@@ -1,4 +1,4 @@
-def clean_woolworths_product_data(raw_product_list: list) -> list:
+def clean_raw_data_woolworths(raw_product_list: list) -> list:
     """
     Takes a list of raw product dictionaries from the Woolworths API and
     returns a new list containing only the essential, cleaned data for each product.
@@ -14,7 +14,6 @@ def clean_woolworths_product_data(raw_product_list: list) -> list:
 
     cleaned_products = []
     for product in raw_product_list:
-        # Use .get() with a default value to safely access keys that might be missing
         clean_product = {
             'name': product.get('Name'),
             'brand': product.get('Brand'),
