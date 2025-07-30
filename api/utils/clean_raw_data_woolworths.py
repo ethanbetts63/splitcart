@@ -26,7 +26,7 @@ def clean_raw_data_woolworths(raw_product_list: list) -> list:
             'is_available': product.get('IsAvailable'),
             'unit_price': product.get('CupPrice'),
             'unit_of_measure': product.get('CupMeasure'),
-            'url_friendly_name': product.get('UrlFriendlyName')
+            'url': product.get('UrlFriendlyName')
         }
         cleaned_products.append(clean_product)
         
