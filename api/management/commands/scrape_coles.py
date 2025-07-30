@@ -14,6 +14,18 @@ class Command(BaseCommand):
         categories = [
             "fruit-vegetables",
             "meat-seafood",
+            "deli",
+            "bakery",
+            "dairy-eggs-fridge",
+            "pantry",
+            "freezer",
+            "drinks",
+            "liquor",
+            "household",
+            "health-beauty",
+            "baby",
+            "pet",
+            "tobacco",
         ]
         
         # Define the path to the raw_data directory
