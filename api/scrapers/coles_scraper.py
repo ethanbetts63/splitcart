@@ -54,10 +54,12 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
         # --- Loop through each category ---
         for category in categories_to_fetch:
             print(f"--- Starting category: '{category}' ---")
-            total_pages = 1 # Default to 1 page, will be updated after first scrape
             
-            # --- Loop through all pages in the category ---
-            for page_num in range(1, total_pages + 1):
+            # --- THE FIX: Use a while loop for flexible pagination ---
+            page_num = 1
+            total_pages = 1 # Start with 1, will be updated after the first page scrape
+            
+            while page_num <= total_pages:
                 print(f"Navigating to page {page_num} of {total_pages} for '{category}'...")
                 browse_url = f"https://www.coles.com.au/browse/{category}?page={page_num}"
                 driver.get(browse_url)
@@ -76,13 +78,13 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
                     product_list = search_results.get("results", [])
 
                     if not product_list:
-                        print(f"WARNING: Product list was empty for page {page_num} of '{category}'. Skipping.")
-                        continue
+                        print(f"WARNING: Product list was empty for page {page_num} of '{category}'. Stopping this category.")
+                        break # Stop processing this category if a page is empty
 
                     # --- If it's the first page, calculate total pages ---
                     if page_num == 1:
                         total_results = search_results.get("noOfResults", 0)
-                        page_size = search_results.get("pageSize", 48) # Default to 48 if not found
+                        page_size = search_results.get("pageSize", 48)
                         if total_results > 0 and page_size > 0:
                             total_pages = math.ceil(total_results / page_size)
                             print(f"Found {total_results} products across {total_pages} pages for '{category}'.")
@@ -98,13 +100,15 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
 
                 except Exception as e:
                     print(f"ERROR: Failed on page {page_num} for '{category}'. Details: {e}")
-                    # Optional: decide if you want to break or continue on error
-                    break # Stop processing this category if a page fails
+                    break
 
                 # Responsible scraping: wait between pages
                 sleep_time = random.uniform(3, 7)
                 print(f"Waiting for {sleep_time:.2f} seconds before next page...")
                 time.sleep(sleep_time)
+
+                # --- Increment the page counter for the while loop ---
+                page_num += 1
             
             print(f"--- Finished category: '{category}' ---\n")
 
