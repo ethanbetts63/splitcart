@@ -1,95 +1,110 @@
 import requests
 import json
+import time
+import random
+import os
+from datetime import datetime
 
-
-def fetch_category_data(session, category_id, page_number=1, page_size=36):
+def scrape_and_save_woolworths_data(categories_to_fetch: list, save_path: str):
     """
-    Fetches product data using a pre-warmed session that contains cookies.
+    Launches a requests-based scraper, iterates through all pages of the given
+    Woolworths categories, and saves each page's product data to a file.
+
+    Args:
+        categories_to_fetch: A list of tuples, where each tuple contains
+                             (category_slug, category_id).
+        save_path: The absolute path to the directory to save JSON files.
     """
-    api_url = "https://www.woolworths.com.au/apis/ui/browse/category"
-
-    payload = {
-        "categoryId": category_id,
-        "pageNumber": page_number,
-        "pageSize": page_size,
-        "sortType": "PriceAsc",
-        "url": f"/shop/browse/electronics?pageNumber={page_number}&sortBy=PriceAsc",
-        "location": f"/shop/browse/electronics?pageNumber={page_number}&sortBy=PriceAsc&filter=SoldBy(Woolworths)",
-        "formatObject": '{"name":"Electronics"}',
-        "isSpecial": False,
-        "isBundle": False,
-        "isMobile": False,
-        "filters": [{"Key": "SoldBy", "Items": [{"Term": "Woolworths"}]}],
-        "token": "",
-        "gpBoost": 0,
-        "isHideUnavailableProducts": False,
-        "isRegisteredRewardCardPromotion": False,
-        "categoryVersion": "v2",
-        "enableAdReRanking": False,
-        "groupEdmVariants": False,
-        "activePersonalizedViewType": "",
-    }
-
-    print(f"Requesting API data for Category: {category_id}, Page: {page_number}")
-
-    try:
-        # Use the provided session object to make the request
-        response = session.post(api_url, json=payload, timeout=60)
-        response.raise_for_status()
-
-        print(f"Successfully fetched API data. Status Code: {response.status_code}")
-        return response.json()
-
-    except requests.exceptions.HTTPError as e:
-        print(f"ERROR: HTTP Error: {e.response.status_code} for URL: {api_url}.")
-        print(f"Response Body: {e.response.text}")
-        return None
-    except requests.exceptions.RequestException as e:
-        print(f"ERROR: An unexpected error occurred: {e}")
-        return None
-
-
-if __name__ == "__main__":
-    # --- STEP 1: Create and "Warm Up" the Session ---
-    print("Initializing session...")
-
-    # Create a single session object
+    print("--- Initializing Woolworths Scraper Tool ---")
+    
     session = requests.Session()
+    session.headers.update({
+        "accept": "application/json, text/plain, */*",
+        "accept-language": "en-US,en;q=0.9",
+        "origin": "https://www.woolworths.com.au",
+        "referer": "https://www.woolworths.com.au/shop/browse/",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
+    })
 
-    # Set the headers for the entire session. These will be used for all requests.
-    session.headers.update(
-        {
-            "accept": "application/json, text/plain, */*",
-            "accept-language": "en-US,en;q=0.9",
-            "origin": "https://www.woolworths.com.au",
-            "referer": "https://www.woolworths.com.au/shop/browse/electronics",
-            "sec-ch-ua": '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"',
-            "sec-ch-ua-mobile": "?0",
-            "sec-ch-ua-platform": '"Windows"',
-            "sec-fetch-dest": "empty",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-site": "same-origin",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
-        }
-    )
-
-    print("Warming up session to acquire cookies...")
     try:
-        # Make a GET request to the homepage to get the initial cookies
+        print("Warming up session to acquire cookies...")
         session.get("https://www.woolworths.com.au/", timeout=60)
         print("Session is ready.")
     except requests.exceptions.RequestException as e:
-        print(f"CRITICAL: Failed to warm up session and get cookies. Error: {e}")
-        exit()  # Exit if we can't get cookies
+        print(f"CRITICAL: Failed to warm up session. Error: {e}")
+        return
 
-    # --- STEP 2: Use the Warmed-Up Session to Fetch Data ---
-    electronics_category_id = "1_B863F57"
-    product_data = fetch_category_data(
-        session, electronics_category_id, page_number=1, page_size=24
-    )
+    # Loop through each category
+    for category_slug, category_id in categories_to_fetch:
+        print(f"\n--- Starting category: '{category_slug}' ---")
+        
+        page_num = 1
+        while True:
+            print(f"Attempting to fetch page {page_num} for '{category_slug}'...")
+            
+            api_url = "https://www.woolworths.com.au/apis/ui/browse/category"
+            
+            # --- THE FIX: Restored the full, detailed payload ---
+            # This payload matches the structure of a real browser request more closely.
+            payload = {
+                "categoryId": category_id,
+                "pageNumber": page_num,
+                "pageSize": 36,
+                "sortType": "PriceAsc",
+                "url": f"/shop/browse/{category_slug}?pageNumber={page_num}&sortBy=PriceAsc",
+                "location": f"/shop/browse/{category_slug}?pageNumber={page_num}&sortBy=PriceAsc&filter=SoldBy(Woolworths)",
+                "formatObject": f'{{"name":"{category_slug}"}}',
+                "isSpecial": False,
+                "isBundle": False,
+                "isMobile": False,
+                "filters": [{"Key": "SoldBy", "Items": [{"Term": "Woolworths"}]}],
+                "token": "",
+                "gpBoost": 0,
+                "isHideUnavailableProducts": False,
+                "isRegisteredRewardCardPromotion": False,
+                "categoryVersion": "v2",
+                "enableAdReRanking": False,
+                "groupEdmVariants": False,
+                "activePersonalizedViewType": "",
+            }
 
-    if product_data:
-        print("\nSuccessfully retrieved API data. Preview of response:")
-        print(json.dumps(product_data, indent=2))
-    else:
-        print("\nWARNING: Failed to retrieve API data.")
+            try:
+                response = session.post(api_url, json=payload, timeout=60)
+                response.raise_for_status()
+                data = response.json()
+                
+                products_on_page = []
+                for bundle in data.get("Bundles", []):
+                    if bundle and bundle.get("Products"):
+                        products_on_page.extend(bundle.get("Products"))
+
+                if not products_on_page:
+                    print(f"Page {page_num} is empty. Assuming end of category '{category_slug}'.")
+                    break
+
+                print(f"Found {len(products_on_page)} products on page {page_num}.")
+
+                timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+                file_name = f"woolworths_{category_slug}_page-{page_num}_{timestamp}.json"
+                file_path = os.path.join(save_path, file_name)
+                
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    json.dump(products_on_page, f, indent=4)
+                print(f"Successfully saved data to {file_name}")
+
+            except requests.exceptions.RequestException as e:
+                print(f"ERROR: Request failed on page {page_num} for '{category_slug}': {e}")
+                break
+            except json.JSONDecodeError:
+                print(f"ERROR: Failed to decode JSON on page {page_num} for '{category_slug}'.")
+                break
+
+            sleep_time = random.uniform(2, 5)
+            print(f"Waiting for {sleep_time:.2f} seconds...")
+            time.sleep(sleep_time)
+            
+            page_num += 1
+        
+        print(f"--- Finished category: '{category_slug}' ---")
+            
+    print("\n--- Woolworths scraper tool finished. ---")
