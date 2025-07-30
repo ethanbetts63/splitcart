@@ -1,6 +1,10 @@
 import json
+import re
 import time
 import random
+import math
+import os
+from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
@@ -8,21 +12,17 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-def fetch_coles_data(categories_to_fetch: list) -> dict:
+def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
     """
-    Launches a visible Selenium browser, pauses for manual CAPTCHA solving,
-    navigates to each category page, and extracts only the product list JSON.
+    Launches a browser, handles CAPTCHA, then iterates through all pages of
+    the given categories, saving each page's product data to a separate file.
 
     Args:
-        categories_to_fetch: A list of category slugs (e.g., ['fruit-vegetables']).
-
-    Returns:
-        A dictionary where keys are category slugs and values are the raw
-        JSON strings of just the product list. Returns an empty dict on failure.
+        categories_to_fetch: A list of category slugs to scrape.
+        save_path: The absolute path to the directory to save JSON files.
     """
     print("--- Initializing Coles Scraper Tool ---")
     driver = None
-    scraped_data = {}
 
     try:
         # --- Set up and launch the visible browser ---
@@ -48,57 +48,70 @@ def fetch_coles_data(categories_to_fetch: list) -> dict:
         page_title = driver.title
         if "Coles" not in page_title:
             print("\nFAILURE: Could not get to the main Coles website. Exiting scraper.")
-            return {}
+            return
         print("SUCCESS: Security passed.\n")
 
-        # --- Loop through categories and fetch data from the page source ---
+        # --- Loop through each category ---
         for category in categories_to_fetch:
-            print(f"Navigating to category page: '{category}'...")
-            browse_url = f"https://www.coles.com.au/browse/{category}"
+            print(f"--- Starting category: '{category}' ---")
+            total_pages = 1 # Default to 1 page, will be updated after first scrape
             
-            driver.get(browse_url)
-            
-            try:
-                # --- Wait for the page data to load ---
-                print("Waiting for page data to load...")
-                wait = WebDriverWait(driver, 10)
-                json_element = wait.until(
-                    EC.presence_of_element_located((By.ID, "__NEXT_DATA__"))
-                )
+            # --- Loop through all pages in the category ---
+            for page_num in range(1, total_pages + 1):
+                print(f"Navigating to page {page_num} of {total_pages} for '{category}'...")
+                browse_url = f"https://www.coles.com.au/browse/{category}?page={page_num}"
+                driver.get(browse_url)
                 
-                print("Page data found. Extracting and trimming JSON...")
-                full_json_text = json_element.get_attribute('innerHTML')
-                full_data = json.loads(full_json_text)
-                
-                # --- THE FIX: Drill down to the product list ---
-                # This follows the path: props -> pageProps -> searchResults -> results
-                product_list = full_data.get("props", {}).get("pageProps", {}).get("searchResults", {}).get("results", [])
+                try:
+                    # --- Wait for the data to load and extract it ---
+                    wait = WebDriverWait(driver, 10)
+                    json_element = wait.until(
+                        EC.presence_of_element_located((By.ID, "__NEXT_DATA__"))
+                    )
+                    full_json_text = json_element.get_attribute('innerHTML')
+                    full_data = json.loads(full_json_text)
+                    
+                    # --- Drill down to the product list ---
+                    search_results = full_data.get("props", {}).get("pageProps", {}).get("searchResults", {})
+                    product_list = search_results.get("results", [])
 
-                if not product_list:
-                    print(f"WARNING: Found page data, but the product list was empty for '{category}'.")
-                    continue
+                    if not product_list:
+                        print(f"WARNING: Product list was empty for page {page_num} of '{category}'. Skipping.")
+                        continue
 
-                # Convert just the product list back to a nicely formatted JSON string
-                product_json_string = json.dumps(product_list, indent=4)
-                
-                scraped_data[category] = product_json_string
-                print(f"Successfully extracted JSON for {len(product_list)} products in '{category}'.")
+                    # --- If it's the first page, calculate total pages ---
+                    if page_num == 1:
+                        total_results = search_results.get("noOfResults", 0)
+                        page_size = search_results.get("pageSize", 48) # Default to 48 if not found
+                        if total_results > 0 and page_size > 0:
+                            total_pages = math.ceil(total_results / page_size)
+                            print(f"Found {total_results} products across {total_pages} pages for '{category}'.")
 
-            except Exception as e:
-                print(f"ERROR: Could not find or process '__NEXT_DATA__' for '{category}'. Details: {e}")
+                    # --- Save this page's data immediately ---
+                    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+                    file_name = f"coles_{category}_page-{page_num}_{timestamp}.json"
+                    file_path = os.path.join(save_path, file_name)
+                    
+                    with open(file_path, 'w', encoding='utf-8') as f:
+                        json.dump(product_list, f, indent=4)
+                    print(f"Successfully saved data for page {page_num} to {file_name}")
 
-            # Responsible scraping: wait between requests
-            if category != categories_to_fetch[-1]:
-                sleep_time = random.uniform(3, 6)
-                print(f"Waiting for {sleep_time:.2f} seconds...")
+                except Exception as e:
+                    print(f"ERROR: Failed on page {page_num} for '{category}'. Details: {e}")
+                    # Optional: decide if you want to break or continue on error
+                    break # Stop processing this category if a page fails
+
+                # Responsible scraping: wait between pages
+                sleep_time = random.uniform(3, 7)
+                print(f"Waiting for {sleep_time:.2f} seconds before next page...")
                 time.sleep(sleep_time)
+            
+            print(f"--- Finished category: '{category}' ---\n")
 
     except Exception as e:
-        print(f"\nAn error occurred during scraping: {e}")
+        print(f"\nA critical error occurred during scraping: {e}")
     
     finally:
         if driver:
             print("\n--- Scraper tool finished, closing browser. ---")
             driver.quit()
-        
-    return scraped_data
