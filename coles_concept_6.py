@@ -8,8 +8,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 def run_coles_scraper():
     """
-    Launches a visible Selenium browser, gets past security, and then uses
-    the same browser session to fetch data from the Coles API.
+    Launches a visible Selenium browser, pauses for manual CAPTCHA solving,
+    and then uses the same browser session to fetch data from the Coles API.
     """
     print("--- Starting Coles Scraper ---")
     driver = None  # Initialize driver to None
@@ -23,13 +23,19 @@ def run_coles_scraper():
         
         driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
 
-        # --- STEP 2: Navigate and pass security check ---
+        # --- STEP 2: Navigate and pause for manual CAPTCHA solving ---
         url = "https://www.coles.com.au"
         print(f"Navigating to {url}...")
         driver.get(url)
 
-        print("Waiting for 10 seconds to ensure page loads and passes security...")
-        time.sleep(10)
+        # --- MANUAL INTERVENTION STEP ---
+        print("\n" + "="*50)
+        print("ACTION REQUIRED: The browser has opened.")
+        print("Please solve the CAPTCHA or any security check now.")
+        input("Once you are on the main Coles homepage, press Enter here to continue...")
+        print("="*50 + "\n")
+        print("Resuming script...")
+
 
         # --- STEP 3: Confirm success and get Build ID ---
         page_title = driver.title
@@ -61,12 +67,10 @@ def run_coles_scraper():
             print(f"--- Requesting data for category: '{category}' ---")
             api_url = f"https://www.coles.com.au/_next/data/{build_id}/en/browse/{category}.json?page=1"
             
-            # Use the already open, authenticated browser to go to the API URL
             driver.get(api_url)
             
-            # The JSON data is inside a <pre> tag. Find it and get its text.
-            pre_tag_content = driver.find_element(webdriver.common.by.By.TAG_NAME, "pre").text
-            product_data = json.loads(pre_tag_content)
+            json_text = driver.find_element(webdriver.common.by.By.TAG_NAME, "body").text
+            product_data = json.loads(json_text)
 
             if product_data:
                 results = product_data.get("pageProps", {}).get("searchResults", {})
