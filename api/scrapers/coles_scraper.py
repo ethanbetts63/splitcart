@@ -22,13 +22,13 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
     driver = None
 
     try:
-        # Launch a basic, non-stealth browser to encourage a solvable CAPTCHA
+        # --- THE FIX: Reverting to the "just bot-like enough" configuration ---
         options = webdriver.ChromeOptions()
-        options.add_argument('--start-maximized')
+        # Add a standard user-agent, but no other stealth flags.
         
         driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
 
-        # Navigate and pause for manual CAPTCHA solving
+        # --- Navigate and pause for manual CAPTCHA solving ---
         url = "https://www.coles.com.au"
         print(f"Navigating to {url}...")
         driver.get(url)
@@ -46,7 +46,7 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
             return
         print("SUCCESS: Security passed.\n")
 
-        # Loop through categories and fetch data from the page source
+        # --- Loop through categories and fetch data from the page source ---
         for category in categories_to_fetch:
             print(f"--- Starting category: '{category}' ---")
             
@@ -59,9 +59,7 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
                 driver.get(browse_url)
                 
                 try:
-                    # Add a fixed wait for the page to settle before the smart wait
                     time.sleep(3)
-
                     wait = WebDriverWait(driver, 10)
                     json_element = wait.until(EC.presence_of_element_located((By.ID, "__NEXT_DATA__")))
                     
@@ -82,12 +80,10 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
                             total_pages = math.ceil(total_results / page_size)
                             print(f"Found {total_results} products across {total_pages} pages for '{category}'.")
 
-                    # Pass all required arguments to the cleaner
                     scrape_timestamp = datetime.now()
                     data_packet = clean_raw_data_coles(raw_product_list, category, page_num, scrape_timestamp)
                     print(f"Found and cleaned {len(data_packet['products'])} products on page {page_num}.")
 
-                    # Save the data packet
                     file_name = f"coles_{category}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
                     file_path = os.path.join(save_path, file_name)
                     
