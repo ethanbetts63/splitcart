@@ -4,7 +4,6 @@ import time
 import random
 import os
 from datetime import datetime
-# --- NEW IMPORT ---
 from api.utils.clean_raw_data_woolworths import clean_raw_data_woolworths
 
 def scrape_and_save_woolworths_data(categories_to_fetch: list, save_path: str):
@@ -65,17 +64,17 @@ def scrape_and_save_woolworths_data(categories_to_fetch: list, save_path: str):
                     print(f"Page {page_num} is empty. Assuming end of category '{category_slug}'.")
                     break
 
-                # --- NEW STEP: Clean the data ---
-                cleaned_products = clean_raw_data_woolworths(raw_products_on_page)
-                print(f"Found and cleaned {len(cleaned_products)} products on page {page_num}.")
+                # --- THE FIX: Pass all required arguments to the cleaner ---
+                scrape_timestamp = datetime.now()
+                data_packet = clean_raw_data_woolworths(raw_products_on_page, category_slug, page_num, scrape_timestamp)
+                print(f"Found and cleaned {len(data_packet['products'])} products on page {page_num}.")
 
-                # --- Save the CLEAN data immediately ---
-                timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-                file_name = f"woolworths_{category_slug}_page-{page_num}_{timestamp}.json"
+                # --- Save the data packet ---
+                file_name = f"woolworths_{category_slug}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
                 file_path = os.path.join(save_path, file_name)
                 
                 with open(file_path, 'w', encoding='utf-8') as f:
-                    json.dump(cleaned_products, f, indent=4)
+                    json.dump(data_packet, f, indent=4)
                 print(f"Successfully saved cleaned data to {file_name}")
 
             except requests.exceptions.RequestException as e:
