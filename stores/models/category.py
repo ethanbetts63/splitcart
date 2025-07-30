@@ -1,5 +1,4 @@
 from django.db import models
-from .store import Store
 
 class Category(models.Model):
     """
@@ -21,7 +20,7 @@ class Category(models.Model):
         help_text="Optional: The specific URL path for this category if it's not based on the slug."
     )
     store = models.ForeignKey(
-        Store,
+        'stores.Store',
         on_delete=models.CASCADE,
         related_name="categories",
         help_text="The store this category belongs to."
