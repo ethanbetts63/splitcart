@@ -22,15 +22,8 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
     driver = None
 
     try:
-        # --- Set up and launch the visible browser with stealth options ---
         options = webdriver.ChromeOptions()
         options.add_argument('--start-maximized')
-        options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36')
-        
-        # --- THE FIX: Restore the anti-detection options ---
-        options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        options.add_experimental_option('useAutomationExtension', False)
-        options.add_argument('--disable-blink-features=AutomationControlled')
         
         driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
 
@@ -90,7 +83,7 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
                     cleaned_products = clean_raw_data_coles(raw_product_list)
                     print(f"Found and cleaned {len(cleaned_products)} products on page {page_num}.")
 
-                    timestamp = datetime.now().strftime("%Y-m-%d_%H-%M-%S")
+                    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
                     file_name = f"coles_{category}_page-{page_num}_{timestamp}.json"
                     file_path = os.path.join(save_path, file_name)
                     

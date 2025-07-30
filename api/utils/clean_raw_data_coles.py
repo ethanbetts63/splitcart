@@ -6,7 +6,7 @@ def clean_raw_data_coles(raw_product_list: list) -> list:
     and returns a new list containing only the essential, cleaned data for each product.
 
     Args:
-        raw_product_list: A list of raw product dictionaries from the 'results' key.
+        raw_product_list: A list of raw dictionaries from the 'results' key.
 
     Returns:
         A list of cleaned product dictionaries.
@@ -15,9 +15,11 @@ def clean_raw_data_coles(raw_product_list: list) -> list:
         return []
 
     cleaned_products = []
-    for product_wrapper in raw_product_list:
-        product = product_wrapper.get('_source', {})
-        if not product:
+    for product in raw_product_list:
+        # --- THE FIX ---
+        # We now process the 'product' dictionary directly and also ensure
+        # we are only processing actual products, not ad tiles.
+        if not product or product.get('_type') != 'PRODUCT':
             continue
 
         pricing = product.get('pricing', {}) or {}
@@ -32,7 +34,6 @@ def clean_raw_data_coles(raw_product_list: list) -> list:
             slug = _create_coles_url_slug(product_name, product_size)
             product_url = f"https://www.coles.com.au/product/{slug}-{product_id}"
 
-        # Combine unit of measure parts, ensuring they are not None
         unit_measure_qty = unit_info.get('ofMeasureQuantity', '')
         unit_measure_units = unit_info.get('ofMeasureUnits', '')
         unit_of_measure = f"{unit_measure_qty}{unit_measure_units}".lower() if unit_measure_qty and unit_measure_units else None
