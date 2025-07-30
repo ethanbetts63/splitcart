@@ -54,3 +54,5 @@ coverage.xml
 # IDE / Editor specific
 .idea/
 .vscode/
+
+api/data/raw_data/
