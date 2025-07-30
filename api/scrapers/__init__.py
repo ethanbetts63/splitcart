@@ -1,1 +1,1 @@
-from coles_scraper import *
+from .coles_scraper import *
