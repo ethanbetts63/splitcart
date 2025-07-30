@@ -2,7 +2,7 @@ import requests
 import json
 import time
 import random
-from coles_scraper import get_coles_session_details
+from get_coles_session_details import get_coles_session_details
 
 def fetch_category_data(session, build_id, category_slug, page=1):
     """
