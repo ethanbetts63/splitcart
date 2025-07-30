@@ -11,7 +11,14 @@ from selenium.webdriver.support import expected_conditions as EC
 def fetch_coles_data(categories_to_fetch: list) -> dict:
     """
     Launches a visible Selenium browser, pauses for manual CAPTCHA solving,
-    navigates to each category page, and extracts the embedded JSON data.
+    navigates to each category page, and extracts only the product list JSON.
+
+    Args:
+        categories_to_fetch: A list of category slugs (e.g., ['fruit-vegetables']).
+
+    Returns:
+        A dictionary where keys are category slugs and values are the raw
+        JSON strings of just the product list. Returns an empty dict on failure.
     """
     print("--- Initializing Coles Scraper Tool ---")
     driver = None
@@ -52,22 +59,30 @@ def fetch_coles_data(categories_to_fetch: list) -> dict:
             driver.get(browse_url)
             
             try:
-                # --- THE FINAL FIX: Use an Explicit Wait ---
-                # This tells Selenium to wait up to 10 seconds for the element to appear.
-                # This is the reliable way to handle race conditions.
+                # --- Wait for the page data to load ---
                 print("Waiting for page data to load...")
                 wait = WebDriverWait(driver, 10)
                 json_element = wait.until(
                     EC.presence_of_element_located((By.ID, "__NEXT_DATA__"))
                 )
                 
-                print("Page data found. Extracting JSON...")
-                json_text = json_element.get_attribute('innerHTML')
+                print("Page data found. Extracting and trimming JSON...")
+                full_json_text = json_element.get_attribute('innerHTML')
+                full_data = json.loads(full_json_text)
                 
-                # Verify we got JSON before storing it
-                json.loads(json_text)
-                scraped_data[category] = json_text
-                print(f"Successfully extracted JSON for '{category}'.")
+                # --- THE FIX: Drill down to the product list ---
+                # This follows the path: props -> pageProps -> searchResults -> results
+                product_list = full_data.get("props", {}).get("pageProps", {}).get("searchResults", {}).get("results", [])
+
+                if not product_list:
+                    print(f"WARNING: Found page data, but the product list was empty for '{category}'.")
+                    continue
+
+                # Convert just the product list back to a nicely formatted JSON string
+                product_json_string = json.dumps(product_list, indent=4)
+                
+                scraped_data[category] = product_json_string
+                print(f"Successfully extracted JSON for {len(product_list)} products in '{category}'.")
 
             except Exception as e:
                 print(f"ERROR: Could not find or process '__NEXT_DATA__' for '{category}'. Details: {e}")
