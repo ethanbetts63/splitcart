@@ -10,6 +10,13 @@ class Category(models.Model):
         unique=True,
         help_text="A URL-friendly version of the name, e.g., 'fruit-vegetables'."
     )
+    store_category_id = models.CharField(
+        max_length=50,
+        unique=True,
+        null=True,
+        blank=True,
+        help_text="The category ID from the store's website, if available."
+    )
     parent = models.ForeignKey(
         'self',
         on_delete=models.CASCADE,
