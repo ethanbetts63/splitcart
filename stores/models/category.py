@@ -1,9 +1,6 @@
 from django.db import models
 
 class Category(models.Model):
-    """
-    Represents a product category, used for organizing products.
-    """
     name = models.CharField(
         max_length=100,
         help_text="The name of the category, e.g., 'Fruit & Vegetables'."
@@ -13,22 +10,34 @@ class Category(models.Model):
         unique=True,
         help_text="A URL-friendly version of the name, e.g., 'fruit-vegetables'."
     )
-    url_path = models.CharField(
-        max_length=1024,
-        blank=True,
+    parent = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
         null=True,
-        help_text="Optional: The specific URL path for this category if it's not based on the slug."
+        blank=True,
+        related_name='subcategories',
+        help_text="The parent category, if this is a subcategory."
     )
     store = models.ForeignKey(
         'stores.Store',
         on_delete=models.CASCADE,
         related_name="categories",
-        help_text="The store this category belongs to."
+        null=True,  # Allow null for top-level, non-store-specific categories
+        blank=True,
+        help_text="The store this category belongs to, if any."
     )
 
     class Meta:
         verbose_name_plural = "Categories"
-        unique_together = ('name', 'store')
+        # The combination of a category's name and its parent must be unique.
+        # A null parent indicates a top-level category.
+        unique_together = ('name', 'parent')
 
     def __str__(self):
-        return f"{self.name} ({self.store.name})"
+        # Build the full path for the category, e.g., "Pantry > Snacks > Chips"
+        full_path = [self.name]
+        p = self.parent
+        while p:
+            full_path.append(p.name)
+            p = p.parent
+        return ' > '.join(reversed(full_path))
