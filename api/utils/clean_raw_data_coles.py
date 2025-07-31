@@ -1,20 +1,10 @@
 from .create_coles_url_slug import _create_coles_url_slug
 from datetime import datetime
 
-
 def clean_raw_data_coles(raw_product_list: list, category: str, page_num: int, timestamp: datetime) -> dict:
     """
     Cleans a list of raw Coles product data and wraps it in a dictionary
     containing metadata about the scrape.
-
-    Args:
-        raw_product_list: A list of raw dictionaries from the 'results' key.
-        category: The category slug being scraped (e.g., 'fruit-vegetables').
-        page_num: The page number of the data.
-        timestamp: The datetime object of when the scrape occurred.
-
-    Returns:
-        A dictionary containing metadata and the cleaned list of products.
     """
     cleaned_products = []
     if raw_product_list:
@@ -24,7 +14,8 @@ def clean_raw_data_coles(raw_product_list: list, category: str, page_num: int, t
 
             pricing = product.get('pricing', {}) or {}
             unit_info = pricing.get('unit', {}) or {}
-            
+            online_heirs = product.get('onlineHeirs', [{}])[0]
+
             product_id = product.get('id')
             product_name = product.get('name')
             product_size = product.get('size')
@@ -50,11 +41,14 @@ def clean_raw_data_coles(raw_product_list: list, category: str, page_num: int, t
                 'is_available': product.get('availability', False),
                 'unit_price': unit_info.get('price'),
                 'unit_of_measure': unit_of_measure,
-                'url': product_url
+                'url': product_url,
+                'departments': [{'name': online_heirs.get('subCategory'), 'id': online_heirs.get('subCategoryId')}],
+                'categories': [{'name': online_heirs.get('category'), 'id': online_heirs.get('categoryId')}],
+                'subcategories': [{'name': online_heirs.get('aisle'), 'id': online_heirs.get('aisleId')}]
             }
             cleaned_products.append(clean_product)
     
-    data_packet = {
+    return {
         "metadata": {
             "store": "coles",
             "category": category,
@@ -63,5 +57,3 @@ def clean_raw_data_coles(raw_product_list: list, category: str, page_num: int, t
         },
         "products": cleaned_products
     }
-    
-    return data_packet
