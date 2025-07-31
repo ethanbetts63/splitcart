@@ -5,7 +5,7 @@ from django.conf import settings
 from api.utils.file_finder import file_finder
 from api.utils.data_combiner import data_combiner
 from api.utils.archive_manager import archive_manager
-# from api.utils.cleanup import cleanup # Intentionally commented out for now
+from api.utils.cleanup import cleanup
 
 class Command(BaseCommand):
     help = 'Processes raw JSON files, combines them by category, and saves them to a structured processed_data directory.'
@@ -44,6 +44,8 @@ class Command(BaseCommand):
             self.stdout.write("No store specified. Processing all available stores...")
             stores_to_process = list(scrape_plan.keys())
 
+        processed_files_for_cleanup = []
+
         for store in stores_to_process:
             if store not in scrape_plan:
                 continue
@@ -67,8 +69,11 @@ class Command(BaseCommand):
                     
                     self.stdout.write(f"      - Combined {len(combined_products)} products from {len(page_files)} page files.")
 
-                    # --- THE FIX: Pass the 'page_files' list to the archive manager ---
                     archive_manager(processed_data_path, store, scrape_date, category, combined_products, page_files)
+                    processed_files_for_cleanup.extend(page_files)
 
-        self.stdout.write(self.style.WARNING("\nCleanup step skipped. Raw data files have not been deleted."))
-        self.stdout.write(self.style.SUCCESS("\n--- All data processing complete ---"))
+        if processed_files_for_cleanup:
+            self.stdout.write(self.style.SUCCESS("\n--- All data processing complete. Starting cleanup... ---"))
+            cleanup(processed_files_for_cleanup)
+        else:
+            self.stdout.write(self.style.WARNING("\nNo files were processed, so no cleanup is needed."))

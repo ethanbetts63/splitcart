@@ -12,19 +12,21 @@ class Command(BaseCommand):
 
         # Define the categories you want to scrape here
         categories = [
-            "fruit-vegetables",
             "meat-seafood",
-            "deli",
-            "bakery",
+            "fruit-vegetables",
             "dairy-eggs-fridge",
+            "bakery",
+            "deli",
             "pantry",
-            "freezer",
+            "dietary-world-foods",
+            "chips-chocolates-snacks"
             "drinks",
-            "liquor",
+            "frozen",
             "household",
             "health-beauty",
             "baby",
             "pet",
+            "liquorland",
             "tobacco",
         ]
         
