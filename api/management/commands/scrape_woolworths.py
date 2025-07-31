@@ -12,7 +12,6 @@ class Command(BaseCommand):
 
         # Define the categories you want to scrape here.
         categories = [
-            ('baby', '1_717A94B'),
             ('fruit-veg', '1-E5BEE36E'),
             ('poultry-meat-seafood', '1_D5A2236'),
             ('meal-occasions', '1_8AD6702'),
@@ -30,7 +29,10 @@ class Command(BaseCommand):
             ('personal-care', '1_894D0A8'),
             ('health-wellness', '1_9851658'),
             ('cleaning-maintenance', '1_2432B58'),
+            ('baby', '1_717A94B'),
             ('pet', '1_61D6FEB'),
+            ('electronics', '1_B863F57'),
+            ('home-lifestyle', '1_DEA3ED5'),
         ]
         
         # Define the path to the raw_data directory
