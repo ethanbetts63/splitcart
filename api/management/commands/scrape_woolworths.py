@@ -1,7 +1,6 @@
 import os
 from django.core.management.base import BaseCommand
 from django.conf import settings
-# I've updated the function name to match the latest scraper version
 from api.scrapers.woolworths_scraper import scrape_and_save_woolworths_data
 
 class Command(BaseCommand):
@@ -41,10 +40,8 @@ class Command(BaseCommand):
         # Ensure the directory exists
         os.makedirs(raw_data_path, exist_ok=True)
         self.stdout.write(f"Data will be saved to: {raw_data_path}")
-
-        # --- THE FIX ---
-        # Call the scraper tool and pass it the save path.
-        # The scraper will now handle all the logic and file saving.
+        
+        # Start the scraping process
         scrape_and_save_woolworths_data(categories, raw_data_path)
 
         self.stdout.write(self.style.SUCCESS("\n--- Woolworths scraping process complete ---"))
