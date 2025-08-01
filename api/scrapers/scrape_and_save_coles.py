@@ -22,9 +22,9 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
     driver = None
 
     try:
-        # --- THE FIX: Reverting to the "just bot-like enough" configuration ---
+        # --- THE FIX: Testing the "shout louder" theory to trigger CAPTCHA ---
         options = webdriver.ChromeOptions()
-        # Add a standard user-agent, but no other stealth flags.
+        options.add_argument("user-agent=SplitCartScraper/1.0 (Contact: admin@splitcart.com)")
         
         driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
 
