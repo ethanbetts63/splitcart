@@ -80,14 +80,15 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
 
                 
                 page_num = 1
+                # When resuming, we need to reset total_pages to ensure the loop condition is met
+                total_pages = 1 
                 if in_progress_category and in_progress_category.get("name") == category:
                     print(f"--- Resuming category: '{category}' ---")
                     page_num = in_progress_category.get("next_page", 1)
+                    # Set total_pages high enough to enter the loop and get the real total
+                    total_pages = page_num 
                 else:
                     print(f"--- Starting category: '{category}' ---")
-
-
-                total_pages = 1 # Will be updated after first page
                 category_succeeded = False
                 
                 while page_num <= total_pages:
@@ -143,9 +144,9 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
                         print(f"ERROR: Failed on page {page_num} for '{category}'. Details: {e}")
                         break
 
-                    sleep_time = random.uniform(2, 4)
-                    print(f"Waiting for {sleep_time:.2f} seconds before next page...")
-                    time.sleep(sleep_time)
+                    # sleep_time = random.uniform(1, 2)
+                    # print(f"Waiting for {sleep_time:.2f} seconds before next page...")
+                    # time.sleep(sleep_time)
                     
                     page_num += 1
                 
