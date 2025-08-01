@@ -11,10 +11,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterUniqueTogether(
-            name="category",
-            unique_together={("name", "parent")},
-        ),
         migrations.AddField(
             model_name="category",
             name="parent",
@@ -26,6 +22,10 @@ class Migration(migrations.Migration):
                 related_name="subcategories",
                 to="stores.category",
             ),
+        ),
+        migrations.AlterUniqueTogether(
+            name="category",
+            unique_together={("name", "parent")},
         ),
         migrations.AlterField(
             model_name="category",
