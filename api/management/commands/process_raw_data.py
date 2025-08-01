@@ -67,7 +67,6 @@ class Command(BaseCommand):
                     
                     self.stdout.write(f"      - Combined {len(combined_products)} products from {len(page_files)} page files.")
 
-                    # --- THE FIX: Pass the 'page_files' list to the archive manager ---
                     archive_manager(processed_data_path, store, scrape_date, category, combined_products, page_files)
 
         self.stdout.write(self.style.WARNING("\nCleanup step skipped. Raw data files have not been deleted."))
