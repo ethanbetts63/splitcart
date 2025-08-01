@@ -23,11 +23,30 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
 
     while True:
         driver = None
+        
+        # Load progress
         completed_categories = []
+        in_progress_category = {}
         if os.path.exists(progress_file_path):
             with open(progress_file_path, 'r') as f:
-                completed_categories = json.load(f)
+                try:
+                    progress_data = json.load(f)
+                    # Handle both old (list) and new (dict) formats
+                    if isinstance(progress_data, list):
+                        completed_categories = progress_data
+                        in_progress_category = {}
+                        print("Detected old progress file format. Converting.")
+                    else:
+                        completed_categories = progress_data.get("completed", [])
+                        in_progress_category = progress_data.get("in_progress", {})
+                except json.JSONDecodeError:
+                    print("Could not decode progress file. Starting fresh.")
+                    completed_categories = []
+                    in_progress_category = {}
+
             print(f"Loaded {len(completed_categories)} completed categories from progress file.")
+            if in_progress_category:
+                print(f"Resuming with category '{in_progress_category.get('name')}' from page {in_progress_category.get('next_page')}.")
 
         try:
             options = webdriver.ChromeOptions()
@@ -59,10 +78,16 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
                     print(f"--- Skipping already completed category: '{category}' ---\n")
                     continue
 
-                print(f"--- Starting category: '{category}' ---")
                 
                 page_num = 1
-                total_pages = 1
+                if in_progress_category and in_progress_category.get("name") == category:
+                    print(f"--- Resuming category: '{category}' ---")
+                    page_num = in_progress_category.get("next_page", 1)
+                else:
+                    print(f"--- Starting category: '{category}' ---")
+
+
+                total_pages = 1 # Will be updated after first page
                 category_succeeded = False
                 
                 while page_num <= total_pages:
@@ -70,13 +95,11 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
                     browse_url = f"https://www.coles.com.au/browse/{category}?page={page_num}"
                     driver.get(browse_url)
 
-                    # Check for block page
                     if "This content is blocked" in driver.page_source or "Access Denied" in driver.title:
                         print(f"BLOCK DETECTED: Scraper was blocked on page {page_num} of '{category}'. Restarting...")
-                        raise Exception("Blocked by website.") # Raise an exception to trigger restart
+                        raise Exception("Blocked by website.")
                     
                     try:
-                        time.sleep(3)
                         wait = WebDriverWait(driver, 10)
                         json_element = wait.until(EC.presence_of_element_located((By.ID, "__NEXT_DATA__")))
                         
@@ -90,7 +113,7 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
                             print(f"WARNING: Product list was empty for page {page_num} of '{category}'. Stopping this category.")
                             break
 
-                        if page_num == 1:
+                        if page_num == 1 or total_pages == 1: # Also check total_pages in case we are resuming
                             total_results = search_results.get("noOfResults", 0)
                             page_size = search_results.get("pageSize", 48)
                             if total_results > 0 and page_size > 0:
@@ -108,11 +131,19 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
                             json.dump(data_packet, f, indent=4)
                         print(f"Successfully saved cleaned data to {file_name}")
 
+                        # Update progress file after each successful page
+                        progress = {
+                            "completed": completed_categories,
+                            "in_progress": {"name": category, "next_page": page_num + 1}
+                        }
+                        with open(progress_file_path, 'w') as f:
+                            json.dump(progress, f, indent=4)
+
                     except Exception as e:
                         print(f"ERROR: Failed on page {page_num} for '{category}'. Details: {e}")
                         break
 
-                    sleep_time = random.uniform(3, 7)
+                    sleep_time = random.uniform(2, 4)
                     print(f"Waiting for {sleep_time:.2f} seconds before next page...")
                     time.sleep(sleep_time)
                     
@@ -124,8 +155,13 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
                 if category_succeeded:
                     print(f"--- Finished category: '{category}' ---")
                     completed_categories.append(category)
+                    in_progress_category = {} # Clear in_progress
+                    progress = {
+                        "completed": completed_categories,
+                        "in_progress": in_progress_category
+                    }
                     with open(progress_file_path, 'w') as f:
-                        json.dump(completed_categories, f, indent=4)
+                        json.dump(progress, f, indent=4)
                     print(f"Saved progress. {len(completed_categories)} of {len(categories_to_fetch)} categories complete.\n")
                 else:
                     print(f"--- Incomplete category: '{category}'. Will retry on next run. ---\n")
@@ -135,7 +171,7 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
                 if os.path.exists(progress_file_path):
                     os.remove(progress_file_path)
                     print("Progress file removed.")
-                break # Exit the while loop as all categories are done
+                break
 
         except Exception as e:
             print(f"\nA critical error occurred during scraping: {e}")
@@ -147,6 +183,5 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
 
         if len(completed_categories) < len(categories_to_fetch):
             print("Restarting scraper due to interruption or incomplete categories...")
-            time.sleep(5) # Small delay before restarting the loop
         else:
-            break # All categories done, exit the outer while loop
+            break
