@@ -20,15 +20,20 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
     """
     print("--- Initializing Coles Scraper Tool ---")
     driver = None
+    progress_file_path = os.path.join(save_path, "coles_progress.json")
+
+    completed_categories = []
+    if os.path.exists(progress_file_path):
+        with open(progress_file_path, 'r') as f:
+            completed_categories = json.load(f)
+        print(f"Loaded {len(completed_categories)} completed categories from progress file.")
 
     try:
-        # --- THE FIX: Testing the "shout louder" theory to trigger CAPTCHA ---
         options = webdriver.ChromeOptions()
         options.add_argument("user-agent=SplitCartScraper/1.0 (Contact: admin@splitcart.com)")
         
         driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
 
-        # --- Navigate and pause for manual CAPTCHA solving ---
         url = "https://www.coles.com.au"
         print(f"Navigating to {url}...")
         driver.get(url)
@@ -46,12 +51,16 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
             return
         print("SUCCESS: Security passed.\n")
 
-        # --- Loop through categories and fetch data from the page source ---
         for category in categories_to_fetch:
+            if category in completed_categories:
+                print(f"--- Skipping already completed category: '{category}' ---\n")
+                continue
+
             print(f"--- Starting category: '{category}' ---")
             
             page_num = 1
             total_pages = 1
+            category_succeeded = False
             
             while page_num <= total_pages:
                 print(f"Navigating to page {page_num} of {total_pages} for '{category}'...")
@@ -101,7 +110,23 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
                 
                 page_num += 1
             
-            print(f"--- Finished category: '{category}' ---\n")
+            if page_num > total_pages:
+                category_succeeded = True
+
+            if category_succeeded:
+                print(f"--- Finished category: '{category}' ---")
+                completed_categories.append(category)
+                with open(progress_file_path, 'w') as f:
+                    json.dump(completed_categories, f, indent=4)
+                print(f"Saved progress. {len(completed_categories)} of {len(categories_to_fetch)} categories complete.\n")
+            else:
+                print(f"--- Incomplete category: '{category}'. Will retry on next run. ---\n")
+
+        if len(completed_categories) == len(categories_to_fetch):
+            print("All categories scraped successfully!")
+            if os.path.exists(progress_file_path):
+                os.remove(progress_file_path)
+                print("Progress file removed.")
 
     except Exception as e:
         print(f"\nA critical error occurred during scraping: {e}")
