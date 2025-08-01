@@ -1,2 +1,2 @@
-from .coles_scraper import *
-from .woolworths_scraper import *
+from .scrape_and_save_coles import *
+from .scrape_and_save_woolworths import *

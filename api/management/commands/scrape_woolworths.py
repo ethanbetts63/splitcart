@@ -1,7 +1,7 @@
 import os
 from django.core.management.base import BaseCommand
 from django.conf import settings
-from api.scrapers.woolworths_scraper import scrape_and_save_woolworths_data
+from api.scrapers.scrape_and_save_woolworths import scrape_and_save_woolworths_data
 
 class Command(BaseCommand):
     help = 'Launches the scraper to fetch all pages of product data from Woolworths.'
