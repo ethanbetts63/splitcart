@@ -121,6 +121,8 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
                             if total_results > 0 and page_size > 0:
                                 total_pages = math.ceil(total_results / page_size)
                                 print(f"Found {total_results} products across {total_pages} pages for '{category}'.")
+                            # After resuming, we don't want this to trigger on every page
+                            resuming = False
 
                         scrape_timestamp = datetime.now()
                         data_packet = clean_raw_data_coles(raw_product_list, category, page_num, scrape_timestamp)
@@ -167,6 +169,7 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
                     print(f"Saved progress. {len(completed_categories)} of {len(categories_to_fetch)} categories complete.\n")
                 else:
                     print(f"--- Incomplete category: '{category}'. Will retry on next run. ---\n")
+                    break # Exit the category loop and trigger a restart
 
             if len(completed_categories) == len(categories_to_fetch):
                 print("All categories scraped successfully!")

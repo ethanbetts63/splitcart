@@ -27,7 +27,6 @@ class Command(BaseCommand):
             "baby",
             "pet",
             "liquorland",
-            "tobacco",
         ]
         
         # Define the path to the raw_data directory
