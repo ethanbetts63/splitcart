@@ -79,16 +79,17 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
                     continue
 
                 
+                resuming = in_progress_category and in_progress_category.get("name") == category
                 page_num = 1
-                # When resuming, we need to reset total_pages to ensure the loop condition is met
-                total_pages = 1 
-                if in_progress_category and in_progress_category.get("name") == category:
+                total_pages = 1
+
+                if resuming:
                     print(f"--- Resuming category: '{category}' ---")
                     page_num = in_progress_category.get("next_page", 1)
-                    # Set total_pages high enough to enter the loop and get the real total
-                    total_pages = page_num 
+                    total_pages = page_num # Temporarily set to allow loop entry
                 else:
                     print(f"--- Starting category: '{category}' ---")
+
                 category_succeeded = False
                 
                 while page_num <= total_pages:
@@ -114,7 +115,7 @@ def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
                             print(f"WARNING: Product list was empty for page {page_num} of '{category}'. Stopping this category.")
                             break
 
-                        if page_num == 1 or total_pages == 1: # Also check total_pages in case we are resuming
+                        if resuming or page_num == 1:
                             total_results = search_results.get("noOfResults", 0)
                             page_size = search_results.get("pageSize", 48)
                             if total_results > 0 and page_size > 0:
