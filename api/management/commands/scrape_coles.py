@@ -19,7 +19,7 @@ class Command(BaseCommand):
             "deli",
             "pantry",
             "dietary-world-foods",
-            "chips-chocolates-snacks"
+            "chips-chocolates-snacks",
             "drinks",
             "frozen",
             "household",
