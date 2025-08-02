@@ -3,7 +3,7 @@ import json
 import tempfile
 from datetime import datetime
 from django.test import TestCase
-from api.utils.archive_manager import archive_manager
+from api.utils.processing_utils.archive_manager import archive_manager
 from products.tests.test_helpers.model_factories import ProductFactory
 
 class TestArchiveManager(TestCase):
