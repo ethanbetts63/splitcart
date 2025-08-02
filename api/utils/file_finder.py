@@ -49,9 +49,9 @@ def file_finder(raw_data_path: str) -> dict:
                 scrape_timestamp = metadata.get('scraped_at')
 
                 if store and category and scrape_timestamp:
-                    # Use the first 19 characters (YYYY-MM-DDTHH:MM:SS) of the timestamp
+                    # Use the first 10 characters (YYYY-MM-DD) of the timestamp
                     # to group all pages from a single scraper run together.
-                    scrape_run_id = scrape_timestamp[:19]
+                    scrape_run_id = scrape_timestamp[:10]
                     scrape_plan[store][scrape_run_id][category].append(file_path)
 
         except (json.JSONDecodeError, IOError) as e:
@@ -61,8 +61,14 @@ def file_finder(raw_data_path: str) -> dict:
     for store in scrape_plan:
         for timestamp in scrape_plan[store]:
             for category in scrape_plan[store][timestamp]:
-                scrape_plan[store][timestamp][category].sort(
-                    key=lambda f: json.load(open(f))['metadata']['page_number']
-                )
+                def sort_key(file_path):
+                    try:
+                        with open(file_path, 'r', encoding='utf-8') as f:
+                            return json.load(f)['metadata']['page_number']
+                    except (FileNotFoundError, json.JSONDecodeError, KeyError) as e:
+                        print(f"Warning: Could not read or parse {file_path} for sorting. Error: {e}")
+                        return float('inf') # Put problematic files at the end
+                
+                scrape_plan[store][timestamp][category].sort(key=sort_key)
 
     return json.loads(json.dumps(scrape_plan)) # Convert defaultdicts to regular dicts
