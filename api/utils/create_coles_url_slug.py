@@ -8,4 +8,5 @@ def _create_coles_url_slug(name: str, size: str) -> str:
     slug = re.sub(r'[^a-z0-9\s-]', '', combined)
     slug = re.sub(r'\s+', '-', slug)
     slug = re.sub(r'--+', '-', slug)
+    slug = slug.strip('-')
     return slug
