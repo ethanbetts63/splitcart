@@ -20,7 +20,7 @@ Returns:
 
 Logic Flow:
     1.  For each target category, identify a pool of potential matches from
-        other stores.
+        other companies.
     2.  Filter this pool to include only categories at a similar hierarchy depth.
     3.  Use fuzzy string matching on the category names to get a similarity score.
     4.  (Advanced) Boost the score if the parents of the two categories are

@@ -13,7 +13,7 @@ Args:
         'barcode', and the store-specific 'stockcode'.
     store_obj (stores.models.Store): The Django model instance of the store 
         where this product was scraped (e.g., the 'coles' Store object).
-    category_obj (stores.models.Category): The lowest-level category instance 
+    category_obj (companies.models.Category): The lowest-level category instance 
         that this product belongs to. This is only used if a new product
         needs to be created.
 

@@ -14,7 +14,7 @@ Args:
     store_obj (stores.models.Store): The store to which this hierarchy belongs.
 
 Returns:
-    stores.models.Category: The final, lowest-level Category instance in the
+    companies.models.Category: The final, lowest-level Category instance in the
         path (typically the subcategory). This is the object that should be
         linked to the Product. Returns None if the path is empty.
 """

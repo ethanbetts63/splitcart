@@ -10,13 +10,13 @@ get_or_create() method for the Category model.
 Args:
     name (str): The name of the category (e.g., 'Dairy, Eggs & Fridge').
     store_obj (stores.models.Store): The store this category belongs to.
-    parent_obj (stores.models.Category, optional): The parent of this category.
+    parent_obj (companies.models.Category, optional): The parent of this category.
         Defaults to None for a top-level category.
     store_category_id (str, optional): The unique identifier for this category
         from the store's own system. Defaults to None.
 
 Returns:
-    tuple[stores.models.Category, bool]: A tuple containing:
-        - The found or newly created stores.models.Category instance.
+    tuple[companies.models.Category, bool]: A tuple containing:
+# The found or newly created companies.models.Category instance.
         - A boolean indicating if the category was created (True) or found (False).
 """

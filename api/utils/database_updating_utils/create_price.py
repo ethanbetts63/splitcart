@@ -13,7 +13,7 @@ Args:
         'unit_price', 'is_on_special', 'is_available', 'url', etc.
     product_obj (products.models.Product): The canonical Product instance to which
         this price record is associated.
-    store_obj (stores.models.Store): The Store instance where this price was
+    store_obj (companies.models.Store): The Store instance where this price was
         recorded.
 
 Returns:

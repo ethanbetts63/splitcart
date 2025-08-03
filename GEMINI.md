@@ -72,6 +72,6 @@ This project is a Django-based application called "splitcart". It appears to be 
 # Development Conventions
 
 *   The project follows the standard Django project structure.
-*   Code is organized into separate apps for `stores`, `products`, and `api`.
+*   Code is organized into separate apps for `companies`, `products`, and `api`.
 *   Management commands are used for data scraping and processing tasks.
 *   The project includes a comprehensive test suite, with tests for models, management commands, and utility functions.
