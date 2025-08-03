@@ -13,22 +13,22 @@ def file_finder(raw_data_path: str) -> dict:
     Returns:
         A nested dictionary structured as:
         {
-            'coles': {
-                '2025-07-30T16:51:12.123456': {  // A unique scrape timestamp
-                    'fruit-vegetables': ['path/to/page1.json', 'path/to/page2.json'],
-                    'meat-seafood': ['path/to/page1.json']
+            'Coles': {
+                'National': {
+                    '2025-08-03': {
+                        'fruit-vegetables': ['path/to/page1.json'],
+                    }
                 }
             },
-            'woolworths': { ... }
+            'ALDI': { ... }
         }
-        Returns an empty dict if the directory doesn't exist or is empty.
     """
     if not os.path.isdir(raw_data_path):
         print(f"Warning: Raw data directory not found at '{raw_data_path}'")
         return {}
 
-    # The structure will be: store -> scrape_timestamp -> category -> list of file paths
-    scrape_plan = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+    # The structure is now: company -> store -> scrape_date -> category -> file_paths
+    scrape_plan = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(list))))
 
     for filename in os.listdir(raw_data_path):
         if not filename.endswith('.json'):
@@ -44,31 +44,32 @@ def file_finder(raw_data_path: str) -> dict:
                     print(f"Warning: Skipping file with missing metadata: {filename}")
                     continue
 
+                # Read the new company and store fields
+                company = metadata.get('company')
                 store = metadata.get('store')
                 category = metadata.get('category')
                 scrape_timestamp = metadata.get('scraped_at')
 
-                if store and category and scrape_timestamp:
-                    # Use the first 10 characters (YYYY-MM-DD) of the timestamp
-                    # to group all pages from a single scraper run together.
-                    scrape_run_id = scrape_timestamp[:10]
-                    scrape_plan[store][scrape_run_id][category].append(file_path)
+                if company and store and category and scrape_timestamp:
+                    # Group by the date part of the timestamp
+                    scrape_date = scrape_timestamp[:10]
+                    scrape_plan[company][store][scrape_date][category].append(file_path)
 
         except (json.JSONDecodeError, IOError) as e:
             print(f"Warning: Could not read or parse {filename}. Error: {e}")
 
     # Sort the page files for each category to ensure they are processed in order
-    for store in scrape_plan:
-        for timestamp in scrape_plan[store]:
-            for category in scrape_plan[store][timestamp]:
-                def sort_key(file_path):
-                    try:
-                        with open(file_path, 'r', encoding='utf-8') as f:
-                            return json.load(f)['metadata']['page_number']
-                    except (FileNotFoundError, json.JSONDecodeError, KeyError) as e:
-                        print(f"Warning: Could not read or parse {file_path} for sorting. Error: {e}")
-                        return float('inf') # Put problematic files at the end
-                
-                scrape_plan[store][timestamp][category].sort(key=sort_key)
+    for company in scrape_plan:
+        for store in scrape_plan[company]:
+            for scrape_date in scrape_plan[company][store]:
+                for category in scrape_plan[company][store][scrape_date]:
+                    def sort_key(file_path):
+                        try:
+                            with open(file_path, 'r', encoding='utf-8') as f:
+                                return json.load(f)['metadata']['page_number']
+                        except (FileNotFoundError, json.JSONDecodeError, KeyError):
+                            return float('inf')
+                    
+                    scrape_plan[company][store][scrape_date][category].sort(key=sort_key)
 
     return json.loads(json.dumps(scrape_plan)) # Convert defaultdicts to regular dicts

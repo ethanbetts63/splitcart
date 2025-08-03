@@ -1,16 +1,16 @@
 import os
 import json
-from datetime import datetime
 
-def archive_manager(processed_data_path: str, store_name: str, scrape_date: str, category_name: str, combined_products: list, source_files: list) -> bool:
+def archive_manager(processed_data_path: str, company_name: str, store_name: str, scrape_date: str, category_name: str, combined_products: list, source_files: list) -> bool:
     """
-    Creates a data packet with metadata and saves the combined list of products
-    to the structured processed_data directory.
+    Creates a data packet with the new metadata structure and saves the combined
+    list of products to the structured processed_data directory.
 
     Args:
         processed_data_path: The root path for the processed_data directory.
-        store_name: The name of the store (e.g., 'coles').
-        scrape_date: The date of the scrape (e.g., '2025-07-30').
+        company_name: The name of the company (e.g., 'Coles').
+        store_name: The name of the specific store (e.g., 'National', 'Dianella').
+        scrape_date: The date of the scrape (e.g., '2025-08-03').
         category_name: The name of the category (e.g., 'fruit-vegetables').
         combined_products: The final, combined list of product dictionaries.
         source_files: The list of raw file paths that were combined.
@@ -19,13 +19,14 @@ def archive_manager(processed_data_path: str, store_name: str, scrape_date: str,
         True if the file was saved successfully, False otherwise.
     """
     if not combined_products:
-        print(f"Warning: Received an empty product list for {store_name}/{category_name}. Nothing to archive.")
+        print(f"Warning: Received an empty product list for {company_name}/{store_name}/{category_name}. Nothing to archive.")
         return False
 
     try:
-        # --- 1. Create the final data packet with metadata ---
+        # Create the final data packet with the new metadata format
         archive_packet = {
             "metadata": {
+                "company": company_name,
                 "store": store_name,
                 "category": category_name,
                 "scrape_date": scrape_date,
@@ -35,11 +36,10 @@ def archive_manager(processed_data_path: str, store_name: str, scrape_date: str,
             "products": combined_products
         }
 
-        # --- 2. Construct the target directory path ---
-        target_dir = os.path.join(processed_data_path, store_name, scrape_date)
+        # Construct the new target directory path: processed_data/company/store/date/
+        target_dir = os.path.join(processed_data_path, company_name, store_name, scrape_date)
         os.makedirs(target_dir, exist_ok=True)
         
-        # --- 3. Define and save the final output file ---
         output_filename = f"{category_name}.json"
         output_filepath = os.path.join(target_dir, output_filename)
         
