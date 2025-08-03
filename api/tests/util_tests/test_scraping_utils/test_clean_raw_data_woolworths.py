@@ -1,6 +1,6 @@
 from django.test import TestCase
 from datetime import datetime
-from api.utils.clean_raw_data_woolworths import clean_raw_data_woolworths
+from api.utils.scraper_utils.clean_raw_data_woolworths import clean_raw_data_woolworths
 
 class TestCleanRawDataWoolworths(TestCase):
 

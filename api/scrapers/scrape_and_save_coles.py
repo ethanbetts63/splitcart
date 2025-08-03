@@ -11,7 +11,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from api.utils.clean_raw_data_coles import clean_raw_data_coles
+from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
 
 def scrape_and_save_coles_data(categories_to_fetch: list, save_path: str):
     """

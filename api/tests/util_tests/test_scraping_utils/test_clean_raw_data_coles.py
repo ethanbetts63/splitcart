@@ -1,6 +1,6 @@
 from django.test import TestCase
 from datetime import datetime
-from api.utils.clean_raw_data_coles import clean_raw_data_coles
+from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
 
 class TestCleanRawDataColes(TestCase):
 

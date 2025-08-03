@@ -1,5 +1,5 @@
 from django.test import TestCase
-from api.utils.create_coles_url_slug import _create_coles_url_slug
+from api.utils.processing_utils.create_coles_url_slug import _create_coles_url_slug
 
 class TestCreateColesUrlSlug(TestCase):
 

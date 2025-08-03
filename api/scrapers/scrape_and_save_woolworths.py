@@ -4,7 +4,7 @@ import time
 import random
 import os
 from datetime import datetime
-from api.utils.clean_raw_data_woolworths import clean_raw_data_woolworths
+from api.utils.scraper_utils.clean_raw_data_woolworths import clean_raw_data_woolworths
 
 def scrape_and_save_woolworths_data(categories_to_fetch: list, save_path: str):
     """

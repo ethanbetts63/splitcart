@@ -1,4 +1,4 @@
-from .create_coles_url_slug import _create_coles_url_slug
+from api.utils.processing_utils import _create_coles_url_slug
 from datetime import datetime
 
 def clean_raw_data_coles(raw_product_list: list, category: str, page_num: int, timestamp: datetime) -> dict:

@@ -1,7 +1,7 @@
 import os
 import tempfile
 from django.test import TestCase
-from api.utils.cleanup import cleanup
+from api.utils.processing_utils.cleanup import cleanup
 
 class TestCleanup(TestCase):
 

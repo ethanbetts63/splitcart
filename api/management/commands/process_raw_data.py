@@ -2,8 +2,8 @@ import os
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from api.utils.file_finder import file_finder
-from api.utils.data_combiner import data_combiner
+from api.utils.processing_utils.file_finder import file_finder
+from api.utils.processing_utils.data_combiner import data_combiner
 from api.utils.processing_utils.archive_manager import archive_manager
 # from api.utils.cleanup import cleanup # Intentionally commented out for now
 
