@@ -1,8 +1,7 @@
 import os
 from django.core.management.base import BaseCommand
 from django.conf import settings
-# We will create this scraper function in a later step
-# from api.scrapers.scrape_and_save_aldi import scrape_and_save_aldi_data
+from api.scrapers.scrape_and_save_aldi import scrape_and_save_aldi_data
 
 class Command(BaseCommand):
     """
@@ -155,9 +154,8 @@ class Command(BaseCommand):
         os.makedirs(raw_data_path, exist_ok=True)
         self.stdout.write(f"Data will be saved to: {raw_data_path}")
         
-        # NOTE: The actual scraper function call is commented out until it is created.
-        # self.stdout.write("Handing off to the scraper function...")
-        # scrape_and_save_aldi_data(categories, raw_data_path)
+        self.stdout.write("Handing off to the scraper function...")
+        scrape_and_save_aldi_data(categories, raw_data_path)
 
         self.stdout.write(self.style.SUCCESS("\n--- ALDI scraping process ready to be executed ---"))
 
