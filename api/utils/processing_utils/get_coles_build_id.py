@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.options import Options
 
 def get_coles_build_id() -> str | None:
     """
-    Launches a stealth-configured browser to visit Coles, bypasses security,
+    Launches a stealth-configured browser to visit coles, bypasses security,
     and retrieves the site's current buildId.
 
     Returns:

@@ -13,14 +13,14 @@ def file_finder(raw_data_path: str) -> dict:
     Returns:
         A nested dictionary structured as:
         {
-            'Coles': {
-                'National': {
+            'coles': {
+                'national': {
                     '2025-08-03': {
                         'fruit-vegetables': ['path/to/page1.json'],
                     }
                 }
             },
-            'ALDI': { ... }
+            'aldi': { ... }
         }
     """
     if not os.path.isdir(raw_data_path):

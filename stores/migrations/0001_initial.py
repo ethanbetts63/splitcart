@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 (
                     "name",
                     models.CharField(
-                        help_text="The name of the store, e.g., 'Coles', 'Woolworths'.",
+                        help_text="The name of the store, e.g., 'coles', 'woolworths'.",
                         max_length=100,
                         unique=True,
                     ),

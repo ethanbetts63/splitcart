@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
                 (
                     "brand",
                     models.CharField(
-                        help_text="The brand of the product, e.g., 'Coles', 'Coca-Cola'.",
+                        help_text="The brand of the product, e.g., 'coles', 'Coca-Cola'.",
                         max_length=100,
                     ),
                 ),

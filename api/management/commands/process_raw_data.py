@@ -14,7 +14,7 @@ class Command(BaseCommand):
             'company_name',
             nargs='?',
             type=str,
-            help='Optional: The name of the company to process (e.g., "Coles"). Processes all if omitted.',
+            help='Optional: The name of the company to process (e.g., "coles"). Processes all if omitted.',
             default=None
         )
 

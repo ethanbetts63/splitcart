@@ -4,13 +4,13 @@ from django.conf import settings
 from api.scrapers.scrape_and_save_coles import scrape_and_save_coles_data
 
 class Command(BaseCommand):
-    help = 'Launches the Selenium scraper to fetch all pages of product data from Coles.'
+    help = 'Launches the Selenium scraper to fetch all pages of product data from coles.'
 
     def handle(self, *args, **options):
-        self.stdout.write(self.style.SUCCESS("--- Starting Coles scraping process ---"))
+        self.stdout.write(self.style.SUCCESS("--- Starting coles scraping process ---"))
 
-        company_name = "Coles"
-        store_name = "National"
+        company_name = "coles"
+        store_name = "national"
 
         categories = [
             "meat-seafood", "fruit-vegetables", "dairy-eggs-fridge", "bakery",
@@ -25,4 +25,4 @@ class Command(BaseCommand):
         self.stdout.write("Handing off to the scraper function...")
         scrape_and_save_coles_data(company_name, store_name, categories, raw_data_path)
 
-        self.stdout.write(self.style.SUCCESS("\n--- Coles scraping process complete ---"))
+        self.stdout.write(self.style.SUCCESS("\n--- coles scraping process complete ---"))

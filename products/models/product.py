@@ -11,7 +11,7 @@ class Product(models.Model):
     )
     brand = models.CharField(
         max_length=100,
-        help_text="The brand of the product, e.g., 'Coles', 'Coca-Cola'."
+        help_text="The brand of the product, e.g., 'coles', 'Coca-Cola'."
     )
     size = models.CharField(
         max_length=50,

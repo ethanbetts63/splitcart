@@ -8,8 +8,8 @@ def archive_manager(processed_data_path: str, company_name: str, store_name: str
 
     Args:
         processed_data_path: The root path for the processed_data directory.
-        company_name: The name of the company (e.g., 'Coles').
-        store_name: The name of the specific store (e.g., 'National', 'Dianella').
+        company_name: The name of the company (e.g., 'coles').
+        store_name: The name of the specific store (e.g., 'national', 'Dianella').
         scrape_date: The date of the scrape (e.g., '2025-08-03').
         category_name: The name of the category (e.g., 'fruit-vegetables').
         combined_products: The final, combined list of product dictionaries.

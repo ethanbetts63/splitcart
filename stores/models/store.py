@@ -7,7 +7,7 @@ class Store(models.Model):
     name = models.CharField(
         max_length=100,
         unique=True,
-        help_text="The name of the store, e.g., 'Coles', 'Woolworths'."
+        help_text="The name of the store, e.g., 'coles', 'woolworths'."
     )
     base_url = models.URLField(
         max_length=255,

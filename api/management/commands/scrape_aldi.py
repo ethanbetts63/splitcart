@@ -5,18 +5,18 @@ from api.scrapers.scrape_and_save_aldi import scrape_and_save_aldi_data
 
 class Command(BaseCommand):
     """
-    This Django management command initiates the scraping process for ALDI.
+    This Django management command initiates the scraping process for aldi.
     """
-    help = 'Launches the scraper to fetch all product data from ALDI by category.'
+    help = 'Launches the scraper to fetch all product data from aldi by category.'
 
     def handle(self, *args, **options):
         """
         Main execution method for the command.
         """
-        self.stdout.write(self.style.SUCCESS("--- Starting ALDI scraping process ---"))
+        self.stdout.write(self.style.SUCCESS("--- Starting aldi scraping process ---"))
 
-        company_name = "ALDI"
-        store_name = "National"
+        company_name = "aldi"
+        store_name = "national"
 
         categories = [
             ('lower-prices', '1588161425841179'),
@@ -153,4 +153,4 @@ class Command(BaseCommand):
         self.stdout.write("Handing off to the scraper function...")
         scrape_and_save_aldi_data(company_name, store_name, categories, raw_data_path)
 
-        self.stdout.write(self.style.SUCCESS("\n--- ALDI scraping process complete ---"))
+        self.stdout.write(self.style.SUCCESS("\n--- aldi scraping process complete ---"))

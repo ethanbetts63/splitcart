@@ -9,9 +9,9 @@ from api.utils.scraper_utils.clean_raw_data_aldi import clean_raw_data_aldi
 def scrape_and_save_aldi_data(company: str, store: str, categories_to_fetch: list, save_path: str):
     """
     Launches a requests-based scraper, iterates through all pages of the given
-    ALDI categories by hitting its API, cleans the data, and saves it to a file.
+    aldi categories by hitting its API, cleans the data, and saves it to a file.
     """
-    print(f"--- Initializing ALDI Scraper Tool for {company} ({store}) ---")
+    print(f"--- Initializing aldi Scraper Tool for {company} ({store}) ---")
     
     session = requests.Session()
     session.headers.update({
@@ -86,4 +86,4 @@ def scrape_and_save_aldi_data(company: str, store: str, categories_to_fetch: lis
         
         print(f"--- Finished category: '{category_slug}' ---")
             
-    print("\n--- ALDI scraper tool finished. ---")
+    print("\n--- aldi scraper tool finished. ---")

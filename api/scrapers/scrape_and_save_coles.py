@@ -17,7 +17,7 @@ def scrape_and_save_coles_data(company: str, store: str, categories_to_fetch: li
     Launches a browser, handles CAPTCHA, then iterates through all pages of
     the given categories, saving each page's cleaned product data to a file.
     """
-    print(f"--- Initializing Coles Scraper Tool for {company} ({store}) ---")
+    print(f"--- Initializing coles Scraper Tool for {company} ({store}) ---")
     progress_file_path = os.path.join(save_path, "coles_progress.json")
 
     # --- NO CHANGES TO THE CORE LOGIC BELOW ---

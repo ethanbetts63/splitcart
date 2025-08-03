@@ -2,7 +2,7 @@ from django.test import TestCase
 from datetime import datetime
 from api.utils.scraper_utils.clean_raw_data_woolworths import clean_raw_data_woolworths
 
-class TestCleanRawDataWoolworths(TestCase):
+class TestCleanRawDatawoolworths(TestCase):
 
     def test_clean_raw_data_woolworths_with_valid_data(self):
         raw_product_list = [

@@ -3,7 +3,7 @@ from datetime import datetime
 
 def clean_raw_data_woolworths(raw_product_list: list, company: str, store: str, category: str, page_num: int, timestamp: datetime) -> dict:
     """
-    Cleans a list of raw Woolworths product data and wraps it in a dictionary
+    Cleans a list of raw woolworths product data and wraps it in a dictionary
     containing metadata about the scrape.
     """
     cleaned_products = []

@@ -1,7 +1,7 @@
 from django.test import TestCase
 from api.utils.processing_utils.create_coles_url_slug import _create_coles_url_slug
 
-class TestCreateColesUrlSlug(TestCase):
+class TestCreatecolesUrlSlug(TestCase):
 
     def test_create_coles_url_slug_with_valid_data(self):
         name = "Test Product"

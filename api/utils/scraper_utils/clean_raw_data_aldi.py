@@ -3,7 +3,7 @@ from datetime import datetime
 
 def clean_raw_data_aldi(raw_product_list: list, company: str, store: str, category_slug: str, page_num: int, timestamp: datetime) -> dict:
     """
-    Cleans a list of raw ALDI product data from its API and wraps it in a 
+    Cleans a list of raw aldi product data from its API and wraps it in a 
     dictionary containing metadata about the scrape.
     """
     cleaned_products = []

@@ -9,9 +9,9 @@ from api.utils.scraper_utils.clean_raw_data_woolworths import clean_raw_data_woo
 def scrape_and_save_woolworths_data(company: str, store: str, categories_to_fetch: list, save_path: str):
     """
     Launches a requests-based scraper, iterates through all pages of the given
-    Woolworths categories, cleans the data, and saves it to a file.
+    woolworths categories, cleans the data, and saves it to a file.
     """
-    print(f"--- Initializing Woolworths Scraper Tool for {company} ({store}) ---")
+    print(f"--- Initializing woolworths Scraper Tool for {company} ({store}) ---")
     
     session = requests.Session()
     session.headers.update({
@@ -78,4 +78,4 @@ def scrape_and_save_woolworths_data(company: str, store: str, categories_to_fetc
         
         print(f"--- Finished category: '{category_slug}' ---")
             
-    print("\n--- Woolworths scraper tool finished. ---")
+    print("\n--- woolworths scraper tool finished. ---")

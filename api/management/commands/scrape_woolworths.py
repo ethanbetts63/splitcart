@@ -4,13 +4,13 @@ from django.conf import settings
 from api.scrapers.scrape_and_save_woolworths import scrape_and_save_woolworths_data
 
 class Command(BaseCommand):
-    help = 'Launches the scraper to fetch all pages of product data from Woolworths.'
+    help = 'Launches the scraper to fetch all pages of product data from woolworths.'
 
     def handle(self, *args, **options):
-        self.stdout.write(self.style.SUCCESS("--- Starting Woolworths scraping process ---"))
+        self.stdout.write(self.style.SUCCESS("--- Starting woolworths scraping process ---"))
 
-        company_name = "Woolworths"
-        store_name = "National"
+        company_name = "woolworths"
+        store_name = "national"
 
         categories = [
             ('fruit-veg', '1-E5BEE36E'), ('poultry-meat-seafood', '1_D5A2236'),
@@ -33,4 +33,4 @@ class Command(BaseCommand):
         self.stdout.write("Handing off to the scraper function...")
         scrape_and_save_woolworths_data(company_name, store_name, categories, raw_data_path)
 
-        self.stdout.write(self.style.SUCCESS("\n--- Woolworths scraping process complete ---"))
+        self.stdout.write(self.style.SUCCESS("\n--- woolworths scraping process complete ---"))
