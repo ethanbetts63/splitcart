@@ -147,10 +147,10 @@ class Command(BaseCommand):
         
         self.stdout.write(f"Found {len(categories)} total categories and subcategories to scrape.")
 
-        # Define the path to the raw_data directory
-        raw_data_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'raw_data', 'aldi')
+        # Define the path to the main raw_data directory
+        raw_data_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'raw_data')
         
-        # Ensure the specific directory for ALDI data exists
+        # Ensure the directory exists
         os.makedirs(raw_data_path, exist_ok=True)
         self.stdout.write(f"Data will be saved to: {raw_data_path}")
         
@@ -158,4 +158,3 @@ class Command(BaseCommand):
         scrape_and_save_aldi_data(categories, raw_data_path)
 
         self.stdout.write(self.style.SUCCESS("\n--- ALDI scraping process ready to be executed ---"))
-

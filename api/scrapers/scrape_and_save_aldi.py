@@ -67,14 +67,22 @@ def scrape_and_save_aldi_data(categories_to_fetch: list, save_path: str):
                 print(f"Successfully saved cleaned data to {file_name}")
 
             except requests.exceptions.RequestException as e:
-                print(f"ERROR: Request failed on page {page_num} for '{category_slug}': {e}")
-                break
+                # *** CHANGE IS HERE ***
+                # Check if the error is a 400 Bad Request, which for this API means we've
+                # requested a page that doesn't exist (i.e., we're past the last page).
+                if e.response is not None and e.response.status_code == 400:
+                    print(f"Received 400 Bad Request. Assuming this is the end of category '{category_slug}'.")
+                    break # Gracefully exit the loop for this category.
+                else:
+                    # For any other error (e.g., 500, timeout), print it and stop the category.
+                    print(f"ERROR: An unexpected request error occurred on page {page_num} for '{category_slug}': {e}")
+                    break
             except json.JSONDecodeError:
                 print(f"ERROR: Failed to decode JSON on page {page_num} for '{category_slug}'. The response may not be valid JSON.")
                 break
 
             # Be a good internet citizen
-            sleep_time = random.uniform(1, 3)
+            sleep_time = random.uniform(2, 5)
             print(f"Waiting for {sleep_time:.2f} seconds...")
             time.sleep(sleep_time)
             
