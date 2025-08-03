@@ -11,7 +11,7 @@ This project is a Django-based application called "splitcart". It appears to be 
 **Architecture:**
 
 1.  **Data Scraping:**
-    *   Management commands (`scrape_coles`, `scrape_woolworths`) are used to initiate the scraping process.
+    *   Management commands (`scrape_coles`, `scrape_woolworths`, etc) are used to initiate the scraping process.
     *   Scraped data is saved as raw JSON files in the `api/data/raw_data` directory.
 
 2.  **Data Processing:**
