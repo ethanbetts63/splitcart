@@ -1,12 +1,12 @@
 # Project Overview
 
-This project is a Django-based application called "splitcart". It appears to be a web scraper and data aggregation tool for comparing prices of products from different grocery stores, specifically Coles, Woolworths, IGA, spudshed and ALDI. The project is structured into three main Django apps: `stores`, `products`, and `api`.
+This project is a Django-based application called "splitcart". It appears to be a web scraper and data aggregation tool for comparing prices of products from different Australian grocery stores, specifically Coles, Woolworths, IGA, spudshed and ALDI. The project is structured into three main Django apps: `stores`, `products`, and `api`.
 
 **Key Technologies:**
 
 *   **Backend:** Django
 *   **Database:** SQLite (as per `settings.py`)
-*   **Data Scraping:** The project uses custom scrapers to fetch data from Coles and Woolworths.
+*   **Data Scraping:** The project uses custom scrapers to fetch data from stores websites. 
 
 **Architecture:**
 
