@@ -6,15 +6,14 @@ import os
 from datetime import datetime
 from api.utils.scraper_utils.clean_raw_data_aldi import clean_raw_data_aldi
 
-def scrape_and_save_aldi_data(categories_to_fetch: list, save_path: str):
+def scrape_and_save_aldi_data(company: str, store: str, categories_to_fetch: list, save_path: str):
     """
     Launches a requests-based scraper, iterates through all pages of the given
     ALDI categories by hitting its API, cleans the data, and saves it to a file.
     """
-    print("--- Initializing ALDI Scraper Tool ---")
+    print(f"--- Initializing ALDI Scraper Tool for {company} ({store}) ---")
     
     session = requests.Session()
-    # ALDI's API does not require extensive headers, but a user-agent is good practice.
     session.headers.update({
         "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
     })
@@ -23,28 +22,22 @@ def scrape_and_save_aldi_data(categories_to_fetch: list, save_path: str):
         print(f"\n--- Starting category: '{category_slug}' ---")
         
         offset = 0
-        limit = 30  # The API seems to default to 30, so we'll stick with that.
+        limit = 30
         page_num = 1
 
         while True:
             print(f"Attempting to fetch page {page_num} for '{category_slug}' (offset: {offset})...")
             
             api_url = "https://api.aldi.com.au/v3/product-search"
-            # These parameters are based on the API call discovered earlier.
             params = {
-                "currency": "AUD",
-                "serviceType": "walk-in",
-                "categoryKey": category_key,
-                "limit": limit,
-                "offset": offset,
-                "sort": "relevance",
-                "testVariant": "A",
-                "servicePoint": "G452", # This may need updating if it's session-specific
+                "currency": "AUD", "serviceType": "walk-in", "categoryKey": category_key,
+                "limit": limit, "offset": offset, "sort": "relevance",
+                "testVariant": "A", "servicePoint": "G452",
             }
 
             try:
                 response = session.get(api_url, params=params, timeout=60)
-                response.raise_for_status()  # Raise an exception for bad status codes (4xx or 5xx)
+                response.raise_for_status()
                 data = response.json()
                 
                 raw_products_on_page = data.get("data", [])
@@ -53,13 +46,20 @@ def scrape_and_save_aldi_data(categories_to_fetch: list, save_path: str):
                     print(f"Page {page_num} is empty. Assuming end of category '{category_slug}'.")
                     break
 
-                # Pass the raw data to the new cleaner function
                 scrape_timestamp = datetime.now()
-                data_packet = clean_raw_data_aldi(raw_products_on_page, category_slug, page_num, scrape_timestamp)
+                # Pass the new arguments to the cleaner
+                data_packet = clean_raw_data_aldi(
+                    raw_product_list=raw_products_on_page, 
+                    company=company, 
+                    store=store, 
+                    category_slug=category_slug, 
+                    page_num=page_num, 
+                    timestamp=scrape_timestamp
+                )
                 print(f"Found and cleaned {len(data_packet['products'])} products on page {page_num}.")
 
-                # Save the cleaned data packet to a JSON file
-                file_name = f"aldi_{category_slug.replace('/', '_')}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
+                # Update filename to include company and store
+                file_name = f"{company.lower()}_{store.lower()}_{category_slug.replace('/', '_')}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
                 file_path = os.path.join(save_path, file_name)
                 
                 with open(file_path, 'w', encoding='utf-8') as f:
@@ -67,26 +67,20 @@ def scrape_and_save_aldi_data(categories_to_fetch: list, save_path: str):
                 print(f"Successfully saved cleaned data to {file_name}")
 
             except requests.exceptions.RequestException as e:
-                # *** CHANGE IS HERE ***
-                # Check if the error is a 400 Bad Request, which for this API means we've
-                # requested a page that doesn't exist (i.e., we're past the last page).
                 if e.response is not None and e.response.status_code == 400:
                     print(f"Received 400 Bad Request. Assuming this is the end of category '{category_slug}'.")
-                    break # Gracefully exit the loop for this category.
+                    break
                 else:
-                    # For any other error (e.g., 500, timeout), print it and stop the category.
                     print(f"ERROR: An unexpected request error occurred on page {page_num} for '{category_slug}': {e}")
                     break
             except json.JSONDecodeError:
-                print(f"ERROR: Failed to decode JSON on page {page_num} for '{category_slug}'. The response may not be valid JSON.")
+                print(f"ERROR: Failed to decode JSON on page {page_num} for '{category_slug}'.")
                 break
 
-            # Be a good internet citizen
             sleep_time = random.uniform(2, 5)
             print(f"Waiting for {sleep_time:.2f} seconds...")
             time.sleep(sleep_time)
             
-            # Prepare for the next page
             offset += limit
             page_num += 1
         

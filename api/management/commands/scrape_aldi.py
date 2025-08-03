@@ -6,8 +6,6 @@ from api.scrapers.scrape_and_save_aldi import scrape_and_save_aldi_data
 class Command(BaseCommand):
     """
     This Django management command initiates the scraping process for ALDI.
-    
-    It uses a predefined list of ALDI categories and passes them to the scraper function.
     """
     help = 'Launches the scraper to fetch all product data from ALDI by category.'
 
@@ -17,8 +15,9 @@ class Command(BaseCommand):
         """
         self.stdout.write(self.style.SUCCESS("--- Starting ALDI scraping process ---"))
 
-        # A complete, hardcoded list of all ALDI categories and subcategories
-        # Each tuple contains: (urlSlugText, categoryKey)
+        company_name = "ALDI"
+        store_name = "National"
+
         categories = [
             ('lower-prices', '1588161425841179'),
             ('super-savers/super-savers', '1588161407991418'),
@@ -147,14 +146,11 @@ class Command(BaseCommand):
         
         self.stdout.write(f"Found {len(categories)} total categories and subcategories to scrape.")
 
-        # Define the path to the main raw_data directory
         raw_data_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'raw_data')
-        
-        # Ensure the directory exists
         os.makedirs(raw_data_path, exist_ok=True)
         self.stdout.write(f"Data will be saved to: {raw_data_path}")
         
         self.stdout.write("Handing off to the scraper function...")
-        scrape_and_save_aldi_data(categories, raw_data_path)
+        scrape_and_save_aldi_data(company_name, store_name, categories, raw_data_path)
 
-        self.stdout.write(self.style.SUCCESS("\n--- ALDI scraping process ready to be executed ---"))
+        self.stdout.write(self.style.SUCCESS("\n--- ALDI scraping process complete ---"))

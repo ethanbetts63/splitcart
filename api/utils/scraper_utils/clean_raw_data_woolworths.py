@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 
-def clean_raw_data_woolworths(raw_product_list: list, category: str, page_num: int, timestamp: datetime) -> dict:
+def clean_raw_data_woolworths(raw_product_list: list, company: str, store: str, category: str, page_num: int, timestamp: datetime) -> dict:
     """
     Cleans a list of raw Woolworths product data and wraps it in a dictionary
     containing metadata about the scrape.
@@ -50,7 +50,8 @@ def clean_raw_data_woolworths(raw_product_list: list, category: str, page_num: i
     
     return {
         "metadata": {
-            "store": "woolworths",
+            "company": company,
+            "store": store,
             "category": category,
             "page_number": page_num,
             "scraped_at": timestamp.isoformat()
