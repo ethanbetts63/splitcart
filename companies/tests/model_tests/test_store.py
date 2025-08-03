@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.db.utils import IntegrityError
-from stores.tests.test_helpers.model_factories import StoreFactory
+from companies.tests.test_helpers.model_factories import StoreFactory
 
 class StoreModelTest(TestCase):
 

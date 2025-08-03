@@ -1,7 +1,7 @@
 import factory
 from factory.django import DjangoModelFactory
 from products.models import Product, Price
-from stores.tests.test_helpers.model_factories import StoreFactory, CategoryFactory
+from companies.tests.test_helpers.model_factories import StoreFactory, CategoryFactory
 
 class ProductFactory(DjangoModelFactory):
     class Meta:

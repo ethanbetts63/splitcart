@@ -1,6 +1,6 @@
 import factory
 from factory.django import DjangoModelFactory
-from stores.models import Store, Category
+from companies.models import Store, Category
 
 class StoreFactory(DjangoModelFactory):
     class Meta:

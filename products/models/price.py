@@ -11,7 +11,7 @@ class Price(models.Model):
         related_name="prices"
     )
     store = models.ForeignKey(
-        'stores.Store',
+        'companies.Store',
         on_delete=models.PROTECT,
         related_name="prices"
     )

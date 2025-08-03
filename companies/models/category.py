@@ -7,12 +7,16 @@ class Category(models.Model):
     )
     slug = models.SlugField(
         max_length=120,
-        unique=True,
         help_text="A URL-friendly version of the name, e.g., 'fruit-vegetables'."
+    )
+    company = models.ForeignKey(
+        'companies.Company',
+        on_delete=models.CASCADE,
+        related_name='categories',
+        help_text="The company that this category belongs to."
     )
     store_category_id = models.CharField(
         max_length=50,
-        unique=True,
         null=True,
         blank=True,
         help_text="The category ID from the store's website, if available."
@@ -25,20 +29,13 @@ class Category(models.Model):
         related_name='subcategories',
         help_text="The parent category, if this is a subcategory."
     )
-    store = models.ForeignKey(
-        'stores.Store',
-        on_delete=models.CASCADE,
-        related_name="categories",
-        null=True,  # Allow null for top-level, non-store-specific categories
-        blank=True,
-        help_text="The store this category belongs to, if any."
-    )
 
     class Meta:
         verbose_name_plural = "Categories"
-        # The combination of a category's name and its parent must be unique.
-        # A null parent indicates a top-level category.
-        unique_together = ('name', 'parent')
+        # A category's name, its parent, and its company must be unique together.
+        unique_together = ('name', 'parent', 'company')
+        # A company can't have two categories with the same slug
+        unique_together = ('slug', 'company')
 
     def __str__(self):
         # Build the full path for the category, e.g., "Pantry > Snacks > Chips"

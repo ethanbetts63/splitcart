@@ -1,7 +1,7 @@
 import time
 from django.test import TestCase
 from products.tests.test_helpers.model_factories import PriceFactory, ProductFactory
-from stores.tests.test_helpers.model_factories import StoreFactory
+from companies.tests.test_helpers.model_factories import StoreFactory
 
 class PriceModelTest(TestCase):
 
