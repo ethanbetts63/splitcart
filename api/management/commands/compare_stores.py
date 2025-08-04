@@ -96,10 +96,11 @@ class Command(BaseCommand):
 
     def _get_product_id_key(self, company_name):
         """Returns the unique product identifier key for a given company."""
+        # All processed data seems to standardize on 'stockcode'
         id_keys = {
             'woolworths': 'stockcode',
-            'aldi': 'productKey',
-            'iga': 'stockcode'  # Corrected from 'sku'
+            'aldi': 'stockcode',
+            'iga': 'stockcode'
         }
         return id_keys.get(company_name)
 
