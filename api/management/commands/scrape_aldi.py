@@ -17,7 +17,6 @@ class Command(BaseCommand):
         company_name = "aldi"
         
         # Hardcoded list of Perth ALDI stores to be scraped.
-        # The 'store_id' is the 'servicePoint' ID from the API.
         stores_to_scrape = [
             {'store_name': create_store_slug_aldi('Yokine'), 'store_id': 'G075'},
             {'store_name': create_store_slug_aldi('Innaloo'), 'store_id': 'G090'},
