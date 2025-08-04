@@ -5,12 +5,17 @@ import random
 import os
 from datetime import datetime
 from api.utils.scraper_utils.clean_raw_data_woolworths import clean_raw_data_woolworths
+from api.utils.scraper_utils.checkpoint_manager import read_checkpoint, update_page_progress, mark_category_complete, clear_checkpoint
 
 def scrape_and_save_woolworths_data(company: str, store_name: str, store_id: str, categories_to_fetch: list, save_path: str):
     """
-    Launches a requests-based scraper for a specific Woolworths store.
+    Launches a requests-based scraper for a specific Woolworths store with checkpointing.
     """
     print(f"--- Initializing Woolworths Scraper for {company} ({store_name}) ---")
+
+    # --- Checkpoint Initialization ---
+    progress = read_checkpoint(company)
+    completed_categories = progress.get("completed_categories", [])
     
     session = requests.Session()
     session.headers.update({
@@ -30,14 +35,22 @@ def scrape_and_save_woolworths_data(company: str, store_name: str, store_id: str
         return
 
     for category_slug, category_id in categories_to_fetch:
+        if category_slug in completed_categories:
+            print(f"Skipping already completed category: '{category_slug}'")
+            continue
+
         print(f"\n--- Starting category: '{category_slug}' ---")
         
         page_num = 1
+        if progress.get("current_category") == category_slug:
+            page_num = progress.get("last_completed_page", 0) + 1
+            print(f"Resuming category '{category_slug}' from page {page_num}.")
+
+        category_successfully_completed = False
         while True:
             print(f"Attempting to fetch page {page_num} for '{category_slug}'...")
             
             api_url = "https://www.woolworths.com.au/apis/ui/browse/category"
-            
             payload = {
                 "categoryId": category_id, "pageNumber": page_num, "pageSize": 36,
                 "sortType": "PriceAsc",
@@ -48,7 +61,6 @@ def scrape_and_save_woolworths_data(company: str, store_name: str, store_id: str
                 "token": "", "gpBoost": 0, "isHideUnavailableProducts": False,
                 "isRegisteredRewardCardPromotion": False, "categoryVersion": "v2",
                 "enableAdReRanking": False, "groupEdmVariants": False, "activePersonalizedViewType": "",
-                # This is the crucial addition for store-specific pricing
                 "storeId": store_id
             }
 
@@ -57,23 +69,18 @@ def scrape_and_save_woolworths_data(company: str, store_name: str, store_id: str
                 response.raise_for_status()
                 data = response.json()
                 
-                raw_products_on_page = []
-                for bundle in data.get("Bundles", []):
-                    if bundle and bundle.get("Products"):
-                        raw_products_on_page.extend(bundle.get("Products"))
+                raw_products_on_page = [p for bundle in data.get("Bundles", []) if bundle and bundle.get("Products") for p in bundle["Products"]]
 
                 if not raw_products_on_page:
                     print(f"Page {page_num} is empty. Assuming end of category '{category_slug}'.")
+                    category_successfully_completed = True
                     break
 
                 scrape_timestamp = datetime.now()
                 data_packet = clean_raw_data_woolworths(
                     raw_product_list=raw_products_on_page,
-                    company=company,
-                    store=store_name,
-                    category=category_slug,
-                    page_num=page_num,
-                    timestamp=scrape_timestamp
+                    company=company, store=store_name, category=category_slug,
+                    page_num=page_num, timestamp=scrape_timestamp
                 )
                 print(f"Found and cleaned {len(data_packet['products'])} products on page {page_num}.")
 
@@ -83,6 +90,13 @@ def scrape_and_save_woolworths_data(company: str, store_name: str, store_id: str
                 with open(file_path, 'w', encoding='utf-8') as f:
                     json.dump(data_packet, f, indent=4)
                 print(f"Successfully saved cleaned data to {file_name}")
+
+                # --- Checkpoint: Update Page Progress ---
+                update_page_progress(
+                    company_name=company, store=store_name,
+                    completed_cats=completed_categories,
+                    current_cat=category_slug, page_num=page_num
+                )
 
             except requests.exceptions.RequestException as e:
                 print(f"ERROR: Request failed on page {page_num} for '{category_slug}': {e}")
@@ -97,6 +111,21 @@ def scrape_and_save_woolworths_data(company: str, store_name: str, store_id: str
             
             page_num += 1
         
-        print(f"--- Finished category: '{category_slug}' ---")
-            
-    print(f"\n--- Woolworths scraper for store '{store_name}' finished. ---")
+        if category_successfully_completed:
+            completed_categories.append(category_slug)
+            mark_category_complete(
+                company_name=company, store=store_name,
+                completed_cats=completed_categories,
+                new_completed_cat=category_slug
+            )
+            print(f"--- Finished category: '{category_slug}' ---")
+        else:
+            print(f"--- Paused category: '{category_slug}'. Progress saved. ---")
+
+    all_category_slugs = [cat[0] for cat in categories_to_fetch]
+    if all(cat in completed_categories for cat in all_category_slugs):
+        print(f"\n--- All categories for '{store_name}' scraped successfully. Clearing checkpoint. ---")
+        clear_checkpoint(company)
+    else:
+        print(f"\n--- Woolworths scraper for store '{store_name}' finished, but not all categories were completed. Checkpoint retained. ---")
+
