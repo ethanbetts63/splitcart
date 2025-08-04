@@ -1,0 +1,297 @@
+{
+    "data": [
+        {
+            "type": "merchant-search",
+            "id": "G075",
+            "attributes": {
+                "merchantName": "6 Wanneroo Road",
+                "merchantUrl": null,
+                "publicEmail": null,
+                "publicPhone": null,
+                "description": null,
+                "faxNumber": null,
+                "distance": "2.1 km",
+                "address": {
+                    "countryName": "Australia",
+                    "address1": "6 Wanneroo Road",
+                    "address2": null,
+                    "address3": null,
+                    "city": "Yokine",
+                    "zipCode": "6060",
+                    "latitude": "-31.91096000000000",
+                    "longitude": "115.84682000000000",
+                    "countryIsoCode": "AU",
+                    "regionName": "Western Australia",
+                    "regionIsoCode": "WA"
+                }
+            },
+            "links": {
+                "self": "https://api.au.prod.commerce.ci-aldi.com:80/merchant-search/G075?currency=AUD&service_type=walk-in&zip_code=6060&address=U 7 149 Waterloo St Tuart Hill 6060"
+            }
+        },
+        {
+            "type": "merchant-search",
+            "id": "G090",
+            "attributes": {
+                "merchantName": "Ellen Stirling Blvd",
+                "merchantUrl": null,
+                "publicEmail": null,
+                "publicPhone": null,
+                "description": null,
+                "faxNumber": null,
+                "distance": "2.7 km",
+                "address": {
+                    "countryName": "Australia",
+                    "address1": "Ellen Stirling Blvd",
+                    "address2": null,
+                    "address3": null,
+                    "city": "Innaloo",
+                    "zipCode": "6018",
+                    "latitude": "-31.89857000000000",
+                    "longitude": "115.80085000000000",
+                    "countryIsoCode": "AU",
+                    "regionName": "Western Australia",
+                    "regionIsoCode": "WA"
+                }
+            },
+            "links": {
+                "self": "https://api.au.prod.commerce.ci-aldi.com:80/merchant-search/G090?currency=AUD&service_type=walk-in&zip_code=6060&address=U 7 149 Waterloo St Tuart Hill 6060"
+            }
+        },
+        {
+            "type": "merchant-search",
+            "id": "G049",
+            "attributes": {
+                "merchantName": "43 Yirrigan Drive",
+                "merchantUrl": null,
+                "publicEmail": null,
+                "publicPhone": null,
+                "description": null,
+                "faxNumber": null,
+                "distance": "4.4 km",
+                "address": {
+                    "countryName": "Australia",
+                    "address1": "43 Yirrigan Drive",
+                    "address2": null,
+                    "address3": null,
+                    "city": "Mirrabooka",
+                    "zipCode": "6061",
+                    "latitude": "-31.87094000000000",
+                    "longitude": "115.86147000000000",
+                    "countryIsoCode": "AU",
+                    "regionName": "Western Australia",
+                    "regionIsoCode": "WA"
+                }
+            },
+            "links": {
+                "self": "https://api.au.prod.commerce.ci-aldi.com:80/merchant-search/G049?currency=AUD&service_type=walk-in&zip_code=6060&address=U 7 149 Waterloo St Tuart Hill 6060"
+            }
+        },
+        {
+            "type": "merchant-search",
+            "id": "G092",
+            "attributes": {
+                "merchantName": "200 Karrinyup Road",
+                "merchantUrl": null,
+                "publicEmail": null,
+                "publicPhone": null,
+                "description": null,
+                "faxNumber": null,
+                "distance": "5.5 km",
+                "address": {
+                    "countryName": "Australia",
+                    "address1": "200 Karrinyup Road",
+                    "address2": null,
+                    "address3": null,
+                    "city": "Karrinyup",
+                    "zipCode": "6018",
+                    "latitude": "-31.87730000000000",
+                    "longitude": "115.77734000000000",
+                    "countryIsoCode": "AU",
+                    "regionName": "Western Australia",
+                    "regionIsoCode": "WA"
+                }
+            },
+            "links": {
+                "self": "https://api.au.prod.commerce.ci-aldi.com:80/merchant-search/G092?currency=AUD&service_type=walk-in&zip_code=6060&address=U 7 149 Waterloo St Tuart Hill 6060"
+            }
+        },
+        {
+            "type": "merchant-search",
+            "id": "G094",
+            "attributes": {
+                "merchantName": "Beaufort Street,  Tenth Avenue",
+                "merchantUrl": null,
+                "publicEmail": null,
+                "publicPhone": null,
+                "description": null,
+                "faxNumber": null,
+                "distance": "6.0 km",
+                "address": {
+                    "countryName": "Australia",
+                    "address1": "Beaufort Street,  Tenth Avenue",
+                    "address2": null,
+                    "address3": null,
+                    "city": "Inglewood",
+                    "zipCode": "6052",
+                    "latitude": "-31.92094000000000",
+                    "longitude": "115.88715000000000",
+                    "countryIsoCode": "AU",
+                    "regionName": "Western Australia",
+                    "regionIsoCode": "WA"
+                }
+            },
+            "links": {
+                "self": "https://api.au.prod.commerce.ci-aldi.com:80/merchant-search/G094?currency=AUD&service_type=walk-in&zip_code=6060&address=U 7 149 Waterloo St Tuart Hill 6060"
+            }
+        },
+        {
+            "type": "merchant-search",
+            "id": "G087",
+            "attributes": {
+                "merchantName": "Cnr Erindale Road, Beach Road",
+                "merchantUrl": null,
+                "publicEmail": null,
+                "publicPhone": null,
+                "description": null,
+                "faxNumber": null,
+                "distance": "6.4 km",
+                "address": {
+                    "countryName": "Australia",
+                    "address1": "Cnr Erindale Road, Beach Road",
+                    "address2": null,
+                    "address3": null,
+                    "city": "Warwick",
+                    "zipCode": "6024",
+                    "latitude": "-31.84369000000000",
+                    "longitude": "115.81115000000000",
+                    "countryIsoCode": "AU",
+                    "regionName": "Western Australia",
+                    "regionIsoCode": "WA"
+                }
+            },
+            "links": {
+                "self": "https://api.au.prod.commerce.ci-aldi.com:80/merchant-search/G087?currency=AUD&service_type=walk-in&zip_code=6060&address=U 7 149 Waterloo St Tuart Hill 6060"
+            }
+        },
+        {
+            "type": "merchant-search",
+            "id": "G066",
+            "attributes": {
+                "merchantName": "4 Collier Rd",
+                "merchantUrl": null,
+                "publicEmail": null,
+                "publicPhone": null,
+                "description": null,
+                "faxNumber": null,
+                "distance": "6.7 km",
+                "address": {
+                    "countryName": "Australia",
+                    "address1": "4 Collier Rd",
+                    "address2": null,
+                    "address3": null,
+                    "city": "Morley",
+                    "zipCode": "6062",
+                    "latitude": "-31.89941000000000",
+                    "longitude": "115.90027000000000",
+                    "countryIsoCode": "AU",
+                    "regionName": "Western Australia",
+                    "regionIsoCode": "WA"
+                }
+            },
+            "links": {
+                "self": "https://api.au.prod.commerce.ci-aldi.com:80/merchant-search/G066?currency=AUD&service_type=walk-in&zip_code=6060&address=U 7 149 Waterloo St Tuart Hill 6060"
+            }
+        },
+        {
+            "type": "merchant-search",
+            "id": "G088",
+            "attributes": {
+                "merchantName": "168 Wanneroo Road",
+                "merchantUrl": null,
+                "publicEmail": null,
+                "publicPhone": null,
+                "description": null,
+                "faxNumber": null,
+                "distance": "9.2 km",
+                "address": {
+                    "countryName": "Australia",
+                    "address1": "168 Wanneroo Road",
+                    "address2": null,
+                    "address3": null,
+                    "city": "Madeley",
+                    "zipCode": "6065",
+                    "latitude": "-31.81698000000000",
+                    "longitude": "115.82291000000000",
+                    "countryIsoCode": "AU",
+                    "regionName": "Western Australia",
+                    "regionIsoCode": "WA"
+                }
+            },
+            "links": {
+                "self": "https://api.au.prod.commerce.ci-aldi.com:80/merchant-search/G088?currency=AUD&service_type=walk-in&zip_code=6060&address=U 7 149 Waterloo St Tuart Hill 6060"
+            }
+        },
+        {
+            "type": "merchant-search",
+            "id": "G093",
+            "attributes": {
+                "merchantName": "161 Altone Park Road",
+                "merchantUrl": null,
+                "publicEmail": null,
+                "publicPhone": null,
+                "description": null,
+                "faxNumber": null,
+                "distance": "11.5 km",
+                "address": {
+                    "countryName": "Australia",
+                    "address1": "161 Altone Park Road",
+                    "address2": null,
+                    "address3": null,
+                    "city": "Beechboro",
+                    "zipCode": "6063",
+                    "latitude": "-31.87040000000000",
+                    "longitude": "115.94583000000000",
+                    "countryIsoCode": "AU",
+                    "regionName": "Western Australia",
+                    "regionIsoCode": "WA"
+                }
+            },
+            "links": {
+                "self": "https://api.au.prod.commerce.ci-aldi.com:80/merchant-search/G093?currency=AUD&service_type=walk-in&zip_code=6060&address=U 7 149 Waterloo St Tuart Hill 6060"
+            }
+        },
+        {
+            "type": "merchant-search",
+            "id": "G047",
+            "attributes": {
+                "merchantName": "227 Belmont Avenue",
+                "merchantUrl": null,
+                "publicEmail": null,
+                "publicPhone": null,
+                "description": null,
+                "faxNumber": null,
+                "distance": "12.4 km",
+                "address": {
+                    "countryName": "Australia",
+                    "address1": "227 Belmont Avenue",
+                    "address2": null,
+                    "address3": null,
+                    "city": "Belmont",
+                    "zipCode": "6105",
+                    "latitude": "-31.96577000000000",
+                    "longitude": "115.93502000000000",
+                    "countryIsoCode": "AU",
+                    "regionName": "Western Australia",
+                    "regionIsoCode": "WA"
+                }
+            },
+            "links": {
+                "self": "https://api.au.prod.commerce.ci-aldi.com:80/merchant-search/G047?currency=AUD&service_type=walk-in&zip_code=6060&address=U 7 149 Waterloo St Tuart Hill 6060"
+            }
+        }
+    ],
+    "links": {
+        "self": "https://api.au.prod.commerce.ci-aldi.com:80/merchant-search?currency=AUD&service_type=walk-in&zip_code=6060&address=U 7 149 Waterloo St Tuart Hill 6060"
+    }
+}

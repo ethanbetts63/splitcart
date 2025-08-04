@@ -1,1 +1,2 @@
 from .create_store_slug_iga import create_store_slug_iga
+from .create_store_slug_aldi import create_store_slug_aldi

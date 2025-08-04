@@ -9,3 +9,4 @@ def create_store_slug_iga(store_name: str) -> str:
     # Replace spaces with hyphens and clean up
     slug = re.sub(r'\s+', '-', name).strip('-')
     return slug
+
