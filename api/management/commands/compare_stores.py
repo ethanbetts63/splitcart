@@ -7,7 +7,7 @@ class Command(BaseCommand):
     help = 'Compares product prices and availability between two stores, category by category, from the latest available date.'
 
     def add_arguments(self, parser):
-        parser.add_argument('company_name', type=str, help='The company to compare (e.g., woolworths).')
+        parser.add_argument('company_name', type=str, help='The company to compare (e.g., woolworths, aldi, iga).')
         parser.add_argument('store_a_name', type=str, help='The name of the first store.')
         parser.add_argument('store_b_name', type=str, help='The name of the second store.')
 
@@ -16,23 +16,24 @@ class Command(BaseCommand):
         store_a_name = options['store_a_name']
         store_b_name = options['store_b_name']
 
-        if company_name != 'woolworths':
-            self.stdout.write(self.style.ERROR("This command currently only supports 'woolworths'."))
+        product_id_key = self._get_product_id_key(company_name)
+        if not product_id_key:
+            self.stdout.write(self.style.ERROR(f"Company '{company_name}' is not supported. Supported: woolworths, aldi, iga."))
             return
 
-        self.stdout.write(self.style.SUCCESS(f"--- Comparing Woolworths Stores: '{store_a_name}' vs '{store_b_name}' ---"))
+        self.stdout.write(self.style.SUCCESS(f"--- Comparing {company_name.title()} Stores: '{store_a_name}' vs '{store_b_name}' ---"))
 
         base_path = os.path.join('api', 'data', 'processed_data', company_name)
 
         try:
-            latest_date_dir_a = self._find_latest_date_dir(base_path, store_a_name)
-            latest_date_dir_b = self._find_latest_date_dir(base_path, store_b_name)
+            latest_date_dir_a = self._find_latest_date_dir(base_path, company_name, store_a_name)
+            latest_date_dir_b = self._find_latest_date_dir(base_path, company_name, store_b_name)
         except FileNotFoundError as e:
             self.stdout.write(self.style.ERROR(str(e)))
             return
 
-        self.stdout.write(f"Found latest data for '{store_a_name}' in: {os.path.basename(os.path.dirname(latest_date_dir_a))}/{os.path.basename(latest_date_dir_a)}")
-        self.stdout.write(f"Found latest data for '{store_b_name}' in: {os.path.basename(os.path.dirname(latest_date_dir_b))}/{os.path.basename(latest_date_dir_b)}")
+        self.stdout.write(f"Found latest data for '{store_a_name}' in: {os.path.relpath(latest_date_dir_a)}")
+        self.stdout.write(f"Found latest data for '{store_b_name}' in: {os.path.relpath(latest_date_dir_b)}")
 
         categories_a = self._get_category_files(latest_date_dir_a)
         categories_b = self._get_category_files(latest_date_dir_b)
@@ -55,8 +56,8 @@ class Command(BaseCommand):
             products_a = self._load_products_from_file(categories_a[category])
             products_b = self._load_products_from_file(categories_b[category])
 
-            products_a_by_sku = {p['stockcode']: p for p in products_a}
-            products_b_by_sku = {p['stockcode']: p for p in products_b}
+            products_a_by_sku = {p[product_id_key]: p for p in products_a if product_id_key in p and p.get(product_id_key)}
+            products_b_by_sku = {p[product_id_key]: p for p in products_b if product_id_key in p and p.get(product_id_key)}
 
             skus_a = set(products_a_by_sku.keys())
             skus_b = set(products_b_by_sku.keys())
@@ -64,11 +65,13 @@ class Command(BaseCommand):
             common_skus = skus_a.intersection(skus_b)
             price_differences = []
             for sku in common_skus:
-                if products_a_by_sku[sku]['price'] != products_b_by_sku[sku]['price']:
+                prod_a = products_a_by_sku[sku]
+                prod_b = products_b_by_sku[sku]
+                if prod_a.get('price') != prod_b.get('price'):
                     price_differences.append({
-                        'name': products_a_by_sku[sku].get('name', 'N/A'),
-                        'price_a': products_a_by_sku[sku]['price'],
-                        'price_b': products_b_by_sku[sku]['price']
+                        'name': prod_a.get('name', 'N/A'),
+                        'price_a': prod_a.get('price'),
+                        'price_b': prod_b.get('price')
                     })
             
             self.stdout.write(f"  Products in '{store_a_name}': {len(skus_a)}")
@@ -78,7 +81,7 @@ class Command(BaseCommand):
 
             if price_differences:
                 self.stdout.write(self.style.WARNING("  Products with Price Differences:"))
-                for diff in price_differences[:5]: # Limit output
+                for diff in price_differences[:5]:
                     price_a_str = f"${diff['price_a']:.2f}" if isinstance(diff['price_a'], (int, float)) else "[N/A]"
                     price_b_str = f"${diff['price_b']:.2f}" if isinstance(diff['price_b'], (int, float)) else "[N/A]"
                     self.stdout.write(f"    - {diff['name']}: '{store_a_name}' {price_a_str} vs '{store_b_name}' {price_b_str}")
@@ -91,9 +94,18 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(f"\n--- Categories Exclusive to '{store_b_name}' ---"))
             self.stdout.write(", ".join(exclusive_to_b[:20]))
 
-    def _find_latest_date_dir(self, base_path, store_name):
+    def _get_product_id_key(self, company_name):
+        """Returns the unique product identifier key for a given company."""
+        id_keys = {
+            'woolworths': 'stockcode',
+            'aldi': 'productKey',
+            'iga': 'stockcode'  # Corrected from 'sku'
+        }
+        return id_keys.get(company_name)
+
+    def _find_latest_date_dir(self, base_path, company_name, store_name):
         """Finds the most recent date-stamped subdirectory for a given store."""
-        clean_store_name = store_name.lower().replace('woolworths', '').strip().replace(' ', '-')
+        clean_store_name = store_name.lower().replace(company_name, '').strip().replace(' ', '-')
         store_dir_path = os.path.join(base_path, clean_store_name)
 
         if not os.path.isdir(store_dir_path):
