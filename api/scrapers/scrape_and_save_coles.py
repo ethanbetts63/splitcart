@@ -11,7 +11,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
 
-# CHANGE 1: Function signature updated to accept company and store
 def scrape_and_save_coles_data(company: str, store: str, categories_to_fetch: list, save_path: str):
     """
     Launches a browser, handles CAPTCHA, then iterates through all pages of
@@ -20,7 +19,6 @@ def scrape_and_save_coles_data(company: str, store: str, categories_to_fetch: li
     print(f"--- Initializing coles Scraper Tool for {company} ({store}) ---")
     progress_file_path = os.path.join(save_path, "coles_progress.json")
 
-    # --- NO CHANGES TO THE CORE LOGIC BELOW ---
     while True:
         driver = None
         
@@ -85,11 +83,9 @@ def scrape_and_save_coles_data(company: str, store: str, categories_to_fetch: li
                             resuming = False
 
                         scrape_timestamp = datetime.now()
-                        # CHANGE 2: Pass company and store to the cleaner
                         data_packet = clean_raw_data_coles(raw_product_list, company, store, category, page_num, scrape_timestamp)
                         print(f"Found and cleaned {len(data_packet['products'])} products on page {page_num}.")
 
-                        # CHANGE 3: Update filename format
                         file_name = f"{company.lower()}_{store.lower()}_{category}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
                         file_path = os.path.join(save_path, file_name)
                         
