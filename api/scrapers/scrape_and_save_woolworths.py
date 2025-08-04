@@ -6,12 +6,11 @@ import os
 from datetime import datetime
 from api.utils.scraper_utils.clean_raw_data_woolworths import clean_raw_data_woolworths
 
-def scrape_and_save_woolworths_data(company: str, store: str, categories_to_fetch: list, save_path: str):
+def scrape_and_save_woolworths_data(company: str, store_name: str, store_id: str, categories_to_fetch: list, save_path: str):
     """
-    Launches a requests-based scraper, iterates through all pages of the given
-    Woolworths categories, cleans the data, and saves it to a file.
+    Launches a requests-based scraper for a specific Woolworths store.
     """
-    print(f"--- Initializing Woolworths Scraper Tool for {company} ({store}) ---")
+    print(f"--- Initializing Woolworths Scraper for {company} ({store_name}) ---")
     
     session = requests.Session()
     session.headers.update({
@@ -49,6 +48,8 @@ def scrape_and_save_woolworths_data(company: str, store: str, categories_to_fetc
                 "token": "", "gpBoost": 0, "isHideUnavailableProducts": False,
                 "isRegisteredRewardCardPromotion": False, "categoryVersion": "v2",
                 "enableAdReRanking": False, "groupEdmVariants": False, "activePersonalizedViewType": "",
+                # This is the crucial addition for store-specific pricing
+                "storeId": store_id
             }
 
             try:
@@ -69,14 +70,14 @@ def scrape_and_save_woolworths_data(company: str, store: str, categories_to_fetc
                 data_packet = clean_raw_data_woolworths(
                     raw_product_list=raw_products_on_page,
                     company=company,
-                    store=store,
+                    store=store_name,
                     category=category_slug,
                     page_num=page_num,
                     timestamp=scrape_timestamp
                 )
                 print(f"Found and cleaned {len(data_packet['products'])} products on page {page_num}.")
 
-                file_name = f"{company.lower()}_{store.lower()}_{category_slug}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
+                file_name = f"{company.lower()}_{store_name.lower()}_{category_slug}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
                 file_path = os.path.join(save_path, file_name)
                 
                 with open(file_path, 'w', encoding='utf-8') as f:
@@ -90,7 +91,7 @@ def scrape_and_save_woolworths_data(company: str, store: str, categories_to_fetc
                 print(f"ERROR: Failed to decode JSON on page {page_num} for '{category_slug}'.")
                 break
 
-            sleep_time = random.uniform(1, 3)
+            sleep_time = random.uniform(2, 4)
             print(f"Waiting for {sleep_time:.2f} seconds...")
             time.sleep(sleep_time)
             
@@ -98,4 +99,4 @@ def scrape_and_save_woolworths_data(company: str, store: str, categories_to_fetc
         
         print(f"--- Finished category: '{category_slug}' ---")
             
-    print("\n--- Woolworths scraper tool finished. ---")
+    print(f"\n--- Woolworths scraper for store '{store_name}' finished. ---")
