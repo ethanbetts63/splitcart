@@ -13,7 +13,6 @@ class Command(BaseCommand):
 
         company_name = "woolworths"
 
-        # Hardcoded list of Perth Woolworths supermarkets to scrape.
         # The 'store_id' is the 'StoreNo' from the API.
         stores_to_scrape = [
             {'store_name': create_store_slug_woolworths('Dianella'), 'store_id': '4366'},
