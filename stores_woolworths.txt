@@ -1,0 +1,3788 @@
+{
+    "Stores": [
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4366",
+            "Name": "Dianella",
+            "AddressLine1": "360-366 Grand Promenade",
+            "AddressLine2": null,
+            "Suburb": "Dianella",
+            "State": "WA",
+            "Postcode": "6059",
+            "Latitude": "-31.89512348",
+            "Longitude": "115.8720815",
+            "GeoLevel": "0",
+            "Distance": "0.91",
+            "Phone": "(08) 9203 3506",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "94218",
+            "Name": "Dianella",
+            "AddressLine1": "Dianella Shopping Centre 372 Grand Promade",
+            "AddressLine2": null,
+            "Suburb": "Dianella",
+            "State": "WA",
+            "Postcode": "6059",
+            "Latitude": "-31.8966",
+            "Longitude": "115.8716",
+            "GeoLevel": "0",
+            "Distance": "1.07",
+            "Phone": "08 6186 0274",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2200"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0600-2200"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0600-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2300"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "94228",
+            "Name": "Mirrabooka",
+            "AddressLine1": "53 Yirrigan Drive (Cnr Farrier Rd)",
+            "AddressLine2": null,
+            "Suburb": "Mirrabooka",
+            "State": "WA",
+            "Postcode": "6061",
+            "Latitude": "-31.8735",
+            "Longitude": "115.8613",
+            "GeoLevel": "0",
+            "Distance": "1.78",
+            "Phone": "08 6186 0287",
+            "GMTZone": "8:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4373",
+            "Name": "Mirrabooka",
+            "AddressLine1": "Mirrabooka Square Shopping Centre, 43 Yirrigan Drive",
+            "AddressLine2": null,
+            "Suburb": "Mirrabooka",
+            "State": "WA",
+            "Postcode": "6061",
+            "Latitude": "-31.86984017",
+            "Longitude": "115.8610919",
+            "GeoLevel": "0",
+            "Distance": "2.14",
+            "Phone": "(08) 9203 3515",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot",
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "94247",
+            "Name": "Morley",
+            "AddressLine1": "60 Russell Street (cnr Walter Rd)",
+            "AddressLine2": null,
+            "Suburb": "Morley",
+            "State": "WA",
+            "Postcode": "6062",
+            "Latitude": "-31.8963",
+            "Longitude": "115.8951",
+            "GeoLevel": "0",
+            "Distance": "2.46",
+            "Phone": "08 6186 0418",
+            "GMTZone": "8:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4314",
+            "Name": "Noranda",
+            "AddressLine1": "Noranda Palms Shopping Centre, Cnr Mcgilvary Street And Benara Road",
+            "AddressLine2": null,
+            "Suburb": "Noranda",
+            "State": "WA",
+            "Postcode": "6062",
+            "Latitude": "-31.87678585",
+            "Longitude": "115.895352",
+            "GeoLevel": "0",
+            "Distance": "2.53",
+            "Phone": "(08) 6318 9993",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4350",
+            "Name": "Morley",
+            "AddressLine1": "4 Collier Road",
+            "AddressLine2": null,
+            "Suburb": "Morley",
+            "State": "WA",
+            "Postcode": "6062",
+            "Latitude": "-31.89869191",
+            "Longitude": "115.8997214",
+            "GeoLevel": "0",
+            "Distance": "2.97",
+            "Phone": "(08) 6318 9987",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "Sushi Bar"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "55540",
+            "Name": "Ampol Foodary Malaga Drive",
+            "AddressLine1": "76-Malaga Dr Cnr Truganina Rd",
+            "AddressLine2": null,
+            "Suburb": "Malaga",
+            "State": "WA",
+            "Postcode": "6090",
+            "Latitude": "-31.863223",
+            "Longitude": "115.893916",
+            "GeoLevel": "0",
+            "Distance": "3.39",
+            "Phone": null,
+            "GMTZone": "8:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-AdBlue",
+                "Fuel-Diesel",
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "AdBlue",
+                        "Diesel",
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4306",
+            "Name": "Dog Swamp",
+            "AddressLine1": "Dog Swamp Shopping Centre, 6 Wanneroo Road",
+            "AddressLine2": null,
+            "Suburb": "Yokine",
+            "State": "WA",
+            "Postcode": "6060",
+            "Latitude": "-31.910332",
+            "Longitude": "115.84744",
+            "GeoLevel": "0",
+            "Distance": "3.44",
+            "Phone": "(08) 6318 9966",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4622",
+            "Name": "Inglewood",
+            "AddressLine1": "861 Beaufort Street",
+            "AddressLine2": null,
+            "Suburb": "Inglewood",
+            "State": "WA",
+            "Postcode": "6052",
+            "Latitude": "-31.92244",
+            "Longitude": "115.88393",
+            "GeoLevel": "0",
+            "Distance": "4.11",
+            "Phone": "(08) 9203 3579",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Instore Bakery",
+                "Pick up",
+                "Quiet Hour",
+                "Scan&Go",
+                "Seafood",
+                "Special Needs Trolleys",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "55503",
+            "Name": "Ampol Foodary Northlands - Balcatta",
+            "AddressLine1": "391-Wanneroo Rd",
+            "AddressLine2": null,
+            "Suburb": "Northlands",
+            "State": "WA",
+            "Postcode": "6021",
+            "Latitude": "-31.8725312",
+            "Longitude": "115.8309687",
+            "GeoLevel": "0",
+            "Distance": "4.14",
+            "Phone": null,
+            "GMTZone": "8:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-AdBlue",
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "AdBlue",
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "55487",
+            "Name": "Ampol Foodary Mount Lawley (Inglewood)",
+            "AddressLine1": "810-Beaufort St",
+            "AddressLine2": null,
+            "Suburb": "Mount Lawley",
+            "State": "WA",
+            "Postcode": "6050",
+            "Latitude": "-31.925227",
+            "Longitude": "115.881476",
+            "GeoLevel": "0",
+            "Distance": "4.36",
+            "Phone": null,
+            "GMTZone": "8:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "55603",
+            "Name": "Ampol Foodary Malaga",
+            "AddressLine1": "Alexander Dr Cnr Capital Rd",
+            "AddressLine2": null,
+            "Suburb": "Malaga",
+            "State": "WA",
+            "Postcode": "6090",
+            "Latitude": "-31.848174",
+            "Longitude": "115.878564",
+            "GeoLevel": "0",
+            "Distance": "4.37",
+            "Phone": null,
+            "GMTZone": "8:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4630",
+            "Name": "Balcatta",
+            "AddressLine1": "732 Karrinyup Road",
+            "AddressLine2": null,
+            "Suburb": "Balcatta",
+            "State": "WA",
+            "Postcode": "6021",
+            "Latitude": "-31.889287",
+            "Longitude": "115.821137",
+            "GeoLevel": "0",
+            "Distance": "4.75",
+            "Phone": "(08) 9203 3567",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Instore Bakery",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "Special Needs Trolleys",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4319",
+            "Name": "Stirling Central",
+            "AddressLine1": "Stirling Central Shopping Centre, 478 Wanneroo Road",
+            "AddressLine2": null,
+            "Suburb": "Westminster",
+            "State": "WA",
+            "Postcode": "6061",
+            "Latitude": "-31.86229019",
+            "Longitude": "115.82949205",
+            "GeoLevel": "0",
+            "Distance": "4.82",
+            "Phone": "(08) 6318 9972",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Australia Post Parcel Locker",
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4346",
+            "Name": "Mt Hawthorn",
+            "AddressLine1": "The Mezz, Cnr Flinders Street And Scarborough Beach Road",
+            "AddressLine2": null,
+            "Suburb": "Mt Hawthorn",
+            "State": "WA",
+            "Postcode": "6016",
+            "Latitude": "-31.92125551",
+            "Longitude": "115.8393911",
+            "GeoLevel": "0",
+            "Distance": "4.86",
+            "Phone": "(08) 6318 9981",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Australia Post Parcel Locker",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "94203",
+            "Name": "Ballajura (Glenview)",
+            "AddressLine1": "Glenview S/Centre Cnr Bellevin & Hamlin Drives",
+            "AddressLine2": null,
+            "Suburb": "Ballajura (Glenview)",
+            "State": "WA",
+            "Postcode": "6066",
+            "Latitude": "-31.8476",
+            "Longitude": "115.907",
+            "GeoLevel": "0",
+            "Distance": "5.52",
+            "Phone": "08 6186 0312",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "6:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "6:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2000"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2000"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2000"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 7:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1900"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "8:00 AM - 7:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-1900"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2100"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4339",
+            "Name": "Ballajura Central",
+            "AddressLine1": "Glenview Marketplace, Cnr Hamelin And Bellefin Drives",
+            "AddressLine2": null,
+            "Suburb": "Ballajura",
+            "State": "WA",
+            "Postcode": "6066",
+            "Latitude": "-31.84655038",
+            "Longitude": "115.9068471",
+            "GeoLevel": "0",
+            "Distance": "5.61",
+            "Phone": "(08) 6318 9978",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Liquor (Adjacent BWS)",
+                "Pick up"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4155",
+            "Name": "Bennett Springs",
+            "AddressLine1": "Cnr Beechboro Road And Bennett Springs Drive",
+            "AddressLine2": null,
+            "Suburb": "Beechboro",
+            "State": "WA",
+            "Postcode": "6063",
+            "Latitude": "-31.85921946",
+            "Longitude": "115.9260159",
+            "GeoLevel": "0",
+            "Distance": "6.01",
+            "Phone": "(08) 6318 9918",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "94240",
+            "Name": "Osborne Park",
+            "AddressLine1": "401 Scarborough Beach Rd",
+            "AddressLine2": null,
+            "Suburb": "Osborne Park",
+            "State": "WA",
+            "Postcode": "6017",
+            "Latitude": "-31.9107",
+            "Longitude": "115.814",
+            "GeoLevel": "0",
+            "Distance": "6.03",
+            "Phone": "08 6186 0433",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "5:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Tue: 0500-0000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "5:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Wed: 0500-0000"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "5:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Thu: 0500-0000"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "5:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Fri: 0500-0000"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "5:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Sat: 0500-0000"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0600-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "5:00 AM - 1:00 PM",
+                    "TradingHourForDisplay": "Mon: 0500-1300"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4621",
+            "Name": "Highgate",
+            "AddressLine1": "80 Bulwer Street",
+            "AddressLine2": null,
+            "Suburb": "Perth",
+            "State": "WA",
+            "Postcode": "6000",
+            "Latitude": "-31.942854",
+            "Longitude": "115.86817",
+            "GeoLevel": "0",
+            "Distance": "6.22",
+            "Phone": "(08) 9203 3583",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot",
+                "Instore Bakery",
+                "Pick up",
+                "Seafood",
+                "Special Needs Trolleys",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "55357",
+            "Name": "Ampol Foodary Glendalough",
+            "AddressLine1": "Harborne St Cnr Jon Sanders Dr",
+            "AddressLine2": null,
+            "Suburb": "Glendalough",
+            "State": "WA",
+            "Postcode": "6016",
+            "Latitude": "-31.922296",
+            "Longitude": "115.819716",
+            "GeoLevel": "0",
+            "Distance": "6.26",
+            "Phone": null,
+            "GMTZone": "8:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "55155",
+            "Name": "Ampol Foodary Leederville",
+            "AddressLine1": "319-Vincent St",
+            "AddressLine2": null,
+            "Suburb": "Leederville",
+            "State": "WA",
+            "Postcode": "6007",
+            "Latitude": "-31.936594",
+            "Longitude": "115.839983",
+            "GeoLevel": "0",
+            "Distance": "6.26",
+            "Phone": null,
+            "GMTZone": "8:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-AdBlue",
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "AdBlue",
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4321",
+            "Name": "Alexander Heights",
+            "AddressLine1": "Alexander Heights Shopping Centre, Cnr Mirrabooka Avenue And Griffon Way",
+            "AddressLine2": null,
+            "Suburb": "Alexander Heights",
+            "State": "WA",
+            "Postcode": "6064",
+            "Latitude": "-31.82936913",
+            "Longitude": "115.85359668",
+            "GeoLevel": "0",
+            "Distance": "6.63",
+            "Phone": "(08) 6318 9996",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Australia Post Parcel Locker",
+                "Pick up"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "55161",
+            "Name": "Ampol Foodary East Perth",
+            "AddressLine1": "157-Lord Street",
+            "AddressLine2": null,
+            "Suburb": "East Perth",
+            "State": "WA",
+            "Postcode": "6000",
+            "Latitude": "-31.948609",
+            "Longitude": "115.869852",
+            "GeoLevel": "0",
+            "Distance": "6.85",
+            "Phone": null,
+            "GMTZone": "8:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4313",
+            "Name": "Innaloo",
+            "AddressLine1": "384 Scarborough Beach Road",
+            "AddressLine2": null,
+            "Suburb": "Innaloo",
+            "State": "WA",
+            "Postcode": "6018",
+            "Latitude": "-31.90042491",
+            "Longitude": "115.7997657",
+            "GeoLevel": "0",
+            "Distance": "6.93",
+            "Phone": "(08) 6318 9969",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "Sushi Bar"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "55170",
+            "Name": "Ampol Foodary Karrinyup",
+            "AddressLine1": "490-Karrinyup Rd Cnr North Beach Rd",
+            "AddressLine2": null,
+            "Suburb": "Karrinyup",
+            "State": "WA",
+            "Postcode": "6018",
+            "Latitude": "-31.882119",
+            "Longitude": "115.796198",
+            "GeoLevel": "0",
+            "Distance": "7.12",
+            "Phone": null,
+            "GMTZone": "8:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "55542",
+            "Name": "Ampol Foodary Beechboro",
+            "AddressLine1": "159-Altone Rd",
+            "AddressLine2": null,
+            "Suburb": "Beechboro",
+            "State": "WA",
+            "Postcode": "6063",
+            "Latitude": "-31.870091",
+            "Longitude": "115.944835",
+            "GeoLevel": "0",
+            "Distance": "7.18",
+            "Phone": null,
+            "GMTZone": "8:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-BBQGasAvailable",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "BBQ Gas Available",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4384",
+            "Name": "Beechboro",
+            "AddressLine1": "161 Altone Road",
+            "AddressLine2": null,
+            "Suburb": "Beechboro",
+            "State": "WA",
+            "Postcode": "6063",
+            "Latitude": "-31.8696322",
+            "Longitude": "115.9457427",
+            "GeoLevel": "0",
+            "Distance": "7.28",
+            "Phone": "(08) 6318 9960",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Australia Post Parcel Locker",
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4379",
+            "Name": "Warwick",
+            "AddressLine1": "Centro Warwick, 643 Beach Road",
+            "AddressLine2": null,
+            "Suburb": "Warwick",
+            "State": "WA",
+            "Postcode": "6024",
+            "Latitude": "-31.84339609",
+            "Longitude": "115.81225521",
+            "GeoLevel": "0",
+            "Distance": "7.4",
+            "Phone": "(08) 9203 3518",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4365",
+            "Name": "Murray Street",
+            "AddressLine1": "166 Murray Street",
+            "AddressLine2": null,
+            "Suburb": "Perth",
+            "State": "WA",
+            "Postcode": "6000",
+            "Latitude": "-31.9529209",
+            "Longitude": "115.8605346",
+            "GeoLevel": "0",
+            "Distance": "7.4",
+            "Phone": "(08) 9203 3503",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Liquor (Adjacent BWS)",
+                "Quiet Hour",
+                "Sushi Bar"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "55486",
+            "Name": "Ampol Foodary Doubleview",
+            "AddressLine1": "365-Scarborough Beach Rd",
+            "AddressLine2": null,
+            "Suburb": "Doubleview",
+            "State": "WA",
+            "Postcode": "6018",
+            "Latitude": "-31.9012363",
+            "Longitude": "115.7942126",
+            "GeoLevel": "0",
+            "Distance": "7.46",
+            "Phone": null,
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "05:00:00 - 00:00:00",
+                    "TradingHourForDisplay": "Tue: 0500-0000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "05:00:00 - 00:00:00",
+                    "TradingHourForDisplay": "Wed: 0500-0000"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "05:00:00 - 00:00:00",
+                    "TradingHourForDisplay": "Thu: 0500-0000"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "05:00:00 - 00:00:00",
+                    "TradingHourForDisplay": "Fri: 0500-0000"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "05:00:00 - 00:00:00",
+                    "TradingHourForDisplay": "Sat: 0500-0000"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "05:00:00 - 00:00:00",
+                    "TradingHourForDisplay": "Sun: 0500-0000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "05:00:00 - 00:00:00",
+                    "TradingHourForDisplay": "Mon: 0500-0000"
+                }
+            ],
+            "Facilities": [
+                "Fuel-AdBlue",
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "AdBlue",
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4301",
+            "Name": "St Georges Terrace",
+            "AddressLine1": "100 St Georges Tce",
+            "AddressLine2": null,
+            "Suburb": "Perth",
+            "State": "WA",
+            "Postcode": "6000",
+            "Latitude": "-31.95471153",
+            "Longitude": "115.8576969",
+            "GeoLevel": "0",
+            "Distance": "7.64",
+            "Phone": "(08) 6318 9963",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Sushi Bar"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4392",
+            "Name": "Subiaco Square",
+            "AddressLine1": "Centro Subiaco, 29 Station Street",
+            "AddressLine2": null,
+            "Suburb": "Subiaco",
+            "State": "WA",
+            "Postcode": "6008",
+            "Latitude": "-31.94405323",
+            "Longitude": "115.8241576",
+            "GeoLevel": "0",
+            "Distance": "7.75",
+            "Phone": "(08) 9203 3521",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "Sushi Bar"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "51034",
+            "Name": "Ampol Foodary Ascot",
+            "AddressLine1": "204-Great Eastern Highway",
+            "AddressLine2": null,
+            "Suburb": "Ascot",
+            "State": "WA",
+            "Postcode": "6104",
+            "Latitude": "-31.940907",
+            "Longitude": "115.9262469",
+            "GeoLevel": "0",
+            "Distance": "7.92",
+            "Phone": null,
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "06:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Tue: 0600-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "06:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Wed: 0600-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "06:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Thu: 0600-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "06:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Fri: 0600-2200"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "06:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Sat: 0600-2200"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "06:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Sun: 0600-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "06:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Mon: 0600-2200"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "55142",
+            "Name": "Ampol Foodary Belmont",
+            "AddressLine1": "303-Great Eastern Highway",
+            "AddressLine2": null,
+            "Suburb": "Belmont",
+            "State": "WA",
+            "Postcode": "6104",
+            "Latitude": "-31.93733426",
+            "Longitude": "115.93320722",
+            "GeoLevel": "0",
+            "Distance": "8.08",
+            "Phone": null,
+            "GMTZone": "8:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "55147",
+            "Name": "Ampol Foodary Subiaco",
+            "AddressLine1": "194-Rokeby Rd Cnr Bagot Rd",
+            "AddressLine2": null,
+            "Suburb": "Subiaco",
+            "State": "WA",
+            "Postcode": "6008",
+            "Latitude": "-31.950641",
+            "Longitude": "115.824281",
+            "GeoLevel": "0",
+            "Distance": "8.36",
+            "Phone": null,
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Tue: 0500-2300"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Wed: 0500-2300"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Thu: 0500-2300"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Fri: 0500-2300"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Sat: 0500-2300"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Sun: 0500-2300"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Mon: 0500-2300"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "55533",
+            "Name": "Ampol Foodary Rivervale",
+            "AddressLine1": "111-Great Eastern Highway",
+            "AddressLine2": null,
+            "Suburb": "Rivervale",
+            "State": "WA",
+            "Postcode": "6103",
+            "Latitude": "-31.95357",
+            "Longitude": "115.912917",
+            "GeoLevel": "0",
+            "Distance": "8.38",
+            "Phone": null,
+            "GMTZone": "8:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "55126",
+            "Name": "Ampol Foodary Carine",
+            "AddressLine1": "Beach Rd Cnr Duffy Rd",
+            "AddressLine2": null,
+            "Suburb": "Carine",
+            "State": "WA",
+            "Postcode": "6020",
+            "Latitude": "-31.846307",
+            "Longitude": "115.795494",
+            "GeoLevel": "0",
+            "Distance": "8.48",
+            "Phone": null,
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Tue: 0500-2300"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Wed: 0500-2300"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Thu: 0500-2300"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Fri: 0500-2300"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "06:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Sat: 0600-2300"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "06:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Sun: 0600-2300"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Mon: 0500-2300"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "94243",
+            "Name": "Greenwood",
+            "AddressLine1": "37 Canham Way (Cnr Wanneroo Rd)",
+            "AddressLine2": null,
+            "Suburb": "Greenwood",
+            "State": "WA",
+            "Postcode": "6024",
+            "Latitude": "-31.8218",
+            "Longitude": "115.8204",
+            "GeoLevel": "0",
+            "Distance": "8.7",
+            "Phone": "08 6186 0388",
+            "GMTZone": "8:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4371",
+            "Name": "Karrinyup",
+            "AddressLine1": "Karrinyup Shopping Centre, 200 Karrinyup Road",
+            "AddressLine2": null,
+            "Suburb": "Karrinyup",
+            "State": "WA",
+            "Postcode": "6018",
+            "Latitude": "-31.87760286",
+            "Longitude": "115.7786031",
+            "GeoLevel": "0",
+            "Distance": "8.82",
+            "Phone": "(08) 9203 3512",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Currently being renovated",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Quiet Hour",
+                "Seafood",
+                "Sushi Bar"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4327",
+            "Name": "Kingsway",
+            "AddressLine1": "Kingsway Shopping Centre, 168 Wanneroo Road",
+            "AddressLine2": null,
+            "Suburb": "Madeley",
+            "State": "WA",
+            "Postcode": "6065",
+            "Latitude": "-31.81861692",
+            "Longitude": "115.82248342",
+            "GeoLevel": "7",
+            "Distance": "8.9",
+            "Phone": "(08) 9303 7912",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "Sushi Bar"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4389",
+            "Name": "Perth Airport",
+            "AddressLine1": "10 High Street",
+            "AddressLine2": null,
+            "Suburb": "Perth Airport",
+            "State": "WA",
+            "Postcode": "6105",
+            "Latitude": "-31.9365752",
+            "Longitude": "115.9489584",
+            "GeoLevel": "0",
+            "Distance": "9.16",
+            "Phone": "(08) 6235 8900",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "5:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0500-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "5:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0500-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "5:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0500-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "5:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0500-2200"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "5:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0500-2200"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot",
+                "Direct to boot - drive through",
+                "Instore Bakery",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "Special Needs Trolleys",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "94216",
+            "Name": "Floreat",
+            "AddressLine1": "Floreat Forum Shopping Centre The Boulevarde",
+            "AddressLine2": null,
+            "Suburb": "Floreat",
+            "State": "WA",
+            "Postcode": "6014",
+            "Latitude": "-31.9367",
+            "Longitude": "115.7939",
+            "GeoLevel": "0",
+            "Distance": "9.17",
+            "Phone": "08 6186 0178",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2000"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "7:00 AM - 7:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-1900"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2300"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4359",
+            "Name": "Floreat",
+            "AddressLine1": "Floreat Forum, 1 Howtree  Place",
+            "AddressLine2": null,
+            "Suburb": "Floreat",
+            "State": "WA",
+            "Postcode": "6014",
+            "Latitude": "-31.9393123",
+            "Longitude": "115.7924541",
+            "GeoLevel": "0",
+            "Distance": "9.45",
+            "Phone": "(08) 9203 3500",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "Sushi Bar"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4333",
+            "Name": "Victoria Park",
+            "AddressLine1": "Victoria Park Central, 366 Albany Highway",
+            "AddressLine2": null,
+            "Suburb": "Victoria Park",
+            "State": "WA",
+            "Postcode": "6100",
+            "Latitude": "-31.9736546",
+            "Longitude": "115.8984471",
+            "GeoLevel": "0",
+            "Distance": "9.97",
+            "Phone": "(08) 6318 9975",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "55128",
+            "Name": "Ampol Foodary Scarborough",
+            "AddressLine1": "74-Scarborough Beach Rd",
+            "AddressLine2": null,
+            "Suburb": "Scarborough",
+            "State": "WA",
+            "Postcode": "6019",
+            "Latitude": "-31.8938157",
+            "Longitude": "115.7645933",
+            "GeoLevel": "0",
+            "Distance": "10.11",
+            "Phone": null,
+            "GMTZone": "8:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "4348",
+            "Name": "Belmont",
+            "AddressLine1": "Belmont Forum, 227 Belmont Ave",
+            "AddressLine2": null,
+            "Suburb": "Cloverdale",
+            "State": "WA",
+            "Postcode": "6105",
+            "Latitude": "-31.9632877",
+            "Longitude": "115.9351585",
+            "GeoLevel": "0",
+            "Distance": "10.4",
+            "Phone": "(08) 6318 9984",
+            "GMTZone": "8:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2100"
+                },
+                {
+                    "Day": "Saturday",
+                    "OpenHour": "8:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1700"
+                },
+                {
+                    "Day": "Sunday",
+                    "OpenHour": "11:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 1100-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        }
+    ]
+}
