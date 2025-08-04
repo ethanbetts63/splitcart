@@ -88,11 +88,21 @@ class Command(BaseCommand):
 
         if exclusive_to_a:
             self.stdout.write(self.style.SUCCESS(f"\n--- Categories Exclusive to '{store_a_name}' ---"))
-            self.stdout.write(", ".join(exclusive_to_a[:20]))
+            for category in exclusive_to_a:
+                try:
+                    products = self._load_products_from_file(categories_a[category])
+                    self.stdout.write(f"  - {category} ({len(products)} products)")
+                except Exception as e:
+                    self.stdout.write(self.style.WARNING(f"  - Could not load category {category}: {e}"))
 
         if exclusive_to_b:
             self.stdout.write(self.style.SUCCESS(f"\n--- Categories Exclusive to '{store_b_name}' ---"))
-            self.stdout.write(", ".join(exclusive_to_b[:20]))
+            for category in exclusive_to_b:
+                try:
+                    products = self._load_products_from_file(categories_b[category])
+                    self.stdout.write(f"  - {category} ({len(products)} products)")
+                except Exception as e:
+                    self.stdout.write(self.style.WARNING(f"  - Could not load category {category}: {e}"))
 
     def _get_product_id_key(self, company_name):
         """Returns the unique product identifier key for a given company."""
