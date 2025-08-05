@@ -23,9 +23,6 @@
         "qp": [
             "VIC, Australia"
         ],
-        "r": [
-            "1.25"
-        ],
         "region": [
             "VIC"
         ]
@@ -5870,15 +5867,15 @@
                 "richTextType": {
                     "maxLength": 15000,
                     "supportedFormat": [
-                        "BULLETED_LIST",
                         "BOLD",
                         "NUMBERED_LIST",
-                        "ITALICS",
-                        "HYPERLINK",
-                        "IMAGE",
                         "CODE_SPAN",
+                        "HYPERLINK",
+                        "UNDERLINE",
+                        "IMAGE",
+                        "BULLETED_LIST",
                         "HEADINGS",
-                        "UNDERLINE"
+                        "ITALICS"
                     ]
                 }
             },
@@ -8689,21 +8686,21 @@
             "type": {
                 "richTextType": {
                     "supportedFormat": [
-                        "BOLD",
-                        "CODE_BLOCK",
                         "NUMBERED_LIST",
-                        "HYPERLINK",
-                        "ITALICS",
-                        "IMAGE",
-                        "SUBSCRIPT",
                         "CODE_SPAN",
-                        "SUPERSCRIPT",
-                        "BULLETED_LIST",
+                        "HYPERLINK",
+                        "UNDERLINE",
+                        "IMAGE",
                         "BLOCK_QUOTE",
+                        "HEADINGS",
+                        "CODE_BLOCK",
+                        "BOLD",
+                        "SUPERSCRIPT",
+                        "SUBSCRIPT",
                         "STRIKETHROUGH",
                         "HORIZONTAL_LINE",
-                        "HEADINGS",
-                        "UNDERLINE"
+                        "BULLETED_LIST",
+                        "ITALICS"
                     ]
                 }
             },
@@ -9540,21 +9537,21 @@
                                 "richTextType": {
                                     "maxLength": 100000,
                                     "supportedFormat": [
-                                        "BOLD",
-                                        "CODE_BLOCK",
                                         "NUMBERED_LIST",
-                                        "ITALICS",
-                                        "HYPERLINK",
-                                        "IMAGE",
-                                        "SUBSCRIPT",
                                         "CODE_SPAN",
-                                        "SUPERSCRIPT",
-                                        "BULLETED_LIST",
+                                        "HYPERLINK",
+                                        "UNDERLINE",
                                         "BLOCK_QUOTE",
+                                        "IMAGE",
+                                        "CODE_BLOCK",
+                                        "HEADINGS",
+                                        "BOLD",
+                                        "SUPERSCRIPT",
+                                        "SUBSCRIPT",
                                         "STRIKETHROUGH",
                                         "HORIZONTAL_LINE",
-                                        "HEADINGS",
-                                        "UNDERLINE"
+                                        "BULLETED_LIST",
+                                        "ITALICS"
                                     ]
                                 }
                             },
@@ -9569,21 +9566,21 @@
                                 "richTextType": {
                                     "maxLength": 100000,
                                     "supportedFormat": [
-                                        "BOLD",
-                                        "CODE_BLOCK",
                                         "NUMBERED_LIST",
-                                        "ITALICS",
-                                        "HYPERLINK",
-                                        "IMAGE",
-                                        "SUBSCRIPT",
                                         "CODE_SPAN",
-                                        "SUPERSCRIPT",
-                                        "BULLETED_LIST",
+                                        "HYPERLINK",
+                                        "UNDERLINE",
                                         "BLOCK_QUOTE",
+                                        "IMAGE",
+                                        "CODE_BLOCK",
+                                        "HEADINGS",
+                                        "BOLD",
+                                        "SUPERSCRIPT",
+                                        "SUBSCRIPT",
                                         "STRIKETHROUGH",
                                         "HORIZONTAL_LINE",
-                                        "HEADINGS",
-                                        "UNDERLINE"
+                                        "BULLETED_LIST",
+                                        "ITALICS"
                                     ]
                                 }
                             },
@@ -9598,21 +9595,21 @@
                                 "richTextType": {
                                     "maxLength": 100000,
                                     "supportedFormat": [
-                                        "BOLD",
-                                        "CODE_BLOCK",
                                         "NUMBERED_LIST",
-                                        "ITALICS",
-                                        "HYPERLINK",
-                                        "IMAGE",
-                                        "SUBSCRIPT",
                                         "CODE_SPAN",
-                                        "SUPERSCRIPT",
-                                        "BULLETED_LIST",
+                                        "HYPERLINK",
+                                        "UNDERLINE",
                                         "BLOCK_QUOTE",
+                                        "IMAGE",
+                                        "CODE_BLOCK",
+                                        "HEADINGS",
+                                        "BOLD",
+                                        "SUPERSCRIPT",
+                                        "SUBSCRIPT",
                                         "STRIKETHROUGH",
                                         "HORIZONTAL_LINE",
-                                        "HEADINGS",
-                                        "UNDERLINE"
+                                        "BULLETED_LIST",
+                                        "ITALICS"
                                     ]
                                 }
                             },
@@ -10467,21 +10464,21 @@
                                 "richTextType": {
                                     "maxLength": 100000,
                                     "supportedFormat": [
-                                        "BOLD",
-                                        "CODE_BLOCK",
                                         "NUMBERED_LIST",
-                                        "HYPERLINK",
-                                        "ITALICS",
-                                        "IMAGE",
-                                        "SUBSCRIPT",
                                         "CODE_SPAN",
-                                        "SUPERSCRIPT",
-                                        "BULLETED_LIST",
-                                        "STRIKETHROUGH",
+                                        "HYPERLINK",
+                                        "UNDERLINE",
                                         "BLOCK_QUOTE",
-                                        "HORIZONTAL_LINE",
+                                        "IMAGE",
                                         "HEADINGS",
-                                        "UNDERLINE"
+                                        "CODE_BLOCK",
+                                        "BOLD",
+                                        "SUPERSCRIPT",
+                                        "SUBSCRIPT",
+                                        "STRIKETHROUGH",
+                                        "HORIZONTAL_LINE",
+                                        "BULLETED_LIST",
+                                        "ITALICS"
                                     ]
                                 }
                             },
@@ -10527,21 +10524,21 @@
                                                         "richTextType": {
                                                             "maxLength": 100000,
                                                             "supportedFormat": [
-                                                                "BOLD",
-                                                                "CODE_BLOCK",
                                                                 "NUMBERED_LIST",
-                                                                "HYPERLINK",
-                                                                "ITALICS",
-                                                                "IMAGE",
-                                                                "SUBSCRIPT",
                                                                 "CODE_SPAN",
-                                                                "SUPERSCRIPT",
-                                                                "BULLETED_LIST",
-                                                                "STRIKETHROUGH",
+                                                                "HYPERLINK",
+                                                                "UNDERLINE",
                                                                 "BLOCK_QUOTE",
-                                                                "HORIZONTAL_LINE",
+                                                                "IMAGE",
                                                                 "HEADINGS",
-                                                                "UNDERLINE"
+                                                                "CODE_BLOCK",
+                                                                "BOLD",
+                                                                "SUPERSCRIPT",
+                                                                "SUBSCRIPT",
+                                                                "STRIKETHROUGH",
+                                                                "HORIZONTAL_LINE",
+                                                                "BULLETED_LIST",
+                                                                "ITALICS"
                                                             ]
                                                         }
                                                     },
