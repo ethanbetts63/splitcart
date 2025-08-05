@@ -1,418 +1,422 @@
-[
-    {
-        "city": "Northam",
-        "line1": "10 Beamish Avenue",
-        "postcode": "6401",
-        "region": "WA",
-        "c_internalALDIID": "2250",
-        "c_locationName": "ALDI Northam"
-    },
-    {
-        "city": "Armadale",
-        "line1": "224 Jull Street",
-        "postcode": "6112",
-        "region": "WA",
-        "c_internalALDIID": "1927",
-        "c_locationName": "ALDI Armadale"
-    },
-    {
-        "city": "Ellenbrook",
-        "line1": "The Promenade, Pinaster Pd Cnr",
-        "postcode": "6056",
-        "region": "WA",
-        "c_internalALDIID": "1904",
-        "c_locationName": "ALDI Ellenbrook"
-    },
-    {
-        "city": "Cloverdale",
-        "line1": "Belmont Avenue 227",
-        "postcode": "6105",
-        "region": "WA",
-        "c_internalALDIID": "1887",
-        "c_locationName": "ALDI Cloverdale"
-    },
-    {
-        "city": "Currambine",
-        "line1": "86 Delamere Avenue",
-        "postcode": "6028",
-        "region": "WA",
-        "c_internalALDIID": "2042",
-        "c_locationName": "ALDI Currambine"
-    },
-    {
-        "city": "Kardinya",
-        "line1": "17 South Street",
-        "postcode": "6163",
-        "region": "WA",
-        "c_internalALDIID": "2399",
-        "c_locationName": "ALDI Kardinya"
-    },
-    {
-        "city": "Spearwood",
-        "line1": "Burgundy Crescent, Lancaster Street Cnr",
-        "postcode": "6163",
-        "region": "WA",
-        "c_internalALDIID": "2191",
-        "c_locationName": "ALDI Spearwood"
-    },
-    {
-        "city": "Australind",
-        "line1": "Mardo Avenue 5",
-        "postcode": "6233",
-        "region": "WA",
-        "c_internalALDIID": "2025",
-        "c_locationName": "ALDI Australind"
-    },
-    {
-        "city": "Southern River",
-        "line1": "346 Warton Road",
-        "postcode": "6110",
-        "region": "WA",
-        "c_internalALDIID": "1903",
-        "c_locationName": "ALDI Southern River"
-    },
-    {
-        "city": "Halls Head",
-        "line1": "14 Guava Way",
-        "postcode": "6210",
-        "region": "WA",
-        "c_internalALDIID": "1985",
-        "c_locationName": "ALDI Halls Head"
-    },
-    {
-        "city": "Waikiki",
-        "line1": "Read Street, Gnangara Drive Cnr",
-        "postcode": "6169",
-        "region": "WA",
-        "c_internalALDIID": "1909",
-        "c_locationName": "ALDI Waikiki"
-    },
-    {
-        "city": "Wonthella",
-        "line1": "46 North West Coastal Highway",
-        "postcode": "6530",
-        "region": "WA",
-        "c_internalALDIID": "2360",
-        "c_locationName": "ALDI Wonthella"
-    },
-    {
-        "city": "Bunbury",
-        "line1": "Edward Street 9",
-        "postcode": "6230",
-        "region": "WA",
-        "c_internalALDIID": "2289",
-        "c_locationName": "ALDI Bunbury"
-    },
-    {
-        "city": "Warwick",
-        "line1": "Erindale Road, Beach Road Cnr",
-        "postcode": "6024",
-        "region": "WA",
-        "c_internalALDIID": "1873",
-        "c_locationName": "ALDI Warwick"
-    },
-    {
-        "city": "Harrisdale",
-        "line1": "Nicholson Road, Yellowwood Avenue Cnr",
-        "postcode": "6112",
-        "region": "WA",
-        "c_internalALDIID": "2078",
-        "c_locationName": "ALDI Harrisdale"
-    },
-    {
-        "city": "Wanneroo",
-        "line1": "Cnr Conlan Avenue, Wanneroo Road",
-        "postcode": "6065",
-        "region": "WA",
-        "c_internalALDIID": "1878",
-        "c_locationName": "ALDI Wanneroo"
-    },
-    {
-        "city": "Byford",
-        "line1": "845 South Western Highway",
-        "postcode": "6122",
-        "region": "WA",
-        "c_internalALDIID": "2366",
-        "c_locationName": "ALDI Byford"
-    },
-    {
-        "city": "Busselton",
-        "line1": "West Street 90",
-        "postcode": "6280",
-        "region": "WA",
-        "c_internalALDIID": "1968",
-        "c_locationName": "ALDI Busselton"
-    },
-    {
-        "city": "Midland",
-        "line1": "Great Eastern Highway 274",
-        "postcode": "6056",
-        "region": "WA",
-        "c_internalALDIID": "1931",
-        "c_locationName": "ALDI Midland"
-    },
-    {
-        "city": "South Lake",
-        "line1": "North Lake Road 620",
-        "postcode": "6164",
-        "region": "WA",
-        "c_internalALDIID": "1921",
-        "c_locationName": "ALDI South Lake"
-    },
-    {
-        "city": "Hillarys",
-        "line1": "Marmion Avenue, Whitfords Ave Cnr",
-        "postcode": "6025",
-        "region": "WA",
-        "c_internalALDIID": "2074",
-        "c_locationName": "ALDI Hillarys"
-    },
-    {
-        "city": "East Victoria Park",
-        "line1": "Albany Highway 1009,1013",
-        "postcode": "6101",
-        "region": "WA",
-        "c_internalALDIID": "2043",
-        "c_locationName": "ALDI East Victoria Park"
-    },
-    {
-        "city": "Butler",
-        "line1": "Butler Boulevard 77",
-        "postcode": "6036",
-        "region": "WA",
-        "c_internalALDIID": "2142",
-        "c_locationName": "ALDI Butler"
-    },
-    {
-        "city": "Rockingham",
-        "line1": "10 Robinson Road",
-        "postcode": "6168",
-        "region": "WA",
-        "c_internalALDIID": "1961",
-        "c_locationName": "ALDI Rockingham"
-    },
-    {
-        "city": "Thornlie",
-        "line1": "115 Murdoch Road",
-        "postcode": "6108",
-        "region": "WA",
-        "c_internalALDIID": "2361",
-        "c_locationName": "ALDI Thornlie"
-    },
-    {
-        "city": "Camillo",
-        "line1": "131 Westfield Road",
-        "postcode": "6111",
-        "region": "WA",
-        "c_internalALDIID": "1929",
-        "c_locationName": "ALDI Camillo"
-    },
-    {
-        "city": "Mandurah",
-        "line1": "2 Aldgate Street",
-        "postcode": "6210",
-        "region": "WA",
-        "c_internalALDIID": "2105",
-        "c_locationName": "ALDI Mandurah"
-    },
-    {
-        "city": "Beeliar",
-        "line1": "Beeliar Drive 283",
-        "postcode": "6164",
-        "region": "WA",
-        "c_internalALDIID": "2264",
-        "c_locationName": "ALDI Beeliar"
-    },
-    {
-        "city": "Joondalup",
-        "line1": "420 Joondalup Drive",
-        "postcode": "6027",
-        "region": "WA",
-        "c_internalALDIID": "1951",
-        "c_locationName": "ALDI Joondalup"
-    },
-    {
-        "city": "South Fremantle",
-        "line1": "Hampton Road 219 / 24",
-        "postcode": "6162",
-        "region": "WA",
-        "c_internalALDIID": "2354",
-        "c_locationName": "ALDI South Fremantle"
-    },
-    {
-        "city": "Mirrabooka",
-        "line1": "Yirrigan Drive 43",
-        "postcode": "6061",
-        "region": "WA",
-        "c_internalALDIID": "1879",
-        "c_locationName": "ALDI Mirrabooka"
-    },
-    {
-        "city": "Karrinyup",
-        "line1": "200 Karrinyup Road",
-        "postcode": "6018",
-        "region": "WA",
-        "c_internalALDIID": "2300",
-        "c_locationName": "ALDI Karrinyup"
-    },
-    {
-        "city": "Kwinana",
-        "line1": "32 Meares Avenue",
-        "postcode": "6167",
-        "region": "WA",
-        "c_internalALDIID": "2120",
-        "c_locationName": "ALDI Kwinana"
-    },
-    {
-        "city": "Baldivis",
-        "line1": "Safety Bay Road 26",
-        "postcode": "6171",
-        "region": "WA",
-        "c_internalALDIID": "2442",
-        "c_locationName": "ALDI Baldivis"
-    },
-    {
-        "city": "Cannington",
-        "line1": "1383 Albany Highway",
-        "postcode": "6107",
-        "region": "WA",
-        "c_internalALDIID": "1907",
-        "c_locationName": "ALDI Cannington"
-    },
-    {
-        "city": "Banksia Grove",
-        "line1": "3 Jewel Way",
-        "postcode": "6031",
-        "region": "WA",
-        "c_internalALDIID": "2312",
-        "c_locationName": "ALDI Banksia Grove"
-    },
-    {
-        "city": "Beechboro",
-        "line1": "Altone Park Road 161",
-        "postcode": "6063",
-        "region": "WA",
-        "c_internalALDIID": "2462",
-        "c_locationName": "ALDI Beechboro"
-    },
-    {
-        "city": "Madeley",
-        "line1": "Wanneroo Road 168",
-        "postcode": "6065",
-        "region": "WA",
-        "c_internalALDIID": "1952",
-        "c_locationName": "ALDI Madeley"
-    },
-    {
-        "city": "Secret Harbour",
-        "line1": "420 Secret Harbour Blvd",
-        "postcode": "6173",
-        "region": "WA",
-        "c_internalALDIID": "1986",
-        "c_locationName": "ALDI Secret Harbour"
-    },
-    {
-        "city": "Mundaring",
-        "line1": "22 - 24 Hartung Street",
-        "postcode": "6073",
-        "region": "WA",
-        "c_internalALDIID": "2013",
-        "c_locationName": "ALDI Mundaring"
-    },
-    {
-        "city": "Kalamunda",
-        "line1": "Mead Street 17",
-        "postcode": "6076",
-        "region": "WA",
-        "c_internalALDIID": "2280",
-        "c_locationName": "ALDI Kalamunda"
-    },
-    {
-        "city": "Lakelands",
-        "line1": "Lake Valley Drive, Seppings Parade Cnr",
-        "postcode": "6180",
-        "region": "WA",
-        "c_internalALDIID": "2016",
-        "c_locationName": "ALDI Lakelands"
-    },
-    {
-        "city": "Wattle Grove",
-        "line1": "Hale Road 338",
-        "postcode": "6107",
-        "region": "WA",
-        "c_internalALDIID": "2258",
-        "c_locationName": "ALDI Wattle Grove"
-    },
-    {
-        "city": "Yanchep",
-        "line1": "2 Kakadu Road",
-        "postcode": "6035",
-        "region": "WA",
-        "c_internalALDIID": "2470",
-        "c_locationName": "ALDI Yanchep"
-    },
-    {
-        "city": "Success",
-        "line1": "Beeliar Drive 816",
-        "postcode": "6164",
-        "region": "WA",
-        "c_internalALDIID": "2024",
-        "c_locationName": "ALDI Success"
-    },
-    {
-        "city": "Yokine",
-        "line1": "Wanneroo Road 6",
-        "postcode": "6060",
-        "region": "WA",
-        "c_internalALDIID": "2375",
-        "c_locationName": "ALDI Yokine"
-    },
-    {
-        "city": "Morley",
-        "line1": "4 Collier Rd",
-        "postcode": "6062",
-        "region": "WA",
-        "c_internalALDIID": "2157",
-        "c_locationName": "ALDI Morley"
-    },
-    {
-        "city": "Inglewood",
-        "line1": "Cnr Beaufort Street, Tenth Avenue",
-        "postcode": "6052",
-        "region": "WA",
-        "c_internalALDIID": "2340",
-        "c_locationName": "ALDI Inglewood"
-    },
-    {
-        "city": "Clarkson",
-        "line1": "Ocean Keys Blvd 36",
-        "postcode": "6030",
-        "region": "WA",
-        "c_internalALDIID": "2482",
-        "c_locationName": "ALDI Clarkson"
-    },
-    {
-        "city": "Albany",
-        "line1": "70-80 Albany Highway",
-        "postcode": "6330",
-        "region": "WA",
-        "c_internalALDIID": "2481",
-        "c_locationName": "ALDI Albany"
-    },
-    {
-        "city": "Innaloo",
-        "line1": "Ellen Stirling Boulevard",
-        "postcode": "6018",
-        "region": "WA",
-        "c_internalALDIID": "2218",
-        "c_locationName": "ALDI Innaloo"
-    },
-    {
-        "city": "Willetton",
-        "line1": "Burrendah Blvd 45",
-        "postcode": "6155",
-        "region": "WA",
-        "c_internalALDIID": "2472",
-        "c_locationName": "ALDI Willetton"
-    }
-]
+{
+    "state": "wa",
+    "store_count": 52,
+    "stores": [
+        {
+            "city": "Northam",
+            "line1": "10 Beamish Avenue",
+            "postcode": "6401",
+            "region": "WA",
+            "c_internalALDIID": "2250",
+            "c_locationName": "ALDI Northam"
+        },
+        {
+            "city": "Armadale",
+            "line1": "224 Jull Street",
+            "postcode": "6112",
+            "region": "WA",
+            "c_internalALDIID": "1927",
+            "c_locationName": "ALDI Armadale"
+        },
+        {
+            "city": "Ellenbrook",
+            "line1": "The Promenade, Pinaster Pd Cnr",
+            "postcode": "6056",
+            "region": "WA",
+            "c_internalALDIID": "1904",
+            "c_locationName": "ALDI Ellenbrook"
+        },
+        {
+            "city": "Cloverdale",
+            "line1": "Belmont Avenue 227",
+            "postcode": "6105",
+            "region": "WA",
+            "c_internalALDIID": "1887",
+            "c_locationName": "ALDI Cloverdale"
+        },
+        {
+            "city": "Currambine",
+            "line1": "86 Delamere Avenue",
+            "postcode": "6028",
+            "region": "WA",
+            "c_internalALDIID": "2042",
+            "c_locationName": "ALDI Currambine"
+        },
+        {
+            "city": "Kardinya",
+            "line1": "17 South Street",
+            "postcode": "6163",
+            "region": "WA",
+            "c_internalALDIID": "2399",
+            "c_locationName": "ALDI Kardinya"
+        },
+        {
+            "city": "Spearwood",
+            "line1": "Burgundy Crescent, Lancaster Street Cnr",
+            "postcode": "6163",
+            "region": "WA",
+            "c_internalALDIID": "2191",
+            "c_locationName": "ALDI Spearwood"
+        },
+        {
+            "city": "Australind",
+            "line1": "Mardo Avenue 5",
+            "postcode": "6233",
+            "region": "WA",
+            "c_internalALDIID": "2025",
+            "c_locationName": "ALDI Australind"
+        },
+        {
+            "city": "Southern River",
+            "line1": "346 Warton Road",
+            "postcode": "6110",
+            "region": "WA",
+            "c_internalALDIID": "1903",
+            "c_locationName": "ALDI Southern River"
+        },
+        {
+            "city": "Halls Head",
+            "line1": "14 Guava Way",
+            "postcode": "6210",
+            "region": "WA",
+            "c_internalALDIID": "1985",
+            "c_locationName": "ALDI Halls Head"
+        },
+        {
+            "city": "Waikiki",
+            "line1": "Read Street, Gnangara Drive Cnr",
+            "postcode": "6169",
+            "region": "WA",
+            "c_internalALDIID": "1909",
+            "c_locationName": "ALDI Waikiki"
+        },
+        {
+            "city": "Wonthella",
+            "line1": "46 North West Coastal Highway",
+            "postcode": "6530",
+            "region": "WA",
+            "c_internalALDIID": "2360",
+            "c_locationName": "ALDI Wonthella"
+        },
+        {
+            "city": "Bunbury",
+            "line1": "Edward Street 9",
+            "postcode": "6230",
+            "region": "WA",
+            "c_internalALDIID": "2289",
+            "c_locationName": "ALDI Bunbury"
+        },
+        {
+            "city": "Warwick",
+            "line1": "Erindale Road, Beach Road Cnr",
+            "postcode": "6024",
+            "region": "WA",
+            "c_internalALDIID": "1873",
+            "c_locationName": "ALDI Warwick"
+        },
+        {
+            "city": "Harrisdale",
+            "line1": "Nicholson Road, Yellowwood Avenue Cnr",
+            "postcode": "6112",
+            "region": "WA",
+            "c_internalALDIID": "2078",
+            "c_locationName": "ALDI Harrisdale"
+        },
+        {
+            "city": "Wanneroo",
+            "line1": "Cnr Conlan Avenue, Wanneroo Road",
+            "postcode": "6065",
+            "region": "WA",
+            "c_internalALDIID": "1878",
+            "c_locationName": "ALDI Wanneroo"
+        },
+        {
+            "city": "Byford",
+            "line1": "845 South Western Highway",
+            "postcode": "6122",
+            "region": "WA",
+            "c_internalALDIID": "2366",
+            "c_locationName": "ALDI Byford"
+        },
+        {
+            "city": "Busselton",
+            "line1": "West Street 90",
+            "postcode": "6280",
+            "region": "WA",
+            "c_internalALDIID": "1968",
+            "c_locationName": "ALDI Busselton"
+        },
+        {
+            "city": "Midland",
+            "line1": "Great Eastern Highway 274",
+            "postcode": "6056",
+            "region": "WA",
+            "c_internalALDIID": "1931",
+            "c_locationName": "ALDI Midland"
+        },
+        {
+            "city": "South Lake",
+            "line1": "North Lake Road 620",
+            "postcode": "6164",
+            "region": "WA",
+            "c_internalALDIID": "1921",
+            "c_locationName": "ALDI South Lake"
+        },
+        {
+            "city": "Hillarys",
+            "line1": "Marmion Avenue, Whitfords Ave Cnr",
+            "postcode": "6025",
+            "region": "WA",
+            "c_internalALDIID": "2074",
+            "c_locationName": "ALDI Hillarys"
+        },
+        {
+            "city": "East Victoria Park",
+            "line1": "Albany Highway 1009,1013",
+            "postcode": "6101",
+            "region": "WA",
+            "c_internalALDIID": "2043",
+            "c_locationName": "ALDI East Victoria Park"
+        },
+        {
+            "city": "Butler",
+            "line1": "Butler Boulevard 77",
+            "postcode": "6036",
+            "region": "WA",
+            "c_internalALDIID": "2142",
+            "c_locationName": "ALDI Butler"
+        },
+        {
+            "city": "Rockingham",
+            "line1": "10 Robinson Road",
+            "postcode": "6168",
+            "region": "WA",
+            "c_internalALDIID": "1961",
+            "c_locationName": "ALDI Rockingham"
+        },
+        {
+            "city": "Thornlie",
+            "line1": "115 Murdoch Road",
+            "postcode": "6108",
+            "region": "WA",
+            "c_internalALDIID": "2361",
+            "c_locationName": "ALDI Thornlie"
+        },
+        {
+            "city": "Camillo",
+            "line1": "131 Westfield Road",
+            "postcode": "6111",
+            "region": "WA",
+            "c_internalALDIID": "1929",
+            "c_locationName": "ALDI Camillo"
+        },
+        {
+            "city": "Mandurah",
+            "line1": "2 Aldgate Street",
+            "postcode": "6210",
+            "region": "WA",
+            "c_internalALDIID": "2105",
+            "c_locationName": "ALDI Mandurah"
+        },
+        {
+            "city": "Beeliar",
+            "line1": "Beeliar Drive 283",
+            "postcode": "6164",
+            "region": "WA",
+            "c_internalALDIID": "2264",
+            "c_locationName": "ALDI Beeliar"
+        },
+        {
+            "city": "Joondalup",
+            "line1": "420 Joondalup Drive",
+            "postcode": "6027",
+            "region": "WA",
+            "c_internalALDIID": "1951",
+            "c_locationName": "ALDI Joondalup"
+        },
+        {
+            "city": "South Fremantle",
+            "line1": "Hampton Road 219 / 24",
+            "postcode": "6162",
+            "region": "WA",
+            "c_internalALDIID": "2354",
+            "c_locationName": "ALDI South Fremantle"
+        },
+        {
+            "city": "Mirrabooka",
+            "line1": "Yirrigan Drive 43",
+            "postcode": "6061",
+            "region": "WA",
+            "c_internalALDIID": "1879",
+            "c_locationName": "ALDI Mirrabooka"
+        },
+        {
+            "city": "Karrinyup",
+            "line1": "200 Karrinyup Road",
+            "postcode": "6018",
+            "region": "WA",
+            "c_internalALDIID": "2300",
+            "c_locationName": "ALDI Karrinyup"
+        },
+        {
+            "city": "Kwinana",
+            "line1": "32 Meares Avenue",
+            "postcode": "6167",
+            "region": "WA",
+            "c_internalALDIID": "2120",
+            "c_locationName": "ALDI Kwinana"
+        },
+        {
+            "city": "Baldivis",
+            "line1": "Safety Bay Road 26",
+            "postcode": "6171",
+            "region": "WA",
+            "c_internalALDIID": "2442",
+            "c_locationName": "ALDI Baldivis"
+        },
+        {
+            "city": "Cannington",
+            "line1": "1383 Albany Highway",
+            "postcode": "6107",
+            "region": "WA",
+            "c_internalALDIID": "1907",
+            "c_locationName": "ALDI Cannington"
+        },
+        {
+            "city": "Banksia Grove",
+            "line1": "3 Jewel Way",
+            "postcode": "6031",
+            "region": "WA",
+            "c_internalALDIID": "2312",
+            "c_locationName": "ALDI Banksia Grove"
+        },
+        {
+            "city": "Beechboro",
+            "line1": "Altone Park Road 161",
+            "postcode": "6063",
+            "region": "WA",
+            "c_internalALDIID": "2462",
+            "c_locationName": "ALDI Beechboro"
+        },
+        {
+            "city": "Madeley",
+            "line1": "Wanneroo Road 168",
+            "postcode": "6065",
+            "region": "WA",
+            "c_internalALDIID": "1952",
+            "c_locationName": "ALDI Madeley"
+        },
+        {
+            "city": "Secret Harbour",
+            "line1": "420 Secret Harbour Blvd",
+            "postcode": "6173",
+            "region": "WA",
+            "c_internalALDIID": "1986",
+            "c_locationName": "ALDI Secret Harbour"
+        },
+        {
+            "city": "Mundaring",
+            "line1": "22 - 24 Hartung Street",
+            "postcode": "6073",
+            "region": "WA",
+            "c_internalALDIID": "2013",
+            "c_locationName": "ALDI Mundaring"
+        },
+        {
+            "city": "Kalamunda",
+            "line1": "Mead Street 17",
+            "postcode": "6076",
+            "region": "WA",
+            "c_internalALDIID": "2280",
+            "c_locationName": "ALDI Kalamunda"
+        },
+        {
+            "city": "Lakelands",
+            "line1": "Lake Valley Drive, Seppings Parade Cnr",
+            "postcode": "6180",
+            "region": "WA",
+            "c_internalALDIID": "2016",
+            "c_locationName": "ALDI Lakelands"
+        },
+        {
+            "city": "Wattle Grove",
+            "line1": "Hale Road 338",
+            "postcode": "6107",
+            "region": "WA",
+            "c_internalALDIID": "2258",
+            "c_locationName": "ALDI Wattle Grove"
+        },
+        {
+            "city": "Yanchep",
+            "line1": "2 Kakadu Road",
+            "postcode": "6035",
+            "region": "WA",
+            "c_internalALDIID": "2470",
+            "c_locationName": "ALDI Yanchep"
+        },
+        {
+            "city": "Success",
+            "line1": "Beeliar Drive 816",
+            "postcode": "6164",
+            "region": "WA",
+            "c_internalALDIID": "2024",
+            "c_locationName": "ALDI Success"
+        },
+        {
+            "city": "Yokine",
+            "line1": "Wanneroo Road 6",
+            "postcode": "6060",
+            "region": "WA",
+            "c_internalALDIID": "2375",
+            "c_locationName": "ALDI Yokine"
+        },
+        {
+            "city": "Morley",
+            "line1": "4 Collier Rd",
+            "postcode": "6062",
+            "region": "WA",
+            "c_internalALDIID": "2157",
+            "c_locationName": "ALDI Morley"
+        },
+        {
+            "city": "Inglewood",
+            "line1": "Cnr Beaufort Street, Tenth Avenue",
+            "postcode": "6052",
+            "region": "WA",
+            "c_internalALDIID": "2340",
+            "c_locationName": "ALDI Inglewood"
+        },
+        {
+            "city": "Clarkson",
+            "line1": "Ocean Keys Blvd 36",
+            "postcode": "6030",
+            "region": "WA",
+            "c_internalALDIID": "2482",
+            "c_locationName": "ALDI Clarkson"
+        },
+        {
+            "city": "Albany",
+            "line1": "70-80 Albany Highway",
+            "postcode": "6330",
+            "region": "WA",
+            "c_internalALDIID": "2481",
+            "c_locationName": "ALDI Albany"
+        },
+        {
+            "city": "Innaloo",
+            "line1": "Ellen Stirling Boulevard",
+            "postcode": "6018",
+            "region": "WA",
+            "c_internalALDIID": "2218",
+            "c_locationName": "ALDI Innaloo"
+        },
+        {
+            "city": "Willetton",
+            "line1": "Burrendah Blvd 45",
+            "postcode": "6155",
+            "region": "WA",
+            "c_internalALDIID": "2472",
+            "c_locationName": "ALDI Willetton"
+        }
+    ]
+}

@@ -1,1354 +1,1358 @@
-[
-    {
-        "city": "Frankston",
-        "line1": "28 Beach Street",
-        "postcode": "3199",
-        "region": "VIC",
-        "c_internalALDIID": "1453",
-        "c_locationName": "ALDI Frankston"
-    },
-    {
-        "city": "Cheltenham",
-        "line1": "Nepean Highway 1239",
-        "postcode": "3192",
-        "region": "VIC",
-        "c_internalALDIID": "1333",
-        "c_locationName": "ALDI Cheltenham"
-    },
-    {
-        "city": "Echuca",
-        "line1": "Anstruther Street 218 - 222",
-        "postcode": "3564",
-        "region": "VIC",
-        "c_internalALDIID": "1121",
-        "c_locationName": "ALDI Echuca"
-    },
-    {
-        "city": "Mooroopna",
-        "line1": "97 - 101 McLennan Street",
-        "postcode": "3629",
-        "region": "VIC",
-        "c_internalALDIID": "1423",
-        "c_locationName": "ALDI Mooroopna"
-    },
-    {
-        "city": "Cowes",
-        "line1": "68 - 80 Thompson Avenue",
-        "postcode": "3922",
-        "region": "VIC",
-        "c_internalALDIID": "2100",
-        "c_locationName": "ALDI Cowes"
-    },
-    {
-        "city": "Eltham",
-        "line1": "Luck Street 6 - 20",
-        "postcode": "3095",
-        "region": "VIC",
-        "c_internalALDIID": "0597",
-        "c_locationName": "ALDI Eltham"
-    },
-    {
-        "city": "Beaconsfield",
-        "line1": "Old Princes Highway 53",
-        "postcode": "3807",
-        "region": "VIC",
-        "c_internalALDIID": "0087",
-        "c_locationName": "ALDI Beaconsfield"
-    },
-    {
-        "city": "Point Cook",
-        "line1": "Point Cook Road 300",
-        "postcode": "3030",
-        "region": "VIC",
-        "c_internalALDIID": "1546",
-        "c_locationName": "ALDI Point Cook"
-    },
-    {
-        "city": "Scoresby",
-        "line1": "Stud Road 800",
-        "postcode": "3179",
-        "region": "VIC",
-        "c_internalALDIID": "2186",
-        "c_locationName": "ALDI Scoresby"
-    },
-    {
-        "city": "Mornington",
-        "line1": "Main Street 241 / M02",
-        "postcode": "3931",
-        "region": "VIC",
-        "c_internalALDIID": "1355",
-        "c_locationName": "ALDI Mornington"
-    },
-    {
-        "city": "West Melbourne",
-        "line1": "Spencer St 528",
-        "postcode": "3003",
-        "region": "VIC",
-        "c_internalALDIID": "2418",
-        "c_locationName": "ALDI West Melbourne"
-    },
-    {
-        "city": "Wantirna South",
-        "line1": "Burwood Hwy 425",
-        "postcode": "3152",
-        "region": "VIC",
-        "c_internalALDIID": "2509",
-        "c_locationName": "ALDI Wantirna South"
-    },
-    {
-        "city": "Blackburn",
-        "line1": "Springfield Rd 64-104",
-        "postcode": "3130",
-        "region": "VIC",
-        "c_internalALDIID": "2489",
-        "c_locationName": "ALDI Blackburn"
-    },
-    {
-        "city": "Morwell",
-        "line1": "Princes Drive 94/72-82",
-        "postcode": "3840",
-        "region": "VIC",
-        "c_internalALDIID": "2496",
-        "c_locationName": "ALDI Morwell"
-    },
-    {
-        "city": "Chadstone",
-        "line1": "Warrigal Road 695",
-        "postcode": "3148",
-        "region": "VIC",
-        "c_internalALDIID": "2513",
-        "c_locationName": "ALDI Chadstone"
-    },
-    {
-        "city": "Truganina",
-        "line1": "33 Prosperity Street",
-        "postcode": "3029",
-        "region": "VIC",
-        "c_internalALDIID": "2246",
-        "c_locationName": "ALDI Truganina"
-    },
-    {
-        "city": "Caulfield South",
-        "line1": "348-354 Hawthorn Road",
-        "postcode": "3162",
-        "region": "VIC",
-        "c_internalALDIID": "2466",
-        "c_locationName": "ALDI Caulfield South"
-    },
-    {
-        "city": "Yarrawonga",
-        "line1": "Frank Drive 2",
-        "postcode": "3730",
-        "region": "VIC",
-        "c_internalALDIID": "2485",
-        "c_locationName": "ALDI Yarrawonga"
-    },
-    {
-        "city": "Craigieburn",
-        "line1": "Riley Road 10",
-        "postcode": "3064",
-        "region": "VIC",
-        "c_internalALDIID": "2520",
-        "c_locationName": "ALDI Craigieburn"
-    },
-    {
-        "city": "Sale",
-        "line1": "Raymond Street 396 - 420",
-        "postcode": "3850",
-        "region": "VIC",
-        "c_internalALDIID": "0735",
-        "c_locationName": "ALDI Sale"
-    },
-    {
-        "city": "Wyndham Vale",
-        "line1": "209 Greens Road",
-        "postcode": "3024",
-        "region": "VIC",
-        "c_internalALDIID": "1413",
-        "c_locationName": "ALDI Wyndham Vale"
-    },
-    {
-        "city": "Rosebud",
-        "line1": "1313 Point Nepean Road",
-        "postcode": "3939",
-        "region": "VIC",
-        "c_internalALDIID": "0110",
-        "c_locationName": "ALDI Rosebud"
-    },
-    {
-        "city": "Epping",
-        "line1": "347 - 371 Dalton Road",
-        "postcode": "3076",
-        "region": "VIC",
-        "c_internalALDIID": "0776",
-        "c_locationName": "ALDI Epping"
-    },
-    {
-        "city": "Kilsyth",
-        "line1": "Mount Dandenong Rd 540",
-        "postcode": "3137",
-        "region": "VIC",
-        "c_internalALDIID": "1418",
-        "c_locationName": "ALDI Kilsyth"
-    },
-    {
-        "city": "Endeavour Hills",
-        "line1": "974 Heatherton Road",
-        "postcode": "3802",
-        "region": "VIC",
-        "c_internalALDIID": "0384",
-        "c_locationName": "ALDI Endeavour Hills"
-    },
-    {
-        "city": "Carnegie",
-        "line1": "Koornang Road 2 - 18",
-        "postcode": "3064",
-        "region": "VIC",
-        "c_internalALDIID": "1729",
-        "c_locationName": "ALDI Carnegie"
-    },
-    {
-        "city": "Somerville",
-        "line1": "Frankston-Flinders Road 1089 - 109",
-        "postcode": "3912",
-        "region": "VIC",
-        "c_internalALDIID": "0798",
-        "c_locationName": "ALDI Somerville"
-    },
-    {
-        "city": "Melton West",
-        "line1": "High Street 533",
-        "postcode": "3337",
-        "region": "VIC",
-        "c_internalALDIID": "1821",
-        "c_locationName": "ALDI Melton West"
-    },
-    {
-        "city": "Sunbury",
-        "line1": "Gap Road 112 - 126",
-        "postcode": "3429",
-        "region": "VIC",
-        "c_internalALDIID": "0112",
-        "c_locationName": "ALDI Sunbury"
-    },
-    {
-        "city": "Prahran",
-        "line1": "34 Elizabeth Street",
-        "postcode": "3181",
-        "region": "VIC",
-        "c_internalALDIID": "0181",
-        "c_locationName": "ALDI Prahran"
-    },
-    {
-        "city": "Brandon Park",
-        "line1": "Cnr Springvale Road, Ferntree Gully Road",
-        "postcode": "3170",
-        "region": "VIC",
-        "c_internalALDIID": "0089",
-        "c_locationName": "ALDI Brandon Park"
-    },
-    {
-        "city": "Hampton Park",
-        "line1": "Pound Road 400",
-        "postcode": "3976",
-        "region": "VIC",
-        "c_internalALDIID": "0100",
-        "c_locationName": "ALDI Hampton Park"
-    },
-    {
-        "city": "Seville",
-        "line1": "638 Warburton Highway",
-        "postcode": "3139",
-        "region": "VIC",
-        "c_internalALDIID": "2346",
-        "c_locationName": "ALDI Seville"
-    },
-    {
-        "city": "Sebastopol",
-        "line1": "Albert Street 31 - 35",
-        "postcode": "3356",
-        "region": "VIC",
-        "c_internalALDIID": "0701",
-        "c_locationName": "ALDI Sebastopol"
-    },
-    {
-        "city": "Seymour",
-        "line1": "32 - 34 Tallarook Street",
-        "postcode": "3660",
-        "region": "VIC",
-        "c_internalALDIID": "1417",
-        "c_locationName": "ALDI Seymour"
-    },
-    {
-        "city": "Mill Park",
-        "line1": "400 McDonalds Road",
-        "postcode": "3082",
-        "region": "VIC",
-        "c_internalALDIID": "0106",
-        "c_locationName": "ALDI Mill Park"
-    },
-    {
-        "city": "Lyndhurst",
-        "line1": "10 - 18 Society Ave",
-        "postcode": "3975",
-        "region": "VIC",
-        "c_internalALDIID": "1230",
-        "c_locationName": "ALDI Lyndhurst"
-    },
-    {
-        "city": "Mornington",
-        "line1": "Nepean Hwy 1128",
-        "postcode": "3931",
-        "region": "VIC",
-        "c_internalALDIID": "2208",
-        "c_locationName": "ALDI Mornington"
-    },
-    {
-        "city": "Berwick",
-        "line1": "O'Shea Road 1",
-        "postcode": "3806",
-        "region": "VIC",
-        "c_internalALDIID": "1232",
-        "c_locationName": "ALDI Berwick"
-    },
-    {
-        "city": "Preston",
-        "line1": "Cramer Street, Mary Street Cnr",
-        "postcode": "3072",
-        "region": "VIC",
-        "c_internalALDIID": "0109",
-        "c_locationName": "ALDI Preston"
-    },
-    {
-        "city": "Horsham",
-        "line1": "67 - 73 Hamilton Street",
-        "postcode": "3400",
-        "region": "VIC",
-        "c_internalALDIID": "0674",
-        "c_locationName": "ALDI Horsham"
-    },
-    {
-        "city": "Ringwood",
-        "line1": "Cnr Maroondah Highway, New Street",
-        "postcode": "3134",
-        "region": "VIC",
-        "c_internalALDIID": "0215",
-        "c_locationName": "ALDI Ringwood"
-    },
-    {
-        "city": "Reservoir",
-        "line1": "Plenty Road 850",
-        "postcode": "3073",
-        "region": "VIC",
-        "c_internalALDIID": "1545",
-        "c_locationName": "ALDI Reservoir"
-    },
-    {
-        "city": "Monbulk",
-        "line1": "32 - 36 Main Road",
-        "postcode": "3793",
-        "region": "VIC",
-        "c_internalALDIID": "1758",
-        "c_locationName": "ALDI Monbulk"
-    },
-    {
-        "city": "Eaglehawk",
-        "line1": "Peg Leg Road 4 - 8",
-        "postcode": "3556",
-        "region": "VIC",
-        "c_internalALDIID": "1052",
-        "c_locationName": "ALDI Eaglehawk"
-    },
-    {
-        "city": "Templestowe Lower",
-        "line1": "Manningham Road 299 - 301",
-        "postcode": "3107",
-        "region": "VIC",
-        "c_internalALDIID": "1744",
-        "c_locationName": "ALDI Templestowe Lower"
-    },
-    {
-        "city": "Mordialloc",
-        "line1": "542 Main Street",
-        "postcode": "3195",
-        "region": "VIC",
-        "c_internalALDIID": "0762",
-        "c_locationName": "ALDI Mordialloc"
-    },
-    {
-        "city": "Leongatha",
-        "line1": "8 - 10 Bruce Street",
-        "postcode": "3953",
-        "region": "VIC",
-        "c_internalALDIID": "1756",
-        "c_locationName": "ALDI Leongatha"
-    },
-    {
-        "city": "Preston",
-        "line1": "Murray Road 2 - 50",
-        "postcode": "3072",
-        "region": "VIC",
-        "c_internalALDIID": "1843",
-        "c_locationName": "ALDI Preston"
-    },
-    {
-        "city": "Mentone",
-        "line1": "Nepean Hwy 27 - 29",
-        "postcode": "3194",
-        "region": "VIC",
-        "c_internalALDIID": "1814",
-        "c_locationName": "ALDI Mentone"
-    },
-    {
-        "city": "Bairnsdale",
-        "line1": "Nicholson Street 132",
-        "postcode": "3875",
-        "region": "VIC",
-        "c_internalALDIID": "0365",
-        "c_locationName": "ALDI Bairnsdale"
-    },
-    {
-        "city": "Highton",
-        "line1": "245 - 253 South Valley Road",
-        "postcode": "3216",
-        "region": "VIC",
-        "c_internalALDIID": "1524",
-        "c_locationName": "ALDI Highton"
-    },
-    {
-        "city": "Werribee",
-        "line1": "Synott Street 77 - 83",
-        "postcode": "3030",
-        "region": "VIC",
-        "c_internalALDIID": "0118",
-        "c_locationName": "ALDI Werribee"
-    },
-    {
-        "city": "Cranbourne",
-        "line1": "14 - 20 Bakewell Street",
-        "postcode": "3977",
-        "region": "VIC",
-        "c_internalALDIID": "0484",
-        "c_locationName": "ALDI Cranbourne"
-    },
-    {
-        "city": "Drysdale",
-        "line1": "12 - 22 Murradoc Road",
-        "postcode": "3222",
-        "region": "VIC",
-        "c_internalALDIID": "1502",
-        "c_locationName": "ALDI Drysdale"
-    },
-    {
-        "city": "Epping",
-        "line1": "High Street 571 - 583",
-        "postcode": "3076",
-        "region": "VIC",
-        "c_internalALDIID": "1501",
-        "c_locationName": "ALDI Epping"
-    },
-    {
-        "city": "Craigieburn",
-        "line1": "Craigieburn Road 340",
-        "postcode": "3064",
-        "region": "VIC",
-        "c_internalALDIID": "1685",
-        "c_locationName": "ALDI Craigieburn"
-    },
-    {
-        "city": "Cheltenham",
-        "line1": "280 - 282 Bay Road",
-        "postcode": "3192",
-        "region": "VIC",
-        "c_internalALDIID": "1804",
-        "c_locationName": "ALDI Cheltenham"
-    },
-    {
-        "city": "Carrum Downs",
-        "line1": "493 Frankston-Dandenong Road",
-        "postcode": "3201",
-        "region": "VIC",
-        "c_internalALDIID": "0208",
-        "c_locationName": "ALDI Carrum Downs"
-    },
-    {
-        "city": "Hamilton",
-        "line1": "104 - 108 French Street",
-        "postcode": "3300",
-        "region": "VIC",
-        "c_internalALDIID": "0528",
-        "c_locationName": "ALDI Hamilton"
-    },
-    {
-        "city": "Maribyrnong",
-        "line1": "Edgewater Boulevard 11",
-        "postcode": "3032",
-        "region": "VIC",
-        "c_internalALDIID": "0104",
-        "c_locationName": "ALDI Maribyrnong"
-    },
-    {
-        "city": "Swan Hill",
-        "line1": "Campbell Street, Rutherford Street Cnr",
-        "postcode": "3585",
-        "region": "VIC",
-        "c_internalALDIID": "0715",
-        "c_locationName": "ALDI Swan Hill"
-    },
-    {
-        "city": "Ararat",
-        "line1": "41 - 47 Moore Street",
-        "postcode": "3377",
-        "region": "VIC",
-        "c_internalALDIID": "0665",
-        "c_locationName": "ALDI Ararat"
-    },
-    {
-        "city": "Rowville",
-        "line1": "Wellington Road 1100",
-        "postcode": "3178",
-        "region": "VIC",
-        "c_internalALDIID": "0520",
-        "c_locationName": "ALDI Rowville"
-    },
-    {
-        "city": "Bentleigh",
-        "line1": "285 - 305 Centre Road",
-        "postcode": "3204",
-        "region": "VIC",
-        "c_internalALDIID": "1746",
-        "c_locationName": "ALDI Bentleigh"
-    },
-    {
-        "city": "Deer Park",
-        "line1": "Cnr Neale Road, Station Road",
-        "postcode": "3023",
-        "region": "VIC",
-        "c_internalALDIID": "1415",
-        "c_locationName": "ALDI Deer Park"
-    },
-    {
-        "city": "Airport West",
-        "line1": "29 - 35 Louis Street",
-        "postcode": "3042",
-        "region": "VIC",
-        "c_internalALDIID": "0163",
-        "c_locationName": "ALDI Airport West"
-    },
-    {
-        "city": "Wodonga",
-        "line1": "Elgin Boulevard 72",
-        "postcode": "3690",
-        "region": "VIC",
-        "c_internalALDIID": "0225",
-        "c_locationName": "ALDI Wodonga"
-    },
-    {
-        "city": "Box Hill South",
-        "line1": "Station Street 391 - 395",
-        "postcode": "3128",
-        "region": "VIC",
-        "c_internalALDIID": "0690",
-        "c_locationName": "ALDI Box Hill South"
-    },
-    {
-        "city": "Malvern East",
-        "line1": "Dandenong Road 1341",
-        "postcode": "3148",
-        "region": "VIC",
-        "c_internalALDIID": "1160",
-        "c_locationName": "ALDI Malvern East"
-    },
-    {
-        "city": "Altona North",
-        "line1": "Millers Road 124 - 134",
-        "postcode": "3025",
-        "region": "VIC",
-        "c_internalALDIID": "1244",
-        "c_locationName": "ALDI Altona North"
-    },
-    {
-        "city": "Grovedale",
-        "line1": "142 Torquay Road",
-        "postcode": "3216",
-        "region": "VIC",
-        "c_internalALDIID": "1338",
-        "c_locationName": "ALDI Grovedale"
-    },
-    {
-        "city": "Warragul",
-        "line1": "Queen Street 12 - 28",
-        "postcode": "3820",
-        "region": "VIC",
-        "c_internalALDIID": "0333",
-        "c_locationName": "ALDI Warragul"
-    },
-    {
-        "city": "Alfredton",
-        "line1": "Sturt Street 1611 - 161",
-        "postcode": "3350",
-        "region": "VIC",
-        "c_internalALDIID": "0986",
-        "c_locationName": "ALDI Alfredton"
-    },
-    {
-        "city": "Ballarat",
-        "line1": "Creswick Road 102 -114",
-        "postcode": "3350",
-        "region": "VIC",
-        "c_internalALDIID": "0409",
-        "c_locationName": "ALDI Ballarat"
-    },
-    {
-        "city": "Balwyn North",
-        "line1": "Cnr Doncaster Road, Tannock Street",
-        "postcode": "3104",
-        "region": "VIC",
-        "c_internalALDIID": "1963",
-        "c_locationName": "ALDI Balwyn North"
-    },
-    {
-        "city": "Roxburgh Park",
-        "line1": "Somerton Road 250",
-        "postcode": "3064",
-        "region": "VIC",
-        "c_internalALDIID": "1394",
-        "c_locationName": "ALDI Roxburgh Park"
-    },
-    {
-        "city": "Abbotsford",
-        "line1": "313 - 325 Victoria Street",
-        "postcode": "3067",
-        "region": "VIC",
-        "c_internalALDIID": "1354",
-        "c_locationName": "ALDI Abbotsford"
-    },
-    {
-        "city": "Altona North",
-        "line1": "302 - 330 Millers Road",
-        "postcode": "3025",
-        "region": "VIC",
-        "c_internalALDIID": "1810",
-        "c_locationName": "ALDI Altona North"
-    },
-    {
-        "city": "Warrnambool",
-        "line1": "251 - 257 Lava Street",
-        "postcode": "3280",
-        "region": "VIC",
-        "c_internalALDIID": "0164",
-        "c_locationName": "ALDI Warrnambool"
-    },
-    {
-        "city": "White Box Rise Wodonga",
-        "line1": "Cnr Victoria Cross Parade, Wark Street",
-        "postcode": "3690",
-        "region": "VIC",
-        "c_internalALDIID": "2216",
-        "c_locationName": "ALDI White Box Rise Wodonga"
-    },
-    {
-        "city": "South Melbourne",
-        "line1": "100 Market Street",
-        "postcode": "3205",
-        "region": "VIC",
-        "c_internalALDIID": "1422",
-        "c_locationName": "ALDI South Melbourne"
-    },
-    {
-        "city": "Wangaratta",
-        "line1": "Chisholm Street 13 - 15",
-        "postcode": "3677",
-        "region": "VIC",
-        "c_internalALDIID": "0928",
-        "c_locationName": "ALDI Wangaratta"
-    },
-    {
-        "city": "St Kilda",
-        "line1": "Inkerman Street 135",
-        "postcode": "3182",
-        "region": "VIC",
-        "c_internalALDIID": "0275",
-        "c_locationName": "ALDI St Kilda"
-    },
-    {
-        "city": "Forest Hill",
-        "line1": "Canterbury Road 3131",
-        "postcode": "3131",
-        "region": "VIC",
-        "c_internalALDIID": "1118",
-        "c_locationName": "ALDI Forest Hill"
-    },
-    {
-        "city": "Melbourne",
-        "line1": "501 Swanston St",
-        "postcode": "3000",
-        "region": "VIC",
-        "c_internalALDIID": "0295",
-        "c_locationName": "ALDI Melbourne"
-    },
-    {
-        "city": "Gisborne",
-        "line1": "45 Aitken Street",
-        "postcode": "3437",
-        "region": "VIC",
-        "c_internalALDIID": "2207",
-        "c_locationName": "ALDI Gisborne"
-    },
-    {
-        "city": "Traralgon",
-        "line1": "141 - 143 Argyle Street",
-        "postcode": "3844",
-        "region": "VIC",
-        "c_internalALDIID": "2051",
-        "c_locationName": "ALDI Traralgon"
-    },
-    {
-        "city": "Moe",
-        "line1": "Saviges Rd 10 - 12",
-        "postcode": "3825",
-        "region": "VIC",
-        "c_internalALDIID": "0724",
-        "c_locationName": "ALDI Moe"
-    },
-    {
-        "city": "Greensborough",
-        "line1": "Main Street 25",
-        "postcode": "3088",
-        "region": "VIC",
-        "c_internalALDIID": "1357",
-        "c_locationName": "ALDI Greensborough"
-    },
-    {
-        "city": "Melton",
-        "line1": "394 - 406 High Street",
-        "postcode": "3337",
-        "region": "VIC",
-        "c_internalALDIID": "0105",
-        "c_locationName": "ALDI Melton"
-    },
-    {
-        "city": "Sunshine",
-        "line1": "324 - 328 Hampshire Road",
-        "postcode": "3020",
-        "region": "VIC",
-        "c_internalALDIID": "0781",
-        "c_locationName": "ALDI Sunshine"
-    },
-    {
-        "city": "Altona Meadows",
-        "line1": "1 Central Avenue",
-        "postcode": "3028",
-        "region": "VIC",
-        "c_internalALDIID": "1146",
-        "c_locationName": "ALDI Altona Meadows"
-    },
-    {
-        "city": "Lakes Entrance",
-        "line1": "6 - 12 Marine Parade",
-        "postcode": "3909",
-        "region": "VIC",
-        "c_internalALDIID": "2128",
-        "c_locationName": "ALDI Lakes Entrance"
-    },
-    {
-        "city": "Wonthaggi",
-        "line1": "Cnr Murray Street, McKenzie Street",
-        "postcode": "3995",
-        "region": "VIC",
-        "c_internalALDIID": "0191",
-        "c_locationName": "ALDI Wonthaggi"
-    },
-    {
-        "city": "Geelong West",
-        "line1": "117 - 127 Albert Street",
-        "postcode": "3218",
-        "region": "VIC",
-        "c_internalALDIID": "1314",
-        "c_locationName": "ALDI Geelong West"
-    },
-    {
-        "city": "Tarneit",
-        "line1": "380 Sayers Road",
-        "postcode": "3029",
-        "region": "VIC",
-        "c_internalALDIID": "0386",
-        "c_locationName": "ALDI Tarneit"
-    },
-    {
-        "city": "Preston",
-        "line1": "Dundas Street 15",
-        "postcode": "3072",
-        "region": "VIC",
-        "c_internalALDIID": "1606",
-        "c_locationName": "ALDI Preston"
-    },
-    {
-        "city": "West Footscray",
-        "line1": "Ashley Street 67",
-        "postcode": "3012",
-        "region": "VIC",
-        "c_internalALDIID": "0114",
-        "c_locationName": "ALDI West Footscray"
-    },
-    {
-        "city": "Caroline Springs",
-        "line1": "29 - 35 Lake Street",
-        "postcode": "3023",
-        "region": "VIC",
-        "c_internalALDIID": "1320",
-        "c_locationName": "ALDI Caroline Springs"
-    },
-    {
-        "city": "Carrum",
-        "line1": "Station Street 516 - 520",
-        "postcode": "3197",
-        "region": "VIC",
-        "c_internalALDIID": "0091",
-        "c_locationName": "ALDI Carrum"
-    },
-    {
-        "city": "Bundoora",
-        "line1": "584 - 604 Grimshaw Street",
-        "postcode": "3083",
-        "region": "VIC",
-        "c_internalALDIID": "1208",
-        "c_locationName": "ALDI Bundoora"
-    },
-    {
-        "city": "Narre Warren South",
-        "line1": "Princess Highway 229",
-        "postcode": "3805",
-        "region": "VIC",
-        "c_internalALDIID": "0160",
-        "c_locationName": "ALDI Narre Warren South"
-    },
-    {
-        "city": "Burnside",
-        "line1": "Westwood Drive 5 - 25",
-        "postcode": "3023",
-        "region": "VIC",
-        "c_internalALDIID": "0090",
-        "c_locationName": "ALDI Burnside"
-    },
-    {
-        "city": "Northcote",
-        "line1": "Cnr High Street, Separation Street",
-        "postcode": "3070",
-        "region": "VIC",
-        "c_internalALDIID": "0364",
-        "c_locationName": "ALDI Northcote"
-    },
-    {
-        "city": "Dandenong",
-        "line1": "McCrae Street, Walker Street Cnr",
-        "postcode": "3175",
-        "region": "VIC",
-        "c_internalALDIID": "1765",
-        "c_locationName": "ALDI Dandenong"
-    },
-    {
-        "city": "Colac",
-        "line1": "62 - 70 Hesse Street",
-        "postcode": "3250",
-        "region": "VIC",
-        "c_internalALDIID": "0165",
-        "c_locationName": "ALDI Colac"
-    },
-    {
-        "city": "Burwood East",
-        "line1": "Burwood Highway, Blackburn Road Cnr",
-        "postcode": "3151",
-        "region": "VIC",
-        "c_internalALDIID": "0653",
-        "c_locationName": "ALDI Burwood East"
-    },
-    {
-        "city": "The Pines",
-        "line1": "181 Reynolds Road",
-        "postcode": "3109",
-        "region": "VIC",
-        "c_internalALDIID": "0162",
-        "c_locationName": "ALDI The Pines"
-    },
-    {
-        "city": "Lilydale",
-        "line1": "33 Hutchinson Street",
-        "postcode": "3140",
-        "region": "VIC",
-        "c_internalALDIID": "1412",
-        "c_locationName": "ALDI Lilydale"
-    },
-    {
-        "city": "Kangaroo Flat",
-        "line1": "High Street, Lockwood Road Cnr",
-        "postcode": "3555",
-        "region": "VIC",
-        "c_internalALDIID": "0317",
-        "c_locationName": "ALDI Kangaroo Flat"
-    },
-    {
-        "city": "Keilor Downs",
-        "line1": "Taylors Road 80",
-        "postcode": "3038",
-        "region": "VIC",
-        "c_internalALDIID": "0226",
-        "c_locationName": "ALDI Keilor Downs"
-    },
-    {
-        "city": "Portland",
-        "line1": "29 Henty Street",
-        "postcode": "3305",
-        "region": "VIC",
-        "c_internalALDIID": "1313",
-        "c_locationName": "ALDI Portland"
-    },
-    {
-        "city": "Springvale South",
-        "line1": "792 - 806 Heatherton Road",
-        "postcode": "3172",
-        "region": "VIC",
-        "c_internalALDIID": "0610",
-        "c_locationName": "ALDI Springvale South"
-    },
-    {
-        "city": "Belmont",
-        "line1": "High Street 149 - 151",
-        "postcode": "3216",
-        "region": "VIC",
-        "c_internalALDIID": "0088",
-        "c_locationName": "ALDI Belmont"
-    },
-    {
-        "city": "Heidelberg West",
-        "line1": "Bell Street 318",
-        "postcode": "3081",
-        "region": "VIC",
-        "c_internalALDIID": "0115",
-        "c_locationName": "ALDI Heidelberg West"
-    },
-    {
-        "city": "Moorabbin Airport",
-        "line1": "288 Centre Dandenong Road",
-        "postcode": "3194",
-        "region": "VIC",
-        "c_internalALDIID": "0107",
-        "c_locationName": "ALDI Moorabbin Airport"
-    },
-    {
-        "city": "Ferntree Gully",
-        "line1": "Burwood Highway 1009",
-        "postcode": "3156",
-        "region": "VIC",
-        "c_internalALDIID": "0096",
-        "c_locationName": "ALDI Ferntree Gully"
-    },
-    {
-        "city": "Maryborough",
-        "line1": "Burke Street 111",
-        "postcode": "3465",
-        "region": "VIC",
-        "c_internalALDIID": "1135",
-        "c_locationName": "ALDI Maryborough"
-    },
-    {
-        "city": "Newcomb",
-        "line1": "Cnr Newcomb S/C Bellarine Hwy",
-        "postcode": "3219",
-        "region": "VIC",
-        "c_internalALDIID": "0108",
-        "c_locationName": "ALDI Newcomb"
-    },
-    {
-        "city": "Chirnside Park",
-        "line1": "Cnr Kimberly Drive, El Centro St",
-        "postcode": "3116",
-        "region": "VIC",
-        "c_internalALDIID": "0092",
-        "c_locationName": "ALDI Chirnside Park"
-    },
-    {
-        "city": "Cranbourne East",
-        "line1": "1 S Linsell Boulevard",
-        "postcode": "3977",
-        "region": "VIC",
-        "c_internalALDIID": "1836",
-        "c_locationName": "ALDI Cranbourne East"
-    },
-    {
-        "city": "Heidelberg",
-        "line1": "Burgundy Street 56",
-        "postcode": "3084",
-        "region": "VIC",
-        "c_internalALDIID": "0802",
-        "c_locationName": "ALDI Heidelberg"
-    },
-    {
-        "city": "Keilor East",
-        "line1": "Milleara Road, Buckley Street Cnr",
-        "postcode": "3033",
-        "region": "VIC",
-        "c_internalALDIID": "1182",
-        "c_locationName": "ALDI Keilor East"
-    },
-    {
-        "city": "Corio",
-        "line1": "465 Princes Highway",
-        "postcode": "3214",
-        "region": "VIC",
-        "c_internalALDIID": "0197",
-        "c_locationName": "ALDI Corio"
-    },
-    {
-        "city": "Bayswater",
-        "line1": "10 - 14 High Street",
-        "postcode": "3153",
-        "region": "VIC",
-        "c_internalALDIID": "0564",
-        "c_locationName": "ALDI Bayswater"
-    },
-    {
-        "city": "Werribee",
-        "line1": "Cnr Derrimut Road, Heaths Road",
-        "postcode": "3030",
-        "region": "VIC",
-        "c_internalALDIID": "1440",
-        "c_locationName": "ALDI Werribee"
-    },
-    {
-        "city": "Ocean Grove",
-        "line1": "Coastal Boulevard 12 - 22",
-        "postcode": "3226",
-        "region": "VIC",
-        "c_internalALDIID": "1598",
-        "c_locationName": "ALDI Ocean Grove"
-    },
-    {
-        "city": "Bacchus Marsh",
-        "line1": "158 - 196 Main Street",
-        "postcode": "3340",
-        "region": "VIC",
-        "c_internalALDIID": "0207",
-        "c_locationName": "ALDI Bacchus Marsh"
-    },
-    {
-        "city": "Strathdale",
-        "line1": "90 - 92 Edwards Road",
-        "postcode": "3550",
-        "region": "VIC",
-        "c_internalALDIID": "1023",
-        "c_locationName": "ALDI Strathdale"
-    },
-    {
-        "city": "Vermont South",
-        "line1": "495 Burwood Highway",
-        "postcode": "3133",
-        "region": "VIC",
-        "c_internalALDIID": "1802",
-        "c_locationName": "ALDI Vermont South"
-    },
-    {
-        "city": "Moonee Ponds",
-        "line1": "14 - 16 Hall Street",
-        "postcode": "3039",
-        "region": "VIC",
-        "c_internalALDIID": "1664",
-        "c_locationName": "ALDI Moonee Ponds"
-    },
-    {
-        "city": "Shepparton",
-        "line1": "428 Wyndham Street",
-        "postcode": "3630",
-        "region": "VIC",
-        "c_internalALDIID": "0153",
-        "c_locationName": "ALDI Shepparton"
-    },
-    {
-        "city": "Pakenham",
-        "line1": "1 - 3 Portobello Road",
-        "postcode": "3810",
-        "region": "VIC",
-        "c_internalALDIID": "0754",
-        "c_locationName": "ALDI Pakenham"
-    },
-    {
-        "city": "Hastings",
-        "line1": "Queen Street 5",
-        "postcode": "3915",
-        "region": "VIC",
-        "c_internalALDIID": "1572",
-        "c_locationName": "ALDI Hastings"
-    },
-    {
-        "city": "Benalla",
-        "line1": "141 - 153 Bridge Street",
-        "postcode": "3672",
-        "region": "VIC",
-        "c_internalALDIID": "0893",
-        "c_locationName": "ALDI Benalla"
-    },
-    {
-        "city": "Brunswick",
-        "line1": "Sydney Road 292 - 298",
-        "postcode": "3056",
-        "region": "VIC",
-        "c_internalALDIID": "0627",
-        "c_locationName": "ALDI Brunswick"
-    },
-    {
-        "city": "Healesville",
-        "line1": "175 Maroondah Highway",
-        "postcode": "3777",
-        "region": "VIC",
-        "c_internalALDIID": "1826",
-        "c_locationName": "ALDI Healesville"
-    },
-    {
-        "city": "Camberwell",
-        "line1": "15 - 25 Station Street",
-        "postcode": "3124",
-        "region": "VIC",
-        "c_internalALDIID": "2019",
-        "c_locationName": "ALDI Camberwell"
-    },
-    {
-        "city": "Kilmore",
-        "line1": "97 Sydney Street",
-        "postcode": "3764",
-        "region": "VIC",
-        "c_internalALDIID": "2148",
-        "c_locationName": "ALDI Kilmore"
-    },
-    {
-        "city": "Dromana",
-        "line1": "120 Nepean Highway",
-        "postcode": "3936",
-        "region": "VIC",
-        "c_internalALDIID": "1910",
-        "c_locationName": "ALDI Dromana"
-    },
-    {
-        "city": "Clyde North",
-        "line1": "Cnr Berwick-Cranbourne Road, Hamersley Dr",
-        "postcode": "3978",
-        "region": "VIC",
-        "c_internalALDIID": "2460",
-        "c_locationName": "ALDI Clyde North"
-    },
-    {
-        "city": "Bell Park",
-        "line1": "Anakie Road 9 / 222",
-        "postcode": "3215",
-        "region": "VIC",
-        "c_internalALDIID": "1632",
-        "c_locationName": "ALDI Bell Park"
-    },
-    {
-        "city": "Taylors Lakes",
-        "line1": "399 Melton Highway",
-        "postcode": "3038",
-        "region": "VIC",
-        "c_internalALDIID": "1794",
-        "c_locationName": "ALDI Taylors Lakes"
-    },
-    {
-        "city": "Lower Plenty",
-        "line1": "Main Road 45",
-        "postcode": "3093",
-        "region": "VIC",
-        "c_internalALDIID": "1842",
-        "c_locationName": "ALDI Lower Plenty"
-    },
-    {
-        "city": "Coburg North",
-        "line1": "Sydney Road 1009 - 101",
-        "postcode": "3058",
-        "region": "VIC",
-        "c_internalALDIID": "2323",
-        "c_locationName": "ALDI Coburg North"
-    },
-    {
-        "city": "Karingal",
-        "line1": "330 Cranbourne Road",
-        "postcode": "3199",
-        "region": "VIC",
-        "c_internalALDIID": "1789",
-        "c_locationName": "ALDI Karingal"
-    },
-    {
-        "city": "Torquay",
-        "line1": "Winki Way 14 - 18",
-        "postcode": "3228",
-        "region": "VIC",
-        "c_internalALDIID": "2336",
-        "c_locationName": "ALDI Torquay"
-    },
-    {
-        "city": "Campbellfield",
-        "line1": "Cnr Sydney Road, Mahoneys Road",
-        "postcode": "3061",
-        "region": "VIC",
-        "c_internalALDIID": "2028",
-        "c_locationName": "ALDI Campbellfield"
-    },
-    {
-        "city": "Wendouree",
-        "line1": "Learmonth Road 21",
-        "postcode": "3355",
-        "region": "VIC",
-        "c_internalALDIID": "1754",
-        "c_locationName": "ALDI Wendouree"
-    },
-    {
-        "city": "Wallan",
-        "line1": "13 - 17 High Street",
-        "postcode": "3756",
-        "region": "VIC",
-        "c_internalALDIID": "1912",
-        "c_locationName": "ALDI Wallan"
-    },
-    {
-        "city": "Keysborough",
-        "line1": "Cheltenham Road 466 - 468",
-        "postcode": "3173",
-        "region": "VIC",
-        "c_internalALDIID": "2037",
-        "c_locationName": "ALDI Keysborough"
-    },
-    {
-        "city": "Glen Waverley",
-        "line1": "235 Springvale Road",
-        "postcode": "3150",
-        "region": "VIC",
-        "c_internalALDIID": "2096",
-        "c_locationName": "ALDI Glen Waverley"
-    },
-    {
-        "city": "Mildura",
-        "line1": "Fifteenth Street 858",
-        "postcode": "3500",
-        "region": "VIC",
-        "c_internalALDIID": "2309",
-        "c_locationName": "ALDI Mildura"
-    },
-    {
-        "city": "Leopold",
-        "line1": "641 - 659 Bellarine Highway",
-        "postcode": "3224",
-        "region": "VIC",
-        "c_internalALDIID": "1840",
-        "c_locationName": "ALDI Leopold"
-    },
-    {
-        "city": "Warrnambool",
-        "line1": "154 Raglan Parade",
-        "postcode": "3280",
-        "region": "VIC",
-        "c_internalALDIID": "1816",
-        "c_locationName": "ALDI Warrnambool"
-    },
-    {
-        "city": "Tarneit",
-        "line1": "540 Derrimut Road",
-        "postcode": "3029",
-        "region": "VIC",
-        "c_internalALDIID": "2296",
-        "c_locationName": "ALDI Tarneit"
-    },
-    {
-        "city": "Gladstone Park",
-        "line1": "Gladstone Park Drive 8 - 34",
-        "postcode": "3043",
-        "region": "VIC",
-        "c_internalALDIID": "2269",
-        "c_locationName": "ALDI Gladstone Park"
-    },
-    {
-        "city": "Springvale",
-        "line1": "754 - 768 Princes Highway",
-        "postcode": "3171",
-        "region": "VIC",
-        "c_internalALDIID": "2099",
-        "c_locationName": "ALDI Springvale"
-    },
-    {
-        "city": "Fitzroy",
-        "line1": "247 Johnston Street",
-        "postcode": "3065",
-        "region": "VIC",
-        "c_internalALDIID": "1957",
-        "c_locationName": "ALDI Fitzroy"
-    },
-    {
-        "city": "Croydon",
-        "line1": "Kent Avenue 15 / 5",
-        "postcode": "3136",
-        "region": "VIC",
-        "c_internalALDIID": "2117",
-        "c_locationName": "ALDI Croydon"
-    },
-    {
-        "city": "Doncaster East",
-        "line1": "Mitchell Street 3 - 11",
-        "postcode": "3109",
-        "region": "VIC",
-        "c_internalALDIID": "1841",
-        "c_locationName": "ALDI Doncaster East"
-    },
-    {
-        "city": "Epsom",
-        "line1": "Midland Highway 182 - 192",
-        "postcode": "3551",
-        "region": "VIC",
-        "c_internalALDIID": "1935",
-        "c_locationName": "ALDI Epsom"
-    },
-    {
-        "city": "Narre Warren South",
-        "line1": "400 Narre Warren-Cranbourne Road",
-        "postcode": "3805",
-        "region": "VIC",
-        "c_internalALDIID": "1728",
-        "c_locationName": "ALDI Narre Warren South"
-    },
-    {
-        "city": "Epping",
-        "line1": "Harvest Home Road, Edgars Road Cnr",
-        "postcode": "3076",
-        "region": "VIC",
-        "c_internalALDIID": "1753",
-        "c_locationName": "ALDI Epping"
-    },
-    {
-        "city": "Armstrong Creek",
-        "line1": "Central Boulevard 35 - 43",
-        "postcode": "3217",
-        "region": "VIC",
-        "c_internalALDIID": "1805",
-        "c_locationName": "ALDI Armstrong Creek"
-    },
-    {
-        "city": "Broadmeadows",
-        "line1": "1099-1169 Pascoe Vale Road",
-        "postcode": "3047",
-        "region": "VIC",
-        "c_internalALDIID": "2468",
-        "c_locationName": "ALDI Broadmeadows"
-    },
-    {
-        "city": "Mulgrave",
-        "line1": "271 Police Road",
-        "postcode": "3170",
-        "region": "VIC",
-        "c_internalALDIID": "2490",
-        "c_locationName": "ALDI Mulgrave"
-    },
-    {
-        "city": "Tarneit",
-        "line1": "177 Hummingbird Boulevard",
-        "postcode": "3029",
-        "region": "VIC",
-        "c_internalALDIID": "2256",
-        "c_locationName": "ALDI Tarneit"
-    }
-]
+{
+    "state": "vic",
+    "store_count": 169,
+    "stores": [
+        {
+            "city": "Frankston",
+            "line1": "28 Beach Street",
+            "postcode": "3199",
+            "region": "VIC",
+            "c_internalALDIID": "1453",
+            "c_locationName": "ALDI Frankston"
+        },
+        {
+            "city": "Cheltenham",
+            "line1": "Nepean Highway 1239",
+            "postcode": "3192",
+            "region": "VIC",
+            "c_internalALDIID": "1333",
+            "c_locationName": "ALDI Cheltenham"
+        },
+        {
+            "city": "Echuca",
+            "line1": "Anstruther Street 218 - 222",
+            "postcode": "3564",
+            "region": "VIC",
+            "c_internalALDIID": "1121",
+            "c_locationName": "ALDI Echuca"
+        },
+        {
+            "city": "Mooroopna",
+            "line1": "97 - 101 McLennan Street",
+            "postcode": "3629",
+            "region": "VIC",
+            "c_internalALDIID": "1423",
+            "c_locationName": "ALDI Mooroopna"
+        },
+        {
+            "city": "Cowes",
+            "line1": "68 - 80 Thompson Avenue",
+            "postcode": "3922",
+            "region": "VIC",
+            "c_internalALDIID": "2100",
+            "c_locationName": "ALDI Cowes"
+        },
+        {
+            "city": "Eltham",
+            "line1": "Luck Street 6 - 20",
+            "postcode": "3095",
+            "region": "VIC",
+            "c_internalALDIID": "0597",
+            "c_locationName": "ALDI Eltham"
+        },
+        {
+            "city": "Beaconsfield",
+            "line1": "Old Princes Highway 53",
+            "postcode": "3807",
+            "region": "VIC",
+            "c_internalALDIID": "0087",
+            "c_locationName": "ALDI Beaconsfield"
+        },
+        {
+            "city": "Point Cook",
+            "line1": "Point Cook Road 300",
+            "postcode": "3030",
+            "region": "VIC",
+            "c_internalALDIID": "1546",
+            "c_locationName": "ALDI Point Cook"
+        },
+        {
+            "city": "Scoresby",
+            "line1": "Stud Road 800",
+            "postcode": "3179",
+            "region": "VIC",
+            "c_internalALDIID": "2186",
+            "c_locationName": "ALDI Scoresby"
+        },
+        {
+            "city": "Mornington",
+            "line1": "Main Street 241 / M02",
+            "postcode": "3931",
+            "region": "VIC",
+            "c_internalALDIID": "1355",
+            "c_locationName": "ALDI Mornington"
+        },
+        {
+            "city": "West Melbourne",
+            "line1": "Spencer St 528",
+            "postcode": "3003",
+            "region": "VIC",
+            "c_internalALDIID": "2418",
+            "c_locationName": "ALDI West Melbourne"
+        },
+        {
+            "city": "Wantirna South",
+            "line1": "Burwood Hwy 425",
+            "postcode": "3152",
+            "region": "VIC",
+            "c_internalALDIID": "2509",
+            "c_locationName": "ALDI Wantirna South"
+        },
+        {
+            "city": "Blackburn",
+            "line1": "Springfield Rd 64-104",
+            "postcode": "3130",
+            "region": "VIC",
+            "c_internalALDIID": "2489",
+            "c_locationName": "ALDI Blackburn"
+        },
+        {
+            "city": "Morwell",
+            "line1": "Princes Drive 94/72-82",
+            "postcode": "3840",
+            "region": "VIC",
+            "c_internalALDIID": "2496",
+            "c_locationName": "ALDI Morwell"
+        },
+        {
+            "city": "Chadstone",
+            "line1": "Warrigal Road 695",
+            "postcode": "3148",
+            "region": "VIC",
+            "c_internalALDIID": "2513",
+            "c_locationName": "ALDI Chadstone"
+        },
+        {
+            "city": "Truganina",
+            "line1": "33 Prosperity Street",
+            "postcode": "3029",
+            "region": "VIC",
+            "c_internalALDIID": "2246",
+            "c_locationName": "ALDI Truganina"
+        },
+        {
+            "city": "Caulfield South",
+            "line1": "348-354 Hawthorn Road",
+            "postcode": "3162",
+            "region": "VIC",
+            "c_internalALDIID": "2466",
+            "c_locationName": "ALDI Caulfield South"
+        },
+        {
+            "city": "Yarrawonga",
+            "line1": "Frank Drive 2",
+            "postcode": "3730",
+            "region": "VIC",
+            "c_internalALDIID": "2485",
+            "c_locationName": "ALDI Yarrawonga"
+        },
+        {
+            "city": "Craigieburn",
+            "line1": "Riley Road 10",
+            "postcode": "3064",
+            "region": "VIC",
+            "c_internalALDIID": "2520",
+            "c_locationName": "ALDI Craigieburn"
+        },
+        {
+            "city": "Sale",
+            "line1": "Raymond Street 396 - 420",
+            "postcode": "3850",
+            "region": "VIC",
+            "c_internalALDIID": "0735",
+            "c_locationName": "ALDI Sale"
+        },
+        {
+            "city": "Wyndham Vale",
+            "line1": "209 Greens Road",
+            "postcode": "3024",
+            "region": "VIC",
+            "c_internalALDIID": "1413",
+            "c_locationName": "ALDI Wyndham Vale"
+        },
+        {
+            "city": "Rosebud",
+            "line1": "1313 Point Nepean Road",
+            "postcode": "3939",
+            "region": "VIC",
+            "c_internalALDIID": "0110",
+            "c_locationName": "ALDI Rosebud"
+        },
+        {
+            "city": "Epping",
+            "line1": "347 - 371 Dalton Road",
+            "postcode": "3076",
+            "region": "VIC",
+            "c_internalALDIID": "0776",
+            "c_locationName": "ALDI Epping"
+        },
+        {
+            "city": "Kilsyth",
+            "line1": "Mount Dandenong Rd 540",
+            "postcode": "3137",
+            "region": "VIC",
+            "c_internalALDIID": "1418",
+            "c_locationName": "ALDI Kilsyth"
+        },
+        {
+            "city": "Endeavour Hills",
+            "line1": "974 Heatherton Road",
+            "postcode": "3802",
+            "region": "VIC",
+            "c_internalALDIID": "0384",
+            "c_locationName": "ALDI Endeavour Hills"
+        },
+        {
+            "city": "Carnegie",
+            "line1": "Koornang Road 2 - 18",
+            "postcode": "3064",
+            "region": "VIC",
+            "c_internalALDIID": "1729",
+            "c_locationName": "ALDI Carnegie"
+        },
+        {
+            "city": "Somerville",
+            "line1": "Frankston-Flinders Road 1089 - 109",
+            "postcode": "3912",
+            "region": "VIC",
+            "c_internalALDIID": "0798",
+            "c_locationName": "ALDI Somerville"
+        },
+        {
+            "city": "Melton West",
+            "line1": "High Street 533",
+            "postcode": "3337",
+            "region": "VIC",
+            "c_internalALDIID": "1821",
+            "c_locationName": "ALDI Melton West"
+        },
+        {
+            "city": "Sunbury",
+            "line1": "Gap Road 112 - 126",
+            "postcode": "3429",
+            "region": "VIC",
+            "c_internalALDIID": "0112",
+            "c_locationName": "ALDI Sunbury"
+        },
+        {
+            "city": "Prahran",
+            "line1": "34 Elizabeth Street",
+            "postcode": "3181",
+            "region": "VIC",
+            "c_internalALDIID": "0181",
+            "c_locationName": "ALDI Prahran"
+        },
+        {
+            "city": "Brandon Park",
+            "line1": "Cnr Springvale Road, Ferntree Gully Road",
+            "postcode": "3170",
+            "region": "VIC",
+            "c_internalALDIID": "0089",
+            "c_locationName": "ALDI Brandon Park"
+        },
+        {
+            "city": "Hampton Park",
+            "line1": "Pound Road 400",
+            "postcode": "3976",
+            "region": "VIC",
+            "c_internalALDIID": "0100",
+            "c_locationName": "ALDI Hampton Park"
+        },
+        {
+            "city": "Seville",
+            "line1": "638 Warburton Highway",
+            "postcode": "3139",
+            "region": "VIC",
+            "c_internalALDIID": "2346",
+            "c_locationName": "ALDI Seville"
+        },
+        {
+            "city": "Sebastopol",
+            "line1": "Albert Street 31 - 35",
+            "postcode": "3356",
+            "region": "VIC",
+            "c_internalALDIID": "0701",
+            "c_locationName": "ALDI Sebastopol"
+        },
+        {
+            "city": "Seymour",
+            "line1": "32 - 34 Tallarook Street",
+            "postcode": "3660",
+            "region": "VIC",
+            "c_internalALDIID": "1417",
+            "c_locationName": "ALDI Seymour"
+        },
+        {
+            "city": "Mill Park",
+            "line1": "400 McDonalds Road",
+            "postcode": "3082",
+            "region": "VIC",
+            "c_internalALDIID": "0106",
+            "c_locationName": "ALDI Mill Park"
+        },
+        {
+            "city": "Lyndhurst",
+            "line1": "10 - 18 Society Ave",
+            "postcode": "3975",
+            "region": "VIC",
+            "c_internalALDIID": "1230",
+            "c_locationName": "ALDI Lyndhurst"
+        },
+        {
+            "city": "Mornington",
+            "line1": "Nepean Hwy 1128",
+            "postcode": "3931",
+            "region": "VIC",
+            "c_internalALDIID": "2208",
+            "c_locationName": "ALDI Mornington"
+        },
+        {
+            "city": "Berwick",
+            "line1": "O'Shea Road 1",
+            "postcode": "3806",
+            "region": "VIC",
+            "c_internalALDIID": "1232",
+            "c_locationName": "ALDI Berwick"
+        },
+        {
+            "city": "Preston",
+            "line1": "Cramer Street, Mary Street Cnr",
+            "postcode": "3072",
+            "region": "VIC",
+            "c_internalALDIID": "0109",
+            "c_locationName": "ALDI Preston"
+        },
+        {
+            "city": "Horsham",
+            "line1": "67 - 73 Hamilton Street",
+            "postcode": "3400",
+            "region": "VIC",
+            "c_internalALDIID": "0674",
+            "c_locationName": "ALDI Horsham"
+        },
+        {
+            "city": "Ringwood",
+            "line1": "Cnr Maroondah Highway, New Street",
+            "postcode": "3134",
+            "region": "VIC",
+            "c_internalALDIID": "0215",
+            "c_locationName": "ALDI Ringwood"
+        },
+        {
+            "city": "Reservoir",
+            "line1": "Plenty Road 850",
+            "postcode": "3073",
+            "region": "VIC",
+            "c_internalALDIID": "1545",
+            "c_locationName": "ALDI Reservoir"
+        },
+        {
+            "city": "Monbulk",
+            "line1": "32 - 36 Main Road",
+            "postcode": "3793",
+            "region": "VIC",
+            "c_internalALDIID": "1758",
+            "c_locationName": "ALDI Monbulk"
+        },
+        {
+            "city": "Eaglehawk",
+            "line1": "Peg Leg Road 4 - 8",
+            "postcode": "3556",
+            "region": "VIC",
+            "c_internalALDIID": "1052",
+            "c_locationName": "ALDI Eaglehawk"
+        },
+        {
+            "city": "Templestowe Lower",
+            "line1": "Manningham Road 299 - 301",
+            "postcode": "3107",
+            "region": "VIC",
+            "c_internalALDIID": "1744",
+            "c_locationName": "ALDI Templestowe Lower"
+        },
+        {
+            "city": "Mordialloc",
+            "line1": "542 Main Street",
+            "postcode": "3195",
+            "region": "VIC",
+            "c_internalALDIID": "0762",
+            "c_locationName": "ALDI Mordialloc"
+        },
+        {
+            "city": "Leongatha",
+            "line1": "8 - 10 Bruce Street",
+            "postcode": "3953",
+            "region": "VIC",
+            "c_internalALDIID": "1756",
+            "c_locationName": "ALDI Leongatha"
+        },
+        {
+            "city": "Preston",
+            "line1": "Murray Road 2 - 50",
+            "postcode": "3072",
+            "region": "VIC",
+            "c_internalALDIID": "1843",
+            "c_locationName": "ALDI Preston"
+        },
+        {
+            "city": "Mentone",
+            "line1": "Nepean Hwy 27 - 29",
+            "postcode": "3194",
+            "region": "VIC",
+            "c_internalALDIID": "1814",
+            "c_locationName": "ALDI Mentone"
+        },
+        {
+            "city": "Bairnsdale",
+            "line1": "Nicholson Street 132",
+            "postcode": "3875",
+            "region": "VIC",
+            "c_internalALDIID": "0365",
+            "c_locationName": "ALDI Bairnsdale"
+        },
+        {
+            "city": "Highton",
+            "line1": "245 - 253 South Valley Road",
+            "postcode": "3216",
+            "region": "VIC",
+            "c_internalALDIID": "1524",
+            "c_locationName": "ALDI Highton"
+        },
+        {
+            "city": "Werribee",
+            "line1": "Synott Street 77 - 83",
+            "postcode": "3030",
+            "region": "VIC",
+            "c_internalALDIID": "0118",
+            "c_locationName": "ALDI Werribee"
+        },
+        {
+            "city": "Cranbourne",
+            "line1": "14 - 20 Bakewell Street",
+            "postcode": "3977",
+            "region": "VIC",
+            "c_internalALDIID": "0484",
+            "c_locationName": "ALDI Cranbourne"
+        },
+        {
+            "city": "Drysdale",
+            "line1": "12 - 22 Murradoc Road",
+            "postcode": "3222",
+            "region": "VIC",
+            "c_internalALDIID": "1502",
+            "c_locationName": "ALDI Drysdale"
+        },
+        {
+            "city": "Epping",
+            "line1": "High Street 571 - 583",
+            "postcode": "3076",
+            "region": "VIC",
+            "c_internalALDIID": "1501",
+            "c_locationName": "ALDI Epping"
+        },
+        {
+            "city": "Craigieburn",
+            "line1": "Craigieburn Road 340",
+            "postcode": "3064",
+            "region": "VIC",
+            "c_internalALDIID": "1685",
+            "c_locationName": "ALDI Craigieburn"
+        },
+        {
+            "city": "Cheltenham",
+            "line1": "280 - 282 Bay Road",
+            "postcode": "3192",
+            "region": "VIC",
+            "c_internalALDIID": "1804",
+            "c_locationName": "ALDI Cheltenham"
+        },
+        {
+            "city": "Carrum Downs",
+            "line1": "493 Frankston-Dandenong Road",
+            "postcode": "3201",
+            "region": "VIC",
+            "c_internalALDIID": "0208",
+            "c_locationName": "ALDI Carrum Downs"
+        },
+        {
+            "city": "Hamilton",
+            "line1": "104 - 108 French Street",
+            "postcode": "3300",
+            "region": "VIC",
+            "c_internalALDIID": "0528",
+            "c_locationName": "ALDI Hamilton"
+        },
+        {
+            "city": "Maribyrnong",
+            "line1": "Edgewater Boulevard 11",
+            "postcode": "3032",
+            "region": "VIC",
+            "c_internalALDIID": "0104",
+            "c_locationName": "ALDI Maribyrnong"
+        },
+        {
+            "city": "Swan Hill",
+            "line1": "Campbell Street, Rutherford Street Cnr",
+            "postcode": "3585",
+            "region": "VIC",
+            "c_internalALDIID": "0715",
+            "c_locationName": "ALDI Swan Hill"
+        },
+        {
+            "city": "Ararat",
+            "line1": "41 - 47 Moore Street",
+            "postcode": "3377",
+            "region": "VIC",
+            "c_internalALDIID": "0665",
+            "c_locationName": "ALDI Ararat"
+        },
+        {
+            "city": "Rowville",
+            "line1": "Wellington Road 1100",
+            "postcode": "3178",
+            "region": "VIC",
+            "c_internalALDIID": "0520",
+            "c_locationName": "ALDI Rowville"
+        },
+        {
+            "city": "Bentleigh",
+            "line1": "285 - 305 Centre Road",
+            "postcode": "3204",
+            "region": "VIC",
+            "c_internalALDIID": "1746",
+            "c_locationName": "ALDI Bentleigh"
+        },
+        {
+            "city": "Deer Park",
+            "line1": "Cnr Neale Road, Station Road",
+            "postcode": "3023",
+            "region": "VIC",
+            "c_internalALDIID": "1415",
+            "c_locationName": "ALDI Deer Park"
+        },
+        {
+            "city": "Airport West",
+            "line1": "29 - 35 Louis Street",
+            "postcode": "3042",
+            "region": "VIC",
+            "c_internalALDIID": "0163",
+            "c_locationName": "ALDI Airport West"
+        },
+        {
+            "city": "Wodonga",
+            "line1": "Elgin Boulevard 72",
+            "postcode": "3690",
+            "region": "VIC",
+            "c_internalALDIID": "0225",
+            "c_locationName": "ALDI Wodonga"
+        },
+        {
+            "city": "Box Hill South",
+            "line1": "Station Street 391 - 395",
+            "postcode": "3128",
+            "region": "VIC",
+            "c_internalALDIID": "0690",
+            "c_locationName": "ALDI Box Hill South"
+        },
+        {
+            "city": "Malvern East",
+            "line1": "Dandenong Road 1341",
+            "postcode": "3148",
+            "region": "VIC",
+            "c_internalALDIID": "1160",
+            "c_locationName": "ALDI Malvern East"
+        },
+        {
+            "city": "Altona North",
+            "line1": "Millers Road 124 - 134",
+            "postcode": "3025",
+            "region": "VIC",
+            "c_internalALDIID": "1244",
+            "c_locationName": "ALDI Altona North"
+        },
+        {
+            "city": "Grovedale",
+            "line1": "142 Torquay Road",
+            "postcode": "3216",
+            "region": "VIC",
+            "c_internalALDIID": "1338",
+            "c_locationName": "ALDI Grovedale"
+        },
+        {
+            "city": "Warragul",
+            "line1": "Queen Street 12 - 28",
+            "postcode": "3820",
+            "region": "VIC",
+            "c_internalALDIID": "0333",
+            "c_locationName": "ALDI Warragul"
+        },
+        {
+            "city": "Alfredton",
+            "line1": "Sturt Street 1611 - 161",
+            "postcode": "3350",
+            "region": "VIC",
+            "c_internalALDIID": "0986",
+            "c_locationName": "ALDI Alfredton"
+        },
+        {
+            "city": "Ballarat",
+            "line1": "Creswick Road 102 -114",
+            "postcode": "3350",
+            "region": "VIC",
+            "c_internalALDIID": "0409",
+            "c_locationName": "ALDI Ballarat"
+        },
+        {
+            "city": "Balwyn North",
+            "line1": "Cnr Doncaster Road, Tannock Street",
+            "postcode": "3104",
+            "region": "VIC",
+            "c_internalALDIID": "1963",
+            "c_locationName": "ALDI Balwyn North"
+        },
+        {
+            "city": "Roxburgh Park",
+            "line1": "Somerton Road 250",
+            "postcode": "3064",
+            "region": "VIC",
+            "c_internalALDIID": "1394",
+            "c_locationName": "ALDI Roxburgh Park"
+        },
+        {
+            "city": "Abbotsford",
+            "line1": "313 - 325 Victoria Street",
+            "postcode": "3067",
+            "region": "VIC",
+            "c_internalALDIID": "1354",
+            "c_locationName": "ALDI Abbotsford"
+        },
+        {
+            "city": "Altona North",
+            "line1": "302 - 330 Millers Road",
+            "postcode": "3025",
+            "region": "VIC",
+            "c_internalALDIID": "1810",
+            "c_locationName": "ALDI Altona North"
+        },
+        {
+            "city": "Warrnambool",
+            "line1": "251 - 257 Lava Street",
+            "postcode": "3280",
+            "region": "VIC",
+            "c_internalALDIID": "0164",
+            "c_locationName": "ALDI Warrnambool"
+        },
+        {
+            "city": "White Box Rise Wodonga",
+            "line1": "Cnr Victoria Cross Parade, Wark Street",
+            "postcode": "3690",
+            "region": "VIC",
+            "c_internalALDIID": "2216",
+            "c_locationName": "ALDI White Box Rise Wodonga"
+        },
+        {
+            "city": "South Melbourne",
+            "line1": "100 Market Street",
+            "postcode": "3205",
+            "region": "VIC",
+            "c_internalALDIID": "1422",
+            "c_locationName": "ALDI South Melbourne"
+        },
+        {
+            "city": "Wangaratta",
+            "line1": "Chisholm Street 13 - 15",
+            "postcode": "3677",
+            "region": "VIC",
+            "c_internalALDIID": "0928",
+            "c_locationName": "ALDI Wangaratta"
+        },
+        {
+            "city": "St Kilda",
+            "line1": "Inkerman Street 135",
+            "postcode": "3182",
+            "region": "VIC",
+            "c_internalALDIID": "0275",
+            "c_locationName": "ALDI St Kilda"
+        },
+        {
+            "city": "Forest Hill",
+            "line1": "Canterbury Road 3131",
+            "postcode": "3131",
+            "region": "VIC",
+            "c_internalALDIID": "1118",
+            "c_locationName": "ALDI Forest Hill"
+        },
+        {
+            "city": "Melbourne",
+            "line1": "501 Swanston St",
+            "postcode": "3000",
+            "region": "VIC",
+            "c_internalALDIID": "0295",
+            "c_locationName": "ALDI Melbourne"
+        },
+        {
+            "city": "Gisborne",
+            "line1": "45 Aitken Street",
+            "postcode": "3437",
+            "region": "VIC",
+            "c_internalALDIID": "2207",
+            "c_locationName": "ALDI Gisborne"
+        },
+        {
+            "city": "Traralgon",
+            "line1": "141 - 143 Argyle Street",
+            "postcode": "3844",
+            "region": "VIC",
+            "c_internalALDIID": "2051",
+            "c_locationName": "ALDI Traralgon"
+        },
+        {
+            "city": "Moe",
+            "line1": "Saviges Rd 10 - 12",
+            "postcode": "3825",
+            "region": "VIC",
+            "c_internalALDIID": "0724",
+            "c_locationName": "ALDI Moe"
+        },
+        {
+            "city": "Greensborough",
+            "line1": "Main Street 25",
+            "postcode": "3088",
+            "region": "VIC",
+            "c_internalALDIID": "1357",
+            "c_locationName": "ALDI Greensborough"
+        },
+        {
+            "city": "Melton",
+            "line1": "394 - 406 High Street",
+            "postcode": "3337",
+            "region": "VIC",
+            "c_internalALDIID": "0105",
+            "c_locationName": "ALDI Melton"
+        },
+        {
+            "city": "Sunshine",
+            "line1": "324 - 328 Hampshire Road",
+            "postcode": "3020",
+            "region": "VIC",
+            "c_internalALDIID": "0781",
+            "c_locationName": "ALDI Sunshine"
+        },
+        {
+            "city": "Altona Meadows",
+            "line1": "1 Central Avenue",
+            "postcode": "3028",
+            "region": "VIC",
+            "c_internalALDIID": "1146",
+            "c_locationName": "ALDI Altona Meadows"
+        },
+        {
+            "city": "Lakes Entrance",
+            "line1": "6 - 12 Marine Parade",
+            "postcode": "3909",
+            "region": "VIC",
+            "c_internalALDIID": "2128",
+            "c_locationName": "ALDI Lakes Entrance"
+        },
+        {
+            "city": "Wonthaggi",
+            "line1": "Cnr Murray Street, McKenzie Street",
+            "postcode": "3995",
+            "region": "VIC",
+            "c_internalALDIID": "0191",
+            "c_locationName": "ALDI Wonthaggi"
+        },
+        {
+            "city": "Geelong West",
+            "line1": "117 - 127 Albert Street",
+            "postcode": "3218",
+            "region": "VIC",
+            "c_internalALDIID": "1314",
+            "c_locationName": "ALDI Geelong West"
+        },
+        {
+            "city": "Tarneit",
+            "line1": "380 Sayers Road",
+            "postcode": "3029",
+            "region": "VIC",
+            "c_internalALDIID": "0386",
+            "c_locationName": "ALDI Tarneit"
+        },
+        {
+            "city": "Preston",
+            "line1": "Dundas Street 15",
+            "postcode": "3072",
+            "region": "VIC",
+            "c_internalALDIID": "1606",
+            "c_locationName": "ALDI Preston"
+        },
+        {
+            "city": "West Footscray",
+            "line1": "Ashley Street 67",
+            "postcode": "3012",
+            "region": "VIC",
+            "c_internalALDIID": "0114",
+            "c_locationName": "ALDI West Footscray"
+        },
+        {
+            "city": "Caroline Springs",
+            "line1": "29 - 35 Lake Street",
+            "postcode": "3023",
+            "region": "VIC",
+            "c_internalALDIID": "1320",
+            "c_locationName": "ALDI Caroline Springs"
+        },
+        {
+            "city": "Carrum",
+            "line1": "Station Street 516 - 520",
+            "postcode": "3197",
+            "region": "VIC",
+            "c_internalALDIID": "0091",
+            "c_locationName": "ALDI Carrum"
+        },
+        {
+            "city": "Bundoora",
+            "line1": "584 - 604 Grimshaw Street",
+            "postcode": "3083",
+            "region": "VIC",
+            "c_internalALDIID": "1208",
+            "c_locationName": "ALDI Bundoora"
+        },
+        {
+            "city": "Narre Warren South",
+            "line1": "Princess Highway 229",
+            "postcode": "3805",
+            "region": "VIC",
+            "c_internalALDIID": "0160",
+            "c_locationName": "ALDI Narre Warren South"
+        },
+        {
+            "city": "Burnside",
+            "line1": "Westwood Drive 5 - 25",
+            "postcode": "3023",
+            "region": "VIC",
+            "c_internalALDIID": "0090",
+            "c_locationName": "ALDI Burnside"
+        },
+        {
+            "city": "Northcote",
+            "line1": "Cnr High Street, Separation Street",
+            "postcode": "3070",
+            "region": "VIC",
+            "c_internalALDIID": "0364",
+            "c_locationName": "ALDI Northcote"
+        },
+        {
+            "city": "Dandenong",
+            "line1": "McCrae Street, Walker Street Cnr",
+            "postcode": "3175",
+            "region": "VIC",
+            "c_internalALDIID": "1765",
+            "c_locationName": "ALDI Dandenong"
+        },
+        {
+            "city": "Colac",
+            "line1": "62 - 70 Hesse Street",
+            "postcode": "3250",
+            "region": "VIC",
+            "c_internalALDIID": "0165",
+            "c_locationName": "ALDI Colac"
+        },
+        {
+            "city": "Burwood East",
+            "line1": "Burwood Highway, Blackburn Road Cnr",
+            "postcode": "3151",
+            "region": "VIC",
+            "c_internalALDIID": "0653",
+            "c_locationName": "ALDI Burwood East"
+        },
+        {
+            "city": "The Pines",
+            "line1": "181 Reynolds Road",
+            "postcode": "3109",
+            "region": "VIC",
+            "c_internalALDIID": "0162",
+            "c_locationName": "ALDI The Pines"
+        },
+        {
+            "city": "Lilydale",
+            "line1": "33 Hutchinson Street",
+            "postcode": "3140",
+            "region": "VIC",
+            "c_internalALDIID": "1412",
+            "c_locationName": "ALDI Lilydale"
+        },
+        {
+            "city": "Kangaroo Flat",
+            "line1": "High Street, Lockwood Road Cnr",
+            "postcode": "3555",
+            "region": "VIC",
+            "c_internalALDIID": "0317",
+            "c_locationName": "ALDI Kangaroo Flat"
+        },
+        {
+            "city": "Keilor Downs",
+            "line1": "Taylors Road 80",
+            "postcode": "3038",
+            "region": "VIC",
+            "c_internalALDIID": "0226",
+            "c_locationName": "ALDI Keilor Downs"
+        },
+        {
+            "city": "Portland",
+            "line1": "29 Henty Street",
+            "postcode": "3305",
+            "region": "VIC",
+            "c_internalALDIID": "1313",
+            "c_locationName": "ALDI Portland"
+        },
+        {
+            "city": "Springvale South",
+            "line1": "792 - 806 Heatherton Road",
+            "postcode": "3172",
+            "region": "VIC",
+            "c_internalALDIID": "0610",
+            "c_locationName": "ALDI Springvale South"
+        },
+        {
+            "city": "Belmont",
+            "line1": "High Street 149 - 151",
+            "postcode": "3216",
+            "region": "VIC",
+            "c_internalALDIID": "0088",
+            "c_locationName": "ALDI Belmont"
+        },
+        {
+            "city": "Heidelberg West",
+            "line1": "Bell Street 318",
+            "postcode": "3081",
+            "region": "VIC",
+            "c_internalALDIID": "0115",
+            "c_locationName": "ALDI Heidelberg West"
+        },
+        {
+            "city": "Moorabbin Airport",
+            "line1": "288 Centre Dandenong Road",
+            "postcode": "3194",
+            "region": "VIC",
+            "c_internalALDIID": "0107",
+            "c_locationName": "ALDI Moorabbin Airport"
+        },
+        {
+            "city": "Ferntree Gully",
+            "line1": "Burwood Highway 1009",
+            "postcode": "3156",
+            "region": "VIC",
+            "c_internalALDIID": "0096",
+            "c_locationName": "ALDI Ferntree Gully"
+        },
+        {
+            "city": "Maryborough",
+            "line1": "Burke Street 111",
+            "postcode": "3465",
+            "region": "VIC",
+            "c_internalALDIID": "1135",
+            "c_locationName": "ALDI Maryborough"
+        },
+        {
+            "city": "Newcomb",
+            "line1": "Cnr Newcomb S/C Bellarine Hwy",
+            "postcode": "3219",
+            "region": "VIC",
+            "c_internalALDIID": "0108",
+            "c_locationName": "ALDI Newcomb"
+        },
+        {
+            "city": "Chirnside Park",
+            "line1": "Cnr Kimberly Drive, El Centro St",
+            "postcode": "3116",
+            "region": "VIC",
+            "c_internalALDIID": "0092",
+            "c_locationName": "ALDI Chirnside Park"
+        },
+        {
+            "city": "Cranbourne East",
+            "line1": "1 S Linsell Boulevard",
+            "postcode": "3977",
+            "region": "VIC",
+            "c_internalALDIID": "1836",
+            "c_locationName": "ALDI Cranbourne East"
+        },
+        {
+            "city": "Heidelberg",
+            "line1": "Burgundy Street 56",
+            "postcode": "3084",
+            "region": "VIC",
+            "c_internalALDIID": "0802",
+            "c_locationName": "ALDI Heidelberg"
+        },
+        {
+            "city": "Keilor East",
+            "line1": "Milleara Road, Buckley Street Cnr",
+            "postcode": "3033",
+            "region": "VIC",
+            "c_internalALDIID": "1182",
+            "c_locationName": "ALDI Keilor East"
+        },
+        {
+            "city": "Corio",
+            "line1": "465 Princes Highway",
+            "postcode": "3214",
+            "region": "VIC",
+            "c_internalALDIID": "0197",
+            "c_locationName": "ALDI Corio"
+        },
+        {
+            "city": "Bayswater",
+            "line1": "10 - 14 High Street",
+            "postcode": "3153",
+            "region": "VIC",
+            "c_internalALDIID": "0564",
+            "c_locationName": "ALDI Bayswater"
+        },
+        {
+            "city": "Werribee",
+            "line1": "Cnr Derrimut Road, Heaths Road",
+            "postcode": "3030",
+            "region": "VIC",
+            "c_internalALDIID": "1440",
+            "c_locationName": "ALDI Werribee"
+        },
+        {
+            "city": "Ocean Grove",
+            "line1": "Coastal Boulevard 12 - 22",
+            "postcode": "3226",
+            "region": "VIC",
+            "c_internalALDIID": "1598",
+            "c_locationName": "ALDI Ocean Grove"
+        },
+        {
+            "city": "Bacchus Marsh",
+            "line1": "158 - 196 Main Street",
+            "postcode": "3340",
+            "region": "VIC",
+            "c_internalALDIID": "0207",
+            "c_locationName": "ALDI Bacchus Marsh"
+        },
+        {
+            "city": "Strathdale",
+            "line1": "90 - 92 Edwards Road",
+            "postcode": "3550",
+            "region": "VIC",
+            "c_internalALDIID": "1023",
+            "c_locationName": "ALDI Strathdale"
+        },
+        {
+            "city": "Vermont South",
+            "line1": "495 Burwood Highway",
+            "postcode": "3133",
+            "region": "VIC",
+            "c_internalALDIID": "1802",
+            "c_locationName": "ALDI Vermont South"
+        },
+        {
+            "city": "Moonee Ponds",
+            "line1": "14 - 16 Hall Street",
+            "postcode": "3039",
+            "region": "VIC",
+            "c_internalALDIID": "1664",
+            "c_locationName": "ALDI Moonee Ponds"
+        },
+        {
+            "city": "Shepparton",
+            "line1": "428 Wyndham Street",
+            "postcode": "3630",
+            "region": "VIC",
+            "c_internalALDIID": "0153",
+            "c_locationName": "ALDI Shepparton"
+        },
+        {
+            "city": "Pakenham",
+            "line1": "1 - 3 Portobello Road",
+            "postcode": "3810",
+            "region": "VIC",
+            "c_internalALDIID": "0754",
+            "c_locationName": "ALDI Pakenham"
+        },
+        {
+            "city": "Hastings",
+            "line1": "Queen Street 5",
+            "postcode": "3915",
+            "region": "VIC",
+            "c_internalALDIID": "1572",
+            "c_locationName": "ALDI Hastings"
+        },
+        {
+            "city": "Benalla",
+            "line1": "141 - 153 Bridge Street",
+            "postcode": "3672",
+            "region": "VIC",
+            "c_internalALDIID": "0893",
+            "c_locationName": "ALDI Benalla"
+        },
+        {
+            "city": "Brunswick",
+            "line1": "Sydney Road 292 - 298",
+            "postcode": "3056",
+            "region": "VIC",
+            "c_internalALDIID": "0627",
+            "c_locationName": "ALDI Brunswick"
+        },
+        {
+            "city": "Healesville",
+            "line1": "175 Maroondah Highway",
+            "postcode": "3777",
+            "region": "VIC",
+            "c_internalALDIID": "1826",
+            "c_locationName": "ALDI Healesville"
+        },
+        {
+            "city": "Camberwell",
+            "line1": "15 - 25 Station Street",
+            "postcode": "3124",
+            "region": "VIC",
+            "c_internalALDIID": "2019",
+            "c_locationName": "ALDI Camberwell"
+        },
+        {
+            "city": "Kilmore",
+            "line1": "97 Sydney Street",
+            "postcode": "3764",
+            "region": "VIC",
+            "c_internalALDIID": "2148",
+            "c_locationName": "ALDI Kilmore"
+        },
+        {
+            "city": "Dromana",
+            "line1": "120 Nepean Highway",
+            "postcode": "3936",
+            "region": "VIC",
+            "c_internalALDIID": "1910",
+            "c_locationName": "ALDI Dromana"
+        },
+        {
+            "city": "Clyde North",
+            "line1": "Cnr Berwick-Cranbourne Road, Hamersley Dr",
+            "postcode": "3978",
+            "region": "VIC",
+            "c_internalALDIID": "2460",
+            "c_locationName": "ALDI Clyde North"
+        },
+        {
+            "city": "Bell Park",
+            "line1": "Anakie Road 9 / 222",
+            "postcode": "3215",
+            "region": "VIC",
+            "c_internalALDIID": "1632",
+            "c_locationName": "ALDI Bell Park"
+        },
+        {
+            "city": "Taylors Lakes",
+            "line1": "399 Melton Highway",
+            "postcode": "3038",
+            "region": "VIC",
+            "c_internalALDIID": "1794",
+            "c_locationName": "ALDI Taylors Lakes"
+        },
+        {
+            "city": "Lower Plenty",
+            "line1": "Main Road 45",
+            "postcode": "3093",
+            "region": "VIC",
+            "c_internalALDIID": "1842",
+            "c_locationName": "ALDI Lower Plenty"
+        },
+        {
+            "city": "Coburg North",
+            "line1": "Sydney Road 1009 - 101",
+            "postcode": "3058",
+            "region": "VIC",
+            "c_internalALDIID": "2323",
+            "c_locationName": "ALDI Coburg North"
+        },
+        {
+            "city": "Karingal",
+            "line1": "330 Cranbourne Road",
+            "postcode": "3199",
+            "region": "VIC",
+            "c_internalALDIID": "1789",
+            "c_locationName": "ALDI Karingal"
+        },
+        {
+            "city": "Torquay",
+            "line1": "Winki Way 14 - 18",
+            "postcode": "3228",
+            "region": "VIC",
+            "c_internalALDIID": "2336",
+            "c_locationName": "ALDI Torquay"
+        },
+        {
+            "city": "Campbellfield",
+            "line1": "Cnr Sydney Road, Mahoneys Road",
+            "postcode": "3061",
+            "region": "VIC",
+            "c_internalALDIID": "2028",
+            "c_locationName": "ALDI Campbellfield"
+        },
+        {
+            "city": "Wendouree",
+            "line1": "Learmonth Road 21",
+            "postcode": "3355",
+            "region": "VIC",
+            "c_internalALDIID": "1754",
+            "c_locationName": "ALDI Wendouree"
+        },
+        {
+            "city": "Wallan",
+            "line1": "13 - 17 High Street",
+            "postcode": "3756",
+            "region": "VIC",
+            "c_internalALDIID": "1912",
+            "c_locationName": "ALDI Wallan"
+        },
+        {
+            "city": "Keysborough",
+            "line1": "Cheltenham Road 466 - 468",
+            "postcode": "3173",
+            "region": "VIC",
+            "c_internalALDIID": "2037",
+            "c_locationName": "ALDI Keysborough"
+        },
+        {
+            "city": "Glen Waverley",
+            "line1": "235 Springvale Road",
+            "postcode": "3150",
+            "region": "VIC",
+            "c_internalALDIID": "2096",
+            "c_locationName": "ALDI Glen Waverley"
+        },
+        {
+            "city": "Mildura",
+            "line1": "Fifteenth Street 858",
+            "postcode": "3500",
+            "region": "VIC",
+            "c_internalALDIID": "2309",
+            "c_locationName": "ALDI Mildura"
+        },
+        {
+            "city": "Leopold",
+            "line1": "641 - 659 Bellarine Highway",
+            "postcode": "3224",
+            "region": "VIC",
+            "c_internalALDIID": "1840",
+            "c_locationName": "ALDI Leopold"
+        },
+        {
+            "city": "Warrnambool",
+            "line1": "154 Raglan Parade",
+            "postcode": "3280",
+            "region": "VIC",
+            "c_internalALDIID": "1816",
+            "c_locationName": "ALDI Warrnambool"
+        },
+        {
+            "city": "Tarneit",
+            "line1": "540 Derrimut Road",
+            "postcode": "3029",
+            "region": "VIC",
+            "c_internalALDIID": "2296",
+            "c_locationName": "ALDI Tarneit"
+        },
+        {
+            "city": "Gladstone Park",
+            "line1": "Gladstone Park Drive 8 - 34",
+            "postcode": "3043",
+            "region": "VIC",
+            "c_internalALDIID": "2269",
+            "c_locationName": "ALDI Gladstone Park"
+        },
+        {
+            "city": "Springvale",
+            "line1": "754 - 768 Princes Highway",
+            "postcode": "3171",
+            "region": "VIC",
+            "c_internalALDIID": "2099",
+            "c_locationName": "ALDI Springvale"
+        },
+        {
+            "city": "Fitzroy",
+            "line1": "247 Johnston Street",
+            "postcode": "3065",
+            "region": "VIC",
+            "c_internalALDIID": "1957",
+            "c_locationName": "ALDI Fitzroy"
+        },
+        {
+            "city": "Croydon",
+            "line1": "Kent Avenue 15 / 5",
+            "postcode": "3136",
+            "region": "VIC",
+            "c_internalALDIID": "2117",
+            "c_locationName": "ALDI Croydon"
+        },
+        {
+            "city": "Doncaster East",
+            "line1": "Mitchell Street 3 - 11",
+            "postcode": "3109",
+            "region": "VIC",
+            "c_internalALDIID": "1841",
+            "c_locationName": "ALDI Doncaster East"
+        },
+        {
+            "city": "Epsom",
+            "line1": "Midland Highway 182 - 192",
+            "postcode": "3551",
+            "region": "VIC",
+            "c_internalALDIID": "1935",
+            "c_locationName": "ALDI Epsom"
+        },
+        {
+            "city": "Narre Warren South",
+            "line1": "400 Narre Warren-Cranbourne Road",
+            "postcode": "3805",
+            "region": "VIC",
+            "c_internalALDIID": "1728",
+            "c_locationName": "ALDI Narre Warren South"
+        },
+        {
+            "city": "Epping",
+            "line1": "Harvest Home Road, Edgars Road Cnr",
+            "postcode": "3076",
+            "region": "VIC",
+            "c_internalALDIID": "1753",
+            "c_locationName": "ALDI Epping"
+        },
+        {
+            "city": "Armstrong Creek",
+            "line1": "Central Boulevard 35 - 43",
+            "postcode": "3217",
+            "region": "VIC",
+            "c_internalALDIID": "1805",
+            "c_locationName": "ALDI Armstrong Creek"
+        },
+        {
+            "city": "Broadmeadows",
+            "line1": "1099-1169 Pascoe Vale Road",
+            "postcode": "3047",
+            "region": "VIC",
+            "c_internalALDIID": "2468",
+            "c_locationName": "ALDI Broadmeadows"
+        },
+        {
+            "city": "Mulgrave",
+            "line1": "271 Police Road",
+            "postcode": "3170",
+            "region": "VIC",
+            "c_internalALDIID": "2490",
+            "c_locationName": "ALDI Mulgrave"
+        },
+        {
+            "city": "Tarneit",
+            "line1": "177 Hummingbird Boulevard",
+            "postcode": "3029",
+            "region": "VIC",
+            "c_internalALDIID": "2256",
+            "c_locationName": "ALDI Tarneit"
+        }
+    ]
+}

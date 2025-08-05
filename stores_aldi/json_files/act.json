@@ -1,106 +1,110 @@
-[
-    {
-        "city": "Belconnen",
-        "line1": "Benjamin Way 20",
-        "postcode": "2617",
-        "region": "ACT",
-        "c_internalALDIID": "1381",
-        "c_locationName": "ALDI Belconnen"
-    },
-    {
-        "city": "Amaroo",
-        "line1": "12 Pioneer Street",
-        "postcode": "2914",
-        "region": "ACT",
-        "c_internalALDIID": "2234",
-        "c_locationName": "ALDI Amaroo"
-    },
-    {
-        "city": "Conder",
-        "line1": "Sidney Nolan Street 9",
-        "postcode": "2906",
-        "region": "ACT",
-        "c_internalALDIID": "0490",
-        "c_locationName": "ALDI Conder"
-    },
-    {
-        "city": "Weston",
-        "line1": "Brierly Street 26",
-        "postcode": "2611",
-        "region": "ACT",
-        "c_internalALDIID": "0718",
-        "c_locationName": "ALDI Weston"
-    },
-    {
-        "city": "Casey",
-        "line1": "15 Kingsland Parade",
-        "postcode": "2913",
-        "region": "ACT",
-        "c_internalALDIID": "1638",
-        "c_locationName": "ALDI Casey"
-    },
-    {
-        "city": "Majura Park",
-        "line1": "18 - 26 Spitfire Avenue",
-        "postcode": "2609",
-        "region": "ACT",
-        "c_internalALDIID": "2086",
-        "c_locationName": "ALDI Majura Park"
-    },
-    {
-        "city": "Chisholm",
-        "line1": "Benham Street 36",
-        "postcode": "2905",
-        "region": "ACT",
-        "c_internalALDIID": "1652",
-        "c_locationName": "ALDI Chisholm"
-    },
-    {
-        "city": "Canberra",
-        "line1": "Bunda Street 148",
-        "postcode": "2601",
-        "region": "ACT",
-        "c_internalALDIID": "0307",
-        "c_locationName": "ALDI Canberra"
-    },
-    {
-        "city": "Tuggeranong",
-        "line1": "Soward Way 150-180",
-        "postcode": "2900",
-        "region": "ACT",
-        "c_internalALDIID": "0021",
-        "c_locationName": "ALDI Tuggeranong"
-    },
-    {
-        "city": "Macquarie",
-        "line1": "1 Bowman Street",
-        "postcode": "2614",
-        "region": "ACT",
-        "c_internalALDIID": "0536",
-        "c_locationName": "ALDI Macquarie"
-    },
-    {
-        "city": "Holt",
-        "line1": "Hardwick Crescent 50 - 60",
-        "postcode": "2615",
-        "region": "ACT",
-        "c_internalALDIID": "0270",
-        "c_locationName": "ALDI Holt"
-    },
-    {
-        "city": "Gungahlin",
-        "line1": "Hibberson Street 33",
-        "postcode": "2912",
-        "region": "ACT",
-        "c_internalALDIID": "2458",
-        "c_locationName": "ALDI Gungahlin"
-    },
-    {
-        "city": "Wright",
-        "line1": "Gornall Street 4",
-        "postcode": "2611",
-        "region": "ACT",
-        "c_internalALDIID": "2530",
-        "c_locationName": "ALDI Wright"
-    }
-]
+{
+    "state": "act",
+    "store_count": 13,
+    "stores": [
+        {
+            "city": "Belconnen",
+            "line1": "Benjamin Way 20",
+            "postcode": "2617",
+            "region": "ACT",
+            "c_internalALDIID": "1381",
+            "c_locationName": "ALDI Belconnen"
+        },
+        {
+            "city": "Amaroo",
+            "line1": "12 Pioneer Street",
+            "postcode": "2914",
+            "region": "ACT",
+            "c_internalALDIID": "2234",
+            "c_locationName": "ALDI Amaroo"
+        },
+        {
+            "city": "Conder",
+            "line1": "Sidney Nolan Street 9",
+            "postcode": "2906",
+            "region": "ACT",
+            "c_internalALDIID": "0490",
+            "c_locationName": "ALDI Conder"
+        },
+        {
+            "city": "Weston",
+            "line1": "Brierly Street 26",
+            "postcode": "2611",
+            "region": "ACT",
+            "c_internalALDIID": "0718",
+            "c_locationName": "ALDI Weston"
+        },
+        {
+            "city": "Casey",
+            "line1": "15 Kingsland Parade",
+            "postcode": "2913",
+            "region": "ACT",
+            "c_internalALDIID": "1638",
+            "c_locationName": "ALDI Casey"
+        },
+        {
+            "city": "Majura Park",
+            "line1": "18 - 26 Spitfire Avenue",
+            "postcode": "2609",
+            "region": "ACT",
+            "c_internalALDIID": "2086",
+            "c_locationName": "ALDI Majura Park"
+        },
+        {
+            "city": "Chisholm",
+            "line1": "Benham Street 36",
+            "postcode": "2905",
+            "region": "ACT",
+            "c_internalALDIID": "1652",
+            "c_locationName": "ALDI Chisholm"
+        },
+        {
+            "city": "Canberra",
+            "line1": "Bunda Street 148",
+            "postcode": "2601",
+            "region": "ACT",
+            "c_internalALDIID": "0307",
+            "c_locationName": "ALDI Canberra"
+        },
+        {
+            "city": "Tuggeranong",
+            "line1": "Soward Way 150-180",
+            "postcode": "2900",
+            "region": "ACT",
+            "c_internalALDIID": "0021",
+            "c_locationName": "ALDI Tuggeranong"
+        },
+        {
+            "city": "Macquarie",
+            "line1": "1 Bowman Street",
+            "postcode": "2614",
+            "region": "ACT",
+            "c_internalALDIID": "0536",
+            "c_locationName": "ALDI Macquarie"
+        },
+        {
+            "city": "Holt",
+            "line1": "Hardwick Crescent 50 - 60",
+            "postcode": "2615",
+            "region": "ACT",
+            "c_internalALDIID": "0270",
+            "c_locationName": "ALDI Holt"
+        },
+        {
+            "city": "Gungahlin",
+            "line1": "Hibberson Street 33",
+            "postcode": "2912",
+            "region": "ACT",
+            "c_internalALDIID": "2458",
+            "c_locationName": "ALDI Gungahlin"
+        },
+        {
+            "city": "Wright",
+            "line1": "Gornall Street 4",
+            "postcode": "2611",
+            "region": "ACT",
+            "c_internalALDIID": "2530",
+            "c_locationName": "ALDI Wright"
+        }
+    ]
+}
