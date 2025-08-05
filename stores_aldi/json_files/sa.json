@@ -1,5 +1,85 @@
 [
     {
+        "city": "Evanston",
+        "line1": "1 Tulloch Road",
+        "postcode": "5116",
+        "region": "SA",
+        "c_internalALDIID": "2241",
+        "c_locationName": "ALDI Evanston"
+    },
+    {
+        "city": "Kadina",
+        "line1": "10 Frances Terrace",
+        "postcode": "5554",
+        "region": "SA",
+        "c_internalALDIID": "2433",
+        "c_locationName": "ALDI Kadina"
+    },
+    {
+        "city": "Parafield Gardens",
+        "line1": "88 - 94 Lavender Drive",
+        "postcode": "5107",
+        "region": "SA",
+        "c_internalALDIID": "1913",
+        "c_locationName": "ALDI Parafield Gardens"
+    },
+    {
+        "city": "Hawthorn",
+        "line1": "198 Belair Road",
+        "postcode": "5062",
+        "region": "SA",
+        "c_internalALDIID": "2244",
+        "c_locationName": "ALDI Hawthorn"
+    },
+    {
+        "city": "Plympton",
+        "line1": "Cnr Anzac Highway, Marion Road",
+        "postcode": "5038",
+        "region": "SA",
+        "c_internalALDIID": "2456",
+        "c_locationName": "ALDI Plympton"
+    },
+    {
+        "city": "Norwood",
+        "line1": "Magill Road 76",
+        "postcode": "5067",
+        "region": "SA",
+        "c_internalALDIID": "2428",
+        "c_locationName": "ALDI Norwood"
+    },
+    {
+        "city": "Kilburn",
+        "line1": "400 Churchill Road",
+        "postcode": "5084",
+        "region": "SA",
+        "c_internalALDIID": "1915",
+        "c_locationName": "ALDI Kilburn"
+    },
+    {
+        "city": "Kensington Park",
+        "line1": "Magill Road 398",
+        "postcode": "5068",
+        "region": "SA",
+        "c_internalALDIID": "2102",
+        "c_locationName": "ALDI Kensington Park"
+    },
+    {
+        "city": "Mawson Lakes",
+        "line1": "1 - 7 Main Street",
+        "postcode": "5095",
+        "region": "SA",
+        "c_internalALDIID": "2281",
+        "c_locationName": "ALDI Mawson Lakes"
+    },
+    {
+        "city": "Mount Barker",
+        "line1": "22-28 Hutchinson Street",
+        "postcode": "5251",
+        "region": "SA",
+        "c_internalALDIID": "2126",
+        "c_locationName": "ALDI Mount Barker"
+    },
+    {
         "city": "Port Pirie",
         "line1": "8 Wandearah Road",
         "postcode": "5540",

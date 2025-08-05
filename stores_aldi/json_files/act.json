@@ -78,5 +78,29 @@
         "region": "ACT",
         "c_internalALDIID": "0536",
         "c_locationName": "ALDI Macquarie"
+    },
+    {
+        "city": "Holt",
+        "line1": "Hardwick Crescent 50 - 60",
+        "postcode": "2615",
+        "region": "ACT",
+        "c_internalALDIID": "0270",
+        "c_locationName": "ALDI Holt"
+    },
+    {
+        "city": "Gungahlin",
+        "line1": "Hibberson Street 33",
+        "postcode": "2912",
+        "region": "ACT",
+        "c_internalALDIID": "2458",
+        "c_locationName": "ALDI Gungahlin"
+    },
+    {
+        "city": "Wright",
+        "line1": "Gornall Street 4",
+        "postcode": "2611",
+        "region": "ACT",
+        "c_internalALDIID": "2530",
+        "c_locationName": "ALDI Wright"
     }
 ]
