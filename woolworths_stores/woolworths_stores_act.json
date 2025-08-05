@@ -2,27 +2,19 @@
   "Stores": [
     {
       "Division": "SUPERMARKETS",
-      "Name": "Conder",
-      "AddressLine1": "4 Sidney Nolan Drive",
-      "Suburb": "Conder",
+      "Name": "Belconnen",
+      "AddressLine1": "18 Benjamin Way",
+      "Suburb": "Belconnen",
       "State": "ACT",
-      "Postcode": "2906"
+      "Postcode": "2617"
     },
     {
       "Division": "SUPERMARKETS",
-      "Name": "Tuggeranong",
-      "AddressLine1": "Tuggeranong Southpoint, Cnr Anketell & Reed Street",
-      "Suburb": "Tuggeranong",
+      "Name": "Bonner (Metro)",
+      "AddressLine1": "61 Mabo Boulevard",
+      "Suburb": "Bonner",
       "State": "ACT",
-      "Postcode": "2900"
-    },
-    {
-      "Division": "SUPERMARKETS",
-      "Name": "Kambah",
-      "AddressLine1": "Marconi Crescent",
-      "Suburb": "Kambah",
-      "State": "ACT",
-      "Postcode": "2902"
+      "Postcode": "2914"
     },
     {
       "Division": "SUPERMARKETS",
@@ -34,75 +26,11 @@
     },
     {
       "Division": "SUPERMARKETS",
-      "Name": "Erindale",
-      "AddressLine1": "50-68 Comrie Street",
-      "Suburb": "Wanniassa",
+      "Name": "Canberra Airport",
+      "AddressLine1": "18-26 Spitfire Avenue",
+      "Suburb": "Majura",
       "State": "ACT",
-      "Postcode": "2903"
-    },
-    {
-      "Division": "SUPERMARKETS",
-      "Name": "Weston Creek",
-      "AddressLine1": "Cnr Brierly And Mahoney Crescent",
-      "Suburb": "Weston Creek",
-      "State": "ACT",
-      "Postcode": "2611"
-    },
-    {
-      "Division": "SUPERMARKETS",
-      "Name": "Wright (Metro)",
-      "AddressLine1": "Crn John Gorton Drive & Steve Irwin Ave",
-      "Suburb": "Wright",
-      "State": "ACT",
-      "Postcode": "2611"
-    },
-    {
-      "Division": "SUPERMARKETS",
-      "Name": "Mawson",
-      "AddressLine1": "Mawson Place",
-      "Suburb": "Mawson",
-      "State": "ACT",
-      "Postcode": "2607"
-    },
-    {
-      "Division": "SUPERMARKETS",
-      "Name": "Woden",
-      "AddressLine1": "Cnr Hindmarsh And Melrose Drives",
-      "Suburb": "Woden",
-      "State": "ACT",
-      "Postcode": "2606"
-    },
-    {
-      "Division": "SUPERMARKETS",
-      "Name": "Kippax",
-      "AddressLine1": "24-48 Hardwick Crescent",
-      "Suburb": "Holt",
-      "State": "ACT",
-      "Postcode": "2615"
-    },
-    {
-      "Division": "SUPERMARKETS",
-      "Name": "Hawker (Metro)",
-      "AddressLine1": "Springvale Drive",
-      "Suburb": "Hawker",
-      "State": "ACT",
-      "Postcode": "2614"
-    },
-    {
-      "Division": "SUPERMARKETS",
-      "Name": "Dunlop",
-      "AddressLine1": "Cnr Snowbridge Circuit & Lance Hill Ave",
-      "Suburb": "Dunlop",
-      "State": "ACT",
-      "Postcode": "2615"
-    },
-    {
-      "Division": "SUPERMARKETS",
-      "Name": "Belconnen",
-      "AddressLine1": "18 Benjamin Way",
-      "Suburb": "Belconnen",
-      "State": "ACT",
-      "Postcode": "2617"
+      "Postcode": "2609"
     },
     {
       "Division": "SUPERMARKETS",
@@ -114,11 +42,11 @@
     },
     {
       "Division": "SUPERMARKETS",
-      "Name": "Cameron Avenue Metro",
-      "AddressLine1": "1/ 6 Grazier Ln, Belconnen",
-      "Suburb": "Belconnen",
-      "State": "NSW",
-      "Postcode": "2617"
+      "Name": "Conder",
+      "AddressLine1": "4 Sidney Nolan Drive",
+      "Suburb": "Conder",
+      "State": "ACT",
+      "Postcode": "2906"
     },
     {
       "Division": "SUPERMARKETS",
@@ -130,11 +58,19 @@
     },
     {
       "Division": "SUPERMARKETS",
-      "Name": "Canberra Airport",
-      "AddressLine1": "18-26 Spitfire Avenue",
-      "Suburb": "Majura",
+      "Name": "Dunlop",
+      "AddressLine1": "Cnr Snowbridge Circuit & Lance Hill Ave",
+      "Suburb": "Dunlop",
       "State": "ACT",
-      "Postcode": "2609"
+      "Postcode": "2615"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Erindale",
+      "AddressLine1": "50-68 Comrie Street",
+      "Suburb": "Wanniassa",
+      "State": "ACT",
+      "Postcode": "2903"
     },
     {
       "Division": "SUPERMARKETS",
@@ -154,11 +90,67 @@
     },
     {
       "Division": "SUPERMARKETS",
-      "Name": "Bonner (Metro)",
-      "AddressLine1": "61 Mabo Boulevard",
-      "Suburb": "Bonner",
+      "Name": "Hawker (Metro)",
+      "AddressLine1": "Springvale Drive",
+      "Suburb": "Hawker",
       "State": "ACT",
-      "Postcode": "2914"
+      "Postcode": "2614"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Kambah",
+      "AddressLine1": "Marconi Crescent",
+      "Suburb": "Kambah",
+      "State": "ACT",
+      "Postcode": "2902"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Kippax",
+      "AddressLine1": "24-48 Hardwick Crescent",
+      "Suburb": "Holt",
+      "State": "ACT",
+      "Postcode": "2615"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Mawson",
+      "AddressLine1": "Mawson Place",
+      "Suburb": "Mawson",
+      "State": "ACT",
+      "Postcode": "2607"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Tuggeranong",
+      "AddressLine1": "Tuggeranong Southpoint, Cnr Anketell & Reed Street",
+      "Suburb": "Tuggeranong",
+      "State": "ACT",
+      "Postcode": "2900"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Weston Creek",
+      "AddressLine1": "Cnr Brierly And Mahoney Crescent",
+      "Suburb": "Weston Creek",
+      "State": "ACT",
+      "Postcode": "2611"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Woden",
+      "AddressLine1": "Cnr Hindmarsh And Melrose Drives",
+      "Suburb": "Woden",
+      "State": "ACT",
+      "Postcode": "2606"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Wright (Metro)",
+      "AddressLine1": "Crn John Gorton Drive & Steve Irwin Ave",
+      "Suburb": "Wright",
+      "State": "ACT",
+      "Postcode": "2611"
     }
   ]
 }
