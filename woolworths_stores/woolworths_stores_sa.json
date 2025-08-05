@@ -1,0 +1,540 @@
+{
+  "Stores": [
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Mount Gambier Marketplace",
+      "AddressLine1": "176 Penola Road",
+      "Suburb": "Mount Gambier",
+      "State": "SA",
+      "Postcode": "5290"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Mount Gambier",
+      "AddressLine1": "Mt Gambier Shopping Centre, 145 Commerical Street",
+      "Suburb": "Mount Gambier",
+      "State": "SA",
+      "Postcode": "5290"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Naracoorte",
+      "AddressLine1": "Kingcraig Plaza, 26 Roberston Street",
+      "Suburb": "Naracoorte",
+      "State": "SA",
+      "Postcode": "5271"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Millicent",
+      "AddressLine1": "34 Davenport Street",
+      "Suburb": "Millicent",
+      "State": "SA",
+      "Postcode": "5280"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Loxton",
+      "AddressLine1": "1 Martha Street",
+      "Suburb": "Loxton",
+      "State": "SA",
+      "Postcode": "5333"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Renmark",
+      "AddressLine1": "Renmark Shopping Centre, Renmark Avenue",
+      "Suburb": "Renmark",
+      "State": "SA",
+      "Postcode": "5341"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Berri",
+      "AddressLine1": "14 Vaughan Terrace",
+      "Suburb": "Berri",
+      "State": "SA",
+      "Postcode": "5343"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Murray Bridge Marketplace",
+      "AddressLine1": "23-51 South Terrace",
+      "Suburb": "Murray Bridge",
+      "State": "SA",
+      "Postcode": "5253"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Waikerie",
+      "AddressLine1": "1 White Street",
+      "Suburb": "Waikerie",
+      "State": "SA",
+      "Postcode": "5330"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Goolwa",
+      "AddressLine1": "33 Hutchinson Street",
+      "Suburb": "Goolwa",
+      "State": "SA",
+      "Postcode": "5214"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Strathalbyn",
+      "AddressLine1": "Cnr Dawson & Donald Street",
+      "Suburb": "Strathalbyn",
+      "State": "SA",
+      "Postcode": "5255"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Victor Harbor",
+      "AddressLine1": "27 Torrens Road",
+      "Suburb": "Victor Harbor",
+      "State": "SA",
+      "Postcode": "5211"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Mount Barker South",
+      "AddressLine1": "239 Wellington Rd Mt Barker 5251",
+      "Suburb": "Mount Barker",
+      "State": "SA",
+      "Postcode": "5251"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Mt Barker",
+      "AddressLine1": "5 Walker Street",
+      "Suburb": "Mt Barker",
+      "State": "SA",
+      "Postcode": "5251"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Aberfoyle Park",
+      "AddressLine1": "130-150 Hub Drive",
+      "Suburb": "Aberfoyle Park",
+      "State": "SA",
+      "Postcode": "5159"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Blackwood",
+      "AddressLine1": "360 Shepherds Hill Road",
+      "Suburb": "Blackwood",
+      "State": "SA",
+      "Postcode": "5051"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Woodcroft",
+      "AddressLine1": "217 Pimpala Road",
+      "Suburb": "Woodcroft",
+      "State": "SA",
+      "Postcode": "5162"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Morphett Vale",
+      "AddressLine1": "146 Main South Road",
+      "Suburb": "Morphett Vale",
+      "State": "SA",
+      "Postcode": "5162"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Seaford (SA)",
+      "AddressLine1": "Cnr Commercial Road And The Parade",
+      "Suburb": "Seaford",
+      "State": "SA",
+      "Postcode": "5169"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Newton",
+      "AddressLine1": "Newton Village Shopping Centre, 299 Montacute Road",
+      "Suburb": "Newton",
+      "State": "SA",
+      "Postcode": "5074"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Seaford Meadows",
+      "AddressLine1": "Lot 209 Grand Boulevard & Prow Drive",
+      "Suburb": "Seaford Meadows",
+      "State": "SA",
+      "Postcode": "5169"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Marryatville",
+      "AddressLine1": "Cnr Kensington Rd And Tusmore Avenue",
+      "Suburb": "Marryatville",
+      "State": "SA",
+      "Postcode": "5068"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Colonnades",
+      "AddressLine1": "Colonnades Shopping Centre, Cnr Burgess And Goldsmith Drives",
+      "Suburb": "Noarlunga",
+      "State": "SA",
+      "Postcode": "5168"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Mitcham",
+      "AddressLine1": "Mitcham Shopping Centre, 119 Belair Road",
+      "Suburb": "Torrens Park",
+      "State": "SA",
+      "Postcode": "5062"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Arkaba",
+      "AddressLine1": "Arkaba Shopping Centre, 180 Glen Osmond Road",
+      "Suburb": "Fullarton",
+      "State": "SA",
+      "Postcode": "5063"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Christies Beach",
+      "AddressLine1": "Christies Beach Shopping Centre, 76 Beach Road",
+      "Suburb": "Christies Beach",
+      "State": "SA",
+      "Postcode": "5165"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Hallett Cove",
+      "AddressLine1": "Hallett Cove Shopping Centre, 246 Lonsdale Road",
+      "Suburb": "Hallett Cove",
+      "State": "SA",
+      "Postcode": "5158"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Unley",
+      "AddressLine1": "204 Unley Road",
+      "Suburb": "Unley",
+      "State": "SA",
+      "Postcode": "5061"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Cumberland Park",
+      "AddressLine1": "366 Goodwood Road",
+      "Suburb": "Cumberland Park",
+      "State": "SA",
+      "Postcode": "5041"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Tea Tree Plaza",
+      "AddressLine1": "984 North East Road",
+      "Suburb": "Modbury",
+      "State": "SA",
+      "Postcode": "5092"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Marden",
+      "AddressLine1": "9 Lower Portrush Road",
+      "Suburb": "Marden",
+      "State": "SA",
+      "Postcode": "5070"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "The Stables",
+      "AddressLine1": "1495 Golden Grove Road",
+      "Suburb": "Golden Grove",
+      "State": "SA",
+      "Postcode": "5125"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Marion",
+      "AddressLine1": "Marion Shopping Centre, 297 Diagonal Road",
+      "Suburb": "Oaklands Park",
+      "State": "SA",
+      "Postcode": "5046"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Gilles Plains",
+      "AddressLine1": "575 North East Road",
+      "Suburb": "Gilles Plains",
+      "State": "SA",
+      "Postcode": "5086"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Rundle Mall",
+      "AddressLine1": "80-88 Rundle Mall",
+      "Suburb": "Adelaide",
+      "State": "SA",
+      "Postcode": "5000"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Modbury Heights",
+      "AddressLine1": "Modbury Heights Shopping Centre, 172 Ladywood Drive",
+      "Suburb": "Modbury Heights",
+      "State": "SA",
+      "Postcode": "5092"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Walkerville",
+      "AddressLine1": "14/104 Walkerville Terrace",
+      "Suburb": "Walkerville",
+      "State": "SA",
+      "Postcode": "5081"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Golden Grove",
+      "AddressLine1": "Cnr The Golden Way And The Grove Way",
+      "Suburb": "Golden Grove",
+      "State": "SA",
+      "Postcode": "5125"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Brighton",
+      "AddressLine1": "437 - 441 Brighton Road",
+      "Suburb": "Brighton",
+      "State": "SA",
+      "Postcode": "5048"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Northgate",
+      "AddressLine1": "Cnr Folland Avenue And Fosters Road",
+      "Suburb": "Northgate",
+      "State": "SA",
+      "Postcode": "5085"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Hilton",
+      "AddressLine1": "160 Sir Donald Bradman Drive",
+      "Suburb": "Hilton",
+      "State": "SA",
+      "Postcode": "5033"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Para Hills",
+      "AddressLine1": "Wilkinson Road",
+      "Suburb": "Para Hills",
+      "State": "SA",
+      "Postcode": "5096"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Northpark",
+      "AddressLine1": "Northpark Shopping Centre, 264 Main Rd",
+      "Suburb": "Prospect",
+      "State": "SA",
+      "Postcode": "5082"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Glenelg",
+      "AddressLine1": "Cnr Jetty And Brighton Rds",
+      "Suburb": "Glenelg",
+      "State": "SA",
+      "Postcode": "5045"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Brickworks (Torrensville)",
+      "AddressLine1": "South Road and Ashwin Parade",
+      "Suburb": "Torrensville",
+      "State": "SA",
+      "Postcode": "5031"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Mawson Lakes",
+      "AddressLine1": "Cnr University Pde & Main St",
+      "Suburb": "Mawson Lakes",
+      "State": "SA",
+      "Postcode": "5095"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Parabanks",
+      "AddressLine1": "John Street",
+      "Suburb": "Salisbury",
+      "State": "SA",
+      "Postcode": "5108"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Blakes Crossing",
+      "AddressLine1": "Blakes Crossing Town Centre, Main Tce",
+      "Suburb": "Blakeview",
+      "State": "SA",
+      "Postcode": "5114"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Kilkenny",
+      "AddressLine1": "470 Torrens Road",
+      "Suburb": "Kilkenny",
+      "State": "SA",
+      "Postcode": "5009"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Elizabeth Way",
+      "AddressLine1": "Elizabeth City Centre, 50 Elizabeth Way",
+      "Suburb": "Elizabeth",
+      "State": "SA",
+      "Postcode": "5112"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Findon",
+      "AddressLine1": "185 Findon Road",
+      "Suburb": "Findon",
+      "State": "SA",
+      "Postcode": "5023"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Hollywood Plaza",
+      "AddressLine1": "155 Winzor Street",
+      "Suburb": "Salisbury Downs",
+      "State": "SA",
+      "Postcode": "5108"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Fulham Gardens",
+      "AddressLine1": "445-457 Tapleys Hill Rd",
+      "Suburb": "Fulham Gardens",
+      "State": "SA",
+      "Postcode": "5024"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Gawler",
+      "AddressLine1": "2 Commercial Lane",
+      "Suburb": "Gawler",
+      "State": "SA",
+      "Postcode": "5118"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Paralowie",
+      "AddressLine1": "337 Whites Road",
+      "Suburb": "Paralowie",
+      "State": "SA",
+      "Postcode": "5108"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Playford",
+      "AddressLine1": "297 Peachey Road",
+      "Suburb": "Munno Para",
+      "State": "SA",
+      "Postcode": "5115"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Springbank Plaza",
+      "AddressLine1": "Cnr Waterloo Rd & Kensington Way",
+      "Suburb": "Burton",
+      "State": "SA",
+      "Postcode": "5110"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "West Lakes",
+      "AddressLine1": "111 West Lakes Boulevard",
+      "Suburb": "West Lakes",
+      "State": "SA",
+      "Postcode": "5021"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "PORT ADELAIDE",
+      "AddressLine1": "200 - 220 COMMERCIAL ROAD, PORT ADELAIDE",
+      "Suburb": "PORT ADELAIDE",
+      "State": "SA",
+      "Postcode": "5015"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Virginia",
+      "AddressLine1": "Old Port Wakefield Road",
+      "Suburb": "Virginia",
+      "State": "SA",
+      "Postcode": "5120"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Clare",
+      "AddressLine1": "CNR Old North Rd and Wright St",
+      "Suburb": "Clare",
+      "State": "SA",
+      "Postcode": "5453"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Kadina",
+      "AddressLine1": "1 Forster Street",
+      "Suburb": "Kadina",
+      "State": "SA",
+      "Postcode": "5554"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Port Pirie",
+      "AddressLine1": "11 Norman Street",
+      "Suburb": "Port Pirie",
+      "State": "SA",
+      "Postcode": "5540"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Whyalla",
+      "AddressLine1": "18-30 Viscount Slim Avenue",
+      "Suburb": "Whyalla",
+      "State": "SA",
+      "Postcode": "5608"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Whyalla Westlands",
+      "AddressLine1": "199 Nicolson Avenue",
+      "Suburb": "Whyalla",
+      "State": "SA",
+      "Postcode": "5600"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Port Augusta",
+      "AddressLine1": "25 Tassie Street",
+      "Suburb": "Port Augusta",
+      "State": "SA",
+      "Postcode": "5700"
+    },
+    {
+      "Division": "SUPERMARKETS",
+      "Name": "Port Lincoln",
+      "AddressLine1": "27 Liverpool Street",
+      "Suburb": "Port Lincoln",
+      "State": "SA",
+      "Postcode": "5606"
+    }
+  ]
+}
