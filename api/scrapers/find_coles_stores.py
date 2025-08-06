@@ -6,6 +6,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from api.utils.shop_scraping_utils.coles import (
+    drange,
     get_graphql_query, 
     load_existing_stores,
     load_progress,
@@ -148,11 +149,4 @@ def fetch_coles_stores_graphql():
                 driver.quit()
                 print("\nBrowser closed.")
 
-def drange(start, stop, step):
-    r = start
-    while r < stop:
-        yield r
-        r += step
 
-if __name__ == "__main__":
-    fetch_coles_stores_graphql()

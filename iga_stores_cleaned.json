@@ -27565,5 +27565,32 @@
         "updated": "0",
         "onlineShopUrl": "",
         "ecommerceUrl": ""
+    },
+    {
+        "storeId": "15993",
+        "retailerId": "183",
+        "storeName": "IGA Tennant Creek",
+        "address": "48 Paterson Street",
+        "suburb": "Tennant Creek",
+        "state": "NT",
+        "postcode": "0860",
+        "phone": "08 8962 2296",
+        "fax": "",
+        "hours": "8:00 AM - 7:00 PM\r\n8:00 AM - 7:00 PM\r\n8:00 AM - 7:00 PM\r\n8:00 AM - 7:00 PM\r\n8:00 AM - 7:00 PM\r\n8:00 AM - 5:00 PM\r\n8:00 AM - 5:00 PM",
+        "hoursDay": "Monday\r\nTuesday\r\nWednesday\r\nThursday\r\nFriday\r\nSaturday\r\nSunday",
+        "regionId": null,
+        "latitude": "-19.648320000000000",
+        "longitude": "134.190610000000000",
+        "tag": "43161",
+        "locationNumber": "65082771",
+        "saleGroupId": "0",
+        "christmasHours": "",
+        "christmasHoursDay": "Please contact the store for Easter opening hours.",
+        "updateTimeStamp": "2025-04-11 15:06:03",
+        "postcodeId": "241",
+        "storeUrl": "",
+        "updated": "0",
+        "onlineShopUrl": "",
+        "ecommerceUrl": ""
     }
 ]
