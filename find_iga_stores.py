@@ -4,6 +4,7 @@ import html
 import re
 import os
 import sys
+from organize_iga_stores import organize_iga_stores
 
 # --- CONFIGURATION ---
 STORES_FILE = 'C:\\Users\\ethan\\coding\\splitcart\\iga_stores_cleaned.json'
@@ -156,6 +157,7 @@ def fetch_all_stores_thorough():
              if os.path.exists(PROGRESS_FILE):
                 os.remove(PROGRESS_FILE)
                 print("Scraping complete. Progress file removed.")
+             organize_iga_stores()
 
 if __name__ == "__main__":
     fetch_all_stores_thorough()
