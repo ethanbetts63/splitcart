@@ -16,7 +16,6 @@ PROGRESS_FILE = 'C:\\Users\\ethan\\coding\\splitcart\\iga_stores_progress.json'
 MAX_STORE_ID = 23001
 STORES_FILE = 'C:\\Users\\ethan\\coding\\splitcart\\iga_stores_cleaned.json'
 
-
 def find_iga_stores():
     """Fetches all store locations, skipping excluded ranges and saving progress."""
     all_stores_data = load_existing_stores(STORES_FILE)
