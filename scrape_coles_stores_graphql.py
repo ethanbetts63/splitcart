@@ -7,6 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
+from organize_coles_stores import organize_coles_stores
 
 # --- CONFIGURATION ---
 COLES_API_URL = "https://www.coles.com.au/api/graphql"
@@ -188,6 +189,10 @@ def fetch_coles_stores_graphql():
             print(f"Cleaned data saved to {OUTPUT_FILE}")
             if os.path.exists(PROGRESS_FILE):
                 os.remove(PROGRESS_FILE)
+            
+            # Organize the final data
+            organize_coles_stores()
+
             break # Exit the main while loop on success
 
         except Exception as e:
