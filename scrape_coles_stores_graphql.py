@@ -40,15 +40,14 @@ def load_progress():
                 last_lat = progress.get('last_lat', LAT_MIN)
                 last_lon = progress.get('last_lon', LON_MIN)
 
-                # If the last longitude was the final one in the row, roll over to the next latitude
                 if last_lon >= LON_MAX:
-                    print(f"Completed row for Lat: {last_lat}. Resuming on next latitude.")
+                    print(f"\nCompleted row for Lat: {last_lat}. Resuming on next latitude.")
                     return last_lat + LAT_STEP, LON_MIN
                 else:
-                    print(f"Resuming from Lat: {last_lat}, Lon: {last_lon + LON_STEP}")
+                    print(f"\nResuming from Lat: {last_lat}, Lon: {last_lon + LON_STEP}")
                     return last_lat, last_lon + LON_STEP
         except (json.JSONDecodeError, IOError):
-            print(f"Warning: {PROGRESS_FILE} is corrupted or unreadable. Starting from the beginning.")
+            print(f"\nWarning: {PROGRESS_FILE} is corrupted or unreadable. Starting from the beginning.")
     return LAT_MIN, LON_MIN
 
 def load_existing_stores():
@@ -59,7 +58,7 @@ def load_existing_stores():
                 stores_list = json.load(f)
                 return {store['id']: store for store in stores_list}
         except (json.JSONDecodeError, KeyError):
-            print(f"Warning: {OUTPUT_FILE} is corrupted or has an unexpected format. Starting fresh.")
+            print(f"\nWarning: {OUTPUT_FILE} is corrupted or has an unexpected format. Starting fresh.")
     return {}
 
 def save_stores_incrementally(stores_dict):
@@ -98,10 +97,10 @@ def fetch_coles_stores_graphql():
     total_steps = total_lat_steps * total_lon_steps
 
     all_stores = load_existing_stores()
+    start_lat, start_lon = load_progress()
 
     while True:
         try:
-            start_lat, start_lon = load_progress()
             print("\n--- Launching Selenium browser to warm up session and make API calls ---")
             chrome_options = Options()
             chrome_options.add_argument("user-agent=SplitCartScraper/1.0 (Contact: admin@splitcart.com)")
@@ -153,7 +152,8 @@ def fetch_coles_stores_graphql():
                         data = json.loads(json_response_str)
 
                         if "error" in data:
-                            print(f"\nAPI Error for Lat: {{current_lat:.2f}}, Lon: {{current_lon:.2f}}: {{data['error']}}")
+                            raise Exception(f"API Error: {data['error']}") # Raise exception to trigger restart
+
                         elif data.get("data") and data["data"].get("stores") and "results" in data["data"]["stores"]:
                             for result in data["data"]["stores"]["results"]:
                                 store_details = result.get('store', {})
@@ -171,10 +171,9 @@ def fetch_coles_stores_graphql():
                                     all_stores[store_id] = cleaned_store
                                     save_stores_incrementally(all_stores)
 
-                    except Exception:
-                        print(f"\nAn unexpected error occurred while processing data for Lat: {{current_lat:.2f}}, Lon: {{current_lon:.2f}}")
-                        import traceback
-                        traceback.print_exc()
+                    except Exception as e:
+                        # This will now catch the API error and trigger the restart
+                        raise e
                     
                     time.sleep(REQUEST_DELAY)
                     current_lon += LON_STEP
@@ -185,11 +184,11 @@ def fetch_coles_stores_graphql():
                 current_lat += LAT_STEP
             
             print_progress_bar(total_steps, total_steps, LAT_MAX, LON_MAX, len(all_stores))
-            print(f"\n\nFinished Coles store scraping. Found {{len(all_stores)}} unique stores.")
+            print(f"\n\nFinished Coles store scraping. Found {len(all_stores)} unique stores.")
             print(f"Cleaned data saved to {OUTPUT_FILE}")
             if os.path.exists(PROGRESS_FILE):
                 os.remove(PROGRESS_FILE)
-            break
+            break # Exit the main while loop on success
 
         except Exception as e:
             print(f"\n\nA critical error occurred: {e}")
