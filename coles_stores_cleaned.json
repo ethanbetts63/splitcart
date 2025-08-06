@@ -32737,5 +32737,47 @@
             "storeFinderId": 2,
             "id": "COL"
         }
+    },
+    {
+        "id": "COL:4442",
+        "name": "Coles Ingham",
+        "phone": "(07) 4776 2201",
+        "isTrading": true,
+        "address": {
+            "state": "QLD",
+            "suburb": "Ingham",
+            "addressLine": "Lannercost St & Mcilwraith St",
+            "postcode": "4850"
+        },
+        "position": {
+            "latitude": -18.651031,
+            "longitude": 146.152864
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "COL:4510",
+        "name": "Coles Ayr",
+        "phone": "(07) 4783 3666",
+        "isTrading": true,
+        "address": {
+            "state": "QLD",
+            "suburb": "Ayr",
+            "addressLine": "118 Edward St",
+            "postcode": "4807"
+        },
+        "position": {
+            "latitude": -19.572496,
+            "longitude": 147.403846
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
     }
 ]

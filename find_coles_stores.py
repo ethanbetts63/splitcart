@@ -1,13 +1,19 @@
-import requests
 import json
 import time
 import os
-import sys
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
-from organize_coles_stores import organize_coles_stores
+from api.utils.shop_scraping_utils.coles import (
+    get_graphql_query, 
+    load_existing_stores,
+    load_progress,
+    organize_coles_stores,
+    print_progress_bar,
+    save_progress,
+    save_stores_incrementally,
+)
 
 # --- CONFIGURATION ---
 COLES_API_URL = "https://www.coles.com.au/api/graphql"
@@ -23,70 +29,7 @@ LON_MAX = 154.0
 LAT_STEP = 0.5
 LON_STEP = 0.5
 
-REQUEST_DELAY = 0.5  # seconds between requests
-
-# --- UTILITY FUNCTIONS ---
-
-def save_progress(lat, lon):
-    """Saves the last processed coordinates to a file."""
-    with open(PROGRESS_FILE, 'w', encoding='utf-8') as f:
-        json.dump({'last_lat': lat, 'last_lon': lon}, f)
-
-def load_progress():
-    """Loads the last processed coordinates from a file, handling rollover."""
-    if os.path.exists(PROGRESS_FILE):
-        try:
-            with open(PROGRESS_FILE, 'r', encoding='utf-8') as f:
-                progress = json.load(f)
-                last_lat = progress.get('last_lat', LAT_MIN)
-                last_lon = progress.get('last_lon', LON_MIN)
-
-                if last_lon >= LON_MAX:
-                    print(f"\nCompleted row for Lat: {last_lat}. Resuming on next latitude.")
-                    return last_lat + LAT_STEP, LON_MIN
-                else:
-                    print(f"\nResuming from Lat: {last_lat}, Lon: {last_lon + LON_STEP}")
-                    return last_lat, last_lon + LON_STEP
-        except (json.JSONDecodeError, IOError):
-            print(f"\nWarning: {PROGRESS_FILE} is corrupted or unreadable. Starting from the beginning.")
-    return LAT_MIN, LON_MIN
-
-def load_existing_stores():
-    """Loads existing stores from the output file to avoid duplicates."""
-    if os.path.exists(OUTPUT_FILE):
-        try:
-            with open(OUTPUT_FILE, 'r', encoding='utf-8') as f:
-                stores_list = json.load(f)
-                return {store['id']: store for store in stores_list}
-        except (json.JSONDecodeError, KeyError):
-            print(f"\nWarning: {OUTPUT_FILE} is corrupted or has an unexpected format. Starting fresh.")
-    return {}
-
-def save_stores_incrementally(stores_dict):
-    """Saves the dictionary of cleaned stores to the output file."""
-    with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
-        json.dump(list(stores_dict.values()), f, indent=4)
-
-def get_graphql_query(latitude, longitude):
-    """Returns the GraphQL query payload."""
-    return {
-        "operationName": "GetStores",
-        "variables": {
-            "brandIds": ["COL", "LQR", "VIN"],
-            "latitude": latitude,
-            "longitude": longitude
-        },
-        "query": "query GetStores($brandIds: [BrandId!], $latitude: Float!, $longitude: Float!) {\n  stores(brandIds: $brandIds, latitude: $latitude, longitude: $longitude) {\n    results {\n      store {\n        id\n        name\n        address {\n          state\n          suburb\n          addressLine\n          postcode\n        }\n        position {\n          latitude\n          longitude\n        }\n        brand {\n          name\n          storeFinderId\n          id\n        }\n        phone\n        isTrading\n        services {\n          name\n        }\n      }\n    }\n  }\n}"
-    }
-
-def print_progress_bar(iteration, total, lat, lon, store_count):
-    """Displays a detailed progress bar with store count."""
-    percentage = 100 * (iteration / total)
-    bar_length = 40
-    filled_length = int(bar_length * iteration // total)
-    bar = '█' * filled_length + '-' * (bar_length - filled_length)
-    sys.stdout.write(f'\rProgress: |{bar}| {percentage:.2f}% ({iteration}/{total}) | Stores Found: {store_count} | Coords: ({lat:.2f}, {lon:.2f})')
-    sys.stdout.flush()
+REQUEST_DELAY = 0.5  
 
 # --- MAIN SCRAPING LOGIC ---
 
@@ -97,8 +40,8 @@ def fetch_coles_stores_graphql():
     total_lon_steps = int((LON_MAX - LON_MIN) / LON_STEP) + 1
     total_steps = total_lat_steps * total_lon_steps
 
-    all_stores = load_existing_stores()
-    start_lat, start_lon = load_progress()
+    all_stores = load_existing_stores(OUTPUT_FILE)
+    start_lat, start_lon = load_progress(PROGRESS_FILE, LAT_MIN, LAT_STEP, LON_MIN, LON_MAX, LON_STEP)
 
     while True:
         try:
@@ -170,7 +113,7 @@ def fetch_coles_stores_graphql():
                                         "brand": store_details.get("brand")
                                     }
                                     all_stores[store_id] = cleaned_store
-                                    save_stores_incrementally(all_stores)
+                                    save_stores_incrementally(OUTPUT_FILE, all_stores)
 
                     except Exception as e:
                         # This will now catch the API error and trigger the restart
@@ -180,7 +123,7 @@ def fetch_coles_stores_graphql():
                     current_lon += LON_STEP
                     completed_steps += 1
                 
-                save_progress(current_lat, current_lon - LON_STEP)
+                save_progress(PROGRESS_FILE, current_lat, current_lon - LON_STEP)
                 start_lon = LON_MIN
                 current_lat += LAT_STEP
             

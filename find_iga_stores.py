@@ -1,11 +1,11 @@
 import requests
 import json
 import os
-from organize_iga_stores import organize_iga_stores
 from api.utils.shop_scraping_utils.iga import (
     is_in_excluded_range,
     load_existing_stores,
     load_progress,
+    organize_iga_stores,
     parse_and_clean_stores,
     print_progress,
     save_progress,
@@ -85,6 +85,3 @@ def find_iga_stores():
                 os.remove(PROGRESS_FILE)
                 print("Scraping complete. Progress file removed.")
              organize_iga_stores()
-
-if __name__ == "__main__":
-    find_iga_stores()
