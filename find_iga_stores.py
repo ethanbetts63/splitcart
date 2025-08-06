@@ -7,7 +7,7 @@ import sys
 
 # --- CONFIGURATION ---
 STORES_FILE = 'C:\\Users\\ethan\\coding\\splitcart\\iga_stores_cleaned.json'
-PROGRESS_FILE = 'C:\\Users\\ethan\\coding\\splitcart\\iga_stores.json'
+PROGRESS_FILE = 'C:\\Users\\ethan\\coding\\splitcart\\iga_stores_progress.json'
 MAX_STORE_ID = 23001
 
 # Ranges of store IDs to exclude from the search
