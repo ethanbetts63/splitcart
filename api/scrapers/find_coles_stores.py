@@ -19,7 +19,7 @@ from api.utils.shop_scraping_utils.coles import (
 # --- CONFIGURATION ---
 COLES_API_URL = "https://www.coles.com.au/api/graphql"
 SUBSCRIPTION_KEY = "eae83861d1cd4de6bb9cd8a2cd6f041e"
-OUTPUT_FILE = "C:\\Users\\ethan\\coding\\splitcart\api\\data\\store_data\\stores_coles\\coles_stores_cleaned.json"
+OUTPUT_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_coles\\coles_stores_cleaned.json"
 PROGRESS_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_coles\\find_coles_stores_progress.json"
 
 # Geographical grid for Australia (approximate)
@@ -104,7 +104,7 @@ def find_coles_stores():
                                 store_details = result.get('store', {})
                                 store_id = store_details.get('id')
                                 if store_id and store_id not in all_stores:
-                                    cleaned_store = {
+                                    cleaned_store = {{
                                         "id": store_id,
                                         "name": store_details.get("name"),
                                         "phone": store_details.get("phone"),
@@ -112,7 +112,7 @@ def find_coles_stores():
                                         "address": store_details.get("address"),
                                         "position": store_details.get("position"),
                                         "brand": store_details.get("brand")
-                                    }
+                                    }}
                                     all_stores[store_id] = cleaned_store
                                     save_stores_incrementally(OUTPUT_FILE, all_stores)
 
@@ -148,5 +148,3 @@ def find_coles_stores():
             if driver:
                 driver.quit()
                 print("\nBrowser closed.")
-
-
