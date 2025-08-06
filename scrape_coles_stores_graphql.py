@@ -32,12 +32,21 @@ def save_progress(lat, lon):
         json.dump({'last_lat': lat, 'last_lon': lon}, f)
 
 def load_progress():
-    """Loads the last processed coordinates from a file."""
+    """Loads the last processed coordinates from a file, handling rollover."""
     if os.path.exists(PROGRESS_FILE):
         try:
             with open(PROGRESS_FILE, 'r', encoding='utf-8') as f:
                 progress = json.load(f)
-                return progress.get('last_lat', LAT_MIN), progress.get('last_lon', LON_MIN) + LON_STEP
+                last_lat = progress.get('last_lat', LAT_MIN)
+                last_lon = progress.get('last_lon', LON_MIN)
+
+                # If the last longitude was the final one in the row, roll over to the next latitude
+                if last_lon >= LON_MAX:
+                    print(f"Completed row for Lat: {last_lat}. Resuming on next latitude.")
+                    return last_lat + LAT_STEP, LON_MIN
+                else:
+                    print(f"Resuming from Lat: {last_lat}, Lon: {last_lon + LON_STEP}")
+                    return last_lat, last_lon + LON_STEP
         except (json.JSONDecodeError, IOError):
             print(f"Warning: {PROGRESS_FILE} is corrupted or unreadable. Starting from the beginning.")
     return LAT_MIN, LON_MIN
@@ -150,7 +159,6 @@ def fetch_coles_stores_graphql():
                                 store_details = result.get('store', {})
                                 store_id = store_details.get('id')
                                 if store_id and store_id not in all_stores:
-                                    # Extract only the desired fields
                                     cleaned_store = {
                                         "id": store_id,
                                         "name": store_details.get("name"),
