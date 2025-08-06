@@ -20,6 +20,7 @@ class Command(BaseCommand):
 
         # The hardcoded list of Perth IGA stores to be scraped.
         stores_to_scrape = [
+            {'store_name': create_store_slug_iga('Darwin City IGA X-press'), 'store_id': '17656'},
             {'store_name': create_store_slug_iga('Nollamara IGA'), 'store_id': '48742'},
             {'store_name': create_store_slug_iga('Stirling Fresh IGA'), 'store_id': '48276'},
             {'store_name': create_store_slug_iga('Tucker Fresh IGA Morris'), 'store_id': '52119'},

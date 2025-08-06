@@ -1,55 +1,72 @@
-
 import requests
 import json
+import html
 import re
-import time
+
+def parse_stores_from_html(html_content):
+    stores = []
+    store_data_matches = re.findall(r'data-storedata="([^"]+)"', html_content)
+
+    for store_data_str in store_data_matches:
+        decoded_str = html.unescape(store_data_str)
+        try:
+            store_data = json.loads(decoded_str)
+            stores.append(store_data)
+        except json.JSONDecodeError as e:
+            print(f"Error decoding JSON: {e}")
+            print(f"Problematic string: {decoded_str}")
+
+    return stores
 
 def fetch_all_stores():
-    """
-    Iterates through Australian postcodes, fetches store data from Sale Finder,
-    and saves all responses into a single JSON file.
-    """
-    all_stores = []
-    # Postcodes range from 0000 to 8000, iterating by 50
-    for postcode in range(0, 8001, 50):
-        # Format the postcode to be 4 digits with leading zeros
-        query = f"{postcode:04d}"
-        target_url = f"https://embed.salefinder.com.au/location/search/183/?query={query}&sensitivity=5&noStoreSuffix=1&withStoreInfo=1"
-        
-        print(f"Fetching data for postcode range around: {query}")
+    stores_file = 'C:\\Users\\ethan\\coding\\splitcart\\stores.json'
 
+    # Load existing stores
+    try:
+        with open(stores_file, 'r', encoding='utf-8') as f:
+            all_stores_data = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        all_stores_data = []
+
+    existing_store_ids = {store['storeId'] for store in all_stores_data}
+    stores_to_check = list(existing_store_ids)
+    checked_store_ids = set()
+
+    while stores_to_check:
+        store_id = stores_to_check.pop(0)
+        if store_id in checked_store_ids:
+            continue
+
+        print(f"Fetching stores near: {store_id}")
+        url = f"https://embed.salefinder.com.au/location/storelocator/183/?format=json&limit=1500&locationId={store_id}"
+        
         try:
-            response = requests.get(target_url, timeout=20)
-            response.raise_for_status()
+            response = requests.get(url)
+            response.raise_for_status() # Raise an exception for bad status codes
+            data = response.json()
+            html_content = data.get('content', '')
+            new_stores = parse_stores_from_html(html_content)
 
-            jsonp_content = response.text
-            match = re.search(r'\((.*)\)', jsonp_content)
-            if not match:
-                print(f"  - Could not extract JSON for postcode {query}.")
-                continue
+            for store in new_stores:
+                if store['storeId'] not in existing_store_ids:
+                    all_stores_data.append(store)
+                    existing_store_ids.add(store['storeId'])
+                    stores_to_check.append(store['storeId'])
+                    print(f"  Found new store: {store['storeName']} ({store['storeId']})")
 
-            json_data_string = match.group(1)
-            data = json.loads(json_data_string)
+            checked_store_ids.add(store_id)
 
-            if data.get("suggestions"):
-                all_stores.extend(data["suggestions"])
-                print(f"  - Found {len(data['suggestions'])} stores.")
-        
         except requests.exceptions.RequestException as e:
-            print(f"  - Error fetching data for postcode {query}: {e}")
-        except json.JSONDecodeError:
-            print(f"  - Failed to decode JSON for postcode {query}.")
-        
-        # A short delay to avoid overwhelming the server
-        time.sleep(0.5)
+            print(f"Error fetching data for store ID {store_id}: {e}")
+        except json.JSONDecodeError as e:
+            print(f"Error decoding JSON response for store ID {store_id}: {e}")
+            print(f"Raw response content:\n{response.text}")
 
-    # Save all collected stores to a single file
-    output_file = "all_stores_data.json"
-    with open(output_file, 'w', encoding='utf-8') as f:
-        json.dump(all_stores, f, indent=4)
+    # Write all stores back to the file
+    with open(stores_file, 'w', encoding='utf-8') as f:
+        json.dump(all_stores_data, f, indent=4)
 
-    print(f"\n--- All postcodes processed. ---")
-    print(f"Saved {len(all_stores)} stores to {output_file}")
+    print(f"Finished. Found {len(all_stores_data)} total stores.")
 
 if __name__ == "__main__":
     fetch_all_stores()
