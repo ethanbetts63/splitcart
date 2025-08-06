@@ -34,7 +34,7 @@ REQUEST_DELAY = 0.5
 
 # --- MAIN SCRAPING LOGIC ---
 
-def fetch_coles_stores_graphql():
+def find_coles_stores():
     """Main function to drive the scraping process."""
     driver = None
     total_lat_steps = int((LAT_MAX - LAT_MIN) / LAT_STEP) + 1
