@@ -1,0 +1,1094 @@
+[
+    {
+        "id": "COL:364",
+        "name": "Coles Albany",
+        "phone": "(08) 9841 2544",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Albany",
+            "addressLine": "38-56 Albany Hwy",
+            "postcode": "6330"
+        },
+        "position": {
+            "latitude": -35.019791,
+            "longitude": 117.881678
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "LQR:3364",
+        "name": "Liquorland Albany",
+        "phone": "(08) 6157 5717",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Albany",
+            "addressLine": "38 Albany Highway",
+            "postcode": "6330"
+        },
+        "position": {
+            "latitude": -35.019682,
+            "longitude": 117.882324
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "LQR:2953",
+        "name": "Liquorland Albany - Orana",
+        "phone": "(08) 6819 7180",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Orana",
+            "addressLine": "463-475 Albany Highway",
+            "postcode": "6330"
+        },
+        "position": {
+            "latitude": -34.99309,
+            "longitude": 117.856255
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "COL:478",
+        "name": "Coles Albany (orana)",
+        "phone": "(08) 6819 7100",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Orana",
+            "addressLine": "Albany Hwy",
+            "postcode": "6330"
+        },
+        "position": {
+            "latitude": -34.992323,
+            "longitude": 117.856097
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "COL:388",
+        "name": "Coles Manjimup",
+        "phone": "(08) 9771 1744",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Manjimup",
+            "addressLine": "Rose St & Ipsen St",
+            "postcode": "6258"
+        },
+        "position": {
+            "latitude": -34.242157,
+            "longitude": 116.144215
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "COL:310",
+        "name": "Coles Margaret River",
+        "phone": "(08) 9757 9933",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Margaret River",
+            "addressLine": "132 Bussell Highway",
+            "postcode": "6285"
+        },
+        "position": {
+            "latitude": -33.951776,
+            "longitude": 115.073286
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "LQR:2991",
+        "name": "Liquorland Margaret River",
+        "phone": "(08) 6115 6456",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Margaret River",
+            "addressLine": "132 Bussell Highway",
+            "postcode": "6285"
+        },
+        "position": {
+            "latitude": -33.95149,
+            "longitude": 115.073143
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "COL:268",
+        "name": "Coles Vasse",
+        "phone": "(08) 9730 1800",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Vasse",
+            "addressLine": "Napoleon Promenade",
+            "postcode": "6280"
+        },
+        "position": {
+            "latitude": -33.674076,
+            "longitude": 115.250141
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "LQR:2444",
+        "name": "Liquorland Vasse",
+        "phone": "(08) 9730 1880",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Vasse",
+            "addressLine": "18 Napoleon Promenade",
+            "postcode": "6280"
+        },
+        "position": {
+            "latitude": -33.673751,
+            "longitude": 115.249742
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "LQR:2939",
+        "name": "Liquorland Dunsborough",
+        "phone": "(08) 9730 1480",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Dunsborough",
+            "addressLine": "55 Dunn Bay Road",
+            "postcode": "6281"
+        },
+        "position": {
+            "latitude": -33.615951,
+            "longitude": 115.105295
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "COL:297",
+        "name": "Coles Dunsborough",
+        "phone": "(08) 9730 1400",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Dunsborough",
+            "addressLine": "Dunn Bay Rd & Cape Naturaliste Rds",
+            "postcode": "6281"
+        },
+        "position": {
+            "latitude": -33.615835,
+            "longitude": 115.105632
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "LQR:2494",
+        "name": "Liquorland Busselton",
+        "phone": "(08) 6247 6480",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Busselton",
+            "addressLine": "Shop 19 30 Kent St",
+            "postcode": "6280"
+        },
+        "position": {
+            "latitude": -33.651227,
+            "longitude": 115.342005
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "COL:4836",
+        "name": "Coles Busselton",
+        "phone": "(08) 6247 6400",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Busselton",
+            "addressLine": "30 Kent St",
+            "postcode": "6280"
+        },
+        "position": {
+            "latitude": -33.651227,
+            "longitude": 115.342005
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "COL:291",
+        "name": "Coles Busselton",
+        "phone": "(08) 9752 1833",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Busselton",
+            "addressLine": "69 Prince St",
+            "postcode": "6280"
+        },
+        "position": {
+            "latitude": -33.650082,
+            "longitude": 115.346231
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "COL:7610",
+        "name": "Coles Dalyellup",
+        "phone": null,
+        "isTrading": false,
+        "address": {
+            "state": "WA",
+            "suburb": "Dalyellup",
+            "addressLine": "19 PORTOBELLO ROAD",
+            "postcode": "6230"
+        },
+        "position": {
+            "latitude": -33.398781,
+            "longitude": 115.635582
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "COL:399",
+        "name": "Coles South Bunbury",
+        "phone": "(08) 9722 4000",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Bunbury South",
+            "addressLine": "22 Hammersley Dr",
+            "postcode": "6230"
+        },
+        "position": {
+            "latitude": -33.359972,
+            "longitude": 115.645426
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "COL:339",
+        "name": "Coles Bunbury Centrepoint",
+        "phone": "(08) 9721 1819",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Bunbury",
+            "addressLine": "Blair St & Stephen St",
+            "postcode": "6230"
+        },
+        "position": {
+            "latitude": -33.325927,
+            "longitude": 115.639856
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "LQR:3219",
+        "name": "Liquorland Bunbury",
+        "phone": "(08) 6115 6406",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Bunbury",
+            "addressLine": "60 Blair Street",
+            "postcode": "6230"
+        },
+        "position": {
+            "latitude": -33.325818,
+            "longitude": 115.640502
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "LQR:2972",
+        "name": "Liquorland Eaton",
+        "phone": "(08) 9724 3480",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Eaton",
+            "addressLine": "2 Recreation Drive",
+            "postcode": "6232"
+        },
+        "position": {
+            "latitude": -33.318635,
+            "longitude": 115.716424
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "COL:493",
+        "name": "Coles Eaton Fair",
+        "phone": "(08) 9724 3400",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Eaton",
+            "addressLine": "Corner Eaton Drive & Recreation Drive",
+            "postcode": "6232"
+        },
+        "position": {
+            "latitude": -33.318635,
+            "longitude": 115.716424
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "COL:327",
+        "name": "Coles Australind",
+        "phone": "(08) 9797 1204",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Australind",
+            "addressLine": "Old Coast Rd & Paris Rd",
+            "postcode": "6233"
+        },
+        "position": {
+            "latitude": -33.279791,
+            "longitude": 115.715067
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "LQR:3254",
+        "name": "Liquorland Australind",
+        "phone": "(08) 6115 6407",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Australind",
+            "addressLine": "299 Old Coast Road",
+            "postcode": "6233"
+        },
+        "position": {
+            "latitude": -33.279545,
+            "longitude": 115.714852
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "LQR:3390",
+        "name": "Liquorland Collie",
+        "phone": "(08) 6115 6409",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Collie",
+            "addressLine": "102-110 Forrest Street",
+            "postcode": "6225"
+        },
+        "position": {
+            "latitude": -33.357864,
+            "longitude": 116.152023
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "COL:390",
+        "name": "Coles Collie",
+        "phone": "(08) 9734 1633",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Collie",
+            "addressLine": "49 Johnston St",
+            "postcode": "6225"
+        },
+        "position": {
+            "latitude": -33.357948,
+            "longitude": 116.152395
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "LQR:3257",
+        "name": "Liquorland Collie Boulevard",
+        "phone": "(08) 6115 6408",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Collie",
+            "addressLine": "25 Johnston Street",
+            "postcode": "6225"
+        },
+        "position": {
+            "latitude": -33.358121,
+            "longitude": 116.154686
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "COL:7543",
+        "name": "Coles Florida",
+        "phone": "(08) 9587 5900",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Dawesville",
+            "addressLine": "71 Dandaragin Drive",
+            "postcode": "6211"
+        },
+        "position": {
+            "latitude": -32.630123,
+            "longitude": 115.630696
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "LQR:2843",
+        "name": "Liquorland Florida Beach",
+        "phone": "(08) 9587 5980",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Dawesville",
+            "addressLine": "71 Dandaragan Drive",
+            "postcode": "6211"
+        },
+        "position": {
+            "latitude": -32.629054,
+            "longitude": 115.62968
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "COL:293",
+        "name": "Coles Pinjarra",
+        "phone": "(08) 9531 7800",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Pinjarra",
+            "addressLine": "George St & James St",
+            "postcode": "6208"
+        },
+        "position": {
+            "latitude": -32.628811,
+            "longitude": 115.873633
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "LQR:2987",
+        "name": "Liquorland Pinjarra",
+        "phone": "(08) 6115 6411",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Pinjarra",
+            "addressLine": "21 George Street",
+            "postcode": "6208"
+        },
+        "position": {
+            "latitude": -32.62873,
+            "longitude": 115.873712
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "LQR:2309",
+        "name": "Liquorland Falcon",
+        "phone": "(08) 9537 4200",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Falcon",
+            "addressLine": "633 Old Coast Road",
+            "postcode": "6210"
+        },
+        "position": {
+            "latitude": -32.582916,
+            "longitude": 115.660726
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "COL:396",
+        "name": "Coles Narrogin",
+        "phone": "(08) 6115 6600",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Narrogin",
+            "addressLine": "Earl St & Ensign St",
+            "postcode": "6312"
+        },
+        "position": {
+            "latitude": -32.932431,
+            "longitude": 117.176687
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "LQR:2486",
+        "name": "Liquorland Erskine",
+        "phone": "(08) 6115 6410",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Erskine",
+            "addressLine": "36 Wattleglen Avenue",
+            "postcode": "6210"
+        },
+        "position": {
+            "latitude": -32.561026,
+            "longitude": 115.688666
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "COL:348",
+        "name": "Coles Erskine",
+        "phone": "(08) 9534 8656",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Erskine",
+            "addressLine": "36 Wattleglen Ave",
+            "postcode": "6210"
+        },
+        "position": {
+            "latitude": -32.560682,
+            "longitude": 115.688256
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "LQR:2425",
+        "name": "Liquorland Halls Head",
+        "phone": "(08) 9586 5180",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Halls Head",
+            "addressLine": "14 Guava Way",
+            "postcode": "6210"
+        },
+        "position": {
+            "latitude": -32.548663,
+            "longitude": 115.702756
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "COL:257",
+        "name": "Coles Halls Head",
+        "phone": "(08) 9586 5100",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Halls Head",
+            "addressLine": "14 Guava Way",
+            "postcode": "6210"
+        },
+        "position": {
+            "latitude": -32.548663,
+            "longitude": 115.702756
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "LQR:2430",
+        "name": "Liquorland Mandurah Forum",
+        "phone": "(08) 9587 5480",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Mandurah",
+            "addressLine": "330 Pinjarra Road",
+            "postcode": "6210"
+        },
+        "position": {
+            "latitude": -32.535527,
+            "longitude": 115.743996
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "COL:311",
+        "name": "Coles Mandurah Forum",
+        "phone": "(08) 9587 5400",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Mandurah",
+            "addressLine": "Fremantle Rd & Pinjarra Rd",
+            "postcode": "6210"
+        },
+        "position": {
+            "latitude": -32.535352,
+            "longitude": 115.744328
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "COL:362",
+        "name": "Coles Meadow Springs",
+        "phone": "(08) 9581 9122",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Meadow Springs",
+            "addressLine": "Fremantle Rd & Meadow Springs Dr",
+            "postcode": "6210"
+        },
+        "position": {
+            "latitude": -32.493561,
+            "longitude": 115.746963
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "LQR:3266",
+        "name": "Liquorland Meadow Springs",
+        "phone": "(08) 6115 6412",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Meadow Springs",
+            "addressLine": "25 Meadow Springs Drive",
+            "postcode": "6210"
+        },
+        "position": {
+            "latitude": -32.493455,
+            "longitude": 115.746849
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "LQR:2441",
+        "name": "Liquorland Lakelands",
+        "phone": "(08) 9587 5580",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Lakelands",
+            "addressLine": "49 Banksiadale Gate",
+            "postcode": "6180"
+        },
+        "position": {
+            "latitude": -32.470234,
+            "longitude": 115.760763
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "COL:4796",
+        "name": "Coles Lakelands",
+        "phone": "(08) 9587 5500",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Lakelands",
+            "addressLine": "49 Banksiadale Gate",
+            "postcode": "6180"
+        },
+        "position": {
+            "latitude": -32.470234,
+            "longitude": 115.760763
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "COL:4790",
+        "name": "Coles Secret Harbour",
+        "phone": "(08) 9557 2500",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Secret Harbour",
+            "addressLine": "Secret Harbour Boulevard",
+            "postcode": "6173"
+        },
+        "position": {
+            "latitude": -32.407243,
+            "longitude": 115.757598
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "LQR:2417",
+        "name": "Liquorland Secret Harbour",
+        "phone": "(08) 9557 2580",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Secret Harbour",
+            "addressLine": "420 Secret Harbour Boulevard",
+            "postcode": "6173"
+        },
+        "position": {
+            "latitude": -32.407079,
+            "longitude": 115.757991
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "LQR:3293",
+        "name": "Liquorland Port Kennedy",
+        "phone": "(08) 6157 5714",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Port Kennedy",
+            "addressLine": "49 Chelmsford Avenue",
+            "postcode": "6172"
+        },
+        "position": {
+            "latitude": -32.353006,
+            "longitude": 115.755321
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "COL:329",
+        "name": "Coles Warnbro",
+        "phone": "(08) 9559 8100",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Warnbro",
+            "addressLine": "Palm Springs Blvd & Warnbro Sound Av",
+            "postcode": "6169"
+        },
+        "position": {
+            "latitude": -32.346303,
+            "longitude": 115.76277
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "LQR:3296",
+        "name": "Liquorland Warnbro",
+        "phone": "(08) 6115 6468",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Warnbro",
+            "addressLine": "204 Warnbro Sound Avenue",
+            "postcode": "6169"
+        },
+        "position": {
+            "latitude": -32.345637,
+            "longitude": 115.761523
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "LQR:2971",
+        "name": "Liquorland Baldivis (coles)",
+        "phone": "(08) 9523 3080",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Baldivis",
+            "addressLine": "20 Settlers Avenue",
+            "postcode": "6171"
+        },
+        "position": {
+            "latitude": -32.333382,
+            "longitude": 115.814912
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "COL:287",
+        "name": "Coles Baldivis",
+        "phone": "(08) 9523 3000",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Baldivis",
+            "addressLine": "Safety Bay Rd",
+            "postcode": "6171"
+        },
+        "position": {
+            "latitude": -32.333382,
+            "longitude": 115.814912
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "COL:370",
+        "name": "Coles Rockingham Park",
+        "phone": "(08) 9559 8000",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Rockingham",
+            "addressLine": "Read St & Council Ave",
+            "postcode": "6168"
+        },
+        "position": {
+            "latitude": -32.290561,
+            "longitude": 115.742287
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "COL:488",
+        "name": "Coles Kwinana",
+        "phone": "(08) 6399 8800",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Casuarina",
+            "addressLine": "4 Chisham Avenue &, Cnr Gilmore Ave",
+            "postcode": "6167"
+        },
+        "position": {
+            "latitude": -32.245302,
+            "longitude": 115.8138
+        },
+        "brand": {
+            "name": "Coles Supermarkets",
+            "storeFinderId": 2,
+            "id": "COL"
+        }
+    },
+    {
+        "id": "LQR:5105",
+        "name": "Liquorland Esperance",
+        "phone": "(08) 6157 5715",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Esperance",
+            "addressLine": "86 Pink Lake Road",
+            "postcode": "6450"
+        },
+        "position": {
+            "latitude": -33.861563,
+            "longitude": 121.886221
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    },
+    {
+        "id": "LQR:2432",
+        "name": "Liquorland Byford",
+        "phone": "(08) 9532 0980",
+        "isTrading": true,
+        "address": {
+            "state": "WA",
+            "suburb": "Byford",
+            "addressLine": "20 Abernethy Road",
+            "postcode": "6122"
+        },
+        "position": {
+            "latitude": -32.220426,
+            "longitude": 116.006227
+        },
+        "brand": {
+            "name": "Liquorland",
+            "storeFinderId": 3,
+            "id": "LQR"
+        }
+    }
+]
