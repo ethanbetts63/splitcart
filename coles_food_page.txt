@@ -1,0 +1,86 @@
+https://www.coles.com.au/browse/fruit-vegetables?page=4
+
+Request URL
+https://www.coles.com.au/browse/fruit-vegetables?page=4
+Request Method
+GET
+Status Code
+200 OK
+Remote Address
+45.60.154.17:443
+Referrer Policy
+strict-origin-when-cross-origin
+cache-control
+private, no-cache, no-store, max-age=0, must-revalidate
+content-encoding
+gzip
+content-security-policy
+frame-ancestors 'self' *.coles.com.au *.instagram.com instagram.com *.punchoutcommerce.com punchoutcommerce.com *.t1cloud.com t1cloud.com *.technologyonecorp.com technologyonecorp.com *.coupa.com coupa.com *.unimarket.com unimarket.com *.epicor.com epicor.com *.precisebusiness.com precisebusiness.com *.ondemand.com ondemand.com *.s4hana.cloud.sap my411205.s4hana.cloud.sap *.citrusad.com citrusad.com;
+content-type
+text/html; charset=utf-8
+date
+Wed, 06 Aug 2025 15:08:37 GMT
+etag
+"orqc7ac626hvjk"
+set-cookie
+s_ecid=MCMID|66687840360939619910791195186280116053; Domain=coles.com.au; path=/; Expires=Fri, 06 Aug 2027 15:08:36 GMT
+set-cookie
+dsch-sessionid=d0be995d-4f34-477e-a8c7-ab27529b1c03; Path=/; Expires=Wed, 06 Aug 2025 15:38:36 GMT; Secure; SameSite=None
+set-cookie
+dsch-visitorid=5075c436-c2ea-4170-8b39-188103680d62; Path=/; Expires=Fri, 31 Dec 9999 23:59:59 GMT; Secure; SameSite=None
+set-cookie
+ad-memory-token=%2ByExNZmAchBeJwrqNmLaGU6pPD4KDhIMCM%2FczcQGEKjQpsICCg4SDAiT3c3EBhCPupzdAgoOEgwIm93NxAYQgp7qxgIKDhIMCOTfzcQGEKz%2BgcgCCg4SDAj0383EBhDQur%2BuAhoCCAIiAA%3D%3D; Max-Age=8640; Path=/; Secure; SameSite=None
+strict-transport-security
+max-age=31536000; includeSubDomains
+vary
+Accept-Encoding
+x-cdn
+Imperva
+x-content-type-options
+nosniff
+x-iinfo
+2-689392-689461 NNNY CT(263 514 0) RT(1754492912509 3823) q(0 1 1 -1) r(9 11) U5
+x-telemetry-traceid
+78bf18ba93a7e3078f8830c9f02eebd8
+:authority
+www.coles.com.au
+:method
+GET
+:path
+/browse/fruit-vegetables?page=4
+:scheme
+https
+accept
+text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+accept-encoding
+gzip, deflate, br, zstd
+accept-language
+en-US,en;q=0.9
+cache-control
+no-cache
+cookie
+nlbi_2800108_2670698=IfOGOTe7CW/aclgK5VPXvwAAAABKRu6gwl1FRKOuLNLT1bhL; ld_user=086232ff-aea3-4a16-b9b5-af4b0652d540; AMCVS_0B3D037254C7DE490A4C98A6%40AdobeOrg=1; sessionId=18bf7018-8606-4457-82c4-bd036776bb42; visitorId=a426c771-31b3-44ad-9a43-cb1a082731a5; nlbi_2800108_3037207=58Y9KF24WmKnk22F5VPXvwAAAAAoVh+KWo5YXx3GaNcjJSif; at_check=true; _gcl_au=1.1.1665504097.1753611473; BVBRANDID=6a7b1261-938d-47a0-89f5-aacc61a4a8d3; _ga=GA1.1.77939231.1753611478; ORA_FPC=id=3f6f58cd-d961-45f1-97d9-d4969a9bc2e6; WTPERSIST=; s_cc=true; s_ecid=MCMID|66687840360939619910791195186280116053; dsch-visitorid=5075c436-c2ea-4170-8b39-188103680d62; visid_incap_3206490=cpyxNn4VQougqacHu6fJqEW6iGgAAAAAQUIPAAAAAAA9Y4bXocle9xku4d7Yn6qT; ApplicationGatewayAffinityCORS=ce1dd33cb7cfcf721c38e4c63f5c6894; ApplicationGatewayAffinity=ce1dd33cb7cfcf721c38e4c63f5c6894; nlbi_2800108=p9MSdVunjQWqLlAl5VPXvwAAAACZH+7oRNdv8gTcNMHuA37/; dsch-searchid=63282285-9d4e-49ed-9a80-3d7dd6c6c3ae; sortOptionPreference=unitPriceAscending; incap_ses_1101_3206490=3u5/Ai7qKUy+9kKM4olHD2v2jGgAAAAA2Sq/4BpORqW3M7mYpEDyqA==; incap_ses_1103_3206490=X6WJMpy1BDVqtXLW36ROD/vEjWgAAAAA1KbTaSM68NvnWzwWxXmuvw==; incap_ses_1103_2800108=Whz1GWc2NFjTm3XW36ROD3HcjWgAAAAAcFu8XQIZdmz+Ye8LEGCwBA==; incap_ses_1101_2800108=h9irSysH3GLaqJyM4olHD71oj2gAAAAA1Rr4m4ZOpUa4q8bv2ss1rw==; incap_ses_1098_2800108=F8hQYJDsbwt/BtlEa+E8D0tQk2gAAAAAN7DhOSTt15cmF2x39dgldw==; kndctr_0B3D037254C7DE490A4C98A6_AdobeOrg_identity=CiY2NjY4Nzg0MDM2MDkzOTYxOTkxMDc5MTE5NTE4NjI4MDExNjA1M1IRCIynjtuEMxgBKgRJUkwxMAPwAdr4xvuHMw==; refreshToken=9EX0+4jawu3NxOMlbs2m3RMmKUYkv9peUZdIVd8F0xXSiuy4MMjikjribcs2+uyY; analyticsIsLoggedIn=true; customer-channel=CsXPhXz6wX94JtGkpXVgN1mnO9pFJwlApegU12Po/Ak=; dsch-ccpuserid=473e0468-c849-44d4-a299-6fdae0c4faa8; colesIdBarcode=2753935086363; fulfillmentStoreId=0314; shopping-method=delivery; USER_LOCATION=Location=Pagewood&State=NSW&Postcode=2035&Latitude=-33.944945&Longitude=151.223597; NEAREST_STORE=StoreId=909&StoreBrandId=2&StoreName=Coles Eastgardens&Latitude=-33.944328&Longitude=151.223828&State=NSW&Postcode=2036&Suburb=Pagewood&OpeningTimes=Reopens at 7am; ___LOCATION=State=NSW&Postcode=2035&Region=c-nsw-met; reese84=3:lZ37LlTQ/n181R23ZorvxA==:qHscOkb5ObNuNIzPn4E3a9SLyrSb3SVqxVg2mV9p3/fHnHSnEezAaSlIp3BLYiu+qlKTcAxA0VMdkVfpmVsCq0uoQUPAeRvpMrSYyliCItIdm7I83OOfT2FcyxZI6dzhfpHI3XjYFT+OsBIqHDttXz0ThbYlcxtiyUz93D9EsnzHegR0htmwOKOEUHsjeHwnCJ2R96w1dMO4U/M8kqz5TWk3qfWd9lu7d0KZdCOqh+TRKZwuvCFbb0i0sTqsemd/7fveeJkQFAaWdK8aEdEaIhaiOXIHNj8973bNxzjGo/PzGhKdrFnH4te1d0AISX7U2ljsh3sl6GuRkfHcMIJ+15q8aXnmiGz0kiL1n+fsjrKr0FEzwMja2cLGYyh7SGu1ttVFL2JepWHZF70LkTC4XCKDRgWQ0jSK6FkiM946PX/juvz97daMJNnge9N261hK/R1ManplcS0ETBOPfLw93w/TitnhZwNps3nYXpSu6XkLy2TGgiF8LAbeb+IFQ5M6:KlEmhjr637RdNNV48SGoSsRhphL7+fXmGTzIoqI0bpQ=; incap_sh_2800108=7m2TaAAAAAAxGngHDAAI7tvNxAYQ6tvNxAb/WyuRnbrnXyBFrMvS3AaC; visid_incap_2800108=hwH2fXG2RrWF6tY+PI5YPcr8hWgAAAAATkIPAAAAAACAwzC+AU3xgFu4CTAYMhmF2X9fSY6K50yK; kndctr_0B3D037254C7DE490A4C98A6_AdobeOrg_cluster=irl1; dsch-sessionid=d0be995d-4f34-477e-a8c7-ab27529b1c03; gpv_pathNode=cusp%3Abrowse%3Aproduct-categories; s_sq=%5B%5BB%5D%5D; s_tp=10986; s_ips=765; gpv_page=cusp%3Abrowse%3Aproduct-categories; accessToken=uLmgDm/GpdBuaVRB//7YWoF0J12ETTL8SinVd0UwwPU6ZcDwpLLOn5NtTq+yzPX1Kw1rXcSo1P5ewQ5MzW+7XlCLj3hsXt8vlMdbMLreVTnW7s8y9DFOn5Qn9dniC+NikZ0VF7brxyP0N/zYaVBX1HlHEjXSJAFt72PVxxHEsFApoEfOF0AZbdXiCkpXck+IV/nHBZUb94XfxPNdE4WV1VQUjAxv45rzZzuFI7XU2VgBZ1frN3Mmu9vTImXK9XjWOznbSHudh5kINH0fxHP/jSF0EkURxCA/SbUBUNOXnDj1FDhHiJ0SDmOwt3dN+KR2h+RmSTdtFAQ15jZ2XHzgvN6YbmQPyfpSRK4rHU0sulArpgAM3XFHaus5FTTeHMV3t9LK5dP3C5/wGumGRJ77glPECjcSBl4FqZNRspFF9AsQy6MF812ir2DLV0364xafWsfneBXUggf+kYPau1ANWIs+HLR9oGPQS//Ej53plFNbuAnpcpugUeQSX3DNJdipHaO2Tm0mIS/76vyVpxSjmO8DC/UXJr2KqSi6q2j0YmWRekCxQu5l8sYbJehfMSNINGDyhqk3/t4eILXCi+gh3vmBpd1cstNBg/sjbe3FS7q7QuTh7VM1KvfSat1WDMjkxP8gkACtnnI9egtO2MPIAs2AzqBIKhbTFT6UaRKiuf15lU8feWalLv+mChFeC36e1MjkGFXZe7cFYgbEtx7pgFt/ylQuG1SqT4x3So4PxG7Uv7bbkPGm6I3/oj9N1vg6SYU7a2OZ4eleAa5pzY+MyKr+q60ygEQ2KZo6dm/G9Vw17a4RIrSjT2LhOKVDp6B7NGNqwVEt7ho/xPY+raevdfb3adUFUjM8Us+zMa+048ZImz65s0Rd2StKEwLwYXce4NOkYBrSkxCf58JM0unWkwQG+ZqeIEfuauSjCFmh6Ju26Dr08ktkYrRiBDNUmFTvFGvebwUd8M57got6xH/ZewZO2Y7A79gYmD6t1wUk/cHEtcXvMZ6bEZwp3uF+qybQ0R8Inp3uIeIE4Jwc1dGMMIY2SY46bwdKyRVlyBN3Y+ygjPAjzQ2H3lIKKKBNZshRMTz8ff1hLMm+Ae03EvXeW/Uy4v6MSK8/DN1ox+MPsXFxwWaaRCU6QsF+51FcpHB4kguyiUVHohlIj4wPWJAquWQsNYyMTvJAG6/9xuvl0Bem5o7I/PtM6QYMBmWR3zVeNAOjHLE/PpH6wXw4BVm9DzqXGKyYgffpynqJtxtIS2em8SrnhkZ/f3MPZ0Z+nvNpUoLlxkl5TryyVhb+q8+wUqfBqhZBM0h164dFRFwTcGVnKPNVPruZSFl1T4wWx8LfPy+lwX0A9vSD3KP/FESDz1ZnfIeUFTbRNCmWi8eerelYBeKsT+g4+WFKacweI+D/iT5R93q3dkR3+oroNiZT3McN70IerFakB597wzN73wDDhVTCdzx4z1R9kYpBGlmvepu/2NRpiwqgI4pgogMkZgKXk+Kqzyeq4S1RWRKb4BBKMRIe66i1JCuJWqz2k+dIvJkDRSDcR3c5r91Hqz/MzqzOZ/hs3X66+/+60LBLAQQ87+TQoncznEn6cqwPo2StVy1I4zxyL0oTmM5EmbGZS04BwwltmVVJXNWki6JbTmwEa2AqDcZXO60aM/MQS8+DfvG05hOCa+iC+nL7BchF2aO1LI7SRqkl3Bm+Q9spu19YQG2v1A3BUrH030KP7O44mWNSKDDu3Wr/jAmBSEFmKQ==; ad-memory-token=dJaTlhmh2ntaKNd9PA8ffJuWTwoKDhIMCMXczcQGEKvH4pADCg4SDAjP3M3EBhCo0KbCAgoOEgwIk93NxAYQj7qc3QIKDhIMCJvdzcQGEIKe6sYCCg4SDAjk383EBhCs%2FoHIAhoCCAIiAA%3D%3D; nlbi_2800108_2147483392=vhyBWz26AC2HmlA+5VPXvwAAAAABJLZze6XsXNwNpzSZKmeu; mbox=PC#4d5c06168777454a9de6755b91226f25.37_0#1817737706|session#4761177a236f48768d8452869fd33533#1754494766; AMCV_0B3D037254C7DE490A4C98A6%40AdobeOrg=179643557%7CMCIDTS%7C20307%7CMCMID%7C66687840360939619910791195186280116053%7CMCAAMLH-1755097706%7C6%7CMCAAMB-1755097706%7CRKhpRz8krg2tLO6pguXWp5olkAcUniQYPHaMWWgdJ3xzPWQmdj0y%7CMCOPTOUT-1754500106s%7CNONE%7CMCAID%7CNONE%7CvVersion%7C5.5.0%7CMCCIDH%7C637724021; BVBRANDSID=cf6691cd-e03e-4ba6-b735-5b07c67d82f7; s_ppv=cusp%253Abrowse%253Aproduct-categories%2C7%2C7%2C7%2C765%2C14%2C1; _ga_C8RCBCKHNM=GS2.1.s1754490807$o22$g1$t1754492909$j60$l0$h0
+pragma
+no-cache
+priority
+u=0, i
+referer
+https://www.coles.com.au/
+sec-ch-ua
+"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"
+sec-ch-ua-mobile
+?0
+sec-ch-ua-platform
+"Windows"
+sec-fetch-dest
+document
+sec-fetch-mode
+navigate
+sec-fetch-site
+same-origin
+sec-fetch-user
+?1
+upgrade-insecure-requests
+1
+user-agent
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
