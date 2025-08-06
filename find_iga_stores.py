@@ -133,7 +133,7 @@ def fetch_all_stores_thorough():
                     if found_new_in_batch:
                         with open(STORES_FILE, 'w', encoding='utf-8') as f:
                             json.dump(all_stores_data, f, indent=4)
-                        print_progress(store_id, MAX_STORE_ID, len(existing_store_ids), f"Found {len(new_stores)} new stores from ID {store_id}!")
+                        print_progress(store_id, MAX_STORE_ID, len(existing_store_ids), f"Processed {len(new_stores)} stores from ID {store_id}.")
 
             except requests.exceptions.RequestException:
                 pass # Ignore network errors silently
