@@ -38,13 +38,23 @@ def fetch_all_stores():
             continue
 
         print(f"Fetching stores near: {store_id}")
-        url = f"https://embed.salefinder.com.au/location/storelocator/183/?format=json&limit=1500&locationId={store_id}"
+        url = f"https://embed.salefinder.com.au/location/storelocator/183/?format=json&saleGroup=0&limit=1500&locationId={store_id}&callback=jQuery17209679725593495141_1754480497404&_=1754480498902"
         
         try:
             response = requests.get(url)
             response.raise_for_status() # Raise an exception for bad status codes
-            data = response.json()
-            html_content = data.get('content', '')
+            
+            # Extract JSON from JSONP
+            jsonp_content = response.text
+            start_index = jsonp_content.find('(')
+            end_index = jsonp_content.rfind(')')
+
+            if start_index != -1 and end_index != -1:
+                json_str = jsonp_content[start_index + 1:end_index]
+                data = json.loads(json_str)
+                html_content = data.get('content', '')
+            else:
+                raise ValueError("Invalid JSONP response")
             new_stores = parse_stores_from_html(html_content)
 
             for store in new_stores:
