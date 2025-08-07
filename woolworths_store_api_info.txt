@@ -1,0 +1,136 @@
+Request URL
+https://www.igashop.com.au/api/storefront/stores?RSID=48102&take=1
+Request Method
+GET
+Status Code
+200 OK
+Remote Address
+[2606:4700:10::ac42:9e2c]:443
+Referrer Policy
+origin-when-cross-origin
+age
+52
+alt-svc
+h3=":443"; ma=86400
+cache-control
+public, max-age=0, must-revalidate
+cf-cache-status
+DYNAMIC
+cf-ray
+96b89cc90d41be38-CPH
+content-encoding
+br
+content-type
+application/json; charset=utf-8
+date
+Thu, 07 Aug 2025 17:49:45 GMT
+etag
+W/"qnsc8ikw4ik3"
+permissions-policy
+camera=(), microphone=(), geolocation=()
+referrer-policy
+origin-when-cross-origin
+server
+cloudflare
+strict-transport-security
+max-age=31536000; includeSubDomains; preload
+x-content-type-options
+nosniff
+x-download-options
+noopen
+x-frame-options
+deny
+x-matched-path
+/api/storefront/[...storefront]
+x-vercel-cache
+HIT
+x-vercel-id
+arn1::syd1::5wc65-1754588985836-24d4a5075328
+x-xss-protection
+1
+:authority
+www.igashop.com.au
+:method
+GET
+:path
+/api/storefront/stores?RSID=48102&take=1
+:scheme
+https
+accept
+*/*
+accept-encoding
+gzip, deflate, br, zstd
+accept-language
+en-US,en;q=0.9
+cache-control
+no-cache
+cookie
+_gcl_au=1.1.671039728.1753780811; ajs_anonymous_id=91980b76-1378-41e0-99b3-8c90580b3b50; __Host-next-auth.csrf-token=26ee6274138cb91bb5de3caa7469c6f49fcc5df6f48e179e9ee549a45dea2c22%7C5405a6dc0610abcf1aec8c28863d1e390df19c1438b8d76d7cbdc74f74842c8b; __Secure-next-auth.callback-url=https%3A%2F%2Fwww.igashop.com.au; iga-shop.shoppingMode=Pickup; iga-shop.selectionType=undefined; _gid=GA1.3.1983046892.1754586442; _clck=rovs17%7C2%7Cfy9%7C0%7C2036; ab.storage.deviceId.62bddbf0-eb6f-4a46-bde2-f29d41add7ca=%7B%22g%22%3A%2272c4b901-0ac8-f7d6-8a5e-f1e4f18b3ee2%22%2C%22c%22%3A1753780835399%2C%22l%22%3A1754588901712%7D; iga-shop.retailerStoreId=48102; _gat_gtag_UA_184622586_1=1; _dc_gtm_UA-184622586-1=1; _ga=GA1.3.1753675373.1753780811; _ga_CWDKGZHRE0=GS2.1.s1754588901$o9$g1$t1754588983$j54$l0$h1291869508; _clsk=1divldo%7C1754588983974%7C6%7C1%7Cj.clarity.ms%2Fcollect; ab.storage.sessionId.62bddbf0-eb6f-4a46-bde2-f29d41add7ca=%7B%22g%22%3A%227ef7f92d-ccef-cb5b-ab22-3a3232bb3eaa%22%2C%22e%22%3A1754590784003%2C%22c%22%3A1754588901709%2C%22l%22%3A1754588984003%7D
+pragma
+no-cache
+priority
+u=1, i
+referer
+https://www.igashop.com.au/categories/fruit-and-vegetable/fruit/1
+sec-ch-ua
+"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"
+sec-ch-ua-mobile
+?0
+sec-ch-ua-platform
+"Windows"
+sec-fetch-dest
+empty
+sec-fetch-mode
+cors
+sec-fetch-site
+same-origin
+user-agent
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+x-shopping-mode
+11111111-1111-1111-1111-111111111111
+
+
+
+payload: 
+{
+    "total": 1,
+    "items": [
+        {
+            "id": "3e3cd8b8-1a90-4c46-a372-ad869e1e3da5",
+            "status": "Active",
+            "type": "Regular",
+            "name": "Balga IGA",
+            "addressLine1": "Shop 16, 108 Princess Road",
+            "addressLine2": "",
+            "addressLine3": "",
+            "countyProvinceState": "WA",
+            "postCode": "6061",
+            "city": "Balga",
+            "country": "Australia",
+            "email": "igabalga@gmail.com",
+            "phone": "08 6150 9293",
+            "retailerStoreId": "48102",
+            "timeZone": "Australia/Perth",
+            "currency": "AUD",
+            "openingHours": "Monday - Sunday 7am - 8pm",
+            "location": {
+                "latitude": -31.856,
+                "longitude": 115.83822
+            },
+            "languages": [
+                {
+                    "isoCode": "en-AU",
+                    "isDefault": true
+                }
+            ],
+            "siteId": "8c744d67-1ce2-4e4b-81d1-e29966f362a7",
+            "urls": [],
+            "categoryHierarchyId": "93c41c59-c564-4639-ae57-2cff46842aa0",
+            "shoppingModes": [
+                "planning",
+                "delivery",
+                "pickup"
+            ]
+        }
+    ]
+}
