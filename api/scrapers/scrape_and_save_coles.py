@@ -158,7 +158,6 @@ def scrape_and_save_coles_data(company: str, store_name: str, categories_to_fetc
                 break
             
             page_num += 1
-            time.sleep(1)
 
         completed_categories.append(category)
         with open(progress_file_path, 'w') as f:
