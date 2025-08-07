@@ -12,9 +12,9 @@ from api.utils.shop_scraping_utils.iga import (
     )
 
 # --- CONFIGURATION ---
-PROGRESS_FILE = 'C:\\Users\\ethan\\coding\\splitcart\\iga_stores_progress.json'
+PROGRESS_FILE = r'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_iga\iga_stores_progress.json'
 MAX_STORE_ID = 23001
-STORES_FILE = 'C:\\Users\\ethan\\coding\\splitcart\\iga_stores_cleaned.json'
+STORES_FILE = r'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_iga\iga_stores_cleaned.json'
 
 def find_iga_stores():
     """Fetches all store locations, skipping excluded ranges and saving progress."""

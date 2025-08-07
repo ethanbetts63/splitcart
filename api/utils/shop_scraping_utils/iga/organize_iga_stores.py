@@ -3,7 +3,7 @@ import os
 from datetime import date
 
 # --- CONFIGURATION ---
-SOURCE_FILE = 'C:\\Users\\ethan\\coding\\splitcart\\iga_stores_cleaned.json'
+SOURCE_FILE = r'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_iga\iga_stores_cleaned.json'
 BASE_OUTPUT_DIR = 'C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_iga'
 
 def organize_iga_stores():
@@ -70,5 +70,3 @@ def organize_iga_stores():
 
     print("\nIGA store organization complete.")
 
-if __name__ == "__main__":
-    organize_iga_stores()

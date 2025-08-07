@@ -4,7 +4,7 @@ import re
 from datetime import date
 
 # --- CONFIGURATION ---
-SOURCE_FILE = 'C:\\Users\\ethan\\coding\\splitcart\\coles_stores_cleaned.json'
+SOURCE_FILE = r'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_coles\coles_stores_cleaned.json'
 BASE_OUTPUT_DIR = 'C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_coles'
 
 def slugify(text):
@@ -88,6 +88,3 @@ def organize_coles_stores():
         print(f"Error deleting source file: {e}")
 
     print("\nOrganization complete.")
-
-if __name__ == "__main__":
-    organize_coles_stores()
