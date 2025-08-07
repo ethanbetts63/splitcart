@@ -41,11 +41,11 @@ def find_coles_stores():
     total_lon_steps = int((LON_MAX - LON_MIN) / LON_STEP) + 1
     total_steps = total_lat_steps * total_lon_steps
 
-    all_stores = load_existing_stores(OUTPUT_FILE)
-    start_lat, start_lon = load_progress(PROGRESS_FILE, LAT_MIN, LAT_STEP, LON_MIN, LON_MAX, LON_STEP)
-
     while True:
         try:
+            all_stores = load_existing_stores(OUTPUT_FILE)
+            start_lat, start_lon = load_progress(PROGRESS_FILE, LAT_MIN, LAT_STEP, LON_MIN, LON_MAX, LON_STEP)
+
             print("\n--- Launching Selenium browser to warm up session and make API calls ---")
             chrome_options = Options()
             chrome_options.add_argument("user-agent=SplitCartScraper/1.0 (Contact: admin@splitcart.com)")
