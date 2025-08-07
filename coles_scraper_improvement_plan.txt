@@ -32,3 +32,9 @@ This hybrid approach gives us the best of both worlds:
 *   We use fast, direct API calls with `requests` for the repetitive, data-heavy work of scraping each category.
 
 This will be significantly faster and more reliable.
+
+please keep in mind that we are trying to trigger the capture. Once the capture is triggered and i solve it manually then we are in and everything works. 
+we do not want to break that. It's also good to note that this scraper actually does work we just want to make it better. 
+relevant files: 
+C:\Users\ethan\coding\splitcart\api\scrapers\scrape_and_save_coles.py
+C:\Users\ethan\coding\splitcart\api\data\store_data\stores_coles\coles-supermarkets\sa.json

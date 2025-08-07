@@ -3,128 +3,153 @@ import time
 import os
 from datetime import datetime
 import math
+import requests
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
 
-def scrape_and_save_coles_data(company: str, store: str, categories_to_fetch: list, save_path: str):
+def scrape_and_save_coles_data(company: str, store: str, categories_to_fetch: list, save_path: str, store_id: str = None):
     """
-    Launches a browser, handles CAPTCHA, then iterates through all pages of
-    the given categories, saving each page's cleaned product data to a file.
+    Launches a browser for initial session setup, then uses a lightweight
+    requests session to iterate through categories and save product data.
     """
-    print(f"--- Initializing coles Scraper Tool for {company} ({store}) ---")
-    progress_file_path = os.path.join(save_path, "coles_progress.json")
+    print(f"--- Initializing Coles Scraper for {company} ({store}) ---")
+    if store_id:
+        print(f"Targeting specific store ID: {store_id}")
 
-    while True:
-        driver = None
+    progress_file_path = os.path.join(save_path, f"coles_progress_{store_id or 'national'}.json")
+
+    # --- Load Progress ---
+    completed_categories = []
+    if os.path.exists(progress_file_path):
+        with open(progress_file_path, 'r') as f:
+            try:
+                completed_categories = json.load(f)
+            except json.JSONDecodeError:
+                completed_categories = []
+
+    # --- Selenium Phase: Session Initialization ---
+    driver = None
+    try:
+        print("--- Selenium Phase: Initializing browser for session ---")
+        options = webdriver.ChromeOptions()
+        options.add_argument("user-agent=SplitCartScraper/1.0 (Contact: admin@splitcart.com)")
+        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
         
-        completed_categories = []
-        in_progress_category = {}
-        if os.path.exists(progress_file_path):
-            with open(progress_file_path, 'r') as f:
-                try:
-                    progress_data = json.load(f)
-                    if isinstance(progress_data, list):
-                        completed_categories = progress_data
-                        in_progress_category = {}
-                    else:
-                        completed_categories = progress_data.get("completed", [])
-                        in_progress_category = progress_data.get("in_progress", {})
-                except json.JSONDecodeError:
-                    completed_categories = []
-                    in_progress_category = {}
+        driver.get("https://www.coles.com.au")
+        
+        # Set the fulfillment store cookie if a specific store is targeted
+        if store_id:
+            print(f"Setting fulfillment cookie for store ID: {store_id}")
+            # The cookie needs to be set on the correct domain.
+            # Visiting the site first ensures the domain is correct.
+            driver.add_cookie({"name": "fulfillmentStoreId", "value": str(store_id)})
+            driver.refresh() # Refresh to apply the new store context
 
-        try:
-            options = webdriver.ChromeOptions()
-            options.add_argument("user-agent=SplitCartScraper/1.0 (Contact: admin@splitcart.com)")
-            driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
-            driver.get("https://www.coles.com.au")
+        input("ACTION REQUIRED: Please solve any CAPTCHA, then press Enter here to continue...")
 
-            input("ACTION REQUIRED: Please solve the CAPTCHA, then press Enter here to continue...")
+        print("\nGiving you 15 seconds to visually confirm the store on the homepage...")
+        time.sleep(15)
+
+        # --- Requests Phase: Data Scraping ---
+        print("\n--- Requests Phase: Transferring session to scrape data ---")
+        
+        # Create a requests session and transfer cookies
+        session = requests.Session()
+        session.headers.update({"User-Agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)"})
+        for cookie in driver.get_cookies():
+            session.cookies.set(cookie['name'], cookie['value'])
+
+        print("Selenium browser is no longer needed. Closing it.")
+        driver.quit()
+        driver = None # Ensure driver is not used beyond this point
+
+        for category in categories_to_fetch:
+            if category in completed_categories:
+                print(f"Skipping already completed category: {category}")
+                continue
+
+            print(f"\n--- Scraping Category: {category} ---")
+            page_num = 1
+            total_pages = 1 # Will be updated after the first successful request
             
-            for category in categories_to_fetch:
-                if category in completed_categories:
-                    continue
-
-                resuming = in_progress_category and in_progress_category.get("name") == category
-                page_num = 1
-                total_pages = 1
-
-                if resuming:
-                    page_num = in_progress_category.get("next_page", 1)
-                    total_pages = page_num
+            while page_num <= total_pages:
+                browse_url = f"https://www.coles.com.au/browse/{category}?page={page_num}"
                 
-                category_succeeded = False
-                
-                while page_num <= total_pages:
-                    browse_url = f"https://www.coles.com.au/browse/{category}?page={page_num}"
-                    driver.get(browse_url)
+                try:
+                    print(f"Requesting page {page_num}/{total_pages if total_pages > 1 else '?'}")
+                    response = session.get(browse_url, timeout=30)
+                    response.raise_for_status()
+
+                    soup = BeautifulSoup(response.text, 'html.parser')
+                    json_element = soup.find('script', {'id': '__NEXT_DATA__'}) 
                     
-                    try:
-                        wait = WebDriverWait(driver, 10)
-                        json_element = wait.until(EC.presence_of_element_located((By.ID, "__NEXT_DATA__")))
-                        full_data = json.loads(json_element.get_attribute('innerHTML'))
+                    if not json_element:
+                        print(f"ERROR: Could not find __NEXT_DATA__ on page {page_num} for '{category}'. Skipping category.")
+                        break
+
+                    full_data = json.loads(json_element.string)
+                    search_results = full_data.get("props", {}).get("pageProps", {}).get("searchResults", {})
+                    raw_product_list = search_results.get("results", [])
+
+                    if not raw_product_list and page_num > 1:
+                        print("No more products found for this category.")
+                        break
+
+                    # Update total pages on the first request
+                    if page_num == 1:
+                        total_results = search_results.get("noOfResults", 0)
+                        page_size = search_results.get("pageSize", 48)
+                        if total_results > 0 and page_size > 0:
+                            total_pages = math.ceil(total_results / page_size)
+                        print(f"Category has {total_results} products across {total_pages} pages.")
+
+                    scrape_timestamp = datetime.now()
+                    # Use the specific store_id for cleaning if provided, otherwise use the generic store name
+                    store_identifier = store_id if store_id else store
+                    data_packet = clean_raw_data_coles(raw_product_list, company, store_identifier, category, page_num, scrape_timestamp)
+                    
+                    if data_packet['products']:
+                        print(f"Found and cleaned {len(data_packet['products'])} products.")
                         
-                        search_results = full_data.get("props", {}).get("pageProps", {}).get("searchResults", {})
-                        raw_product_list = search_results.get("results", [])
-
-                        if not raw_product_list:
-                            break
-
-                        if resuming or page_num == 1:
-                            total_results = search_results.get("noOfResults", 0)
-                            page_size = search_results.get("pageSize", 48)
-                            if total_results > 0 and page_size > 0:
-                                total_pages = math.ceil(total_results / page_size)
-                            resuming = False
-
-                        scrape_timestamp = datetime.now()
-                        data_packet = clean_raw_data_coles(raw_product_list, company, store, category, page_num, scrape_timestamp)
-                        print(f"Found and cleaned {len(data_packet['products'])} products on page {page_num}.")
-
-                        file_name = f"{company.lower()}_{store.lower()}_{category}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
+                        file_name = f"{company.lower()}_{store_identifier}_{category}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
                         file_path = os.path.join(save_path, file_name)
                         
                         with open(file_path, 'w', encoding='utf-8') as f:
                             json.dump(data_packet, f, indent=4)
                         print(f"Successfully saved cleaned data to {file_name}")
+                    else:
+                        print("No products found on this page.")
 
-                        progress = {"completed": completed_categories, "in_progress": {"name": category, "next_page": page_num + 1}}
-                        with open(progress_file_path, 'w') as f:
-                            json.dump(progress, f, indent=4)
-
-                    except Exception as e:
-                        print(f"ERROR: Failed on page {page_num} for '{category}'. Details: {e}")
-                        break
-                    
-                    page_num += 1
+                except requests.exceptions.RequestException as e:
+                    print(f"ERROR: Network request failed on page {page_num} for '{category}': {e}")
+                    print("Skipping to the next category.")
+                    break # Exit category loop on network error
+                except Exception as e:
+                    print(f"ERROR: An unexpected error occurred on page {page_num} for '{category}': {e}")
+                    break # Exit category loop on other errors
                 
-                if page_num > total_pages:
-                    category_succeeded = True
+                page_num += 1
+                time.sleep(1) # Be respectful to the server
 
-                if category_succeeded:
-                    completed_categories.append(category)
-                    progress = {"completed": completed_categories, "in_progress": {}}
-                    with open(progress_file_path, 'w') as f:
-                        json.dump(progress, f, indent=4)
+            # Mark category as complete
+            completed_categories.append(category)
+            with open(progress_file_path, 'w') as f:
+                json.dump(completed_categories, f, indent=4)
+            print(f"Finished category: {category}")
 
-            if len(completed_categories) == len(categories_to_fetch):
-                if os.path.exists(progress_file_path):
-                    os.remove(progress_file_path)
-                break
+        print("\n--- All categories processed ---")
+        if os.path.exists(progress_file_path):
+            os.remove(progress_file_path)
 
-        except Exception as e:
-            print(f"\nA critical error occurred during scraping: {e}")
-        
-        finally:
-            if driver:
-                driver.quit()
+    except Exception as e:
+        print(f"\nA critical error occurred: {e}")
+        print("The scraping process was interrupted.")
+    
+    finally:
+        if driver:
+            print("Closing any remaining Selenium browser.")
+            driver.quit()
 
-        if len(completed_categories) < len(categories_to_fetch):
-            print("Restarting scraper...")
-        else:
-            break
