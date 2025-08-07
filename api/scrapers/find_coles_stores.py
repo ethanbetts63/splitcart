@@ -104,7 +104,7 @@ def find_coles_stores():
                                 store_details = result.get('store', {})
                                 store_id = store_details.get('id')
                                 if store_id and store_id not in all_stores:
-                                    cleaned_store = {{
+                                    cleaned_store = {
                                         "id": store_id,
                                         "name": store_details.get("name"),
                                         "phone": store_details.get("phone"),
@@ -112,7 +112,7 @@ def find_coles_stores():
                                         "address": store_details.get("address"),
                                         "position": store_details.get("position"),
                                         "brand": store_details.get("brand")
-                                    }}
+                                    }
                                     all_stores[store_id] = cleaned_store
                                     save_stores_incrementally(OUTPUT_FILE, all_stores)
 
@@ -120,11 +120,11 @@ def find_coles_stores():
                         # This will now catch the API error and trigger the restart
                         raise e
                     
+                    save_progress(PROGRESS_FILE, current_lat, current_lon)
                     time.sleep(REQUEST_DELAY)
                     current_lon += LON_STEP
                     completed_steps += 1
-                
-                save_progress(PROGRESS_FILE, current_lat, current_lon - LON_STEP)
+
                 start_lon = LON_MIN
                 current_lat += LAT_STEP
             
