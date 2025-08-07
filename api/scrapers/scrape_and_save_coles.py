@@ -108,12 +108,17 @@ def scrape_and_save_coles_data(company: str, store_name: str, categories_to_fetc
                 # --- VERIFICATION STEP (only on page 1) ---
                 if page_num == 1:
                     try:
-                        actual_store_id = full_data.get("props", {}).get("pageProps", {}).get("fulfillment", {}).get("storeId")
+                        actual_store_id = full_data.get("props", {}).get("pageProps", {}).get("initStoreId")
                         print(f"Verifying store ID for category '{category}'...")
                         if str(actual_store_id) == str(store_id):
                             print(f"SUCCESS: Store ID {actual_store_id} matches target {store_id}.")
                         else:
                             print(f"ERROR: Store ID mismatch! Expected {store_id}, but page data shows {actual_store_id}. Skipping category.")
+                            # Save the problematic JSON for debugging
+                            debug_file_path = os.path.join(save_path, '__NEXT_DATA___debug.json')
+                            with open(debug_file_path, 'w', encoding='utf-8') as f:
+                                json.dump(full_data, f, indent=4)
+                            print(f"Saved the __NEXT_DATA__ block to {debug_file_path} for inspection.")
                             break 
                     except (KeyError, TypeError) as e:
                         print(f"ERROR: Could not find storeId in page data for verification: {e}. Skipping category.")
