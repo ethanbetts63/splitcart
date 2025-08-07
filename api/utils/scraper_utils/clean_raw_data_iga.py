@@ -1,6 +1,6 @@
 from datetime import datetime
 
-def clean_raw_data_iga(raw_product_list: list, company: str, store: str, category_slug: str, page_num: int, timestamp: datetime) -> dict:
+def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, category_slug: str, page_num: int, timestamp: datetime) -> dict:
     """
     Cleans a list of raw IGA product data from its API and wraps it in a 
     dictionary containing metadata about the scrape.
@@ -66,10 +66,9 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store: str, categor
     return {
         "metadata": {
             "company": company.lower(),
-            "store": store.lower(),
+            "store_id": store_id,
+            "store_name": store_name,
+            "state": state,
             "category": category_slug,
-            "page_number": page_num,
-            "scraped_at": timestamp.isoformat()
-        },
         "products": cleaned_products
     }

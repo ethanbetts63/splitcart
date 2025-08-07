@@ -1,7 +1,7 @@
 from api.utils.processing_utils import _create_coles_url_slug
 from datetime import datetime
 
-def clean_raw_data_coles(raw_product_list: list, company: str, store: str, category: str, page_num: int, timestamp: datetime) -> dict:
+def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, category: str, page_num: int, timestamp: datetime) -> dict:
     """
     Cleans a list of raw coles product data and wraps it in a dictionary
     containing metadata about the scrape.
@@ -51,7 +51,9 @@ def clean_raw_data_coles(raw_product_list: list, company: str, store: str, categ
     return {
         "metadata": {
             "company": company,
-            "store": store,
+            "store_id": store_id,
+            "store_name": store_name,
+            "state": state,
             "category": category,
             "page_number": page_num,
             "scraped_at": timestamp.isoformat()

@@ -13,7 +13,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
 
-def scrape_and_save_coles_data(company: str, store_name: str, categories_to_fetch: list, save_path: str, store_id: str):
+def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, state: str, categories_to_fetch: list, save_path: str):
     """
     Launches a browser for session setup, then uses a requests session to scrape data.
     Includes a verification step on the first page of each category.
@@ -139,7 +139,7 @@ def scrape_and_save_coles_data(company: str, store_name: str, categories_to_fetc
                     print(f"Category has {total_results} products across {total_pages} pages.")
 
                 scrape_timestamp = datetime.now()
-                data_packet = clean_raw_data_coles(raw_product_list, company, store_id, category, page_num, scrape_timestamp)
+                data_packet = clean_raw_data_coles(raw_product_list, company, store_id, store_name, state, category, page_num, scrape_timestamp)
                 
                 if data_packet['products']:
                     print(f"Found and cleaned {len(data_packet['products'])} products.")
