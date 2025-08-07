@@ -51,7 +51,6 @@ def scrape_and_save_coles_data(company: str, store: str, categories_to_fetch: li
         input("ACTION REQUIRED: Please solve any CAPTCHA, then press Enter here to continue...")
 
         print("\nGiving you 15 seconds to visually confirm the store on the homepage...")
-        time.sleep(15)
 
         # --- Requests Phase: Data Scraping ---
         print("\n--- Requests Phase: Transferring session to scrape data ---")
