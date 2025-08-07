@@ -71,4 +71,5 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
             "state": state,
             "category": category_slug,
         "products": cleaned_products
+        }
     }
