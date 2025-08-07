@@ -1,0 +1,84 @@
+Request URL
+https://www.coles.com.au/browse/fruit-vegetables?page=12
+Request Method
+GET
+Status Code
+200 OK
+Remote Address
+45.60.154.17:443
+Referrer Policy
+strict-origin-when-cross-origin
+cache-control
+private, no-cache, no-store, max-age=0, must-revalidate
+content-encoding
+gzip
+content-security-policy
+frame-ancestors 'self' *.coles.com.au *.instagram.com instagram.com *.punchoutcommerce.com punchoutcommerce.com *.t1cloud.com t1cloud.com *.technologyonecorp.com technologyonecorp.com *.coupa.com coupa.com *.unimarket.com unimarket.com *.epicor.com epicor.com *.precisebusiness.com precisebusiness.com *.ondemand.com ondemand.com *.s4hana.cloud.sap my411205.s4hana.cloud.sap *.citrusad.com citrusad.com;
+content-type
+text/html; charset=utf-8
+date
+Thu, 07 Aug 2025 10:03:25 GMT
+etag
+"o8e74ce97fgs3n"
+set-cookie
+s_ecid=MCMID|78896104331417471551461885982321069048; Domain=coles.com.au; path=/; Expires=Sat, 07 Aug 2027 10:03:23 GMT
+set-cookie
+dsch-sessionid=ea5c4496-f629-4c80-be1b-fcfb0ef1a361; Path=/; Expires=Thu, 07 Aug 2025 10:33:23 GMT; Secure; SameSite=None
+set-cookie
+dsch-visitorid=370c5f15-e6e5-4a77-9130-4bf5c85c208d; Path=/; Expires=Fri, 31 Dec 9999 23:59:59 GMT; Secure; SameSite=None
+set-cookie
+ad-memory-token=HN3sYngcbTmf5MITM6fbRTbZKmkKDhIMCOLx0cQGEKD997YCCg0SCwik8tHEBhCu2KEjCg4SDAjl8tHEBhCSvODhAgoOEgwIp%2FPRxAYQzbjE%2BAIKDRILCOzz0cQGEKHekSgaAggCIgA%3D; Max-Age=8640; Path=/; Secure; SameSite=None
+strict-transport-security
+max-age=31536000; includeSubDomains
+vary
+Accept-Encoding
+x-cdn
+Imperva
+x-content-type-options
+nosniff
+x-iinfo
+14-3014609-3014611 NNNN CT(251 505 0) RT(1754561002739 51) q(0 1 8 -1) r(26 28) U5
+x-telemetry-traceid
+445020c3e514b2b6c32aa2c47acc42b9
+:authority
+www.coles.com.au
+:method
+GET
+:path
+/browse/fruit-vegetables?page=12
+:scheme
+https
+accept
+text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+accept-encoding
+gzip, deflate, br, zstd
+accept-language
+en-US,en;q=0.9
+cookie
+incap_ses_1099_2800108=n1tUaH02wl6EeCQ2+m5AD5F4lGgAAAAAZSX6coM5LlxxpgvMjnW2Dg==; reese84=3:MW0sYH9HWdAsPh00YSOK8Q==:xl27VmA5an50IB87OF8U0G+VJfZCorJ+1IJg8BqcZZWmx++3ki6V48g2jzXkmHyEr53+F48OSClFo3GQ/wwSOog37qhL3Q0/ixy1GvbgOIePf/9QF/nmI1eCetQnaaDbRDztd5/Aj6fa3OLsAYRz6bWI8M50/SSAUujOF4K21M3VdzAza12cYrQ8U1bk1wYaKdMN52kgMzQGa2zJQp5s5uAWfP5DvAhzdKway//3OJ44KTCbJABEU+JkUuhmebJTYnyyX2dszYF/DMpzii+Siy92yhueR46qBVZZepD/RKyIU2snan7H43G1SLg1vXiR96q3wYz0oB0tkCNMwiWd1sxK8uQqLM65m4AQ2ziQMG90Bvivvk2PZzvT6PXmPtZ7Jpz9yzaOxGu/v+D+ONOBfkZM8SlhBn2vLbu4cAePOIQ47QfOXN8gE8IF1GqlbLCYsQF/mHE0bFdbRvnQKB3X6rRTQ69Ce+Ofdlp9oAe35y9Q+QQDG+rf5XtvD6EsJdFuLMhYpxxmbr9EfLFa+ocjlnEvWtp9tnaO/ByB2fl8J8ab7gZhDXiLbKhWazuOm2rP:+iplocTGRJZ8q5EdlaBCjar7Bf2w7fiDoOjgbOL695s=; ApplicationGatewayAffinityCORS=bfe5a4a2131860a0c8623216b3d7f486; ApplicationGatewayAffinity=bfe5a4a2131860a0c8623216b3d7f486; nlbi_2800108=U7P7TiNtiQmvEVVr5VPXvwAAAADw1VgXsMEbOc8XM3Xsv3Pn; incap_sh_2800108=nXiUaAAAAACOrvQ/BgAInfHRxAYpGRVuPM4bIvSO/hnX3X4g; visid_incap_2800108=ejKYYGH9SSGTh8GNuXeqWZF4lGgAAAAAQkIPAAAAAACANTW+AU3xgJjQXy08NJ98o+ft0qbV5Vah; AMCVS_0B3D037254C7DE490A4C98A6%40AdobeOrg=1; ld_user=5e6bcf2f-1526-4db3-be24-fa9adca31488; sessionId=98567359-6a8b-497e-9a5d-9e45eac47d09; visitorId=5706994e-dcb0-4475-8d4c-de763e3550d4; AMCV_0B3D037254C7DE490A4C98A6%40AdobeOrg=179643557%7CMCIDTS%7C20308%7CMCMID%7C78896104331417471551461885982321069048%7CMCAAMLH-1755165470%7C6%7CMCAAMB-1755165470%7C6G1ynYcLPuiQxYZrsz_pkqfLG9yMXBpb2zX5dvJdYQJzPXImdj0y%7CMCOPTOUT-1754567871s%7CNONE%7CMCAID%7CNONE%7CMCSYNCSOP%7C411-20315%7CvVersion%7C5.5.0; analyticsIsLoggedIn=false; at_check=true; nlbi_2800108_3037207=+CdrUD9onm8tUtbO5VPXvwAAAADOLeUYpGzocxvQu3QdmsrO; _gcl_au=1.1.70206305.1754560672; kndctr_0B3D037254C7DE490A4C98A6_AdobeOrg_identity=CiY3ODg5NjEwNDMzMTQxNzQ3MTU1MTQ2MTg4NTk4MjMyMTA2OTA0OFIRCPXj3J-IMxgBKgRJUkwxMAPwAfXj3J-IMw==; kndctr_0B3D037254C7DE490A4C98A6_AdobeOrg_cluster=irl1; BVBRANDID=7ff1154c-41de-4af7-87fd-3bf6b48163dc; BVBRANDSID=c5f6de9c-0a44-48e4-88d3-bd3553c81727; s_ecid=MCMID|78896104331417471551461885982321069048; dsch-sessionid=ea5c4496-f629-4c80-be1b-fcfb0ef1a361; dsch-visitorid=370c5f15-e6e5-4a77-9130-4bf5c85c208d; nlbi_2800108_2670698=4219NmVivlAjympr5VPXvwAAAADc73TTYYShaf8C1Ti8Py+t; gpv_page=cusp%3Abrowse%3Aproduct-categories; s_cc=true; _ga=GA1.1.1751513382.1754560682; ORA_FPC=id=277316c8-4293-4f39-a99c-62a17e2a0b1e; WTPERSIST=; _fbp=fb.2.1754560681795.899344663710641688; s_ips=713; ad-memory-token=GjI4zFOAUlvPdWnAgvX24TLKi7YKDhIMCKDx0cQGEKnV3NADCg4SDAji8dHEBhCg%2Ffe2AgoNEgsIpPLRxAYQrtihIwoOEgwI5fLRxAYQkrzg4QIKDhIMCKfz0cQGEM24xPgCGgIIAiIA; nlbi_2800108_2147483392=0v1KZ3Nrmwttf+m/5VPXvwAAAAB/fyc03Et56RZke0MyIGHf; s_tp=16149; s_ppv=cusp%253Abrowse%253Aproduct-categories%2C4%2C4%2C4%2C713%2C22%2C1; _ga_C8RCBCKHNM=GS2.1.s1754560681$o1$g1$t1754560944$j60$l0$h0; mbox=session#cf868df8c54542778839d9a869cf4c7a#1754562831|PC#cf868df8c54542778839d9a869cf4c7a.37_0#1817805741; gpv_pathNode=localisation%20modal%20loaded%20-%20search; s_sq=colesonline-coles-global-prod%3D%2526c.%2526a.%2526activitymap.%2526page%253Dcusp%25253Abrowse%25253Aproduct-categories%2526link%253Dclose%252520dialog%2526region%253Dshopping-method-drawer%2526pageIDType%253D1%2526.activitymap%2526.a%2526.c%2526pid%253Dcusp%25253Abrowse%25253Aproduct-categories%2526pidt%253D1%2526oid%253Dfunctionrm%252528%252529%25257B%25257D%2526oidt%253D2%2526ot%253DSUBMIT
+priority
+u=0, i
+sec-ch-ua
+"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"
+sec-ch-ua-mobile
+?0
+sec-ch-ua-platform
+"Windows"
+sec-fetch-dest
+document
+sec-fetch-mode
+navigate
+sec-fetch-site
+none
+sec-fetch-user
+?1
+upgrade-insecure-requests
+1
+user-agent
+SplitCartScraper/1.0 (Contact: admin@splitcart.com)
+
+
+
+
+how about this: 
+id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"assetsUrl":"https://cdn.productimages.coles.com.au/productimages","isMobile":false,"searchResults":{"didYouMean":null,"noOfResults":578,"start":12,"pageSize":48,"keyword":null,"resultType":1,"alternateResult":false,"filters":[{"name":"Brand","values":[{"id":"313322030","displayText":"Alfalfa","count":1},{"id":"3178904886","displayText":"Aus Roasting","count":1},{"id":"3512338364","displayText":"Avofresh","count":2},{"id":"681312230","displayText":"Bean","count":1},{"id":"1588948030","displayText":"Birch\u0026Waite","count":7},{"id":"3955134709","displayText":"Coles","count":497,"brand":"Coles"},{"id":"1165989645","displayText":"Crunchy","count":1},{"id":"402773875","displayText":"Fresh","count":25},{"id":"1786121870","displayText":"Freshology","count":2},{"id":"1202265425","displayText":"Gold","count":1},{"id":"1393433095","displayText":"Gourmet Garden","count":13},{"id":"3834155601","displayText":"IM Perfect","count":1},{"id":"3951651808","displayText":"Market Lane","count":12},{"id":"4150748007","displayText":"Market Square","count":2},{"id":"4076305502","displayText":"Medjool","count":1},{"id":"3146406568","displayText":"Nutri V","count":5},{"id":"742224549","displayText":"Organic","count":1},{"id":"1757128976","displayText":"Perfection","count":2},{"id":"2585471108","displayText":"Perfection Fresh","count":1},{"id":"3195704006","displayText":"Salad Servers Lentl Salad","count":1},{"id":"3537980050","displayText":"The Salad Servers","count":1}]},{"name":"Allergen","values":[{"id":"9","displayText":"Gluten Free","count":9},{"id":"5","displayText":"Egg Free","count":3},{"id":"1003","displayText":"Dairy Free","count":2},{"id":"8","displayText":"Free from Artificial Preservatives","count":2},{"id":"1008","displayText":"Milk Free","count":1}]},{"name":"Dietary","values":[{"id":"1023","displayText":"No Artificial Flavours or Colours","count":56},{"id":"1032","displayText":"Organic","count":45},{"id":"24","displayText":"Source of Dietary Fibre","count":28},{"id":"33","displayText":"Vegetarian","count":23},{"id":"22","displayText":"No Preservatives","count":7},{"id":"1030","displayText":"GMO Free","count":5},{"id":"1033","displayText":"Vegan","count":4},{"id":"31","displayText":"Halal","count":4},{"id":"1025","displayText":"Source of Vitamin C","count":1},{"id":"1029","displayText":"Free Range","count":1}]},{"name":"Special","values":[{"id":"allspecials","displayText":"All specials","count":112},{"id":"multibuy","displayText":"Multi buy","count":62},{"id":"onlineonl

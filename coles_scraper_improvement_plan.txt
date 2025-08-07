@@ -38,3 +38,7 @@ we do not want to break that. It's also good to note that this scraper actually 
 relevant files: 
 C:\Users\ethan\coding\splitcart\api\scrapers\scrape_and_save_coles.py
 C:\Users\ethan\coding\splitcart\api\data\store_data\stores_coles\coles-supermarkets\sa.json
+
+
+
+this is the part of the cookie that we really care about: USER_LOCATION=Location=Pagewood&State=NSW&Postcode=2035&Latitude=-33.944945&Longitude=151.223597; NEAREST_STORE=StoreId=909&StoreBrandId=2&StoreName=Coles Eastgardens&Latitude=-33.944328&Longitude=151.223828&State=NSW&Postcode=2036&Suburb=Pagewood
