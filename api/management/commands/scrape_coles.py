@@ -13,9 +13,14 @@ class Command(BaseCommand):
 
         # Hardcoded list of Coles stores for testing
         stores_to_scrape = [
-            {'store_name': 'DefaultStore', 'store_id': '0584'},
-            {'store_name': 'Pagewood', 'store_id': '0314'},
-            {'store_name': 'Highfields', 'store_id': '4452'}
+            {'store_name': 'Coles Alice Springs', 'store_id': '418'},
+            {'store_name': 'Coles Goondiwindi', 'store_id': '4384'},
+            {'store_name': 'Coles Chisholm', 'store_id': '858'},
+            {'store_name': 'Coles Eden', 'store_id': '5697'},
+            {'store_name': 'Coles Burnie', 'store_id': '7541'},
+            {'store_name': 'Coles Warrnambool (lava St)', 'store_id': '7730'},
+            {'store_name': 'Coles Port Lincoln', 'store_id': '440'},
+            {'store_name': 'Coles Albany', 'store_id': '364'},
         ]
 
         categories = [
