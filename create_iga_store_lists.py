@@ -45,7 +45,7 @@ def create_iga_store_lists():
                 if store_name and store_id:
                     stores_by_state[state_key].append({
                         'store_name': store_name,
-                        'store_id': str(store_id) # Ensure ID is a string
+                        'retailerId': str(store_id) # Ensure ID is a string
                     })
 
     # Sort stores within each state alphabetically by name
