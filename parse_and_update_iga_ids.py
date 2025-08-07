@@ -5,8 +5,8 @@ import re
 def parse_and_update_from_log_corrected():
     """
     Parses the retailer_ids_iga.txt log file to find successfully updated
-    retailer IDs and updates the 'retailerId' field in the corresponding state JSON files.
-    Ensures every store has a 'retailerId' key.
+    retailer IDs and updates the 'retailerStoreId' field in the corresponding state JSON files.
+    Ensures every store has a 'retailerStoreId' key.
     """
     base_path = os.path.join('C:', os.sep, 'Users', 'ethan', 'coding', 'splitcart')
     log_file_path = os.path.join(base_path, 'retailer_ids_iga.txt')
@@ -36,7 +36,7 @@ def parse_and_update_from_log_corrected():
         print(f"Error: Stores directory not found at {stores_dir}")
         return
 
-    print("\n--- Updating state JSON files with 'retailerId' ---")
+    print("\n--- Updating state JSON files with 'retailerStoreId' ---")
     for filename in os.listdir(stores_dir):
         if filename.endswith('.json') and 'by_state' not in filename:
             file_path = os.path.join(stores_dir, filename)
@@ -48,16 +48,16 @@ def parse_and_update_from_log_corrected():
                     stores = data.get('stores', [])
 
                     for store in stores:
-                        # Ensure the retailerId key exists
-                        if 'retailerId' not in store:
-                            store['retailerId'] = ""
+                        # Ensure the retailerStoreId key exists
+                        if 'retailerStoreId' not in store:
+                            store['retailerStoreId'] = ""
 
                         store_name = store.get('storeName')
                         if store_name in store_id_map:
                             new_id = store_id_map[store_name]
-                            if store['retailerId'] != new_id:
-                                store['retailerId'] = new_id
-                                print(f"Updated '{store_name}' in {filename} with retailerId: {new_id}")
+                            if store['retailerStoreId'] != new_id:
+                                store['retailerStoreId'] = new_id
+                                print(f"Updated '{store_name}' in {filename} with retailerStoreId: {new_id}")
                                 updated_in_file = True
                     
                     # If any updates were made, write back to the file

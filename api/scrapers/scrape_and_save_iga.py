@@ -18,6 +18,8 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
     session.headers.update({
         "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
     })
+    # Set the store ID in the cookies for the session
+    session.cookies.set("iga-shop.retailerStoreId", str(store_id))
 
     # --- Checkpoint Initialization ---
     progress = read_checkpoint(company)

@@ -44,7 +44,7 @@ class Command(BaseCommand):
 
                 store_to_scrape = stores_in_current_state[0]
                 store_name_slug = create_store_slug_iga(store_to_scrape['store_name'])
-                store_id = store_to_scrape['retailerId']
+                store_id = store_to_scrape['retailerStoreId']
 
                 self.stdout.write(f"Attempting to scrape store {i+1}/2: {store_to_scrape['store_name']} ({store_id})")
 
