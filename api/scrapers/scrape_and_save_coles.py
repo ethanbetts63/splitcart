@@ -12,30 +12,27 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
+from api.utils.scraper_utils.checkpoint_manager import read_checkpoint, update_page_progress, mark_category_complete, clear_checkpoint
 
 def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, state: str, categories_to_fetch: list, save_path: str):
     """
     Launches a browser for session setup, then uses a requests session to scrape data.
-    Includes a verification step on the first page of each category.
+    Includes a verification step and uses the central checkpoint manager for progress.
     """
-    print(f"--- Initializing Hybrid Coles Scraper for store: {store_name} ({store_id}) ---")
-    progress_file_path = os.path.join(save_path, f"coles_progress_{store_id}.json")
+    store_name_slug = f"{store_name.lower().replace(' ', '-')}-{store_id}"
+    print(f"--- Initializing Hybrid Coles Scraper for store: {store_name} ({store_name_slug}) ---")
 
-    # --- Load Progress ---
-    completed_categories = []
-    if os.path.exists(progress_file_path):
-        with open(progress_file_path, 'r') as f:
-            try:
-                # Handle both old dict format and new list format for progress
-                progress_data = json.load(f)
-                if isinstance(progress_data, list):
-                    completed_categories = progress_data
-                elif isinstance(progress_data, dict):
-                    completed_categories = progress_data.get("completed", [])
-                else:
-                    completed_categories = []
-            except json.JSONDecodeError:
-                completed_categories = []
+    # --- Load Progress from Checkpoint Manager ---
+    progress = read_checkpoint(company)
+    
+    # Check if we are starting a new store or resuming an old one
+    start_scraping_fresh = not progress.get("current_store") or progress.get("current_store") != store_name_slug
+    if start_scraping_fresh:
+        print(f"Starting fresh scrape for {store_name}.")
+        completed_categories = []
+    else:
+        print(f"Resuming scrape for {store_name}.")
+        completed_categories = progress.get("completed_categories", [])
 
     # --- Selenium Phase: Session Initialization ---
     driver = None
@@ -79,17 +76,27 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
         return
 
     # --- Main Scraping Loop ---
-    for category in categories_to_fetch:
-        if category in completed_categories:
-            print(f"Skipping already completed category: {category}")
+    for category_slug in categories_to_fetch:
+        if category_slug in completed_categories:
+            print(f"Skipping already completed category: {category_slug}")
             continue
 
-        print(f"\n--- Scraping Category: {category} ---")
+        print(f"\n--- Scraping Category: {category_slug} ---")
         page_num = 1
         total_pages = 1
-        
-        while page_num <= total_pages:
-            browse_url = f"https://www.coles.com.au/browse/{category}?page={page_num}"
+
+        # Check for resuming a category from a specific page
+        if not start_scraping_fresh and progress.get("current_category") == category_slug:
+            page_num = progress.get("last_completed_page", 0) + 1
+            print(f"Resuming category '{category_slug}' from page {page_num}.")
+
+        category_successfully_completed = False
+        while True: # Will break out internally
+            if page_num > total_pages and total_pages > 1:
+                category_successfully_completed = True
+                break
+
+            browse_url = f"https://www.coles.com.au/browse/{category_slug}?page={page_num}"
             
             try:
                 print(f"Requesting page {page_num}/{total_pages if total_pages > 1 else '?'}")
@@ -100,25 +107,19 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
                 json_element = soup.find('script', {'id': '__NEXT_DATA__'}) 
                 
                 if not json_element:
-                    print(f"ERROR: Could not find __NEXT_DATA__ on page {page_num} for '{category}'. Skipping category.")
+                    print(f"ERROR: Could not find __NEXT_DATA__ on page {page_num} for '{category_slug}'. Skipping category.")
                     break
 
                 full_data = json.loads(json_element.string)
 
-                # --- VERIFICATION STEP (only on page 1) ---
                 if page_num == 1:
                     try:
                         actual_store_id = full_data.get("props", {}).get("pageProps", {}).get("initStoreId")
-                        print(f"Verifying store ID for category '{category}'...")
+                        print(f"Verifying store ID for category '{category_slug}'...")
                         if str(actual_store_id) == str(store_id):
                             print(f"SUCCESS: Store ID {actual_store_id} matches target {store_id}.")
                         else:
                             print(f"ERROR: Store ID mismatch! Expected {store_id}, but page data shows {actual_store_id}. Skipping category.")
-                            # Save the problematic JSON for debugging
-                            debug_file_path = os.path.join(save_path, '__NEXT_DATA___debug.json')
-                            with open(debug_file_path, 'w', encoding='utf-8') as f:
-                                json.dump(full_data, f, indent=4)
-                            print(f"Saved the __NEXT_DATA__ block to {debug_file_path} for inspection.")
                             break 
                     except (KeyError, TypeError) as e:
                         print(f"ERROR: Could not find storeId in page data for verification: {e}. Skipping category.")
@@ -127,8 +128,9 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
                 search_results = full_data.get("props", {}).get("pageProps", {}).get("searchResults", {})
                 raw_product_list = search_results.get("results", [])
 
-                if not raw_product_list and page_num > 1:
+                if not raw_product_list:
                     print("No more products found for this category.")
+                    category_successfully_completed = True
                     break
 
                 if page_num == 1:
@@ -139,31 +141,42 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
                     print(f"Category has {total_results} products across {total_pages} pages.")
 
                 scrape_timestamp = datetime.now()
-                data_packet = clean_raw_data_coles(raw_product_list, company, store_id, store_name, state, category, page_num, scrape_timestamp)
+                data_packet = clean_raw_data_coles(raw_product_list, company, store_id, store_name, state, category_slug, page_num, scrape_timestamp)
                 
                 if data_packet['products']:
                     print(f"Found and cleaned {len(data_packet['products'])} products.")
-                    file_name = f"{company.lower()}_{store_id}_{category}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
+                    file_name = f"{company.lower()}_{store_id}_{category_slug}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
                     file_path = os.path.join(save_path, file_name)
                     
                     with open(file_path, 'w', encoding='utf-8') as f:
                         json.dump(data_packet, f, indent=4)
                     print(f"Successfully saved cleaned data to {file_name}")
 
+                    update_page_progress(
+                        company_name=company, store=store_name_slug,
+                        completed_cats=completed_categories, current_cat=category_slug, page_num=page_num
+                    )
+
             except requests.exceptions.RequestException as e:
-                print(f"ERROR: Network request failed on page {page_num} for '{category}': {e}")
+                print(f"ERROR: Network request failed on page {page_num} for '{category_slug}': {e}")
                 break 
             except Exception as e:
-                print(f"ERROR: An unexpected error occurred on page {page_num} for '{category}': {e}")
+                print(f"ERROR: An unexpected error occurred on page {page_num} for '{category_slug}': {e}")
                 break
             
             page_num += 1
 
-        completed_categories.append(category)
-        with open(progress_file_path, 'w') as f:
-            json.dump(completed_categories, f, indent=4)
-        print(f"Finished or skipped category: {category}")
+        if category_successfully_completed:
+            if category_slug not in completed_categories:
+                completed_categories.append(category_slug)
+            mark_category_complete(
+                company_name=company, store=store_name_slug,
+                completed_cats=completed_categories, new_completed_cat=category_slug
+            )
+            print(f"--- Finished category: {category_slug} ---")
+        else:
+            print(f"--- Paused category: {category_slug}. Progress saved. ---")
 
-    print("\n--- All categories processed ---")
-    if os.path.exists(progress_file_path):
-        os.remove(progress_file_path)
+    print("\n--- All categories processed for this store ---")
+    clear_checkpoint(company)
+    print(f"--- Coles scraper finished for store: {store_name} ({store_id}). Checkpoint cleared. ---")

@@ -1,4 +1,3 @@
-
 import os
 import json
 import requests
@@ -23,20 +22,20 @@ def update_iga_store_ids():
             print(f"--- Processing {filename} ---")
             
             try:
+                # Open with r+ to read and then write
                 with open(file_path, 'r+', encoding='utf-8') as f:
                     data = json.load(f)
-                    stores = data.get('stores', [])
+                    stores_to_process = data.get('stores', [])
                     
-                    if not stores:
+                    if not stores_to_process:
                         print(f"No stores found in {filename}. Skipping.")
                         continue
 
-                    updated_stores = []
-                    for store in stores:
+                    # Modify the list of stores in-place
+                    for store in stores_to_process:
                         tag = store.get('tag')
                         if not tag:
                             print(f"Warning: Store '{store.get('storeName')}' is missing a 'tag'. Skipping.")
-                            updated_stores.append(store)
                             continue
 
                         try:
@@ -48,6 +47,7 @@ def update_iga_store_ids():
                             if api_data.get('items'):
                                 retailer_store_id = api_data['items'][0].get('retailerStoreId')
                                 if retailer_store_id:
+                                    # Add the new ID to the store dictionary
                                     store['retailerStoreId'] = retailer_store_id
                                     print(f"Successfully updated '{store.get('storeName')}' with retailer ID: {retailer_store_id}")
                                 else:
@@ -57,14 +57,11 @@ def update_iga_store_ids():
                                 
                         except requests.exceptions.RequestException as e:
                             print(f"Error fetching data for tag {tag}: {e}")
-
-                        updated_stores.append(store)
-                        time.sleep(1) # Be respectful to the API
+                        
+                        time.sleep(0.5) # Be respectful to the API
 
                     # Go back to the beginning of the file to overwrite it
                     f.seek(0)
-                    # Overwrite the 'stores' list with the updated one
-                    data['stores'] = updated_stores
                     # Write the updated data back to the file
                     json.dump(data, f, indent=4)
                     # Truncate the file in case the new content is smaller

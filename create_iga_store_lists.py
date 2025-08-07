@@ -40,7 +40,7 @@ def create_iga_store_lists():
 
             for store in data.get('stores', []):
                 store_name = store.get('storeName')
-                store_id = store.get('storeId')
+                store_id = store.get('retailerId')
                 
                 if store_name and store_id:
                     stores_by_state[state_key].append({
