@@ -11,7 +11,8 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, cate
     """
     Launches a requests-based scraper for a specific ALDI store with checkpointing.
     """
-    print(f"--- Initializing ALDI Scraper for {company} ({store_name}) ---")
+    store_name_slug = f"{store_name.lower().replace(' ', '-')}-{store_id}"
+    print(f"--- Initializing ALDI Scraper for {company} ({store_name_slug}) ---")
 
     # --- Checkpoint Initialization ---
     progress = read_checkpoint(company)
@@ -67,12 +68,12 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, cate
 
                 scrape_timestamp = datetime.now()
                 data_packet = clean_raw_data_aldi(
-                    raw_product_list=raw_products_on_page, company=company, store=store_name,
+                    raw_product_list=raw_products_on_page, company=company, store_name=store_name, store_id=store_id,
                     category_slug=category_slug, page_num=page_num, timestamp=scrape_timestamp
                 )
                 print(f"Found and cleaned {len(data_packet['products'])} products on page {page_num}.")
 
-                file_name = f"{company}_{store_name}_{category_slug.replace('/', '_')}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
+                file_name = f"{company}_{store_name_slug}_{category_slug.replace('/', '_')}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
                 file_path = os.path.join(save_path, file_name)
                 
                 with open(file_path, 'w', encoding='utf-8') as f:
@@ -81,7 +82,7 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, cate
 
                 # --- Checkpoint: Update Page Progress ---
                 update_page_progress(
-                    company_name=company, store=store_name,
+                    company_name=company, store=store_name_slug,
                     completed_cats=completed_categories,
                     current_cat=category_slug, page_num=page_num
                 )
@@ -103,7 +104,7 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, cate
         if category_successfully_completed:
             completed_categories.append(category_slug)
             mark_category_complete(
-                company_name=company, store=store_name,
+                company_name=company, store=store_name_slug,
                 completed_cats=completed_categories,
                 new_completed_cat=category_slug
             )
@@ -113,8 +114,8 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, cate
 
     all_category_slugs = [cat[0] for cat in categories_to_fetch]
     if all(cat in completed_categories for cat in all_category_slugs):
-        print(f"\n--- All categories for '{store_name}' scraped successfully. Clearing checkpoint. ---")
+        print(f"\n--- All categories for '{store_name_slug}' scraped successfully. Clearing checkpoint. ---")
         clear_checkpoint(company)
     else:
-        print(f"\n--- ALDI scraper for store '{store_name}' finished, but not all categories were completed. Checkpoint retained. ---")
+        print(f"\n--- ALDI scraper for store '{store_name_slug}' finished, but not all categories were completed. Checkpoint retained. ---")
 
