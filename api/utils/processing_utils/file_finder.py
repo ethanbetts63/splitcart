@@ -27,8 +27,8 @@ def file_finder(raw_data_path: str) -> dict:
         print(f"Warning: Raw data directory not found at '{raw_data_path}'")
         return {}
 
-    # The structure is now: company -> store -> scrape_date -> category -> file_paths
-    scrape_plan = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(list))))
+    # The structure is now: company -> state -> store -> scrape_date -> category -> file_paths
+    scrape_plan = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(list)))))
 
     for filename in os.listdir(raw_data_path):
         if not filename.endswith('.json'):
@@ -44,34 +44,34 @@ def file_finder(raw_data_path: str) -> dict:
                     print(f"Warning: Skipping file with missing metadata: {filename}")
                     continue
 
-                # Read the new company and store fields
                 company = metadata.get('company')
+                state = metadata.get('state')
                 store_name = metadata.get('store_name')
                 store_id = metadata.get('store_id')
                 category = metadata.get('category')
                 scrape_timestamp = metadata.get('scraped_at')
 
-                if company and store_name and store_id and category and scrape_timestamp:
-                    # Group by the date part of the timestamp
+                if all([company, state, store_name, store_id, category, scrape_timestamp]):
                     scrape_date = scrape_timestamp[:10]
                     store_key = f"{store_name}-{store_id}"
-                    scrape_plan[company][store_key][scrape_date][category].append(file_path)
+                    scrape_plan[company][state][store_key][scrape_date][category].append(file_path)
 
         except (json.JSONDecodeError, IOError) as e:
             print(f"Warning: Could not read or parse {filename}. Error: {e}")
 
     # Sort the page files for each category to ensure they are processed in order
     for company in scrape_plan:
-        for store in scrape_plan[company]:
-            for scrape_date in scrape_plan[company][store]:
-                for category in scrape_plan[company][store][scrape_date]:
-                    def sort_key(file_path):
-                        try:
-                            with open(file_path, 'r', encoding='utf-8') as f:
-                                return json.load(f)['metadata']['page_number']
-                        except (FileNotFoundError, json.JSONDecodeError, KeyError):
-                            return float('inf')
-                    
-                    scrape_plan[company][store][scrape_date][category].sort(key=sort_key)
+        for state in scrape_plan[company]:
+            for store in scrape_plan[company][state]:
+                for scrape_date in scrape_plan[company][state][store]:
+                    for category in scrape_plan[company][state][store][scrape_date]:
+                        def sort_key(file_path):
+                            try:
+                                with open(file_path, 'r', encoding='utf-8') as f:
+                                    return json.load(f)['metadata']['page_number']
+                            except (FileNotFoundError, json.JSONDecodeError, KeyError):
+                                return float('inf')
+                        
+                        scrape_plan[company][state][store][scrape_date][category].sort(key=sort_key)
 
     return json.loads(json.dumps(scrape_plan)) # Convert defaultdicts to regular dicts
