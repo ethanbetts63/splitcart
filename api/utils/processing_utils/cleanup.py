@@ -21,8 +21,6 @@ def cleanup(file_paths: list):
             # Check if the file exists before trying to delete it
             if os.path.exists(file_path):
                 os.remove(file_path)
-                # To keep the output clean, we can comment out the line-by-line print
-                # print(f"  - Deleted {os.path.basename(file_path)}")
                 success_count += 1
             else:
                 print(f"  - Warning: File not found for deletion: {os.path.basename(file_path)}")

@@ -6,6 +6,8 @@ from api.utils.processing_utils.file_finder import file_finder
 from api.utils.processing_utils.data_combiner import data_combiner
 from api.utils.processing_utils.archive_manager import archive_manager
 
+from api.utils.processing_utils.cleanup import cleanup
+
 class Command(BaseCommand):
     help = 'Processes raw JSON files, combines them by category, and saves them to a structured processed_data directory.'
 
@@ -77,7 +79,7 @@ class Command(BaseCommand):
                             self.stdout.write(f"          - Combined {len(combined_products)} products from {len(page_files)} page files.")
 
                             # Call the updated archive manager with the new arguments
-                            archive_manager(
+                            archive_success = archive_manager(
                                 processed_data_path, 
                                 company, 
                                 state,
@@ -87,6 +89,12 @@ class Command(BaseCommand):
                                 combined_products, 
                                 page_files
                             )
+
+                            if archive_success:
+                                self.stdout.write(f"          - Archiving successful. Initiating cleanup...")
+                                cleanup(page_files)
+                            else:
+                                self.stdout.write(self.style.ERROR("          - Archiving failed. Raw files not deleted."))
 
         self.stdout.write(self.style.WARNING("\nCleanup step skipped. Raw data files have not been deleted."))
         self.stdout.write(self.style.SUCCESS("\n--- All data processing complete ---"))
