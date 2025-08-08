@@ -6,22 +6,25 @@ import os
 from datetime import datetime
 from api.utils.scraper_utils.clean_raw_data_aldi import clean_raw_data_aldi
 from api.utils.scraper_utils.checkpoint_utils import read_checkpoint, update_page_progress, mark_category_complete, clear_checkpoint
+from api.utils.scraper_utils.get_aldi_categories import get_aldi_categories
 
-def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, state: str, categories_to_fetch: list, save_path: str):
+def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, state: str, save_path: str):
     """
     Launches a requests-based scraper for a specific ALDI store with checkpointing.
     """
     store_name_slug = f"{store_name.lower().replace(' ', '-')}-{store_id}"
     print(f"--- Initializing ALDI Scraper for {company} ({store_name_slug}) ---")
 
-    # --- Checkpoint Initialization ---
-    progress = read_checkpoint(company)
-    completed_categories = progress.get("completed_categories", [])
-
     session = requests.Session()
     session.headers.update({
         "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
     })
+
+    # --- Get Categories ---
+    categories_to_fetch = get_aldi_categories(store_id, session)
+    if not categories_to_fetch:
+        print("Could not fetch ALDI categories. Aborting scraper.")
+        return
 
     for category_slug, category_key in categories_to_fetch:
         if category_slug in completed_categories:
