@@ -1,0 +1,30 @@
+Postcode: 6000, Error: HTTPSConnectionPool(host='www.woolworths.com.au', port=443): Read timed out. (read timeout=10), Time elapsed: 10.14 seconds
+Postcode: 6001, Status Code: 200, Response Time: 8.62 seconds
+Postcode: 6002, Status Code: 200, Response Time: 9.65 seconds
+Postcode: 6003, Status Code: 200, Response Time: 9.94 seconds
+Postcode: 6004, Status Code: 200, Response Time: 9.77 seconds
+Postcode: 6005, Status Code: 200, Response Time: 9.56 seconds
+Postcode: 6006, Error: HTTPSConnectionPool(host='www.woolworths.com.au', port=443): Read timed out. (read timeout=10), Time elapsed: 10.09 seconds
+Postcode: 6007, Error: HTTPSConnectionPool(host='www.woolworths.com.au', port=443): Read timed out. (read timeout=10), Time elapsed: 10.12 seconds
+Postcode: 6008, Status Code: 200, Response Time: 9.85 seconds
+Postcode: 6009, Status Code: 200, Response Time: 8.64 seconds
+Postcode: 6010, Error: HTTPSConnectionPool(host='www.woolworths.com.au', port=443): Read timed out. (read timeout=10), Time elapsed: 10.10 seconds
+Postcode: 6011, Status Code: 200, Response Time: 9.77 seconds
+Postcode: 6012, Error: HTTPSConnectionPool(host='www.woolworths.com.au', port=443): Read timed out. (read timeout=10), Time elapsed: 10.20 seconds
+Postcode: 6013, Status Code: 200, Response Time: 8.59 seconds
+Postcode: 6014, Error: HTTPSConnectionPool(host='www.woolworths.com.au', port=443): Read timed out. (read timeout=10), Time elapsed: 10.09 seconds
+Postcode: 6015, Status Code: 200, Response Time: 10.08 seconds
+Postcode: 6016, Status Code: 200, Response Time: 8.58 seconds
+Postcode: 6017, Status Code: 200, Response Time: 9.21 seconds
+Postcode: 6018, Error: HTTPSConnectionPool(host='www.woolworths.com.au', port=443): Read timed out. (read timeout=10), Time elapsed: 10.15 seconds
+Postcode: 6019, Status Code: 200, Response Time: 9.57 seconds
+Postcode: 6020, Status Code: 200, Response Time: 8.96 seconds
+Postcode: 6021, Status Code: 200, Response Time: 9.55 seconds
+Postcode: 6022, Error: HTTPSConnectionPool(host='www.woolworths.com.au', port=443): Read timed out. (read timeout=10), Time elapsed: 10.11 seconds
+Postcode: 6023, Error: HTTPSConnectionPool(host='www.woolworths.com.au', port=443): Read timed out. (read timeout=10), Time elapsed: 10.13 seconds
+Postcode: 6024, Error: HTTPSConnectionPool(host='www.woolworths.com.au', port=443): Read timed out. (read timeout=10), Time elapsed: 10.15 seconds
+Postcode: 6025, Error: HTTPSConnectionPool(host='www.woolworths.com.au', port=443): Read timed out. (read timeout=10), Time elapsed: 10.10 seconds
+Postcode: 6026, Status Code: 200, Response Time: 9.62 seconds
+Postcode: 6027, Error: HTTPSConnectionPool(host='www.woolworths.com.au', port=443): Read timed out. (read timeout=10), Time elapsed: 10.10 seconds
+Postcode: 6028, Error: HTTPSConnectionPool(host='www.woolworths.com.au', port=443): Read timed out. (read timeout=10), Time elapsed: 10.14 seconds
+Postcode: 6029, Error: HTTPSConnectionPool(host='www.woolworths.com.au', port=443): Read timed out. (read timeout=10), Time elapsed: 10.13 seconds

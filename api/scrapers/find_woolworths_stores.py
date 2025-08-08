@@ -1,4 +1,3 @@
-
 import json
 import time
 import os
@@ -13,9 +12,9 @@ from api.utils.shop_scraping_utils.aldi import (
 )
 
 # --- CONFIGURATION ---
-ALDI_API_URL = "https://api.aldi.com.au/v2/service-points"
-OUTPUT_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_aldi\\aldi_stores_raw.json"
-PROGRESS_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_aldi\\find_aldi_stores_progress.json"
+WOOLWORTHS_API_URL = "https://www.woolworths.com.au/apis/ui/StoreLocator/Stores"
+OUTPUT_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_woolworths\\woolworths_stores_raw.json"
+PROGRESS_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_woolworths\\find_woolworths_stores_progress.json"
 
 # Geographical grid for Australia (approximate)
 LAT_MIN = -44.0
@@ -29,7 +28,7 @@ REQUEST_DELAY = 0.5
 
 # --- MAIN SCRAPING LOGIC ---
 
-def find_aldi_stores():
+def find_woolworths_stores():
     """Main function to drive the scraping process."""
     total_lat_steps = int((LAT_MAX - LAT_MIN) / LAT_STEP) + 1
     total_lon_steps = int((LON_MAX - LON_MIN) / LON_STEP) + 1
@@ -45,7 +44,7 @@ def find_aldi_stores():
             all_stores = load_existing_stores(OUTPUT_FILE)
             start_lat, start_lon = load_progress(PROGRESS_FILE, LAT_MIN, LAT_STEP, LON_MIN, LON_MAX, LON_STEP)
 
-            print("\nStarting ALDI store data scraping...")
+            print("\nStarting Woolworths store data scraping...")
 
             lat_steps = list(drange(LAT_MIN, LAT_MAX, LAT_STEP))
             lon_steps = list(drange(LON_MIN, LON_MAX, LON_STEP))
@@ -66,18 +65,19 @@ def find_aldi_stores():
                     params = {
                         "latitude": current_lat,
                         "longitude": current_lon,
-                        "serviceType": "walk-in",
-                        "includeNearbyServicePoints": "true",
+                        "Max": 30,
+                        "Division": "SUPERMARKETS,EG,AMPOL",
+                        "Facility": "",
                     }
 
                     try:
-                        response = session.get(ALDI_API_URL, params=params, timeout=60)
+                        response = session.get(WOOLWORTHS_API_URL, params=params, timeout=60)
                         response.raise_for_status()
                         data = response.json()
 
-                        if "data" in data:
-                            for store_details in data["data"]:
-                                store_id = store_details.get('id')
+                        if "Stores" in data:
+                            for store_details in data["Stores"]:
+                                store_id = store_details.get('StoreNo')
                                 if store_id and store_id not in all_stores:
                                     all_stores[store_id] = store_details
                                     save_stores_incrementally(OUTPUT_FILE, all_stores)
@@ -100,7 +100,7 @@ def find_aldi_stores():
                 current_lat += LAT_STEP
             
             print_progress_bar(total_steps, total_steps, LAT_MAX, LON_MAX, len(all_stores))
-            print(f"\n\nFinished ALDI store scraping. Found {len(all_stores)} unique stores.")
+            print(f"\n\nFinished Woolworths store scraping. Found {len(all_stores)} unique stores.")
             print(f"Raw data saved to {OUTPUT_FILE}")
             if os.path.exists(PROGRESS_FILE):
                 os.remove(PROGRESS_FILE)

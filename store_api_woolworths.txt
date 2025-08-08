@@ -1,0 +1,2182 @@
+https://www.woolworths.com.au/apis/ui/StoreLocator/Stores?Max=30&Division=SUPERMARKETS,EG,AMPOL&Facility=&latitude=-33.865143&longitude=151.2099
+
+
+Request URL
+https://www.woolworths.com.au/apis/ui/StoreLocator/Stores?Max=30&Division=SUPERMARKETS,EG,AMPOL&Facility=&latitude=-33.865143&longitude=151.2099
+Request Method
+GET
+Status Code
+200 OK
+Remote Address
+95.101.192.24:443
+Referrer Policy
+strict-origin-when-cross-origin
+access-control-allow-headers
+Content-type
+access-control-allow-origin
+*
+access-control-expose-headers
+Request-Context
+cache-control
+no-cache, no-store, must-revalidate
+content-encoding
+gzip
+content-length
+3430
+content-type
+application/json; charset=utf-8
+date
+Fri, 08 Aug 2025 14:18:22 GMT
+expires
+-1
+pragma
+no-cache
+request-context
+appId=cid-v1:8b7484df-d0d5-4f33-83b4-86cf16480688
+server-timing
+cdn-cache; desc=MISS
+server-timing
+edge; dur=256
+server-timing
+origin; dur=45
+server-timing
+ak_p; desc="1754662702564_398936981_10869446_30097_24657_31_0_219";dur=1
+set-cookie
+bm_sv=C0F9294922F50C94016D07382CA83E2B~YAAQlUvHF51LHoeYAQAALw8MihyzwTaZ0AV5e0kejqi28xj+KX7M+k3zdClElW3v2LloOsTh58J00GkyuqTK0KWJ9skGEX5zjox5R5YEiQr0W+KX5a/SALNwY4al6NC+QcxghQniJ3oisSdVZvLxdE4qaBkcbBYzAC1pqcrw1LjFqU7nuRoZCzBp/kmWd1wCALif/SEogR9bivRUheRkjz2vJoOy7kxrYqDRQpL67VG7sC4M/80rbNoArBfHsugXGeZAOUCy2Do=~1; Domain=.woolworths.com.au; Path=/; Expires=Fri, 08 Aug 2025 15:55:13 GMT; Max-Age=5811; Secure
+strict-transport-security
+max-age=31536000 ; includeSubDomains
+vary
+Accept-Encoding
+x-content-type-options
+nosniff
+x-xss-protection
+1; mode=block
+:authority
+www.woolworths.com.au
+:method
+GET
+:path
+/apis/ui/StoreLocator/Stores?Max=30&Division=SUPERMARKETS,EG,AMPOL&Facility=&latitude=-33.865143&longitude=151.2099
+:scheme
+https
+accept
+application/json, text/plain, */*
+accept-encoding
+gzip, deflate, br, zstd
+accept-language
+en-US,en;q=0.9
+cache-control
+no-cache
+cookie
+ai_user=f2PsI7aSIfbR2xPKugY8L/|2025-07-26T13:17:13.648Z; at_check=true; akaalb_woolworths.com.au=~op=www_woolworths_com_au_ZoneB:PROD-ZoneB|www_woolworths_com_au_BFF_MEL_Launch:WOW-BFF-MEL|~rv=56~m=PROD-ZoneB:0|WOW-BFF-MEL:0|~os=43eb3391333cc20efbd7f812851447e6~id=8c860f834ad9abc0c627c6353adae6f7; AMCVS_4353388057AC8D357F000101%40AdobeOrg=1; dtCookie=v_4_srv_3_sn_BA8D517C22ACB26CE83F641C2EFA2BFF_perc_100000_ol_0_mul_1_app-3Af908d76079915f06_1_rcs-3Acss_1; INGRESSCOOKIE=1753535838.528.186.477444|37206e05370eb151ee9f1b6a1c80a538; s_cc=true; _pin_unauth=dWlkPVpUa3pZakppTmpVdE56VmxOaTAwWXprMUxXSTRaall0TW1aaU1EVm1NR014WkRVMw; IR_gbd=woolworths.com.au; _tt_enable_cookie=1; _ttp=01K13E313DQYBYJGZ9150XFMA4_.tt.2; _scid=zvkgoeSPImpTV7lgqwFyvv0O7CE3rvrk; _gcl_au=1.1.1255165719.1753535842; kampyle_userid=8f90-1660-15b8-ce5a-9037-605b-f69a-c802; BVBRANDID=9dbbd768-d15d-420d-964f-dc2b612e112b; w-listingIdentifier=homepage_nsw; _ga=GA1.1.1580281860.1753535842; _uetvid=c9f304d06def11f09511b7427a3322de; new_login_exp=true; hasLoggedIn=true; fmsCoachmarkShownAVTR2719=1; _ScCbts=%5B%5D; fullstoryEnabled=false; w-lrkswrdjp=dm-Courier,f-0,s-4705; IR_PI=1605a5cf-6f79-11f0-98a0-a555989b7b39%7C1754395131933; AMCV_4353388057AC8D357F000101%40AdobeOrg=179643557%7CMCIDTS%7C20309%7CMCMID%7C61377436100556492450241788245013098383%7CMCAAMLH-1755266108%7C6%7CMCAAMB-1755266108%7CRKhpRz8krg2tLO6pguXWp5olkAcUniQYPHaMWWgdJ3xzPWQmdj0y%7CMCOPTOUT-1754668508s%7CNONE%7CvVersion%7C5.5.0%7CMCCIDH%7C-1960630893; ak_bmsc=A57B9269ECBAC0426C8744C44E691CA8~000000000000000000000000000000~YAAQlUvHFx6NHYeYAQAA1tP2iRzVfckpajbA8QAGbVl2ZwjN6Ry9AorvuwPmooVbApitfZiUp+DHsVwLoooiGr0RjGnaNKgHNwhvFTTX0OHj+ErBA0yrJQgRER4mCeidtnLkiXh3VlntMCJ09zEEMgcd7USTa+mM8FKEe+g4RYwzF/hvVhnn4LpSzgQbhRQNh/q9XZQlbOD34+U3CLvFiS6DmyOCLCrB7ZjCrVnyu2XuFc8BML2R9lw1OKRfuxXcEg+vNdVHpdmCiH3GwKZDIoDZ2P5MSZB1A1xIwBTpHJQeIkeD3pKngxbdDwlBVHAWRlcFNSIFdyhPhBpARfB+B1ki95Rgei+B+7LcsO4BCFYLnV+8tlTzfnTTBv0ATTkHTUOKL2twAVUWHkGSMtiT8rzLLgCB8xhY8c1CUIhsatd+tNa0W8UT20WZPJZKa03Qfy3k+A2xxvKI0JLD85xhHIdBOuI=; IR_7464=1754661316636%7C0%7C1754661316636%7C%7C; _scid_r=1nkgoeSPImpTV7lgqwFyvv0O7CE3rvrkZvmPKQ; utag_main=v_id:019846e17d8400139b86f518f7f50506f005f0670093c$_sn:14$_se:26$_ss:0$_st:1754664494240$vapi_domain:woolworths.com.au$dc_visit:14$last_logged_in_user.ProfileIDHash:ebe68e3a02cd24bd58e99cf5626c4ae64094d48cffe1b75f882d624f7f6fb6c4$ses_id:1754661315727%3Bexp-session$_pn:1%3Bexp-session$dc_event:12%3Bexp-session$dc_region:ap-southeast-2%3Bexp-session$dleUpToDate:true%3Bexp-session; ttcsid_CJ0AT43C77U75407IG80=1754661316934::bHL2bCThtrDWUbXyVE2o.11.1754662694418; ttcsid=1754661316937::g4fmNJivHaReb2_zRvzo.11.1754662694418; kampyleUserSession=1754662695376; kampyleUserSessionsCount=57; kampyleUserPercentile=92.57683321554713; kampyleSessionPageCounter=1; AKA_A2=A; bm_sz=BA2894DA7CDD686755E86E1649841E6A~YAAQlUvHF1VLHoeYAQAAnQcMihy8GKEssMe/12Dwr3/SGbh8Rtp6WST2f3SAzM2D62lE9kCbxvtN9CiKPl/7VHfzqBpwzAsAxfCvYXpJ6zcTasQXtC6U9lyK7tspV2y9iPtoCfg9wv9qo0VZZTTPH8iAmb1sOrCFUDv3jHBQeobEqk4Z8cfv9Usghp3BXOjUzjBdb9YkavABVzwg7YChX7ka5fCtd5+Eq0/w6t81snxa86ak1bc3ADnPD9uXttVkaYvkGcmdAMzeYrUbRJYdG2UkqaA8qiTcoCUWNVEa/DsGTsCNqSlV/6afvNoHfh7Wak0kliGfQ2YU/YEpQ3bTOVDAWwX/65GHH3mWtPBYr4WFzSFLHBk81wXZ2zPLVzl+Pzd/hBizz9p88qoxLawzh13EhnDLx701IhplcGizzEZZnxgISNgiJvMj~4273206~3552049; _ga_YBVRJYN9JL=GS2.1.s1754661348$o21$g1$t1754662700$j6$l0$h0; _abck=868B708020769E4BE2511667106D6276~0~YAAQlUvHF2BLHoeYAQAAtAgMig5TRZo8ibcrWXzZcPy4sB9mLZRvtsvWsQ42403M0yONVMME7wxoUCryQgoOLU5DT2REYVxi/at+ukXsxgTKQ23Ow/2ej0VMmukMXSPcS9c3/eL9AobQDF3GTgbH9RGRSarbwTgXXfAVFI6yVKJ2Pi1eydZh/Wnny7Gjeb5k+q1JI7Mx+rdDDUrLUKDswNvLN5tRADl+0MA2Plt4Wv1NqtZRMMNQbL8bl961l2m6T57DPy8LoB2VL3qrxK0gztGzLAfcnSpGdYSqo1hvh5aczeDC8HoAw5YUciyfiRp6mPMMrraBcfMg08cjM+Shfd0IkIu55WLhKGyxl9vIX4e5DBsSZprVoqQ0G1eGEyeIfZCbKEWfAkm456fuBM6v7sWujKqtPdpiRVjqdBoUgRg9IfMVq8z3pmCtebPFJUUNKdDhG8QNJUkwlmmrirNBmExPorIp4lYmrVSWuQ0KBdttSlY+ZIo6gowKVIq6zrtIKL1+pDnz51Ne8Ck6uFfkMMj9zTaJgUtSWveWJTBuw5vR6M9Ziv5xUL7KJQU3s/0GW4Q6RUFMvjRASR3iq1CLvOGrL0g7T0k2QUy47r75JP2K4VH4IpK31TilagMBpfZ30Hx8eDERUJ/1yU+ux1gogB4xi22cnFjV1JuyWLOdqYsWzsB0AsVR0F6CWLKV2c+uTjpb6lEtF1L/dLBxrncA6rZUmOVk+xfI0oHreNAZnRX/vMlIZ7lHHCIbJg7m/ms580xW539jHdiAT0aDsFF3zIlXwOOvzmxwWDV1r6vCigImpyrcHropOUAp9q3HgQ05TWOrfpjWI/BXR15IJDZsxn8=~-1~-1~1754664909; mbox=PC#d689b5462a0a42c5b0a79eaa618a9c30.37_0#1817906114|session#65e9cfff1bbd4ca7af41bc5f2f79c52f#1754664561; RT="z=1&dm=www.woolworths.com.au&si=8fbeb67a-0a31-4e52-8adf-8b73104abeda&ss=me2w1c7e&sl=1&tt=4nl&rl=1"; w-rctx=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE3NTQ2NjI3MDIsImV4cCI6MTc1NDY2NjMwMiwiaWF0IjoxNzU0NjYyNzAyLCJpc3MiOiJXb29sd29ydGhzIiwiYXVkIjoid3d3Lndvb2x3b3J0aHMuY29tLmF1Iiwic2lkIjoiNDg3ODYwMSIsInVpZCI6IjhkYjExNTc0LTA4YmEtNDNhNi1hZjllLTVkZDVmZDc5YjBiZiIsIm1haWQiOiIwIiwiYXV0IjoiU2hvcHBlciIsImF1YiI6IjQ4Nzg2MDEiLCJhdWJhIjoiMCIsIm1mYSI6IjQifQ.YFlE6mZVk1tQy3nYmodgDJNrpc7Kk4_OkfKsmk_JIx-0qDM5RJYOBUEJK6OwNEnvPOJ5JiuQcwr-s3SaKvjpn1Kp2zQND3T_m-KojX1yH70xjoQQMekTp8PLyk0KOf1Ht36KkmJj1e_AuaoPNxPi1Cvvdx4PGjjwQeCxmZ8B_iN9XWwHUnA4_2zT2BMU8FTEnsei8SNRRr76eTlBnLDTiEYV9YSP7-78GyW3HTBr5P2DxkZznaPUI4HQ9GYZvyNW_pEGYmHaEu_neOwsnLuHjEYDseeajLaQtUcOqdiiLl0kIxi77fdZ7m9CR4Za8h8TbWBhipeMOOAE-UAYddALPg; wow-auth-token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE3NTQ2NjI3MDIsImV4cCI6MTc1NDY2NjMwMiwiaWF0IjoxNzU0NjYyNzAyLCJpc3MiOiJXb29sd29ydGhzIiwiYXVkIjoid3d3Lndvb2x3b3J0aHMuY29tLmF1Iiwic2lkIjoiNDg3ODYwMSIsInVpZCI6IjhkYjExNTc0LTA4YmEtNDNhNi1hZjllLTVkZDVmZDc5YjBiZiIsIm1haWQiOiIwIiwiYXV0IjoiU2hvcHBlciIsImF1YiI6IjQ4Nzg2MDEiLCJhdWJhIjoiMCIsIm1mYSI6IjQifQ.YFlE6mZVk1tQy3nYmodgDJNrpc7Kk4_OkfKsmk_JIx-0qDM5RJYOBUEJK6OwNEnvPOJ5JiuQcwr-s3SaKvjpn1Kp2zQND3T_m-KojX1yH70xjoQQMekTp8PLyk0KOf1Ht36KkmJj1e_AuaoPNxPi1Cvvdx4PGjjwQeCxmZ8B_iN9XWwHUnA4_2zT2BMU8FTEnsei8SNRRr76eTlBnLDTiEYV9YSP7-78GyW3HTBr5P2DxkZznaPUI4HQ9GYZvyNW_pEGYmHaEu_neOwsnLuHjEYDseeajLaQtUcOqdiiLl0kIxi77fdZ7m9CR4Za8h8TbWBhipeMOOAE-UAYddALPg; prodwow-auth-token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE3NTQ2NjI3MDIsImV4cCI6MTc1NDY2NjMwMiwiaWF0IjoxNzU0NjYyNzAyLCJpc3MiOiJXb29sd29ydGhzIiwiYXVkIjoid3d3Lndvb2x3b3J0aHMuY29tLmF1Iiwic2lkIjoiNDg3ODYwMSIsInVpZCI6IjhkYjExNTc0LTA4YmEtNDNhNi1hZjllLTVkZDVmZDc5YjBiZiIsIm1haWQiOiIwIiwiYXV0IjoiU2hvcHBlciIsImF1YiI6IjQ4Nzg2MDEiLCJhdWJhIjoiMCIsIm1mYSI6IjQifQ.YFlE6mZVk1tQy3nYmodgDJNrpc7Kk4_OkfKsmk_JIx-0qDM5RJYOBUEJK6OwNEnvPOJ5JiuQcwr-s3SaKvjpn1Kp2zQND3T_m-KojX1yH70xjoQQMekTp8PLyk0KOf1Ht36KkmJj1e_AuaoPNxPi1Cvvdx4PGjjwQeCxmZ8B_iN9XWwHUnA4_2zT2BMU8FTEnsei8SNRRr76eTlBnLDTiEYV9YSP7-78GyW3HTBr5P2DxkZznaPUI4HQ9GYZvyNW_pEGYmHaEu_neOwsnLuHjEYDseeajLaQtUcOqdiiLl0kIxi77fdZ7m9CR4Za8h8TbWBhipeMOOAE-UAYddALPg; w-loggedin=true; ai_session=xUhgqmoPktgSYt5V1YVGyZ|1754661307344|1754662701494; bm_sv=C0F9294922F50C94016D07382CA83E2B~YAAQlUvHF4hLHoeYAQAAQA0MihxPj6aDI5f0AAs8+FMicMFoQBPhB6cmCOQ0yPsJaxG5t1rV3Sfg4JEpNpbGciLU+BS2p0DnU4eiBarmmSrZng4pxSKxcrphZLHgpTlafEqiyT7wknqSSXgq/zCgmmcJJlgr8HoHkBM1WLEaYowhcxujHLtNdlTQESUEImQVC4z8e4qlQ0dZiDfI8Hx/WlVfQNxNfg2g5qTI59PXO5kNSdvQV8NccFg8d+gXhYKPz090vKxeA2k=~1
+pragma
+no-cache
+priority
+u=1, i
+referer
+https://www.woolworths.com.au/shop/storelocator
+request-id
+|2735d409cb284492a41c1c4bb8be4c0b.0bd7c367bbae40b0
+sec-ch-ua
+"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"
+sec-ch-ua-mobile
+?0
+sec-ch-ua-platform
+"Windows"
+sec-fetch-dest
+empty
+sec-fetch-mode
+cors
+sec-fetch-site
+same-origin
+traceparent
+00-2735d409cb284492a41c1c4bb8be4c0b-0bd7c367bbae40b0-01
+user-agent
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+
+
+
+
+{
+    "Stores": [
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1550",
+            "Name": "Sydney Metcentre (Metro)",
+            "AddressLine1": "60 Margaret Street",
+            "AddressLine2": null,
+            "Suburb": "Sydney",
+            "State": "NSW",
+            "Postcode": "2000",
+            "Latitude": "-33.864935",
+            "Longitude": "151.206521",
+            "GeoLevel": "0",
+            "Distance": "0.32",
+            "Phone": "(02) 8565 9236",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "Closed",
+                    "TradingHourForDisplay": "Sat: Closed"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "Closed",
+                    "TradingHourForDisplay": "Sun: Closed"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2000"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2000"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2000"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2000"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2000"
+                }
+            ],
+            "Facilities": [
+                "Convenience Store",
+                "Metro",
+                "Sushi Bar",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1211",
+            "Name": "Pitt St Mall (Metro)",
+            "AddressLine1": "400 George St",
+            "AddressLine2": null,
+            "Suburb": "Sydney",
+            "State": "NSW",
+            "Postcode": "2000",
+            "Latitude": "-33.8701",
+            "Longitude": "151.208267",
+            "GeoLevel": "0",
+            "Distance": "0.59",
+            "Phone": "(02) 9308 7388",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-2000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-2000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Convenience Store",
+                "Metro",
+                "Sushi Bar",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "8964",
+            "Name": "Barangaroo Metro",
+            "AddressLine1": "Shop 20/300 Barangaroo Ave",
+            "AddressLine2": null,
+            "Suburb": "Barangaroo",
+            "State": "NSW",
+            "Postcode": "2000",
+            "Latitude": "-33.865306",
+            "Longitude": "151.202667",
+            "GeoLevel": "0",
+            "Distance": "0.68",
+            "Phone": "(02) 8709 4346",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Metro",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1248",
+            "Name": "Town Hall",
+            "AddressLine1": "Cnr Park & George Street",
+            "AddressLine2": null,
+            "Suburb": "Sydney",
+            "State": "NSW",
+            "Postcode": "2000",
+            "Latitude": "-33.87304498",
+            "Longitude": "151.207038",
+            "GeoLevel": "0",
+            "Distance": "0.94",
+            "Phone": "(02) 8565 9275",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Sat: 0700-0000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Sun: 0700-0000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Mon: 0600-0000"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Tue: 0600-0000"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Wed: 0600-0000"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Thu: 0600-0000"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Fri: 0600-0000"
+                }
+            ],
+            "Facilities": [
+                "Australia Post Parcel Locker",
+                "Pick up",
+                "Quiet Hour",
+                "Sushi Bar",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1486",
+            "Name": "Woolloomooloo (Metro)",
+            "AddressLine1": "75 Crown Street",
+            "AddressLine2": null,
+            "Suburb": "Woolloomooloo",
+            "State": "NSW",
+            "Postcode": "2011",
+            "Latitude": "-33.87380218",
+            "Longitude": "151.2162258",
+            "GeoLevel": "7",
+            "Distance": "1.14",
+            "Phone": "(02) 8565 9321",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Convenience Store",
+                "Metro",
+                "Pick up",
+                "Sushi Bar",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1055",
+            "Name": "Potts Point (Metro)",
+            "AddressLine1": "Icon Building, 81 Macleay Street",
+            "AddressLine2": null,
+            "Suburb": "Potts Point",
+            "State": "NSW",
+            "Postcode": "2011",
+            "Latitude": "-33.870603",
+            "Longitude": "151.2248",
+            "GeoLevel": "0",
+            "Distance": "1.5",
+            "Phone": "(02) 9308 7391",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Convenience Store",
+                "Liquor (Adjacent BWS)",
+                "Metro",
+                "Pick up"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1270",
+            "Name": "Kings Cross Metro",
+            "AddressLine1": "111-139 Darlinghurst Rd",
+            "AddressLine2": null,
+            "Suburb": "Potts Point",
+            "State": "NSW",
+            "Postcode": "2011",
+            "Latitude": "-33.874459",
+            "Longitude": "151.222562",
+            "GeoLevel": "0",
+            "Distance": "1.57",
+            "Phone": "(02) 8565 9381",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Convenience Store",
+                "Instore Bakery",
+                "Metro",
+                "Pick up",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1449",
+            "Name": "Pyrmont (Metro)",
+            "AddressLine1": "63 Miller Street",
+            "AddressLine2": null,
+            "Suburb": "Pyrmont",
+            "State": "NSW",
+            "Postcode": "2009",
+            "Latitude": "-33.8705305",
+            "Longitude": "151.1930142",
+            "GeoLevel": "0",
+            "Distance": "1.68",
+            "Phone": "(02) 8736 7447",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2300"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-2300"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2300"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2300"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2300"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2300"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2300"
+                }
+            ],
+            "Facilities": [
+                "Convenience Store",
+                "Direct to boot - drive through",
+                "Instore Bakery",
+                "Metro",
+                "Pick up",
+                "Seafood",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1716",
+            "Name": "Haymarket Metro",
+            "AddressLine1": "61-79 Quay Street",
+            "AddressLine2": null,
+            "Suburb": "Haymarket",
+            "State": "NSW",
+            "Postcode": "2000",
+            "Latitude": "-33.881461",
+            "Longitude": "151.203209",
+            "GeoLevel": "0",
+            "Distance": "1.93",
+            "Phone": "(02) 8736 7467",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "8:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "8:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2200"
+                }
+            ],
+            "Facilities": [
+                "Australia Post Parcel Locker",
+                "Convenience Store",
+                "Liquor (Adjacent BWS)",
+                "Metro",
+                "Pick up",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1256",
+            "Name": "Surry Hills (Metro)",
+            "AddressLine1": "437 Bourke Street",
+            "AddressLine2": null,
+            "Suburb": "Surry Hills",
+            "State": "NSW",
+            "Postcode": "2010",
+            "Latitude": "-33.882573",
+            "Longitude": "151.216238",
+            "GeoLevel": "0",
+            "Distance": "2.04",
+            "Phone": "(02) 8565 9212",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Sat: 0700-0000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Sun: 0700-0000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Mon: 0700-0000"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Tue: 0700-0000"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Wed: 0700-0000"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Thu: 0700-0000"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Fri: 0700-0000"
+                }
+            ],
+            "Facilities": [
+                "Convenience Store",
+                "Cut on Demand",
+                "Metro",
+                "Pick up",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1669",
+            "Name": "Central (Metro)",
+            "AddressLine1": "302-306 Elizabeth Street",
+            "AddressLine2": null,
+            "Suburb": "Surry Hills",
+            "State": "NSW",
+            "Postcode": "2010",
+            "Latitude": "-33.88372288",
+            "Longitude": "151.2084814",
+            "GeoLevel": "0",
+            "Distance": "2.09",
+            "Phone": "(02) 8736 7401",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2200"
+                }
+            ],
+            "Facilities": [
+                "Convenience Store",
+                "Metro",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1845",
+            "Name": "Kirribilli Metro",
+            "AddressLine1": "23 Broughton Street",
+            "AddressLine2": null,
+            "Suburb": "Kirribilli",
+            "State": "NSW",
+            "Postcode": "2061",
+            "Latitude": "-33.846111",
+            "Longitude": "151.212991",
+            "GeoLevel": "0",
+            "Distance": "2.12",
+            "Phone": "(02) 8565 9390",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Convenience Store",
+                "Instore Bakery",
+                "Metro",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1905",
+            "Name": "Central Park (Metro)",
+            "AddressLine1": "26-60 Broadway",
+            "AddressLine2": null,
+            "Suburb": "Chippendale",
+            "State": "NSW",
+            "Postcode": "2008",
+            "Latitude": "-33.8845605",
+            "Longitude": "151.2006821",
+            "GeoLevel": "5",
+            "Distance": "2.34",
+            "Phone": "(02) 8736 7450",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Cut on Demand",
+                "Metro",
+                "Pick up",
+                "Seafood",
+                "Sushi Bar",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1329",
+            "Name": "Paddington (Metro)",
+            "AddressLine1": "220 Glenmore Rd",
+            "AddressLine2": null,
+            "Suburb": "Paddington",
+            "State": "NSW",
+            "Postcode": "2021",
+            "Latitude": "-33.88215088",
+            "Longitude": "151.2278366",
+            "GeoLevel": "0",
+            "Distance": "2.52",
+            "Phone": "(02) 8565 9369",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Metro",
+                "Sushi Bar",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "8952",
+            "Name": "Balmain (Metro)",
+            "AddressLine1": "276 Darling St",
+            "AddressLine2": null,
+            "Suburb": "Balmain",
+            "State": "NSW",
+            "Postcode": "2041",
+            "Latitude": "-33.857672",
+            "Longitude": "151.181298",
+            "GeoLevel": "0",
+            "Distance": "2.77",
+            "Phone": "(02) 8565 9203",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Currently being renovated",
+                "Metro",
+                "Pick up",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1816",
+            "Name": "North Sydney Metro",
+            "AddressLine1": "100 Miller St",
+            "AddressLine2": null,
+            "Suburb": "North Sydney",
+            "State": "NSW",
+            "Postcode": "2060",
+            "Latitude": "-33.837855",
+            "Longitude": "151.206647",
+            "GeoLevel": "0",
+            "Distance": "3.03",
+            "Phone": "(02) 9305 1097",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "9:00 AM - 7:00 PM",
+                    "TradingHourForDisplay": "Sat: 0900-1900"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 7:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1900"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Liquor (Adjacent BWS)",
+                "Metro",
+                "Pick up",
+                "Sushi Bar",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "91834",
+            "Name": "Surry Hills",
+            "AddressLine1": "475-489 Cleveland St",
+            "AddressLine2": null,
+            "Suburb": "Surry Hills",
+            "State": "NSW",
+            "Postcode": "2016",
+            "Latitude": "-33.8922",
+            "Longitude": "151.2161",
+            "GeoLevel": "0",
+            "Distance": "3.08",
+            "Phone": "02 8870 7670",
+            "GMTZone": "10:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1018",
+            "Name": "Redfern Station (Metro)",
+            "AddressLine1": "1 Lawson Square",
+            "AddressLine2": null,
+            "Suburb": "Redfern",
+            "State": "NSW",
+            "Postcode": "2016",
+            "Latitude": "-33.89274",
+            "Longitude": "151.19944",
+            "GeoLevel": "0",
+            "Distance": "3.23",
+            "Phone": "(02) 9305 1031",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Metro",
+                "Sushi Bar",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1474",
+            "Name": "Redfern",
+            "AddressLine1": "261-265 Chalmers Street",
+            "AddressLine2": null,
+            "Suburb": "Redfern",
+            "State": "NSW",
+            "Postcode": "2016",
+            "Latitude": "-33.894652",
+            "Longitude": "151.205006",
+            "GeoLevel": "0",
+            "Distance": "3.33",
+            "Phone": "(02) 8565 9278",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Pick up"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1416",
+            "Name": "Double Bay",
+            "AddressLine1": "Kiaora Lane and Kiaora Road",
+            "AddressLine2": null,
+            "Suburb": "Double Bay",
+            "State": "NSW",
+            "Postcode": "2028",
+            "Latitude": "-33.87813873",
+            "Longitude": "151.2444126",
+            "GeoLevel": "0",
+            "Distance": "3.5",
+            "Phone": "(02) 8736 7472",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sat: 0600-2300"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2300"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2300"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2300"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2300"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2300"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2300"
+                }
+            ],
+            "Facilities": [
+                "Cut on Demand",
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Scan&Go",
+                "Seafood",
+                "Sushi Bar",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1577",
+            "Name": "Rozelle Metro",
+            "AddressLine1": "605 Darling St",
+            "AddressLine2": null,
+            "Suburb": "Rozelle",
+            "State": "NSW",
+            "Postcode": "2039",
+            "Latitude": "-33.86113",
+            "Longitude": "151.171249",
+            "GeoLevel": "0",
+            "Distance": "3.6",
+            "Phone": "(02) 8736 7475",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Convenience Store",
+                "Instore Bakery",
+                "Metro",
+                "Pick up",
+                "Sushi Bar",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "22440",
+            "Name": "U-Go Rozelle",
+            "AddressLine1": "121-Victoria Rd Cnr Wellington St",
+            "AddressLine2": null,
+            "Suburb": "Rozelle",
+            "State": "NSW",
+            "Postcode": "2039",
+            "Latitude": "-33.862558",
+            "Longitude": "151.168495",
+            "GeoLevel": "0",
+            "Distance": "3.84",
+            "Phone": null,
+            "GMTZone": "10:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-E10",
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "E10",
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1113",
+            "Name": "Neutral Bay Village",
+            "AddressLine1": "1-7 Rangers Road",
+            "AddressLine2": null,
+            "Suburb": "Neutral Bay",
+            "State": "NSW",
+            "Postcode": "2089",
+            "Latitude": "-33.831999",
+            "Longitude": "151.223851",
+            "GeoLevel": "0",
+            "Distance": "3.89",
+            "Phone": "(02) 9308 7367",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sat: 0600-2300"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sun: 0600-2300"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2300"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2300"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2300"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2300"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2300"
+                }
+            ],
+            "Facilities": [
+                "Pick up",
+                "Quiet Hour",
+                "Scan&Go Trolley",
+                "Seafood",
+                "Sushi Bar"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "22447",
+            "Name": "Ampol Foodary Neutral Bay",
+            "AddressLine1": "16-38-Military Rd",
+            "AddressLine2": null,
+            "Suburb": "Neutral Bay",
+            "State": "NSW",
+            "Postcode": "2089",
+            "Latitude": "-33.829054",
+            "Longitude": "151.21632",
+            "GeoLevel": "0",
+            "Distance": "4.04",
+            "Phone": null,
+            "GMTZone": "10:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-AdBlue",
+                "Fuel-E10",
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "AdBlue",
+                        "E10",
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "22239",
+            "Name": "Ampol Foodary Crows Nest",
+            "AddressLine1": "111-121-Falcon St",
+            "AddressLine2": null,
+            "Suburb": "Crows Nest",
+            "State": "NSW",
+            "Postcode": "2065",
+            "Latitude": "-33.828703",
+            "Longitude": "151.206007",
+            "GeoLevel": "0",
+            "Distance": "4.05",
+            "Phone": null,
+            "GMTZone": "10:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-E10",
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "E10",
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "22135",
+            "Name": "Ampol Foodary Alexandria",
+            "AddressLine1": "133-Wyndham St Cnr Mcevoy St",
+            "AddressLine2": null,
+            "Suburb": "Alexandria",
+            "State": "NSW",
+            "Postcode": "2015",
+            "Latitude": "-33.9021424",
+            "Longitude": "151.1994031",
+            "GeoLevel": "0",
+            "Distance": "4.24",
+            "Phone": null,
+            "GMTZone": "10:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-AdBlue",
+                "Fuel-E10",
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "AdBlue",
+                        "E10",
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1318",
+            "Name": "Crows Nest",
+            "AddressLine1": "10 Falcon Street",
+            "AddressLine2": null,
+            "Suburb": "Crows Nest",
+            "State": "NSW",
+            "Postcode": "2065",
+            "Latitude": "-33.827359",
+            "Longitude": "151.201462",
+            "GeoLevel": "0",
+            "Distance": "4.26",
+            "Phone": "(02) 8565 9336",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2300"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2300"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2300"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2300"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2300"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2300"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2300"
+                }
+            ],
+            "Facilities": [
+                "Cut on Demand",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Scan&Go",
+                "Seafood",
+                "Sushi Bar",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "8946",
+            "Name": "Alexandria (Metro)",
+            "AddressLine1": "10 Fountain St",
+            "AddressLine2": null,
+            "Suburb": "Alexandria",
+            "State": "NSW",
+            "Postcode": "2015",
+            "Latitude": "-33.902473",
+            "Longitude": "151.194661",
+            "GeoLevel": "0",
+            "Distance": "4.4",
+            "Phone": "(02) 8565 9353",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Metro",
+                "Pick up",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1324",
+            "Name": "Erskineville (Metro)",
+            "AddressLine1": "21-23 Erskineville Road",
+            "AddressLine2": null,
+            "Suburb": "Newtown",
+            "State": "NSW",
+            "Postcode": "2042",
+            "Latitude": "-33.89853874",
+            "Longitude": "151.1818915",
+            "GeoLevel": "7",
+            "Distance": "4.54",
+            "Phone": "(02) 8565 9297",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Convenience Store",
+                "Direct to boot - drive through",
+                "Metro",
+                "Pick up",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1638",
+            "Name": "Green Square (Metro)",
+            "AddressLine1": "20 - 26 Ebsworth Street",
+            "AddressLine2": null,
+            "Suburb": "Zetland",
+            "State": "NSW",
+            "Postcode": "2017",
+            "Latitude": "-33.905907",
+            "Longitude": "151.204171",
+            "GeoLevel": "0",
+            "Distance": "4.58",
+            "Phone": "(02) 8565 9365",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "6:30 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sat: 0630-2300"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2300"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:30 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Mon: 0630-2300"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:30 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Tue: 0630-2300"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:30 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Wed: 0630-2300"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:30 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Thu: 0630-2300"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:30 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Fri: 0630-2300"
+                }
+            ],
+            "Facilities": [
+                "Convenience Store",
+                "Liquor (Adjacent BWS)",
+                "Metro",
+                "Seafood",
+                "Sushi Bar",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        }
+    ]
+}
