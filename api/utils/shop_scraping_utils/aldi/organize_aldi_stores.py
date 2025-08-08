@@ -84,4 +84,7 @@ def organize_aldi_stores():
     except OSError as e:
         print(f"Error deleting source file: {e}")
 
+    from api.utils.shop_scraping_utils.aldi.create_aldi_stores_by_state import create_aldi_stores_by_state
+
     print("\nOrganization complete.")
+    create_aldi_stores_by_state()
