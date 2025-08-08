@@ -3,7 +3,7 @@ import json
 import time
 import os
 import requests
-from api.utils.shop_scraping_utils.coles import (
+from api.utils.shop_scraping_utils.aldi import (
     drange,
     load_existing_stores,
     load_progress,
@@ -18,10 +18,10 @@ OUTPUT_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\store
 PROGRESS_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_aldi\\find_aldi_stores_progress.json"
 
 # Geographical grid for Australia (approximate)
-LAT_MIN = -32.0
-LAT_MAX = -10.0
-LON_MIN = 112.0
-LON_MAX = 154.0
+LAT_MIN = -34.0
+LAT_MAX = -33.0
+LON_MIN = 151.0
+LON_MAX = 152.0
 LAT_STEP = 0.5
 LON_STEP = 0.5
 
@@ -75,8 +75,8 @@ def find_aldi_stores():
                         response.raise_for_status()
                         data = response.json()
 
-                        if "servicePoints" in data:
-                            for store_details in data["servicePoints"]:
+                        if "data" in data:
+                            for store_details in data["data"]:
                                 store_id = store_details.get('id')
                                 if store_id and store_id not in all_stores:
                                     all_stores[store_id] = store_details
