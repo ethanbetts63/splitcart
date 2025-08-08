@@ -18,12 +18,12 @@ OUTPUT_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\store
 PROGRESS_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_woolworths\\find_woolworths_stores_progress.json"
 
 # Geographical grid for Australia (approximate)
-LAT_MIN = -44.0
+LAT_MIN = -42.0
 LAT_MAX = -10.0
 LON_MIN = 112.0
 LON_MAX = 154.0
-LAT_STEP = 0.5
-LON_STEP = 0.5
+LAT_STEP = 1
+LON_STEP = 2
 
 REQUEST_DELAY = 0.5
 
@@ -66,7 +66,7 @@ def find_woolworths_stores():
                     params = {
                         "latitude": current_lat,
                         "longitude": current_lon,
-                        "Max": 30,
+                        "Max": 10000,
                         "Division": "SUPERMARKETS,EG,AMPOL",
                         "Facility": "",
                     }

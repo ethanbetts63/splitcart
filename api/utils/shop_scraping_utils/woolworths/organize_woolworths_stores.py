@@ -5,7 +5,7 @@ from datetime import date
 
 # --- CONFIGURATION ---
 SOURCE_FILE = r'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_woolworths\woolworths_stores_raw.json'
-BASE_OUTPUT_DIR = 'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_woolworths'
+BASE_OUTPUT_DIR = r'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_woolworths'
 
 def slugify(text):
     """Converts a string into a URL-friendly slug."""
