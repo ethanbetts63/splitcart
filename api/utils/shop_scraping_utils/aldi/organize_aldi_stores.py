@@ -34,12 +34,14 @@ def organize_aldi_stores():
     grouped_stores = {}
     for store in all_stores_list:
         try:
-            state = store.get('address', {}).get('regionName', 'unknown-state').lower()
+            address = store.get('address', {})
+            state_iso = address.get('regionIsoCode', 'unknown-state').lower()
+            state_name = address.get('regionName', 'Unknown State')
 
-            if state not in grouped_stores:
-                grouped_stores[state] = []
+            if state_iso not in grouped_stores:
+                grouped_stores[state_iso] = {'name': state_name, 'stores': []}
             
-            grouped_stores[state].append(store)
+            grouped_stores[state_iso]['stores'].append(store)
 
         except Exception as e:
             print(f"Skipping store due to error: {e}\nProblematic store data: {store}")
@@ -51,17 +53,21 @@ def organize_aldi_stores():
 
     today_date = date.today().isoformat()
 
-    for state, stores in grouped_stores.items():
-        output_filename = os.path.join(BASE_OUTPUT_DIR, f"{state}.json")
+    for state_iso, state_data in grouped_stores.items():
+        output_filename = os.path.join(BASE_OUTPUT_DIR, f"{state_iso}.json")
+        stores = state_data['stores']
+        state_name = state_data['name']
         
         # Create the final data structure with metadata
         output_data = {
             "metadata": {
                 "number_of_stores": len(stores),
                 "company": "aldi",
-                "state": state.upper(),
+                "state": state_name,
+                "state_iso": state_iso.upper(),
                 "date_scraped": today_date
             },
+            "stores": stores
         }
 
         try:
