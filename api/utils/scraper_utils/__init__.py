@@ -5,3 +5,4 @@ from .clean_raw_data_spudshed import *
 from .clean_raw_data_aldi import *
 from .get_iga_categories import get_iga_categories
 from .checkpoint_utils import *
+from .get_aldi_categories import get_aldi_categories
