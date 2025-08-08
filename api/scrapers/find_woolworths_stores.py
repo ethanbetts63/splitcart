@@ -2,13 +2,14 @@ import json
 import time
 import os
 import requests
-from api.utils.shop_scraping_utils.aldi import (
+from api.utils.shop_scraping_utils.woolworths import (
     drange,
     load_existing_stores,
     load_progress,
     print_progress_bar,
     save_progress,
     save_stores_incrementally,
+    organize_woolworths_stores,
 )
 
 # --- CONFIGURATION ---
@@ -105,6 +106,8 @@ def find_woolworths_stores():
             if os.path.exists(PROGRESS_FILE):
                 os.remove(PROGRESS_FILE)
             
+            organize_woolworths_stores()
+
             break # Exit the main while loop on success
 
         except Exception as e:

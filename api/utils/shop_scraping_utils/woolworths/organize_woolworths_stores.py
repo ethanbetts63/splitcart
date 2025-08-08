@@ -4,8 +4,8 @@ import re
 from datetime import date
 
 # --- CONFIGURATION ---
-SOURCE_FILE = r'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_coles\coles_stores_cleaned.json'
-BASE_OUTPUT_DIR = 'C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_coles'
+SOURCE_FILE = r'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_woolworths\woolworths_stores_raw.json'
+BASE_OUTPUT_DIR = 'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_woolworths'
 
 def slugify(text):
     """Converts a string into a URL-friendly slug."""
@@ -14,14 +14,15 @@ def slugify(text):
     text = re.sub(r'[\s_]+', '-', text)   # Replace spaces/underscores with hyphens
     return text
 
-def organize_coles_stores():
-    """Reads the cleaned stores file and organizes stores into brand/state specific files with metadata."""
+def organize_woolworths_stores():
+    """Reads the raw stores file and organizes stores into brand/state specific files with metadata."""
     print(f"Starting organization of {SOURCE_FILE}...")
 
     # 1. Read the source file
     try:
         with open(SOURCE_FILE, 'r', encoding='utf-8') as f:
-            all_stores = json.load(f)
+            all_stores_dict = json.load(f)
+            all_stores_list = list(all_stores_dict.values())
     except FileNotFoundError:
         print(f"Error: Source file not found at {SOURCE_FILE}. Nothing to do.")
         return
@@ -31,10 +32,10 @@ def organize_coles_stores():
 
     # 2. Group stores by brand and then by state
     grouped_stores = {}
-    for store in all_stores:
+    for store in all_stores_list:
         try:
-            brand_name = store.get('brand', {}).get('name', 'unknown-brand')
-            state = store.get('address', {}).get('state', 'unknown-state').lower()
+            brand_name = store.get('Division', 'unknown-brand')
+            state = store.get('State', 'unknown-state').lower()
 
             brand_slug = slugify(brand_name)
 
@@ -66,7 +67,8 @@ def organize_coles_stores():
             output_data = {
                 "metadata": {
                     "number_of_stores": len(stores),
-                    "company": "coles",
+                    "company": "woolworths",
+                    "brand": brand_slug,
                     "state": state.upper(),
                     "date_scraped": today_date
                 },
