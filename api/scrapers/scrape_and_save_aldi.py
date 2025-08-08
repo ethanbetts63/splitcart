@@ -26,6 +26,10 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, stat
         print("Could not fetch ALDI categories. Aborting scraper.")
         return
 
+    # --- Checkpoint Initialization ---
+    progress = read_checkpoint(company)
+    completed_categories = progress.get("completed_categories", [])
+
     for category_slug, category_key in categories_to_fetch:
         if category_slug in completed_categories:
             print(f"Skipping already completed category: '{category_slug}'")
@@ -97,7 +101,7 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, stat
                 print(f"ERROR: Failed to decode JSON on page {page_num} for '{category_slug}'.")
                 break
 
-            sleep_time = random.uniform(2, 5)
+            sleep_time = random.uniform(0.5, 1.5)
             print(f"Waiting for {sleep_time:.2f} seconds...")
             time.sleep(sleep_time)
             
