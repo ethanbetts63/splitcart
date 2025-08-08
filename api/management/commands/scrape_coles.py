@@ -4,6 +4,7 @@ import datetime
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from api.scrapers.scrape_and_save_coles import scrape_and_save_coles_data
+from api.utils.scraper_utils.checkpoint_utils import clear_checkpoint
 
 class Command(BaseCommand):
     help = 'Launches a long-running scraper to fetch data from two Coles stores per state.'
@@ -77,4 +78,5 @@ class Command(BaseCommand):
         with open(stores_file_path, 'w') as f:
             json.dump(data, f, indent=4)
 
+        clear_checkpoint(company_name)
         self.stdout.write(self.style.SUCCESS(f"\n--- Full scraping cycle complete. State file has been updated. ---"))

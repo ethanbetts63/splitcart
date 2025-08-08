@@ -1,5 +1,6 @@
 from api.utils.scraper_utils.checkpoint_utils.read_checkpoints import read_checkpoints
 from api.utils.scraper_utils.checkpoint_utils.write_checkpoints import write_checkpoints
+from typing import List
 
 def mark_category_complete(company_name: str, store: str, completed_cats: List[str], new_completed_cat: str) -> None:
     """
