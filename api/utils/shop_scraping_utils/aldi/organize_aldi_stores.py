@@ -34,7 +34,7 @@ def organize_aldi_stores():
     grouped_stores = {}
     for store in all_stores_list:
         try:
-            state = store.get('address', {}).get('regionIsoCode', 'unknown-state').lower()
+            state = store.get('address', {}).get('regionName', 'unknown-state').lower()
 
             if state not in grouped_stores:
                 grouped_stores[state] = []

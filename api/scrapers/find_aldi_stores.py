@@ -7,6 +7,7 @@ from api.utils.shop_scraping_utils.aldi import (
     drange,
     load_existing_stores,
     load_progress,
+    organize_aldi_stores,
     print_progress_bar,
     save_progress,
     save_stores_incrementally,
@@ -104,6 +105,8 @@ def find_aldi_stores():
             print(f"Raw data saved to {OUTPUT_FILE}")
             if os.path.exists(PROGRESS_FILE):
                 os.remove(PROGRESS_FILE)
+
+            organize_aldi_stores()
             
             break # Exit the main while loop on success
 
