@@ -8,6 +8,8 @@ from api.utils.scraper_utils.clean_raw_data_iga import clean_raw_data_iga
 from api.utils.scraper_utils.get_iga_categories import get_iga_categories
 from api.utils.scraper_utils.checkpoint_manager import read_checkpoint, update_page_progress, mark_category_complete, clear_checkpoint
 
+import uuid
+
 def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store_name_slug: str, state: str, save_path: str):
     """
     Launches a requests-based scraper for IGA with checkpointing.
@@ -18,6 +20,7 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
     session.headers.update({
         "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
     })
+    session.cookies.set("iga-shop.retailerStoreId", store_id)
 
     # --- Checkpoint Initialization ---
     progress = read_checkpoint(company)
@@ -28,7 +31,10 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
 
     print(f"\n--- Starting Store: {store_name} (ID: {store_id}) ---")
 
-    categories_to_fetch = get_iga_categories(store_id, session)
+    session_id = str(uuid.uuid4())
+    print(f"Generated session ID: {session_id}")
+
+    categories_to_fetch = get_iga_categories(store_id, session, session_id)
     if not categories_to_fetch:
         print(f"Could not retrieve categories for {store_name}. Skipping.")
         return
@@ -58,7 +64,7 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
             print(f"    Attempting to fetch page {page_num} for '{category_name}' (skip: {skip})...")
             
             api_url = f"https://www.igashop.com.au/api/storefront/stores/{store_id}/categories/{requests.utils.quote(category_name)}/search"
-            params = {'take': take, 'skip': skip}
+            params = {'take': take, 'skip': skip, 'sessionId': session_id}
 
             try:
                 response = session.get(api_url, params=params, timeout=60)
@@ -109,7 +115,7 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
                 print(f"    ERROR: Failed to decode JSON.")
                 break
 
-            sleep_time = random.uniform(2, 4)
+            sleep_time = random.uniform(0.5, 1.5)
             print(f"    Waiting for {sleep_time:.2f} seconds...")
             time.sleep(sleep_time)
             
