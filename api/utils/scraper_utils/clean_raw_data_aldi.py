@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 
-def clean_raw_data_aldi(raw_product_list: list, company: str, store: str, category_slug: str, page_num: int, timestamp: datetime) -> dict:
+def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, store_id: str, state: str, category_slug: str, page_num: int, timestamp: datetime) -> dict:
     """
     Cleans a list of raw aldi product data from its API and wraps it in a 
     dictionary containing metadata about the scrape.
@@ -55,7 +55,9 @@ def clean_raw_data_aldi(raw_product_list: list, company: str, store: str, catego
     return {
         "metadata": {
             "company": company,
-            "store": store,
+            "store_name": store_name,
+            "store_id": store_id,
+            "state": state,
             "category": category_slug,
             "page_number": page_num,
             "scraped_at": timestamp.isoformat()

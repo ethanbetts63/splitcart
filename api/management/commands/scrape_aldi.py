@@ -18,16 +18,16 @@ class Command(BaseCommand):
         
         # Hardcoded list of Perth ALDI stores to be scraped.
         stores_to_scrape = [
-            {'store_name': create_store_slug_aldi('Yokine'), 'store_id': 'G075'},
-            {'store_name': create_store_slug_aldi('Innaloo'), 'store_id': 'G090'},
-            {'store_name': create_store_slug_aldi('Mirrabooka'), 'store_id': 'G049'},
-            {'store_name': create_store_slug_aldi('Karrinyup'), 'store_id': 'G092'},
-            {'store_name': create_store_slug_aldi('Inglewood'), 'store_id': 'G094'},
-            {'store_name': create_store_slug_aldi('Warwick'), 'store_id': 'G087'},
-            {'store_name': create_store_slug_aldi('Morley'), 'store_id': 'G066'},
-            {'store_name': create_store_slug_aldi('Madeley'), 'store_id': 'G088'},
-            {'store_name': create_store_slug_aldi('Beechboro'), 'store_id': 'G093'},
-            {'store_name': create_store_slug_aldi('Belmont'), 'store_id': 'G047'},
+            {'store_name': create_store_slug_aldi('Yokine'), 'store_id': 'G075', 'state': 'WA'},
+            {'store_name': create_store_slug_aldi('Innaloo'), 'store_id': 'G090', 'state': 'WA'},
+            {'store_name': create_store_slug_aldi('Mirrabooka'), 'store_id': 'G049', 'state': 'WA'},
+            {'store_name': create_store_slug_aldi('Karrinyup'), 'store_id': 'G092', 'state': 'WA'},
+            {'store_name': create_store_slug_aldi('Inglewood'), 'store_id': 'G094', 'state': 'WA'},
+            {'store_name': create_store_slug_aldi('Warwick'), 'store_id': 'G087', 'state': 'WA'},
+            {'store_name': create_store_slug_aldi('Morley'), 'store_id': 'G066', 'state': 'WA'},
+            {'store_name': create_store_slug_aldi('Madeley'), 'store_id': 'G088', 'state': 'WA'},
+            {'store_name': create_store_slug_aldi('Beechboro'), 'store_id': 'G093', 'state': 'WA'},
+            {'store_name': create_store_slug_aldi('Belmont'), 'store_id': 'G047', 'state': 'WA'},
         ]
         
         categories = [
@@ -106,6 +106,7 @@ class Command(BaseCommand):
                 company=company_name,
                 store_name=store['store_name'],
                 store_id=store['store_id'],
+                state=store['state'],
                 categories_to_fetch=categories,
                 save_path=raw_data_path
             )
