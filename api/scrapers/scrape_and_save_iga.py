@@ -41,7 +41,9 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
 
     completed_categories = progress.get("completed_categories", []) if not start_scraping else []
 
-    for category_name in categories_to_fetch:
+    for category_data in categories_to_fetch:
+        category_name = category_data['displayName']
+        category_identifier = category_data['identifier']
         category_slug = category_name.lower().replace(' & ', '-').replace(' ', '-').replace(',', '')
         if category_slug in completed_categories:
             print(f"  Skipping already completed category: '{category_name}'")
@@ -63,7 +65,7 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
         while True:
             print(f"    Attempting to fetch page {page_num} for '{category_name}' (skip: {skip})...")
             
-            api_url = f"https://www.igashop.com.au/api/storefront/stores/{store_id}/categories/{requests.utils.quote(category_name)}/search"
+            api_url = f"https://www.igashop.com.au/api/storefront/stores/{store_id}/categories/{requests.utils.quote(category_identifier)}/search"
             params = {'take': take, 'skip': skip, 'sessionId': session_id}
 
             try:

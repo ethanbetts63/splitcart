@@ -10,15 +10,19 @@ def _find_leaf_categories(nodes: list) -> list:
         nodes: A list of category nodes from the hierarchy.
 
     Returns:
-        A flat list of the 'displayName' of each leaf category.
+        A flat list of dictionaries, where each dictionary contains the 
+        'displayName' and 'identifier' of each leaf category.
     """
     leaf_categories = []
     for node in nodes:
         children = node.get('children', [])
         if not children:
-            # This is a leaf node, add its name to our list
-            if 'displayName' in node:
-                leaf_categories.append(node['displayName'])
+            # This is a leaf node, add its name and identifier to our list
+            if 'displayName' in node and 'identifier' in node:
+                leaf_categories.append({
+                    'displayName': node['displayName'],
+                    'identifier': node['identifier']
+                })
         else:
             # This is not a leaf node, so we go deeper
             leaf_categories.extend(_find_leaf_categories(children))
