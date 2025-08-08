@@ -12,7 +12,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
-from api.utils.scraper_utils.checkpoint_manager import read_checkpoint, update_page_progress, mark_category_complete, clear_checkpoint
+from api.utils.scraper_utils.checkpoint_utils import read_checkpoint, update_page_progress, mark_category_complete, clear_checkpoint
 
 def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, state: str, categories_to_fetch: list, save_path: str):
     """
@@ -178,5 +178,4 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
             print(f"--- Paused category: {category_slug}. Progress saved. ---")
 
     print("\n--- All categories processed for this store ---")
-    clear_checkpoint(company)
-    print(f"--- Coles scraper finished for store: {store_name} ({store_id}). Checkpoint cleared. ---")
+    print(f"--- Coles scraper finished for store: {store_name} ({store_id}). ---")

@@ -5,7 +5,7 @@ import random
 import os
 from datetime import datetime
 from api.utils.scraper_utils.clean_raw_data_aldi import clean_raw_data_aldi
-from api.utils.scraper_utils.checkpoint_manager import read_checkpoint, update_page_progress, mark_category_complete, clear_checkpoint
+from api.utils.scraper_utils.checkpoint_utils import read_checkpoint, update_page_progress, mark_category_complete, clear_checkpoint
 
 def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, categories_to_fetch: list, save_path: str):
     """

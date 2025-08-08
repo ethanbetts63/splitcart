@@ -6,7 +6,7 @@ import os
 from datetime import datetime
 from api.utils.scraper_utils.clean_raw_data_iga import clean_raw_data_iga
 from api.utils.scraper_utils.get_iga_categories import get_iga_categories
-from api.utils.scraper_utils.checkpoint_manager import read_checkpoint, update_page_progress, mark_category_complete, clear_checkpoint
+from api.utils.scraper_utils.checkpoint_utils import read_checkpoint, update_page_progress, mark_category_complete, clear_checkpoint
 
 import uuid
 
