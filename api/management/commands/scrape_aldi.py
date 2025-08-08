@@ -28,8 +28,7 @@ class Command(BaseCommand):
             {'store_name': create_store_slug_aldi('Madeley'), 'store_id': 'G088', 'state': 'WA'},
             {'store_name': create_store_slug_aldi('Beechboro'), 'store_id': 'G093', 'state': 'WA'},
             {'store_name': create_store_slug_aldi('Belmont'), 'store_id': 'G047', 'state': 'WA'},
-        ]
-        
+        ]        
         categories = [
             ('lower-prices', '1588161425841179'), ('super-savers/super-savers', '1588161407991418'),
             ('limited-time-only', '1588161420755352'), ('fruits-vegetables', '950000000'),
