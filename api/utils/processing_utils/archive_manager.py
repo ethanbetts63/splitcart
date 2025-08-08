@@ -36,7 +36,7 @@ def archive_manager(processed_data_path: str, company_name: str, store_name: str
             "products": combined_products
         }
 
-        # Construct the new target directory path: processed_data/company/store/date/
+        # Construct the new target directory path: processed_data/company/store_name-store_id/date/
         target_dir = os.path.join(processed_data_path, company_name, store_name, scrape_date)
         os.makedirs(target_dir, exist_ok=True)
         

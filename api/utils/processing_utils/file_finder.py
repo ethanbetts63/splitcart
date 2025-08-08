@@ -46,14 +46,16 @@ def file_finder(raw_data_path: str) -> dict:
 
                 # Read the new company and store fields
                 company = metadata.get('company')
-                store = metadata.get('store')
+                store_name = metadata.get('store_name')
+                store_id = metadata.get('store_id')
                 category = metadata.get('category')
                 scrape_timestamp = metadata.get('scraped_at')
 
-                if company and store and category and scrape_timestamp:
+                if company and store_name and store_id and category and scrape_timestamp:
                     # Group by the date part of the timestamp
                     scrape_date = scrape_timestamp[:10]
-                    scrape_plan[company][store][scrape_date][category].append(file_path)
+                    store_key = f"{store_name}-{store_id}"
+                    scrape_plan[company][store_key][scrape_date][category].append(file_path)
 
         except (json.JSONDecodeError, IOError) as e:
             print(f"Warning: Could not read or parse {filename}. Error: {e}")
