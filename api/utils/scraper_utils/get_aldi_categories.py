@@ -1,58 +1,62 @@
 import requests
 import json
-import os
 
-# --- CONFIGURATION ---
-# The servicePoint can be any valid store ID. Using G452 as found in the example.
-ALDI_CATEGORIES_URL = "https://api.aldi.com.au/v2/product-category-tree?serviceType=walk-in&servicePoint=G452"
-OUTPUT_DIR = r'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_aldi'
-OUTPUT_FILE = os.path.join(OUTPUT_DIR, 'aldi_categories.json')
+def _find_leaf_categories(nodes: list) -> list:
+    """
+    A recursive helper function to traverse the category tree and find all 
+    nodes that have no children (the "leaf" nodes).
+    
+    Args:
+        nodes: A list of category nodes from the hierarchy.
 
-def get_aldi_categories():
+    Returns:
+        A flat list of tuples, where each tuple contains the 
+        'urlSlugText' and 'key' of each leaf category.
     """
-    Fetches the category hierarchy from the ALDI API, extracts all categories
-    (including children), and saves them to a file.
-    Returns a list of (category_slug, category_key) tuples.
+    leaf_categories = []
+    for node in nodes:
+        children = node.get('children', [])
+        if not children:
+            # This is a leaf node, add its urlSlugText and key to our list
+            if 'urlSlugText' in node and 'key' in node:
+                leaf_categories.append(
+                    (node['urlSlugText'], node['key'])
+                )
+        else:
+            # This is not a leaf node, so we go deeper
+            leaf_categories.extend(_find_leaf_categories(children))
+    return leaf_categories
+
+def get_aldi_categories(store_id: str, session: requests.Session) -> list:
     """
-    print("Fetching ALDI categories...")
-    if not os.path.exists(OUTPUT_DIR):
-        os.makedirs(OUTPUT_DIR)
-        
+    Fetches the category hierarchy for a specific ALDI store and extracts a list
+    of all the leaf subcategories to be scraped.
+
+    Args:
+        store_id: The unique identifier for the ALDI store (e.g., 'G452').
+        session: The requests.Session object to use for the API call.
+
+    Returns:
+        A list of (urlSlugText, key) tuples to scrape, or an empty list if an error occurs.
+    """
+    print(f"    Fetching category hierarchy for store ID: {store_id}...")
+    api_url = f"https://api.aldi.com.au/v2/product-category-tree?serviceType=walk-in&servicePoint={store_id}"
+    
     try:
-        # First, check if the file exists and is recent.
-        # For this implementation, we will always fetch for simplicity.
-        
-        response = requests.get(ALDI_CATEGORIES_URL)
+        response = session.get(api_url, timeout=60)
         response.raise_for_status()
-        data = response.json()
-
-        with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=4)
-
-        print(f"Successfully saved raw ALDI categories to {OUTPUT_FILE}")
-
-        # Now, let's process this to get the list we need for the scraper
-        all_categories = []
+        hierarchy_data = response.json()
         
-        def extract_categories(categories):
-            for category in categories:
-                # Add the parent category
-                all_categories.append((category.get('urlSlugText'), category.get('key')))
-                # Recursively add children
-                if category.get('children'):
-                    extract_categories(category.get('children'))
-
-        extract_categories(data.get('data', []))
+        root_nodes = hierarchy_data.get('data', [])
         
-        print(f"Extracted {len(all_categories)} categories and sub-categories.")
-        return all_categories
+        leaf_categories = _find_leaf_categories(root_nodes)
+        
+        print(f"    Successfully extracted {len(leaf_categories)} specific subcategories.")
+        return leaf_categories
 
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching categories: {e}")
-        return None
+        print(f"    ERROR: Could not fetch category hierarchy for store {store_id}. Error: {e}")
     except json.JSONDecodeError:
-        print("Error decoding JSON from category API.")
-        return None
-
-if __name__ == '__main__':
-    get_aldi_categories()
+        print(f"    ERROR: Failed to decode JSON for category hierarchy for store {store_id}.")
+    
+    return []
