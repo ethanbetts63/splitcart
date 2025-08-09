@@ -1,3 +1,3 @@
 from .create_store_slug_iga import create_store_slug_iga
+from .get_woolworths_categories import get_woolworths_categories
 from .create_store_slug_aldi import create_store_slug_aldi
-from .create_store_slug_woolworths import create_store_slug_woolworths
