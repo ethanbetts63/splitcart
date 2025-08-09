@@ -1,9 +1,9 @@
 import os
-import re
+import json
+import random
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from api.scrapers.scrape_and_save_woolworths import scrape_and_save_woolworths_data
-from api.utils.management_utils.create_store_slug_woolworths import create_store_slug_woolworths
 
 class Command(BaseCommand):
     help = 'Launches the scraper to fetch all pages of product data from specific Woolworths stores.'
@@ -13,34 +13,11 @@ class Command(BaseCommand):
 
         company_name = "woolworths"
 
-        # The 'store_id' is the 'StoreNo' from the API.
-        stores_to_scrape = [
-            {'store_name': create_store_slug_woolworths('Dianella'), 'store_id': '4366'},
-            {'store_name': create_store_slug_woolworths('Mirrabooka'), 'store_id': '4373'},
-            {'store_name': create_store_slug_woolworths('Noranda'), 'store_id': '4314'},
-            {'store_name': create_store_slug_woolworths('Morley'), 'store_id': '4350'},
-            {'store_name': create_store_slug_woolworths('Dog Swamp'), 'store_id': '4306'},
-            {'store_name': create_store_slug_woolworths('Inglewood'), 'store_id': '4622'},
-            {'store_name': create_store_slug_woolworths('Balcatta'), 'store_id': '4630'},
-            {'store_name': create_store_slug_woolworths('Stirling Central'), 'store_id': '4319'},
-            {'store_name': create_store_slug_woolworths('Mt Hawthorn'), 'store_id': '4346'},
-            {'store_name': create_store_slug_woolworths('Highgate'), 'store_id': '4621'},
-            {'store_name': create_store_slug_woolworths('Alexander Heights'), 'store_id': '4321'},
-            {'store_name': create_store_slug_woolworths('Innaloo'), 'store_id': '4313'},
-            {'store_name': create_store_slug_woolworths('Beechboro'), 'store_id': '4384'},
-            {'store_name': create_store_slug_woolworths('Warwick'), 'store_id': '4379'},
-            {'store_name': create_store_slug_woolworths('Murray Street'), 'store_id': '4365'},
-            {'store_name': create_store_slug_woolworths('St Georges Terrace'), 'store_id': '4301'},
-            {'store_name': create_store_slug_woolworths('Subiaco Square'), 'store_id': '4392'},
-            {'store_name': create_store_slug_woolworths('Belmont'), 'store_id': '4348'},
-            {'store_name': create_store_slug_woolworths('Ballajura Central'), 'store_id': '4339'},
-            {'store_name': create_store_slug_woolworths('Bennett Springs'), 'store_id': '4155'},
-            {'store_name': create_store_slug_woolworths('Karrinyup'), 'store_id': '4371'},
-            {'store_name': create_store_slug_woolworths('Kingsway'), 'store_id': '4327'},
-            {'store_name': create_store_slug_woolworths('Perth Airport'), 'store_id': '4389'},
-            {'store_name': create_store_slug_woolworths('Floreat'), 'store_id': '4359'},
-            {'store_name': create_store_slug_woolworths('Victoria Park'), 'store_id': '4333'},
-        ]
+        # Load store data from JSON file
+        stores_json_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'store_data', 'stores_woolworths', 'woolworths_stores_by_state.json')
+        with open(stores_json_path, 'r') as f:
+            stores_by_state_data = json.load(f)
+        stores_by_state = stores_by_state_data['stores_by_state']
 
         categories = [
             ('fruit-veg', '1-E5BEE36E'), ('poultry-meat-seafood', '1_D5A2236'),
@@ -60,12 +37,17 @@ class Command(BaseCommand):
         os.makedirs(raw_data_path, exist_ok=True)
         self.stdout.write(f"Data will be saved to: {raw_data_path}")
         
-        for store in stores_to_scrape:
-            self.stdout.write(self.style.SUCCESS(f"\n--- Handing off to scraper for store: {store['store_name']} ---"))
+        for state, stores in stores_by_state.items():
+            if len(stores) > 2:
+                stores_to_scrape = random.sample(stores, 2)
+            else:
+                stores_to_scrape = stores
+
+            self.stdout.write(self.style.SUCCESS(f"\n--- Handing off to scraper for state: {state} ---"))
             scrape_and_save_woolworths_data(
                 company=company_name,
-                store_name=store['store_name'],
-                store_id=store['store_id'],
+                state=state,
+                stores=stores_to_scrape,
                 categories_to_fetch=categories,
                 save_path=raw_data_path
             )
