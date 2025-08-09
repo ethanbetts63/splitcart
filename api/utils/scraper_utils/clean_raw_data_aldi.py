@@ -3,7 +3,7 @@ from datetime import datetime
 
 def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, store_id: str, state: str, category_slug: str, page_num: int, timestamp: datetime) -> dict:
     """
-    Cleans a list of raw aldi product data from its API and wraps it in a 
+    Cleans a list of raw aldi product data from its API and wraps it in a
     dictionary containing metadata about the scrape.
     """
     cleaned_products = []
@@ -48,7 +48,21 @@ def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, s
             'url': product_url,
             'departments': [{'name': dept.get('name'), 'id': dept.get('id')} for dept in departments],
             'categories': [{'name': cat.get('name'), 'id': cat.get('id')} for cat in categories],
-            'subcategories': [{'name': sub.get('name'), 'id': sub.get('id')} for sub in subcategories]
+            'subcategories': [{'name': sub.get('name'), 'id': sub.get('id')} for sub in subcategories],
+            
+            # --- Appending additional raw data ---
+            'age_restriction': product.get('ageRestriction'),
+            'alcohol_details': product.get('alcohol'),
+            'badges': product.get('badges'),
+            'full_category_hierarchy': product.get('categories'),
+            'country_extensions': product.get('countryExtensions'),
+            'is_discontinued': product.get('discontinued'),
+            'discontinued_note': product.get('discontinuedNote'),
+            'energy_class': product.get('energyClass'),
+            'not_for_sale_reason': product.get('notForSaleReason'),
+            'on_sale_date_display': product.get('onSaleDateDisplay'),
+            'price_details': price_info,
+            'url_slug_text': product.get('urlSlugText'),
         }
         cleaned_products.append(clean_product)
     
