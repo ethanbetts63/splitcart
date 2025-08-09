@@ -17,12 +17,6 @@ class Product(models.Model):
         max_length=50,
         help_text="The size or quantity of the product, e.g., '500g', '1 Each'."
     )
-    store = models.ForeignKey(
-        'companies.Store',
-        on_delete=models.CASCADE,
-        related_name="products",
-        help_text="The store where this specific product is sold."
-    )
     category = models.ForeignKey(
         'companies.Category',
         on_delete=models.SET_NULL,
@@ -51,8 +45,8 @@ class Product(models.Model):
     )
 
     class Meta:
-        # A product is unique based on its name, brand, size, and the store it's sold in.
-        unique_together = ('name', 'brand', 'size', 'store')
+        # A product is unique based on its name, brand, and size.
+        unique_together = ('name', 'brand', 'size')
 
     def __str__(self):
-        return f"{self.brand} {self.name} ({self.size}) at {self.store.name}"
+        return f"{self.brand} {self.name} ({self.size})"
