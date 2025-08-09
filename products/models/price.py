@@ -48,6 +48,11 @@ class Price(models.Model):
         default=True,
         help_text="Whether the product was in stock at the time of scraping."
     )
+    is_active = models.BooleanField(
+        default=True,
+        db_index=True,
+        help_text="Whether this is the latest price record for the product at this store."
+    )
     
     scraped_at = models.DateTimeField(auto_now_add=True)
     url = models.URLField(max_length=1024, blank=True, null=True)
