@@ -7,9 +7,11 @@ from products.models import Product, Price
 
 def get_or_create_category_hierarchy(category_string, company):
     """
-    Gets or creates a category hierarchy from a string like 'cat1_cat2_cat3'.
+    Gets or creates a category hierarchy from a string like 'cat1_cat2_cat3' or 'cat1/cat2/cat3'.
     """
     parent = None
+    # Replace / with _ to handle both delimiters
+    category_string = category_string.replace('/', '_')
     for category_name in category_string.split('_'):
         category, _ = Category.objects.get_or_create(
             name=category_name,

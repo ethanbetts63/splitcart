@@ -53,7 +53,7 @@ def file_finder(raw_data_path: str) -> dict:
 
                 if all([company, state, store_name, store_id, category, scrape_timestamp]):
                     scrape_date = scrape_timestamp[:10]
-                    store_key = f"{store_name}-{store_id}"
+                    store_key = store_id
                     scrape_plan[company][state][store_key][scrape_date][category].append(file_path)
 
         except (json.JSONDecodeError, IOError) as e:
