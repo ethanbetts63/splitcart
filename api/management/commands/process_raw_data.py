@@ -96,5 +96,4 @@ class Command(BaseCommand):
                             else:
                                 self.stdout.write(self.style.ERROR("          - Archiving failed. Raw files not deleted."))
 
-        self.stdout.write(self.style.WARNING("\nCleanup step skipped. Raw data files have not been deleted."))
         self.stdout.write(self.style.SUCCESS("\n--- All data processing complete ---"))
