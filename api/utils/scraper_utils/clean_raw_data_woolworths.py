@@ -93,8 +93,8 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
     return {
         "metadata": {
             "company": company,
-            "store_id": store_id,
             "store_name": store_name,
+            "store_id": store_id,
             "state": state,
             "category": category,
             "page_number": page_num,
