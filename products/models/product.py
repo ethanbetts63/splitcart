@@ -37,6 +37,12 @@ class Product(models.Model):
         db_index=True,
         help_text="The universal barcode (UPC/EAN) of the product."
     )
+    image_url = models.URLField(max_length=1024, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    country_of_origin = models.CharField(max_length=100, blank=True, null=True)
+    allergens = models.TextField(blank=True, null=True)
+    ingredients = models.TextField(blank=True, null=True)
+    nutritional_information = models.JSONField(blank=True, null=True)
     substitute_goods = models.ManyToManyField(
         'self',
         blank=True,

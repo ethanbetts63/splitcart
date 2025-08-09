@@ -12,6 +12,7 @@ This project is a Django-based application called "splitcart". It appears to be 
 
 1.  **Data Scraping:**
     *   Management commands (`scrape_coles`, `scrape_woolworths`, etc) are used to initiate the scraping process.
+    *   For Woolworths, the scraper dynamically fetches categories from their API, and store data is loaded from a JSON file. For other stores, categories and store data are hardcoded.
     *   Scraped data is saved as raw JSON files in the `api/data/raw_data` directory.
 
 2.  **Data Processing:**
@@ -74,4 +75,5 @@ This project is a Django-based application called "splitcart". It appears to be 
 *   The project follows the standard Django project structure.
 *   Code is organized into separate apps for `companies`, `products`, and `api`.
 *   Management commands are used for data scraping and processing tasks.
+*   Utility functions are used to encapsulate logic for interacting with external APIs, such as fetching category data.
 *   The project includes a comprehensive test suite, with tests for models, management commands, and utility functions.
