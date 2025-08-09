@@ -42,7 +42,7 @@ def archive_manager(processed_data_path: str, company_name: str, state: str, sto
         target_dir = os.path.join(processed_data_path, company_name, state, store_name, scrape_date)
         os.makedirs(target_dir, exist_ok=True)
         
-        output_filename = f"{category_name}.json"
+        output_filename = f"{category_name.replace('/', '_')}.json"
         output_filepath = os.path.join(target_dir, output_filename)
         
         with open(output_filepath, 'w', encoding='utf-8') as f:
