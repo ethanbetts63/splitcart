@@ -40,9 +40,9 @@ def create_aldi_stores_by_state_file():
                         stores_in_file = data['stores']
                     
                     for store in stores_in_file:
-                        store_name = store.get('storeName')
-                        retailer_id = store.get('retailerId')
-                        state = store.get('state')
+                        store_name = store.get('store_name')
+                        retailer_id = store.get('id')
+                        state = store.get('address', {}).get('regionIsoCode')
 
                         if store_name and retailer_id and state:
                             if state not in aldi_stores_by_state['stores_by_state']:
@@ -50,7 +50,7 @@ def create_aldi_stores_by_state_file():
                             
                             aldi_stores_by_state['stores_by_state'][state].append({
                                 'store_name': store_name,
-                                'retailerId': retailer_id
+                                'id': retailer_id
                             })
                             total_stores_count += 1
                         else:
