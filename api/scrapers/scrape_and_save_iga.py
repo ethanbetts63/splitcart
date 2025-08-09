@@ -77,6 +77,7 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
                 data = response.json()
                 
                 raw_products_on_page = data.get("items", [])
+
                 if not raw_products_on_page:
                     print(f"    Page {page_num} is empty. End of category.")
                     category_successfully_completed = True

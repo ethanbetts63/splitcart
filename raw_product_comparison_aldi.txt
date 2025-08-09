@@ -1,0 +1,241 @@
+--- Category: lower-prices ---
+[
+  {
+    "sku": "000000000000200998",
+    "name": "Chocolate Chip Brioche Milk Rolls 8 Pack 280g",
+    "brandName": "BON APPETIT",
+    "urlSlugText": "bon-appetit-chocolate-chip-brioche-milk-rolls-8-pack-280g",
+    "ageRestriction": null,
+    "alcohol": null,
+    "discontinued": false,
+    "discontinuedNote": null,
+    "notForSale": true,
+    "notForSaleReason": null,
+    "quantityMin": 1,
+    "quantityMax": 99,
+    "quantityInterval": 1,
+    "quantityDefault": 1,
+    "quantityUnit": "ea",
+    "weightType": "0",
+    "sellingSize": "280 g",
+    "energyClass": null,
+    "onSaleDateDisplay": null,
+    "price": {
+      "amount": 469,
+      "amountRelevant": 469,
+      "amountRelevantDisplay": "$4.69",
+      "bottleDeposit": 0,
+      "bottleDepositDisplay": "$0.00",
+      "comparison": 168,
+      "comparisonDisplay": "$1.68 per 100 g",
+      "currencyCode": "AUD",
+      "currencySymbol": "$",
+      "perUnit": null,
+      "perUnitDisplay": null,
+      "wasPriceDisplay": null,
+      "additionalInfo": null
+    },
+    "countryExtensions": null,
+    "categories": [
+      {
+        "id": "920000000",
+        "name": "Bakery",
+        "urlSlugText": "bakery"
+      },
+      {
+        "id": "1111111133",
+        "name": "Speciality Breads & Rolls",
+        "urlSlugText": "bakery/speciality-breads-rolls"
+      }
+    ],
+    "assets": [
+      {
+        "url": "https://dm.apac.cms.aldi.cx/is/image/aldiprodapac/product/jpg/scaleWidth/{width}/f2efa456-39e2-4bc9-93c5-5ff8030239f2/{slug}",
+        "maxWidth": 1500,
+        "maxHeight": 1500,
+        "mimeType": "image/*",
+        "assetType": "FR01",
+        "alt": null,
+        "displayName": null
+      },
+      {
+        "url": "https://dm.apac.cms.aldi.cx/is/image/aldiprodapac/product/jpg/scaleWidth/{width}/919e6bc7-5e57-4e96-a530-cdcf330ae925/{slug}",
+        "maxWidth": 1500,
+        "maxHeight": 1500,
+        "mimeType": "image/*",
+        "assetType": "FR02",
+        "alt": null,
+        "displayName": null
+      },
+      {
+        "url": "https://dm.apac.cms.aldi.cx/is/image/aldiprodapac/product/jpg/scaleWidth/{width}/497b401b-b699-423c-964f-ba2a8acc9a7a/{slug}",
+        "maxWidth": 1500,
+        "maxHeight": 1500,
+        "mimeType": "image/*",
+        "assetType": "NU01",
+        "alt": null,
+        "displayName": null
+      }
+    ],
+    "badges": []
+  },
+  {
+    "sku": "000000000000286123",
+    "name": "Goat Cheese Original 110g",
+    "brandName": "EMPORIUM SELECTION",
+    "urlSlugText": "emporium-selection-goat-cheese-original-110g",
+    "ageRestriction": null,
+    "alcohol": null,
+    "discontinued": false,
+    "discontinuedNote": null,
+    "notForSale": true,
+    "notForSaleReason": null,
+    "quantityMin": 1,
+    "quantityMax": 99,
+    "quantityInterval": 1,
+    "quantityDefault": 1,
+    "quantityUnit": "ea",
+    "weightType": "0",
+    "sellingSize": "0.11 kg",
+    "energyClass": null,
+    "onSaleDateDisplay": null,
+    "price": {
+      "amount": 379,
+      "amountRelevant": 379,
+      "amountRelevantDisplay": "$3.79",
+      "bottleDeposit": 0,
+      "bottleDepositDisplay": "$0.00",
+      "comparison": 3445,
+      "comparisonDisplay": "$34.45 per 1 kg",
+      "currencyCode": "AUD",
+      "currencySymbol": "$",
+      "perUnit": null,
+      "perUnitDisplay": null,
+      "wasPriceDisplay": null,
+      "additionalInfo": null
+    },
+    "countryExtensions": null,
+    "categories": [
+      {
+        "id": "960000000",
+        "name": "Dairy, Eggs & Fridge",
+        "urlSlugText": "dairy-eggs-fridge"
+      },
+      {
+        "id": "1111111163",
+        "name": "Cheese",
+        "urlSlugText": "dairy-eggs-fridge/cheese"
+      }
+    ],
+    "assets": [
+      {
+        "url": "https://dm.apac.cms.aldi.cx/is/image/aldiprodapac/product/jpg/scaleWidth/{width}/d4302f84-499d-41df-bc43-5cc9ad5c1226/{slug}",
+        "maxWidth": 1500,
+        "maxHeight": 1500,
+        "mimeType": "image/*",
+        "assetType": "FR01",
+        "alt": null,
+        "displayName": null
+      },
+      {
+        "url": "https://dm.apac.cms.aldi.cx/is/image/aldiprodapac/product/jpg/scaleWidth/{width}/a1da5f5e-1680-4cf7-96fc-6dc2e54f2b6c/{slug}",
+        "maxWidth": 1500,
+        "maxHeight": 1500,
+        "mimeType": "image/*",
+        "assetType": "FR02",
+        "alt": null,
+        "displayName": null
+      },
+      {
+        "url": "https://dm.apac.cms.aldi.cx/is/image/aldiprodapac/product/jpg/scaleWidth/{width}/c302c890-7ca0-4c86-a649-f8c3d863c9f9/{slug}",
+        "maxWidth": 1500,
+        "maxHeight": 1500,
+        "mimeType": "image/*",
+        "assetType": "NU01",
+        "alt": null,
+        "displayName": null
+      }
+    ],
+    "badges": []
+  },
+  {
+    "sku": "000000000000364955",
+    "name": "Marinara Mix 800g",
+    "brandName": "OCEAN ROYALE",
+    "urlSlugText": "ocean-royale-marinara-mix-800g",
+    "ageRestriction": null,
+    "alcohol": null,
+    "discontinued": false,
+    "discontinuedNote": null,
+    "notForSale": true,
+    "notForSaleReason": null,
+    "quantityMin": 1,
+    "quantityMax": 99,
+    "quantityInterval": 1,
+    "quantityDefault": 1,
+    "quantityUnit": "ea",
+    "weightType": "0",
+    "sellingSize": "0.8 kg",
+    "energyClass": null,
+    "onSaleDateDisplay": null,
+    "price": {
+      "amount": 1249,
+      "amountRelevant": 1249,
+      "amountRelevantDisplay": "$12.49",
+      "bottleDeposit": 0,
+      "bottleDepositDisplay": "$0.00",
+      "comparison": 1561,
+      "comparisonDisplay": "$15.61 per 1 kg",
+      "currencyCode": "AUD",
+      "currencySymbol": "$",
+      "perUnit": null,
+      "perUnitDisplay": null,
+      "wasPriceDisplay": null,
+      "additionalInfo": null
+    },
+    "countryExtensions": null,
+    "categories": [
+      {
+        "id": "980000000",
+        "name": "Freezer",
+        "urlSlugText": "freezer"
+      },
+      {
+        "id": "1111111197",
+        "name": "Frozen Meat & Seafood",
+        "urlSlugText": "freezer/frozen-meat-seafood"
+      }
+    ],
+    "assets": [
+      {
+        "url": "https://dm.apac.cms.aldi.cx/is/image/aldiprodapac/product/jpg/scaleWidth/{width}/ea672c39-dae2-4e2d-a1f0-ed3181f4589b/{slug}",
+        "maxWidth": 1500,
+        "maxHeight": 1500,
+        "mimeType": "image/*",
+        "assetType": "FR01",
+        "alt": null,
+        "displayName": null
+      },
+      {
+        "url": "https://dm.apac.cms.aldi.cx/is/image/aldiprodapac/product/jpg/scaleWidth/{width}/42f2f0e4-7080-48a4-adb6-77c4d918de0f/{slug}",
+        "maxWidth": 1500,
+        "maxHeight": 1500,
+        "mimeType": "image/*",
+        "assetType": "FR02",
+        "alt": null,
+        "displayName": null
+      },
+      {
+        "url": "https://dm.apac.cms.aldi.cx/is/image/aldiprodapac/product/jpg/scaleWidth/{width}/6d837e9c-8bbf-4edd-866d-75da267bfefa/{slug}",
+        "maxWidth": 1500,
+        "maxHeight": 1500,
+        "mimeType": "image/*",
+        "assetType": "NU01",
+        "alt": null,
+        "displayName": null
+      }
+    ],
+    "badges": []
+  }
+]
+

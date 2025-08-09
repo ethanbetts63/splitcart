@@ -1,0 +1,181 @@
+--- Category: meat-seafood ---\n[
+  {
+    "_type": "PRODUCT",
+    "id": 3942620,
+    "adId": null,
+    "adSource": null,
+    "featured": false,
+    "name": "Graze Lamb Extra Trim Cutlets",
+    "brand": "Coles",
+    "description": "COLES GRAZE LAMB EXTRA TRIM CUTLETS 7 X 5",
+    "size": "approx. 300g",
+    "availability": false,
+    "availabilityType": "InStoreAndOnline",
+    "imageUris": [
+      {
+        "altText": "",
+        "type": "default",
+        "uri": "/3/3942620.jpg"
+      }
+    ],
+    "locations": [
+      {
+        "aisleSide": null,
+        "description": "Aisle information is not available for this product. Please ask a Team Member at $STORE to help you find this product.",
+        "facing": 0,
+        "aisle": null,
+        "order": 9999,
+        "shelf": null
+      }
+    ],
+    "restrictions": {
+      "retailLimit": 20,
+      "promotionalLimit": 12,
+      "liquorAgeRestrictionFlag": false,
+      "tobaccoAgeRestrictionFlag": false,
+      "restrictedByOrganisation": false
+    },
+    "merchandiseHeir": {
+      "tradeProfitCentre": "MEAT",
+      "categoryGroup": "LAMB",
+      "category": "LAMB",
+      "subCategory": "GRAZE",
+      "className": "CHOPS"
+    },
+    "onlineHeirs": [
+      {
+        "aisle": "Graze Grass-Fed Lamb",
+        "category": "Lamb",
+        "subCategory": "Meat & Seafood",
+        "categoryId": "8892638",
+        "aisleId": "8892639",
+        "subCategoryId": "7238"
+      }
+    ],
+    "pricing": {
+      "now": 12,
+      "was": 14.1,
+      "saveAmount": 2.1,
+      "saveStatement": "save $2.10",
+      "unit": {
+        "quantity": 300,
+        "ofMeasureQuantity": 1,
+        "ofMeasureUnits": "g",
+        "price": 40,
+        "ofMeasureType": "g",
+        "isWeighted": true,
+        "isIncremental": false
+      },
+      "comparable": "$40.00 per 1kg",
+      "promotionType": "SPECIAL",
+      "onlineSpecial": true
+    }
+  },
+  {
+    "_type": "SINGLE_TILE",
+    "adId": "Campaign_Aisle_Tile_Entertaining_At_Home",
+    "adSource": "aem",
+    "campaignName": "/content/dam/coles-onesite/contentfragment/ecommerce-supplier-media/always-on-campaigns/entertaining-at-home/campaign-aisle-tile-entertaining-at-home11",
+    "expiry": null,
+    "headingText": null,
+    "bannerText": "Entertaining at home",
+    "bannerTextColour": null,
+    "ctaFlag": null,
+    "ctaText": "Shop now",
+    "ctaTextAccessibility": null,
+    "ctaLink": "/offers/entertaining-at-home?pid=Campaign_Aisle_Tile_Entertaining_At_Home",
+    "backgroundColour": null,
+    "backgroundImage": "/content/dam/coles/cusp/online-campaign-creatives/content-tiles/476x240-entertaining-at-home.jpg",
+    "backgroundImagePosition": null,
+    "secondaryBackgroundImage": null,
+    "secondaryBackgroundImagePosition": null,
+    "heroImage": null,
+    "heroImageAltText": null,
+    "secondaryHeroImage": null,
+    "secondaryHeroImageAltText": null,
+    "productIds": [
+      "1015615",
+      "3576271",
+      "5191256"
+    ],
+    "additionalFields": [
+      {
+        "id": "description",
+        "value": "Shop all your home entertaining essentials in one destination."
+      }
+    ]
+  },
+  {
+    "_type": "PRODUCT",
+    "id": 3477123,
+    "adId": "display_8pppstMUaticC4afednP2S2yYx0KCgoIMzQ3NzEyM1ASABoMCNuW-MQGEJzXlKsBIgIIAQ==",
+    "adSource": "citrus",
+    "featured": true,
+    "name": "Tasmanian Smoked Salmon",
+    "brand": "Tassal",
+    "description": "TASSAL TASMANIAN SMOKED SALMON",
+    "size": "250g",
+    "availability": true,
+    "availabilityType": "InStoreAndOnline",
+    "imageUris": [
+      {
+        "altText": "",
+        "type": "default",
+        "uri": "/3/3477123.jpg"
+      }
+    ],
+    "locations": [
+      {
+        "aisleSide": null,
+        "description": "Aisle information is not available for this product. Please ask a Team Member at $STORE to help you find this product.",
+        "facing": 0,
+        "aisle": null,
+        "order": 9999,
+        "shelf": null
+      }
+    ],
+    "restrictions": {
+      "retailLimit": 20,
+      "promotionalLimit": 12,
+      "liquorAgeRestrictionFlag": false,
+      "tobaccoAgeRestrictionFlag": false,
+      "restrictedByOrganisation": false,
+      "delivery": [
+        "REMOTE SERVICE",
+        "OVN"
+      ]
+    },
+    "merchandiseHeir": {
+      "tradeProfitCentre": "DAIRY",
+      "categoryGroup": "DAIRY",
+      "category": "SMOKED & CURED FISH",
+      "subCategory": "SALMON DY",
+      "className": "COLD SMOKED"
+    },
+    "onlineHeirs": [
+      {
+        "aisle": "Smoked And Cured Fish",
+        "category": "Seafood",
+        "subCategory": "Meat & Seafood",
+        "categoryId": "8892671",
+        "aisleId": "8892678",
+        "subCategoryId": "7238"
+      }
+    ],
+    "pricing": {
+      "now": 21,
+      "was": 0,
+      "unit": {
+        "quantity": 1,
+        "ofMeasureQuantity": 1,
+        "ofMeasureUnits": "kg",
+        "price": 84,
+        "ofMeasureType": "kg",
+        "isWeighted": false,
+        "isIncremental": false
+      },
+      "comparable": "$84.00 per 1kg",
+      "onlineSpecial": false
+    }
+  }
+]\n\n
