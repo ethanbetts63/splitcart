@@ -5,6 +5,20 @@ from django.conf import settings
 from companies.models import Company, Store, Category
 from products.models import Product, Price
 
+def get_or_create_category_hierarchy(category_string, company):
+    """
+    Gets or creates a category hierarchy from a string like 'cat1_cat2_cat3'.
+    """
+    parent = None
+    for category_name in category_string.split('_'):
+        category, _ = Category.objects.get_or_create(
+            name=category_name,
+            company=company,
+            parent=parent
+        )
+        parent = category
+    return parent
+
 class Command(BaseCommand):
     help = 'Updates the database with processed product data.'
 
@@ -18,22 +32,24 @@ class Command(BaseCommand):
                 if file.endswith('.json'):
                     file_path = os.path.join(root, file)
                     
-                    # Extract company, state, and store from the file path
-                    path_parts = os.path.normpath(file_path).split(os.sep)
-                    company_name = path_parts[-5]
-                    state_name = path_parts[-4]
-                    store_name = path_parts[-3]
-
                     with open(file_path, 'r') as f:
                         data = json.load(f)
+
+                    metadata = data.get('metadata', {})
+                    company_name = metadata.get('company')
+                    state_name = metadata.get('state')
+                    store_name = metadata.get('store')
+                    category_string = metadata.get('category')
+
+                    if not all([company_name, state_name, store_name, category_string]):
+                        self.stdout.write(self.style.WARNING(f"Skipping file with missing metadata: {file_path}"))
+                        continue
 
                     for product_data in data.get('products', []):
                         # a. Get or create the Company, Store, and Category.
                         company, _ = Company.objects.get_or_create(name=company_name)
                         store, _ = Store.objects.get_or_create(name=store_name, company=company, defaults={'state': state_name})
-
-                        # TODO: Need to handle category hierarchy
-                        category, _ = Category.objects.get_or_create(name=data['category'], company=company)
+                        category = get_or_create_category_hierarchy(category_string, company)
 
                         # b. Get or create the Product.
                         product, created = Product.objects.get_or_create(
