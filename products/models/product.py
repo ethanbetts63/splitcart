@@ -17,12 +17,10 @@ class Product(models.Model):
         max_length=50,
         help_text="The size or quantity of the product, e.g., '500g', '1 Each'."
     )
-    category = models.ForeignKey(
+    category = models.ManyToManyField(
         'companies.Category',
-        on_delete=models.SET_NULL,
-        null=True,
         related_name="products",
-        help_text="The category this product belongs to."
+        help_text="The categories this product belongs to."
     )
     barcode = models.CharField(
         max_length=50,
@@ -45,7 +43,6 @@ class Product(models.Model):
     )
 
     class Meta:
-        # A product is unique based on its name, brand, and size.
         unique_together = ('name', 'brand', 'size')
 
     def __str__(self):

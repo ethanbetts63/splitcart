@@ -59,7 +59,6 @@ class Command(BaseCommand):
                             brand=product_data.get('brand', 'N/A'),
                             size=product_data.get('size', 'N/A'),
                             defaults={
-                                'category': category,
                                 'image_url': product_data.get('image_url'),
                                 'description': product_data.get('description'),
                                 'country_of_origin': product_data.get('country_of_origin'),
@@ -68,6 +67,7 @@ class Command(BaseCommand):
                                 'nutritional_information': product_data.get('nutritional_information'),
                             }
                         )
+                        product.category.add(category)
                         if created:
                             self.stdout.write(self.style.SUCCESS(f"Created new product: {product}"))
 
