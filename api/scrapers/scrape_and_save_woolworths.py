@@ -85,7 +85,7 @@ def scrape_and_save_woolworths_data(company: str, state: str, stores: list, cate
                     scrape_timestamp = datetime.now()
                     data_packet = clean_raw_data_woolworths(
                         raw_product_list=raw_products_on_page,
-                        company=company, store=store_name, category=category_slug,
+                        company=company, store_id=store_id, store_name=store_name, state=state, category=category_slug,
                         page_num=page_num, timestamp=scrape_timestamp
                     )
                     print(f"Found and cleaned {len(data_packet['products'])} products on page {page_num}.")
