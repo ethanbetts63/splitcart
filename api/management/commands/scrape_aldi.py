@@ -13,7 +13,7 @@ class Command(BaseCommand):
         # --- Configuration ---
         COMPANY = 'aldi'
         STORES_JSON_PATH = os.path.join('api', 'data', 'store_data', 'stores_aldi', 'aldi_stores_by_state.json')
-        SAVE_PATH = os.path.join('api', 'data', 'raw_data', 'aldi')
+        SAVE_PATH = os.path.join('api', 'data', 'raw_data')
 
         if not os.path.exists(SAVE_PATH):
             os.makedirs(SAVE_PATH)

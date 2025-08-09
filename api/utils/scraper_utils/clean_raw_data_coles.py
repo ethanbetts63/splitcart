@@ -1,52 +1,103 @@
-from api.utils.processing_utils import _create_coles_url_slug
 from datetime import datetime
+
+def _create_coles_url_slug(product_name: str, product_size: str) -> str:
+    """Helper function to create a URL slug from product name and size."""
+    if not product_name or not product_size:
+        return ""
+    # Remove size from name if it's already there
+    name_lower = product_name.lower()
+    size_lower = product_size.lower()
+    if name_lower.endswith(size_lower):
+        name_lower = name_lower[:-len(size_lower)].strip()
+    
+    # Basic slugification
+    slug = name_lower.replace(' ', '-')
+    slug = ''.join(e for e in slug if e.isalnum() or e == '-')
+    return slug
 
 def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, category: str, page_num: int, timestamp: datetime) -> dict:
     """
-    Cleans a list of raw coles product data and wraps it in a dictionary
-    containing metadata about the scrape.
+    Cleans a list of raw Coles product data according to the V2 schema and
+    wraps it in a dictionary containing metadata about the scrape.
     """
     cleaned_products = []
-    if raw_product_list:
-        for product in raw_product_list:
-            if not product or product.get('_type') != 'PRODUCT':
-                continue
+    if not raw_product_list:
+        raw_product_list = []
 
-            pricing = product.get('pricing', {}) or {}
-            unit_info = pricing.get('unit', {}) or {}
-            online_heirs = product.get('onlineHeirs', [{}])[0]
+    for product in raw_product_list:
+        if not product or product.get('_type') != 'PRODUCT':
+            continue
 
-            product_id = product.get('id')
-            product_name = product.get('name')
-            product_size = product.get('size')
+        pricing = product.get('pricing', {}) or {}
+        unit_info = pricing.get('unit', {}) or {}
+        online_heirs = product.get('onlineHeirs', [{}])[0] or {}
+        restrictions = product.get('restrictions', {}) or {}
+        image_uris = product.get('imageUris', []) or []
 
-            product_url = None
-            if product_id and product_name and product_size:
-                slug = _create_coles_url_slug(product_name, product_size)
-                product_url = f"https://www.coles.com.au/product/{slug}-{product_id}"
+        # --- Basic Info ---
+        product_id = product.get('id')
+        product_name = product.get('name')
+        product_size = product.get('size')
+        
+        # --- URL ---
+        product_url = None
+        if product_id and product_name and product_size:
+            slug = _create_coles_url_slug(product_name, product_size)
+            product_url = f"https://www.coles.com.au/product/{slug}-{product_id}"
 
-            unit_measure_qty = unit_info.get('ofMeasureQuantity', '')
-            unit_measure_units = unit_info.get('ofMeasureUnits', '')
-            unit_of_measure = f"{unit_measure_qty}{unit_measure_units}".lower() if unit_measure_qty and unit_measure_units else None
+        # --- Pricing ---
+        price_now = pricing.get('now')
+        price_was = pricing.get('was') if pricing.get('was') != 0 else None
+        
+        # --- Tags & Promotions ---
+        tags = []
+        if pricing.get('promotionType') == 'SPECIAL':
+            tags.append('special')
+        
+        clean_product = {
+            "product_id_store": str(product_id) if product_id else None,
+            "barcode": None,  # Not available in Coles data
+            "name": product_name,
+            "brand": product.get('brand'),
+            "description_short": product.get('description'),
+            "description_long": None, # Not available in Coles data
+            "url": product_url,
+            "image_url_main": f"https://www.coles.com.au{image_uris[0]['uri']}" if image_uris else None,
+            "image_urls_all": [f"https://www.coles.com.au{img['uri']}" for img in image_uris],
 
-            clean_product = {
-                'name': product_name,
-                'brand': product.get('brand'),
-                'barcode': None,
-                'stockcode': product_id,
-                'package_size': product_size,
-                'price': pricing.get('now'),
-                'was_price': pricing.get('was') if pricing.get('was') != 0 else None,
-                'is_on_special': pricing.get('onlineSpecial', False),
-                'is_available': product.get('availability', False),
-                'unit_price': unit_info.get('price'),
-                'unit_of_measure': unit_of_measure,
-                'url': product_url,
-                'departments': [{'name': online_heirs.get('subCategory'), 'id': online_heirs.get('subCategoryId')}],
-                'categories': [{'name': online_heirs.get('category'), 'id': online_heirs.get('categoryId')}],
-                'subcategories': [{'name': online_heirs.get('aisle'), 'id': online_heirs.get('aisleId')}]
-            }
-            cleaned_products.append(clean_product)
+            # --- Pricing ---
+            "price_current": price_now,
+            "price_was": price_was,
+            "is_on_special": pricing.get('onlineSpecial', False),
+            "price_save_amount": pricing.get('saveAmount'),
+            "promotion_type": pricing.get('promotionType'),
+            "price_unit": unit_info.get('price'),
+            "unit_of_measure": unit_info.get('ofMeasureUnits'),
+            "unit_price_string": pricing.get('comparable'),
+
+            # --- Availability & Stock ---
+            "is_available": product.get('availability', False),
+            "stock_level": None, # Not available
+            "purchase_limit": restrictions.get('retailLimit'),
+
+            # --- Details & Attributes ---
+            "package_size": product_size,
+            "country_of_origin": None, # Not available
+            "health_star_rating": None, # Not available
+            "ingredients": None, # Not available
+            "allergens_may_be_present": None, # Not available
+            "nutritional_information": None, # Not available
+
+            # --- Categorization ---
+            "category_main": online_heirs.get('subCategory'),
+            "category_sub": online_heirs.get('category'),
+            "tags": tags,
+            
+            # --- Ratings ---
+            "rating_average": None, # Not available
+            "rating_count": None, # Not available
+        }
+        cleaned_products.append(clean_product)
     
     return {
         "metadata": {

@@ -1,16 +1,22 @@
-import re
 from datetime import datetime
+import re
 
 def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, store_id: str, state: str, category_slug: str, page_num: int, timestamp: datetime) -> dict:
     """
-    Cleans a list of raw aldi product data from its API and wraps it in a
-    dictionary containing metadata about the scrape.
+    Cleans a list of raw ALDI product data according to the V2 schema and
+    wraps it in a dictionary containing metadata about the scrape.
     """
     cleaned_products = []
-    
+    if not raw_product_list:
+        raw_product_list = []
+
     for product in raw_product_list:
-        price_info = product.get('price', {})
+        if not product:
+            continue
+
+        price_info = product.get('price', {}) or {}
         
+        # --- Price Transformation ---
         current_price = price_info.get('amount')
         if current_price is not None:
             current_price /= 100.0
@@ -18,7 +24,16 @@ def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, s
         comparison_price = price_info.get('comparison')
         if comparison_price is not None:
             comparison_price /= 100.0
-            
+
+        was_price = price_info.get('wasPriceDisplay') # This seems to be a string, not a number
+        if was_price:
+            try:
+                # Attempt to extract a float from a string like '$5.99'
+                was_price = float(re.sub(r'[^\d.]', '', was_price))
+            except (ValueError, TypeError):
+                was_price = None
+
+        # --- Unit of Measure ---
         unit_of_measure = None
         comparison_display = price_info.get('comparisonDisplay')
         if comparison_display:
@@ -26,43 +41,61 @@ def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, s
             if match:
                 unit_of_measure = match.group(1).strip()
 
+        # --- Category Hierarchy ---
         category_hierarchy = product.get('categories', [])
-        departments = [category_hierarchy[0]] if len(category_hierarchy) > 0 else []
-        categories = [category_hierarchy[1]] if len(category_hierarchy) > 1 else []
-        subcategories = [category_hierarchy[2]] if len(category_hierarchy) > 2 else []
+        cat_main = category_hierarchy[0].get('name') if len(category_hierarchy) > 0 else None
+        cat_sub = category_hierarchy[1].get('name') if len(category_hierarchy) > 1 else None
 
-        product_url = f"https://www.aldi.com.au/product/{product.get('urlSlugText', '')}" if product.get('urlSlugText') else None
+        # --- Image URLs ---
+        assets = product.get('assets', []) or []
+        image_urls = [asset.get('url') for asset in assets if asset.get('url')]
+        main_image = image_urls[0] if image_urls else None
+
+        # --- Tags ---
+        tags = [badge.get('badgeText') for badge in product.get('badges', []) if badge.get('badgeText')]
 
         clean_product = {
-            'name': product.get('name'),
-            'brand': product.get('brandName'),
-            'barcode': None,
-            'stockcode': product.get('sku'),
-            'package_size': price_info.get('sellingSize'),
-            'price': current_price,
-            'was_price': price_info.get('wasPriceDisplay'),
-            'is_on_special': price_info.get('wasPriceDisplay') is not None,
-            'is_available': not product.get('notForSale', True),
-            'unit_price': comparison_price,
-            'unit_of_measure': unit_of_measure,
-            'url': product_url,
-            'departments': [{'name': dept.get('name'), 'id': dept.get('id')} for dept in departments],
-            'categories': [{'name': cat.get('name'), 'id': cat.get('id')} for cat in categories],
-            'subcategories': [{'name': sub.get('name'), 'id': sub.get('id')} for sub in subcategories],
-            
-            # --- Appending additional raw data ---
-            'age_restriction': product.get('ageRestriction'),
-            'alcohol_details': product.get('alcohol'),
-            'badges': product.get('badges'),
-            'full_category_hierarchy': product.get('categories'),
-            'country_extensions': product.get('countryExtensions'),
-            'is_discontinued': product.get('discontinued'),
-            'discontinued_note': product.get('discontinuedNote'),
-            'energy_class': product.get('energyClass'),
-            'not_for_sale_reason': product.get('notForSaleReason'),
-            'on_sale_date_display': product.get('onSaleDateDisplay'),
-            'price_details': price_info,
-            'url_slug_text': product.get('urlSlugText'),
+            "product_id_store": product.get('sku'),
+            "barcode": None, # Not available
+            "name": product.get('name'),
+            "brand": product.get('brandName'),
+            "description_short": None, # Not available
+            "description_long": None, # Not available
+            "url": f"https://www.aldi.com.au/product/{product.get('urlSlugText', '')}" if product.get('urlSlugText') else None,
+            "image_url_main": main_image,
+            "image_urls_all": image_urls,
+
+            # --- Pricing ---
+            "price_current": current_price,
+            "price_was": was_price,
+            "is_on_special": was_price is not None,
+            "price_save_amount": round(was_price - current_price, 2) if was_price and current_price else None,
+            "promotion_type": None, # Not available
+            "price_unit": comparison_price,
+            "unit_of_measure": unit_of_measure,
+            "unit_price_string": comparison_display,
+
+            # --- Availability & Stock ---
+            "is_available": not product.get('notForSale', True),
+            "stock_level": None, # Not available
+            "purchase_limit": product.get('quantityMax'),
+
+            # --- Details & Attributes ---
+            "package_size": product.get('sellingSize'),
+            "country_of_origin": None, # Not available
+            "health_star_rating": None, # Not available
+            "ingredients": None, # Not available
+            "allergens_may_be_present": None, # Not available
+            "nutritional_information": None, # Not available
+
+            # --- Categorization ---
+            "category_main": cat_main,
+            "category_sub": cat_sub,
+            "tags": tags,
+
+            # --- Ratings ---
+            "rating_average": None, # Not available
+            "rating_count": None, # Not available
         }
         cleaned_products.append(clean_product)
     

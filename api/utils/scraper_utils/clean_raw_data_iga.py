@@ -1,65 +1,90 @@
 from datetime import datetime
+import re
 
 def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, category_slug: str, page_num: int, timestamp: datetime) -> dict:
     """
-    Cleans a list of raw IGA product data from its API and wraps it in a 
-    dictionary containing metadata about the scrape.
+    Cleans a list of raw IGA product data according to the V2 schema and
+    wraps it in a dictionary containing metadata about the scrape.
     """
     cleaned_products = []
-    
-    for product in raw_product_list:
-        
-        # --- Category Hierarchy Transformation ---
-        # The 'categories' field appears to be a breadcrumb trail.
-        category_hierarchy = product.get('categories', [])
-        departments = []
-        categories = []
-        subcategories = []
+    if not raw_product_list:
+        raw_product_list = []
 
-        if category_hierarchy:
-            # The structure seems to be a list of breadcrumb parts.
-            # We will map them based on their position.
-            if len(category_hierarchy) > 0:
-                departments = [{'name': category_hierarchy[0].get('category'), 'id': None}]
-            if len(category_hierarchy) > 1:
-                categories = [{'name': category_hierarchy[1].get('category'), 'id': None}]
-            if len(category_hierarchy) > 2:
-                subcategories = [{'name': category_hierarchy[2].get('category'), 'id': None}]
+    for product in raw_product_list:
+        if not product:
+            continue
 
         # --- Price and Special Transformation ---
-        # The 'tprPrice' (Temporary Price Reduction) array indicates a special.
         is_on_special = bool(product.get('tprPrice'))
         was_price = None
+        current_price = None
+        save_amount = None
         if is_on_special:
-            # If on special, the regular price becomes the 'was_price'.
             was_price = product.get('priceNumeric')
-            # The actual current price is inside the tprPrice array.
             current_price = product.get('tprPrice', [{}])[0].get('price')
+            if was_price and current_price:
+                save_amount = round(was_price - current_price, 2)
         else:
             current_price = product.get('priceNumeric')
 
-        # --- Unit Price Transformation ---
-        # IGA API does not seem to provide a clear unit price field.
-        # We will leave it null for now.
-        unit_price = None
-        unit_of_measure = product.get('unitOfMeasure', {}).get('label')
+        # --- Category Hierarchy ---
+        category_hierarchy = product.get('categories', [])
+        cat_main = category_hierarchy[0].get('category') if len(category_hierarchy) > 0 else None
+        cat_sub = category_hierarchy[1].get('category') if len(category_hierarchy) > 1 else None
+
+        # --- Description and Attributes ---
+        description = product.get('description', '')
+        country_of_origin = None
+        match = re.search(r"Country of Origin: (.*?)", description, re.IGNORECASE)
+        if match:
+            country_of_origin = match.group(1).strip()
+
+        # --- Image URLs ---
+        image_info = product.get('image', {}) or {}
+        image_urls = [url for url in image_info.values() if url] # Filter out nulls
 
         clean_product = {
-            'name': product.get('name'),
-            'brand': product.get('brand'),
-            'barcode': product.get('barcode'),
-            'stockcode': product.get('sku'),
-            'package_size': product.get('sellBy'), # 'sellBy' seems most appropriate
-            'price': current_price,
-            'was_price': was_price,
-            'is_on_special': is_on_special,
-            'is_available': product.get('available', False),
-            'unit_price': unit_price,
-            'unit_of_measure': unit_of_measure,
-            'url': None, # No direct URL available in this API endpoint
-            'departments': departments,
-            'categories': categories,
-            'subcategories': subcategories
+            "product_id_store": product.get('sku'),
+            "barcode": product.get('barcode'),
+            "name": product.get('name'),
+            "brand": product.get('brand'),
+            "description_short": None, # IGA provides one description field
+            "description_long": description,
+            "url": None, # No direct URL available
+            "image_url_main": image_info.get('default'),
+            "image_urls_all": image_urls,
+
+            # --- Pricing ---
+            "price_current": current_price,
+            "price_was": was_price,
+            "is_on_special": is_on_special,
+            "price_save_amount": save_amount,
+            "promotion_type": product.get('priceSource'), # e.g., 'regular' or 'special'
+            "price_unit": None, # Not directly available
+            "unit_of_measure": product.get('unitOfMeasure', {}).get('label'),
+            "unit_price_string": product.get('pricePerUnit'),
+
+            # --- Availability & Stock ---
+            "is_available": product.get('available', False),
+            "stock_level": None, # Not available
+            "purchase_limit": None, # Not available
+
+            # --- Details & Attributes ---
+            "package_size": product.get('sellBy'),
+            "country_of_origin": country_of_origin,
+            "health_star_rating": None, # Not available
+            "ingredients": None, # Not available
+            "allergens_may_be_present": None, # Not available
+            "nutritional_information": None, # Not available
+
+            # --- Categorization ---
+            "category_main": cat_main,
+            "category_sub": cat_sub,
+            "tags": [], # No specific tags available
+
+            # --- Ratings ---
+            "rating_average": None, # Not available
+            "rating_count": None, # Not available
         }
         cleaned_products.append(clean_product)
     
