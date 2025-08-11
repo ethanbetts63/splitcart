@@ -15,17 +15,30 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
             continue
 
         # --- Price and Special Transformation ---
-        is_on_special = bool(product.get('tprPrice'))
-        was_price = None
+        # The presence of 'wasWholePrice' is the most reliable indicator of a special.
+        is_on_special = 'wasWholePrice' in product
         current_price = None
+        was_price = None
         save_amount = None
+
         if is_on_special:
-            was_price = product.get('priceNumeric')
-            current_price = product.get('tprPrice', [{}])[0].get('price')
-            if was_price and current_price:
-                save_amount = round(was_price - current_price, 2)
+            # For specials, the original price is wasWholePrice.
+            was_price = product.get('wasWholePrice')
+            # The special price is inside the tprPrice list.
+            tpr_price_info = product.get('tprPrice', [])
+            if tpr_price_info:
+                current_price = tpr_price_info[0].get('wholePrice')
         else:
+            # For regular items, the price is wholePrice.
+            current_price = product.get('wholePrice')
+
+        # Fallback logic in case 'wholePrice' is missing but 'priceNumeric' exists
+        if current_price is None:
             current_price = product.get('priceNumeric')
+        
+        # Calculate save amount if possible
+        if was_price and current_price:
+            save_amount = round(was_price - current_price, 2)
 
         # --- Category Hierarchy ---
         category_path = []
