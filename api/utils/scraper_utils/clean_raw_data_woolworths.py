@@ -33,6 +33,9 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
         
         # --- Category Hierarchy ---
         category_path = []
+        attrs = product.get('AdditionalAttributes', {}) or {}
+        
+        # Primary Method: Use the detailed SAP fields if they exist
         dept = attrs.get('sapdepartmentname')
         cat = attrs.get('sapcategoryname')
         sub_cat = attrs.get('sapsubcategoryname')
@@ -41,12 +44,28 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
         if dept:
             category_path.append(dept)
         if cat:
-            # This field can sometimes contain multiple levels separated by '/'
             category_path.extend([part.strip() for part in cat.split('/')])
         if sub_cat:
             category_path.append(sub_cat)
         if segment:
             category_path.append(segment)
+
+        # Fallback Method: If SAP fields are empty, use the PIES JSON fields
+        if not category_path:
+            try:
+                pies_dept = json.loads(attrs.get('piesdepartmentnamesjson', '[]'))
+                pies_cat = json.loads(attrs.get('piescategorynamesjson', '[]'))
+                pies_sub_cat = json.loads(attrs.get('piessubcategorynamesjson', '[]'))
+                
+                if pies_dept:
+                    category_path.append(pies_dept[0])
+                if pies_cat:
+                    category_path.append(pies_cat[0])
+                if pies_sub_cat:
+                    category_path.append(pies_sub_cat[0])
+            except (json.JSONDecodeError, TypeError, IndexError):
+                # If parsing fails, leave the path empty
+                pass
         
         # Clean up the final path by title-casing and removing empty strings
         category_path = [part.strip().title() for part in category_path if part]

@@ -1,4 +1,5 @@
 import os
+import json
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
@@ -35,7 +36,6 @@ class Command(BaseCommand):
 
         companies_to_process = []
         if company_to_process:
-            # Find the matching company key case-insensitively
             for key in scrape_plan.keys():
                 if key.lower() == company_to_process.lower():
                     companies_to_process.append(key)
@@ -59,61 +59,69 @@ class Command(BaseCommand):
                     for scrape_date, categories in dates.items():
                         self.stdout.write(f"      Processing scrape date: {scrape_date}")
                         
-                        all_products_for_store = []
-                        all_source_files = []
+                        # --- Load existing data if it exists ---
+                        processed_filepath = os.path.join(processed_data_path, f"{company}_{store_id}_{scrape_date}.json")
+                        existing_products = {}
+                        if os.path.exists(processed_filepath):
+                            self.stdout.write(f"        - Found existing processed file. Loading products...")
+                            with open(processed_filepath, 'r', encoding='utf-8') as f:
+                                try:
+                                    existing_data = json.load(f)
+                                    for p in existing_data.get('products', []):
+                                        if p.get('product_id_store'):
+                                            existing_products[p['product_id_store']] = p
+                                except json.JSONDecodeError:
+                                    self.stdout.write(self.style.WARNING(f"          - Could not decode existing file {processed_filepath}. It will be overwritten."))
+
+                        # --- Process new raw files ---
+                        newly_processed_products = []
+                        all_source_files_this_run = []
                         final_metadata = {}
 
                         for category, page_files in categories.items():
-                            self.stdout.write(f"        - Combining category: {category}")
                             combined_products, metadata = data_combiner(page_files)
-
-                            if not combined_products:
-                                continue
-                            
-                            all_products_for_store.extend(combined_products)
-                            all_source_files.extend([os.path.basename(f) for f in page_files])
-                            
-                            # Capture metadata from the first category processed
+                            if combined_products:
+                                newly_processed_products.extend(combined_products)
+                            all_source_files_this_run.extend([os.path.basename(f) for f in page_files])
                             if not final_metadata:
                                 final_metadata = metadata
 
-                        if not all_products_for_store:
-                            self.stdout.write(self.style.WARNING("          - No products found for this store. Skipping."))
+                        if not newly_processed_products:
+                            self.stdout.write(self.style.WARNING("          - No new products found in raw files. Nothing to do."))
                             continue
 
-                        # --- Assemble the simplified, final data packet ---
+                        # --- Merge, de-duplicate, and save ---
+                        self.stdout.write(f"        - Found {len(newly_processed_products)} new products. Merging with {len(existing_products)} existing products.")
+                        for new_product in newly_processed_products:
+                            if new_product.get('product_id_store'):
+                                existing_products[new_product['product_id_store']] = new_product
                         
-                        # 1. Create the simplified metadata
+                        final_product_list = list(existing_products.values())
+
                         simplified_metadata = {
                             "company": company,
-                            "store_name": final_metadata.get('store_name', 'N/A'), # Assumes store_name is in metadata
+                            "store_name": final_metadata.get('store_name', 'N/A'),
                             "store_id": store_id,
                             "state": state,
                             "scrape_date": scrape_date,
-                            "product_count": len(all_products_for_store),
-                            "source_files": all_source_files
+                            "product_count": len(final_product_list),
+                            "source_files": all_source_files_this_run # Note: only lists sources from this run
                         }
 
-                        # 2. Create the final packet
                         processed_data_packet = {
                             "metadata": simplified_metadata,
-                            "products": all_products_for_store
+                            "products": final_product_list
                         }
 
-                        # 3. Save the single file for the store for that date
-                        processed_data_success = save_processed_data(
-                            processed_data_path,
-                            processed_data_packet
-                        )
+                        save_success = save_processed_data(processed_data_path, processed_data_packet)
 
-                        if processed_data_success:
-                            self.stdout.write(f"          - Successfully created processed file for store {store_id} on {scrape_date}.")
-                            # We need to collect all file paths to be cleaned up
+                        if save_success:
+                            self.stdout.write(f"          - Successfully saved updated processed file for store {store_id}.")
                             files_to_clean = []
                             for cat_files in categories.values():
                                 files_to_clean.extend(cat_files)
                             cleanup(files_to_clean)
                         else:
-                            self.stdout.write(self.style.ERROR("          - Archiving failed. Raw files not deleted."))
+                            self.stdout.write(self.style.ERROR("          - Saving processed file failed. Raw files not deleted."))
 
         self.stdout.write(self.style.SUCCESS("\n--- All data processing complete ---"))
