@@ -1,37 +1,73 @@
-# In file: products/utils/get_or_create_product.py
-
 """
 Finds a canonical product in the database or creates a new one.
 
 This is the core logic for preventing duplicate products. It uses a tiered
 matching strategy, starting with the most reliable identifiers and falling
 back to less precise methods.
-
-Args:
-    product_data (dict): A dictionary representing a single product from the 
-        processed JSON file. Must contain keys like 'name', 'brand', 'size',
-        'barcode', and the store-specific 'stockcode'.
-    store_obj (stores.models.Store): The Django model instance of the store 
-        where this product was scraped (e.g., the 'coles' Store object).
-    category_obj (companies.models.Category): The lowest-level category instance 
-        that this product belongs to. This is only used if a new product
-        needs to be created.
-
-Returns:
-    tuple[products.models.Product, bool]: A tuple containing:
-        - The found or newly created products.models.Product instance.
-        - A boolean indicating if the product was created (True) or found (False).
-
-Logic Flow:
-    1.  Tier 1 (Barcode): If product_data['barcode'] exists, search for a 
-        Product with that barcode. If found, return it.
-    2.  Tier 2 (Store-Specific ID): Search for a previous Price instance with the
-        matching store_obj and store_product_id (from product_data['stockcode']).
-        If found, return that price's associated product.
-    3.  Tier 3 (Fuzzy Match): If no match yet, create a normalized string from
-        the product's brand, name, and size. Use a library like 'thefuzz' to
-        compare this string against all existing products. If a match with a
-        high similarity score (e.g., > 95%) is found, return that product.
-    4.  Tier 4 (Create New): If all checks fail, create a new Product instance
-        using the data from product_data and the provided category_obj.
 """
+from products.models import Product, Price
+from companies.models import Store, Category
+
+def get_or_create_product(product_data: dict, store_obj: Store, category_obj: Category) -> tuple[Product, bool]:
+    """
+    Finds a canonical product or creates a new one.
+
+    Args:
+        product_data (dict): A dictionary representing a single product from the 
+            processed JSON file.
+        store_obj (Store): The Django model instance of the store.
+        category_obj (Category): The lowest-level category for the product.
+
+    Returns:
+        tuple[Product, bool]: The product instance and a boolean indicating
+            if it was created.
+    """
+    # Tier 1: Match by Barcode
+    barcode = product_data.get('barcode')
+    if barcode:
+        try:
+            product = Product.objects.get(barcode=barcode)
+            return product, False
+        except Product.DoesNotExist:
+            pass  # Continue to the next tier
+
+    # Tier 2: Match by Store-Specific ID
+    store_product_id = product_data.get('store_product_id')
+    if store_product_id:
+        try:
+            # Find the most recent active price for this store-specific ID
+            price = Price.objects.filter(
+                store=store_obj,
+                store_product_id=store_product_id,
+                is_active=True
+            ).latest('scraped_at')
+            return price.product, False
+        except Price.DoesNotExist:
+            pass # Continue to the next tier
+
+    # Tier 3: Match by Normalized Name, Brand, and Size
+    try:
+        product = Product.objects.get(
+            name__iexact=product_data['name'],
+            brand__iexact=product_data['brand'],
+            size__iexact=product_data['size']
+        )
+        return product, False
+    except Product.DoesNotExist:
+        pass # Continue to the final tier
+
+    # Tier 4: Create New Product
+    product = Product.objects.create(
+        name=product_data['name'],
+        brand=product_data['brand'],
+        size=product_data['size'],
+        barcode=product_data.get('barcode'),
+        image_url=product_data.get('image_url'),
+        description=product_data.get('description'),
+        country_of_origin=product_data.get('country_of_origin'),
+        ingredients=product_data.get('ingredients'),
+        allergens=product_data.get('allergens'),
+        nutritional_information=product_data.get('nutritional_information')
+    )
+    product.category.add(category_obj)
+    return product, True
