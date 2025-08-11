@@ -1,0 +1,696 @@
+Request URL
+https://www.woolworths.com.au/api/v3/ui/subs/114363
+Request Method
+GET
+Status Code
+200 OK
+Remote Address
+23.40.109.38:443
+Referrer Policy
+strict-origin-when-cross-origin
+access-control-allow-headers
+Content-type
+access-control-allow-origin
+*
+access-control-expose-headers
+Request-Context
+cache-control
+no-cache, no-store, must-revalidate
+content-encoding
+gzip
+content-length
+4280
+content-type
+application/json; charset=utf-8
+date
+Mon, 11 Aug 2025 14:21:25 GMT
+expires
+-1
+pragma
+no-cache
+request-context
+appId=cid-v1:8b7484df-d0d5-4f33-83b4-86cf16480688
+server-timing
+cdn-cache; desc=MISS
+server-timing
+edge; dur=253
+server-timing
+origin; dur=56
+server-timing
+ak_p; desc="1754922084821_34843909_117866746_30955_20630_33_0_219";dur=1
+set-cookie
+bm_sv=D80BDF78D17075C443C37DAE42D0B549~YAAQBa0TAkjNS4eYAQAAl+uBmRx2b++VOSSeMD+k4W8wsEVenxYykyko+lWoFscRGzbs/B/5EtZ4fFWl9YteLE8mE4o65wVJU0lfNaGIh1nPa6e0dYW4quPlplCVutw+IX/1X0JiYOmYgHZDi4xMhsb9KTrF6i7COcmMwEBSQYBjo02rbRDDuaUfXVfayS7UOqe3ESeuMB/aXQjw0asdhtArA9p7rBoW1nMHNiaEQ3Ot7cyAdw6XK1nLVLDLTpUHtT4wZ7dus4g=~1; Domain=.woolworths.com.au; Path=/; Expires=Mon, 11 Aug 2025 15:34:33 GMT; Max-Age=4388; Secure
+strict-transport-security
+max-age=31536000 ; includeSubDomains
+vary
+Accept-Encoding
+x-content-type-options
+nosniff
+x-xss-protection
+1; mode=block
+:authority
+www.woolworths.com.au
+:method
+GET
+:path
+/api/v3/ui/subs/114363
+:scheme
+https
+accept
+*/*
+accept-encoding
+gzip, deflate, br, zstd
+accept-language
+en-US,en;q=0.9
+cache-control
+no-cache
+cookie
+ai_user=f2PsI7aSIfbR2xPKugY8L/|2025-07-26T13:17:13.648Z; at_check=true; akaalb_woolworths.com.au=~op=www_woolworths_com_au_ZoneB:PROD-ZoneB|www_woolworths_com_au_BFF_MEL_Launch:WOW-BFF-MEL|~rv=56~m=PROD-ZoneB:0|WOW-BFF-MEL:0|~os=43eb3391333cc20efbd7f812851447e6~id=8c860f834ad9abc0c627c6353adae6f7; AMCVS_4353388057AC8D357F000101%40AdobeOrg=1; dtCookie=v_4_srv_3_sn_BA8D517C22ACB26CE83F641C2EFA2BFF_perc_100000_ol_0_mul_1_app-3Af908d76079915f06_1_rcs-3Acss_1; INGRESSCOOKIE=1753535838.528.186.477444|37206e05370eb151ee9f1b6a1c80a538; s_cc=true; _pin_unauth=dWlkPVpUa3pZakppTmpVdE56VmxOaTAwWXprMUxXSTRaall0TW1aaU1EVm1NR014WkRVMw; IR_gbd=woolworths.com.au; _tt_enable_cookie=1; _ttp=01K13E313DQYBYJGZ9150XFMA4_.tt.2; _scid=zvkgoeSPImpTV7lgqwFyvv0O7CE3rvrk; _gcl_au=1.1.1255165719.1753535842; kampyle_userid=8f90-1660-15b8-ce5a-9037-605b-f69a-c802; BVBRANDID=9dbbd768-d15d-420d-964f-dc2b612e112b; _ga=GA1.1.1580281860.1753535842; _uetvid=c9f304d06def11f09511b7427a3322de; new_login_exp=true; hasLoggedIn=true; fmsCoachmarkShownAVTR2719=1; _ScCbts=%5B%5D; w-lrkswrdjp=dm-Courier,f-0,s-4705; fullstoryEnabled=false; w-listingIdentifier=homepage_wa; ttcsid_CJ0AT43C77U75407IG80=1754759608038::B9GomddurZc_R00mkUFF.13.1754759621603; ttcsid=1754759608039::tBH6xHqFrSFI5jVJWOTE.13.1754759621604; w-loggedin=true; AKA_A2=A; AMCV_4353388057AC8D357F000101%40AdobeOrg=179643557%7CMCIDTS%7C20312%7CMCMID%7C61377436100556492450241788245013098383%7CMCAAMLH-1755526604%7C6%7CMCAAMB-1755526604%7CRKhpRz8krg2tLO6pguXWp5olkAcUniQYPHaMWWgdJ3xzPWQmdj0y%7CMCOPTOUT-1754929004s%7CNONE%7CvVersion%7C5.5.0%7CMCCIDH%7C-1960630893; bm_mi=28817D7E1EEEC682F6ECBAD9E8AB6F14~YAAQBa0TArDLS4eYAQAABbSBmRwsoxKcfXLBcMkF4XJ+nRXC8HEkA3YpOQx9qcJgGz3i97Gvsvr/AdH5xfGS6tX8qnAKeAFf40UdSzZXZHq0o0gz4eq2f79OSiFBSjn0FZbWuNdfzCYFTnwvpjeDoaURmh/9qKUtEChm4NnWyI054W2PBD99U+ghA5KqBxKhlCVlRxPM00RkW0DmqmfCmJFkRN48EclSOpvxEO0c8RNQNP8uCN979kbIJ8/fqK4OFYFhTYCc7vipCejICAB+XPrexZZlMLEgc9mbks+z6TMx+3HAniLxssxFSHPG1gTwK3b/vg1m32gjQiTWQCSykW7+sxNFU2TMMJto4PG+rnimb16kJlX77eBRDA==~1; ak_bmsc=C20ACB30805A25643400D4E08161968A~000000000000000000000000000000~YAAQBa0TAvfLS4eYAQAA+L+BmRy2K/bWp/wByMx2YOAwvCcsWdrVoz4ojlM6un0pKlTFIGdF4G+pbTXv7yt0f4IGdTe8uQb+dPNzpXGlA8kXH+3lOMdP8B9IB0MRfklS/48HEIlRC9RKQpmfICfrU3WmwbOwZucza6sO4Fj9QFdIo0YMdvmilPJAnKh54Z+VxjvhKw5dhh6EwgPqycytFp7Rc81zJJXdmXkcBpB5GDxebI0oaqRpFboEHLzZhLQGm75Rewda1a1wgmiCnUZf8xUUeu1kGP0rWy6bS433w8z7w3udO/Pmlb+U1pjKj3nVxN3dM8P60cMho4PbpsnRBMIi/UyocQ5yfGU5GXMDmPd00KkxmabhUSKYx4LrwkiHQwxulFpmxf00vrru+zYO80dj4CBLn9Hqo/WccX+XQf6Qla1HI7H6BpPYyze7deZawx4b6pN0eQ3ww/tBdD9hL+3Op2LyvB+Sjqt6o6x60qpTBp5Wm0AClUE1p1H66WpYreDpKJlvCzbFS4dErUEpsWDLaSkgYwZzmkgiEo0zMvOyxQ==; kampyleUserSession=1754922077784; kampyleUserSessionsCount=62; kampyleUserPercentile=49.38534410144892; kampyleSessionPageCounter=1; _scid_r=3HkgoeSPImpTV7lgqwFyvv0O7CE3rvrkZvmPPg; IR_PI=1605a5cf-6f79-11f0-98a0-a555989b7b39%7C1754922077971; IR_7464=1754922077971%7C0%7C1754922077971%7C%7C; BVBRANDSID=6c652acd-0277-4dea-865d-04c9e5f4734f; utag_main=v_id:019846e17d8400139b86f518f7f50506f005f0670093c$_sn:17$_se:5$_ss:0$_st:1754923882213$vapi_domain:woolworths.com.au$dc_visit:17$last_logged_in_user.ProfileIDHash:ebe68e3a02cd24bd58e99cf5626c4ae64094d48cffe1b75f882d624f7f6fb6c4$ses_id:1754922076577%3Bexp-session$_pn:1%3Bexp-session$dc_event:3%3Bexp-session$dc_region:ap-southeast-2%3Bexp-session; _ga_YBVRJYN9JL=GS2.1.s1754922077$o24$g0$t1754922082$j55$l0$h0; mbox=PC#d689b5462a0a42c5b0a79eaa618a9c30.37_0#1818166874|session#95e6ac16a72b43409fe6aa940d24fe1a#1754923943; RT="z=1&dm=www.woolworths.com.au&si=8fbeb67a-0a31-4e52-8adf-8b73104abeda&ss=me774ouk&sl=1&tt=2tp&rl=1"; bm_sz=2C2CD3A4076CC58FE246A12A110FFFBC~YAAQBa0TAhbNS4eYAQAADeeBmRwUGjtsx4o7okgD0GAOS6Zc/O5PPKhpPckyfWXivigGoCFYxsr+7JI+3c5LNFy3vPyEr8YLkszotMyrIHHj9C4j9snr4Vz+SgFj5B8D+flzkv0CwKdzK6OAWO9BFMh5S/3Mw+Ejewr5MIBpHCEr6Sn1LFiL5TAJBvv0miRyvq9uiQXE1uUq2sLU9gI7HkTF205NBsNEumzqfQiPJQRLFQIKuZLUrGV71z1VueMKsvk9onShfJinVIrmNWadmBAfsf0hLslGzDSxwuRIv4c7iPPq2Bd0Sa9kmsoRmOHTONdSdfdvc/3M1j3eKywERxWDkMhyazpvAyhZrmUVJfapmOBGf41HoPNcQ/dw/Ne56mDJYrD7vCVqUwcC/SDt7+yKlwjfNQIH1YBgntsFbNEcHbcpWEa2tDdChm6Gc9EA3w==~3290950~3228481; w-rctx=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE3NTQ5MjIwODQsImV4cCI6MTc1NDkyNTY4NCwiaWF0IjoxNzU0OTIyMDg0LCJpc3MiOiJXb29sd29ydGhzIiwiYXVkIjoid3d3Lndvb2x3b3J0aHMuY29tLmF1Iiwic2lkIjoiNDg3ODYwMSIsInVpZCI6ImJhMjAzNDg4LTZkOWEtNDY4Ny1iZmIxLTc3NDE5NDQ5NTY0NSIsIm1haWQiOiIwIiwiYXV0IjoiU2hvcHBlciIsImF1YiI6IjQ4Nzg2MDEiLCJhdWJhIjoiMCIsIm1mYSI6IjQifQ.Riq_7zmm1tSjSGFoPjcHN86_nBZ0yBGfhgcL7yJA4nkaY6k_yapbF7w_ednRlhNP6iZ9YX3zaJZ5o6jpDIYzIxQS8RCeARBp75_MtGVAfjR9K7bNlKh0V7odlfk0HCRIZ2xtF88oP6c2Xjg-Xiq0DlZp4LcO0H8YyGGoWmJAcPBmRYOvnk1zoD3GZojKXoFMwFydVdxsmfZfudSEZtBnvETmsxsbCU4tjrP9b1d729X9s7Gvs0-7OPh_dZA8ssHWLB_FX2kAra5SBS1aSpzH7gnKY1CpMGubDZh-ZOTddLl1A6ILZdbfikGTRSxvP70avylGXD9mWSmWGxFezfTElQ; wow-auth-token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE3NTQ5MjIwODQsImV4cCI6MTc1NDkyNTY4NCwiaWF0IjoxNzU0OTIyMDg0LCJpc3MiOiJXb29sd29ydGhzIiwiYXVkIjoid3d3Lndvb2x3b3J0aHMuY29tLmF1Iiwic2lkIjoiNDg3ODYwMSIsInVpZCI6ImJhMjAzNDg4LTZkOWEtNDY4Ny1iZmIxLTc3NDE5NDQ5NTY0NSIsIm1haWQiOiIwIiwiYXV0IjoiU2hvcHBlciIsImF1YiI6IjQ4Nzg2MDEiLCJhdWJhIjoiMCIsIm1mYSI6IjQifQ.Riq_7zmm1tSjSGFoPjcHN86_nBZ0yBGfhgcL7yJA4nkaY6k_yapbF7w_ednRlhNP6iZ9YX3zaJZ5o6jpDIYzIxQS8RCeARBp75_MtGVAfjR9K7bNlKh0V7odlfk0HCRIZ2xtF88oP6c2Xjg-Xiq0DlZp4LcO0H8YyGGoWmJAcPBmRYOvnk1zoD3GZojKXoFMwFydVdxsmfZfudSEZtBnvETmsxsbCU4tjrP9b1d729X9s7Gvs0-7OPh_dZA8ssHWLB_FX2kAra5SBS1aSpzH7gnKY1CpMGubDZh-ZOTddLl1A6ILZdbfikGTRSxvP70avylGXD9mWSmWGxFezfTElQ; prodwow-auth-token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE3NTQ5MjIwODQsImV4cCI6MTc1NDkyNTY4NCwiaWF0IjoxNzU0OTIyMDg0LCJpc3MiOiJXb29sd29ydGhzIiwiYXVkIjoid3d3Lndvb2x3b3J0aHMuY29tLmF1Iiwic2lkIjoiNDg3ODYwMSIsInVpZCI6ImJhMjAzNDg4LTZkOWEtNDY4Ny1iZmIxLTc3NDE5NDQ5NTY0NSIsIm1haWQiOiIwIiwiYXV0IjoiU2hvcHBlciIsImF1YiI6IjQ4Nzg2MDEiLCJhdWJhIjoiMCIsIm1mYSI6IjQifQ.Riq_7zmm1tSjSGFoPjcHN86_nBZ0yBGfhgcL7yJA4nkaY6k_yapbF7w_ednRlhNP6iZ9YX3zaJZ5o6jpDIYzIxQS8RCeARBp75_MtGVAfjR9K7bNlKh0V7odlfk0HCRIZ2xtF88oP6c2Xjg-Xiq0DlZp4LcO0H8YyGGoWmJAcPBmRYOvnk1zoD3GZojKXoFMwFydVdxsmfZfudSEZtBnvETmsxsbCU4tjrP9b1d729X9s7Gvs0-7OPh_dZA8ssHWLB_FX2kAra5SBS1aSpzH7gnKY1CpMGubDZh-ZOTddLl1A6ILZdbfikGTRSxvP70avylGXD9mWSmWGxFezfTElQ; ai_session=Nzs5rvSMKiYa3H+ZgwIKCL|1754919004607|1754922084448; bm_sv=D80BDF78D17075C443C37DAE42D0B549~YAAQBa0TAjrNS4eYAQAARemBmRyNuomEzIaB7QqIZw5u0IPjgXH1zA9eHHBpafDy5kd1pTVCx7JahqwCWl4ToaiB87r9fv/nIo5wYA4qeDQAMSq+fYOqL3bAxcEiXtQulavEwCxN7g6ZCJZ9M0PRC1xxGLi+lf5DFlIQ2mlsCntEnJdgMwqgEnjf+4Y7c2sRyEshNgrRp4G4eyPl8cKpWE2shgqazDt3Hp2DAEVR4Oo5/d934VZUW/Ywf63uQlheM6iLBzkfzm4=~1; _abck=868B708020769E4BE2511667106D6276~-1~YAAQBa0TAjvNS4eYAQAAi+mBmQ7nkSTth0uBGeVhrUQRtC/xMx3K31bWVRqYK7g1aHLjYSUltYZlSyh6TBRWISN9AMPVOkZfcpiF2nvtWwc6vWqP2jqM8hTPQuUSk6F1prFDhwq4F/u8CQflv5NXM2hkVOjfWSMvEixjIEhQovc7yzmlBArrTAAdPn0lg75s0dOrAG90mN02O9w+vqA3GvvoDFDS36jQgIbNggnwZX9UHegaubel6yGV1etoYt5WDb98/khc/i5VfGq2ttyZVOXlwav+oVopbokex05DEIzMbCH5Hj9s13Epkcb26u7uIYvNI9PlRFQPbgMK4+hOG3Dco0i9Z6m65X87/zlZK3WBgqoamsu60LNcx+JZ+wv9jxqRHjxrJ778L+MK255ymztcvboIpZ0zKWnZ1YSwsE+CWDs+SMEMnZLvzIky/G6UpUymFJpRJ4YwCk5NqcCwPWVxhW+EJNodfNvgVkL6nlY9uJNCAxYP2mtw0e37cH8iPFm37e/BO0rfqBwT4HyYL0grntYcqbgRkKpIjYFiOKXgl0zNIztKDdvr1VcMiM8O1jppxWVSR4Bpiw6e8mepQeoaITakfThmfUuWuaDAKPcBaajw5q+PhI5DF3XkRiv4UohZDg1X79r8VEzr5u0rTiB0N/sOI9MfGSFMzdi5Ljkgc/51SweDasxE19LwT1BGCb88NBKW/GLz1qbOrmTD9o6GifF/oGp3CWQwpQcCXzvz/FtX5nohdjNlxINKTw6JtvgAjaJLlgzDFVXNul0V4Arj1H3tv8s=~-1~-1~1754914979
+pragma
+no-cache
+priority
+u=1, i
+referer
+https://www.woolworths.com.au/shop/productdetails/114363/pork-stir-fry
+request-id
+|7ade193688a0491b8af4ca77fac0ab1d.2951fc225ad34410
+sec-ch-ua
+"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"
+sec-ch-ua-mobile
+?0
+sec-ch-ua-platform
+"Windows"
+sec-fetch-dest
+empty
+sec-fetch-mode
+cors
+sec-fetch-site
+same-origin
+traceparent
+00-7ade193688a0491b8af4ca77fac0ab1d-2951fc225ad34410-01
+user-agent
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+
+
+{
+    "Result": [
+        {
+            "StockCode": 114363,
+            "SubstituteProductList": [
+                {
+                    "Product": {
+                        "TileID": 0,
+                        "Stockcode": 680992,
+                        "Barcode": "9339687039654",
+                        "GtinFormat": 13,
+                        "CupPrice": 20,
+                        "InstoreCupPrice": 20,
+                        "CupMeasure": "1KG",
+                        "CupString": "$20.00 / 1KG",
+                        "InstoreCupString": "$20.00 / 1KG",
+                        "HasCupPrice": true,
+                        "InstoreHasCupPrice": true,
+                        "Price": 8,
+                        "IncrementalPrice": null,
+                        "IncrementalWasPrice": null,
+                        "IncrementalMinimumQuantity": null,
+                        "IncrementalMinimumQuantityUnit": "g",
+                        "PricePerKGLabel": null,
+                        "MinWeightPrice": null,
+                        "MaxWeightPrice": null,
+                        "InstorePrice": 8,
+                        "Name": "Woolworths Pork Sizzle Steak",
+                        "DisplayName": "Woolworths Pork Sizzle Steak 400g",
+                        "UrlFriendlyName": "woolworths-pork-sizzle-steak",
+                        "Description": " Woolworths Pork Sizzle Steak<br> 400g",
+                        "SmallImageFile": "https://cdn1.woolworths.media/content/wowproductimages/small/680992.jpg",
+                        "MediumImageFile": "https://cdn1.woolworths.media/content/wowproductimages/medium/680992.jpg",
+                        "LargeImageFile": "https://cdn1.woolworths.media/content/wowproductimages/large/680992.jpg",
+                        "IsNew": false,
+                        "IsHalfPrice": false,
+                        "IsOnlineOnly": false,
+                        "IsOnSpecial": false,
+                        "InstoreIsOnSpecial": false,
+                        "IsEdrSpecial": false,
+                        "SavingsAmount": 0,
+                        "InstoreSavingsAmount": 0,
+                        "WasPrice": 8,
+                        "InstoreWasPrice": 8,
+                        "QuantityInTrolley": 0,
+                        "Unit": "Each",
+                        "MinimumQuantity": 1,
+                        "HasBeenBoughtBefore": false,
+                        "IsInTrolley": false,
+                        "Source": "Substitutions",
+                        "SupplyLimit": 13,
+                        "ProductLimit": 36,
+                        "MaxSupplyLimitMessage": "13 item(s) left",
+                        "IsRanged": true,
+                        "IsInStock": true,
+                        "PackageSize": "400g",
+                        "IsPmDelivery": false,
+                        "IsForCollection": true,
+                        "IsForDelivery": true,
+                        "IsForExpress": true,
+                        "ProductRestrictionMessage": null,
+                        "ProductWarningMessage": null,
+                        "CentreTag": {
+                            "TagContent": "<a title=\"2 for $15.00\" href=\"/Shop/OfferGroup/20800391\"><span>2 for $15.00 - $18.75/1KG</span><i aria-hidden=\"true\" class=\"iconAct-Chevron_Right\"></i></a> ",
+                            "TagLink": "",
+                            "FallbackText": null,
+                            "TagType": "Html",
+                            "MultibuyData": {
+                                "Quantity": 2,
+                                "Price": 15,
+                                "CupTag": "$18.75/1KG"
+                            },
+                            "MemberPriceData": null,
+                            "FFPVMemberPriceData": null,
+                            "TagContentText": "2 for $15.00 - $18.75/1KG ",
+                            "DualImageTagContent": null,
+                            "PromotionType": "NOT_SET",
+                            "IsRegisteredRewardCardPromotion": false
+                        },
+                        "IsCentreTag": true,
+                        "ImageTag": {
+                            "TagContent": "/content/promotiontags/roundel-buy-more-save-more-200x200.png",
+                            "TagLink": null,
+                            "FallbackText": "Buy More Save More",
+                            "TagType": "Image",
+                            "MultibuyData": null,
+                            "MemberPriceData": null,
+                            "FFPVMemberPriceData": null,
+                            "TagContentText": null,
+                            "DualImageTagContent": null,
+                            "PromotionType": "NOT_SET",
+                            "IsRegisteredRewardCardPromotion": false
+                        },
+                        "HeaderTag": null,
+                        "HasHeaderTag": false,
+                        "UnitWeightInGrams": 466,
+                        "SupplyLimitMessage": "'Woolworths Pork Sizzle Steak' has a supply limit of 13. The quantity in your cart has been reduced accordingly. To purchase a larger quantity, please contact us on 1800 000 610. Please note we do not supply trade orders.",
+                        "SmallFormatDescription": "Woolworths Pork Sizzle Steak ",
+                        "FullDescription": "Woolworths Pork Sizzle Steak ",
+                        "IsAvailable": true,
+                        "InstoreIsAvailable": true,
+                        "IsPurchasable": true,
+                        "InstoreIsPurchasable": true,
+                        "AgeRestricted": false,
+                        "DisplayQuantity": 1,
+                        "RichDescription": "Pork Cut Guide Cut from the topside of the leg or the eye of loin, pork sizzle steak is ready in minutes and perfect for a quick and easy meal.",
+                        "HideWasSavedPrice": false,
+                        "SapCategories": null,
+                        "Brand": "Woolworths",
+                        "IsRestrictedByDeliveryMethod": false,
+                        "FooterTag": {
+                            "TagContent": null,
+                            "TagLink": null,
+                            "FallbackText": null,
+                            "TagType": "None",
+                            "MultibuyData": null,
+                            "MemberPriceData": null,
+                            "FFPVMemberPriceData": null,
+                            "TagContentText": null,
+                            "DualImageTagContent": null,
+                            "PromotionType": "NOT_SET",
+                            "IsRegisteredRewardCardPromotion": false
+                        },
+                        "IsFooterEnabled": false,
+                        "Diagnostics": "0",
+                        "IsBundle": false,
+                        "IsInFamily": false,
+                        "ChildProducts": [],
+                        "UrlOverride": null,
+                        "AdditionalAttributes": {
+                            "boxedcontents": null,
+                            "addedvitaminsandminerals": "False",
+                            "sapdepartmentname": "FRESH CONVENIENCE",
+                            "spf": null,
+                            "haircolour": null,
+                            "lifestyleanddietarystatement": null,
+                            "sapcategoryname": "MEAT CONVENIENCE",
+                            "skintype": null,
+                            "importantinformation": null,
+                            "allergystatement": null,
+                            "productdepthmm": null,
+                            "skincondition": null,
+                            "ophthalmologistapproved": null,
+                            "healthstarrating": null,
+                            "hairtype": null,
+                            "fragrance-free": null,
+                            "sapsegmentname": "PORK STEAKS",
+                            "suitablefor": null,
+                            "PiesProductDepartmentsjson": "[{\"Id\":\"1_D5A2236\",\"Description\":\"Poultry, Meat & Seafood\"}]",
+                            "piessubcategorynamesjson": "[\"Pork\",\"Pork\"]",
+                            "sapsegmentno": "8",
+                            "productwidthmm": null,
+                            "contains": null,
+                            "sapsubcategoryname": "PORK CASE READY",
+                            "dermatologisttested": null,
+                            "wool_productpackaging": null,
+                            "dermatologicallyapproved": null,
+                            "specialsgroupid": null,
+                            "productimages": "680992.jpg,680992_2.jpg",
+                            "productheightmm": null,
+                            "r&r_hidereviews": null,
+                            "microwavesafe": "False",
+                            "paba-free": null,
+                            "lifestyleclaim": null,
+                            "alcoholfree": null,
+                            "tgawarning": null,
+                            "activeconstituents": null,
+                            "microwaveable": "False",
+                            "soap-free": null,
+                            "countryoforigin": null,
+                            "isexcludedfromsubstitution": "False",
+                            "productimagecount": "2",
+                            "r&r_loggedinreviews": null,
+                            "anti-dandruff": null,
+                            "servingsize-total-nip": null,
+                            "tgahealthwarninglink": null,
+                            "allergenmaybepresent": null,
+                            "PiesProductDepartmentNodeId": "1_D5A2236",
+                            "parabenfree": "False",
+                            "vendorarticleid": null,
+                            "containsgluten": "False",
+                            "containsnuts": "False",
+                            "ingredients": null,
+                            "colour": null,
+                            "manufacturer": null,
+                            "sapcategoryno": "1",
+                            "storageinstructions": "Keep Refrigerated",
+                            "tgawarnings": null,
+                            "piesdepartmentnamesjson": "[\"Poultry, Meat & Seafood\"]",
+                            "brand": "woolworths",
+                            "oilfree": null,
+                            "fragrance": null,
+                            "antibacterial": "False",
+                            "non-comedogenic": null,
+                            "antiseptic": "False",
+                            "bpafree": "False",
+                            "vendorcostprice": null,
+                            "description": "Pork Cut Guide Cut from the topside of the leg or the eye of loin, pork sizzle steak is ready in minutes and perfect for a quick and easy meal.",
+                            "sweatresistant": null,
+                            "sapsubcategoryno": "286",
+                            "antioxidant": "False",
+                            "claims": null,
+                            "phbalanced": null,
+                            "wool_dietaryclaim": null,
+                            "ophthalmologisttested": null,
+                            "sulfatefree": "False",
+                            "piescategorynamesjson": "[\"Meat\",\"BBQ Meat\"]",
+                            "servingsperpack-total-nip": null,
+                            "nutritionalinformation": null,
+                            "ovencook": "False",
+                            "vegetarian": "False",
+                            "hypo-allergenic": null,
+                            "timer": null,
+                            "dermatologistrecommended": null,
+                            "sapdepartmentno": "10",
+                            "allergencontains": null,
+                            "waterresistant": null,
+                            "friendlydisclaimer": null,
+                            "recyclableinformation": null,
+                            "usageinstructions": null,
+                            "freezable": "False"
+                        },
+                        "DetailsImagePaths": [
+                            "https://cdn0.woolworths.media/content/wowproductimages/large/680992.jpg",
+                            "https://cdn0.woolworths.media/content/wowproductimages/large/680992_2.jpg"
+                        ],
+                        "Variety": null,
+                        "Rating": {
+                            "ReviewCount": 0,
+                            "RatingCount": 0,
+                            "RatingSum": 0,
+                            "OneStarCount": 0,
+                            "TwoStarCount": 0,
+                            "ThreeStarCount": 0,
+                            "FourStarCount": 0,
+                            "FiveStarCount": 0,
+                            "Average": 0,
+                            "OneStarPercentage": 0,
+                            "TwoStarPercentage": 0,
+                            "ThreeStarPercentage": 0,
+                            "FourStarPercentage": 0,
+                            "FiveStarPercentage": 0
+                        },
+                        "HasProductSubs": false,
+                        "IsSponsoredAd": false,
+                        "AdID": null,
+                        "AdIndex": null,
+                        "AdStatus": null,
+                        "IsMarketProduct": false,
+                        "IsGiftable": false,
+                        "Vendor": null,
+                        "Untraceable": false,
+                        "ThirdPartyProductInfo": null,
+                        "MarketFeatures": null,
+                        "MarketSpecifications": null,
+                        "SupplyLimitSource": "StockQuantity",
+                        "Tags": [
+                            {
+                                "Content": {
+                                    "Type": "Roundel",
+                                    "Position": "Top",
+                                    "Attributes": {
+                                        "ImagePath": "/content/promotiontags/roundel-buy-more-save-more-200x200.png",
+                                        "FallbackText": "Buy More Save More"
+                                    },
+                                    "FFPVAttributes": null
+                                },
+                                "TemplateId": null,
+                                "Metadata": null
+                            },
+                            {
+                                "Content": {
+                                    "Type": "PromotionInformation",
+                                    "Position": "Top",
+                                    "Attributes": {
+                                        "TagLink": "",
+                                        "Text": "2 for $15.00 - $18.75/1KG ",
+                                        "Html": "<a title=\"2 for $15.00\" href=\"/Shop/OfferGroup/20800391\"><span>2 for $15.00 - $18.75/1KG</span><i aria-hidden=\"true\" class=\"iconAct-Chevron_Right\"></i></a> ",
+                                        "IsRegisteredRewardCardPromotion": "False"
+                                    },
+                                    "FFPVAttributes": null
+                                },
+                                "TemplateId": null,
+                                "Metadata": null
+                            }
+                        ],
+                        "IsPersonalisedByPurchaseHistory": false,
+                        "IsFromFacetedSearch": false,
+                        "NextAvailabilityDate": "2025-08-13T00:00:00.0000000Z",
+                        "NumberOfSubstitutes": 0,
+                        "IsPrimaryVariant": false,
+                        "VariantGroupId": 0,
+                        "HasVariants": false,
+                        "VariantTitle": null,
+                        "IsTobacco": false,
+                        "IsB2BExtendedRangeSapCategory": false,
+                        "IsFreeShipping": null,
+                        "FulfilmentStoreId": 4373,
+                        "B2BExtendedRange": false,
+                        "OfferId": null,
+                        "BundleProductGroups": null
+                    },
+                    "Score": 2
+                },
+                {
+                    "Product": {
+                        "TileID": 0,
+                        "Stockcode": 675671,
+                        "Barcode": "9339687141647",
+                        "GtinFormat": 13,
+                        "CupPrice": 21,
+                        "InstoreCupPrice": 21,
+                        "CupMeasure": "1KG",
+                        "CupString": "$21.00 / 1KG",
+                        "InstoreCupString": "$21.00 / 1KG",
+                        "HasCupPrice": true,
+                        "InstoreHasCupPrice": true,
+                        "Price": 12.6,
+                        "IncrementalPrice": null,
+                        "IncrementalWasPrice": null,
+                        "IncrementalMinimumQuantity": null,
+                        "IncrementalMinimumQuantityUnit": "g",
+                        "PricePerKGLabel": null,
+                        "MinWeightPrice": null,
+                        "MaxWeightPrice": null,
+                        "InstorePrice": 12.6,
+                        "Name": "Woolworths Pork Fillet Heart Smart",
+                        "DisplayName": "Woolworths Pork Fillet Heart Smart 250g - 600g",
+                        "UrlFriendlyName": "woolworths-pork-fillet-heart-smart",
+                        "Description": " Woolworths Pork Fillet Heart<br>Smart  250g - 600g",
+                        "SmallImageFile": "https://cdn1.woolworths.media/content/wowproductimages/small/675671.jpg",
+                        "MediumImageFile": "https://cdn1.woolworths.media/content/wowproductimages/medium/675671.jpg",
+                        "LargeImageFile": "https://cdn1.woolworths.media/content/wowproductimages/large/675671.jpg",
+                        "IsNew": false,
+                        "IsHalfPrice": false,
+                        "IsOnlineOnly": false,
+                        "IsOnSpecial": false,
+                        "InstoreIsOnSpecial": false,
+                        "IsEdrSpecial": false,
+                        "SavingsAmount": 0,
+                        "InstoreSavingsAmount": 0,
+                        "WasPrice": 12.6,
+                        "InstoreWasPrice": 12.6,
+                        "QuantityInTrolley": 0,
+                        "Unit": "Each",
+                        "MinimumQuantity": 1,
+                        "HasBeenBoughtBefore": false,
+                        "IsInTrolley": false,
+                        "Source": "Substitutions",
+                        "SupplyLimit": 4,
+                        "ProductLimit": 36,
+                        "MaxSupplyLimitMessage": "4 item(s) left",
+                        "IsRanged": true,
+                        "IsInStock": true,
+                        "PackageSize": "250g - 600g",
+                        "IsPmDelivery": false,
+                        "IsForCollection": true,
+                        "IsForDelivery": true,
+                        "IsForExpress": true,
+                        "ProductRestrictionMessage": null,
+                        "ProductWarningMessage": null,
+                        "CentreTag": {
+                            "TagContent": "<span style=\"COLOR: #3A474E\">Item price based on max weight\r\n</span>",
+                            "TagLink": null,
+                            "FallbackText": null,
+                            "TagType": "Html",
+                            "MultibuyData": null,
+                            "MemberPriceData": null,
+                            "FFPVMemberPriceData": null,
+                            "TagContentText": "Item price based on max weight\r\n",
+                            "DualImageTagContent": null,
+                            "PromotionType": "NOT_SET",
+                            "IsRegisteredRewardCardPromotion": false
+                        },
+                        "IsCentreTag": true,
+                        "ImageTag": {
+                            "TagContent": "/content/promotiontags/australian-pork-roundel-200x200.png",
+                            "TagLink": null,
+                            "FallbackText": "Australian Pork",
+                            "TagType": "Image",
+                            "MultibuyData": null,
+                            "MemberPriceData": null,
+                            "FFPVMemberPriceData": null,
+                            "TagContentText": null,
+                            "DualImageTagContent": null,
+                            "PromotionType": "NOT_SET",
+                            "IsRegisteredRewardCardPromotion": false
+                        },
+                        "HeaderTag": null,
+                        "HasHeaderTag": false,
+                        "UnitWeightInGrams": 511,
+                        "SupplyLimitMessage": "'Woolworths Pork Fillet Heart Smart' has a supply limit of 4. The quantity in your cart has been reduced accordingly. To purchase a larger quantity, please contact us on 1800 000 610. Please note we do not supply trade orders.",
+                        "SmallFormatDescription": "Woolworths Pork Fillet Heart Smart ",
+                        "FullDescription": "Woolworths Pork Fillet Heart Smart ",
+                        "IsAvailable": true,
+                        "InstoreIsAvailable": true,
+                        "IsPurchasable": true,
+                        "InstoreIsPurchasable": true,
+                        "AgeRestricted": false,
+                        "DisplayQuantity": 1,
+                        "RichDescription": "Sourced from 100% Australian pork from selected Aussie farmers, Woolworths Extra Lean Pork Fillet contains less than 1% saturated fat, making it a healthier choice for your favourite pork dishes. Tender, juicy and mild in flavour, this Extra Lean Pork Fillet is part of our Heart Smart meat range and is a good source of protein.<br>\n<br>\nWoolworths Extra Lean Pork Fillet is ideal for dishes such as pork medallions with gravy or a flavoursome pork souvlaki.\n<p><strong>This is a variable weight product and is priced by $/kg. Once we've picked your item in store, we'll refund you for the difference between the weight paid and the weight received. Please advise in your personal shopper notes your preferred weight when reviewing your order at checkout. We will try our best to provide you with the requested weight.<br /></strong></p>",
+                        "HideWasSavedPrice": false,
+                        "SapCategories": null,
+                        "Brand": "Woolworths",
+                        "IsRestrictedByDeliveryMethod": false,
+                        "FooterTag": {
+                            "TagContent": null,
+                            "TagLink": null,
+                            "FallbackText": null,
+                            "TagType": "None",
+                            "MultibuyData": null,
+                            "MemberPriceData": null,
+                            "FFPVMemberPriceData": null,
+                            "TagContentText": null,
+                            "DualImageTagContent": null,
+                            "PromotionType": "NOT_SET",
+                            "IsRegisteredRewardCardPromotion": false
+                        },
+                        "IsFooterEnabled": false,
+                        "Diagnostics": "0",
+                        "IsBundle": false,
+                        "IsInFamily": false,
+                        "ChildProducts": [],
+                        "UrlOverride": null,
+                        "AdditionalAttributes": {
+                            "boxedcontents": null,
+                            "addedvitaminsandminerals": "False",
+                            "sapdepartmentname": "FRESH CONVENIENCE",
+                            "spf": null,
+                            "haircolour": null,
+                            "lifestyleanddietarystatement": "Gluten Free,High Protein,Low Fat,Low Salt,Low Saturated Fat,Low Sugar,Source of Protein",
+                            "sapcategoryname": "MEAT CONVENIENCE",
+                            "skintype": null,
+                            "importantinformation": null,
+                            "allergystatement": "Dairy Free,Egg Free,Fish Free,Gluten Free,Lactose Free,Soy Free,Wheat Free",
+                            "productdepthmm": null,
+                            "skincondition": null,
+                            "ophthalmologistapproved": null,
+                            "healthstarrating": null,
+                            "hairtype": null,
+                            "fragrance-free": null,
+                            "sapsegmentname": "PORK STEAKS",
+                            "suitablefor": null,
+                            "PiesProductDepartmentsjson": "[{\"Id\":\"1_D5A2236\",\"Description\":\"Poultry, Meat & Seafood\"}]",
+                            "piessubcategorynamesjson": "[\"Gluten Free Meat\",\"Pork\",\"Pork\"]",
+                            "sapsegmentno": "8",
+                            "productwidthmm": null,
+                            "contains": null,
+                            "sapsubcategoryname": "PORK CASE READY",
+                            "dermatologisttested": null,
+                            "wool_productpackaging": null,
+                            "dermatologicallyapproved": null,
+                            "specialsgroupid": null,
+                            "productimages": "675671.jpg",
+                            "productheightmm": null,
+                            "r&r_hidereviews": null,
+                            "microwavesafe": "False",
+                            "paba-free": null,
+                            "lifestyleclaim": null,
+                            "alcoholfree": null,
+                            "tgawarning": null,
+                            "activeconstituents": null,
+                            "microwaveable": "False",
+                            "soap-free": null,
+                            "countryoforigin": null,
+                            "isexcludedfromsubstitution": "False",
+                            "productimagecount": "1",
+                            "r&r_loggedinreviews": null,
+                            "anti-dandruff": null,
+                            "servingsize-total-nip": null,
+                            "tgahealthwarninglink": null,
+                            "allergenmaybepresent": null,
+                            "PiesProductDepartmentNodeId": "1_D5A2236",
+                            "parabenfree": "False",
+                            "vendorarticleid": null,
+                            "containsgluten": "False",
+                            "containsnuts": "False",
+                            "ingredients": "Pork",
+                            "colour": null,
+                            "manufacturer": null,
+                            "sapcategoryno": "1",
+                            "storageinstructions": "Keep Refrigerated",
+                            "tgawarnings": null,
+                            "piesdepartmentnamesjson": "[\"Poultry, Meat & Seafood\"]",
+                            "brand": "woolworths",
+                            "oilfree": null,
+                            "fragrance": null,
+                            "antibacterial": "False",
+                            "non-comedogenic": null,
+                            "antiseptic": "False",
+                            "bpafree": "False",
+                            "vendorcostprice": null,
+                            "description": "Sourced from 100% Australian pork from selected Aussie farmers, Woolworths Extra Lean Pork Fillet contains less than 1% saturated fat, making it a healthier choice for your favourite pork dishes. Tender, juicy and mild in flavour, this Extra Lean Pork Fillet is part of our Heart Smart meat range and is a good source of protein.<br>\n<br>\nWoolworths Extra Lean Pork Fillet is ideal for dishes such as pork medallions with gravy or a flavoursome pork souvlaki.\n<p><strong>This is a variable weight product and is priced by $/kg. Once we've picked your item in store, we'll refund you for the difference between the weight paid and the weight received. Please advise in your personal shopper notes your preferred weight when reviewing your order at checkout. We will try our best to provide you with the requested weight.<br /></strong></p>",
+                            "sweatresistant": null,
+                            "sapsubcategoryno": "286",
+                            "antioxidant": "False",
+                            "claims": null,
+                            "phbalanced": null,
+                            "wool_dietaryclaim": null,
+                            "ophthalmologisttested": null,
+                            "sulfatefree": "False",
+                            "piescategorynamesjson": "[\"Meat\",\"BBQ Meat\"]",
+                            "servingsperpack-total-nip": null,
+                            "nutritionalinformation": "{\"Name\":\"Nutritional Information\",\"Attributes\":[{\"Id\":705,\"Name\":\"Carbohydrate Quantity Per 100g - Total - NIP\",\"Value\":\"Approx.0.4g\",\"Description\":\"Carbohydrate Quantity Per 100g - Total - NIP\",\"SortOrder\":83},{\"Id\":706,\"Name\":\"Carbohydrate Quantity Per Serve - Total - NIP\",\"Value\":\"Approx.0.4g\",\"Description\":\"Carbohydrate Quantity Per Serve - Total - NIP\",\"SortOrder\":87},{\"Id\":759,\"Name\":\"Energy kJ Quantity Per 100g - Total - NIP\",\"Value\":\"Approx.471kJ\",\"Description\":\"Energy kJ Quantity Per 100g - Total - NIP\",\"SortOrder\":239},{\"Id\":760,\"Name\":\"Energy kJ Quantity Per Serve - Total - NIP\",\"Value\":\"Approx.471kJ\",\"Description\":\"Energy kJ Quantity Per Serve - Total - NIP\",\"SortOrder\":243},{\"Id\":253,\"Name\":\"Fat Saturated Quantity Per 100g - Total - NIP\",\"Value\":\"Approx.1g\",\"Description\":\"Fat Saturated Quantity Per 100g - Total - NIP\",\"SortOrder\":251},{\"Id\":258,\"Name\":\"Fat Saturated Quantity Per Serve - Total - NIP\",\"Value\":\"Approx.1g\",\"Description\":\"Fat Saturated Quantity Per Serve - Total - NIP\",\"SortOrder\":255},{\"Id\":764,\"Name\":\"Fat Total Quantity Per 100g - Total - NIP\",\"Value\":\"Approx.2.3g\",\"Description\":\"Fat Total Quantity Per 100g - Total - NIP\",\"SortOrder\":263},{\"Id\":166,\"Name\":\"Fat Total Quantity Per 100g - ValueWord - NIP\",\"Value\":\"2.3\",\"Description\":\"Fat Total Quantity Per 100g - ValueWord - NIP\",\"SortOrder\":264},{\"Id\":264,\"Name\":\"Fat Total Quantity Per Serve - Total - NIP\",\"Value\":\"Approx.2.3g\",\"Description\":\"Fat Total Quantity Per Serve - Total - NIP\",\"SortOrder\":267},{\"Id\":878,\"Name\":\"Protein Quantity Per 100g - Total - NIP\",\"Value\":\"Approx.21.7g\",\"Description\":\"Protein Quantity Per 100g - Total - NIP\",\"SortOrder\":587},{\"Id\":882,\"Name\":\"Protein Quantity Per Serve - Total - NIP\",\"Value\":\"Approx.21.7g\",\"Description\":\"Protein Quantity Per Serve - Total - NIP\",\"SortOrder\":591},{\"Id\":477,\"Name\":\"Serving Size - Total - NIP\",\"Value\":\"100g\",\"Description\":\"Serving Size - Total - NIP\",\"SortOrder\":607},{\"Id\":491,\"Name\":\"Sodium Quantity Per 100g - Total - NIP\",\"Value\":\"Approx.55mg\",\"Description\":\"Sodium Quantity Per 100g - Total - NIP\",\"SortOrder\":623},{\"Id\":495,\"Name\":\"Sodium Quantity Per Serve - Total - NIP\",\"Value\":\"Approx.55mg\",\"Description\":\"Sodium Quantity Per Serve - Total - NIP\",\"SortOrder\":627},{\"Id\":907,\"Name\":\"Sugars Quantity Per 100g - Prefix - NIP\",\"Value\":\"Approx.\",\"Description\":\"Sugars Quantity Per 100g - Prefix - NIP\",\"SortOrder\":645},{\"Id\":908,\"Name\":\"Sugars Quantity Per 100g - SuffixUnits - NIP\",\"Value\":\"g\",\"Description\":\"Sugars Quantity Per 100g - SuffixUnits - NIP\",\"SortOrder\":646},{\"Id\":909,\"Name\":\"Sugars Quantity Per 100g - Total - NIP\",\"Value\":\"Approx.0.4g\",\"Description\":\"Sugars Quantity Per 100g - Total - NIP\",\"SortOrder\":647},{\"Id\":910,\"Name\":\"Sugars Quantity Per 100g - ValueWord - NIP\",\"Value\":\"0.4\",\"Description\":\"Sugars Quantity Per 100g - ValueWord - NIP\",\"SortOrder\":648},{\"Id\":504,\"Name\":\"Sugars Quantity Per Serve - Prefix - NIP\",\"Value\":\"Approx.\",\"Description\":\"Sugars Quantity Per Serve - Prefix - NIP\",\"SortOrder\":649},{\"Id\":911,\"Name\":\"Sugars Quantity Per Serve - SuffixUnits - NIP\",\"Value\":\"g\",\"Description\":\"Sugars Quantity Per Serve - SuffixUnits - NIP\",\"SortOrder\":650},{\"Id\":912,\"Name\":\"Sugars Quantity Per Serve - Total - NIP\",\"Value\":\"Approx.0.4g\",\"Description\":\"Sugars Quantity Per Serve - Total - NIP\",\"SortOrder\":651},{\"Id\":572,\"Name\":\"Sugars Quantity Per Serve - ValueWord - NIP\",\"Value\":\"0.4\",\"Description\":\"Sugars Quantity Per Serve - ValueWord - NIP\",\"SortOrder\":652},{\"Id\":593,\"Name\":\"Trans Quantity Per 100g - Total - NIP\",\"Value\":\"Approx.0.1g\",\"Description\":\"Trans Quantity Per 100g - Total - NIP\",\"SortOrder\":667},{\"Id\":510,\"Name\":\"Trans Quantity Per Serve - Total - NIP\",\"Value\":\"Approx.0.1g\",\"Description\":\"Trans Quantity Per Serve - Total - NIP\",\"SortOrder\":671}]}",
+                            "ovencook": "False",
+                            "vegetarian": "False",
+                            "hypo-allergenic": null,
+                            "timer": null,
+                            "dermatologistrecommended": null,
+                            "sapdepartmentno": "10",
+                            "allergencontains": null,
+                            "waterresistant": null,
+                            "friendlydisclaimer": null,
+                            "recyclableinformation": null,
+                            "usageinstructions": null,
+                            "freezable": "False"
+                        },
+                        "DetailsImagePaths": [
+                            "https://cdn0.woolworths.media/content/wowproductimages/large/675671.jpg"
+                        ],
+                        "Variety": null,
+                        "Rating": {
+                            "ReviewCount": 0,
+                            "RatingCount": 0,
+                            "RatingSum": 0,
+                            "OneStarCount": 0,
+                            "TwoStarCount": 0,
+                            "ThreeStarCount": 0,
+                            "FourStarCount": 0,
+                            "FiveStarCount": 0,
+                            "Average": 0,
+                            "OneStarPercentage": 0,
+                            "TwoStarPercentage": 0,
+                            "ThreeStarPercentage": 0,
+                            "FourStarPercentage": 0,
+                            "FiveStarPercentage": 0
+                        },
+                        "HasProductSubs": false,
+                        "IsSponsoredAd": false,
+                        "AdID": null,
+                        "AdIndex": null,
+                        "AdStatus": null,
+                        "IsMarketProduct": false,
+                        "IsGiftable": false,
+                        "Vendor": null,
+                        "Untraceable": false,
+                        "ThirdPartyProductInfo": null,
+                        "MarketFeatures": null,
+                        "MarketSpecifications": null,
+                        "SupplyLimitSource": "StockQuantity",
+                        "Tags": [
+                            {
+                                "Content": {
+                                    "Type": "Roundel",
+                                    "Position": "Top",
+                                    "Attributes": {
+                                        "ImagePath": "/content/promotiontags/australian-pork-roundel-200x200.png",
+                                        "FallbackText": "Australian Pork"
+                                    },
+                                    "FFPVAttributes": null
+                                },
+                                "TemplateId": null,
+                                "Metadata": null
+                            },
+                            {
+                                "Content": {
+                                    "Type": "PromotionInformation",
+                                    "Position": "Top",
+                                    "Attributes": {
+                                        "TagLink": null,
+                                        "Text": "Item price based on max weight\r\n",
+                                        "Html": "<span style=\"COLOR: #3A474E\">Item price based on max weight\r\n</span>",
+                                        "IsRegisteredRewardCardPromotion": "False"
+                                    },
+                                    "FFPVAttributes": null
+                                },
+                                "TemplateId": null,
+                                "Metadata": null
+                            }
+                        ],
+                        "IsPersonalisedByPurchaseHistory": false,
+                        "IsFromFacetedSearch": false,
+                        "NextAvailabilityDate": "2025-08-13T00:00:00.0000000Z",
+                        "NumberOfSubstitutes": 0,
+                        "IsPrimaryVariant": false,
+                        "VariantGroupId": 0,
+                        "HasVariants": false,
+                        "VariantTitle": null,
+                        "IsTobacco": false,
+                        "IsB2BExtendedRangeSapCategory": false,
+                        "IsFreeShipping": null,
+                        "FulfilmentStoreId": 4373,
+                        "B2BExtendedRange": false,
+                        "OfferId": null,
+                        "BundleProductGroups": null
+                    },
+                    "Score": 1
+                }
+            ]
+        }
+    ]
+}

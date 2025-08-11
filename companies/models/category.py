@@ -21,27 +21,22 @@ class Category(models.Model):
         blank=True,
         help_text="The category ID from the store's website, if available."
     )
-    parent = models.ForeignKey(
+    # A category can appear in multiple places in a store's hierarchy, 
+    # e.g., a top-level "Specials" and a nested "Meat -> Specials".
+    # A ManyToManyField allows a category to have multiple parents to reflect this.
+    parents = models.ManyToManyField(
         'self',
-        on_delete=models.CASCADE,
-        null=True,
+        symmetrical=False,
         blank=True,
         related_name='subcategories',
-        help_text="The parent category, if this is a subcategory."
+        help_text="The parent categories of this category."
     )
 
     class Meta:
         verbose_name_plural = "Categories"
-        # A category's name, its parent, and its company must be unique together.
-        unique_together = ('name', 'parent', 'company')
-        # A company can't have two categories with the same slug
+        # A company can't have two categories with the same slug.
         unique_together = ('slug', 'company')
 
     def __str__(self):
-        # Build the full path for the category, e.g., "Pantry > Snacks > Chips"
-        full_path = [self.name]
-        p = self.parent
-        while p:
-            full_path.append(p.name)
-            p = p.parent
-        return ' > '.join(reversed(full_path))
+        # A category can have multiple parent paths, so we just return its name.
+        return self.name
