@@ -75,7 +75,6 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
             "health_star_rating": None, # Not available
             "ingredients": None, # Not available
             "allergens_may_be_present": None, # Not available
-            "nutritional_information": None, # Not available
 
             # --- Categorization ---
             "category_main": cat_main,

@@ -65,9 +65,8 @@ def get_or_create_product(product_data: dict, store_obj: Store, category_obj: Ca
         image_url=product_data.get('image_url'),
         description=product_data.get('description'),
         country_of_origin=product_data.get('country_of_origin'),
-        ingredients=product_data.get('ingredients'),
-        allergens=product_data.get('allergens'),
-        nutritional_information=product_data.get('nutritional_information')
+        ingredients=product_data.get('ingredients')
     )
-    product.category.add(category_obj)
+    if created:
+        product.category.add(category_obj)
     return product, True

@@ -34,7 +34,6 @@ class Product(models.Model):
     country_of_origin = models.CharField(max_length=100, blank=True, null=True)
     allergens = models.TextField(blank=True, null=True)
     ingredients = models.TextField(blank=True, null=True)
-    nutritional_information = models.JSONField(blank=True, null=True)
     substitute_goods = models.ManyToManyField(
         'self',
         blank=True,

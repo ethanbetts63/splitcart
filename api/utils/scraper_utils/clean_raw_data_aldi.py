@@ -86,7 +86,6 @@ def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, s
             "health_star_rating": None, # Not available
             "ingredients": None, # Not available
             "allergens_may_be_present": None, # Not available
-            "nutritional_information": None, # Not available
 
             # --- Categorization ---
             "category_main": cat_main,

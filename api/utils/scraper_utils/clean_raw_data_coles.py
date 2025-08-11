@@ -84,9 +84,7 @@ def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, st
             "package_size": product_size,
             "country_of_origin": None, # Not available
             "health_star_rating": None, # Not available
-            "ingredients": None, # Not available
-            "allergens_may_be_present": None, # Not available
-            "nutritional_information": None, # Not available
+            "ingredients": ingredients,
 
             # --- Categorization ---
             "category_main": online_heirs.get('subCategory'),

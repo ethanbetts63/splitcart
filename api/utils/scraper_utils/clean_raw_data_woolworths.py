@@ -31,14 +31,6 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
         if product.get('ImageTag', {}).get('FallbackText'):
             tags.append(product['ImageTag']['FallbackText'])
         
-        # --- Nutritional Info ---
-        nutritional_info = None
-        try:
-            if attrs.get('nutritionalinformation'):
-                nutritional_info = json.loads(attrs['nutritionalinformation'])
-        except (json.JSONDecodeError, TypeError):
-            nutritional_info = None
-
         # --- Categories ---
         try:
             categories = json.loads(attrs.get('piescategorynamesjson', '[]'))
@@ -77,7 +69,6 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
             "health_star_rating": float(attrs['healthstarrating']) if attrs.get('healthstarrating') else None,
             "ingredients": attrs.get('ingredients'),
             "allergens_may_be_present": [allergen.strip() for allergen in attrs['allergenmaybepresent'].split(',')] if attrs.get('allergenmaybepresent') else [],
-            "nutritional_information": nutritional_info,
 
             # --- Categorization ---
             "category_main": attrs.get('sapcategoryname'),
