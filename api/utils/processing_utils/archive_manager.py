@@ -1,45 +1,41 @@
 import os
 import json
+from typing import Dict, Any
 
-def archive_manager(processed_data_path: str, company_name: str, state: str, store_name: str, scrape_date: str, category_name: str, combined_products: list, source_files: list) -> bool:
+def archive_manager(processed_data_path: str, archive_packet: Dict[str, Any]) -> bool:
     """
-    Creates a data packet with the new metadata structure and saves the combined
-    list of products to the structured processed_data directory.
+    Saves a complete data packet (metadata and products) to the structured
+    processed_data directory. The path is derived from the metadata.
 
     Args:
         processed_data_path: The root path for the processed_data directory.
-        company_name: The name of the company (e.g., 'coles').
-        state: The state of the store (e.g., 'NSW').
-        store_name: The name of the specific store (e.g., 'national', 'Dianella').
-        scrape_date: The date of the scrape (e.g., '2025-08-03').
-        category_name: The name of the category (e.g., 'fruit-vegetables').
-        combined_products: The final, combined list of product dictionaries.
-        source_files: The list of raw file paths that were combined.
+        archive_packet: The final data packet containing 'metadata' and 'products'.
 
     Returns:
         True if the file was saved successfully, False otherwise.
     """
-    if not combined_products:
-        print(f"Warning: Received an empty product list for {company_name}/{state}/{store_name}/{category_name}. Nothing to archive.")
+    metadata = archive_packet.get("metadata", {})
+    products = archive_packet.get("products", [])
+
+    if not products:
+        print("Warning: Received an empty product list. Nothing to archive.")
+        return False
+    
+    # Extract path components from metadata
+    company_name = metadata.get("company")
+    state = metadata.get("state")
+    # Use store_id if available, otherwise fall back to store, then store_name
+    store_identifier = metadata.get("store_id") or metadata.get("store") or metadata.get("store_name")
+    scrape_date = metadata.get("scrape_date")
+    category_name = metadata.get("category")
+
+    if not all([company_name, state, store_identifier, scrape_date, category_name]):
+        print(f"ERROR: Missing one or more required metadata fields for archiving.")
         return False
 
     try:
-        # Create the final data packet with the new metadata format
-        archive_packet = {
-            "metadata": {
-                "company": company_name,
-                "state": state,
-                "store": store_name,
-                "category": category_name,
-                "scrape_date": scrape_date,
-                "product_count": len(combined_products),
-                "source_files": [os.path.basename(f) for f in source_files]
-            },
-            "products": combined_products
-        }
-
-        # Construct the new target directory path: processed_data/company/state/store/date/
-        target_dir = os.path.join(processed_data_path, company_name, state, store_name, scrape_date)
+        # Construct the target directory path from metadata
+        target_dir = os.path.join(processed_data_path, company_name, state, str(store_identifier), scrape_date)
         os.makedirs(target_dir, exist_ok=True)
         
         output_filename = f"{category_name.replace('/', '_')}.json"
@@ -48,7 +44,7 @@ def archive_manager(processed_data_path: str, company_name: str, state: str, sto
         with open(output_filepath, 'w', encoding='utf-8') as f:
             json.dump(archive_packet, f, indent=4)
         
-        print(f"Successfully archived {len(combined_products)} products to {output_filepath}")
+        print(f"Successfully archived {len(products)} products to {output_filepath}")
         return True
 
     except IOError as e:

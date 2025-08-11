@@ -5,7 +5,6 @@ from django.conf import settings
 from api.utils.processing_utils.file_finder import file_finder
 from api.utils.processing_utils.data_combiner import data_combiner
 from api.utils.processing_utils.archive_manager import archive_manager
-
 from api.utils.processing_utils.cleanup import cleanup
 
 class Command(BaseCommand):
@@ -70,7 +69,7 @@ class Command(BaseCommand):
                         for category, page_files in categories.items():
                             self.stdout.write(f"        - Category: {category}")
 
-                            combined_products = data_combiner(page_files)
+                            combined_products, metadata = data_combiner(page_files)
 
                             if not combined_products:
                                 self.stdout.write(self.style.WARNING("          - No products found after combining. Skipping."))
@@ -78,16 +77,26 @@ class Command(BaseCommand):
                             
                             self.stdout.write(f"          - Combined {len(combined_products)} products from {len(page_files)} page files.")
 
-                            # Call the updated archive manager with the new arguments
+                            # Assemble the final archive packet
+                            archive_packet = {
+                                "metadata": metadata,
+                                "products": combined_products
+                            }
+                            
+                            # Add/update metadata fields for the processed file
+                            archive_packet["metadata"]["product_count"] = len(combined_products)
+                            archive_packet["metadata"]["source_files"] = [os.path.basename(f) for f in page_files]
+                            # Ensure the path components from the file finder are in the metadata
+                            archive_packet["metadata"]["company"] = company
+                            archive_packet["metadata"]["state"] = state
+                            archive_packet["metadata"]["store"] = store
+                            archive_packet["metadata"]["scrape_date"] = scrape_date
+                            archive_packet["metadata"]["category"] = category
+
+
                             archive_success = archive_manager(
-                                processed_data_path, 
-                                company, 
-                                state,
-                                store, 
-                                scrape_date, 
-                                category, 
-                                combined_products, 
-                                page_files
+                                processed_data_path,
+                                archive_packet
                             )
 
                             if archive_success:

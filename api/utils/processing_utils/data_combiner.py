@@ -1,28 +1,37 @@
 import json
+from typing import Tuple, List, Dict, Any
 
-def data_combiner(file_paths: list) -> list:
+def data_combiner(file_paths: list) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
     """
     Takes a list of file paths to raw data JSON files, opens each one,
     extracts the 'products' list, and combines them into a single list.
+    It also extracts the metadata from the first file in the list.
 
     Args:
         file_paths: A list of absolute paths to the JSON files for each page
                     of a category scrape.
 
     Returns:
-        A single list containing all product dictionaries from all pages,
-        or an empty list if an error occurs or no products are found.
+        A tuple containing:
+        - A single list of all product dictionaries.
+        - A dictionary containing the metadata from the first file.
+        Returns ([], {}) if an error occurs or no files are provided.
     """
     if not file_paths:
-        return []
+        return [], {}
 
     all_products = []
-    for file_path in file_paths:
+    metadata = {}
+    
+    for i, file_path in enumerate(file_paths):
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 data_packet = json.load(f)
                 
-                # Each file is a dictionary with a 'products' key
+                # On the first file, grab the metadata
+                if i == 0:
+                    metadata = data_packet.get('metadata', {})
+
                 products_on_page = data_packet.get('products')
                 
                 if isinstance(products_on_page, list):
@@ -34,8 +43,6 @@ def data_combiner(file_paths: list) -> list:
             print(f"Error: File not found at path: {file_path}")
         except (json.JSONDecodeError, IOError) as e:
             print(f"Error: Could not read or parse {file_path}. Details: {e}")
-            # Decide if you want to stop processing or just skip the file.
-            # For robustness, we'll just skip the corrupted file.
             continue
             
-    return all_products
+    return all_products, metadata
