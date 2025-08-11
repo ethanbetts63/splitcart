@@ -7,6 +7,7 @@ from api.utils.database_updating_utils import (
     deactivate_prices_for_store,
     get_or_create_product,
     create_price,
+    get_store_and_company
     get_or_create_category_hierarchy
 )
 from companies.models import Store, Company
