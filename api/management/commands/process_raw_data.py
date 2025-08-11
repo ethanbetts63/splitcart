@@ -8,7 +8,7 @@ from api.utils.processing_utils.archive_manager import archive_manager
 from api.utils.processing_utils.cleanup import cleanup
 
 class Command(BaseCommand):
-    help = 'Processes raw JSON files, combines them by category, and saves them to a structured processed_data directory.'
+    help = 'Processes raw JSON files, combines them by store and date, and saves them to a flat processed_data directory.'
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -35,13 +35,12 @@ class Command(BaseCommand):
 
         companies_to_process = []
         if company_to_process:
-            found = False
-            for company in scrape_plan.keys():
-                if company.lower() == company_to_process.lower():
-                    companies_to_process.append(company)
-                    found = True
+            # Find the matching company key case-insensitively
+            for key in scrape_plan.keys():
+                if key.lower() == company_to_process.lower():
+                    companies_to_process.append(key)
                     break
-            if not found:
+            if not companies_to_process:
                 self.stdout.write(self.style.ERROR(f"No data found for company: {company_to_process}"))
                 return
         else:
@@ -49,60 +48,72 @@ class Command(BaseCommand):
             companies_to_process = list(scrape_plan.keys())
 
         for company in companies_to_process:
-            if company not in scrape_plan:
-                continue
-            
             self.stdout.write(self.style.SUCCESS(f"\n--- Processing Company: {company} ---"))
             
             for state, stores in scrape_plan[company].items():
                 self.stdout.write(self.style.SUCCESS(f"  --- Processing State: {state} ---"))
 
-                for store, dates in stores.items():
-                    self.stdout.write(self.style.SUCCESS(f"    --- Processing Store: {store} ---"))
+                for store_id, dates in stores.items():
+                    self.stdout.write(self.style.SUCCESS(f"    --- Processing Store ID: {store_id} ---"))
                     
-                    all_scrape_dates = sorted(dates.keys(), reverse=True)
-
-                    for scrape_date in all_scrape_dates:
+                    for scrape_date, categories in dates.items():
                         self.stdout.write(f"      Processing scrape date: {scrape_date}")
-                        categories = dates[scrape_date]
+                        
+                        all_products_for_store = []
+                        all_source_files = []
+                        final_metadata = {}
 
                         for category, page_files in categories.items():
-                            self.stdout.write(f"        - Category: {category}")
-
+                            self.stdout.write(f"        - Combining category: {category}")
                             combined_products, metadata = data_combiner(page_files)
 
                             if not combined_products:
-                                self.stdout.write(self.style.WARNING("          - No products found after combining. Skipping."))
                                 continue
                             
-                            self.stdout.write(f"          - Combined {len(combined_products)} products from {len(page_files)} page files.")
-
-                            # Assemble the final archive packet
-                            archive_packet = {
-                                "metadata": metadata,
-                                "products": combined_products
-                            }
+                            all_products_for_store.extend(combined_products)
+                            all_source_files.extend([os.path.basename(f) for f in page_files])
                             
-                            # Add/update metadata fields for the processed file
-                            archive_packet["metadata"]["product_count"] = len(combined_products)
-                            archive_packet["metadata"]["source_files"] = [os.path.basename(f) for f in page_files]
-                            # Ensure the path components from the file finder are in the metadata
-                            archive_packet["metadata"]["company"] = company
-                            archive_packet["metadata"]["state"] = state
-                            archive_packet["metadata"]["store"] = store
-                            archive_packet["metadata"]["scrape_date"] = scrape_date
-                            archive_packet["metadata"]["category"] = category
+                            # Capture metadata from the first category processed
+                            if not final_metadata:
+                                final_metadata = metadata
 
+                        if not all_products_for_store:
+                            self.stdout.write(self.style.WARNING("          - No products found for this store. Skipping."))
+                            continue
 
-                            archive_success = archive_manager(
-                                processed_data_path,
-                                archive_packet
-                            )
+                        # --- Assemble the simplified, final data packet ---
+                        
+                        # 1. Create the simplified metadata
+                        simplified_metadata = {
+                            "company": company,
+                            "store_name": final_metadata.get('store_name', 'N/A'), # Assumes store_name is in metadata
+                            "store_id": store_id,
+                            "state": state,
+                            "scrape_date": scrape_date,
+                            "product_count": len(all_products_for_store),
+                            "source_files": all_source_files
+                        }
 
-                            if archive_success:
-                                self.stdout.write(f"          - Archiving successful. Initiating cleanup...")
-                                cleanup(page_files)
-                            else:
-                                self.stdout.write(self.style.ERROR("          - Archiving failed. Raw files not deleted."))
+                        # 2. Create the final packet
+                        archive_packet = {
+                            "metadata": simplified_metadata,
+                            "products": all_products_for_store
+                        }
+
+                        # 3. Save the single file for the store for that date
+                        archive_success = archive_manager(
+                            processed_data_path,
+                            archive_packet
+                        )
+
+                        if archive_success:
+                            self.stdout.write(f"          - Successfully created processed file for store {store_id} on {scrape_date}.")
+                            # We need to collect all file paths to be cleaned up
+                            files_to_clean = []
+                            for cat_files in categories.values():
+                                files_to_clean.extend(cat_files)
+                            cleanup(files_to_clean)
+                        else:
+                            self.stdout.write(self.style.ERROR("          - Archiving failed. Raw files not deleted."))
 
         self.stdout.write(self.style.SUCCESS("\n--- All data processing complete ---"))

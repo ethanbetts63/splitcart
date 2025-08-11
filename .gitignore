@@ -56,3 +56,4 @@ coverage.xml
 .vscode/
 
 api/data/
+db.sqlite3

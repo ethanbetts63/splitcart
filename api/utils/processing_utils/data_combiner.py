@@ -1,48 +1,54 @@
 import json
-from typing import Tuple, List, Dict, Any
+import os
+from datetime import datetime
+from .category_parser import get_category_path
 
-def data_combiner(file_paths: list) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+def data_combiner(page_files):
     """
-    Takes a list of file paths to raw data JSON files, opens each one,
-    extracts the 'products' list, and combines them into a single list.
-    It also extracts the metadata from the first file in the list.
-
-    Args:
-        file_paths: A list of absolute paths to the JSON files for each page
-                    of a category scrape.
-
-    Returns:
-        A tuple containing:
-        - A single list of all product dictionaries.
-        - A dictionary containing the metadata from the first file.
-        Returns ([], {}) if an error occurs or no files are provided.
+    Combines product data from multiple JSON files (pages) into a single list.
+    It also extracts metadata and adds a consistent category_path to each product.
     """
-    if not file_paths:
+    combined_products = []
+    metadata = {}
+    company_name = ""
+
+    if not page_files:
+        return combined_products, metadata
+
+    page_files.sort()
+
+    try:
+        # Use the first file to determine company and extract metadata
+        filename = os.path.basename(page_files[0])
+        company_name = filename.split('_')[0]
+        with open(page_files[0], 'r', encoding='utf-8') as f:
+            # Some raw files are lists, some are dicts with metadata
+            raw_data = json.load(f)
+            if isinstance(raw_data, dict) and 'metadata' in raw_data:
+                metadata = raw_data.get('metadata', {})
+            else:
+                metadata = {'company': company_name, 'scraped_at': datetime.now().isoformat()}
+    except (json.JSONDecodeError, FileNotFoundError, IndexError) as e:
+        print(f"Error reading metadata from {page_files[0]}: {e}")
         return [], {}
 
-    all_products = []
-    metadata = {}
-    
-    for i, file_path in enumerate(file_paths):
+    # Process all files for their product lists
+    for file_path in page_files:
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
-                data_packet = json.load(f)
-                
-                # On the first file, grab the metadata
-                if i == 0:
-                    metadata = data_packet.get('metadata', {})
+                data = json.load(f)
+                # Find the list of products, whether it's the root object or under a key
+                products = data.get('products', []) if isinstance(data, dict) else data
+                if not isinstance(products, list):
+                    continue
 
-                products_on_page = data_packet.get('products')
-                
-                if isinstance(products_on_page, list):
-                    all_products.extend(products_on_page)
-                else:
-                    print(f"Warning: 'products' key was not a list in file: {file_path}")
+                for product in products:
+                    # Add the consistent category path to each product
+                    product['category_path'] = get_category_path(product, company_name)
+                    combined_products.append(product)
 
-        except FileNotFoundError:
-            print(f"Error: File not found at path: {file_path}")
-        except (json.JSONDecodeError, IOError) as e:
-            print(f"Error: Could not read or parse {file_path}. Details: {e}")
+        except (json.JSONDecodeError, FileNotFoundError) as e:
+            print(f"Error processing file {file_path}: {e}")
             continue
             
-    return all_products, metadata
+    return combined_products, metadata
