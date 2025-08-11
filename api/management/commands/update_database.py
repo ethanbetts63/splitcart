@@ -32,16 +32,16 @@ class Command(BaseCommand):
             metadata = data.get('metadata', {})
             products = data.get('products', [])
             store_id = metadata.get('store_id')
+            company_name = metadata.get('company')
 
-            if not all([metadata, products, store_id]):
-                self.stdout.write(self.style.WARNING(f'Skipping {filename}: missing metadata, products, or store_id.'))
+            if not all([store_id, company_name]):
+                self.stdout.write(self.style.WARNING(f'Skipping {filename}: missing store_id or company in metadata.'))
                 continue
 
-            try:
-                store_obj = Store.objects.get(id=store_id)
-                company_obj = store_obj.company
-            except Store.DoesNotExist:
-                self.stdout.write(self.style.WARNING(f'Store with ID {store_id} from file {filename} not found in DB. Skipping.'))
+            store_obj, company_obj = get_store_and_company(company_name, store_id)
+
+            if not store_obj:
+                self.stdout.write(self.style.WARNING(f'Store with ID {store_id} for company {company_name} not found in DB. Skipping file {filename}.'))
                 continue
 
             self.stdout.write(self.style.SUCCESS(f'--- Processing file: {filename} for store: {store_obj.name} ---'))
