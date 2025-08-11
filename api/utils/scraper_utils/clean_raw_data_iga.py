@@ -28,9 +28,14 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
             current_price = product.get('priceNumeric')
 
         # --- Category Hierarchy ---
+        category_path = []
         category_hierarchy = product.get('categories', [])
-        cat_main = category_hierarchy[0].get('category') if len(category_hierarchy) > 0 else None
-        cat_sub = category_hierarchy[1].get('category') if len(category_hierarchy) > 1 else None
+        if category_hierarchy:
+            # The last category in the list has the full breadcrumb
+            last_category = category_hierarchy[-1]
+            breadcrumb = last_category.get('categoryBreadcrumb', '')
+            if breadcrumb:
+                category_path = [part.strip().title() for part in breadcrumb.split('/') if part]
 
         # --- Description and Attributes ---
         description = product.get('description', '')
@@ -77,8 +82,7 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
             "allergens_may_be_present": None, # Not available
 
             # --- Categorization ---
-            "category_main": cat_main,
-            "category_sub": cat_sub,
+            "category_path": category_path,
             "tags": [], # No specific tags available
 
             # --- Ratings ---

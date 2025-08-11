@@ -31,11 +31,25 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
         if product.get('ImageTag', {}).get('FallbackText'):
             tags.append(product['ImageTag']['FallbackText'])
         
-        # --- Categories ---
-        try:
-            categories = json.loads(attrs.get('piescategorynamesjson', '[]'))
-        except (json.JSONDecodeError, TypeError):
-            categories = []
+        # --- Category Hierarchy ---
+        category_path = []
+        dept = attrs.get('sapdepartmentname')
+        cat = attrs.get('sapcategoryname')
+        sub_cat = attrs.get('sapsubcategoryname')
+        segment = attrs.get('sapsegmentname')
+
+        if dept:
+            category_path.append(dept)
+        if cat:
+            # This field can sometimes contain multiple levels separated by '/'
+            category_path.extend([part.strip() for part in cat.split('/')])
+        if sub_cat:
+            category_path.append(sub_cat)
+        if segment:
+            category_path.append(segment)
+        
+        # Clean up the final path by title-casing and removing empty strings
+        category_path = [part.strip().title() for part in category_path if part]
 
         clean_product = {
             "product_id_store": str(stockcode) if stockcode else None,
@@ -71,8 +85,7 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
             "allergens_may_be_present": [allergen.strip() for allergen in attrs['allergenmaybepresent'].split(',')] if attrs.get('allergenmaybepresent') else [],
 
             # --- Categorization ---
-            "category_main": attrs.get('sapcategoryname'),
-            "category_sub": attrs.get('sapsubcategoryname'),
+            "category_path": category_path,
             "tags": list(set(tags)), # Remove duplicates
 
             # --- Ratings ---
