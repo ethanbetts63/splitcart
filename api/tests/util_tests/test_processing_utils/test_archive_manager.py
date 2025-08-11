@@ -3,7 +3,7 @@ import json
 import tempfile
 from datetime import datetime
 from django.test import TestCase
-from api.utils.processing_utils.archive_manager import archive_manager
+from api.utils.processing_utils.save_processed_data import save_processed_data
 from products.tests.test_helpers.model_factories import ProductFactory
 
 class TestArchiveManager(TestCase):
@@ -17,7 +17,7 @@ class TestArchiveManager(TestCase):
         # Clean up the temporary directory and all its contents
         self.temp_dir.cleanup()
 
-    def test_archive_manager_creates_file_and_returns_true(self):
+    def test_save_processed_data_creates_file_and_returns_true(self):
         """Tests that the archive manager successfully creates a valid JSON file."""
         store_name = "coles"
         scrape_date = datetime.now().strftime("%Y-%m-%d")
@@ -38,7 +38,7 @@ class TestArchiveManager(TestCase):
         source_files = ["file1.json", "file2.json"]
 
         # Call the function under test
-        result = archive_manager(
+        result = save_processed_data(
             self.processed_data_path,
             store_name,
             scrape_date,
@@ -63,7 +63,7 @@ class TestArchiveManager(TestCase):
             self.assertEqual(data["metadata"]["product_count"], len(combined_products))
             self.assertEqual(len(data["products"]), len(combined_products))
 
-    def test_archive_manager_returns_false_for_empty_products(self):
+    def test_save_processed_data_returns_false_for_empty_products(self):
         """Tests that the function correctly handles an empty product list."""
         store_name = "coles"
         scrape_date = datetime.now().strftime("%Y-%m-%d")
@@ -71,7 +71,7 @@ class TestArchiveManager(TestCase):
         combined_products = [] # Empty list
         source_files = ["file1.json", "file2.json"]
 
-        result = archive_manager(
+        result = save_processed_data(
             self.processed_data_path,
             store_name,
             scrape_date,

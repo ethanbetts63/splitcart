@@ -1,6 +1,6 @@
 
 from .create_coles_url_slug import _create_coles_url_slug
-from .archive_manager import archive_manager
+from .save_processed_data import save_processed_data
 from .cleanup import cleanup
 from .file_finder import *
 from .category_parser import *

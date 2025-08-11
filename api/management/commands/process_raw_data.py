@@ -4,7 +4,7 @@ from django.conf import settings
 
 from api.utils.processing_utils.file_finder import file_finder
 from api.utils.processing_utils.data_combiner import data_combiner
-from api.utils.processing_utils.archive_manager import archive_manager
+from api.utils.processing_utils.save_processed_data import save_processed_data
 from api.utils.processing_utils.cleanup import cleanup
 
 class Command(BaseCommand):
@@ -95,18 +95,18 @@ class Command(BaseCommand):
                         }
 
                         # 2. Create the final packet
-                        archive_packet = {
+                        processed_data_packet = {
                             "metadata": simplified_metadata,
                             "products": all_products_for_store
                         }
 
                         # 3. Save the single file for the store for that date
-                        archive_success = archive_manager(
+                        processed_data_success = save_processed_data(
                             processed_data_path,
-                            archive_packet
+                            processed_data_packet
                         )
 
-                        if archive_success:
+                        if processed_data_success:
                             self.stdout.write(f"          - Successfully created processed file for store {store_id} on {scrape_date}.")
                             # We need to collect all file paths to be cleaned up
                             files_to_clean = []
