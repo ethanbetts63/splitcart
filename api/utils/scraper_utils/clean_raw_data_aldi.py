@@ -42,9 +42,12 @@ def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, s
                 unit_of_measure = match.group(1).strip()
 
         # --- Category Hierarchy ---
+        category_path = []
         category_hierarchy = product.get('categories', [])
-        cat_main = category_hierarchy[0].get('name') if len(category_hierarchy) > 0 else None
-        cat_sub = category_hierarchy[1].get('name') if len(category_hierarchy) > 1 else None
+        for category in category_hierarchy:
+            name = category.get('name')
+            if name:
+                category_path.append(name.strip().title())
 
         # --- Image URLs ---
         assets = product.get('assets', []) or []
@@ -88,8 +91,7 @@ def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, s
             "allergens_may_be_present": None, # Not available
 
             # --- Categorization ---
-            "category_main": cat_main,
-            "category_sub": cat_sub,
+            "category_path": category_path,
             "tags": tags,
 
             # --- Ratings ---

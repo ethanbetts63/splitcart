@@ -53,6 +53,19 @@ def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, st
         tags = []
         if pricing.get('promotionType') == 'SPECIAL':
             tags.append('special')
+
+        # --- Category Hierarchy ---
+        category_path = []
+        if online_heirs:
+            sub_cat = online_heirs.get('subCategory')
+            cat = online_heirs.get('category')
+            aisle = online_heirs.get('aisle')
+            if sub_cat:
+                category_path.append(sub_cat.strip().title())
+            if cat:
+                category_path.append(cat.strip().title())
+            if aisle:
+                category_path.append(aisle.strip().title())
         
         clean_product = {
             "product_id_store": str(product_id) if product_id else None,
@@ -84,11 +97,10 @@ def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, st
             "package_size": product_size,
             "country_of_origin": None, # Not available
             "health_star_rating": None, # Not available
-            "ingredients": ingredients,
+            "ingredients": None, # Not available in this part of the data
 
             # --- Categorization ---
-            "category_main": online_heirs.get('subCategory'),
-            "category_sub": online_heirs.get('category'),
+            "category_path": category_path,
             "tags": tags,
             
             # --- Ratings ---
