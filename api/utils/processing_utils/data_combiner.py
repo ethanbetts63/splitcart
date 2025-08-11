@@ -43,8 +43,9 @@ def data_combiner(page_files):
                     continue
 
                 for product in products:
-                    # Add the consistent category path to each product
-                    product['category_path'] = get_category_path(product, company_name)
+                    # If category_path is missing or empty, try to generate it
+                    if not product.get('category_path'):
+                        product['category_path'] = get_category_path(product, company_name)
                     combined_products.append(product)
 
         except (json.JSONDecodeError, FileNotFoundError) as e:

@@ -8,6 +8,8 @@ from api.utils.processing_utils.data_combiner import data_combiner
 from api.utils.processing_utils.save_processed_data import save_processed_data
 from api.utils.processing_utils.cleanup import cleanup
 
+from django.core import management
+
 class Command(BaseCommand):
     help = 'Processes raw JSON files, combines them by store and date, and saves them to a flat processed_data directory.'
 
@@ -125,3 +127,6 @@ class Command(BaseCommand):
                             self.stdout.write(self.style.ERROR("          - Saving processed file failed. Raw files not deleted."))
 
         self.stdout.write(self.style.SUCCESS("\n--- All data processing complete ---"))
+
+        self.stdout.write(self.style.SUCCESS("\n--- Updating database with processed data ---"))
+    
