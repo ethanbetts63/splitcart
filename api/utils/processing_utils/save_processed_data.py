@@ -18,9 +18,10 @@ def save_processed_data(processed_data_path, processed_data_packet):
         # We need store_id and scrape_date for the filename
         store_id = metadata['store_id']
         scrape_date = metadata['scrape_date']
+        company = metadata.get('company', 'unknown')  # Safely get company name
 
-        # Create the filename
-        processed_data_filename = f"{store_id}_{scrape_date}.json"
+        # Create the filename, e.g., "woolworths_1137_2025-08-11.json"
+        processed_data_filename = f"{company}_{store_id}_{scrape_date}.json"
         processed_data_filepath = os.path.join(processed_data_path, processed_data_filename)
 
         # Ensure the base directory exists
