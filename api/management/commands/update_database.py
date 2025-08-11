@@ -8,9 +8,9 @@ from api.utils.database_updating_utils import (
     get_or_create_product,
     create_price,
     get_or_create_category_hierarchy,
-    get_store_and_company
+    get_or_create_company,
+    get_or_create_store
 )
-from companies.models import Store, Company
 
 class Command(BaseCommand):
     help = 'Updates the database with the latest processed data.'
@@ -32,17 +32,22 @@ class Command(BaseCommand):
             
             metadata = data.get('metadata', {})
             products = data.get('products', [])
-            store_id = metadata.get('store_id')
-            company_name = metadata.get('company')
 
-            if not all([store_id, company_name]):
-                self.stdout.write(self.style.WARNING(f'Skipping {filename}: missing store_id or company in metadata.'))
+            if not all([metadata, products]):
+                self.stdout.write(self.style.WARNING(f'Skipping {filename}: missing metadata or products key.'))
                 continue
 
-            store_obj, company_obj = get_store_and_company(company_name, store_id)
+            company_name = metadata.get('company')
+            if not company_name:
+                self.stdout.write(self.style.WARNING(f'Skipping {filename}: missing company in metadata.'))
+                continue
+
+            # Get or create the Company and Store objects
+            company_obj = get_or_create_company(company_name)
+            store_obj = get_or_create_store(company_obj, metadata)
 
             if not store_obj:
-                self.stdout.write(self.style.WARNING(f'Store with ID {store_id} for company {company_name} not found in DB. Skipping file {filename}.'))
+                self.stdout.write(self.style.ERROR(f'Could not get or create store from metadata in {filename}. Skipping.'))
                 continue
 
             self.stdout.write(self.style.SUCCESS(f'--- Processing file: {filename} for store: {store_obj.name} ---'))

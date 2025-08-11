@@ -1,5 +1,6 @@
 from .create_price import *
-from .get_store_and_company import *
+from .get_or_create_company import *
+from .get_or_create_store import *
 from .get_or_create_category import *
 from .get_or_create_category_hierarchy import *
 from .get_or_create_product import *
