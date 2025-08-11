@@ -15,6 +15,8 @@ class Product(models.Model):
     )
     size = models.CharField(
         max_length=50,
+        null=True,
+        blank=True,
         help_text="The size or quantity of the product, e.g., '500g', '1 Each'."
     )
     category = models.ManyToManyField(
