@@ -42,6 +42,7 @@ def find_woolworths_stores():
     while True:
         try:
             start_lat, start_lon = load_progress(PROGRESS_FILE, LAT_MIN, LAT_STEP, LON_MIN, LON_MAX, LON_STEP)
+            found_stores = 0
 
             print("\nStarting Woolworths store data scraping...")
 
@@ -59,7 +60,7 @@ def find_woolworths_stores():
             while current_lat <= LAT_MAX:
                 current_lon = start_lon if current_lat == start_lat else LON_MIN
                 while current_lon <= LON_MAX:
-                    print_progress_bar(completed_steps, total_steps, current_lat, current_lon, 0)
+                    print_progress_bar(completed_steps, total_steps, current_lat, current_lon, found_stores)
                     
                     params = {
                         "latitude": current_lat,
@@ -79,9 +80,11 @@ def find_woolworths_stores():
                                 cleaned_data = clean_raw_store_data_woolworths(store_details, "woolworths", datetime.now())
                                 store_id = cleaned_data['store_data']['store_id']
                                 filename = os.path.join(DISCOVERED_STORES_DIR, f"woolworths_{store_id}.json")
-                                with open(filename, 'w', encoding='utf-8') as f:
-                                    json.dump(cleaned_data, f, indent=4)
-                                print(f"\nSaved store {store_id} to {filename}")
+                                if not os.path.exists(filename):
+                                    with open(filename, 'w', encoding='utf-8') as f:
+                                        json.dump(cleaned_data, f, indent=4)
+                                    print(f"\nSaved store {store_id} to {filename}")
+                                    found_stores += 1
 
 
                     except requests.exceptions.RequestException as e:
@@ -101,7 +104,7 @@ def find_woolworths_stores():
                 start_lon = LON_MIN
                 current_lat += LAT_STEP
             
-            print_progress_bar(total_steps, total_steps, LAT_MAX, LON_MAX, 0)
+            print_progress_bar(total_steps, total_steps, LAT_MAX, LON_MAX, found_stores)
             print(f"\n\nFinished Woolworths store scraping.")
             if os.path.exists(PROGRESS_FILE):
                 os.remove(PROGRESS_FILE)
