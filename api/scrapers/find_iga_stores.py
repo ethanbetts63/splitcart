@@ -1,11 +1,11 @@
 import requests
 import json
 import os
+from datetime import datetime
+from api.utils.scraper_utils.clean_raw_store_data_iga import clean_raw_store_data_iga
 from api.utils.shop_scraping_utils.iga import (
     is_in_excluded_range,
-    load_existing_stores,
     load_progress,
-    organize_iga_stores,
     parse_and_clean_stores,
     print_progress,
     save_progress,
@@ -14,27 +14,20 @@ from api.utils.shop_scraping_utils.iga import (
 # --- CONFIGURATION ---
 PROGRESS_FILE = r'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_iga\iga_stores_progress.json'
 MAX_STORE_ID = 23001
-STORES_FILE = r'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_iga\iga_stores_cleaned.json'
+DISCOVERED_STORES_DIR = r'C:\Users\ethan\coding\splitcart\api\data\discovered_stores'
 
 def find_iga_stores():
     """Fetches all store locations, skipping excluded ranges and saving progress."""
-    all_stores_data = load_existing_stores(STORES_FILE)
-    existing_store_ids = {str(store['storeId']) for store in all_stores_data}
     start_id = load_progress(PROGRESS_FILE) + 1
 
     print("Performing thorough search for stores...")
     try:
         for store_id in range(start_id, MAX_STORE_ID + 1):
             if is_in_excluded_range(store_id):
-                print_progress(store_id, MAX_STORE_ID, len(existing_store_ids), f"Skipping ID {store_id} (excluded).")
+                print_progress(store_id, MAX_STORE_ID, 0, f"Skipping ID {store_id} (excluded).")
                 continue
 
-            str_store_id = str(store_id)
-            if str_store_id in existing_store_ids:
-                print_progress(store_id, MAX_STORE_ID, len(existing_store_ids), f"Skipping ID {store_id} (found).")
-                continue
-
-            print_progress(store_id, MAX_STORE_ID, len(existing_store_ids), f"Checking ID: {store_id}...")
+            print_progress(store_id, MAX_STORE_ID, 0, f"Checking ID: {store_id}...")
             url = f"https://embed.salefinder.com.au/location/storelocator/183/?format=json&saleGroup=0&limit=1500&locationId={store_id}"
             
             try:
@@ -50,17 +43,13 @@ def find_iga_stores():
                     html_content = data.get('content', '')
                     new_stores = parse_and_clean_stores(html_content)
 
-                    found_new_in_batch = False
                     for store in new_stores:
-                        if str(store['storeId']) not in existing_store_ids:
-                            all_stores_data.append(store)
-                            existing_store_ids.add(str(store['storeId']))
-                            found_new_in_batch = True
-                    
-                    if found_new_in_batch:
-                        with open(STORES_FILE, 'w', encoding='utf-8') as f:
-                            json.dump(all_stores_data, f, indent=4)
-                        print_progress(store_id, MAX_STORE_ID, len(existing_store_ids), f"Processed {len(new_stores)} stores from ID {store_id}.")
+                        cleaned_data = clean_raw_store_data_iga(store, "iga", datetime.now())
+                        store_id = cleaned_data['store_data']['store_id']
+                        filename = os.path.join(DISCOVERED_STORES_DIR, f"iga_{store_id}.json")
+                        with open(filename, 'w', encoding='utf-8') as f:
+                            json.dump(cleaned_data, f, indent=4)
+                        print_progress(store_id, MAX_STORE_ID, 0, f"Saved store {store_id} to {filename}")
 
             except requests.exceptions.RequestException:
                 pass # Ignore network errors silently
@@ -74,13 +63,9 @@ def find_iga_stores():
     except KeyboardInterrupt:
         print("\n\nScraping interrupted by user. Progress has been saved.")
     finally:
-        # Final save on exit
-        with open(STORES_FILE, 'w', encoding='utf-8') as f:
-            json.dump(all_stores_data, f, indent=4)
-        print(f"\nFinished. Found {len(all_stores_data)} total stores.")
+        print(f"\nFinished.")
         # Optionally remove progress file on natural completion
         if 'store_id' in locals() and store_id == MAX_STORE_ID:
              if os.path.exists(PROGRESS_FILE):
                 os.remove(PROGRESS_FILE)
                 print("Scraping complete. Progress file removed.")
-             organize_iga_stores()
