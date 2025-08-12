@@ -4,6 +4,8 @@ class Store(models.Model):
     """
     Represents a physical or virtual store where products are sold.
     """
+
+    # Common fields for all stores
     name = models.CharField(
         max_length=255,
         help_text="The specific name of the store, e.g., 'IGA Cannington' or 'Coles National'."
@@ -27,28 +29,9 @@ class Store(models.Model):
         # IGA: storeId
         # Woolworths: StoreNo
     )
-    retailer_store_id = models.CharField(
-        max_length=50,
-        blank=True,
-        help_text="The retailer-specific identifier for the store, if available."
-        # IGA: retailerStoreId
-    )
     is_active = models.BooleanField(
         default=True,
         help_text="True if the store is currently being scraped."
-        # Coles: isTrading
-    )
-    division = models.CharField(
-        max_length=100,
-        blank=True,
-        help_text="The division the store belongs to, e.g., 'Supermarkets'."
-        # Woolworths: Division
-        # Coles: brand
-    )
-    email = models.EmailField(
-        blank=True,
-        help_text="The contact email for the store."
-        # IGA: email
     )
     phone_number = models.CharField(
         max_length=20,
@@ -147,7 +130,32 @@ class Store(models.Model):
         # Coles: isTrading
         # Aldi: isOpenNow
     )
+    division = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="The division the store belongs to, e.g., 'Supermarkets'."
+        # Woolworths: Division
+        # Coles: brand
+    )
+    last_updated = models.DateTimeField(
+        auto_now=True,
+        help_text="The date and time when the store was last updated."
+    )
 
+    # Company-specific fields
+
+    # IGA
+    retailer_store_id = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="The retailer-specific identifier for the store, if available."
+        # IGA: retailerStoreId
+    )
+    email = models.EmailField(
+        blank=True,
+        help_text="The contact email for the store."
+        # IGA: email
+    )
     online_shop_url = models.URLField(
         max_length=255,
         blank=True,
@@ -202,6 +210,8 @@ class Store(models.Model):
         help_text="A JSON object storing a list of available shopping modes."
         # IGA: shoppingModes
     )
+
+    # Aldi
     available_customer_service_types = models.JSONField(
         null=True,
         blank=True,
@@ -213,10 +223,6 @@ class Store(models.Model):
         blank=True,
         help_text="A JSON object storing a list of available alcohol types."
         # Aldi: alcoholAvailability
-    )
-    last_updated = models.DateTimeField(
-        auto_now=True,
-        help_text="The date and time when the store was last updated."
     )
 
     class Meta:
