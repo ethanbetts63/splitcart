@@ -22,13 +22,13 @@ def find_iga_stores():
 
     print("Performing thorough search for stores...")
     try:
-        for store_id in range(start_id, MAX_STORE_ID + 1):
-            if is_in_excluded_range(store_id):
-                print_progress(store_id, MAX_STORE_ID, 0, f"Skipping ID {store_id} (excluded).")
+        for store_id_num in range(start_id, MAX_STORE_ID + 1):
+            if is_in_excluded_range(store_id_num):
+                print_progress(store_id_num, MAX_STORE_ID, 0, f"Skipping ID {store_id_num} (excluded).")
                 continue
 
-            print_progress(store_id, MAX_STORE_ID, 0, f"Checking ID: {store_id}...")
-            url = f"https://embed.salefinder.com.au/location/storelocator/183/?format=json&saleGroup=0&limit=1500&locationId={store_id}"
+            print_progress(store_id_num, MAX_STORE_ID, 0, f"Checking ID: {store_id_num}...")
+            url = f"https://embed.salefinder.com.au/location/storelocator/183/?format=json&saleGroup=0&limit=1500&locationId={store_id_num}"
             
             try:
                 response = requests.get(url, timeout=10)
@@ -49,7 +49,6 @@ def find_iga_stores():
                         filename = os.path.join(DISCOVERED_STORES_DIR, f"iga_{store_id}.json")
                         with open(filename, 'w', encoding='utf-8') as f:
                             json.dump(cleaned_data, f, indent=4)
-                        print_progress(store_id, MAX_STORE_ID, 0, f"Saved store {store_id} to {filename}")
 
             except requests.exceptions.RequestException:
                 pass # Ignore network errors silently
@@ -58,14 +57,14 @@ def find_iga_stores():
             except ValueError:
                 pass # Ignore other parsing errors
             
-            save_progress(PROGRESS_FILE, store_id)
+            save_progress(PROGRESS_FILE, store_id_num)
 
     except KeyboardInterrupt:
         print("\n\nScraping interrupted by user. Progress has been saved.")
     finally:
         print(f"\nFinished.")
         # Optionally remove progress file on natural completion
-        if 'store_id' in locals() and store_id == MAX_STORE_ID:
+        if 'store_id_num' in locals() and store_id_num == MAX_STORE_ID:
              if os.path.exists(PROGRESS_FILE):
                 os.remove(PROGRESS_FILE)
                 print("Scraping complete. Progress file removed.")
