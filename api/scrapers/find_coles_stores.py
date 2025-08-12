@@ -5,22 +5,21 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
+from datetime import datetime
+from api.utils.scraper_utils.clean_raw_store_data_coles import clean_raw_store_data_coles
 from api.utils.shop_scraping_utils.coles import (
     drange,
-    get_graphql_query, 
-    load_existing_stores,
+    get_graphql_query,
     load_progress,
-    organize_coles_stores,
     print_progress_bar,
     save_progress,
-    save_stores_incrementally,
 )
 
 # --- CONFIGURATION ---
 COLES_API_URL = "https://www.coles.com.au/api/graphql"
 SUBSCRIPTION_KEY = "eae83861d1cd4de6bb9cd8a2cd6f041e"
-OUTPUT_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_coles\\coles_stores_cleaned.json"
-PROGRESS_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_coles\\find_coles_stores_progress.json"
+DISCOVERED_STORES_DIR = r'C:\Users\ethan\coding\splitcart\api\data\discovered_stores'
+PROGRESS_FILE = "C:\Users\ethan\coding\splitcart\api\data\store_data\stores_coles\find_coles_stores_progress.json"
 
 # Geographical grid for Australia (approximate)
 LAT_MIN = -44.0
@@ -43,8 +42,8 @@ def find_coles_stores():
 
     while True:
         try:
-            all_stores = load_existing_stores(OUTPUT_FILE)
             start_lat, start_lon = load_progress(PROGRESS_FILE, LAT_MIN, LAT_STEP, LON_MIN, LON_MAX, LON_STEP)
+            found_stores = 0
 
             print("\n--- Launching Selenium browser to warm up session and make API calls ---")
             chrome_options = Options()
@@ -70,7 +69,7 @@ def find_coles_stores():
             while current_lat <= LAT_MAX:
                 current_lon = start_lon if current_lat == start_lat else LON_MIN
                 while current_lon <= LON_MAX:
-                    print_progress_bar(completed_steps, total_steps, current_lat, current_lon, len(all_stores))
+                    print_progress_bar(completed_steps, total_steps, current_lat, current_lon, found_stores)
                     graphql_query = get_graphql_query(current_lat, current_lon)
                     
                     js_code = f'''
@@ -101,20 +100,15 @@ def find_coles_stores():
 
                         elif data.get("data") and data["data"].get("stores") and "results" in data["data"]["stores"]:
                             for result in data["data"]["stores"]["results"]:
-                                store_details = result.get('store', {})
-                                store_id = store_details.get('id')
-                                if store_id and store_id not in all_stores:
-                                    cleaned_store = {
-                                        "id": store_id,
-                                        "name": store_details.get("name"),
-                                        "phone": store_details.get("phone"),
-                                        "isTrading": store_details.get("isTrading"),
-                                        "address": store_details.get("address"),
-                                        "position": store_details.get("position"),
-                                        "brand": store_details.get("brand")
-                                    }
-                                    all_stores[store_id] = cleaned_store
-                                    save_stores_incrementally(OUTPUT_FILE, all_stores)
+                                store_details = result.get('store', {{}})
+                                cleaned_data = clean_raw_store_data_coles(store_details, "coles", datetime.now())
+                                store_id = cleaned_data['store_data']['store_id']
+                                filename = os.path.join(DISCOVERED_STORES_DIR, f"coles_{store_id}.json")
+                                if not os.path.exists(filename):
+                                    with open(filename, 'w', encoding='utf-8') as f:
+                                        json.dump(cleaned_data, f, indent=4)
+                                    print(f"\nSaved store {store_id} to {filename}")
+                                    found_stores += 1
 
                     except Exception as e:
                         # This will now catch the API error and trigger the restart
@@ -128,15 +122,11 @@ def find_coles_stores():
                 start_lon = LON_MIN
                 current_lat += LAT_STEP
             
-            print_progress_bar(total_steps, total_steps, LAT_MAX, LON_MAX, len(all_stores))
-            print(f"\n\nFinished Coles store scraping. Found {len(all_stores)} unique stores.")
-            print(f"Cleaned data saved to {OUTPUT_FILE}")
+            print_progress_bar(total_steps, total_steps, LAT_MAX, LON_MAX, found_stores)
+            print(f"\n\nFinished Coles store scraping. Found {found_stores} unique stores.")
             if os.path.exists(PROGRESS_FILE):
                 os.remove(PROGRESS_FILE)
             
-            # Organize the final data
-            organize_coles_stores()
-
             break # Exit the main while loop on success
 
         except Exception as e:

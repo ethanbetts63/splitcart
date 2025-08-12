@@ -27,7 +27,7 @@ def find_woolworths_stores2():
     
     print("\nStarting Woolworths store data scraping (postcode method)...")
 
-    for postcode in range(1, 10000):
+    for postcode in range(1, 10000, 10): # Increment by 10
         print_progress_bar(postcode, 9999, 0, 0, found_stores)
         params = {
             "postcode": str(postcode).zfill(4)
