@@ -20,13 +20,13 @@ class Store(models.Model):
         related_name='stores',
         help_text="The parent company that owns this store."
     )
-    brand = models.ForeignKey(
-        'companies.Brand',
+    division = models.ForeignKey(
+        'companies.Division',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='stores',
-        help_text="The specific brand of the store."
+        help_text="The specific division of the store."
     )
     store_id = models.CharField(
         max_length=50,
