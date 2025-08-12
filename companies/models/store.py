@@ -36,8 +36,8 @@ class Store(models.Model):
     is_active = models.BooleanField(
         default=True,
         help_text="True if the store is currently being scraped."
-    )
         # Coles: isTrading
+    )
     division = models.CharField(
         max_length=100,
         blank=True,
@@ -153,6 +153,70 @@ class Store(models.Model):
         blank=True,
         help_text="The URL for the store's online shopping portal."
         # IGA: onlineShopUrl
+    )
+    store_url = models.URLField(
+        max_length=255,
+        blank=True,
+        help_text="The URL for the store's website."
+        # IGA: storeUrl
+    )
+    ecommerce_url = models.URLField(
+        max_length=255,
+        blank=True,
+        help_text="The URL for the store's e-commerce platform."
+        # IGA: ecommerceUrl
+    )
+    record_id = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="The unique identifier for the store record from the IGA system."
+        # IGA: id
+    )
+    status = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="The status of the store (e.g., 'Active')."
+        # IGA: status
+    )
+    store_type = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="The type of the store (e.g., 'Regular')."
+        # IGA: type
+    )
+    site_id = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="The ID of the site from the IGA system."
+        # IGA: siteId
+    )
+    category_hierarchy_id = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="The ID of the category hierarchy from the IGA system."
+        # IGA: categoryHierarchyId
+    )
+    shopping_modes = models.JSONField(
+        null=True,
+        blank=True,
+        help_text="A JSON object storing a list of available shopping modes."
+        # IGA: shoppingModes
+    )
+    available_customer_service_types = models.JSONField(
+        null=True,
+        blank=True,
+        help_text="A JSON object storing a list of available customer service types."
+        # Aldi: availableCustomerServiceTypes
+    )
+    alcohol_availability = models.JSONField(
+        null=True,
+        blank=True,
+        help_text="A JSON object storing a list of available alcohol types."
+        # Aldi: alcoholAvailability
+    )
+    last_updated = models.DateTimeField(
+        auto_now=True,
+        help_text="The date and time when the store was last updated."
     )
 
     class Meta:
