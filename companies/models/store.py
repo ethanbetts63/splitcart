@@ -20,10 +20,17 @@ class Store(models.Model):
         db_index=True,
         help_text="The unique identifier for the store from the company's own system."
     )
+    retailer_store_id = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="The retailer-specific identifier for the store, if available."
+    )
     is_active = models.BooleanField(
         default=True,
         help_text="True if the store is currently being scraped."
     )
+
+    # New fields based on JSON data
     division = models.CharField(
         max_length=100,
         blank=True,
@@ -32,6 +39,10 @@ class Store(models.Model):
     description = models.TextField(
         blank=True,
         help_text="A longer description of the store, if available."
+    )
+    email = models.EmailField(
+        blank=True,
+        help_text="The contact email for the store."
     )
     phone_number = models.CharField(
         max_length=20,
