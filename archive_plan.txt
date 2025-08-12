@@ -1,0 +1,45 @@
+# Archive Plan: Generating Sellable Data Products
+
+This plan outlines the process for generating customer-ready JSON files, which will serve as our sellable data products. The command responsible for this will be `build_archive`.
+
+## `build_archive` Command
+
+This command will generate denormalized, customer-ready JSON files as requested.
+
+*   **Purpose:** Generate sellable data products in a convenient, self-contained format.
+*   **Output Structure:**
+    ```
+    archive/
+    ├───company_data/
+    │   ├───coles.json
+    │   └───woolworths.json
+    │
+    └───store_data/
+        ├───coles/
+        │   ├───{store_slug_1}.json
+        │   └───{store_slug_2}.json
+        └───woolworths/
+            ├───{store_slug_3}.json
+            └───{store_slug_4}.json
+    ```
+
+*   **File Contents:**
+    *   `archive/company_data/{company_slug}.json`:
+        *   **Metadata:** Company details, date of data generation.
+        *   **Stores:** A list of all stores for that company, including their details (name, address, etc.).
+    *   `archive/store_data/{company_slug}/{store_slug}.json`:
+        *   **Metadata:** Store details, date of data generation.
+        *   **Products:** A complete list of all products available at that store, listed in a logical order (e.g., alphabetically). Each product will have:
+            *   All its current details (name, description, size, etc.).
+            *   A full history of its price records at that store, with each record containing the date and price.
+        *   **Categories:** A hierarchical representation of all categories specific to that store. This structure will be included in the metadata section of the store file.
+
+### Handling Categories in Sellable Data
+
+To address the complexity of categories, the `build_archive` command will do the following for each store:
+
+1.  Fetch all categories associated with that specific store from the database.
+2.  Reconstruct the hierarchical structure of these categories (parents and subcategories).
+3.  This entire category structure will be included in the metadata section of the store's JSON file.
+
+This approach ensures that the category information in each store file is accurate and self-contained, reflecting the unique layout of that store, while avoiding product duplication.
