@@ -20,6 +20,14 @@ class Store(models.Model):
         related_name='stores',
         help_text="The parent company that owns this store."
     )
+    brand = models.ForeignKey(
+        'companies.Brand',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='stores',
+        help_text="The specific brand of the store."
+    )
     store_id = models.CharField(
         max_length=50,
         db_index=True,
@@ -130,20 +138,13 @@ class Store(models.Model):
         # Coles: isTrading
         # Aldi: isOpenNow
     )
-    division = models.CharField(
-        max_length=100,
-        blank=True,
-        help_text="The division the store belongs to, e.g., 'Supermarkets'."
-        # Woolworths: Division
-        # Coles: brand
-    )
     last_updated = models.DateTimeField(
         auto_now=True,
         help_text="The date and time when the store was last updated."
     )
 
     # Company-specific fields
-
+    
     # IGA
     retailer_store_id = models.CharField(
         max_length=50,
