@@ -5,7 +5,7 @@ import os
 import requests
 import random
 from datetime import datetime
-from api.utils.scraper_utils.clean_raw_store_data_aldi import clean_raw_store_data_aldi
+from api.utils.shop_scraping_utils.aldi.clean_raw_store_data_aldi import clean_raw_store_data_aldi
 from api.utils.shop_scraping_utils.aldi import (
     drange,
     load_progress,
