@@ -12,8 +12,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('Starting to build company JSON files...'))
 
-        archive_dir = os.path.join('archive', 'company_data')
-        os.makedirs(archive_dir, exist_ok=True)
+        # Define the base archive directory relative to the project root
+        # This assumes the command is run from the project root (where manage.py is)
+        base_archive_dir = os.path.join('api', 'data', 'archive')
+        company_data_dir = os.path.join(base_archive_dir, 'company_data')
+        os.makedirs(company_data_dir, exist_ok=True)
 
         companies = Company.objects.all()
 
@@ -72,7 +75,7 @@ class Command(BaseCommand):
                 }
                 company_data['stores_by_division'][division_slug]['stores'].append(store_details)
             
-            output_file_path = os.path.join(archive_dir, f'{company_slug}.json')
+            output_file_path = os.path.join(company_data_dir, f'{company_slug}.json')
             with open(output_file_path, 'w', encoding='utf-8') as f:
                 json.dump(company_data, f, indent=4)
             
