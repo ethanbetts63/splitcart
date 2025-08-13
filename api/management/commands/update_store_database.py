@@ -22,7 +22,23 @@ class Command(BaseCommand):
             store_data = store_data_full.get('store_data', {})
 
             company_name = metadata.get('company')
-            division_name = store_data.get('division')
+            
+            # Extract division data based on company
+            division_name = None
+            external_id = None
+            store_finder_id = None
+
+            if company_name == "Coles":
+                brand_data = store_data.get('brand', {})
+                division_name = brand_data.get('name')
+                external_id = brand_data.get('id')
+                store_finder_id = brand_data.get('storeFinderId')
+            elif company_name == "Woolworths":
+                division_name = store_data.get('Division')
+            else:
+                # For Aldi, IGA, etc., division_name will remain None
+                pass
+
             store_id = store_data.get('store_id')
 
             if not company_name or not store_id:
@@ -36,7 +52,12 @@ class Command(BaseCommand):
 
             division_obj = None
             if division_name:
-                division_obj, division_created = get_or_create_division(company_obj, division_name)
+                division_obj, division_created = get_or_create_division(
+                    company_obj=company_obj,
+                    division_name=division_name,
+                    external_id=external_id,
+                    store_finder_id=store_finder_id
+                )
                 if division_created:
                     self.stdout.write(self.style.SUCCESS(f"  Created new Division: {division_obj.name} for {company_obj.name}"))
 
@@ -53,7 +74,7 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(f"  * Updated existing Store: {store_obj.name} ({store_obj.store_id})"))
             
             # Use the tally counter utility
-            self.tally.increment(store_created)
+            self.tally.increment(store_created, company_name) # Pass company_name here
             os.remove(file_path)
             self.tally.display(self)
 
@@ -81,8 +102,8 @@ class Command(BaseCommand):
                     self.process_store_file(file_name, DISCOVERED_STORES_DIR)
                 continue
             else:
-                self.stdout.write(self.style.SUCCESS("\nNo new store files found. Waiting 120 seconds..."))
-                time.sleep(120)
+                self.stdout.write(self.style.SUCCESS("\nNo new store files found. Waiting 60 seconds..."))
+                time.sleep(60)
                 store_files = [f for f in os.listdir(DISCOVERED_STORES_DIR) if f.endswith('.json')]
                 if not store_files:
                     self.stdout.write(self.style.SUCCESS("No new store files found after waiting. Exiting."))
