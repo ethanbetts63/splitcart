@@ -7,7 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
-from api.utils.shop_scraping_utils.coles.clean_raw_store_data_coles import clean_raw_store_data_coles
+from api.utils.scraper_utils.clean_raw_store_data_coles import clean_raw_store_data_coles
 from api.utils.shop_scraping_utils.coles import (
     drange,
     get_graphql_query, 
@@ -58,7 +58,7 @@ def find_coles_stores():
             driver.get("https://www.coles.com.au")
             input("ACTION REQUIRED: Please solve any CAPTCHA in the browser, then press Enter here to continue...")
             print("\nStarting Coles store data scraping...")
-            
+
             lat_steps = list(drange(LAT_MIN, LAT_MAX, LAT_STEP))
             lon_steps = list(drange(LON_MIN, LON_MAX, LON_STEP))
             
