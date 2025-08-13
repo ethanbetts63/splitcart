@@ -1,13 +1,13 @@
 import json
 import time
 import os
+import random
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from api.utils.scraper_utils.clean_raw_store_data_coles import clean_raw_store_data_coles
-from api.utils.processing_utils.process_coles_stores_for_inbox import process_coles_stores_for_inbox
 from api.utils.shop_scraping_utils.coles import (
     drange,
     get_graphql_query, 
@@ -16,6 +16,7 @@ from api.utils.shop_scraping_utils.coles import (
     print_progress_bar,
     save_progress,
     save_stores_incrementally,
+    process_coles_stores_for_inbox
 )
 
 # --- CONFIGURATION ---
@@ -29,8 +30,8 @@ LAT_MIN = -44.0
 LAT_MAX = -10.0
 LON_MIN = 112.0
 LON_MAX = 154.0
-LAT_STEP = 10
-LON_STEP = 10
+LAT_STEP = random.uniform(0.25, 0.75)
+LON_STEP = random.uniform(0.25, 0.75)
 
 REQUEST_DELAY = 0.1 
 

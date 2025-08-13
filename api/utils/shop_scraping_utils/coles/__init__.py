@@ -6,3 +6,4 @@ from .organize_coles_stores import organize_coles_stores
 from .print_progress_bar import print_progress_bar
 from .save_progress import save_progress
 from .save_stores_incrementally import save_stores_incrementally
+from .process_coles_stores_for_inbox import process_coles_stores_for_inbox
