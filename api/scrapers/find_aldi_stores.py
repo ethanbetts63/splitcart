@@ -3,28 +3,28 @@ import json
 import time
 import os
 import requests
+import random
+from datetime import datetime
+from api.utils.scraper_utils.clean_raw_store_data_aldi import clean_raw_store_data_aldi
 from api.utils.shop_scraping_utils.aldi import (
     drange,
-    load_existing_stores,
     load_progress,
-    organize_aldi_stores,
     print_progress_bar,
     save_progress,
-    save_stores_incrementally,
 )
 
 # --- CONFIGURATION ---
 ALDI_API_URL = "https://api.aldi.com.au/v2/service-points"
-OUTPUT_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_aldi\\aldi_stores_raw.json"
-PROGRESS_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_aldi\\find_aldi_stores_progress.json"
+DISCOVERED_STORES_DIR = r'C:\Users\ethan\coding\splitcart\api\data\discovered_stores'
+PROGRESS_FILE = r"C:\Users\ethan\coding\splitcart\api\data\store_data\stores_aldi\find_aldi_stores_progress.json"
 
 # Geographical grid for Australia (approximate)
 LAT_MIN = -44.0
 LAT_MAX = -10.0
 LON_MIN = 112.0
 LON_MAX = 154.0
-LAT_STEP = 0.5
-LON_STEP = 0.5
+LAT_STEP = random.uniform(0.25, 0.75)
+LON_STEP = random.uniform(0.25, 0.75)
 
 REQUEST_DELAY = 0.5
 
@@ -43,8 +43,8 @@ def find_aldi_stores():
 
     while True:
         try:
-            all_stores = load_existing_stores(OUTPUT_FILE)
             start_lat, start_lon = load_progress(PROGRESS_FILE, LAT_MIN, LAT_STEP, LON_MIN, LON_MAX, LON_STEP)
+            found_stores = 0
 
             print("\nStarting ALDI store data scraping...")
 
@@ -62,7 +62,7 @@ def find_aldi_stores():
             while current_lat <= LAT_MAX:
                 current_lon = start_lon if current_lat == start_lat else LON_MIN
                 while current_lon <= LON_MAX:
-                    print_progress_bar(completed_steps, total_steps, current_lat, current_lon, len(all_stores))
+                    print_progress_bar(completed_steps, total_steps, current_lat, current_lon, found_stores)
                     
                     params = {
                         "latitude": current_lat,
@@ -78,10 +78,14 @@ def find_aldi_stores():
 
                         if "data" in data:
                             for store_details in data["data"]:
-                                store_id = store_details.get('id')
-                                if store_id and store_id not in all_stores:
-                                    all_stores[store_id] = store_details
-                                    save_stores_incrementally(OUTPUT_FILE, all_stores)
+                                cleaned_data = clean_raw_store_data_aldi(store_details, "aldi", datetime.now())
+                                store_id = cleaned_data['store_data']['store_id']
+                                filename = os.path.join(DISCOVERED_STORES_DIR, f"aldi_{store_id}.json")
+                                if not os.path.exists(filename):
+                                    with open(filename, 'w', encoding='utf-8') as f:
+                                        json.dump(cleaned_data, f, indent=4)
+                                    print(f"\nSaved store {store_id} to {filename}")
+                                    found_stores += 1
 
                     except requests.exceptions.RequestException as e:
                         print(f"Request failed: {e}")
@@ -100,13 +104,10 @@ def find_aldi_stores():
                 start_lon = LON_MIN
                 current_lat += LAT_STEP
             
-            print_progress_bar(total_steps, total_steps, LAT_MAX, LON_MAX, len(all_stores))
-            print(f"\n\nFinished ALDI store scraping. Found {len(all_stores)} unique stores.")
-            print(f"Raw data saved to {OUTPUT_FILE}")
+            print_progress_bar(total_steps, total_steps, LAT_MAX, LON_MAX, found_stores)
+            print(f"\n\nFinished ALDI store scraping. Found {found_stores} unique stores.")
             if os.path.exists(PROGRESS_FILE):
                 os.remove(PROGRESS_FILE)
-
-            organize_aldi_stores()
             
             break # Exit the main while loop on success
 
