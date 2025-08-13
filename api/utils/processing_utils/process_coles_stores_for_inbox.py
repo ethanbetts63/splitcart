@@ -1,5 +1,11 @@
 import json
 import os
+import re # Import the re module for regular expressions
+
+def sanitize_filename(filename):
+    """Sanitizes a string to be safe for use as a filename."""
+    # Replace any character that is not alphanumeric, hyphen, or underscore with an underscore
+    return re.sub(r'[^\w\-\.]', '_', filename)
 
 def process_coles_stores_for_inbox():
     OUTPUT_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_coles\\coles_stores_cleaned.json"
@@ -27,7 +33,12 @@ def process_coles_stores_for_inbox():
     stores_to_keep = {}
 
     for store_id, store_data in all_stores.items():
-        filename = os.path.join(DISCOVERED_STORES_DIR, f"coles_{store_id}.json")
+        # Sanitize the store_id before using it in the filename
+        sanitized_store_id = sanitize_filename(store_id)
+        
+        filename = os.path.join(DISCOVERED_STORES_DIR, f"coles_{sanitized_store_id}.json")
+        
+        print(f"DEBUG: Attempting to save to: {filename}") # Print the final filename
         
         try:
             with open(filename, 'w', encoding='utf-8') as f:
