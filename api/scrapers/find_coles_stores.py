@@ -1,17 +1,18 @@
 import json
 import time
 import os
+from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from api.utils.scraper_utils.clean_raw_store_data_coles import clean_raw_store_data_coles
+from api.utils.processing_utils.process_coles_stores_for_inbox import process_coles_stores_for_inbox
 from api.utils.shop_scraping_utils.coles import (
     drange,
     get_graphql_query, 
     load_existing_stores,
     load_progress,
-    organize_coles_stores,
     print_progress_bar,
     save_progress,
     save_stores_incrementally,
@@ -28,10 +29,10 @@ LAT_MIN = -44.0
 LAT_MAX = -10.0
 LON_MIN = 112.0
 LON_MAX = 154.0
-LAT_STEP = 0.5
-LON_STEP = 0.5
+LAT_STEP = 10
+LON_STEP = 10
 
-REQUEST_DELAY = 0.5  
+REQUEST_DELAY = 0.1 
 
 # --- MAIN SCRAPING LOGIC ---
 
@@ -127,8 +128,8 @@ def find_coles_stores():
             if os.path.exists(PROGRESS_FILE):
                 os.remove(PROGRESS_FILE)
             
-            # Organize the final data
-            organize_coles_stores()
+            # Process and move data to inbox
+            process_coles_stores_for_inbox()
 
             break # Exit the main while loop on success
 
