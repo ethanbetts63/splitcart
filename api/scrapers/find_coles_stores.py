@@ -57,6 +57,9 @@ def find_coles_stores():
 
             driver.get("https://www.coles.com.au")
             input("ACTION REQUIRED: Please solve any CAPTCHA in the browser, then press Enter here to continue...")
+            print("Selenium browser is no longer needed. Closing it.")
+            driver.quit()
+            driver = None
             print("\nStarting Coles store data scraping...")
             
             lat_steps = list(drange(LAT_MIN, LAT_MAX, LAT_STEP))

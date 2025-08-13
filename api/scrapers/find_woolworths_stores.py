@@ -39,6 +39,8 @@ def find_woolworths_stores():
         "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
     })
 
+    current_run_discovered_stores = set() # Initialize set to track stores found in this run
+
     while True:
         try:
             start_lat, start_lon = load_progress(PROGRESS_FILE, LAT_MIN, LAT_STEP, LON_MIN, LON_MAX, LON_STEP)
@@ -80,11 +82,15 @@ def find_woolworths_stores():
                                 cleaned_data = clean_raw_store_data_woolworths(store_details, "woolworths", datetime.now())
                                 store_id = cleaned_data['store_data']['store_id']
                                 filename = os.path.join(DISCOVERED_STORES_DIR, f"woolworths_{store_id}.json")
-                                if not os.path.exists(filename):
-                                    with open(filename, 'w', encoding='utf-8') as f:
-                                        json.dump(cleaned_data, f, indent=4)
-                                    print(f"\nSaved store {store_id} to {filename}")
-                                    found_stores += 1
+                                
+                                # Check if the store has already been found in this run
+                                if store_id not in current_run_discovered_stores:
+                                    if not os.path.exists(filename): # Still check if file exists to avoid overwriting
+                                        with open(filename, 'w', encoding='utf-8') as f:
+                                            json.dump(cleaned_data, f, indent=4)
+                                        print(f"\nSaved store {store_id} to {filename}")
+                                        found_stores += 1
+                                    current_run_discovered_stores.add(store_id) # Add to set for current run
 
 
                     except requests.exceptions.RequestException as e:
