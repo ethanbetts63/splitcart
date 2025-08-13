@@ -28,11 +28,14 @@ def process_coles_stores_for_inbox():
     if not isinstance(all_stores, dict):
         print(f"Error: Expected a dictionary in '{OUTPUT_FILE}', but found {type(all_stores)}. Skipping processing.")
         return
+    
+    print(f"DEBUG: Loaded {len(all_stores)} stores from {OUTPUT_FILE}.")
 
     processed_count = 0
     stores_to_keep = {}
 
     for store_id, store_data in all_stores.items():
+        print(f"DEBUG: Processing store_id: {store_id}")
         # Sanitize the store_id before using it in the filename
         sanitized_store_id = sanitize_filename(store_id)
         
