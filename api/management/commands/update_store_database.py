@@ -8,7 +8,7 @@ from api.utils.database_updating_utils.get_or_create_division import get_or_crea
 from api.utils.database_updating_utils.get_or_create_store import get_or_create_store
 
 class Command(BaseCommand):
-    help = 'Updates the store database from files in the discovered_stores directory.'
+    help = 'Continuously updates the store database from files in the discovered_stores directory.'
 
     def process_store_file(self, file_name, directory):
         file_path = os.path.join(directory, file_name)
@@ -31,13 +31,13 @@ class Command(BaseCommand):
 
             company_obj, company_created = get_or_create_company(company_name)
             if company_created:
-                self.stdout.write(self.style.SUCCESS(f"Created new Company: {company_obj.name}"))
+                self.stdout.write(self.style.SUCCESS(f"  Created new Company: {company_obj.name}"))
 
             division_obj = None
             if division_name:
                 division_obj, division_created = get_or_create_division(company_obj, division_name)
                 if division_created:
-                    self.stdout.write(self.style.SUCCESS(f"Created new Division: {division_obj.name} for {company_obj.name}"))
+                    self.stdout.write(self.style.SUCCESS(f"  Created new Division: {division_obj.name} for {company_obj.name}"))
 
             store_obj, store_created = get_or_create_store(
                 company_obj=company_obj,
@@ -47,12 +47,14 @@ class Command(BaseCommand):
             )
 
             if store_created:
-                self.stdout.write(self.style.SUCCESS(f"Created new Store: {store_obj.name} ({store_obj.store_id})"))
+                self.stdout.write(self.style.SUCCESS(f"  + Created new Store: {store_obj.name} ({store_obj.store_id})"))
+                self.stores_created += 1
             else:
-                self.stdout.write(self.style.SUCCESS(f"Updated existing Store: {store_obj.name} ({store_obj.store_id})"))
+                self.stdout.write(self.style.SUCCESS(f"  * Updated existing Store: {store_obj.name} ({store_obj.store_id})"))
+                self.stores_updated += 1
 
             os.remove(file_path)
-            self.stdout.write(self.style.SUCCESS(f"Successfully processed and deleted {file_name}"))
+            self.stdout.write(f"--- Tally: {self.stores_created} Created, {self.stores_updated} Updated ---")
 
         except json.JSONDecodeError:
             self.stdout.write(self.style.ERROR(f"Error decoding JSON from {file_name}. Removing."))
@@ -63,21 +65,25 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         DISCOVERED_STORES_DIR = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\discovered_stores"
+        self.stores_created = 0
+        self.stores_updated = 0
 
         if not os.path.exists(DISCOVERED_STORES_DIR):
             self.stdout.write(self.style.WARNING(f"'{DISCOVERED_STORES_DIR}' not found. Nothing to process."))
             return
 
-        store_files = [f for f in os.listdir(DISCOVERED_STORES_DIR) if f.endswith('.json')]
-
-        if not store_files:
-            self.stdout.write(self.style.SUCCESS("No new store files found. Waiting 60 seconds to check again..."))
-            time.sleep(60)
+        while True:
             store_files = [f for f in os.listdir(DISCOVERED_STORES_DIR) if f.endswith('.json')]
-            if not store_files:
-                self.stdout.write(self.style.SUCCESS("No new store files found after waiting. Exiting."))
-                return
-            self.stdout.write(self.style.SUCCESS("New files found after waiting. Processing..."))
 
-        for file_name in store_files:
-            self.process_store_file(file_name, DISCOVERED_STORES_DIR)
+            if store_files:
+                self.stdout.write(self.style.SUCCESS(f"Found {len(store_files)} file(s) to process..."))
+                for file_name in store_files:
+                    self.process_store_file(file_name, DISCOVERED_STORES_DIR)
+                continue
+            else:
+                self.stdout.write(self.style.SUCCESS("\nNo new store files found. Waiting 60 seconds..."))
+                time.sleep(60)
+                store_files = [f for f in os.listdir(DISCOVERED_STORES_DIR) if f.endswith('.json')]
+                if not store_files:
+                    self.stdout.write(self.style.SUCCESS("No new store files found after waiting. Exiting."))
+                    break
