@@ -48,15 +48,7 @@ def find_aldi_stores():
 
             print("\nStarting ALDI store data scraping...")
 
-            lat_steps = list(drange(LAT_MIN, LAT_MAX, LAT_STEP))
-            lon_steps = list(drange(LON_MIN, LON_MAX, LON_STEP))
-            
-            completed_steps = 0
-            if start_lat > LAT_MIN:
-                completed_lat_steps = lat_steps.index(start_lat)
-                completed_steps += completed_lat_steps * len(lon_steps)
-            if start_lon > LON_MIN:
-                completed_steps += lon_steps.index(start_lon)
+            completed_steps = 0 # Reset completed_steps for the current run
 
             current_lat = start_lat
             while current_lat <= LAT_MAX:
