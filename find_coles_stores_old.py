@@ -5,7 +5,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
-from api.utils.scraper_utils.clean_raw_store_data_coles import clean_raw_store_data_coles
 from api.utils.shop_scraping_utils.coles import (
     drange,
     get_graphql_query, 
@@ -105,8 +104,16 @@ def find_coles_stores():
                                 store_details = result.get('store', {})
                                 store_id = store_details.get('id')
                                 if store_id and store_id not in all_stores:
-                                    cleaned_data = clean_raw_store_data_coles(store_details, "coles", datetime.now())
-                                    all_stores[store_id] = cleaned_data
+                                    cleaned_store = {
+                                        "id": store_id,
+                                        "name": store_details.get("name"),
+                                        "phone": store_details.get("phone"),
+                                        "isTrading": store_details.get("isTrading"),
+                                        "address": store_details.get("address"),
+                                        "position": store_details.get("position"),
+                                        "brand": store_details.get("brand")
+                                    }
+                                    all_stores[store_id] = cleaned_store
                                     save_stores_incrementally(OUTPUT_FILE, all_stores)
 
                     except Exception as e:
