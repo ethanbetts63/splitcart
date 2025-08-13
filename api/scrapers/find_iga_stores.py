@@ -19,6 +19,7 @@ DISCOVERED_STORES_DIR = r'C:\Users\ethan\coding\splitcart\api\data\discovered_st
 def find_iga_stores():
     """Fetches all store locations, skipping excluded ranges and saving progress."""
     start_id = load_progress(PROGRESS_FILE) + 1
+    found_stores_count = 0 # Initialize counter for stores found in this run
 
     print("Performing thorough search for stores...")
     try:
@@ -47,8 +48,11 @@ def find_iga_stores():
                         cleaned_data = clean_raw_store_data_iga(store, "iga", datetime.now())
                         store_id = cleaned_data['store_data']['store_id']
                         filename = os.path.join(DISCOVERED_STORES_DIR, f"iga_{store_id}.json")
-                        with open(filename, 'w', encoding='utf-8') as f:
-                            json.dump(cleaned_data, f, indent=4)
+                        # Only save if the file doesn't already exist to avoid overwriting and recount
+                        if not os.path.exists(filename):
+                            with open(filename, 'w', encoding='utf-8') as f:
+                                json.dump(cleaned_data, f, indent=4)
+                            found_stores_count += 1 # Increment only for newly saved stores
 
             except requests.exceptions.RequestException:
                 pass # Ignore network errors silently
@@ -58,11 +62,12 @@ def find_iga_stores():
                 pass # Ignore other parsing errors
             
             save_progress(PROGRESS_FILE, store_id_num)
+            print_progress(store_id_num, MAX_STORE_ID, found_stores_count, f"Checking ID: {store_id_num}...") # Update progress bar with actual count
 
     except KeyboardInterrupt:
         print("\n\nScraping interrupted by user. Progress has been saved.")
     finally:
-        print(f"\nFinished.")
+        print(f"\nFinished. Total stores found and saved: {found_stores_count}") # Final print with total count
         # Optionally remove progress file on natural completion
         if 'store_id_num' in locals() and store_id_num == MAX_STORE_ID:
              if os.path.exists(PROGRESS_FILE):

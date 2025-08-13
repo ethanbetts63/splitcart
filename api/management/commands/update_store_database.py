@@ -102,8 +102,8 @@ class Command(BaseCommand):
                     self.process_store_file(file_name, DISCOVERED_STORES_DIR)
                 continue
             else:
-                self.stdout.write(self.style.SUCCESS("\nNo new store files found. Waiting 60 seconds..."))
-                time.sleep(60)
+                self.stdout.write(self.style.SUCCESS("\nNo new store files found. Waiting 180 seconds..."))
+                time.sleep(180)
                 store_files = [f for f in os.listdir(DISCOVERED_STORES_DIR) if f.endswith('.json')]
                 if not store_files:
                     self.stdout.write(self.style.SUCCESS("No new store files found after waiting. Exiting."))
