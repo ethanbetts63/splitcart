@@ -3,7 +3,7 @@ import time
 import os
 import requests
 from datetime import datetime
-from api.utils.scraper_utils.clean_raw_store_data_woolworths import clean_raw_store_data_woolworths
+from api.utils.shop_scraping_utils.woolworths.clean_raw_store_data_woolworths import clean_raw_store_data_woolworths
 from api.utils.shop_scraping_utils.woolworths import (
     print_progress_bar,
 )

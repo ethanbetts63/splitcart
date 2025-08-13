@@ -2,7 +2,7 @@ import requests
 import json
 import os
 from datetime import datetime
-from api.utils.scraper_utils.clean_raw_store_data_iga import clean_raw_store_data_iga
+from api.utils.shop_scraping_utils.iga.clean_raw_store_data_iga import clean_raw_store_data_iga
 from api.utils.shop_scraping_utils.iga import (
     is_in_excluded_range,
     load_progress,

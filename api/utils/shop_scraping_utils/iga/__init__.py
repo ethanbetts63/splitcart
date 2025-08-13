@@ -5,3 +5,4 @@ from .organize_iga_stores import organize_iga_stores
 from .parse_and_clean_stores import parse_and_clean_stores
 from .print_progress import print_progress
 from .save_progress import save_progress
+from .clean_raw_store_data_iga import clean_raw_store_data_iga

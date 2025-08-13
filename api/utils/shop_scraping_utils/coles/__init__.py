@@ -7,3 +7,4 @@ from .print_progress_bar import print_progress_bar
 from .save_progress import save_progress
 from .save_stores_incrementally import save_stores_incrementally
 from .process_coles_stores_for_inbox import process_coles_stores_for_inbox
+from .clean_raw_store_data_coles import clean_raw_store_data_coles

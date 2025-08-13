@@ -7,7 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
-from api.utils.scraper_utils.clean_raw_store_data_coles import clean_raw_store_data_coles
+from api.utils.shop_scraping_utils.coles.clean_raw_store_data_coles import clean_raw_store_data_coles
 from api.utils.shop_scraping_utils.coles import (
     drange,
     get_graphql_query, 
