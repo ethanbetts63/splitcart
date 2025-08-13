@@ -6,6 +6,7 @@ def get_or_create_division(company_obj: Company, division_name: str):
     """
     division, created = Division.objects.get_or_create(
         company=company_obj,
-        name=division_name
+        id=division_name,
+        defaults={'name': division_name}
     )
     return division, created
