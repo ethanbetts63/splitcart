@@ -19,7 +19,7 @@ from api.utils.shop_scraping_utils.coles import (
 COLES_API_URL = "https://www.coles.com.au/api/graphql"
 SUBSCRIPTION_KEY = "eae83861d1cd4de6bb9cd8a2cd6f041e"
 DISCOVERED_STORES_DIR = r'C:\Users\ethan\coding\splitcart\api\data\discovered_stores'
-PROGRESS_FILE = "C:\Users\ethan\coding\splitcart\api\data\store_data\stores_coles\find_coles_stores_progress.json"
+PROGRESS_FILE = r"C:\Users\ethan\coding\splitcart\api\data\store_data\stores_coles\find_coles_stores_progress.json"
 
 # Geographical grid for Australia (approximate)
 LAT_MIN = -44.0
