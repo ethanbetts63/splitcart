@@ -6,6 +6,7 @@ from django.core.management.base import BaseCommand
 from api.utils.database_updating_utils.get_or_create_company import get_or_create_company
 from api.utils.database_updating_utils.get_or_create_division import get_or_create_division
 from api.utils.database_updating_utils.get_or_create_store import get_or_create_store
+from api.utils.database_updating_utils.tally_counter import TallyCounter
 
 class Command(BaseCommand):
     help = 'Continuously updates the store database from files in the discovered_stores directory.'
@@ -48,13 +49,13 @@ class Command(BaseCommand):
 
             if store_created:
                 self.stdout.write(self.style.SUCCESS(f"  + Created new Store: {store_obj.name} ({store_obj.store_id})"))
-                self.stores_created += 1
             else:
                 self.stdout.write(self.style.SUCCESS(f"  * Updated existing Store: {store_obj.name} ({store_obj.store_id})"))
-                self.stores_updated += 1
-
+            
+            # Use the tally counter utility
+            self.tally.increment(store_created)
             os.remove(file_path)
-            self.stdout.write(f"--- Tally: {self.stores_created} Created, {self.stores_updated} Updated ---")
+            self.tally.display(self)
 
         except json.JSONDecodeError:
             self.stdout.write(self.style.ERROR(f"Error decoding JSON from {file_name}. Removing."))
@@ -65,8 +66,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         DISCOVERED_STORES_DIR = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\discovered_stores"
-        self.stores_created = 0
-        self.stores_updated = 0
+        self.tally = TallyCounter()
 
         if not os.path.exists(DISCOVERED_STORES_DIR):
             self.stdout.write(self.style.WARNING(f"'{DISCOVERED_STORES_DIR}' not found. Nothing to process."))
@@ -81,8 +81,8 @@ class Command(BaseCommand):
                     self.process_store_file(file_name, DISCOVERED_STORES_DIR)
                 continue
             else:
-                self.stdout.write(self.style.SUCCESS("\nNo new store files found. Waiting 60 seconds..."))
-                time.sleep(60)
+                self.stdout.write(self.style.SUCCESS("\nNo new store files found. Waiting 120 seconds..."))
+                time.sleep(120)
                 store_files = [f for f in os.listdir(DISCOVERED_STORES_DIR) if f.endswith('.json')]
                 if not store_files:
                     self.stdout.write(self.style.SUCCESS("No new store files found after waiting. Exiting."))
