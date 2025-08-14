@@ -3,6 +3,10 @@ import json
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.conf import settings
+from datetime import datetime
+
+# Define constants for failed products
+FAILED_PRODUCTS_DIR = os.path.join(settings.BASE_DIR, 'api', 'data', 'failed_products')
 from api.utils.database_updating_utils import (
     deactivate_prices_for_store,
     get_or_create_product,
@@ -17,6 +21,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         processed_data_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'processed_data')
+        self.failed_products_data = {} # Initialize failed products data
 
         if not os.path.exists(processed_data_path):
             self.stdout.write(self.style.WARNING('Processed data directory not found.'))
@@ -73,7 +78,15 @@ class Command(BaseCommand):
                     for product_data in products:
                         category_path = product_data.get('category_path', [])
                         if not category_path:
-                            self.stdout.write(self.style.WARNING(f"    - Product '{product_data.get('name')}' is missing category_path. Skipping."))
+                            # Save failed product data
+                            self.stdout.write(self.style.WARNING(f"    - Product '{product_data.get('name')}' is missing category_path. Saving to failed products."))
+                            
+                            company_entry = self.failed_products_data.setdefault(company_name, {})
+                            store_entry = company_entry.setdefault(store_id, [])
+                            store_entry.append({
+                                'product_data': product_data,
+                                'reason': 'missing category_path'
+                            })
                             continue
 
                         # Get or create the category hierarchy
@@ -94,5 +107,15 @@ class Command(BaseCommand):
 
             except Exception as e:
                 self.stderr.write(self.style.ERROR(f'  An error occurred processing {filename}. The file will not be deleted. Error: {e}'))
+
+        # --- Save failed products to JSON file ---
+        if self.failed_products_data:
+            os.makedirs(FAILED_PRODUCTS_DIR, exist_ok=True)
+            today_str = datetime.now().strftime('%Y-%m-%d')
+            failed_file_path = os.path.join(FAILED_PRODUCTS_DIR, f'failed_products_{today_str}.json')
+            
+            with open(failed_file_path, 'w', encoding='utf-8') as f:
+                json.dump(self.failed_products_data, f, indent=4)
+            self.stdout.write(self.style.WARNING(f'\nSaved failed products to: {failed_file_path}'))
 
         self.stdout.write(self.style.SUCCESS("\n--- Database update complete ---"))
