@@ -28,20 +28,32 @@ class Command(BaseCommand):
                     'company_slug': company_slug, # Use the slugified name
                     'data_generation_date': datetime.now().isoformat()
                 },
-                'stores_by_division': {}
+                'stores_by_division': {},
+                'stores_without_division': [] # New key for stores without a division
             }
+
+            total_company_stores = 0 # Counter for total stores in the company
 
             stores = Store.objects.filter(company=company).select_related('division')
 
             for store in stores:
-                division_name = store.division.name if store.division else 'No Division'
-                division_slug = slugify(division_name) if store.division else 'no-division' # Use slugify for division name
+                total_company_stores += 1 # Increment total company stores
 
-                if division_slug not in company_data['stores_by_division']:
-                    company_data['stores_by_division'][division_slug] = {
-                        'division_name': division_name,
-                        'stores': []
-                    }
+                if store.division: # If the store has a division
+                    division_name = store.division.name
+                    division_slug = slugify(division_name)
+
+                    if division_slug not in company_data['stores_by_division']:
+                        company_data['stores_by_division'][division_slug] = {
+                            'division_name': division_name,
+                            'total_stores_in_division': 0, # New counter for division stores
+                            'stores': []
+                        }
+                    
+                    company_data['stores_by_division'][division_slug]['total_stores_in_division'] += 1 # Increment division store count
+                    target_store_list = company_data['stores_by_division'][division_slug]['stores']
+                else: # If the store has no division
+                    target_store_list = company_data['stores_without_division']
                 
                 store_details = {
                     'store_id': store.store_id,
@@ -73,7 +85,7 @@ class Command(BaseCommand):
                     'available_customer_service_types': store.available_customer_service_types,
                     'alcohol_availability': store.alcohol_availability,
                 }
-                company_data['stores_by_division'][division_slug]['stores'].append(store_details)
+                target_store_list.append(store_details)
             
             output_file_path = os.path.join(company_data_dir, f'{company_slug}.json')
             with open(output_file_path, 'w', encoding='utf-8') as f:
