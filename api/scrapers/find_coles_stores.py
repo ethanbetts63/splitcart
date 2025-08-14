@@ -143,7 +143,7 @@ def find_coles_stores():
                 current_lat += LAT_STEP
             
             print_progress_bar(total_steps, total_steps, LAT_MAX, LON_MAX, len(all_stores))
-            print(f"\n\nFinished Coles store scraping. Found {len(all_stores)} unique stores.")
+            print(f"\n\nFinished Coles store scraping. Found {len(all_stores)} unique stores. Finishing Coords: ({LAT_MAX}, {LON_MAX})")
             print(f"Cleaned data saved to {OUTPUT_FILE}")
             if os.path.exists(PROGRESS_FILE):
                 os.remove(PROGRESS_FILE)
