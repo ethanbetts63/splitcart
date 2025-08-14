@@ -1,4 +1,3 @@
-
 import time
 import os
 import requests
@@ -55,16 +54,16 @@ class Command(BaseCommand):
                 return
             total_products = len(product_ids_to_check)
             completed_count = 0
+            substitutes_found_count = 0
         else:
-            # This part of the logic needs to be more robust
-            # We need the original total to calculate progress correctly.
-            # For now, we'll just show progress on the remaining items.
             self.stdout.write(self.style.WARNING(f"Resuming from progress file. {len(remaining_ids)} products left to check."))
             product_ids_to_check = remaining_ids
-            total_products = len(product_ids_to_check) # This is not the overall total, but for this session.
+            total_products = len(product_ids_to_check)
             completed_count = 0
+            substitutes_found_count = 0 # Reset on resume
 
-        print_progress(completed_count, total_products)
+        # Initial progress print
+        print_progress(completed_count, total_products, substitutes_found_count)
 
         for product_id in list(product_ids_to_check):
             if product_id not in product_ids_to_check:
@@ -86,13 +85,13 @@ class Command(BaseCommand):
             if not original_product:
                 # If we can't find the original product, just update progress and move on
                 completed_count += increment
-                print_progress(completed_count, total_products)
+                print_progress(completed_count, total_products, substitutes_found_count)
                 save_progress(PROGRESS_FILE, product_ids_to_check)
                 continue
 
             if substitute_data_list:
+                substitutes_found_count += len(substitute_data_list)
                 for sub_data in substitute_data_list:
-                    # sub_data is a dictionary of product details
                     sub_id = str(sub_data.get('Stockcode'))
 
                     if sub_id in product_ids_to_check:
@@ -101,19 +100,17 @@ class Command(BaseCommand):
                     
                     substitute_product = get_product_by_store_id(sub_id)
                     if substitute_product:
-                        # Product exists in DB, link it
                         if substitute_product != original_product:
                             link_products_as_substitutes(original_product, substitute_product)
                     else:
-                        # Product is not in DB, save it for later
                         save_discovered_product(sub_data)
 
             completed_count += increment
-            print_progress(completed_count, total_products)
+            print_progress(completed_count, total_products, substitutes_found_count)
             save_progress(PROGRESS_FILE, product_ids_to_check)
 
         if os.path.exists(PROGRESS_FILE):
             os.remove(PROGRESS_FILE)
         
-        print_progress(total_products, total_products) # Show 100%
+        print_progress(total_products, total_products, substitutes_found_count)
         self.stdout.write(self.style.SUCCESS("\nSuccessfully finished fetching and linking Woolworths substitutes."))
