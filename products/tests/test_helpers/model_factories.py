@@ -1,7 +1,7 @@
 import factory
 from factory.django import DjangoModelFactory
 from products.models import Product, Price
-from companies.tests.test_helpers.model_factories import StoreFactory, CategoryFactory
+from companies.tests.test_helpers.model_factories import StoreFactory
 
 class ProductFactory(DjangoModelFactory):
     class Meta:
@@ -11,7 +11,12 @@ class ProductFactory(DjangoModelFactory):
     brand = factory.Faker('company')
     size = factory.Faker('word')
     barcode = factory.Faker('ean')
-    category = factory.SubFactory(CategoryFactory)
+    image_url = factory.Faker('image_url')
+    description = factory.Faker('text')
+    country_of_origin = factory.Faker('country')
+    allergens = factory.Faker('text')
+    ingredients = factory.Faker('text')
+    # category and substitute_goods will be handled post-generation for ManyToMany
 
 class PriceFactory(DjangoModelFactory):
     class Meta:
@@ -26,4 +31,5 @@ class PriceFactory(DjangoModelFactory):
     unit_of_measure = factory.Faker('word')
     is_on_special = factory.Faker('boolean')
     is_available = factory.Faker('boolean')
+    is_active = True
     url = factory.Faker('url')
