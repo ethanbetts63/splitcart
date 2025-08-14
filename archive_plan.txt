@@ -1,45 +1,35 @@
-# Archive Plan: Generating Sellable Data Products
+# Data Processing and Archiving Pipeline
 
-This plan outlines the process for generating customer-ready JSON files, which will serve as our sellable data products. The command responsible for this will be `build_archive`.
+This document outlines the current data processing pipeline, from raw data collection to the generation of final, sellable data archives.
 
-## `build_archive` Command
+## Implemented Stages
 
-This command will generate denormalized, customer-ready JSON files as requested.
+The pipeline consists of several automated stages that process raw data and populate the central database, followed by a process to generate company-level archives.
 
-*   **Purpose:** Generate sellable data products in a convenient, self-contained format.
-*   **Output Structure:**
-    ```
-    archive/
-    ├───company_data/
-    │   ├───coles.json
-    │   └───woolworths.json
-    │
-    └───store_data/
-        ├───coles/
-        │   ├───{store_slug_1}.json
-        │   └───{store_slug_2}.json
-        └───woolworths/
-            ├───{store_slug_3}.json
-            └───{store_slug_4}.json
-    ```
+### Stage 1: Store Database Population
+*   **Command:** `python manage.py update_store_database`
+*   **Purpose:** This command processes raw JSON files containing store information from the `api/data/discovered_stores/` directory.
+*   **Process:** It reads each file, creates or updates the corresponding `Company`, `Division`, and `Store` records in the database, and then deletes the source file. This ensures the central database always has the most up-to-date store information.
 
-*   **File Contents:**
-    *   `archive/company_data/{company_slug}.json`:
-        *   **Metadata:** Company details, date of data generation.
-        *   **Stores:** A list of all stores for that company, including their details (name, address, etc.).
-    *   `archive/store_data/{company_slug}/{store_slug}.json`:
-        *   **Metadata:** Store details, date of data generation.
-        *   **Products:** A complete list of all products available at that store, listed in a logical order (e.g., alphabetically). Each product will have:
-            *   All its current details (name, description, size, etc.).
-            *   A full history of its price records at that store, with each record containing the date and price.
-        *   **Categories:** A hierarchical representation of all categories specific to that store. This structure will be included in the metadata section of the store file.
+### Stage 2: Product Database Population
+*   **Command:** `python manage.py update_database`
+*   **Purpose:** This command populates the database with product and price information from processed data files located in `api/data/processed_data/`.
+*   **Process:** For each file, it deactivates old prices for the relevant store, then creates or updates `Product` records and adds the new `Price` information. This command maintains a live, relational database of all products and their current prices.
 
-### Handling Categories in Sellable Data
+### Stage 3: Company Archive Generation
+*   **Command:** `python manage.py build_company_jsons`
+*   **Purpose:** This command generates the first set of sellable data archives.
+*   **Process:** It queries the database and creates aggregated JSON files for each company (e.g., `coles.json`, `woolworths.json`) in the `api/data/archive/company_data/` directory. These files contain detailed lists of all stores belonging to each company, grouped by division.
 
-To address the complexity of categories, the `build_archive` command will do the following for each store:
+## Future Work: Product Archives
 
-1.  Fetch all categories associated with that specific store from the database.
-2.  Reconstruct the hierarchical structure of these categories (parents and subcategories).
-3.  This entire category structure will be included in the metadata section of the store's JSON file.
+The final piece of the archiving system, the generation of per-store **product archives**, has not yet been built.
 
-This approach ensures that the category information in each store file is accurate and self-contained, reflecting the unique layout of that store, while avoiding product duplication.
+*   **Concept:** These archives will be individual JSON files for each store (e.g., `archive/store_data/coles/{store-slug}.json`).
+*   **Contents:** Each file will contain:
+    *   Metadata about the specific store.
+    *   A complete list of all products available at that store.
+    *   A full price history for each product at that store.
+    *   A hierarchical representation of the store's specific product categories.
+
+This represents the remaining work required to complete the full suite of planned sellable data products.
