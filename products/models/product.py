@@ -41,7 +41,7 @@ class Product(models.Model):
     substitute_goods = models.ManyToManyField(
         'self',
         blank=True,
-        symmetrical=False,
+        symmetrical=True,
         help_text="Optional: Other products that can be used as substitutes."
     )
 
