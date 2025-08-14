@@ -102,7 +102,7 @@ class Command(BaseCommand):
                 }
 
                 for key, value in fields_to_check.items():
-                    if value is not None and value != "":
+                    if value is not None and value != "" and value != []:
                         store_details[key] = value
 
                 target_store_list.append(store_details)
