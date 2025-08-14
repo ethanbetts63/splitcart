@@ -13,7 +13,7 @@ def get_or_create_category(name: str, company: Company, store_category_id: str =
     # This respects the "first name wins" for a given slug.
     category, created = Category.objects.get_or_create(
         slug=slug,
-        company=company.id,
+        company=company,
         defaults={'name': name, 'store_category_id': store_category_id}
     )
     return category, created
