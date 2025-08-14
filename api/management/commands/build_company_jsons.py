@@ -57,7 +57,22 @@ class Command(BaseCommand):
                 
                 store_details = {
                     'store_id': store.store_id,
-                    'name': store.name,
+                    'name': store.name
+                }
+
+                # --- Field Processing ---
+                # Simplify Woolworths trading hours
+                trading_hours_value = store.trading_hours
+                if company.name == 'Woolworths' and isinstance(store.trading_hours, list):
+                    try:
+                        simplified_hours = [item['TradingHourForDisplay'] for item in store.trading_hours if 'TradingHourForDisplay' in item]
+                        if simplified_hours:
+                            trading_hours_value = simplified_hours
+                    except (TypeError, KeyError):
+                        pass # Keep original value if structure is not as expected
+
+                # List of fields to check and add to the details if they have a value
+                fields_to_check = {
                     'is_active': store.is_active,
                     'phone_number': store.phone_number,
                     'address_line_1': store.address_line_1,
@@ -67,7 +82,7 @@ class Command(BaseCommand):
                     'postcode': store.postcode,
                     'latitude': str(store.latitude) if store.latitude is not None else None,
                     'longitude': str(store.longitude) if store.longitude is not None else None,
-                    'trading_hours': store.trading_hours,
+                    'trading_hours': trading_hours_value,
                     'facilities': store.facilities,
                     'is_trading': store.is_trading,
                     'last_updated': store.last_updated.isoformat() if store.last_updated else None,
@@ -85,6 +100,11 @@ class Command(BaseCommand):
                     'available_customer_service_types': store.available_customer_service_types,
                     'alcohol_availability': store.alcohol_availability,
                 }
+
+                for key, value in fields_to_check.items():
+                    if value is not None and value != "":
+                        store_details[key] = value
+
                 target_store_list.append(store_details)
             
             output_file_path = os.path.join(company_data_dir, f'{company_slug}.json')
