@@ -33,3 +33,35 @@ The final piece of the archiving system, the generation of per-store **product a
     *   A hierarchical representation of the store's specific product categories.
 
 This represents the remaining work required to complete the full suite of planned sellable data products.
+
+---
+
+## Implementation Plan: `build_store_jsons` Command
+
+This section outlines the plan for the `build_store_jsons` command, which is responsible for generating the per-store product archives.
+
+### 1. Command Definition and Arguments
+
+The command will be defined in `api/management/commands/build_store_jsons.py` and will support the following arguments:
+
+*   **`--company <company_slug>`**: (Optional) Restricts processing to a single company.
+*   **`--store <store_id>`**: (Optional) Restricts processing to a single store, identified by its unique `store_id`.
+*   **Default Behavior**: When run without arguments, the command will process all active stores for all companies.
+
+### 2. Core Logic and Process
+
+The command will follow a four-step process:
+
+**Step 1: Select Target Stores**
+Based on the provided arguments, the command will build a queryset of stores. To ensure efficiency and minimize database calls, this query will use `prefetch_related` to fetch all associated product and price data upfront.
+
+**Step 2: Iterate Through Stores**
+The command will loop through each store in the selected queryset. For each store, it will generate a single JSON file.
+
+**Step 3: Gather and Structure Data**
+For each store, a Python dictionary will be constructed with the following structure:
+*   **`metadata`**: Will contain store details (name, address, ID), a `data_generation_date`, and a reconstructed `category_hierarchy` specific to that store's product set.
+*   **`products`**: A list where each item represents a product. Each product will include its details (name, description, etc.) and a `price_history` list containing all of its price records at that store, sorted by date.
+
+**Step 4: Generate and Save JSON File**
+The final dictionary will be saved as a JSON file to `api/data/archive/store_data/{company_slug}/{store_id}.json`. The command will be responsible for creating the necessary directories.
