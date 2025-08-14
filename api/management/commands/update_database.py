@@ -44,7 +44,19 @@ class Command(BaseCommand):
 
             # Get or create the Company and Store objects
             company_obj = get_or_create_company(company_name)
-            store_obj = get_or_create_store(company_obj, metadata)
+            store_id = metadata.get('store_id')
+            if not store_id:
+                self.stdout.write(self.style.WARNING(f'Skipping {filename}: missing store_id in metadata.'))
+                continue
+
+            # The get_or_create_store utility expects a division object, but we don't have
+            # that information in the processed product files. We'll pass None.
+            store_obj, created = get_or_create_store(
+                company_obj=company_obj,
+                division_obj=None,
+                store_id=store_id,
+                store_data=metadata
+            )
 
             if not store_obj:
                 self.stdout.write(self.style.ERROR(f'Could not get or create store from metadata in {filename}. Skipping.'))
