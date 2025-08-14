@@ -19,6 +19,6 @@ def get_woolworths_product_store_ids() -> Set[str]:
     prices = Price.objects.filter(
         store__company=woolworths_company,
         is_active=True
-    ).distinct('store_product_id')
+    ).values_list('store_product_id', flat=True).distinct()
 
-    return set(p.store_product_id for p in prices)
+    return set(prices)
