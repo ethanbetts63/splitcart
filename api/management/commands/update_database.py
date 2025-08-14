@@ -43,7 +43,7 @@ class Command(BaseCommand):
                 continue
 
             # Get or create the Company and Store objects
-            company_obj = get_or_create_company(company_name)
+            company_obj, company_created = get_or_create_company(company_name)
             store_id = metadata.get('store_id')
             if not store_id:
                 self.stdout.write(self.style.WARNING(f'Skipping {filename}: missing store_id in metadata.'))

@@ -10,7 +10,8 @@ def get_or_create_company(company_name: str) -> Company:
     Returns:
         The Company object.
     """
-    return Company.objects.get_or_create(
+    company, created = Company.objects.get_or_create(
         name__iexact=company_name,
         defaults={'name': company_name.title()}
     )
+    return company, created
