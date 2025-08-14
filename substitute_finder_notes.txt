@@ -1,0 +1,35 @@
+
+# Notes on Messages from the `get_woolworths_substitutes` Command
+
+This file explains the common informational and warning messages you might see when running the substitute finder script.
+
+---
+
+### 1. Message: `Product with store_id [ID] not found in database.`
+
+**What it means:**
+The Woolworths API returned a product ID that does not exist in your local database.
+
+**Common Causes:**
+*   **New Products:** The product was recently added to the Woolworths website and has not been picked up by your own scrapers yet.
+*   **Regional Items:** The product might only be available in certain states or stores that are not part of your regular scraping process.
+*   **Scraping Gaps:** A previous scraping run might have missed this particular product for some reason.
+
+**Is it a problem?**
+Not for this script. The substitute finder is built to handle this gracefully. It simply notes that the product isn't available locally and moves on. It does not indicate a crash or a critical error.
+
+---
+
+### 2. Message: `Multiple active prices found for store_id [ID].`
+
+**What it means:**
+The script queried your local database for a specific product and found multiple price records for it that are all marked as `is_active=True`.
+
+**Common Causes:**
+*   **Incomplete Data Updates:** This is the most likely cause. When your scrapers fetch new prices, the old price for a product should be deactivated (i.e., its `is_active` flag set to `False`). This message suggests that for some products, the old price records are not being correctly deactivated.
+
+**Is it a problem?**
+Yes, this indicates a data integrity issue in your database that should be investigated. While the substitute finder script protects itself by skipping these products, the presence of multiple active prices could lead to incorrect data being used in other parts of your application.
+
+**Where to look:**
+Review the management command or script responsible for updating your database with newly scraped product data. Ensure that it has a clear step to find and deactivate the previous price record for a product before saving the new one.

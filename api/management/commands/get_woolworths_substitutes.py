@@ -12,6 +12,7 @@ from api.utils.substitution_utils import (
     load_progress,
     save_progress,
     print_progress,
+    save_discovered_product,
 )
 
 PROGRESS_FILE = os.path.join(settings.BASE_DIR, 'api', 'data', 'woolworths_substitutes_progress.json')
@@ -70,33 +71,42 @@ class Command(BaseCommand):
                 continue
 
             try:
-                substitute_ids = fetch_substitutes_from_api(product_id, session)
+                substitute_data_list = fetch_substitutes_from_api(product_id, session)
                 time.sleep(1)
             except (requests.exceptions.RequestException, ValueError) as e:
                 self.stderr.write(f"\nAPI Error for {product_id}: {e}. Skipping.")
                 time.sleep(5)
                 continue
 
+            # The original product is processed, so remove it from the set
+            product_ids_to_check.remove(product_id)
+            increment = 1
+
             original_product = get_product_by_store_id(product_id)
             if not original_product:
-                product_ids_to_check.remove(product_id)
-                completed_count += 1
+                # If we can't find the original product, just update progress and move on
+                completed_count += increment
                 print_progress(completed_count, total_products)
                 save_progress(PROGRESS_FILE, product_ids_to_check)
                 continue
 
-            product_ids_to_check.remove(product_id)
-            increment = 1
+            if substitute_data_list:
+                for sub_data in substitute_data_list:
+                    # sub_data is a dictionary of product details
+                    sub_id = str(sub_data.get('Stockcode'))
 
-            if substitute_ids:
-                for sub_id in substitute_ids:
                     if sub_id in product_ids_to_check:
                         product_ids_to_check.remove(sub_id)
                         increment += 1
                     
                     substitute_product = get_product_by_store_id(sub_id)
-                    if substitute_product and substitute_product != original_product:
-                        link_products_as_substitutes(original_product, substitute_product)
+                    if substitute_product:
+                        # Product exists in DB, link it
+                        if substitute_product != original_product:
+                            link_products_as_substitutes(original_product, substitute_product)
+                    else:
+                        # Product is not in DB, save it for later
+                        save_discovered_product(sub_data)
 
             completed_count += increment
             print_progress(completed_count, total_products)

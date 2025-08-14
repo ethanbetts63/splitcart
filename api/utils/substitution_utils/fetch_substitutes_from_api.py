@@ -25,7 +25,7 @@ def fetch_substitutes_from_api(product_id: str, session: requests.Session) -> Li
 
         substitute_list = substitutes[0]["SubstituteProductList"]
         return [
-            str(sub_data.get("Product", {}).get("Stockcode"))
+            sub_data.get("Product")
             for sub_data in substitute_list
             if sub_data.get("Product", {}).get("Stockcode")
         ]

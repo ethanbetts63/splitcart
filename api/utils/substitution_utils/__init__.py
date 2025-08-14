@@ -7,6 +7,7 @@ from .link_products_as_substitutes import link_products_as_substitutes
 from .load_progress import load_progress
 from .save_progress import save_progress
 from .print_progress import print_progress
+from .save_discovered_product import save_discovered_product
 
 __all__ = [
     'get_woolworths_product_store_ids',
@@ -16,6 +17,7 @@ __all__ = [
     'load_progress',
     'save_progress',
     'print_progress',
+    'save_discovered_product',
 ]
 
 
