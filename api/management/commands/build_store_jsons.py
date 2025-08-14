@@ -45,6 +45,11 @@ class Command(BaseCommand):
             # 2. Build the list of products with price history
             product_list = build_product_list(store)
 
+            # Skip creating a file if there are no products for the store
+            if not product_list:
+                self.stdout.write(self.style.WARNING(f'  Skipping store: No products found.'))
+                continue
+
             # 3. Assemble the final dictionary for the JSON file
             store_data = {
                 'metadata': {
