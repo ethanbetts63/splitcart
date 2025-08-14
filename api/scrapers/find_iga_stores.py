@@ -52,7 +52,7 @@ def find_iga_stores():
                         if not os.path.exists(filename):
                             with open(filename, 'w', encoding='utf-8') as f:
                                 json.dump(cleaned_data, f, indent=4)
-                            found_stores_count += 1 # Increment only for newly saved stores
+                            found_stores_count += 1 
 
             except requests.exceptions.RequestException:
                 pass # Ignore network errors silently

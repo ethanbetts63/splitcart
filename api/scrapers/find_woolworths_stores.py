@@ -21,8 +21,6 @@ LAT_MIN = -42.0
 LAT_MAX = -10.0
 LON_MIN = 112.0
 LON_MAX = 154.0
-LAT_STEP = 1
-LON_STEP = 2
 
 REQUEST_DELAY = 0.5
 
@@ -30,33 +28,43 @@ REQUEST_DELAY = 0.5
 
 def find_woolworths_stores():
     """Main function to drive the scraping process."""
-    total_lat_steps = int((LAT_MAX - LAT_MIN) / LAT_STEP) + 1
-    total_lon_steps = int((LON_MAX - LON_MIN) / LON_STEP) + 1
-    total_steps = total_lat_steps * total_lon_steps
-
     session = requests.Session()
     session.headers.update({
         "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
     })
 
-    current_run_discovered_stores = set() # Initialize set to track stores found in this run
+    # Set to track stores found in the current execution to avoid redundant file writes
+    current_run_discovered_stores = set()
 
     while True:
         try:
-            start_lat, start_lon = load_progress(PROGRESS_FILE, LAT_MIN, LAT_STEP, LON_MIN, LON_MAX, LON_STEP)
-            found_stores = 0
+            # Load progress or initialize new scraping parameters
+            start_lat, start_lon, lat_step, lon_step, found_stores = load_progress(PROGRESS_FILE, LAT_MIN, LON_MIN)
+
+            # Get the initial count of stores from the directory
+            if found_stores == 0:
+                 found_stores = len([name for name in os.listdir(DISCOVERED_STORES_DIR) if os.path.isfile(os.path.join(DISCOVERED_STORES_DIR, name)) and name.startswith('woolworths_')])
 
             print("\nStarting Woolworths store data scraping...")
 
-            lat_steps = list(drange(LAT_MIN, LAT_MAX, LAT_STEP))
-            lon_steps = list(drange(LON_MIN, LON_MAX, LON_STEP))
+            lat_steps = list(drange(LAT_MIN, LAT_MAX, lat_step))
+            lon_steps = list(drange(LON_MIN, LON_MAX, lon_step))
             
+            total_lat_steps = len(lat_steps)
+            total_lon_steps = len(lon_steps)
+            total_steps = total_lat_steps * total_lon_steps
+            
+            # Calculate initial completed_steps based on start_lat and start_lon
             completed_steps = 0
-            if start_lat > LAT_MIN:
-                completed_lat_steps = lat_steps.index(start_lat)
-                completed_steps += completed_lat_steps * len(lon_steps)
-            if start_lon > LON_MIN:
-                completed_steps += lon_steps.index(start_lon)
+            try:
+                start_lat_index = next(i for i, lat in enumerate(lat_steps) if abs(lat - start_lat) < 1e-9)
+                completed_steps += start_lat_index * total_lon_steps
+                start_lon_index = next(i for i, lon in enumerate(lon_steps) if abs(lon - start_lon) < 1e-9)
+                completed_steps += start_lon_index
+            except StopIteration:
+                # If start_lat/start_lon not found, start from beginning
+                completed_steps = 0
+
 
             current_lat = start_lat
             while current_lat <= LAT_MAX:
@@ -81,37 +89,33 @@ def find_woolworths_stores():
                             for store_details in data["Stores"]:
                                 cleaned_data = clean_raw_store_data_woolworths(store_details, "woolworths", datetime.now())
                                 store_id = cleaned_data['store_data']['store_id']
-                                filename = os.path.join(DISCOVERED_STORES_DIR, f"woolworths_{store_id}.json")
                                 
                                 # Check if the store has already been found in this run
                                 if store_id not in current_run_discovered_stores:
-                                    if not os.path.exists(filename): # Still check if file exists to avoid overwriting
+                                    filename = os.path.join(DISCOVERED_STORES_DIR, f"woolworths_{store_id}.json")
+                                    if not os.path.exists(filename):
                                         with open(filename, 'w', encoding='utf-8') as f:
                                             json.dump(cleaned_data, f, indent=4)
-                                        print(f"\nSaved store {store_id} to {filename}")
                                         found_stores += 1
-                                    current_run_discovered_stores.add(store_id) # Add to set for current run
-
+                                    current_run_discovered_stores.add(store_id)
 
                     except requests.exceptions.RequestException as e:
-                        print(f"Request failed: {e}")
-                        print("Restarting scraper in 10 seconds...")
-                        time.sleep(10)
+                        print(f"\nRequest failed: {e}")
                         raise e # Reraise to trigger the restart
                     except json.JSONDecodeError:
-                        print("Failed to decode JSON. Retrying...")
+                        print("\nFailed to decode JSON. Retrying...")
                         time.sleep(5)
                         continue
                     
-                    save_progress(PROGRESS_FILE, current_lat, current_lon)
-                    current_lon += LON_STEP
+                    save_progress(PROGRESS_FILE, current_lat, current_lon, lat_step, lon_step, found_stores)
+                    current_lon += lon_step
                     completed_steps += 1
 
-                start_lon = LON_MIN
-                current_lat += LAT_STEP
+                start_lon = LON_MIN # Reset for the next latitude sweep
+                current_lat += lat_step
             
             print_progress_bar(total_steps, total_steps, LAT_MAX, LON_MAX, found_stores)
-            print(f"\n\nFinished Woolworths store scraping.")
+            print(f"\n\nFinished Woolworths store scraping. Found {found_stores} unique stores.")
             if os.path.exists(PROGRESS_FILE):
                 os.remove(PROGRESS_FILE)
             

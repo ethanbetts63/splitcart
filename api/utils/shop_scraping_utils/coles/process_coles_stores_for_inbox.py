@@ -46,7 +46,6 @@ def process_coles_stores_for_inbox():
         try:
             with open(filename, 'w', encoding='utf-8') as f:
                 json.dump(store_data, f, indent=4)
-            print(f"Processed and saved store {store_id} to {filename}")
             processed_count += 1
         except Exception as e:
             print(f"Error saving store {store_id} to {filename}: {e}")
