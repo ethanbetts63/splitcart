@@ -6,4 +6,4 @@ from .get_or_create_category_hierarchy import *
 from .get_or_create_product import *
 from .get_woolworths_substitutes import *
 from .recommend_category_links import *
-from .deactivate_store_prices import *
+from .deactivate_product_price import deactivate_product_price

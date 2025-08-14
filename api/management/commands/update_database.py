@@ -71,16 +71,11 @@ class Command(BaseCommand):
 
             try:
                 with transaction.atomic():
-                    num_deactivated = deactivate_prices_for_store(store_obj)
-                    self.stdout.write(f'  Deactivated {num_deactivated} prices for {store_obj.name}')
-
                     product_count = 0
                     for product_data in products:
                         category_path = product_data.get('category_path', [])
                         if not category_path:
-                            # Save failed product data
                             self.stdout.write(self.style.WARNING(f"    - Product '{product_data.get('name')}' is missing category_path. Saving to failed products."))
-                            
                             company_entry = self.failed_products_data.setdefault(company_name, {})
                             store_entry = company_entry.setdefault(store_id, [])
                             store_entry.append({
@@ -89,19 +84,16 @@ class Command(BaseCommand):
                             })
                             continue
 
-                        # Get or create the category hierarchy
                         category_obj = get_or_create_category_hierarchy(category_path, company_obj)
-                        
-                        # Get or create the product
                         product_obj, created = get_or_create_product(product_data, store_obj, category_obj)
-                        if created:
-                            self.stdout.write(f'    - Created new product: {product_obj}')
                         
-                        # Create the new price record
+                        # Deactivate old price for this specific product before creating the new one
+                        deactivate_product_price(product_obj, store_obj)
+                        
+                        # Create the new price record, which will be active by default
                         create_price(product_data, product_obj, store_obj)
                         product_count += 1
                 
-                # If the transaction completes without error, we can now delete the file.
                 os.remove(file_path)
                 self.stdout.write(self.style.SUCCESS(f'  Successfully processed {product_count} products and deleted {filename}'))
 

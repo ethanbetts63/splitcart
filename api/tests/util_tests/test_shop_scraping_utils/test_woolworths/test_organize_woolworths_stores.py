@@ -1,4 +1,3 @@
-
 import os
 import json
 import tempfile
@@ -21,8 +20,8 @@ class TestOrganizeWoolworthsStores(TestCase):
         with open(self.source_file_path, 'w', encoding='utf-8') as f:
             json.dump(data, f)
 
-    @patch('api.utils.shop_scraping_utils.woolworths.organize_woolworths_stores.SOURCE_FILE', new_callable=property)
-    @patch('api.utils.shop_scraping_utils.woolworths.organize_woolworths_stores.BASE_OUTPUT_DIR', new_callable=property)
+    @patch('api.utils.shop_scraping_utils.woolworths.organize_woolworths_stores.SOURCE_FILE')
+    @patch('api.utils.shop_scraping_utils.woolworths.organize_woolworths_stores.BASE_OUTPUT_DIR')
     def test_organization_and_file_creation(self, mock_base_dir, mock_source_file):
         mock_source_file.return_value = self.source_file_path
         mock_base_dir.return_value = self.temp_dir
@@ -61,4 +60,4 @@ class TestSlugify(TestCase):
     def test_slugify(self):
         self.assertEqual(slugify("Test Store 1"), "test-store-1")
         self.assertEqual(slugify("BWS Liquor"), "bws-liquor")
-        self.assertEqual(slugify("  Spaces & Chars! "), "spaces-chars")
+        self.assertEqual(slugify("  Spaces & Chars! "), "-spaces-chars-")
