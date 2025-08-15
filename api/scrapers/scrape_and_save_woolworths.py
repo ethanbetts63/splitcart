@@ -24,7 +24,17 @@ def scrape_and_save_woolworths_data(company: str, state: str, stores: list, cate
 
         # --- Checkpoint Initialization ---
         progress = read_checkpoint(company)
-        completed_categories = progress.get("completed_categories", [])
+        
+        store_name_slug = f"{store_name.lower().replace(' ', '-')}-{store_id}"
+
+        # Check if we are starting a new store or resuming an old one
+        start_scraping_fresh = not progress.get("current_store") or progress.get("current_store") != store_name_slug
+        if start_scraping_fresh:
+            print(f"Starting fresh scrape for {store_name}. Checkpoint from previous store will be ignored for this run.")
+            completed_categories = []
+        else:
+            print(f"Resuming scrape for {store_name}.")
+            completed_categories = progress.get("completed_categories", [])
         
         session = requests.Session()
         session.headers.update({
@@ -102,7 +112,7 @@ def scrape_and_save_woolworths_data(company: str, state: str, stores: list, cate
 
                     # --- Checkpoint: Update Page Progress ---
                     update_page_progress(
-                        company_name=company, store=store_name,
+                        company_name=company, store=store_name_slug,
                         completed_cats=completed_categories,
                         current_cat=category_slug, page_num=page_num
                     )
@@ -123,7 +133,7 @@ def scrape_and_save_woolworths_data(company: str, state: str, stores: list, cate
             if category_successfully_completed:
                 completed_categories.append(category_slug)
                 mark_category_complete(
-                    company_name=company, store=store_name,
+                    company_name=company, store=store_name_slug,
                     completed_cats=completed_categories,
                     new_completed_cat=category_slug
                 )
