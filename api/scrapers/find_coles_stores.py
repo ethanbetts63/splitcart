@@ -8,22 +8,20 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from api.utils.shop_scraping_utils.coles.clean_raw_store_data_coles import clean_raw_store_data_coles
-from api.utils.shop_scraping_utils.coles import (
-    drange,
-    get_graphql_query, 
-    load_existing_stores,
-    load_progress,
-    print_progress_bar,
-    save_progress,
-    save_stores_incrementally,
-    process_coles_stores_for_inbox
-)
+from api.utils.shop_scraping_utils.coles.drange import drange
+from api.utils.shop_scraping_utils.coles.get_graphql_query import get_graphql_query
+from api.utils.shop_scraping_utils.coles.load_existing_stores import load_existing_stores
+from api.utils.shop_scraping_utils.coles.load_progress import load_progress
+from api.utils.shop_scraping_utils.coles.print_progress_bar import print_progress_bar
+from api.utils.shop_scraping_utils.coles.save_progress import save_progress
+from api.utils.shop_scraping_utils.coles.save_stores_incrementally import save_stores_incrementally
+from api.utils.shop_scraping_utils.coles.process_coles_stores_for_inbox import process_coles_stores_for_inbox
 
 # --- CONFIGURATION ---
 COLES_API_URL = "https://www.coles.com.au/api/graphql"
 SUBSCRIPTION_KEY = "eae83861d1cd4de6bb9cd8a2cd6f041e"
-OUTPUT_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_coles\\coles_stores_cleaned.json"
-PROGRESS_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_coles\\find_coles_stores_progress.json"
+OUTPUT_FILE = r"C:\Users\ethan\coding\splitcart\api\data\archive\store_data\coles_stores_cleaned.json"
+PROGRESS_FILE = r"C:\Users\ethan\coding\splitcart\api\data\archive\store_data\find_coles_stores_progress.json"
 
 # Geographical grid for Australia (approximate)
 LAT_MIN = -44.0
