@@ -4,8 +4,7 @@ from django.utils import timezone
 from companies.models import Company, Store
 from api.scrapers.scrape_and_save_aldi import scrape_and_save_aldi_data
 from api.utils.scraper_utils.get_aldi_categories import get_aldi_categories
-
-from api.utils.management_utils.get_company_by_name import get_company_by_name, get_active_stores_for_company
+from api.utils.management_utils import get_company_by_name, get_active_stores_for_company
 
 def run_aldi_scraper(batch_size, raw_data_path):
     print("--- Starting Aldi scraping process ---")

@@ -4,7 +4,7 @@ import random
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from api.scrapers.scrape_and_save_woolworths import scrape_and_save_woolworths_data
-from api.utils.management_utils.get_woolworths_categories import get_woolworths_categories
+from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
 
 class Command(BaseCommand):
     help = 'Launches the scraper to fetch all pages of product data from specific Woolworths stores.'

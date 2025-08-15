@@ -6,27 +6,32 @@ from companies.models import Company, Store
 from api.scrapers.scrape_and_save_woolworths import scrape_and_save_woolworths_data
 from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
 
-from api.utils.management_utils.get_company_by_name import get_company_by_name, get_active_stores_for_company
+SCRAPE_BATCH_SIZE = 2
 
-def run_woolworths_scraper(batch_size, raw_data_path):
+def run_woolworths_scraper():
     print("--- Starting Woolworths scraping process ---")
 
-    woolworths_company = get_company_by_name("woolworths")
-    if not woolworths_company:
+    try:
+        woolworths_company = Company.objects.get(name="woolworths")
+    except Company.DoesNotExist:
+        print("Company 'woolworths' not found in the database.")
         return
 
-    stores = get_active_stores_for_company(woolworths_company)
-    if not stores:
+    stores = Store.objects.filter(company=woolworths_company, is_active=True)
+    if not stores.exists():
+        print("No active Woolworths stores found in the database.")
         return
 
     # Prioritize stores that have never been scraped, then the least recently scraped
-    stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
+    stores_to_scrape = stores.order_by('last_scraped_products')[:SCRAPE_BATCH_SIZE]
 
     categories = get_woolworths_categories()
     if not categories:
         print("Could not fetch Woolworths categories. Aborting.")
         return
     
+    raw_data_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'raw_data')
+    os.makedirs(raw_data_path, exist_ok=True)
     print(f"Data will be saved to: {raw_data_path}")
     
     for store in stores_to_scrape:
@@ -42,3 +47,12 @@ def run_woolworths_scraper(batch_size, raw_data_path):
         store.save()
 
     print("\n--- Woolworths scraping process complete ---")
+
+def run_coles_scraper():
+    print("Coles scraper not implemented yet.")
+
+def run_aldi_scraper():
+    print("Aldi scraper not implemented yet.")
+
+def run_iga_scraper():
+    print("Iga scraper not implemented yet.")

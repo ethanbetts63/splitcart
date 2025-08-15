@@ -6,3 +6,5 @@ from .clean_raw_data_aldi import *
 from .get_iga_categories import get_iga_categories
 from .checkpoint_utils import *
 from .get_aldi_categories import get_aldi_categories
+from .get_coles_categories import get_coles_categories
+from .get_woolworths_categories import get_woolworths_categories

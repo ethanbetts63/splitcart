@@ -1,7 +1,7 @@
 from django.test import TestCase
 from unittest.mock import patch, Mock
 from requests.exceptions import RequestException
-from api.utils.management_utils.get_woolworths_categories import get_woolworths_categories
+from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
 
 class GetWoolworthsCategoriesTest(TestCase):
 
