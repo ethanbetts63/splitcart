@@ -81,10 +81,10 @@ class Command(BaseCommand):
                             continue
 
                         category_obj = get_or_create_category_hierarchy(category_path, company_obj)
-                        product_obj = get_or_create_product(product_data, company_obj.name, tally_counter)
+                        product_obj, created = get_or_create_product(product_data, store_obj, category_obj)
                         product_obj.category.add(category_obj)
                         
-                        create_price(product_obj, store_obj, product_data)
+                        create_price(product_data, product_obj, store_obj)
                         product_count += 1
                 
                 os.remove(file_path)
