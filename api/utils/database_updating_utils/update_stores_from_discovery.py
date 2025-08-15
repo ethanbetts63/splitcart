@@ -34,27 +34,17 @@ def process_store_file(file_name, directory, command, tally):
             return
 
         company_obj, company_created = get_or_create_company(company_name)
-        if company_created:
-            command.stdout.write(command.style.SUCCESS(f"  Created new Company: {company_obj.name}"))
-
         division_obj = None
         if division_name:
             division_obj, division_created = get_or_create_division(
                 company_obj=company_obj, division_name=division_name,
                 external_id=external_id, store_finder_id=store_finder_id
             )
-            if division_created:
-                command.stdout.write(command.style.SUCCESS(f"  Created new Division: {division_obj.name} for {company_obj.name}"))
-
         store_obj, store_created = get_or_create_store(
             company_obj=company_obj, division_obj=division_obj,
-            store_id=store_id, store_data=store_data
+            store_id=store_id,
+            store_data=store_data
         )
-
-        if store_created:
-            command.stdout.write(command.style.SUCCESS(f"  + Created new Store: {store_obj.name} ({store_obj.store_id})"))
-        else:
-            command.stdout.write(command.style.SUCCESS(f"  * Updated existing Store: {store_obj.name} ({store_obj.store_id})"))
         
         tally.increment(store_created, company_name)
         os.remove(file_path)

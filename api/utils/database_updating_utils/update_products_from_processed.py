@@ -58,15 +58,18 @@ def update_products_from_processed(command):
             command.stdout.write(command.style.ERROR(f'Could not get or create store from metadata in {filename}. Skipping.'))
             continue
 
-        command.stdout.write(command.style.SUCCESS(f'--- Processing file: {filename} for store: {store_obj.name} ---'))
+        display_store_name = store_obj.name if store_obj.name != 'N/A' else store_obj.store_id
+        command.stdout.write(command.style.SUCCESS(f'--- Processing file: {filename} for store: {display_store_name} ---'))
 
         try:
             with transaction.atomic():
-                product_count = 0
+                products_created = 0
+                products_updated = 0
+                products_failed = 0
                 for product_data in products:
                     category_path = product_data.get('category_path', [])
                     if not category_path:
-                        command.stdout.write(command.style.WARNING(f"    - Product '{product_data.get('name')}' is missing category_path. Saving to failed products."))
+                        products_failed += 1
                         company_entry = failed_products_data.setdefault(company_name, {})
                         store_entry = company_entry.setdefault(store_id, [])
                         store_entry.append({
@@ -80,10 +83,13 @@ def update_products_from_processed(command):
                     product_obj.category.add(category_obj)
                     
                     create_price(product_data, product_obj, store_obj)
-                    product_count += 1
+                    if created:
+                        products_created += 1
+                    else:
+                        products_updated += 1
             
             os.remove(file_path)
-            command.stdout.write(command.style.SUCCESS(f'  Successfully processed {product_count} products and deleted {filename}'))
+            command.stdout.write(command.style.SUCCESS(f'  Successfully processed products for {filename}. Created: {products_created}, Updated: {products_updated}, Failed: {products_failed}'))
 
         except Exception as e:
             command.stderr.write(command.style.ERROR(f'  An error occurred processing {filename}. The file will not be deleted. Error: {e}'))
