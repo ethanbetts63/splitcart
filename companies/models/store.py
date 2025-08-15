@@ -140,7 +140,12 @@ class Store(models.Model):
     )
     last_updated = models.DateTimeField(
         auto_now=True,
-        help_text="The date and time when the store was last updated."
+        help_text="The date and time when the stores details were last updated."
+    )
+    last_scraped_products = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="The date and time when the store's products were last scraped."
     )
 
     # Company-specific fields

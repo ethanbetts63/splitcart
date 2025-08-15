@@ -1,0 +1,63 @@
+**Scraper Refactor Plan**
+
+**Objective:** Consolidate the individual `scrape_*` management commands into a single `scrape` command that uses the database as the source of truth for store information.
+
+**Key Improvements:**
+
+*   **Single Command:** One command to rule them all (`manage.py scrape --<store_name>`).
+*   **Database Driven:** No more hardcoded JSON files for stores. The scrapers will fetch store data directly from the `Store` and `Company` models.
+*   **Modular and Maintainable:** The scraping logic will be clearly separated from the command-line interface, making it easier to maintain and extend.
+*   **Consistent Behavior:** All scrapers will follow a similar pattern of fetching stores from the database and then scraping them.
+
+**Steps:**
+
+1.  **Modify `Store` Model:**
+    *   **File Path:** `companies/models/store.py`
+    *   **Change:** Add a `last_scraped_products = models.DateTimeField(null=True, blank=True)` field to the `Store` model.
+    *   **Migration:** Create and apply a database migration for this change.
+
+2.  **Create Scraper Orchestrator:**
+    *   **File Path:** `api/scrapers/scraper_orchestrator.py`
+    *   **Purpose:** This new file will contain the high-level logic for running each scraper. It will have one function per scraper, e.g., `run_woolworths_scraper()`, `run_coles_scraper()`, etc.
+    *   **Details:**
+        *   Each function will query the database to get the relevant `Company` and a list of active `Store`s.
+        *   It will prioritize stores that have never been scraped (`last_scraped_products` is `null`) and then the least recently scraped stores.
+        *   It will iterate through a configurable "batch size" of these stores and call the existing low-level scraping functions.
+        *   After a store is successfully scraped, it will update the `last_scraped_products` field for that store.
+
+3.  **Create Consolidated `scrape` Command:**
+    *   **File Path:** `api/management/commands/scrape.py`
+    *   **Purpose:** This will be the new, unified management command for running all scrapers.
+    *   **Details:**
+        *   It will use `argparse` to define command-line arguments for each scraper, e.g., `--woolworths`, `--coles`, `--aldi`, `--iga`.
+        *   The `handle()` method will be a simple dispatcher that calls the appropriate function from `scraper_orchestrator.py` based on the command-line arguments.
+        *   If no arguments are provided, it will call all the scraper functions in the orchestrator.
+
+4.  **Refactor Existing Scrapers (as needed):**
+    *   **File Paths:** `api/scrapers/scrape_and_save_*.py`
+    *   **Purpose:** Ensure that the low-level scraping functions can be called directly from the new orchestrator.
+    *   **Details:**
+        *   The existing `scrape_and_save_*.py` files will be reviewed to ensure they can be easily called from the orchestrator.
+        *   Any logic that deals with reading from the old JSON files will be removed.
+        *   The functions will be modified to accept store data (e.g., store ID, name, state) as arguments, rather than reading it from a file.
+
+5.  **Update `get_*_categories` Utilities (as needed):**
+    *   **File Paths:** `api/utils/management_utils/get_*_categories.py` and `api/utils/scraper_utils/get_*_categories.py`
+    *   **Purpose:** Ensure that the category fetching utilities are compatible with the new database-driven approach.
+    *   **Details:**
+        *   These files will be reviewed to ensure they don't have any dependencies on the old JSON files.
+        *   If they do, they will be refactored to get any necessary information from the database.
+
+6.  **Delete Old Files:**
+    *   **File Paths:**
+        *   `api/management/commands/scrape_*.py` (all the old scrape commands)
+        *   `api/data/store_data/` (the entire directory and all its contents)
+    *   **Purpose:** Clean up the project by removing the now-redundant files.
+    *   **Details:**
+        *   This step should only be done after the new `scrape` command has been thoroughly tested and is working as expected.
+
+**Considerations:**
+
+*   **Batch Size:** We need to decide on a reasonable batch size for each scraper run. This could be a constant in the `scraper_orchestrator.py` file or even a setting in the Django `settings.py` file.
+*   **Error Handling:** We need to ensure that the new `scrape` command has robust error handling. If one scraper fails, it should not prevent the others from running.
+*   **Testing:** We need to create a new set of tests for the `scrape` command and the scraper orchestrator.
