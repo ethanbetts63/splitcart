@@ -11,7 +11,7 @@ from api.utils.management_utils import get_company_by_name, get_active_stores_fo
 def run_iga_scraper(batch_size, raw_data_path):
     print("--- Starting IGA scraping process ---")
 
-    iga_company = get_company_by_name("iga")
+    iga_company = get_company_by_name("Iga")
     if not iga_company:
         return
 

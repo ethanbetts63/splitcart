@@ -7,7 +7,7 @@ from api.utils.management_utils import get_company_by_name, get_active_stores_fo
 def run_woolworths_scraper(batch_size, raw_data_path):
     print("--- Starting Woolworths scraping process ---")
 
-    woolworths_company = get_company_by_name("woolworths")
+    woolworths_company = get_company_by_name("Woolworths")
     if not woolworths_company:
         return
 

@@ -10,7 +10,7 @@ from api.utils.management_utils import get_company_by_name, get_active_stores_fo
 def run_coles_scraper(batch_size, raw_data_path):
     print("--- Starting Coles scraping process ---")
 
-    coles_company = get_company_by_name("coles")
+    coles_company = get_company_by_name("Coles")
     if not coles_company:
         return
 

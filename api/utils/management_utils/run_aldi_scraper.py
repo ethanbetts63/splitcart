@@ -9,7 +9,7 @@ from api.utils.management_utils import get_company_by_name, get_active_stores_fo
 def run_aldi_scraper(batch_size, raw_data_path):
     print("--- Starting Aldi scraping process ---")
 
-    aldi_company = get_company_by_name("aldi")
+    aldi_company = get_company_by_name("Aldi")
     if not aldi_company:
         return
 
