@@ -6,7 +6,7 @@ from api.scrapers.scrape_and_save_iga import scrape_and_save_iga_data
 from api.utils.scraper_utils.get_iga_categories import get_iga_categories
 from api.utils.management_utils.create_store_slug_iga import create_store_slug_iga
 
-from api.utils.management_utils.get_company_by_name import get_company_by_name, get_active_stores_for_company
+from api.utils.management_utils import get_company_by_name, get_active_stores_for_company
 
 def run_iga_scraper(batch_size, raw_data_path):
     print("--- Starting IGA scraping process ---")
