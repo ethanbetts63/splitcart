@@ -1,15 +1,8 @@
-
 import os
-import json
 from django.core.management.base import BaseCommand
-from django.db import transaction
 from django.conf import settings
 
-from api.utils.database_updating_utils import (
-    get_or_create_company,
-    get_or_create_store,
-    get_or_create_division,
-)
+from api.utils.database_updating_utils import update_stores_from_archive_file
 
 class Command(BaseCommand):
     help = 'Updates the database from archived JSON files.'
@@ -30,7 +23,6 @@ class Command(BaseCommand):
         run_stores = options['stores']
         run_products = options['products']
 
-        # If no flags are specified, run both processes
         if not run_stores and not run_products:
             run_stores = True
             run_products = True
@@ -54,44 +46,13 @@ class Command(BaseCommand):
                 continue
 
             file_path = os.path.join(archive_path, filename)
-            self.stdout.write(f"Processing file: {filename}")
-            with open(file_path, 'r', encoding='utf-8') as f:
-                try:
-                    data = json.load(f)
-                except json.JSONDecodeError:
-                    self.stderr.write(self.style.ERROR(f"  Could not decode JSON from {filename}. Skipping."))
-                    continue
-
-            metadata = data.get('metadata', {})
-            company_name = metadata.get('company_name')
-            if not company_name:
-                self.stderr.write(self.style.ERROR(f"  Skipping {filename}: missing company_name in metadata."))
-                continue
-
-            company_obj, _ = get_or_create_company(company_name)
-            stores_by_division = data.get('stores_by_division', {})
-
-            for division_slug, division_data in stores_by_division.items():
-                division_name = division_data.get('division_name')
-                if not division_name:
-                    continue
-                
-                division_obj, _ = get_or_create_division(division_name, company_obj)
-
-                stores = division_data.get('stores', [])
-                store_count = 0
-                for store_data in stores:
-                    store_id = store_data.get('store_id')
-                    if not store_id:
-                        continue
-                    
-                    get_or_create_store(
-                        company_obj=company_obj,
-                        division_obj=division_obj,
-                        store_id=store_id,
-                        store_data=store_data
-                    )
-                    store_count += 1
-                self.stdout.write(self.style.SUCCESS(f"  Processed {store_count} stores for division '{division_name}'."))
+            self.stdout.write(f"Processing file: {filename}...")
+            
+            company_name, stores_processed = update_stores_from_archive_file(file_path)
+            
+            if company_name:
+                self.stdout.write(self.style.SUCCESS(f"  Successfully processed {stores_processed} stores for {company_name}."))
+            else:
+                self.stderr.write(self.style.ERROR(f"  Failed to process {filename}."))
 
         self.stdout.write(self.style.SUCCESS("--- Store Update from Archive Complete ---"))

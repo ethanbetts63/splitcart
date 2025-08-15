@@ -7,3 +7,4 @@ from .get_or_create_product import *
 from .get_woolworths_substitutes import *
 from .recommend_category_links import *
 from .deactivate_product_price import deactivate_product_price
+from .update_stores_from_archive_file import update_stores_from_archive_file
