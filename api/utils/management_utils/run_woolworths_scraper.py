@@ -2,7 +2,8 @@ from django.conf import settings
 from django.utils import timezone
 from api.scrapers.scrape_and_save_woolworths import scrape_and_save_woolworths_data
 from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
-from api.utils.management_utils import get_company_by_name, get_active_stores_for_company
+from api.utils.management_utils.get_company_by_name import get_company_by_name
+from api.utils.management_utils.get_active_stores_for_company import get_active_stores_for_company
 
 def run_woolworths_scraper(batch_size, raw_data_path):
     print("--- Starting Woolworths scraping process ---")
