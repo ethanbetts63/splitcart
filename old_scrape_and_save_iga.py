@@ -7,6 +7,7 @@ from datetime import datetime
 from api.utils.scraper_utils.clean_raw_data_iga import clean_raw_data_iga
 from api.utils.scraper_utils.get_iga_categories import get_iga_categories
 from api.utils.scraper_utils.checkpoint_utils import read_checkpoint, update_page_progress, mark_category_complete, clear_checkpoint
+
 import uuid
 
 def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store_name_slug: str, state: str, save_path: str):
@@ -65,7 +66,7 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
             print(f"    Attempting to fetch page {page_num} for '{category_name}' (skip: {skip})...")
             
             api_url = f"https://www.igashop.com.au/api/storefront/stores/{store_id}/categories/{requests.utils.quote(category_identifier)}/search"
-            params = {{'take': take, 'skip': skip, 'sessionId': session_id}}
+            params = {'take': take, 'skip': skip, 'sessionId': session_id}
 
             try:
                 response = session.get(api_url, params=params, timeout=60)
@@ -82,7 +83,7 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
                     category_successfully_completed = True
                     break
 
-                current_page_skus = {{p.get('sku') for p in raw_products_on_page}}
+                current_page_skus = {p.get('sku') for p in raw_products_on_page}
                 if current_page_skus == previous_page_skus:
                     print(f"    WARNING: Duplicate products detected. Stopping category.")
                     category_successfully_completed = True
@@ -137,4 +138,3 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
 
     print("\n--- IGA scraper tool finished for this store. ---")
     clear_checkpoint(company)
-
