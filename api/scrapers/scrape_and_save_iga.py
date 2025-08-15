@@ -6,7 +6,10 @@ import os
 from datetime import datetime
 from api.utils.scraper_utils.clean_raw_data_iga import clean_raw_data_iga
 from api.utils.scraper_utils.get_iga_categories import get_iga_categories
-from api.utils.scraper_utils.checkpoint_utils import read_checkpoint, update_page_progress, mark_category_complete, clear_checkpoint
+from api.utils.scraper_utils.checkpoint_utils.read_checkpoint import read_checkpoint
+from api.utils.scraper_utils.checkpoint_utils.update_page_progress import update_page_progress
+from api.utils.scraper_utils.checkpoint_utils.mark_category_complete import mark_category_complete
+from api.utils.scraper_utils.checkpoint_utils.clear_checkpoint import clear_checkpoint
 import uuid
 
 def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store_name_slug: str, state: str, save_path: str):
