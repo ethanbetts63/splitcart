@@ -1,10 +1,8 @@
 from django.core.management.base import BaseCommand
-from api.utils.archiving_utils import (
-    get_stores_queryset,
-    build_product_list,
-    save_json_file,
-    print_product_progress,
-)
+from api.utils.archiving_utils.get_stores_queryset import get_stores_queryset
+from api.utils.archiving_utils.build_product_list import build_product_list
+from api.utils.archiving_utils.save_json_file import save_json_file
+from api.utils.archiving_utils.print_product_progress import print_product_progress
 from django.utils.text import slugify
 from datetime import datetime
 

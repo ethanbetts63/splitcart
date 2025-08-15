@@ -3,16 +3,14 @@ import os
 import requests
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from api.utils.substitution_utils import (
-    get_woolworths_product_store_ids,
-    fetch_substitutes_from_api,
-    get_product_by_store_id,
-    link_products_as_substitutes,
-    load_progress,
-    save_progress,
-    print_progress,
-    save_discovered_product,
-)
+from api.utils.substitution_utils.get_woolworths_product_store_ids import get_woolworths_product_store_ids
+from api.utils.substitution_utils.fetch_substitutes_from_api import fetch_substitutes_from_api
+from api.utils.substitution_utils.get_product_by_store_id import get_product_by_store_id
+from api.utils.substitution_utils.link_products_as_substitutes import link_products_as_substitutes
+from api.utils.substitution_utils.load_progress import load_progress
+from api.utils.substitution_utils.save_progress import save_progress
+from api.utils.substitution_utils.print_progress import print_progress
+from api.utils.substitution_utils.save_discovered_product import save_discovered_product
 
 PROGRESS_FILE = os.path.join(settings.BASE_DIR, 'api', 'data', 'woolworths_substitutes_progress.json')
 

@@ -7,14 +7,12 @@ from datetime import datetime
 
 # Define constants for failed products
 FAILED_PRODUCTS_DIR = os.path.join(settings.BASE_DIR, 'api', 'data', 'failed_products')
-from api.utils.database_updating_utils import (
-    get_or_create_product,
-    create_price,
-    get_or_create_category_hierarchy,
-    get_or_create_company,
-    get_or_create_store,
-    TallyCounter
-)
+from api.utils.database_updating_utils.get_or_create_product import get_or_create_product
+from api.utils.database_updating_utils.create_price import create_price
+from api.utils.database_updating_utils.get_or_create_category_hierarchy import get_or_create_category_hierarchy
+from api.utils.database_updating_utils.get_or_create_company import get_or_create_company
+from api.utils.database_updating_utils.get_or_create_store import get_or_create_store
+from api.utils.database_updating_utils.tally_counter import TallyCounter
 
 class Command(BaseCommand):
     help = 'Updates the database with the latest processed data.'

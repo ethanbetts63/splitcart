@@ -2,7 +2,7 @@ import os
 import json
 from datetime import datetime
 from django.core.management.base import BaseCommand
-from companies.models import Company, Store
+from companies.models import Company
 from django.utils.text import slugify
 
 class Command(BaseCommand):
