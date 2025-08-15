@@ -5,29 +5,24 @@ from companies.models import Company, Store
 from api.scrapers.scrape_and_save_coles import scrape_and_save_coles_data
 from api.utils.management_utils.get_coles_categories import get_coles_categories
 
-SCRAPE_BATCH_SIZE = 2
+from api.utils.management_utils.get_company_by_name import get_company_by_name, get_active_stores_for_company
 
-def run_coles_scraper():
+def run_coles_scraper(batch_size, raw_data_path):
     print("--- Starting Coles scraping process ---")
 
-    try:
-        coles_company = Company.objects.get(name="coles")
-    except Company.DoesNotExist:
-        print("Company 'coles' not found in the database.")
+    coles_company = get_company_by_name("coles")
+    if not coles_company:
         return
 
-    stores = Store.objects.filter(company=coles_company, is_active=True)
-    if not stores.exists():
-        print("No active Coles stores found in the database.")
+    stores = get_active_stores_for_company(coles_company)
+    if not stores:
         return
 
     # Prioritize stores that have never been scraped, then the least recently scraped
-    stores_to_scrape = stores.order_by('last_scraped_products')[:SCRAPE_BATCH_SIZE]
+    stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
 
     categories = get_coles_categories()
 
-    raw_data_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'raw_data')
-    os.makedirs(raw_data_path, exist_ok=True)
     print(f"Data will be saved to: {raw_data_path}")
 
     for store in stores_to_scrape:

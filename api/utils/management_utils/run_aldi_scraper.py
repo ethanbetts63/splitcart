@@ -5,27 +5,22 @@ from companies.models import Company, Store
 from api.scrapers.scrape_and_save_aldi import scrape_and_save_aldi_data
 from api.utils.scraper_utils.get_aldi_categories import get_aldi_categories
 
-SCRAPE_BATCH_SIZE = 2
+from api.utils.management_utils.get_company_by_name import get_company_by_name, get_active_stores_for_company
 
-def run_aldi_scraper():
+def run_aldi_scraper(batch_size, raw_data_path):
     print("--- Starting Aldi scraping process ---")
 
-    try:
-        aldi_company = Company.objects.get(name="aldi")
-    except Company.DoesNotExist:
-        print("Company 'aldi' not found in the database.")
+    aldi_company = get_company_by_name("aldi")
+    if not aldi_company:
         return
 
-    stores = Store.objects.filter(company=aldi_company, is_active=True)
-    if not stores.exists():
-        print("No active Aldi stores found in the database.")
+    stores = get_active_stores_for_company(aldi_company)
+    if not stores:
         return
 
     # Prioritize stores that have never been scraped, then the least recently scraped
-    stores_to_scrape = stores.order_by('last_scraped_products')[:SCRAPE_BATCH_SIZE]
+    stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
 
-    raw_data_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'raw_data')
-    os.makedirs(raw_data_path, exist_ok=True)
     print(f"Data will be saved to: {raw_data_path}")
 
     for store in stores_to_scrape:
