@@ -34,7 +34,7 @@ def clean_raw_store_data_aldi(raw_store_data: dict, company: str, timestamp: dat
         "status": None,
         "store_type": None,
         "site_id": None,
-        "category_hierarchy_id": None,
+        
         "shopping_modes": None,
         "available_customer_service_types": raw_store_data.get('availableCustomerServiceTypes'),
         "alcohol_availability": raw_store_data.get('alcoholAvailability'),

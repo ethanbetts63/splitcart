@@ -118,7 +118,7 @@ class Command(BaseCommand):
             'status': store.status,
             'store_type': store.store_type,
             'site_id': store.site_id,
-            'category_hierarchy_id': store.category_hierarchy_id,
+            
             'shopping_modes': store.shopping_modes,
             'available_customer_service_types': store.available_customer_service_types,
             'alcohol_availability': store.alcohol_availability,

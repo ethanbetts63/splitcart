@@ -37,7 +37,7 @@ def get_or_create_store(company_obj: Company, division_obj: Division, store_id: 
         'status': store_data.get('status', ''),
         'store_type': store_data.get('store_type', ''),
         'site_id': store_data.get('site_id', ''),
-        'category_hierarchy_id': store_data.get('category_hierarchy_id', ''),
+        
         'shopping_modes': store_data.get('shopping_modes'),
         'available_customer_service_types': store_data.get('available_customer_service_types'),
         'alcohol_availability': store_data.get('alcohol_availability'),

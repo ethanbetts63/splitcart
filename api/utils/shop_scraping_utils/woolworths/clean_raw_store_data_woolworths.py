@@ -32,7 +32,7 @@ def clean_raw_store_data_woolworths(raw_store_data: dict, company: str, timestam
         "status": None,
         "store_type": None,
         "site_id": None,
-        "category_hierarchy_id": None,
+        
         "shopping_modes": None,
         "available_customer_service_types": None,
         "alcohol_availability": None,

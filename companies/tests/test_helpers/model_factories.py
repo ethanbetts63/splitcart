@@ -46,7 +46,7 @@ class StoreFactory(DjangoModelFactory):
     status = 'Active'
     store_type = 'Regular'
     site_id = factory.Faker('random_int', min=1, max=100)
-    category_hierarchy_id = factory.Faker('uuid4')
+    
     shopping_modes = {}
     available_customer_service_types = {}
     alcohol_availability = {}

@@ -101,7 +101,7 @@ class GetOrCreateStoreTest(TestCase):
             "status": "Open",
             "store_type": "Super",
             "site_id": "SITE1",
-            "category_hierarchy_id": "CAT1",
+            
             "shopping_modes": ["Click & Collect"],
             "available_customer_service_types": ["Phone"],
             "alcohol_availability": ["Beer"]
@@ -130,7 +130,7 @@ class GetOrCreateStoreTest(TestCase):
         self.assertEqual(store.status, "Open")
         self.assertEqual(store.store_type, "Super")
         self.assertEqual(store.site_id, "SITE1")
-        self.assertEqual(store.category_hierarchy_id, "CAT1")
+        
         self.assertEqual(store.shopping_modes, ["Click & Collect"])
         self.assertEqual(store.available_customer_service_types, ["Phone"])
         self.assertEqual(store.alcohol_availability, ["Beer"])

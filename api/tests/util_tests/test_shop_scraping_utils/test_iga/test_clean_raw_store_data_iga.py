@@ -27,7 +27,7 @@ class TestCleanRawStoreDataIga(TestCase):
             "status": "Open",
             "type": "Supermarket",
             "siteId": "S123",
-            "categoryHierarchyId": "cat123",
+            
             "shoppingModes": ["InStore"]
         }
 
@@ -57,7 +57,7 @@ class TestCleanRawStoreDataIga(TestCase):
         self.assertEqual(store_data['status'], "Open")
         self.assertEqual(store_data['store_type'], "Supermarket")
         self.assertEqual(store_data['site_id'], "S123")
-        self.assertEqual(store_data['category_hierarchy_id'], "cat123")
+        
         self.assertEqual(store_data['shopping_modes'], ["InStore"])
 
     def test_missing_data(self):

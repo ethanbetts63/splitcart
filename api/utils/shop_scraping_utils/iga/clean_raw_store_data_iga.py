@@ -32,7 +32,7 @@ def clean_raw_store_data_iga(raw_store_data: dict, company: str, timestamp: date
         "status": raw_store_data.get('status'),
         "store_type": raw_store_data.get('type'),
         "site_id": raw_store_data.get('siteId'),
-        "category_hierarchy_id": raw_store_data.get('categoryHierarchyId'),
+        
         "shopping_modes": raw_store_data.get('shoppingModes'),
         "available_customer_service_types": None,
         "alcohol_availability": None,
