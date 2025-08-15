@@ -16,12 +16,8 @@ def get_stores_queryset(company_slug=None, store_id=None):
     Returns:
         QuerySet: A Django QuerySet of Store objects.
     """
-    # Start with active stores and prefetch all related data needed for the archives
-    # Use select_related for the foreign key relationship to company
-    queryset = Store.objects.select_related('company').filter(is_active=True).prefetch_related(
-        'prices__product__category__parent', # Prefetch through the Price model
-        'prices__product__substitute_goods'
-    )
+    # Start with active stores and select the related company
+    queryset = Store.objects.select_related('company').filter(is_active=True)
 
     # Apply filters based on arguments
     if store_id:

@@ -35,7 +35,7 @@ def update_stores_from_archive_file(file_path: str) -> (str, int):
         if not division_name:
             continue
         
-        division_obj, _ = get_or_create_division(division_name, company_obj)
+        division_obj, _ = get_or_create_division(company_obj, division_name)
 
         stores = division_data.get('stores', [])
         for store_data in stores:
