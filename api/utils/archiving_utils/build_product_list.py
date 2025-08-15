@@ -13,26 +13,27 @@ def get_category_path(category):
 
 def build_product_list(store):
     """
-    Builds a list of product dictionaries for a given store, including price history.
+    Builds a list of product dictionaries for a given store.
+    This function is a generator, yielding one fully processed product at a time.
 
     Args:
-        store (Store): A Store object with prices and products prefetched.
+        store (Store): The store to process products for.
 
-    Returns:
-        list: A list of product dictionaries.
+    Yields:
+        dict: A dictionary representing a single product and its price history.
     """
     processed_products = {}
+    price_queryset = store.prices.prefetch_related(
+        'product__category__parent',
+        'product__substitute_goods'
+    ).all()
 
-    if not hasattr(store, 'prices'):
-        return []
-
-    # The prices are ordered by -scraped_at from the Price model's Meta
-    for price in store.prices.all():
+    # First pass: group all prices by product ID
+    for price in price_queryset:
         product = price.product
-
-        # If we haven't processed this product yet, create its main entry
         if product.id not in processed_products:
             product_data = {
+                'id': product.id,
                 'name': product.name,
                 'brand': product.brand,
                 'size': product.size,
@@ -42,19 +43,11 @@ def build_product_list(store):
                 'allergens': product.allergens,
                 'ingredients': product.ingredients,
                 'barcode': product.barcode,
-                'price_history': []
+                'price_history': [],
+                'category_paths': [] # Initialize empty category paths
             }
-
-            # Get category paths
-            category_paths = []
-            if hasattr(product, 'category'):
-                for cat in product.category.all():
-                    category_paths.append(get_category_path(cat))
-            product_data['category_paths'] = category_paths
-
             processed_products[product.id] = product_data
 
-        # Add the current price to the product's price history
         price_data = {
             'price': str(price.price),
             'was_price': str(price.was_price) if price.was_price else None,
@@ -65,16 +58,21 @@ def build_product_list(store):
             'scraped_at': price.scraped_at.isoformat(),
             'url': price.url
         }
-        
-        # Clean Nones from price_data before appending
         cleaned_price_data = {k: v for k, v in price_data.items() if v is not None}
         processed_products[product.id]['price_history'].append(cleaned_price_data)
 
-    # Convert the dict of processed products to the final list
-    final_product_list = []
+    # Second pass: build category paths and yield final product data
     for product_id, product_data in processed_products.items():
-        # Clean final product data from None, empty strings, or empty lists
-        cleaned_product_data = {k: v for k, v in product_data.items() if v is not None and v != "" and v != []}
-        final_product_list.append(cleaned_product_data)
+        # This requires another query, but it's done per product.
+        # This is a trade-off for generator-based processing.
+        product_obj = price_queryset.filter(product_id=product_id).first().product
+        category_paths = []
+        if hasattr(product_obj, 'category'):
+            for cat in product_obj.category.all():
+                category_paths.append(get_category_path(cat))
+        product_data['category_paths'] = category_paths
 
-    return final_product_list
+        # Clean and yield the final product dictionary
+        product_data.pop('id') # Remove the temporary internal ID
+        cleaned_product_data = {k: v for k, v in product_data.items() if v is not None and v != "" and v != []}
+        yield cleaned_product_data

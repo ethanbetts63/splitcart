@@ -1,8 +1,12 @@
 from django.core.management.base import BaseCommand
-from api.utils.archiving_utils.get_stores_queryset import get_stores_queryset
-from api.utils.archiving_utils.construct_category_hierarchy import construct_category_hierarchy
-from api.utils.archiving_utils.build_product_list import build_product_list
-from api.utils.archiving_utils.save_json_file import save_json_file
+from api.utils.archiving_utils import (
+    get_stores_queryset,
+    construct_category_hierarchy,
+    build_product_list,
+    save_json_file,
+    get_product_queryset_for_store,
+    print_product_progress,
+)
 from django.utils.text import slugify
 from datetime import datetime
 
@@ -29,28 +33,38 @@ class Command(BaseCommand):
 
         stores_to_process = get_stores_queryset(company_slug_arg, store_id_arg)
 
-        if not stores_to_process.exists():
+        # Get the total count first, before iterating
+        total_stores = stores_to_process.count()
+        if total_stores == 0:
             self.stdout.write(self.style.WARNING('No stores found for the given criteria.'))
             return
 
-        total_stores = len(stores_to_process)
         self.stdout.write(f'Found {total_stores} store(s) to process...')
 
-        for i, store in enumerate(stores_to_process):
-            self.stdout.write(f'\n({i+1}/{total_stores}) Processing store: {store.name} ({store.store_id})...')
+        # Use .iterator() to process stores one by one, avoiding memory issues and large queries
+        for i, store in enumerate(stores_to_process.iterator(), 1):
+            self.stdout.write(f'\n({i}/{total_stores}) Processing store: {store.name} ({store.store_id})...')
 
             # 1. Construct the category hierarchy
             category_hierarchy = construct_category_hierarchy(store)
 
-            # 2. Build the list of products with price history
-            product_list = build_product_list(store)
+            # 2. Build the product list using the generator and show progress
+            product_list = []
+            products_processed_count = 0
+            for product_data in build_product_list(store):
+                products_processed_count += 1
+                print_product_progress(products_processed_count)
+                product_list.append(product_data)
 
-            # Skip creating a file if there are no products for the store
-            if not product_list:
+            # 3. Check if any products were found and processed
+            if products_processed_count == 0:
                 self.stdout.write(self.style.WARNING(f'  Skipping store: No products found.'))
                 continue
+            
+            # Newline after progress bar is finished
+            self.stdout.write("") 
 
-            # 3. Assemble the final dictionary for the JSON file
+            # 4. Assemble the final dictionary for the JSON file
             store_data = {
                 'metadata': {
                     'store_id': store.store_id,
@@ -66,7 +80,7 @@ class Command(BaseCommand):
                 'products': product_list
             }
 
-            # 4. Save the JSON file
+            # 5. Save the JSON file
             company_slug = slugify(store.company.name)
             saved_path = save_json_file(company_slug, store.store_id, store_data)
             self.stdout.write(self.style.SUCCESS(f'  Successfully created file: {saved_path}'))
