@@ -42,7 +42,7 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
     except requests.exceptions.RequestException as e:
         print(f"    ERROR: Could not initialize session. Error: {e}")
         # We can try to continue, but it will likely fail.
-        return
+        return False
 
     session_id = str(uuid.uuid4())
     print(f"    Generated session ID for product search: {session_id}")
@@ -50,7 +50,7 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
     categories_to_fetch = get_iga_categories(store_id, session)
     if not categories_to_fetch:
         print(f"Could not retrieve categories for {store_name}. Skipping.")
-        return
+        return False
 
     completed_categories = progress.get("completed_categories", []) if not start_scraping else []
 
@@ -151,3 +151,4 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
 
     print("\n--- IGA scraper tool finished for this store. ---")
     clear_checkpoint(company)
+    return True

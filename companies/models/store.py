@@ -43,6 +43,10 @@ class Store(models.Model):
         default=True,
         help_text="True if the store is currently being scraped."
     )
+    is_online_shopable = models.BooleanField(
+        default=False,
+        help_text="True if the store has a functioning online shop that can be scraped."
+    )
     phone_number = models.CharField(
         max_length=20,
         blank=True,

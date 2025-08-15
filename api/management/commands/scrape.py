@@ -14,7 +14,7 @@ class Command(BaseCommand):
         parser.add_argument('--coles', action='store_true', help='Run the Coles scraper.')
         parser.add_argument('--aldi', action='store_true', help='Run the Aldi scraper.')
         parser.add_argument('--iga', action='store_true', help='Run the IGA scraper.')
-        parser.add_argument('--batch-size', type=int, default=2, help='The number of stores to scrape per run.')
+        parser.add_argument('--batch-size', type=int, default=100, help='The number of stores to scrape per run.')
 
     def handle(self, *args, **options):
         run_all = not any(options[company] for company in ['woolworths', 'coles', 'aldi', 'iga'])
