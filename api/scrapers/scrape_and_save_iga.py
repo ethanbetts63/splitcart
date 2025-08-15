@@ -21,6 +21,7 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
     session = requests.Session()
     session.headers.update({
         "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
+        "x-shopping-mode": "11111111-1111-1111-1111-111111111111"
     })
     session.cookies.set("iga-shop.retailerStoreId", store_id)
 
@@ -33,10 +34,20 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
 
     print(f"\n--- Starting Store: {store_name} (ID: {store_id}) ---")
 
-    session_id = str(uuid.uuid4())
-    print(f"Generated session ID: {session_id}")
+    # First, visit the home page to initialize the session
+    try:
+        print("    Initializing session by visiting homepage...")
+        session.get("https://www.igashop.com.au/", timeout=60)
+        print("    Session initialized.")
+    except requests.exceptions.RequestException as e:
+        print(f"    ERROR: Could not initialize session. Error: {e}")
+        # We can try to continue, but it will likely fail.
+        return
 
-    categories_to_fetch = get_iga_categories(store_id, session, session_id)
+    session_id = str(uuid.uuid4())
+    print(f"    Generated session ID for product search: {session_id}")
+
+    categories_to_fetch = get_iga_categories(store_id, session)
     if not categories_to_fetch:
         print(f"Could not retrieve categories for {store_name}. Skipping.")
         return

@@ -21,18 +21,33 @@ def run_iga_scraper(batch_size, raw_data_path):
 
     print(f"Data will be saved to: {raw_data_path}")
 
-    for store in stores_to_scrape:
-        print(f"\n--- Handing off to scraper for store: {store.name} ---")
-        store_name_slug = create_store_slug_iga(store.name)
-        scrape_and_save_iga_data(
-            company=iga_company.name,
-            store_id=store.store_id,
-            store_name=store.name,
-            store_name_slug=store_name_slug,
-            state=store.state,
-            save_path=raw_data_path
-        )
-        store.last_scraped_products = timezone.now()
-        store.save()
+    # Hardcoding store ID for debugging
+    store_id = "32600"
+    store_name = "Test Store"
+    store_name_slug = "test-store"
+    state = "SA"
+    print(f"\n--- Handing off to scraper for store: {store_name} (HARDCODED) ---")
+    scrape_and_save_iga_data(
+        company=iga_company.name,
+        store_id=store_id,
+        store_name=store_name,
+        store_name_slug=store_name_slug,
+        state=state,
+        save_path=raw_data_path
+    )
+
+    # for store in stores_to_scrape:
+    #     print(f"\n--- Handing off to scraper for store: {store.name} ---")
+    #     store_name_slug = create_store_slug_iga(store.name)
+    #     scrape_and_save_iga_data(
+    #         company=iga_company.name,
+    #         store_id=store.store_id,
+    #         store_name=store.name,
+    #         store_name_slug=store_name_slug,
+    #         state=store.state,
+    #         save_path=raw_data_path
+    #     )
+    #     store.last_scraped_products = timezone.now()
+    #     store.save()
 
     print("\n--- IGA scraping process complete ---")
