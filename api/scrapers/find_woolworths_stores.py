@@ -4,17 +4,15 @@ import os
 import requests
 from datetime import datetime
 from api.utils.shop_scraping_utils.woolworths.clean_raw_store_data_woolworths import clean_raw_store_data_woolworths
-from api.utils.shop_scraping_utils.woolworths import (
-    drange,
-    load_progress,
-    print_progress_bar,
-    save_progress,
-)
+from api.utils.shop_scraping_utils.woolworths.drange import drange
+from api.utils.shop_scraping_utils.woolworths.load_progress import load_progress
+from api.utils.shop_scraping_utils.woolworths.print_progress_bar import print_progress_bar
+from api.utils.shop_scraping_utils.woolworths.save_progress import save_progress
 
 # --- CONFIGURATION ---
 WOOLWORTHS_API_URL = "https://www.woolworths.com.au/apis/ui/StoreLocator/Stores"
 DISCOVERED_STORES_DIR = r'C:\Users\ethan\coding\splitcart\api\data\discovered_stores'
-PROGRESS_FILE = r"C:\Users\ethan\coding\splitcart\api\data\store_data\stores_woolworths\find_woolworths_stores_progress.json"
+PROGRESS_FILE = r"C:\Users\ethan\coding\splitcart\api\data\archive\store_data\find_woolworths_stores_progress.json"
 
 # Geographical grid for Australia (approximate)
 LAT_MIN = -42.0
