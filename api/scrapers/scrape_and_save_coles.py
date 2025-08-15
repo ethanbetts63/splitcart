@@ -22,6 +22,9 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
     Launches a browser for session setup, then uses a requests session to scrape data.
     Includes a verification step and uses the central checkpoint manager for progress.
     """
+    # The store_id from the database might be in the format 'COL:1234'.
+    # We need to extract the numeric part for the fulfillment cookie and other uses.
+    store_id = store_id.split(':')[-1] if store_id and ':' in store_id else store_id
     store_name_slug = f"{store_name.lower().replace(' ', '-')}-{store_id}"
     print(f"--- Initializing Hybrid Coles Scraper for store: {store_name} ({store_name_slug}) ---")
 

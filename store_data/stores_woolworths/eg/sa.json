@@ -1,0 +1,1971 @@
+{
+    "metadata": {
+        "number_of_stores": 28,
+        "company": "woolworths",
+        "brand": "eg",
+        "state": "SA",
+        "date_scraped": "2025-08-08"
+    },
+    "stores": [
+        {
+            "Division": "EG",
+            "StoreNo": "95539",
+            "Name": "Port Lincoln",
+            "AddressLine1": "Cnr Mortlock Terrace & Boston St",
+            "AddressLine2": null,
+            "Suburb": "Port Lincoln",
+            "State": "SA",
+            "Postcode": "5606",
+            "Latitude": "-34.7251",
+            "Longitude": "135.8587",
+            "GeoLevel": "0",
+            "Distance": "956.13",
+            "Phone": "08 7079 6993",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-2000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95001",
+            "Name": "Mt. Gambier Marketplace",
+            "AddressLine1": "176 Penola Road",
+            "AddressLine2": null,
+            "Suburb": "Mt. Gambier Marketplace",
+            "State": "SA",
+            "Postcode": "5290",
+            "Latitude": "-37.8072",
+            "Longitude": "140.7919",
+            "GeoLevel": "0",
+            "Distance": "882.35",
+            "Phone": "08 7082 4515",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95517",
+            "Name": "Victor Harbour",
+            "AddressLine1": "31 Torrens Street",
+            "AddressLine2": null,
+            "Suburb": "Victor Harbour",
+            "State": "SA",
+            "Postcode": "5211",
+            "Latitude": "-35.5539",
+            "Longitude": "138.6208",
+            "GeoLevel": "0",
+            "Distance": "917.6",
+            "Phone": "08 8664 6405",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95020",
+            "Name": "Goolwa",
+            "AddressLine1": "137 Beach Road (Cnr Port Elliott Road)",
+            "AddressLine2": null,
+            "Suburb": "Goolwa",
+            "State": "SA",
+            "Postcode": "5214",
+            "Latitude": "-35.5051",
+            "Longitude": "138.7762",
+            "GeoLevel": "0",
+            "Distance": "930.38",
+            "Phone": "(08) 8548 3544",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "5:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0500-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "5:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0500-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "5:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0500-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "5:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0500-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "5:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0500-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "5:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0500-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "5:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0500-2100"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95510",
+            "Name": "Naracoorte",
+            "AddressLine1": "12 McRae Street",
+            "AddressLine2": null,
+            "Suburb": "Naracoorte",
+            "State": "SA",
+            "Postcode": "5271",
+            "Latitude": "-36.9571",
+            "Longitude": "140.7416",
+            "GeoLevel": "0",
+            "Distance": "935.83",
+            "Phone": "(08) 7735 0822",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "6:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sat: 0600-2000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "6:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sun: 0600-2000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2100"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95555",
+            "Name": "Seaford",
+            "AddressLine1": "Cnr Griffiths Drive & Grand Boulevarde",
+            "AddressLine2": null,
+            "Suburb": "Seaford",
+            "State": "SA",
+            "Postcode": "5169",
+            "Latitude": "-35.1922",
+            "Longitude": "138.4807",
+            "GeoLevel": "0",
+            "Distance": "942.88",
+            "Phone": "08 7633 3211",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "5:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Sat: 0500-0000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "5:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Sun: 0500-0000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "5:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Mon: 0500-0000"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "5:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Tue: 0500-0000"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "5:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Wed: 0500-0000"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "5:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Thu: 0500-0000"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "5:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Fri: 0500-0000"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95542",
+            "Name": "Colonnades",
+            "AddressLine1": "Goldsmith Drive",
+            "AddressLine2": null,
+            "Suburb": "Colonnades",
+            "State": "SA",
+            "Postcode": "5168",
+            "Latitude": "-35.1444",
+            "Longitude": "138.4978",
+            "GeoLevel": "0",
+            "Distance": "948.13",
+            "Phone": "08 7082 4555",
+            "GMTZone": "9:30",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95529",
+            "Name": "O'Halloran Hill",
+            "AddressLine1": "Main South Road",
+            "AddressLine2": null,
+            "Suburb": "O'Halloran Hill",
+            "State": "SA",
+            "Postcode": "5158",
+            "Latitude": "-35.0517",
+            "Longitude": "138.5598",
+            "GeoLevel": "0",
+            "Distance": "959.82",
+            "Phone": "08 7082 4529",
+            "GMTZone": "9:30",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95526",
+            "Name": "Eden Hills",
+            "AddressLine1": "272 Shepherds Hill Road",
+            "AddressLine2": null,
+            "Suburb": "Eden Hills",
+            "State": "SA",
+            "Postcode": "5050",
+            "Latitude": "-35.0265",
+            "Longitude": "138.6038",
+            "GeoLevel": "0",
+            "Distance": "964.4",
+            "Phone": "08 8548 9656",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "5:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sat: 0500-2300"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "5:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sun: 0500-2300"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "5:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Mon: 0500-2300"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "5:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Tue: 0500-2300"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "5:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Wed: 0500-2300"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "5:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Thu: 0500-2300"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "5:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Fri: 0500-2300"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95506",
+            "Name": "Mitcham",
+            "AddressLine1": "119 Belair Rd",
+            "AddressLine2": null,
+            "Suburb": "Mitcham",
+            "State": "SA",
+            "Postcode": "5062",
+            "Latitude": "-34.9761",
+            "Longitude": "138.6096",
+            "GeoLevel": "0",
+            "Distance": "969.32",
+            "Phone": "08 7082 4556",
+            "GMTZone": "9:30",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95504",
+            "Name": "West Richmond",
+            "AddressLine1": "130-132 Marion Road",
+            "AddressLine2": null,
+            "Suburb": "West Richmond",
+            "State": "SA",
+            "Postcode": "5033",
+            "Latitude": "-34.9367",
+            "Longitude": "138.5525",
+            "GeoLevel": "0",
+            "Distance": "970.02",
+            "Phone": "08 7082 4500",
+            "GMTZone": "9:30",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95522",
+            "Name": "Stirling",
+            "AddressLine1": "66 Mount Barker Road",
+            "AddressLine2": null,
+            "Suburb": "Stirling",
+            "State": "SA",
+            "Postcode": "5152",
+            "Latitude": "-35.0077",
+            "Longitude": "138.7202",
+            "GeoLevel": "0",
+            "Distance": "972.16",
+            "Phone": "08 8548 3532",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2200"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95022",
+            "Name": "Mt Barker",
+            "AddressLine1": "1 Diagonal Way (Cnr Adelaide & Mt. Barker Rds), Totness",
+            "AddressLine2": null,
+            "Suburb": "Mt Barker",
+            "State": "SA",
+            "Postcode": "5250",
+            "Latitude": "-35.0555",
+            "Longitude": "138.852",
+            "GeoLevel": "0",
+            "Distance": "974.74",
+            "Phone": "08 8548 3571",
+            "GMTZone": "9:30",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95541",
+            "Name": "Kilkenny",
+            "AddressLine1": "Hanson Road (Cnr First Avenue)",
+            "AddressLine2": null,
+            "Suburb": "Kilkenny",
+            "State": "SA",
+            "Postcode": "5009",
+            "Latitude": "-34.8724",
+            "Longitude": "138.5483",
+            "GeoLevel": "0",
+            "Distance": "975.75",
+            "Phone": "(08) 7081 0998",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0600-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0600-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2200"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95511",
+            "Name": "Marryatville",
+            "AddressLine1": "220-224 Kensington Rd(Cnr Dudley St)",
+            "AddressLine2": null,
+            "Suburb": "Marryatville",
+            "State": "SA",
+            "Postcode": "5068",
+            "Latitude": "-34.9267",
+            "Longitude": "138.6493",
+            "GeoLevel": "0",
+            "Distance": "975.9",
+            "Phone": "08 7082 4554",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "6:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Sat: 0600-0000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "6:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Sun: 0600-0000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Mon: 0600-0000"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Tue: 0600-0000"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Wed: 0600-0000"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Thu: 0600-0000"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 12:00 AM",
+                    "TradingHourForDisplay": "Fri: 0600-0000"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95548",
+            "Name": "Nailsworth",
+            "AddressLine1": "113 Main North Road (Cnr Newbon St & Edward St)",
+            "AddressLine2": null,
+            "Suburb": "Nailsworth",
+            "State": "SA",
+            "Postcode": "5083",
+            "Latitude": "-34.8878",
+            "Longitude": "138.6033",
+            "GeoLevel": "0",
+            "Distance": "977.12",
+            "Phone": "08 8548 9649",
+            "GMTZone": "9:30",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95514",
+            "Name": "Felixstow",
+            "AddressLine1": "469 Payneham Road",
+            "AddressLine2": null,
+            "Suburb": "Felixstow",
+            "State": "SA",
+            "Postcode": "5070",
+            "Latitude": "-34.8901",
+            "Longitude": "138.654",
+            "GeoLevel": "0",
+            "Distance": "979.5",
+            "Phone": "08 7082 4561",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2300"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-2300"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2300"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2300"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2300"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2300"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2300"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95521",
+            "Name": "Hollywood Plaza",
+            "AddressLine1": "122-200 Winzor Street",
+            "AddressLine2": null,
+            "Suburb": "Hollywood Plaza",
+            "State": "SA",
+            "Postcode": "5108",
+            "Latitude": "-34.768",
+            "Longitude": "138.6227",
+            "GeoLevel": "0",
+            "Distance": "989.17",
+            "Phone": "(08) 7081 1044",
+            "GMTZone": "9:30",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95509",
+            "Name": "Springbank Plaza",
+            "AddressLine1": "382-396 Waterloo Corner Road",
+            "AddressLine2": null,
+            "Suburb": "Springbank Plaza",
+            "State": "SA",
+            "Postcode": "5110",
+            "Latitude": "-34.741",
+            "Longitude": "138.6059",
+            "GeoLevel": "0",
+            "Distance": "990.83",
+            "Phone": "08 7082 4541",
+            "GMTZone": "9:30",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95507",
+            "Name": "Golden Grove",
+            "AddressLine1": "Aeolian Drive",
+            "AddressLine2": null,
+            "Suburb": "Golden Grove",
+            "State": "SA",
+            "Postcode": "5125",
+            "Latitude": "-34.7894",
+            "Longitude": "138.6953",
+            "GeoLevel": "0",
+            "Distance": "990.89",
+            "Phone": "08 7082 4545",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2200"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95534",
+            "Name": "Murray Bridge",
+            "AddressLine1": "1 Standen St (Cnr Swanport Rd)",
+            "AddressLine2": null,
+            "Suburb": "Murray Bridge",
+            "State": "SA",
+            "Postcode": "5253",
+            "Latitude": "-35.1205",
+            "Longitude": "139.2736",
+            "GeoLevel": "0",
+            "Distance": "991.73",
+            "Phone": "08 7082 4525",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0600-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0600-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2200"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95546",
+            "Name": "Elizabeth",
+            "AddressLine1": "1 Playford Boulevard (Cnr Phillip Hwy)",
+            "AddressLine2": null,
+            "Suburb": "Elizabeth",
+            "State": "SA",
+            "Postcode": "5112",
+            "Latitude": "-34.7197",
+            "Longitude": "138.6709",
+            "GeoLevel": "0",
+            "Distance": "996.08",
+            "Phone": "08 7082 4567",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "5:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sat: 0500-2300"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "5:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sun: 0500-2300"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "5:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Mon: 0500-2300"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "5:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Tue: 0500-2300"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "5:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Wed: 0500-2300"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "5:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Thu: 0500-2300"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "5:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Fri: 0500-2300"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95540",
+            "Name": "Gawler",
+            "AddressLine1": "85 Para Road (Cnr Main North)",
+            "AddressLine2": null,
+            "Suburb": "Gawler",
+            "State": "SA",
+            "Postcode": "5116",
+            "Latitude": "-34.6227",
+            "Longitude": "138.7378",
+            "GeoLevel": "0",
+            "Distance": "918.19",
+            "Phone": "08 7082 4501",
+            "GMTZone": "9:30",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95512",
+            "Name": "Kadina",
+            "AddressLine1": "1 Digby Street",
+            "AddressLine2": null,
+            "Suburb": "Kadina",
+            "State": "SA",
+            "Postcode": "5554",
+            "Latitude": "-33.9649",
+            "Longitude": "137.7155",
+            "GeoLevel": "0",
+            "Distance": "950.69",
+            "Phone": "08 7082 4527",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-2000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-2000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2000"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2000"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2000"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2000"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2000"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95538",
+            "Name": "Renmark",
+            "AddressLine1": "202 - 206 Renmark Av (Cnr 18th Street)",
+            "AddressLine2": null,
+            "Suburb": "Renmark",
+            "State": "SA",
+            "Postcode": "5341",
+            "Latitude": "-34.1753",
+            "Longitude": "140.7449",
+            "GeoLevel": "0",
+            "Distance": "963.67",
+            "Phone": "(08) 8548 9663",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2100"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95501",
+            "Name": "Port Pirie",
+            "AddressLine1": "137 Florence Street",
+            "AddressLine2": null,
+            "Suburb": "Port Pirie",
+            "State": "SA",
+            "Postcode": "5540",
+            "Latitude": "-33.1806",
+            "Longitude": "138.0106",
+            "GeoLevel": "0",
+            "Distance": "996.45",
+            "Phone": "08 7082 4531",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:30 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sun: 0830-2000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95515",
+            "Name": "Whyalla",
+            "AddressLine1": "7/11 Ekblom Street",
+            "AddressLine2": null,
+            "Suburb": "Whyalla",
+            "State": "SA",
+            "Postcode": "5608",
+            "Latitude": "-33.0278",
+            "Longitude": "137.5348",
+            "GeoLevel": "0",
+            "Distance": "998.5",
+            "Phone": "08 7082 4538",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "5:30 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0530-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "5:30 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0530-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "5:30 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0530-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "5:30 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0530-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "5:30 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0530-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "5:30 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0530-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "5:30 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0530-2200"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95502",
+            "Name": "Port Augusta",
+            "AddressLine1": "25 Tassie Street",
+            "AddressLine2": null,
+            "Suburb": "Port Augusta",
+            "State": "SA",
+            "Postcode": "5700",
+            "Latitude": "-32.4894",
+            "Longitude": "137.7629",
+            "GeoLevel": "0",
+            "Distance": "959.22",
+            "Phone": "08 7082 4506",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        }
+    ]
+}

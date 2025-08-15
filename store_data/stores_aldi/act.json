@@ -1,0 +1,505 @@
+{
+    "metadata": {
+        "number_of_stores": 13,
+        "company": "aldi",
+        "state": "Australian Capital Territory",
+        "state_iso": "ACT",
+        "date_scraped": "2025-08-08"
+    },
+    "stores": [
+        {
+            "name": "Conder",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Australian Capital Territory",
+                "regionIsoCode": "ACT",
+                "address1": "9 Sidney Nolan Street",
+                "address2": null,
+                "address3": null,
+                "city": "Conder",
+                "zipCode": "2906",
+                "district": "Conder",
+                "latitude": "-35.45715000000000",
+                "longitude": "149.09283000000000"
+            },
+            "id": "G473",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "127.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Conder"
+        },
+        {
+            "name": "Tuggeranong",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Australian Capital Territory",
+                "regionIsoCode": "ACT",
+                "address1": "150-180 Soward Way",
+                "address2": null,
+                "address3": null,
+                "city": "Tuggeranong",
+                "zipCode": "2900",
+                "district": "Tuggeranong",
+                "latitude": "-35.41794000000000",
+                "longitude": "149.06867000000000"
+            },
+            "id": "G472",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "130.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Tuggeranong"
+        },
+        {
+            "name": "Chisholm",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Australian Capital Territory",
+                "regionIsoCode": "ACT",
+                "address1": "36 Benham Street",
+                "address2": null,
+                "address3": null,
+                "city": "Chisholm",
+                "zipCode": "2905",
+                "district": "Chisholm",
+                "latitude": "-35.41338000000000",
+                "longitude": "149.12774000000000"
+            },
+            "id": "G508",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "133.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Chisholm"
+        },
+        {
+            "name": "Weston",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Australian Capital Territory",
+                "regionIsoCode": "ACT",
+                "address1": "26 Brierly Street",
+                "address2": null,
+                "address3": null,
+                "city": "Weston",
+                "zipCode": "2611",
+                "district": "Weston",
+                "latitude": "-35.34021000000000",
+                "longitude": "149.05255000000000"
+            },
+            "id": "G488",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "138.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Weston"
+        },
+        {
+            "name": "Wright",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Australian Capital Territory",
+                "regionIsoCode": "ACT",
+                "address1": "4 Gornall Street",
+                "address2": null,
+                "address3": null,
+                "city": "Wright",
+                "zipCode": "2611",
+                "district": "Wright",
+                "latitude": "-35.32145523965000",
+                "longitude": "149.03715174085000"
+            },
+            "id": "G656",
+            "availableCustomerServiceTypes": [
+                "walk-in",
+                "pickup"
+            ],
+            "distance": "139.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Wright"
+        },
+        {
+            "name": "Canberra",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Australian Capital Territory",
+                "regionIsoCode": "ACT",
+                "address1": "148 Bunda Street",
+                "address2": null,
+                "address3": null,
+                "city": "Canberra",
+                "zipCode": "2601",
+                "district": "Canberra",
+                "latitude": "-35.27906000000000",
+                "longitude": "149.13354000000000"
+            },
+            "id": "G483",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "147.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Canberra"
+        },
+        {
+            "name": "Macquarie",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Australian Capital Territory",
+                "regionIsoCode": "ACT",
+                "address1": "1 Bowman Street",
+                "address2": null,
+                "address3": null,
+                "city": "Macquarie",
+                "zipCode": "2614",
+                "district": "Macquarie",
+                "latitude": "-35.25249000000000",
+                "longitude": "149.07152000000000"
+            },
+            "id": "G482",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "97.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Macquarie"
+        },
+        {
+            "name": "Holt",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Australian Capital Territory",
+                "regionIsoCode": "ACT",
+                "address1": "50 - 60 Hardwick Crescent",
+                "address2": null,
+                "address3": null,
+                "city": "Holt",
+                "zipCode": "2615",
+                "district": "Holt",
+                "latitude": "-35.22127640000000",
+                "longitude": "149.01909900000000"
+            },
+            "id": "G466",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "98.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Holt"
+        },
+        {
+            "name": "Majura Park",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Australian Capital Territory",
+                "regionIsoCode": "ACT",
+                "address1": "18 - 26 Spitfire Avenue",
+                "address2": null,
+                "address3": null,
+                "city": "Majura Park",
+                "zipCode": "2609",
+                "district": "Majura Park",
+                "latitude": "-35.29931500000000",
+                "longitude": "149.19092500000000"
+            },
+            "id": "G528",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "79.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Majura Park"
+        },
+        {
+            "name": "Belconnen",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Australian Capital Territory",
+                "regionIsoCode": "ACT",
+                "address1": "20 Benjamin Way",
+                "address2": null,
+                "address3": null,
+                "city": "Belconnen",
+                "zipCode": "2617",
+                "district": "Belconnen",
+                "latitude": "-35.23885000000000",
+                "longitude": "149.06619000000000"
+            },
+            "id": "G502",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "100.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Belconnen"
+        },
+        {
+            "name": "Casey",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Australian Capital Territory",
+                "regionIsoCode": "ACT",
+                "address1": "15 Kingsland Parade",
+                "address2": null,
+                "address3": null,
+                "city": "Casey",
+                "zipCode": "2913",
+                "district": "Casey",
+                "latitude": "-35.17483810000000",
+                "longitude": "149.09534350000000"
+            },
+            "id": "G526",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "101.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Casey"
+        },
+        {
+            "name": "Amaroo",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Australian Capital Territory",
+                "regionIsoCode": "ACT",
+                "address1": "12 Pioneer Street",
+                "address2": null,
+                "address3": null,
+                "city": "Amaroo",
+                "zipCode": "2914",
+                "district": "Amaroo",
+                "latitude": "-35.16516480000000",
+                "longitude": "149.13250230000000"
+            },
+            "id": "G571",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "60.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Amaroo"
+        },
+        {
+            "name": "Gungahlin",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Australian Capital Territory",
+                "regionIsoCode": "ACT",
+                "address1": "33 Hibberson Street",
+                "address2": null,
+                "address3": null,
+                "city": "Gungahlin",
+                "zipCode": "2912",
+                "district": "Gungahlin",
+                "latitude": "-35.18454397704000",
+                "longitude": "149.13359649393000"
+            },
+            "id": "G662",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "61.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Gungahlin"
+        }
+    ]
+}

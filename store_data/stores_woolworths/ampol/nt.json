@@ -1,0 +1,329 @@
+{
+    "metadata": {
+        "number_of_stores": 3,
+        "company": "woolworths",
+        "brand": "ampol",
+        "state": "NT",
+        "date_scraped": "2025-08-08"
+    },
+    "stores": [
+        {
+            "Division": "AMPOL",
+            "StoreNo": "77030",
+            "Name": "Ampol Foodary Yarrawonga Middleton St",
+            "AddressLine1": "8-Middleton St",
+            "AddressLine2": null,
+            "Suburb": "Yarrawonga",
+            "State": "NT",
+            "Postcode": "0830",
+            "Latitude": "-12.4698632",
+            "Longitude": "130.9875898",
+            "GeoLevel": "0",
+            "Distance": "954.3",
+            "Phone": null,
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "05:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Sat: 0500-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "05:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Sun: 0500-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "05:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Mon: 0500-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "05:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Tue: 0500-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "05:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Wed: 0500-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "05:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Thu: 0500-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "05:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Fri: 0500-2200"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "70027",
+            "Name": "Ampol Foodary Berrimah",
+            "AddressLine1": "92-Jessop Crescent",
+            "AddressLine2": null,
+            "Suburb": "Berrimah",
+            "State": "NT",
+            "Postcode": "0828",
+            "Latitude": "-12.4284243",
+            "Longitude": "130.9127881",
+            "GeoLevel": "0",
+            "Distance": "958.04",
+            "Phone": null,
+            "GMTZone": "9:30",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-AdBlue",
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "AdBlue",
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "77031",
+            "Name": "Ampol Foodary Eaton Mcmillian Rd",
+            "AddressLine1": "Cnr Mcmillian Rd & Neale St",
+            "AddressLine2": null,
+            "Suburb": "Eaton",
+            "State": "NT",
+            "Postcode": "0820",
+            "Latitude": "-12.397471",
+            "Longitude": "130.86041",
+            "GeoLevel": "0",
+            "Distance": "960.92",
+            "Phone": null,
+            "GMTZone": "9:30",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        }
+    ]
+}

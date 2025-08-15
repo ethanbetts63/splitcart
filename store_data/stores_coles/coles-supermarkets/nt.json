@@ -1,0 +1,178 @@
+{
+    "metadata": {
+        "number_of_stores": 8,
+        "company": "coles",
+        "state": "NT",
+        "date_scraped": "2025-08-07"
+    },
+    "stores": [
+        {
+            "id": "COL:418",
+            "name": "Coles Alice Springs",
+            "phone": "(08) 7915 3600",
+            "isTrading": true,
+            "address": {
+                "state": "NT",
+                "suburb": "Alice Springs",
+                "addressLine": "Bath St & Gregory Tce",
+                "postcode": "0870"
+            },
+            "position": {
+                "latitude": -23.698378,
+                "longitude": 133.879268
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:486",
+            "name": "Coles Coolalinga",
+            "phone": "(08) 8919 3200",
+            "isTrading": true,
+            "address": {
+                "state": "NT",
+                "suburb": "Coolalinga",
+                "addressLine": "405 Stuart Hwy",
+                "postcode": "0839"
+            },
+            "position": {
+                "latitude": -12.520682,
+                "longitude": 131.04152
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:219",
+            "name": "Coles Oasis (palmerston)",
+            "phone": "(08) 8998 4700",
+            "isTrading": true,
+            "address": {
+                "state": "NT",
+                "suburb": "Palmerston",
+                "addressLine": "Corner Temple & Chung Wah Terrace",
+                "postcode": "0830"
+            },
+            "position": {
+                "latitude": -12.483354,
+                "longitude": 130.985361
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:450",
+            "name": "Coles Palmerston",
+            "phone": "(08) 8932 1222",
+            "isTrading": true,
+            "address": {
+                "state": "NT",
+                "suburb": "Palmerston",
+                "addressLine": "Temple Tce & Chung Wah Tce",
+                "postcode": "0830"
+            },
+            "position": {
+                "latitude": -12.481748,
+                "longitude": 130.984535
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:460",
+            "name": "Coles Darwin",
+            "phone": "(08) 8941 8055",
+            "isTrading": true,
+            "address": {
+                "state": "NT",
+                "suburb": "Darwin",
+                "addressLine": "Mitchell St & Knuckey St",
+                "postcode": "0800"
+            },
+            "position": {
+                "latitude": -12.464076,
+                "longitude": 130.840063
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:472",
+            "name": "Coles Northlakes",
+            "phone": "(08) 8927 8011",
+            "isTrading": true,
+            "address": {
+                "state": "NT",
+                "suburb": "Marrara",
+                "addressLine": "Links Rd & Mcmillans Rd",
+                "postcode": "0812"
+            },
+            "position": {
+                "latitude": -12.39574,
+                "longitude": 130.894924
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:404",
+            "name": "Coles Casuarina",
+            "phone": "(08) 8927 9055",
+            "isTrading": true,
+            "address": {
+                "state": "NT",
+                "suburb": "Casuarina",
+                "addressLine": "Dripstone Rd & Trower Rd",
+                "postcode": "0810"
+            },
+            "position": {
+                "latitude": -12.376538,
+                "longitude": 130.881255
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:4947",
+            "name": "Coles Bradshaw St",
+            "phone": "(08) 8927 0200",
+            "isTrading": true,
+            "address": {
+                "state": "NT",
+                "suburb": "Casuarina",
+                "addressLine": "Cnr Dripstone & Trower Roads",
+                "postcode": "0810"
+            },
+            "position": {
+                "latitude": -12.371249,
+                "longitude": 130.88138
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        }
+    ]
+}

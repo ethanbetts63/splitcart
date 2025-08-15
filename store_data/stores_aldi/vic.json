@@ -1,0 +1,4302 @@
+{
+    "metadata": {
+        "number_of_stores": 113,
+        "company": "aldi",
+        "state": "Victoria",
+        "state_iso": "VIC",
+        "date_scraped": "2025-08-08"
+    },
+    "stores": [
+        {
+            "name": "Portland",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "29 Henty Street",
+                "address2": null,
+                "address3": null,
+                "city": "Portland",
+                "zipCode": "3305",
+                "district": "Portland",
+                "latitude": "-38.34664000000000",
+                "longitude": "141.60267000000000"
+            },
+            "id": "G291",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "138.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Portland"
+        },
+        {
+            "name": "Warrnambool",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "251 - 257 Lava Street",
+                "address2": null,
+                "address3": null,
+                "city": "Warrnambool",
+                "zipCode": "3280",
+                "district": "Warrnambool",
+                "latitude": "-38.37901000000000",
+                "longitude": "142.47857000000000"
+            },
+            "id": "G233",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "131.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Warrnambool"
+        },
+        {
+            "name": "Warrnambool",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "154 Raglan Parade",
+                "address2": null,
+                "address3": null,
+                "city": "Warrnambool",
+                "zipCode": "3280",
+                "district": "Warrnambool",
+                "latitude": "-38.38025795544000",
+                "longitude": "142.52077861722000"
+            },
+            "id": "G250",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "132.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Warrnambool"
+        },
+        {
+            "name": "Colac",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "62 - 70 Hesse Street",
+                "address2": null,
+                "address3": null,
+                "city": "Colac",
+                "zipCode": "3250",
+                "district": "Colac",
+                "latitude": "-38.34189000000000",
+                "longitude": "143.58986000000000"
+            },
+            "id": "G257",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "138.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Colac"
+        },
+        {
+            "name": "Torquay",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "14 - 18 Winki Way",
+                "address2": null,
+                "address3": null,
+                "city": "Torquay",
+                "zipCode": "3228",
+                "district": "Torquay",
+                "latitude": "-38.31048512357000",
+                "longitude": "144.31807696441000"
+            },
+            "id": "G266",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "135.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Torquay"
+        },
+        {
+            "name": "Armstrong Creek",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "35-43 Central Boulevard",
+                "address2": null,
+                "address3": null,
+                "city": "Armstrong Creek",
+                "zipCode": "3217",
+                "district": "Armstrong Creek",
+                "latitude": "-38.23144231529000",
+                "longitude": "144.37067935185000"
+            },
+            "id": "G582",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "144.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Armstrong Creek"
+        },
+        {
+            "name": "Ocean Grove",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "12 - 22 Coastal Boulevard",
+                "address2": null,
+                "address3": null,
+                "city": "Ocean Grove",
+                "zipCode": "3226",
+                "district": "Ocean Grove",
+                "latitude": "-38.24733974770000",
+                "longitude": "144.54023921683000"
+            },
+            "id": "G274",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "146.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Ocean Grove"
+        },
+        {
+            "name": "Highton",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "245 - 253 South Valley Road",
+                "address2": null,
+                "address3": null,
+                "city": "Highton",
+                "zipCode": "3216",
+                "district": "Highton",
+                "latitude": "-38.19615000000000",
+                "longitude": "144.31837000000000"
+            },
+            "id": "G225",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "147.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Highton"
+        },
+        {
+            "name": "Grovedale",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "142 Torquay Road",
+                "address2": null,
+                "address3": null,
+                "city": "Grovedale",
+                "zipCode": "3216",
+                "district": "Grovedale",
+                "latitude": "-38.19334000000000",
+                "longitude": "144.34310000000000"
+            },
+            "id": "G295",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "148.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Grovedale"
+        },
+        {
+            "name": "Rosebud",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "1313 Point Nepean Road",
+                "address2": null,
+                "address3": null,
+                "city": "Rosebud",
+                "zipCode": "3939",
+                "district": "Rosebud",
+                "latitude": "-38.35932000000000",
+                "longitude": "144.89284000000000"
+            },
+            "id": "G329",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "148.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Rosebud"
+        },
+        {
+            "name": "Cowes",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "68 - 80 Thompson Avenue",
+                "address2": null,
+                "address3": null,
+                "city": "Cowes",
+                "zipCode": "3922",
+                "district": "Cowes",
+                "latitude": "-38.45024600000000",
+                "longitude": "145.23891100000000"
+            },
+            "id": "G359",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "133.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Cowes"
+        },
+        {
+            "name": "Dromana",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "120 Nepean Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Dromana",
+                "zipCode": "3936",
+                "district": "Dromana",
+                "latitude": "-38.33031365177000",
+                "longitude": "144.98725675051000"
+            },
+            "id": "G368",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "136.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Dromana"
+        },
+        {
+            "name": "Wonthaggi",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "Cnr Murray Street, McKenzie St",
+                "address2": null,
+                "address3": null,
+                "city": "Wonthaggi",
+                "zipCode": "3995",
+                "district": "Wonthaggi",
+                "latitude": "-38.60472000000000",
+                "longitude": "145.59305000000000"
+            },
+            "id": "G326",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "137.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Wonthaggi"
+        },
+        {
+            "name": "Hastings",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "5 Queen Street",
+                "address2": null,
+                "address3": null,
+                "city": "Hastings",
+                "zipCode": "3915",
+                "district": "Hastings",
+                "latitude": "-38.30852700000000",
+                "longitude": "145.18842300000000"
+            },
+            "id": "G345",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "145.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Hastings"
+        },
+        {
+            "name": "Leongatha",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "8 - 10 Bruce Street",
+                "address2": null,
+                "address3": null,
+                "city": "Leongatha",
+                "zipCode": "3953",
+                "district": "Leongatha",
+                "latitude": "-38.47815001729000",
+                "longitude": "145.94498916429000"
+            },
+            "id": "G347",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "139.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Leongatha"
+        },
+        {
+            "name": "Mornington",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "1128 Nepean Hwy",
+                "address2": null,
+                "address3": null,
+                "city": "Mornington",
+                "zipCode": "3931",
+                "district": "Mornington",
+                "latitude": "-38.21987900000000",
+                "longitude": "145.06064600000000"
+            },
+            "id": "G370",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "142.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Mornington"
+        },
+        {
+            "name": "Somerville",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "1089 - 109 Frankston-Flinders",
+                "address2": null,
+                "address3": null,
+                "city": "Somerville",
+                "zipCode": "3912",
+                "district": "Somerville",
+                "latitude": "-38.22496000000000",
+                "longitude": "145.17698000000000"
+            },
+            "id": "G337",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "142.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Somerville"
+        },
+        {
+            "name": "Morwell",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "94/72-82 Princes Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Morwell",
+                "zipCode": "3840",
+                "district": "Morwell",
+                "latitude": "-38.23697170536000",
+                "longitude": "146.42976932277000"
+            },
+            "id": "G674",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "145.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Morwell"
+        },
+        {
+            "name": "Warragul",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "12 - 28 Queen Street",
+                "address2": null,
+                "address3": null,
+                "city": "Warragul",
+                "zipCode": "3820",
+                "district": "Warragul",
+                "latitude": "-38.16263651582000",
+                "longitude": "145.92690635737000"
+            },
+            "id": "G346",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "148.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Warragul"
+        },
+        {
+            "name": "Moe",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "10 - 12 Saviges Rd",
+                "address2": null,
+                "address3": null,
+                "city": "Moe",
+                "zipCode": "3825",
+                "district": "Moe",
+                "latitude": "-38.17523666742000",
+                "longitude": "146.25804549699000"
+            },
+            "id": "G348",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "149.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Moe"
+        },
+        {
+            "name": "Traralgon",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "141 - 143 Argyle Street",
+                "address2": null,
+                "address3": null,
+                "city": "Traralgon",
+                "zipCode": "3844",
+                "district": "Traralgon",
+                "latitude": "-38.19201200000000",
+                "longitude": "146.55525700000000"
+            },
+            "id": "G333",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "145.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Traralgon"
+        },
+        {
+            "name": "Hamilton",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "104 - 108 French Street",
+                "address2": null,
+                "address3": null,
+                "city": "Hamilton",
+                "zipCode": "3300",
+                "district": "Hamilton",
+                "latitude": "-37.74434000000000",
+                "longitude": "142.02776000000000"
+            },
+            "id": "G260",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "147.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Hamilton"
+        },
+        {
+            "name": "Geelong West",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "117 - 127 Albert Street",
+                "address2": null,
+                "address3": null,
+                "city": "Geelong West",
+                "zipCode": "3218",
+                "district": "Geelong West",
+                "latitude": "-38.13966000000000",
+                "longitude": "144.33726000000000"
+            },
+            "id": "G298",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "120.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Geelong West"
+        },
+        {
+            "name": "Newcomb",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "Cnr Newcomb S/C  Bellarine Hwy",
+                "address2": null,
+                "address3": null,
+                "city": "Newcomb",
+                "zipCode": "3219",
+                "district": "Newcomb",
+                "latitude": "-38.16987000000000",
+                "longitude": "144.39262000000000"
+            },
+            "id": "G263",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "120.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Newcomb"
+        },
+        {
+            "name": "Leopold",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "641 - 659 Bellarine Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Leopold",
+                "zipCode": "3224",
+                "district": "Leopold",
+                "latitude": "-38.18478833101000",
+                "longitude": "144.45398294250000"
+            },
+            "id": "G252",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "98.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Leopold"
+        },
+        {
+            "name": "Drysdale",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "12 - 22 Murradoc Road",
+                "address2": null,
+                "address3": null,
+                "city": "Drysdale",
+                "zipCode": "3222",
+                "district": "Drysdale",
+                "latitude": "-38.17326000000000",
+                "longitude": "144.57303000000000"
+            },
+            "id": "G297",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "92.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Drysdale"
+        },
+        {
+            "name": "Frankston",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "330 Cranbourne Road",
+                "address2": null,
+                "address3": null,
+                "city": "Frankston",
+                "zipCode": "3199",
+                "district": "Frankston",
+                "latitude": "-38.15252104833000",
+                "longitude": "145.16694711680000"
+            },
+            "id": "G381",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "95.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Frankston"
+        },
+        {
+            "name": "Frankston",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "28 Beach Street",
+                "address2": null,
+                "address3": null,
+                "city": "Frankston",
+                "zipCode": "3199",
+                "district": "Frankston",
+                "latitude": "-38.13978100000000",
+                "longitude": "145.12620900000000"
+            },
+            "id": "G366",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "96.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Frankston"
+        },
+        {
+            "name": "Pakenham",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "67-69 Main St",
+                "address2": null,
+                "address3": null,
+                "city": "Pakenham",
+                "zipCode": "3810",
+                "district": "Pakenham",
+                "latitude": "-38.07798000000000",
+                "longitude": "145.47870000000000"
+            },
+            "id": "G685",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "112.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Pakenham"
+        },
+        {
+            "name": "Pakenham",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "1 - 3 Portobello Road",
+                "address2": null,
+                "address3": null,
+                "city": "Pakenham",
+                "zipCode": "3810",
+                "district": "Pakenham",
+                "latitude": "-38.06422900000000",
+                "longitude": "145.45472500000000"
+            },
+            "id": "G351",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "138.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Pakenham"
+        },
+        {
+            "name": "Bairnsdale",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "132 Nicholson Street",
+                "address2": null,
+                "address3": null,
+                "city": "Bairnsdale",
+                "zipCode": "3875",
+                "district": "Bairnsdale",
+                "latitude": "-37.82549000000000",
+                "longitude": "147.62702000000000"
+            },
+            "id": "G332",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "141.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Bairnsdale"
+        },
+        {
+            "name": "Lakes Entrance",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "6 - 12 Marine Parade",
+                "address2": null,
+                "address3": null,
+                "city": "Lakes Entrance",
+                "zipCode": "3909",
+                "district": "Lakes Entrance",
+                "latitude": "-37.88153300000000",
+                "longitude": "147.97404600000000"
+            },
+            "id": "G362",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "131.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Lakes Entrance"
+        },
+        {
+            "name": "Ararat",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "41 - 47 Moore Street",
+                "address2": null,
+                "address3": null,
+                "city": "Ararat",
+                "zipCode": "3377",
+                "district": "Ararat",
+                "latitude": "-37.28457598443000",
+                "longitude": "142.93272519604000"
+            },
+            "id": "G268",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "140.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Ararat"
+        },
+        {
+            "name": "Bell Park",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "9 / 222 Anakie Road",
+                "address2": null,
+                "address3": null,
+                "city": "Bell Park",
+                "zipCode": "3215",
+                "district": "Bell Park",
+                "latitude": "-38.09696300000000",
+                "longitude": "144.33443800000000"
+            },
+            "id": "G256",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "85.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Bell Park"
+        },
+        {
+            "name": "Carrum Downs",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "493 Frankston-Dandenong Road",
+                "address2": null,
+                "address3": null,
+                "city": "Carrum Downs",
+                "zipCode": "3201",
+                "district": "Carrum Downs",
+                "latitude": "-38.11024858340000",
+                "longitude": "145.16107915019000"
+            },
+            "id": "G325",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "45.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Carrum Downs"
+        },
+        {
+            "name": "Carrum",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "516 - 520 Station Street",
+                "address2": null,
+                "address3": null,
+                "city": "Carrum",
+                "zipCode": "3197",
+                "district": "Carrum",
+                "latitude": "-38.07652000000000",
+                "longitude": "145.12338000000000"
+            },
+            "id": "G328",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "48.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Carrum"
+        },
+        {
+            "name": "Cranbourne",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "14 - 20 Bakewell Street",
+                "address2": null,
+                "address3": null,
+                "city": "Cranbourne",
+                "zipCode": "3977",
+                "district": "Cranbourne",
+                "latitude": "-38.11148000000000",
+                "longitude": "145.28421700000000"
+            },
+            "id": "G338",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "47.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Cranbourne"
+        },
+        {
+            "name": "Clyde North",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "Cnr Berwick-Cranbourne Road, H",
+                "address2": null,
+                "address3": null,
+                "city": "Clyde North",
+                "zipCode": "3978",
+                "district": "Clyde North",
+                "latitude": "-38.09355900000000",
+                "longitude": "145.33342000000000"
+            },
+            "id": "G380",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "47.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Clyde North"
+        },
+        {
+            "name": "Cranbourne East",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "1 S Linsell Boulevard",
+                "address2": null,
+                "address3": null,
+                "city": "Cranbourne East",
+                "zipCode": "3977",
+                "district": "Cranbourne East",
+                "latitude": "-38.10003124302000",
+                "longitude": "145.29340197376000"
+            },
+            "id": "G360",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "48.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Cranbourne East"
+        },
+        {
+            "name": "Beaconsfield",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "53 Old Princes Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Beaconsfield",
+                "zipCode": "3807",
+                "district": "Beaconsfield",
+                "latitude": "-38.04469100000000",
+                "longitude": "145.36801900000000"
+            },
+            "id": "G307",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "111.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Beaconsfield"
+        },
+        {
+            "name": "Horsham",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "67 - 73 Hamilton Street",
+                "address2": null,
+                "address3": null,
+                "city": "Horsham",
+                "zipCode": "3400",
+                "district": "Horsham",
+                "latitude": "-36.71820000000000",
+                "longitude": "142.19807000000000"
+            },
+            "id": "G265",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "143.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Horsham"
+        },
+        {
+            "name": "Alfredton",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "1611 - 161 Sturt Street",
+                "address2": null,
+                "address3": null,
+                "city": "Alfredton",
+                "zipCode": "3350",
+                "district": "Alfredton",
+                "latitude": "-37.55557000000000",
+                "longitude": "143.81747000000000"
+            },
+            "id": "G278",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "125.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Alfredton"
+        },
+        {
+            "name": "Sebastopol",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "31 - 35 Albert Street",
+                "address2": null,
+                "address3": null,
+                "city": "Sebastopol",
+                "zipCode": "3356",
+                "district": "Sebastopol",
+                "latitude": "-37.58491000000000",
+                "longitude": "143.84122000000000"
+            },
+            "id": "G267",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "126.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Sebastopol"
+        },
+        {
+            "name": "Wendouree",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "21 Learmonth Road",
+                "address2": null,
+                "address3": null,
+                "city": "Wendouree",
+                "zipCode": "3355",
+                "district": "Wendouree",
+                "latitude": "-37.53504800000000",
+                "longitude": "143.81810800000000"
+            },
+            "id": "G244",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "126.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Wendouree"
+        },
+        {
+            "name": "Ballarat",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "102 -114 Creswick Road",
+                "address2": null,
+                "address3": null,
+                "city": "Ballarat",
+                "zipCode": "3350",
+                "district": "Ballarat",
+                "latitude": "-37.55593362568000",
+                "longitude": "143.85530464299000"
+            },
+            "id": "G251",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "128.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Ballarat"
+        },
+        {
+            "name": "Corio",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "465 Princes Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Corio",
+                "zipCode": "3214",
+                "district": "Corio",
+                "latitude": "-38.06512000000000",
+                "longitude": "144.38039000000000"
+            },
+            "id": "G262",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "34.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Corio"
+        },
+        {
+            "name": "Wyndham Vale",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "209 Greens Road",
+                "address2": null,
+                "address3": null,
+                "city": "Wyndham Vale",
+                "zipCode": "3024",
+                "district": "Wyndham Vale",
+                "latitude": "-37.88738600000000",
+                "longitude": "144.60735800000000"
+            },
+            "id": "G288",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "15.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Wyndham Vale"
+        },
+        {
+            "name": "Werribee",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "77 - 83 Synott Street",
+                "address2": null,
+                "address3": null,
+                "city": "Werribee",
+                "zipCode": "3030",
+                "district": "Werribee",
+                "latitude": "-37.90445000000000",
+                "longitude": "144.65778000000000"
+            },
+            "id": "G235",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "17.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Werribee"
+        },
+        {
+            "name": "Werribee",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "Cnr Derrimut Road, Heaths Road",
+                "address2": null,
+                "address3": null,
+                "city": "Werribee",
+                "zipCode": "3030",
+                "district": "Werribee",
+                "latitude": "-37.87520300000000",
+                "longitude": "144.67963800000000"
+            },
+            "id": "G253",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "21.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Werribee"
+        },
+        {
+            "name": "Tarneit",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "177 Hummingbird Boulevard",
+                "address2": null,
+                "address3": null,
+                "city": "Tarneit",
+                "zipCode": "3029",
+                "district": "Tarneit",
+                "latitude": "-37.83503749314000",
+                "longitude": "144.65197717440000"
+            },
+            "id": "G590",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "22.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Tarneit"
+        },
+        {
+            "name": "Cheltenham",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "280 - 282 Bay Road",
+                "address2": null,
+                "address3": null,
+                "city": "Cheltenham",
+                "zipCode": "3192",
+                "district": "Cheltenham",
+                "latitude": "-37.95591558542000",
+                "longitude": "145.03342973642000"
+            },
+            "id": "G342",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "5.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Cheltenham"
+        },
+        {
+            "name": "Cheltenham",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "1239 Nepean Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Cheltenham",
+                "zipCode": "3192",
+                "district": "Cheltenham",
+                "latitude": "-37.95955000000000",
+                "longitude": "145.05376000000000"
+            },
+            "id": "G357",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "6.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Cheltenham"
+        },
+        {
+            "name": "Mentone",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "27 - 29 / Nepean Hwy",
+                "address2": null,
+                "address3": null,
+                "city": "Mentone",
+                "zipCode": "3194",
+                "district": "Mentone",
+                "latitude": "-37.97546125822000",
+                "longitude": "145.06789012296000"
+            },
+            "id": "G358",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "6.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Mentone"
+        },
+        {
+            "name": "Mordialloc",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "542 Main Street",
+                "address2": null,
+                "address3": null,
+                "city": "Mordialloc",
+                "zipCode": "3195",
+                "district": "Mordialloc",
+                "latitude": "-38.00601108814000",
+                "longitude": "145.08535522581000"
+            },
+            "id": "G306",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "7.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Mordialloc"
+        },
+        {
+            "name": "Moorabbin Airport",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "288 Centre Dandenong Road",
+                "address2": null,
+                "address3": null,
+                "city": "Moorabbin Airport",
+                "zipCode": "3194",
+                "district": "Moorabbin Airport",
+                "latitude": "-37.97044800000000",
+                "longitude": "145.09103900000000"
+            },
+            "id": "G318",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "8.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Moorabbin Airport"
+        },
+        {
+            "name": "Bentleigh",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "285 - 305 Centre Road",
+                "address2": null,
+                "address3": null,
+                "city": "Bentleigh",
+                "zipCode": "3204",
+                "district": "Bentleigh",
+                "latitude": "-37.91794000000000",
+                "longitude": "145.03431000000000"
+            },
+            "id": "G322",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "9.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Bentleigh"
+        },
+        {
+            "name": "Caulfield South",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "348-354 Hawthorn Road",
+                "address2": null,
+                "address3": null,
+                "city": "Caulfield South",
+                "zipCode": "3162",
+                "district": "Caulfield South",
+                "latitude": "-37.88754000000000",
+                "longitude": "145.02165000000000"
+            },
+            "id": "G675",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "12.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Caulfield South"
+        },
+        {
+            "name": "Keysborough",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "466 - 468 Cheltenham Road",
+                "address2": null,
+                "address3": null,
+                "city": "Keysborough",
+                "zipCode": "3173",
+                "district": "Keysborough",
+                "latitude": "-37.99232558181000",
+                "longitude": "145.14601197422000"
+            },
+            "id": "G379",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "12.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Keysborough"
+        },
+        {
+            "name": "Springvale South",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "792 - 806 Heatherton Road",
+                "address2": null,
+                "address3": null,
+                "city": "Springvale South",
+                "zipCode": "3172",
+                "district": "Springvale South",
+                "latitude": "-37.96162000000000",
+                "longitude": "145.14381000000000"
+            },
+            "id": "G323",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "13.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Springvale South"
+        },
+        {
+            "name": "Berwick",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "1 O'shea Road",
+                "address2": null,
+                "address3": null,
+                "city": "Berwick",
+                "zipCode": "3806",
+                "district": "Berwick",
+                "latitude": "-38.06259400000000",
+                "longitude": "145.33961800000000"
+            },
+            "id": "G304",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "15.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Berwick"
+        },
+        {
+            "name": "Monbulk",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "32 - 36 Main Road",
+                "address2": null,
+                "address3": null,
+                "city": "Monbulk",
+                "zipCode": "3793",
+                "district": "Monbulk",
+                "latitude": "-37.87637000000000",
+                "longitude": "145.40899400000000"
+            },
+            "id": "G349",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "15.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Monbulk"
+        },
+        {
+            "name": "Narre Warren South",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "229 Princess Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Narre Warren South",
+                "zipCode": "3805",
+                "district": "Narre Warren South",
+                "latitude": "-38.01769510398000",
+                "longitude": "145.30097619617000"
+            },
+            "id": "G324",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "17.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Narre Warren South"
+        },
+        {
+            "name": "Narre Warren South",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "400 Narre Warren-Cranbourne Ro",
+                "address2": null,
+                "address3": null,
+                "city": "Narre Warren South",
+                "zipCode": "3805",
+                "district": "Narre Warren South",
+                "latitude": "-38.06772482876000",
+                "longitude": "145.30050648024000"
+            },
+            "id": "G369",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "19.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Narre Warren South"
+        },
+        {
+            "name": "Hampton Park",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "400 Pound Road",
+                "address2": null,
+                "address3": null,
+                "city": "Hampton Park",
+                "zipCode": "3976",
+                "district": "Hampton Park",
+                "latitude": "-38.03451900000000",
+                "longitude": "145.28437500000000"
+            },
+            "id": "G310",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "19.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Hampton Park"
+        },
+        {
+            "name": "Endeavour Hills",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "974 Heatherton Road",
+                "address2": null,
+                "address3": null,
+                "city": "Endeavour Hills",
+                "zipCode": "3802",
+                "district": "Endeavour Hills",
+                "latitude": "-37.97539000000000",
+                "longitude": "145.26022000000000"
+            },
+            "id": "G334",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "21.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Endeavour Hills"
+        },
+        {
+            "name": "Seville",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "638 Warburton Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Seville",
+                "zipCode": "3139",
+                "district": "Seville",
+                "latitude": "-37.77837218490000",
+                "longitude": "145.45897691173000"
+            },
+            "id": "G373",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "53.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Seville"
+        },
+        {
+            "name": "Healesville",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "175 Maroondah Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Healesville",
+                "zipCode": "3777",
+                "district": "Healesville",
+                "latitude": "-37.65417000000000",
+                "longitude": "145.51385300000000"
+            },
+            "id": "G372",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "94.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Healesville"
+        },
+        {
+            "name": "Maryborough",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "111 Burke Street",
+                "address2": null,
+                "address3": null,
+                "city": "Maryborough",
+                "zipCode": "3465",
+                "district": "Maryborough",
+                "latitude": "-37.04723000000000",
+                "longitude": "143.74258000000000"
+            },
+            "id": "G280",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "120.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Maryborough"
+        },
+        {
+            "name": "Bacchus Marsh",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "158 - 196 Main Street",
+                "address2": null,
+                "address3": null,
+                "city": "Bacchus Marsh",
+                "zipCode": "3340",
+                "district": "Bacchus Marsh",
+                "latitude": "-37.67483389194000",
+                "longitude": "144.43922187392000"
+            },
+            "id": "G232",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "85.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Bacchus Marsh"
+        },
+        {
+            "name": "Melton West",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "533 High Street",
+                "address2": null,
+                "address3": null,
+                "city": "Melton West",
+                "zipCode": "3337",
+                "district": "Melton West",
+                "latitude": "-37.68689488230000",
+                "longitude": "144.56051825713000"
+            },
+            "id": "G227",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "95.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Melton West"
+        },
+        {
+            "name": "Gisborne",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "45 Aitken Street",
+                "address2": null,
+                "address3": null,
+                "city": "Gisborne",
+                "zipCode": "3437",
+                "district": "Gisborne",
+                "latitude": "-37.48840400000000",
+                "longitude": "144.59149300000000"
+            },
+            "id": "G287",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "96.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Gisborne"
+        },
+        {
+            "name": "Melton",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "394 - 406 High Street",
+                "address2": null,
+                "address3": null,
+                "city": "Melton",
+                "zipCode": "3337",
+                "district": "Melton",
+                "latitude": "-37.68297932023000",
+                "longitude": "144.57888190324000"
+            },
+            "id": "G223",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "54.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Melton"
+        },
+        {
+            "name": "Sunbury",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "112 - 126 Gap Road",
+                "address2": null,
+                "address3": null,
+                "city": "Sunbury",
+                "zipCode": "3429",
+                "district": "Sunbury",
+                "latitude": "-37.57818496307000",
+                "longitude": "144.71241141235000"
+            },
+            "id": "G222",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "63.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Sunbury"
+        },
+        {
+            "name": "Taylors Lakes",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "399 Melton Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Taylors Lakes",
+                "zipCode": "3038",
+                "district": "Taylors Lakes",
+                "latitude": "-37.69937132430000",
+                "longitude": "144.77876588490000"
+            },
+            "id": "G301",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "33.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Taylors Lakes"
+        },
+        {
+            "name": "Caroline Springs",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "29 - 35 Lake Street",
+                "address2": null,
+                "address3": null,
+                "city": "Caroline Springs",
+                "zipCode": "3023",
+                "district": "Caroline Springs",
+                "latitude": "-37.73150136758000",
+                "longitude": "144.74280476864000"
+            },
+            "id": "G281",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "33.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Caroline Springs"
+        },
+        {
+            "name": "Burnside",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "5 - 25 Westwood Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Burnside",
+                "zipCode": "3023",
+                "district": "Burnside",
+                "latitude": "-37.76004300000000",
+                "longitude": "144.75521800000000"
+            },
+            "id": "G221",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "36.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Burnside"
+        },
+        {
+            "name": "Deer Park",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "Cnr Neale Road, Station Road",
+                "address2": null,
+                "address3": null,
+                "city": "Deer Park",
+                "zipCode": "3023",
+                "district": "Deer Park",
+                "latitude": "-37.75050000000000",
+                "longitude": "144.77444000000000"
+            },
+            "id": "G286",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "36.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Deer Park"
+        },
+        {
+            "name": "Keilor Downs",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "80 Taylors Road",
+                "address2": null,
+                "address3": null,
+                "city": "Keilor Downs",
+                "zipCode": "3038",
+                "district": "Keilor Downs",
+                "latitude": "-37.72644678642000",
+                "longitude": "144.80658648578000"
+            },
+            "id": "G240",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "36.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Keilor Downs"
+        },
+        {
+            "name": "Wallan",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "13 - 17 High Street",
+                "address2": null,
+                "address3": null,
+                "city": "Wallan",
+                "zipCode": "3756",
+                "district": "Wallan",
+                "latitude": "-37.41818200000000",
+                "longitude": "144.97796900000000"
+            },
+            "id": "G239",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "9.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Wallan"
+        },
+        {
+            "name": "Craigieburn",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "340 Craigieburn Road",
+                "address2": null,
+                "address3": null,
+                "city": "Craigieburn",
+                "zipCode": "3064",
+                "district": "Craigieburn",
+                "latitude": "-37.59461000000000",
+                "longitude": "144.91269000000000"
+            },
+            "id": "G228",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "13.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Craigieburn"
+        },
+        {
+            "name": "Epping",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "Harvest Home Road, Edgars Road",
+                "address2": null,
+                "address3": null,
+                "city": "Epping",
+                "zipCode": "3076",
+                "district": "Epping",
+                "latitude": "-37.62172661031000",
+                "longitude": "145.00642735500000"
+            },
+            "id": "G254",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "13.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Epping"
+        },
+        {
+            "name": "Roxburgh Park",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "250 Somerton Road",
+                "address2": null,
+                "address3": null,
+                "city": "Roxburgh Park",
+                "zipCode": "3064",
+                "district": "Roxburgh Park",
+                "latitude": "-37.63787307763000",
+                "longitude": "144.93300242712000"
+            },
+            "id": "G220",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "16.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Roxburgh Park"
+        },
+        {
+            "name": "Epping",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "571 - 583 High Street",
+                "address2": null,
+                "address3": null,
+                "city": "Epping",
+                "zipCode": "3076",
+                "district": "Epping",
+                "latitude": "-37.65519434172000",
+                "longitude": "145.01618804241000"
+            },
+            "id": "G282",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "17.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Epping"
+        },
+        {
+            "name": "Mill Park",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "400 McDonalds Road",
+                "address2": null,
+                "address3": null,
+                "city": "Mill Park",
+                "zipCode": "3082",
+                "district": "Mill Park",
+                "latitude": "-37.65076000000000",
+                "longitude": "145.06844000000000"
+            },
+            "id": "G269",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "17.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Mill Park"
+        },
+        {
+            "name": "Epping",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "347 - 371 Dalton Road",
+                "address2": null,
+                "address3": null,
+                "city": "Epping",
+                "zipCode": "3076",
+                "district": "Epping",
+                "latitude": "-37.65926000000000",
+                "longitude": "145.02974000000000"
+            },
+            "id": "G271",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "17.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Epping"
+        },
+        {
+            "name": "Broadmeadows",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "1099-1169 Pascoe Vale Road",
+                "address2": null,
+                "address3": null,
+                "city": "Broadmeadows",
+                "zipCode": "3047",
+                "district": "Broadmeadows",
+                "latitude": "-37.67944321686000",
+                "longitude": "144.92096326290000"
+            },
+            "id": "G585",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "21.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Broadmeadows"
+        },
+        {
+            "name": "Campbellfield",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "Cnr Sydney Road, Mahoneys Road",
+                "address2": null,
+                "address3": null,
+                "city": "Campbellfield",
+                "zipCode": "3061",
+                "district": "Campbellfield",
+                "latitude": "-37.68745715614000",
+                "longitude": "144.95977667134000"
+            },
+            "id": "G255",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "21.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Campbellfield"
+        },
+        {
+            "name": "Bundoora",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "584 - 604 Grimshaw Street",
+                "address2": null,
+                "address3": null,
+                "city": "Bundoora",
+                "zipCode": "3083",
+                "district": "Bundoora",
+                "latitude": "-37.69988800000000",
+                "longitude": "145.05904700000000"
+            },
+            "id": "G305",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "22.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Bundoora"
+        },
+        {
+            "name": "Lilydale",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "33 Hutchinson Street",
+                "address2": null,
+                "address3": null,
+                "city": "Lilydale",
+                "zipCode": "3140",
+                "district": "Lilydale",
+                "latitude": "-37.76025000000000",
+                "longitude": "145.34870000000000"
+            },
+            "id": "G331",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "31.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Lilydale"
+        },
+        {
+            "name": "Chirnside Park",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "Cnr Kimberly Drive, El Centro",
+                "address2": null,
+                "address3": null,
+                "city": "Chirnside Park",
+                "zipCode": "3116",
+                "district": "Chirnside Park",
+                "latitude": "-37.75638530134000",
+                "longitude": "145.31193745071000"
+            },
+            "id": "G303",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "33.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Chirnside Park"
+        },
+        {
+            "name": "Kilsyth",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "540 Mount Dandenong Rd",
+                "address2": null,
+                "address3": null,
+                "city": "Kilsyth",
+                "zipCode": "3137",
+                "district": "Kilsyth",
+                "latitude": "-37.80301000000000",
+                "longitude": "145.31133000000000"
+            },
+            "id": "G363",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "37.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Kilsyth"
+        },
+        {
+            "name": "Croydon",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "15 / 5 Kent Avenue",
+                "address2": null,
+                "address3": null,
+                "city": "Croydon",
+                "zipCode": "3136",
+                "district": "Croydon",
+                "latitude": "-37.79335700000000",
+                "longitude": "145.27912300000000"
+            },
+            "id": "G378",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "38.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Croydon"
+        },
+        {
+            "name": "Eltham",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "6 - 20 Luck Street",
+                "address2": null,
+                "address3": null,
+                "city": "Eltham",
+                "zipCode": "3095",
+                "district": "Eltham",
+                "latitude": "-37.71296000000000",
+                "longitude": "145.15040000000000"
+            },
+            "id": "G361",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "38.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Eltham"
+        },
+        {
+            "name": "Doncaster East",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "181 Reynolds Road",
+                "address2": null,
+                "address3": null,
+                "city": "Doncaster East",
+                "zipCode": "3109",
+                "district": "Doncaster East",
+                "latitude": "-37.76162000000000",
+                "longitude": "145.16936000000000"
+            },
+            "id": "G320",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "41.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Doncaster East"
+        },
+        {
+            "name": "Greensborough",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "25 Main Street",
+                "address2": null,
+                "address3": null,
+                "city": "Greensborough",
+                "zipCode": "3088",
+                "district": "Greensborough",
+                "latitude": "-37.70289902902000",
+                "longitude": "145.10116528778000"
+            },
+            "id": "G311",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "41.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Greensborough"
+        },
+        {
+            "name": "Boronia",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "1-13 Erica Avenue",
+                "address2": null,
+                "address3": null,
+                "city": "Boronia",
+                "zipCode": "3155",
+                "district": "Boronia",
+                "latitude": "-37.86148000000000",
+                "longitude": "145.28358000000000"
+            },
+            "id": "G671",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "74.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Boronia"
+        },
+        {
+            "name": "Bayswater",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "10 - 14 High Street",
+                "address2": null,
+                "address3": null,
+                "city": "Bayswater",
+                "zipCode": "3153",
+                "district": "Bayswater",
+                "latitude": "-37.84307000000000",
+                "longitude": "145.26617000000000"
+            },
+            "id": "G336",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "75.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Bayswater"
+        },
+        {
+            "name": "Benalla",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "141 - 153 Bridge Street",
+                "address2": null,
+                "address3": null,
+                "city": "Benalla",
+                "zipCode": "3672",
+                "district": "Benalla",
+                "latitude": "-36.54987000000000",
+                "longitude": "145.98915600000000"
+            },
+            "id": "G272",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "138.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Benalla"
+        },
+        {
+            "name": "Wangaratta",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "13 - 15 Chisholm Street",
+                "address2": null,
+                "address3": null,
+                "city": "Wangaratta",
+                "zipCode": "3677",
+                "district": "Wangaratta",
+                "latitude": "-36.35665000000000",
+                "longitude": "146.32803000000000"
+            },
+            "id": "G276",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "140.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Wangaratta"
+        },
+        {
+            "name": "Kangaroo Flat",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "Cnr High Street, Lockwood Road",
+                "address2": null,
+                "address3": null,
+                "city": "Kangaroo Flat",
+                "zipCode": "3555",
+                "district": "Kangaroo Flat",
+                "latitude": "-36.79727408730000",
+                "longitude": "144.24328734899000"
+            },
+            "id": "G241",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "112.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Kangaroo Flat"
+        },
+        {
+            "name": "Eaglehawk",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "4 - 8 Peg Leg Road",
+                "address2": null,
+                "address3": null,
+                "city": "Eaglehawk",
+                "zipCode": "3556",
+                "district": "Eaglehawk",
+                "latitude": "-36.71736400000000",
+                "longitude": "144.24999400000000"
+            },
+            "id": "G300",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "115.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Eaglehawk"
+        },
+        {
+            "name": "Strathdale",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "90 - 92 Edwards Road",
+                "address2": null,
+                "address3": null,
+                "city": "Strathdale",
+                "zipCode": "3550",
+                "district": "Strathdale",
+                "latitude": "-36.77208000000000",
+                "longitude": "144.30573000000000"
+            },
+            "id": "G283",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "118.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Strathdale"
+        },
+        {
+            "name": "Epsom",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "182 - 192 Midland Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Epsom",
+                "zipCode": "3551",
+                "district": "Epsom",
+                "latitude": "-36.70466500000000",
+                "longitude": "144.31743200000000"
+            },
+            "id": "G242",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "79.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Epsom"
+        },
+        {
+            "name": "Kilmore",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "97 Sydney Street",
+                "address2": null,
+                "address3": null,
+                "city": "Kilmore",
+                "zipCode": "3764",
+                "district": "Kilmore",
+                "latitude": "-37.28783700000000",
+                "longitude": "144.94856400000000"
+            },
+            "id": "G245",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "51.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Kilmore"
+        },
+        {
+            "name": "Seymour",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "32 - 34 Tallarook Street",
+                "address2": null,
+                "address3": null,
+                "city": "Seymour",
+                "zipCode": "3660",
+                "district": "Seymour",
+                "latitude": "-37.02280000000000",
+                "longitude": "145.13275000000000"
+            },
+            "id": "G296",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "56.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Seymour"
+        },
+        {
+            "name": "Mooroopna",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "97 - 101 McLennan Street",
+                "address2": null,
+                "address3": null,
+                "city": "Mooroopna",
+                "zipCode": "3629",
+                "district": "Mooroopna",
+                "latitude": "-36.39538000000000",
+                "longitude": "145.35804000000000"
+            },
+            "id": "G294",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "68.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Mooroopna"
+        },
+        {
+            "name": "Shepparton",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "428 Wyndham Street",
+                "address2": null,
+                "address3": null,
+                "city": "Shepparton",
+                "zipCode": "3630",
+                "district": "Shepparton",
+                "latitude": "-36.38345000000000",
+                "longitude": "145.39847000000000"
+            },
+            "id": "G248",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "69.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Shepparton"
+        },
+        {
+            "name": "Wodonga",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "Cnr Victoria Cross Parade, War",
+                "address2": null,
+                "address3": null,
+                "city": "Wodonga",
+                "zipCode": "3689",
+                "district": "Wodonga",
+                "latitude": "-36.13845007689000",
+                "longitude": "146.89513629617000"
+            },
+            "id": "G247",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "102.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Wodonga"
+        },
+        {
+            "name": "Wodonga",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "72 Elgin Boulevard",
+                "address2": null,
+                "address3": null,
+                "city": "Wodonga",
+                "zipCode": "3690",
+                "district": "Wodonga",
+                "latitude": "-36.11904001142000",
+                "longitude": "146.88166077120000"
+            },
+            "id": "G243",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "103.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Wodonga"
+        },
+        {
+            "name": "Yarrawonga",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "2 Frank Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Yarrawonga",
+                "zipCode": "3730",
+                "district": "Yarrawonga",
+                "latitude": "-36.01171000000000",
+                "longitude": "146.02412000000000"
+            },
+            "id": "G616",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "117.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Yarrawonga"
+        },
+        {
+            "name": "Swan Hill",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "Cnr Campbell Street, Rutherfor",
+                "address2": null,
+                "address3": null,
+                "city": "Swan Hill",
+                "zipCode": "3585",
+                "district": "Swan Hill",
+                "latitude": "-35.34265000000000",
+                "longitude": "143.56102000000000"
+            },
+            "id": "G261",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "138.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Swan Hill"
+        },
+        {
+            "name": "Echuca",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "218 - 222 Anstruther Street",
+                "address2": null,
+                "address3": null,
+                "city": "Echuca",
+                "zipCode": "3564",
+                "district": "Echuca",
+                "latitude": "-36.12567000000000",
+                "longitude": "144.75062000000000"
+            },
+            "id": "G290",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "119.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Echuca"
+        },
+        {
+            "name": "Mildura",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Victoria",
+                "regionIsoCode": "VIC",
+                "address1": "858 Fifteenth Street",
+                "address2": null,
+                "address3": null,
+                "city": "Mildura",
+                "zipCode": "3500",
+                "district": "Mildura",
+                "latitude": "-34.20643900000000",
+                "longitude": "142.13497600000000"
+            },
+            "id": "G030",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "144.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Mildura"
+        }
+    ]
+}

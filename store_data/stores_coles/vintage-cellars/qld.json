@@ -1,0 +1,136 @@
+{
+    "metadata": {
+        "number_of_stores": 6,
+        "company": "coles",
+        "state": "QLD",
+        "date_scraped": "2025-08-07"
+    },
+    "stores": [
+        {
+            "id": "VIN:8657",
+            "name": "Vintage Cellars Broadbeach",
+            "phone": "(07) 3734 0879",
+            "isTrading": true,
+            "address": {
+                "state": "QLD",
+                "suburb": "Broadbeach",
+                "addressLine": "2721 Main Place",
+                "postcode": "4218"
+            },
+            "position": {
+                "latitude": -28.027955,
+                "longitude": 153.430161
+            },
+            "brand": {
+                "name": "Vintage Cellars",
+                "storeFinderId": 5,
+                "id": "VIN"
+            }
+        },
+        {
+            "id": "VIN:8650",
+            "name": "Vintage Cellars Chapel Hill",
+            "phone": "(07) 3734 0836",
+            "isTrading": true,
+            "address": {
+                "state": "QLD",
+                "suburb": "Chapel Hill",
+                "addressLine": "620-626 Moggill Road",
+                "postcode": "4069"
+            },
+            "position": {
+                "latitude": -27.505746,
+                "longitude": 152.960854
+            },
+            "brand": {
+                "name": "Vintage Cellars",
+                "storeFinderId": 5,
+                "id": "VIN"
+            }
+        },
+        {
+            "id": "VIN:8653",
+            "name": "Vintage Cellars Indooroopilly",
+            "phone": "(07) 3726 9647",
+            "isTrading": true,
+            "address": {
+                "state": "QLD",
+                "suburb": "Indooroopilly",
+                "addressLine": "34 Coonan Street",
+                "postcode": "4068"
+            },
+            "position": {
+                "latitude": -27.49643,
+                "longitude": 152.975994
+            },
+            "brand": {
+                "name": "Vintage Cellars",
+                "storeFinderId": 5,
+                "id": "VIN"
+            }
+        },
+        {
+            "id": "VIN:6475",
+            "name": "Vintage Cellars Toowong Village",
+            "phone": "(07) 3734 0852",
+            "isTrading": true,
+            "address": {
+                "state": "QLD",
+                "suburb": "Toowong",
+                "addressLine": "9 Sherwood Road",
+                "postcode": "4066"
+            },
+            "position": {
+                "latitude": -27.485028,
+                "longitude": 152.992567
+            },
+            "brand": {
+                "name": "Vintage Cellars",
+                "storeFinderId": 5,
+                "id": "VIN"
+            }
+        },
+        {
+            "id": "VIN:8660",
+            "name": "Vintage Cellars Paddington",
+            "phone": "(07) 3734 0880",
+            "isTrading": true,
+            "address": {
+                "state": "QLD",
+                "suburb": "Paddington",
+                "addressLine": "262 Given Terrace",
+                "postcode": "4064"
+            },
+            "position": {
+                "latitude": -27.4608,
+                "longitude": 153.00346
+            },
+            "brand": {
+                "name": "Vintage Cellars",
+                "storeFinderId": 5,
+                "id": "VIN"
+            }
+        },
+        {
+            "id": "VIN:8665",
+            "name": "Vintage Cellars Manly",
+            "phone": "(07) 3734 0881",
+            "isTrading": true,
+            "address": {
+                "state": "QLD",
+                "suburb": "Manly West",
+                "addressLine": "11 Burnett Street",
+                "postcode": "4179"
+            },
+            "position": {
+                "latitude": -27.474972,
+                "longitude": 153.155589
+            },
+            "brand": {
+                "name": "Vintage Cellars",
+                "storeFinderId": 5,
+                "id": "VIN"
+            }
+        }
+    ]
+}

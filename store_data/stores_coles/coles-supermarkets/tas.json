@@ -1,0 +1,367 @@
+{
+    "metadata": {
+        "number_of_stores": 17,
+        "company": "coles",
+        "state": "TAS",
+        "date_scraped": "2025-08-07"
+    },
+    "stores": [
+        {
+            "id": "COL:7541",
+            "name": "Coles Burnie",
+            "phone": "(03) 6431 4188",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "Burnie",
+                "addressLine": "26 Mount St",
+                "postcode": "7320"
+            },
+            "position": {
+                "latitude": -41.051367,
+                "longitude": 145.904318
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:7606",
+            "name": "Coles Ulverstone",
+            "phone": "(03) 6425 2700",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "Ulverstone",
+                "addressLine": "16 Reiby St",
+                "postcode": "7315"
+            },
+            "position": {
+                "latitude": -41.15736,
+                "longitude": 146.169829
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:7621",
+            "name": "Coles Devonport",
+            "phone": "(03) 6495 5300",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "Devonport",
+                "addressLine": "86 Best St",
+                "postcode": "7310"
+            },
+            "position": {
+                "latitude": -41.177234,
+                "longitude": 146.354893
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:7647",
+            "name": "Coles Bridgewater",
+            "phone": "(03) 6118 6600",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "Bridgewater",
+                "addressLine": "Covehill Rd",
+                "postcode": "7030"
+            },
+            "position": {
+                "latitude": -42.735102,
+                "longitude": 147.242148
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:7645",
+            "name": "Coles Glenorchy",
+            "phone": "(03) 6161 5400",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "Glenorchy",
+                "addressLine": "Main Rd & King George V Av",
+                "postcode": "7010"
+            },
+            "position": {
+                "latitude": -42.832197,
+                "longitude": 147.273415
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:7629",
+            "name": "Coles Kingston",
+            "phone": "(03) 6171 6700",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "Kingston",
+                "addressLine": "John St & Channel Hwy",
+                "postcode": "7050"
+            },
+            "position": {
+                "latitude": -42.974982,
+                "longitude": 147.311015
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:7523",
+            "name": "Coles New Town",
+            "phone": "(03) 6161 5300",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "New Town",
+                "addressLine": "1 Risdon Rd",
+                "postcode": "7008"
+            },
+            "position": {
+                "latitude": -42.855634,
+                "longitude": 147.305763
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:7505",
+            "name": "Coles Sandy Bay",
+            "phone": "(03) 6234 3291",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "Sandy Bay",
+                "addressLine": "246 Sandy Bay Rd",
+                "postcode": "7005"
+            },
+            "position": {
+                "latitude": -42.895824,
+                "longitude": 147.327594
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:7602",
+            "name": "Coles Eastlands",
+            "phone": "(03) 6244 3944",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "Rosny",
+                "addressLine": "1 Bligh St",
+                "postcode": "7018"
+            },
+            "position": {
+                "latitude": -42.865389,
+                "longitude": 147.368843
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:7547",
+            "name": "Coles Glebe Hill",
+            "phone": "(03) 6161 8500",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "Howrah",
+                "addressLine": "Cnr Pass Road And Grange Road",
+                "postcode": "7018"
+            },
+            "position": {
+                "latitude": -42.88787,
+                "longitude": 147.427516
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:7500",
+            "name": "Coles Sorell",
+            "phone": "(03) 6269 1400",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "Sorell",
+                "addressLine": "12 Cole St",
+                "postcode": "7172"
+            },
+            "position": {
+                "latitude": -42.782181,
+                "longitude": 147.565333
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:7658",
+            "name": "Coles Wellington St",
+            "phone": "(03) 6334 2299",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "Launceston",
+                "addressLine": "128 Wellington St",
+                "postcode": "7250"
+            },
+            "position": {
+                "latitude": -41.444861,
+                "longitude": 147.138544
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:7656",
+            "name": "Coles Charles Street",
+            "phone": "(03) 6334 5731",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "Launceston",
+                "addressLine": "198 Charles Street",
+                "postcode": "7250"
+            },
+            "position": {
+                "latitude": -41.442132,
+                "longitude": 147.139698
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:7646",
+            "name": "Coles Meadow Mews",
+            "phone": "(03) 6161 5900",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "Kings Meadows",
+                "addressLine": "102 Hobart Rd",
+                "postcode": "7249"
+            },
+            "position": {
+                "latitude": -41.466626,
+                "longitude": 147.159044
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:7502",
+            "name": "Coles Mowbray",
+            "phone": "(03) 6324 4700",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "Mowbray",
+                "addressLine": "Cnr Invermay Rd & Joffre St",
+                "postcode": "7248"
+            },
+            "position": {
+                "latitude": -41.405731,
+                "longitude": 147.132266
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:7562",
+            "name": "Coles Racecourse",
+            "phone": "(03) 6388 1100",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "Launceston",
+                "addressLine": "15 Racecourse Cres",
+                "postcode": "7250"
+            },
+            "position": {
+                "latitude": -41.42902,
+                "longitude": 147.147442
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:7659",
+            "name": "Coles Newstead",
+            "phone": "(03) 6333 0389",
+            "isTrading": true,
+            "address": {
+                "state": "TAS",
+                "suburb": "Newstead",
+                "addressLine": "165a Elphin Rd",
+                "postcode": "7250"
+            },
+            "position": {
+                "latitude": -41.441318,
+                "longitude": 147.160972
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        }
+    ]
+}

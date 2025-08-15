@@ -1,0 +1,1860 @@
+{
+    "metadata": {
+        "number_of_stores": 50,
+        "company": "aldi",
+        "state": "Western Australia",
+        "state_iso": "WA",
+        "date_scraped": "2025-08-08"
+    },
+    "stores": [
+        {
+            "name": "Albany",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "70-80 Albany Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Albany",
+                "zipCode": "6330",
+                "district": "Albany",
+                "latitude": "-35.01812000000000",
+                "longitude": "117.88160000000000"
+            },
+            "id": "G586",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "135.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Albany"
+        },
+        {
+            "name": "Busselton",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "Cnr Bussell Highway, West Stre",
+                "address2": null,
+                "address3": null,
+                "city": "Busselton",
+                "zipCode": "6280",
+                "district": "Busselton",
+                "latitude": "-33.65514000000000",
+                "longitude": "115.34111000000000"
+            },
+            "id": "G077",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "121.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Busselton"
+        },
+        {
+            "name": "Bunbury",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "9 Edward Street",
+                "address2": null,
+                "address3": null,
+                "city": "Bunbury",
+                "zipCode": "6230",
+                "district": "Bunbury",
+                "latitude": "-33.32834000000000",
+                "longitude": "115.63895000000000"
+            },
+            "id": "G073",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "143.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Bunbury"
+        },
+        {
+            "name": "Australind",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "5 Mardo Avenue",
+                "address2": null,
+                "address3": null,
+                "city": "Australind",
+                "zipCode": "6233",
+                "district": "Australind",
+                "latitude": "-33.28072000000000",
+                "longitude": "115.71568000000000"
+            },
+            "id": "G052",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "137.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Australind"
+        },
+        {
+            "name": "Halls Head",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "14 Guava Way",
+                "address2": null,
+                "address3": null,
+                "city": "Halls Head",
+                "zipCode": "6210",
+                "district": "Halls Head",
+                "latitude": "-32.54769000000000",
+                "longitude": "115.70244000000000"
+            },
+            "id": "G051",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "124.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Halls Head"
+        },
+        {
+            "name": "Mandurah",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "2 Aldgate Street",
+                "address2": null,
+                "address3": null,
+                "city": "Mandurah",
+                "zipCode": "6210",
+                "district": "Mandurah",
+                "latitude": "-32.53213000000000",
+                "longitude": "115.73303000000000"
+            },
+            "id": "G058",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "127.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Mandurah"
+        },
+        {
+            "name": "Lakelands",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "Cnr Lake Valley Drive, Sepping",
+                "address2": null,
+                "address3": null,
+                "city": "Lakelands",
+                "zipCode": "6180",
+                "district": "Lakelands",
+                "latitude": "-32.47145000000000",
+                "longitude": "115.76127000000000"
+            },
+            "id": "G069",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "134.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Lakelands"
+        },
+        {
+            "name": "Secret Harbour",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "420 Secret Harbour Blvd",
+                "address2": null,
+                "address3": null,
+                "city": "Secret Harbour",
+                "zipCode": "6173",
+                "district": "Secret Harbour",
+                "latitude": "-32.40875000000000",
+                "longitude": "115.75920000000000"
+            },
+            "id": "G067",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "140.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Secret Harbour"
+        },
+        {
+            "name": "Waikiki",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "Cnr Read Street, Gnangara Driv",
+                "address2": null,
+                "address3": null,
+                "city": "Waikiki",
+                "zipCode": "6169",
+                "district": "Waikiki",
+                "latitude": "-32.31440000000000",
+                "longitude": "115.75439000000000"
+            },
+            "id": "G064",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "149.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Waikiki"
+        },
+        {
+            "name": "Baldivis",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "26 Safety Bay Road",
+                "address2": null,
+                "address3": null,
+                "city": "Baldivis",
+                "zipCode": "6171",
+                "district": "Baldivis",
+                "latitude": "-32.33315000000000",
+                "longitude": "115.81643000000000"
+            },
+            "id": "G089",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "133.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Baldivis"
+        },
+        {
+            "name": "Rockingham",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "10 Robinson Road",
+                "address2": null,
+                "address3": null,
+                "city": "Rockingham",
+                "zipCode": "6168",
+                "district": "Rockingham",
+                "latitude": "-32.28780000000000",
+                "longitude": "115.74269000000000"
+            },
+            "id": "G054",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "136.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Rockingham"
+        },
+        {
+            "name": "Byford",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "845 South Western Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Byford",
+                "zipCode": "6122",
+                "district": "Byford",
+                "latitude": "-32.21994000000000",
+                "longitude": "116.00840000000000"
+            },
+            "id": "G082",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "149.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Byford"
+        },
+        {
+            "name": "Kwinana",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "32 Meares Avenue",
+                "address2": null,
+                "address3": null,
+                "city": "Kwinana",
+                "zipCode": "6167",
+                "district": "Kwinana",
+                "latitude": "-32.24352000000000",
+                "longitude": "115.81527000000000"
+            },
+            "id": "G050",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "85.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Kwinana"
+        },
+        {
+            "name": "Armadale",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "224 Jull Street",
+                "address2": null,
+                "address3": null,
+                "city": "Armadale",
+                "zipCode": "6112",
+                "district": "Armadale",
+                "latitude": "-32.15341000000000",
+                "longitude": "116.01565000000000"
+            },
+            "id": "G061",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "104.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Armadale"
+        },
+        {
+            "name": "Camillo",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "131 Westfield Road",
+                "address2": null,
+                "address3": null,
+                "city": "Camillo",
+                "zipCode": "6111",
+                "district": "Camillo",
+                "latitude": "-32.11931000000000",
+                "longitude": "116.00115000000000"
+            },
+            "id": "G055",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "135.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Camillo"
+        },
+        {
+            "name": "South Fremantle",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "219 / 24 Hampton Road",
+                "address2": null,
+                "address3": null,
+                "city": "South Fremantle",
+                "zipCode": "6162",
+                "district": "South Fremantle",
+                "latitude": "-32.07418000000000",
+                "longitude": "115.75843000000000"
+            },
+            "id": "G071",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "127.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "South Fremantle"
+        },
+        {
+            "name": "Spearwood",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "Cnr Burgundy Crescent, Lancast",
+                "address2": null,
+                "address3": null,
+                "city": "Spearwood",
+                "zipCode": "6163",
+                "district": "Spearwood",
+                "latitude": "-32.09613000000000",
+                "longitude": "115.78461000000000"
+            },
+            "id": "G070",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "128.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Spearwood"
+        },
+        {
+            "name": "Beeliar",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "283 Beeliar Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Beeliar",
+                "zipCode": "6164",
+                "district": "Beeliar",
+                "latitude": "-32.12638000000000",
+                "longitude": "115.79843000000000"
+            },
+            "id": "G080",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "85.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Beeliar"
+        },
+        {
+            "name": "Harrisdale",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "Cnr Cnr Nicholson Road, Yellow",
+                "address2": null,
+                "address3": null,
+                "city": "Harrisdale",
+                "zipCode": "6112",
+                "district": "Harrisdale",
+                "latitude": "-32.12646000000000",
+                "longitude": "115.92696000000000"
+            },
+            "id": "G053",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "68.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Harrisdale"
+        },
+        {
+            "name": "Southern River",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "346 Warton Road",
+                "address2": null,
+                "address3": null,
+                "city": "Southern River",
+                "zipCode": "6110",
+                "district": "Southern River",
+                "latitude": "-32.09060000000000",
+                "longitude": "115.94256000000000"
+            },
+            "id": "G056",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "69.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Southern River"
+        },
+        {
+            "name": "Thornlie",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "115 Murdoch Road",
+                "address2": null,
+                "address3": null,
+                "city": "Thornlie",
+                "zipCode": "6108",
+                "district": "Thornlie",
+                "latitude": "-32.06874000000000",
+                "longitude": "115.95057000000000"
+            },
+            "id": "G086",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "70.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Thornlie"
+        },
+        {
+            "name": "Northam",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "10 Beamish Avenue",
+                "address2": null,
+                "address3": null,
+                "city": "Northam",
+                "zipCode": "6401",
+                "district": "Northam",
+                "latitude": "-31.65737000000000",
+                "longitude": "116.67057000000000"
+            },
+            "id": "G074",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "98.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Northam"
+        },
+        {
+            "name": "Mundaring",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "22 - 24 Hartung Street",
+                "address2": null,
+                "address3": null,
+                "city": "Mundaring",
+                "zipCode": "6073",
+                "district": "Mundaring",
+                "latitude": "-31.90054000000000",
+                "longitude": "116.16501000000000"
+            },
+            "id": "G060",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "103.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Mundaring"
+        },
+        {
+            "name": "Kalamunda",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "17 Mead Street",
+                "address2": null,
+                "address3": null,
+                "city": "Kalamunda",
+                "zipCode": "6076",
+                "district": "Kalamunda",
+                "latitude": "-31.97352000000000",
+                "longitude": "116.05824000000000"
+            },
+            "id": "G078",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "106.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Kalamunda"
+        },
+        {
+            "name": "Wattle Grove",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "338 Hale Road",
+                "address2": null,
+                "address3": null,
+                "city": "Wattle Grove",
+                "zipCode": "6107",
+                "district": "Wattle Grove",
+                "latitude": "-31.99987000000000",
+                "longitude": "115.98487000000000"
+            },
+            "id": "G062",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "110.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Wattle Grove"
+        },
+        {
+            "name": "Yanchep",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "2 Kakadu Road",
+                "address2": null,
+                "address3": null,
+                "city": "Yanchep",
+                "zipCode": "6035",
+                "district": "Yanchep",
+                "latitude": "-31.54809000000000",
+                "longitude": "115.64061000000000"
+            },
+            "id": "G095",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "119.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Yanchep"
+        },
+        {
+            "name": "Hillarys",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "Cnr Marmion Avenue, Whitfords",
+                "address2": null,
+                "address3": null,
+                "city": "Hillarys",
+                "zipCode": "6025",
+                "district": "Hillarys",
+                "latitude": "-31.79633000000000",
+                "longitude": "115.74764000000000"
+            },
+            "id": "G091",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "119.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Hillarys"
+        },
+        {
+            "name": "Butler",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "77 Butler Boulevard",
+                "address2": null,
+                "address3": null,
+                "city": "Butler",
+                "zipCode": "6036",
+                "district": "Butler",
+                "latitude": "-31.63796000000000",
+                "longitude": "115.69631000000000"
+            },
+            "id": "G059",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "120.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Butler"
+        },
+        {
+            "name": "Clarkson",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "36 Ocean Keys Blvd",
+                "address2": null,
+                "address3": null,
+                "city": "Clarkson",
+                "zipCode": "6030",
+                "district": "Clarkson",
+                "latitude": "-31.69087000000000",
+                "longitude": "115.71763000000000"
+            },
+            "id": "G587",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "120.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Clarkson"
+        },
+        {
+            "name": "Currambine",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "86 Delamere Avenue",
+                "address2": null,
+                "address3": null,
+                "city": "Currambine",
+                "zipCode": "6028",
+                "district": "Currambine",
+                "latitude": "-31.74119000000000",
+                "longitude": "115.74107000000000"
+            },
+            "id": "G076",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "120.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Currambine"
+        },
+        {
+            "name": "Karrinyup",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "200 Karrinyup Road",
+                "address2": null,
+                "address3": null,
+                "city": "Karrinyup",
+                "zipCode": "6018",
+                "district": "Karrinyup",
+                "latitude": "-31.87730000000000",
+                "longitude": "115.77734000000000"
+            },
+            "id": "G092",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "121.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Karrinyup"
+        },
+        {
+            "name": "Joondalup",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "420 Joondalup Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Joondalup",
+                "zipCode": "6027",
+                "district": "Joondalup",
+                "latitude": "-31.74403000000000",
+                "longitude": "115.76830000000000"
+            },
+            "id": "G048",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "123.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Joondalup"
+        },
+        {
+            "name": "Innaloo",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "Ellen Stirling Blvd",
+                "address2": null,
+                "address3": null,
+                "city": "Innaloo",
+                "zipCode": "6018",
+                "district": "Innaloo",
+                "latitude": "-31.89857000000000",
+                "longitude": "115.80085000000000"
+            },
+            "id": "G090",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "76.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Innaloo"
+        },
+        {
+            "name": "Kardinya",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "17 South Street",
+                "address2": null,
+                "address3": null,
+                "city": "Kardinya",
+                "zipCode": "6163",
+                "district": "Kardinya",
+                "latitude": "-32.06729500000000",
+                "longitude": "115.81849600000000"
+            },
+            "id": "G079",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "30.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Kardinya"
+        },
+        {
+            "name": "South Lake",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "620 North Lake Road",
+                "address2": null,
+                "address3": null,
+                "city": "South Lake",
+                "zipCode": "6164",
+                "district": "South Lake",
+                "latitude": "-32.10644000000000",
+                "longitude": "115.82829000000000"
+            },
+            "id": "G057",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "33.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "South Lake"
+        },
+        {
+            "name": "Warwick",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "Cnr Erindale Road, Beach Road",
+                "address2": null,
+                "address3": null,
+                "city": "Warwick",
+                "zipCode": "6024",
+                "district": "Warwick",
+                "latitude": "-31.84369000000000",
+                "longitude": "115.81115000000000"
+            },
+            "id": "G087",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "34.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Warwick"
+        },
+        {
+            "name": "Yokine",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "6 Wanneroo Road",
+                "address2": null,
+                "address3": null,
+                "city": "Yokine",
+                "zipCode": "6060",
+                "district": "Yokine",
+                "latitude": "-31.91096000000000",
+                "longitude": "115.84682000000000"
+            },
+            "id": "G075",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "34.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Yokine"
+        },
+        {
+            "name": "Cannington",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "1383 Albany Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Cannington",
+                "zipCode": "6107",
+                "district": "Cannington",
+                "latitude": "-32.02165000000000",
+                "longitude": "115.93661000000000"
+            },
+            "id": "G063",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "6.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Cannington"
+        },
+        {
+            "name": "Belmont",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "227 Belmont Avenue",
+                "address2": null,
+                "address3": null,
+                "city": "Belmont",
+                "zipCode": "6105",
+                "district": "Belmont",
+                "latitude": "-31.96577000000000",
+                "longitude": "115.93502000000000"
+            },
+            "id": "G047",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "7.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Belmont"
+        },
+        {
+            "name": "East Victoria Park",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "1009,1013 Albany Highway",
+                "address2": null,
+                "address3": null,
+                "city": "East Victoria Park",
+                "zipCode": "6101",
+                "district": "East Victoria Park",
+                "latitude": "-31.99232000000000",
+                "longitude": "115.91095000000000"
+            },
+            "id": "G084",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "8.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "East Victoria Park"
+        },
+        {
+            "name": "Midland",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "274 Great Eastern Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Midland",
+                "zipCode": "6056",
+                "district": "Midland",
+                "latitude": "-31.88992000000000",
+                "longitude": "116.01280000000000"
+            },
+            "id": "G085",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "12.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Midland"
+        },
+        {
+            "name": "Willetton",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "45 Burrendah Blvd",
+                "address2": null,
+                "address3": null,
+                "city": "Willetton",
+                "zipCode": "6155",
+                "district": "Willetton",
+                "latitude": "-32.05753000000000",
+                "longitude": "115.87963000000000"
+            },
+            "id": "G735",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "13.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Willetton"
+        },
+        {
+            "name": "Ellenbrook",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "Cnr The Promenade, Pinaster Pd",
+                "address2": null,
+                "address3": null,
+                "city": "Ellenbrook",
+                "zipCode": "6056",
+                "district": "Ellenbrook",
+                "latitude": "-31.78174000000000",
+                "longitude": "115.97413000000000"
+            },
+            "id": "G065",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "99.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Ellenbrook"
+        },
+        {
+            "name": "Banksia Grove",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "3 Jewel Way",
+                "address2": null,
+                "address3": null,
+                "city": "Banksia Grove",
+                "zipCode": "6031",
+                "district": "Banksia Grove",
+                "latitude": "-31.70495000000000",
+                "longitude": "115.80142000000000"
+            },
+            "id": "G072",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "125.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Banksia Grove"
+        },
+        {
+            "name": "Wanneroo",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "Cnr Conlan Avenue, Wanneroo Ro",
+                "address2": null,
+                "address3": null,
+                "city": "Wanneroo",
+                "zipCode": "6065",
+                "district": "Wanneroo",
+                "latitude": "-31.75198000000000",
+                "longitude": "115.80590000000000"
+            },
+            "id": "G081",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "126.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Wanneroo"
+        },
+        {
+            "name": "Madeley",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "168 Wanneroo Road",
+                "address2": null,
+                "address3": null,
+                "city": "Madeley",
+                "zipCode": "6065",
+                "district": "Madeley",
+                "latitude": "-31.81698000000000",
+                "longitude": "115.82291000000000"
+            },
+            "id": "G088",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "85.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Madeley"
+        },
+        {
+            "name": "Beechboro",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "161 Altone Park Road",
+                "address2": null,
+                "address3": null,
+                "city": "Beechboro",
+                "zipCode": "6063",
+                "district": "Beechboro",
+                "latitude": "-31.87040000000000",
+                "longitude": "115.94583000000000"
+            },
+            "id": "G093",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "66.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Beechboro"
+        },
+        {
+            "name": "Morley",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "4 Collier Rd",
+                "address2": null,
+                "address3": null,
+                "city": "Morley",
+                "zipCode": "6062",
+                "district": "Morley",
+                "latitude": "-31.89941000000000",
+                "longitude": "115.90027000000000"
+            },
+            "id": "G066",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "72.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Morley"
+        },
+        {
+            "name": "Inglewood",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "Beaufort Street,  Tenth Avenue",
+                "address2": null,
+                "address3": null,
+                "city": "Inglewood",
+                "zipCode": "6052",
+                "district": "Inglewood",
+                "latitude": "-31.92094000000000",
+                "longitude": "115.88715000000000"
+            },
+            "id": "G094",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "115.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Inglewood"
+        },
+        {
+            "name": "Wonthella",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "Western Australia",
+                "regionIsoCode": "WA",
+                "address1": "46 North West Coastal Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Wonthella",
+                "zipCode": "6530",
+                "district": "Wonthella",
+                "latitude": "-28.77673000000000",
+                "longitude": "114.62690000000000"
+            },
+            "id": "G083",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "149.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Wonthella"
+        }
+    ]
+}

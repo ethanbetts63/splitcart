@@ -1,0 +1,4316 @@
+{
+    "metadata": {
+        "number_of_stores": 68,
+        "company": "woolworths",
+        "brand": "supermarkets",
+        "state": "SA",
+        "date_scraped": "2025-08-08"
+    },
+    "stores": [
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5644",
+            "Name": "Port Lincoln",
+            "AddressLine1": "27 Liverpool Street",
+            "AddressLine2": null,
+            "Suburb": "Port Lincoln",
+            "State": "SA",
+            "Postcode": "5606",
+            "Latitude": "-34.72208",
+            "Longitude": "135.85924",
+            "GeoLevel": "0",
+            "Distance": "956.45",
+            "Phone": "(08) 8683 7800",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5647",
+            "Name": "Millicent",
+            "AddressLine1": "34 Davenport Street",
+            "AddressLine2": null,
+            "Suburb": "Millicent",
+            "State": "SA",
+            "Postcode": "5280",
+            "Latitude": "-37.596415",
+            "Longitude": "140.35335",
+            "GeoLevel": "0",
+            "Distance": "864.81",
+            "Phone": "(08) 8726 4950",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "CLOSED",
+                    "TradingHourForDisplay": "Sun: CLOSED"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 6:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-1800"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 6:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-1800"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 6:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-1800"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 6:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-1800"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5634",
+            "Name": "Mount Gambier",
+            "AddressLine1": "Mt Gambier Shopping Centre, 145 Commerical Street",
+            "AddressLine2": null,
+            "Suburb": "Mount Gambier",
+            "State": "SA",
+            "Postcode": "5290",
+            "Latitude": "-37.830579",
+            "Longitude": "140.7897007",
+            "GeoLevel": "0",
+            "Distance": "880.72",
+            "Phone": "(08) 8726 4902",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-2000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2200"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5018",
+            "Name": "Mount Gambier Marketplace",
+            "AddressLine1": "176 Penola Road",
+            "AddressLine2": null,
+            "Suburb": "Mount Gambier",
+            "State": "SA",
+            "Postcode": "5290",
+            "Latitude": "-37.8081067",
+            "Longitude": "140.7941103",
+            "GeoLevel": "7",
+            "Distance": "882.46",
+            "Phone": "(08) 8726 4907",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-2000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5653",
+            "Name": "Victor Harbor",
+            "AddressLine1": "27 Torrens Road",
+            "AddressLine2": null,
+            "Suburb": "Victor Harbor",
+            "State": "SA",
+            "Postcode": "5211",
+            "Latitude": "-35.552947",
+            "Longitude": "138.619962",
+            "GeoLevel": "0",
+            "Distance": "917.64",
+            "Phone": "(08) 8555 9302",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Pick up",
+                "Quiet Hour",
+                "Sushi Bar"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5668",
+            "Name": "Goolwa",
+            "AddressLine1": "33 Hutchinson Street",
+            "AddressLine2": null,
+            "Suburb": "Goolwa",
+            "State": "SA",
+            "Postcode": "5214",
+            "Latitude": "-35.505466",
+            "Longitude": "138.777709",
+            "GeoLevel": "0",
+            "Distance": "930.43",
+            "Phone": "(08) 8555 6000",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot",
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5602",
+            "Name": "Naracoorte",
+            "AddressLine1": "Kingcraig Plaza, 26 Roberston Street",
+            "AddressLine2": null,
+            "Suburb": "Naracoorte",
+            "State": "SA",
+            "Postcode": "5271",
+            "Latitude": "-36.957362",
+            "Longitude": "140.743214",
+            "GeoLevel": "0",
+            "Distance": "935.92",
+            "Phone": "(08) 8760 2200",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-2000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5646",
+            "Name": "Seaford (SA)",
+            "AddressLine1": "Cnr Commercial Road And The Parade",
+            "AddressLine2": null,
+            "Suburb": "Seaford",
+            "State": "SA",
+            "Postcode": "5169",
+            "Latitude": "-35.1889915",
+            "Longitude": "138.47860196",
+            "GeoLevel": "0",
+            "Distance": "943.06",
+            "Phone": "(08) 8383 5161",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5606",
+            "Name": "Seaford Meadows",
+            "AddressLine1": "Lot 209 Grand Boulevard & Prow Drive",
+            "AddressLine2": null,
+            "Suburb": "Seaford Meadows",
+            "State": "SA",
+            "Postcode": "5169",
+            "Latitude": "-35.172409",
+            "Longitude": "138.483846",
+            "GeoLevel": "0",
+            "Distance": "944.85",
+            "Phone": "(08) 8383 5197",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5739",
+            "Name": "Christies Beach",
+            "AddressLine1": "Christies Beach Shopping Centre, 76 Beach Road",
+            "AddressLine2": null,
+            "Suburb": "Christies Beach",
+            "State": "SA",
+            "Postcode": "5165",
+            "Latitude": "-35.139673",
+            "Longitude": "138.478235",
+            "GeoLevel": "0",
+            "Distance": "947.56",
+            "Phone": "(08) 8383 5179",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5679",
+            "Name": "Colonnades",
+            "AddressLine1": "Colonnades Shopping Centre, Cnr Burgess And Goldsmith Drives",
+            "AddressLine2": null,
+            "Suburb": "Noarlunga",
+            "State": "SA",
+            "Postcode": "5168",
+            "Latitude": "-35.1414693",
+            "Longitude": "138.4965189",
+            "GeoLevel": "0",
+            "Distance": "948.34",
+            "Phone": "(08) 8383 5173",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5664",
+            "Name": "Morphett Vale",
+            "AddressLine1": "146 Main South Road",
+            "AddressLine2": null,
+            "Suburb": "Morphett Vale",
+            "State": "SA",
+            "Postcode": "5162",
+            "Latitude": "-35.12320654",
+            "Longitude": "138.52399739",
+            "GeoLevel": "0",
+            "Distance": "951.43",
+            "Phone": "(08) 8383 5164",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5622",
+            "Name": "Woodcroft",
+            "AddressLine1": "217 Pimpala Road",
+            "AddressLine2": null,
+            "Suburb": "Woodcroft",
+            "State": "SA",
+            "Postcode": "5162",
+            "Latitude": "-35.103031",
+            "Longitude": "138.554222",
+            "GeoLevel": "0",
+            "Distance": "954.83",
+            "Phone": "(08) 8383 5158",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Australia Post Parcel Locker",
+                "Direct to boot - drive through",
+                "Pick up"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5672",
+            "Name": "Hallett Cove",
+            "AddressLine1": "Hallett Cove Shopping Centre, 246 Lonsdale Road",
+            "AddressLine2": null,
+            "Suburb": "Hallett Cove",
+            "State": "SA",
+            "Postcode": "5158",
+            "Latitude": "-35.0774807",
+            "Longitude": "138.5171984",
+            "GeoLevel": "0",
+            "Distance": "955.27",
+            "Phone": "(08) 8383 5170",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5600",
+            "Name": "Strathalbyn",
+            "AddressLine1": "Cnr Dawson & Donald Street",
+            "AddressLine2": null,
+            "Suburb": "Strathalbyn",
+            "State": "SA",
+            "Postcode": "5255",
+            "Latitude": "-35.260111",
+            "Longitude": "138.89109",
+            "GeoLevel": "0",
+            "Distance": "958.43",
+            "Phone": "(08) 8536 7100",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5661",
+            "Name": "Aberfoyle Park",
+            "AddressLine1": "130-150 Hub Drive",
+            "AddressLine2": null,
+            "Suburb": "Aberfoyle Park",
+            "State": "SA",
+            "Postcode": "5159",
+            "Latitude": "-35.0757255",
+            "Longitude": "138.592041",
+            "GeoLevel": "0",
+            "Distance": "959.29",
+            "Phone": "(08) 8314 5474",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5798",
+            "Name": "Brighton",
+            "AddressLine1": "437 - 441 Brighton Road",
+            "AddressLine2": null,
+            "Suburb": "Brighton",
+            "State": "SA",
+            "Postcode": "5048",
+            "Latitude": "-35.016013",
+            "Longitude": "138.522207",
+            "GeoLevel": "0",
+            "Distance": "961.17",
+            "Phone": "(08) 8215 6938",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Australia Post Parcel Locker",
+                "Direct to boot - drive through",
+                "Instore Bakery",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5639",
+            "Name": "Marion",
+            "AddressLine1": "Marion Shopping Centre, 297 Diagonal Road",
+            "AddressLine2": null,
+            "Suburb": "Oaklands Park",
+            "State": "SA",
+            "Postcode": "5046",
+            "Latitude": "-35.0170669",
+            "Longitude": "138.5421636",
+            "GeoLevel": "0",
+            "Distance": "962.1",
+            "Phone": "(08) 8314 5453",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Instore Bakery",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5311",
+            "Name": "Glenelg",
+            "AddressLine1": "Cnr Jetty And Brighton Rds",
+            "AddressLine2": null,
+            "Suburb": "Glenelg",
+            "State": "SA",
+            "Postcode": "5045",
+            "Latitude": "-34.979172",
+            "Longitude": "138.519482",
+            "GeoLevel": "0",
+            "Distance": "964.43",
+            "Phone": "(08) 8314 5423",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5650",
+            "Name": "Blackwood",
+            "AddressLine1": "360 Shepherds Hill Road",
+            "AddressLine2": null,
+            "Suburb": "Blackwood",
+            "State": "SA",
+            "Postcode": "5051",
+            "Latitude": "-35.02161",
+            "Longitude": "138.615907",
+            "GeoLevel": "0",
+            "Distance": "965.47",
+            "Phone": "(08) 8314 5465",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Australia Post Parcel Locker",
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5003",
+            "Name": "Cumberland Park",
+            "AddressLine1": "366 Goodwood Road",
+            "AddressLine2": null,
+            "Suburb": "Cumberland Park",
+            "State": "SA",
+            "Postcode": "5041",
+            "Latitude": "-34.96821",
+            "Longitude": "138.58985",
+            "GeoLevel": "7",
+            "Distance": "969.03",
+            "Phone": "(08) 8215 6925",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Australia Post Parcel Locker",
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Scan&Go",
+                "Sushi Bar"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5630",
+            "Name": "Mitcham",
+            "AddressLine1": "Mitcham Shopping Centre, 119 Belair Road",
+            "AddressLine2": null,
+            "Suburb": "Torrens Park",
+            "State": "SA",
+            "Postcode": "5062",
+            "Latitude": "-34.975826",
+            "Longitude": "138.609733",
+            "GeoLevel": "0",
+            "Distance": "969.35",
+            "Phone": "(08) 8314 5447",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "Sushi Bar",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5088",
+            "Name": "Fulham Gardens",
+            "AddressLine1": "445-457 Tapleys Hill Rd",
+            "AddressLine2": null,
+            "Suburb": "Fulham Gardens",
+            "State": "SA",
+            "Postcode": "5024",
+            "Latitude": "-34.913509",
+            "Longitude": "138.514836",
+            "GeoLevel": "0",
+            "Distance": "970.25",
+            "Phone": "(08) 8215 6957",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot",
+                "Direct to boot - drive through",
+                "Instore Bakery",
+                "Pick up",
+                "Scan&Go",
+                "Seafood",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5626",
+            "Name": "Hilton",
+            "AddressLine1": "160 Sir Donald Bradman Drive",
+            "AddressLine2": null,
+            "Suburb": "Hilton",
+            "State": "SA",
+            "Postcode": "5033",
+            "Latitude": "-34.931909",
+            "Longitude": "138.561601",
+            "GeoLevel": "0",
+            "Distance": "970.93",
+            "Phone": "(08) 8314 5441",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5619",
+            "Name": "Unley",
+            "AddressLine1": "204 Unley Road",
+            "AddressLine2": null,
+            "Suburb": "Unley",
+            "State": "SA",
+            "Postcode": "5061",
+            "Latitude": "-34.95068913",
+            "Longitude": "138.6054961",
+            "GeoLevel": "0",
+            "Distance": "971.45",
+            "Phone": "(08) 8314 5435",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Sushi Bar"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5623",
+            "Name": "West Lakes",
+            "AddressLine1": "111 West Lakes Boulevard",
+            "AddressLine2": null,
+            "Suburb": "West Lakes",
+            "State": "SA",
+            "Postcode": "5021",
+            "Latitude": "-34.8806324",
+            "Longitude": "138.490307",
+            "GeoLevel": "0",
+            "Distance": "972.05",
+            "Phone": "(08) 8314 5438",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Scan&Go",
+                "Seafood",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5518",
+            "Name": "Brickworks (Torrensville)",
+            "AddressLine1": "South Road and Ashwin Parade",
+            "AddressLine2": null,
+            "Suburb": "Torrensville",
+            "State": "SA",
+            "Postcode": "5031",
+            "Latitude": "-34.9135161",
+            "Longitude": "138.5638958",
+            "GeoLevel": "0",
+            "Distance": "972.74",
+            "Phone": "(08) 8215 6928",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Pick up",
+                "Seafood",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5665",
+            "Name": "Arkaba",
+            "AddressLine1": "Arkaba Shopping Centre, 180 Glen Osmond Road",
+            "AddressLine2": null,
+            "Suburb": "Fullarton",
+            "State": "SA",
+            "Postcode": "5063",
+            "Latitude": "-34.9476976",
+            "Longitude": "138.6264368",
+            "GeoLevel": "0",
+            "Distance": "972.8",
+            "Phone": "(08) 8215 6906",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5631",
+            "Name": "Findon",
+            "AddressLine1": "185 Findon Road",
+            "AddressLine2": null,
+            "Suburb": "Findon",
+            "State": "SA",
+            "Postcode": "5023",
+            "Latitude": "-34.89486",
+            "Longitude": "138.53141",
+            "GeoLevel": "0",
+            "Distance": "972.81",
+            "Phone": "(08) 8314 5450",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5098",
+            "Name": "Mount Barker South",
+            "AddressLine1": "239 Wellington Rd Mt Barker 5251",
+            "AddressLine2": null,
+            "Suburb": "Mount Barker",
+            "State": "SA",
+            "Postcode": "5251",
+            "Latitude": "-35.0891714",
+            "Longitude": "138.873977",
+            "GeoLevel": "0",
+            "Distance": "972.86",
+            "Phone": "(08) 8188 7202",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5317",
+            "Name": "Rundle Mall",
+            "AddressLine1": "80-88 Rundle Mall",
+            "AddressLine2": null,
+            "Suburb": "Adelaide",
+            "State": "SA",
+            "Postcode": "5000",
+            "Latitude": "-34.922449",
+            "Longitude": "138.602601",
+            "GeoLevel": "7",
+            "Distance": "973.89",
+            "Phone": "(08) 8314 5426",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Cut on Demand",
+                "Liquor (Adjacent BWS)",
+                "Quiet Hour",
+                "Seafood",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5682",
+            "Name": "Mt Barker",
+            "AddressLine1": "5 Walker Street",
+            "AddressLine2": null,
+            "Suburb": "Mt Barker",
+            "State": "SA",
+            "Postcode": "5251",
+            "Latitude": "-35.0652651",
+            "Longitude": "138.8573472",
+            "GeoLevel": "0",
+            "Distance": "974.14",
+            "Phone": "(08) 8188 7250",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "Sushi Bar"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5648",
+            "Name": "Kilkenny",
+            "AddressLine1": "470 Torrens Road",
+            "AddressLine2": null,
+            "Suburb": "Kilkenny",
+            "State": "SA",
+            "Postcode": "5009",
+            "Latitude": "-34.87413554",
+            "Longitude": "138.5488828",
+            "GeoLevel": "0",
+            "Distance": "975.62",
+            "Phone": "(08) 8314 5462",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5629",
+            "Name": "PORT ADELAIDE",
+            "AddressLine1": "200 - 220 COMMERCIAL ROAD, PORT ADELAIDE",
+            "AddressLine2": null,
+            "Suburb": "PORT ADELAIDE",
+            "State": "SA",
+            "Postcode": "5015",
+            "Latitude": "-34.848979",
+            "Longitude": "138.504847",
+            "GeoLevel": "0",
+            "Distance": "975.72",
+            "Phone": null,
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5616",
+            "Name": "Marryatville",
+            "AddressLine1": "Cnr Kensington Rd And Tusmore Avenue",
+            "AddressLine2": null,
+            "Suburb": "Marryatville",
+            "State": "SA",
+            "Postcode": "5068",
+            "Latitude": "-34.927339",
+            "Longitude": "138.6506479",
+            "GeoLevel": "0",
+            "Distance": "975.91",
+            "Phone": "(08) 8314 5432",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5547",
+            "Name": "Walkerville",
+            "AddressLine1": "14/104 Walkerville Terrace",
+            "AddressLine2": null,
+            "Suburb": "Walkerville",
+            "State": "SA",
+            "Postcode": "5081",
+            "Latitude": "-34.89604847",
+            "Longitude": "138.61726023",
+            "GeoLevel": "0",
+            "Distance": "977.07",
+            "Phone": "(08) 8215 6911",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "Sushi Bar",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5687",
+            "Name": "Northpark",
+            "AddressLine1": "Northpark Shopping Centre, 264 Main Rd",
+            "AddressLine2": null,
+            "Suburb": "Prospect",
+            "State": "SA",
+            "Postcode": "5082",
+            "Latitude": "-34.8757477",
+            "Longitude": "138.6011688",
+            "GeoLevel": "0",
+            "Distance": "978.12",
+            "Phone": "(08) 8314 5483",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5736",
+            "Name": "Marden",
+            "AddressLine1": "9 Lower Portrush Road",
+            "AddressLine2": null,
+            "Suburb": "Marden",
+            "State": "SA",
+            "Postcode": "5070",
+            "Latitude": "-34.8952",
+            "Longitude": "138.63843",
+            "GeoLevel": "0",
+            "Distance": "978.24",
+            "Phone": "(08) 8215 6903",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5689",
+            "Name": "Northgate",
+            "AddressLine1": "Cnr Folland Avenue And Fosters Road",
+            "AddressLine2": null,
+            "Suburb": "Northgate",
+            "State": "SA",
+            "Postcode": "5085",
+            "Latitude": "-34.8565923",
+            "Longitude": "138.634497",
+            "GeoLevel": "0",
+            "Distance": "981.59",
+            "Phone": "(08) 8314 5489",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot",
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5643",
+            "Name": "Newton",
+            "AddressLine1": "Newton Village Shopping Centre, 299 Montacute Road",
+            "AddressLine2": null,
+            "Suburb": "Newton",
+            "State": "SA",
+            "Postcode": "5074",
+            "Latitude": "-34.886639",
+            "Longitude": "138.690387",
+            "GeoLevel": "0",
+            "Distance": "981.69",
+            "Phone": "(08) 8314 5456",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5318",
+            "Name": "Gilles Plains",
+            "AddressLine1": "575 North East Road",
+            "AddressLine2": null,
+            "Suburb": "Gilles Plains",
+            "State": "SA",
+            "Postcode": "5086",
+            "Latitude": "-34.8550172",
+            "Longitude": "138.6547488",
+            "GeoLevel": "0",
+            "Distance": "982.77",
+            "Phone": "(08) 8215 6931",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5799",
+            "Name": "Mawson Lakes",
+            "AddressLine1": "Cnr University Pde & Main St",
+            "AddressLine2": null,
+            "Suburb": "Mawson Lakes",
+            "State": "SA",
+            "Postcode": "5095",
+            "Latitude": "-34.8095016",
+            "Longitude": "138.6153603",
+            "GeoLevel": "0",
+            "Distance": "984.96",
+            "Phone": "(08) 8215 6915",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "Sushi Bar",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5612",
+            "Name": "Para Hills",
+            "AddressLine1": "Wilkinson Road",
+            "AddressLine2": null,
+            "Suburb": "Para Hills",
+            "State": "SA",
+            "Postcode": "5096",
+            "Latitude": "-34.8102449",
+            "Longitude": "138.6532217",
+            "GeoLevel": "0",
+            "Distance": "986.82",
+            "Phone": "(08) 8314 5429",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5654",
+            "Name": "Tea Tree Plaza",
+            "AddressLine1": "984 North East Road",
+            "AddressLine2": null,
+            "Suburb": "Modbury",
+            "State": "SA",
+            "Postcode": "5092",
+            "Latitude": "-34.83007301",
+            "Longitude": "138.69108342",
+            "GeoLevel": "0",
+            "Distance": "986.93",
+            "Phone": "(08) 8314 5468",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5645",
+            "Name": "Modbury Heights",
+            "AddressLine1": "Modbury Heights Shopping Centre, 172 Ladywood Drive",
+            "AddressLine2": null,
+            "Suburb": "Modbury Heights",
+            "State": "SA",
+            "Postcode": "5092",
+            "Latitude": "-34.809742",
+            "Longitude": "138.685892",
+            "GeoLevel": "0",
+            "Distance": "988.53",
+            "Phone": "(08) 8314 5459",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5613",
+            "Name": "Paralowie",
+            "AddressLine1": "337 Whites Road",
+            "AddressLine2": null,
+            "Suburb": "Paralowie",
+            "State": "SA",
+            "Postcode": "5108",
+            "Latitude": "-34.7643388",
+            "Longitude": "138.6068602",
+            "GeoLevel": "0",
+            "Distance": "988.71",
+            "Phone": "(08) 8259 3714",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5731",
+            "Name": "Hollywood Plaza",
+            "AddressLine1": "155 Winzor Street",
+            "AddressLine2": null,
+            "Suburb": "Salisbury Downs",
+            "State": "SA",
+            "Postcode": "5108",
+            "Latitude": "-34.767241",
+            "Longitude": "138.625757",
+            "GeoLevel": "0",
+            "Distance": "989.4",
+            "Phone": "(08) 8259 3729",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5657",
+            "Name": "Springbank Plaza",
+            "AddressLine1": "Cnr Waterloo Rd & Kensington Way",
+            "AddressLine2": null,
+            "Suburb": "Burton",
+            "State": "SA",
+            "Postcode": "5110",
+            "Latitude": "-34.741",
+            "Longitude": "138.605",
+            "GeoLevel": "0",
+            "Distance": "990.78",
+            "Phone": "(08) 8259 3720",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5621",
+            "Name": "Golden Grove",
+            "AddressLine1": "Cnr The Golden Way And The Grove Way",
+            "AddressLine2": null,
+            "Suburb": "Golden Grove",
+            "State": "SA",
+            "Postcode": "5125",
+            "Latitude": "-34.789563",
+            "Longitude": "138.694171",
+            "GeoLevel": "0",
+            "Distance": "990.82",
+            "Phone": "(08) 8259 3717",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5611",
+            "Name": "Parabanks",
+            "AddressLine1": "John Street",
+            "AddressLine2": null,
+            "Suburb": "Salisbury",
+            "State": "SA",
+            "Postcode": "5108",
+            "Latitude": "-34.76168324",
+            "Longitude": "138.64606461",
+            "GeoLevel": "0",
+            "Distance": "990.94",
+            "Phone": "(08) 8259 3711",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5642",
+            "Name": "Murray Bridge Marketplace",
+            "AddressLine1": "23-51 South Terrace",
+            "AddressLine2": null,
+            "Suburb": "Murray Bridge",
+            "State": "SA",
+            "Postcode": "5253",
+            "Latitude": "-35.11984",
+            "Longitude": "139.276173",
+            "GeoLevel": "0",
+            "Distance": "991.93",
+            "Phone": "(08) 8534 3200",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5632",
+            "Name": "The Stables",
+            "AddressLine1": "1495 Golden Grove Road",
+            "AddressLine2": null,
+            "Suburb": "Golden Grove",
+            "State": "SA",
+            "Postcode": "5125",
+            "Latitude": "-34.7734914",
+            "Longitude": "138.7287975",
+            "GeoLevel": "0",
+            "Distance": "994.07",
+            "Phone": "(08) 8259 3734",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5681",
+            "Name": "Virginia",
+            "AddressLine1": "Old Port Wakefield Road",
+            "AddressLine2": null,
+            "Suburb": "Virginia",
+            "State": "SA",
+            "Postcode": "5120",
+            "Latitude": "-34.666544",
+            "Longitude": "138.560499",
+            "GeoLevel": "0",
+            "Distance": "995.47",
+            "Phone": "(08) 8259 3723",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5686",
+            "Name": "Elizabeth Way",
+            "AddressLine1": "Elizabeth City Centre, 50 Elizabeth Way",
+            "AddressLine2": null,
+            "Suburb": "Elizabeth",
+            "State": "SA",
+            "Postcode": "5112",
+            "Latitude": "-34.7194444",
+            "Longitude": "138.6675",
+            "GeoLevel": "0",
+            "Distance": "995.94",
+            "Phone": "(08) 8259 3726",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5945",
+            "Name": "Playford",
+            "AddressLine1": "297 Peachey Road",
+            "AddressLine2": null,
+            "Suburb": "Munno Para",
+            "State": "SA",
+            "Postcode": "5115",
+            "Latitude": "-34.6700363",
+            "Longitude": "138.679211",
+            "GeoLevel": "0",
+            "Distance": "911.14",
+            "Phone": "(08) 8259 3737",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Australia Post Parcel Locker",
+                "Direct to boot",
+                "Instore Bakery",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5301",
+            "Name": "Blakes Crossing",
+            "AddressLine1": "Blakes Crossing Town Centre, Main Tce",
+            "AddressLine2": null,
+            "Suburb": "Blakeview",
+            "State": "SA",
+            "Postcode": "5114",
+            "Latitude": "-34.6792824",
+            "Longitude": "138.7043593",
+            "GeoLevel": "0",
+            "Distance": "911.19",
+            "Phone": "(08) 8259 3708",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot",
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5617",
+            "Name": "Gawler",
+            "AddressLine1": "2 Commercial Lane",
+            "AddressLine2": null,
+            "Suburb": "Gawler",
+            "State": "SA",
+            "Postcode": "5118",
+            "Latitude": "-34.597325",
+            "Longitude": "138.747991",
+            "GeoLevel": "4",
+            "Distance": "921.14",
+            "Phone": "(08) 8525 7002",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-1700"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "9:00 AM - 5:00 PM",
+                    "TradingHourForDisplay": "Sun: 0900-1700"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Currently being renovated",
+                "Cut on Demand",
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5610",
+            "Name": "Kadina",
+            "AddressLine1": "1 Forster Street",
+            "AddressLine2": null,
+            "Suburb": "Kadina",
+            "State": "SA",
+            "Postcode": "5554",
+            "Latitude": "-33.964369",
+            "Longitude": "137.71443",
+            "GeoLevel": "0",
+            "Distance": "950.71",
+            "Phone": "(08) 8828 3000",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5702",
+            "Name": "Clare",
+            "AddressLine1": "CNR Old North Rd and Wright St",
+            "AddressLine2": null,
+            "Suburb": "Clare",
+            "State": "SA",
+            "Postcode": "5453",
+            "Latitude": "-33.831922",
+            "Longitude": "138.612324",
+            "GeoLevel": "0",
+            "Distance": "993.88",
+            "Phone": "(08) 8842 9400",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-2000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-2000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Mon: 0800-2000"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Tue: 0800-2000"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Wed: 0800-2000"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Thu: 0800-2000"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Fri: 0800-2000"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5685",
+            "Name": "Loxton",
+            "AddressLine1": "1 Martha Street",
+            "AddressLine2": null,
+            "Suburb": "Loxton",
+            "State": "SA",
+            "Postcode": "5333",
+            "Latitude": "-34.451254",
+            "Longitude": "140.57157",
+            "GeoLevel": "0",
+            "Distance": "929.16",
+            "Phone": "(08) 8580 6400",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 7:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-1900"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2000"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2000"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2000"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2000"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2000"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5671",
+            "Name": "Waikerie",
+            "AddressLine1": "1 White Street",
+            "AddressLine2": null,
+            "Suburb": "Waikerie",
+            "State": "SA",
+            "Postcode": "5330",
+            "Latitude": "-34.17879",
+            "Longitude": "139.986286",
+            "GeoLevel": "0",
+            "Distance": "936.74",
+            "Phone": "(08) 8542 2200",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2000"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2000"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2000"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2000"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2000"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5684",
+            "Name": "Berri",
+            "AddressLine1": "14 Vaughan Terrace",
+            "AddressLine2": null,
+            "Suburb": "Berri",
+            "State": "SA",
+            "Postcode": "5343",
+            "Latitude": "-34.285943",
+            "Longitude": "140.60233",
+            "GeoLevel": "0",
+            "Distance": "947.11",
+            "Phone": "(08) 8583 3300",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-2000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5608",
+            "Name": "Renmark",
+            "AddressLine1": "Renmark Shopping Centre, Renmark Avenue",
+            "AddressLine2": null,
+            "Suburb": "Renmark",
+            "State": "SA",
+            "Postcode": "5341",
+            "Latitude": "-34.178253",
+            "Longitude": "140.744105",
+            "GeoLevel": "0",
+            "Distance": "963.34",
+            "Phone": "(08) 8580 4202",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5603",
+            "Name": "Port Pirie",
+            "AddressLine1": "11 Norman Street",
+            "AddressLine2": null,
+            "Suburb": "Port Pirie",
+            "State": "SA",
+            "Postcode": "5540",
+            "Latitude": "-33.179101",
+            "Longitude": "138.00994",
+            "GeoLevel": "0",
+            "Distance": "996.61",
+            "Phone": "(08) 8632 9100",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5635",
+            "Name": "Whyalla Westlands",
+            "AddressLine1": "199 Nicolson Avenue",
+            "AddressLine2": null,
+            "Suburb": "Whyalla",
+            "State": "SA",
+            "Postcode": "5600",
+            "Latitude": "-33.02840101",
+            "Longitude": "137.532792",
+            "GeoLevel": "0",
+            "Distance": "998.44",
+            "Phone": "(08) 8649 9500",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5660",
+            "Name": "Whyalla",
+            "AddressLine1": "18-30 Viscount Slim Avenue",
+            "AddressLine2": null,
+            "Suburb": "Whyalla",
+            "State": "SA",
+            "Postcode": "5608",
+            "Latitude": "-33.020937",
+            "Longitude": "137.541587",
+            "GeoLevel": "0",
+            "Distance": "999.24",
+            "Phone": "(08) 8649 9503",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5601",
+            "Name": "Port Augusta",
+            "AddressLine1": "25 Tassie Street",
+            "AddressLine2": null,
+            "Suburb": "Port Augusta",
+            "State": "SA",
+            "Postcode": "5700",
+            "Latitude": "-32.4899211",
+            "Longitude": "137.7616659",
+            "GeoLevel": "0",
+            "Distance": "959.14",
+            "Phone": "(08) 8642 7202",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "5649",
+            "Name": "Roxby Downs",
+            "AddressLine1": "12 - 28 Richardson Pl",
+            "AddressLine2": null,
+            "Suburb": "Roxby Downs",
+            "State": "SA",
+            "Postcode": "5725",
+            "Latitude": "-30.561926",
+            "Longitude": "136.896553",
+            "GeoLevel": "0",
+            "Distance": "974.68",
+            "Phone": "(08) 8678 5000",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 7:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-1900"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 7:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-1900"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2000"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2000"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2000"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2000"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2000"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Pick up"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        }
+    ]
+}

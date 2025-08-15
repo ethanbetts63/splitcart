@@ -1,0 +1,1226 @@
+{
+    "metadata": {
+        "number_of_stores": 19,
+        "company": "woolworths",
+        "brand": "supermarkets",
+        "state": "ACT",
+        "date_scraped": "2025-08-08"
+    },
+    "stores": [
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1275",
+            "Name": "Conder",
+            "AddressLine1": "4 Sidney Nolan Drive",
+            "AddressLine2": null,
+            "Suburb": "Conder",
+            "State": "ACT",
+            "Postcode": "2906",
+            "Latitude": "-35.457078",
+            "Longitude": "149.092691",
+            "GeoLevel": "0",
+            "Distance": "952.08",
+            "Phone": "(02) 6132 9843",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1198",
+            "Name": "Tuggeranong",
+            "AddressLine1": "Tuggeranong Southpoint, Cnr Anketell & Reed Street",
+            "AddressLine2": null,
+            "Suburb": "Tuggeranong",
+            "State": "ACT",
+            "Postcode": "2900",
+            "Latitude": "-35.41712817",
+            "Longitude": "149.0676505",
+            "GeoLevel": "0",
+            "Distance": "954.19",
+            "Phone": "(02) 6132 9834",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1134",
+            "Name": "Calwell",
+            "AddressLine1": "Calwell Shopping Centre, Johnson Drive",
+            "AddressLine2": null,
+            "Suburb": "Calwell",
+            "State": "ACT",
+            "Postcode": "2905",
+            "Latitude": "-35.43462747",
+            "Longitude": "149.1144501",
+            "GeoLevel": "0",
+            "Distance": "955.26",
+            "Phone": "(02) 6132 9819",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Australia Post Parcel Locker",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1194",
+            "Name": "Kambah",
+            "AddressLine1": "Marconi Crescent",
+            "AddressLine2": null,
+            "Suburb": "Kambah",
+            "State": "ACT",
+            "Postcode": "2902",
+            "Latitude": "-35.38032358",
+            "Longitude": "149.0575749",
+            "GeoLevel": "0",
+            "Distance": "956.87",
+            "Phone": "(02) 6132 9831",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1206",
+            "Name": "Erindale",
+            "AddressLine1": "50-68 Comrie Street",
+            "AddressLine2": null,
+            "Suburb": "Wanniassa",
+            "State": "ACT",
+            "Postcode": "2903",
+            "Latitude": "-35.40372597",
+            "Longitude": "149.098678",
+            "GeoLevel": "0",
+            "Distance": "957.09",
+            "Phone": "(02) 6132 9837",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1161",
+            "Name": "Weston Creek",
+            "AddressLine1": "Cnr Brierly And Mahoney Crescent",
+            "AddressLine2": null,
+            "Suburb": "Weston Creek",
+            "State": "ACT",
+            "Postcode": "2611",
+            "Latitude": "-35.34059299",
+            "Longitude": "149.052288",
+            "GeoLevel": "0",
+            "Distance": "960.08",
+            "Phone": "(02) 6132 9828",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Sushi Bar"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1137",
+            "Name": "Mawson",
+            "AddressLine1": "Mawson Place",
+            "AddressLine2": null,
+            "Suburb": "Mawson",
+            "State": "ACT",
+            "Postcode": "2607",
+            "Latitude": "-35.3658022",
+            "Longitude": "149.0944688",
+            "GeoLevel": "0",
+            "Distance": "960.19",
+            "Phone": "(02) 6132 9822",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Australia Post Parcel Locker",
+                "Cut on Demand",
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Scan&Go",
+                "Seafood",
+                "Sushi Bar",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1610",
+            "Name": "Wright (Metro)",
+            "AddressLine1": "Crn John Gorton Drive & Steve Irwin Ave",
+            "AddressLine2": null,
+            "Suburb": "Wright",
+            "State": "ACT",
+            "Postcode": "2611",
+            "Latitude": "-35.319759",
+            "Longitude": "149.037186",
+            "GeoLevel": "0",
+            "Distance": "961.09",
+            "Phone": "(02) 6132 9333",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Metro",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1118",
+            "Name": "Woden",
+            "AddressLine1": "Cnr Hindmarsh And Melrose Drives",
+            "AddressLine2": null,
+            "Suburb": "Woden",
+            "State": "ACT",
+            "Postcode": "2606",
+            "Latitude": "-35.34603",
+            "Longitude": "149.08472",
+            "GeoLevel": "0",
+            "Distance": "961.39",
+            "Phone": "(02) 6132 9816",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1089",
+            "Name": "Hawker (Metro)",
+            "AddressLine1": "Springvale Drive",
+            "AddressLine2": null,
+            "Suburb": "Hawker",
+            "State": "ACT",
+            "Postcode": "2614",
+            "Latitude": "-35.24337262",
+            "Longitude": "149.0441686",
+            "GeoLevel": "0",
+            "Distance": "968.24",
+            "Phone": "(02) 6132 9302",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Australia Post Parcel Locker",
+                "Liquor (Adjacent BWS)",
+                "Metro",
+                "Pick up",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1261",
+            "Name": "Kippax",
+            "AddressLine1": "24-48 Hardwick Crescent",
+            "AddressLine2": null,
+            "Suburb": "Holt",
+            "State": "ACT",
+            "Postcode": "2615",
+            "Latitude": "-35.222924",
+            "Longitude": "149.020355",
+            "GeoLevel": "0",
+            "Distance": "968.76",
+            "Phone": "(02) 6132 9840",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Cut on Demand",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1139",
+            "Name": "Belconnen",
+            "AddressLine1": "18 Benjamin Way",
+            "AddressLine2": null,
+            "Suburb": "Belconnen",
+            "State": "ACT",
+            "Postcode": "2617",
+            "Latitude": "-35.2386596",
+            "Longitude": "149.0652762",
+            "GeoLevel": "0",
+            "Distance": "969.82",
+            "Phone": "(02) 6132 9825",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1358",
+            "Name": "Charnwood",
+            "AddressLine1": "Charnwood Place",
+            "AddressLine2": null,
+            "Suburb": "Charnwood",
+            "State": "ACT",
+            "Postcode": "2615",
+            "Latitude": "-35.20484943",
+            "Longitude": "149.0332289",
+            "GeoLevel": "0",
+            "Distance": "971.07",
+            "Phone": "(02) 6132 9852",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1343",
+            "Name": "Dunlop",
+            "AddressLine1": "Cnr Snowbridge Circuit & Lance Hill Ave",
+            "AddressLine2": null,
+            "Suburb": "Dunlop",
+            "State": "ACT",
+            "Postcode": "2615",
+            "Latitude": "-35.1944281",
+            "Longitude": "149.0194181",
+            "GeoLevel": "0",
+            "Distance": "971.25",
+            "Phone": "(02) 6132 9849",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sat: 0800-2000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "8:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sun: 0800-2000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2000"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2000"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2000"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2000"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2000"
+                }
+            ],
+            "Facilities": [
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1419",
+            "Name": "Canberra Airport",
+            "AddressLine1": "18-26 Spitfire Avenue",
+            "AddressLine2": null,
+            "Suburb": "Majura",
+            "State": "ACT",
+            "Postcode": "2609",
+            "Latitude": "-35.29835231",
+            "Longitude": "149.1908188",
+            "GeoLevel": "7",
+            "Distance": "971.47",
+            "Phone": "(02) 6132 9860",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Australia Post Parcel Locker",
+                "Direct to boot - drive through",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1073",
+            "Name": "Dickson",
+            "AddressLine1": "1 Dickson Place",
+            "AddressLine2": null,
+            "Suburb": "Dickson",
+            "State": "ACT",
+            "Postcode": "2602",
+            "Latitude": "-35.24978706",
+            "Longitude": "149.1390028",
+            "GeoLevel": "0",
+            "Distance": "972.88",
+            "Phone": "(02) 6132 9810",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1661",
+            "Name": "Franklin (Metro)",
+            "AddressLine1": "Cnr Flemington Rd and Nullarbour Ave",
+            "AddressLine2": null,
+            "Suburb": "Franklin",
+            "State": "ACT",
+            "Postcode": "2913",
+            "Latitude": "-35.2002735",
+            "Longitude": "149.1484928",
+            "GeoLevel": "0",
+            "Distance": "977.78",
+            "Phone": "(02) 6132 9305",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Australia Post Parcel Locker",
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Metro",
+                "Pick up",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1279",
+            "Name": "Gungahlin",
+            "AddressLine1": "30-33 Hibberson Street",
+            "AddressLine2": null,
+            "Suburb": "Gungahlin",
+            "State": "ACT",
+            "Postcode": "2912",
+            "Latitude": "-35.18476133",
+            "Longitude": "149.1341604",
+            "GeoLevel": "0",
+            "Distance": "978.37",
+            "Phone": "(02) 6132 9846",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Direct to boot",
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Pick up",
+                "Quiet Hour",
+                "Seafood",
+                "WiFi"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "SUPERMARKETS",
+            "StoreNo": "1457",
+            "Name": "Bonner (Metro)",
+            "AddressLine1": "61 Mabo Boulevard",
+            "AddressLine2": null,
+            "Suburb": "Bonner",
+            "State": "ACT",
+            "Postcode": "2914",
+            "Latitude": "-35.16138916",
+            "Longitude": "149.138889",
+            "GeoLevel": "0",
+            "Distance": "980.7",
+            "Phone": "(02) 6132 9863",
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2200"
+                }
+            ],
+            "Facilities": [
+                "Community Pick up - Drive up",
+                "Direct to boot",
+                "Direct to boot - drive through",
+                "Liquor (Adjacent BWS)",
+                "Metro",
+                "Pick up"
+            ],
+            "CategorisedFacilities": [],
+            "NearbyPartners": null
+        }
+    ]
+}

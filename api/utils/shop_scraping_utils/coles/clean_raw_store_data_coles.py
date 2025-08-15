@@ -6,6 +6,7 @@ def clean_raw_store_data_coles(raw_store_data: dict, company: str, timestamp: da
     """
     
     store_id = raw_store_data.get('id')
+    print(store_id)
     address = raw_store_data.get('address', {})
     position = raw_store_data.get('position', {})
     brand = raw_store_data.get('brand', {})

@@ -1,0 +1,52 @@
+{
+    "metadata": {
+        "number_of_stores": 2,
+        "company": "coles",
+        "state": "VIC",
+        "date_scraped": "2025-08-07"
+    },
+    "stores": [
+        {
+            "id": "VIN:2846",
+            "name": "Vintage Cellars Torquay",
+            "phone": "(03) 9075 1337",
+            "isTrading": true,
+            "address": {
+                "state": "VIC",
+                "suburb": "Torquay",
+                "addressLine": "15 Gilbert Street",
+                "postcode": "3228"
+            },
+            "position": {
+                "latitude": -38.332484,
+                "longitude": 144.324104
+            },
+            "brand": {
+                "name": "Vintage Cellars",
+                "storeFinderId": 5,
+                "id": "VIN"
+            }
+        },
+        {
+            "id": "VIN:3871",
+            "name": "Vintage Cellars Balaclava",
+            "phone": "(03) 7031 4980",
+            "isTrading": true,
+            "address": {
+                "state": "VIC",
+                "suburb": "Balaclava",
+                "addressLine": "232 Carlisle Street",
+                "postcode": "3183"
+            },
+            "position": {
+                "latitude": -37.868086,
+                "longitude": 144.991667
+            },
+            "brand": {
+                "name": "Vintage Cellars",
+                "storeFinderId": 5,
+                "id": "VIN"
+            }
+        }
+    ]
+}
