@@ -199,12 +199,7 @@ class Store(models.Model):
         help_text="The ID of the site from the IGA system."
         # IGA: siteId
     )
-    category_hierarchy_id = models.CharField(
-        max_length=50,
-        blank=True,
-        help_text="The ID of the category hierarchy from the IGA system."
-        # IGA: categoryHierarchyId
-    )
+    
     shopping_modes = models.JSONField(
         null=True,
         blank=True,
