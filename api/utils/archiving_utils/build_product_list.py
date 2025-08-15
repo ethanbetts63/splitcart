@@ -1,3 +1,5 @@
+from products.models import Product, Price
+
 def get_category_path(category):
     """
     Traverses up the category tree to build a full path for a given category.
@@ -7,14 +9,13 @@ def get_category_path(category):
     current = category
     while current:
         path.insert(0, current.name)
-        # .parents.first() is used as we need a single path for representation
         current = current.parents.first()
     return path
 
 def build_product_list(store):
     """
-    Builds a list of product dictionaries for a given store.
-    This function is a generator, yielding one fully processed product at a time.
+    Builds a list of product dictionaries for a given store, including price history.
+    This function is a generator that processes products in chunks to avoid database limits.
 
     Args:
         store (Store): The store to process products for.
@@ -22,18 +23,49 @@ def build_product_list(store):
     Yields:
         dict: A dictionary representing a single product and its price history.
     """
-    processed_products = {}
-    price_queryset = store.prices.prefetch_related(
-        'product__category__parent',
-        'product__substitute_goods'
-    ).all()
+    # 1. Get all unique product IDs for the store first.
+    product_ids = list(Price.objects.filter(store=store).values_list('product_id', flat=True).distinct())
 
-    # First pass: group all prices by product ID
-    for price in price_queryset:
-        product = price.product
-        if product.id not in processed_products:
+    # 2. Process these IDs in manageable chunks.
+    chunk_size = 500 # SQLite's default limit is 1000, so 500 is a safe chunk size.
+    for i in range(0, len(product_ids), chunk_size):
+        chunk_ids = product_ids[i:i + chunk_size]
+
+        # 3. Fetch products and prices for the current chunk.
+        products_in_chunk = Product.objects.filter(id__in=chunk_ids).prefetch_related(
+            'category__parent'
+        )
+        prices_in_chunk = Price.objects.filter(store=store, product_id__in=chunk_ids).order_by('-scraped_at')
+
+        # 4. Group prices by product ID for efficient lookup.
+        prices_by_product = {}
+        for price in prices_in_chunk:
+            if price.product_id not in prices_by_product:
+                prices_by_product[price.product_id] = []
+            prices_by_product[price.product_id].append(price)
+
+        # 5. Build and yield the final product dictionary for each product in the chunk.
+        for product in products_in_chunk:
+            price_history = []
+            for price in prices_by_product.get(product.id, []):
+                price_data = {
+                    'price': str(price.price),
+                    'was_price': str(price.was_price) if price.was_price else None,
+                    'unit_price': str(price.unit_price) if price.unit_price else None,
+                    'unit_of_measure': price.unit_of_measure,
+                    'is_on_special': price.is_on_special,
+                    'is_available': price.is_available,
+                    'scraped_at': price.scraped_at.isoformat(),
+                    'url': price.url
+                }
+                cleaned_price_data = {k: v for k, v in price_data.items() if v is not None}
+                price_history.append(cleaned_price_data)
+
+            category_paths = []
+            for cat in product.category.all():
+                category_paths.append(get_category_path(cat))
+
             product_data = {
-                'id': product.id,
                 'name': product.name,
                 'brand': product.brand,
                 'size': product.size,
@@ -43,36 +75,9 @@ def build_product_list(store):
                 'allergens': product.allergens,
                 'ingredients': product.ingredients,
                 'barcode': product.barcode,
-                'price_history': [],
-                'category_paths': [] # Initialize empty category paths
+                'price_history': price_history,
+                'category_paths': category_paths
             }
-            processed_products[product.id] = product_data
 
-        price_data = {
-            'price': str(price.price),
-            'was_price': str(price.was_price) if price.was_price else None,
-            'unit_price': str(price.unit_price) if price.unit_price else None,
-            'unit_of_measure': price.unit_of_measure,
-            'is_on_special': price.is_on_special,
-            'is_available': price.is_available,
-            'scraped_at': price.scraped_at.isoformat(),
-            'url': price.url
-        }
-        cleaned_price_data = {k: v for k, v in price_data.items() if v is not None}
-        processed_products[product.id]['price_history'].append(cleaned_price_data)
-
-    # Second pass: build category paths and yield final product data
-    for product_id, product_data in processed_products.items():
-        # This requires another query, but it's done per product.
-        # This is a trade-off for generator-based processing.
-        product_obj = price_queryset.filter(product_id=product_id).first().product
-        category_paths = []
-        if hasattr(product_obj, 'category'):
-            for cat in product_obj.category.all():
-                category_paths.append(get_category_path(cat))
-        product_data['category_paths'] = category_paths
-
-        # Clean and yield the final product dictionary
-        product_data.pop('id') # Remove the temporary internal ID
-        cleaned_product_data = {k: v for k, v in product_data.items() if v is not None and v != "" and v != []}
-        yield cleaned_product_data
+            cleaned_product_data = {k: v for k, v in product_data.items() if v is not None and v != "" and v != []}
+            yield cleaned_product_data
