@@ -1,18 +1,14 @@
 import json
 import os
-import re
+from django.utils.text import slugify
+import json
+import os
 from datetime import date
 
 # --- CONFIGURATION ---
 SOURCE_FILE = r'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_aldi\aldi_stores_raw.json'
 BASE_OUTPUT_DIR = r'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_aldi'
 
-def slugify(text):
-    """Converts a string into a URL-friendly slug."""
-    text = text.lower()
-    text = re.sub(r'[^\w\s-]', '', text)  # Remove non-alphanumeric characters
-    text = re.sub(r'[\s_]+', '-', text)   # Replace spaces/underscores with hyphens
-    return text
 
 def organize_aldi_stores():
     """Reads the raw stores file and organizes stores into state specific files with metadata."""
@@ -36,6 +32,8 @@ def organize_aldi_stores():
         try:
             address = store.get('address', {})
             state_iso = address.get('regionIsoCode', 'unknown-state').lower()
+            if not state_iso: # Add this check
+                state_iso = 'unknown-state'
             state_name = address.get('regionName', 'Unknown State')
 
             if state_iso not in grouped_stores:
