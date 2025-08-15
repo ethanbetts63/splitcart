@@ -1,4 +1,6 @@
 from django.db import models
+from .company import Company
+from .division import Division
 
 class Store(models.Model):
     """
@@ -15,13 +17,13 @@ class Store(models.Model):
         # Woolworths: Name
     )
     company = models.ForeignKey(
-        'companies.Company',
+        Company,
         on_delete=models.CASCADE,
         related_name='stores',
         help_text="The parent company that owns this store."
     )
     division = models.ForeignKey(
-        'companies.Division',
+        Division,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

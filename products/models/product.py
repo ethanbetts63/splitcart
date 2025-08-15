@@ -1,4 +1,5 @@
 from django.db import models
+from companies.models.category import Category
 
 class Product(models.Model):
     """
@@ -22,7 +23,7 @@ class Product(models.Model):
         help_text="The size or quantity of the product, e.g., '500g', '1 Each'."
     )
     category = models.ManyToManyField(
-        'companies.Category',
+        Category,
         related_name="products",
         help_text="The categories this product belongs to."
     )

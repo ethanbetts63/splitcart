@@ -1,4 +1,4 @@
-from companies.models import Store
+from companies.models.store import Store
 
 def get_active_stores_for_company(company):
     """

@@ -1,4 +1,4 @@
-from companies.models import Company
+from companies.models.company import Company
 
 def get_company_by_name(company_name):
     """
