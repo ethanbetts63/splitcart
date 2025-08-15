@@ -34,6 +34,7 @@ class Product(models.Model):
         help_text="The universal barcode (UPC/EAN) of the product."
     )
     image_url = models.URLField(max_length=1024, blank=True, null=True)
+    url = models.URLField(max_length=1024, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     country_of_origin = models.CharField(max_length=100, blank=True, null=True)
     allergens = models.TextField(blank=True, null=True)

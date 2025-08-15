@@ -8,12 +8,12 @@ from datetime import datetime
 # Define constants for failed products
 FAILED_PRODUCTS_DIR = os.path.join(settings.BASE_DIR, 'api', 'data', 'failed_products')
 from api.utils.database_updating_utils import (
-    deactivate_prices_for_store,
     get_or_create_product,
     create_price,
     get_or_create_category_hierarchy,
     get_or_create_company,
-    get_or_create_store
+    get_or_create_store,
+    TallyCounter
 )
 
 class Command(BaseCommand):
@@ -22,6 +22,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         processed_data_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'processed_data')
         self.failed_products_data = {} # Initialize failed products data
+        tally_counter = TallyCounter()
 
         if not os.path.exists(processed_data_path):
             self.stdout.write(self.style.WARNING('Processed data directory not found.'))
@@ -47,15 +48,12 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.WARNING(f'Skipping {filename}: missing company in metadata.'))
                 continue
 
-            # Get or create the Company and Store objects
             company_obj, company_created = get_or_create_company(company_name)
             store_id = metadata.get('store_id')
             if not store_id:
                 self.stdout.write(self.style.WARNING(f'Skipping {filename}: missing store_id in metadata.'))
                 continue
 
-            # The get_or_create_store utility expects a division object, but we don't have
-            # that information in the processed product files. We'll pass None.
             store_obj, created = get_or_create_store(
                 company_obj=company_obj,
                 division_obj=None,
@@ -85,13 +83,10 @@ class Command(BaseCommand):
                             continue
 
                         category_obj = get_or_create_category_hierarchy(category_path, company_obj)
-                        product_obj, created = get_or_create_product(product_data, store_obj, category_obj)
+                        product_obj = get_or_create_product(product_data, company_obj.name, tally_counter)
+                        product_obj.category.add(category_obj)
                         
-                        # Deactivate old price for this specific product before creating the new one
-                        deactivate_product_price(product_obj, store_obj)
-                        
-                        # Create the new price record, which will be active by default
-                        create_price(product_data, product_obj, store_obj)
+                        create_price(product_obj, store_obj, product_data)
                         product_count += 1
                 
                 os.remove(file_path)
@@ -100,7 +95,6 @@ class Command(BaseCommand):
             except Exception as e:
                 self.stderr.write(self.style.ERROR(f'  An error occurred processing {filename}. The file will not be deleted. Error: {e}'))
 
-        # --- Save failed products to JSON file ---
         if self.failed_products_data:
             os.makedirs(FAILED_PRODUCTS_DIR, exist_ok=True)
             today_str = datetime.now().strftime('%Y-%m-%d')

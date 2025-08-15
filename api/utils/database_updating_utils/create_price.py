@@ -38,7 +38,7 @@ def create_price(price_data: dict, product_obj: Product, store_obj: Store) -> Pr
         unit_of_measure=price_data.get('unit_of_measure'),
         is_on_special=price_data.get('is_on_special', False),
         is_available=price_data.get('is_available', True),
-        url=price_data.get('url'),
+        
         is_active=True  # New prices are always active
     )
     return price

@@ -15,7 +15,6 @@ class PriceModelTest(TestCase):
         self.assertIsNotNone(price.store_product_id)
         self.assertTrue(price.price > 0)
         self.assertIsNotNone(price.scraped_at)
-        self.assertIsNotNone(price.url)
 
     def test_price_str_representation(self):
         """Test the string representation of the price."""
@@ -42,7 +41,6 @@ class PriceModelTest(TestCase):
         self.assertIsNone(price.was_price)
         self.assertIsNone(price.unit_price)
         self.assertIsNone(price.unit_of_measure)
-        self.assertIsNone(price.url)
 
     def test_default_values(self):
         """Test the default values for boolean fields."""

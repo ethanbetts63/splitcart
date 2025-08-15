@@ -20,7 +20,6 @@ class CreatePriceTest(TestCase):
             "unit_of_measure": "100g",
             "is_on_special": True,
             "is_available": True,
-            "url": "http://example.com/product"
         }
         price = create_price(price_data, self.product, self.store)
         
@@ -35,7 +34,6 @@ class CreatePriceTest(TestCase):
         self.assertTrue(price.is_on_special)
         self.assertTrue(price.is_available)
         self.assertTrue(price.is_active) # Should always be True for new prices
-        self.assertEqual(price.url, "http://example.com/product")
         self.assertIsNotNone(price.scraped_at)
 
     def test_create_price_fallback_to_was_price(self):

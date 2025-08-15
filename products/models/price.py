@@ -55,7 +55,7 @@ class Price(models.Model):
     )
     
     scraped_at = models.DateTimeField(auto_now_add=True)
-    url = models.URLField(max_length=1024, blank=True, null=True)
+    
 
     class Meta:
         ordering = ['-scraped_at']

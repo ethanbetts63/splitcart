@@ -58,7 +58,10 @@ def get_or_create_product(product_data: dict, store_obj: Store, category_obj: Ca
             defaults={
                 'barcode': product_data.get('barcode'),
                 'image_url': product_data.get('image_url_main'),
-                'description': product_data.get('description_long'),
+                'url': product_data.get('url'),
+                '        defaults={
+            'description': product_data.get('description'),
+            'url': product_data.get('url'),
                 'country_of_origin': product_data.get('country_of_origin'),
                 'ingredients': product_data.get('ingredients')
             }
