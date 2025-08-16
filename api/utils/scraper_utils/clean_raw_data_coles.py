@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.utils.text import slugify
 
 def _create_coles_url_slug(product_name: str, product_size: str) -> str:
     """Helper function to create a URL slug from product name and size."""
@@ -10,10 +11,7 @@ def _create_coles_url_slug(product_name: str, product_size: str) -> str:
     if name_lower.endswith(size_lower):
         name_lower = name_lower[:-len(size_lower)].strip()
     
-    # Basic slugification
-    slug = name_lower.replace(' ', '-')
-    slug = ''.join(e for e in slug if e.isalnum() or e == '-')
-    return slug
+    return slugify(name_lower)
 
 def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, category: str, page_num: int, timestamp: datetime) -> dict:
     """

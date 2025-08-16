@@ -84,7 +84,7 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, stat
                 )
                 print(f"Found and cleaned {len(data_packet['products'])} products on page {page_num}.")
 
-                file_name = f"{company}_{store_name_slug}_{category_slug.replace('/', '_')}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
+                file_name = f"{company}_{store_name_slug}_{slugify(category_slug)}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
                 file_path = os.path.join(save_path, file_name)
                 
                 with open(file_path, 'w', encoding='utf-8') as f:
