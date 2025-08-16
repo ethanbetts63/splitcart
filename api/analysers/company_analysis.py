@@ -1,4 +1,6 @@
 
+import os
+from django.conf import settings
 import matplotlib.pyplot as plt
 import seaborn as sns
 from django.db.models import Count
@@ -36,15 +38,23 @@ def generate_store_product_counts_chart(company_name: str):
 
     # Create the plot
     plt.figure(figsize=(12, 8))
-    sns.barplot(x=product_counts, y=store_names, palette='viridis')
+    sns.barplot(x=product_counts, y=store_names, hue=store_names, palette='viridis', legend=False)
     
     plt.xlabel('Total Number of Products')
     plt.ylabel('Store')
     plt.title(f'Total Products per Store for {company.name}')
     plt.tight_layout()
 
+    # Define output directories and create them if they don't exist
+    base_output_dir = os.path.join(settings.BASE_DIR, 'api', 'data', 'analysis')
+    heatmap_output_dir = os.path.join(base_output_dir, 'heatmap')
+
+    os.makedirs(base_output_dir, exist_ok=True)
+    os.makedirs(heatmap_output_dir, exist_ok=True)
+
     # Save the plot
     output_filename = f"{company.name.lower().replace(' ', '_')}_store_product_counts.png"
-    plt.savefig(output_filename)
-    print(f"Chart saved as '{output_filename}'")
+    output_path = os.path.join(heatmap_output_dir, output_filename)
+    plt.savefig(output_path)
+    print(f"Chart saved as '{output_path}'")
 
