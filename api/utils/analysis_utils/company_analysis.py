@@ -22,6 +22,7 @@ def generate_store_product_counts_chart(company_name: str):
     # Get all stores for the company, annotated with the count of their products (price entries)
     stores_with_counts = Store.objects.filter(company=company) \
                                       .annotate(product_count=Count('prices')) \
+                                      .filter(product_count__gt=0) \
                                       .order_by('-product_count')
 
     if not stores_with_counts.exists():
