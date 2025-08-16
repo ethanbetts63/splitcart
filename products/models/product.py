@@ -50,7 +50,6 @@ class Product(models.Model):
         'self',
         blank=True,
         symmetrical=True,
-        related_name='_size_variants_set', # Required to avoid clash with default _set
         help_text="Products that are the same item but in a different size."
     )
 
