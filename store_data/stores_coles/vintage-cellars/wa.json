@@ -1,0 +1,157 @@
+{
+    "metadata": {
+        "number_of_stores": 7,
+        "company": "coles",
+        "state": "WA",
+        "date_scraped": "2025-08-07"
+    },
+    "stores": [
+        {
+            "id": "VIN:3271",
+            "name": "Vintage Cellars Cottesloe",
+            "phone": "(08) 6115 6452",
+            "isTrading": true,
+            "address": {
+                "state": "WA",
+                "suburb": "Cottesloe",
+                "addressLine": "502 Stirling Highway",
+                "postcode": "6011"
+            },
+            "position": {
+                "latitude": -31.999884,
+                "longitude": 115.761604
+            },
+            "brand": {
+                "name": "Vintage Cellars",
+                "storeFinderId": 5,
+                "id": "VIN"
+            }
+        },
+        {
+            "id": "VIN:5161",
+            "name": "Vintage Cellars Myaree",
+            "phone": "(08) 6115 6454",
+            "isTrading": true,
+            "address": {
+                "state": "WA",
+                "suburb": "Myaree",
+                "addressLine": "1-7 Marshall Road",
+                "postcode": "6154"
+            },
+            "position": {
+                "latitude": -32.045667,
+                "longitude": 115.818498
+            },
+            "brand": {
+                "name": "Vintage Cellars",
+                "storeFinderId": 5,
+                "id": "VIN"
+            }
+        },
+        {
+            "id": "VIN:3208",
+            "name": "Vintage Cellars Duncraig",
+            "phone": "(08) 6115 6457",
+            "isTrading": true,
+            "address": {
+                "state": "WA",
+                "suburb": "Duncraig",
+                "addressLine": "50 Marri Road",
+                "postcode": "6023"
+            },
+            "position": {
+                "latitude": -31.831805,
+                "longitude": 115.769392
+            },
+            "brand": {
+                "name": "Vintage Cellars",
+                "storeFinderId": 5,
+                "id": "VIN"
+            }
+        },
+        {
+            "id": "VIN:2501",
+            "name": "Vintage Cellars Karrinyup",
+            "phone": "(08) 6116 7080",
+            "isTrading": true,
+            "address": {
+                "state": "WA",
+                "suburb": "Karrinyup",
+                "addressLine": "200 Karrinyup Road",
+                "postcode": "6018"
+            },
+            "position": {
+                "latitude": -31.8776,
+                "longitude": 115.77762
+            },
+            "brand": {
+                "name": "Vintage Cellars",
+                "storeFinderId": 5,
+                "id": "VIN"
+            }
+        },
+        {
+            "id": "VIN:3263",
+            "name": "Vintage Cellars Applecross",
+            "phone": "(08) 6115 6425",
+            "isTrading": true,
+            "address": {
+                "state": "WA",
+                "suburb": "Applecross",
+                "addressLine": "34 Ardross Street",
+                "postcode": "6153"
+            },
+            "position": {
+                "latitude": -32.010138,
+                "longitude": 115.834726
+            },
+            "brand": {
+                "name": "Vintage Cellars",
+                "storeFinderId": 5,
+                "id": "VIN"
+            }
+        },
+        {
+            "id": "VIN:3275",
+            "name": "Vintage Cellars East Perth",
+            "phone": "(08) 6115 6467",
+            "isTrading": true,
+            "address": {
+                "state": "WA",
+                "suburb": "East Perth",
+                "addressLine": "Cnr Royal Street & Sovereign Close",
+                "postcode": "6004"
+            },
+            "position": {
+                "latitude": -31.954007,
+                "longitude": 115.879059
+            },
+            "brand": {
+                "name": "Vintage Cellars",
+                "storeFinderId": 5,
+                "id": "VIN"
+            }
+        },
+        {
+            "id": "VIN:2437",
+            "name": "Vintage Cellars Mt Lawley",
+            "phone": "(08) 6115 6450",
+            "isTrading": true,
+            "address": {
+                "state": "WA",
+                "suburb": "Mount Lawley",
+                "addressLine": "760 Beaufort Street",
+                "postcode": "6050"
+            },
+            "position": {
+                "latitude": -31.928066,
+                "longitude": 115.877991
+            },
+            "brand": {
+                "name": "Vintage Cellars",
+                "storeFinderId": 5,
+                "id": "VIN"
+            }
+        }
+    ]
+}

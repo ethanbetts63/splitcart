@@ -1,0 +1,641 @@
+{
+    "metadata": {
+        "number_of_stores": 9,
+        "company": "woolworths",
+        "brand": "eg",
+        "state": "NT",
+        "date_scraped": "2025-08-08"
+    },
+    "stores": [
+        {
+            "Division": "EG",
+            "StoreNo": "95523",
+            "Name": "Alice Springs",
+            "AddressLine1": "Cnr Wills & Railway Terrace",
+            "AddressLine2": null,
+            "Suburb": "Alice Springs",
+            "State": "NT",
+            "Postcode": "870",
+            "Latitude": "-23.6956",
+            "Longitude": "133.8804",
+            "GeoLevel": "0",
+            "Distance": "998.87",
+            "Phone": "08 7904 9755",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sat: 0700-2000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 8:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0700-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0700-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0700-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0700-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0700-2100"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95513",
+            "Name": "Katherine",
+            "AddressLine1": "Cnr Lindsay & First Streets",
+            "AddressLine2": null,
+            "Suburb": "Katherine",
+            "State": "NT",
+            "Postcode": "850",
+            "Latitude": "-14.4654",
+            "Longitude": "132.2662",
+            "GeoLevel": "0",
+            "Distance": "978.47",
+            "Phone": "08 7082 4540",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0600-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0600-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2100"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95520",
+            "Name": "Coolalinga",
+            "AddressLine1": "20 Henning Road (Cnr Stuart Hwy)",
+            "AddressLine2": null,
+            "Suburb": "Coolalinga",
+            "State": "NT",
+            "Postcode": "835",
+            "Latitude": "-12.525",
+            "Longitude": "131.0432",
+            "GeoLevel": "0",
+            "Distance": "996.39",
+            "Phone": "08 7082 4544",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0600-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "7:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0700-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2200"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95905",
+            "Name": "Bakewell",
+            "AddressLine1": "Cnr Chung Wah Terrace & Lambrick Avenue",
+            "AddressLine2": null,
+            "Suburb": "Bakewell",
+            "State": "NT",
+            "Postcode": "831",
+            "Latitude": "-12.4999",
+            "Longitude": "130.9862",
+            "GeoLevel": "0",
+            "Distance": "997.09",
+            "Phone": "08 7082 4553",
+            "GMTZone": "9:30",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95550",
+            "Name": "Palmerstson",
+            "AddressLine1": "15 Yarrawonga Rd (Cnr Stuart Highway)",
+            "AddressLine2": null,
+            "Suburb": "Palmerstson",
+            "State": "NT",
+            "Postcode": "831",
+            "Latitude": "-12.4708",
+            "Longitude": "130.9845",
+            "GeoLevel": "0",
+            "Distance": "954.16",
+            "Phone": "(08) 7082 4560",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sat: 0600-2100"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "6:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Sun: 0600-2100"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "5:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Mon: 0500-2100"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "5:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Tue: 0500-2100"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "5:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Wed: 0500-2100"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "5:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Thu: 0500-2100"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "5:00 AM - 9:00 PM",
+                    "TradingHourForDisplay": "Fri: 0500-2100"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95906",
+            "Name": "Pinelands",
+            "AddressLine1": "883 Stuart Highway",
+            "AddressLine2": null,
+            "Suburb": "Pinelands",
+            "State": "NT",
+            "Postcode": "835",
+            "Latitude": "-12.4546",
+            "Longitude": "130.9662",
+            "GeoLevel": "0",
+            "Distance": "955.74",
+            "Phone": "08 7082 4566",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "5:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sat: 0500-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "5:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Sun: 0500-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "5:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Mon: 0500-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "5:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Tue: 0500-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "5:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Wed: 0500-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "5:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Thu: 0500-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "5:00 AM - 10:00 PM",
+                    "TradingHourForDisplay": "Fri: 0500-2200"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95543",
+            "Name": "Karama",
+            "AddressLine1": "37 Kalymnos Drive",
+            "AddressLine2": null,
+            "Suburb": "Karama",
+            "State": "NT",
+            "Postcode": "812",
+            "Latitude": "-12.401",
+            "Longitude": "130.9164",
+            "GeoLevel": "0",
+            "Distance": "961.12",
+            "Phone": "08 7082 4552",
+            "GMTZone": "9:30",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95508",
+            "Name": "Nightcliff",
+            "AddressLine1": "Dick Ward Drive",
+            "AddressLine2": null,
+            "Suburb": "Nightcliff",
+            "State": "NT",
+            "Postcode": "810",
+            "Latitude": "-12.3895",
+            "Longitude": "130.8519",
+            "GeoLevel": "0",
+            "Distance": "961.72",
+            "Phone": "08 7082 4516",
+            "GMTZone": "9:30",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sat: 0600-2300"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Sun: 0600-2300"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Mon: 0600-2300"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Tue: 0600-2300"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Wed: 0600-2300"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Thu: 0600-2300"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "6:00 AM - 11:00 PM",
+                    "TradingHourForDisplay": "Fri: 0600-2300"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "EG",
+            "StoreNo": "95519",
+            "Name": "Casuarina",
+            "AddressLine1": "Cnr Trower Rd & Scaturchio St",
+            "AddressLine2": null,
+            "Suburb": "Casuarina",
+            "State": "NT",
+            "Postcode": "810",
+            "Latitude": "-12.372",
+            "Longitude": "130.8836",
+            "GeoLevel": "0",
+            "Distance": "963.98",
+            "Phone": "08 7082 4532",
+            "GMTZone": "9:30",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        }
+    ]
+}

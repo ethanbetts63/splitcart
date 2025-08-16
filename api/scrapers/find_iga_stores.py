@@ -3,13 +3,11 @@ import json
 import os
 from datetime import datetime
 from api.utils.shop_scraping_utils.iga.clean_raw_store_data_iga import clean_raw_store_data_iga
-from api.utils.shop_scraping_utils.iga import (
-    is_in_excluded_range,
-    load_progress,
-    parse_and_clean_stores,
-    print_progress,
-    save_progress,
-    )
+from api.utils.shop_scraping_utils.iga.is_in_excluded_range import is_in_excluded_range
+from api.utils.shop_scraping_utils.iga.load_progress import load_progress
+from api.utils.shop_scraping_utils.iga.parse_and_clean_stores import parse_and_clean_stores
+from api.utils.shop_scraping_utils.iga.print_progress import print_progress
+from api.utils.shop_scraping_utils.iga.save_progress import save_progress
 
 # --- CONFIGURATION ---
 PROGRESS_FILE = r'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_iga\iga_stores_progress.json'

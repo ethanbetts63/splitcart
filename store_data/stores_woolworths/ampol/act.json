@@ -1,0 +1,961 @@
+{
+    "metadata": {
+        "number_of_stores": 9,
+        "company": "woolworths",
+        "brand": "ampol",
+        "state": "ACT",
+        "date_scraped": "2025-08-08"
+    },
+    "stores": [
+        {
+            "Division": "AMPOL",
+            "StoreNo": "22176",
+            "Name": "Ampol Foodary Calwell",
+            "AddressLine1": "Were St Cnr Webber Crescent",
+            "AddressLine2": null,
+            "Suburb": "Calwell",
+            "State": "ACT",
+            "Postcode": "2905",
+            "Latitude": "-35.434858",
+            "Longitude": "149.112548",
+            "GeoLevel": "0",
+            "Distance": "955.13",
+            "Phone": null,
+            "GMTZone": "10:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "28060",
+            "Name": "Ampol Foodary Kambah",
+            "AddressLine1": "3-Marconi Cres",
+            "AddressLine2": null,
+            "Suburb": "Kambah",
+            "State": "ACT",
+            "Postcode": "2902",
+            "Latitude": "-35.378974",
+            "Longitude": "149.057258",
+            "GeoLevel": "0",
+            "Distance": "956.97",
+            "Phone": null,
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "05:00:00 - 23:59:00",
+                    "TradingHourForDisplay": "Sat: 0500-2359"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "05:00:00 - 23:59:00",
+                    "TradingHourForDisplay": "Sun: 0500-2359"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "05:00:00 - 23:59:00",
+                    "TradingHourForDisplay": "Mon: 0500-2359"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "05:00:00 - 23:59:00",
+                    "TradingHourForDisplay": "Tue: 0500-2359"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "05:00:00 - 23:59:00",
+                    "TradingHourForDisplay": "Wed: 0500-2359"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "05:00:00 - 23:59:00",
+                    "TradingHourForDisplay": "Thu: 0500-2359"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "05:00:00 - 23:59:00",
+                    "TradingHourForDisplay": "Fri: 0500-2359"
+                }
+            ],
+            "Facilities": [
+                "Fuel-E10",
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "E10",
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "22018",
+            "Name": "Ampol Foodary Weston",
+            "AddressLine1": "49-Brierly St Cnr Liardet St",
+            "AddressLine2": null,
+            "Suburb": "Weston",
+            "State": "ACT",
+            "Postcode": "2611",
+            "Latitude": "-35.340258",
+            "Longitude": "149.052069",
+            "GeoLevel": "0",
+            "Distance": "960.1",
+            "Phone": null,
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Sat: 0500-2300"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Sun: 0500-2300"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Mon: 0500-2300"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Tue: 0500-2300"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Wed: 0500-2300"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Thu: 0500-2300"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Fri: 0500-2300"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "28492",
+            "Name": "Ampol Foodary Weston Creek",
+            "AddressLine1": "1-Kirkpatrick Street",
+            "AddressLine2": null,
+            "Suburb": "Weston",
+            "State": "ACT",
+            "Postcode": "2611",
+            "Latitude": "-35.3219901",
+            "Longitude": "149.0571738",
+            "GeoLevel": "0",
+            "Distance": "961.99",
+            "Phone": null,
+            "GMTZone": "10:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-E10",
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "General-TwentyFourHourOutdoor",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "E10",
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet",
+                        "Twenty Four Hour Outdoor Payment"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "22546",
+            "Name": "Ampol Foodary Kippax Holt",
+            "AddressLine1": "1-Hardwick Cres",
+            "AddressLine2": null,
+            "Suburb": "Holt",
+            "State": "ACT",
+            "Postcode": "2615",
+            "Latitude": "-35.224282",
+            "Longitude": "149.020967",
+            "GeoLevel": "0",
+            "Distance": "968.67",
+            "Phone": null,
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "07:00:00 - 19:00:00",
+                    "TradingHourForDisplay": "Sat: 0700-1900"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "07:00:00 - 19:00:00",
+                    "TradingHourForDisplay": "Sun: 0700-1900"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "06:00:00 - 20:00:00",
+                    "TradingHourForDisplay": "Mon: 0600-2000"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "06:00:00 - 20:00:00",
+                    "TradingHourForDisplay": "Tue: 0600-2000"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "06:00:00 - 20:00:00",
+                    "TradingHourForDisplay": "Wed: 0600-2000"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "06:00:00 - 20:00:00",
+                    "TradingHourForDisplay": "Thu: 0600-2000"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "06:00:00 - 20:00:00",
+                    "TradingHourForDisplay": "Fri: 0600-2000"
+                }
+            ],
+            "Facilities": [
+                "Fuel-E10",
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards",
+                "Rewards-Redeem Fuel Discount"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards",
+                        "Redeem Fuel Discount"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "E10",
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "20006",
+            "Name": "Ampol Foodary Canberra Airport (Pialligo)",
+            "AddressLine1": "1\\/3-Rogan St",
+            "AddressLine2": null,
+            "Suburb": "Canberra Airport",
+            "State": "ACT",
+            "Postcode": "2609",
+            "Latitude": "-35.309492",
+            "Longitude": "149.187972",
+            "GeoLevel": "0",
+            "Distance": "970.33",
+            "Phone": null,
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "06:00:00 - 20:00:00",
+                    "TradingHourForDisplay": "Sat: 0600-2000"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "06:00:00 - 20:00:00",
+                    "TradingHourForDisplay": "Sun: 0600-2000"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Mon: 0500-2300"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Tue: 0500-2300"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Wed: 0500-2300"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Thu: 0500-2300"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Fri: 0500-2300"
+                }
+            ],
+            "Facilities": [
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-BBQGasAvailable",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "BBQ Gas Available"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "22721",
+            "Name": "Ampol Foodary Braddon",
+            "AddressLine1": "36-Lonsdale St",
+            "AddressLine2": null,
+            "Suburb": "Braddon",
+            "State": "ACT",
+            "Postcode": "2612",
+            "Latitude": "-35.2710315",
+            "Longitude": "149.1334298",
+            "GeoLevel": "0",
+            "Distance": "970.7",
+            "Phone": null,
+            "GMTZone": "10:0",
+            "IsOpen": true,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sat: 24 Hours"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Sun: 24 Hours"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Mon: 24 Hours"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Tue: 24 Hours"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Wed: 24 Hours"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Thu: 24 Hours"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "24 Hours",
+                    "TradingHourForDisplay": "Fri: 24 Hours"
+                }
+            ],
+            "Facilities": [
+                "Fuel-E10",
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "E10",
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "22763",
+            "Name": "Ampol Foodary Kaleen",
+            "AddressLine1": "275-Maribyrnong Ave",
+            "AddressLine2": null,
+            "Suburb": "Kaleen",
+            "State": "ACT",
+            "Postcode": "2617",
+            "Latitude": "-35.2337831",
+            "Longitude": "149.1038843",
+            "GeoLevel": "0",
+            "Distance": "972.36",
+            "Phone": null,
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "06:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Sat: 0600-2200"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "06:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Sun: 0600-2200"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "06:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Mon: 0600-2200"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "06:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Tue: 0600-2200"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "06:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Wed: 0600-2200"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "06:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Thu: 0600-2200"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "06:00:00 - 22:00:00",
+                    "TradingHourForDisplay": "Fri: 0600-2200"
+                }
+            ],
+            "Facilities": [
+                "Fuel-E10",
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "E10",
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        },
+        {
+            "Division": "AMPOL",
+            "StoreNo": "22723",
+            "Name": "Ampol Foodary Nicholls",
+            "AddressLine1": "Curran Dr Cnr O'hanlon Pl",
+            "AddressLine2": null,
+            "Suburb": "Nicholls",
+            "State": "ACT",
+            "Postcode": "2913",
+            "Latitude": "-35.1894287",
+            "Longitude": "149.0815598",
+            "GeoLevel": "0",
+            "Distance": "975.08",
+            "Phone": null,
+            "GMTZone": "10:0",
+            "IsOpen": false,
+            "PartnerUrl": null,
+            "TradingHours": [
+                {
+                    "Day": "Today",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Sat: 0500-2300"
+                },
+                {
+                    "Day": "Tomorrow",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Sun: 0500-2300"
+                },
+                {
+                    "Day": "Monday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Mon: 0500-2300"
+                },
+                {
+                    "Day": "Tuesday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Tue: 0500-2300"
+                },
+                {
+                    "Day": "Wednesday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Wed: 0500-2300"
+                },
+                {
+                    "Day": "Thursday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Thu: 0500-2300"
+                },
+                {
+                    "Day": "Friday",
+                    "OpenHour": "05:00:00 - 23:00:00",
+                    "TradingHourForDisplay": "Fri: 0500-2300"
+                }
+            ],
+            "Facilities": [
+                "Fuel-AdBlue",
+                "Fuel-E10",
+                "Fuel-Premium95A",
+                "Fuel-Premium98A",
+                "Fuel-PremiumDieselA",
+                "Fuel-UnleadedPetrol",
+                "General-ATM",
+                "General-BBQGasAvailable",
+                "General-DisabledToilet",
+                "Pay-AmpolCardaccepted",
+                "Pay-FuelPay",
+                "Rewards-Everyday Rewards"
+            ],
+            "CategorisedFacilities": [
+                {
+                    "Category": "Rewards",
+                    "CategoryLabel": "Rewards",
+                    "Facilities": [
+                        "Everyday Rewards"
+                    ]
+                },
+                {
+                    "Category": "Fuel",
+                    "CategoryLabel": "Fuel",
+                    "Facilities": [
+                        "AdBlue",
+                        "E10",
+                        "Premium 95 A",
+                        "Premium 98 A",
+                        "Premium Diesel A",
+                        "Unleaded Petrol"
+                    ]
+                },
+                {
+                    "Category": "Pay",
+                    "CategoryLabel": "Payment options",
+                    "Facilities": [
+                        "AmpolCard accepted",
+                        "FuelPay"
+                    ]
+                },
+                {
+                    "Category": "General",
+                    "CategoryLabel": "Store services",
+                    "Facilities": [
+                        "ATM",
+                        "BBQ Gas Available",
+                        "Disabled Toilet"
+                    ]
+                }
+            ],
+            "NearbyPartners": null
+        }
+    ]
+}

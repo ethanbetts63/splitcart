@@ -1,0 +1,5350 @@
+{
+    "metadata": {
+        "number_of_stores": 142,
+        "company": "aldi",
+        "state": "New South Wales",
+        "state_iso": "NSW",
+        "date_scraped": "2025-08-08"
+    },
+    "stores": [
+        {
+            "name": "Belmont",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "510 Pacific Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Belmont",
+                "zipCode": "2280",
+                "district": "Belmont",
+                "latitude": "-38.17361000000000",
+                "longitude": "144.34389000000000"
+            },
+            "id": "G231",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "148.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Belmont"
+        },
+        {
+            "name": "Merimbula",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "107 Main St",
+                "address2": null,
+                "address3": null,
+                "city": "Merimbula",
+                "zipCode": "2548",
+                "district": "Merimbula",
+                "latitude": "-36.88637900000000",
+                "longitude": "149.90928600000000"
+            },
+            "id": "G565",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "147.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Merimbula"
+        },
+        {
+            "name": "Cooma",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "18 Hilton Street",
+                "address2": null,
+                "address3": null,
+                "city": "Cooma",
+                "zipCode": "2630",
+                "district": "Cooma",
+                "latitude": "-36.23077000000000",
+                "longitude": "149.13499000000000"
+            },
+            "id": "G495",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "141.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Cooma"
+        },
+        {
+            "name": "Narooma",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "185 / S42 Princes Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Narooma",
+                "zipCode": "2546",
+                "district": "Narooma",
+                "latitude": "-36.22314000000000",
+                "longitude": "150.12757000000000"
+            },
+            "id": "G576",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "142.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Narooma"
+        },
+        {
+            "name": "Albury",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "617 - 621 Young Street",
+                "address2": null,
+                "address3": null,
+                "city": "Albury",
+                "zipCode": "2640",
+                "district": "Albury",
+                "latitude": "-36.07586200000000",
+                "longitude": "146.92474900000000"
+            },
+            "id": "G285",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "109.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Albury"
+        },
+        {
+            "name": "Lavington",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "385 - 387 Wagga Road",
+                "address2": null,
+                "address3": null,
+                "city": "Lavington",
+                "zipCode": "2641",
+                "district": "Lavington",
+                "latitude": "-36.04686400000000",
+                "longitude": "146.93938800000000"
+            },
+            "id": "G249",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "113.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Lavington"
+        },
+        {
+            "name": "Batemans Bay",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "1 Perry Street",
+                "address2": null,
+                "address3": null,
+                "city": "Batemans Bay",
+                "zipCode": "2536",
+                "district": "Batemans Bay",
+                "latitude": "-35.71000000000000",
+                "longitude": "150.17778000000000"
+            },
+            "id": "G463",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "144.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Batemans Bay"
+        },
+        {
+            "name": "Jerrabomberra",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "9 Ferdinand Lane",
+                "address2": null,
+                "address3": null,
+                "city": "Jerrabomberra",
+                "zipCode": "2619",
+                "district": "Jerrabomberra",
+                "latitude": "-35.38019470000000",
+                "longitude": "149.19686060000000"
+            },
+            "id": "G574",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "139.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Jerrabomberra"
+        },
+        {
+            "name": "Queanbeyan",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "134 - 136 Crawford Street",
+                "address2": null,
+                "address3": null,
+                "city": "Queanbeyan",
+                "zipCode": "2620",
+                "district": "Queanbeyan",
+                "latitude": "-35.34828000000000",
+                "longitude": "149.23127000000000"
+            },
+            "id": "G465",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "144.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Queanbeyan"
+        },
+        {
+            "name": "Ulladulla",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "23 Boree Street",
+                "address2": null,
+                "address3": null,
+                "city": "Ulladulla",
+                "zipCode": "2539",
+                "district": "Ulladulla",
+                "latitude": "-35.35972000000000",
+                "longitude": "150.47179000000000"
+            },
+            "id": "G478",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "133.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Ulladulla"
+        },
+        {
+            "name": "Glenfield Park",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "12 Tanda Place",
+                "address2": null,
+                "address3": null,
+                "city": "Glenfield Park",
+                "zipCode": "2650",
+                "district": "Glenfield Park",
+                "latitude": "-35.13725000000000",
+                "longitude": "147.33388000000000"
+            },
+            "id": "G493",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "122.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Glenfield Park"
+        },
+        {
+            "name": "Wagga Wagga",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "11 Berry Street",
+                "address2": null,
+                "address3": null,
+                "city": "Wagga Wagga",
+                "zipCode": "2650",
+                "district": "Wagga Wagga",
+                "latitude": "-35.11535040200000",
+                "longitude": "147.37290325568000"
+            },
+            "id": "G503",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "104.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Wagga Wagga"
+        },
+        {
+            "name": "Vincentia",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "8 Moona Creek Road",
+                "address2": null,
+                "address3": null,
+                "city": "Vincentia",
+                "zipCode": "2540",
+                "district": "Vincentia",
+                "latitude": "-35.07528770000000",
+                "longitude": "150.65679040000000"
+            },
+            "id": "G524",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "103.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Vincentia"
+        },
+        {
+            "name": "Nowra",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "8 - 16 Kinghorne Street",
+                "address2": null,
+                "address3": null,
+                "city": "Nowra",
+                "zipCode": "2541",
+                "district": "Nowra",
+                "latitude": "-34.87362000000000",
+                "longitude": "150.60354000000000"
+            },
+            "id": "G462",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "125.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Nowra"
+        },
+        {
+            "name": "Bomaderry",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "54 Narang Road",
+                "address2": null,
+                "address3": null,
+                "city": "Bomaderry",
+                "zipCode": "2541",
+                "district": "Bomaderry",
+                "latitude": "-34.84536000000000",
+                "longitude": "150.59389000000000"
+            },
+            "id": "G578",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "128.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Bomaderry"
+        },
+        {
+            "name": "Leeton",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "1 Acacia Avenue",
+                "address2": null,
+                "address3": null,
+                "city": "Leeton",
+                "zipCode": "2705",
+                "district": "Leeton",
+                "latitude": "-34.55172080000000",
+                "longitude": "146.39765950000000"
+            },
+            "id": "G522",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "133.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Leeton"
+        },
+        {
+            "name": "Griffith",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "4 - 6 Oakes Road",
+                "address2": null,
+                "address3": null,
+                "city": "Griffith",
+                "zipCode": "2680",
+                "district": "Griffith",
+                "latitude": "-34.29684040000000",
+                "longitude": "146.05016140000000"
+            },
+            "id": "G531",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "142.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Griffith"
+        },
+        {
+            "name": "Moss Vale",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "6 Roberston Road",
+                "address2": null,
+                "address3": null,
+                "city": "Moss Vale",
+                "zipCode": "2577",
+                "district": "Moss Vale",
+                "latitude": "-34.54619617000000",
+                "longitude": "150.38041949000000"
+            },
+            "id": "G568",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "106.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Moss Vale"
+        },
+        {
+            "name": "Albion Park",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "10 Ash Avenue",
+                "address2": null,
+                "address3": null,
+                "city": "Albion Park",
+                "zipCode": "2527",
+                "district": "Albion Park",
+                "latitude": "-34.57014000000000",
+                "longitude": "150.80123000000000"
+            },
+            "id": "G501",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "107.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Albion Park"
+        },
+        {
+            "name": "Shellharbour",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "5 Holm Place",
+                "address2": null,
+                "address3": null,
+                "city": "Shellharbour",
+                "zipCode": "2529",
+                "district": "Shellharbour",
+                "latitude": "-34.56291460000000",
+                "longitude": "150.83711190000000"
+            },
+            "id": "G469",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "108.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Shellharbour"
+        },
+        {
+            "name": "Goulburn",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "9 - 13 Clinton Lane",
+                "address2": null,
+                "address3": null,
+                "city": "Goulburn",
+                "zipCode": "2580",
+                "district": "Goulburn",
+                "latitude": "-34.75807000000000",
+                "longitude": "149.71618000000000"
+            },
+            "id": "G489",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "109.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Goulburn"
+        },
+        {
+            "name": "Warilla",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "43 - 57 Shellharbour Road",
+                "address2": null,
+                "address3": null,
+                "city": "Warilla",
+                "zipCode": "2528",
+                "district": "Warilla",
+                "latitude": "-34.54688934000000",
+                "longitude": "150.86281210000000"
+            },
+            "id": "G527",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "106.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Warilla"
+        },
+        {
+            "name": "Warrawong",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "45 Cowper Street",
+                "address2": null,
+                "address3": null,
+                "city": "Warrawong",
+                "zipCode": "2502",
+                "district": "Warrawong",
+                "latitude": "-34.48542000000000",
+                "longitude": "150.88748000000000"
+            },
+            "id": "G509",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "113.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Warrawong"
+        },
+        {
+            "name": "Dapto",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "38 Osborne Street",
+                "address2": null,
+                "address3": null,
+                "city": "Dapto",
+                "zipCode": "2530",
+                "district": "Dapto",
+                "latitude": "-34.49292000000000",
+                "longitude": "150.79438000000000"
+            },
+            "id": "G479",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "129.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Dapto"
+        },
+        {
+            "name": "Young",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "11 Zouch St",
+                "address2": null,
+                "address3": null,
+                "city": "Young",
+                "zipCode": "2594",
+                "district": "Young",
+                "latitude": "-34.31058935000000",
+                "longitude": "148.30035640000000"
+            },
+            "id": "G486",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "141.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Young"
+        },
+        {
+            "name": "Yass",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "193 Comur Street",
+                "address2": null,
+                "address3": null,
+                "city": "Yass",
+                "zipCode": "2582",
+                "district": "Yass",
+                "latitude": "-34.84430000000000",
+                "longitude": "148.91315000000000"
+            },
+            "id": "G498",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "130.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Yass"
+        },
+        {
+            "name": "Bowral",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "5-11 Banyette Street",
+                "address2": null,
+                "address3": null,
+                "city": "Bowral",
+                "zipCode": "2576",
+                "district": "Bowral",
+                "latitude": "-34.48184271000000",
+                "longitude": "150.41568340000000"
+            },
+            "id": "G480",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "69.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Bowral"
+        },
+        {
+            "name": "Mittagong",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "181 - 183 Old Hume Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Mittagong",
+                "zipCode": "2575",
+                "district": "Mittagong",
+                "latitude": "-34.44765000000000",
+                "longitude": "150.43990000000000"
+            },
+            "id": "G496",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "73.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Mittagong"
+        },
+        {
+            "name": "Wollongong",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "25 Stewart Street",
+                "address2": null,
+                "address3": null,
+                "city": "Wollongong",
+                "zipCode": "2521",
+                "district": "Wollongong",
+                "latitude": "-34.42825430000000",
+                "longitude": "150.89842110000000"
+            },
+            "id": "G468",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "64.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Wollongong"
+        },
+        {
+            "name": "Fairy Meadow",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "102 - 110 Princess Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Fairy Meadow",
+                "zipCode": "2519",
+                "district": "Fairy Meadow",
+                "latitude": "-34.39383000000000",
+                "longitude": "150.89357000000000"
+            },
+            "id": "G471",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "87.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Fairy Meadow"
+        },
+        {
+            "name": "Corrimal",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "7 Russell Street",
+                "address2": null,
+                "address3": null,
+                "city": "Corrimal",
+                "zipCode": "2518",
+                "district": "Corrimal",
+                "latitude": "-34.37135337000000",
+                "longitude": "150.89592934000000"
+            },
+            "id": "G567",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "122.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Corrimal"
+        },
+        {
+            "name": "Cowra",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "125-131 Fitzroy Street",
+                "address2": null,
+                "address3": null,
+                "city": "Cowra",
+                "zipCode": "2794",
+                "district": "Cowra",
+                "latitude": "-33.83685000000000",
+                "longitude": "148.69586000000000"
+            },
+            "id": "G439",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "132.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Cowra"
+        },
+        {
+            "name": "Tahmoor",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "153 - 159 Remembrance Driveway",
+                "address2": null,
+                "address3": null,
+                "city": "Tahmoor",
+                "zipCode": "2573",
+                "district": "Tahmoor",
+                "latitude": "-34.22552000000000",
+                "longitude": "150.59198000000000"
+            },
+            "id": "G499",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "62.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Tahmoor"
+        },
+        {
+            "name": "Engadine",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "101 / 15 Caldarra Avenue",
+                "address2": null,
+                "address3": null,
+                "city": "Engadine",
+                "zipCode": "2233",
+                "district": "Engadine",
+                "latitude": "-34.06556520000000",
+                "longitude": "151.01408340000000"
+            },
+            "id": "G504",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "48.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Engadine"
+        },
+        {
+            "name": "Woolooware",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "455 - 461 Captain Cook Dr",
+                "address2": null,
+                "address3": null,
+                "city": "Woolooware",
+                "zipCode": "2230",
+                "district": "Woolooware",
+                "latitude": "-34.03805244773000",
+                "longitude": "151.13884377731000"
+            },
+            "id": "G666",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "61.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Woolooware"
+        },
+        {
+            "name": "Miranda",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "600 The Kingsway",
+                "address2": null,
+                "address3": null,
+                "city": "Miranda",
+                "zipCode": "2228",
+                "district": "Miranda",
+                "latitude": "-34.03459000000000",
+                "longitude": "151.10035600000000"
+            },
+            "id": "G458",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "63.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Miranda"
+        },
+        {
+            "name": "Miranda",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "14 - 16 Wandella Road",
+                "address2": null,
+                "address3": null,
+                "city": "Miranda",
+                "zipCode": "2228",
+                "district": "Miranda",
+                "latitude": "-34.03252000000000",
+                "longitude": "151.09926000000000"
+            },
+            "id": "G505",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "63.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Miranda"
+        },
+        {
+            "name": "Hillsdale",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "238 - 262 Bunnerong Road",
+                "address2": null,
+                "address3": null,
+                "city": "Hillsdale",
+                "zipCode": "2036",
+                "district": "Hillsdale",
+                "latitude": "-33.95211375000000",
+                "longitude": "151.23095065000000"
+            },
+            "id": "G550",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "93.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Hillsdale"
+        },
+        {
+            "name": "Maroubra",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "707 - 751 Anzac Parade",
+                "address2": null,
+                "address3": null,
+                "city": "Maroubra",
+                "zipCode": "2035",
+                "district": "Maroubra",
+                "latitude": "-33.94124000000000",
+                "longitude": "151.23898000000000"
+            },
+            "id": "G484",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "93.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Maroubra"
+        },
+        {
+            "name": "Eastgardens",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "152 Bunnerong Road",
+                "address2": null,
+                "address3": null,
+                "city": "Eastgardens",
+                "zipCode": "2036",
+                "district": "Eastgardens",
+                "latitude": "-33.94463080000000",
+                "longitude": "151.22449560000000"
+            },
+            "id": "G521",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "94.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Eastgardens"
+        },
+        {
+            "name": "Bondi Junction",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "71 - 91 / Spring Street",
+                "address2": null,
+                "address3": null,
+                "city": "Bondi Junction",
+                "zipCode": "2022",
+                "district": "Bondi Junction",
+                "latitude": "-33.89282000000000",
+                "longitude": "151.24874000000000"
+            },
+            "id": "G512",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "96.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Bondi Junction"
+        },
+        {
+            "name": "Eastlakes",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "16D Evans Ave",
+                "address2": null,
+                "address3": null,
+                "city": "Eastlakes",
+                "zipCode": "2018",
+                "district": "Eastlakes",
+                "latitude": "-33.92439197000000",
+                "longitude": "151.21195400000000"
+            },
+            "id": "G577",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "96.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Eastlakes"
+        },
+        {
+            "name": "Rosebery",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "85 Dunning Avenue",
+                "address2": null,
+                "address3": null,
+                "city": "Rosebery",
+                "zipCode": "2018",
+                "district": "Rosebery",
+                "latitude": "-33.91676000000000",
+                "longitude": "151.20252000000000"
+            },
+            "id": "G659",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "97.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Rosebery"
+        },
+        {
+            "name": "Edgecliff",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "203 - 233 New South Head Road",
+                "address2": null,
+                "address3": null,
+                "city": "Edgecliff",
+                "zipCode": "2024",
+                "district": "Edgecliff",
+                "latitude": "-33.87905767000000",
+                "longitude": "151.23557884000000"
+            },
+            "id": "G467",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "98.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Edgecliff"
+        },
+        {
+            "name": "Waterloo",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "20 A Danks Street",
+                "address2": null,
+                "address3": null,
+                "city": "Waterloo",
+                "zipCode": "2017",
+                "district": "Waterloo",
+                "latitude": "-33.89798000000000",
+                "longitude": "151.21241000000000"
+            },
+            "id": "G506",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "136.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Waterloo"
+        },
+        {
+            "name": "Darlinghurst",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "73 Oxford Street",
+                "address2": null,
+                "address3": null,
+                "city": "Darlinghurst",
+                "zipCode": "2010",
+                "district": "Darlinghurst",
+                "latitude": "-33.87888233000000",
+                "longitude": "151.21345863000000"
+            },
+            "id": "G525",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "137.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Darlinghurst"
+        },
+        {
+            "name": "Parkes",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "11 Caledonia Street",
+                "address2": null,
+                "address3": null,
+                "city": "Parkes",
+                "zipCode": "2870",
+                "district": "Parkes",
+                "latitude": "-33.14084000000000",
+                "longitude": "148.17553000000000"
+            },
+            "id": "G382",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "144.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Parkes"
+        },
+        {
+            "name": "Orange",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "167 - 177 Peisley Street",
+                "address2": null,
+                "address3": null,
+                "city": "Orange",
+                "zipCode": "2800",
+                "district": "Orange",
+                "latitude": "-33.28580000000000",
+                "longitude": "149.10267000000000"
+            },
+            "id": "G395",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "129.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Orange"
+        },
+        {
+            "name": "Bathurst",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "128 Russell Street",
+                "address2": null,
+                "address3": null,
+                "city": "Bathurst",
+                "zipCode": "2795",
+                "district": "Bathurst",
+                "latitude": "-33.42055000000000",
+                "longitude": "149.58056000000000"
+            },
+            "id": "G391",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "118.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Bathurst"
+        },
+        {
+            "name": "Lithgow",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "2 Valley Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Lithgow",
+                "zipCode": "2790",
+                "district": "Lithgow",
+                "latitude": "-33.48833000000000",
+                "longitude": "150.15250000000000"
+            },
+            "id": "G403",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "120.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Lithgow"
+        },
+        {
+            "name": "Katoomba",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "201-205 Katoomba Street",
+                "address2": null,
+                "address3": null,
+                "city": "Katoomba",
+                "zipCode": "2780",
+                "district": "Katoomba",
+                "latitude": "-33.71745000000000",
+                "longitude": "150.31063000000000"
+            },
+            "id": "G383",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "125.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Katoomba"
+        },
+        {
+            "name": "Glenmore Park",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "1 Town Terrace",
+                "address2": null,
+                "address3": null,
+                "city": "Glenmore Park",
+                "zipCode": "2745",
+                "district": "Glenmore Park",
+                "latitude": "-33.78734700000000",
+                "longitude": "150.66859400000000"
+            },
+            "id": "G452",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "66.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Glenmore Park"
+        },
+        {
+            "name": "Cobbitty",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "3 Kakadu Street",
+                "address2": null,
+                "address3": null,
+                "city": "Cobbitty",
+                "zipCode": "2570",
+                "district": "Cobbitty",
+                "latitude": "-33.99476900000000",
+                "longitude": "150.72426400000000"
+            },
+            "id": "G654",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "66.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Cobbitty"
+        },
+        {
+            "name": "Emu Plains",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "1 Pyramid Street",
+                "address2": null,
+                "address3": null,
+                "city": "Emu Plains",
+                "zipCode": "2750",
+                "district": "Emu Plains",
+                "latitude": "-33.75290000000000",
+                "longitude": "150.65966000000000"
+            },
+            "id": "G408",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "66.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Emu Plains"
+        },
+        {
+            "name": "Narellan",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "304 - 306 Camden Valley Way",
+                "address2": null,
+                "address3": null,
+                "city": "Narellan",
+                "zipCode": "2567",
+                "district": "Narellan",
+                "latitude": "-34.04227640000000",
+                "longitude": "150.73361580000000"
+            },
+            "id": "G561",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "67.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Narellan"
+        },
+        {
+            "name": "Penrith",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "585 High Street",
+                "address2": null,
+                "address3": null,
+                "city": "Penrith",
+                "zipCode": "2750",
+                "district": "Penrith",
+                "latitude": "-33.75008000000000",
+                "longitude": "150.69130000000000"
+            },
+            "id": "G387",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "69.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Penrith"
+        },
+        {
+            "name": "Mount Annan",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "6-8 Main Street",
+                "address2": null,
+                "address3": null,
+                "city": "Mount Annan",
+                "zipCode": "2567",
+                "district": "Mount Annan",
+                "latitude": "-34.04979175941000",
+                "longitude": "150.75730480530000"
+            },
+            "id": "G474",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "24.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Mount Annan"
+        },
+        {
+            "name": "Gregory Hills",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "33 Village Circuit",
+                "address2": null,
+                "address3": null,
+                "city": "Gregory Hills",
+                "zipCode": "2557",
+                "district": "Gregory Hills",
+                "latitude": "-34.02672600000000",
+                "longitude": "150.77878900000000"
+            },
+            "id": "G579",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "25.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Gregory Hills"
+        },
+        {
+            "name": "Leppington",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "5 Emerald Hills Boulevarde",
+                "address2": null,
+                "address3": null,
+                "city": "Leppington",
+                "zipCode": "2179",
+                "district": "Leppington",
+                "latitude": "-33.99646941000000",
+                "longitude": "150.79056970000000"
+            },
+            "id": "G566",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "26.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Leppington"
+        },
+        {
+            "name": "Campbelltown",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "200 Gilchrist Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Campbelltown",
+                "zipCode": "2560",
+                "district": "Campbelltown",
+                "latitude": "-34.07613943000000",
+                "longitude": "150.79844267000000"
+            },
+            "id": "G559",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "28.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Campbelltown"
+        },
+        {
+            "name": "Blair Athol",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "171 The Kraal Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Blair Athol",
+                "zipCode": "2560",
+                "district": "Blair Athol",
+                "latitude": "-34.06325000000000",
+                "longitude": "150.80688000000000"
+            },
+            "id": "G457",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "29.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Blair Athol"
+        },
+        {
+            "name": "Ambarvale",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "45 Woodhouse Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Ambarvale",
+                "zipCode": "2560",
+                "district": "Ambarvale",
+                "latitude": "-34.08618000000000",
+                "longitude": "150.80162000000000"
+            },
+            "id": "G492",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "29.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Ambarvale"
+        },
+        {
+            "name": "Menai",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "509 Old Illawarra Road",
+                "address2": null,
+                "address3": null,
+                "city": "Menai",
+                "zipCode": "2234",
+                "district": "Menai",
+                "latitude": "-34.01682000000000",
+                "longitude": "151.01157000000000"
+            },
+            "id": "G485",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "2.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Menai"
+        },
+        {
+            "name": "Riverwood",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "247 - 253 Belmore Road",
+                "address2": null,
+                "address3": null,
+                "city": "Riverwood",
+                "zipCode": "2210",
+                "district": "Riverwood",
+                "latitude": "-33.95228274000000",
+                "longitude": "151.05097550000000"
+            },
+            "id": "G560",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "7.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Riverwood"
+        },
+        {
+            "name": "Kirrawee",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "580 Princes Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Kirrawee",
+                "zipCode": "2232",
+                "district": "Kirrawee",
+                "latitude": "-34.03223188000000",
+                "longitude": "151.07285911000000"
+            },
+            "id": "G562",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "7.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Kirrawee"
+        },
+        {
+            "name": "Bankstown Aerodrome",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "345 Henry Lawson Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Bankstown Aerodrome",
+                "zipCode": "2200",
+                "district": "Bankstown Aerodrome",
+                "latitude": "-33.92828556000000",
+                "longitude": "150.98118469000000"
+            },
+            "id": "G455",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "8.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Bankstown Aerodrome"
+        },
+        {
+            "name": "Roselands",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "24 Roselands Avenue",
+                "address2": null,
+                "address3": null,
+                "city": "Roselands",
+                "zipCode": "2196",
+                "district": "Roselands",
+                "latitude": "-33.93599889000000",
+                "longitude": "151.06931810000000"
+            },
+            "id": "G570",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "9.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Roselands"
+        },
+        {
+            "name": "Bankstown",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "440 - 450 Chapel Road",
+                "address2": null,
+                "address3": null,
+                "city": "Bankstown",
+                "zipCode": "2200",
+                "district": "Bankstown",
+                "latitude": "-33.91426000000000",
+                "longitude": "151.03477000000000"
+            },
+            "id": "G475",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "10.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Bankstown"
+        },
+        {
+            "name": "Macquarie Fields",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "61 Victoria Road",
+                "address2": null,
+                "address3": null,
+                "city": "Macquarie Fields",
+                "zipCode": "2564",
+                "district": "Macquarie Fields",
+                "latitude": "-33.98488000000000",
+                "longitude": "150.89215000000000"
+            },
+            "id": "G494",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "10.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Macquarie Fields"
+        },
+        {
+            "name": "Mosman",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "3 / 1 Brady Street",
+                "address2": null,
+                "address3": null,
+                "city": "Mosman",
+                "zipCode": "2088",
+                "district": "Mosman",
+                "latitude": "-33.82373290000000",
+                "longitude": "151.24055030000000"
+            },
+            "id": "G558",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "30.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Mosman"
+        },
+        {
+            "name": "Dee Why",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "15 - 19 Pacific Parade",
+                "address2": null,
+                "address3": null,
+                "city": "Dee Why",
+                "zipCode": "2099",
+                "district": "Dee Why",
+                "latitude": "-33.75500150000000",
+                "longitude": "151.28478270000000"
+            },
+            "id": "G555",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "71.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Dee Why"
+        },
+        {
+            "name": "Balgowlah",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "22 - 26 Roseberry Street",
+                "address2": null,
+                "address3": null,
+                "city": "Balgowlah",
+                "zipCode": "2093",
+                "district": "Balgowlah",
+                "latitude": "-33.78824501000000",
+                "longitude": "151.26815530000000"
+            },
+            "id": "G540",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "71.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Balgowlah"
+        },
+        {
+            "name": "Brookvale",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "3 - 5 Cross Street",
+                "address2": null,
+                "address3": null,
+                "city": "Brookvale",
+                "zipCode": "2100",
+                "district": "Brookvale",
+                "latitude": "-33.76580000000000",
+                "longitude": "151.26735000000000"
+            },
+            "id": "G551",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "72.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Brookvale"
+        },
+        {
+            "name": "Warriewood",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "12 Jacksons Road",
+                "address2": null,
+                "address3": null,
+                "city": "Warriewood",
+                "zipCode": "2102",
+                "district": "Warriewood",
+                "latitude": "-33.69583000000000",
+                "longitude": "151.29559000000000"
+            },
+            "id": "G556",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "116.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Warriewood"
+        },
+        {
+            "name": "Mona Vale",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "13 Bungan Street",
+                "address2": null,
+                "address3": null,
+                "city": "Mona Vale",
+                "zipCode": "2103",
+                "district": "Mona Vale",
+                "latitude": "-33.67761000000000",
+                "longitude": "151.30217000000000"
+            },
+            "id": "G557",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "116.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Mona Vale"
+        },
+        {
+            "name": "Bateau Bay",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "12 / M01 Bay Village Road",
+                "address2": null,
+                "address3": null,
+                "city": "Bateau Bay",
+                "zipCode": "2261",
+                "district": "Bateau Bay",
+                "latitude": "-33.37581000000000",
+                "longitude": "151.47246000000000"
+            },
+            "id": "G421",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "117.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Bateau Bay"
+        },
+        {
+            "name": "Dubbo",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "176 Talbragar Street",
+                "address2": null,
+                "address3": null,
+                "city": "Dubbo",
+                "zipCode": "2830",
+                "district": "Dubbo",
+                "latitude": "-32.24582000000000",
+                "longitude": "148.61237000000000"
+            },
+            "id": "G413",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "139.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Dubbo"
+        },
+        {
+            "name": "Mudgee",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "97 - 99 Church Street",
+                "address2": null,
+                "address3": null,
+                "city": "Mudgee",
+                "zipCode": "2850",
+                "district": "Mudgee",
+                "latitude": "-32.59709000000000",
+                "longitude": "149.58746000000000"
+            },
+            "id": "G436",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "142.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Mudgee"
+        },
+        {
+            "name": "North Richmond",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "47 - 55 Bells Line of Road",
+                "address2": null,
+                "address3": null,
+                "city": "North Richmond",
+                "zipCode": "2754",
+                "district": "North Richmond",
+                "latitude": "-33.58069500000000",
+                "longitude": "150.71989000000000"
+            },
+            "id": "G428",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "113.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "North Richmond"
+        },
+        {
+            "name": "Cranebrook",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "80 - 98 Borrowdale Way",
+                "address2": null,
+                "address3": null,
+                "city": "Cranebrook",
+                "zipCode": "2749",
+                "district": "Cranebrook",
+                "latitude": "-33.71943500000000",
+                "longitude": "150.70972500000000"
+            },
+            "id": "G453",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "70.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Cranebrook"
+        },
+        {
+            "name": "Richmond",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "128 Windsor Street",
+                "address2": null,
+                "address3": null,
+                "city": "Richmond",
+                "zipCode": "2753",
+                "district": "Richmond",
+                "latitude": "-33.59911000000000",
+                "longitude": "150.75463000000000"
+            },
+            "id": "G404",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "70.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Richmond"
+        },
+        {
+            "name": "Penrith",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "201 - 205 High Street",
+                "address2": null,
+                "address3": null,
+                "city": "Penrith",
+                "zipCode": "2750",
+                "district": "Penrith",
+                "latitude": "-33.75554000000000",
+                "longitude": "150.70562000000000"
+            },
+            "id": "G414",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "71.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Penrith"
+        },
+        {
+            "name": "McGraths Hill",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "5 Curtis Road",
+                "address2": null,
+                "address3": null,
+                "city": "McGraths Hill",
+                "zipCode": "2756",
+                "district": "McGraths Hill",
+                "latitude": "-33.62350000000000",
+                "longitude": "150.83673000000000"
+            },
+            "id": "G442",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "34.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "McGraths Hill"
+        },
+        {
+            "name": "Galston",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "346 Galston Road",
+                "address2": null,
+                "address3": null,
+                "city": "Galston",
+                "zipCode": "2159",
+                "district": "Galston",
+                "latitude": "-33.65256300000000",
+                "longitude": "151.04646400000000"
+            },
+            "id": "G532",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "17.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Galston"
+        },
+        {
+            "name": "Box Hill",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "745 Windsor Road",
+                "address2": null,
+                "address3": null,
+                "city": "Box Hill",
+                "zipCode": "2765",
+                "district": "Box Hill",
+                "latitude": "-33.65888500000000",
+                "longitude": "150.88020600000000"
+            },
+            "id": "G592",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "20.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Box Hill"
+        },
+        {
+            "name": "Dural",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "22 Allen Way",
+                "address2": null,
+                "address3": null,
+                "city": "Dural",
+                "zipCode": "2158",
+                "district": "Dural",
+                "latitude": "-33.69080000000000",
+                "longitude": "151.01752000000000"
+            },
+            "id": "G417",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "21.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Dural"
+        },
+        {
+            "name": "Mount Kuring-gai",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "Cnr Nyarra Road, Pacific Highw",
+                "address2": null,
+                "address3": null,
+                "city": "Mount Kuring-gai",
+                "zipCode": "2080",
+                "district": "Mount Kuring-gai",
+                "latitude": "-33.65621000000000",
+                "longitude": "151.13409000000000"
+            },
+            "id": "G533",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "21.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Mount Kuring-gai"
+        },
+        {
+            "name": "Rouse Hill",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "3 Resolution Place",
+                "address2": null,
+                "address3": null,
+                "city": "Rouse Hill",
+                "zipCode": "2155",
+                "district": "Rouse Hill",
+                "latitude": "-33.68367000000000",
+                "longitude": "150.91823000000000"
+            },
+            "id": "G418",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "21.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Rouse Hill"
+        },
+        {
+            "name": "North Kellyville",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "10 Hezlett Road",
+                "address2": null,
+                "address3": null,
+                "city": "North Kellyville",
+                "zipCode": "2155",
+                "district": "North Kellyville",
+                "latitude": "-33.69954900000000",
+                "longitude": "150.95739100000000"
+            },
+            "id": "G449",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "22.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "North Kellyville"
+        },
+        {
+            "name": "Kellyville",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "92 Wrights Road",
+                "address2": null,
+                "address3": null,
+                "city": "Kellyville",
+                "zipCode": "2155",
+                "district": "Kellyville",
+                "latitude": "-33.71411000000000",
+                "longitude": "150.97350000000000"
+            },
+            "id": "G389",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "23.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Kellyville"
+        },
+        {
+            "name": "Hornsby",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "236 Pacific Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Hornsby",
+                "zipCode": "2077",
+                "district": "Hornsby",
+                "latitude": "-33.70504000000000",
+                "longitude": "151.09939000000000"
+            },
+            "id": "G534",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "24.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Hornsby"
+        },
+        {
+            "name": "Westleigh",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "4/8 Eucalyptus Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Westleigh",
+                "zipCode": "2120",
+                "district": "Westleigh",
+                "latitude": "-33.71971600000000",
+                "longitude": "151.06894060000000"
+            },
+            "id": "G535",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "25.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Westleigh"
+        },
+        {
+            "name": "Erina",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "620 - 658 Terrigal Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Erina",
+                "zipCode": "2250",
+                "district": "Erina",
+                "latitude": "-33.43932000000000",
+                "longitude": "151.39398000000000"
+            },
+            "id": "G426",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "11.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Erina"
+        },
+        {
+            "name": "Green Point",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "203 Avoca Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Green Point",
+                "zipCode": "2251",
+                "district": "Green Point",
+                "latitude": "-33.45129000000000",
+                "longitude": "151.36135000000000"
+            },
+            "id": "G432",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "14.0 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Green Point"
+        },
+        {
+            "name": "Umina Beach",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "310 Trafalgar Ave",
+                "address2": null,
+                "address3": null,
+                "city": "Umina Beach",
+                "zipCode": "2257",
+                "district": "Umina Beach",
+                "latitude": "-33.52271000000000",
+                "longitude": "151.32079000000000"
+            },
+            "id": "G390",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "16.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Umina Beach"
+        },
+        {
+            "name": "Point Clare",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "53 - 59 Brisbane Water Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Point Clare",
+                "zipCode": "2250",
+                "district": "Point Clare",
+                "latitude": "-33.44282000000000",
+                "longitude": "151.32910000000000"
+            },
+            "id": "G434",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "17.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Point Clare"
+        },
+        {
+            "name": "Wyoming",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "489 Pacific Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Wyoming",
+                "zipCode": "2250",
+                "district": "Wyoming",
+                "latitude": "-33.40917000000000",
+                "longitude": "151.34944000000000"
+            },
+            "id": "G405",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "17.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Wyoming"
+        },
+        {
+            "name": "Tuggerah",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "50 Wyong Rd",
+                "address2": null,
+                "address3": null,
+                "city": "Tuggerah",
+                "zipCode": "2259",
+                "district": "Tuggerah",
+                "latitude": "-33.30719000000000",
+                "longitude": "151.41344000000000"
+            },
+            "id": "G420",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "22.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Tuggerah"
+        },
+        {
+            "name": "Wyong",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "146 - 148 Pacific Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Wyong",
+                "zipCode": "2259",
+                "district": "Wyong",
+                "latitude": "-33.28073400000000",
+                "longitude": "151.42611900000000"
+            },
+            "id": "G431",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "25.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Wyong"
+        },
+        {
+            "name": "Toukley",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "127 Evans St",
+                "address2": null,
+                "address3": null,
+                "city": "Toukley",
+                "zipCode": "2263",
+                "district": "Toukley",
+                "latitude": "-33.26622000000000",
+                "longitude": "151.55002000000000"
+            },
+            "id": "G450",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "26.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Toukley"
+        },
+        {
+            "name": "Lakehaven",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "43 Lakehaven Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Lakehaven",
+                "zipCode": "2263",
+                "district": "Lakehaven",
+                "latitude": "-33.24042000000000",
+                "longitude": "151.50380000000000"
+            },
+            "id": "G427",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "54.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Lakehaven"
+        },
+        {
+            "name": "Blue Haven",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "19 Roper Road",
+                "address2": null,
+                "address3": null,
+                "city": "Blue Haven",
+                "zipCode": "2262",
+                "district": "Blue Haven",
+                "latitude": "-33.20630335960000",
+                "longitude": "151.49838501010000"
+            },
+            "id": "G416",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "56.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Blue Haven"
+        },
+        {
+            "name": "Belmont",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "Cnr Pacific Highway, Maude Str",
+                "address2": null,
+                "address3": null,
+                "city": "Belmont",
+                "zipCode": "2280",
+                "district": "Belmont",
+                "latitude": "-33.03426000000000",
+                "longitude": "151.66095000000000"
+            },
+            "id": "G435",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "60.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Belmont"
+        },
+        {
+            "name": "Salamander Bay",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "3 Central Ave",
+                "address2": null,
+                "address3": null,
+                "city": "Salamander Bay",
+                "zipCode": "2317",
+                "district": "Salamander Bay",
+                "latitude": "-32.73518600000000",
+                "longitude": "152.10846200000000"
+            },
+            "id": "G591",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "92.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Salamander Bay"
+        },
+        {
+            "name": "Newcastle",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "54 Union Street",
+                "address2": null,
+                "address3": null,
+                "city": "Newcastle",
+                "zipCode": "2302",
+                "district": "Newcastle",
+                "latitude": "-32.93042000000000",
+                "longitude": "151.76567000000000"
+            },
+            "id": "G444",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "93.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Newcastle"
+        },
+        {
+            "name": "Hamilton",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "11 Swan Street",
+                "address2": null,
+                "address3": null,
+                "city": "Hamilton",
+                "zipCode": "2303",
+                "district": "Hamilton",
+                "latitude": "-32.91892000000000",
+                "longitude": "151.74573000000000"
+            },
+            "id": "G401",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "95.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Hamilton"
+        },
+        {
+            "name": "Charlestown",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "30 Pearson Street",
+                "address2": null,
+                "address3": null,
+                "city": "Charlestown",
+                "zipCode": "2290",
+                "district": "Charlestown",
+                "latitude": "-32.96263000000000",
+                "longitude": "151.69531200000000"
+            },
+            "id": "G441",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "95.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Charlestown"
+        },
+        {
+            "name": "Kotara",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "30 Northcott Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Kotara",
+                "zipCode": "2289",
+                "district": "Kotara",
+                "latitude": "-32.94067000000000",
+                "longitude": "151.71216000000000"
+            },
+            "id": "G402",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "96.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Kotara"
+        },
+        {
+            "name": "Mount Hutton",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "4 Dunkley Parade",
+                "address2": null,
+                "address3": null,
+                "city": "Mount Hutton",
+                "zipCode": "2290",
+                "district": "Mount Hutton",
+                "latitude": "-32.97713000000000",
+                "longitude": "151.66861000000000"
+            },
+            "id": "G396",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "96.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Mount Hutton"
+        },
+        {
+            "name": "Mayfield",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "230 Maitland Road",
+                "address2": null,
+                "address3": null,
+                "city": "Mayfield",
+                "zipCode": "2304",
+                "district": "Mayfield",
+                "latitude": "-32.89899000000000",
+                "longitude": "151.73794000000000"
+            },
+            "id": "G410",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "135.1 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Mayfield"
+        },
+        {
+            "name": "Warners Bay",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "6 King Street",
+                "address2": null,
+                "address3": null,
+                "city": "Warners Bay",
+                "zipCode": "2282",
+                "district": "Warners Bay",
+                "latitude": "-32.97528700000000",
+                "longitude": "151.64603100000000"
+            },
+            "id": "G454",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "138.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Warners Bay"
+        },
+        {
+            "name": "Singleton",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "17 John Street",
+                "address2": null,
+                "address3": null,
+                "city": "Singleton",
+                "zipCode": "2330",
+                "district": "Singleton",
+                "latitude": "-32.56924000000000",
+                "longitude": "151.16479000000000"
+            },
+            "id": "G411",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "78.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Singleton"
+        },
+        {
+            "name": "Cessnock",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "165 - 167 Wollombi Road",
+                "address2": null,
+                "address3": null,
+                "city": "Cessnock",
+                "zipCode": "2325",
+                "district": "Cessnock",
+                "latitude": "-32.83418000000000",
+                "longitude": "151.35223000000000"
+            },
+            "id": "G392",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "81.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Cessnock"
+        },
+        {
+            "name": "Kurri Kurri",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "106 -112 Barton Street",
+                "address2": null,
+                "address3": null,
+                "city": "Kurri Kurri",
+                "zipCode": "2327",
+                "district": "Kurri Kurri",
+                "latitude": "-32.81873000000000",
+                "longitude": "151.48282000000000"
+            },
+            "id": "G451",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "49.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Kurri Kurri"
+        },
+        {
+            "name": "Toronto",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "189 - 197 Brighton Ave",
+                "address2": null,
+                "address3": null,
+                "city": "Toronto",
+                "zipCode": "2283",
+                "district": "Toronto",
+                "latitude": "-33.01384000000000",
+                "longitude": "151.59467700000000"
+            },
+            "id": "G447",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "55.5 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Toronto"
+        },
+        {
+            "name": "Edgeworth",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "57 Thomas Street",
+                "address2": null,
+                "address3": null,
+                "city": "Edgeworth",
+                "zipCode": "2285",
+                "district": "Edgeworth",
+                "latitude": "-32.92492205324000",
+                "longitude": "151.62619705376000"
+            },
+            "id": "G446",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "14.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Edgeworth"
+        },
+        {
+            "name": "Cardiff",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "49 Harrison Street",
+                "address2": null,
+                "address3": null,
+                "city": "Cardiff",
+                "zipCode": "2285",
+                "district": "Cardiff",
+                "latitude": "-32.94095000000000",
+                "longitude": "151.65968000000000"
+            },
+            "id": "G438",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "16.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Cardiff"
+        },
+        {
+            "name": "Fletcher",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "1 Britannia Boulevard",
+                "address2": null,
+                "address3": null,
+                "city": "Fletcher",
+                "zipCode": "2287",
+                "district": "Fletcher",
+                "latitude": "-32.87636000000000",
+                "longitude": "151.63920000000000"
+            },
+            "id": "G419",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "18.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Fletcher"
+        },
+        {
+            "name": "Wallsend",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "32 Kokera Street",
+                "address2": null,
+                "address3": null,
+                "city": "Wallsend",
+                "zipCode": "2287",
+                "district": "Wallsend",
+                "latitude": "-32.90368000000000",
+                "longitude": "151.66737000000000"
+            },
+            "id": "G388",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "18.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Wallsend"
+        },
+        {
+            "name": "Raymond Terrace",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "22 - 32 Port Stephens Road",
+                "address2": null,
+                "address3": null,
+                "city": "Raymond Terrace",
+                "zipCode": "2324",
+                "district": "Raymond Terrace",
+                "latitude": "-32.75851000000000",
+                "longitude": "151.74619000000000"
+            },
+            "id": "G433",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "75.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Raymond Terrace"
+        },
+        {
+            "name": "Forster",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "3 - 17 Breese Parade",
+                "address2": null,
+                "address3": null,
+                "city": "Forster",
+                "zipCode": "2428",
+                "district": "Forster",
+                "latitude": "-32.20046000000000",
+                "longitude": "152.51935000000000"
+            },
+            "id": "G424",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "99.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Forster"
+        },
+        {
+            "name": "Muswellbrook",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "31 Rutherford Road",
+                "address2": null,
+                "address3": null,
+                "city": "Muswellbrook",
+                "zipCode": "2333",
+                "district": "Muswellbrook",
+                "latitude": "-32.28300000000000",
+                "longitude": "150.89754000000000"
+            },
+            "id": "G440",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "133.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Muswellbrook"
+        },
+        {
+            "name": "Rutherford",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "3 Hillview Street",
+                "address2": null,
+                "address3": null,
+                "city": "Rutherford",
+                "zipCode": "2320",
+                "district": "Rutherford",
+                "latitude": "-32.71707000000000",
+                "longitude": "151.52727000000000"
+            },
+            "id": "G429",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "99.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Rutherford"
+        },
+        {
+            "name": "Maitland",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "405 / MM01 High Street",
+                "address2": null,
+                "address3": null,
+                "city": "Maitland",
+                "zipCode": "2320",
+                "district": "Maitland",
+                "latitude": "-32.73391800000000",
+                "longitude": "151.55629200000000"
+            },
+            "id": "G445",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "102.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Maitland"
+        },
+        {
+            "name": "East Maitland",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "18 - 20 Garnett Road",
+                "address2": null,
+                "address3": null,
+                "city": "East Maitland",
+                "zipCode": "2323",
+                "district": "East Maitland",
+                "latitude": "-32.76011000000000",
+                "longitude": "151.58838000000000"
+            },
+            "id": "G425",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "105.9 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "East Maitland"
+        },
+        {
+            "name": "Taree",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "98-106 High Street",
+                "address2": null,
+                "address3": null,
+                "city": "Taree",
+                "zipCode": "2430",
+                "district": "Taree",
+                "latitude": "-31.91104900000000",
+                "longitude": "152.45275200000000"
+            },
+            "id": "G448",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "65.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Taree"
+        },
+        {
+            "name": "Port Macquarie",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "3 Hughes Place",
+                "address2": null,
+                "address3": null,
+                "city": "Port Macquarie",
+                "zipCode": "2444",
+                "district": "Port Macquarie",
+                "latitude": "-31.42715000000000",
+                "longitude": "152.87952000000000"
+            },
+            "id": "G394",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "119.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Port Macquarie"
+        },
+        {
+            "name": "Gunnedah",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "185 Conadilly Street",
+                "address2": null,
+                "address3": null,
+                "city": "Gunnedah",
+                "zipCode": "2380",
+                "district": "Gunnedah",
+                "latitude": "-30.97737000000000",
+                "longitude": "150.25244000000000"
+            },
+            "id": "G415",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "134.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Gunnedah"
+        },
+        {
+            "name": "Tamworth",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "194-196 Peel Street",
+                "address2": null,
+                "address3": null,
+                "city": "Tamworth",
+                "zipCode": "2340",
+                "district": "Tamworth",
+                "latitude": "-31.08508000000000",
+                "longitude": "150.92624000000000"
+            },
+            "id": "G584",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "134.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Tamworth"
+        },
+        {
+            "name": "Kempsey",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "15 - 33 Belgrave Street",
+                "address2": null,
+                "address3": null,
+                "city": "Kempsey",
+                "zipCode": "2440",
+                "district": "Kempsey",
+                "latitude": "-31.07984600000000",
+                "longitude": "152.84007200000000"
+            },
+            "id": "G397",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "107.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Kempsey"
+        },
+        {
+            "name": "Armidale",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "95 Barney Street",
+                "address2": null,
+                "address3": null,
+                "city": "Armidale",
+                "zipCode": "2350",
+                "district": "Armidale",
+                "latitude": "-30.51703400000000",
+                "longitude": "151.66927900000000"
+            },
+            "id": "G159",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "126.6 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Armidale"
+        },
+        {
+            "name": "Toormina",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "52 Minorie Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Toormina",
+                "zipCode": "2452",
+                "district": "Toormina",
+                "latitude": "-30.35471500000000",
+                "longitude": "153.09049600000000"
+            },
+            "id": "G145",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "139.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Toormina"
+        },
+        {
+            "name": "Coffs Harbour",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "253 Pacific Highway",
+                "address2": null,
+                "address3": null,
+                "city": "Coffs Harbour",
+                "zipCode": "2450",
+                "district": "Coffs Harbour",
+                "latitude": "-30.28233000000000",
+                "longitude": "153.13037300000000"
+            },
+            "id": "G118",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "148.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Coffs Harbour"
+        },
+        {
+            "name": "Moonee Beach",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "2B Moonee Beach Road",
+                "address2": null,
+                "address3": null,
+                "city": "Moonee Beach",
+                "zipCode": "2450",
+                "district": "Moonee Beach",
+                "latitude": "-30.20490000000000",
+                "longitude": "153.15088000000000"
+            },
+            "id": "G581",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "144.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Moonee Beach"
+        },
+        {
+            "name": "Grafton",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "163 - 169 Prince Street",
+                "address2": null,
+                "address3": null,
+                "city": "Grafton",
+                "zipCode": "2460",
+                "district": "Grafton",
+                "latitude": "-29.68629000000000",
+                "longitude": "152.93650700000000"
+            },
+            "id": "G113",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "146.2 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Grafton"
+        },
+        {
+            "name": "Casino",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "139 Centre Street",
+                "address2": null,
+                "address3": null,
+                "city": "Casino",
+                "zipCode": "2470",
+                "district": "Casino",
+                "latitude": "-28.86555700000000",
+                "longitude": "153.04586500000000"
+            },
+            "id": "G134",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "136.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Casino"
+        },
+        {
+            "name": "Lismore",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "44 Ballina Road",
+                "address2": null,
+                "address3": null,
+                "city": "Lismore",
+                "zipCode": "2480",
+                "district": "Lismore",
+                "latitude": "-28.81361100000000",
+                "longitude": "153.27936900000000"
+            },
+            "id": "G129",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "134.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Lismore"
+        },
+        {
+            "name": "Goonellabah",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "15 Simeoni Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Goonellabah",
+                "zipCode": "2480",
+                "district": "Goonellabah",
+                "latitude": "-28.82120300000000",
+                "longitude": "153.32672500000000"
+            },
+            "id": "G153",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "134.8 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Goonellabah"
+        },
+        {
+            "name": "Ballina",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "2 North Creek Road",
+                "address2": null,
+                "address3": null,
+                "city": "Ballina",
+                "zipCode": "2478",
+                "district": "Ballina",
+                "latitude": "-28.84995600000000",
+                "longitude": "153.55418700000000"
+            },
+            "id": "G115",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "138.7 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Ballina"
+        },
+        {
+            "name": "Byron Bay",
+            "alcoholAvailability": [],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "1 Byron Street",
+                "address2": null,
+                "address3": null,
+                "city": "Byron Bay",
+                "zipCode": "2481",
+                "district": "Byron Bay",
+                "latitude": "-28.64333700000000",
+                "longitude": "153.61290300000000"
+            },
+            "id": "G140",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "112.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Byron Bay"
+        },
+        {
+            "name": "Tweed Heads South",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "9 - 11 Machinery Drive",
+                "address2": null,
+                "address3": null,
+                "city": "Tweed Heads South",
+                "zipCode": "2486",
+                "district": "Tweed Heads South",
+                "latitude": "-28.20290900000000",
+                "longitude": "153.54079700000000"
+            },
+            "id": "G105",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "144.3 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Tweed Heads South"
+        },
+        {
+            "name": "Tweed Heads",
+            "alcoholAvailability": [
+                "Beer",
+                "Wine"
+            ],
+            "publicPhoneNumber": null,
+            "facilities": [],
+            "address": {
+                "countryName": "Australia",
+                "countryIsoCode": "AU",
+                "regionName": "New South Wales",
+                "regionIsoCode": "NSW",
+                "address1": "16 - 32 Wharf Street",
+                "address2": null,
+                "address3": null,
+                "city": "Tweed Heads",
+                "zipCode": "2485",
+                "district": "Tweed Heads",
+                "latitude": "-28.17111300000000",
+                "longitude": "153.54425300000000"
+            },
+            "id": "G114",
+            "availableCustomerServiceTypes": [
+                "pickup",
+                "walk-in"
+            ],
+            "distance": "106.4 km",
+            "geofencing": {
+                "enabled": false,
+                "geofences": {
+                    "inner": 5,
+                    "outer": 10
+                }
+            },
+            "isOpenNow": false,
+            "store_name": "Tweed Heads"
+        }
+    ]
+}

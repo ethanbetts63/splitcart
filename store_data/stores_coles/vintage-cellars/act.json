@@ -1,0 +1,31 @@
+{
+    "metadata": {
+        "number_of_stores": 1,
+        "company": "coles",
+        "state": "ACT",
+        "date_scraped": "2025-08-07"
+    },
+    "stores": [
+        {
+            "id": "VIN:3593",
+            "name": "Vintage Cellars Manuka",
+            "phone": "(02) 5135 9512",
+            "isTrading": true,
+            "address": {
+                "state": "ACT",
+                "suburb": "Manuka",
+                "addressLine": "25 Bougainville Street",
+                "postcode": "2603"
+            },
+            "position": {
+                "latitude": -35.320182,
+                "longitude": 149.131653
+            },
+            "brand": {
+                "name": "Vintage Cellars",
+                "storeFinderId": 5,
+                "id": "VIN"
+            }
+        }
+    ]
+}

@@ -1,0 +1,283 @@
+{
+    "metadata": {
+        "number_of_stores": 13,
+        "company": "coles",
+        "state": "ACT",
+        "date_scraped": "2025-08-07"
+    },
+    "stores": [
+        {
+            "id": "COL:858",
+            "name": "Coles Chisholm",
+            "phone": "(02) 6298 5100",
+            "isTrading": true,
+            "address": {
+                "state": "ACT",
+                "suburb": "Chisholm",
+                "addressLine": "42 Halley St",
+                "postcode": "2905"
+            },
+            "position": {
+                "latitude": -35.413758,
+                "longitude": 149.128133
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:911",
+            "name": "Coles Tuggeranong",
+            "phone": "(02) 6293 2355",
+            "isTrading": true,
+            "address": {
+                "state": "ACT",
+                "suburb": "Tuggeranong",
+                "addressLine": "Pitman St & Ankertell St",
+                "postcode": "2900"
+            },
+            "position": {
+                "latitude": -35.417174,
+                "longitude": 149.067212
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:4786",
+            "name": "Coles Wanniassa",
+            "phone": "(02) 6284 0400",
+            "isTrading": true,
+            "address": {
+                "state": "ACT",
+                "suburb": "Wanniassa",
+                "addressLine": "12 Sangster Pl",
+                "postcode": "2903"
+            },
+            "position": {
+                "latitude": -35.391072,
+                "longitude": 149.086145
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:848",
+            "name": "Coles Woden",
+            "phone": "(02) 6232 5569",
+            "isTrading": true,
+            "address": {
+                "state": "ACT",
+                "suburb": "Phillip",
+                "addressLine": "Cnr Melrose & Hindmarsh Drives",
+                "postcode": "2606"
+            },
+            "position": {
+                "latitude": -35.346777,
+                "longitude": 149.085588
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:859",
+            "name": "Coles Manuka",
+            "phone": "(02) 6126 9600",
+            "isTrading": true,
+            "address": {
+                "state": "ACT",
+                "suburb": "Griffith",
+                "addressLine": "Franklin Street & Flinders Way",
+                "postcode": "2603"
+            },
+            "position": {
+                "latitude": -35.320835,
+                "longitude": 149.134113
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:735",
+            "name": "Coles Curtin",
+            "phone": "(02) 6122 9600",
+            "isTrading": true,
+            "address": {
+                "state": "ACT",
+                "suburb": "Curtin",
+                "addressLine": "51 Curtin Place",
+                "postcode": "2605"
+            },
+            "position": {
+                "latitude": -35.325584,
+                "longitude": 149.082414
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:4787",
+            "name": "Coles Canberra Civic",
+            "phone": "(02) 6276 2100",
+            "isTrading": true,
+            "address": {
+                "state": "ACT",
+                "suburb": "Canberra City",
+                "addressLine": "Bunda St & Petrie St",
+                "postcode": "2601"
+            },
+            "position": {
+                "latitude": -35.278028,
+                "longitude": 149.134255
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:4814",
+            "name": "Coles Dickson",
+            "phone": "(02) 5122 5400",
+            "isTrading": true,
+            "address": {
+                "state": "ACT",
+                "suburb": "Dickson",
+                "addressLine": "36 Badham Street",
+                "postcode": "2602"
+            },
+            "position": {
+                "latitude": -35.249174,
+                "longitude": 149.138702
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:748",
+            "name": "Coles Jamison",
+            "phone": "(02) 6256 2200",
+            "isTrading": true,
+            "address": {
+                "state": "ACT",
+                "suburb": "Macquarie",
+                "addressLine": "Bowman St",
+                "postcode": "2614"
+            },
+            "position": {
+                "latitude": -35.253158,
+                "longitude": 149.070363
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:779",
+            "name": "Coles Belconnen",
+            "phone": "(02) 6256 1300",
+            "isTrading": true,
+            "address": {
+                "state": "ACT",
+                "suburb": "Belconnen",
+                "addressLine": "Benjamin Way",
+                "postcode": "2617"
+            },
+            "position": {
+                "latitude": -35.23788,
+                "longitude": 149.064734
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:4785",
+            "name": "Coles Kaleen",
+            "phone": "(02) 6204 8700",
+            "isTrading": true,
+            "address": {
+                "state": "ACT",
+                "suburb": "Kaleen Plaza",
+                "addressLine": "1 Maribyrnong Ave",
+                "postcode": "2617"
+            },
+            "position": {
+                "latitude": -35.220297,
+                "longitude": 149.10311
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:803",
+            "name": "Coles Gungahlin",
+            "phone": "(02) 6123 4500",
+            "isTrading": true,
+            "address": {
+                "state": "ACT",
+                "suburb": "Gungahlin",
+                "addressLine": "Hibberson St & Gungahlin Place",
+                "postcode": "2912"
+            },
+            "position": {
+                "latitude": -35.186052,
+                "longitude": 149.135792
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        },
+        {
+            "id": "COL:5784",
+            "name": "Coles Amaroo",
+            "phone": "(02) 6223 0500",
+            "isTrading": true,
+            "address": {
+                "state": "ACT",
+                "suburb": "Amaroo",
+                "addressLine": "Horse Park Dr",
+                "postcode": "2914"
+            },
+            "position": {
+                "latitude": -35.164593,
+                "longitude": 149.131995
+            },
+            "brand": {
+                "name": "Coles Supermarkets",
+                "storeFinderId": 2,
+                "id": "COL"
+            }
+        }
+    ]
+}
