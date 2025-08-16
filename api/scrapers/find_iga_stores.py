@@ -42,6 +42,8 @@ def find_iga_stores():
                     html_content = data.get('content', '')
                     new_stores = parse_and_clean_stores(html_content)
 
+                    
+
                     for store in new_stores:
                         cleaned_data = clean_raw_store_data_iga(store, "iga", datetime.now())
                         store_id = cleaned_data['store_data']['store_id']

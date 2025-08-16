@@ -10,7 +10,7 @@ def clean_raw_store_data_iga(raw_store_data: dict, company: str, timestamp: date
     cleaned_data = {
         "name": raw_store_data.get('storeName'),
         "store_id": store_id,
-        "retailer_store_id": raw_store_data.get('retailerStoreId'),
+        "retailer_store_id": raw_store_data.get('tag'),
         "is_active": True,  # Assuming all discovered stores are active
         "division": None,  # IGA doesn't seem to have divisions in the same way as Coles/Woolies
         "email": raw_store_data.get('email'),
