@@ -19,10 +19,16 @@ class Command(BaseCommand):
             type=str,
             help='The name of the company to generate the report for (required for some reports).'
         )
+        parser.add_argument(
+            '--state',
+            type=str,
+            help='The state to generate the report for (optional, for store-level reports).'
+        )
 
     def handle(self, *args, **options):
         report_type = options['report']
         company_name = options['company_name']
+        state = options['state']
 
         if report_type == 'store_product_counts':
             if not company_name:
@@ -41,7 +47,7 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.ERROR(
                     'The --company-name argument is required for the store_heatmap report.'))
                 return
-            generate_store_product_overlap_heatmap(company_name)
+            generate_store_product_overlap_heatmap(company_name, state)
 
         else:
             self.stdout.write(self.style.WARNING(

@@ -14,6 +14,11 @@ class SaveProgressTest(TestCase):
         mock_open_file.assert_called_once_with(file_path, 'w')
         
         # Check the written content
-        written_data = "".join(c.args[0] for c in mock_open_file().write.call_args_list)
-        expected_data = {"remaining_ids": sorted(list(remaining_ids))} # json.dump sorts lists
-        self.assertEqual(written_data, json.dumps(expected_data, indent=4))
+        written_data_str = "".join(c.args[0] for c in mock_open_file().write.call_args_list)
+        written_data_dict = json.loads(written_data_str)
+        
+        # Sort the list from the written data for consistent comparison
+        written_data_dict['remaining_ids'].sort()
+
+        expected_data = {"remaining_ids": sorted(list(remaining_ids))}
+        self.assertEqual(written_data_dict, expected_data)

@@ -3,7 +3,7 @@ from api.utils.analysis_utils.product_overlap.calculate_overlap_matrices import 
 from api.utils.analysis_utils.product_overlap.generate_heatmap_image import generate_heatmap_image
 from companies.models import Company
 
-def generate_store_product_overlap_heatmap(company_name):
+def generate_store_product_overlap_heatmap(company_name, state=None):
     """
     Analyzes the product overlap between stores of a specific company and generates a co-occurrence matrix (heatmap).
     """
@@ -13,10 +13,13 @@ def generate_store_product_overlap_heatmap(company_name):
         print(f"Company with name '{company_name}' not found.")
         return
 
-    print(f"--- Generating Store Product Overlap Heatmap for {company.name} ---")
+    if state:
+        print(f"--- Generating Store Product Overlap Heatmap for {company.name} in {state} ---")
+    else:
+        print(f"--- Generating Store Product Overlap Heatmap for {company.name} ---")
 
     # 1. Get product sets for all stores in the company
-    store_products = get_product_sets_by_entity(entity_type='store', company_name=company.name)
+    store_products = get_product_sets_by_entity(entity_type='store', company_name=company.name, state=state)
 
     if not store_products:
         print(f"No stores with products found for {company.name}.")
@@ -26,6 +29,6 @@ def generate_store_product_overlap_heatmap(company_name):
     overlap_matrix, percent_of_row_matrix, percent_of_col_matrix, average_percentage_matrix = calculate_overlap_matrices(store_products)
 
     # 3. Generate and save the heatmap image
-    generate_heatmap_image(overlap_matrix, percent_of_row_matrix, percent_of_col_matrix, average_percentage_matrix, entity_type='store', company_name=company.name)
+    generate_heatmap_image(overlap_matrix, percent_of_row_matrix, percent_of_col_matrix, average_percentage_matrix, entity_type='store', company_name=company.name, state=state)
 
     print("--- Finished ---")
