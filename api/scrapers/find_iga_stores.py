@@ -10,7 +10,7 @@ from api.utils.shop_scraping_utils.iga.print_progress import print_progress
 from api.utils.shop_scraping_utils.iga.save_progress import save_progress
 
 # --- CONFIGURATION ---
-PROGRESS_FILE = r'C:\Users\ethan\coding\splitcart\api\data\store_data\stores_iga\iga_stores_progress.json'
+PROGRESS_FILE = r'C:\Users\ethan\coding\splitcart\api\data\archive\store_data\iga_stores_progress.json'
 MAX_STORE_ID = 23001
 DISCOVERED_STORES_DIR = r'C:\Users\ethan\coding\splitcart\api\data\discovered_stores'
 
@@ -23,10 +23,10 @@ def find_iga_stores():
     try:
         for store_id_num in range(start_id, MAX_STORE_ID + 1):
             if is_in_excluded_range(store_id_num):
-                print_progress(store_id_num, MAX_STORE_ID, 0, f"Skipping ID {store_id_num} (excluded).")
+                print_progress(store_id_num, MAX_STORE_ID, found_stores_count, f"Skipping ID {store_id_num} (excluded).")
                 continue
 
-            print_progress(store_id_num, MAX_STORE_ID, 0, f"Checking ID: {store_id_num}...")
+            print_progress(store_id_num, MAX_STORE_ID, found_stores_count, f"Checking ID: {store_id_num}...")
             url = f"https://embed.salefinder.com.au/location/storelocator/183/?format=json&saleGroup=0&limit=1500&locationId={store_id_num}"
             
             try:
