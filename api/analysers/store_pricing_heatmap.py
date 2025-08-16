@@ -37,6 +37,6 @@ def generate_store_pricing_heatmap(company_name, state=None):
     overlap_matrix, percent_of_row_matrix, percent_of_col_matrix, average_percentage_matrix = calculate_pricing_overlap_matrix(store_product_prices)
 
     # 4. Generate and save the heatmap image
-    generate_heatmap_image(overlap_matrix, percent_of_row_matrix, percent_of_col_matrix, average_percentage_matrix, entity_type='store', company_name=company.name, state=state)
+    generate_pricing_heatmap_image(overlap_matrix, percent_of_row_matrix, percent_of_col_matrix, average_percentage_matrix, entity_type='store', company_name=company.name, state=state)
 
     print("--- Finished ---")

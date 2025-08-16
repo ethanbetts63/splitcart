@@ -30,9 +30,9 @@ def generate_pricing_heatmap_image(overlap_matrix, percent_of_row_matrix, percen
         percent_col = percent_of_col_matrix.loc[entity1, entity2]
 
         if entity1 == entity2:
-            return f"Total Products: {raw_count}\n100%"
+            return f"{average_percentage_matrix.loc[entity1, entity2]:.1f}%"
         else:
-            return f"Identical Prices: {raw_count}\n% of {entity1}: {percent_row:.1f}%\n% of {entity2}: {percent_col:.1f}%"
+            return f"{average_percentage_matrix.loc[entity1, entity2]:.1f}%"
 
     # Create a custom annotation array
     annot_array = overlap_matrix.copy().astype(str)

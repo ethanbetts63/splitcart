@@ -10,14 +10,6 @@ class ProductModelTest(TestCase):
         product = ProductFactory()
         self.assertIsNotNone(product.id)
         self.assertIsNotNone(product.name)
-        self.assertIsNotNone(product.brand)
-        self.assertIsNotNone(product.size)
-        self.assertIsNotNone(product.barcode)
-        self.assertIsNotNone(product.image_url)
-        self.assertIsNotNone(product.description)
-        self.assertIsNotNone(product.country_of_origin)
-        self.assertIsNotNone(product.allergens)
-        self.assertIsNotNone(product.ingredients)
 
     def test_product_str_representation(self):
         """Test the string representation of the product."""

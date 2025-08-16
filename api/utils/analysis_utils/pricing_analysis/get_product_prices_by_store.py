@@ -2,6 +2,7 @@
 from collections import defaultdict
 from products.models import Product, Price
 from companies.models import Company, Store
+from django.db.models import OuterRef, Subquery
 
 def get_product_prices_by_store(company_name=None, state=None):
     """
@@ -35,7 +36,15 @@ def get_product_prices_by_store(company_name=None, state=None):
     store_map = {store.id: store.name for store in stores}
     
     # Get the most recent price for each product in each store
-    prices = Price.objects.filter(store__in=stores).order_by('product', '-scraped_at').distinct('product', 'store')
+    latest_prices_subquery = Price.objects.filter(
+        product=OuterRef('product'),
+        store=OuterRef('store')
+    ).order_by('-scraped_at').values('id')[:1]
+
+    prices = Price.objects.filter(
+        store__in=stores,
+        id=Subquery(latest_prices_subquery)
+    )
 
     for price in prices:
         if price.store.id in store_map:
