@@ -1,0 +1,44 @@
+# Optimized Scraping Strategy
+
+## 1. Goal
+
+To move from a brute-force scraping model (scraping everything from every store) to a targeted, data-driven model. The aim is to significantly reduce redundant scraping while maintaining and even improving data quality by identifying and leveraging patterns in product ranges and pricing.
+
+## 2. Core Idea
+
+The central concept is to use price correlation and product overlap analysis at both the store and category levels to group similar stores. Instead of treating every store as an independent entity, we can identify "price-twins" and "category-twins" and use this information to make our scraping efforts much more efficient.
+
+## 3. The Strategy
+
+### Step 1: Initial Full Scrape & Baseline Analysis
+
+*   **Action:** Perform a complete, deep scrape of all products from all stores for all companies.
+*   **Purpose:** To establish a comprehensive baseline dataset that can be used for the initial correlation analysis.
+
+### Step 2: Grouping and Clustering
+
+*   **Initial Grouping:** Group stores by Company, State, and Division/Brand. This creates a set of logical, high-level groups to work with.
+*   **Category-Level Price Correlation Analysis:** Within each of these groups, perform a price correlation analysis for each category between all pairs of stores. This will create a "correlation profile" for each store pair, showing how their pricing for different categories compares.
+*   **Identify Clusters:** Based on the correlation profiles, identify clusters of stores that have highly correlated pricing for specific categories (e.g., a correlation coefficient > 0.95).
+
+### Step 3: Designate "Lead" Stores and Categories
+
+*   **Action:** For each category-specific cluster, designate one store as the "lead" store for that category.
+*   **Purpose:** The "lead" store will be the one that we scrape most thoroughly, and its data will be used as the benchmark for the other stores in the cluster.
+
+### Step 4: Implement Hyper-Optimized Scraping
+
+*   **Full Scrapes:** Only perform full, deep scrapes on the "lead" store for its designated category.
+*   **Spot Checks:** For the other stores in a category cluster, perform regular, lightweight "spot checks." This could involve scraping a small, representative sample of "canary" products (products whose prices are known to change frequently) to ensure they are still in line with the lead store.
+*   **Triggered Full Scrapes:** If a spot check reveals a significant deviation in pricing, automatically trigger a full scrape for that store and category to get the most up-to-date data.
+
+### Step 5: Regular Re-evaluation
+
+*   **Action:** Periodically (e.g., monthly or quarterly), re-run the full correlation analysis on all stores.
+*   **Purpose:** To adapt to any changes in pricing strategies and to ensure that the store/category clusters remain valid over time.
+
+## 4. Benefits
+
+*   **Massive Efficiency Gains:** Drastically reduces the number of products that need to be scraped on a regular basis, saving time, bandwidth, and computational resources.
+*   **Dynamic and Responsive:** The spot-check and trigger system ensures that the data remains accurate and up-to-date, even if stores change their pricing strategies.
+*   **Deeper Insights:** The correlation analysis itself becomes a valuable source of data, revealing the underlying pricing strategies of different companies and stores.

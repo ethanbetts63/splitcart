@@ -37,7 +37,7 @@ class PriceModelTest(TestCase):
 
     def test_nullable_fields(self):
         """Test that fields that can be null are correctly handled."""
-        price = PriceFactory(was_price=None, unit_price=None, unit_of_measure=None, url=None)
+        price = PriceFactory(was_price=None, unit_price=None, unit_of_measure=None)
         self.assertIsNone(price.was_price)
         self.assertIsNone(price.unit_price)
         self.assertIsNone(price.unit_of_measure)

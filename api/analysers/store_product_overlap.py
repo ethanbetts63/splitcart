@@ -21,8 +21,15 @@ def generate_store_product_overlap_heatmap(company_name, state=None):
     # 1. Get product sets for all stores in the company
     store_products = get_product_sets_by_entity(entity_type='store', company_name=company.name, state=state)
 
+    # Filter out stores with less than 100 products
+    original_store_count = len(store_products)
+    store_products = {store: products for store, products in store_products.items() if len(products) >= 100}
+    filtered_store_count = original_store_count - len(store_products)
+    if filtered_store_count > 0:
+        print(f"    Filtered out {filtered_store_count} stores with fewer than 100 products.")
+
     if not store_products:
-        print(f"No stores with products found for {company.name}.")
+        print(f"No stores with 100 or more products found for {company.name}.")
         return
 
     # 2. Calculate overlap matrices
