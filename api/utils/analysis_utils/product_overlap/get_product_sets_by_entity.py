@@ -34,10 +34,10 @@ def get_product_sets_by_entity(entity_type='company', company_name=None):
             return {}
 
         print(f"    Fetching all products for stores in company {company_name}...")
-        stores = Store.objects.filter(company=company)
+        stores = Store.objects.filter(company=company).exclude(name__iexact='N/A')
         store_map = {store.id: store.name for store in stores}
         
-        queryset = Product.objects.prefetch_related('prices__store').filter(prices__store__company=company)
+        queryset = Product.objects.prefetch_related('prices__store').filter(prices__store__company=company, prices__store__in=stores)
         
         for product in queryset.iterator(chunk_size=500):
             product_stores = {price.store.id for price in product.prices.all() if price.store.id in store_map}

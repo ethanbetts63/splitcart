@@ -4,6 +4,7 @@ import time
 import random
 import os
 from datetime import datetime
+from django.utils.text import slugify
 from api.utils.scraper_utils.clean_raw_data_aldi import clean_raw_data_aldi
 from api.utils.scraper_utils.checkpoint_utils.read_checkpoint import read_checkpoint
 from api.utils.scraper_utils.checkpoint_utils.update_page_progress import update_page_progress
@@ -15,7 +16,7 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, stat
     """
     Launches a requests-based scraper for a specific ALDI store with checkpointing.
     """
-    store_name_slug = f"{store_name.lower().replace(' ', '-')}-{store_id}"
+    store_name_slug = f"{slugify(store_name)}-{store_id}"
     print(f"--- Initializing ALDI Scraper for {company} ({store_name_slug}) ---")
 
     session = requests.Session()

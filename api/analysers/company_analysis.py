@@ -4,6 +4,7 @@ from django.conf import settings
 import matplotlib.pyplot as plt
 import seaborn as sns
 from django.db.models import Count
+from django.utils.text import slugify
 from companies.models import Company, Store
 
 def generate_store_product_counts_chart(company_name: str):

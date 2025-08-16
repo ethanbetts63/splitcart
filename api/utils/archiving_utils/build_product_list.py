@@ -63,7 +63,7 @@ def build_product_list(store):
                     'is_on_special': price.is_on_special,
                     'is_available': price.is_available,
                     'scraped_at': price.scraped_at.isoformat(),
-                    'url': price.url
+                    'url': product.url
                 }
                 cleaned_price_data = {k: v for k, v in price_data.items() if v is not None}
                 price_history.append(cleaned_price_data)
