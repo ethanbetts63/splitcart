@@ -12,6 +12,7 @@ class ProductFactory(DjangoModelFactory):
     size = factory.Faker('word')
     barcode = factory.Faker('ean')
     image_url = factory.Faker('image_url')
+    url = factory.Faker('url')
     description = factory.Faker('text')
     country_of_origin = factory.Faker('country')
     allergens = factory.Faker('text')
@@ -32,4 +33,3 @@ class PriceFactory(DjangoModelFactory):
     is_on_special = factory.Faker('boolean')
     is_available = factory.Faker('boolean')
     is_active = True
-    url = factory.Faker('url')
