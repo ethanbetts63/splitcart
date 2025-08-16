@@ -19,16 +19,10 @@ class Command(BaseCommand):
             type=str,
             help='The name of the company to generate the report for (required for some reports).'
         )
-        parser.add_argument(
-            '--company-id',
-            type=int,
-            help='The ID of the company to generate the report for (required for some reports).'
-        )
 
     def handle(self, *args, **options):
         report_type = options['report']
         company_name = options['company_name']
-        company_id = options['company_id']
 
         if report_type == 'store_product_counts':
             if not company_name:
@@ -43,11 +37,11 @@ class Command(BaseCommand):
             generate_company_product_overlap_heatmap()
 
         elif report_type == 'store_heatmap':
-            if not company_id:
+            if not company_name:
                 self.stdout.write(self.style.ERROR(
-                    'The --company-id argument is required for the store_heatmap report.'))
+                    'The --company-name argument is required for the store_heatmap report.'))
                 return
-            generate_store_product_overlap_heatmap(company_id)
+            generate_store_product_overlap_heatmap(company_name)
 
         else:
             self.stdout.write(self.style.WARNING(

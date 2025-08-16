@@ -3,20 +3,20 @@ from api.utils.analysis_utils.product_overlap.calculate_overlap_matrices import 
 from api.utils.analysis_utils.product_overlap.generate_heatmap_image import generate_heatmap_image
 from companies.models import Company
 
-def generate_store_product_overlap_heatmap(company_id):
+def generate_store_product_overlap_heatmap(company_name):
     """
     Analyzes the product overlap between stores of a specific company and generates a co-occurrence matrix (heatmap).
     """
     try:
-        company = Company.objects.get(id=company_id)
+        company = Company.objects.get(name__iexact=company_name)
     except Company.DoesNotExist:
-        print(f"Company with id {company_id} not found.")
+        print(f"Company with name '{company_name}' not found.")
         return
 
     print(f"--- Generating Store Product Overlap Heatmap for {company.name} ---")
 
     # 1. Get product sets for all stores in the company
-    store_products = get_product_sets_by_entity(entity_type='store', company_id=company_id)
+    store_products = get_product_sets_by_entity(entity_type='store', company_name=company.name)
 
     if not store_products:
         print(f"No stores with products found for {company.name}.")
