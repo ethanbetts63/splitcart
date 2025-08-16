@@ -20,8 +20,7 @@ class Command(BaseCommand):
                 self.stdout.write(f'- {company.name} (ID: {company.id})')
 
         if company_name:
-            self.stdout.write(self.style.SUCCESS(f'
---- Debugging company: {company_name} ---'))
+            self.stdout.write(self.style.SUCCESS(f'\n--- Debugging company: {company_name} ---'))
             try:
                 company = Company.objects.get(name__iexact=company_name)
                 self.stdout.write(self.style.SUCCESS(f'Company "{company.name}" found.'))

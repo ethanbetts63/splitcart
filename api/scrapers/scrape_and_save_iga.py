@@ -4,6 +4,7 @@ import time
 import random
 import os
 from datetime import datetime
+from django.utils.text import slugify
 from api.utils.scraper_utils.clean_raw_data_iga import clean_raw_data_iga
 from api.utils.scraper_utils.get_iga_categories import get_iga_categories
 from api.utils.scraper_utils.checkpoint_utils.read_checkpoint import read_checkpoint
@@ -60,7 +61,7 @@ def scrape_and_save_iga_data(company: str, store_id: str, retailer_store_id: str
     for category_data in categories_to_fetch:
         category_name = category_data['displayName']
         category_identifier = category_data['identifier']
-        category_slug = category_name.lower().replace(' & ', '-').replace(' ', '-').replace(',', '')
+        category_slug = slugify(category_name)
         if category_slug in completed_categories:
             print(f"  Skipping already completed category: '{category_name}'")
             continue

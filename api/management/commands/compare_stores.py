@@ -1,6 +1,7 @@
 import os
 import json
 from django.core.management.base import BaseCommand
+from django.utils.text import slugify
 from datetime import datetime
 
 class Command(BaseCommand):
@@ -116,7 +117,7 @@ class Command(BaseCommand):
 
     def _find_latest_date_dir(self, base_path, company_name, store_name):
         """Finds the most recent date-stamped subdirectory for a given store."""
-        clean_store_name = store_name.lower().replace(company_name, '').strip().replace(' ', '-')
+        clean_store_name = slugify(store_name.lower().replace(company_name, '').strip())
         store_dir_path = os.path.join(base_path, clean_store_name)
 
         if not os.path.isdir(store_dir_path):

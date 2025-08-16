@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.utils import timezone
+from django.utils.text import slugify
 from api.scrapers.scrape_and_save_iga import scrape_and_save_iga_data
-from api.utils.management_utils.create_store_slug_iga import create_store_slug_iga
 from api.utils.management_utils.get_company_by_name import get_company_by_name
 from api.utils.management_utils.get_active_stores_for_company import get_active_stores_for_company
 
@@ -23,7 +23,7 @@ def run_iga_scraper(batch_size, raw_data_path):
 
     for store in stores_to_scrape:
         print(f"\n--- Handing off to scraper for store: {store.name} ---")
-        store_name_slug = create_store_slug_iga(store.name)
+        store_name_slug = slugify(store.name.lower().replace('iga', '').replace('fresh', ''))
         success = scrape_and_save_iga_data(
             company=iga_company.name,
             store_id=store.store_id,

@@ -5,6 +5,7 @@ from datetime import datetime
 import math
 import requests
 from bs4 import BeautifulSoup
+from django.utils.text import slugify
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
@@ -25,7 +26,7 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
     # The store_id from the database might be in the format 'COL:1234'.
     # We need to extract the numeric part for the fulfillment cookie and other uses.
     store_id = store_id.split(':')[-1] if store_id and ':' in store_id else store_id
-    store_name_slug = f"{store_name.lower().replace(' ', '-')}-{store_id}"
+    store_name_slug = f"{slugify(store_name)}-{store_id}"
     print(f"--- Initializing Hybrid Coles Scraper for store: {store_name} ({store_name_slug}) ---")
 
     # --- Load Progress from Checkpoint Manager ---

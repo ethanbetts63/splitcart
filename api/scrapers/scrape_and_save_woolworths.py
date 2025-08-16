@@ -4,6 +4,7 @@ import time
 import random
 import os
 from datetime import datetime
+from django.utils.text import slugify
 from api.utils.scraper_utils.clean_raw_data_woolworths import clean_raw_data_woolworths
 from api.utils.scraper_utils.checkpoint_utils.read_checkpoint import read_checkpoint
 from api.utils.scraper_utils.checkpoint_utils.update_page_progress import update_page_progress
@@ -25,7 +26,7 @@ def scrape_and_save_woolworths_data(company: str, state: str, stores: list, cate
         # --- Checkpoint Initialization ---
         progress = read_checkpoint(company)
         
-        store_name_slug = f"{store_name.lower().replace(' ', '-')}-{store_id}"
+        store_name_slug = f"{slugify(store_name)}-{store_id}"
 
         # Check if we are starting a new store or resuming an old one
         start_scraping_fresh = not progress.get("current_store") or progress.get("current_store") != store_name_slug
@@ -103,7 +104,7 @@ def scrape_and_save_woolworths_data(company: str, state: str, stores: list, cate
                     )
                     print(f"Found and cleaned {len(data_packet['products'])} products on page {page_num}.")
 
-                    file_name = f"{company.lower()}_{store_name.lower()}_{category_slug}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
+                    file_name = f"{slugify(company)}_{slugify(store_name)}_{category_slug}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
                     file_path = os.path.join(save_path, file_name)
                     
                     with open(file_path, 'w', encoding='utf-8') as f:

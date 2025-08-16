@@ -54,7 +54,7 @@ def generate_store_product_counts_chart(company_name: str):
     os.makedirs(heatmap_output_dir, exist_ok=True)
 
     # Save the plot
-    output_filename = f"{company.name.lower().replace(' ', '_')}_store_product_counts.png"
+    output_filename = f"{slugify(company.name)}_store_product_counts.png"
     output_path = os.path.join(heatmap_output_dir, output_filename)
     plt.savefig(output_path)
     print(f"Chart saved as '{output_path}'")
