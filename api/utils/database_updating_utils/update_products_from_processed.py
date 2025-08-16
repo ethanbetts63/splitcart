@@ -101,7 +101,6 @@ def update_products_from_processed(command):
         
         with open(failed_file_path, 'w', encoding='utf-8') as f:
             json.dump(failed_products_data, f, indent=4)
-        command.stdout.write(command.style.SQL_FIELD(f'
-Saved failed products to: {failed_file_path}'))
+        command.stdout.write(command.style.SQL_FIELD(f'Saved failed products to: {failed_file_path}'))
 
     command.stdout.write(command.style.SUCCESS("\n--- Product update from processed data complete ---"))
