@@ -1,6 +1,7 @@
 
 from django.core.management.base import BaseCommand
 from api.utils.analysis_utils.company_analysis import generate_store_product_counts_chart
+from api.utils.analysis_utils.product_analysis import generate_product_overlap_heatmap
 
 class Command(BaseCommand):
     help = 'Generates various reports and visualizations from product data.'
@@ -11,8 +12,7 @@ class Command(BaseCommand):
             type=str,
             required=True,
             help='Specifies which type of analysis or report to generate.',
-            # Add more choices here as more reports are built
-            choices=['store_product_counts']
+            choices=['store_product_counts', 'overlap_heatmap']
         )
         parser.add_argument(
             '--company',
@@ -32,6 +32,10 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(
                 f"Generating store product counts chart for '{company_name}'..."))
             generate_store_product_counts_chart(company_name)
+        
+        elif report_type == 'overlap_heatmap':
+            generate_product_overlap_heatmap()
+
         else:
             self.stdout.write(self.style.WARNING(
                 f"Report type '{report_type}' is not yet implemented."))
