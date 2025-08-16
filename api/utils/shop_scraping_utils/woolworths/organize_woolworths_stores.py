@@ -12,7 +12,7 @@ def slugify(text):
     text = text.lower()
     text = re.sub(r'[^\w\s-]', '', text)  # Remove non-alphanumeric characters
     text = re.sub(r'[\s_]+', '-', text)   # Replace spaces/underscores with hyphens
-    return text
+    return text.strip('-')
 
 def organize_woolworths_stores():
     """Reads the raw stores file and organizes stores into brand/state specific files with metadata."""

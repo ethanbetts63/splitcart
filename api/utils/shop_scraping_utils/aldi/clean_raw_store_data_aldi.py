@@ -10,7 +10,7 @@ def clean_raw_store_data_aldi(raw_store_data: dict, company: str, timestamp: dat
     address_data = raw_store_data.get('address', {})
 
     cleaned_data = {
-        "name": raw_store_data.get('name'),
+        "store_name": store_id,
         "store_id": store_id,
         "retailer_store_id": None,
         "is_active": True,

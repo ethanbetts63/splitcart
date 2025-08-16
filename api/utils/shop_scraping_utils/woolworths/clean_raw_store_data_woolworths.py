@@ -8,7 +8,7 @@ def clean_raw_store_data_woolworths(raw_store_data: dict, company: str, timestam
     store_id = raw_store_data.get('StoreNo')
     
     cleaned_data = {
-        "name": raw_store_data.get('Name'),
+        "store_name": raw_store_data.get('Name'),
         "store_id": store_id,
         "retailer_store_id": None,
         "is_active": True,  # Assuming all discovered stores are active

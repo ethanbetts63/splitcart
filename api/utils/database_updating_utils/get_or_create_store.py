@@ -15,7 +15,7 @@ def get_or_create_store(company_obj: Company, division_obj: Division, store_id: 
         A tuple containing the Store object and a boolean indicating if it was created.
     """
     defaults = {
-        'name': store_data.get('name', 'N/A'),
+        'name': store_data.get('store_name', 'N/A'),
         'division': division_obj,
         'phone_number': store_data.get('phone_number', ''),
         'address_line_1': store_data.get('address_line_1', ''),

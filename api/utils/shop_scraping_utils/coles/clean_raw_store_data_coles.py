@@ -12,7 +12,7 @@ def clean_raw_store_data_coles(raw_store_data: dict, company: str, timestamp: da
     brand = raw_store_data.get('brand', {})
 
     cleaned_data = {
-        "name": raw_store_data.get('name'),
+        "store_name": raw_store_data.get('name'),
         "store_id": store_id,
         "retailer_store_id": None,
         "is_active": True,  # Assuming all discovered stores are active

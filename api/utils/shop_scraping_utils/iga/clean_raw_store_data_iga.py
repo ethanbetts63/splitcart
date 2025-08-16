@@ -8,7 +8,7 @@ def clean_raw_store_data_iga(raw_store_data: dict, company: str, timestamp: date
     store_id = raw_store_data.get('storeId')
     
     cleaned_data = {
-        "name": raw_store_data.get('storeName'),
+        "store_name": raw_store_data.get('storeName'),
         "store_id": store_id,
         "retailer_store_id": raw_store_data.get('tag'),
         "is_active": True,  # Assuming all discovered stores are active
