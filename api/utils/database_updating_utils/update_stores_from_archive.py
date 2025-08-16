@@ -3,7 +3,7 @@ from django.conf import settings
 from api.utils.database_updating_utils.update_stores_from_archive_file import update_stores_from_archive_file
 
 def update_stores_from_archive(command):
-    command.stdout.write(command.style.SUCCESS("--- Starting Store Update from Archive ---"))
+    command.stdout.write(command.style.SQL_FIELD("--- Starting Store Update from Archive ---"))
     archive_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'archive', 'company_data')
 
     if not os.path.exists(archive_path):
@@ -15,7 +15,7 @@ def update_stores_from_archive(command):
             continue
 
         file_path = os.path.join(archive_path, filename)
-        command.stdout.write(f"Processing file: {filename}...")
+        command.stdout.write(command.style.SQL_FIELD(f"Processing file: {filename}..."))
         
         company_name, stores_processed = update_stores_from_archive_file(file_path)
         
@@ -24,4 +24,4 @@ def update_stores_from_archive(command):
         else:
             command.stderr.write(command.style.ERROR(f"  Failed to process {filename}."))
 
-    command.stdout.write(command.style.SUCCESS("--- Store Update from Archive Complete ---"))
+    command.stdout.write(command.style.SQL_FIELD("--- Store Update from Archive Complete ---"))

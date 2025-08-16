@@ -1,6 +1,6 @@
 # Project Overview
 
-This project is a Django-based application called "splitcart". It appears to be a web scraper and data aggregation tool for comparing prices of products from different Australian grocery stores, specifically coles, woolworths, IGA, spudshed and aldi. The project is structured into three main Django apps: `stores`, `products`, and `api`.
+This project is a Django-based application called "splitcart". It appears to be a web scraper and data aggregation tool for comparing prices of products from different Australian grocery stores, specifically coles, woolworths, IGA, spudshed and aldi. The project is structured into three main Django apps: `companies`, `products`, and `api`.
 
 **Key Technologies:**
 
@@ -11,7 +11,7 @@ This project is a Django-based application called "splitcart". It appears to be 
 **Architecture:**
 
 1.  **Data Scraping:**
-    *   Management commands (`scrape_coles`, `scrape_woolworths`, etc) are used to initiate the scraping process.
+    *   The `scrape` management command is used to initiate the scraping process, with options for specific stores (e.g., `python manage.py scrape --coles`).
     *   For Woolworths, the scraper dynamically fetches categories from their API, and store data is loaded from a JSON file. For other stores, categories and store data are hardcoded.
     *   Scraped data is saved as raw JSON files in the `api/data/raw_data` directory.
 
@@ -20,11 +20,11 @@ This project is a Django-based application called "splitcart". It appears to be 
     *   It combines data by category and archives it in the `api/data/processed_data` directory.
 
 3.  **Database Update:**
-    *   The `update_database` management command is intended to update the database with the processed data, but it is currently empty.
+    *   The `update_db` management command is used to update the database with processed data, including stores, products, and archived information. It consolidates the functionality of `update_database`, `update_store_database`, and `update_database_from_archive`.
 
 **Models:**
 
-*   **`stores` app:**
+*   **`companies` app:**
     *   `Store`: Represents a grocery store (e.g., coles, woolworths).
     *   `Category`: Represents a product category, with support for hierarchical categories.
 *   **`products` app:**
@@ -50,13 +50,9 @@ This project is a Django-based application called "splitcart". It appears to be 
 
 **3. Data Scraping and Processing:**
 
-*   To scrape data from coles:
+*   To initiate scraping (e.g., for Coles):
     ```bash
-    python manage.py scrape_coles
-    ```
-*   To scrape data from woolworths:
-    ```bash
-    python manage.py scrape_woolworths
+    python manage.py scrape --coles
     ```
 *   To process the scraped data:
     ```bash

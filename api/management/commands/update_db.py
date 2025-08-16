@@ -22,17 +22,17 @@ class Command(BaseCommand):
             run_products = True
 
         if run_archive:
-            self.stdout.write(self.style.SUCCESS('--- Running store update from archive ---'))
+            self.stdout.write(self.style.SQL_FIELD('--- Running store update from archive ---'))
             update_stores_from_archive(self)
             self.stdout.write(self.style.SUCCESS('--- Store update from archive complete ---'))
 
         if run_stores:
-            self.stdout.write(self.style.SUCCESS('--- Running store update from discovery ---'))
+            self.stdout.write(self.style.SQL_FIELD('--- Running store update from discovery ---'))
             update_stores_from_discovery(self)
             self.stdout.write(self.style.SUCCESS('--- Store update from discovery complete ---'))
 
         if run_products:
-            self.stdout.write(self.style.SUCCESS('--- Running product update from processed data ---'))
+            self.stdout.write(self.style.SQL_FIELD('--- Running product update from processed data ---'))
             update_products_from_processed(self)
             self.stdout.write(self.style.SUCCESS('--- Product update from processed data complete ---'))
 

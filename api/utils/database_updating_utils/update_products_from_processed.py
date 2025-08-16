@@ -59,7 +59,7 @@ def update_products_from_processed(command):
             continue
 
         display_store_name = store_obj.name if store_obj.name != 'N/A' else store_obj.store_id
-        command.stdout.write(command.style.SUCCESS(f'--- Processing file: {filename} for store: {display_store_name} ---'))
+        command.stdout.write(command.style.SQL_FIELD(f'--- Processing file: {filename} for store: {display_store_name} ---'))
 
         try:
             with transaction.atomic():
@@ -101,6 +101,7 @@ def update_products_from_processed(command):
         
         with open(failed_file_path, 'w', encoding='utf-8') as f:
             json.dump(failed_products_data, f, indent=4)
-        command.stdout.write(command.style.WARNING(f'\nSaved failed products to: {failed_file_path}'))
+        command.stdout.write(command.style.SQL_FIELD(f'
+Saved failed products to: {failed_file_path}'))
 
     command.stdout.write(command.style.SUCCESS("\n--- Product update from processed data complete ---"))
