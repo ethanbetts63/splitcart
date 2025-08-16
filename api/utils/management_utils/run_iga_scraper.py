@@ -27,6 +27,7 @@ def run_iga_scraper(batch_size, raw_data_path):
         success = scrape_and_save_iga_data(
             company=iga_company.name,
             store_id=store.store_id,
+            retailer_store_id=store.retailer_store_id,
             store_name=store.name,
             store_name_slug=store_name_slug,
             state=store.state,

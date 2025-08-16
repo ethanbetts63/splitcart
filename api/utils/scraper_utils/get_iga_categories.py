@@ -28,20 +28,20 @@ def _find_leaf_categories(nodes: list) -> list:
             leaf_categories.extend(_find_leaf_categories(children))
     return leaf_categories
 
-def get_iga_categories(store_id: str, session: requests.Session) -> list:
+def get_iga_categories(retailer_store_id: str, session: requests.Session) -> list:
     """
     Fetches the category hierarchy for a specific IGA store and extracts a list
     of all the leaf subcategories to be scraped.
 
     Args:
-        store_id: The unique identifier for the IGA store.
+        retailer_store_id: The unique retailer-specific identifier for the IGA store.
         session: The requests.Session object to use for the API call.
 
     Returns:
         A list of specific subcategory names to scrape, or an empty list if an error occurs.
     """
-    print(f"    Fetching category hierarchy for store ID: {store_id}...")
-    api_url = f"https://www.igashop.com.au/api/storefront/stores/{store_id}/categoryHierarchy"
+    print(f"    Fetching category hierarchy for store ID: {retailer_store_id}...")
+    api_url = f"https://www.igashop.com.au/api/storefront/stores/{retailer_store_id}/categoryHierarchy"
     
     try:
         response = session.get(api_url, timeout=60)
@@ -57,8 +57,8 @@ def get_iga_categories(store_id: str, session: requests.Session) -> list:
         return leaf_categories
 
     except requests.exceptions.RequestException as e:
-        print(f"    ERROR: Could not fetch category hierarchy for store {store_id}. Error: {e}")
+        print(f"    ERROR: Could not fetch category hierarchy for store {retailer_store_id}. Error: {e}")
     except json.JSONDecodeError:
-        print(f"    ERROR: Failed to decode JSON for category hierarchy for store {store_id}.")
+        print(f"    ERROR: Failed to decode JSON for category hierarchy for store {retailer_store_id}.")
     
     return []

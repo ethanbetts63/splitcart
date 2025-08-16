@@ -12,18 +12,22 @@ from api.utils.scraper_utils.checkpoint_utils.mark_category_complete import mark
 from api.utils.scraper_utils.checkpoint_utils.clear_checkpoint import clear_checkpoint
 import uuid
 
-def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store_name_slug: str, state: str, save_path: str):
+def scrape_and_save_iga_data(company: str, store_id: str, retailer_store_id: str, store_name: str, store_name_slug: str, state: str, save_path: str):
     """
     Launches a requests-based scraper for IGA with checkpointing.
     """
     print("--- Initializing IGA Scraper Tool ---")
+
+    if not retailer_store_id:
+        print(f"    Skipping {store_name} as it has no retailerStoreId, indicating it's not an online store.")
+        return False
 
     session = requests.Session()
     session.headers.update({
         "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
         "x-shopping-mode": "11111111-1111-1111-1111-111111111111"
     })
-    session.cookies.set("iga-shop.retailerStoreId", store_id)
+    session.cookies.set("iga-shop.retailerStoreId", retailer_store_id)
 
     # --- Checkpoint Initialization ---
     progress = read_checkpoint(company)
@@ -32,7 +36,7 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
     if not progress.get("current_store") or progress.get("current_store") != store_name_slug:
         start_scraping = True
 
-    print(f"\n--- Starting Store: {store_name} (ID: {store_id}) ---")
+    print(f"\n--- Starting Store: {store_name} (Retailer ID: {retailer_store_id}) ---")
 
     # First, visit the home page to initialize the session
     try:
@@ -41,13 +45,12 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
         print("    Session initialized.")
     except requests.exceptions.RequestException as e:
         print(f"    ERROR: Could not initialize session. Error: {e}")
-        # We can try to continue, but it will likely fail.
         return False
 
     session_id = str(uuid.uuid4())
     print(f"    Generated session ID for product search: {session_id}")
 
-    categories_to_fetch = get_iga_categories(store_id, session)
+    categories_to_fetch = get_iga_categories(retailer_store_id, session)
     if not categories_to_fetch:
         print(f"Could not retrieve categories for {store_name}. Skipping.")
         return False
@@ -78,7 +81,7 @@ def scrape_and_save_iga_data(company: str, store_id: str, store_name: str, store
         while True:
             print(f"    Attempting to fetch page {page_num} for '{category_name}' (skip: {skip})...")
             
-            api_url = f"https://www.igashop.com.au/api/storefront/stores/{store_id}/categories/{requests.utils.quote(category_identifier)}/search"
+            api_url = f"https://www.igashop.com.au/api/storefront/stores/{retailer_store_id}/categories/{requests.utils.quote(category_identifier)}/search"
             params = {'take': take, 'skip': skip, 'sessionId': session_id}
 
             try:
