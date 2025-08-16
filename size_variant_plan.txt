@@ -1,0 +1,74 @@
+# Size Variant Identification and Linking Plan
+
+This plan outlines the process for identifying and linking "size variants" – products that are essentially the same item but in different sizes. This will leverage a Many-to-Many field on the `Product` model and a single, consolidated command to manage the relationships.
+
+## 1. Schema Modification
+
+A new Many-to-Many field has been added to the `Product` model to directly link size variants.
+
+*   **Field Definition:**
+    ```python
+    # products/models/product.py
+    from django.db import models
+
+    class Product(models.Model):
+        # ... existing fields ...
+        size_variants = models.ManyToManyField(
+            'self',
+            blank=True,
+            symmetrical=True, # Explicitly set for clarity, though it's the default for self-referential M2M
+            related_name='_size_variants_set', # Required to avoid clash with default _set
+            help_text="Products that are the same item but in a different size."
+        )
+        # ...
+    ```
+*   **Database Migration:** A new Django migration will need to be created and applied to update the database schema after this change.
+
+## 2. Foundational Step: Price Per Unit (PPU) Calculation
+
+Accurate PPU calculation is crucial for identifying and prioritizing size variants based on cost-effectiveness.
+
+*   **Process:**
+    *   **Unit & Quantity Extraction:** Develop robust parsing logic to extract units (e.g., kg, g, L, mL, count, each, pack) and their corresponding quantities from product names and descriptions.
+    *   **Standardization:** Convert all extracted units to a common base (e.g., all grams to kilograms, all milliliters to liters).
+    *   **Calculation:** `PPU = Price / Standardized Quantity`.
+*   **Storage:** The calculated PPU will be stored on the `Price` model (e.g., `unit_price_value` and `unit_price_unit` fields).
+
+## 3. Consolidated Command: `identify_and_link_size_variants`
+
+A single Django management command will be created to handle both the initial identification of direct size variants and the enforcement of transitive closure.
+
+*   **Command Name:** `identify_and_link_size_variants`
+*   **Location:** `api/management/commands/identify_and_link_size_variants.py`
+*   **Process within the Command:**
+
+    *   **Phase A: Initial Direct Variant Identification:**
+        *   **Goal:** Identify pairs of products that are highly likely to be size variants (e.g., "Coca-Cola 1.25L" and "Coca-Cola 2L").
+        *   **Logic:**
+            *   **Name Normalization:** For each `Product`, create a "normalized name" by removing size, quantity, and common packaging descriptors (e.g., "Coca-Cola Classic Soft Drink 1.25L" -> "Coca-Cola Classic Soft Drink").
+            *   **Category Matching:** Only consider products within the same lowest-level `Category` for comparison.
+            *   **Similarity Scoring:** Compare products based on their normalized names and potentially other attributes (e.g., brand, core type). A high similarity score indicates they are likely direct size variants.
+            *   **Initial Linking:** For each identified direct pair (Product A, Product B), add B to `A.size_variants` and A to `B.size_variants`.
+
+    *   **Phase B: Enforcing Transitive Closure:**
+        *   **Goal:** Ensure that if Product A is a size variant of Product B, and Product B is a size variant of Product C, then Product A is also directly linked to Product C (and vice-versa). This creates a complete "clique" of size variants.
+        *   **Logic:**
+            *   Iterate through every `Product` in the database.
+            *   For each `Product` (let's call it `P`), perform a graph traversal (e.g., Breadth-First Search or Depth-First Search) starting from `P`, using its current `size_variants` links.
+            *   Collect all products reachable through these links into a set (this set represents the complete "clique" or group of size variants).
+            *   Update `P.size_variants.set(clique_set - {P})` to ensure `P` is directly linked to all other products in its identified clique. This step will be repeated for all products to ensure consistency across the entire database.
+
+## 4. Revised Substitute Generation Logic
+
+The `generate_substitutes` command will now leverage the `size_variants` field as the highest priority for substitution.
+
+*   **Tier 0: Size Variants (Highest Priority)**
+    *   **Goal:** Find other products in the `size_variants` M2M field that offer a better PPU.
+    *   **Logic:** For a given product, retrieve all products in its `size_variants` field. Compare their PPUs to the original product's PPU.
+
+*   **Tier 1: Same Product, Different Price/PPU (as previously defined)**
+    *   **Goal:** Find the *exact same product* (same `Product` ID) offered at a better PPU by a different store/company.
+    *   **Logic:** Compare `Price` entries for the identical `Product` ID.
+
+*   **Tier 2: Highly Similar Products (Accuracy-Focused, as previously defined)**
+    *   **Goal:** Find *different* `Product` objects that are highly similar based on category, attributes, NLP.

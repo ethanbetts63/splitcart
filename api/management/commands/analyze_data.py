@@ -1,7 +1,7 @@
 
 from django.core.management.base import BaseCommand
-from api.utils.analysis_utils.company_analysis import generate_store_product_counts_chart
-from api.utils.analysis_utils.product_analysis import generate_product_overlap_heatmap
+from api.analysers.company_analysis import generate_store_product_counts_chart
+from api.analysers.product_analysis import generate_product_overlap_heatmap
 
 class Command(BaseCommand):
     help = 'Generates various reports and visualizations from product data.'

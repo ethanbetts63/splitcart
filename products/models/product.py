@@ -46,6 +46,13 @@ class Product(models.Model):
         symmetrical=True,
         help_text="Optional: Other products that can be used as substitutes."
     )
+    size_variants = models.ManyToManyField(
+        'self',
+        blank=True,
+        symmetrical=True,
+        related_name='_size_variants_set', # Required to avoid clash with default _set
+        help_text="Products that are the same item but in a different size."
+    )
 
     class Meta:
         unique_together = ('name', 'brand', 'size')
