@@ -37,7 +37,7 @@ def update_products_from_store_archives(command):
                 continue
 
             try:
-                store = Store.objects.get(id=store_id)
+                store = Store.objects.get(store_id=store_id)
             except Store.DoesNotExist:
                 logger.warning(f"Store with id {store_id} not found. Skipping.")
                 continue
