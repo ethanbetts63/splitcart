@@ -35,7 +35,6 @@ def update_products_from_store_archives(command):
         store_files = [f for f in os.scandir(company_folder.path) if f.name.endswith('.json')]
         
         for store_file in store_files:
-            command.stdout.write(f"--- Processing Store File: {store_file.name} ---")
             with open(store_file.path, 'r') as f:
                 data = json.load(f)
 
@@ -53,7 +52,6 @@ def update_products_from_store_archives(command):
             
             for product_data in products:
                 product_count += 1
-                command.stdout.write(f"  [Product {product_count}] Processing: {product_data.get('name')}")
                 category_paths = product_data.get('category_paths', [])
                 if not category_paths:
                     continue
@@ -72,6 +70,9 @@ def update_products_from_store_archives(command):
                     products_created += 1
                 else:
                     products_updated += 1
+                
+                if product_count % 100 == 0:
+                    command.stdout.write(f"    Products: updated {products_updated}, created {products_created}")
 
                 if not product_obj:
                     continue
@@ -107,7 +108,6 @@ def update_products_from_store_archives(command):
                         products_to_save_now.append(product_instance)
 
                 if products_to_save_now:
-                    command.stdout.write(f"    CHECKPOINT: Saving {len(products_to_save_now)} new products for this store...")
                     # 2. Bulk create this small batch of products.
                     with transaction.atomic():
                         Product.objects.bulk_create(list(products_to_save_now))
@@ -115,7 +115,7 @@ def update_products_from_store_archives(command):
                     # 3. Update the global product cache with the newly saved products.
                     for product in products_to_save_now:
                         saved_product = Product.objects.get(name=product.name, brand=product.brand, size=product.size)
-                        composite_key = (saved_product.name.lower(), saved_product.brand.lower(), saved_product.size.lower())
+                        composite_key = (saved_product.name.lower() if saved_product.name else '', saved_product.brand.lower() if saved_product.brand else '', saved_product.size.lower() if saved_product.size else '')
                         product_cache[composite_key] = saved_product
                         
                         # 4. Remove them from the main list to avoid creating them again later.
@@ -125,10 +125,9 @@ def update_products_from_store_archives(command):
                 for price_obj in prices_to_create_for_store:
                     if not price_obj.product.id:
                         p = price_obj.product
-                        composite_key = (p.name.lower(), p.brand.lower(), p.size.lower())
+                        composite_key = (p.name.lower() if p.name else '', p.brand.lower() if p.brand else '', p.size.lower() if p.size else '')
                         price_obj.product = product_cache.get(composite_key)
 
-                command.stdout.write(f"    CHECKPOINT: Saving {len(prices_to_create_for_store)} prices for this store...")
                 # 6. Now, safely bulk create the prices for this store.
                 with transaction.atomic():
                     Price.objects.bulk_create(prices_to_create_for_store)
@@ -140,7 +139,7 @@ def update_products_from_store_archives(command):
         # We still need to update the cache for the category relationship step.
         for product in new_products_to_create:
             saved_product = Product.objects.get(name=product.name, brand=product.brand, size=product.size)
-            composite_key = (saved_product.name.lower(), saved_product.brand.lower(), saved_product.size.lower())
+            composite_key = (saved_product.name.lower() if saved_product.name else '', saved_product.brand.lower() if saved_product.brand else '', saved_product.size.lower() if saved_product.size else '')
             product_cache[composite_key] = saved_product
 
     # Add category relationships for all products
@@ -148,12 +147,13 @@ def update_products_from_store_archives(command):
         with transaction.atomic():
             for product, cat_id in product_category_relations:
                 if not product.id:
-                    composite_key = (product.name.lower(), product.brand.lower(), product.size.lower())
+                    composite_key = (product.name.lower() if product.name else '', product.brand.lower() if product.brand else '', product.size.lower() if product.size else '')
                     product = product_cache.get(composite_key)
                 if product:
                     product.category.add(cat_id)
 
     command.stdout.write(f"    Total Products: updated {products_updated}, created {products_created}")
     command.stdout.write("\n")
+
     
     
