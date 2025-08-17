@@ -54,10 +54,16 @@ def update_products_from_store_archives(command):
                 if not category_paths:
                     continue
                 
-                category_path = category_paths[0]
-                category_obj = get_or_create_category_hierarchy(category_path, store.company)
-
-                product_obj, created = get_or_create_product(product_data, store, category_obj, product_cache, new_products_to_create)
+                product_obj = None
+                created = False
+                for i, category_path in enumerate(category_paths):
+                    category_obj = get_or_create_category_hierarchy(category_path, store.company)
+                    if i == 0: # Call get_or_create_product only on the first category path
+                        product_obj, created = get_or_create_product(product_data, store, category_obj, product_cache, new_products_to_create)
+                    elif product_obj and category_obj:
+                        if not hasattr(product_obj, 'categories_to_add'):
+                            product_obj.categories_to_add = set()
+                        product_obj.categories_to_add.add(category_obj.id)
                 
                 if created:
                     products_created += 1

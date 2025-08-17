@@ -16,6 +16,7 @@ from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
 from api.utils.scraper_utils.checkpoint_utils.read_checkpoint import read_checkpoint
 from api.utils.scraper_utils.checkpoint_utils.update_page_progress import update_page_progress
 from api.utils.scraper_utils.checkpoint_utils.mark_category_complete import mark_category_complete
+from api.utils.scraper_utils.get_store_specific_categories_coles import get_store_specific_categories
 from api.utils.scraper_utils.checkpoint_utils.clear_checkpoint import clear_checkpoint
 
 def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, state: str, categories_to_fetch: list, save_path: str):
@@ -81,6 +82,14 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
     if not session:
         print("ERROR: Requests session was not created. Aborting.")
         return
+
+    # --- Fetch Store-Specific Categories ---
+    print("\n--- Fetching store-specific categories ---")
+    categories_to_fetch = get_store_specific_categories(session)
+    if not categories_to_fetch:
+        print("ERROR: Could not fetch categories. Aborting.")
+        return
+    print(f"Found {len(categories_to_fetch)} categories for this store.")
 
     # --- Main Scraping Loop ---
     for category_slug in categories_to_fetch:
