@@ -62,7 +62,7 @@ class UpdateStoresFromDiscoveryTest(TestCase):
         mock_get_or_create_store.assert_called_once_with(company_obj=mock_company, division_obj=mock_division, store_id="123", store_data=sample_data['store_data'])
         mock_time_sleep.assert_called_once_with(500)
         mock_command.stdout.write.assert_any_call('Found 1 file(s) to process...')
-        mock_command.stdout.write.assert_any_call('No new store files found. Waiting 500 seconds...')
+        mock_command.stdout.write.assert_any_call('No new store files found. Waiting 30 seconds...')
         mock_command.stdout.write.assert_any_call('No new files found after waiting. Exiting.')
 
     @patch('api.utils.database_updating_utils.update_stores_from_discovery.os.path.exists')

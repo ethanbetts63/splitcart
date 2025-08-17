@@ -70,8 +70,8 @@ def update_stores_from_discovery(command):
             continue  # Check for more files immediately
 
         # If no files are found, wait and check again
-        command.stdout.write(command.style.SQL_FIELD("No new store files found. Waiting 500 seconds..."))
-        time.sleep(500)
+        command.stdout.write(command.style.SQL_FIELD("No new store files found. Waiting 30 seconds..."))
+        time.sleep(30)
 
         store_files_after_wait = [f for f in os.listdir(discovered_stores_dir) if f.endswith('.json')]
         if not store_files_after_wait:
