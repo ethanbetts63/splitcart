@@ -4,8 +4,8 @@ import json
 import sys
 from django.db import transaction
 from companies.models import Store
+from products.models import Price
 from .get_or_create_product import get_or_create_product
-from .create_price import create_price
 from .get_or_create_category_hierarchy import get_or_create_category_hierarchy
 
 def update_products_from_store_archives(command):
@@ -21,6 +21,9 @@ def update_products_from_store_archives(command):
     products_created = 0
     product_count = 0
 
+    # In-memory cache for stores
+    store_cache = {str(store.store_id): store for store in Store.objects.all()}
+
     company_folders = [f for f in os.scandir(archive_dir) if f.is_dir()]
     for company_folder in company_folders:
         command.stdout.write(command.style.SUCCESS(f"Processing company: {company_folder.name}"))
@@ -35,12 +38,12 @@ def update_products_from_store_archives(command):
             if not store_id:
                 continue
 
-            try:
-                store = Store.objects.get(store_id=store_id)
-            except Store.DoesNotExist:
+            store = store_cache.get(store_id)
+            if not store:
                 continue
 
             products = data.get('products', [])
+            prices_to_create = []
             with transaction.atomic():
                 for product_data in products:
                     product_count += 1
@@ -65,8 +68,24 @@ def update_products_from_store_archives(command):
                         continue
 
                     for price_data in product_data.get('price_history', []):
-                        create_price(price_data, product_obj, store)
-    
+                        price_to_use = price_data.get('price')
+                        if price_to_use is None:
+                            continue
+
+                        prices_to_create.append(
+                            Price(
+                                product=product_obj,
+                                store=store,
+                                price=price_to_use,
+                                is_on_special=price_data.get('is_on_special', False),
+                                is_available=price_data.get('is_available', True),
+                                is_active=True
+                            )
+                        )
+                
+                if prices_to_create:
+                    Price.objects.bulk_create(prices_to_create)
+
     command.stdout.write(f"    Total Products: updated {products_updated}, created {products_created}")
     command.stdout.write("\n")
     
