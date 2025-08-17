@@ -24,11 +24,11 @@ def run_coles_scraper(batch_size, raw_data_path):
     print(f"Data will be saved to: {raw_data_path}")
 
     for store in stores_to_scrape:
-        print(f"\n--- Handing off to scraper for store: {store.name} ---")
+        print(f"\n--- Handing off to scraper for store: {store.store_name} ---")
         scrape_and_save_coles_data(
             company=coles_company.name,
             store_id=store.store_id,
-            store_name=store.name,
+            store_name=store.store_name,
             state=store.state,
             categories_to_fetch=categories,
             save_path=raw_data_path

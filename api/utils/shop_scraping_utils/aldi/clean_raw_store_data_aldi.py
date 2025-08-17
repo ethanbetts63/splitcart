@@ -10,7 +10,7 @@ def clean_raw_store_data_aldi(raw_store_data: dict, company: str, timestamp: dat
     address_data = raw_store_data.get('address', {})
 
     cleaned_data = {
-        "store_name": store_id,
+        "store_name": raw_store_data.get('name'),
         "store_id": store_id,
         "retailer_store_id": None,
         "is_active": True,
@@ -20,6 +20,7 @@ def clean_raw_store_data_aldi(raw_store_data: dict, company: str, timestamp: dat
         "address_line_1": address_data.get('address1'),
         "address_line_2": address_data.get('address2'),
         "suburb": address_data.get('city'),
+        "city": address_data.get('city'),
         "state": address_data.get('regionName'),
         "postcode": address_data.get('zipCode'),
         "latitude": address_data.get('latitude'),
@@ -34,7 +35,6 @@ def clean_raw_store_data_aldi(raw_store_data: dict, company: str, timestamp: dat
         "status": None,
         "store_type": None,
         "site_id": None,
-        
         "shopping_modes": None,
         "available_customer_service_types": raw_store_data.get('availableCustomerServiceTypes'),
         "alcohol_availability": raw_store_data.get('alcoholAvailability'),

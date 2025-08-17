@@ -19,13 +19,7 @@ def process_store_file(file_name, directory, command, tally):
         company_name = metadata.get('company')
         
         division_name, external_id, store_finder_id = None, None, None
-        if company_name == "Coles":
-            brand_data = store_data.get('brand', {})
-            division_name = brand_data.get('name')
-            external_id = brand_data.get('id')
-            store_finder_id = brand_data.get('storeFinderId')
-        elif company_name == "Woolworths":
-            division_name = store_data.get('Division')
+        division_name = store_data.get('division')
 
         store_id = store_data.get('store_id')
 

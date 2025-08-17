@@ -27,13 +27,13 @@ def get_product_prices_by_store(company_name=None, state=None):
         return {}
 
     print(f"    Fetching all products for stores in company {company_name}...")
-    stores_query = Store.objects.filter(company=company)
+    stores_query = Store.objects.filter(company=company, is_active=True)
     if state:
         print(f"    Filtering for state: {state}...")
         stores_query = stores_query.filter(state__iexact=state)
     
     stores = stores_query
-    store_map = {store.id: store.name for store in stores}
+    store_map = {store.id: store.store_name for store in stores}
     
     # Get the most recent price for each product in each store
     latest_prices_subquery = Price.objects.filter(
@@ -45,6 +45,9 @@ def get_product_prices_by_store(company_name=None, state=None):
         store__in=stores,
         id=Subquery(latest_prices_subquery)
     )
+    
+    print(f"    Found {stores.count()} stores for {company_name}.")
+    print(f"    Found {prices.count()} prices.")
 
     for price in prices:
         if price.store.id in store_map:

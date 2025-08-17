@@ -8,7 +8,7 @@ class Store(models.Model):
     """
 
     # Common fields for all stores
-    name = models.CharField(
+    store_name = models.CharField(
         max_length=255,
         help_text="The specific name of the store, e.g., 'IGA Cannington' or 'Coles National'."
         # Coles: name

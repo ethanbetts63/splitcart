@@ -34,7 +34,7 @@ def generate_store_product_counts_chart(company_name: str):
         return
 
     # Prepare data for plotting
-    store_names = [store.name for store in stores_with_counts]
+    store_names = [store.store_name for store in stores_with_counts]
     product_counts = [store.product_count for store in stores_with_counts]
 
     # Create the plot

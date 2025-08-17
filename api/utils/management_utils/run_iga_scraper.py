@@ -22,13 +22,13 @@ def run_iga_scraper(batch_size, raw_data_path):
     print(f"Data will be saved to: {raw_data_path}")
 
     for store in stores_to_scrape:
-        print(f"\n--- Handing off to scraper for store: {store.name} ---")
-        store_name_slug = slugify(store.name.lower().replace('iga', '').replace('fresh', ''))
+        print(f"\n--- Handing off to scraper for store: {store.store_name} ---")
+        store_name_slug = slugify(store.store_name.lower().replace('iga', '').replace('fresh', ''))
         success = scrape_and_save_iga_data(
             company=iga_company.name,
             store_id=store.store_id,
             retailer_store_id=store.retailer_store_id,
-            store_name=store.name,
+            store_name=store.store_name,
             store_name_slug=store_name_slug,
             state=store.state,
             save_path=raw_data_path
@@ -36,10 +36,10 @@ def run_iga_scraper(batch_size, raw_data_path):
         if success:
             store.is_online_shopable = True
             store.last_scraped_products = timezone.now()
-            print(f"    Successfully scraped. Marked '{store.name}' as online shopable.")
+            print(f"    Successfully scraped. Marked '{store.store_name}' as online shopable.")
         else:
             store.is_online_shopable = False
-            print(f"    Scrape failed. Marked '{store.name}' as not online shopable.")
+            print(f"    Scrape failed. Marked '{store.store_name}' as not online shopable.")
         store.save()
 
     print("\n--- IGA scraping process complete ---")

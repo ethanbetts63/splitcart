@@ -37,7 +37,7 @@ class Command(BaseCommand):
         self.stdout.write(f'Found {total_stores} store(s) to process...')
 
         for i, store in enumerate(stores_to_process.iterator(), 1):
-            self.stdout.write(f'\n({i}/{total_stores}) Processing store: {store.name} ({store.store_id})...')
+            self.stdout.write(f'\n({i}/{total_stores}) Processing store: {store.store_name} ({store.store_id})...')
 
             product_list = []
             products_processed_count = 0
@@ -55,7 +55,7 @@ class Command(BaseCommand):
             store_data = {
                 'metadata': {
                     'store_id': store.store_id,
-                    'name': store.name,
+                    'store_name': store.store_name,
                     'company_name': store.company.name,
                     'address_line_1': store.address_line_1,
                     'suburb': store.suburb,

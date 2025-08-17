@@ -83,7 +83,7 @@ class Command(BaseCommand):
     def get_store_details(self, store, company):
         store_details = {
             'store_id': store.store_id,
-            'name': store.name
+            'store_name': store.store_name
         }
         
         trading_hours_value = store.trading_hours

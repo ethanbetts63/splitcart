@@ -9,7 +9,7 @@ class StoreModelTest(TestCase):
         """Test that a store can be created."""
         store = StoreFactory()
         self.assertIsNotNone(store.id)
-        self.assertIsNotNone(store.name)
+        self.assertIsNotNone(store.store_name)
         self.assertIsNotNone(store.company)
         self.assertIsNotNone(store.store_id)
 

@@ -23,8 +23,18 @@ def generate_store_pricing_heatmap(company_name, state=None):
     store_product_prices = get_product_prices_by_store(company_name=company.name, state=state)
 
     # 2. Filter out stores with less than 100 products
+    print(f"    Total stores before filtering: {len(store_product_prices)}")
+    for store, products in store_product_prices.items():
+        print(f"      - Store: {store}, Products: {len(products)}")
+
     original_store_count = len(store_product_prices)
     store_product_prices = {store: products for store, products in store_product_prices.items() if len(products) >= 100}
+    
+    print(f"    Total stores after filtering: {len(store_product_prices)}")
+    if len(store_product_prices) == 1:
+        for store, products in store_product_prices.items():
+            print(f"      - Remaining Store: {store}, Products: {len(products)}")
+
     filtered_store_count = original_store_count - len(store_product_prices)
     if filtered_store_count > 0:
         print(f"    Filtered out {filtered_store_count} stores with fewer than 100 products.")
@@ -35,6 +45,12 @@ def generate_store_pricing_heatmap(company_name, state=None):
 
     # 3. Calculate overlap matrix
     overlap_matrix, percent_of_row_matrix, percent_of_col_matrix, average_percentage_matrix = calculate_pricing_overlap_matrix(store_product_prices)
+
+    # Check for N/A in the overlap matrix
+    if 'N/A' in overlap_matrix.columns:
+        print("    'N/A' found in overlap matrix columns.")
+        na_data = overlap_matrix.loc['N/A', 'N/A']
+        print(f"      - N/A Data: {na_data}")
 
     # 4. Generate and save the heatmap image
     generate_pricing_heatmap_image(overlap_matrix, percent_of_row_matrix, percent_of_col_matrix, average_percentage_matrix, entity_type='store', company_name=company.name, state=state)

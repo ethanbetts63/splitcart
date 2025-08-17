@@ -11,7 +11,7 @@ class GetOrCreateStoreTest(TestCase):
         store_data = {"name": "New Store", "suburb": "Perth"}
         store, created = get_or_create_store(company, None, "new_store_id", store_data)
         self.assertTrue(created)
-        self.assertEqual(store.name, "New Store")
+        self.assertEqual(store.store_name, "New Store")
         self.assertEqual(store.suburb, "Perth")
         self.assertEqual(Store.objects.count(), 1)
 
@@ -24,7 +24,7 @@ class GetOrCreateStoreTest(TestCase):
         store, created = get_or_create_store(company, None, "existing_id", store_data)
         
         self.assertFalse(created)
-        self.assertEqual(store.name, "Updated Name")
+        self.assertEqual(store.store_name, "Updated Name")
         self.assertEqual(store.suburb, "Updated Suburb")
         self.assertEqual(Store.objects.count(), 1) # No new store created
         self.assertEqual(store.id, existing_store.id) # Same store updated
@@ -65,7 +65,7 @@ class GetOrCreateStoreTest(TestCase):
         store, created = get_or_create_store(company, None, "overwrite_test_id", store_data)
         
         self.assertFalse(created)
-        self.assertEqual(store.name, "New Name")
+        self.assertEqual(store.store_name, "New Name")
         self.assertEqual(store.latitude, 10.0) # Should remain original value
         self.assertEqual(store.longitude, 20.0) # Should remain original value
 
@@ -110,7 +110,7 @@ class GetOrCreateStoreTest(TestCase):
         store, created = get_or_create_store(company, None, "update_fields_id", store_data)
         
         self.assertFalse(created)
-        self.assertEqual(store.name, "New Name")
+        self.assertEqual(store.store_name, "New Name")
         self.assertEqual(store.phone_number, "456")
         self.assertEqual(store.address_line_1, "New Address")
         self.assertEqual(store.suburb, "New Suburb")

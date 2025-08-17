@@ -41,7 +41,7 @@ def get_product_sets_by_entity(entity_type='company', company_name=None, state=N
             stores_query = stores_query.filter(state__iexact=state)
         
         stores = stores_query
-        store_map = {store.id: store.name for store in stores}
+        store_map = {store.id: store.store_name for store in stores}
         
         queryset = Product.objects.prefetch_related('prices__store').filter(prices__store__in=stores)
         

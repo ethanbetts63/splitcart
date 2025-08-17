@@ -22,10 +22,10 @@ def run_aldi_scraper(batch_size, raw_data_path):
     print(f"Data will be saved to: {raw_data_path}")
 
     for store in stores_to_scrape:
-        print(f"\n--- Handing off to scraper for store: {store.name} ---")
+        print(f"\n--- Handing off to scraper for store: {store.store_name} ---")
         scrape_and_save_aldi_data(
             company=aldi_company.name,
-            store_name=store.name,
+            store_name=store.store_name,
             store_id=store.store_id,
             state=store.state,
             save_path=raw_data_path
