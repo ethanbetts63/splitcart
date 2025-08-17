@@ -1,0 +1,137 @@
+The question i have with this follwoing output is two things: 
+1. Why are the products being updated not created? after resetting the database i would expect them to be created fresh? 
+2. I might be wrong but it seems as if this gets slower and slower the longer it runs? could that be possible? 
+
+
+(venv) PS C:\Users\ethan\coding\splitcart> # reset_django_project.ps1
+(venv) PS C:\Users\ethan\coding\splitcart> # A PowerShell script to completely reset a Django project's database and migrations.
+(venv) PS C:\Users\ethan\coding\splitcart> # WARNING: This script is DESTRUCTIVE and will permanently delete your database and migration history.
+(venv) PS C:\Users\ethan\coding\splitcart>
+(venv) PS C:\Users\ethan\coding\splitcart> # --- CONFIGURATION ---
+(venv) PS C:\Users\ethan\coding\splitcart> # The $apps variable is used to clean out the old migration folders.
+(venv) PS C:\Users\ethan\coding\splitcart> # Update this list with the names of your Django apps.
+(venv) PS C:\Users\ethan\coding\splitcart> $apps = @(
+>>     "products",
+>>     "companies",
+>>     "api"
+>> )
+(venv) PS C:\Users\ethan\coding\splitcart>
+(venv) PS C:\Users\ethan\coding\splitcart> # --- EXECUTION ---
+(venv) PS C:\Users\ethan\coding\splitcart> Write-Host "🚀 Starting Django Project Reset..." -ForegroundColor Yellow
+🚀 Starting Django Project Reset...
+(venv) PS C:\Users\ethan\coding\splitcart>
+(venv) PS C:\Users\ethan\coding\splitcart> # 1. Delete the SQLite Database file
+(venv) PS C:\Users\ethan\coding\splitcart> Write-Host "🔥 Deleting database file (db.sqlite3)..." -ForegroundColor Cyan
+🔥 Deleting database file (db.sqlite3)...
+(venv) PS C:\Users\ethan\coding\splitcart> Remove-Item -Path "db.sqlite3" -ErrorAction SilentlyContinue
+(venv) PS C:\Users\ethan\coding\splitcart>
+(venv) PS C:\Users\ethan\coding\splitcart> # 2. Delete old migration files from specified apps
+(venv) PS C:\Users\ethan\coding\splitcart> Write-Host "🔥 Deleting old migration files..." -ForegroundColor Cyan
+🔥 Deleting old migration files...
+(venv) PS C:\Users\ethan\coding\splitcart> foreach ($app in $apps) {
+>>     # Construct the path to the migrations folder for each app
+>>     $migrationPath = Join-Path -Path $app -ChildPath "migrations"
+>>
+>>     # Check if the migrations directory exists before trying to clean it
+>>     if (Test-Path $migrationPath) {
+>>         # Find and remove all files except for __init__.py
+>>         Get-ChildItem -Path $migrationPath -File | Where-Object { $_.Name -ne "__init__.py" } | Remove-Item -Force
+>>         Write-Host "  - Cleaned migrations for '$app' app."
+>>     } else {
+>>         Write-Host "  - No migrations folder found for '$app', skipping." -ForegroundColor Gray
+>>     }
+>> }
+  - Cleaned migrations for 'products' app.
+  - Cleaned migrations for 'companies' app.
+  - Cleaned migrations for 'api' app.
+(venv) PS C:\Users\ethan\coding\splitcart>
+(venv) PS C:\Users\ethan\coding\splitcart> # 3. Delete all __pycache__ directories to ensure a clean state
+(venv) PS C:\Users\ethan\coding\splitcart> Write-Host "🔥 Deleting __pycache__ directories..." -ForegroundColor Cyan
+🔥 Deleting __pycache__ directories...
+(venv) PS C:\Users\ethan\coding\splitcart> Get-ChildItem -Path . -Recurse -Directory -Filter "__pycache__" | Remove-Item -Recurse -Force
+(venv) PS C:\Users\ethan\coding\splitcart>
+(venv) PS C:\Users\ethan\coding\splitcart> # 4. Make a new, unified migration plan for the whole project
+(venv) PS C:\Users\ethan\coding\splitcart> Write-Host "✨ Creating a unified migration plan for the whole project..." -ForegroundColor Cyan
+✨ Creating a unified migration plan for the whole project...
+(venv) PS C:\Users\ethan\coding\splitcart> python manage.py makemigrations
+Migrations for 'companies':
+  companies\migrations\0001_initial.py
+    + Create model Company
+    + Create model Division
+    + Create model Category
+    + Create model Store
+Migrations for 'products':
+  products\migrations\0001_initial.py
+    + Create model Product
+    + Create model Price
+(venv) PS C:\Users\ethan\coding\splitcart>
+(venv) PS C:\Users\ethan\coding\splitcart> # 5. Apply migrations to the database
+(venv) PS C:\Users\ethan\coding\splitcart> Write-Host "✨ Applying migrations to create a new database..." -ForegroundColor Cyan
+✨ Applying migrations to create a new database...
+(venv) PS C:\Users\ethan\coding\splitcart> python manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, auth, companies, contenttypes, products, sessions
+Running migrations:
+  No migrations to apply.
+(venv) PS C:\Users\ethan\coding\splitcart>
+(venv) PS C:\Users\ethan\coding\splitcart> git add .
+warning: in the working copy of 'api/tests/util_tests/test_database_updating_utils/test_update_stores_from_discovery.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'api/utils/database_updating_utils/update_stores_from_discovery.py', LF will be replaced by CRLF the next time Git touches it
+(venv) PS C:\Users\ethan\coding\splitcart> git commit -m "migration reset"
+[main e65f31d] migration reset
+ 4 files changed, 5 insertions(+), 5 deletions(-)
+(venv) PS C:\Users\ethan\coding\splitcart> git push
+Enumerating objects: 28, done.
+Counting objects: 100% (28/28), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (16/16), done.
+Writing objects: 100% (16/16), 3.72 KiB | 952.00 KiB/s, done.
+Total 16 (delta 11), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (11/11), completed with 10 local objects.
+To https://github.com/ethanbetts63/splitcart.git
+   72e8d89..e65f31d  main -> main
+(venv) PS C:\Users\ethan\coding\splitcart>
+(venv) PS C:\Users\ethan\coding\splitcart> python manage.py update_db --archive
+--- Running store update from company archives ---
+--- Starting Store Update from Archive ---
+Processing file: aldi.json...
+  Successfully processed 495 stores for Aldi.
+Processing file: coles.json...
+  Successfully processed 1701 stores for Coles.
+Processing file: iga.json...
+  Successfully processed 1291 stores for Iga.
+Processing file: woolworths.json...
+  Successfully processed 2196 stores for Woolworths.
+--- Store Update from Archive Complete ---
+--- Store update from company archives complete ---
+--- Running product update from store archives ---
+Processing company: aldi
+    Products: updated 100, created 0
+    Products: updated 200, created 0
+    Products: updated 300, created 0
+    Products: updated 400, created 0
+    Products: updated 500, created 0
+    Products: updated 600, created 0
+    Products: updated 700, created 0
+    Products: updated 800, created 0
+    Products: updated 900, created 0
+    Products: updated 1000, created 0
+    Products: updated 1100, created 0
+    Products: updated 1200, created 0
+    Products: updated 1300, created 0
+    Products: updated 1400, created 0
+    Products: updated 1500, created 0
+    Products: updated 1600, created 0
+    Products: updated 1700, created 0
+    Products: updated 1800, created 0
+    Products: updated 1900, created 0
+    Products: updated 2000, created 0
+    Products: updated 2100, created 0
+    Products: updated 2200, created 0
+    Products: updated 2300, created 0
+    Products: updated 2400, created 0
+    Products: updated 2500, created 0
+    Products: updated 2600, created 0
+    Products: updated 2700, created 0
+    Products: updated 2800, created 0
+    Products: updated 2900, created 0
