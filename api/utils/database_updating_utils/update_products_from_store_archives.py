@@ -25,7 +25,7 @@ def update_products_from_store_archives(command):
     store_cache = {str(store.store_id): store for store in Store.objects.all()}
     product_cache = { (p.name.lower() if p.name else '', p.brand.lower() if p.brand else '', p.size.lower() if p.size else ''): p for p in Product.objects.all() }
     
-    # This list will hold all unsaved product objects for the entire run.
+    # This list will hold all unsaved product objects for the entire run. 
     new_products_to_create = [] 
     product_category_relations = []
 
@@ -35,6 +35,7 @@ def update_products_from_store_archives(command):
         store_files = [f for f in os.scandir(company_folder.path) if f.name.endswith('.json')]
         
         for store_file in store_files:
+            command.stdout.write(f"--- Processing Store File: {store_file.name} ---")
             with open(store_file.path, 'r') as f:
                 data = json.load(f)
 
@@ -52,6 +53,7 @@ def update_products_from_store_archives(command):
             
             for product_data in products:
                 product_count += 1
+                command.stdout.write(f"  [Product {product_count}] Processing: {product_data.get('name')}")
                 category_paths = product_data.get('category_paths', [])
                 if not category_paths:
                     continue
@@ -70,9 +72,6 @@ def update_products_from_store_archives(command):
                     products_created += 1
                 else:
                     products_updated += 1
-                
-                if product_count % 100 == 0:
-                    command.stdout.write(f"    Products: updated {products_updated}, created {products_created}")
 
                 if not product_obj:
                     continue
@@ -108,6 +107,7 @@ def update_products_from_store_archives(command):
                         products_to_save_now.append(product_instance)
 
                 if products_to_save_now:
+                    command.stdout.write(f"    CHECKPOINT: Saving {len(products_to_save_now)} new products for this store...")
                     # 2. Bulk create this small batch of products.
                     with transaction.atomic():
                         Product.objects.bulk_create(list(products_to_save_now))
@@ -128,6 +128,7 @@ def update_products_from_store_archives(command):
                         composite_key = (p.name.lower(), p.brand.lower(), p.size.lower())
                         price_obj.product = product_cache.get(composite_key)
 
+                command.stdout.write(f"    CHECKPOINT: Saving {len(prices_to_create_for_store)} prices for this store...")
                 # 6. Now, safely bulk create the prices for this store.
                 with transaction.atomic():
                     Price.objects.bulk_create(prices_to_create_for_store)
