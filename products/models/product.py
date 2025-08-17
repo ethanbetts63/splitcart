@@ -8,18 +8,21 @@ class Product(models.Model):
     """
     name = models.CharField(
         max_length=255,
+        db_index=True,
         help_text="The full name of the product as seen in the store."
     )
     brand = models.CharField(
         max_length=100,
         null=True,
         blank=True,
+        db_index=True,
         help_text="The brand of the product, e.g., 'Coles', 'Coca-Cola'."
     )
     size = models.CharField(
         max_length=50,
         null=True,
         blank=True,
+        db_index=True,
         help_text="The size or quantity of the product, e.g., '500g', '1 Each'."
     )
     category = models.ManyToManyField(

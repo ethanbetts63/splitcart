@@ -24,7 +24,9 @@ def update_products_from_store_archives(command):
     # In-memory cache for stores and products
     store_cache = {str(store.store_id): store for store in Store.objects.all()}
     product_cache = { (p.name.lower() if p.name else '', p.brand.lower() if p.brand else '', p.size.lower() if p.size else ''): p for p in Product.objects.all() }
-    new_products_to_create = []
+    
+    # This list will hold all unsaved product objects for the entire run.
+    new_products_to_create = [] 
     product_category_relations = []
 
     company_folders = [f for f in os.scandir(archive_dir) if f.is_dir()]
@@ -46,7 +48,7 @@ def update_products_from_store_archives(command):
                 continue
 
             products = data.get('products', [])
-            prices_to_create = []
+            prices_to_create_for_store = []
             
             for product_data in products:
                 product_count += 1
@@ -54,8 +56,7 @@ def update_products_from_store_archives(command):
                 if not category_paths:
                     continue
                 
-                product_obj = None
-                created = False
+                product_obj, created = None, False
                 for i, category_path in enumerate(category_paths):
                     category_obj = get_or_create_category_hierarchy(category_path, store.company)
                     if i == 0: # Call get_or_create_product only on the first category path
@@ -86,7 +87,7 @@ def update_products_from_store_archives(command):
                     if price_to_use is None:
                         continue
 
-                    prices_to_create.append(
+                    prices_to_create_for_store.append(
                         Price(
                             product=product_obj,
                             store=store,
@@ -97,26 +98,53 @@ def update_products_from_store_archives(command):
                         )
                     )
             
-            if prices_to_create:
-                with transaction.atomic():
-                    Price.objects.bulk_create(prices_to_create)
+            # --- NEW "JUST-IN-TIME" LOGIC ---
+            if prices_to_create_for_store:
+                # 1. Find which products for this store's prices need to be created.
+                products_to_save_now = {p.product for p in prices_to_create_for_store if p.product in new_products_to_create}
 
-    # Bulk create new products
+                if products_to_save_now:
+                    # 2. Bulk create this small batch of products.
+                    with transaction.atomic():
+                        Product.objects.bulk_create(list(products_to_save_now))
+
+                    # 3. Update the global product cache with the newly saved products.
+                    for product in products_to_save_now:
+                        saved_product = Product.objects.get(name=product.name, brand=product.brand, size=product.size)
+                        composite_key = (saved_product.name.lower(), saved_product.brand.lower(), saved_product.size.lower())
+                        product_cache[composite_key] = saved_product
+                        
+                        # 4. Remove them from the main list to avoid creating them again later.
+                        new_products_to_create.remove(product)
+
+                # 5. Update the prices with the now-saved product objects.
+                for price_obj in prices_to_create_for_store:
+                    if not price_obj.product.id:
+                        p = price_obj.product
+                        composite_key = (p.name.lower(), p.brand.lower(), p.size.lower())
+                        price_obj.product = product_cache.get(composite_key)
+
+                # 6. Now, safely bulk create the prices for this store.
+                with transaction.atomic():
+                    Price.objects.bulk_create(prices_to_create_for_store)
+
+    # Bulk create any remaining new products (those that had no prices)
     if new_products_to_create:
         with transaction.atomic():
             Product.objects.bulk_create(new_products_to_create)
-
-        # Re-fetch the newly created products to get their IDs
+        # We still need to update the cache for the category relationship step.
         for product in new_products_to_create:
-            product_cache[(product.name.lower(), product.brand.lower(), product.size.lower())] = Product.objects.get(name=product.name, brand=product.brand, size=product.size)
+            saved_product = Product.objects.get(name=product.name, brand=product.brand, size=product.size)
+            composite_key = (saved_product.name.lower(), saved_product.brand.lower(), saved_product.size.lower())
+            product_cache[composite_key] = saved_product
 
-    # Add category relationships
+    # Add category relationships for all products
     if product_category_relations:
         with transaction.atomic():
             for product, cat_id in product_category_relations:
-                # If the product was newly created, get the object with the ID
                 if not product.id:
-                    product = product_cache.get((product.name.lower(), product.brand.lower(), product.size.lower()))
+                    composite_key = (product.name.lower(), product.brand.lower(), product.size.lower())
+                    product = product_cache.get(composite_key)
                 if product:
                     product.category.add(cat_id)
 
