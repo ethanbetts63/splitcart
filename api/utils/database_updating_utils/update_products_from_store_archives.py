@@ -19,6 +19,7 @@ def update_products_from_store_archives(command):
 
     products_updated = 0
     products_created = 0
+    product_count = 0
 
     company_folders = [f for f in os.scandir(archive_dir) if f.is_dir()]
     for company_folder in company_folders:
@@ -42,6 +43,7 @@ def update_products_from_store_archives(command):
             products = data.get('products', [])
             with transaction.atomic():
                 for product_data in products:
+                    product_count += 1
                     category_paths = product_data.get('category_paths', [])
                     if not category_paths:
                         continue
@@ -56,8 +58,8 @@ def update_products_from_store_archives(command):
                     else:
                         products_updated += 1
                     
-                    command.stdout.write(f"    Products: updated {products_updated}, created {products_created}\r")
-                    sys.stdout.flush()
+                    if product_count % 100 == 0:
+                        command.stdout.write(f"    Products: updated {products_updated}, created {products_created}")
 
                     if not product_obj:
                         continue
@@ -65,6 +67,7 @@ def update_products_from_store_archives(command):
                     for price_data in product_data.get('price_history', []):
                         create_price(price_data, product_obj, store)
     
+    command.stdout.write(f"    Total Products: updated {products_updated}, created {products_created}")
     command.stdout.write("\n")
     
     
