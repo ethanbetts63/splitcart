@@ -101,7 +101,11 @@ def update_products_from_store_archives(command):
             # --- NEW "JUST-IN-TIME" LOGIC ---
             if prices_to_create_for_store:
                 # 1. Find which products for this store's prices need to be created.
-                products_to_save_now = {p.product for p in prices_to_create_for_store if p.product in new_products_to_create}
+                products_to_save_now = []
+                for p in prices_to_create_for_store:
+                    product_instance = p.product
+                    if product_instance in new_products_to_create and product_instance not in products_to_save_now:
+                        products_to_save_now.append(product_instance)
 
                 if products_to_save_now:
                     # 2. Bulk create this small batch of products.
