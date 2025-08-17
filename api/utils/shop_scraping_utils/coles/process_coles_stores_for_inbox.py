@@ -8,7 +8,7 @@ def sanitize_filename(filename):
     return re.sub(r'[^\w\-\.]', '_', filename)
 
 def process_coles_stores_for_inbox():
-    OUTPUT_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\store_data\\stores_coles\\coles_stores_cleaned.json"
+    OUTPUT_FILE = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\archive\\store_data\\coles_stores_cleaned.json"
     DISCOVERED_STORES_DIR = "C:\\Users\\ethan\\coding\\splitcart\\api\\data\\discovered_stores"
 
     if not os.path.exists(OUTPUT_FILE):
