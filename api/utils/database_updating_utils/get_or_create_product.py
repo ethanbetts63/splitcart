@@ -8,7 +8,7 @@ back to less precise methods.
 from products.models import Product, Price
 from companies.models import Store, Category
 
-def get_or_create_product(product_data: dict, store_obj: Store, category_obj: Category) -> tuple[Product, bool]:
+def get_or_create_product(product_data: dict, store_obj: Store, category_obj: Category, product_cache: dict, new_products_to_create: list) -> tuple[Product, bool]:
     """
     Finds a canonical product or creates a new one, ensuring the category
     is always associated.
@@ -16,13 +16,28 @@ def get_or_create_product(product_data: dict, store_obj: Store, category_obj: Ca
     product = None
     created = False
 
+    # Create a composite key for cache lookup
+    name_str = product_data.get('name', '')
+    brand_str = product_data.get('brand', '')
+    size_str = product_data.get('size', '')
+
+    name = name_str.lower() if name_str else ''
+    brand = brand_str.lower() if brand_str else ''
+    size = size_str.lower() if size_str else ''
+    composite_key = (name, brand, size)
+
+    # Tier 0: Check cache first
+    if composite_key in product_cache:
+        product = product_cache[composite_key]
+
     # Tier 1: Match by Barcode
-    barcode = product_data.get('barcode')
-    if barcode:
-        try:
-            product = Product.objects.get(barcode=barcode)
-        except Product.DoesNotExist:
-            pass
+    if not product:
+        barcode = product_data.get('barcode')
+        if barcode:
+            try:
+                product = Product.objects.get(barcode=barcode)
+            except Product.DoesNotExist:
+                pass
 
     # Tier 2: Match by Store-Specific ID
     if not product:
@@ -38,35 +53,40 @@ def get_or_create_product(product_data: dict, store_obj: Store, category_obj: Ca
             except Price.DoesNotExist:
                 pass
 
-    # Tier 3: Match by Normalized Name, Brand, and Size
+    # Tier 3: Match by Normalized Name, Brand, and Size (from DB)
     if not product:
         try:
             product = Product.objects.get(
-                name__iexact=product_data.get('name'),
-                brand__iexact=product_data.get('brand'),
-                size__iexact=product_data.get('package_size')
+                name__iexact=name,
+                brand__iexact=brand,
+                size__iexact=size
             )
         except Product.DoesNotExist:
             pass
 
-    # Tier 4: Create New Product if not found
+    # Tier 4: Create New Product if not found (in memory)
     if not product:
-        product, created = Product.objects.get_or_create(
+        product = Product(
             name=product_data.get('name'),
             brand=product_data.get('brand'),
-            size=product_data.get('package_size'),
-            defaults={
-                'barcode': product_data.get('barcode'),
-                'image_url': product_data.get('image_url_main'),
-                'url': product_data.get('url'),
-                'description': product_data.get('description'),
-                'country_of_origin': product_data.get('country_of_origin'),
-                'ingredients': product_data.get('ingredients')
-            }
+            size=product_data.get('size'),
+            barcode=product_data.get('barcode'),
+            image_url=product_data.get('image_url'),
+            url=product_data.get('url'),
+            description=product_data.get('description'),
+            country_of_origin=product_data.get('country_of_origin'),
+            ingredients=product_data.get('ingredients')
         )
+        new_products_to_create.append(product)
+        product_cache[composite_key] = product # Add to cache for subsequent lookups
+        created = True
 
-    # This now runs for ANY product, whether it was found or created
-    if product:
-        product.category.add(category_obj)
+    # Category association will be handled after bulk creation
+    if product and category_obj:
+        # This part needs to be handled carefully after the product has an ID.
+        # We can store these relationships and add them after bulk creating.
+        if not hasattr(product, 'categories_to_add'):
+            product.categories_to_add = set()
+        product.categories_to_add.add(category_obj.id)
 
     return product, created
