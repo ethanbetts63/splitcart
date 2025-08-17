@@ -44,7 +44,6 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
     # --- Selenium Phase: Session Initialization ---
     driver = None
     session = None
-    categories_to_fetch = []
     try:
         print("--- Selenium Phase: Initializing browser for session ---")
         options = webdriver.ChromeOptions()
@@ -61,55 +60,6 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
         driver.refresh()
 
         input("ACTION REQUIRED: Please solve any CAPTCHA, then press Enter here to continue...")
-
-        # --- Fetch Store-Specific Categories using Selenium ---
-        print("\n--- Fetching store-specific categories using Selenium ---")
-        
-        graphql_script = '''
-            const fetchGraphQL = async (storeId) => {
-              const response = await fetch('https://www.coles.com.au/api/graphql', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'ocp-apim-subscription-key': 'eae83861d1cd4de6bb9cd8a2cd6f041e',
-                  'cusp-channel': 'coles.online.1site.desktop'
-                },
-                body: JSON.stringify({
-                  "operationName": "getMenuItems",
-                  "variables": {
-                    "storeId": storeId,
-                    "userId": null,
-                    "channel": "ColesOnline",
-                    "optional": false,
-                    "showAll": true
-                  },
-                  "query": "query getMenuItems($storeId: String!, $userId: String, $channel: String!, $optional: Boolean, $showAll: Boolean) {\n  menuItems(storeId: $storeId, userId: $userId, channel: $channel, optional: $optional, showAll: $showAll) {\n    ...menuItemFields\n    __typename\n  }\n}\n\nfragment menuItemFields on MenuItems {\n  items {\n    ...menuItem\n    __typename\n  }\n  restrictedIds\n  __typename\n}\n\nfragment menuItem on MenuItem {\n  id\n  level\n  name\n  originalName\n  productCount\n  seoToken\n  type\n  subType\n  childItems {\n    id\n    level\n    name\n    originalName\n    productCount\n    seoToken\n    type\n    subType\n    childItems {\n      id\n      level\n      name\n      originalName\n      productCount\n      seoToken\n      type\n      subType\n      childItems {\n        id\n        level\n        name\n        originalName\n        productCount\n        seoToken\n        type\n        subType\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n  __typename\n}\n"
-                })
-              });
-              return response.json();
-            };
-            return fetchGraphQL(arguments[0]);
-            '''
-        
-        category_data = driver.execute_script(graphql_script, store_id)
-
-        def extract_slugs(items):
-            slugs = []
-            for item in items:
-                if item.get('seoToken'):
-                    slugs.append(item['seoToken'])
-                if item.get('childItems'):
-                    slugs.extend(extract_slugs(item['childItems']))
-            return slugs
-
-        categories_to_fetch = extract_slugs(category_data['data']['menuItems']['items'])
-        
-        if not categories_to_fetch:
-            print("ERROR: Could not fetch categories using Selenium. Aborting.")
-            driver.quit()
-            return
-        
-        print(f"Found {len(categories_to_fetch)} categories for this store.")
 
         # --- Requests Phase: Data Scraping ---
         print("\n--- Requests Phase: Transferring session to scrape data ---")
@@ -148,7 +98,7 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
             print(f"Resuming category '{category_slug}' from page {page_num}.")
 
         category_successfully_completed = False
-        while True: # Will break out internally 
+        while True: # Will break out internally
             if page_num > total_pages and total_pages > 1:
                 category_successfully_completed = True
                 break
