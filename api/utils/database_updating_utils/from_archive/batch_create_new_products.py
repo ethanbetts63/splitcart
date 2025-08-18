@@ -19,10 +19,10 @@ def batch_create_new_products(consolidated_data: dict):
             details = data['product_details']
             new_products_to_create.append(                Product(
                     name=str(details.get('name', '')).strip(), brand=str(details.get('brand', '')).strip(),
-                    size=str(details.get('size', '')).strip(), barcode=details.get('barcode'),
-                    image_url=details.get('image_url'), url=details.get('url'),
-                    description=details.get('description'), country_of_origin=details.get('country_of_origin'),
-                    ingredients=details.get('ingredients'), allergens=details.get('allergens')))
+                    size=str(details.get('package_size', '')).strip(), barcode=details.get('barcode'),
+                    image_url=details.get('image_url_main'), url=details.get('url'),
+                    description=details.get('description_long'), country_of_origin=details.get('country_of_origin'),
+                    ingredients=details.get('ingredients'), allergens=details.get('allergens_may_be_present')))
             seen_keys.add(key) # Add key to seen_keys
 
     if new_products_to_create:

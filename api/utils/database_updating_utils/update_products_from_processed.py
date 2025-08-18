@@ -38,12 +38,12 @@ def update_products_from_processed(command):
         for p in products:
             name = str(p.get('name', '')).lower()
             brand = str(p.get('brand', '')).lower()
-            size = str(p.get('size', '')).lower()
+            size = str(p.get('package_size', '')).strip().lower()
             key = (name, brand, size)
 
             price_info = {
                 'store_id': metadata.get('store_id'),
-                'price': p.get('price'),
+                'price': p.get('price_current'),
                 'is_on_special': p.get('is_on_sale', False),
                 'is_available': True 
             }
