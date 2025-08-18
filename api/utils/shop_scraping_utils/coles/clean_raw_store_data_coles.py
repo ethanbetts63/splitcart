@@ -6,7 +6,6 @@ def clean_raw_store_data_coles(raw_store_data: dict, company: str, timestamp: da
     """
     
     store_id = raw_store_data.get('id')
-    print(store_id)
     address = raw_store_data.get('address', {})
     position = raw_store_data.get('position', {})
     brand = raw_store_data.get('brand', {})
@@ -41,6 +40,18 @@ def clean_raw_store_data_coles(raw_store_data: dict, company: str, timestamp: da
         "available_customer_service_types": None,
         "alcohol_availability": None,
     }
+
+    store_id = cleaned_data.get('store_id')
+    suburb = cleaned_data.get('suburb')
+    store_name = cleaned_data.get('store_name')
+
+    if store_id and suburb and (not store_name or store_name == 'N/A'):
+        if 'COL:' in store_id:
+            cleaned_data['store_name'] = f"Coles {suburb}"
+        elif 'VIN:' in store_id:
+            cleaned_data['store_name'] = f"Vintage Cellars {suburb}"
+        elif 'LQR:' in store_id:
+            cleaned_data['store_name'] = f"Liquorland {suburb}"
 
     metadata = {
         "company": company,
