@@ -10,7 +10,7 @@ def batch_create_category_relationships(consolidated_data: dict, product_cache: 
     
     # Part A: Ensure all categories exist
     print("  Part A: Ensuring all categories exist...")
-    existing_categories = {(c.name.lower(), c.company_id): c for c in Category.objects.all()}
+    existing_categories = {(c.name.lower() if c.name else '', c.company_id): c for c in Category.objects.all()}
     all_category_names = set()
     for data in consolidated_data.values():
         for path in data['category_paths']:
@@ -33,7 +33,7 @@ def batch_create_category_relationships(consolidated_data: dict, product_cache: 
         print(f"  Creating {len(new_categories_to_create)} new categories...")
         Category.objects.bulk_create(new_categories_to_create, ignore_conflicts=True)
     
-    category_cache = {(c.name.lower(), c.company_id): c for c in Category.objects.all()}
+    category_cache = {(c.name.lower() if c.name else '', c.company_id): c for c in Category.objects.all()}
 
     # Part B: Create parent-child relationships
     print("  Part B: Creating parent-child relationships...")

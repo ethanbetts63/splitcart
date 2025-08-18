@@ -30,6 +30,9 @@ def batch_create_new_products(consolidated_data: dict):
         print("No new products to create.")
 
     print("Refreshing product cache...")
-    full_product_cache = {(p.name.lower(), p.brand.lower(), p.size.lower()): p for p in Product.objects.all()}
+    full_product_cache = {
+        (p.name.lower() if p.name else '', p.brand.lower() if p.brand else '', p.size.lower() if p.size else ''): p 
+        for p in Product.objects.all()
+    }
     print(f"Total products in cache: {len(full_product_cache)}")
     return full_product_cache
