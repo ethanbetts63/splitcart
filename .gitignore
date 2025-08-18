@@ -59,3 +59,5 @@ api/data/
 db.sqlite3
 db.sqlite3-shm
 db.sqlite3-wal
+
+processed_data/
