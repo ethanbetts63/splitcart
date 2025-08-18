@@ -15,10 +15,15 @@ def batch_create_prices(consolidated_data: dict, product_cache: dict):
         if not product_obj: continue
 
         for price_data in data['price_history']:
-            store_obj = store_cache.get(price_data['store_id'])
-            if not store_obj: continue
+            current_store_id = price_data['store_id'] # Get store_id here
+            store_obj = store_cache.get(str(current_store_id)) # Ensure it's a string for lookup
+            if not store_obj:
+                print(f"DEBUG: Skipping price for product {key} - Store ID {current_store_id} not found in cache.")
+                continue
             price_to_use = price_data.get('price')
-            if price_to_use is None: continue
+            if price_to_use is None:
+                print(f"DEBUG: Skipping price for product {key} at store {current_store_id} - Price is None.")
+                continue
 
             prices_to_create.append(Price(
                 product=product_obj, store=store_obj, price=price_to_use,
