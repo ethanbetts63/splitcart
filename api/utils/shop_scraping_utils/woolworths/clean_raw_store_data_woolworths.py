@@ -38,6 +38,9 @@ def clean_raw_store_data_woolworths(raw_store_data: dict, company: str, timestam
         "alcohol_availability": None,
     }
 
+    if cleaned_data.get('store_name') == 'N/A' and cleaned_data.get('suburb'):
+        cleaned_data['store_name'] = cleaned_data['suburb']
+        
     metadata = {
         "company": company,
         "scraped_at": timestamp.isoformat()
