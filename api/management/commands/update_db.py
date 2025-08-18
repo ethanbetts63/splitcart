@@ -2,7 +2,8 @@ from django.core.management.base import BaseCommand
 from api.utils.database_updating_utils.update_stores_from_discovery import update_stores_from_discovery
 from api.utils.database_updating_utils.update_products_from_processed import update_products_from_processed
 from api.utils.database_updating_utils.update_stores_from_archive import update_stores_from_archive
-from api.utils.database_updating_utils.update_products_from_store_archives import update_products_from_store_archives
+# from api.utils.database_updating_utils.update_products_from_store_archives import update_products_from_store_archives
+from api.utils.database_updating_utils.from_archive import perform_fast_update_from_archive
 
 class Command(BaseCommand):
     help = 'Updates the database with data from various sources.'
@@ -37,8 +38,9 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS('--- Store update from company archives complete ---'))
             
             if run_products_archive:
-                self.stdout.write(self.style.SQL_FIELD('--- Running product update from store archives ---'))
-                update_products_from_store_archives(self)
+                self.stdout.write(self.style.SQL_FIELD('--- Running FAST product update from store archives ---'))
+                # update_products_from_store_archives(self) # --- OLD SLOW METHOD
+                perform_fast_update_from_archive(self) # +++ NEW FAST METHOD
                 self.stdout.write(self.style.SUCCESS('--- Product update from store archives complete ---'))
 
         if run_stores_discovery:
