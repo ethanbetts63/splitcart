@@ -1,8 +1,8 @@
 
 import json
-from .get_or_create_company import get_or_create_company
-from .get_or_create_division import get_or_create_division
-from .get_or_create_store import get_or_create_store
+from api.utils.database_updating_utils.get_or_create_company import get_or_create_company
+from api.utils.database_updating_utils.get_or_create_division import get_or_create_division
+from api.utils.database_updating_utils.get_or_create_store import get_or_create_store
 
 def update_stores_from_archive_file(file_path: str) -> (str, int):
     """
