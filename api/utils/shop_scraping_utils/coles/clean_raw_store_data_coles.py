@@ -10,12 +10,24 @@ def clean_raw_store_data_coles(raw_store_data: dict, company: str, timestamp: da
     position = raw_store_data.get('position', {})
     brand = raw_store_data.get('brand', {})
 
+    division_mapping = {
+        "COL": "Coles Supermarkets",
+        "VIN": "Vintage Cellars",
+        "LQR": "Liquorland"
+    }
+    division = None
+    if store_id:
+        for prefix, division_name in division_mapping.items():
+            if f"{prefix}:" in store_id:
+                division = division_name
+                break
+
     cleaned_data = {
         "store_name": raw_store_data.get('name'),
         "store_id": store_id,
         "retailer_store_id": None,
         "is_active": True,  # Assuming all discovered stores are active
-        "division": brand.get('name'),
+        "division": division,
         "email": None,
         "phone_number": raw_store_data.get('phone'),
         "address_line_1": address.get('addressLine'),
