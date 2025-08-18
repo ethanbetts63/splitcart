@@ -15,12 +15,12 @@ def batch_create_new_products(consolidated_data: dict):
     for key, data in consolidated_data.items():
         if key not in existing_products_cache:
             details = data['product_details']
-            new_products_to_create.append(Product(
-                name=details.get('name', '').strip(), brand=details.get('brand', '').strip(),
-                size=details.get('size', '').strip(), barcode=details.get('barcode'),
-                image_url=details.get('image_url'), url=details.get('url'),
-                description=details.get('description'), country_of_origin=details.get('country_of_origin'),
-                ingredients=details.get('ingredients')))
+            new_products_to_create.append(                Product(
+                    name=details.get('name', '').strip(), brand=details.get('brand', '').strip(),
+                    size=details.get('size', '').strip(), barcode=details.get('barcode'),
+                    image_url=details.get('image_url'), url=details.get('url'),
+                    description=details.get('description'), country_of_origin=details.get('country_of_origin'),
+                    ingredients=details.get('ingredients'), allergens=details.get('allergens')))
 
     if new_products_to_create:
         print(f"Creating {len(new_products_to_create)} new products...")
