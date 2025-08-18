@@ -36,8 +36,8 @@ def update_products_from_processed(command):
         # Step 1: Consolidate data from the single file into the expected format
         consolidated_data = {}
         for p in products:
-            name = str(p.get('name', '')).lower()
-            brand = str(p.get('brand', '')).lower()
+            name = str(p.get('name', '')).strip().lower()
+            brand = str(p.get('brand', '')).strip().lower()
             size = str(p.get('package_size', '')).strip().lower()
             key = (name, brand, size)
 
