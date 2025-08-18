@@ -58,7 +58,7 @@ def update_products_from_processed(command):
             command.stdout.write(command.style.ERROR(f'Could not get or create store from metadata in {filename}. Skipping.'))
             continue
 
-        display_store_name = store_obj.name if store_obj.name != 'N/A' else store_obj.store_id
+        display_store_name = store_obj.store_name if store_obj.store_name != 'N/A' else store_obj.store_id
         command.stdout.write(command.style.SQL_FIELD(f'--- Processing file: {filename} for store: {display_store_name} ---'))
 
         try:
