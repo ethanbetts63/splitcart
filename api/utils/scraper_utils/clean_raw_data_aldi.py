@@ -60,8 +60,8 @@ def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, s
         clean_product = {
             "product_id_store": product.get('sku'),
             "barcode": None, # Not available
-            "name": product.get('name'),
-            "brand": product.get('brandName'),
+            "name": product.get('name').lower().strip(),
+            "brand": product.get('brandName').lower().strip(),
             "description_short": None, # Not available
             "description_long": None, # Not available
             "url": f"https://www.aldi.com.au/product/{product.get('urlSlugText', '')}" if product.get('urlSlugText') else None,
@@ -84,7 +84,7 @@ def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, s
             "purchase_limit": product.get('quantityMax'),
 
             # --- Details & Attributes ---
-            "package_size": product.get('sellingSize'),
+            "package_size": product.get('sellingSize').lower().strip() if product.get('sellingSize') else None,
             "country_of_origin": None, # Not available
             "health_star_rating": None, # Not available
             "ingredients": None, # Not available
@@ -102,11 +102,11 @@ def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, s
     
     return {
         "metadata": {
-            "company": company,
-            "store_name": store_name,
-            "store_id": store_id,
-            "state": state,
-            "category": category_slug,
+            "company": company.lower().strip(),
+            "store_name": store_name.lower().strip(),
+            "store_id": store_id.lower().strip(),
+            "state": state.lower().strip(),
+            "category": category_slug.lower(),
             "page_number": page_num,
             "scraped_at": timestamp.isoformat()
         },

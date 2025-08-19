@@ -68,9 +68,9 @@ def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, st
         clean_product = {
             "product_id_store": str(product_id) if product_id else None,
             "barcode": None,  # Not available in Coles data
-            "name": product_name,
-            "brand": product.get('brand'),
-            "description_short": product.get('description'),
+            "name": product_name.lower().strip() if product_name else None,
+            "brand": product.get('brand').lower().strip() if product.get('brand') else None,
+            "description_short": product.get('description').strip() if product.get('description') else None,
             "description_long": None, # Not available in Coles data
             "url": product_url,
             "image_url_main": f"https://www.coles.com.au{image_uris[0]['uri']}" if image_uris else None,
@@ -83,7 +83,7 @@ def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, st
             "price_save_amount": pricing.get('saveAmount'),
             "promotion_type": pricing.get('promotionType'),
             "price_unit": unit_info.get('price'),
-            "unit_of_measure": unit_info.get('ofMeasureUnits'),
+            "unit_of_measure": unit_info.get('ofMeasureUnits').lower().strip() if unit_info.get('ofMeasureUnits') else None,
             "unit_price_string": pricing.get('comparable'),
 
             # --- Availability & Stock ---
@@ -92,7 +92,7 @@ def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, st
             "purchase_limit": restrictions.get('retailLimit'),
 
             # --- Details & Attributes ---
-            "package_size": product_size,
+            "package_size": product_size.lower().strip() if product_size else None,
             "country_of_origin": None, # Not available
             "health_star_rating": None, # Not available
             "ingredients": None, # Not available in this part of the data
@@ -109,11 +109,11 @@ def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, st
     
     return {
         "metadata": {
-            "company": company,
-            "store_name": store_name,
-            "store_id": store_id,
-            "state": state,
-            "category": category,
+            "company": company.lower().strip(),
+            "store_name": store_name.lower().strip(),
+            "store_id": store_id.lower().strip(),
+            "state": state.lower().strip(),
+            "category": category.lower().strip(),
             "page_number": page_num,
             "scraped_at": timestamp.isoformat()
         },

@@ -64,10 +64,10 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
         clean_product = {
             "product_id_store": product.get('sku'),
             "barcode": product.get('barcode'),
-            "name": product.get('name'),
-            "brand": product.get('brand'),
+            "name": product.get('name').lower().strip() if product.get('name') else None,
+            "brand": product.get('brand').lower().strip() if product.get('brand') else None,
             "description_short": None, # IGA provides one description field
-            "description_long": description,
+            "description_long": description.strip() if description else None,
             "url": None, # No direct URL available
             "image_url_main": image_info.get('default'),
             "image_urls_all": image_urls,
@@ -79,7 +79,7 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
             "price_save_amount": save_amount,
             "promotion_type": product.get('priceSource'), # e.g., 'regular' or 'special'
             "price_unit": None, # Not directly available
-            "unit_of_measure": product.get('unitOfMeasure', {}).get('label'),
+            "unit_of_measure": product.get('unitOfMeasure', {}).get('label').lower().strip() if product.get('unitOfMeasure', {}).get('label') else None,
             "unit_price_string": product.get('pricePerUnit'),
 
             # --- Availability & Stock ---
@@ -88,7 +88,7 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
             "purchase_limit": None, # Not available
 
             # --- Details & Attributes ---
-            "package_size": product.get('sellBy'),
+            "package_size": product.get('sellBy').lower().strip() if product.get('sellBy') else None,
             "country_of_origin": country_of_origin,
             "health_star_rating": None, # Not available
             "ingredients": None, # Not available
@@ -106,11 +106,11 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
     
     return {
         "metadata": {
-            "company": company,
-            "store_name": store_name,
-            "store_id": store_id,
-            "state": state,
-            "category": category_slug,
+            "company": company.lower().strip(),
+            "store_name": store_name.lower().strip(),
+            "store_id": store_id.lower().strip(),
+            "state": state.lower().strip(),
+            "category": category_slug.lower().strip(),
             "page_number": page_num,
             "scraped_at": timestamp.isoformat()
         },

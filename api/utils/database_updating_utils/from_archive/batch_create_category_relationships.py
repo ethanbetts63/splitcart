@@ -6,7 +6,8 @@ def batch_create_category_relationships(consolidated_data: dict, product_cache: 
     Pass 4: Create categories and all relationships in batches.
     """
     print("--- Pass 4: Batch creating category relationships ---")
-    company_cache = {c.name: c for c in Company.objects.all()}
+
+    company_cache = {c.name.lower(): c for c in Company.objects.all()}
     
     # Part A: Ensure all categories exist
     print("  Part A: Ensuring all categories exist...")
@@ -21,7 +22,7 @@ def batch_create_category_relationships(consolidated_data: dict, product_cache: 
     # This is simplified; assumes company context is available for each category name.
     # A more robust implementation might need to associate company with each path.
     for data in consolidated_data.values():
-        company = company_cache.get(data['company_name'])
+        company = company_cache.get(data['company_name'].lower())
         if not company: continue
         for path in data['category_paths']:
             for name in path:
@@ -40,7 +41,7 @@ def batch_create_category_relationships(consolidated_data: dict, product_cache: 
     parent_relations_to_create = []
     CategoryParents = Category.parents.through
     for data in consolidated_data.values():
-        company = company_cache.get(data['company_name'])
+        company = company_cache.get(data['company_name'].lower())
         if not company: continue
         for path in data['category_paths']:
             parent_obj = None
@@ -60,7 +61,7 @@ def batch_create_category_relationships(consolidated_data: dict, product_cache: 
     product_relations_to_create = []
     for key, data in consolidated_data.items():
         product_obj = product_cache.get(key)
-        company = company_cache.get(data['company_name'])
+        company = company_cache.get(data['company_name'].lower())
         if not product_obj or not company: continue
         for path in data['category_paths']:
             if path:
