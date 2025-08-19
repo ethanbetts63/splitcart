@@ -26,12 +26,17 @@ class Command(BaseCommand):
             default=True,
             help='Find and display potential fuzzy duplicates.'
         )
+        parser.add_argument(
+            '--exclude-size',
+            action='store_true',
+            help='Exclude groups where products have different sizes.'
+        )
 
     def handle(self, *args, **options):
         if options['find']:
-            self.find_duplicates()
+            self.find_duplicates(exclude_size=options['exclude_size'])
 
-    def find_duplicates(self):
+    def find_duplicates(self, exclude_size=False):
         self.stdout.write(self.style.SQL_FIELD('--- Finding potential duplicates by normalized name and brand ---'))
 
         # Group products by normalized name and brand
@@ -44,8 +49,21 @@ class Command(BaseCommand):
         # Filter for groups with more than one product
         duplicate_groups = {key: products for key, products in product_groups.items() if len(products) > 1}
 
+        # If --exclude-size is used, filter out groups with varying sizes
+        if exclude_size:
+            self.stdout.write(self.style.SQL_FIELD('--- Filtering: Excluding groups with different sizes ---'))
+            filtered_groups = {}
+            for key, products in duplicate_groups.items():
+                # Create a set of all sizes in the group
+                sizes = {p.size for p in products}
+                # If there's only one unique size, keep the group
+                if len(sizes) == 1:
+                    filtered_groups[key] = products
+            duplicate_groups = filtered_groups
+
+
         if not duplicate_groups:
-            self.stdout.write(self.style.SUCCESS('No potential duplicates found with this method.'))
+            self.stdout.write(self.style.SUCCESS('No potential duplicates found with the current criteria.'))
             return
 
         self.stdout.write(f'Found {len(duplicate_groups)} potential duplicate groups.')
