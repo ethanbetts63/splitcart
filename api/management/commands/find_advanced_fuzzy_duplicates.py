@@ -48,22 +48,14 @@ def format_group_output(writer, group_type, criteria, products, similarity=None)
 class Command(BaseCommand):
     help = 'Finds advanced fuzzy duplicates and outputs them to a file or console.'
 
-    def add_arguments(self, parser):
-        parser.add_argument(
-            '--output-file',
-            type=str,
-            help='Path to the output file. If not provided, prints to console.'
-        )
-
     def handle(self, *args, **options):
-        output_file = options['output_file']
-        writer = open(output_file, 'w') if output_file else self.stdout
+        output_file_path = "C:\Users\ethan\coding\splitcart\splitcart.txt"
+        writer = open(output_file_path, 'w')
         
         try:
             self._execute(writer)
         finally:
-            if output_file:
-                writer.close()
+            writer.close()
 
     def _execute(self, writer):
         writer.write('--- Starting advanced fuzzy duplicate detection ---\n')
@@ -91,7 +83,7 @@ class Command(BaseCommand):
             for normalized_name, group in normalized_groups.items():
                 if len(group) > 1:
                     direct_match_groups += 1
-                    criteria = f'Brand='{brand}', Size='{size}', Normalized='{normalized_name}''
+                    criteria = f"Brand='{brand}', Size='{size}', Normalized='{normalized_name}'"
                     format_group_output(writer, 'Direct', criteria, group)
                     for p in group:
                         processed_ids.add(p.id)
@@ -128,7 +120,7 @@ class Command(BaseCommand):
                     for p in similar_group:
                         processed_ids.add(p.id)
                     
-                    criteria = f'Brand='{brand}', Size='{size}''
+                    criteria = f"Brand='{brand}', Size='{size}"
                     # For display, we show the similarity of the first item to the rest
                     # A more complex logic could show pair-wise similarity
                     base_name = similar_group[0].name
