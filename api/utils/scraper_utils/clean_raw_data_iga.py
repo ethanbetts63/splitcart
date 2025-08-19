@@ -106,7 +106,7 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
     
     return {
         "metadata": {
-            "company": company.lower(),
+            "company": company,
             "store_name": store_name,
             "store_id": store_id,
             "state": state,
