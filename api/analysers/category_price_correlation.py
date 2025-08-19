@@ -26,10 +26,10 @@ def generate_category_price_correlation_heatmap(company_name, category_name):
 
     stores = Store.objects.filter(company=company).annotate(
         product_count=Count('prices__product', filter=Q(prices__product__category=category))
-    ).filter(product_count__gt=0)
+    ).filter(product_count__gt=10)
     store_count = stores.count()
     if store_count < 2:
-        print(f"Skipping category '{category_name}': Not enough stores with products in this category.")
+        print(f"Skipping category '{category_name}': Not enough stores with over 10 products in this category.")
     else:
         # Create a DataFrame to store the correlation matrix
         correlation_matrix = pd.DataFrame(index=[s.store_name for s in stores], columns=[s.store_name for s in stores], dtype=float)
@@ -61,8 +61,8 @@ def generate_category_price_correlation_heatmap(company_name, category_name):
                     identical_price_count = 0
                     for product_id in common_product_ids:
                         try:
-                            price1 = Price.objects.get(product_id=product_id, store=store1).price
-                            price2 = Price.objects.get(product_id=product_id, store=store2).price
+                            price1 = Price.objects.filter(product_id=product_id, store=store1).latest('scraped_at').price
+                            price2 = Price.objects.filter(product_id=product_id, store=store2).latest('scraped_at').price
                             if price1 is not None and price1 == price2:
                                 identical_price_count += 1
                         except Price.DoesNotExist:
@@ -81,11 +81,11 @@ def generate_category_price_correlation_heatmap(company_name, category_name):
         plt.ylabel('Store')
         
         # Save the heatmap
-        output_dir = os.path.join('api', 'data', 'analysis')
+        output_dir = os.path.join('api', 'data', 'analysis', 'heatmaps', company_name.lower())
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
         
-        filename = f'{company_name.lower()}_{category_name.lower()}_category_price_correlation_heatmap.png'
+        filename = f'{category_name.lower()}_heatmap.png'
         filepath = os.path.join(output_dir, filename)
         plt.savefig(filepath)
         print(f"Heatmap saved to {filepath}")
