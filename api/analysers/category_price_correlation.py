@@ -19,17 +19,17 @@ def generate_category_price_correlation_heatmap(company_name, category_name):
 
     try:
         # Assuming category names are unique within a company
-        category = Category.objects.get(name__iexact=category_name, company=company)
+        category = Category.objects.filter(name__iexact=category_name, company=company).first()
     except Category.DoesNotExist:
         print(f"Category '{category_name}' not found for company '{company_name}'.")
         return
 
     stores = Store.objects.filter(company=company).annotate(
         product_count=Count('prices__product', filter=Q(prices__product__category=category))
-    ).filter(product_count__gt=100)
+    ).filter(product_count__gt=0)
     store_count = stores.count()
     if store_count < 2:
-        print(f"Skipping category '{category_name}': Not enough stores with over 100 products in this category.")
+        print(f"Skipping category '{category_name}': Not enough stores with products in this category.")
     else:
         # Create a DataFrame to store the correlation matrix
         correlation_matrix = pd.DataFrame(index=[s.store_name for s in stores], columns=[s.store_name for s in stores], dtype=float)

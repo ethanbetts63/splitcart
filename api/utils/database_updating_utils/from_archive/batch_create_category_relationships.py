@@ -1,17 +1,17 @@
 from products.models import Product
 from companies.models import Category, Company
+from django.utils.text import slugify
 
 def batch_create_category_relationships(consolidated_data: dict, product_cache: dict):
     """
     Pass 4: Create categories and all relationships in batches.
     """
     print("--- Pass 4: Batch creating category relationships ---")
-
     company_cache = {c.name.lower(): c for c in Company.objects.all()}
     
     # Part A: Ensure all categories exist
     print("  Part A: Ensuring all categories exist...")
-    existing_categories = {(c.name.lower() if c.name else '', c.company_id): c for c in Category.objects.all()}
+    existing_categories = {(c.slug, c.company_id): c for c in Category.objects.all()}
     all_category_names = set()
     for data in consolidated_data.values():
         for path in data['category_paths']:
@@ -19,22 +19,21 @@ def batch_create_category_relationships(consolidated_data: dict, product_cache: 
                 all_category_names.add(name)
 
     new_categories_to_create = []
-    # This is simplified; assumes company context is available for each category name.
-    # A more robust implementation might need to associate company with each path.
     for data in consolidated_data.values():
         company = company_cache.get(data['company_name'].lower())
         if not company: continue
         for path in data['category_paths']:
             for name in path:
-                if (name.lower(), company.id) not in existing_categories:
-                    new_categories_to_create.append(Category(name=name, company=company))
-                    existing_categories[(name.lower(), company.id)] = True # Avoid duplicates
+                slug = slugify(name)
+                if (slug, company.id) not in existing_categories:
+                    new_categories_to_create.append(Category(name=name, slug=slug, company=company))
+                    existing_categories[(slug, company.id)] = True # Avoid duplicates
 
     if new_categories_to_create:
         print(f"  Creating {len(new_categories_to_create)} new categories...")
         Category.objects.bulk_create(new_categories_to_create, ignore_conflicts=True)
     
-    category_cache = {(c.name.lower() if c.name else '', c.company_id): c for c in Category.objects.all()}
+    category_cache = {(c.slug, c.company_id): c for c in Category.objects.all()}
 
     # Part B: Create parent-child relationships
     print("  Part B: Creating parent-child relationships...")
@@ -46,7 +45,8 @@ def batch_create_category_relationships(consolidated_data: dict, product_cache: 
         for path in data['category_paths']:
             parent_obj = None
             for name in path:
-                cat_obj = category_cache.get((name.lower(), company.id))
+                slug = slugify(name)
+                cat_obj = category_cache.get((slug, company.id))
                 if parent_obj and cat_obj:
                     parent_relations_to_create.append(CategoryParents(from_category_id=cat_obj.id, to_category_id=parent_obj.id))
                 parent_obj = cat_obj
@@ -66,7 +66,8 @@ def batch_create_category_relationships(consolidated_data: dict, product_cache: 
         for path in data['category_paths']:
             if path:
                 leaf_category_name = path[-1]
-                cat_obj = category_cache.get((leaf_category_name.lower(), company.id))
+                slug = slugify(leaf_category_name)
+                cat_obj = category_cache.get((slug, company.id))
                 if cat_obj:
                     product_relations_to_create.append(ProductCategory(product_id=product_obj.id, category_id=cat_obj.id))
 
