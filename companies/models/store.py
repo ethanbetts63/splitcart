@@ -238,4 +238,4 @@ class Store(models.Model):
         verbose_name_plural = "Stores"
 
     def __str__(self):
-        return f"{self.name} ({self.company.name})"
+        return f"{self.store_name} ({self.company.name})"

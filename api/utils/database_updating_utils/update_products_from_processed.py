@@ -3,6 +3,8 @@ import json
 from django.db import transaction
 from django.conf import settings
 from datetime import datetime
+from companies.models import Company
+from api.utils.database_updating_utils.get_or_create_store import get_or_create_store
 
 from api.utils.database_updating_utils.from_archive.batch_create_new_products import batch_create_new_products
 from api.utils.database_updating_utils.from_archive.batch_create_prices import batch_create_prices

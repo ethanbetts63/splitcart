@@ -14,7 +14,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR("Company 'Coles' not found."))
             return
 
-        stores = Store.objects.filter(company=coles_company).annotate(price_count=Count('prices')).order_by('-price_count')
+        stores = Store.objects.filter(company=coles_company).exclude(store_name__icontains='Liquorland').exclude(store_name__icontains='Vintage Cellars').annotate(price_count=Count('prices')).order_by('-price_count')
 
         if not stores.exists():
             self.stdout.write(self.style.WARNING("No stores found for Coles."))

@@ -45,6 +45,7 @@ def archive_single_store(store_id):
                 'state': store.state,
                 'postcode': store.postcode,
                 'data_generation_date': datetime.now().isoformat(),
+                'total_products': len(product_list),
             },
             'products': product_list
         }
