@@ -49,7 +49,7 @@ class Command(BaseCommand):
             generate_store_product_counts_chart(company_name)
         
         elif report_type == 'company_heatmap':
-            generate__product_overlap_heatmap()
+            generate_company_product_overlap_heatmap()
 
         elif report_type == 'store_heatmap':
             if not company_name:
