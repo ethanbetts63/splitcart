@@ -42,7 +42,7 @@ def format_group_output(writer, group_type, criteria, products, similarity=None)
         writer.write(f'Similarity: {similarity:.2f}%\n')
     writer.write(f'----------------------------------------\n')
     for p in products:
-        stores_info = ", ".join(sorted(list(set([price.store.store_name for price in p.prices.all()]))))
+        stores_info = ", ".join(sorted(list(set([price.store.company.name for price in p.prices.all()]))))
         writer.write(f"  - ID: {p.id:<5} | Brand: {p.brand:<20} | Name: {p.name:<50} | Size: {p.size:<15} | Stores: {stores_info}\n")
     writer.write(f'='*60+'\n')
 
@@ -67,7 +67,7 @@ class Command(BaseCommand):
         total_products = all_products.count()
 
         for i in range(0, total_products, batch_size):
-            products_batch = all_products[i:i + batch_size].prefetch_related('prices__store')
+            products_batch = all_products[i:i + batch_size].prefetch_related('prices__store__company')
             for product in products_batch:
                 brand = product.brand.lower().strip() if product.brand else ''
                 size = product.size.lower().strip() if product.size else ''
