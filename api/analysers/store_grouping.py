@@ -13,16 +13,22 @@ def group_stores_by_price_correlation(company_name, threshold=99.5):
         print(f"Company '{company_name}' not found.")
         return [], []
 
-    stores = Store.objects.filter(company=company)
+    stores = Store.objects.filter(company=company).annotate(product_count=Count('prices')).filter(product_count__gt=100)
     store_count = stores.count()
     if store_count < 2:
         print("Need at least 2 stores to compare.")
         return [], list(stores)
 
+    total_comparisons = store_count * (store_count - 1) // 2
+    current_comparison = 0
+
     # Build a graph where an edge exists if the correlation is above the threshold
     graph = {store.id: [] for store in stores}
     for i in range(store_count):
         for j in range(i + 1, store_count):
+            current_comparison += 1
+            print(f"Comparing stores ({current_comparison}/{total_comparisons}): {stores[i].store_name} and {stores[j].store_name}")
+
             store1 = stores[i]
             store2 = stores[j]
 
