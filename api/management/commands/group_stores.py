@@ -21,12 +21,12 @@ class Command(BaseCommand):
             for i, group in enumerate(groups):
                 self.stdout.write(self.style.SUCCESS(f"\nGroup {i + 1}:"))
                 for store in group:
-                    self.stdout.write(f"  - {store.name} ({store.store_id})")
+                    self.stdout.write(f"  - {store.store_name} ({store.store_id})")
         
         if island_stores:
             self.stdout.write(self.style.WARNING("\n--- Island Stores (no strong correlation found) ---"))
             for store in island_stores:
-                self.stdout.write(f"  - {store.name} ({store.store_id})")
+                self.stdout.write(f"  - {store.store_name} ({store.store_id})")
         
         if not groups and not island_stores:
             self.stdout.write(self.style.WARNING("No stores found for this company."))
