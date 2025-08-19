@@ -23,10 +23,12 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
     Launches a browser for session setup, then uses a requests session to scrape data.
     Includes a verification step and uses the central checkpoint manager for progress.
     """
-    # The store_id from the database might be in the format 'COL:1234'.
-    # We need to extract the numeric part for the fulfillment cookie and other uses.
-    store_id = store_id.split(':')[-1] if store_id and ':' in store_id else store_id
-    store_name_slug = f"{slugify(store_name)}-{store_id}"
+    # The store_id from the database is prefixed (e.g., 'COL:1234').
+    # We need the numeric part for the fulfillment cookie.
+    numeric_store_id = store_id.split(':')[-1] if store_id and ':' in store_id else store_id
+    
+    # Use the numeric ID for the slug to keep it clean
+    store_name_slug = f"{slugify(store_name)}-{numeric_store_id}"
     print(f"--- Initializing Hybrid Coles Scraper for store: {store_name} ({store_name_slug}) ---")
 
     # --- Load Progress from Checkpoint Manager ---
@@ -54,8 +56,8 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
         
         print("Clearing all cookies to ensure a clean session.")
         driver.delete_all_cookies()
-        print(f"Setting fulfillment cookie for store ID: {store_id}")
-        driver.add_cookie({"name": "fulfillmentStoreId", "value": str(store_id)})
+        print(f"Setting fulfillment cookie for store ID: {numeric_store_id}")
+        driver.add_cookie({"name": "fulfillmentStoreId", "value": str(numeric_store_id)})
         print("Refreshing the page to apply the new store context.")
         driver.refresh()
 
