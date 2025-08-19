@@ -1,0 +1,36 @@
+### Database Updating Process Duplicate Prevention
+
+The primary duplicate prevention during the initial data update (via `batch_create_new_products.py`) now uses a **tiered matching system**:
+
+1.  **Barcode Match:** The system first attempts to find an existing product by its barcode. This is the most reliable identifier.
+2.  **Normalized Name, Brand, and Size Match:** If no barcode match is found, it then checks for an existing product with the same normalized name (lowercase, no punctuation, sorted words), brand (lowercase), and size (lowercase).
+
+### Extra Command Methods (for Post-Processing & Analysis)
+
+These are separate management commands designed to find and/or merge duplicates that might have slipped through the initial update process or existed previously.
+
+*   **`find_duplicates.py`**
+    *   **Purpose:** Finds and merges products with duplicate barcodes.
+    *   **Commands:**
+        *   `python manage.py find_duplicates --barcode`: Lists products that share the same barcode.
+        *   `python manage.py find_duplicates --merge-by-barcode --dry-run`: Simulates merging products with duplicate barcodes.
+        *   `python manage.py find_duplicates --merge-by-barcode`: Executes the merge of products with duplicate barcodes.
+
+*   **`merge_by_store_id.py`**
+    *   **Purpose:** Finds and merges products that share the same `store_product_id` within the same store.
+    *   **Commands:**
+        *   `python manage.py merge_by_store_id --find`: Lists products with duplicate `store_product_id` within the same store.
+        *   `python manage.py merge_by_store_id --merge --dry-run`: Simulates merging products with duplicate `store_product_id` within the same store.
+        *   `python manage.py merge_by_store_id --merge`: Executes the merge of products with duplicate `store_product_id` within the same store.
+
+*   **`find_fuzzy_duplicates.py`**
+    *   **Purpose:** Analyzes and lists potential fuzzy duplicates based on normalized product names and brands. This is for analysis only, no merging.
+    *   **Commands:**
+        *   `python manage.py find_fuzzy_duplicates`: Lists potential fuzzy duplicates based on normalized name and brand.
+        *   `python manage.py find_fuzzy_duplicates --exclude-size`: Lists potential fuzzy duplicates, but only those where all products in the group also have the same size.
+
+*   **`merge_fuzzy_duplicates.py`**
+    *   **Purpose:** Merges fuzzy duplicate products that have the same normalized name, brand, and size.
+    *   **Commands:**
+        *   `python manage.py merge_fuzzy_duplicates --dry-run`: Simulates merging fuzzy duplicates based on normalized name, brand, and size.
+        *   `python manage.py merge_fuzzy_duplicates --merge`: Executes the merge of fuzzy duplicates based on normalized name, brand, and size.
