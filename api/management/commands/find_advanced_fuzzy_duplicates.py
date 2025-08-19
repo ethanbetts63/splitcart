@@ -16,7 +16,7 @@ def advanced_normalize_name(name):
     ]
     name = name.lower()
     name = ' '.join([word for word in name.split() if word not in common_words])
-    name = re.sub(r'\d+', '', name)
+    # name = re.sub(r'\d+', '', name) # Removed to keep numbers
     name = re.sub(r'[^\w\s]', '', name)
     tokens = sorted(name.split())
     return ' '.join(tokens)
@@ -42,14 +42,15 @@ def format_group_output(writer, group_type, criteria, products, similarity=None)
         writer.write(f'Similarity: {similarity:.2f}%\n')
     writer.write(f'----------------------------------------\n')
     for p in products:
-        writer.write(f'  - ID: {p.id:<5} | Brand: {p.brand:<20} | Name: {p.name}\n')
+        stores_info = ", ".join(sorted(list(set([price.store.store_name for price in p.prices.all()]))))
+        writer.write(f"  - ID: {p.id:<5} | Brand: {p.brand:<20} | Name: {p.name:<50} | Size: {p.size:<15} | Stores: {stores_info}\n")
     writer.write(f'='*60+'\n')
 
 class Command(BaseCommand):
     help = 'Finds advanced fuzzy duplicates and outputs them to a file or console.'
 
     def handle(self, *args, **options):
-        output_file_path = "C:\Users\ethan\coding\splitcart\splitcart.txt"
+        output_file_path = r"C:\Users\ethan\coding\splitcart\splitcart.txt"
         writer = open(output_file_path, 'w')
         
         try:
@@ -61,7 +62,7 @@ class Command(BaseCommand):
         writer.write('--- Starting advanced fuzzy duplicate detection ---\n')
 
         products_by_brand_size = defaultdict(list)
-        for product in Product.objects.all():
+        for product in Product.objects.select_related('prices__store').all():
             brand = product.brand.lower().strip() if product.brand else ''
             size = product.size.lower().strip() if product.size else ''
             products_by_brand_size[(brand, size)].append(product)
