@@ -3,6 +3,7 @@ from api.analysers.company_analysis import generate_store_product_counts_chart
 from api.analysers.company_product_overlap import generate_company_product_overlap_heatmap
 from api.analysers.store_product_overlap import generate_store_product_overlap_heatmap
 from api.analysers.store_pricing_heatmap import generate_store_pricing_heatmap
+from api.analysers.category_price_correlation import generate_category_price_correlation_heatmap
 
 class Command(BaseCommand):
     help = 'Generates various reports and visualizations from product data.'
@@ -13,12 +14,17 @@ class Command(BaseCommand):
             type=str,
             required=True,
             help='Specifies which type of analysis or report to generate.',
-            choices=['store_product_counts', 'company_heatmap', 'store_heatmap', 'pricing_heatmap']
+            choices=['store_product_counts', 'company_heatmap', 'store_heatmap', 'pricing_heatmap', 'category_heatmap']
         )
         parser.add_argument(
             '--company-name',
             type=str,
             help='The name of the company to generate the report for (required for some reports).'
+        )
+        parser.add_argument(
+            '--category',
+            type=str,
+            help='The category to generate the report for (required for category_heatmap report).'
         )
         parser.add_argument(
             '--state',
@@ -29,6 +35,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         report_type = options['report']
         company_name = options['company_name']
+        category_name = options['category']
         state = options['state']
 
         if report_type == 'store_product_counts':
@@ -56,6 +63,15 @@ class Command(BaseCommand):
                     'The --company-name argument is required for the pricing_heatmap report.'))
                 return
             generate_store_pricing_heatmap(company_name, state)
+
+        elif report_type == 'category_heatmap':
+            if not company_name or not category_name:
+                self.stdout.write(self.style.ERROR(
+                    'The --company-name and --category arguments are required for the category_heatmap report.'))
+                return
+            self.stdout.write(self.style.SUCCESS(
+                f"Generating category pricing heatmap for '{company_name}' and category '{category_name}'..."))
+            generate_category_price_correlation_heatmap(company_name, category_name)
 
         else:
             self.stdout.write(self.style.WARNING(
