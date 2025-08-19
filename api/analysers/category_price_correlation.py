@@ -85,7 +85,9 @@ def generate_category_price_correlation_heatmap(company_name, category_name):
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
         
-        filename = f'{category_name.lower()}_heatmap.png'
+        # Sanitize the category name to create a valid filename
+        sanitized_filename = "".join(c if c.isalnum() or c in ('_','-') else '_' for c in category_name.lower())
+        filename = f'{sanitized_filename}_heatmap.png'
         filepath = os.path.join(output_dir, filename)
         plt.savefig(filepath)
         print(f"Heatmap saved to {filepath}")
