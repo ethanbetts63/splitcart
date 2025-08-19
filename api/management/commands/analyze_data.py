@@ -4,6 +4,7 @@ from api.analysers.company_product_overlap import generate_company_product_overl
 from api.analysers.store_product_overlap import generate_store_product_overlap_heatmap
 from api.analysers.store_pricing_heatmap import generate_store_pricing_heatmap
 from api.analysers.category_price_correlation import generate_category_price_correlation_heatmap
+from companies.models import Company, Category
 
 class Command(BaseCommand):
     help = 'Generates various reports and visualizations from product data.'
@@ -48,7 +49,7 @@ class Command(BaseCommand):
             generate_store_product_counts_chart(company_name)
         
         elif report_type == 'company_heatmap':
-            generate_company_product_overlap_heatmap()
+            generate__product_overlap_heatmap()
 
         elif report_type == 'store_heatmap':
             if not company_name:
@@ -65,13 +66,26 @@ class Command(BaseCommand):
             generate_store_pricing_heatmap(company_name, state)
 
         elif report_type == 'category_heatmap':
-            if not company_name or not category_name:
+            if not company_name:
                 self.stdout.write(self.style.ERROR(
-                    'The --company-name and --category arguments are required for the category_heatmap report.'))
+                    'The --company-name argument is required for the category_heatmap report.'))
                 return
-            self.stdout.write(self.style.SUCCESS(
-                f"Generating category pricing heatmap for '{company_name}' and category '{category_name}'..."))
-            generate_category_price_correlation_heatmap(company_name, category_name)
+
+            if category_name:
+                self.stdout.write(self.style.SUCCESS(
+                    f"Generating category pricing heatmap for '{company_name}' and category '{category_name}'..."))
+                generate_category_price_correlation_heatmap(company_name, category_name)
+            else:
+                self.stdout.write(self.style.SUCCESS(
+                    f"Generating category pricing heatmaps for all categories in '{company_name}'..."))
+                try:
+                    company = Company.objects.get(name__iexact=company_name)
+                    categories = Category.objects.filter(company=company)
+                    for category in categories:
+                        self.stdout.write(self.style.SUCCESS(f"  Generating heatmap for category '{category.name}'..."))
+                        generate_category_price_correlation_heatmap(company_name, category.name)
+                except Company.DoesNotExist:
+                    self.stdout.write(self.style.ERROR(f"Company '{company_name}' not found."))
 
         else:
             self.stdout.write(self.style.WARNING(

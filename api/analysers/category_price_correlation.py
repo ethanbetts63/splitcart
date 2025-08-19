@@ -32,6 +32,9 @@ def generate_category_price_correlation_heatmap(company_name, category_name):
     # Create a DataFrame to store the correlation matrix
     correlation_matrix = pd.DataFrame(index=[s.store_name for s in stores], columns=[s.store_name for s in stores], dtype=float)
 
+    total_comparisons = store_count * (store_count - 1) // 2
+    current_comparison = 0
+
     for i in range(store_count):
         for j in range(i, store_count):
             store1 = stores[i]
@@ -41,9 +44,12 @@ def generate_category_price_correlation_heatmap(company_name, category_name):
                 correlation_matrix.iloc[i, j] = 100.0
                 continue
 
+            current_comparison += 1
+            print(f"Comparing stores: {store1.store_name} and {store2.store_name} ({current_comparison}/{total_comparisons})")
+
             # Get all products in the category for each store
-            products1 = set(Product.objects.filter(categories=category, prices__store=store1).values_list('id', flat=True))
-            products2 = set(Product.objects.filter(categories=category, prices__store=store2).values_list('id', flat=True))
+            products1 = set(Product.objects.filter(category=category, prices__store=store1).values_list('id', flat=True))
+            products2 = set(Product.objects.filter(category=category, prices__store=store2).values_list('id', flat=True))
 
             common_product_ids = products1.intersection(products2)
             
