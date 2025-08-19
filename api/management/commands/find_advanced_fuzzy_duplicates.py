@@ -62,10 +62,16 @@ class Command(BaseCommand):
         writer.write('--- Starting advanced fuzzy duplicate detection ---\n')
 
         products_by_brand_size = defaultdict(list)
-        for product in Product.objects.select_related('prices__store').all():
-            brand = product.brand.lower().strip() if product.brand else ''
-            size = product.size.lower().strip() if product.size else ''
-            products_by_brand_size[(brand, size)].append(product)
+        batch_size = 1000
+        all_products = Product.objects.all()
+        total_products = all_products.count()
+
+        for i in range(0, total_products, batch_size):
+            products_batch = all_products[i:i + batch_size].prefetch_related('prices__store')
+            for product in products_batch:
+                brand = product.brand.lower().strip() if product.brand else ''
+                size = product.size.lower().strip() if product.size else ''
+                products_by_brand_size[(brand, size)].append(product)
 
         # Phase 1: Direct Matches
         writer.write('\n--- Phase 1: Finding direct matches based on advanced normalization ---\n')
