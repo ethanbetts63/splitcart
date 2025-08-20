@@ -13,22 +13,36 @@ def merge_duplicate_products(product_to_keep, product_to_delete, dry_run=False):
     log = []
 
     # 1. Merge fields by copying missing data
-    fields_to_merge = [
-        'barcode', 'image_url', 'url', 'description', 
-        'country_of_origin', 'allergens', 'ingredients'
-    ]
+    fields_to_merge = {
+        'barcode': {'check_conflict': True},
+        'image_url': {'check_conflict': False},
+        'url': {'check_conflict': False},
+        'description': {'check_conflict': False},
+        'country_of_origin': {'check_conflict': False},
+        'allergens': {'check_conflict': False},
+        'ingredients': {'check_conflict': False},
+    }
     updated_fields = []
 
-    for field_name in fields_to_merge:
+    for field_name, rules in fields_to_merge.items():
+        value_to_copy = getattr(product_to_delete, field_name)
         # If the field is empty on the product we're keeping, but present on the one we're deleting...
-        if not getattr(product_to_keep, field_name) and getattr(product_to_delete, field_name):
+        if not getattr(product_to_keep, field_name) and value_to_copy:
+            
+            # For fields that have their own unique constraints, check for conflicts before copying.
+            if rules['check_conflict']:
+                if Product.objects.exclude(pk=product_to_keep.pk).filter(**{field_name: value_to_copy}).exists():
+                    log.append(f"WARNING: Could not merge field '{field_name}' with value '{value_to_copy}' from product {product_to_delete.id} because it's already in use.")
+                    continue # Skip to the next field
+
             # ...copy the value over.
-            setattr(product_to_keep, field_name, getattr(product_to_delete, field_name))
+            setattr(product_to_keep, field_name, value_to_copy)
             updated_fields.append(field_name)
 
     if updated_fields:
         log.append(f"Merged fields {updated_fields} from product {product_to_delete.id} to {product_to_keep.id}.")
         if not dry_run:
+            # Save only the fields that were actually updated.
             product_to_keep.save(update_fields=updated_fields)
 
     # 2. Re-parent prices from the deleted product to the kept product
