@@ -1,4 +1,5 @@
 import re
+import random
 from django.core.management.base import BaseCommand
 from products.models import Product
 from django.db.models import Q
@@ -39,6 +40,9 @@ class Command(BaseCommand):
         change_log = [] # To store details for dry run
         potential_update_counter = 0 # Counter for sampling
         
+        # For randomized logging
+        next_log_point = random.randint(60, 100) if dry_run else 0
+
         rules = {
             r'approx\.': '',
             r'\s*gram\s*': 'g',
@@ -47,6 +51,9 @@ class Command(BaseCommand):
             r'\s*kilo\s*': 'kg',
             r'eachunit': 'each',
             r'(\d)\s+([a-zA-Z])': r'\1\2',
+            # New rules
+            r'1\s*each|1\.1\s*each': 'each',
+            r'\s*case\s*': 'pk',
         }
 
         for product in products_to_check.iterator(chunk_size=2000):
@@ -56,13 +63,34 @@ class Command(BaseCommand):
             for pattern, replacement in rules.items():
                 new_size = re.sub(pattern, replacement, new_size, flags=re.IGNORECASE)
 
+            # Handle l -> ml conversion
+            l_match = re.match(r'^(\d+\.?\d*)\s*l$', new_size)
+            if l_match:
+                try:
+                    litres = float(l_match.group(1))
+                    millilitres = int(litres * 1000)
+                    new_size = f'{millilitres}ml'
+                except (ValueError, IndexError):
+                    pass # Keep original if conversion fails
+
+            # Handle kg -> g conversion
+            kg_match = re.match(r'^(\d+\.?\d*)\s*kg$', new_size)
+            if kg_match:
+                try:
+                    kilograms = float(kg_match.group(1))
+                    grams = int(kilograms * 1000)
+                    new_size = f'{grams}g'
+                except (ValueError, IndexError):
+                    pass # Keep original if conversion fails
+
             new_size = new_size.strip()
 
             if new_size != original_size:
                 potential_update_counter += 1 
                 if dry_run:
-                    if (potential_update_counter % 100) == 0: 
+                    if potential_update_counter >= next_log_point:
                         change_log.append((product.id, original_size, new_size))
+                        next_log_point += random.randint(60, 100)
                 
                 product.size = new_size
                 name_str = str(product.name or '').strip().lower()
@@ -72,7 +100,7 @@ class Command(BaseCommand):
                 products_to_update.append(product)
 
         if dry_run:
-            self.stdout.write(self.style.SUCCESS("\n--- DRY-RUN: Sample of changes that would be made (1 in 100) ---"))
+            self.stdout.write(self.style.SUCCESS("\n--- DRY-RUN: Sample of changes that would be made (every ~80 products) ---"))
             if not change_log and empty_count == 0:
                 self.stdout.write("No changes would be made.")
             else:
