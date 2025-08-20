@@ -1,6 +1,6 @@
 from datetime import datetime
 import re
-from api.utils.processing_utils.product_cleaner import normalize_product_data
+from api.utils.scraper_utils.product_cleaner import normalize_product_data
 
 
 def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, store_id: str, state: str, category_slug: str, page_num: int, timestamp: datetime) -> dict:

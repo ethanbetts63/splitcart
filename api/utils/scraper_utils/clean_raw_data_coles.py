@@ -1,6 +1,6 @@
 from datetime import datetime
 from django.utils.text import slugify
-from api.utils.processing_utils.product_cleaner import normalize_product_data
+from api.utils.scraper_utils.product_cleaner import normalize_product_data
 
 
 def _create_coles_url_slug(product_name: str, product_size: str) -> str:
