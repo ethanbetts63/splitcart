@@ -1,3 +1,5 @@
+import os
+from django.conf import settings
 from products.models import Price
 from companies.models import Store
 
@@ -8,6 +10,7 @@ def batch_create_prices(command, consolidated_data: dict, product_cache: dict):
     command.stdout.write(command.style.SQL_FIELD("--- Pass 3: Batch creating prices ---"))
     prices_to_create = []
     skipped_products_count = 0
+    skipped_product_keys = [] # New list to store keys
     store_cache = {str(store.store_id): store for store in Store.objects.all()}
     if not store_cache:
         command.stdout.write(command.style.WARNING("DEBUG: store_cache is empty. Exiting batch_create_prices."))
@@ -17,6 +20,7 @@ def batch_create_prices(command, consolidated_data: dict, product_cache: dict):
         product_obj = product_cache.get(key)
         if not product_obj:
             skipped_products_count += 1
+            skipped_product_keys.append(key) # Append the key
             continue
 
         for price_data in data['price_history']:
@@ -37,4 +41,12 @@ def batch_create_prices(command, consolidated_data: dict, product_cache: dict):
     else:
         command.stdout.write("No new price records to create.")
     
+    # New: Write skipped products to file
+    if skipped_product_keys:
+        problem_products_file = os.path.join(settings.BASE_DIR, 'api', 'data', 'problem_products.txt')
+        with open(problem_products_file, 'a') as f: # 'a' for append mode
+            for p_key in skipped_product_keys:
+                f.write(f"{p_key}\n")
+        command.stdout.write(f"Details of {len(skipped_product_keys)} skipped products written to {problem_products_file}")
+
     command.stdout.write(f"Skipped {skipped_products_count} products due to not being found in product_cache.")

@@ -1,12 +1,12 @@
 from django.db import IntegrityError
 from products.models import Product
 
-def batch_create_new_products(consolidated_data: dict):
+def batch_create_new_products(command, consolidated_data: dict):
     """
     Pass 2: Identify new products using a tiered matching system and bulk create them.
     This function implements a more robust check to prevent duplicates.
     """
-    print("--- Pass 2: Batch creating new products with tiered matching ---")
+    command.stdout.write(command.style.SQL_FIELD("--- Pass 2: Batch creating new products with tiered matching ---"))
 
     # --- Tiered Matching Setup ---
     # Cache 1: For exact name, brand, size matching (case-insensitive)
@@ -14,11 +14,11 @@ def batch_create_new_products(consolidated_data: dict):
         (p.name.lower() if p.name else '', p.brand.lower() if p.brand else '', p.size.lower() if p.size else ''): p
         for p in Product.objects.all()
     }
-    print(f"Found {len(name_brand_size_cache)} existing products for name/brand/size matching.")
+    command.stdout.write(f"Found {len(name_brand_size_cache)} existing products for name/brand/size matching.")
 
     # Cache 2: For barcode matching
     barcode_cache = {p.barcode: p for p in Product.objects.filter(barcode__isnull=False) if p.barcode}
-    print(f"Found {len(barcode_cache)} existing products with barcodes.")
+    command.stdout.write(f"Found {len(barcode_cache)} existing products with barcodes.")
 
     new_products_to_create = []
     # This cache will map the composite key to a Product object (either existing or one we are about to create)
@@ -26,7 +26,7 @@ def batch_create_new_products(consolidated_data: dict):
     product_lookup_cache = {}
     seen_new_product_keys = set()
 
-    print("Identifying new products...")
+    command.stdout.write("Identifying new products...")
     for key, data in consolidated_data.items():
         product = None
         product_details = data['product_details']
@@ -63,24 +63,24 @@ def batch_create_new_products(consolidated_data: dict):
 
     # --- Bulk Creation ---
     if new_products_to_create:
-        print(f"Creating {len(new_products_to_create)} new products...")
+        command.stdout.write(f"Creating {len(new_products_to_create)} new products...")
         try:
             # We use ignore_conflicts=True as a safeguard, but our tiered check should prevent collisions.
             Product.objects.bulk_create(new_products_to_create, batch_size=999)
-            print("Bulk create complete.")
+            command.stdout.write("Bulk create complete.")
         except IntegrityError as e:
-            print(f"WARNING: An integrity error occurred during bulk creation. This is likely due to case-sensitivity conflicts with existing data. The script will continue, and the final cache refresh should resolve the missing products. Error: {e}")
+            command.stderr.write(command.style.ERROR(f"WARNING: An integrity error occurred during bulk creation. This is likely due to case-sensitivity conflicts with existing data. The script will continue, and the final cache refresh should resolve the missing products. Error: {e}"))
     else:
-        print("No new products to create.")
+        command.stdout.write("No new products to create.")
 
     # --- Refresh Product Cache ---
     # After creating new products, we need a complete cache for the next steps.
-    print("Refreshing final product cache...")
+    command.stdout.write("Refreshing final product cache...")
     full_product_cache = {
         (p.name.lower() if p.name else '', p.brand.lower() if p.brand else '', p.size.lower() if p.size else ''): p
         for p in Product.objects.all()
     }
-    print(f"Total products in cache: {len(full_product_cache)}")
+    command.stdout.write(f"Total products in cache: {len(full_product_cache)}")
 
     # The original function returned the cache, which is used by subsequent steps.
     # The `full_product_cache` is what the next steps need.

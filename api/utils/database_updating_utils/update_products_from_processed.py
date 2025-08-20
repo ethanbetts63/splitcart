@@ -60,7 +60,7 @@ def update_products_from_processed(command):
         try:
             with transaction.atomic():
                 # Step 2: Batch create new products and get a full product cache
-                product_cache = batch_create_new_products(consolidated_data)
+                product_cache = batch_create_new_products(command, consolidated_data)
 
                 # Step 3: Batch create all new price records
                 batch_create_prices(command, consolidated_data, product_cache)
