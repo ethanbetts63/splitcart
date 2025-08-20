@@ -48,7 +48,7 @@ def batch_create_new_products(consolidated_data: dict):
                 new_product = Product(
                     name=str(product_details.get('name', '')).strip(),
                     brand=str(product_details.get('brand', '')).strip(),
-                    size=str(product_details.get('package_size', '') or product_details.get('size', '')).strip(),
+                    size=str(product_details.get('package_size', '')).strip(),
                     barcode=product_details.get('barcode'),
                     image_url=product_details.get('image_url_main'),
                     url=product_details.get('url'),

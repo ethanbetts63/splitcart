@@ -6,7 +6,6 @@ def batch_create_prices(consolidated_data: dict, product_cache: dict):
     Pass 3: Create all price records in a single batch.
     """
     print("--- Pass 3: Batch creating prices ---")
-    print("--- Pass 3: Batch creating prices (Function Start) ---") # Add this
     prices_to_create = []
     store_cache = {str(store.store_id): store for store in Store.objects.all()}
     if not store_cache:
