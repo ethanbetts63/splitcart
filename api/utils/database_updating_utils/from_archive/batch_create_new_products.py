@@ -27,7 +27,7 @@ def batch_create_new_products(command, consolidated_data: dict):
 
     # Cache 2: Store-Specific Product ID
     store_product_id_cache = {}
-    prices_with_ids = Price.objects.filter(store_product_id__isnull=False, store_product_id__ne='').select_related('product', 'store')
+    prices_with_ids = Price.objects.filter(store_product_id__isnull=False).exclude(store_product_id='').select_related('product', 'store')
     for price in prices_with_ids:
         key = (price.store.store_id, price.store_product_id)
         store_product_id_cache[key] = price.product
