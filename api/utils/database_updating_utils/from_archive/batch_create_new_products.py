@@ -46,9 +46,9 @@ def batch_create_new_products(consolidated_data: dict):
             # Check if we've already decided to create this product in this run.
             if key not in seen_new_product_keys:
                 new_product = Product(
-                    name=str(product_details.get('name', '')).strip(),
-                    brand=str(product_details.get('brand', '')).strip(),
-                    size=str(product_details.get('package_size', '')).strip(),
+                    name=str(product_details.get('name', '')).strip().lower(),
+                    brand=str(product_details.get('brand', '')).strip().lower(),
+                    size=str(product_details.get('package_size', '')).strip().lower(),
                     barcode=product_details.get('barcode'),
                     image_url=product_details.get('image_url_main'),
                     url=product_details.get('url'),
