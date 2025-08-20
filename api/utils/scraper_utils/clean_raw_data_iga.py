@@ -103,6 +103,10 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
             "rating_count": None, # Not available
         }
         cleaned_products.append(clean_product)
+
+    # --- Final generic cleaning and normalization ---
+    from api.utils.processing_utils.product_cleaner import normalize_product_data
+    final_products = [normalize_product_data(p) for p in cleaned_products]
     
     return {
         "metadata": {
@@ -114,5 +118,5 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
             "page_number": page_num,
             "scraped_at": timestamp.isoformat()
         },
-        "products": cleaned_products
+        "products": final_products
     }

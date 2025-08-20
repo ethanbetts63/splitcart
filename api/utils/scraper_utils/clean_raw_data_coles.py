@@ -1,5 +1,7 @@
 from datetime import datetime
 from django.utils.text import slugify
+from api.utils.processing_utils.product_cleaner import normalize_product_data
+
 
 def _create_coles_url_slug(product_name: str, product_size: str) -> str:
     """Helper function to create a URL slug from product name and size."""
@@ -106,6 +108,9 @@ def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, st
             "rating_count": None, # Not available
         }
         cleaned_products.append(clean_product)
+
+    # --- Final generic cleaning and normalization ---
+    final_products = [normalize_product_data(p) for p in cleaned_products]
     
     return {
         "metadata": {
@@ -117,5 +122,5 @@ def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, st
             "page_number": page_num,
             "scraped_at": timestamp.isoformat()
         },
-        "products": cleaned_products
+        "products": final_products
     }

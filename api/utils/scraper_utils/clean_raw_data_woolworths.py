@@ -1,5 +1,7 @@
 import json
 from datetime import datetime
+from api.utils.processing_utils.product_cleaner import normalize_product_data
+
 
 def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, category: str, page_num: int, timestamp: datetime) -> dict:
     """
@@ -112,6 +114,9 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
             "rating_count": rating_info.get('ReviewCount'),
         }
         cleaned_products.append(clean_product)
+
+    # --- Final generic cleaning and normalization ---
+    final_products = [normalize_product_data(p) for p in cleaned_products]
     
     return {
         "metadata": {
@@ -123,5 +128,5 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
             "page_number": page_num,
             "scraped_at": timestamp.isoformat()
         },
-        "products": cleaned_products
+        "products": final_products
     }
