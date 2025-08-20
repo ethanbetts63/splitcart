@@ -37,6 +37,7 @@ class Command(BaseCommand):
 
         products_to_update = []
         change_log = [] # To store details for dry run
+        potential_update_counter = 0 # Counter for sampling
         
         rules = {
             r'approx\.': '',
@@ -58,8 +59,9 @@ class Command(BaseCommand):
             new_size = new_size.strip()
 
             if new_size != original_size:
+                potential_update_counter += 1 
                 if dry_run:
-                    if len(change_log) < 20: # Log first 20 changes for review
+                    if (potential_update_counter % 100) == 0: 
                         change_log.append((product.id, original_size, new_size))
                 
                 product.size = new_size
@@ -70,14 +72,19 @@ class Command(BaseCommand):
                 products_to_update.append(product)
 
         if dry_run:
-            self.stdout.write(self.style.SUCCESS("\n--- DRY-RUN: Sample of changes that would be made ---"))
+            self.stdout.write(self.style.SUCCESS("\n--- DRY-RUN: Sample of changes that would be made (1 in 100) ---"))
             if not change_log and empty_count == 0:
                 self.stdout.write("No changes would be made.")
             else:
                 for pid, old, new in change_log:
                     self.stdout.write(f"  Product ID {pid}: '{old}' -> '{new}'")
-                if len(products_to_update) > len(change_log):
-                    self.stdout.write(f"  ...and {len(products_to_update) - len(change_log)} more products.")
+                
+                remaining_potential_updates = len(products_to_update) - len(change_log)
+                if remaining_potential_updates > 0:
+                    self.stdout.write(f"  ...and {remaining_potential_updates} more products (not shown in sample).")
+
+            if empty_count > 0:
+                self.stdout.write(f"\nWould set {empty_count} products with empty string size to Null.")
         else:
             if products_to_update:
                 self.stdout.write(f"Updating {len(products_to_update)} products with cleaned sizes...")
