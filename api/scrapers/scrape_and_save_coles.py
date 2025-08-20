@@ -154,7 +154,7 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
                 
                 if data_packet['products']:
                     print(f"Found and cleaned {len(data_packet['products'])} products.")
-                    file_name = f"{company.lower()}_{store_id}_{category_slug}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
+                    file_name = f"{company.lower()}_{store_id.replace(':', '-')}_{category_slug}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
                     file_path = os.path.join(save_path, file_name)
                     
                     with open(file_path, 'w', encoding='utf-8') as f:

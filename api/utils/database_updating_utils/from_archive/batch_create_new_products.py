@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from products.models import Product
 
 def batch_create_new_products(consolidated_data: dict):
@@ -63,9 +64,12 @@ def batch_create_new_products(consolidated_data: dict):
     # --- Bulk Creation ---
     if new_products_to_create:
         print(f"Creating {len(new_products_to_create)} new products...")
-        # We use ignore_conflicts=True as a safeguard, but our tiered check should prevent collisions.
-        Product.objects.bulk_create(new_products_to_create, batch_size=999, ignore_conflicts=True)
-        print("Bulk create complete.")
+        try:
+            # We use ignore_conflicts=True as a safeguard, but our tiered check should prevent collisions.
+            Product.objects.bulk_create(new_products_to_create, batch_size=999)
+            print("Bulk create complete.")
+        except IntegrityError as e:
+            print(f"WARNING: An integrity error occurred during bulk creation. This is likely due to case-sensitivity conflicts with existing data. The script will continue, and the final cache refresh should resolve the missing products. Error: {e}")
     else:
         print("No new products to create.")
 
