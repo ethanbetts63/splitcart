@@ -1,0 +1,25 @@
+Here's a summary of the model and database changes we've implemented:
+
+**1. Product Model (`products/models/product.py`) Modifications:**
+
+*   **Added `normalized_name_brand_size` field:** A new `CharField` to store a cleaned, lowercased, and combined string of the product's `name`, `brand`, and `size`.
+*   **Removed old `unique_together` constraint:** The problematic `unique_together = ('name', 'brand', 'size')` was removed.
+*   **Added Conditional `UniqueConstraint` for `normalized_name_brand_size`:** A new database-level constraint ensures uniqueness for products with non-null/non-empty normalized values.
+*   **Modified `barcode` field:** We reverted the strict `unique=True` and instead added a **conditional `UniqueConstraint`** for `barcode`, enforcing uniqueness only for non-null/non-empty barcode values.
+*   **Overrode `save` method:** The `Product` model's `save` method now automatically calculates and populates the `normalized_name_brand_size` field before saving.
+
+**2. Database Migrations:**
+
+*   **`products.0002_product_barcode_conditional_unique`:** Applied to add the conditional unique constraint for the `barcode` field.
+*   **`products.0003_add_normalized_name_brand_size`:** Applied to add the `normalized_name_brand_size` field, remove the old `unique_together`, and add its new conditional unique constraint.
+
+**3. New Management Commands:**
+
+*   **`find_duplicate_barcodes`:** Created to help identify products with duplicate barcode values (including nulls/empty strings).
+*   **`backfill_normalized_product_data`:** Created and executed to populate the `normalized_name_brand_size` field for all existing `Product` objects.
+
+**4. Modified `clean_product_data` Management Command:**
+
+*   **Updated duplicate grouping:** Now uses the `normalized_name_brand_size` field for more accurate duplicate identification.
+*   **Removed `_clean_value` method:** This helper became redundant.
+*   **Removed `clean_data` method:** Its functionality is now handled by the automatic normalization and unique constraints in the `Product` model.

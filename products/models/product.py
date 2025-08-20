@@ -57,15 +57,40 @@ class Product(models.Model):
         help_text="Products that are the same item but in a different size."
     )
 
+    normalized_name_brand_size = models.CharField(
+        max_length=500,
+        unique=True,
+        null=True,
+        blank=True,
+        db_index=True,
+        help_text="Normalized combination of name, brand, and size for uniqueness."
+    )
+
     class Meta:
-        unique_together = ('name', 'brand', 'size')
         constraints = [
             models.UniqueConstraint(
                 fields=['barcode'],
                 condition=Q(barcode__isnull=False) & ~Q(barcode=''),
                 name='unique_barcode_if_not_null_or_empty'
+            ),
+            models.UniqueConstraint(
+                fields=['normalized_name_brand_size'],
+                condition=Q(normalized_name_brand_size__isnull=False),
+                name='unique_normalized_name_brand_size'
             )
         ]
+
+    def _clean_value(self, value):
+        if value is None:
+            return ''
+        return str(value).strip().lower()
+
+    def save(self, *args, **kwargs):
+        # Generate normalized_name_brand_size before saving
+        self.normalized_name_brand_size = self._clean_value(self.name) + "_" + \
+                                          self._clean_value(self.brand) + "_" + \
+                                          self._clean_value(self.size)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.brand} {self.name} ({self.size})"

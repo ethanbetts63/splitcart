@@ -23,34 +23,22 @@ class Command(BaseCommand):
             help="Merge the found duplicate products."
         )
 
-    def _clean_value(self, value):
-        """Cleans a string value, converting various null-like strings to None."""
-        if value is None:
-            return None
-        cleaned_val = str(value).strip().lower()
-        if cleaned_val in ['none', 'null', '']:
-            return None
-        return cleaned_val
-
     def handle(self, *args, **options):
         if options['find_duplicates_only']:
             self.find_duplicates()
         elif options['merge_duplicates']:
             self.merge_duplicates(options['dry_run'])
         else:
-            self.clean_data(options['dry_run'])
+            self.stdout.write(self.style.WARNING("The 'clean_data' functionality is now handled automatically by the Product model's save method and unique constraints."))
+            self.stdout.write(self.style.WARNING("Please use '--find-duplicates-only' or '--merge-duplicates'."))
 
     def _get_duplicate_groups(self):
-        """Finds and returns groups of duplicate products."""
-        cleaned_records = defaultdict(list)
+        """Finds and returns groups of duplicate products based on normalized_name_brand_size."""
+        normalized_records = defaultdict(list)
         for product in Product.objects.iterator():
-            key = (
-                self._clean_value(product.name),
-                self._clean_value(product.brand),
-                self._clean_value(product.size)
-            )
-            cleaned_records[key].append(product.id)
-        return {k: v for k, v in cleaned_records.items() if len(v) > 1}
+            if product.normalized_name_brand_size: # Only group if normalized value exists
+                normalized_records[product.normalized_name_brand_size].append(product.id)
+        return {k: v for k, v in normalized_records.items() if len(v) > 1}
 
     def find_duplicates(self):
         self.stdout.write(self.style.SQL_FIELD("--- Finding potential duplicates ---"))
@@ -61,8 +49,8 @@ class Command(BaseCommand):
             return
 
         self.stdout.write(self.style.WARNING(f"Found {len(duplicate_groups)} group(s) of potential duplicates:"))
-        for (name, brand, size), ids in duplicate_groups.items():
-            self.stdout.write(f"- Group (Name: '{name}', Brand: '{brand}', Size: '{size}')")
+        for normalized_key, ids in duplicate_groups.items():
+            self.stdout.write(f"- Group (Normalized Key: '{normalized_key}')")
             self.stdout.write(f"  Product IDs: {ids}")
 
     def merge_duplicates(self, dry_run):
@@ -79,8 +67,8 @@ class Command(BaseCommand):
         merged_groups_count = 0
         deleted_products_count = 0
 
-        for (name, brand, size), ids in duplicate_groups.items():
-            self.stdout.write(self.style.NOTICE(f"\nProcessing Group: (Name: '{name}', Brand: '{brand}', Size: '{size}')"))
+        for normalized_key, ids in duplicate_groups.items():
+            self.stdout.write(self.style.NOTICE(f"\nProcessing Group: (Normalized Key: '{normalized_key}')"))
             
             primary_product = Product.objects.get(id=ids[0])
             duplicates_to_merge = Product.objects.filter(id__in=ids[1:])
@@ -115,7 +103,7 @@ class Command(BaseCommand):
                         merged_groups_count += 1
 
                 except Exception as e:
-                    self.stderr.write(self.style.ERROR(f"An error occurred while merging group for product '{name}'. Rolling back. Error: {e}"))
+                    self.stderr.write(self.style.ERROR(f"An error occurred while merging group for normalized key '{normalized_key}'. Rolling back. Error: {e}"))
             else:
                 # Simulate actions for dry run
                 for duplicate in duplicates_to_merge:
@@ -133,30 +121,4 @@ class Command(BaseCommand):
         if dry_run:
             self.stdout.write(self.style.WARNING("This was a dry run. No changes were made to the database."))
 
-    def clean_data(self, dry_run):
-        # This method remains unchanged.
-        if dry_run:
-            self.stdout.write(self.style.WARNING("--- DRY RUN MODE: CLEAN DATA ---"))
-        else:
-            self.stdout.write(self.style.SUCCESS("--- LIVE RUN MODE: CLEAN DATA ---"))
-
-        changed_count = 0
-        for product in Product.objects.iterator():
-            original_tuple = (product.name, product.brand, product.size)
-            
-            product.name = self._clean_value(product.name)
-            product.brand = self._clean_value(product.brand)
-            product.size = self._clean_value(product.size)
-            
-            if (product.name, product.brand, product.size) != original_tuple:
-                changed_count += 1
-                if dry_run:
-                    self.stdout.write(f"Product ID: {product.id} would be changed.")
-                else:
-                    try:
-                        with transaction.atomic():
-                            product.save()
-                    except IntegrityError:
-                        self.stderr.write(self.style.ERROR(f"Failed to update Product ID: {product.id}. A duplicate likely exists."))
-
-        self.stdout.write(f"\nTotal products that would be/were changed: {changed_count}")
+    
