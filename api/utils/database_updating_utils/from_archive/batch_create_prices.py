@@ -1,21 +1,22 @@
 from products.models import Price
 from companies.models import Store
 
-def batch_create_prices(consolidated_data: dict, product_cache: dict):
+def batch_create_prices(command, consolidated_data: dict, product_cache: dict):
     """
     Pass 3: Create all price records in a single batch.
     """
-    print("--- Pass 3: Batch creating prices ---")
+    command.stdout.write(command.style.SQL_FIELD("--- Pass 3: Batch creating prices ---"))
     prices_to_create = []
+    skipped_products_count = 0
     store_cache = {str(store.store_id): store for store in Store.objects.all()}
     if not store_cache:
-        print("DEBUG: store_cache is empty. Exiting batch_create_prices.") # Add this
+        command.stdout.write(command.style.WARNING("DEBUG: store_cache is empty. Exiting batch_create_prices."))
         return
 
     for key, data in consolidated_data.items():
         product_obj = product_cache.get(key)
         if not product_obj:
-            print(f"DEBUG: Product {key} not found in product_cache. Skipping price creation for this product.") # Add this
+            skipped_products_count += 1
             continue
 
         for price_data in data['price_history']:
@@ -30,8 +31,10 @@ def batch_create_prices(consolidated_data: dict, product_cache: dict):
                 is_available=price_data.get('is_available', True), is_active=True))
 
     if prices_to_create:
-        print(f"Creating {len(prices_to_create)} new price records...")
+        command.stdout.write(f"Creating {len(prices_to_create)} new price records...", ending='\r')
         Price.objects.bulk_create(prices_to_create, batch_size=1000)
-        print("Bulk create for prices complete.")
+        command.stdout.write("Bulk create for prices complete.")
     else:
-        print("No new price records to create.")
+        command.stdout.write("No new price records to create.")
+    
+    command.stdout.write(f"Skipped {skipped_products_count} products due to not being found in product_cache.")

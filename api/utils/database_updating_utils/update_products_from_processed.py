@@ -63,7 +63,7 @@ def update_products_from_processed(command):
                 product_cache = batch_create_new_products(consolidated_data)
 
                 # Step 3: Batch create all new price records
-                batch_create_prices(consolidated_data, product_cache)
+                batch_create_prices(command, consolidated_data, product_cache)
 
                 # Step 4: Batch create all category and product-category relationships
                 batch_create_category_relationships(consolidated_data, product_cache)

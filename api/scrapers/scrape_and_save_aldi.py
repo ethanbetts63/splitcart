@@ -16,7 +16,9 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, stat
     """
     Launches a requests-based scraper for a specific ALDI store with checkpointing.
     """
-    store_name_slug = f"{slugify(store_name)}-{store_id}"
+    # Ensure store_name is not empty, use a fallback if it is
+    effective_store_name = store_name if store_name else f"ALDI Store {store_id}"
+    store_name_slug = f"{slugify(effective_store_name)}-{store_id}"
     print(f"--- Initializing ALDI Scraper for {company} ({store_name_slug}) ---")
 
     session = requests.Session()
@@ -79,7 +81,7 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, stat
 
                 scrape_timestamp = datetime.now()
                 data_packet = clean_raw_data_aldi(
-                    raw_product_list=raw_products_on_page, company=company, store_name=store_name, store_id=store_id, state=state,
+                    raw_product_list=raw_products_on_page, company=company, store_name=effective_store_name, store_id=store_id, state=state,
                     category_slug=category_slug, page_num=page_num, timestamp=scrape_timestamp
                 )
                 print(f"Found and cleaned {len(data_packet['products'])} products on page {page_num}.")
