@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from companies.models.category import Category
 
 class Product(models.Model):
@@ -58,6 +59,13 @@ class Product(models.Model):
 
     class Meta:
         unique_together = ('name', 'brand', 'size')
+        constraints = [
+            models.UniqueConstraint(
+                fields=['barcode'],
+                condition=Q(barcode__isnull=False) & ~Q(barcode=''),
+                name='unique_barcode_if_not_null_or_empty'
+            )
+        ]
 
     def __str__(self):
         return f"{self.brand} {self.name} ({self.size})"

@@ -51,7 +51,13 @@ def archive_single_store(store_id):
         }
 
         company_slug = slugify(store.company.name)
-        saved_path = save_json_file(company_slug, store.store_id, store_data)
+
+        # Clean up the store_id to handle cases like 'COL:123'
+        cleaned_store_id = store.store_id
+        if ':' in cleaned_store_id:
+            cleaned_store_id = cleaned_store_id.split(':')[-1]
+
+        saved_path = save_json_file(company_slug, cleaned_store_id, store_data)
         return {'status': 'success', 'store_name': store.store_name, 'path': saved_path, 'products_found': len(product_list)}
 
     except Exception as e:
