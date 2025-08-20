@@ -12,7 +12,6 @@ from api.utils.database_updating_utils.from_archive.batch_create_category_relati
 
 def update_products_from_processed(command):
     processed_data_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'processed_data')
-    failed_products_data = {}
 
     if not os.path.exists(processed_data_path):
         command.stdout.write(command.style.WARNING('Processed data directory not found.'))
@@ -35,19 +34,22 @@ def update_products_from_processed(command):
             command.stdout.write(command.style.WARNING(f'Skipping {filename}: missing metadata or products key.'))
             continue
 
-        # Step 1: Consolidate data from the single file into the expected format
+        # Step 1: Consolidate data into the format expected by the batch functions.
+        # The key is used for the lookup cache that is passed between steps.
         consolidated_data = {}
         for p in products:
-            name = str(p.get('name', '')).strip().lower()
-            brand = str(p.get('brand', '')).strip().lower()
-            size = str(p.get('package_size', '')).strip().lower()
-            key = (name, brand, size)
+            name = str(p.get('name', ''))
+            brand = str(p.get('brand', ''))
+            size = str(p.get('package_size', ''))
+            # This key is for local caching between steps, not for database lookups.
+            key = (name.strip().lower(), brand.strip().lower(), size.strip().lower())
 
             price_info = {
                 'store_id': metadata.get('store_id'),
                 'price': p.get('price_current'),
                 'is_on_special': p.get('is_on_sale', False),
-                'is_available': True 
+                'is_available': True,
+                'store_product_id': p.get('store_product_id') # Pass this along
             }
 
             consolidated_data[key] = {
@@ -59,17 +61,17 @@ def update_products_from_processed(command):
 
         try:
             with transaction.atomic():
-                # Step 2: Batch create new products and get a full product cache
+                # Step 2: Identify products and create new ones using tiered matching.
                 product_cache = batch_create_new_products(command, consolidated_data)
 
-                # Step 3: Batch create all new price records
+                # Step 3: Batch create all new price records.
                 batch_create_prices(command, consolidated_data, product_cache)
 
-                # Step 4: Batch create all category and product-category relationships
+                # Step 4: Batch create all category and product-category relationships.
                 batch_create_category_relationships(consolidated_data, product_cache)
 
             os.remove(file_path)
-            command.stdout.write(command.style.SUCCESS(f'  Successfully processed and archived {filename}.'))
+            command.stdout.write(command.style.SUCCESS(f'  Successfully processed and removed {filename}.'))
 
         except Exception as e:
             command.stderr.write(command.style.ERROR(f'  An error occurred processing {filename}. The file will not be deleted. Error: {e}'))

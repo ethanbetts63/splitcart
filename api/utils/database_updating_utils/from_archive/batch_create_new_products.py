@@ -1,87 +1,129 @@
 from django.db import IntegrityError
-from products.models import Product
+from products.models import Product, Price
+from companies.models import Store
+
+def _generate_normalized_string(name, brand, size):
+    """
+    Generates a normalized string from product attributes.
+    This MUST match the normalization logic in the Product model's save() method.
+    """
+    name_str = str(name or '').strip().lower()
+    brand_str = str(brand or '').strip().lower()
+    size_str = str(size or '').strip().lower()
+    return f"{name_str}-{brand_str}-{size_str}"
 
 def batch_create_new_products(command, consolidated_data: dict):
     """
     Pass 2: Identify new products using a tiered matching system and bulk create them.
-    This function implements a more robust check to prevent duplicates.
     """
     command.stdout.write(command.style.SQL_FIELD("--- Pass 2: Batch creating new products with tiered matching ---"))
 
-    # --- Tiered Matching Setup ---
-    # Cache 1: For exact name, brand, size matching (case-insensitive)
-    name_brand_size_cache = {
-        (p.name.lower() if p.name else '', p.brand.lower() if p.brand else '', p.size.lower() if p.size else ''): p
-        for p in Product.objects.all()
-    }
-    command.stdout.write(f"Found {len(name_brand_size_cache)} existing products for name/brand/size matching.")
+    # --- Step 1: Pre-fetch all data for caches ---
+    all_products = list(Product.objects.all())
+    
+    # Cache 1: Barcode (Highest Priority)
+    barcode_cache = {p.barcode: p for p in all_products if p.barcode}
+    command.stdout.write(f"Built cache for {len(barcode_cache)} barcodes.")
 
-    # Cache 2: For barcode matching
-    barcode_cache = {p.barcode: p for p in Product.objects.filter(barcode__isnull=False) if p.barcode}
-    command.stdout.write(f"Found {len(barcode_cache)} existing products with barcodes.")
+    # Cache 2: Store-Specific Product ID
+    store_product_id_cache = {}
+    prices_with_ids = Price.objects.filter(store_product_id__isnull=False, store_product_id__ne='').select_related('product', 'store')
+    for price in prices_with_ids:
+        key = (price.store.store_id, price.store_product_id)
+        store_product_id_cache[key] = price.product
+    command.stdout.write(f"Built cache for {len(store_product_id_cache)} store-specific product IDs.")
 
-    new_products_to_create = []
-    # This cache will map the composite key to a Product object (either existing or one we are about to create)
-    # It's essential for the subsequent price creation step.
-    product_lookup_cache = {}
-    seen_new_product_keys = set()
+    # Cache 3: Normalized Name-Brand-Size String (Fallback)
+    normalized_string_cache = {p.normalized_name_brand_size: p for p in all_products if p.normalized_name_brand_size}
+    command.stdout.write(f"Built cache for {len(normalized_string_cache)} normalized strings.")
 
-    command.stdout.write("Identifying new products...")
+    # --- Step 2: Identify existing and new products ---
+    product_lookup_cache = {}  # This is the final cache we will return
+    products_to_create_data = []  # Store tuples of (key, data) for new products
+    
+    command.stdout.write("Identifying existing vs. new products...")
     for key, data in consolidated_data.items():
         product = None
         product_details = data['product_details']
-
-        # Tier 1: Match by Barcode (highest priority)
+        
+        # Tier 1: Match by Barcode
         barcode = product_details.get('barcode')
         if barcode and barcode in barcode_cache:
             product = barcode_cache[barcode]
 
-        # Tier 2: Match by Name, Brand, and Size (from pre-fetched cache)
-        if not product and key in name_brand_size_cache:
-            product = name_brand_size_cache[key]
-        
+        # Tier 2: Match by Store Product ID
+        if not product:
+            store_id = data['price_history'][0].get('store_id')
+            # Ensure 'store_product_id' is scraped and available in product_details
+            store_product_id = product_details.get('store_product_id')
+            if store_id and store_product_id:
+                if (store_id, store_product_id) in store_product_id_cache:
+                    product = store_product_id_cache[(store_id, store_product_id)]
+
+        # Tier 3: Match by Normalized String
+        if not product:
+            normalized_string = _generate_normalized_string(
+                product_details.get('name'),
+                product_details.get('brand'),
+                product_details.get('package_size')
+            )
+            if normalized_string in normalized_string_cache:
+                product = normalized_string_cache[normalized_string]
+
         if product:
             product_lookup_cache[key] = product
         else:
-            # This is potentially a new product.
-            # Check if we've already decided to create this product in this run.
-            if key not in seen_new_product_keys:
-                new_product = Product(
-                    name=str(product_details.get('name', '')).strip().lower(),
-                    brand=str(product_details.get('brand', '')).strip().lower(),
-                    size=str(product_details.get('package_size', '')).strip().lower(),
+            products_to_create_data.append((key, data))
+
+    # --- Step 3: Batch create new products ---
+    if products_to_create_data:
+        command.stdout.write(f"Found {len(products_to_create_data)} potential new products.")
+        new_product_objects = []
+        seen_normalized_strings = set(normalized_string_cache.keys())
+
+        for _, data in products_to_create_data:
+            product_details = data['product_details']
+            normalized_string = _generate_normalized_string(
+                product_details.get('name'),
+                product_details.get('brand'),
+                product_details.get('package_size')
+            )
+            if normalized_string and normalized_string not in seen_normalized_strings:
+                new_product_objects.append(Product(
+                    name=product_details.get('name', ''),
+                    brand=product_details.get('brand', ''),
+                    size=product_details.get('package_size', ''),
                     barcode=product_details.get('barcode'),
+                    normalized_name_brand_size=normalized_string,
                     image_url=product_details.get('image_url_main'),
                     url=product_details.get('url'),
                     description=product_details.get('description_long'),
                     country_of_origin=product_details.get('country_of_origin'),
                     ingredients=product_details.get('ingredients'),
                     allergens=product_details.get('allergens_may_be_present')
+                ))
+                seen_normalized_strings.add(normalized_string)
+
+        if new_product_objects:
+            command.stdout.write(f"Creating {len(new_product_objects)} new unique products...")
+            Product.objects.bulk_create(new_product_objects, batch_size=999, ignore_conflicts=True)
+            
+            # --- Step 4: Refresh cache with newly created products ---
+            command.stdout.write("Refreshing cache with newly created products...")
+            newly_created_products = Product.objects.filter(
+                normalized_name_brand_size__in=[p.normalized_name_brand_size for p in new_product_objects]
+            )
+            new_products_cache = {p.normalized_name_brand_size: p for p in newly_created_products}
+
+            for key, data in products_to_create_data:
+                product_details = data['product_details']
+                normalized_string = _generate_normalized_string(
+                    product_details.get('name'),
+                    product_details.get('brand'),
+                    product_details.get('package_size')
                 )
-                new_products_to_create.append(new_product)
-                seen_new_product_keys.add(key)
+                if normalized_string in new_products_cache:
+                    product_lookup_cache[key] = new_products_cache[normalized_string]
 
-    # --- Bulk Creation ---
-    if new_products_to_create:
-        command.stdout.write(f"Creating {len(new_products_to_create)} new products...")
-        try:
-            # We use ignore_conflicts=True as a safeguard, but our tiered check should prevent collisions.
-            Product.objects.bulk_create(new_products_to_create, batch_size=999)
-            command.stdout.write("Bulk create complete.")
-        except IntegrityError as e:
-            command.stderr.write(command.style.ERROR(f"WARNING: An integrity error occurred during bulk creation. This is likely due to case-sensitivity conflicts with existing data. The script will continue, and the final cache refresh should resolve the missing products. Error: {e}"))
-    else:
-        command.stdout.write("No new products to create.")
-
-    # --- Refresh Product Cache ---
-    # After creating new products, we need a complete cache for the next steps.
-    command.stdout.write("Refreshing final product cache...")
-    full_product_cache = {
-        (p.name.lower() if p.name else '', p.brand.lower() if p.brand else '', p.size.lower() if p.size else ''): p
-        for p in Product.objects.all()
-    }
-    command.stdout.write(f"Total products in cache: {len(full_product_cache)}")
-
-    # The original function returned the cache, which is used by subsequent steps.
-    # The `full_product_cache` is what the next steps need.
-    return full_product_cache
+    command.stdout.write(f"Final product lookup cache contains {len(product_lookup_cache)} entries.")
+    return product_lookup_cache
