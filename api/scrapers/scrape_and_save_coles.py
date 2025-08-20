@@ -125,10 +125,10 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
                     try:
                         actual_store_id = full_data.get("props", {}).get("pageProps", {}).get("initStoreId")
                         print(f"Verifying store ID for category '{category_slug}'...")
-                        if str(actual_store_id) == str(store_id):
-                            print(f"SUCCESS: Store ID {actual_store_id} matches target {store_id}.")
+                        if str(actual_store_id) == str(numeric_store_id):
+                            print(f"SUCCESS: Store ID {actual_store_id} matches target {numeric_store_id}.")
                         else:
-                            print(f"ERROR: Store ID mismatch! Expected {store_id}, but page data shows {actual_store_id}. Skipping category.")
+                            print(f"ERROR: Store ID mismatch! Expected {numeric_store_id}, but page data shows {actual_store_id}. Skipping category.")
                             break 
                     except (KeyError, TypeError) as e:
                         print(f"ERROR: Could not find storeId in page data for verification: {e}. Skipping category.")

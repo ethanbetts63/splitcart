@@ -34,7 +34,9 @@ def title_word_similarity(name1, name2):
     return (len(shared_words) / len(all_words)) * 100 if all_words else 0.0
 
 def format_group_output(writer, group_type, criteria, products, similarity=None):
-    """Formats the output for a group of duplicate products."""
+    """
+    Formats the output for a group of duplicate products.
+    """
     writer.write(f'\n' + '='*60 + '\n')
     writer.write(f'** {group_type.upper()} MATCH **\n')
     writer.write(f'Criteria: {criteria}\n')
@@ -42,8 +44,24 @@ def format_group_output(writer, group_type, criteria, products, similarity=None)
         writer.write(f'Similarity: {similarity:.2f}%\n')
     writer.write(f'----------------------------------------\n')
     for p in products:
-        stores_info = ", ".join(sorted(list(set([price.store.company.name for price in p.prices.all()]))))
-        writer.write(f"  - ID: {p.id:<5} | Brand: {p.brand:<20} | Name: {p.name:<50} | Size: {p.size:<15} | Stores: {stores_info}\n")
+        stores_info = []
+        latest_prices_by_store = defaultdict(lambda: None)
+
+        for price_obj in p.prices.all():
+            store_name = price_obj.store.company.name # Using company name as requested
+            if latest_prices_by_store[store_name] is None or price_obj.scraped_at > latest_prices_by_store[store_name].scraped_at:
+                latest_prices_by_store[store_name] = price_obj
+        
+        for store_name, price_obj in latest_prices_by_store.items():
+            price_str = f"${price_obj.price:.2f}"
+            if price_obj.is_on_special and price_obj.was_price:
+                price_str += f" (Was: ${price_obj.was_price:.2f})"
+            elif price_obj.is_on_special:
+                price_str += " (On Special)"
+            stores_info.append(f"{store_name}: {price_str}")
+
+        stores_display = ", ".join(sorted(stores_info))
+        writer.write(f"  - ID: {p.id:<5} | Brand: {p.brand:<20} | Name: {p.name:<50} | Size: {p.size:<15} | Companies: {stores_display}\n")
     writer.write(f'='*60+'\n')
 
 class Command(BaseCommand):
