@@ -26,25 +26,33 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR("Please specify either --brands or --normalized."))
 
     def get_unique_brands(self):
-        self.stdout.write("Getting unique brands...")
-        # Get all brand names
-        all_brands = Product.objects.values_list('brand', flat=True)
+        self.stdout.write("Getting unique brands with example products...")
+        
+        # Get all products that have a brand, ordered by brand
+        products = Product.objects.filter(brand__isnull=False).exclude(brand='').order_by('brand')
 
-        # Process the brands: strip, lowercase, and get unique values
-        processed_brands = {brand.strip().lower() for brand in all_brands if brand}
+        # Use a dictionary to store unique brands and their first encountered example product
+        unique_brands_with_examples = {} # {normalized_brand: (raw_name, sizes_list)}
 
+        for product in products:
+            normalized_brand = product.brand.strip().lower()
+            if normalized_brand not in unique_brands_with_examples:
+                # Store the raw name and the sizes list
+                unique_brands_with_examples[normalized_brand] = (product.name, product.sizes)
+        
         # Sort the unique brands alphabetically
-        unique_sorted_brands = sorted(list(processed_brands))
+        unique_sorted_brands = sorted(unique_brands_with_examples.keys())
 
-        # Define the output file path
         output_file = os.path.join('unique_brands.txt')
 
-        # Write the unique brands to the file
         with open(output_file, 'w', encoding='utf-8') as f:
             for brand in unique_sorted_brands:
-                f.write(f"{brand}\n")
+                raw_name, sizes_list = unique_brands_with_examples[brand]
+                # Format the sizes list into a readable string
+                sizes_str = ", ".join(sizes_list) if sizes_list else "N/A"
+                f.write(f"{brand} ({raw_name}, {sizes_str})\n")
 
-        self.stdout.write(self.style.SUCCESS(f"Successfully wrote unique brands to {output_file}"))
+        self.stdout.write(self.style.SUCCESS(f"Successfully wrote unique brands with examples to {output_file}"))
 
     def get_normalized_strings(self):
         self.stdout.write("Getting all normalized strings...")
