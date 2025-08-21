@@ -1,6 +1,7 @@
 import difflib
 import os
 import re
+import sys
 from django.core.management.base import BaseCommand
 from products.models.product import Product
 
@@ -85,8 +86,11 @@ class Command(BaseCommand):
                 
                 comparisons_made += 1
                 if comparisons_made % 1000 == 0:
-                    self.stdout.write(f"  Processed {comparisons_made} comparisons...")
+                    sys.stdout.write(f"\r  Processed {comparisons_made} comparisons...")
+                    sys.stdout.flush()
         
+        sys.stdout.write("\r" + " " * 50 + "\r") # Clear the line
+        sys.stdout.flush()
         self.stdout.write(f"Finished {comparisons_made} comparisons.")
 
         if not similar_pairs:
