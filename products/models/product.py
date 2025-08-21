@@ -89,12 +89,26 @@ class Product(models.Model):
         # Alphabetize the characters
         return ''.join(sorted(cleaned_value))
 
+    def _get_cleaned_name(self):
+        name = self.name
+        # Remove brand
+        if self.brand and self.brand.lower() in name.lower():
+            name = re.sub(r'\b' + re.escape(self.brand) + r'\b', '', name, flags=re.IGNORECASE).strip()
+        
+        # Remove size
+        if self.size:
+            # Define unit variations
+            units = ['g', 'gram', 'grams', 'kg', 'kilogram', 'kilograms', 'ml', 'millilitre', 'millilitres', 'l', 'litre', 'litres', 'pk', 'pack', 'each', 'ea']
+            # Create a regex pattern to find a number followed by a unit
+            size_pattern = r'\b\d+\s*(' + '|'.join(units) + r')\b'
+            name = re.sub(size_pattern, '', name, flags=re.IGNORECASE).strip()
+            # Also remove the exact size string, in case it's in a different format (e.g., "6x100g")
+            name = name.replace(self.size, '').strip()
+        
+        return name
+
     def save(self, *args, **kwargs):
-        # Clean the name by removing the brand
-        cleaned_name = self.name
-        if self.brand and self.brand.lower() in self.name.lower():
-            # Use regex to remove the brand as a whole word, case-insensitive
-            cleaned_name = re.sub(r'\b' + re.escape(self.brand) + r'\b', '', self.name, flags=re.IGNORECASE).strip()
+        cleaned_name = self._get_cleaned_name()
 
         # Generate normalized_name_brand_size before saving
         self.normalized_name_brand_size = self._clean_value(cleaned_name) + \
