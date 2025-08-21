@@ -27,6 +27,10 @@ class Product(models.Model):
         db_index=True,
         help_text="The size or quantity of the product, e.g., '500g', '1 Each'."
     )
+    sizes = models.JSONField(
+        default=list,
+        help_text="A list of all size-related strings found for the product."
+    )
     category = models.ManyToManyField(
         Category,
         related_name="products",
