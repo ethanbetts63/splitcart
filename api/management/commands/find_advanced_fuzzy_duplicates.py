@@ -61,7 +61,7 @@ def format_group_output(writer, group_type, criteria, products, similarity=None)
             stores_info.append(f"{store_name}: {price_str}")
 
         stores_display = ", ".join(sorted(stores_info))
-        writer.write(f"  - ID: {p.id:<5} | Brand: {p.brand:<20} | Name: {p.name:<50} | Size: {p.size:<15} | Companies: {stores_display}\n")
+        writer.write(f"  - ID: {p.id:<5} | Brand: {p.brand:<20} | Name: {p.name:<50} | Sizes: {', '.join(p.sizes):<15} | Companies: {stores_display}\n")
     writer.write(f'='*60+'\n')
 
 class Command(BaseCommand):
@@ -108,7 +108,7 @@ class Command(BaseCommand):
             for normalized_name, group in normalized_groups.items():
                 if len(group) > 1:
                     direct_match_groups += 1
-                    criteria = f"Brand='{brand}', Size='{size}', Normalized='{normalized_name}'"
+                    criteria = f"Brand='{brand}', Sizes='{size}', Normalized='{normalized_name}'"
                     format_group_output(writer, 'Direct', criteria, group)
                     for p in group:
                         processed_ids.add(p.id)
@@ -155,3 +155,4 @@ class Command(BaseCommand):
 
         writer.write(f'--- Phase 2 complete. Found {similarity_match_groups} similarity match groups. ---\n')
         writer.write('\n--- Advanced fuzzy duplicate detection finished. ---\n')
+d. ---\n')

@@ -13,6 +13,7 @@ class Command(BaseCommand):
         )
 
     def _extract_size_from_name(self, name):
+        extracted_sizes = []
         # More comprehensive list of units and their variations
         units = {
             'g': ['g', 'gram', 'grams'],
@@ -29,11 +30,10 @@ class Command(BaseCommand):
             for unit in variations:
                 # Match the unit as a whole word
                 pattern = r'(\d+\.?\d*)\s*' + re.escape(unit) + r'\b'
-                match = re.search(pattern, name, re.IGNORECASE)
-                if match:
-                    # Return the number and the standard unit
-                    return f"{match.group(1)}{standard_unit}"
-        return None
+                matches = re.finditer(pattern, name, re.IGNORECASE)
+                for match in matches:
+                    extracted_sizes.append(f"{match.group(1)}{standard_unit}")
+        return extracted_sizes
 
     def handle(self, *args, **options):
         dry_run = options['dry_run']
@@ -47,15 +47,16 @@ class Command(BaseCommand):
         for i, product in enumerate(products):
             extracted_size = self._extract_size_from_name(product.name)
 
-            if extracted_size:
+            if extracted_sizes:
                 if dry_run:
                     self.stdout.write(f"Product ID: {product.id}")
                     self.stdout.write(f"  Original Name: {product.name}")
-                    self.stdout.write(f"  Original Size: {product.size}")
-                    self.stdout.write(self.style.SUCCESS(f"  Extracted Size: {extracted_size}"))
+                    self.stdout.write(f"  Original Sizes: {product.sizes}")
+                    self.stdout.write(self.style.SUCCESS(f"  Extracted Sizes: {extracted_sizes}"))
                     self.stdout.write("--------------------")
                 else:
-                    product.size = extracted_size
+                    # Add extracted sizes to the existing sizes list, avoiding duplicates
+                    product.sizes = list(set(product.sizes + extracted_sizes))
                     product.save()
             
             if (i + 1) % 100 == 0 or (i + 1) == total_products:

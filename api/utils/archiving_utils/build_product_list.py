@@ -58,7 +58,7 @@ def build_product_list(store):
             product_data = {
                 'name': product.name,
                 'brand': product.brand,
-                'size': product.size,
+                'sizes': product.sizes,
                 'description': product.description,
                 'image_url': product.image_url,
                 'country_of_origin': product.country_of_origin,

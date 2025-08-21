@@ -22,7 +22,7 @@ class Command(BaseCommand):
         if count > 0:
             self.stdout.write(self.style.SUCCESS(f"Found {count} shared product(s)."))
             for product in shared_products:
-                self.stdout.write(f"  - ID: {product.id}, Name: {product.name}, Brand: {product.brand}, Size: {product.size}")
+                self.stdout.write(f"  - ID: {product.id}, Name: {product.name}, Brand: {product.brand}, Sizes: {", ".join(product.sizes)}")
         else:
             self.stdout.write(self.style.WARNING("Found 0 products explicitly linked to both Coles and Woolworths."))
 

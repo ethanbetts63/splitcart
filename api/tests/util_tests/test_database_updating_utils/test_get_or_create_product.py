@@ -62,7 +62,7 @@ class GetOrCreateProductTest(TestCase):
 
     def test_get_existing_product_by_normalized_name_brand_size(self):
         """Test that an existing product is returned by normalized name, brand, and size."""
-        existing_product = ProductFactory(name='Test Product', brand='Test Brand', size='100g')
+        existing_product = ProductFactory(name='Test Product', brand='Test Brand', sizes=['100g'])
         product_data = {'name': 'test product', 'brand': 'test brand', 'package_size': '100G'}
         product, created = get_or_create_product(product_data, self.store, self.category)
         self.assertFalse(created)

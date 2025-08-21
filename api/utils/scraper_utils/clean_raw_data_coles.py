@@ -3,17 +3,11 @@ from django.utils.text import slugify
 from api.utils.scraper_utils.product_cleaner import normalize_product_data
 
 
-def _create_coles_url_slug(product_name: str, product_size: str) -> str:
-    """Helper function to create a URL slug from product name and size."""
-    if not product_name or not product_size:
+def _create_coles_url_slug(product_name: str) -> str:
+    """Helper function to create a URL slug from product name."""
+    if not product_name:
         return ""
-    # Remove size from name if it's already there
-    name_lower = product_name.lower()
-    size_lower = product_size.lower()
-    if name_lower.endswith(size_lower):
-        name_lower = name_lower[:-len(size_lower)].strip()
-    
-    return slugify(name_lower)
+    return slugify(product_name)
 
 def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, category: str, page_num: int, timestamp: datetime) -> dict:
     """
@@ -42,7 +36,7 @@ def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, st
         # --- URL ---
         product_url = None
         if product_id and product_name and product_size:
-            slug = _create_coles_url_slug(product_name, product_size)
+            slug = _create_coles_url_slug(product_name)
             product_url = f"https://www.coles.com.au/product/{slug}-{product_id}"
 
         # --- Pricing ---

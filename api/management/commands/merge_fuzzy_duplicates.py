@@ -62,7 +62,7 @@ class Command(BaseCommand):
             master_product = products[0]
             products_to_merge = products[1:]
 
-            self.stdout.write(self.style.WARNING(f"\nProcessing Group: Name='{normalized_name}', Brand='{brand}', Size='{size}'"))
+            self.stdout.write(self.style.WARNING(f"\nProcessing Group: Name='{normalized_name}', Brand='{brand}', Sizes='{size}'"))
             self.stdout.write(f"  - Master product (keeping): ID {master_product.id} ('{master_product.name}')")
 
             for p in products_to_merge:
@@ -84,3 +84,4 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(f'\n--- Dry run complete. {len(duplicate_groups)} sets of duplicates identified. ---'))
         else:
             self.stdout.write(self.style.SUCCESS(f'\n--- Merge complete. {merged_count} of {len(duplicate_groups)} sets of duplicates merged. ---'))
+ed. ---'))

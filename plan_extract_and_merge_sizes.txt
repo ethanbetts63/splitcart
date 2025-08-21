@@ -1,0 +1,58 @@
+**Plan for Extracting Size Information and Merging Products**
+
+**Objective:** To extract size information from product names and brands, add it to the `sizes` list, and merge conflicting products due to `normalized_name_brand_size` uniqueness.
+
+**Command Name:** `extract_and_merge_sizes` (or similar)
+
+**Steps:**
+
+1.  **Step 1: Determine Normalized String and Handle Duplicate Sizes**
+    *   **Goal:** Understand how the `normalized_name_brand_size` will look after extracting size information and ensure no duplicate sizes in the `sizes` list.
+    *   **Process:**
+        *   Iterate through all `Product` objects.
+        *   For each product, attempt to extract size information from its `name` and `brand` fields.
+        *   Add any newly extracted sizes to the `product.sizes` list.
+        *   Implement a cleaning method for the `sizes` list to remove duplicates (e.g., convert to a set and back to a list).
+        *   Calculate the *new* `normalized_name_brand_size` based on the updated `name`, `brand`, and `sizes` (which will be a joined string of the cleaned `sizes` list).
+        *   Identify potential conflicts: If the newly calculated `normalized_name_brand_size` already exists for another product (excluding the current product itself), this indicates a conflict.
+    *   **Relevant Files:**
+        *   `products/models/product.py`: For `Product` model definition, `_clean_value`, `_get_cleaned_name` (which will need to be adapted to handle size extraction from name/brand), and `normalized_name_brand_size` calculation.
+        *   `api/management/commands/extract_size_from_name.py`: This command already has logic for extracting sizes from names. Its core logic can be adapted.
+
+2.  **Step 2: Handling Conflicts (Merging Products)**
+    *   **Goal:** When a conflict is detected (two products would have the same `normalized_name_brand_size`), merge the duplicate product into the primary product.
+    *   **Process:**
+        *   For each conflicting pair (Product A and Product B, where B is the primary/older product):
+            *   **Field Transfer:** Transfer any field values from Product A to Product B if Product B's field is empty/null and Product A's field has a value.
+            *   **Price Redirection:** Re-point all `Price` objects associated with Product A to Product B.
+            *   **Barcode Handling:** If Product A has a barcode and Product B does not, and Product A's barcode is not already in use by another product (other than A itself), then:
+                *   Delete Product A first.
+                *   Then, assign Product A's barcode to Product B and save Product B. This avoids unique constraint violations during the transfer.
+            *   **Deletion:** Delete Product A.
+    *   **Relevant Files:**
+        *   `products/models/product.py`: For `Product` model and `Price` model.
+        *   `api/management/commands/update_and_merge_products.py`: This command contains existing merge logic that can be adapted. Specifically, the `merge_products` function.
+
+3.  **Step 3: Running the Name and Brand Size Removal (Actual Execution)**
+    *   **Goal:** Execute the size extraction, `sizes` list cleaning, and product merging.
+    *   **Process:**
+        *   The management command will orchestrate Steps 1 and 2.
+        *   It will iterate through products, perform size extraction and `sizes` list cleaning.
+        *   For each product, it will calculate the new `normalized_name_brand_size`.
+        *   If a conflict is detected, it will trigger the merging process (Step 2).
+        *   After processing, it will save the updated primary products.
+
+**`--dry-run` Argument:**
+
+*   When `--dry-run` is specified, the command will:
+    *   Perform all calculations and conflict detection.
+    *   Print detailed information about which products would be updated and which conflicts would occur.
+    *   For conflicts, it will show the `raw name`, `brand`, and `sizes` of both the primary and duplicate products, along with the proposed merge actions (field transfers, price redirection, deletion).
+    *   **Crucially, no changes will be saved to the database.**
+
+**Relevant File Paths (for reference):**
+
+*   `C:\Users\ethan\coding\splitcart\products\models\product.py`
+*   `C:\Users\ethan\coding\splitcart\products\models\price.py`
+*   `C:\Users\ethan\coding\splitcart\api\management\commands\extract_size_from_name.py`
+*   `C:\Users\ethan\coding\splitcart\api\management\commands\update_and_merge_products.py`
