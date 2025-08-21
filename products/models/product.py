@@ -84,10 +84,12 @@ class Product(models.Model):
     def _clean_value(self, value):
         if value is None:
             return ''
+        # Split into words, sort them, and join back
+        words = sorted(str(value).lower().split())
+        sorted_string = ' '.join(words)
         # Remove non-alphanumeric characters and spaces
-        cleaned_value = re.sub(r'[^a-z0-9]', '', str(value).lower())
-        # Alphabetize the characters
-        return ''.join(sorted(cleaned_value))
+        cleaned_value = re.sub(r'[^a-z0-9]', '', sorted_string)
+        return cleaned_value
 
     def _get_cleaned_name(self):
         name = self.name

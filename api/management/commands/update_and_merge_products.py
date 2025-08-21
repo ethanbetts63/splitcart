@@ -19,10 +19,12 @@ class Command(BaseCommand):
     def _clean_value(self, value):
         if value is None:
             return ''
+        # Split into words, sort them, and join back
+        words = sorted(str(value).lower().split())
+        sorted_string = ' '.join(words)
         # Remove non-alphanumeric characters and spaces
-        cleaned_value = re.sub(r'[^a-z0-9]', '', str(value).lower())
-        # Alphabetize the characters
-        return ''.join(sorted(cleaned_value))
+        cleaned_value = re.sub(r'[^a-z0-9]', '', sorted_string)
+        return cleaned_value
 
     def _get_cleaned_name(self, product):
         name = product.name
@@ -92,8 +94,24 @@ class Command(BaseCommand):
 
     def merge_products(self, main_product, duplicate_products, dry_run=False):
         if dry_run:
-            self.stdout.write(self.style.WARNING("  [DRY RUN] Not merging products."))
-            for duplicate_product in duplicate_products:
+            main_product_cleaned_name = self._get_cleaned_name(main_product)
+            main_product_normalized_key = (
+                self._clean_value(main_product_cleaned_name) +
+                self._clean_value(main_product.brand) +
+                self._clean_value(main_product.size)
+            )
+
+            self.stdout.write("  1 = master, 2 = duplicate")
+            self.stdout.write(f"  1. {main_product_normalized_key}")
+
+            for i, duplicate_product in enumerate(duplicate_products, 2):
+                duplicate_product_cleaned_name = self._get_cleaned_name(duplicate_product)
+                duplicate_product_normalized_key = (
+                    self._clean_value(duplicate_product_cleaned_name) +
+                    self._clean_value(duplicate_product.brand) +
+                    self._clean_value(duplicate_product.size)
+                )
+                self.stdout.write(f"  {i}. {duplicate_product_normalized_key}")
                 self.stdout.write(f"  [DRY RUN] Would merge {duplicate_product.id} into {main_product.id}")
             return
 
