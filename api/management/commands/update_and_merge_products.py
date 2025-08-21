@@ -24,6 +24,24 @@ class Command(BaseCommand):
         # Alphabetize the characters
         return ''.join(sorted(cleaned_value))
 
+    def _get_cleaned_name(self, product):
+        name = product.name
+        # Remove brand
+        if product.brand and product.brand.lower() in name.lower():
+            name = re.sub(r'\b' + re.escape(product.brand) + r'\b', '', name, flags=re.IGNORECASE).strip()
+        
+        # Remove size
+        if product.size:
+            # Define unit variations
+            units = ['g', 'gram', 'grams', 'kg', 'kilogram', 'kilograms', 'ml', 'millilitre', 'millilitres', 'l', 'litre', 'litres', 'pk', 'pack', 'each', 'ea']
+            # Create a regex pattern to find a number followed by a unit
+            size_pattern = r'\b\d+\s*(' + '|'.join(units) + r')\b'
+            name = re.sub(size_pattern, '', name, flags=re.IGNORECASE).strip()
+            # Also remove the exact size string, in case it's in a different format (e.g., "6x100g")
+            name = name.replace(product.size, '').strip()
+        
+        return name
+
     def handle(self, *args, **options):
         dry_run = options['dry_run']
 
@@ -33,9 +51,7 @@ class Command(BaseCommand):
         products = Product.objects.all()
         total_products = products.count()
         for i, product in enumerate(products):
-            cleaned_name = product.name
-            if product.brand and product.brand.lower() in product.name.lower():
-                cleaned_name = re.sub(r'\b' + re.escape(product.brand) + r'\b', '', product.name, flags=re.IGNORECASE).strip()
+            cleaned_name = self._get_cleaned_name(product)
 
             normalized_key = (
                 self._clean_value(cleaned_name) +
