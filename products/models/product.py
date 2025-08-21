@@ -86,11 +86,18 @@ class Product(models.Model):
             return ''
         # Remove non-alphanumeric characters and spaces
         cleaned_value = re.sub(r'[^a-z0-9]', '', str(value).lower())
-        return cleaned_value
+        # Alphabetize the characters
+        return ''.join(sorted(cleaned_value))
 
     def save(self, *args, **kwargs):
+        # Clean the name by removing the brand
+        cleaned_name = self.name
+        if self.brand and self.brand.lower() in self.name.lower():
+            # Use regex to remove the brand as a whole word, case-insensitive
+            cleaned_name = re.sub(r'\b' + re.escape(self.brand) + r'\b', '', self.name, flags=re.IGNORECASE).strip()
+
         # Generate normalized_name_brand_size before saving
-        self.normalized_name_brand_size = self._clean_value(self.name) + \
+        self.normalized_name_brand_size = self._clean_value(cleaned_name) + \
                                           self._clean_value(self.brand) + \
                                           self._clean_value(self.size)
         super().save(*args, **kwargs)

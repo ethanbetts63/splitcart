@@ -4,6 +4,7 @@ from products.models import Product, Price
 from companies.models import Category
 from collections import defaultdict
 import re
+import sys
 
 class Command(BaseCommand):
     help = 'Updates all products and merges duplicates based on normalized_name_brand_size.'
@@ -20,7 +21,8 @@ class Command(BaseCommand):
             return ''
         # Remove non-alphanumeric characters and spaces
         cleaned_value = re.sub(r'[^a-z0-9]', '', str(value).lower())
-        return cleaned_value
+        # Alphabetize the characters
+        return ''.join(sorted(cleaned_value))
 
     def handle(self, *args, **options):
         dry_run = options['dry_run']
@@ -28,13 +30,24 @@ class Command(BaseCommand):
         self.stdout.write("Finding duplicate products based on new normalization...")
 
         normalized_map = defaultdict(list)
-        for product in Product.objects.all():
+        products = Product.objects.all()
+        total_products = products.count()
+        for i, product in enumerate(products):
+            cleaned_name = product.name
+            if product.brand and product.brand.lower() in product.name.lower():
+                cleaned_name = re.sub(r'\b' + re.escape(product.brand) + r'\b', '', product.name, flags=re.IGNORECASE).strip()
+
             normalized_key = (
-                self._clean_value(product.name) +
+                self._clean_value(cleaned_name) +
                 self._clean_value(product.brand) +
                 self._clean_value(product.size)
             )
             normalized_map[normalized_key].append(product)
+            sys.stdout.write(f"\rProcessing product {i+1}/{total_products}")
+            sys.stdout.flush()
+        
+        sys.stdout.write("\n")
+
 
         duplicates_found = 0
         for normalized_key, products in normalized_map.items():
@@ -52,8 +65,13 @@ class Command(BaseCommand):
 
         if not dry_run:
             self.stdout.write("Updating normalized_name_brand_size for all products...")
-            for product in Product.objects.all():
+            products_to_update = Product.objects.all()
+            total_to_update = products_to_update.count()
+            for i, product in enumerate(products_to_update):
                 product.save()
+                sys.stdout.write(f"\rUpdating product {i+1}/{total_to_update}")
+                sys.stdout.flush()
+            sys.stdout.write("\n")
             self.stdout.write(self.style.SUCCESS("Finished updating products."))
 
     def merge_products(self, main_product, duplicate_products, dry_run=False):
@@ -67,7 +85,9 @@ class Command(BaseCommand):
             for duplicate_product in duplicate_products:
                 # Merge fields
                 if not main_product.barcode and duplicate_product.barcode:
-                    main_product.barcode = duplicate_product.barcode
+                    # Check if the barcode is already used by another product
+                    if not Product.objects.filter(barcode=duplicate_product.barcode).exists():
+                        main_product.barcode = duplicate_product.barcode
                 if not main_product.image_url and duplicate_product.image_url:
                     main_product.image_url = duplicate_product.image_url
                 if not main_product.url and duplicate_product.url:
