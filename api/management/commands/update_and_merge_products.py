@@ -94,24 +94,11 @@ class Command(BaseCommand):
 
     def merge_products(self, main_product, duplicate_products, dry_run=False):
         if dry_run:
-            main_product_cleaned_name = self._get_cleaned_name(main_product)
-            main_product_normalized_key = (
-                self._clean_value(main_product_cleaned_name) +
-                self._clean_value(main_product.brand) +
-                self._clean_value(main_product.size)
-            )
-
             self.stdout.write("  1 = master, 2 = duplicate")
-            self.stdout.write(f"  1. {main_product_normalized_key}")
+            self.stdout.write(f"  1. Name: {main_product.name}, Brand: {main_product.brand}, Size: {main_product.size}")
 
             for i, duplicate_product in enumerate(duplicate_products, 2):
-                duplicate_product_cleaned_name = self._get_cleaned_name(duplicate_product)
-                duplicate_product_normalized_key = (
-                    self._clean_value(duplicate_product_cleaned_name) +
-                    self._clean_value(duplicate_product.brand) +
-                    self._clean_value(duplicate_product.size)
-                )
-                self.stdout.write(f"  {i}. {duplicate_product_normalized_key}")
+                self.stdout.write(f"  {i}. Name: {duplicate_product.name}, Brand: {duplicate_product.brand}, Size: {duplicate_product.size}")
                 self.stdout.write(f"  [DRY RUN] Would merge {duplicate_product.id} into {main_product.id}")
             return
 
