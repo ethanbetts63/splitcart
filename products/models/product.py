@@ -89,26 +89,67 @@ class Product(models.Model):
         cleaned_value = re.sub(r'[^a-z0-9]', '', sorted_string)
         return cleaned_value
 
+    def _extract_sizes(self, text):
+        if not text:
+            return []
+        
+        extracted_sizes = []
+        # More comprehensive list of units and their variations
+        units = {
+            'g': ['g', 'gram', 'grams'],
+            'kg': ['kg', 'kilogram', 'kilograms'],
+            'ml': ['ml', 'millilitre', 'millilitres'],
+            'l': ['l', 'litre', 'litres'],
+            'pk': ['pk', 'pack'],
+            'ea': ['each', 'ea'],
+        }
+
+        # Build a regex pattern that is more robust
+        # It looks for a number (integer or decimal) followed by an optional space and then a unit
+        for standard_unit, variations in units.items():
+            for unit in variations:
+                # Match the unit as a whole word
+                pattern = r'(\d+\.?\d*)\s*' + re.escape(unit) + r'\b'
+                matches = re.finditer(pattern, text, re.IGNORECASE)
+                for match in matches:
+                    extracted_sizes.append(f"{match.group(1)}{standard_unit}")
+        return extracted_sizes
+
+    def clean(self):
+        super().clean()
+        # Extract sizes from name and brand
+        name_sizes = self._extract_sizes(self.name)
+        brand_sizes = self._extract_sizes(self.brand)
+
+        # Combine with existing sizes, ensure uniqueness, and sort
+        all_sizes = set(self.sizes)
+        all_sizes.update(name_sizes)
+        all_sizes.update(brand_sizes)
+        self.sizes = sorted(list(all_sizes))
+
     def _get_cleaned_name(self):
         name = self.name
-        # Remove brand
+        # Remove brand from name
         if self.brand and self.brand.lower() in name.lower():
             name = re.sub(r'\b' + re.escape(self.brand) + r'\b', '', name, flags=re.IGNORECASE).strip()
         
-        # Remove sizes
+        # Remove all identified size strings from the name
         if self.sizes:
-            # Define unit variations
-            units = ['g', 'gram', 'grams', 'kg', 'kilogram', 'kilograms', 'ml', 'millilitre', 'millilitres', 'l', 'litre', 'litres', 'pk', 'pack', 'each', 'ea']
-            # Create a regex pattern to find a number followed by a unit
-            size_pattern = r'\b\d+\s*(' + '|'.join(units) + r')\b'
             for s in self.sizes:
-                name = re.sub(size_pattern, '', name, flags=re.IGNORECASE).strip()
-                # Also remove the exact size string, in case it's in a different format (e.g., "6x100g")
+                # Also remove the exact size string, which might be in formats like "6x100g"
                 name = name.replace(s, '').strip()
+
+        # A more general regex to remove any remaining size-like patterns
+        units = ['g', 'gram', 'grams', 'kg', 'kilogram', 'kilograms', 'ml', 'millilitre', 'millilitres', 'l', 'litre', 'litres', 'pk', 'pack', 'each', 'ea']
+        size_pattern = r'\b\d+\.?\d*\s*(' + '|'.join(units) + r')s?\b' # added 's?' to handle pluralization
+        name = re.sub(size_pattern, '', name, flags=re.IGNORECASE)
         
+        # Clean up extra spaces that might be left after removal
+        name = re.sub(r'\s+', ' ', name).strip()
         return name
 
     def save(self, *args, **kwargs):
+        self.clean()  # Ensure data is cleaned before saving
         cleaned_name = self._get_cleaned_name()
 
         # Generate normalized_name_brand_size before saving

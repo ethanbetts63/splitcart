@@ -64,7 +64,15 @@ class Command(BaseCommand):
         dry_run = options['dry_run']
         if dry_run:
             self.stdout.write(self.style.WARNING("--- DRY RUN ---"))
+            self._execute_logic(dry_run=True)
+        else:
+            with transaction.atomic():
+                self.stdout.write(self.style.WARNING("--- RUNNING IN LIVE MODE ---"))
+                self._execute_logic(dry_run=False)
+        
+        self.stdout.write(self.style.SUCCESS("Process finished."))
 
+    def _execute_logic(self, dry_run):
         self.stdout.write("Step 1: Calculating potential new normalized keys and identifying conflicts...")
         
         potential_normalized_map = defaultdict(list)
@@ -75,12 +83,7 @@ class Command(BaseCommand):
             new_sizes = self._extract_sizes(product.name) + self._extract_sizes(product.brand)
             updated_sizes = sorted(list(set(product.sizes + new_sizes)))
 
-            # Create a temporary product instance to calculate the new normalized key
-            temp_product = Product(
-                name=product.name,
-                brand=product.brand,
-                sizes=updated_sizes
-            )
+            temp_product = Product(name=product.name, brand=product.brand, sizes=updated_sizes)
             cleaned_name = self._get_cleaned_name(temp_product)
             
             normalized_key = (
@@ -106,7 +109,6 @@ class Command(BaseCommand):
 
         for normalized_key, items in potential_normalized_map.items():
             if len(items) > 1:
-                # Conflict detected
                 items.sort(key=lambda x: x['product'].id)
                 main_item = items[0]
                 duplicate_items = items[1:]
@@ -118,7 +120,7 @@ class Command(BaseCommand):
                 
                 if dry_run:
                     self.stdout.write(f"  Primary: ID={main_product.id}, Name='{main_product.name}', Brand='{main_product.brand}', New Sizes={main_product.sizes}")
-                
+
                 for item in duplicate_items:
                     duplicate_product = item['product']
                     if dry_run:
@@ -126,13 +128,16 @@ class Command(BaseCommand):
                         self.stdout.write(f"    [DRY RUN] Would merge prices and relations from {duplicate_product.id} to {main_product.id}")
                         self.stdout.write(f"    [DRY RUN] Would delete product {duplicate_product.id}")
                     else:
-                        self.merge_products(main_product, duplicate_product)
-                        products_to_delete.append(duplicate_product)
+                        barcode_to_transfer = self.merge_products(main_product, duplicate_product)
+                        if barcode_to_transfer:
+                            self.stdout.write(f"    Transferring barcode {barcode_to_transfer} from {duplicate_product.id} to {main_product.id}")
+                            duplicate_product.delete()
+                            main_product.barcode = barcode_to_transfer
+                        else:
+                            products_to_delete.append(duplicate_product)
 
                 products_to_save.append(main_product)
-
             else:
-                # No conflict, just update sizes
                 item = items[0]
                 product = item['product']
                 if product.sizes != item['updated_sizes']:
@@ -140,35 +145,31 @@ class Command(BaseCommand):
                     products_to_save.append(product)
 
         if not dry_run:
-            with transaction.atomic():
-                self.stdout.write(f"Saving {len(products_to_save)} products...")
-                for product in products_to_save:
-                    product.save()
-                
-                self.stdout.write(f"Deleting {len(products_to_delete)} products...")
-                for product in products_to_delete:
-                    product.delete()
-
-        self.stdout.write(self.style.SUCCESS("Process finished."))
+            self.stdout.write(f"Saving {len(products_to_save)} products...")
+            for product in products_to_save:
+                product.save()
+            
+            self.stdout.write(f"Deleting {len(products_to_delete)} products...")
+            for product in products_to_delete:
+                product.delete()
 
     def merge_products(self, main_product, duplicate_product):
-        # Transfer fields
+        barcode_to_transfer = None
         if not main_product.barcode and duplicate_product.barcode:
             if not Product.objects.filter(barcode=duplicate_product.barcode).exclude(id=duplicate_product.id).exists():
-                main_product.barcode = duplicate_product.barcode
-        
-        # Combine other text fields if main is empty
+                barcode_to_transfer = duplicate_product.barcode
+
         for field in ['image_url', 'url', 'description', 'country_of_origin', 'allergens', 'ingredients']:
             if not getattr(main_product, field) and getattr(duplicate_product, field):
                 setattr(main_product, field, getattr(duplicate_product, field))
 
-        # Re-point prices
         Price.objects.filter(product=duplicate_product).update(product=main_product)
 
-        # Merge M2M fields
         for category in duplicate_product.category.all():
             main_product.category.add(category)
         for substitute in duplicate_product.substitute_goods.all():
             main_product.substitute_goods.add(substitute)
         for variant in duplicate_product.size_variants.all():
             main_product.size_variants.add(variant)
+            
+        return barcode_to_transfer
