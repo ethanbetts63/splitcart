@@ -7,9 +7,9 @@ from datetime import datetime
 from companies.models import Company
 from api.utils.database_updating_utils.get_or_create_store import get_or_create_store
 
-from api.utils.database_updating_utils.from_archive.batch_create_new_products import batch_create_new_products
-from api.utils.database_updating_utils.from_archive.batch_create_prices import batch_create_prices
-from api.utils.database_updating_utils.from_archive.batch_create_category_relationships import batch_create_category_relationships
+from api.utils.database_updating_utils.batch_create_new_products import batch_create_new_products
+from api.utils.database_updating_utils.batch_create_prices import batch_create_prices
+from api.utils.database_updating_utils.batch_create_category_relationships import batch_create_category_relationships
 
 def update_products_from_processed(command):
     processed_data_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'processed_data')

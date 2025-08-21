@@ -1,7 +1,7 @@
 import os
 from django.test import TestCase
 from unittest.mock import patch, MagicMock
-from api.utils.database_updating_utils.from_archive.update_stores_from_archive import update_stores_from_archive
+from api.utils.database_updating_utils.update_stores_from_archive import update_stores_from_archive
 
 class UpdateStoresFromArchiveTest(TestCase):
     @patch('api.utils.database_updating_utils.update_stores_from_archive.os.listdir')

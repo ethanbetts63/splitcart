@@ -1,9 +1,9 @@
 import os
 from django.db import transaction
-from api.utils.database_updating_utils.from_archive.consolidate_product_data import consolidate_product_data
-from api.utils.database_updating_utils.from_archive.batch_create_new_products import batch_create_new_products
-from api.utils.database_updating_utils.from_archive.batch_create_prices import batch_create_prices
-from api.utils.database_updating_utils.from_archive.batch_create_category_relationships import batch_create_category_relationships
+from api.utils.database_updating_utils.consolidate_product_data import consolidate_product_data
+from api.utils.database_updating_utils.batch_create_new_products import batch_create_new_products
+from api.utils.database_updating_utils.batch_create_prices import batch_create_prices
+from api.utils.database_updating_utils.batch_create_category_relationships import batch_create_category_relationships
 
 @transaction.atomic
 def update_products_from_archive(command):

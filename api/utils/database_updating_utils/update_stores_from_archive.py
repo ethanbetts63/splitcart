@@ -1,6 +1,6 @@
 import os
 from django.conf import settings
-from api.utils.database_updating_utils.from_archive.update_stores_from_archive_file import update_stores_from_archive_file
+from api.utils.database_updating_utils.update_stores_from_archive_file import update_stores_from_archive_file
 
 def update_stores_from_archive(command):
     command.stdout.write(command.style.SQL_FIELD("--- Starting Store Update from Archive ---"))

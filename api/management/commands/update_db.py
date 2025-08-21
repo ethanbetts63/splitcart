@@ -1,8 +1,8 @@
 from django.core.management.base import BaseCommand
 from api.utils.database_updating_utils.update_stores_from_discovery import update_stores_from_discovery
 from api.utils.database_updating_utils.update_products_from_processed import update_products_from_processed
-from api.utils.database_updating_utils.from_archive.update_stores_from_archive import update_stores_from_archive
-from api.utils.database_updating_utils.from_archive.update_products_from_archive import update_products_from_archive
+from api.utils.database_updating_utils.update_stores_from_archive import update_stores_from_archive
+from api.utils.database_updating_utils.update_products_from_archive import update_products_from_archive
 
 class Command(BaseCommand):
     help = 'Updates the database with data from various sources.'
