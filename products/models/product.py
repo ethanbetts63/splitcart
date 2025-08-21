@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Q
+import re
 from companies.models.category import Category
 
 class Product(models.Model):
@@ -83,12 +84,14 @@ class Product(models.Model):
     def _clean_value(self, value):
         if value is None:
             return ''
-        return str(value).strip().lower()
+        # Remove non-alphanumeric characters and spaces
+        cleaned_value = re.sub(r'[^a-z0-9]', '', str(value).lower())
+        return cleaned_value
 
     def save(self, *args, **kwargs):
         # Generate normalized_name_brand_size before saving
-        self.normalized_name_brand_size = self._clean_value(self.name) + "_" + \
-                                          self._clean_value(self.brand) + "_" + \
+        self.normalized_name_brand_size = self._clean_value(self.name) + \
+                                          self._clean_value(self.brand) + \
                                           self._clean_value(self.size)
         super().save(*args, **kwargs)
 
