@@ -59,7 +59,7 @@ class Command(BaseCommand):
             normalized_key = (
                 self._clean_value(cleaned_name) +
                 self._clean_value(product.brand) +
-                self._clean_value(product.size)
+                self._clean_value(product.sizes)
             )
             normalized_map[normalized_key].append(product)
             sys.stdout.write(f"\rProcessing product {i+1}/{total_products}")

@@ -49,7 +49,7 @@ class Command(BaseCommand):
 
             self.stdout.write(self.style.WARNING(f"\nDuplicate found for Store: '{store_name}', Store Product ID: '{store_product_id}'"))
             for p in products:
-                self.stdout.write(f"  - Product ID: {p.id}, Name: {p.name}, Brand: {p.brand}, Size: {p.size}")
+                self.stdout.write(f"  - Product ID: {p.id}, Name: {p.name}, Brand: {p.brand}, Size: {p.sizes}")
 
     def merge_by_store_id(self, dry_run):
         if dry_run:

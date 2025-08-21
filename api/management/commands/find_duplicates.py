@@ -42,7 +42,7 @@ class Command(BaseCommand):
         for barcode, products in barcodes.items():
             self.stdout.write(self.style.WARNING(f"Duplicate barcode found: {barcode}"))
             for p in products:
-                self.stdout.write(f"  - Product ID: {p.id}, Name: {p.name}, Brand: {p.brand}, Size: {p.size}")
+                self.stdout.write(f"  - Product ID: {p.id}, Name: {p.name}, Brand: {p.brand}, Size: {p.sizes}")
 
     def merge_by_barcode(self, dry_run):
         if dry_run:

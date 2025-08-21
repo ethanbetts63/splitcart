@@ -88,7 +88,7 @@ class Command(BaseCommand):
             products_batch = all_products[i:i + batch_size].prefetch_related('prices__store__company')
             for product in products_batch:
                 brand = product.brand.lower().strip() if product.brand else ''
-                size = product.size.lower().strip() if product.size else ''
+                size = product.sizes.lower().strip() if product.sizes else ''
                 products_by_brand_size[(brand, size)].append(product)
 
         # Phase 1: Direct Matches
@@ -155,4 +155,3 @@ class Command(BaseCommand):
 
         writer.write(f'--- Phase 2 complete. Found {similarity_match_groups} similarity match groups. ---\n')
         writer.write('\n--- Advanced fuzzy duplicate detection finished. ---\n')
-d. ---\n')

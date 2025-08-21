@@ -46,7 +46,7 @@ class Command(BaseCommand):
         for product in Product.objects.all():
             normalized = normalize_name(product.name)
             brand = product.brand.lower().strip() if product.brand else ''
-            size = product.size.lower().strip() if product.size else ''
+            size = product.sizes.lower().strip() if product.sizes else ''
             product_groups[(normalized, brand, size)].append(product)
 
         # Filter for groups with more than one product
@@ -84,4 +84,3 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(f'\n--- Dry run complete. {len(duplicate_groups)} sets of duplicates identified. ---'))
         else:
             self.stdout.write(self.style.SUCCESS(f'\n--- Merge complete. {merged_count} of {len(duplicate_groups)} sets of duplicates merged. ---'))
-ed. ---'))

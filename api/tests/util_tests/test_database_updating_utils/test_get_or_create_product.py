@@ -29,7 +29,7 @@ class GetOrCreateProductTest(TestCase):
         self.assertIsNotNone(product.id)
         self.assertEqual(product.name, 'New Product')
         self.assertEqual(product.brand, 'New Brand')
-        self.assertEqual(product.size, '100g')
+        self.assertEqual(product.sizes, '100g')
         self.assertEqual(product.barcode, '1234567890123')
         self.assertEqual(product.image_url, 'http://example.com/image.jpg')
         self.assertEqual(product.description, 'Long description')

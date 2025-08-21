@@ -62,7 +62,7 @@ class ProductModelTest(TestCase):
             ingredients=None
         )
         self.assertIsNone(product.brand)
-        self.assertIsNone(product.size)
+        self.assertIsNone(product.sizes)
         self.assertIsNone(product.barcode)
         self.assertIsNone(product.image_url)
         self.assertIsNone(product.description)

@@ -55,7 +55,7 @@ class Command(BaseCommand):
             filtered_groups = {}
             for key, products in duplicate_groups.items():
                 # Create a set of all sizes in the group
-                sizes = {p.size for p in products}
+                sizes = {p.sizes for p in products}
                 # If there's only one unique size, keep the group
                 if len(sizes) == 1:
                     filtered_groups[key] = products
@@ -71,6 +71,6 @@ class Command(BaseCommand):
         for (normalized_name, brand), products in duplicate_groups.items():
             self.stdout.write(self.style.WARNING(f"\nGroup: Normalized Name='{normalized_name}', Brand='{brand}'"))
             for p in products:
-                self.stdout.write(f"  - ID: {p.id}, Name: '{p.name}', Brand: '{p.brand}', Size: '{p.size}'")
+                self.stdout.write(f"  - ID: {p.id}, Name: '{p.name}', Brand: '{p.brand}', Size: '{p.sizes}'")
 
         self.stdout.write(self.style.SUCCESS(f'\n--- Analysis complete. Found {len(duplicate_groups)} potential duplicate groups. ---'))
