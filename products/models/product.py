@@ -1,5 +1,6 @@
 from api.utils.database_updating_utils.product_cleaning import extract_sizes, clean_value, get_cleaned_name, normalize_product_data
 from django.db import models
+from django.db.models import Q
 
 class Product(models.Model):
     """
@@ -24,7 +25,7 @@ class Product(models.Model):
         help_text="A list of all size-related strings found for the product."
     )
     category = models.ManyToManyField(
-        Category,
+        'companies.Category',
         related_name="products",
         help_text="The categories this product belongs to."
     )
