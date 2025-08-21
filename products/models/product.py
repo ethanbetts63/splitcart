@@ -20,13 +20,7 @@ class Product(models.Model):
         db_index=True,
         help_text="The brand of the product, e.g., 'Coles', 'Coca-Cola'."
     )
-    size = models.CharField(
-        max_length=50,
-        null=True,
-        blank=True,
-        db_index=True,
-        help_text="The size or quantity of the product, e.g., '500g', '1 Each'."
-    )
+    
     sizes = models.JSONField(
         default=list,
         help_text="A list of all size-related strings found for the product."
@@ -101,15 +95,16 @@ class Product(models.Model):
         if self.brand and self.brand.lower() in name.lower():
             name = re.sub(r'\b' + re.escape(self.brand) + r'\b', '', name, flags=re.IGNORECASE).strip()
         
-        # Remove size
-        if self.size:
+        # Remove sizes
+        if self.sizes:
             # Define unit variations
             units = ['g', 'gram', 'grams', 'kg', 'kilogram', 'kilograms', 'ml', 'millilitre', 'millilitres', 'l', 'litre', 'litres', 'pk', 'pack', 'each', 'ea']
             # Create a regex pattern to find a number followed by a unit
             size_pattern = r'\b\d+\s*(' + '|'.join(units) + r')\b'
-            name = re.sub(size_pattern, '', name, flags=re.IGNORECASE).strip()
-            # Also remove the exact size string, in case it's in a different format (e.g., "6x100g")
-            name = name.replace(self.size, '').strip()
+            for s in self.sizes:
+                name = re.sub(size_pattern, '', name, flags=re.IGNORECASE).strip()
+                # Also remove the exact size string, in case it's in a different format (e.g., "6x100g")
+                name = name.replace(s, '').strip()
         
         return name
 
@@ -119,7 +114,7 @@ class Product(models.Model):
         # Generate normalized_name_brand_size before saving
         self.normalized_name_brand_size = self._clean_value(cleaned_name) + \
                                           self._clean_value(self.brand) + \
-                                          self._clean_value(self.size)
+                                          self._clean_value(" ".join(self.sizes) if self.sizes else "")
         super().save(*args, **kwargs)
 
     def __str__(self):

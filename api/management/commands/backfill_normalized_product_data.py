@@ -24,7 +24,7 @@ class Command(BaseCommand):
         for product in Product.objects.iterator():
             normalized_value = self._clean_value(product.name) + "_" + \
                                self._clean_value(product.brand) + "_" + \
-                               self._clean_value(product.size)
+                               self._clean_value(" ".join(product.sizes) if product.sizes else "")
             
             if product.normalized_name_brand_size != normalized_value:
                 product.normalized_name_brand_size = normalized_value

@@ -32,15 +32,16 @@ class Command(BaseCommand):
         if product.brand and product.brand.lower() in name.lower():
             name = re.sub(r'\b' + re.escape(product.brand) + r'\b', '', name, flags=re.IGNORECASE).strip()
         
-        # Remove size
-        if product.size:
+        # Remove sizes
+        if product.sizes:
             # Define unit variations
             units = ['g', 'gram', 'grams', 'kg', 'kilogram', 'kilograms', 'ml', 'millilitre', 'millilitres', 'l', 'litre', 'litres', 'pk', 'pack', 'each', 'ea']
             # Create a regex pattern to find a number followed by a unit
             size_pattern = r'\b\d+\s*(' + '|'.join(units) + r')\b'
-            name = re.sub(size_pattern, '', name, flags=re.IGNORECASE).strip()
-            # Also remove the exact size string, in case it's in a different format (e.g., "6x100g")
-            name = name.replace(product.size, '').strip()
+            for s in product.sizes:
+                name = re.sub(size_pattern, '', name, flags=re.IGNORECASE).strip()
+                # Also remove the exact size string, in case it's in a different format (e.g., "6x100g")
+                name = name.replace(s, '').strip()
         
         return name
 
@@ -98,7 +99,7 @@ class Command(BaseCommand):
             self.stdout.write(f"  1. Name: {main_product.name}, Brand: {main_product.brand}, Size: {main_product.size}")
 
             for i, duplicate_product in enumerate(duplicate_products, 2):
-                self.stdout.write(f"  {i}. Name: {duplicate_product.name}, Brand: {duplicate_product.brand}, Size: {duplicate_product.size}")
+                self.stdout.write(f"  {i}. Name: {duplicate_product.name}, Brand: {duplicate_product.brand}, Sizes: {duplicate_product.sizes}")
                 self.stdout.write(f"  [DRY RUN] Would merge {duplicate_product.id} into {main_product.id}")
             return
 
