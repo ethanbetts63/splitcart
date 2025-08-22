@@ -1,6 +1,4 @@
 import json
-import time
-import os
 from datetime import datetime
 import math
 import requests
@@ -12,9 +10,11 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException # Added this line
 from django.conf import settings
 from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
 from api.utils.scraper_utils.jsonl_writer import JsonlWriter
+
 
 def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, state: str, categories_to_fetch: list):
     """
@@ -50,7 +50,20 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
         print("Refreshing the page to apply the new store context.")
         driver.refresh()
 
-        input("ACTION REQUIRED: Please solve any CAPTCHA, then press Enter here to continue...")
+        print("ACTION REQUIRED: Please solve any CAPTCHA in the browser.")
+        print("Waiting for __NEXT_DATA__ script to appear (indicating main page load)...")
+        
+        timeout_seconds = 300 # 5 minutes timeout for CAPTCHA
+        
+        try:
+            # Wait until the __NEXT_DATA__ script tag is present
+            WebDriverWait(driver, timeout_seconds, poll_frequency=2).until(
+                EC.presence_of_element_located((By.ID, "__NEXT_DATA__"))
+            )
+            print("__NEXT_DATA__ script found. CAPTCHA appears to be solved.")
+        except TimeoutException:
+            print("Timeout reached. __NEXT_DATA__ script did not appear within the allotted time.")
+            raise Exception("CAPTCHA not solved or main page did not load within the allotted time.")
 
         # --- Requests Phase: Data Scraping ---
         print("\n--- Requests Phase: Transferring session to scrape data ---")
