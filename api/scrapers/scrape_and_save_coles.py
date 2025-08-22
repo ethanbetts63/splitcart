@@ -73,6 +73,7 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
             session.cookies.set(cookie['name'], cookie['value'])
 
         print("Selenium browser is no longer needed. Closing it.")
+        print(f"DEBUG: Current URL after Selenium phase: {driver.current_url}") # Added debug print
         driver.quit()
         driver = None
 
@@ -93,6 +94,7 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
         jsonl_writer.open() # Open the JSONL file at the start of the scrape
 
         # --- Main Scraping Loop ---
+        print(f"DEBUG: Categories to fetch: {categories_to_fetch}") # Added debug print
         for category_slug in categories_to_fetch:
             print(f"\n--- Scraping Category: {category_slug} ---")
             page_num = 1
