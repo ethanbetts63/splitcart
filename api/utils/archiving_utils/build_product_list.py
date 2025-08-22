@@ -65,6 +65,7 @@ def build_product_list(store):
                 'allergens': product.allergens,
                 'ingredients': product.ingredients,
                 'barcode': product.barcode,
+                'normalized_name_brand_size': product.normalized_name_brand_size,
                 'price_history': price_history,
                 'category_paths': category_paths
             }
