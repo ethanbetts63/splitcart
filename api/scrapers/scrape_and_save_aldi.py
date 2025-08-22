@@ -84,14 +84,18 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, stat
                     raw_product_list=raw_products_on_page, company=company, store_name=effective_store_name, store_id=store_id, state=state,
                     category_slug=category_slug, page_num=page_num, timestamp=scrape_timestamp
                 )
-                print(f"Found and cleaned {len(data_packet['products'])} products on page {page_num}.")
+                from api.utils.scraper_utils.save_to_inbox import save_to_inbox
 
-                file_name = f"{company}_{store_name_slug}_{slugify(category_slug)}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
-                file_path = os.path.join(save_path, file_name)
+                products_on_page = data_packet.get('products', [])
+                metadata = data_packet.get('metadata', {})
+
+                saved_count = 0
+                for product in products_on_page:
+                    if save_to_inbox(product, metadata):
+                        saved_count += 1
                 
-                with open(file_path, 'w', encoding='utf-8') as f:
-                    json.dump(data_packet, f, indent=4)
-                print(f"Successfully saved cleaned data to {file_name}")
+                print(f"Found and cleaned {len(products_on_page)} products on page {page_num}.")
+                print(f"Successfully saved {saved_count}/{len(products_on_page)} products to the inbox.")
 
                 # --- Checkpoint: Update Page Progress ---
                 update_page_progress(
