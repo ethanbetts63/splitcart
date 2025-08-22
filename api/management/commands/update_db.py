@@ -27,8 +27,12 @@ def update_products_from_inbox(command):
 
     consolidated_data = {}
     processed_files = []
+    total_files = len(json_files)
+    processed_count = 0
 
     for filename in json_files:
+        processed_count += 1
+        command.stdout.write(f'\r  Processing file {processed_count}/{total_files}...', ending='')
         file_path = os.path.join(inbox_path, filename)
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
@@ -39,7 +43,6 @@ def update_products_from_inbox(command):
             
             key = product_details.get('normalized_name_brand_size')
             if not key:
-                command.stdout.write(command.style.WARNING(f'Skipping {filename}: missing normalized_name_brand_size key.'))
                 continue
 
             if key in consolidated_data:
@@ -69,8 +72,11 @@ def update_products_from_inbox(command):
         except Exception as e:
             command.stderr.write(command.style.ERROR(f'  An unexpected error occurred processing {filename}: {e}'))
             continue
+    
+    command.stdout.write('')
 
     if not consolidated_data:
+
         command.stdout.write(command.style.WARNING("No valid products to process after consolidation."))
         return
 

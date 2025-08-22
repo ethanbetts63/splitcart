@@ -71,17 +71,18 @@ To address the weaknesses in the current system, we are developing a new hybrid 
 
 **Files to Delete:**
 
-*   `C:\Users\ethan\coding\splitcart\api\management\commands\process_raw_data.py`
-*   `C:\Users\ethan\coding\splitcart\api\utils\scraper_utils\product_cleaner.py` (The old, simpler normalization logic)
+*   `C:\Users\ethan\coding\splitcart\api\management\commands\process_raw_data.py` DONE
+*   `C:\Users\ethan\coding\splitcart\api\utils\scraper_utils\product_cleaner.py` (The old, simpler normalization logic) DONE
+*   `C:\Users\ethan\coding\splitcart\api\utils\database_updating_utils\batch_create_new_products.py` DONE
 
 **Files to Modify:**
 
-*   `C:\Users\ethan\coding\splitcart\api\scrapers\scrape_and_save_*.py` (all scraper files): After calling the `clean_raw_data_*` function, loop through the `products` list in the returned dictionary. For each product, call the new `save_to_inbox` utility, passing the product data and relevant metadata.
-*   `C:\Users\ethan\coding\splitcart\api\management\commands\update_db.py`: Overhaul the `--products` logic to read from the `product_inbox`, perform in-memory de-duplication using the `normalized_name_brand_size` key, and then proceed with batch processing.
-*   `C:\Users\ethan\coding\splitcart\api\utils\database_updating_utils\update_products_from_processed.py`: The logic from this file will need to be adapted and moved into the `update_db.py` command.
-*   `C:\Users\ethan\coding\splitcart\api\utils\database_updating_utils\product_cleaning.py`: This file contains the superior normalization logic. It will be moved to a more central location (e.g., `api/utils/normalization_utils.py`) and adapted to work with product dictionaries instead of model instances.
+*   `C:\Users\ethan\coding\splitcart\api\scrapers\scrape_and_save_*.py` (all scraper files): After calling the `clean_raw_data_*` function, loop through the `products` list in the returned dictionary. For each product, call the new `save_to_inbox` utility, passing the product data and relevant metadata. DONE
+*   `C:\Users\ethan\coding\splitcart\api\management\commands\update_db.py`: Overhaul the `--products` logic to read from the `product_inbox`, perform in-memory de-duplication using the `normalized_name_brand_size` key, and then proceed with batch processing. DONE
+*   `C:\Users\ethan\coding\splitcart\api\utils\database_updating_utils\update_products_from_processed.py`: The logic from this file will need to be adapted and moved into the `update_db.py` command. DONE
+*   `C:\Users\ethan\coding\splitcart\api\utils\database_updating_utils\product_cleaning.py`: This file contains the superior normalization logic. It will be moved to a more central location (e.g., `api/utils/normalization_utils.py`) and adapted to work with product dictionaries instead of model instances. DONE
 
 **New Files to Create:**
 
-*   `C:\Users\ethan\coding\splitcart\api\utils\scraper_utils\save_to_inbox.py` (or similar): A new utility function to handle the creation of individual product JSON files in the `product_inbox` directory.
-*   `C:\Users\ethan\coding\splitcart\api\utils\normalization_utils.py` (or similar): A new, centralized location for the powerful normalization logic from `product_cleaning.py`.
+*   `C:\Users\ethan\coding\splitcart\api\utils\scraper_utils\save_to_inbox.py` (or similar): A new utility function to handle the creation of individual product JSON files in the `product_inbox` directory. DONE
+*   `C:\Users\ethan\coding\splitcart\api\utils\normalization_utils.py` (or similar): A new, centralized location for the powerful normalization logic from `product_cleaning.py`. DONE
