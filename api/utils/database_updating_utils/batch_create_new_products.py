@@ -1,7 +1,5 @@
-from django.db import IntegrityError
 from products.models import Product, Price
-from companies.models import Store
-from api.utils.database_updating_utils.product_cleaning import normalize_product_data
+from api.utils.normalization_utils import normalize_product_data
 
 def batch_create_new_products(command, consolidated_data: dict):
     """
@@ -127,5 +125,4 @@ def batch_create_new_products(command, consolidated_data: dict):
 
     command.stdout.write(f"Final product lookup cache contains {len(product_lookup_cache)} entries.")
     return product_lookup_cache
-
 
