@@ -9,7 +9,7 @@ class JsonlWriter:
         if not os.path.exists(self.temp_dir):
             os.makedirs(self.temp_dir)
         
-        self.temp_file_path = os.path.join(self.temp_dir, f"temp_{store_name_slug}.jsonl")
+        self.temp_file_path = os.path.join(self.temp_dir, f"{store_name_slug}.jsonl")
         self.inbox_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'product_inbox')
         self.temp_file_handle = None
         self.seen_product_keys = set()
@@ -54,8 +54,9 @@ class JsonlWriter:
 
         if scrape_successful:
             print(f"Finalizing scrape for {self.store_name_slug}.")
-            final_file_name = f"{self.company.lower()}_{self.state.lower()}_{self.store_name_slug}.jsonl"
-            finalize_scrape(self.temp_file_path, os.path.join(self.inbox_path, final_file_name))
+            store_id = self.store_name_slug.split('-')[-1]
+            final_file_name = f"{self.company.lower()}_{store_id.lower()}.jsonl"
+            finalize_scrape(self.temp_file_path, self.inbox_path, final_file_name)
             print(f"Successfully moved temp file to inbox for {self.store_name_slug}.")
         else:
             if os.path.exists(self.temp_file_path):
