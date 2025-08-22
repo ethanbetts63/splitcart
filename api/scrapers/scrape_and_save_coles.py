@@ -1,4 +1,6 @@
 import json
+import time
+import os
 from datetime import datetime
 import math
 import requests
@@ -10,11 +12,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException # Added this line
-from django.conf import settings
 from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
-from api.utils.scraper_utils.jsonl_writer import JsonlWriter
-
 
 def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, state: str, categories_to_fetch: list):
     """
@@ -50,20 +48,7 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
         print("Refreshing the page to apply the new store context.")
         driver.refresh()
 
-        print("ACTION REQUIRED: Please solve any CAPTCHA in the browser.")
-        print("Waiting for __NEXT_DATA__ script to appear (indicating main page load)...")
-        
-        timeout_seconds = 300 # 5 minutes timeout for CAPTCHA
-        
-        try:
-            # Wait until the __NEXT_DATA__ script tag is present
-            WebDriverWait(driver, timeout_seconds, poll_frequency=2).until(
-                EC.presence_of_element_located((By.ID, "__NEXT_DATA__"))
-            )
-            print("__NEXT_DATA__ script found. CAPTCHA appears to be solved.")
-        except TimeoutException:
-            print("Timeout reached. __NEXT_DATA__ script did not appear within the allotted time.")
-            raise Exception("CAPTCHA not solved or main page did not load within the allotted time.")
+        input("ACTION REQUIRED: Please solve any CAPTCHA, then press Enter here to continue...")
 
         # --- Requests Phase: Data Scraping ---
         print("\n--- Requests Phase: Transferring session to scrape data ---")
@@ -73,7 +58,6 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
             session.cookies.set(cookie['name'], cookie['value'])
 
         print("Selenium browser is no longer needed. Closing it.")
-        print(f"DEBUG: Current URL after Selenium phase: {driver.current_url}") # Added debug print
         driver.quit()
         driver = None
 
@@ -87,18 +71,11 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
         print("ERROR: Requests session was not created. Aborting.")
         return
 
-    jsonl_writer = JsonlWriter(company, store_name_slug, state)
-    scrape_successful = False # Track if the entire scrape was successful
-
-    try:
-        jsonl_writer.open() # Open the JSONL file at the start of the scrape
-
-        # --- Main Scraping Loop ---
-        print(f"DEBUG: Categories to fetch: {categories_to_fetch}") # Added debug print
-        for category_slug in categories_to_fetch:
-            print(f"\n--- Scraping Category: {category_slug} ---")
-            page_num = 1
-            total_pages = 1
+    # --- Main Scraping Loop ---
+    for category_slug in categories_to_fetch:
+        print(f"\n--- Scraping Category: {category_slug} ---")
+        page_num = 1
+        total_pages = 1
 
         category_successfully_completed = False
         while True: # Will break out internally
@@ -153,18 +130,20 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
                 scrape_timestamp = datetime.now()
                 data_packet = clean_raw_data_coles(raw_product_list, company, store_id, store_name, state, category_slug, page_num, scrape_timestamp)
                 
+                from api.utils.scraper_utils.save_to_inbox import save_to_inbox
+
                 if data_packet['products']:
                     print(f"Found and cleaned {len(data_packet['products'])} products.")
                     
                     products_on_page = data_packet.get('products', [])
                     metadata = data_packet.get('metadata', {})
                     
-                    products_written_count = 0
+                    saved_count = 0
                     for product in products_on_page:
-                        if jsonl_writer.write_product(product, metadata):
-                            products_written_count += 1
+                        if save_to_inbox(product, metadata):
+                            saved_count += 1
                     
-                    print(f"Successfully saved {products_written_count}/{len(products_on_page)} products to the temp JSONL file.")
+                    print(f"Successfully saved {saved_count}/{len(products_on_page)} products to the inbox.")
 
             except requests.exceptions.RequestException as e:
                 print(f"ERROR: Network request failed on page {page_num} for '{category_slug}': {e}")
@@ -180,14 +159,5 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
         else:
             print(f"--- Category {category_slug} not fully scraped due to an error. ---")
 
-        # If we reach here, it means the main loop completed without critical errors
-        # (though individual categories might have failed).
-        # Mark scrape_successful as True if all categories were processed.
-        # This logic might need refinement if partial success is considered a failure for the whole scrape.
-        # For now, if the loop finishes, we consider it successful.
-        scrape_successful = True # Assuming loop completion means overall success for now
-
-    finally:
-        jsonl_writer.finalize(scrape_successful)
-
-    print(f"\n--- Coles scraper finished for store: {store_name} ({store_id}). ---")
+    print("\n--- All categories processed for this store ---")
+    print(f"--- Coles scraper finished for store: {store_name} ({store_id}). ---")
