@@ -7,7 +7,7 @@ from datetime import datetime
 from django.conf import settings
 from django.utils.text import slugify
 from api.utils.scraper_utils.clean_raw_data_woolworths import clean_raw_data_woolworths
-from api.utils.scraper_utils.atomic_scraping_utils import append_to_temp_file, finalize_scrape
+from api.utils.scraper_utils.atomic_scraping_utils import finalize_scrape
 
 def scrape_and_save_woolworths_data(company: str, state: str, stores: list, categories_to_fetch: list):
     """
@@ -31,6 +31,7 @@ def scrape_and_save_woolworths_data(company: str, state: str, stores: list, cate
         inbox_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'product_inbox')
         
         scrape_successful = False
+        temp_file_handle = None # Initialize file handle to None
 
         try:
             session = requests.Session()
@@ -50,7 +51,10 @@ def scrape_and_save_woolworths_data(company: str, state: str, stores: list, cate
                 print(f"CRITICAL: Failed to warm up session. Error: {e}")
                 return
 
-            all_products_data = []
+            # Open the temporary file for writing (or appending if it exists from a previous failed run)
+            temp_file_handle = open(temp_file_path, 'a', encoding='utf-8')
+            seen_product_keys = set() # For in-scrape deduplication
+
             for category_slug, category_id in categories_to_fetch:
                 print(f"\n--- Starting category: '{category_slug}' ---")
                 
@@ -93,10 +97,18 @@ def scrape_and_save_woolworths_data(company: str, state: str, stores: list, cate
                         products_on_page = data_packet.get('products', [])
                         metadata = data_packet.get('metadata', {})
 
+                        products_written_count = 0
                         for product in products_on_page:
-                            all_products_data.append({"product": product, "metadata": metadata})
+                            product_key = product.get('normalized_name_brand_size')
+                            if product_key and product_key not in seen_product_keys:
+                                json.dump({"product": product, "metadata": metadata}, temp_file_handle)
+                                temp_file_handle.write('\n')
+                                seen_product_keys.add(product_key)
+                                products_written_count += 1
+                            # else: # Optional: print a message if a duplicate is skipped
+                            #     print(f"Skipping duplicate product: {product_key}")
 
-                        print(f"Found and cleaned {len(products_on_page)} products on page {page_num}.")
+                        print(f"Found {len(products_on_page)} products on page {page_num}. Wrote {products_written_count} new products to temp file.")
 
                     except requests.exceptions.RequestException as e:
                         print(f"ERROR: Request failed on page {page_num} for '{category_slug}': {e}")
@@ -111,16 +123,13 @@ def scrape_and_save_woolworths_data(company: str, state: str, stores: list, cate
                     
                     page_num += 1
 
-            # After all categories are scraped, write to temp file
-            with open(temp_file_path, 'w', encoding='utf-8') as f:
-                for product_data in all_products_data:
-                    json.dump(product_data, f)
-                    f.write('\n')
-
             scrape_successful = True
             print(f"\n--- All categories for '{store_name}' scraped successfully. ---")
 
         finally:
+            if temp_file_handle:
+                temp_file_handle.close()
+
             if scrape_successful:
                 print(f"Finalizing scrape for {store_name}.")
                 final_file_name = f"{company.lower()}_{state.lower()}_{store_name_slug}.jsonl"
