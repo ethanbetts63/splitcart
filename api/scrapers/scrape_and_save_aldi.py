@@ -4,135 +4,117 @@ import time
 import random
 import os
 from datetime import datetime
+from django.conf import settings
 from django.utils.text import slugify
 from api.utils.scraper_utils.clean_raw_data_aldi import clean_raw_data_aldi
-from api.utils.scraper_utils.checkpoint_utils.read_checkpoint import read_checkpoint
-from api.utils.scraper_utils.checkpoint_utils.update_page_progress import update_page_progress
-from api.utils.scraper_utils.checkpoint_utils.mark_category_complete import mark_category_complete
-from api.utils.scraper_utils.checkpoint_utils.clear_checkpoint import clear_checkpoint
+from api.utils.scraper_utils.atomic_scraping_utils import append_to_temp_file, finalize_scrape
 from api.utils.scraper_utils.get_aldi_categories import get_aldi_categories
 
 def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, state: str):
     """
-    Launches a requests-based scraper for a specific ALDI store with checkpointing.
+    Launches a requests-based scraper for a specific ALDI store.
+    Scrapes all data into a temporary file and moves it to the inbox on success.
     """
-    # Ensure store_name is not empty, use a fallback if it is
     effective_store_name = store_name if store_name else f"ALDI Store {store_id}"
     store_name_slug = f"{slugify(effective_store_name)}-{store_id}"
     print(f"--- Initializing ALDI Scraper for {company} ({store_name_slug}) ---")
 
-    session = requests.Session()
-    session.headers.update({
-        "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
-    })
+    temp_dir = os.path.join(settings.BASE_DIR, 'api', 'data', 'temp_inbox')
+    if not os.path.exists(temp_dir):
+        os.makedirs(temp_dir)
 
-    # --- Get Categories ---
-    categories_to_fetch = get_aldi_categories(store_id, session)
-    if not categories_to_fetch:
-        print("Could not fetch ALDI categories. Aborting scraper.")
-        return
+    temp_file_path = os.path.join(temp_dir, f"temp_{store_name_slug}.jsonl")
+    inbox_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'product_inbox')
 
-    # --- Checkpoint Initialization ---
-    progress = read_checkpoint(company)
-    completed_categories = progress.get("completed_categories", [])
+    scrape_successful = False
 
-    for category_slug, category_key in categories_to_fetch:
-        if category_slug in completed_categories:
-            print(f"Skipping already completed category: '{category_slug}'")
-            continue
+    try:
+        session = requests.Session()
+        session.headers.update({
+            "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
+        })
 
-        print(f"\n--- Starting category: '{category_slug}' ---")
-        
-        limit = 30
-        page_num = 1
-        offset = 0
+        categories_to_fetch = get_aldi_categories(store_id, session)
+        if not categories_to_fetch:
+            print("Could not fetch ALDI categories. Aborting scraper.")
+            return
 
-        if progress.get("current_category") == category_slug:
-            page_num = progress.get("last_completed_page", 0) + 1
-            offset = (page_num - 1) * limit
-            print(f"Resuming category '{category_slug}' from page {page_num} (offset: {offset}).")
-
-        category_successfully_completed = False
-        while True:
-            print(f"Attempting to fetch page {page_num} for '{category_slug}' (offset: {offset})...")
+        all_products_data = []
+        for category_slug, category_key in categories_to_fetch:
+            print(f"\n--- Starting category: '{category_slug}' ---")
             
-            api_url = "https://api.aldi.com.au/v3/product-search"
-            params = {
-                "currency": "AUD", "serviceType": "walk-in", "categoryKey": category_key,
-                "limit": limit, "offset": offset, "sort": "relevance", "testVariant": "A",
-                "servicePoint": store_id,
-            }
+            limit = 30
+            page_num = 1
+            offset = 0
 
-            try:
-                response = session.get(api_url, params=params, timeout=60)
-                if response.status_code == 400:
-                    print(f"Received 400 Bad Request. Assuming end of category '{category_slug}'.")
-                    category_successfully_completed = True
-                    break
-                response.raise_for_status()
-                data = response.json()
+            while True:
+                print(f"Attempting to fetch page {page_num} for '{category_slug}' (offset: {offset})...")
                 
-                raw_products_on_page = data.get("data", [])
+                api_url = "https://api.aldi.com.au/v3/product-search"
+                params = {
+                    "currency": "AUD", "serviceType": "walk-in", "categoryKey": category_key,
+                    "limit": limit, "offset": offset, "sort": "relevance", "testVariant": "A",
+                    "servicePoint": store_id,
+                }
 
-                if not raw_products_on_page:
-                    print(f"Page {page_num} is empty. Assuming end of category '{category_slug}'.")
-                    category_successfully_completed = True
-                    break
+                try:
+                    response = session.get(api_url, params=params, timeout=60)
+                    if response.status_code == 400:
+                        print(f"Received 400 Bad Request. Assuming end of category '{category_slug}'.")
+                        break
+                    response.raise_for_status()
+                    data = response.json()
+                    
+                    raw_products_on_page = data.get("data", [])
 
-                scrape_timestamp = datetime.now()
-                data_packet = clean_raw_data_aldi(
-                    raw_product_list=raw_products_on_page, company=company, store_name=effective_store_name, store_id=store_id, state=state,
-                    category_slug=category_slug, page_num=page_num, timestamp=scrape_timestamp
-                )
-                from api.utils.scraper_utils.save_to_inbox import save_to_inbox
+                    if not raw_products_on_page:
+                        print(f"Page {page_num} is empty. Assuming end of category '{category_slug}'.")
+                        break
 
-                products_on_page = data_packet.get('products', [])
-                metadata = data_packet.get('metadata', {})
+                    scrape_timestamp = datetime.now()
+                    data_packet = clean_raw_data_aldi(
+                        raw_product_list=raw_products_on_page, company=company, store_name=effective_store_name, store_id=store_id, state=state,
+                        category_slug=category_slug, page_num=page_num, timestamp=scrape_timestamp
+                    )
+                    
+                    products_on_page = data_packet.get('products', [])
+                    metadata = data_packet.get('metadata', {})
 
-                saved_count = 0
-                for product in products_on_page:
-                    if save_to_inbox(product, metadata):
-                        saved_count += 1
+                    for product in products_on_page:
+                        all_products_data.append({"product": product, "metadata": metadata})
+
+                    print(f"Found and cleaned {len(products_on_page)} products on page {page_num}.")
+
+                except requests.exceptions.RequestException as e:
+                    print(f"ERROR: Request failed on page {page_num} for '{category_slug}': {e}")
+                    raise
+                except json.JSONDecodeError:
+                    print(f"ERROR: Failed to decode JSON on page {page_num} for '{category_slug}'.")
+                    raise
+
+                sleep_time = random.uniform(0.5, 1.5)
+                print(f"Waiting for {sleep_time:.2f} seconds...")
+                time.sleep(sleep_time)
                 
-                print(f"Found and cleaned {len(products_on_page)} products on page {page_num}.")
-                print(f"Successfully saved {saved_count}/{len(products_on_page)} products to the inbox.")
+                offset += limit
+                page_num += 1
 
-                # --- Checkpoint: Update Page Progress ---
-                update_page_progress(
-                    company_name=company, store=store_name_slug,
-                    completed_cats=completed_categories,
-                    current_cat=category_slug, page_num=page_num
-                )
+        with open(temp_file_path, 'w', encoding='utf-8') as f:
+            for product_data in all_products_data:
+                json.dump(product_data, f)
+                f.write('\n')
 
-            except requests.exceptions.RequestException as e:
-                print(f"ERROR: Request failed on page {page_num} for '{category_slug}': {e}")
-                break
-            except json.JSONDecodeError:
-                print(f"ERROR: Failed to decode JSON on page {page_num} for '{category_slug}'.")
-                break
+        scrape_successful = True
+        print(f"\n--- All categories for '{store_name_slug}' scraped successfully. ---")
 
-            sleep_time = random.uniform(0.5, 1.5)
-            print(f"Waiting for {sleep_time:.2f} seconds...")
-            time.sleep(sleep_time)
-            
-            offset += limit
-            page_num += 1
-        
-        if category_successfully_completed:
-            completed_categories.append(category_slug)
-            mark_category_complete(
-                company_name=company, store=store_name_slug,
-                completed_cats=completed_categories,
-                new_completed_cat=category_slug
-            )
-            print(f"--- Finished category: '{category_slug}' ---")
+    finally:
+        if scrape_successful:
+            print(f"Finalizing scrape for {store_name_slug}.")
+            final_file_name = f"{company.lower()}_{state.lower()}_{store_name_slug}.jsonl"
+            finalize_scrape(temp_file_path, os.path.join(inbox_path, final_file_name))
+            print(f"Successfully moved temp file to inbox for {store_name_slug}.")
         else:
-            print(f"--- Paused category: '{category_slug}'. Progress saved. ---")
-
-    all_category_slugs = [cat[0] for cat in categories_to_fetch]
-    if all(cat in completed_categories for cat in all_category_slugs):
-        print(f"\n--- All categories for '{store_name_slug}' scraped successfully. Clearing checkpoint. ---")
-        clear_checkpoint(company)
-    else:
-        print(f"\n--- ALDI scraper for store '{store_name_slug}' finished, but not all categories were completed. Checkpoint retained. ---")
+            if os.path.exists(temp_file_path):
+                os.remove(temp_file_path)
+            print(f"Scrape for {store_name_slug} failed. Temporary file removed.")
 

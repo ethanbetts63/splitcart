@@ -64,3 +64,5 @@ The following files will need to be modified:
 5.  **Clean Up:**
     *   Remove the old `save_to_inbox.py` if it's no longer needed.
     *   Remove any unused checkpointing utility files.
+
+    its very important that you do not change the scraping logic of the scrapers. They are very delicate. 
