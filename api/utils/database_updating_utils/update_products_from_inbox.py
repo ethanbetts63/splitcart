@@ -13,13 +13,18 @@ def update_products_from_inbox(command):
 
     while True:
         json_files = [f for f in os.listdir(inbox_path) if f.endswith('.json')]
+        
         if not json_files:
             command.stdout.write(command.style.SUCCESS("No files in the inbox. Waiting 60 seconds..."))
-            time.sleep(60)
+            time.sleep(60) # First wait if no files
             json_files = [f for f in os.listdir(inbox_path) if f.endswith('.json')]
             if not json_files:
                 command.stdout.write(command.style.SUCCESS("No new files found after waiting. Exiting."))
-                break
+                break # Exit if still no files after first wait
         
+        # If we reach here, it means there are files to process (either initially or after the first wait)
         consolidated_data, processed_files = consolidate_inbox_data(inbox_path, command)
         update_database_from_consolidated_data(consolidated_data, processed_files, command)
+
+        # This ensures a delay between processing runs.
+        time.sleep(60)
