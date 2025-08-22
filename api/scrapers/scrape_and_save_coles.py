@@ -152,14 +152,20 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
                 scrape_timestamp = datetime.now()
                 data_packet = clean_raw_data_coles(raw_product_list, company, store_id, store_name, state, category_slug, page_num, scrape_timestamp)
                 
+                from api.utils.scraper_utils.save_to_inbox import save_to_inbox
+
                 if data_packet['products']:
                     print(f"Found and cleaned {len(data_packet['products'])} products.")
-                    file_name = f"{company.lower()}_{store_id.replace(':', '-')}_{category_slug}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
-                    file_path = os.path.join(save_path, file_name)
                     
-                    with open(file_path, 'w', encoding='utf-8') as f:
-                        json.dump(data_packet, f, indent=4)
-                    print(f"Successfully saved cleaned data to {file_name}")
+                    products_on_page = data_packet.get('products', [])
+                    metadata = data_packet.get('metadata', {})
+                    
+                    saved_count = 0
+                    for product in products_on_page:
+                        if save_to_inbox(product, metadata):
+                            saved_count += 1
+                    
+                    print(f"Successfully saved {saved_count}/{len(products_on_page)} products to the inbox.")
 
                     update_page_progress(
                         company_name=company, store=store_name_slug,

@@ -1,13 +1,7 @@
 from datetime import datetime
 from django.utils.text import slugify
-from api.utils.scraper_utils.product_cleaner import normalize_product_data
+from api.utils.normalization_utils import normalize_product_data
 
-
-def _create_coles_url_slug(product_name: str) -> str:
-    """Helper function to create a URL slug from product name."""
-    if not product_name:
-        return ""
-    return slugify(product_name)
 
 def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, category: str, page_num: int, timestamp: datetime) -> dict:
     """
@@ -36,7 +30,7 @@ def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, st
         # --- URL ---
         product_url = None
         if product_id and product_name and product_size:
-            slug = _create_coles_url_slug(product_name)
+            slug = slugify(product_name)
             product_url = f"https://www.coles.com.au/product/{slug}-{product_id}"
 
         # --- Pricing ---

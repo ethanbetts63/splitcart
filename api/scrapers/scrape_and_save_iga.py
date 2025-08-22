@@ -113,14 +113,17 @@ def scrape_and_save_iga_data(company: str, store_id: str, retailer_store_id: str
                     store_id=store_id, store_name=store_name, state=state,
                     category_slug=category_slug, page_num=page_num, timestamp=scrape_timestamp
                 )
-                print(f"    Found and cleaned {len(data_packet['products'])} products.")
-
-                file_name = f"{company}_{store_name_slug}_{category_slug}_page-{page_num}_{scrape_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.json"
-                file_path = os.path.join(save_path, file_name)
+                from api.utils.scraper_utils.save_to_inbox import save_to_inbox
                 
-                with open(file_path, 'w', encoding='utf-8') as f:
-                    json.dump(data_packet, f, indent=4)
-                print(f"    Successfully saved cleaned data to {file_name}")
+                products_on_page = data_packet.get('products', [])
+                metadata = data_packet.get('metadata', {})
+                
+                saved_count = 0
+                for product in products_on_page:
+                    if save_to_inbox(product, metadata):
+                        saved_count += 1
+                
+                print(f"    Successfully saved {saved_count}/{len(products_on_page)} products to the inbox.")
 
                 update_page_progress(
                     company_name=company, store=store_name_slug,

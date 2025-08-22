@@ -1,19 +1,12 @@
 from django.test import TestCase
 from datetime import datetime
 from unittest.mock import patch, MagicMock
-from api.utils.scraper_utils.clean_raw_data_coles import _create_coles_url_slug, clean_raw_data_coles
+from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
 
 class CleanRawDataColesTest(TestCase):
-    def test_create_coles_url_slug(self):
-        self.assertEqual(_create_coles_url_slug("Coles Brand Milk", "2L"), "coles-brand-milk")
-        self.assertEqual(_create_coles_url_slug("Coles Brand Milk 2L", "2L"), "coles-brand-milk")
-        self.assertEqual(_create_coles_url_slug("Product with Special Chars!@#", "100g"), "product-with-special-chars")
-        self.assertEqual(_create_coles_url_slug("", "100g"), "")
-        self.assertEqual(_create_coles_url_slug("Product Name", ""), "")
-
-    @patch('api.utils.scraper_utils.clean_raw_data_coles._create_coles_url_slug')
-    def test_clean_raw_data_coles(self, mock_create_coles_url_slug):
-        mock_create_coles_url_slug.return_value = "mock-slug"
+    @patch('api.utils.scraper_utils.clean_raw_data_coles.slugify')
+    def test_clean_raw_data_coles(self, mock_slugify):
+        mock_slugify.return_value = "mock-slug"
 
         raw_product_list = [
             {
@@ -77,7 +70,7 @@ class CleanRawDataColesTest(TestCase):
         self.assertEqual(cleaned_product['image_url_main'], "https://www.coles.com.au/some/image.jpg")
         self.assertEqual(cleaned_product['image_urls_all'], ["https://www.coles.com.au/some/image.jpg"])
 
-        mock_create_coles_url_slug.assert_called_once_with("Test Product", "100g")
+        mock_slugify.assert_called_once_with("Test Product")
 
     def test_clean_raw_data_coles_empty_list(self):
         cleaned_data = clean_raw_data_coles([], "Coles", "id", "name", "state", "cat", 1, datetime.now())

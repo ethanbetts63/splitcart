@@ -1,4 +1,4 @@
-from api.utils.database_updating_utils.product_cleaning import extract_sizes, clean_value, get_cleaned_name, normalize_product_data
+from api.utils.normalization_utils import normalize_product_data
 from django.db import models
 from django.db.models import Q
 
