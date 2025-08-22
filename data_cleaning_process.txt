@@ -1,0 +1,86 @@
+
+Splitcart is a grocery price comparison application designed to help users find the best prices for their favorite products across different Australian grocery stores. To achieve this, it is crucial to accurately identify the same product even when it is listed with slight variations in different stores. This document outlines the entire data cleaning and de-duplication process, from raw data scraping to final database entry, to help analyze and improve our strategies for identifying duplicate products.
+
+**Data Cleaning and De-duplication Pipeline**
+
+**Part 1: Scraping and Initial Cleaning**
+
+1.  **Scrape Raw Data:** The process begins by scraping the raw product data directly from the grocery store's API. This is initiated by a management command (e.g., `python manage.py scrape --woolworths`). The raw data for each page of products is returned as a JSON object.
+
+2.  **Store-Specific Cleaning Function:** For each grocery store, a specialized cleaning function is used to process the raw JSON data. For example, `clean_raw_data_woolworths` handles data from Woolworths. This function performs the following initial cleaning and normalization:
+    *   **Data Extraction:** It extracts relevant values from the complex, nested JSON structure and maps them to a standardized set of keys (e.g., `name`, `brand`, `price_current`).
+    *   **URL Construction:** It builds a direct URL to the product page.
+    *   **Tag Aggregation:** It combines various data points (e.g., 'new', 'organic', 'gluten-free') into a single list of tags.
+    *   **Category Path Creation:** It constructs a hierarchical category path from the available data.
+    *   **Data Type Conversion:** It converts data to the correct types, such as converting the health star rating to a floating-point number.
+
+3.  **Generic Normalization:** After the store-specific cleaning, a generic function, `normalize_product_data`, is applied to all products. This function performs further normalization to ensure consistency across all stores:
+    *   **Size Standardization:** It renames the `package_size` field to `size` and applies a series of rules to clean and standardize the size information (e.g., '1 kg' becomes '1000g', '1 litre' becomes '1000ml', 'each' is standardized).
+    *   **De-duplication Key Generation:** It creates a `normalized_name_brand_size` key by converting the product's name, brand, and cleaned size to lowercase and joining them with underscores. **Note:** This key is intended for de-duplication, but is not currently used in the final de-duplication step.
+
+4.  **Deposit to Raw Data Folder:** The cleaned and normalized data is saved as a JSON file in the `api/data/raw_data` directory. Each file contains the product data from a single scraped page.
+
+**Part 2: Processing and De-duplication**
+
+5.  **Process Raw Data:** The `process_raw_data` management command is run to consolidate the raw data files. It reads all the JSON files from the `api/data/raw_data` directory.
+
+6.  **First-Pass De-duplication:** Within the `process_raw_data` command, the first stage of de-duplication occurs. It combines all the products for a single store and de-duplicates them based on their `product_id_store`. This ensures that if a product was scraped multiple times from the same store (e.g., in different categories), only the most recent version is kept.
+
+7.  **Save to Processed Data Folder:** The consolidated and de-duplicated data for each store is saved as a single JSON file in the `api/data/processed_data` directory. The filename follows the format `{company}_{store_id}_{scrape_date}.json`.
+
+8.  **Clean Up Raw Data:** After the processed file is successfully created, the original raw data files are deleted.
+
+**Part 3: Database Update and Final De-duplication**
+
+9.  **Update Database:** The `update_db --products` command is run to update the database with the processed data.
+
+10. **Read Processed Data:** The script reads the JSON files from the `api/data/processed_data` directory.
+
+11. **Final De-duplication:** This is the most critical de-duplication step. The script creates a de-duplication key by taking the product's `name`, `brand`, and `package_size`, converting them to lowercase, and stripping whitespace. It uses this key to consolidate the product data before it is added to the database. **Crucially, this step does not use the normalized size from Part 1, Step 3.**
+
+12. **Create New Products:** If a product with a given de-duplication key does not already exist in the database, a new `Product` record is created.
+
+13. **Create Prices:** A new `Price` record is created for the product, linking it to the specific store and recording the current price.
+
+14. **Create Category Relationships:** The script links the product to its corresponding categories in the database.
+
+15. **Clean Up Processed Data:** Once a processed file has been successfully loaded into the database, it is deleted.
+
+**Proposed Hybrid Architecture (Under Development)**
+
+To address the weaknesses in the current system, we are developing a new hybrid architecture that simplifies the data pipeline and improves de-duplication accuracy.
+
+**1. Scraping and Saving to Product Inbox:**
+    *   The scraping and cleaning process will remain the same, including the generation of the `normalized_name_brand_size` key.
+    *   However, instead of saving a single JSON file per page, the scraper will save a separate JSON file for **each individual product** into a new `api/data/product_inbox/` directory.
+
+**2. `update_db` with Integrated De-duplication:**
+    *   The `process_raw_data` command will be eliminated.
+    *   The `update_db --products` command will be responsible for reading all the individual product files from the `product_inbox`.
+    *   **In-Memory De-duplication:** The command will load all products into memory and use the `normalized_name_brand_size` key to de-duplicate them. If multiple files have the same key, the data will be merged (e.g., keeping the data from the most recent scrape).
+    *   **Batch Database Update:** Once the data is de-duplicated, the command will use the existing batching logic to efficiently update the database.
+    *   **File Cleanup:** After a product is successfully processed and committed to the database, its corresponding file in the `product_inbox` will be deleted.
+
+**Benefits of the Hybrid Approach:**
+
+*   **Simplified Pipeline:** Eliminates the need for the `process_raw_data` command.
+*   **Improved Accuracy:** Uses the more sophisticated `normalized_name_brand_size` key for de-duplication.
+*   **Increased Resilience:** Errors with a single product file will not prevent other products from being processed.
+*   **Maintains Performance:** Keeps the efficiency of batch database operations.
+
+**Implementation To-Do List**
+
+**Files to Delete:**
+
+*   `C:\Users\ethan\coding\splitcart\api\management\commands\process_raw_data.py`
+
+**Files to Modify:**
+
+*   `C:\Users\ethan\coding\splitcart\api\scrapers\scrape_and_save_*.py` (all scraper files): Modify to save individual product files to the `product_inbox`.
+*   `C:\Users\ethan\coding\splitcart\api\management\commands\update_db.py`: Overhaul the `--products` logic to read from the `product_inbox`, perform in-memory de-duplication using the `normalized_name_brand_size` key, and then proceed with batch processing.
+*   `C:\Users\ethan\coding\splitcart\api\utils\database_updating_utils\update_products_from_processed.py`: The logic from this file will need to be adapted and moved into the `update_db.py` command.
+*   `C:\Users\ethan\coding\splitcart\api\utils\scraper_utils\product_cleaner.py`: Update the `normalize_product_data` function to create a `normalized_size` field instead of renaming `package_size`.
+
+**New Files to Create:**
+
+*   `C:\Users\ethan\coding\splitcart\api\utils\scraper_utils\save_to_inbox.py` (or similar): A new utility function to handle the creation of individual product JSON files in the `product_inbox` directory. This will promote code reuse across the different scrapers.

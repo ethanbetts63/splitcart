@@ -12,7 +12,7 @@ class Command(BaseCommand):
         parser.add_argument(
             '--threshold',
             type=float,
-            default=0.95,
+            default=0.90,
             help='Similarity threshold (0.0 to 1.0) for considering brands as similar. Default is 0.95.'
         )
         parser.add_argument(
@@ -80,8 +80,8 @@ class Command(BaseCommand):
 
                     similar_pairs.append((
                         brand1_name, brand2_name, ratio,
-                        f"({example_name1}, {sizes_str1})",
-                        f"({example_name2}, {sizes_str2})"
+                        example_name1, sizes_str1,
+                        example_name2, sizes_str2
                     ))
                 
                 comparisons_made += 1
@@ -102,13 +102,13 @@ class Command(BaseCommand):
 
         if dry_run:
             self.stdout.write(self.style.SQL_FIELD("\n--- Similar Brand Pairs (Dry Run) ---"))
-            for b1, b2, r, ex1, ex2 in similar_pairs:
-                self.stdout.write(f"'{b1}' {ex1} vs '{b2}' {ex2}: {r:.4f}")
+            for b1, b2, r, n1, s1, n2, s2 in similar_pairs:
+                self.stdout.write(f"'{b1}' vs '{b2}', '{n1}' vs '{n2}'")
             self.stdout.write(self.style.SQL_FIELD("-------------------------------------"))
         else:
             with open(output_file, 'w', encoding='utf-8') as f:
                 f.write(f"Similar Brand Pairs (Threshold: {threshold})\n")
-                f.write("-----------------------------------------")
-                for b1, b2, r, ex1, ex2 in similar_pairs:
-                    f.write(f"'{b1}' {ex1} vs '{b2}' {ex2}: {r:.4f}\n")
+                f.write("-----------------------------------------\n")
+                for b1, b2, r, n1, s1, n2, s2 in similar_pairs:
+                    f.write(f"'{b1}' vs '{b2}', '{n1}' vs '{n2}'\n")
             self.stdout.write(self.style.SUCCESS(f"Successfully wrote similar brand pairs to {output_file}"))

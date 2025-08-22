@@ -1,0 +1,61 @@
+# Data Cleaning and Normalization Pipeline
+
+## Introduction
+This document details the comprehensive data cleaning and normalization pipeline for the Splitcart application. The goal is to transform raw, scraped product data into a consistent, standardized format suitable for analysis, comparison, and storage in the database. The pipeline ensures data integrity and facilitates accurate product matching across different grocery stores.
+
+## Phase 1: Data Scraping (Raw Data Acquisition)
+This is the initial stage where raw product information is collected from various grocery store APIs.
+
+1.  **Scraping Process:** Data is scraped directly from grocery store APIs. For each API request, data arrives as a JSON dictionary.
+2.  **Specialized Cleaning Functions:** For every grocery store, a specialized cleaning function is employed. This function takes the raw JSON dictionary, extracts the values relevant to our application (e.g., product name, brand, price, package size), and maps them to a set of consistent, predefined keys. This ensures uniformity in the structure of the extracted data, regardless of the source store's API format.
+3.  **Raw Data Deposit:** The extracted and initially structured information is then deposited into the `api/data/raw_data` folder. Each JSON file in this folder typically represents a page's worth of products scraped from a single API request.
+
+## Phase 2: Raw Data Processing (`process_raw_data` command)
+This phase involves processing the raw JSON files generated during scraping.
+
+1.  **Command Execution:** The `python manage.py process_raw_data` command is executed to initiate this phase.
+2.  **Consolidation and Archiving:** This command reads the raw JSON files from `api/data/raw_data`. It consolidates the product data, often combining information by category or other criteria, and then archives this processed data into the `api/data/processed_data` directory. This step may involve basic data validation and initial structuring before database ingestion.
+
+## Phase 3: Database Update (`update_db` command)
+This is the critical phase where the processed data is ingested into the Django database, and extensive cleaning and normalization occur within the `Product` model itself.
+
+1.  **Command Execution:** The `python manage.py update_db --products` command (or similar variations) triggers this phase.
+2.  **Product Creation/Update (`batch_create_new_products`):**
+    *   The `update_db` command calls `batch_create_new_products` to handle the creation or updating of `Product` instances in the database.
+    *   This function uses a tiered matching system (barcode, store-specific ID, normalized string) to identify if a product already exists.
+    *   Crucially, `batch_create_new_products` now uses the central `normalize_product_data` utility function to prepare product data before database operations. It populates the `sizes` field and calculates the `normalized_name_brand_size` for new products, which are then inserted using `bulk_create` for performance.
+3.  **Model-Driven Cleaning (via `Product.clean()` and `Product.save()`):**
+    *   When a `Product` instance is saved (either individually or after a `bulk_create` when its `save()` method is eventually called, or when `process_and_merge_products` is run), its `clean()` method is automatically invoked.
+    *   The `clean()` method is responsible for ensuring the product's data is consistent and normalized. It calls the `normalize_product_data` utility function.
+    *   **`normalize_product_data` Utility Function (`api/utils/database_updating_utils/product_cleaning.py`):** This is the core of the product-level cleaning. It performs the following steps:
+        *   **Size Extraction (`extract_sizes`):** This function intelligently identifies and extracts all size-related strings from the product's `name` and `brand` fields. It uses a series of sophisticated regular expressions to handle various formats, including:
+            *   **Ranges:** e.g., "10-15kg" (extracts both "10kg" and "15kg").
+            *   **Multipacks:** e.g., "4x250ml" or "250ml x 4" (extracts both the individual unit size and the pack quantity, like "4pk").
+            *   **Standard Units:** e.g., "500g", "1.5L".
+        *   **`sizes` Field Population:** The extracted sizes are added to the `product.sizes` JSONField. This field stores a list of all identified size strings, ensuring uniqueness and sorted order.
+        *   **Cleaned Name Generation (`get_cleaned_name`):** This function creates a version of the product's `name` with the brand and all identified size information removed. This "cleaned name" is used solely for the purpose of generating the `normalized_name_brand_size`. The original `product.name` field remains unchanged.
+        *   **`normalized_name_brand_size` Generation (`clean_value`):** This function takes the cleaned name, the product's brand, and the `sizes` list. It applies a consistent normalization (lowercasing, sorting words, removing non-alphanumeric characters) to each component and concatenates them to create a unique, consistent `normalized_name_brand_size` string. This string serves as a primary key for identifying duplicate products across the entire database.
+4.  **Duplicate Handling (`process_and_merge_products` command):**
+    *   The `python manage.py process_and_merge_products` command is designed to explicitly re-run the model's cleaning logic on all existing products.
+    *   It identifies products that now have the same `normalized_name_brand_size` (due to improved cleaning) and merges them.
+    *   The merging process transfers all associated data (prices, categories, etc.) from duplicate products to a single master product, and then deletes the duplicates.
+
+## Phase 4: Archiving (`archive` command)
+This phase involves creating structured JSON archives of the cleaned and normalized data from the database.
+
+1.  **Command Execution:** The `python manage.py archive --products` command initiates the archiving of product data.
+2.  **Data Extraction:** The command reads product information directly from the database. Since the data has already gone through the rigorous cleaning and normalization process during database ingestion, it is already in a consistent state.
+3.  **`sizes` Field Archiving:** The `product.sizes` JSONField (containing the list of extracted sizes) is correctly extracted and included in the archived JSON files. The `normalized_name_brand_size` is *not* explicitly archived, as it can be reliably regenerated upon re-import using the `normalize_product_data` utility.
+4.  **JSON File Generation:** The cleaned product data is then saved into structured JSON files within the `api/data/archive/store_data` directory, organized by store.
+
+## Phase 5: Post-Processing and Analysis (Brand Canonicalization)
+This phase focuses on further refining data consistency, particularly for brand names, to improve product matching across different stores.
+
+1.  **Identifying Similar Brands (`find_similar_brands` command):**
+    *   The `python manage.py find_similar_brands` command is used to identify brand names that are highly similar (e.g., 90% string similarity) but not identical. This helps in identifying variations of the same brand (e.g., "Andrew Garret" vs. "Andrew Garrett").
+    *   The output provides example products for each similar brand, aiding manual review.
+2.  **Brand Canonicalization Map:** The identified similar brands are used to build a "brand canonicalization map" (a translation list). This map defines a single, canonical (preferred) name for each brand, resolving inconsistencies.
+3.  **Applying the Map:** This canonicalization map would be applied in an earlier stage of the pipeline, ideally during **Phase 1 (Data Scraping)** or **Phase 2 (Raw Data Processing)**. By mapping brand names to their canonical form *before* they enter the database and undergo `normalized_name_brand_size` generation, product matching across stores (e.g., Woolworths vs. Coles) can be significantly improved. This ensures that "4 Pines Brewing Co." and "4 Pines" both resolve to the same canonical brand, leading to more accurate duplicate detection.
+
+## Conclusion
+The Splitcart data pipeline employs a multi-stage approach to data cleaning and normalization. From initial scraping and specialized cleaning functions to robust model-driven normalization and post-processing analysis, every step is designed to ensure high data quality, consistency, and accurate product identification, which is crucial for effective price comparison and analysis.
