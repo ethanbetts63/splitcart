@@ -124,8 +124,6 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
             "store_name": store_name,
             "store_id": store_id,
             "state": state,
-            "category": category,
-            "page_number": page_num,
             "scraped_at": timestamp.isoformat()
         },
         "products": final_products

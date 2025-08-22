@@ -25,7 +25,6 @@ def normalize_product_data(product_data: dict) -> dict:
 
     # Calculate cleaned name
     cleaned_name = get_cleaned_name(name, brand, product_data['extracted_sizes'])
-    product_data['cleaned_name'] = cleaned_name
 
     # Generate normalized_name_brand_size
     normalized_string = clean_value(cleaned_name) + \

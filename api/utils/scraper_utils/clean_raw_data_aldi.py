@@ -111,8 +111,6 @@ def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, s
             "store_name": store_name.lower().strip(),
             "store_id": store_id.lower().strip(),
             "state": state.lower().strip(),
-            "category": category_slug.lower(),
-            "page_number": page_num,
             "scraped_at": timestamp.isoformat()
         },
         "products": final_products
