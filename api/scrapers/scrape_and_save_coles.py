@@ -12,7 +12,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from django.conf import settings
 from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
+from api.utils.scraper_utils.jsonl_writer import JsonlWriter
 
 def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, state: str, categories_to_fetch: list):
     """
@@ -71,11 +73,17 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
         print("ERROR: Requests session was not created. Aborting.")
         return
 
-    # --- Main Scraping Loop ---
-    for category_slug in categories_to_fetch:
-        print(f"\n--- Scraping Category: {category_slug} ---")
-        page_num = 1
-        total_pages = 1
+    jsonl_writer = JsonlWriter(company, store_name_slug, state)
+    scrape_successful = False # Track if the entire scrape was successful
+
+    try:
+        jsonl_writer.open() # Open the JSONL file at the start of the scrape
+
+        # --- Main Scraping Loop ---
+        for category_slug in categories_to_fetch:
+            print(f"\n--- Scraping Category: {category_slug} ---")
+            page_num = 1
+            total_pages = 1
 
         category_successfully_completed = False
         while True: # Will break out internally
@@ -130,20 +138,18 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
                 scrape_timestamp = datetime.now()
                 data_packet = clean_raw_data_coles(raw_product_list, company, store_id, store_name, state, category_slug, page_num, scrape_timestamp)
                 
-                from api.utils.scraper_utils.save_to_inbox import save_to_inbox
-
                 if data_packet['products']:
                     print(f"Found and cleaned {len(data_packet['products'])} products.")
                     
                     products_on_page = data_packet.get('products', [])
                     metadata = data_packet.get('metadata', {})
                     
-                    saved_count = 0
+                    products_written_count = 0
                     for product in products_on_page:
-                        if save_to_inbox(product, metadata):
-                            saved_count += 1
+                        if jsonl_writer.write_product(product, metadata):
+                            products_written_count += 1
                     
-                    print(f"Successfully saved {saved_count}/{len(products_on_page)} products to the inbox.")
+                    print(f"Successfully saved {products_written_count}/{len(products_on_page)} products to the temp JSONL file.")
 
             except requests.exceptions.RequestException as e:
                 print(f"ERROR: Network request failed on page {page_num} for '{category_slug}': {e}")
@@ -159,5 +165,14 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
         else:
             print(f"--- Category {category_slug} not fully scraped due to an error. ---")
 
-    print("\n--- All categories processed for this store ---")
-    print(f"--- Coles scraper finished for store: {store_name} ({store_id}). ---")
+        # If we reach here, it means the main loop completed without critical errors
+        # (though individual categories might have failed).
+        # Mark scrape_successful as True if all categories were processed.
+        # This logic might need refinement if partial success is considered a failure for the whole scrape.
+        # For now, if the loop finishes, we consider it successful.
+        scrape_successful = True # Assuming loop completion means overall success for now
+
+    finally:
+        jsonl_writer.finalize(scrape_successful)
+
+    print(f"\n--- Coles scraper finished for store: {store_name} ({store_id}). ---")

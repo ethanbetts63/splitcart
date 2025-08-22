@@ -7,8 +7,8 @@ from datetime import datetime
 from django.conf import settings
 from django.utils.text import slugify
 from api.utils.scraper_utils.clean_raw_data_aldi import clean_raw_data_aldi
-from api.utils.scraper_utils.atomic_scraping_utils import finalize_scrape
 from api.utils.scraper_utils.get_aldi_categories import get_aldi_categories
+from api.utils.scraper_utils.jsonl_writer import JsonlWriter
 
 def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, state: str):
     """
@@ -19,15 +19,8 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, stat
     store_name_slug = f"{slugify(effective_store_name)}-{store_id}"
     print(f"--- Initializing ALDI Scraper for {company} ({store_name_slug}) ---")
 
-    temp_dir = os.path.join(settings.BASE_DIR, 'api', 'data', 'temp_inbox')
-    if not os.path.exists(temp_dir):
-        os.makedirs(temp_dir)
-
-    temp_file_path = os.path.join(temp_dir, f"temp_{store_name_slug}.jsonl")
-    inbox_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'product_inbox')
-
     scrape_successful = False
-    temp_file_handle = None # Initialize file handle to None
+    jsonl_writer = JsonlWriter(company, store_name_slug, state)
 
     try:
         session = requests.Session()
@@ -40,8 +33,7 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, stat
             print("Could not fetch ALDI categories. Aborting scraper.")
             return
 
-        temp_file_handle = open(temp_file_path, 'a', encoding='utf-8')
-        seen_product_keys = set() # For in-scrape deduplication
+        jsonl_writer.open() # Open the JSONL file
 
         for category_slug, category_key in categories_to_fetch:
             print(f"\n--- Starting category: '{category_slug}' ---")
@@ -85,11 +77,7 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, stat
 
                     products_written_count = 0
                     for product in products_on_page:
-                        product_key = product.get('normalized_name_brand_size')
-                        if product_key and product_key not in seen_product_keys:
-                            json.dump({"product": product, "metadata": metadata}, temp_file_handle)
-                            temp_file_handle.write('\n')
-                            seen_product_keys.add(product_key)
+                        if jsonl_writer.write_product(product, metadata):
                             products_written_count += 1
 
                     print(f"Found {len(products_on_page)} products on page {page_num}. Wrote {products_written_count} new products to temp file.")
@@ -112,16 +100,5 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, stat
         print(f"\n--- All categories for '{store_name_slug}' scraped successfully. ---")
 
     finally:
-        if temp_file_handle:
-            temp_file_handle.close()
-
-        if scrape_successful:
-            print(f"Finalizing scrape for {store_name_slug}.")
-            final_file_name = f"{company.lower()}_{state.lower()}_{store_name_slug}.jsonl"
-            finalize_scrape(temp_file_path, os.path.join(inbox_path, final_file_name))
-            print(f"Successfully moved temp file to inbox for {store_name_slug}.")
-        else:
-            if os.path.exists(temp_file_path):
-                os.remove(temp_file_path)
-            print(f"Scrape for {store_name_slug} failed. Temporary file removed.")
+        jsonl_writer.finalize(scrape_successful)
 
