@@ -1,0 +1,78 @@
+# Analyze Command Cheat Sheet
+
+This document provides example commands for using the `python manage.py analyze` command to generate various reports and visualizations.
+
+## General Usage:
+`python manage.py analyze --report <report_type> [options]`
+
+---
+
+## Report Types:
+
+### 1. Store Product Counts (`store_product_counts`)
+Generates a chart showing product counts per store for a given company.
+*   **Required:** `--company-name`
+
+**Example:**
+```bash
+python manage.py analyze --report store_product_counts --company-name "Coles"
+```
+
+---
+
+### 2. Company Product Overlap Heatmap (`company_heatmap`)
+Generates a heatmap showing product overlap between all companies.
+*   **No additional arguments required.**
+
+**Example:**
+```bash
+python manage.py analyze --report company_heatmap
+```
+
+---
+
+### 3. Store Product Overlap Heatmap (`store_heatmap`)
+Generates a heatmap showing product overlap between stores of a specific company.
+*   **Required:** `--company-name`
+*   **Optional:** `--state` (filters stores by state)
+
+**Examples:**
+```bash
+# For all stores of a company
+python manage.py analyze --report store_heatmap --company-name "Woolworths"
+
+# For stores of a company in a specific state
+python manage.py analyze --report store_heatmap --company-name "Woolworths" --state "NSW"
+```
+
+---
+
+### 4. Store Pricing Heatmap (`pricing_heatmap`)
+Generates a heatmap showing pricing variations across stores for a specific company.
+*   **Required:** `--company-name`
+*   **Optional:** `--state` (filters stores by state)
+
+**Examples:**
+```bash
+# For all stores of a company
+python manage.py analyze --report pricing_heatmap --company-name "Aldi"
+
+# For stores of a company in a specific state
+python manage.py analyze --report pricing_heatmap --company-name "Aldi" --state "VIC"
+```
+
+---
+
+### 5. Category Price Correlation Heatmap (`category_heatmap`)
+Generates a heatmap showing price correlations within categories for a specific company.
+*   **Required:** `--company-name`
+*   **Optional:** `--category` (generates for a specific category; if omitted, generates for all categories of the company)
+
+**Examples:**
+```bash
+# For all categories of a company
+python manage.py analyze --report category_heatmap --company-name "IGA"
+
+# For a specific category within a company
+python manage.py analyze --report category_heatmap --company-name "IGA" --category "Sweets And Lollies"
+```
