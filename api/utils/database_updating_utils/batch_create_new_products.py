@@ -50,14 +50,15 @@ def batch_create_new_products(command, consolidated_data: dict):
 
         # Tier 3: Match by Normalized String
         if not product:
-            # Create a temporary Product instance to get its normalized string
-            temp_product = Product(
-                name=product_details.get('name', ''),
-                brand=product_details.get('brand', ''),
-                sizes=[product_details.get('package_size', '')] if product_details.get('package_size') else []
-            )
+            # Create a temporary dictionary to get its normalized string
+            temp_product_dict = {
+                'name': product_details.get('name', ''),
+                'brand': product_details.get('brand', ''),
+                'size': product_details.get('package_size', '')
+            }
             # Use the utility to populate sizes and get the normalized string
-            normalized_string = normalize_product_data(temp_product)
+            normalized_data = normalize_product_data(temp_product_dict)
+            normalized_string = normalized_data['normalized_name_brand_size']
             
             if normalized_string in normalized_string_cache:
                 product = normalized_string_cache[normalized_string]
@@ -76,31 +77,42 @@ def batch_create_new_products(command, consolidated_data: dict):
         for _, data in products_to_create_data:
             product_details = data['product_details']
             
-            # Create a Product instance and normalize it using the utility
-            temp_product = Product(
-                name=product_details.get('name', ''),
-                brand=product_details.get('brand', ''),
-                sizes=[product_details.get('package_size', '')] if product_details.get('package_size') else [],
-                barcode=product_details.get('barcode'),
-                image_url=product_details.get('image_url_main'),
-                url=product_details.get('url'),
-                description=product_details.get('description_long'),
-                country_of_origin=product_details.get('country_of_origin'),
-                ingredients=product_details.get('ingredients'),
-                allergens=product_details.get('allergens_may_be_present')
-            )
-            # This call will populate temp_product.sizes and return the normalized string
-            normalized_string = normalize_product_data(temp_product)
+            # Create a dictionary and normalize it using the utility
+            temp_product_dict = {
+                'name': product_details.get('name', ''),
+                'brand': product_details.get('brand', ''),
+                'size': product_details.get('package_size', ''),
+                'barcode': product_details.get('barcode'),
+                'image_url_main': product_details.get('image_url_main'),
+                'url': product_details.get('url'),
+                'description_long': product_details.get('description_long'),
+                'country_of_origin': product_details.get('country_of_origin'),
+                'ingredients': product_details.get('ingredients'),
+                'allergens_may_be_present': product_details.get('allergens_may_be_present')
+            }
+            
+            normalized_data = normalize_product_data(temp_product_dict)
+            normalized_string = normalized_data['normalized_name_brand_size']
 
             if normalized_string and normalized_string not in seen_normalized_strings:
-                # Add the product with its correctly populated sizes and normalized_name_brand_size
-                temp_product.normalized_name_brand_size = normalized_string # Manually set for bulk_create
-                new_product_objects.append(temp_product)
+                # Create a Product instance with the normalized data
+                new_product_objects.append(Product(
+                    name=normalized_data.get('cleaned_name'),
+                    brand=product_details.get('brand', ''),
+                    sizes=normalized_data.get('extracted_sizes'),
+                    barcode=product_details.get('barcode'),
+                    image_url=product_details.get('image_url_main'),
+                    url=product_details.get('url'),
+                    description=product_details.get('description_long'),
+                    country_of_origin=product_details.get('country_of_origin'),
+                    ingredients=product_details.get('ingredients'),
+                    allergens=product_details.get('allergens_may_be_present'),
+                    normalized_name_brand_size=normalized_string
+                ))
                 seen_normalized_strings.add(normalized_string)
 
         if new_product_objects:
             command.stdout.write(f"Creating {len(new_product_objects)} new unique products...")
-            # bulk_create will now insert products with correctly pre-calculated normalized_name_brand_size
             Product.objects.bulk_create(new_product_objects, batch_size=999, ignore_conflicts=True)
             
             # --- Step 4: Refresh cache with newly created products ---
@@ -113,12 +125,13 @@ def batch_create_new_products(command, consolidated_data: dict):
             for key, data in products_to_create_data:
                 product_details = data['product_details']
                 # Recalculate normalized string using the utility for cache lookup
-                temp_product = Product(
-                    name=product_details.get('name', ''),
-                    brand=product_details.get('brand', ''),
-                    sizes=[product_details.get('package_size', '')] if product_details.get('package_size') else []
-                )
-                normalized_string = normalize_product_data(temp_product)
+                temp_product_dict = {
+                    'name': product_details.get('name', ''),
+                    'brand': product_details.get('brand', ''),
+                    'size': product_details.get('package_size', '')
+                }
+                normalized_data = normalize_product_data(temp_product_dict)
+                normalized_string = normalized_data['normalized_name_brand_size']
 
                 if normalized_string in new_products_cache:
                     product_lookup_cache[key] = new_products_cache[normalized_string]
