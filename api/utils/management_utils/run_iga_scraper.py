@@ -5,7 +5,7 @@ from api.scrapers.scrape_and_save_iga import scrape_and_save_iga_data
 from api.utils.management_utils.get_company_by_name import get_company_by_name
 from api.utils.management_utils.get_active_stores_for_company import get_active_stores_for_company
 
-def run_iga_scraper(batch_size, raw_data_path):
+def run_iga_scraper(batch_size):
     print("--- Starting IGA scraping process ---")
 
     iga_company = get_company_by_name("Iga")
@@ -19,8 +19,6 @@ def run_iga_scraper(batch_size, raw_data_path):
     # Prioritize stores that have never been scraped, then the least recently scraped
     stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
 
-    print(f"Data will be saved to: {raw_data_path}")
-
     for store in stores_to_scrape:
         print(f"\n--- Handing off to scraper for store: {store.store_name} ---")
         store_name_slug = slugify(store.store_name.lower().replace('iga', '').replace('fresh', ''))
@@ -30,8 +28,7 @@ def run_iga_scraper(batch_size, raw_data_path):
             retailer_store_id=store.retailer_store_id,
             store_name=store.store_name,
             store_name_slug=store_name_slug,
-            state=store.state,
-            save_path=raw_data_path
+            state=store.state
         )
         if success:
             store.is_online_shopable = True

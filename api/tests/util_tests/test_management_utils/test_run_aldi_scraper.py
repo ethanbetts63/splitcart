@@ -38,9 +38,8 @@ class RunAldiScraperTest(TestCase):
         mock_timezone_now.return_value = mock_now
 
         batch_size = 2
-        raw_data_path = '/tmp/raw_data'
 
-        run_aldi_scraper(batch_size, raw_data_path)
+        run_aldi_scraper(batch_size)
 
         # Assertions
         mock_get_company_by_name.assert_called_once_with('Aldi')
@@ -52,15 +51,13 @@ class RunAldiScraperTest(TestCase):
             company='Aldi',
             store_name='Store 1',
             store_id='1',
-            state='WA',
-            save_path=raw_data_path
+            state='WA'
         )
         mock_scrape_and_save_aldi_data.assert_any_call(
             company='Aldi',
             store_name='Store 2',
             store_id='2',
-            state='VIC',
-            save_path=raw_data_path
+            state='VIC'
         )
 
         # Assert on the attributes of the MockStore instances
@@ -71,7 +68,7 @@ class RunAldiScraperTest(TestCase):
     @patch('api.utils.management_utils.run_aldi_scraper.get_active_stores_for_company')
     def test_run_aldi_scraper_no_company(self, mock_get_active_stores_for_company, mock_get_company_by_name):
         mock_get_company_by_name.return_value = None
-        run_aldi_scraper(1, '/tmp/raw_data')
+        run_aldi_scraper(1)
         mock_get_company_by_name.assert_called_once_with('Aldi')
         mock_get_active_stores_for_company.assert_not_called() # Corrected assertion
 
@@ -82,7 +79,7 @@ class RunAldiScraperTest(TestCase):
         mock_aldi_company = MagicMock(name='Aldi')
         mock_get_company_by_name.return_value = mock_aldi_company
         mock_get_active_stores_for_company.return_value = None
-        run_aldi_scraper(1, '/tmp/raw_data')
+        run_aldi_scraper(1)
         mock_get_company_by_name.assert_called_once_with('Aldi')
         mock_get_active_stores_for_company.assert_called_once_with(mock_aldi_company)
         mock_scrape_and_save_aldi_data.assert_not_called() # Corrected assertion

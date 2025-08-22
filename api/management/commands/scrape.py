@@ -1,4 +1,3 @@
-import os
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from api.utils.management_utils.run_woolworths_scraper import run_woolworths_scraper

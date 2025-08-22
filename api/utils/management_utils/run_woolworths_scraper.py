@@ -5,7 +5,7 @@ from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_cat
 from api.utils.management_utils.get_company_by_name import get_company_by_name
 from api.utils.management_utils.get_active_stores_for_company import get_active_stores_for_company
 
-def run_woolworths_scraper(batch_size, raw_data_path):
+def run_woolworths_scraper(batch_size):
     print("--- Starting Woolworths scraping process ---")
 
     woolworths_company = get_company_by_name("Woolworths")
@@ -24,16 +24,13 @@ def run_woolworths_scraper(batch_size, raw_data_path):
         print("Could not fetch Woolworths categories. Aborting.")
         return
     
-    print(f"Data will be saved to: {raw_data_path}")
-    
     for store in stores_to_scrape:
         print(f"\n--- Handing off to scraper for store: {store.store_name} ---")
         scrape_and_save_woolworths_data(
             company=woolworths_company.name,
             state=store.state,
             stores=[{'store_name': store.store_name, 'store_id': store.store_id}],
-            categories_to_fetch=categories,
-            save_path=raw_data_path
+            categories_to_fetch=categories
         )
         store.last_scraped_products = timezone.now()
         store.save()
