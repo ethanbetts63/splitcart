@@ -13,7 +13,7 @@ from api.utils.scraper_utils.checkpoint_utils.mark_category_complete import mark
 from api.utils.scraper_utils.checkpoint_utils.clear_checkpoint import clear_checkpoint
 import uuid
 
-def scrape_and_save_iga_data(company: str, store_id: str, retailer_store_id: str, store_name: str, store_name_slug: str, state: str, save_path: str):
+def scrape_and_save_iga_data(company: str, store_id: str, retailer_store_id: str, store_name: str, store_name_slug: str, state: str):
     """
     Launches a requests-based scraper for IGA with checkpointing.
     """

@@ -12,7 +12,7 @@ from api.utils.scraper_utils.checkpoint_utils.mark_category_complete import mark
 from api.utils.scraper_utils.checkpoint_utils.clear_checkpoint import clear_checkpoint
 from api.utils.scraper_utils.get_aldi_categories import get_aldi_categories
 
-def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, state: str, save_path: str):
+def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, state: str):
     """
     Launches a requests-based scraper for a specific ALDI store with checkpointing.
     """

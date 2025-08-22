@@ -64,7 +64,6 @@ git commit -m "reset django project robust.ps1"
 git push
 
 python manage.py update_db --archive
-python manage.py process_raw_data
 python manage.py update_db stores
 python manage.py update_db categories
 python manage.py build_company_jsons

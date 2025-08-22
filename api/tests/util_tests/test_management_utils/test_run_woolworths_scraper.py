@@ -41,9 +41,8 @@ class RunWoolworthsScraperTest(TestCase):
         mock_timezone_now.return_value = mock_now
 
         batch_size = 2
-        raw_data_path = '/tmp/raw_data'
 
-        run_woolworths_scraper(batch_size, raw_data_path)
+        run_woolworths_scraper(batch_size)
 
         # Assertions
         mock_get_company_by_name.assert_called_once_with('Woolworths')
@@ -56,15 +55,13 @@ class RunWoolworthsScraperTest(TestCase):
             company='Woolworths',
             state='WA',
             stores=[{'store_name': 'Store 1', 'store_id': '1'}],
-            categories_to_fetch=mock_categories,
-            save_path=raw_data_path
+            categories_to_fetch=mock_categories
         )
         mock_scrape_and_save_woolworths_data.assert_any_call(
             company='Woolworths',
             state='VIC',
             stores=[{'store_name': 'Store 2', 'store_id': '2'}],
-            categories_to_fetch=mock_categories,
-            save_path=raw_data_path
+            categories_to_fetch=mock_categories
         )
 
         self.assertEqual(mock_store1.save.call_count, 1)
@@ -78,7 +75,7 @@ class RunWoolworthsScraperTest(TestCase):
     @patch('api.utils.management_utils.run_woolworths_scraper.scrape_and_save_woolworths_data')
     def test_run_woolworths_scraper_no_company(self, mock_scrape_and_save_woolworths_data, mock_get_woolworths_categories, mock_get_active_stores_for_company, mock_get_company_by_name):
         mock_get_company_by_name.return_value = None
-        run_woolworths_scraper(1, '/tmp/raw_data')
+        run_woolworths_scraper(1)
         mock_get_company_by_name.assert_called_once_with('Woolworths')
         mock_get_active_stores_for_company.assert_not_called() # Corrected assertion
         mock_get_woolworths_categories.assert_not_called()
@@ -93,7 +90,7 @@ class RunWoolworthsScraperTest(TestCase):
         mock_woolworths_company.name = 'Woolworths'
         mock_get_company_by_name.return_value = mock_woolworths_company
         mock_get_active_stores_for_company.return_value = None
-        run_woolworths_scraper(1, '/tmp/raw_data')
+        run_woolworths_scraper(1)
         mock_get_company_by_name.assert_called_once_with('Woolworths')
         mock_get_active_stores_for_company.assert_called_once_with(mock_woolworths_company)
         mock_get_woolworths_categories.assert_not_called()
@@ -109,7 +106,7 @@ class RunWoolworthsScraperTest(TestCase):
         mock_get_company_by_name.return_value = mock_woolworths_company
         mock_get_active_stores_for_company.return_value = MagicMock(order_by=MagicMock(return_value=[])) # Return empty queryset
         mock_get_woolworths_categories.return_value = None # Simulate no categories
-        run_woolworths_scraper(1, '/tmp/raw_data')
+        run_woolworths_scraper(1)
         mock_get_company_by_name.assert_called_once_with('Woolworths')
         mock_get_active_stores_for_company.assert_called_once_with(mock_woolworths_company)
         mock_get_woolworths_categories.assert_called_once()

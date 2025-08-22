@@ -11,7 +11,7 @@ from api.utils.scraper_utils.checkpoint_utils.update_page_progress import update
 from api.utils.scraper_utils.checkpoint_utils.mark_category_complete import mark_category_complete
 from api.utils.scraper_utils.checkpoint_utils.clear_checkpoint import clear_checkpoint
 
-def scrape_and_save_woolworths_data(company: str, state: str, stores: list, categories_to_fetch: list, save_path: str):
+def scrape_and_save_woolworths_data(company: str, state: str, stores: list, categories_to_fetch: list):
     """
     Launches a requests-based scraper for a specific Woolworths store with checkpointing.
     """

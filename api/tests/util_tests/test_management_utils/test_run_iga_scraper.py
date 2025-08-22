@@ -40,9 +40,8 @@ class RunIgaScraperTest(TestCase):
         mock_timezone_now.return_value = mock_now
 
         batch_size = 2
-        raw_data_path = '/tmp/raw_data'
 
-        run_iga_scraper(batch_size, raw_data_path)
+        run_iga_scraper(batch_size)
 
         # Assertions
         mock_get_company_by_name.assert_called_once_with('Iga')
@@ -56,8 +55,7 @@ class RunIgaScraperTest(TestCase):
             retailer_store_id='retailer1',
             store_name='IGA Store 1',
             store_name_slug='store-1', # slugify('IGA Store 1'.lower().replace('iga', '').replace('fresh', ''))
-            state='WA',
-            save_path=raw_data_path
+            state='WA'
         )
         mock_scrape_and_save_iga_data.assert_any_call(
             company='Iga',
@@ -65,8 +63,7 @@ class RunIgaScraperTest(TestCase):
             retailer_store_id='retailer2',
             store_name='IGA Fresh Store 2',
             store_name_slug='store-2', # slugify('IGA Fresh Store 2'.lower().replace('iga', '').replace('fresh', ''))
-            state='VIC',
-            save_path=raw_data_path
+            state='VIC'
         )
 
         self.assertEqual(mock_store1.save.call_count, 1)
@@ -93,7 +90,7 @@ class RunIgaScraperTest(TestCase):
 
         mock_scrape_and_save_iga_data.return_value = False # Simulate scrape failure
 
-        run_iga_scraper(1, '/tmp/raw_data')
+        run_iga_scraper(1)
 
         self.assertEqual(mock_store1.save.call_count, 1)
         self.assertFalse(mock_store1.is_online_shopable)
@@ -103,7 +100,7 @@ class RunIgaScraperTest(TestCase):
     @patch('api.utils.management_utils.run_iga_scraper.get_active_stores_for_company')
     def test_run_iga_scraper_no_company(self, mock_get_active_stores_for_company, mock_get_company_by_name):
         mock_get_company_by_name.return_value = None
-        run_iga_scraper(1, '/tmp/raw_data')
+        run_iga_scraper(1)
         mock_get_company_by_name.assert_called_once_with('Iga')
         mock_get_active_stores_for_company.assert_not_called()
 
@@ -115,7 +112,7 @@ class RunIgaScraperTest(TestCase):
         mock_iga_company.name = 'Iga'
         mock_get_company_by_name.return_value = mock_iga_company
         mock_get_active_stores_for_company.return_value = None
-        run_iga_scraper(1, '/tmp/raw_data')
+        run_iga_scraper(1)
         mock_get_company_by_name.assert_called_once_with('Iga')
         mock_get_active_stores_for_company.assert_called_once_with(mock_iga_company)
         mock_scrape_and_save_iga_data.assert_not_called()

@@ -41,9 +41,8 @@ class RunColesScraperTest(TestCase):
         mock_timezone_now.return_value = mock_now
 
         batch_size = 2
-        raw_data_path = '/tmp/raw_data'
 
-        run_coles_scraper(batch_size, raw_data_path)
+        run_coles_scraper(batch_size)
 
         # Assertions
         mock_get_company_by_name.assert_called_once_with('Coles')
@@ -57,16 +56,14 @@ class RunColesScraperTest(TestCase):
             store_id='1',
             store_name='Store 1',
             state='WA',
-            categories_to_fetch=mock_categories,
-            save_path=raw_data_path
+            categories_to_fetch=mock_categories
         )
         mock_scrape_and_save_coles_data.assert_any_call(
             company='Coles',
             store_id='2',
             store_name='Store 2',
             state='VIC',
-            categories_to_fetch=mock_categories,
-            save_path=raw_data_path
+            categories_to_fetch=mock_categories
         )
 
         self.assertEqual(mock_store1.save.call_count, 1)
@@ -80,7 +77,7 @@ class RunColesScraperTest(TestCase):
     @patch('api.utils.management_utils.run_coles_scraper.scrape_and_save_coles_data') # Added this patch
     def test_run_coles_scraper_no_company(self, mock_scrape_and_save_coles_data, mock_get_coles_categories, mock_get_active_stores_for_company, mock_get_company_by_name):
         mock_get_company_by_name.return_value = None
-        run_coles_scraper(1, '/tmp/raw_data')
+        run_coles_scraper(1)
         mock_get_company_by_name.assert_called_once_with('Coles')
         mock_get_active_stores_for_company.assert_not_called() # Corrected assertion
         mock_get_coles_categories.assert_not_called()
@@ -95,7 +92,7 @@ class RunColesScraperTest(TestCase):
         mock_coles_company.name = 'Coles' # Explicitly set the attribute
         mock_get_company_by_name.return_value = mock_coles_company
         mock_get_active_stores_for_company.return_value = None
-        run_coles_scraper(1, '/tmp/raw_data')
+        run_coles_scraper(1)
         mock_get_company_by_name.assert_called_once_with('Coles')
         mock_get_active_stores_for_company.assert_called_once_with(mock_coles_company)
         mock_get_coles_categories.assert_not_called()
