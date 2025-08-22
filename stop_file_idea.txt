@@ -1,0 +1,49 @@
+## Stop File Mechanism for Graceful Scraper Shutdown
+
+**Concept:**
+To gracefully stop a running scraper process without interrupting its current operation, a "stop file" mechanism can be implemented. This allows the scraper to complete its current atomic unit of work (e.g., finishing the current store or category scrape) before exiting.
+
+**How it Works:**
+1.  **Designated Stop File:** A specific, empty file (e.g., `stop_scrape.txt`, `stop_woolworths.txt`, or `stop_aldi.txt`) is designated as the signal to stop the scraper.
+2.  **Periodic Check:** The running scraper process periodically checks for the existence of this stop file at a predefined location (e.g., in the project's root directory or a `temp` directory).
+3.  **Graceful Exit:** If the scraper detects the stop file, it will:
+    *   Complete its current iteration or task (e.g., finish scraping the current page, category, or store).
+    *   Perform any necessary cleanup (e.g., finalize the temporary data file for the current store).
+    *   Exit the process cleanly.
+4.  **User Action:** To stop a scraper, the user simply creates this empty stop file in the specified location.
+5.  **Cleanup:** After the scraper exits, the stop file can be manually deleted.
+
+**Advantages:**
+*   **Graceful Shutdown:** Ensures data integrity by allowing the scraper to finish its current operation.
+*   **Platform-Independent:** Works across different operating systems without complex platform-specific code.
+*   **Simple to Implement:** Requires minimal changes to the scraper's main loop.
+*   **Non-Blocking:** Does not require continuous, blocking keyboard input polling.
+
+**Example Implementation Idea (Conceptual):**
+
+```python
+import os
+import time
+
+STOP_FILE_PATH = "./stop_scrape.txt" # Example path
+
+def scraper_main_loop():
+    while True:
+        if os.path.exists(STOP_FILE_PATH):
+            print("Stop file detected. Finishing current task and exiting...")
+            # Perform any necessary cleanup or finalization here
+            break
+
+        # ... (your existing scraping logic for one unit of work, e.g., one page or one product)
+        print("Scraping in progress...")
+        time.sleep(5) # Simulate work
+
+    print("Scraper stopped gracefully.")
+
+# To stop the scraper, a user would run:
+# touch stop_scrape.txt  (on Linux/macOS)
+# type nul > stop_scrape.txt (on Windows CMD)
+# New-Item stop_scrape.txt -ItemType File (on Windows PowerShell)
+```
+
+**Note:** This is a conceptual outline. The exact implementation would depend on where in your scraper's loop you want to check for the stop file (e.g., after each page, after each category, or after each store).
