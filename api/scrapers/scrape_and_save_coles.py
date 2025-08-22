@@ -13,10 +13,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
-from api.utils.scraper_utils.checkpoint_utils.read_checkpoint import read_checkpoint
-from api.utils.scraper_utils.checkpoint_utils.update_page_progress import update_page_progress
-from api.utils.scraper_utils.checkpoint_utils.mark_category_complete import mark_category_complete
-from api.utils.scraper_utils.checkpoint_utils.clear_checkpoint import clear_checkpoint
 
 def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, state: str, categories_to_fetch: list):
     """
@@ -31,17 +27,8 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
     store_name_slug = f"{slugify(store_name)}-{numeric_store_id}"
     print(f"--- Initializing Hybrid Coles Scraper for store: {store_name} ({store_name_slug}) ---")
 
-    # --- Load Progress from Checkpoint Manager ---
-    progress = read_checkpoint(company)
-    
-    # Check if we are starting a new store or resuming an old one
-    start_scraping_fresh = not progress.get("current_store") or progress.get("current_store") != store_name_slug
-    if start_scraping_fresh:
-        print(f"Starting fresh scrape for {store_name}.")
-        completed_categories = []
-    else:
-        print(f"Resuming scrape for {store_name}.")
-        completed_categories = progress.get("completed_categories", [])
+    # This scraper is atomic; it always starts fresh.
+    completed_categories = []
 
     # --- Selenium Phase: Session Initialization ---
     driver = None
@@ -86,18 +73,9 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
 
     # --- Main Scraping Loop ---
     for category_slug in categories_to_fetch:
-        if category_slug in completed_categories:
-            print(f"Skipping already completed category: {category_slug}")
-            continue
-
         print(f"\n--- Scraping Category: {category_slug} ---")
         page_num = 1
         total_pages = 1
-
-        # Check for resuming a category from a specific page
-        if not start_scraping_fresh and progress.get("current_category") == category_slug:
-            page_num = progress.get("last_completed_page", 0) + 1
-            print(f"Resuming category '{category_slug}' from page {page_num}.")
 
         category_successfully_completed = False
         while True: # Will break out internally
@@ -167,11 +145,6 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
                     
                     print(f"Successfully saved {saved_count}/{len(products_on_page)} products to the inbox.")
 
-                    update_page_progress(
-                        company_name=company, store=store_name_slug,
-                        completed_cats=completed_categories, current_cat=category_slug, page_num=page_num
-                    )
-
             except requests.exceptions.RequestException as e:
                 print(f"ERROR: Network request failed on page {page_num} for '{category_slug}': {e}")
                 break 
@@ -182,15 +155,9 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
             page_num += 1
 
         if category_successfully_completed:
-            if category_slug not in completed_categories:
-                completed_categories.append(category_slug)
-            mark_category_complete(
-                company_name=company, store=store_name_slug,
-                completed_cats=completed_categories, new_completed_cat=category_slug
-            )
             print(f"--- Finished category: {category_slug} ---")
         else:
-            print(f"--- Paused category: {category_slug}. Progress saved. ---")
+            print(f"--- Category {category_slug} not fully scraped due to an error. ---")
 
     print("\n--- All categories processed for this store ---")
     print(f"--- Coles scraper finished for store: {store_name} ({store_id}). ---")
