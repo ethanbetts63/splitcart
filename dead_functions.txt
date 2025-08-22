@@ -1,9 +1,0 @@
-Dead Functions Found:
-
-- print_product_progress (api/utils/archiving_utils/print_product_progress.py)
-- create_price (api/utils/database_updating_utils/create_price.py)
-- deactivate_product_price (api/utils/database_updating_utils/deactivate_product_price.py)
-- deactivate_prices_for_store (api/utils/database_updating_utils/deactivate_store_prices.py)
-- get_or_create_category_hierarchy (api/utils/database_updating_utils/get_or_create_category_hierarchy.py)
-- get_or_create_product (api/utils/database_updating_utils/get_or_create_product.py)
-- merge_duplicate_products (api/utils/database_updating_utils/merging.py)
