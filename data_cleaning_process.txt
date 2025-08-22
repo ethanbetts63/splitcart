@@ -23,7 +23,7 @@ The data pipeline has been redesigned into a simplified and more robust two-stag
 
 2.  **Consolidate from Inbox:** The command reads all the individual product JSON files from the `product_inbox`.
 
-3.  **In-Memory De-duplication:** The script uses the `normalized_name_brand_size` key from each product file to perform an in-memory de-duplication. If multiple files share the same key, only the most recent one is kept, ensuring that the most up-to-date product information is used.
+3.  **In-Memory De-duplication:** The script uses the `normalized_name_brand_size` key from each product file to perform an in-memory de-duplication. If multiple files share the same key, the system uses a "last one wins" approach: the data from the file that is processed last will overwrite any previous data for that key.
 
 4.  **Batch Database Operations:** Once the unique products have been identified, the script performs the following actions in efficient batches:
     *   **Identify New Products:** It uses a tiered matching system (checking barcode, then store-specific ID, then the normalized string) to determine which products are genuinely new.

@@ -97,7 +97,7 @@ def batch_create_new_products(command, consolidated_data: dict):
             if normalized_string and normalized_string not in seen_normalized_strings:
                 # Create a Product instance with the normalized data
                 new_product_objects.append(Product(
-                    name=normalized_data.get('cleaned_name'),
+                    name=product_details.get('name', ''),
                     brand=product_details.get('brand', ''),
                     sizes=normalized_data.get('extracted_sizes'),
                     barcode=product_details.get('barcode'),
