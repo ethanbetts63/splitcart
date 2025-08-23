@@ -136,3 +136,14 @@ All `api` app tests are currently passing.
 
 **Import Changes:**
 -   All imports in `api/utils/normalization_utils` files were changed to be explicit (e.g., `from api.utils.normalization_utils.module import function` instead of `from .module import function`).
+
+--- Progress Update (August 23, 2025) ---
+
+**Non-Test Files Modified:**
+- `api/utils/scraper_utils/clean_raw_data_aldi.py`: Removed lowercasing/stripping from `name` and `brand` fields.
+- `api/utils/normalization_utils/extract_sizes.py`: Corrected size extraction logic to handle spaces more robustly.
+- `api/utils/database_updating_utils/batch_create_new_products.py`: Removed redundant calls to `get_extracted_sizes` and `get_normalized_string`.
+
+**Test Files Modified & Status:**
+- `api/tests/integration/test_data_flow_aldi.py`: Updated with full raw product data, correct assertions for original name/brand, and `Decimal` for price. **(PASSING)**.
+- `api/tests/integration/test_data_flow_coles.py`: Updated assertions for original name/brand and `Decimal` for price. **(FAILING - sizes assertion)**.
