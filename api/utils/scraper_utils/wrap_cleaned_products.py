@@ -8,7 +8,7 @@ def wrap_cleaned_products(products: list, company: str, store_name: str, store_i
         "metadata": {
             "company": company.lower().strip(),
             "store_name": store_name.lower().strip(),
-            "store_id": store_id.lower().strip(),
+            "store_id": store_id.strip(),
             "state": state.lower().strip(),
             "scraped_at": timestamp.isoformat()
         },

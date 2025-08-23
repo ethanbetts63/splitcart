@@ -43,7 +43,7 @@ if you ever need to reference how the data comes in you can look at these. This 
 
 things we want to test for: 
 1. no data loss from scrape to database
-2. each scraper is actually testing multiple stores. 
+2. each scraper is actually getting information from multiple stores. it doesnt just think it is. 
 3. deduplication is working as expected. 
 
 all tests not in the list above were passing at the start of this process. Put a (DONE) marker next to a test in the list when you finish it. \
@@ -81,3 +81,32 @@ all tests not in the list above were passing at the start of this process. Put a
   - api/tests/util_tests/test_scraper_utils/test_clean_raw_data_*
   .py (all 4 cleaners): Function call arguments updated. All
   tests are passing.
+
+
+--- Recent Changes & Test Status (August 23, 2025) ---
+
+Non-Test Files Modified:
+- api/utils/normalization_utils/normalize_product_data.py: DELETED. Replaced by two new functions.
+- products/models/product.py: Updated `clean` method to use new normalization utilities.
+- api/utils/scraper_utils/clean_raw_data_coles.py: Refactored to use `get_extracted_sizes` and `get_normalized_string`.
+- api/utils/scraper_utils/clean_raw_data_woolworths.py: Refactored to use `get_extracted_sizes` and `get_normalized_string`.
+- api/utils/scraper_utils/clean_raw_data_aldi.py: Refactored to use `get_extracted_sizes` and `get_normalized_string`.
+- api/utils/scraper_utils/clean_raw_data_iga.py: Refactored to use `get_extracted_sizes` and `get_normalized_string`.
+- api/utils/database_updating_utils/batch_create_new_products.py: Refactored to use `get_extracted_sizes` and `get_normalized_string`.
+
+New Files Created:
+- api/utils/normalization_utils/get_extracted_sizes.py: Utility to extract and return product sizes.
+- api/utils/normalization_utils/get_normalized_string.py: Utility to generate and return normalized product string.
+
+Test Files Modified & Status:
+- api/tests/util_tests/test_normalization_utils/test_normalize_product_data.py: DELETED. Replaced by new test files.
+- api/tests/util_tests/test_normalization_utils/test_get_extracted_sizes.py: NEW. Tests `get_extracted_sizes`. (PASSING)
+- api/tests/util_tests/test_normalization_utils/test_get_normalized_string.py: NEW. Tests `get_normalized_string`. (PASSING)
+- api/tests/util_tests/test_scraper_utils/test_clean_raw_data_coles.py: Mocks updated. (PASSING)
+- api/tests/util_tests/test_scraper_utils/test_clean_raw_data_woolworths.py: Mocks updated. (PASSING)
+- api/tests/util_tests/test_scraper_utils/test_clean_raw_data_aldi.py: Mocks updated. (PASSING)
+- api/tests/util_tests/test_scraper_utils/test_clean_raw_data_iga.py: Mocks updated. (PASSING)
+- api/tests/util_tests/test_database_updating_utils/test_product_matching.py: Updated to use new normalization functions and corrected test data. (PASSING)
+- api/tests/scrapers/test_scrape_and_save_coles.py: NEW. Basic successful scrape test. (PASSING)
+
+All `api` app tests are currently passing.

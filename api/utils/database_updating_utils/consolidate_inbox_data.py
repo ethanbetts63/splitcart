@@ -50,8 +50,8 @@ def process_product_data(data, consolidated_data):
     price_info = {
         'store_id': metadata.get('store_id'),
         'price': product_details.get('price_current'),
-        'is_on_special': product_details.get('is_on_sale', False),
-        'is_available': True,
+        'is_on_special': product_details.get('is_on_special', False),
+        'is_available': product_details.get('is_available', True),
         'store_product_id': product_details.get('store_product_id')
     }
 

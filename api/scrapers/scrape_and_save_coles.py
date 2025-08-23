@@ -146,7 +146,7 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
                         print(f"Category has {total_results} products across {total_pages} pages.")
 
                     scrape_timestamp = datetime.now()
-                    data_packet = clean_raw_data_coles(raw_product_list, company, store_id, store_name, state, category_slug, page_num, scrape_timestamp)
+                    data_packet = clean_raw_data_coles(raw_product_list, company, store_id, store_name, state, scrape_timestamp)
                     
                     if data_packet['products']:
                         print(f"Found and cleaned {len(data_packet['products'])} products.")
