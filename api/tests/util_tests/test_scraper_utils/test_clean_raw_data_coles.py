@@ -1,4 +1,3 @@
-
 import unittest
 from unittest.mock import patch
 from datetime import datetime
@@ -6,8 +5,9 @@ from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
 
 class TestCleanRawDataColes(unittest.TestCase):
 
-    @patch('api.utils.scraper_utils.clean_raw_data_coles.normalize_product_data', side_effect=lambda p: p)
-    def test_clean_raw_data_coles(self, mock_normalize):
+    @patch('api.utils.scraper_utils.clean_raw_data_coles.get_normalized_string', return_value='normalized_string')
+    @patch('api.utils.scraper_utils.clean_raw_data_coles.get_extracted_sizes', return_value=['approx. 300g'])
+    def test_clean_raw_data_coles(self, mock_get_sizes, mock_get_string):
         raw_product_list = [
             {
                 "_type": "PRODUCT",
@@ -59,7 +59,8 @@ class TestCleanRawDataColes(unittest.TestCase):
         self.assertEqual(product['package_size'], 'approx. 300g')
         self.assertEqual(product['category_path'], ['Meat & Seafood', 'Lamb', 'Graze Grass-Fed Lamb'])
         self.assertIn('special', product['tags'])
-        self.assertEqual(mock_normalize.call_count, 1)
+        self.assertEqual(mock_get_sizes.call_count, 1)
+        self.assertEqual(mock_get_string.call_count, 1)
 
 if __name__ == '__main__':
     unittest.main()

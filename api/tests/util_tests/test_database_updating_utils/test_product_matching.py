@@ -1,4 +1,3 @@
-
 from django.test import TestCase
 from unittest.mock import Mock
 from products.models import Product
@@ -22,9 +21,8 @@ class TestProductMatching(TestCase):
         self.existing_product_norm = ProductFactory(
             name="Test Product",
             brand="TestBrand",
-            normalized_name_brand_size="1kgproducttesttestbrand"
+            sizes=["1kg"]
         )
-
 
         self.mock_command = Mock()
         self.mock_command.stdout = Mock()
@@ -42,18 +40,15 @@ class TestProductMatching(TestCase):
                 "price_history": [{"store_id": "store1", "price": 1.0}]
             },
             "key_norm": {
-                "product_details": {"name": "Test Product", "brand": "TestBrand", "package_size": "1kg"},
+                "product_details": {"name": "Test Product", "brand": "TestBrand", "sizes": ["1kg"]},
                 "price_history": [{"store_id": "store1", "price": 1.0}]
             },
             "key_new": {
-                "product_details": {"name": "New Product", "brand": "NewBrand", "package_size": "500g", "barcode": "987654321"},
+                "product_details": {"name": "New Product", "brand": "NewBrand", "sizes": ["500g"], "barcode": "987654321"},
                 "price_history": [{"store_id": "store1", "price": 1.0}]
             }
         }
 
-        # There is an issue in batch_create_new_products where it expects normalize_product_data
-        # to return a dictionary, but it returns a string. This test will likely fail.
-        # I will leave the failing test as per the instructions.
         product_lookup_cache = batch_create_new_products(self.mock_command, consolidated_data)
 
         # Assertions

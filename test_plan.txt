@@ -49,3 +49,35 @@ things we want to test for:
 all tests not in the list above were passing at the start of this process. Put a (DONE) marker next to a test in the list when you finish it. \
 
 
+  --- Recent Changes & Test Status ---
+
+
+  Non-Test Files Modified:
+  - api/utils/normalization_utils/normalize_product_data.py:
+  Updated to handle dict/model input; returns dict with
+  normalized string and extracted sizes.
+  - products/models/price.py: is_available now nullable
+  (null=True, default=None). Migration applied.
+  - api/utils/scraper_utils/clean_raw_data_*.py (all 4 cleaners):
+   Removed unused category/page_num params. Integrated
+  wrap_cleaned_products utility. IGA cleaner updated to parse
+  pricePerUnit and is_available now uses
+  product.get('available').
+
+
+  New Files Created:
+  - api/utils/scraper_utils/wrap_cleaned_products.py: Contains
+  shared metadata wrapping utility.
+
+
+  Test Files Modified & Status:
+  - api/tests/util_tests/test_normalization_utils/test_normalize_
+  product_data.py: Assertions updated for dict return.
+  test_product_with_multipack_size still fails (due to
+  get_cleaned_name issue).
+  - api/tests/util_tests/test_database_updating_utils/test_produc
+  t_matching.py: setUp updated for existing_product_norm (calls
+  clean()/save()). Still failing (normalized string mismatch).
+  - api/tests/util_tests/test_scraper_utils/test_clean_raw_data_*
+  .py (all 4 cleaners): Function call arguments updated. All
+  tests are passing.

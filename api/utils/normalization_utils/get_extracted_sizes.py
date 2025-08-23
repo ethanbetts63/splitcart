@@ -1,11 +1,8 @@
 from .extract_sizes import extract_sizes
-from .get_cleaned_name import get_cleaned_name
-from .clean_value import clean_value
 
-def normalize_product_data(product) -> str:
+def get_extracted_sizes(product) -> list:
     """
-    Takes a product object (model instance or dictionary), extracts and cleans sizes,
-    cleans the name, and returns a normalized_name_brand_size string.
+    Takes a product object (model instance or dictionary) and returns a sorted list of unique sizes.
     """
     # Safely get name, brand, and sizes, handling both object attributes and dictionary keys
     name = getattr(product, 'name', product.get('name', '')) if hasattr(product, 'get') else getattr(product, 'name', '')
@@ -25,14 +22,4 @@ def normalize_product_data(product) -> str:
     all_sizes.update(name_sizes)
     all_sizes.update(brand_sizes)
     
-    extracted_sizes = sorted(list(all_sizes))
-
-    # Calculate cleaned name
-    cleaned_name = get_cleaned_name(name, brand, extracted_sizes)
-
-    # Generate normalized_name_brand_size
-    normalized_string = clean_value(cleaned_name) + \
-                        clean_value(brand) + \
-                        clean_value(" ".join(extracted_sizes) if extracted_sizes else "")
-    
-    return normalized_string
+    return sorted(list(all_sizes))

@@ -1,5 +1,6 @@
 from products.models import Product, Price
-from api.utils.normalization_utils import normalize_product_data
+from api.utils.normalization_utils.get_extracted_sizes import get_extracted_sizes
+from api.utils.normalization_utils.get_normalized_string import get_normalized_string
 
 def batch_create_new_products(command, consolidated_data: dict):
     """
@@ -54,11 +55,11 @@ def batch_create_new_products(command, consolidated_data: dict):
             temp_product_dict = {
                 'name': product_details.get('name', ''),
                 'brand': product_details.get('brand', ''),
-                'size': product_details.get('package_size', '')
+                'sizes': product_details.get('sizes', [])
             }
             # Use the utility to populate sizes and get the normalized string
-            normalized_data = normalize_product_data(temp_product_dict)
-            normalized_string = normalized_data['normalized_name_brand_size']
+            extracted_sizes = get_extracted_sizes(temp_product_dict)
+            normalized_string = get_normalized_string(temp_product_dict, extracted_sizes)
             
             if normalized_string in normalized_string_cache:
                 product = normalized_string_cache[normalized_string]
@@ -81,25 +82,18 @@ def batch_create_new_products(command, consolidated_data: dict):
             temp_product_dict = {
                 'name': product_details.get('name', ''),
                 'brand': product_details.get('brand', ''),
-                'size': product_details.get('package_size', ''),
-                'barcode': product_details.get('barcode'),
-                'image_url_main': product_details.get('image_url_main'),
-                'url': product_details.get('url'),
-                'description_long': product_details.get('description_long'),
-                'country_of_origin': product_details.get('country_of_origin'),
-                'ingredients': product_details.get('ingredients'),
-                'allergens_may_be_present': product_details.get('allergens_may_be_present')
+                'sizes': product_details.get('sizes', [])
             }
             
-            normalized_data = normalize_product_data(temp_product_dict)
-            normalized_string = normalized_data['normalized_name_brand_size']
+            extracted_sizes = get_extracted_sizes(temp_product_dict)
+            normalized_string = get_normalized_string(temp_product_dict, extracted_sizes)
 
             if normalized_string and normalized_string not in seen_normalized_strings:
                 # Create a Product instance with the normalized data
                 new_product_objects.append(Product(
                     name=product_details.get('name', ''),
                     brand=product_details.get('brand', ''),
-                    sizes=normalized_data.get('extracted_sizes'),
+                    sizes=extracted_sizes,
                     barcode=product_details.get('barcode'),
                     image_url=product_details.get('image_url_main'),
                     url=product_details.get('url'),
@@ -128,14 +122,13 @@ def batch_create_new_products(command, consolidated_data: dict):
                 temp_product_dict = {
                     'name': product_details.get('name', ''),
                     'brand': product_details.get('brand', ''),
-                    'size': product_details.get('package_size', '')
+                    'sizes': product_details.get('sizes', [])
                 }
-                normalized_data = normalize_product_data(temp_product_dict)
-                normalized_string = normalized_data['normalized_name_brand_size']
+                extracted_sizes = get_extracted_sizes(temp_product_dict)
+                normalized_string = get_normalized_string(temp_product_dict, extracted_sizes)
 
                 if normalized_string in new_products_cache:
                     product_lookup_cache[key] = new_products_cache[normalized_string]
 
     command.stdout.write(f"Final product lookup cache contains {len(product_lookup_cache)} entries.")
     return product_lookup_cache
-

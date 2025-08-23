@@ -1,4 +1,5 @@
-from api.utils.normalization_utils import normalize_product_data
+from api.utils.normalization_utils.get_extracted_sizes import get_extracted_sizes
+from api.utils.normalization_utils.get_normalized_string import get_normalized_string
 from django.db import models
 from django.db.models import Q
 
@@ -80,8 +81,10 @@ class Product(models.Model):
 
     def clean(self):
         super().clean()
-        # Use the external utility function to normalize product data
-        self.normalized_name_brand_size = normalize_product_data(self)
+        # Use the external utility functions to normalize product data
+        extracted_sizes = get_extracted_sizes(self)
+        self.sizes = extracted_sizes
+        self.normalized_name_brand_size = get_normalized_string(self, extracted_sizes)
 
     def save(self, *args, **kwargs):
         self.clean()  # Ensure data is cleaned and normalized_name_brand_size is set

@@ -1,4 +1,3 @@
-
 import unittest
 from unittest.mock import patch
 from datetime import datetime
@@ -6,8 +5,9 @@ from api.utils.scraper_utils.clean_raw_data_woolworths import clean_raw_data_woo
 
 class TestCleanRawDataWoolworths(unittest.TestCase):
 
-    @patch('api.utils.scraper_utils.clean_raw_data_woolworths.normalize_product_data', side_effect=lambda p: p)
-    def test_clean_raw_data_woolworths(self, mock_normalize):
+    @patch('api.utils.scraper_utils.clean_raw_data_woolworths.get_normalized_string', return_value='normalized_string')
+    @patch('api.utils.scraper_utils.clean_raw_data_woolworths.get_extracted_sizes', return_value=['each'])
+    def test_clean_raw_data_woolworths(self, mock_get_sizes, mock_get_string):
         raw_product_list = [
             {
                 "Stockcode": 136341,
@@ -74,7 +74,8 @@ class TestCleanRawDataWoolworths(unittest.TestCase):
         self.assertIn('Australian Grown', product['tags'])
         self.assertEqual(product['rating_average'], 4.5)
         self.assertEqual(product['rating_count'], 10)
-        self.assertEqual(mock_normalize.call_count, 1)
+        self.assertEqual(mock_get_sizes.call_count, 1)
+        self.assertEqual(mock_get_string.call_count, 1)
 
 if __name__ == '__main__':
     unittest.main()
