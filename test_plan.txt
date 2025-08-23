@@ -5,9 +5,9 @@ The data pipeline begins with scraping raw product data from grocery store websi
 Below is the list of test files to be created, in the recommended order, to ensure the data pipeline is thoroughly tested.
 
 # Unit Tests for Scrapers
-C:\Users\ethan\coding\splitcart\api\tests\scrapers\test_scrape_and_save_coles.py
-C:\Users\ethan\coding\splitcart\api\tests\scrapers\test_scrape_and_save_woolworths.py
-C:\Users\ethan\coding\splitcart\api\tests\scrapers\test_scrape_and_save_aldi.py
+C:\Users\ethan\coding\splitcart\api\tests\scrapers\test_scrape_and_save_coles.py (DONE)
+C:\Users\ethan\coding\splitcart\api\tests\scrapers\test_scrape_and_save_woolworths.py (DONE)
+C:\Users\ethan\coding\splitcart\api\tests\scrapers\test_scrape_and_save_aldi.py (DONE)
 C:\Users\ethan\coding\splitcart\api\tests\scrapers\test_scrape_and_save_iga.py
 
 # Unit Tests for Data Cleaners
