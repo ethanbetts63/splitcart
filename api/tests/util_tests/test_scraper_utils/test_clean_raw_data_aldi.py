@@ -39,8 +39,6 @@ class TestCleanRawDataAldi(unittest.TestCase):
             store_id="9876",
             store_name="Test Aldi",
             state="QLD",
-            category_slug="bakery",
-            page_num=1,
             timestamp=datetime(2025, 8, 23)
         )
 

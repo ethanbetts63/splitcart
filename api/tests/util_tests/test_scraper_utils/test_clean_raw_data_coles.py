@@ -45,8 +45,6 @@ class TestCleanRawDataColes(unittest.TestCase):
             store_id="1234",
             store_name="Test Store",
             state="NSW",
-            category="meat-seafood",
-            page_num=1,
             timestamp=datetime(2025, 8, 23)
         )
 

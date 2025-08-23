@@ -53,8 +53,6 @@ class TestCleanRawDataWoolworths(unittest.TestCase):
             store_id="5678",
             store_name="Test Woolies",
             state="VIC",
-            category="fruit-veg",
-            page_num=1,
             timestamp=datetime(2025, 8, 23)
         )
 

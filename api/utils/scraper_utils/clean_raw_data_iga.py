@@ -60,6 +60,18 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
         image_info = product.get('image', {}) or {}
         image_urls = [url for url in image_info.values() if url] # Filter out nulls
 
+        price_unit = None
+        unit_of_measure = None
+        price_per_unit_string = product.get('pricePerUnit')
+        if price_per_unit_string:
+            match = re.search(r'\$([\d.]+)/(.+)', price_per_unit_string)
+            if match:
+                try:
+                    price_unit = float(match.group(1))
+                    unit_of_measure = match.group(2).strip().lower()
+                except ValueError:
+                    pass # Keep as None if parsing fails
+
         clean_product = {
             "product_id_store": product.get('sku'),
             "barcode": product.get('barcode'),
@@ -77,8 +89,8 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
             "is_on_special": is_on_special,
             "price_save_amount": save_amount,
             "promotion_type": product.get('priceSource'), # e.g., 'regular' or 'special'
-            "price_unit": None, # Not directly available
-            "unit_of_measure": product.get('unitOfMeasure', {}).get('label').lower().strip() if product.get('unitOfMeasure', {}).get('label') else None,
+            "price_unit": price_unit,
+            "unit_of_measure": unit_of_measure,
             "unit_price_string": product.get('pricePerUnit'),
 
             # --- Availability & Stock ---

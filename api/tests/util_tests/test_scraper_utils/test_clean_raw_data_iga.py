@@ -34,8 +34,6 @@ class TestCleanRawDataIga(unittest.TestCase):
             store_id="1111",
             store_name="Test IGA",
             state="NSW",
-            category_slug="coconut-milk",
-            page_num=1,
             timestamp=datetime(2025, 8, 23)
         )
 
@@ -59,8 +57,6 @@ class TestCleanRawDataIga(unittest.TestCase):
             store_id="1111",
             store_name="Test IGA",
             state="NSW",
-            category_slug="some-cat",
-            page_num=1,
             timestamp=datetime(2025, 8, 23)
         )
 
