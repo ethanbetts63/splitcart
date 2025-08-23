@@ -1,8 +1,8 @@
 import os
 import time
 from django.conf import settings
-from .consolidate_inbox_data import consolidate_inbox_data
-from .update_database_from_consolidated_data import update_database_from_consolidated_data
+from api.utils.database_updating_utils.consolidate_inbox_data import consolidate_inbox_data
+from api.utils.database_updating_utils.update_database_from_consolidated_data import update_database_from_consolidated_data
 
 def update_products_from_inbox(command):
     inbox_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'product_inbox')
