@@ -31,6 +31,7 @@ def batch_create_prices(command, consolidated_data: dict, product_cache: dict):
 
             prices_to_create.append(Price(
                 product=product_obj, store=store_obj, price=price_to_use,
+                store_product_id=price_data.get('store_product_id'),
                 is_on_special=price_data.get('is_on_special', False),
                 is_available=price_data.get('is_available', True), is_active=True))
 

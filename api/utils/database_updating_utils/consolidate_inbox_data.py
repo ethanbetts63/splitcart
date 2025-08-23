@@ -52,7 +52,7 @@ def process_product_data(data, consolidated_data):
         'price': product_details.get('price_current'),
         'is_on_special': product_details.get('is_on_special', False),
         'is_available': product_details.get('is_available', True),
-        'store_product_id': product_details.get('store_product_id')
+        'store_product_id': product_details.get('product_id_store')
     }
 
     consolidated_data[key] = {
