@@ -24,7 +24,7 @@ class TestConsolidateInboxData(unittest.TestCase):
             "product": {
                 "normalized_name_brand_size": "key1",
                 "price_current": 10.0,
-                "is_on_sale": False,
+                "is_on_special": False,
                 "store_product_id": "spid1",
                 "category_path": ["cat1", "cat2"]
             },
@@ -37,7 +37,7 @@ class TestConsolidateInboxData(unittest.TestCase):
             "product": {
                 "normalized_name_brand_size": "key2",
                 "price_current": 20.0,
-                "is_on_sale": True,
+                "is_on_special": True,
                 "store_product_id": "spid2",
                 "category_path": ["cat3"]
             },
@@ -51,7 +51,7 @@ class TestConsolidateInboxData(unittest.TestCase):
             "product": {
                 "normalized_name_brand_size": "key1",
                 "price_current": 12.0,
-                "is_on_sale": True,
+                "is_on_special": True,
                 "store_product_id": "spid3",
                 "category_path": ["cat4"]
             },
