@@ -12,13 +12,13 @@ def update_products_from_inbox(command):
         return
 
     while True:
-        json_files = [f for f in os.listdir(inbox_path) if f.endswith('.json')]
+        jsonl_files = [f for f in os.listdir(inbox_path) if f.endswith('.jsonl')]
         
-        if not json_files:
+        if not jsonl_files:
             command.stdout.write(command.style.SUCCESS("No files in the inbox. Waiting 30 seconds..."))
             time.sleep(30) # First wait if no files
-            json_files = [f for f in os.listdir(inbox_path) if f.endswith('.json')]
-            if not json_files:
+            jsonl_files = [f for f in os.listdir(inbox_path) if f.endswith('.jsonl')]
+            if not jsonl_files:
                 command.stdout.write(command.style.SUCCESS("No new files found after waiting. Exiting."))
                 break # Exit if still no files after first wait
         
