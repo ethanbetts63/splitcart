@@ -45,7 +45,8 @@ class Price(models.Model):
     
     is_on_special = models.BooleanField(default=False)
     is_available = models.BooleanField(
-        default=True,
+        null=True,
+        default=None,
         help_text="Whether the product was in stock at the time of scraping."
     )
     is_active = models.BooleanField(

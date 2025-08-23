@@ -1,5 +1,6 @@
 from datetime import datetime
 import re
+from api.utils.normalization_utils import normalize_product_data
 
 def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, category_slug: str, page_num: int, timestamp: datetime) -> dict:
     """
@@ -53,9 +54,6 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
         # --- Description and Attributes ---
         description = product.get('description', '')
         country_of_origin = None
-        match = re.search(r"Country of Origin: (.*?)", description, re.IGNORECASE)
-        if match:
-            country_of_origin = match.group(1).strip()
 
         # --- Image URLs ---
         image_info = product.get('image', {}) or {}
@@ -83,7 +81,7 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
             "unit_price_string": product.get('pricePerUnit'),
 
             # --- Availability & Stock ---
-            "is_available": product.get('available', False),
+            "is_available": product.get('available'),
             "stock_level": None, # Not available
             "purchase_limit": None, # Not available
 
@@ -104,8 +102,6 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
         }
         cleaned_products.append(clean_product)
 
-    # --- Final generic cleaning and normalization ---
-    from api.utils.normalization_utils import normalize_product_data
     final_products = [normalize_product_data(p) for p in cleaned_products]
     
     return {
