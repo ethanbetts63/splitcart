@@ -6,6 +6,7 @@ from products.tests.test_helpers.model_factories import ProductFactory
 from companies.tests.test_helpers.model_factories import StoreFactory, CompanyFactory, DivisionFactory
 from api.utils.database_updating_utils.batch_create_new_products import batch_create_new_products
 from products.models.price import Price
+from api.utils.normalization_utils.get_normalized_string import get_normalized_string
 
 class TestProductMatching(TestCase):
 
@@ -15,7 +16,10 @@ class TestProductMatching(TestCase):
         self.store1 = StoreFactory(company=self.company, division=self.division, store_id="store1")
 
         self.existing_product_barcode = ProductFactory(barcode="123456789")
+        self.existing_product_barcode.save()
+
         self.existing_product_spid = ProductFactory()
+        self.existing_product_spid.save()
         Price.objects.create(product=self.existing_product_spid, store=self.store1, store_product_id="spid1", price=1.0)
 
         self.existing_product_norm = ProductFactory(
@@ -23,6 +27,7 @@ class TestProductMatching(TestCase):
             brand="TestBrand",
             sizes=["1kg"]
         )
+        self.existing_product_norm.save()
 
         self.mock_command = Mock()
         self.mock_command.stdout = Mock()
@@ -48,6 +53,11 @@ class TestProductMatching(TestCase):
                 "price_history": [{"store_id": "store1", "price": 1.0}]
             }
         }
+
+        # Add normalized strings to the test data
+        for key, data in consolidated_data.items():
+            product_details = data['product_details']
+            product_details['normalized_name_brand_size'] = get_normalized_string(product_details, product_details.get('sizes', []))
 
         product_lookup_cache = batch_create_new_products(self.mock_command, consolidated_data)
 
