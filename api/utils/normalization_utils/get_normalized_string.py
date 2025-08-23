@@ -1,6 +1,6 @@
-from .get_cleaned_name import get_cleaned_name
-from .clean_value import clean_value
-from .standardize_sizes_for_norm_string import standardize_sizes_for_norm_string
+from api.utils.normalization_utils.get_cleaned_name import get_cleaned_name
+from api.utils.normalization_utils.clean_value import clean_value
+from api.utils.normalization_utils.standardize_sizes_for_norm_string import standardize_sizes_for_norm_string
 
 def get_normalized_string(product, extracted_sizes) -> str:
     """

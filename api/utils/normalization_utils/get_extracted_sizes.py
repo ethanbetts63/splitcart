@@ -1,4 +1,4 @@
-from .extract_sizes import extract_sizes
+from api.utils.normalization_utils.extract_sizes import extract_sizes
 
 def get_extracted_sizes(product) -> list:
     """
