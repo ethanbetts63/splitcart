@@ -64,8 +64,8 @@ def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, s
         clean_product = {
             "product_id_store": product.get('sku'),
             "barcode": None, # Not available
-            "name": product.get('name').lower().strip(),
-            "brand": str(product.get('brandName', '')).lower().strip(),
+            "name": product.get('name'),
+            "brand": str(product.get('brandName', '')),
             "description_short": None, # Not available
             "description_long": None, # Not available
             "url": f"https://www.aldi.com.au/product/{product.get('urlSlugText', '')}" if product.get('urlSlugText') else None,

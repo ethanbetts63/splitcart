@@ -76,8 +76,8 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
         clean_product = {
             "product_id_store": product.get('sku'),
             "barcode": product.get('barcode'),
-            "name": product.get('name').lower().strip() if product.get('name') else None,
-            "brand": product.get('brand').lower().strip() if product.get('brand') else None,
+            "name": product.get('name') if product.get('name') else None,
+            "brand": product.get('brand') if product.get('brand') else None,
             "description_short": None, # IGA provides one description field
             "description_long": description.strip() if description else None,
             "url": None, # No direct URL available

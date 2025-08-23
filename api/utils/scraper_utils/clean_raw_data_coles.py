@@ -60,8 +60,8 @@ def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, st
         clean_product = {
             "product_id_store": str(product_id) if product_id else None,
             "barcode": None,  # Not available in Coles data
-            "name": product_name.lower().strip() if product_name else None,
-            "brand": product.get('brand').lower().strip() if product.get('brand') else None,
+            "name": product_name if product_name else None,
+            "brand": product.get('brand') if product.get('brand') else None,
             "description_short": product.get('description').strip() if product.get('description') else None,
             "description_long": None, # Not available in Coles data
             "url": product_url,

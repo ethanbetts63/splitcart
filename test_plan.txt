@@ -8,7 +8,7 @@ Below is the list of test files to be created, in the recommended order, to ensu
 C:\Users\ethan\coding\splitcart\api\tests\scrapers\test_scrape_and_save_coles.py (DONE)
 C:\Users\ethan\coding\splitcart\api\tests\scrapers\test_scrape_and_save_woolworths.py (DONE)
 C:\Users\ethan\coding\splitcart\api\tests\scrapers\test_scrape_and_save_aldi.py (DONE)
-C:\Users\ethan\coding\splitcart\api\tests\scrapers\test_scrape_and_save_iga.py
+C:\Users\ethan\coding\splitcart\api\tests\scrapers\test_scrape_and_save_iga.py (DONE)
 
 # Unit Tests for Data Cleaners
 C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_scraper_utils\test_clean_raw_data_coles.py
@@ -18,7 +18,7 @@ C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_scraper_utils\test_cle
 
 # Unit Tests for Utility Functions
 C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_normalization_utils\test_normalize_product_data.py
-C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_database_updating_utils\test_consolidate_inbox_data.py
+C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_database_updating_utils\test_consolidate_inbox_data.py (DONE)
 C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_database_updating_utils\test_product_matching.py
 
 # Integration Tests for End-to-End Data Flow

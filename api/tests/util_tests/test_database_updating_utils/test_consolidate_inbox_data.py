@@ -25,6 +25,7 @@ class TestConsolidateInboxData(unittest.TestCase):
                 "normalized_name_brand_size": "key1",
                 "price_current": 10.0,
                 "is_on_special": False,
+                "is_available": True,
                 "store_product_id": "spid1",
                 "category_path": ["cat1", "cat2"]
             },
@@ -38,6 +39,7 @@ class TestConsolidateInboxData(unittest.TestCase):
                 "normalized_name_brand_size": "key2",
                 "price_current": 20.0,
                 "is_on_special": True,
+                "is_available": False,
                 "store_product_id": "spid2",
                 "category_path": ["cat3"]
             },
@@ -52,6 +54,7 @@ class TestConsolidateInboxData(unittest.TestCase):
                 "normalized_name_brand_size": "key1",
                 "price_current": 12.0,
                 "is_on_special": True,
+                "is_available": True,
                 "store_product_id": "spid3",
                 "category_path": ["cat4"]
             },
@@ -87,11 +90,13 @@ class TestConsolidateInboxData(unittest.TestCase):
         # Check product_2 data (from key2)
         self.assertIn("key2", consolidated_data)
         self.assertEqual(consolidated_data["key2"]["product_details"]["price_current"], 20.0)
+        self.assertFalse(consolidated_data["key2"]["price_history"][0]["is_available"])
 
         # Check product_3 data (from key1, overwriting product_1)
         self.assertIn("key1", consolidated_data)
         self.assertEqual(consolidated_data["key1"]["product_details"]["price_current"], 12.0)
         self.assertTrue(consolidated_data["key1"]["price_history"][0]["is_on_special"])
+        self.assertTrue(consolidated_data["key1"]["price_history"][0]["is_available"])
         self.assertEqual(consolidated_data["key1"]["company_name"], "companyC")
 
 if __name__ == '__main__':
