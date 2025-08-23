@@ -1,5 +1,6 @@
 from .get_cleaned_name import get_cleaned_name
 from .clean_value import clean_value
+from .standardize_sizes_for_norm_string import standardize_sizes_for_norm_string
 
 def get_normalized_string(product, extracted_sizes) -> str:
     """
@@ -17,9 +18,12 @@ def get_normalized_string(product, extracted_sizes) -> str:
     # Calculate cleaned name
     cleaned_name = get_cleaned_name(name, brand, extracted_sizes)
 
+    # Standardize sizes for the normalization string
+    standardized_sizes = standardize_sizes_for_norm_string(extracted_sizes)
+
     # Generate normalized_name_brand_size
     normalized_string = clean_value(cleaned_name) + \
                         clean_value(brand) + \
-                        clean_value(" ".join(extracted_sizes) if extracted_sizes else "")
+                        clean_value(" ".join(standardized_sizes) if standardized_sizes else "")
     
     return normalized_string
