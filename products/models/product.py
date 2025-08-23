@@ -88,4 +88,5 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.brand} {self.name} ({self.size})"
+        sizes_str = ', '.join(self.sizes) if self.sizes else ''
+        return f"{self.brand} {self.name} ({sizes_str})"

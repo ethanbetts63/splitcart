@@ -18,7 +18,7 @@ class PriceModelTest(TestCase):
 
     def test_price_str_representation(self):
         """Test the string representation of the price."""
-        store = StoreFactory(name="TestStore")
+        store = StoreFactory(store_name="TestStore")
         product = ProductFactory(name="TestProduct")
         price = PriceFactory(store=store, product=product, price=10.50)
         price_str = str(price)
@@ -45,7 +45,7 @@ class PriceModelTest(TestCase):
     def test_default_values(self):
         """Test the default values for boolean fields."""
         product = ProductFactory()
-        store = StoreFactory()
+        store = StoreFactory(store_name="DefaultStore")
         price = Price.objects.create(product=product, store=store, store_product_id="123", price=10.0)
         self.assertFalse(price.is_on_special)
         self.assertTrue(price.is_available)
