@@ -20,6 +20,8 @@ C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_scraper_utils\test_cle
 C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_normalization_utils\test_normalize_product_data.py
 C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_database_updating_utils\test_consolidate_inbox_data.py (DONE)
 C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_database_updating_utils\test_product_matching.py (PASSING)
+C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_database_updating_utils\test_batch_create_prices.py (DONE)
+C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_database_updating_utils\test_batch_create_category_relationships.py (DONE)
 
 # Integration Tests for End-to-End Data Flow
 C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_coles.py (DONE)
