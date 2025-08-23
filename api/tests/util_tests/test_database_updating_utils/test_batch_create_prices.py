@@ -28,13 +28,13 @@ class TestBatchCreatePrices(TestCase):
         self.consolidated_data = {
             "key1": {
                 "price_history": [
-                    {"store_id": "store1", "price": 1.00, "is_on_special": False, "is_available": True},
-                    {"store_id": "store2", "price": 1.10, "is_on_special": True, "is_available": True}
+                    {"store_id": "store1", "price": 1.00, "is_on_special": False, "is_available": True, "store_product_id": "p1s1"},
+                    {"store_id": "store2", "price": 1.10, "is_on_special": True, "is_available": True, "store_product_id": "p1s2"}
                 ]
             },
             "key2": {
                 "price_history": [
-                    {"store_id": "store1", "price": 2.00, "is_on_special": False, "is_available": False}
+                    {"store_id": "store1", "price": 2.00, "is_on_special": False, "is_available": False, "store_product_id": "p2s1"}
                 ]
             }
         }
