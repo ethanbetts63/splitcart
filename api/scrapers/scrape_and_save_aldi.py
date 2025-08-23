@@ -68,8 +68,7 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, stat
 
                     scrape_timestamp = datetime.now()
                     data_packet = clean_raw_data_aldi(
-                        raw_product_list=raw_products_on_page, company=company, store_name=effective_store_name, store_id=store_id, state=state,
-                        category_slug=category_slug, page_num=page_num, timestamp=scrape_timestamp
+                        raw_product_list=raw_products_on_page, company=company, store_name=effective_store_name, store_id=store_id, state=state, timestamp=scrape_timestamp
                     )
                     
                     products_on_page = data_packet.get('products', [])

@@ -102,8 +102,7 @@ def scrape_and_save_iga_data(company: str, store_id: str, retailer_store_id: str
                     scrape_timestamp = datetime.now()
                     data_packet = clean_raw_data_iga(
                         raw_product_list=raw_products_on_page, company=company,
-                        store_id=store_id, store_name=store_name, state=state,
-                        category_slug=category_slug, page_num=page_num, timestamp=scrape_timestamp
+                        store_id=store_id, store_name=store_name, state=state, timestamp=scrape_timestamp
                     )
                     
                     products_on_page = data_packet.get('products', [])

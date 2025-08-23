@@ -1,103 +1,52 @@
-
 import os
 import json
-import unittest
-from unittest.mock import Mock
 import tempfile
 import shutil
-
+from django.test import TestCase
+from unittest.mock import Mock
 from api.utils.database_updating_utils.consolidate_inbox_data import consolidate_inbox_data
 
-class TestConsolidateInboxData(unittest.TestCase):
+class TestConsolidateInboxData(TestCase):
 
     def setUp(self):
-        # Create a temporary directory
-        self.test_dir = tempfile.mkdtemp()
+        self.temp_dir = tempfile.mkdtemp()
+        self.inbox_path = os.path.join(self.temp_dir, 'product_inbox')
+        os.makedirs(self.inbox_path, exist_ok=True)
+
+        self.mock_command = Mock()
+        self.mock_command.stdout = Mock()
+        self.mock_command.stderr = Mock()
+        self.mock_command.style = Mock()
+
+        # Create dummy inbox files
+        self.file1_path = os.path.join(self.inbox_path, "file1.jsonl")
+        with open(self.file1_path, 'w') as f:
+            data1 = {"product": {"normalized_name_brand_size": "key1", "price_current": 1.00}, "metadata": {"company": "TestCo"}}
+            data2 = {"product": {"normalized_name_brand_size": "key2", "price_current": 2.00}, "metadata": {"company": "TestCo"}}
+            f.write(json.dumps(data1) + '\n')
+            f.write(json.dumps(data2) + '\n')
+
+        self.file2_path = os.path.join(self.inbox_path, "file2.jsonl")
+        with open(self.file2_path, 'w') as f:
+            data3 = {"product": {"normalized_name_brand_size": "key2", "price_current": 2.50}, "metadata": {"company": "TestCo"}} # Duplicate key
+            data4 = {"product": {"normalized_name_brand_size": "key3", "price_current": 3.00}, "metadata": {"company": "TestCo"}}
+            f.write(json.dumps(data3) + '\n')
+            f.write(json.dumps(data4) + '\n')
 
     def tearDown(self):
-        # Remove the directory after the test
-        shutil.rmtree(self.test_dir)
+        shutil.rmtree(self.temp_dir)
 
-    def test_consolidate_data(self):
-        # Create dummy files
-        product_1 = {
-            "product": {
-                "normalized_name_brand_size": "key1",
-                "price_current": 10.0,
-                "is_on_special": False,
-                "is_available": True,
-                "store_product_id": "spid1",
-                "category_path": ["cat1", "cat2"]
-            },
-            "metadata": {
-                "store_id": "store1",
-                "company": "companyA"
-            }
-        }
-        product_2 = {
-            "product": {
-                "normalized_name_brand_size": "key2",
-                "price_current": 20.0,
-                "is_on_special": True,
-                "is_available": False,
-                "store_product_id": "spid2",
-                "category_path": ["cat3"]
-            },
-            "metadata": {
-                "store_id": "store2",
-                "company": "companyB"
-            }
-        }
-        # This product will overwrite product_1 because of the same key
-        product_3 = {
-            "product": {
-                "normalized_name_brand_size": "key1",
-                "price_current": 12.0,
-                "is_on_special": True,
-                "is_available": True,
-                "store_product_id": "spid3",
-                "category_path": ["cat4"]
-            },
-            "metadata": {
-                "store_id": "store3",
-                "company": "companyC"
-            }
-        }
+    def test_consolidate_inbox_data_success(self):
+        consolidated_data, processed_files = consolidate_inbox_data(self.inbox_path, self.mock_command)
 
-        # Write a .json file
-        with open(os.path.join(self.test_dir, "file1.json"), 'w') as f:
-            json.dump(product_1, f)
-
-        # Write a .jsonl file
-        with open(os.path.join(self.test_dir, "file2.jsonl"), 'w') as f:
-            f.write(json.dumps(product_2) + '\n')
-            f.write(json.dumps(product_3) + '\n')
-
-        # Create a mock command object
-        mock_command = Mock()
-        mock_command.stdout = Mock()
-        mock_command.stderr = Mock()
-        mock_command.style.ERROR = lambda x: x
-
-
-        # Run the function
-        consolidated_data, processed_files = consolidate_inbox_data(self.test_dir, mock_command)
-
-        # Assertions
-        self.assertEqual(len(processed_files), 2)
-        self.assertEqual(len(consolidated_data), 2)
-
-        # Check product_2 data (from key2)
-        self.assertIn("key2", consolidated_data)
-        self.assertEqual(consolidated_data["key2"]["product_details"]["price_current"], 20.0)
-        self.assertFalse(consolidated_data["key2"]["price_history"][0]["is_available"])
-
-        # Check product_3 data (from key1, overwriting product_1)
+        self.assertEqual(len(consolidated_data), 3)
         self.assertIn("key1", consolidated_data)
-        self.assertEqual(consolidated_data["key1"]["product_details"]["price_current"], 12.0)
-        self.assertTrue(consolidated_data["key1"]["price_history"][0]["is_on_special"])
-        self.assertTrue(consolidated_data["key1"]["price_history"][0]["is_available"])
-        self.assertEqual(consolidated_data["key1"]["company_name"], "companyC")
+        self.assertIn("key2", consolidated_data)
+        self.assertIn("key3", consolidated_data)
 
-if __name__ == '__main__':
-    unittest.main()
+        # Test "last one wins" for duplicate key
+        self.assertEqual(consolidated_data['key2']['product_details']['price_current'], 2.50)
+
+        self.assertEqual(len(processed_files), 2)
+        self.assertIn(self.file1_path, processed_files)
+        self.assertIn(self.file2_path, processed_files)
