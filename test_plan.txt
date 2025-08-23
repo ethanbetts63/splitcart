@@ -146,4 +146,12 @@ All `api` app tests are currently passing.
 
 **Test Files Modified & Status:**
 - `api/tests/integration/test_data_flow_aldi.py`: Updated with full raw product data, correct assertions for original name/brand, and `Decimal` for price. **(PASSING)**.
-- `api/tests/integration/test_data_flow_coles.py`: Updated assertions for original name/brand and `Decimal` for price. **(FAILING - sizes assertion)**.
+- `api/tests/integration/test_data_flow_coles.py`: Updated assertions for original name/brand and `Decimal` for price. **(PASSING)**.
+
+--- Progress Update (August 23, 2025) ---
+
+**Non-Test Files Modified:**
+- `api/utils/normalization_utils/extract_sizes.py`: Refactored size extraction logic to correctly handle prefixes (e.g., "approx.") and prevent incorrect matching of single-letter units within words.
+
+**Test Files Modified & Status:**
+- `api/tests/integration/test_data_flow_coles.py`: Test is now **(PASSING)** after fixes to `extract_sizes.py`.

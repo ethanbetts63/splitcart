@@ -8,6 +8,12 @@ def extract_sizes(text):
     sizes = set()
     processed_text = text.lower()
 
+    # Pre-process to remove common prefixes
+    prefixes_to_remove = ['approx. ', 'approx ', 'around ', 'about ']
+    for prefix in prefixes_to_remove:
+        if processed_text.startswith(prefix):
+            processed_text = processed_text[len(prefix):]
+
     units = {
         'g': ['g', 'gram', 'grams'],
         'kg': ['kg', 'kilogram', 'kilograms'],
@@ -46,15 +52,18 @@ def extract_sizes(text):
         sizes.add(f"{match.group(3)}pk")
     processed_text = re.sub(multipack_pattern_2, '', processed_text)
 
-    # 4. Standard, simple sizes (e.g., "500g", "5 pack", "each") - the fallback
-    optional_number_pattern = r'(\d+\.?\d*)?\s*(' + '|'.join(all_unit_variations) + r')\b'
-    units_to_remove_space = units['g'] + units['kg'] + units['ml'] + units['l']
-    for match in re.finditer(optional_number_pattern, processed_text):
-        matched_string = match.group(0).strip()
-        parts = matched_string.split()
-        if len(parts) > 1 and parts[0].isdigit() and parts[1] in units_to_remove_space:
-            sizes.add("".join(parts))
-        else:
-            sizes.add(matched_string)
+    # 4. Standard, simple sizes (e.g., "500g", "5 pack") - with numbers
+    number_unit_pattern = r'(\d+\.?\d*)\s*(' + '|'.join(all_unit_variations) + r')\b'
+    for match in re.finditer(number_unit_pattern, processed_text):
+        unit = unit_map[match.group(2)]
+        sizes.add(f"{match.group(1)}{unit}")
+    processed_text = re.sub(number_unit_pattern, '', processed_text)
+    
+    # 5. Standalone units (e.g., "each") - no numbers
+    # Exclude 'l' and other single-letter units that are too ambiguous
+    standalone_units = [u for u in all_unit_variations if len(u) > 1] + ['ea'] # Keep 'ea'
+    standalone_unit_pattern = r'\b(' + '|'.join(standalone_units) + r')\b'
+    for match in re.finditer(standalone_unit_pattern, processed_text):
+        sizes.add(match.group(1))
 
     return list(sizes)
