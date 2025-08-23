@@ -19,5 +19,9 @@ class GetExtractedSizesTest(unittest.TestCase):
         product = {'name': 'Test Product', 'brand': 'Test Brand', 'sizes': []}
         self.assertEqual(get_extracted_sizes(product), [])
 
+    def test_extract_sizes_from_package_size(self):
+        product = {'name': 'Test Product', 'brand': 'Test Brand', 'package_size': 'approx. 500ml'}
+        self.assertEqual(get_extracted_sizes(product), ['500ml'])
+
 if __name__ == '__main__':
     unittest.main()

@@ -45,10 +45,9 @@ def extract_sizes(text):
         sizes.add(f"{match.group(3)}pk")
     processed_text = re.sub(multipack_pattern_2, '', processed_text)
 
-    # 4. Standard, simple sizes (e.g., "500g", "5 pack") - the fallback
-    standard_pattern = r'(\d+\.?\d*)\s*(' + '|'.join(all_unit_variations) + r')\b'
-    for match in re.finditer(standard_pattern, processed_text):
-        unit = unit_map[match.group(2)]
-        sizes.add(f"{match.group(1)}{unit}")
+    # 4. Standard, simple sizes (e.g., "500g", "5 pack", "each") - the fallback
+    optional_number_pattern = r'(\d+\.?\d*)?\s*(' + '|'.join(all_unit_variations) + r')\b'
+    for match in re.finditer(optional_number_pattern, processed_text):
+        sizes.add(match.group(0).strip())
 
     return list(sizes)

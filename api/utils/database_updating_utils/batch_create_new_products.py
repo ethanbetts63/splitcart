@@ -55,6 +55,7 @@ def batch_create_new_products(command, consolidated_data: dict):
             temp_product_dict = {
                 'name': product_details.get('name', ''),
                 'brand': product_details.get('brand', ''),
+                'package_size': product_details.get('package_size', ''),
                 'sizes': product_details.get('sizes', [])
             }
             # Use the utility to populate sizes and get the normalized string
@@ -82,6 +83,7 @@ def batch_create_new_products(command, consolidated_data: dict):
             temp_product_dict = {
                 'name': product_details.get('name', ''),
                 'brand': product_details.get('brand', ''),
+                'package_size': product_details.get('package_size', ''),
                 'sizes': product_details.get('sizes', [])
             }
             
