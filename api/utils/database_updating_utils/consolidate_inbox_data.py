@@ -45,8 +45,6 @@ def process_product_data(data, consolidated_data):
     if not key:
         return
 
-    # For now, we are not consolidating, just taking the last seen product.
-    # This can be improved later.
     price_info = {
         'store_id': metadata.get('store_id'),
         'price': product_details.get('price_current'),
@@ -55,9 +53,23 @@ def process_product_data(data, consolidated_data):
         'store_product_id': product_details.get('product_id_store')
     }
 
-    consolidated_data[key] = {
-        'product_details': product_details,
-        'price_history': [price_info],
-        'category_paths': [product_details.get('category_path', [])],
-        'company_name': metadata.get('company')
-    }
+    if key in consolidated_data:
+        # Key exists, append price history
+        consolidated_data[key]['price_history'].append(price_info)
+        # Also append category paths if they are new
+        category_path = tuple(product_details.get('category_path', []))
+        if category_path:
+            consolidated_data[key]['category_paths'].add(category_path)
+    else:
+        # Key is new, create the entry
+        category_paths = set()
+        raw_path = product_details.get('category_path', [])
+        if raw_path:
+            category_paths.add(tuple(raw_path))
+
+        consolidated_data[key] = {
+            'product_details': product_details,
+            'price_history': [price_info],
+            'category_paths': category_paths,
+            'company_name': metadata.get('company')
+        }
