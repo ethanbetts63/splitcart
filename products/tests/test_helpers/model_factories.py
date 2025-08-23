@@ -9,7 +9,7 @@ class ProductFactory(DjangoModelFactory):
 
     name = factory.Faker('word')
     brand = factory.Faker('company')
-    size = factory.Faker('word')
+    sizes = factory.List([factory.Faker('word')])
     barcode = factory.Faker('ean')
     image_url = factory.Faker('image_url')
     url = factory.Faker('url')
@@ -17,7 +17,7 @@ class ProductFactory(DjangoModelFactory):
     country_of_origin = factory.Faker('country')
     allergens = factory.Faker('text')
     ingredients = factory.Faker('text')
-    # category and substitute_goods will be handled post-generation for ManyToMany
+    # category, substitute_goods and size_variants will be handled post-generation for ManyToMany
 
 class PriceFactory(DjangoModelFactory):
     class Meta:
