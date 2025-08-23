@@ -113,7 +113,7 @@ def batch_create_new_products(command, consolidated_data: dict):
 
         if new_product_objects:
             command.stdout.write(f"Creating {len(new_product_objects)} new unique products...")
-            Product.objects.bulk_create(new_product_objects, batch_size=999, ignore_conflicts=True)
+            Product.objects.bulk_create(new_product_objects, batch_size=999)
             
             # --- Step 4: Refresh cache with newly created products ---
             command.stdout.write("Refreshing cache with newly created products...")
