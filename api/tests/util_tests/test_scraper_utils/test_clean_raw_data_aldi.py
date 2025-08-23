@@ -37,8 +37,8 @@ class TestCleanRawDataAldi(unittest.TestCase):
         product = cleaned_data['products'][0]
 
         self.assertEqual(product['product_id_store'], '12345')
-        self.assertEqual(product['name'], 'aldi product 100g')
-        self.assertEqual(product['brand'], 'aldi brand')
+        self.assertEqual(product['name'], 'Aldi Product 100g')
+        self.assertEqual(product['brand'], 'Aldi Brand')
         self.assertEqual(product['price_current'], 1.50)
         self.assertEqual(product['unit_of_measure'], '100g')
         self.assertEqual(product['category_path'], ['Dairy'])

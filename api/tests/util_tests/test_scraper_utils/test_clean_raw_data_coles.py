@@ -51,8 +51,8 @@ class TestCleanRawDataColes(unittest.TestCase):
         self.assertEqual(len(cleaned_data['products']), 1)
         product = cleaned_data['products'][0]
 
-        self.assertEqual(product['name'], 'graze lamb extra trim cutlets')
-        self.assertEqual(product['brand'], 'coles')
+        self.assertEqual(product['name'], 'Graze Lamb Extra Trim Cutlets')
+        self.assertEqual(product['brand'], 'Coles')
         self.assertEqual(product['price_current'], 12.00)
         self.assertEqual(product['price_was'], 14.10)
         self.assertTrue(product['is_on_special'])

@@ -48,6 +48,6 @@ def extract_sizes(text):
     # 4. Standard, simple sizes (e.g., "500g", "5 pack", "each") - the fallback
     optional_number_pattern = r'(\d+\.?\d*)?\s*(' + '|'.join(all_unit_variations) + r')\b'
     for match in re.finditer(optional_number_pattern, processed_text):
-        sizes.add(match.group(0).strip())
+        sizes.add(re.sub(r'(\d)\s+([a-zA-Z])', r'\1\2', match.group(0).strip()))
 
     return list(sizes)
