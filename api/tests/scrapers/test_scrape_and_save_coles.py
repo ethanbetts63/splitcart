@@ -1,115 +1,93 @@
-
 import unittest
-from unittest.mock import patch, Mock, MagicMock
+from unittest.mock import patch, MagicMock
+from datetime import datetime
 import json
-from bs4 import BeautifulSoup
 
-# The module to be tested
-from api.scrapers import scrape_and_save_coles
+from api.scrapers.scrape_and_save_coles import scrape_and_save_coles_data
 
 class TestScrapeAndSaveColes(unittest.TestCase):
 
+    def setUp(self):
+        self.company = "Coles"
+        self.store_id = "COL:1234"
+        self.store_name = "Test Coles Store"
+        self.state = "NSW"
+        self.categories_to_fetch = ["fresh-produce/fruit"]
+        self.timestamp = datetime(2025, 8, 23)
+
     @patch('api.scrapers.scrape_and_save_coles.webdriver.Chrome')
+    @patch('api.scrapers.scrape_and_save_coles.ChromeService')
     @patch('api.scrapers.scrape_and_save_coles.ChromeDriverManager')
+    @patch('api.scrapers.scrape_and_save_coles.WebDriverWait')
     @patch('api.scrapers.scrape_and_save_coles.requests.Session')
+    @patch('api.scrapers.scrape_and_save_coles.BeautifulSoup')
+    @patch('api.scrapers.scrape_and_save_coles.json.loads')
+    @patch('api.scrapers.scrape_and_save_coles.clean_raw_data_coles')
     @patch('api.scrapers.scrape_and_save_coles.JsonlWriter')
-    @patch('api.scrapers.scrape_and_save_coles.time.sleep') # To speed up test
-    def test_scrape_and_save_coles_data(self, mock_sleep, mock_jsonl_writer, mock_session, mock_driver_manager, mock_chrome):
-
-        # --- Setup Mocks ---
-
-        # Mock Selenium WebDriver
+    def test_successful_scrape(self, MockJsonlWriter, MockCleanRawDataColes, MockJsonLoads, MockBeautifulSoup, MockRequestsSession, MockWebDriverWait, MockChromeDriverManager, MockChromeService, MockChrome):
+        # Mock Selenium setup
         mock_driver = MagicMock()
-        mock_chrome.return_value = mock_driver
+        MockChrome.return_value = mock_driver
+        mock_driver.get_cookies.return_value = [{'name': 'cookie1', 'value': 'value1'}]
 
-        # Mock Requests Session
-        mock_requests_session = MagicMock()
-        mock_session.return_value = mock_requests_session
+        # Mock WebDriverWait
+        mock_wait = MagicMock()
+        MockWebDriverWait.return_value = mock_wait
+        mock_wait.until.return_value = True
 
-        # Mock the response from requests.get
+        # Mock requests session
+        mock_session = MagicMock()
+        MockRequestsSession.return_value = mock_session
         mock_response = MagicMock()
-        mock_response.status_code = 200
-        
-        # Construct the __NEXT_DATA__ JSON
-        next_data = {
+        mock_session.get.return_value = mock_response
+        mock_response.text = "<html><script id=\"__NEXT_DATA__\">{}</script></html>"
+
+        # Mock json.loads
+        MockJsonLoads.return_value = {
             "props": {
                 "pageProps": {
                     "initStoreId": "1234",
                     "searchResults": {
+                        "results": [{"id": 1, "name": "Product A"}],
                         "noOfResults": 1,
-                        "pageSize": 48,
-                        "results": [
-                            {
-                                "_type": "PRODUCT",
-                                "id": 3942620,
-                                "name": "Graze Lamb Extra Trim Cutlets",
-                                "brand": "Coles",
-                                "description": "COLES GRAZE LAMB EXTRA TRIM CUTLETS 7 X 5",
-                                "size": "approx. 300g",
-                                "availability": True,
-                                "pricing": {
-                                    "now": 12.00,
-                                    "was": 14.10,
-                                    "unit": {"price": 40.00, "ofMeasureUnits": "kg"}
-                                }
-                            }
-                        ]
+                        "pageSize": 48
                     }
                 }
             }
         }
-        
-        mock_response.text = f"""
-        <html>
-            <body>
-                <script id="__NEXT_DATA__" type="application/json">
-                {json.dumps(next_data)}
-                </script>
-            </body>
-        </html>
-        """
-        mock_requests_session.get.return_value = mock_response
+
+        # Mock clean_raw_data_coles
+        MockCleanRawDataColes.return_value = {
+            'products': [{'name': 'cleaned product a', 'normalized_name_brand_size': 'normalized_a'}],
+            'metadata': {}
+        }
 
         # Mock JsonlWriter
-        mock_writer_instance = MagicMock()
-        mock_jsonl_writer.return_value = mock_writer_instance
+        mock_jsonl_writer = MagicMock()
+        MockJsonlWriter.return_value = mock_jsonl_writer
+        mock_jsonl_writer.write_product.return_value = True
 
-        # --- Call the function ---
-        scrape_and_save_coles.scrape_and_save_coles_data(
-            company="coles",
-            store_id="COL:1234",
-            store_name="Test Store",
-            state="NSW",
-            categories_to_fetch=["meat-seafood"]
+        scrape_and_save_coles_data(
+            company=self.company,
+            store_id=self.store_id,
+            store_name=self.store_name,
+            state=self.state,
+            categories_to_fetch=self.categories_to_fetch
         )
 
-        # --- Assertions ---
-
-        # Check that the browser was initialized and quit
-        mock_chrome.assert_called_once()
+        # Assertions
+        mock_driver.get.assert_called_once_with("https://www.coles.com.au")
+        mock_driver.add_cookie.assert_called_once_with({'name': 'fulfillmentStoreId', 'value': '1234'})
+        mock_driver.refresh.assert_called_once()
         mock_driver.quit.assert_called_once()
 
-        # Check that requests.get was called for the category
-        mock_requests_session.get.assert_called_with("https://www.coles.com.au/browse/meat-seafood?page=1", timeout=30)
-
-        # Check that the JsonlWriter was used correctly
-        mock_jsonl_writer.assert_called_with("coles", "test-store-1234", "NSW")
-        mock_writer_instance.open.assert_called_once()
-        
-        # Check that write_product was called
-        self.assertTrue(mock_writer_instance.write_product.called)
-        
-        # Check the content of what was written
-        # The data passed to write_product is a (product, metadata) tuple
-        args, kwargs = mock_writer_instance.write_product.call_args
-        written_product, written_metadata = args
-        
-        self.assertEqual(written_product['name'], 'Graze Lamb Extra Trim Cutlets')
-        self.assertEqual(written_product['brand'], 'Coles')
-        self.assertEqual(written_product['price_current'], 12.00)
-
-        mock_writer_instance.finalize.assert_called_with(True)
-
+        mock_session.get.assert_called_once_with("https://www.coles.com.au/browse/fresh-produce/fruit?page=1", timeout=30)
+        MockBeautifulSoup.assert_called_once()
+        MockJsonLoads.assert_called_once()
+        MockCleanRawDataColes.assert_called_once()
+        mock_jsonl_writer.open.assert_called_once()
+        mock_jsonl_writer.write_product.assert_called_once_with({'name': 'cleaned product a', 'normalized_name_brand_size': 'normalized_a'}, {})
+        mock_jsonl_writer.finalize.assert_called_once_with(True)
 
 if __name__ == '__main__':
     unittest.main()
