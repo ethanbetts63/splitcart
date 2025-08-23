@@ -23,10 +23,12 @@ def batch_create_new_products(command, consolidated_data: dict):
         key = (price.store.store_id, price.store_product_id)
         store_product_id_cache[key] = price.product
     command.stdout.write(f"Built cache for {len(store_product_id_cache)} store-specific product IDs.")
+    print(f"store_product_id_cache: {store_product_id_cache}")
 
     # Cache 3: Normalized Name-Brand-Size String (Fallback)
     normalized_string_cache = {p.normalized_name_brand_size: p for p in all_products if p.normalized_name_brand_size}
     command.stdout.write(f"Built cache for {len(normalized_string_cache)} normalized strings.")
+    print(f"normalized_string_cache: {normalized_string_cache}")
 
     # --- Step 2: Identify existing and new products ---
     product_lookup_cache = {}  # This is the final cache we will return
@@ -56,8 +58,10 @@ def batch_create_new_products(command, consolidated_data: dict):
                 product = normalized_string_cache[normalized_string]
 
         if product:
+            print(f"Found existing product for key {key}: {product}")
             product_lookup_cache[key] = product
         else:
+            print(f"Could not find existing product for key {key}")
             products_to_create_data.append((key, data))
 
     # --- Step 3: Batch create new products ---

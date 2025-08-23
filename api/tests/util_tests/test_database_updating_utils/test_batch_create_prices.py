@@ -88,7 +88,7 @@ class TestBatchCreatePrices(TestCase):
 
     def test_batch_create_prices_skip_missing_store(self):
         self.consolidated_data['key1']['price_history'].append(
-            {"store_id": "store3", "price": 4.00}
+            {"store_id": "store3", "price": 4.00, "store_product_id": "p1s3"}
         )
 
         batch_create_prices(self.mock_command, self.consolidated_data, self.product_cache)

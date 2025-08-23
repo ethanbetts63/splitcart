@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import MagicMock
 from django.test import TestCase
-from products.models import Product
+from products.models import Product, Price
 from companies.models import Company, Store, Division
 from api.utils.database_updating_utils.batch_create_new_products import batch_create_new_products
 from companies.tests.test_helpers.model_factories import CompanyFactory, StoreFactory, DivisionFactory
@@ -50,6 +50,8 @@ class BatchCreateNewProductsTest(TestCase):
             normalized_name_brand_size="normalized string product-brand c-250ml"
         )
         self.assertEqual(Product.objects.count(), 3)
+        print(f"Products in DB after setup: {Product.objects.all()}")
+        print(f"Prices in DB after setup: {Price.objects.all()}")
 
         # Consolidated data for testing
         consolidated_data = {

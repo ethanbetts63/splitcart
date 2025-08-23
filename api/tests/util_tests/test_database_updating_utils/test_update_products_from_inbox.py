@@ -1,4 +1,3 @@
-
 import unittest
 from unittest.mock import patch, MagicMock
 from django.test import TestCase
@@ -14,7 +13,7 @@ class UpdateProductsFromInboxTest(TestCase):
     @patch('os.listdir')
     @patch('os.path.exists', return_value=True)
     def test_update_products_from_inbox(self, mock_exists, mock_listdir, mock_sleep, mock_consolidate, mock_update):
-        mock_listdir.side_effect = [["file1.jsonl"], []]
+        mock_listdir.side_effect = [["file1.jsonl"], [], []]
         consolidated_data = {"product1": {}}
         processed_files = ["file1.jsonl"]
         mock_consolidate.return_value = (consolidated_data, processed_files)
@@ -31,13 +30,14 @@ class UpdateProductsFromInboxTest(TestCase):
     @patch('os.listdir')
     @patch('os.path.exists', return_value=True)
     def test_no_files_initially_then_files_appear(self, mock_exists, mock_listdir, mock_sleep, mock_consolidate, mock_update):
-        mock_listdir.side_effect = [[], ["file1.jsonl"], []]
+        mock_listdir.side_effect = [[], ["file1.jsonl"], [], []]
         consolidated_data = {"product1": {}}
         processed_files = ["file1.jsonl"]
         mock_consolidate.return_value = (consolidated_data, processed_files)
 
         update_products_from_inbox(self.mock_command)
 
+        self.assertEqual(mock_sleep.call_count, 2)
         mock_consolidate.assert_called_once()
         mock_update.assert_called_once()
 
