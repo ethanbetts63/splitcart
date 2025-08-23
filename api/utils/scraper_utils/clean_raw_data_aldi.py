@@ -1,6 +1,7 @@
 from datetime import datetime
 import re
 from api.utils.normalization_utils import normalize_product_data
+from .wrap_cleaned_products import wrap_cleaned_products
 
 
 def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, store_id: str, state: str, timestamp: datetime) -> dict:
@@ -105,13 +106,11 @@ def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, s
     # --- Final generic cleaning and normalization ---
     final_products = [normalize_product_data(p) for p in cleaned_products]
     
-    return {
-        "metadata": {
-            "company": company.lower().strip(),
-            "store_name": store_name.lower().strip(),
-            "store_id": store_id.lower().strip(),
-            "state": state.lower().strip(),
-            "scraped_at": timestamp.isoformat()
-        },
-        "products": final_products
-    }
+    return wrap_cleaned_products(
+        products=final_products,
+        company=company,
+        store_name=store_name,
+        store_id=store_id,
+        state=state,
+        timestamp=timestamp
+    )
