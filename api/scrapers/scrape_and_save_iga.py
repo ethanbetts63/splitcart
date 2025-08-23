@@ -26,7 +26,7 @@ def scrape_and_save_iga_data(company: str, store_id: str, retailer_store_id: str
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
 
-    temp_file_path = os.path.join(temp_dir, f"temp_{store_name_slug}.jsonl")
+    temp_file_path = os.path.join(temp_dir, f"{store_name_slug}.jsonl")
     inbox_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'product_inbox')
 
     scrape_successful = False
@@ -143,8 +143,8 @@ def scrape_and_save_iga_data(company: str, store_id: str, retailer_store_id: str
 
         if scrape_successful:
             print(f"Finalizing scrape for {store_name_slug}.")
-            final_file_name = f"{company.lower()}_{state.lower()}_{store_name_slug}.jsonl"
-            finalize_scrape(temp_file_path, os.path.join(inbox_path, final_file_name))
+            final_file_name = f"{company.lower()}_{store_id.lower()}.jsonl" # Updated naming convention
+            finalize_scrape(temp_file_path, inbox_path, final_file_name) # Updated call
             print(f"Successfully moved temp file to inbox for {store_name_slug}.")
         else:
             if os.path.exists(temp_file_path):
