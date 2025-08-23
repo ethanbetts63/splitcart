@@ -247,14 +247,13 @@ class TestDataFlowWoolworths(TestCase):
 
         # --- Stage 2: Update Database ---
         consolidated_data, processed_files = consolidate_inbox_data(self.inbox_path, self.mock_command)
-        print("Consolidated data:", json.dumps(consolidated_data, indent=2))
         update_database_from_consolidated_data(consolidated_data, processed_files, self.mock_command)
 
         # --- Stage 3: Assert Database State ---
         self.assertEqual(Product.objects.count(), 1)
         self.assertEqual(Price.objects.count(), 1)
 
-        product1 = Product.objects.get(name="woolworths bird's eye chilli hot")
+        product1 = Product.objects.get(name="Woolworths Bird's Eye Chilli Hot")
         self.assertEqual(product1.brand, "woolworths")
         self.assertEqual(product1.sizes, ["each"])
         self.assertEqual(product1.barcode, "0265178000003")
