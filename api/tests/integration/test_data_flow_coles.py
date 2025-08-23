@@ -109,6 +109,8 @@ class TestDataFlowColes(TestCase):
                 json.dump(line_data, f)
                 f.write('\n')
 
+        print(cleaned_data_packet)
+
         # --- Stage 2: Update Database ---
         consolidated_data, processed_files = consolidate_inbox_data(self.inbox_path, self.mock_command)
         update_database_from_consolidated_data(consolidated_data, processed_files, self.mock_command)
@@ -119,6 +121,7 @@ class TestDataFlowColes(TestCase):
 
         # Product 1: Lamb Cutlets
         product1 = Product.objects.get(name="Graze Lamb Extra Trim Cutlets")
+        print(product1.sizes)
         self.assertEqual(product1.brand, "Coles")
         self.assertEqual(product1.sizes, ["300g"])
         
@@ -130,6 +133,7 @@ class TestDataFlowColes(TestCase):
 
         # Product 2: Smoked Salmon
         product2 = Product.objects.get(name="Tasmanian Smoked Salmon")
+        print(product2.sizes)
         self.assertEqual(product2.brand, "Tassal")
         self.assertEqual(product2.sizes, ["250g"])
 

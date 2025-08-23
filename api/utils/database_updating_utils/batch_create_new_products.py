@@ -51,17 +51,7 @@ def batch_create_new_products(command, consolidated_data: dict):
 
         # Tier 3: Match by Normalized String
         if not product:
-            # Create a temporary dictionary to get its normalized string
-            temp_product_dict = {
-                'name': product_details.get('name', ''),
-                'brand': product_details.get('brand', ''),
-                'package_size': product_details.get('package_size', ''),
-                'sizes': product_details.get('sizes', [])
-            }
-            # Use the utility to populate sizes and get the normalized string
-            extracted_sizes = get_extracted_sizes(temp_product_dict)
-            normalized_string = get_normalized_string(temp_product_dict, extracted_sizes)
-            
+            normalized_string = product_details.get('normalized_name_brand_size')
             if normalized_string in normalized_string_cache:
                 product = normalized_string_cache[normalized_string]
 
@@ -79,23 +69,14 @@ def batch_create_new_products(command, consolidated_data: dict):
         for _, data in products_to_create_data:
             product_details = data['product_details']
             
-            # Create a dictionary and normalize it using the utility
-            temp_product_dict = {
-                'name': product_details.get('name', ''),
-                'brand': product_details.get('brand', ''),
-                'package_size': product_details.get('package_size', ''),
-                'sizes': product_details.get('sizes', [])
-            }
-            
-            extracted_sizes = get_extracted_sizes(temp_product_dict)
-            normalized_string = get_normalized_string(temp_product_dict, extracted_sizes)
+            normalized_string = product_details.get('normalized_name_brand_size')
 
             if normalized_string and normalized_string not in seen_normalized_strings:
                 # Create a Product instance with the normalized data
                 new_product_objects.append(Product(
                     name=product_details.get('name', ''),
                     brand=product_details.get('brand', ''),
-                    sizes=extracted_sizes,
+                    sizes=product_details.get('sizes', []),
                     barcode=product_details.get('barcode'),
                     image_url=product_details.get('image_url_main'),
                     url=product_details.get('url'),
@@ -120,14 +101,7 @@ def batch_create_new_products(command, consolidated_data: dict):
 
             for key, data in products_to_create_data:
                 product_details = data['product_details']
-                # Recalculate normalized string using the utility for cache lookup
-                temp_product_dict = {
-                    'name': product_details.get('name', ''),
-                    'brand': product_details.get('brand', ''),
-                    'sizes': product_details.get('sizes', [])
-                }
-                extracted_sizes = get_extracted_sizes(temp_product_dict)
-                normalized_string = get_normalized_string(temp_product_dict, extracted_sizes)
+                normalized_string = product_details.get('normalized_name_brand_size')
 
                 if normalized_string in new_products_cache:
                     product_lookup_cache[key] = new_products_cache[normalized_string]

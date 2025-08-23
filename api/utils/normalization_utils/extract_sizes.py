@@ -1,6 +1,7 @@
 import re
 
 def extract_sizes(text):
+    print(f"extract_sizes called with text: {text}")
     if not text:
         return []
 
