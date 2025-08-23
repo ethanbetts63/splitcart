@@ -46,7 +46,7 @@ things we want to test for:
 2. each scraper is actually getting information from multiple stores. it doesnt just think it is. 
 3. deduplication is working as expected. 
 
-all tests not in the list above were passing at the start of this process. Put a (DONE) marker next to a test in the list when you finish it. \
+all tests not in the list above were passing at the start of this process. Put a (DONE) marker next to a test in the list when you finish it. \ 
 
 
   --- Recent Changes & Test Status ---
@@ -110,3 +110,29 @@ Test Files Modified & Status:
 - api/tests/scrapers/test_scrape_and_save_coles.py: NEW. Basic successful scrape test. (PASSING)
 
 All `api` app tests are currently passing.
+
+
+--- Progress Update (August 23, 2025) ---
+
+**Integration Tests:**
+-   `C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_coles.py`: Created and is now **(PASSING)**.
+-   `C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_woolworths.py`: Created and is now **(PASSING)**.
+
+**Utility Files Modified & Status:**
+-   `api/utils/scraper_utils/clean_raw_data_coles.py`: Corrected argument passing for `clean_raw_data_coles`.
+-   `api/utils/scraper_utils/wrap_cleaned_products.py`: Removed `.lower()` from `store_id` to preserve original casing.
+-   `api/utils/normalization_utils/get_extracted_sizes.py`: Modified to extract sizes from `package_size` field. **(PASSING)**.
+-   `api/utils/normalization_utils/extract_sizes.py`: Modified to correctly extract standalone units (e.g., "each") as raw values. **(PASSING)**.
+-   `api/utils/normalization_utils/get_normalized_string.py`: Updated to use `standardize_sizes_for_norm_string` for size standardization in the normalization key. **(PASSING)**.
+-   `api/utils/database_updating_utils/consolidate_inbox_data.py`: Corrected `is_on_special` and `is_available` field mapping.
+
+**New Files Created:**
+-   `api/tests/integration/test_data_flow_coles.py`: Integration test for Coles data flow.
+-   `api/tests/integration/test_data_flow_woolworths.py`: Integration test for Woolworths data flow.
+-   `api/utils/normalization_utils/standardize_sizes_for_norm_string.py`: New utility for standardizing sizes for the normalization string.
+-   `api/tests/util_tests/test_normalization_utils/test_extract_sizes.py`: Unit test for `extract_sizes.py`. **(PASSING)**.
+-   `api/tests/util_tests/test_normalization_utils/test_standardize_sizes_for_norm_string.py`: Unit test for `standardize_sizes_for_norm_string.py`. **(PASSING)**.
+-   `api/utils/normalization_utils/README.md`: Documentation for normalization utilities.
+
+**Import Changes:**
+-   All imports in `api/utils/normalization_utils` files were changed to be explicit (e.g., `from api.utils.normalization_utils.module import function` instead of `from .module import function`).
