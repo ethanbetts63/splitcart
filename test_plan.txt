@@ -1,0 +1,51 @@
+This document outlines the testing plan for the Splitcart data pipeline.
+
+The data pipeline begins with scraping raw product data from grocery store websites. This raw data is then passed through store-specific cleaning functions to standardize the format. After cleaning, a central normalization utility extracts size information, cleans the product name, and generates a unique de-duplication key. Each normalized product is then saved as a separate JSON file in the 'product_inbox'. The database update process is triggered by a management command, which consolidates the data from the inbox, performs an in-memory de-duplication using the 'last one wins' approach, and then uses a tiered matching system to identify and create new products and prices in the database in efficient batches. Once the data is successfully saved, the corresponding files are deleted from the inbox.
+
+Below is the list of test files to be created, in the recommended order, to ensure the data pipeline is thoroughly tested.
+
+# Unit Tests for Scrapers
+C:\Users\ethan\coding\splitcart\api\tests\scrapers\test_scrape_and_save_coles.py
+C:\Users\ethan\coding\splitcart\api\tests\scrapers\test_scrape_and_save_woolworths.py
+C:\Users\ethan\coding\splitcart\api\tests\scrapers\test_scrape_and_save_aldi.py
+C:\Users\ethan\coding\splitcart\api\tests\scrapers\test_scrape_and_save_iga.py
+
+# Unit Tests for Data Cleaners
+C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_scraper_utils\test_clean_raw_data_coles.py
+C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_scraper_utils\test_clean_raw_data_woolworths.py
+C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_scraper_utils\test_clean_raw_data_aldi.py
+C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_scraper_utils\test_clean_raw_data_iga.py
+
+# Unit Tests for Utility Functions
+C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_normalization_utils\test_normalize_product_data.py
+C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_database_updating_utils\test_consolidate_inbox_data.py
+C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_database_updating_utils\test_product_matching.py
+
+# Integration Tests for End-to-End Data Flow
+C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_coles.py
+C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_woolworths.py
+C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_aldi.py
+C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_iga.py
+
+We are going to be writing tests. Look at some of the existing tests for reference. Start with utils. then scrapers, then anything. Be absolutely certain that a test file doesn't already exist before creating a new one. 
+here are the rules: 
+1. use the model factory file from tests\test_helpers in the app the test is in
+2. Do not touch any non test files without my explicit permission. If you need to touch a non test file to solve a problem, make a comment next to the failing test then skip to the next one. Don't stop to ask me anything. Do not touch non test files. To be very explicit. 
+3. Run tests on individual files not on whole apps. 
+Things by in large work really well. So if a test is failing its most likely your test not the code. However if you think it is the code. You are to leave the failing test as is and move on. We will return to them later. 
+
+C:\Users\ethan\coding\splitcart\raw_product_comparison_aldi.txt
+C:\Users\ethan\coding\splitcart\raw_product_comparison_coles.txt
+C:\Users\ethan\coding\splitcart\raw_product_comparison_iga.txt
+C:\Users\ethan\coding\splitcart\raw_product_comparison_woolworths.txt
+
+if you ever need to reference how the data comes in you can look at these. This is the data in its raw state for each company. 
+
+things we want to test for: 
+1. no data loss from scrape to database
+2. each scraper is actually testing multiple stores. 
+3. deduplication is working as expected. 
+
+all tests not in the list above were passing at the start of this process. Put a (DONE) marker next to a test in the list when you finish it. \
+
+
