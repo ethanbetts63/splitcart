@@ -1,52 +1,78 @@
-import os
-import json
+import unittest
 import tempfile
 import shutil
+import json
+import os
+from unittest.mock import MagicMock
 from django.test import TestCase
-from unittest.mock import Mock
 from api.utils.database_updating_utils.consolidate_inbox_data import consolidate_inbox_data
 
-class TestConsolidateInboxData(TestCase):
-
+class ConsolidateInboxDataTest(TestCase):
     def setUp(self):
-        self.temp_dir = tempfile.mkdtemp()
-        self.inbox_path = os.path.join(self.temp_dir, 'product_inbox')
-        os.makedirs(self.inbox_path, exist_ok=True)
+        self.test_dir = tempfile.mkdtemp()
+        self.mock_command = MagicMock()
 
-        self.mock_command = Mock()
-        self.mock_command.stdout = Mock()
-        self.mock_command.stderr = Mock()
-        self.mock_command.style = Mock()
+        # Product data - same product, different stores
+        self.product_data_1 = {
+            "metadata": {"store_id": "S001", "company": "TestCorp"},
+            "product": {
+                "normalized_name_brand_size": "prod-a-1kg",
+                "price_current": 1.99,
+                "product_id_store": "P1_S1",
+                "category_path": ["Bakery", "Bread"]
+            }
+        }
+        self.product_data_2 = {
+            "metadata": {"store_id": "S002", "company": "TestCorp"},
+            "product": {
+                "normalized_name_brand_size": "prod-a-1kg",
+                "price_current": 1.89,
+                "product_id_store": "P1_S2",
+                "category_path": ["Bakery", "Rolls"]
+            }
+        }
+        # A different product
+        self.product_data_3 = {
+            "metadata": {"store_id": "S001", "company": "TestCorp"},
+            "product": {
+                "normalized_name_brand_size": "prod-b-500g",
+                "price_current": 3.50,
+                "product_id_store": "P2_S1",
+                "category_path": ["Dairy", "Milk"]
+            }
+        }
 
-        # Create dummy inbox files
-        self.file1_path = os.path.join(self.inbox_path, "file1.jsonl")
-        with open(self.file1_path, 'w') as f:
-            data1 = {"product": {"normalized_name_brand_size": "key1", "price_current": 1.00}, "metadata": {"company": "TestCo"}}
-            data2 = {"product": {"normalized_name_brand_size": "key2", "price_current": 2.00}, "metadata": {"company": "TestCo"}}
-            f.write(json.dumps(data1) + '\n')
-            f.write(json.dumps(data2) + '\n')
-
-        self.file2_path = os.path.join(self.inbox_path, "file2.jsonl")
-        with open(self.file2_path, 'w') as f:
-            data3 = {"product": {"normalized_name_brand_size": "key2", "price_current": 2.50}, "metadata": {"company": "TestCo"}} # Duplicate key
-            data4 = {"product": {"normalized_name_brand_size": "key3", "price_current": 3.00}, "metadata": {"company": "TestCo"}}
-            f.write(json.dumps(data3) + '\n')
-            f.write(json.dumps(data4) + '\n')
+        # Create a dummy .jsonl file
+        with open(os.path.join(self.test_dir, "data.jsonl"), 'w') as f:
+            f.write(json.dumps(self.product_data_1) + '\n')
+            f.write(json.dumps(self.product_data_2) + '\n')
+            f.write(json.dumps(self.product_data_3) + '\n')
 
     def tearDown(self):
-        shutil.rmtree(self.temp_dir)
+        shutil.rmtree(self.test_dir)
 
-    def test_consolidate_inbox_data_success(self):
-        consolidated_data, processed_files = consolidate_inbox_data(self.inbox_path, self.mock_command)
+    def test_consolidation_logic(self):
+        consolidated_data, processed_files = consolidate_inbox_data(self.test_dir, self.mock_command)
 
-        self.assertEqual(len(consolidated_data), 3)
-        self.assertIn("key1", consolidated_data)
-        self.assertIn("key2", consolidated_data)
-        self.assertIn("key3", consolidated_data)
+        # We expect 2 unique products
+        self.assertEqual(len(consolidated_data), 2)
 
-        # Test "last one wins" for duplicate key
-        self.assertEqual(consolidated_data['key2']['product_details']['price_current'], 2.50)
+        # Check the consolidated data for the first product
+        key1 = "prod-a-1kg"
+        self.assertIn(key1, consolidated_data)
+        product1_data = consolidated_data[key1]
 
-        self.assertEqual(len(processed_files), 2)
-        self.assertIn(self.file1_path, processed_files)
-        self.assertIn(self.file2_path, processed_files)
+        # Check price history
+        self.assertEqual(len(product1_data['price_history']), 2)
+        prices = {p['price'] for p in product1_data['price_history']}
+        self.assertEqual(prices, {1.99, 1.89})
+
+        # Check category paths
+        self.assertEqual(len(product1_data['category_paths']), 2)
+        self.assertIn(tuple(["Bakery", "Bread"]), product1_data['category_paths'])
+        self.assertIn(tuple(["Bakery", "Rolls"]), product1_data['category_paths'])
+
+        # Check the second product
+        key2 = "prod-b-500g"
+        self.assertIn(key2, consolidated_data)
+        self.assertEqual(len(consolidated_data[key2]['price_history']), 1)
