@@ -256,7 +256,7 @@ class TestDataFlowWoolworths(TestCase):
 
         product1 = Product.objects.get(name="Woolworths Bird's Eye Chilli Hot")
         self.assertEqual(product1.brand, "Woolworths")
-        self.assertEqual(product1.sizes, ["each"])
+        self.assertEqual(product1.sizes, ["ea"])
         self.assertEqual(product1.barcode, "0265178000003")
         
         price1 = Price.objects.get(product=product1)

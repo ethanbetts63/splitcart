@@ -73,6 +73,23 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
                 except ValueError:
                     pass # Keep as None if parsing fails
 
+        unit_of_size_info = product.get('unitOfSize')
+        sell_by_info = product.get('sellBy')
+        package_size_str = None
+        
+        size_parts = []
+        if unit_of_size_info:
+            size = unit_of_size_info.get('size')
+            size_type = unit_of_size_info.get('type')
+            if size and size_type:
+                size_parts.append(f"{size}{size_type}")
+        
+        if sell_by_info:
+            size_parts.append(sell_by_info)
+            
+        if size_parts:
+            package_size_str = " ".join(size_parts)
+
         clean_product = {
             "product_id_store": product.get('sku'),
             "barcode": product.get('barcode'),
@@ -100,7 +117,7 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
             "purchase_limit": None, # Not available
 
             # --- Details & Attributes ---
-            "package_size": product.get('sellBy').lower().strip() if product.get('sellBy') else None,
+            "package_size": package_size_str,
             "country_of_origin": country_of_origin,
             "health_star_rating": None, # Not available
             "ingredients": None, # Not available

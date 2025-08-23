@@ -25,7 +25,7 @@ C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_database_updating_util
 C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_coles.py (DONE)
 C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_woolworths.py (DONE)
 C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_aldi.py (DONE)
-C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_iga.py
+C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_iga.py (DONE)
 
 We are going to be writing tests. Look at some of the existing tests for reference. Start with utils. then scrapers, then anything. Be absolutely certain that a test file doesn't already exist before creating a new one. 
 here are the rules: 
@@ -155,3 +155,13 @@ All `api` app tests are currently passing.
 
 **Test Files Modified & Status:**
 - `api/tests/integration/test_data_flow_coles.py`: Test is now **(PASSING)** after fixes to `extract_sizes.py`.
+
+--- Progress Update (August 23, 2025) ---
+
+**Non-Test Files Modified:**
+- `api/utils/scraper_utils/clean_raw_data_iga.py`: Updated to combine `unitOfSize` and `sellBy` fields to create a comprehensive `package_size` string.
+- `api/utils/normalization_utils/extract_sizes.py`: Fixed a bug where `each` was not being correctly normalized to `ea`.
+
+**Test Files Modified & Status:**
+- `api/tests/integration/test_data_flow_iga.py`: Created and is now **(PASSING)**.
+

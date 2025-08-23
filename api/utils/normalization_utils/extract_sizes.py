@@ -64,6 +64,7 @@ def extract_sizes(text):
     standalone_units = [u for u in all_unit_variations if len(u) > 1] + ['ea'] # Keep 'ea'
     standalone_unit_pattern = r'\b(' + '|'.join(standalone_units) + r')\b'
     for match in re.finditer(standalone_unit_pattern, processed_text):
-        sizes.add(match.group(1))
+        unit = unit_map[match.group(1)]
+        sizes.add(unit)
 
     return list(sizes)
