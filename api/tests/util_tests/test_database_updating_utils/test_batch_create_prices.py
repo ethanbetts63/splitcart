@@ -85,3 +85,12 @@ class TestBatchCreatePrices(TestCase):
         with open(problem_products_file, 'r') as f:
             content = f.read()
             self.assertIn("key3", content)
+
+    def test_batch_create_prices_skip_missing_store(self):
+        self.consolidated_data['key1']['price_history'].append(
+            {"store_id": "store3", "price": 4.00}
+        )
+
+        batch_create_prices(self.mock_command, self.consolidated_data, self.product_cache)
+
+        self.assertEqual(Price.objects.count(), 3)
