@@ -1,6 +1,5 @@
 from django.test import TestCase
 from django.db.utils import IntegrityError
-from companies.models import Store
 from companies.tests.test_helpers.model_factories import StoreFactory, CompanyFactory
 
 class StoreModelTest(TestCase):
@@ -16,7 +15,7 @@ class StoreModelTest(TestCase):
     def test_store_str_representation(self):
         """Test the string representation of the store."""
         company = CompanyFactory(name="Test Company")
-        store = StoreFactory(name="Test Store", company=company)
+        store = StoreFactory(store_name="Test Store", company=company)
         self.assertEqual(str(store), "Test Store (Test Company)")
 
     def test_unique_together_constraint(self):
