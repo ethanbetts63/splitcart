@@ -4,10 +4,8 @@ import tempfile
 import shutil
 from datetime import datetime
 from unittest.mock import Mock
-
+from decimal import Decimal
 from django.test import TestCase, override_settings
-
-from companies.models import Company, Division, Store
 from products.models import Product, Price
 from companies.tests.test_helpers.model_factories import CompanyFactory, DivisionFactory, StoreFactory
 from api.utils.scraper_utils.clean_raw_data_aldi import clean_raw_data_aldi
@@ -132,6 +130,6 @@ class TestDataFlowAldi(TestCase):
         
         price1 = Price.objects.get(product=product1)
         self.assertEqual(price1.store, self.store)
-        self.assertEqual(price1.price, 4.69)
+        self.assertEqual(price1.price, Decimal('4.69'))
         self.assertFalse(price1.is_on_special)
         self.assertFalse(price1.is_available)

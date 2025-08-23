@@ -22,9 +22,9 @@ C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_database_updating_util
 C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_database_updating_utils\test_product_matching.py
 
 # Integration Tests for End-to-End Data Flow
-C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_coles.py
-C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_woolworths.py
-C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_aldi.py
+C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_coles.py (DONE)
+C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_woolworths.py (DONE)
+C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_aldi.py (DONE)
 C:\Users\ethan\coding\splitcart\api\tests\integration\test_data_flow_iga.py
 
 We are going to be writing tests. Look at some of the existing tests for reference. Start with utils. then scrapers, then anything. Be absolutely certain that a test file doesn't already exist before creating a new one. 

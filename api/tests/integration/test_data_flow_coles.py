@@ -6,6 +6,8 @@ import shutil
 from datetime import datetime
 from unittest.mock import Mock
 
+from decimal import Decimal
+
 from django.test import TestCase, override_settings
 
 from companies.models import Company, Division, Store
@@ -116,23 +118,23 @@ class TestDataFlowColes(TestCase):
         self.assertEqual(Price.objects.count(), 2)
 
         # Product 1: Lamb Cutlets
-        product1 = Product.objects.get(name="graze lamb extra trim cutlets")
-        self.assertEqual(product1.brand, "coles")
+        product1 = Product.objects.get(name="Graze Lamb Extra Trim Cutlets")
+        self.assertEqual(product1.brand, "Coles")
         self.assertEqual(product1.sizes, ["300g"])
         
         price1 = Price.objects.get(product=product1)
         self.assertEqual(price1.store, self.store)
-        self.assertEqual(price1.price, 12.00)
+        self.assertEqual(price1.price, Decimal('12.00'))
         self.assertTrue(price1.is_on_special)
         self.assertFalse(price1.is_available)
 
         # Product 2: Smoked Salmon
-        product2 = Product.objects.get(name="tasmanian smoked salmon")
-        self.assertEqual(product2.brand, "tassal")
+        product2 = Product.objects.get(name="Tasmanian Smoked Salmon")
+        self.assertEqual(product2.brand, "Tassal")
         self.assertEqual(product2.sizes, ["250g"])
 
         price2 = Price.objects.get(product=product2)
         self.assertEqual(price2.store, self.store)
-        self.assertEqual(price2.price, 21.00)
+        self.assertEqual(price2.price, Decimal('21.00'))
         self.assertFalse(price2.is_on_special)
         self.assertTrue(price2.is_available)
