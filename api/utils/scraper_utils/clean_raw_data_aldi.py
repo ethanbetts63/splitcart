@@ -3,7 +3,7 @@ import re
 from api.utils.normalization_utils import normalize_product_data
 
 
-def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, store_id: str, state: str, category_slug: str, page_num: int, timestamp: datetime) -> dict:
+def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, store_id: str, state: str, timestamp: datetime) -> dict:
     """
     Cleans a list of raw ALDI product data according to the V2 schema and
     wraps it in a dictionary containing metadata about the scrape.

@@ -3,7 +3,7 @@ from datetime import datetime
 from api.utils.normalization_utils import normalize_product_data
 
 
-def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, category: str, page_num: int, timestamp: datetime) -> dict:
+def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, timestamp: datetime) -> dict:
     """
     Cleans a list of raw Woolworths product data according to the V2 schema and
     wraps it in a dictionary containing metadata about the scrape.
