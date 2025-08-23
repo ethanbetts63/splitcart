@@ -14,6 +14,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException # Added this line
 from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
+from api.utils.scraper_utils.jsonl_writer import JsonlWriter
 
 def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, state: str, categories_to_fetch: list):
     """
@@ -28,8 +29,8 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
     store_name_slug = f"{slugify(store_name)}-{numeric_store_id}"
     print(f"--- Initializing Hybrid Coles Scraper for store: {store_name} ({store_name_slug}) ---")
 
-    # This scraper is atomic; it always starts fresh.
-    completed_categories = []
+    scrape_successful = False
+    jsonl_writer = JsonlWriter(company, store_name_slug, state)
 
     # --- Selenium Phase: Session Initialization ---
     driver = None
@@ -85,93 +86,91 @@ def scrape_and_save_coles_data(company: str, store_id: str, store_name: str, sta
         print("ERROR: Requests session was not created. Aborting.")
         return
 
-    # --- Main Scraping Loop ---
-    for category_slug in categories_to_fetch:
-        print(f"\n--- Scraping Category: {category_slug} ---")
-        page_num = 1
-        total_pages = 1
+    try:
+        jsonl_writer.open()
 
-        category_successfully_completed = False
-        while True: # Will break out internally
-            if page_num > total_pages and total_pages > 1:
-                category_successfully_completed = True
-                break
+        # --- Main Scraping Loop ---
+        for category_slug in categories_to_fetch:
+            print(f"\n--- Scraping Category: {category_slug} ---")
+            page_num = 1
+            total_pages = 1
 
-            browse_url = f"https://www.coles.com.au/browse/{category_slug}?page={page_num}"
-            
-            try:
-                print(f"Requesting page {page_num}/{total_pages if total_pages > 1 else '?'}")
-                response = session.get(browse_url, timeout=30)
-                response.raise_for_status()
-
-                soup = BeautifulSoup(response.text, 'html.parser')
-                json_element = soup.find('script', {'id': '__NEXT_DATA__'}) 
-                
-                if not json_element:
-                    print(f"ERROR: Could not find __NEXT_DATA__ on page {page_num} for '{category_slug}'. Skipping category.")
-                    break
-
-                full_data = json.loads(json_element.string)
-
-                if page_num == 1:
-                    try:
-                        actual_store_id = full_data.get("props", {}).get("pageProps", {}).get("initStoreId")
-                        print(f"Verifying store ID for category '{category_slug}'...")
-                        if str(actual_store_id) == str(numeric_store_id):
-                            print(f"SUCCESS: Store ID {actual_store_id} matches target {numeric_store_id}.")
-                        else:
-                            print(f"ERROR: Store ID mismatch! Expected {numeric_store_id}, but page data shows {actual_store_id}. Skipping category.")
-                            break 
-                    except (KeyError, TypeError) as e:
-                        print(f"ERROR: Could not find storeId in page data for verification: {e}. Skipping category.")
-                        break
-                
-                search_results = full_data.get("props", {}).get("pageProps", {}).get("searchResults", {})
-                raw_product_list = search_results.get("results", [])
-
-                if not raw_product_list:
-                    print("No more products found for this category.")
+            category_successfully_completed = False
+            while True: # Will break out internally
+                if page_num > total_pages and total_pages > 1:
                     category_successfully_completed = True
                     break
 
-                if page_num == 1:
-                    total_results = search_results.get("noOfResults", 0)
-                    page_size = search_results.get("pageSize", 48)
-                    if total_results > 0 and page_size > 0:
-                        total_pages = math.ceil(total_results / page_size)
-                    print(f"Category has {total_results} products across {total_pages} pages.")
-
-                scrape_timestamp = datetime.now()
-                data_packet = clean_raw_data_coles(raw_product_list, company, store_id, store_name, state, category_slug, page_num, scrape_timestamp)
+                browse_url = f"https://www.coles.com.au/browse/{category_slug}?page={page_num}"
                 
-                from api.utils.scraper_utils.save_to_inbox import save_to_inbox
+                try:
+                    print(f"Requesting page {page_num}/{total_pages if total_pages > 1 else '?'}")
+                    response = session.get(browse_url, timeout=30)
+                    response.raise_for_status()
 
-                if data_packet['products']:
-                    print(f"Found and cleaned {len(data_packet['products'])} products.")
+                    soup = BeautifulSoup(response.text, 'html.parser')
+                    json_element = soup.find('script', {'id': '__NEXT_DATA__'}) 
                     
-                    products_on_page = data_packet.get('products', [])
-                    metadata = data_packet.get('metadata', {})
+                    if not json_element:
+                        print(f"ERROR: Could not find __NEXT_DATA__ on page {page_num} for '{category_slug}'. Skipping category.")
+                        break
+
+                    full_data = json.loads(json_element.string)
+
+                    if page_num == 1:
+                        try:
+                            actual_store_id = full_data.get("props", {}).get("pageProps", {}).get("initStoreId")
+                            print(f"Verifying store ID for category '{category_slug}'...")
+                            if str(actual_store_id) == str(numeric_store_id):
+                                print(f"SUCCESS: Store ID {actual_store_id} matches target {numeric_store_id}.")
+                            else:
+                                print(f"ERROR: Store ID mismatch! Expected {numeric_store_id}, but page data shows {actual_store_id}. Skipping category.")
+                                break 
+                        except (KeyError, TypeError) as e:
+                            print(f"ERROR: Could not find storeId in page data for verification: {e}. Skipping category.")
+                            break
                     
-                    saved_count = 0
-                    for product in products_on_page:
-                        if save_to_inbox(product, metadata):
-                            saved_count += 1
+                    search_results = full_data.get("props", {}).get("pageProps", {}).get("searchResults", {})
+                    raw_product_list = search_results.get("results", [])
+
+                    if not raw_product_list:
+                        print("No more products found for this category.")
+                        category_successfully_completed = True
+                        break
+
+                    if page_num == 1:
+                        total_results = search_results.get("noOfResults", 0)
+                        page_size = search_results.get("pageSize", 48)
+                        if total_results > 0 and page_size > 0:
+                            total_pages = math.ceil(total_results / page_size)
+                        print(f"Category has {total_results} products across {total_pages} pages.")
+
+                    scrape_timestamp = datetime.now()
+                    data_packet = clean_raw_data_coles(raw_product_list, company, store_id, store_name, state, category_slug, page_num, scrape_timestamp)
                     
-                    print(f"Successfully saved {saved_count}/{len(products_on_page)} products to the inbox.")
+                    if data_packet['products']:
+                        print(f"Found and cleaned {len(data_packet['products'])} products.")
+                        
+                        products_on_page = data_packet.get('products', [])
+                        metadata = data_packet.get('metadata', {})
+                        
+                        products_written_count = 0
+                        for product in products_on_page:
+                            if jsonl_writer.write_product(product, metadata):
+                                products_written_count += 1
+                        
+                        print(f"Successfully saved {products_written_count}/{len(products_on_page)} products to the inbox.")
 
-            except requests.exceptions.RequestException as e:
-                print(f"ERROR: Network request failed on page {page_num} for '{category_slug}': {e}")
-                break 
-            except Exception as e:
-                print(f"ERROR: An unexpected error occurred on page {page_num} for '{category_slug}': {e}")
-                break
-            
-            page_num += 1
+                except requests.exceptions.RequestException as e:
+                    print(f"ERROR: Network request failed on page {page_num} for '{category_slug}': {e}")
+                    break 
+                except Exception as e:
+                    print(f"ERROR: An unexpected error occurred on page {page_num} for '{category_slug}': {e}")
+                    break
+                
+                page_num += 1
 
-        if category_successfully_completed:
-            print(f"--- Finished category: {category_slug} ---")
-        else:
-            print(f"--- Category {category_slug} not fully scraped due to an error. ---")
-
-    print("\n--- All categories processed for this store ---")
-    print(f"--- Coles scraper finished for store: {store_name} ({store_id}). ---")
+        scrape_successful = True
+        print("\n--- All categories processed for this store ---")
+    finally:
+        jsonl_writer.finalize(scrape_successful)
