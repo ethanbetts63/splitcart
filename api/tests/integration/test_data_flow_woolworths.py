@@ -5,6 +5,7 @@ import tempfile
 import shutil
 from datetime import datetime
 from unittest.mock import Mock
+from decimal import Decimal
 
 from django.test import TestCase, override_settings
 
@@ -254,12 +255,12 @@ class TestDataFlowWoolworths(TestCase):
         self.assertEqual(Price.objects.count(), 1)
 
         product1 = Product.objects.get(name="Woolworths Bird's Eye Chilli Hot")
-        self.assertEqual(product1.brand, "woolworths")
+        self.assertEqual(product1.brand, "Woolworths")
         self.assertEqual(product1.sizes, ["each"])
         self.assertEqual(product1.barcode, "0265178000003")
         
         price1 = Price.objects.get(product=product1)
         self.assertEqual(price1.store, self.store)
-        self.assertEqual(price1.price, 0.14)
+        self.assertEqual(price1.price, Decimal('0.14'))
         self.assertFalse(price1.is_on_special)
         self.assertTrue(price1.is_available)
