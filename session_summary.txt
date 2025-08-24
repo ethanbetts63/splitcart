@@ -1,0 +1,88 @@
+Session Summary: Improving Product De-duplication
+
+Date: Saturday, August 23, 2025
+
+Introduction:
+This session focused on addressing the core problem of duplicate product entries in your database, which arise due to discrepancies in how different companies define the same product. The goal was to enhance the accuracy and robustness of your product de-duplication process, particularly by standardizing brand names.
+
+What We've Done & Why:
+
+1.  Initial Analysis of Normalization Logic:
+    *   We reviewed your existing `get_normalized_string` function and its helper utilities (`clean_value`, `get_cleaned_name`, `standardize_sizes_for_norm_string`).
+    *   Why: To understand the current de-duplication mechanism and identify its limitations, primarily its rigidity and lack of synonym handling, which led to brittle normalized keys.
+
+2.  Tool for Identifying Potential Brand Matches (`find_brand_matches` command):
+    *   Purpose: To automatically scan your existing product data and identify brand names that are highly similar, suggesting they might be variations of the same brand.
+    *   Why: This provides a data-driven starting point for manual review, making the process of finding synonyms much more efficient than guessing.
+    *   Key Features Added:
+        *   Progress bar: To provide feedback during potentially long-running comparisons.
+        *   Example products: To give immediate context for each brand pair, aiding in decision-making.
+        *   Pre-cleaning of brands: Brands are now lowercased, stripped of whitespace, and punctuation is removed before comparison, improving accuracy and reducing the number of unique brands to compare.
+
+3.  Interactive Tool for Curating Brand Synonyms (`create_synonyms` command):
+    *   Purpose: To allow you to manually review potential brand matches and build a highly accurate brand synonym dictionary.
+    *   Why: Human intelligence is crucial for making accurate decisions on ambiguous or context-dependent brand variations, which automated fuzzy matching alone cannot reliably handle.
+    *   Key Features Added:
+        *   Interactive prompts: Guides you through each potential match.
+        *   Single-keypress input: Streamlines the decision-making process (no need for Enter).
+        *   Immediate saving of decisions: Ensures your progress is saved instantly to files, making sessions resumable.
+        *   "No Match" category (Option 5): For pairs that are definitely not synonyms.
+        *   "Unsure" category (Option 3): For ambiguous pairs that require further research or context.
+        *   "Rule-Based" category (Option 4): For pairs that are synonyms but require conditional rules (e.g., based on product name) to avoid false positives.
+        *   Progress bar: Shows how many pairs are left to review.
+        *   Skipping processed pairs: Automatically skips pairs already categorized (synonym, no match, unsure, rule-based).
+
+4.  Integration of Brand Synonyms into Normalization Logic:
+    *   Purpose: To apply the curated brand synonyms to the product normalization process.
+    *   Why: Ensures that all products, whether newly scraped or re-processed, use canonical brand names. This is a critical step in reducing duplicate product entries across different companies.
+    *   Verification: We added and ran a unit test to confirm that the `get_normalized_string` function correctly applies the brand synonym mapping.
+
+Key Concepts Discussed:
+
+*   **Normalization vs. Denormalization:** Explored the trade-offs in database design, particularly in your `Store` and `Product` models, highlighting that "deviations" can be pragmatic choices for performance or simplicity.
+*   **Precision vs. Recall:** Emphasized the importance of precision (accuracy) over recall (completeness) in data matching to avoid false positives, especially when dealing with brand synonyms.
+*   **Deterministic vs. Probabilistic Matching:** Stressed the value of applying deterministic rules (like synonym maps) before considering probabilistic methods (like fuzzy matching) for more robust data cleaning.
+*   **Data Cleaning Workflow:** Established a clear workflow: identify -> curate -> integrate -> verify.
+
+Relevant Files:
+
+*   `api/utils/normalization_utils/get_normalized_string.py`: The main function responsible for generating the normalized product string.
+*   `api/utils/normalization_utils/clean_value.py`: Core utility for cleaning individual string components (e.g., brand, name).
+*   `api/utils/normalization_utils/get_cleaned_name.py`: Utility for cleaning product names.
+*   `api/utils/normalization_utils/standardize_sizes_for_norm_string.py`: Utility for standardizing size strings.
+*   `api/data/analysis/brand_synonyms.py`: The Python file containing your curated brand synonym dictionary.
+*   `api/data/analysis/brand_non_matches.csv`: CSV file storing pairs you've explicitly marked as "No Match".
+*   `api/data/analysis/brand_unsure_matches.csv`: CSV file storing pairs you've marked as "Unsure".
+*   `api/data/analysis/brand_rule_based_matches.csv`: CSV file storing pairs you've marked for "Rule-Based" handling.
+*   `brand_matches.csv`: The CSV file generated by `find_brand_matches`, containing potential brand matches for review.
+*   `api/management/commands/find_brand_matches.py`: The Django management command to generate `brand_matches.csv`.
+*   `api/management/commands/create_synonyms.py`: The interactive Django management command to curate `brand_synonyms.py` and the other history files.
+*   `api/utils/management_utils/synonym_tool.py`: The utility file containing the core logic for the synonym management commands.
+*   `api/tests/util_tests/test_normalization_utils/test_get_normalized_string.py`: The unit test file for the `get_normalized_string` function, including verification of brand synonym integration.
+
+Next Steps for You:
+
+1.  **Re-process your data:** Run `python manage.py update_db --products` to apply the new normalization logic to your existing product data.
+2.  **Re-run brand analysis:** Run `python manage.py find_brand_matches` to see the reduced number of unique brands and potential matches.
+3.  **Continue curation:** Use `python manage.py create_synonyms` to process any remaining matches.
+
+
+Future Enhancements to Product Matching:
+
+As we discussed, achieving perfect product de-duplication is an ongoing process. Here are some advanced ideas we've brainstormed for future enhancements:
+
+1.  **Brand Synonym Chaining & Loop Detection:**
+    *   **Concept:** Allow synonyms to chain (e.g., 'coke' -> 'coca-cola' -> 'The Coca-Cola Company') to funnel all variations down to a single canonical name.
+    *   **Importance:** Crucial for robust brand normalization. Requires implementing recursive lookups in the normalization logic and detecting loops (e.g., 'coke' -> 'pepsi' -> 'coke') to prevent infinite recursion.
+
+2.  **Conditional Brand Rules:**
+    *   **Concept:** For ambiguous cases (like 'ocean' vs. 'Ocean Blue'), create rules that apply a synonym only if certain conditions are met (e.g., 'map 'ocean' to 'Ocean Blue' ONLY IF the product name contains 'salmon').
+    *   **Importance:** Provides highly precise matching for context-dependent brands, avoiding false positives. This would require a significant architectural change to the synonym storage (from a simple dictionary to a rule-based system) and the normalization pipeline.
+
+3.  **Category Mapping for Product Matching:**
+    *   **Concept:** First, identify and map equivalent categories between different companies (e.g., Coles 'Fresh Produce' == Woolworths 'Fruit & Veg').
+    *   **Importance:** When searching for product matches, the system could first narrow down the search to products within the equivalent categories, significantly improving accuracy and efficiency by reducing the search space.
+
+4.  **Interactive Tool for 'Unsure' and 'Rule-Based' Matches:**
+    *   **Concept:** Develop dedicated interactive tools (similar to `create_synonyms`) to systematically review and process the `brand_unsure_matches.csv` and `brand_rule_based_matches.csv` files.
+    *   **Importance:** Provides a structured way to tackle the most challenging matches, potentially offering more context (e.g., all products for a given brand) or guiding the creation of conditional rules.

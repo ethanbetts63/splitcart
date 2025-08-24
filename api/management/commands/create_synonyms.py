@@ -65,6 +65,7 @@ class Command(BaseCommand):
             self.stdout.write("  [3] Unsure")
             self.stdout.write("  [4] Rule-Based")
             self.stdout.write("  [5] No Match")
+            self.stdout.write("  [6] Custom Canonical")
             self.stdout.write("  [q] Quit")
             while True:
                 self.stdout.write("Your choice: ", ending="")
@@ -72,9 +73,9 @@ class Command(BaseCommand):
                 char = msvcrt.getch().decode('utf-8').lower()
                 self.stdout.write(char + '\n') # Echo character and move to next line
                 choice = char
-                if choice in ['1', '2', '3', '4', '5', 'q']:
+                if choice in ['1', '2', '3', '4', '5', '6', 'q']:
                     break
-                self.stdout.write(self.style.ERROR("Invalid input."))
+                self.stdout.write(self.style.ERROR("Invalid input. Please enter 1, 2, 3, 4, 5, 6, or q."))
 
             if choice == 'q':
                 break
@@ -96,6 +97,22 @@ class Command(BaseCommand):
                 append_rule_based_match(brand1, brand2)
                 rule_based_matches.add(canonical_pair)
                 continue
+
+            if choice == '6': # Custom Canonical
+                custom_canonical = input("Enter custom canonical name: ").strip()
+                if not custom_canonical:
+                    self.stdout.write(self.style.ERROR("Custom canonical name cannot be empty. Skipping."))
+                    continue
+                
+                # Map both brands to the custom canonical
+                if append_synonym(brand1, custom_canonical) and append_synonym(brand2, custom_canonical):
+                    self.stdout.write(self.style.SUCCESS(f"Mapped '{brand1}' -> '{custom_canonical}'"))
+                    self.stdout.write(self.style.SUCCESS(f"Mapped '{brand2}' -> '{custom_canonical}'"))
+                    processed_brands.add(brand1) # Mark original brand as processed
+                    processed_brands.add(brand2) # Mark original brand as processed
+                else:
+                    self.stderr.write(self.style.ERROR("Failed to write to synonym file for custom mapping."))
+                continue # Move to next pair
 
             # If choice is '1' or '2', they are a match
             if choice == '1':
