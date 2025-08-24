@@ -1,6 +1,4 @@
 from products.models import Product, Price
-from api.utils.normalization_utils.get_extracted_sizes import get_extracted_sizes
-from api.utils.normalization_utils.get_normalized_string import get_normalized_string
 
 def batch_create_new_products(command, consolidated_data: dict):
     """
@@ -58,10 +56,8 @@ def batch_create_new_products(command, consolidated_data: dict):
                 product = normalized_string_cache[normalized_string]
 
         if product:
-            print(f"Found existing product for key {key}: {product}")
             product_lookup_cache[key] = product
         else:
-            print(f"Could not find existing product for key {key}")
             products_to_create_data.append((key, data))
 
     # --- Step 3: Batch create new products ---
