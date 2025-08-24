@@ -4,26 +4,29 @@ from itertools import combinations
 from django.core.management.base import BaseCommand
 from products.models import Product
 from thefuzz import fuzz
+from api.utils.normalization_utils.clean_value import clean_value # Import clean_value
 
 class Command(BaseCommand):
     help = 'Finds and exports brand names with high similarity scores.'
 
-    # Define the list of generic/unmatchable brands
-    BRAND_STOP_LIST = set([
+    # Define the list of generic/unmatchable brands (raw words)
+    RAW_BRAND_STOP_WORDS = [
         'tea', 'real', 'quick', 'power', 'duck', 'chicken', 'dog', 'cookie',
         'black', 'bio', 'bakers', 'aussie', 'australian', 'organic', 'wild',
         'simply', 'royal', 'ocean', 'natural', 'mini', 'la', 'love', 'lolly',
         'just', 'hemp', 'harvest', 'gold', 'double', 'classic', 'baby',
         'queen', 'king', 'milk', 'margaret', 'kids', 'gourmet', 'golden',
-        'fresh', 'fine', 'dine', 'byron bay', 'organic', 'everyday', 'every day',
+        'fresh', 'fine', 'dine', 'byron bay', 'everyday', 'every day',
         'deluxe', 'daily', 'cottage', 'classic', 'clean', 'chefs', 'chef',
         'casa', 'cafe', 'butter', 'bush', 'kids', 'home', 'healthy', 'health',
         'garden', 'farm', 'farmer', 'family', 'essentials', 'essence', 'everyday',
         'fancy', 'fresh', 'free', 'la', 'local', 'love', 'lunch', 'lunchbox',
-        'lifestyle', 'lite', 'little', 'lolly', 'long', 'dog', 'national'
+        'lifestyle', 'lite', 'little', 'lolly', 'long', 'dog', 'national', 'power', 'street', 'river'
         # Primary and secondary colors
         'red', 'yellow', 'blue', 'green', 'orange', 'purple',
-    ])
+    ]
+    # Apply clean_value to each word in the stop list once at definition time
+    BRAND_STOP_LIST = set(clean_value(word) for word in RAW_BRAND_STOP_WORDS)
 
     def handle(self, *args, **options):
         self.stdout.write("Fetching unique brand names from products...")
@@ -34,8 +37,8 @@ class Command(BaseCommand):
         # Filter out brands that are in the stop list
         cleaned_brand_map = {}
         for brand in raw_brands:
-            # Lowercase, strip, and remove all non-alphanumeric characters except spaces
-            cleaned = re.sub(r'[^a-zA-Z0-9\s]', '', brand).lower().strip()
+            # Use clean_value for consistent cleaning
+            cleaned = clean_value(brand)
             
             # Skip if the cleaned brand is in the stop list
             if cleaned in self.BRAND_STOP_LIST:
@@ -95,4 +98,3 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(f"Successfully wrote {len(matches)} matches to {output_filename}"))
         except IOError as e:
             self.stderr.write(self.style.ERROR(f"Error writing to file {output_filename}: {e}"))
-
