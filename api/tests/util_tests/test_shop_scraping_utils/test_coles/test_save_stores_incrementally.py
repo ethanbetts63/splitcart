@@ -8,13 +8,13 @@ from api.utils.shop_scraping_utils.coles.save_stores_incrementally import save_s
 class TestSaveStoresIncrementally(TestCase):
 
     def setUp(self):
-        """Set up a temporary file."""
+        """Set up a  file."""
         self.temp_file = tempfile.NamedTemporaryFile(mode='w+', delete=False, suffix=".json")
         self.temp_file_path = self.temp_file.name
         self.temp_file.close()
 
     def tearDown(self):
-        """Clean up the temporary file."""
+        """Clean up the  file."""
         os.remove(self.temp_file_path)
 
     def test_save_stores_incrementally(self):

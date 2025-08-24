@@ -12,7 +12,7 @@ from api.utils.scraper_utils.jsonl_writer import JsonlWriter
 def scrape_and_save_woolworths_data(company: str, state: str, stores: list, categories_to_fetch: list):
     """
     Launches a requests-based scraper for a specific Woolworths store.
-    Scrapes all data into a temporary file and moves it to the inbox on success.
+    Scrapes all data into a  file and moves it to the inbox on success.
     """
     print(f"--- Initializing Woolworths Scraper for {company} in {state} ---")
 

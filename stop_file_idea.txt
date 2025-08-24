@@ -8,7 +8,7 @@ To gracefully stop a running scraper process without interrupting its current op
 2.  **Periodic Check:** The running scraper process periodically checks for the existence of this stop file at a predefined location (e.g., in the project's root directory or a `temp` directory).
 3.  **Graceful Exit:** If the scraper detects the stop file, it will:
     *   Complete its current iteration or task (e.g., finish scraping the current page, category, or store).
-    *   Perform any necessary cleanup (e.g., finalize the temporary data file for the current store).
+    *   Perform any necessary cleanup (e.g., finalize the  data file for the current store).
     *   Exit the process cleanly.
 4.  **User Action:** To stop a scraper, the user simply creates this empty stop file in the specified location.
 5.  **Cleanup:** After the scraper exits, the stop file can be manually deleted.

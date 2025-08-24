@@ -13,7 +13,7 @@ from api.utils.scraper_utils.jsonl_writer import JsonlWriter
 def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, state: str):
     """
     Launches a requests-based scraper for a specific ALDI store.
-    Scrapes all data into a temporary file and moves it to the inbox on success.
+    Scrapes all data into a  file and moves it to the inbox on success.
     """
     effective_store_name = store_name if store_name else f"ALDI Store {store_id}"
     store_name_slug = f"{slugify(effective_store_name)}-{store_id}"
@@ -79,7 +79,7 @@ def scrape_and_save_aldi_data(company: str, store_name: str, store_id: str, stat
                         if jsonl_writer.write_product(product, metadata):
                             products_written_count += 1
 
-                    print(f"Found {len(products_on_page)} products on page {page_num}. Wrote {products_written_count} new products to temp file.")
+                    print(f"Found {len(products_on_page)} products on page {page_num}. Wrote {products_written_count} new products to file.")
 
                 except requests.exceptions.RequestException as e:
                     print(f"ERROR: Request failed on page {page_num} for '{category_slug}': {e}")

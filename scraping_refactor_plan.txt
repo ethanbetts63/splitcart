@@ -18,42 +18,42 @@ We will implement a new atomic scraping process that addresses these issues. The
 
 ### Key Changes:
 
-*   **Temporary File per Scrape:** For each store being scraped, a temporary JSON file will be created. All products found during the scrape will be appended to this file.
+*   ** File per Scrape:** For each store being scraped, a  JSON file will be created. All products found during the scrape will be appended to this file.
 *   **Atomic Operation:** The scraping logic for each store will be wrapped in a `try...finally` block.
     *   **`try` block:** Contains the main scraping loop.
     *   **`finally` block:**
-        *   If the scrape was successful, the temporary file is moved to the `product_inbox`.
-        *   If the scrape was interrupted or failed, the temporary file is deleted.
+        *   If the scrape was successful, the  file is moved to the `product_inbox`.
+        *   If the scrape was interrupted or failed, the  file is deleted.
 *   **Coles Exception:** The existing checkpoint system will be maintained for Coles, as it is prone to interruptions where resuming is valuable. The Coles scraper will continue to write individual files to the inbox as it does now.
 *   **Removal of Checkpoints:** The checkpointing logic (`read_checkpoint`, `update_page_progress`, etc.) will be removed from all other scrapers (Woolworths, Aldi, IGA).
-*   **Data Format:** The temporary file will contain a list of JSON objects, where each object is a product. This will be a single large file that can be processed more efficiently by the `update_db` command.
+*   **Data Format:** The  file will contain a list of JSON objects, where each object is a product. This will be a single large file that can be processed more efficiently by the `update_db` command.
 
 ## 4. Affected Files
 
 The following files will need to be modified:
 
-*   **`api/scrapers/scrape_and_save_woolworths.py`**: To remove checkpointing and implement the new temporary file logic.
-*   **`api/scrapers/scrape_and_save_aldi.py`**: To remove checkpointing and implement the new temporary file logic.
-*   **`api/scrapers/scrape_and_save_iga.py`**: To remove checkpointing and implement the new temporary file logic.
-*   **`api/scrapers/scrape_and_save_spudshed.py`**: To remove checkpointing and implement the new temporary file logic.
-*   **`api/scrapers/scrape_and_save_foodworks.py`**: To remove checkpointing and implement the new temporary file logic.
-*   **`api/scrapers/scrape_and_save_friendly_grocer.py`**: To remove checkpointing and implement the new temporary file logic.
-*   **`api/utils/scraper_utils/save_to_inbox.py`**: This will likely be replaced by a new utility function for writing to the temporary file. A new utility `finalize_scrape` will be needed to move the temp file.
+*   **`api/scrapers/scrape_and_save_woolworths.py`**: To remove checkpointing and implement the new  file logic.
+*   **`api/scrapers/scrape_and_save_aldi.py`**: To remove checkpointing and implement the new  file logic.
+*   **`api/scrapers/scrape_and_save_iga.py`**: To remove checkpointing and implement the new  file logic.
+*   **`api/scrapers/scrape_and_save_spudshed.py`**: To remove checkpointing and implement the new  file logic.
+*   **`api/scrapers/scrape_and_save_foodworks.py`**: To remove checkpointing and implement the new  file logic.
+*   **`api/scrapers/scrape_and_save_friendly_grocer.py`**: To remove checkpointing and implement the new  file logic.
+*   **`api/utils/scraper_utils/save_to_inbox.py`**: This will likely be replaced by a new utility function for writing to the  file. A new utility `finalize_scrape` will be needed to move the file.
 *   **`api/utils/scraper_utils/checkpoint_utils/*`**: These files can be simplified or removed if they are no longer needed by any scraper other than Coles.
 *   **`api/utils/database_updating_utils/consolidate_inbox_data.py`**: This will need to be updated to handle the new single-file-per-store format in the inbox. Instead of iterating through many small files, it will now process one larger file at a time.
 
 ## 5. Implementation Steps
 
 1.  **Create New Utility Functions:**
-    *   Create a function `append_to_temp_file(product_data, temp_file_path)` that appends a product's JSON data to the temporary file.
-    *   Create a function `finalize_scrape(temp_file_path, inbox_path)` that moves the completed temporary file to the `product_inbox`.
+    *   Create a function `append_to_temp_file(product_data, temp_file_path)` that appends a product's JSON data to the  file.
+    *   Create a function `finalize_scrape(temp_file_path, inbox_path)` that moves the completed  file to the `product_inbox`.
 
 2.  **Refactor Scrapers (Woolworths, Aldi, IGA, etc.):**
     *   For each scraper (except Coles), remove all calls to the checkpointing utilities.
-    *   At the beginning of the main scraping function for a store, create a temporary file path.
+    *   At the beginning of the main scraping function for a store, create a  file path.
     *   Wrap the main scraping loop in a `try...finally` block.
     *   Inside the loop, instead of calling `save_to_inbox`, call the new `append_to_temp_file` function.
-    *   In the `finally` block, check a flag to see if the scrape was successful. If it was, call `finalize_scrape`. Otherwise, delete the temporary file.
+    *   In the `finally` block, check a flag to see if the scrape was successful. If it was, call `finalize_scrape`. Otherwise, delete the  file.
 
 3.  **Keep Coles Scraper As-Is:**
     *   Do not modify `scrape_and_save_coles.py` other than to ensure it continues to work with any changes to shared utilities.

@@ -14,7 +14,7 @@ import uuid
 def scrape_and_save_iga_data(company: str, store_id: str, retailer_store_id: str, store_name: str, store_name_slug: str, state: str):
     """
     Launches a requests-based scraper for IGA.
-    Scrapes all data into a temporary file and moves it to the inbox on success.
+    Scrapes all data into a  file and moves it to the inbox on success.
     """
     print("--- Initializing IGA Scraper Tool ---")
 
@@ -117,7 +117,7 @@ def scrape_and_save_iga_data(company: str, store_id: str, retailer_store_id: str
                             seen_product_keys.add(product_key)
                             products_written_count += 1
 
-                    print(f"    Found {len(products_on_page)} products on page {page_num}. Wrote {products_written_count} new products to temp file.")
+                    print(f"    Found {len(products_on_page)} products on page {page_num}. Wrote {products_written_count} new products to file.")
 
                 except requests.exceptions.RequestException as e:
                     print(f"    ERROR: Request failed: {e}")
@@ -144,10 +144,10 @@ def scrape_and_save_iga_data(company: str, store_id: str, retailer_store_id: str
             print(f"Finalizing scrape for {store_name_slug}.")
             final_file_name = f"{company.lower()}_{store_id.lower()}.jsonl" # Updated naming convention
             finalize_scrape(temp_file_path, inbox_path, final_file_name) # Updated call
-            print(f"Successfully moved temp file to inbox for {store_name_slug}.")
+            print(f"Successfully moved file to inbox for {store_name_slug}.")
         else:
             if os.path.exists(temp_file_path):
                 os.remove(temp_file_path)
-            print(f"Scrape for {store_name_slug} failed. Temporary file removed.")
+            print(f"Scrape for {store_name_slug} failed.  file removed.")
 
     return scrape_successful

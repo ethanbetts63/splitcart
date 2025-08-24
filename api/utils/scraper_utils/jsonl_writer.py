@@ -18,8 +18,8 @@ class JsonlWriter:
         self.state = state
 
     def open(self):
-        """Opens the temporary JSONL file for writing."""
-        print(f"Opening temporary JSONL file: {self.temp_file_path}")
+        """Opens the  JSONL file for writing."""
+        print(f"Opening  JSONL file: {self.temp_file_path}")
         self.temp_file_handle = open(self.temp_file_path, 'a', encoding='utf-8')
 
     def write_product(self, product_data: dict, metadata: dict) -> bool:
@@ -45,7 +45,7 @@ class JsonlWriter:
 
     def finalize(self, scrape_successful: bool):
         """
-        Finalizes the scrape by moving the temp file to inbox or deleting it.
+        Finalizes the scrape by moving the file to inbox or deleting it.
         Must be called in a finally block.
         """
         if self.temp_file_handle:
@@ -57,8 +57,8 @@ class JsonlWriter:
             store_id = self.store_name_slug.split('-')[-1]
             final_file_name = f"{self.company.lower()}_{store_id.lower()}.jsonl"
             finalize_scrape(self.temp_file_path, self.inbox_path, final_file_name)
-            print(f"Successfully moved temp file to inbox for {self.store_name_slug}.")
+            print(f"Successfully moved file to inbox for {self.store_name_slug}.")
         else:
             if os.path.exists(self.temp_file_path):
                 os.remove(self.temp_file_path)
-            print(f"Scrape for {self.store_name_slug} failed. Temporary file removed.")
+            print(f"Scrape for {self.store_name_slug} failed. File removed.")

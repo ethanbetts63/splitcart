@@ -11,11 +11,11 @@ from api.utils.shop_scraping_utils.aldi.create_aldi_stores_by_state import creat
 class CreateAldiStoresByStateTest(TestCase):
 
     def setUp(self):
-        # Create temporary directories for source and output files
+        # Create  directories for source and output files
         self.temp_source_dir = tempfile.mkdtemp()
         self.temp_output_dir = tempfile.mkdtemp()
 
-        # Patch SOURCE_DIR and OUTPUT_FILE to use temporary paths
+        # Patch SOURCE_DIR and OUTPUT_FILE to use  paths
         self.patcher_source_dir = patch('api.utils.shop_scraping_utils.aldi.create_aldi_stores_by_state.SOURCE_DIR', self.temp_source_dir)
         self.patcher_output_file = patch('api.utils.shop_scraping_utils.aldi.create_aldi_stores_by_state.OUTPUT_FILE', os.path.join(self.temp_output_dir, 'aldi_stores_by_state.json'))
         
@@ -23,7 +23,7 @@ class CreateAldiStoresByStateTest(TestCase):
         self.patcher_output_file.start()
 
     def tearDown(self):
-        # Clean up temporary directories
+        # Clean up  directories
         shutil.rmtree(self.temp_source_dir)
         shutil.rmtree(self.temp_output_dir)
         self.patcher_source_dir.stop()
