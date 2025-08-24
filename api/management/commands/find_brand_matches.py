@@ -8,17 +8,39 @@ from thefuzz import fuzz
 class Command(BaseCommand):
     help = 'Finds and exports brand names with high similarity scores.'
 
+    # Define the list of generic/unmatchable brands
+    BRAND_STOP_LIST = set([
+        'tea', 'real', 'quick', 'power', 'duck', 'chicken', 'dog', 'cookie',
+        'black', 'bio', 'bakers', 'aussie', 'australian', 'organic', 'wild',
+        'simply', 'royal', 'ocean', 'natural', 'mini', 'la', 'love', 'lolly',
+        'just', 'hemp', 'harvest', 'gold', 'double', 'classic', 'baby',
+        'queen', 'king', 'milk', 'margaret', 'kids', 'gourmet', 'golden',
+        'fresh', 'fine', 'dine', 'byron bay', 'organic', 'everyday', 'every day',
+        'deluxe', 'daily', 'cottage', 'classic', 'clean', 'chefs', 'chef',
+        'casa', 'cafe', 'butter', 'bush', 'kids', 'home', 'healthy', 'health',
+        'garden', 'farm', 'farmer', 'family', 'essentials', 'essence', 'everyday',
+        'fancy', 'fresh', 'free', 'la', 'local', 'love', 'lunch', 'lunchbox',
+        'lifestyle', 'lite', 'little', 'lolly', 'long', 'dog', 'national'
+        # Primary and secondary colors
+        'red', 'yellow', 'blue', 'green', 'orange', 'purple',
+    ])
+
     def handle(self, *args, **options):
         self.stdout.write("Fetching unique brand names from products...")
         
         raw_brands = Product.objects.values_list('brand', flat=True).exclude(brand__isnull=True).exclude(brand__exact='').distinct()
 
         # Create a mapping from cleaned brand name to its original form
-        # This handles cases like "Brand." and "brand" being treated as one
+        # Filter out brands that are in the stop list
         cleaned_brand_map = {}
         for brand in raw_brands:
             # Lowercase, strip, and remove all non-alphanumeric characters except spaces
             cleaned = re.sub(r'[^a-zA-Z0-9\s]', '', brand).lower().strip()
+            
+            # Skip if the cleaned brand is in the stop list
+            if cleaned in self.BRAND_STOP_LIST:
+                continue
+
             if cleaned not in cleaned_brand_map:
                 cleaned_brand_map[cleaned] = brand
 
