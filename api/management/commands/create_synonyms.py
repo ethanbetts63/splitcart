@@ -5,10 +5,12 @@ from api.utils.management_utils.synonym_tool import (
     load_existing_synonyms,
     load_non_matches,
     load_unsure_matches,
+    load_rule_based_matches,
     read_brand_matches,
     append_synonym,
     append_non_match,
     append_unsure_match,
+    append_rule_based_match,
 )
 
 class Command(BaseCommand):
@@ -19,6 +21,7 @@ class Command(BaseCommand):
         processed_brands = load_existing_synonyms()
         non_matches = load_non_matches()
         unsure_matches = load_unsure_matches()
+        rule_based_matches = load_rule_based_matches()
         all_matches = read_brand_matches()
 
         if not all_matches:
@@ -32,7 +35,7 @@ class Command(BaseCommand):
             if brand1 in processed_brands or brand2 in processed_brands:
                 continue
             canonical_pair = tuple(sorted((brand1, brand2)))
-            if canonical_pair in non_matches or canonical_pair in unsure_matches:
+            if canonical_pair in non_matches or canonical_pair in unsure_matches or canonical_pair in rule_based_matches:
                 continue
             matches_to_review.append(match)
 
@@ -60,7 +63,8 @@ class Command(BaseCommand):
             self.stdout.write(f"  [1] '{brand1}' is canonical")
             self.stdout.write(f"  [2] '{brand2}' is canonical")
             self.stdout.write("  [3] Unsure")
-            self.stdout.write("  [4] No Match")
+            self.stdout.write("  [4] Rule-Based")
+            self.stdout.write("  [5] No Match")
             self.stdout.write("  [q] Quit")
             while True:
                 self.stdout.write("Your choice: ", ending="")
@@ -68,7 +72,7 @@ class Command(BaseCommand):
                 char = msvcrt.getch().decode('utf-8').lower()
                 self.stdout.write(char + '\n') # Echo character and move to next line
                 choice = char
-                if choice in ['1', '2', '3', '4', 'q']:
+                if choice in ['1', '2', '3', '4', '5', 'q']:
                     break
                 self.stdout.write(self.style.ERROR("Invalid input."))
 
@@ -78,7 +82,7 @@ class Command(BaseCommand):
             # Get the canonical pair once for use in multiple places
             canonical_pair = tuple(sorted((brand1, brand2)))
 
-            if choice == '4': # No Match
+            if choice == '5': # No Match
                 append_non_match(brand1, brand2)
                 non_matches.add(canonical_pair)
                 continue
@@ -86,6 +90,11 @@ class Command(BaseCommand):
             if choice == '3': # Unsure
                 append_unsure_match(brand1, brand2)
                 unsure_matches.add(canonical_pair)
+                continue
+
+            if choice == '4': # Rule-Based
+                append_rule_based_match(brand1, brand2)
+                rule_based_matches.add(canonical_pair)
                 continue
 
             # If choice is '1' or '2', they are a match
@@ -103,3 +112,15 @@ class Command(BaseCommand):
                 self.stderr.write(self.style.ERROR("Failed to write to synonym file."))
 
         self.stdout.write(self.style.SUCCESS("Synonym creation session finished."))
+
+# --- Conditional Rule Explanation ---
+# The 'Rule-Based' option (5) is for pairs that cannot be resolved with a simple
+# 'one-to-one' synonym mapping due to ambiguity or context-dependency.
+# For example, mapping a generic brand like 'ocean' to a specific brand like
+# 'Ocean Blue' might be correct for salmon products, but incorrect for other
+# products (e.g., 'ocean sea salt').
+# These cases require a more advanced, conditional rule system where the synonym
+# is applied only if certain conditions are met (e.g., product name contains
+# specific keywords). This is a future enhancement that would involve a more
+# complex normalization pipeline and a rule engine, rather than a simple dictionary lookup.
+

@@ -1,6 +1,7 @@
 from api.utils.normalization_utils.get_cleaned_name import get_cleaned_name
 from api.utils.normalization_utils.clean_value import clean_value
 from api.utils.normalization_utils.standardize_sizes_for_norm_string import standardize_sizes_for_norm_string
+from api.data.analysis.brand_synonyms import BRAND_SYNONYMS
 
 def get_normalized_string(product, extracted_sizes) -> str:
     """
@@ -14,6 +15,11 @@ def get_normalized_string(product, extracted_sizes) -> str:
     # Ensure name and brand are strings
     name = str(name) if name is not None else ''
     brand = str(brand) if brand is not None else ''
+
+    # Apply brand synonym mapping
+    # The brand is cleaned (lowercase, no punctuation) before lookup
+    cleaned_brand_for_lookup = clean_value(brand) # Using clean_value for consistency
+    brand = BRAND_SYNONYMS.get(cleaned_brand_for_lookup, brand)
 
     # Calculate cleaned name
     cleaned_name = get_cleaned_name(name, brand, extracted_sizes)

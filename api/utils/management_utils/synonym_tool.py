@@ -6,6 +6,7 @@ import importlib.util
 SYNONYM_FILE_PATH = 'api/data/analysis/brand_synonyms.py'
 NON_MATCH_FILE_PATH = 'api/data/analysis/brand_non_matches.csv'
 UNSURE_MATCH_FILE_PATH = 'api/data/analysis/brand_unsure_matches.csv'
+RULE_BASED_MATCH_FILE_PATH = 'api/data/analysis/brand_rule_based_matches.csv'
 MATCH_FILE_PATH = 'brand_matches.csv'
 
 def _get_synonyms_module():
@@ -51,6 +52,10 @@ def load_unsure_matches():
     """Loads the unsure-match history into a set for fast lookups."""
     return _load_csv_to_set(UNSURE_MATCH_FILE_PATH)
 
+def load_rule_based_matches():
+    """Loads the rule-based-match history into a set for fast lookups."""
+    return _load_csv_to_set(RULE_BASED_MATCH_FILE_PATH)
+
 def read_brand_matches():
     """Reads the brand_matches.csv file and returns its content."""
     if not os.path.exists(MATCH_FILE_PATH):
@@ -94,4 +99,8 @@ def append_non_match(brand1, brand2):
 def append_unsure_match(brand1, brand2):
     """Appends a pair of unsure brands to the history file."""
     return _append_to_csv(UNSURE_MATCH_FILE_PATH, brand1, brand2)
+
+def append_rule_based_match(brand1, brand2):
+    """Appends a pair of rule-based brands to the history file."""
+    return _append_to_csv(RULE_BASED_MATCH_FILE_PATH, brand1, brand2)
 
