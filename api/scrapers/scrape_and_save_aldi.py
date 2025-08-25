@@ -73,8 +73,9 @@ def scrape_and_save_aldi_data(command, company: str, store_name: str, store_id: 
                     
                     new_products_count = 0
                     duplicate_products_count = 0
+                    metadata_for_jsonl = data_packet.get('metadata', {})
                     for product in products_on_page:
-                        if jsonl_writer.write_product(product, {}):
+                        if jsonl_writer.write_product(product, metadata_for_jsonl):
                             new_products_count += 1
                         else:
                             duplicate_products_count +=1

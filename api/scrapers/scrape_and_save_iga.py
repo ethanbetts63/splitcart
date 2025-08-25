@@ -81,8 +81,9 @@ def scrape_and_save_iga_data(command, company: str, store_id: str, retailer_stor
                     
                     new_products_count = 0
                     duplicate_products_count = 0
+                    metadata_for_jsonl = data_packet.get('metadata', {})
                     for product in data_packet.get('products', []):
-                        if jsonl_writer.write_product(product, {}):
+                        if jsonl_writer.write_product(product, metadata_for_jsonl):
                             new_products_count += 1
                         else:
                             duplicate_products_count += 1

@@ -116,8 +116,9 @@ def scrape_and_save_coles_data(command, company: str, store_id: str, store_name:
                     if data_packet['products']:
                         new_products_count = 0
                         duplicate_products_count = 0
+                        metadata_for_jsonl = data_packet.get('metadata', {})
                         for product in data_packet['products']:
-                            if jsonl_writer.write_product(product, {}):
+                            if jsonl_writer.write_product(product, metadata_for_jsonl):
                                 new_products_count += 1
                             else:
                                 duplicate_products_count += 1
