@@ -82,20 +82,20 @@ class Command(BaseCommand):
             self.stdout.write(f"  {self.style.SQL_KEYWORD('[q]')} Quit")
 
             # --- Product Display ---
-            self.stdout.write("\n" + "-" * 50)
-            self.stdout.write(self.style.HTTP_INFO(f"Products for [{brand1}]:"))
+            self.stdout.write("-" * 50)
+            self.stdout.write(self.style.HTTP_INFO(f"Products for [{self.style.SUCCESS(brand1)}]:"))
             products1 = Product.objects.filter(brand__iexact=brand1)
             if products1:
                 for p in products1:
-                    self.stdout.write(f"  - {self.style.HTTP_SUCCESS('Name:')} {p.name}, {self.style.HTTP_SUCCESS('Size:')} {p.sizes}")
+                    self.stdout.write(f"  - {self.style.SQL_KEYWORD('Name:')} {p.name}, {self.style.SQL_KEYWORD('Size:')} {p.sizes}")
             else:
                 self.stdout.write(self.style.WARNING("  No products found."))
 
-            self.stdout.write(self.style.HTTP_INFO(f"\nProducts for [{brand2}]:"))
+            self.stdout.write(self.style.HTTP_INFO(f"\nProducts for [{self.style.SUCCESS(brand2)}]:"))
             products2 = Product.objects.filter(brand__iexact=brand2)
             if products2:
                 for p in products2:
-                    self.stdout.write(f"  - {self.style.HTTP_SUCCESS('Name:')} {p.name}, {self.style.HTTP_SUCCESS('Size:')} {p.sizes}")
+                    self.stdout.write(f"  - {self.style.SQL_KEYWORD('Name:')} {p.name}, {self.style.SQL_KEYWORD('Size:')} {p.sizes}")
             else:
                 self.stdout.write(self.style.WARNING("  No products found."))
             self.stdout.write("-" * 50)
