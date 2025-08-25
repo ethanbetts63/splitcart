@@ -10,13 +10,18 @@ class JsonlWriter:
         if not os.path.exists(self.temp_dir):
             os.makedirs(self.temp_dir)
         
-        self.temp_file_path = os.path.join(self.temp_dir, f"{store_name_slug}.jsonl")
-        self.inbox_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'product_inbox')
-        self.temp_file_handle = None
-        self.seen_product_keys = set()
+        # Assign company and store_name_slug first
         self.company = company
         self.store_name_slug = store_name_slug
         self.state = state
+
+        # Now use them to construct temp_file_path
+        date_str = datetime.now().strftime('%Y-%m-%d')
+        self.temp_file_path = os.path.join(self.temp_dir, f"{self.company.lower()}-{self.store_name_slug.lower()}-{date_str}.jsonl")
+        
+        self.inbox_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'product_inbox')
+        self.temp_file_handle = None
+        self.seen_product_keys = set()
 
     def open(self):
         """Opens the  JSONL file for writing."""
