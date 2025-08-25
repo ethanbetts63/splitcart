@@ -4,6 +4,7 @@ from api.analysers.company_product_overlap import generate_company_product_overl
 from api.analysers.store_product_overlap import generate_store_product_overlap_heatmap
 from api.analysers.store_pricing_heatmap import generate_store_pricing_heatmap
 from api.analysers.category_price_correlation import generate_category_price_correlation_heatmap
+from api.utils.analysis_utils.category_tree import generate_category_tree
 from companies.models import Company, Category
 
 class Command(BaseCommand):
@@ -15,7 +16,7 @@ class Command(BaseCommand):
             type=str,
             required=True,
             help='Specifies which type of analysis or report to generate.',
-            choices=['store_product_counts', 'company_heatmap', 'store_heatmap', 'pricing_heatmap', 'category_heatmap']
+            choices=['store_product_counts', 'company_heatmap', 'store_heatmap', 'pricing_heatmap', 'category_heatmap', 'category_tree']
         )
         parser.add_argument(
             '--company-name',
@@ -86,6 +87,16 @@ class Command(BaseCommand):
                         generate_category_price_correlation_heatmap(company_name, category.name)
                 except Company.DoesNotExist:
                     self.stdout.write(self.style.ERROR(f"Company '{company_name}' not found."))
+
+        elif report_type == 'category_tree':
+            if not company_name:
+                self.stdout.write(self.style.ERROR(
+                    'The --company-name argument is required for the category_tree report.'))
+                return
+            self.stdout.write(self.style.SUCCESS(
+                f"Generating category tree for '{company_name}'..."))
+            tree_output = generate_category_tree(company_name)
+            self.stdout.write(tree_output)
 
         else:
             self.stdout.write(self.style.WARNING(
