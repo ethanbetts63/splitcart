@@ -7,6 +7,7 @@ def consolidate_inbox_data(inbox_path, command):
     files_to_process = [f for f in os.listdir(inbox_path) if f.endswith(('.json', '.jsonl'))]
     total_files = len(files_to_process)
     processed_count = 0
+    skipped_products_tally = 0
 
     command.stdout.write(f"Found {total_files} files in the inbox to process.")
 
@@ -22,10 +23,12 @@ def consolidate_inbox_data(inbox_path, command):
                         line = line.strip()
                         if line:
                             data = json.loads(line)
-                            process_product_data(data, consolidated_data)
+                            if process_product_data(data, consolidated_data, command, filename):
+                                skipped_products_tally += 1
                 else: # .json
                     data = json.load(f)
-                    process_product_data(data, consolidated_data)
+                    if process_product_data(data, consolidated_data, command, filename):
+                        skipped_products_tally += 1
 
             processed_files.append(file_path)
 
@@ -37,15 +40,22 @@ def consolidate_inbox_data(inbox_path, command):
             continue
     
     command.stdout.write('')
+    if skipped_products_tally > 0:
+        command.stdout.write(command.style.WARNING(f"Skipped {skipped_products_tally} products due to missing key data (e.g., company name)."))
     return consolidated_data, processed_files
 
-def process_product_data(data, consolidated_data):
+
+def process_product_data(data, consolidated_data, command, filename):
     product_details = data.get('product', {})
     metadata = data.get('metadata', {})
     
     key = product_details.get('normalized_name_brand_size')
     if not key:
-        return
+        return True
+
+    company_name = metadata.get('company')
+    if not company_name:
+        return True
 
     price_info = {
         'store_id': metadata.get('store_id'),
@@ -73,5 +83,6 @@ def process_product_data(data, consolidated_data):
             'product_details': product_details,
             'price_history': [price_info],
             'category_paths': category_paths,
-            'company_name': metadata.get('company')
+            'company_name': company_name
         }
+    return False

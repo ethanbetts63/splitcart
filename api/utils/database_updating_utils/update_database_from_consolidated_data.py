@@ -7,6 +7,11 @@ from .batch_create_category_relationships import batch_create_category_relations
 def update_database_from_consolidated_data(consolidated_data, processed_files, command):
     if not consolidated_data:
         command.stdout.write(command.style.WARNING("No valid products to process after consolidation."))
+        # Still remove the files that were processed, even if they yielded no valid products
+        if processed_files:
+            for file_path in processed_files:
+                os.remove(file_path)
+            command.stdout.write(command.style.SUCCESS(f'  Processed and removed {len(processed_files)} files from the inbox (contained no valid products).'))
         return
 
     command.stdout.write(f"Consolidated to {len(consolidated_data)} unique products.")

@@ -20,7 +20,10 @@ def batch_create_category_relationships(consolidated_data: dict, product_cache: 
 
     new_categories_to_create = []
     for data in consolidated_data.values():
-        company = company_cache.get(data['company_name'].lower())
+        company_name = data.get('company_name')
+        if not company_name:
+            continue
+        company = company_cache.get(company_name.lower())
         if not company: continue
         for path in data['category_paths']:
             for name in path:
@@ -40,7 +43,10 @@ def batch_create_category_relationships(consolidated_data: dict, product_cache: 
     parent_relations_to_create = []
     CategoryParents = Category.parents.through
     for data in consolidated_data.values():
-        company = company_cache.get(data['company_name'].lower())
+        company_name = data.get('company_name')
+        if not company_name:
+            continue
+        company = company_cache.get(company_name.lower())
         if not company: continue
         for path in data['category_paths']:
             parent_obj = None
@@ -61,7 +67,10 @@ def batch_create_category_relationships(consolidated_data: dict, product_cache: 
     product_relations_to_create = []
     for key, data in consolidated_data.items():
         product_obj = product_cache.get(key)
-        company = company_cache.get(data['company_name'].lower())
+        company_name = data.get('company_name')
+        if not company_name:
+            continue
+        company = company_cache.get(company_name.lower())
         if not product_obj or not company: continue
         for path in data['category_paths']:
             if path:
