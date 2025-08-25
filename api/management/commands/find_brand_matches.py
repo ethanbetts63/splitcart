@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
     # Define the list of generic/unmatchable brands (raw words)
     RAW_BRAND_STOP_WORDS = [
-        'tea', 'real', 'quick', 'power', 'duck', 'chicken', 'dog', 'cookie',
+        'tea', 'real', 'quick', 'power', 'duck', 'chicken', 'cookie',
         'black', 'bio', 'bakers', 'aussie', 'australian', 'organic', 'wild',
         'simply', 'royal', 'ocean', 'natural', 'mini', 'la', 'love', 'lolly',
         'just', 'hemp', 'harvest', 'gold', 'double', 'classic', 'baby',
@@ -22,7 +22,8 @@ class Command(BaseCommand):
         'garden', 'farm', 'farmer', 'family', 'essentials', 'essence', 'everyday',
         'fancy', 'fresh', 'free', 'local', 'love', 'lunch', 'lunchbox',
         'lifestyle', 'lite', 'little', 'lolly', 'long', 'dog', 'national', 'power', 'street', 'river',
-        'red', 'yellow', 'blue', 'green', 'orange', 'purple',
+        'red', 'yellow', 'blue', 'green', 'orange', 'purple', 'mama', 'papa',
+        'market', 'meat', 'meats', 'meal', 'meals',
     ]
     # Apply clean_value to each word in the stop list once at definition time
     BRAND_STOP_LIST = set(clean_value(word) for word in RAW_BRAND_STOP_WORDS)
