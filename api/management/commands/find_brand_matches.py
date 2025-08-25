@@ -20,9 +20,8 @@ class Command(BaseCommand):
         'deluxe', 'daily', 'cottage', 'classic', 'clean', 'chefs', 'chef',
         'casa', 'cafe', 'butter', 'bush', 'kids', 'home', 'healthy', 'health',
         'garden', 'farm', 'farmer', 'family', 'essentials', 'essence', 'everyday',
-        'fancy', 'fresh', 'free', 'la', 'local', 'love', 'lunch', 'lunchbox',
-        'lifestyle', 'lite', 'little', 'lolly', 'long', 'dog', 'national', 'power', 'street', 'river'
-        # Primary and secondary colors
+        'fancy', 'fresh', 'free', 'local', 'love', 'lunch', 'lunchbox',
+        'lifestyle', 'lite', 'little', 'lolly', 'long', 'dog', 'national', 'power', 'street', 'river',
         'red', 'yellow', 'blue', 'green', 'orange', 'purple',
     ]
     # Apply clean_value to each word in the stop list once at definition time
