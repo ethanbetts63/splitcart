@@ -3,25 +3,22 @@ import json
 import time
 import random
 from datetime import datetime
-from django.conf import settings
 from django.utils.text import slugify
 from api.utils.scraper_utils.clean_raw_data_woolworths import clean_raw_data_woolworths
 from api.utils.scraper_utils.jsonl_writer import JsonlWriter
+from api.utils.scraper_utils.output_utils import ScraperOutput
 
-def scrape_and_save_woolworths_data(company: str, state: str, stores: list, categories_to_fetch: list):
+def scrape_and_save_woolworths_data(command, company: str, state: str, stores: list, categories_to_fetch: list):
     """
     Launches a requests-based scraper for a specific Woolworths store.
-    Scrapes all data into a  file and moves it to the inbox on success.
+    Scrapes all data into a file and moves it to the inbox on success.
     """
-    print(f"--- Initializing Woolworths Scraper for {company} in {state} ---")
-
     for store in stores:
         store_name = store.get("store_name")
         store_id = store.get("store_id")
         store_name_slug = f"{slugify(store_name)}-{store_id}"
         
-        print(f"--- Initializing Woolworths Scraper for {company} ({store_name}) ---")
-
+        output = ScraperOutput(command, company, store_name)
         scrape_successful = False
         jsonl_writer = JsonlWriter(company, store_name_slug, state)
 
@@ -36,22 +33,19 @@ def scrape_and_save_woolworths_data(company: str, state: str, stores: list, cate
             })
 
             try:
-                print("Warming up session to acquire cookies...")
                 session.get("https://www.woolworths.com.au/", timeout=60)
-                print("Session is ready.")
             except requests.exceptions.RequestException as e:
-                print(f"CRITICAL: Failed to warm up session. Error: {e}")
                 return
 
-            jsonl_writer.open() # Open the JSONL file
+            jsonl_writer.open()
+            total_categories = len(categories_to_fetch)
+            output.update_progress(total_categories=total_categories)
 
-            for category_slug, category_id in categories_to_fetch:
-                print(f"\n--- Starting category: '{category_slug}' ---")
+            for i, (category_slug, category_id) in enumerate(categories_to_fetch):
+                output.update_progress(categories_scraped=i + 1)
                 
                 page_num = 1
                 while True:
-                    print(f"Attempting to fetch page {page_num} for '{category_slug}'...")
-                    
                     api_url = "https://www.woolworths.com.au/apis/ui/browse/category"
                     payload = {
                         "categoryId": category_id, "pageNumber": page_num, "pageSize": 36,
@@ -74,7 +68,6 @@ def scrape_and_save_woolworths_data(company: str, state: str, stores: list, cate
                         raw_products_on_page = [p for bundle in data.get("Bundles", []) if bundle and bundle.get("Products") for p in bundle["Products"]]
 
                         if not raw_products_on_page:
-                            print(f"Page {page_num} is empty. Assuming end of category '{category_slug}'.")
                             break
 
                         scrape_timestamp = datetime.now()
@@ -83,32 +76,23 @@ def scrape_and_save_woolworths_data(company: str, state: str, stores: list, cate
                             company=company, store_id=store_id, store_name=store_name, state=state, timestamp=scrape_timestamp
                         )
                         
-                        products_on_page = data_packet.get('products', [])
-                        metadata = data_packet.get('metadata', {})
+                        new_products_count = 0
+                        duplicate_products_count = 0
+                        for product in data_packet.get('products', []):
+                            if jsonl_writer.write_product(product, {}):
+                                new_products_count += 1
+                            else:
+                                duplicate_products_count += 1
+                        
+                        output.update_progress(new_products=new_products_count, duplicate_products=duplicate_products_count, pages_scraped=1)
 
-                        products_written_count = 0
-                        for product in products_on_page:
-                            if jsonl_writer.write_product(product, metadata):
-                                products_written_count += 1
-
-                        print(f"Found {len(products_on_page)} products on page {page_num}. Wrote {products_written_count} new products to temp file.")
-
-                    except requests.exceptions.RequestException as e:
-                        print(f"ERROR: Request failed on page {page_num} for '{category_slug}': {e}")
+                    except (requests.exceptions.RequestException, json.JSONDecodeError):
                         break
-                    except json.JSONDecodeError:
-                        print(f"ERROR: Failed to decode JSON on page {page_num} for '{category_slug}'.")
-                        break
-
-                    #sleep_time = random.uniform(0.5, 1)
-                    #print(f"Waiting for {sleep_time:.2f} seconds...")
-                    #time.sleep(sleep_time)
                     
                     page_num += 1
 
             scrape_successful = True
-            print(f"\n--- All categories for '{store_name}' scraped successfully. ---")
 
         finally:
             jsonl_writer.finalize(scrape_successful)
-
+            output.finalize()

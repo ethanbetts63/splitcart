@@ -5,8 +5,8 @@ from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_cat
 from api.utils.management_utils.get_company_by_name import get_company_by_name
 from api.utils.management_utils.get_active_stores_for_company import get_active_stores_for_company
 
-def run_woolworths_scraper(batch_size):
-    print("--- Starting Woolworths scraping process ---")
+def run_woolworths_scraper(command, batch_size):
+    command.stdout.write("--- Starting Woolworths scraping process ---\n")
 
     woolworths_company = get_company_by_name("Woolworths")
     if not woolworths_company:
@@ -19,14 +19,15 @@ def run_woolworths_scraper(batch_size):
     # Prioritize stores that have never been scraped, then the least recently scraped
     stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
 
-    categories = get_woolworths_categories()
+    categories = get_woolworths_categories(command)
     if not categories:
-        print("Could not fetch Woolworths categories. Aborting.")
+        command.stdout.write("Could not fetch Woolworths categories. Aborting.\n")
         return
     
     for store in stores_to_scrape:
-        print(f"\n--- Handing off to scraper for store: {store.store_name} ---")
+        command.stdout.write(f"\n--- Handing off to scraper for store: {store.store_name} ---\n")
         scrape_and_save_woolworths_data(
+            command,
             company=woolworths_company.name,
             state=store.state,
             stores=[{'store_name': store.store_name, 'store_id': store.store_id}],
@@ -35,4 +36,4 @@ def run_woolworths_scraper(batch_size):
         store.last_scraped_products = timezone.now()
         store.save()
 
-    print("\n--- Woolworths scraping process complete ---")
+    command.stdout.write("\n--- Woolworths scraping process complete ---\n")

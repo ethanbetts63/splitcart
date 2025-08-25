@@ -23,12 +23,13 @@ class ScraperOutput:
         output = (
             f"\r{colorama.Fore.YELLOW}Company:{colorama.Style.RESET_ALL} {self.company} | "
             f"{colorama.Fore.CYAN}Store:{colorama.Style.RESET_ALL} {self.store_name} | "
-            f"{colorama.Fore.GREEN}New Products:{colorama.Style.RESET_ALL} {self.new_products} | "
-            f"{colorama.Fore.RED}Duplicates:{colorama.Style.RESET_ALL} {self.duplicate_products} | "
-            f"{colorama.Fore.BLUE}Pages Scraped:{colorama.Style.RESET_ALL} {self.pages_scraped} | "
-            f"{colorama.Fore.MAGENTA}Categories:{colorama.Style.RESET_ALL} {self.categories_scraped}/{self.total_categories}"
+            f"{colorama.Fore.GREEN}New:{colorama.Style.RESET_ALL} {self.new_products} | "
+            f"{colorama.Fore.RED}Duplicate:{colorama.Style.RESET_ALL} {self.duplicate_products} | "
+            f"{colorama.Fore.BLUE}Pages:{colorama.Style.RESET_ALL} {self.pages_scraped} | "
+            f"{colorama.Fore.MAGENTA}Cats:{colorama.Style.RESET_ALL} {self.categories_scraped}/{self.total_categories}"
         )
         self.command.stdout.write(output)
+        self.command.stdout.flush()
 
     def finalize(self):
         self.command.stdout.write("\n")

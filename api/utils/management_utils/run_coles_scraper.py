@@ -5,8 +5,8 @@ from api.utils.scraper_utils.get_coles_categories import get_coles_categories
 from api.utils.management_utils.get_company_by_name import get_company_by_name
 from api.utils.management_utils.get_active_stores_for_company import get_active_stores_for_company
 
-def run_coles_scraper(batch_size):
-    print("--- Starting Coles scraping process ---")
+def run_coles_scraper(command, batch_size):
+    command.stdout.write("--- Starting Coles scraping process ---\n")
 
     coles_company = get_company_by_name("Coles")
     if not coles_company:
@@ -22,8 +22,9 @@ def run_coles_scraper(batch_size):
     categories = get_coles_categories()
 
     for store in stores_to_scrape:
-        print(f"\n--- Handing off to scraper for store: {store.store_name} ---")
+        command.stdout.write(f"\n--- Handing off to scraper for store: {store.store_name} ---\n")
         scrape_and_save_coles_data(
+            command,
             company=coles_company.name,
             store_id=store.store_id,
             store_name=store.store_name,
@@ -33,4 +34,4 @@ def run_coles_scraper(batch_size):
         store.last_scraped_products = timezone.now()
         store.save()
 
-    print("\n--- Coles scraping process complete ---")
+    command.stdout.write("\n--- Coles scraping process complete ---\n")

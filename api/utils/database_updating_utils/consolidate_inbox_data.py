@@ -19,8 +19,10 @@ def consolidate_inbox_data(inbox_path, command):
             with open(file_path, 'r', encoding='utf-8') as f:
                 if filename.endswith('.jsonl'):
                     for line in f:
-                        data = json.loads(line)
-                        process_product_data(data, consolidated_data)
+                        line = line.strip()
+                        if line:
+                            data = json.loads(line)
+                            process_product_data(data, consolidated_data)
                 else: # .json
                     data = json.load(f)
                     process_product_data(data, consolidated_data)

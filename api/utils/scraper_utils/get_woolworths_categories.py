@@ -1,6 +1,6 @@
 import requests
 
-def get_woolworths_categories():
+def get_woolworths_categories(command):
     """
     Fetches the category hierarchy from Woolworths' API and extracts a flattened list of categories.
     """
@@ -18,10 +18,10 @@ def get_woolworths_categories():
         response.raise_for_status()
         data = response.json()
     except requests.exceptions.RequestException as e:
-        print(f"ERROR: Request failed when fetching categories: {e}")
+        command.stdout.write(f"ERROR: Request failed when fetching categories: {e}\n")
         return []
     except ValueError: # Catches JSON decoding errors
-        print("ERROR: Failed to decode JSON when fetching categories.")
+        command.stdout.write("ERROR: Failed to decode JSON when fetching categories.\n")
         return []
 
     categories = []

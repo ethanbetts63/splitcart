@@ -20,18 +20,18 @@ class Command(BaseCommand):
         batch_size = options['batch_size']
         if options['woolworths'] or run_all:
             self.stdout.write(self.style.SUCCESS('Running Woolworths scraper...'))
-            run_woolworths_scraper(batch_size)
+            run_woolworths_scraper(self, batch_size)
 
         if options['coles'] or run_all:
             self.stdout.write(self.style.SUCCESS('Running Coles scraper...'))
-            run_coles_scraper(batch_size)
+            run_coles_scraper(self, batch_size)
 
         if options['aldi'] or run_all:
             self.stdout.write(self.style.SUCCESS('Running Aldi scraper...'))
-            run_aldi_scraper(batch_size)
+            run_aldi_scraper(self, batch_size)
 
         if options['iga'] or run_all:
             self.stdout.write(self.style.SUCCESS('Running IGA scraper...'))
-            run_iga_scraper(batch_size)
+            run_iga_scraper(self, batch_size)
 
         self.stdout.write(self.style.SUCCESS('Scraping complete.'))
