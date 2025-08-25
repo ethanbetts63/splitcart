@@ -78,8 +78,9 @@ def scrape_and_save_woolworths_data(command, company: str, state: str, stores: l
                         
                         new_products_count = 0
                         duplicate_products_count = 0
+                        metadata_for_jsonl = data_packet.get('metadata', {})
                         for product in data_packet.get('products', []):
-                            if jsonl_writer.write_product(product, {}):
+                            if jsonl_writer.write_product(product, metadata_for_jsonl):
                                 new_products_count += 1
                             else:
                                 duplicate_products_count += 1

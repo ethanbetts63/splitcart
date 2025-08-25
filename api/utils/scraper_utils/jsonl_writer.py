@@ -25,7 +25,6 @@ class JsonlWriter:
 
     def open(self):
         """Opens the  JSONL file for writing."""
-        # print(f"Opening  JSONL file: {self.temp_file_path}")
         self.temp_file_handle = open(self.temp_file_path, 'a', encoding='utf-8')
 
     def write_product(self, product_data: dict, metadata: dict) -> bool:
