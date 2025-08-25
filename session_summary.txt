@@ -60,13 +60,6 @@ Relevant Files:
 *   `api/utils/management_utils/synonym_tool.py`: The utility file containing the core logic for the synonym management commands.
 *   `api/tests/util_tests/test_normalization_utils/test_get_normalized_string.py`: The unit test file for the `get_normalized_string` function, including verification of brand synonym integration.
 
-Next Steps for You:
-
-1.  **Re-process your data:** Run `python manage.py update_db --products` to apply the new normalization logic to your existing product data.
-2.  **Re-run brand analysis:** Run `python manage.py find_brand_matches` to see the reduced number of unique brands and potential matches.
-3.  **Continue curation:** Use `python manage.py create_synonyms` to process any remaining matches.
-
-
 Future Enhancements to Product Matching:
 
 As we discussed, achieving perfect product de-duplication is an ongoing process. Here are some advanced ideas we've brainstormed for future enhancements:
