@@ -1,4 +1,3 @@
-
 from api.utils.synonym_utils.load_synonyms import load_synonyms
 from api.utils.synonym_utils.save_synonym import save_synonym
 from api.utils.synonym_utils.log_synonym import log_synonym
@@ -9,8 +8,16 @@ def handle_barcode_match(incoming_product_details, existing_product):
     and if they are different, it creates a new synonym.
     """
     incoming_brand = incoming_product_details.get('brand', '')
+    incoming_barcode = incoming_product_details.get('barcode', '')
     existing_brand = existing_product.brand
-    
+    existing_barcode = existing_product.barcode
+
+    # Do not generate synonyms for products with "notfound" barcodes.
+    if incoming_barcode == 'notfound' or existing_barcode == 'notfound':
+        return
+
+    # For a consistent comparison, we clean the brand names by making them lowercase
+    # and stripping leading/trailing whitespace.
     cleaned_incoming_brand = str(incoming_brand).lower().strip()
     cleaned_existing_brand = str(existing_brand).lower().strip()
 
@@ -18,25 +25,20 @@ def handle_barcode_match(incoming_product_details, existing_product):
         return
 
     if cleaned_incoming_brand != cleaned_existing_brand:
-        # Before saving, check if this synonym relationship already exists
-        # (either directly or inverted) in our synonym files.
         all_synonyms = load_synonyms()
         
-        # Check if the incoming brand is already a known synonym or a canonical name
+        # Check for existing synonyms using the clean brand names
         if cleaned_incoming_brand in all_synonyms or cleaned_incoming_brand in all_synonyms.values():
             return
 
-        # Check if the existing brand is a synonym (it should be a canonical name)
         if cleaned_existing_brand in all_synonyms:
-            # This case is complex. The canonical brand is itself a synonym.
-            # We should log this and probably not proceed.
-            log_synonym('conflict', f"Canonical brand '{cleaned_existing_brand}' is already a synonym for '{all_synonyms[cleaned_existing_brand]}'. Skipping auto-generation for '{cleaned_incoming_brand}'.")
             return
 
-        # If we've reached here, it's a new, non-conflicting synonym.
-        # The existing product's brand is treated as the canonical name.
-        new_synonym = {cleaned_incoming_brand: cleaned_existing_brand}
+        # For debugging, format the output with barcodes
+        key_with_barcode = f"{cleaned_incoming_brand} ({incoming_barcode})"
+        value_with_barcode = f"{cleaned_existing_brand} ({existing_barcode})"
+
+        new_synonym = {key_with_barcode: value_with_barcode}
         
         save_synonym(new_synonym)
-        log_synonym('new', f"New synonym found: '{cleaned_incoming_brand}' -> '{cleaned_existing_brand}'", new_synonym)
-
+        log_synonym('info', f"NEW SYNONYM DETECTED: {new_synonym}")
