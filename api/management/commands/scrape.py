@@ -19,19 +19,15 @@ class Command(BaseCommand):
         run_all = not any(options[company] for company in ['woolworths', 'coles', 'aldi', 'iga'])
         batch_size = options['batch_size']
         if options['woolworths'] or run_all:
-            self.stdout.write(self.style.SUCCESS('Running Woolworths scraper...'))
             run_woolworths_scraper(self, batch_size)
 
         if options['coles'] or run_all:
-            self.stdout.write(self.style.SUCCESS('Running Coles scraper...'))
             run_coles_scraper(self, batch_size)
 
         if options['aldi'] or run_all:
-            self.stdout.write(self.style.SUCCESS('Running Aldi scraper...'))
             run_aldi_scraper(self, batch_size)
 
         if options['iga'] or run_all:
-            self.stdout.write(self.style.SUCCESS('Running IGA scraper...'))
             run_iga_scraper(self, batch_size)
 
         self.stdout.write(self.style.SUCCESS('Scraping complete.'))

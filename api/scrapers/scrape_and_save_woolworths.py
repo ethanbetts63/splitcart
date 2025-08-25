@@ -84,7 +84,7 @@ def scrape_and_save_woolworths_data(command, company: str, state: str, stores: l
                             else:
                                 duplicate_products_count += 1
                         
-                        output.update_progress(new_products=new_products_count, duplicate_products=duplicate_products_count, pages_scraped=1)
+                        output.update_progress(new_products=new_products_count, duplicate_products=duplicate_products_count)
 
                     except (requests.exceptions.RequestException, json.JSONDecodeError):
                         break

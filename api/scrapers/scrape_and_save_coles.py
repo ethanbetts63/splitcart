@@ -121,7 +121,7 @@ def scrape_and_save_coles_data(command, company: str, store_id: str, store_name:
                                 new_products_count += 1
                             else:
                                 duplicate_products_count += 1
-                        output.update_progress(new_products=new_products_count, duplicate_products=duplicate_products_count, pages_scraped=1)
+                        output.update_progress(new_products=new_products_count, duplicate_products=duplicate_products_count)
 
                 except (requests.exceptions.RequestException, Exception):
                     break

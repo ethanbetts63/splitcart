@@ -79,7 +79,7 @@ def scrape_and_save_aldi_data(command, company: str, store_name: str, store_id: 
                         else:
                             duplicate_products_count +=1
 
-                    output.update_progress(new_products=new_products_count, duplicate_products=duplicate_products_count, pages_scraped=1)
+                    output.update_progress(new_products=new_products_count, duplicate_products=duplicate_products_count)
 
                 except (requests.exceptions.RequestException, json.JSONDecodeError):
                     raise

@@ -6,7 +6,6 @@ from api.utils.management_utils.get_company_by_name import get_company_by_name
 from api.utils.management_utils.get_active_stores_for_company import get_active_stores_for_company
 
 def run_aldi_scraper(command, batch_size):
-    command.stdout.write("--- Starting Aldi scraping process ---\n")
 
     aldi_company = get_company_by_name("Aldi")
     if not aldi_company:
@@ -20,7 +19,6 @@ def run_aldi_scraper(command, batch_size):
     stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
 
     for store in stores_to_scrape:
-        command.stdout.write(f"\n--- Handing off to scraper for store: {store.store_name} ---\n")
         scrape_and_save_aldi_data(
             command,
             company=aldi_company.name,
@@ -30,5 +28,3 @@ def run_aldi_scraper(command, batch_size):
         )
         store.last_scraped_products = timezone.now()
         store.save()
-
-    command.stdout.write("\n--- Aldi scraping process complete ---\n")

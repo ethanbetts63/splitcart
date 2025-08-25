@@ -6,7 +6,6 @@ from api.utils.management_utils.get_company_by_name import get_company_by_name
 from api.utils.management_utils.get_active_stores_for_company import get_active_stores_for_company
 
 def run_woolworths_scraper(command, batch_size):
-    command.stdout.write("--- Starting Woolworths scraping process ---\n")
 
     woolworths_company = get_company_by_name("Woolworths")
     if not woolworths_company:
@@ -25,7 +24,6 @@ def run_woolworths_scraper(command, batch_size):
         return
     
     for store in stores_to_scrape:
-        command.stdout.write(f"\n--- Handing off to scraper for store: {store.store_name} ---\n")
         scrape_and_save_woolworths_data(
             command,
             company=woolworths_company.name,
@@ -36,4 +34,3 @@ def run_woolworths_scraper(command, batch_size):
         store.last_scraped_products = timezone.now()
         store.save()
 
-    command.stdout.write("\n--- Woolworths scraping process complete ---\n")
