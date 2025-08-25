@@ -37,3 +37,12 @@ The logic will be triggered within the `update_db` management command at the mom
 -   **Conflict Resolution:** Before adding a new auto-generated synonym, the system should check for existing manual synonyms (in `brand_synonyms.py`) or existing rules (in `brand_rules.json`). If a conflict is detected (e.g., the auto-generated synonym contradicts an existing manual entry or rule), the auto-generation should be skipped, and the conflict should be logged. Manual entries/rules should always take precedence.
 -   **Detailed Logging:** Reinforce the need for detailed logging of every auto-generated synonym (and any skipped conflicts) to a dedicated log file (e.g., `auto_synonyms.log`). This log should include the source product details (barcode, original brands, product names) to aid in debugging and verification.
 -   **Brand Cleaning:** Reiterate the importance of consistently cleaning brand names using `clean_value` before comparison and before adding to the synonym file to ensure accurate matching and prevent redundant entries.
+
+**Some Relevant File Paths:**
+-   `api/management/commands/update_db.py`: The main management command that orchestrates the database update process.
+-   `api/utils/database_updating_utils/batch_create_new_products.py`: Contains the core logic for matching products, including barcode matching, where the auto-synonym generation logic will be implemented.
+-   `api/utils/normalization_utils/clean_value.py`: Utility function for cleaning and normalizing string values, crucial for consistent brand comparisons.
+-   `api/data/analysis/brand_synonyms.py`: The primary file containing manually curated brand synonyms. Auto-generated synonyms will eventually be merged here after review.
+-   `api/data/analysis/brand_rules.json`: Stores conditional brand rules, which need to be considered during conflict resolution for auto-generated synonyms.
+-   `api/data/analysis/auto_generated_brand_synonyms.json`: The new, temporary file where automatically generated synonyms will be stored for initial review and testing.
+-   `auto_synonyms.log`: A dedicated log file to record details of all auto-generated synonyms, including any conflicts or skipped entries, for auditing and debugging purposes.
