@@ -25,7 +25,6 @@ def batch_create_new_products(command, consolidated_data: dict):
     # Cache 3: Normalized Name-Brand-Size String (Fallback)
     normalized_string_cache = {p.normalized_name_brand_size: p for p in all_products if p.normalized_name_brand_size}
     command.stdout.write(f"Built cache for {len(normalized_string_cache)} normalized strings.")
-    print(f"normalized_string_cache: {normalized_string_cache}")
 
     # --- Step 2: Identify existing and new products ---
     product_lookup_cache = {}  # This is the final cache we will return
