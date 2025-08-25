@@ -1,3 +1,4 @@
+from api.utils.synonym_utils.handle_barcode_match import handle_barcode_match
 from products.models import Product, Price
 
 def batch_create_new_products(command, consolidated_data: dict):

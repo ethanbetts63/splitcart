@@ -11,7 +11,7 @@ The logic will be triggered within the `update_db` management command at the mom
 2.  To ensure accuracy, the brands will be cleaned (lowercased, whitespace stripped) before comparison.
 3.  If the cleaned brand names are different, the system will automatically create a new synonym mapping.
 4.  The brand of the existing product will be treated as the canonical name, and the brand of the new product will be the synonym.
-5.  **Initial Implementation:** This new mapping will be appended to a *separate* file, `api/data/analysis/auto_generated_brand_synonyms.json`, for review and testing purposes.
+5.  **Initial Implementation:** This new mapping will be appended to a *separate* file, `api/data/analysis/generated_brand_synonyms.json`, for review and testing purposes.
 
 **Example Workflow:**
 1.  **Existing Product in DB:**
@@ -23,7 +23,7 @@ The logic will be triggered within the `update_db` management command at the mom
 3.  **`update_db` Execution:**
     - A barcode match is found.
     - The system compares `clean('Coke')` and `clean('Coca-Cola')` and finds them to be different.
-    - It automatically appends the synonym `{"Coke": "Coca-Cola"}` to `api/data/analysis/auto_generated_brand_synonyms.json`.
+    - It automatically appends the synonym `{"Coke": "Coca-Cola"}` to `api/data/analysis/generated_brand_synonyms.json`.
     - It then proceeds with its normal function of adding the new price to the existing `Coca-Cola` product.
 
 **Benefits:**
@@ -32,7 +32,7 @@ The logic will be triggered within the `update_db` management command at the mom
 -   **Improved Matching:** The enriched synonym list will improve product matching for non-barcoded items from other stores.
 
 **Safeguards & Further Considerations:**
--   **Separate File for Review:** Saving to `auto_generated_brand_synonyms.json` allows for manual review and curation of these automatically generated synonyms before they are potentially merged into the main `brand_synonyms.py` file. This mitigates the risk of incorrect barcode data introducing bad synonyms.
+-   **Separate File for Review:** Saving to `generated_brand_synonyms.json` allows for manual review and curation of these automatically generated synonyms before they are potentially merged into the main `brand_synonyms.py` file. This mitigates the risk of incorrect barcode data introducing bad synonyms.
 -   **File Format:** Using a JSON file (`.json`) for `auto_generated_brand_synonyms` is recommended for easier programmatic reading and writing compared to a Python (`.py`) file.
 -   **Conflict Resolution:** Before adding a new auto-generated synonym, the system should check for existing manual synonyms (in `brand_synonyms.py`) or existing rules (in `brand_rules.json`). If a conflict is detected (e.g., the auto-generated synonym contradicts an existing manual entry or rule), the auto-generation should be skipped, and the conflict should be logged. Manual entries/rules should always take precedence.
 -   **Detailed Logging:** Reinforce the need for detailed logging of every auto-generated synonym (and any skipped conflicts) to a dedicated log file (e.g., `auto_synonyms.log`). This log should include the source product details (barcode, original brands, product names) to aid in debugging and verification.
@@ -44,5 +44,5 @@ The logic will be triggered within the `update_db` management command at the mom
 -   `api/utils/normalization_utils/clean_value.py`: Utility function for cleaning and normalizing string values, crucial for consistent brand comparisons.
 -   `api/data/analysis/brand_synonyms.py`: The primary file containing manually curated brand synonyms. Auto-generated synonyms will eventually be merged here after review.
 -   `api/data/analysis/brand_rules.json`: Stores conditional brand rules, which need to be considered during conflict resolution for auto-generated synonyms.
--   `api/data/analysis/auto_generated_brand_synonyms.json`: The new, temporary file where automatically generated synonyms will be stored for initial review and testing.
+-   `api/data/analysis/generated_brand_synonyms.json`: The new, temporary file where automatically generated synonyms will be stored for initial review and testing.
 -   `auto_synonyms.log`: A dedicated log file to record details of all auto-generated synonyms, including any conflicts or skipped entries, for auditing and debugging purposes.

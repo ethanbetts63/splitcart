@@ -11,7 +11,9 @@ logger.setLevel(logging.INFO)
 # Create a file handler if one doesn't exist yet
 if not logger.handlers:
     # Ensure the directory exists
-    os.makedirs(os.path.dirname(LOG_FILE_PATH), exist_ok=True)
+    log_dir = os.path.dirname(LOG_FILE_PATH)
+    if log_dir:
+        os.makedirs(log_dir, exist_ok=True)
     handler = logging.FileHandler(LOG_FILE_PATH)
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
     handler.setFormatter(formatter)

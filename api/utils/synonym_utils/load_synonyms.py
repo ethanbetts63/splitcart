@@ -1,17 +1,28 @@
-
 import json
-from brand_synonyms import BRAND_SYNONYMS
+import importlib.util
+import sys
+
+def load_module_from_file(file_path, module_name):
+    spec = importlib.util.spec_from_file_location(module_name, file_path)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
 
 def load_synonyms():
     """
     Loads both manual and auto-generated brand synonyms.
     """
-    # Start with the manually curated synonyms
-    all_synonyms = BRAND_SYNONYMS.copy()
+    # Load BRAND_SYNONYMS from brand_synonyms.py at the project root
+    try:
+        brand_synonyms_module = load_module_from_file('brand_synonyms.py', 'brand_synonyms')
+        all_synonyms = brand_synonyms_module.BRAND_SYNONYMS.copy()
+    except FileNotFoundError:
+        all_synonyms = {}
 
     # Try to load auto-generated synonyms and merge them
     try:
-        with open('api/data/analysis/auto_generated_brand_synonyms.json', 'r') as f:
+        with open('api/data/analysis/generated_brand_synonyms.json', 'r') as f:
             auto_synonyms = json.load(f)
             all_synonyms.update(auto_synonyms)
     except FileNotFoundError:
@@ -22,4 +33,3 @@ def load_synonyms():
         pass
 
     return all_synonyms
-

@@ -2,7 +2,7 @@
 import json
 import os
 
-AUTO_SYNONYMS_FILE_PATH = 'api/data/analysis/auto_generated_brand_synonyms.json'
+AUTO_SYNONYMS_FILE_PATH = 'api/data/analysis/generated_brand_synonyms.json'
 
 def save_synonym(new_synonym):
     """
