@@ -1,0 +1,35 @@
+## Idea: Automatic Brand Synonym Generation from Barcode Matches
+
+**Concept:**
+Leverage barcode matches during the `update_db` process to automatically discover and save brand name synonyms. When a new product is scraped with a barcode that already exists in the database, we can treat this as a confirmed match and a source of truth.
+
+**Trigger Point:**
+The logic will be triggered within the `update_db` management command at the moment a new, incoming product from the product_inbox is found to have the same barcode as a product already existing in the database.
+
+**Proposed Logic:**
+1.  When a barcode match is identified, the system will perform a check to compare the brand of the incoming product with the brand of the existing product.
+2.  To ensure accuracy, the brands will be cleaned (lowercased, whitespace stripped) before comparison.
+3.  If the cleaned brand names are different, the system will automatically create a new synonym mapping.
+4.  The brand of the existing product will be treated as the canonical name, and the brand of the new product will be the synonym.
+5.  This new mapping will be appended directly to the `brand_synonyms.py` file using the existing `append_synonym()` utility.
+
+**Example Workflow:**
+1.  **Existing Product in DB:**
+    - Barcode: `9300675009753`
+    - Brand: `Coca-Cola`
+2.  **Incoming Scraped Product:**
+    - Barcode: `9300675009753`
+    - Brand: `Coke`
+3.  **`update_db` Execution:**
+    - A barcode match is found.
+    - The system compares `clean('Coke')` and `clean('Coca-Cola')` and finds them to be different.
+    - It automatically appends the synonym `{'Coke': 'Coca-Cola'}` to the synonym file.
+    - It then proceeds with its normal function of adding the new price to the existing `Coca-Cola` product.
+
+**Benefits:**
+-   **Automated Learning:** Continuously and automatically improves the brand normalization data without manual intervention.
+-   **Increased Accuracy:** Leverages the most reliable product identifier (the barcode) to create high-confidence synonyms.
+-   **Improved Matching:** The enriched synonym list will improve product matching for non-barcoded items from other stores.
+
+**Safeguards:**
+-   To mitigate the small risk of incorrect barcode data from a store, a log file (`auto_synonyms.log`) will be created to provide a clear audit trail of every synonym that is generated automatically. This allows for easy review and manual correction if needed.
