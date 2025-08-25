@@ -116,20 +116,21 @@ class Command(BaseCommand):
             canonical_pair = tuple(sorted((brand1, brand2)))
 
             if choice in ['1', '2']:
-                keyword = input("Enter the keyword to look for in the product name: ").strip()
-                if keyword:
+                keywords_input = input("Enter the keyword(s) to look for in the product name (comma-separated): ").strip()
+                if keywords_input:
+                    keywords = [k.strip() for k in keywords_input.split(',')]
                     canonical_brand = brand1 if choice == '1' else brand2
                     rule = {
                         "brands": [brand1, brand2],
                         "canonical_brand": canonical_brand,
-                        "condition_type": "name_contains",
-                        "condition_value": keyword
+                        "condition_type": "name_contains_any",
+                        "condition_values": keywords
                     }
                     brand_rules.append(rule)
                     save_brand_rules(brand_rules)
                     self.stdout.write(self.style.SUCCESS(f"Rule created and saved: {rule}"))
                 else:
-                    self.stdout.write(self.style.WARNING("Keyword cannot be empty. No rule created."))
+                    self.stdout.write(self.style.WARNING("Keywords cannot be empty. No rule created."))
             
             elif choice == '3':
                 append_synonym(brand2, brand1)
