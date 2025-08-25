@@ -1,8 +1,7 @@
 
-from api.utils.normalization_utils.clean_value import clean_value
-from .load_synonyms import load_synonyms
-from .save_synonym import save_synonym
-from .log_synonym import log_synonym
+from api.utils.synonym_utils.load_synonyms import load_synonyms
+from api.utils.synonym_utils.save_synonym import save_synonym
+from api.utils.synonym_utils.log_synonym import log_synonym
 
 def handle_barcode_match(incoming_product_details, existing_product):
     """
@@ -11,10 +10,9 @@ def handle_barcode_match(incoming_product_details, existing_product):
     """
     incoming_brand = incoming_product_details.get('brand', '')
     existing_brand = existing_product.brand
-
-    # Clean both brand names for a consistent comparison
-    cleaned_incoming_brand = clean_value(incoming_brand)
-    cleaned_existing_brand = clean_value(existing_brand)
+    
+    cleaned_incoming_brand = str(incoming_brand).lower().strip()
+    cleaned_existing_brand = str(existing_brand).lower().strip()
 
     if not cleaned_incoming_brand or not cleaned_existing_brand:
         return
