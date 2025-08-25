@@ -48,13 +48,24 @@ class Command(BaseCommand):
         processed_synonyms = load_existing_synonyms()
         non_matches = load_non_matches()
         unsure_matches = load_unsure_matches()
+        existing_rules = load_brand_rules()
+
+        # Create a set of already processed rule pairs for quick lookup
+        processed_rule_pairs = set()
+        for rule in existing_rules:
+            processed_rule_pairs.add(tuple(sorted(rule["brands"])))
 
         matches_to_review = []
         for brand1, brand2 in rule_based_matches:
+            # Check if already processed as a simple synonym
             if brand1 in processed_synonyms or brand2 in processed_synonyms:
                 continue
             canonical_pair = tuple(sorted((brand1, brand2)))
+            # Check if already processed as a non-match or unsure
             if canonical_pair in non_matches or canonical_pair in unsure_matches:
+                continue
+            # Check if already processed as a rule
+            if canonical_pair in processed_rule_pairs:
                 continue
             matches_to_review.append((brand1, brand2))
 
