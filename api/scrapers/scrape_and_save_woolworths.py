@@ -2,7 +2,6 @@ import requests
 import json
 import time
 import random
-import os
 from datetime import datetime
 from django.conf import settings
 from django.utils.text import slugify
@@ -96,10 +95,10 @@ def scrape_and_save_woolworths_data(company: str, state: str, stores: list, cate
 
                     except requests.exceptions.RequestException as e:
                         print(f"ERROR: Request failed on page {page_num} for '{category_slug}': {e}")
-                        raise
+                        break
                     except json.JSONDecodeError:
                         print(f"ERROR: Failed to decode JSON on page {page_num} for '{category_slug}'.")
-                        raise
+                        break
 
                     sleep_time = random.uniform(0.5, 1)
                     print(f"Waiting for {sleep_time:.2f} seconds...")

@@ -21,7 +21,6 @@ def batch_create_new_products(command, consolidated_data: dict):
         key = (price.store.store_id, price.store_product_id)
         store_product_id_cache[key] = price.product
     command.stdout.write(f"Built cache for {len(store_product_id_cache)} store-specific product IDs.")
-    print(f"store_product_id_cache: {store_product_id_cache}")
 
     # Cache 3: Normalized Name-Brand-Size String (Fallback)
     normalized_string_cache = {p.normalized_name_brand_size: p for p in all_products if p.normalized_name_brand_size}
