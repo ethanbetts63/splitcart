@@ -100,9 +100,9 @@ def scrape_and_save_woolworths_data(company: str, state: str, stores: list, cate
                         print(f"ERROR: Failed to decode JSON on page {page_num} for '{category_slug}'.")
                         break
 
-                    sleep_time = random.uniform(0.5, 1)
-                    print(f"Waiting for {sleep_time:.2f} seconds...")
-                    time.sleep(sleep_time)
+                    #sleep_time = random.uniform(0.5, 1)
+                    #print(f"Waiting for {sleep_time:.2f} seconds...")
+                    #time.sleep(sleep_time)
                     
                     page_num += 1
 
