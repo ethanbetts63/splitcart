@@ -2,7 +2,7 @@
 
 **Date:** August 26, 2025
 
-**Objective:** To design, implement, and debug an automatic brand synonym generation system, and to subsequently build a robust barcode cleaning utility to improve data quality at the source.
+**Objective:** To design, implement, and debug an automatic brand synonym generation system, and to subsequently build a robust barcode cleaning utility and a product name variation detector to improve data quality.
 
 ---
 
@@ -27,12 +27,11 @@ We implemented a system to automatically detect potential brand synonyms. The co
 ### 2. Interactive Synonym Review Tool
 
 **Concept:**
-To ensure accuracy and establish correct brand directionality (i.e., which name is the canonical one), we integrated the processing of the newly generated synonyms into the existing `create_brand_rules.py` management command.
+To ensure accuracy and establish correct brand directionality, we integrated the processing of the newly generated synonyms into the existing `create_brand_rules.py` management command.
 
 **Implementation Details:**
 - A `--generated` flag was added to the `create_brand_rules` command.
 - When run with this flag, the command now reads from `generated_brand_synonyms.json` instead of its default CSV file.
-- This allows for the use of the existing powerful and nuanced interactive review process for the new auto-generated synonyms.
 
 **Relevant Files:**
 - `api/management/commands/create_brand_rules.py`
@@ -40,33 +39,69 @@ To ensure accuracy and establish correct brand directionality (i.e., which name 
 
 ---
 
-### 3. Barcode Cleaning Utility
+### 3. Product Name Variation Detection
 
 **Concept:**
-During our work, we identified several data quality issues with the barcodes themselves. To address this, we created a new "barcode cleaner" utility to standardize and validate barcodes as soon as they are scraped, ensuring better data integrity downstream.
+Building on the brand synonym generation, we implemented a similar system to detect variations in product names. This feature also uses barcode matches as a source of truth to identify different phrasings for the same product across different stores.
+
+**Implementation Details:**
+- A new utility, `handle_name_variations`, was created to compare the names of products that share a barcode.
+- If the names are different, a record containing the barcode and both name variations is saved to `api/data/analysis/generated_name_variations.json`.
+- The logic was also designed to ignore "notfound" barcodes to ensure the quality of the collected data.
+
+**Relevant Files:**
+- `api/utils/database_updating_utils/handle_name_variations.py`
+- `api/utils/database_updating_utils/save_name_variation.py`
+- `api/data/analysis/generated_name_variations.json`
+
+---
+
+### 4. Barcode Cleaning Utility
+
+**Concept:**
+During our work, we identified several data quality issues with barcodes. To address this, we created a new "barcode cleaner" utility to standardize and validate barcodes as soon as they are scraped.
 
 **Implementation Details:**
 The `clean_barcode` utility, located at `api/utils/scraper_utils/clean_barcode.py`, was created to handle:
-- **Paired Barcodes:** Correctly processes fields containing both 12- and 13-digit barcodes (e.g., `"123, 0123"`), preferring the 13-digit EAN.
-- **UPC to EAN Conversion:** Automatically converts 12-digit UPCs to 13-digit EANs by prepending a "0".
-- **Internal Store Codes:** Identifies and nullifies short barcodes that are likely internal PLU codes by comparing them to the `store_product_id`.
-- **Invalid Data:** Discards invalid data like "notfound" and barcodes of incorrect lengths.
+- **Paired Barcodes:** Correctly processes fields containing both 12- and 13-digit barcodes.
+- **UPC to EAN Conversion:** Automatically converts 12-digit UPCs to 13-digit EANs.
+- **Internal Store Codes:** Identifies and removes short, store-specific codes.
+- **Invalid Data:** Discards invalid data like "notfound".
 
 **Integration:**
-This new utility was integrated into the data cleaning process for all scrapers that provide barcode data.
+This new utility was integrated into the data cleaning process for all scrapers that provide barcode data (IGA and Woolworths).
+
+**Relevant Files:**
+- `api/utils/scraper_utils/clean_barcode.py`
 - `api/utils/scraper_utils/clean_raw_data_iga.py`
 - `api/utils/scraper_utils/clean_raw_data_woolworths.py`
 
 ---
 
-### 4. Simplifications & Improvements
+### 5. Advanced Data Reconciliation Strategy (Discussion)
 
-- **Code Simplification:** We removed the `clean_brand_name` utility and replaced it with a more direct `.lower().strip()` call inside the synonym generation logic, making the code more straightforward.
-- **Logging Removal:** After debugging the initial implementation, we removed the dedicated logging for the synonym generation (`auto_synonyms.log` and its corresponding utility) to keep the production code clean.
+**The "Timing Gap" Problem:**
+We identified a critical challenge in the data pipeline: new product name variations are discovered in the database update phase, but the normalized keys used for de-duplication are created back in the scraping phase. This can lead to temporary duplicate products being created if multiple new variations appear in the same batch.
+
+**The "Two-Pass Clean-up" Solution:**
+You proposed an elegant and robust solution to this problem:
+1.  **Accept Temporary Duplicates:** Allow the main `update_db` process to run, creating potential duplicates but also compiling a list of newly discovered name variations.
+2.  **Run a Clean-up Function:** At the end of the `update_db` command, a new, dedicated "clean-up" function will be triggered.
+3.  **Targeted Merging:** This function will use the list of newly discovered names to find any temporary duplicates, merge their essential information (like new prices) into the correct canonical product, and then safely delete the duplicate.
+
+This "Two-Pass" approach is the agreed-upon strategy for the future as it favors simplicity, safety, and maintainability over a more complex real-time solution.
 
 ---
 
-### 5. Additional Thoughts & Future Considerations
+### 6. Simplifications & Improvements
 
-- **`store_product_id` Cleaning:** A similar cleaning utility for the `store_product_id` field would be a valuable next step to ensure that no universal barcodes have been mistakenly placed in this field.
-- **Scraper Maintenance:** The discovery that Coles and Aldi do not provide barcode data, and that the Spudshed cleaning script is empty, highlights the ongoing need to monitor and maintain the scrapers to adapt to changes in the source websites.
+- **Code Simplification:** We removed a `clean_brand_name` utility and replaced it with a more direct `.lower().strip()` call.
+- **Logging Removal:** After debugging, we removed the dedicated logging for synonym generation to keep the code clean.
+
+---
+
+### 7. Additional Thoughts & Future Considerations
+
+- **`store_product_id` Cleaning:** A similar cleaning utility for the `store_product_id` field would be a valuable next step.
+- **Review Tools:** An interactive review tool could be built for the new `generated_name_variations.json` file, similar to the one for brands.
+- **Scraper Maintenance:** The discovery that Coles and Aldi do not provide barcode data, and that the Spudshed cleaning script is empty, highlights the ongoing need to monitor and maintain the scrapers.

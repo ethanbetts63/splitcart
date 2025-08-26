@@ -1,7 +1,7 @@
 import json
 import os
 
-VARIATIONS_FILE_PATH = 'api/data/analysis/product_name_variations.json'
+VARIATIONS_FILE_PATH = 'api/data/analysis/generated_name_variations.json'
 
 def save_name_variation(new_variation):
     """

@@ -1,4 +1,3 @@
-
 from api.utils.database_updating_utils.save_name_variation import save_name_variation
 
 def handle_name_variations(incoming_product_details, existing_product):
@@ -6,6 +5,10 @@ def handle_name_variations(incoming_product_details, existing_product):
     Compares the names of two products with the same barcode and records
     any variations found.
     """
+    barcode = existing_product.barcode
+    if not barcode or barcode == 'notfound':
+        return
+
     incoming_name = incoming_product_details.get('name', '')
     existing_name = existing_product.name
 
@@ -19,7 +22,7 @@ def handle_name_variations(incoming_product_details, existing_product):
     if cleaned_incoming_name != cleaned_existing_name:
         # Found a variation, save it for review
         variation_data = {
-            "barcode": existing_product.barcode,
+            "barcode": barcode,
             "name_1": cleaned_incoming_name,
             "name_2": cleaned_existing_name
         }
