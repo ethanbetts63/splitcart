@@ -1485,5 +1485,32 @@
             "chicken",
             "fish"
         ]
+    },
+    {
+        "brands": [
+            "schwarzkopf",
+            "extra"
+        ],
+        "canonical_brand": "schwarzkopf",
+        "condition_type": "name_contains_any",
+        "condition_values": [
+            "curl",
+            "care",
+            "hair"
+        ]
+    },
+    {
+        "brands": [
+            "redwin",
+            "you"
+        ],
+        "canonical_brand": "redwin",
+        "condition_type": "name_contains_any",
+        "condition_values": [
+            "body",
+            "lotion",
+            "deodorant",
+            "moisturiser"
+        ]
     }
 ]

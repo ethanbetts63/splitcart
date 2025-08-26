@@ -1,81 +1,72 @@
-Session Summary: Improving Product De-duplication
+# Session Summary
 
-Date: Saturday, August 23, 2025
+**Date:** August 26, 2025
 
-Introduction:
-This session focused on addressing the core problem of duplicate product entries in your database, which arise due to discrepancies in how different companies define the same product. The goal was to enhance the accuracy and robustness of your product de-duplication process, particularly by standardizing brand names.
+**Objective:** To design, implement, and debug an automatic brand synonym generation system, and to subsequently build a robust barcode cleaning utility to improve data quality at the source.
 
-What We've Done & Why:
+---
 
-1.  Initial Analysis of Normalization Logic:
-    *   We reviewed your existing `get_normalized_string` function and its helper utilities (`clean_value`, `get_cleaned_name`, `standardize_sizes_for_norm_string`).
-    *   Why: To understand the current de-duplication mechanism and identify its limitations, primarily its rigidity and lack of synonym handling, which led to brittle normalized keys.
+### 1. Automatic Brand Synonym Generation
 
-2.  Tool for Identifying Potential Brand Matches (`find_brand_matches` command):
-    *   Purpose: To automatically scan your existing product data and identify brand names that are highly similar, suggesting they might be variations of the same brand.
-    *   Why: This provides a data-driven starting point for manual review, making the process of finding synonyms much more efficient than guessing.
-    *   Key Features Added:
-        *   Progress bar: To provide feedback during potentially long-running comparisons.
-        *   Example products: To give immediate context for each brand pair, aiding in decision-making.
-        *   Pre-cleaning of brands: Brands are now lowercased, stripped of whitespace, and punctuation is removed before comparison, improving accuracy and reducing the number of unique brands to compare.
+**Concept:**
+We implemented a system to automatically detect potential brand synonyms. The core idea is to leverage product barcodes as a ground truth: when two products from different scrapes share the same barcode but have different brand names, they are flagged as potential synonyms.
 
-3.  Interactive Tool for Curating Brand Synonyms (`create_synonyms` command):
-    *   Purpose: To allow you to manually review potential brand matches and build a highly accurate brand synonym dictionary.
-    *   Why: Human intelligence is crucial for making accurate decisions on ambiguous or context-dependent brand variations, which automated fuzzy matching alone cannot reliably handle.
-    *   Key Features Added:
-        *   Interactive prompts: Guides you through each potential match.
-        *   Single-keypress input: Streamlines the decision-making process (no need for Enter).
-        *   Immediate saving of decisions: Ensures your progress is saved instantly to files, making sessions resumable.
-        *   "No Match" category (Option 5): For pairs that are definitely not synonyms.
-        *   "Unsure" category (Option 3): For ambiguous pairs that require further research or context.
-        *   "Rule-Based" category (Option 4): For pairs that are synonyms but require conditional rules (e.g., based on product name) to avoid false positives.
-        *   Progress bar: Shows how many pairs are left to review.
-        *   Skipping processed pairs: Automatically skips pairs already categorized (synonym, no match, unsure, rule-based).
+**Implementation Details:**
+- The main logic was placed in a new utility at `api/utils/synonym_utils/handle_barcode_match.py`.
+- This utility is triggered from within the `batch_create_new_products.py` script whenever a barcode match is found.
+- Newly discovered synonyms are saved to `api/data/analysis/generated_brand_synonyms.json`.
 
-4.  Integration of Brand Synonyms into Normalization Logic:
-    *   Purpose: To apply the curated brand synonyms to the product normalization process.
-    *   Why: Ensures that all products, whether newly scraped or re-processed, use canonical brand names. This is a critical step in reducing duplicate product entries across different companies.
-    *   Verification: We added and ran a unit test to confirm that the `get_normalized_string` function correctly applies the brand synonym mapping.
+**Relevant Files:**
+- `api/utils/synonym_utils/handle_barcode_match.py`
+- `api/utils/synonym_utils/save_synonym.py`
+- `api/utils/synonym_utils/load_synonyms.py`
+- `api/data/analysis/generated_brand_synonyms.json`
 
-Key Concepts Discussed:
+---
 
-*   **Normalization vs. Denormalization:** Explored the trade-offs in database design, particularly in your `Store` and `Product` models, highlighting that "deviations" can be pragmatic choices for performance or simplicity.
-*   **Precision vs. Recall:** Emphasized the importance of precision (accuracy) over recall (completeness) in data matching to avoid false positives, especially when dealing with brand synonyms.
-*   **Deterministic vs. Probabilistic Matching:** Stressed the value of applying deterministic rules (like synonym maps) before considering probabilistic methods (like fuzzy matching) for more robust data cleaning.
-*   **Data Cleaning Workflow:** Established a clear workflow: identify -> curate -> integrate -> verify.
+### 2. Interactive Synonym Review Tool
 
-Relevant Files:
+**Concept:**
+To ensure accuracy and establish correct brand directionality (i.e., which name is the canonical one), we integrated the processing of the newly generated synonyms into the existing `create_brand_rules.py` management command.
 
-*   `api/utils/normalization_utils/get_normalized_string.py`: The main function responsible for generating the normalized product string.
-*   `api/utils/normalization_utils/clean_value.py`: Core utility for cleaning individual string components (e.g., brand, name).
-*   `api/utils/normalization_utils/get_cleaned_name.py`: Utility for cleaning product names.
-*   `api/utils/normalization_utils/standardize_sizes_for_norm_string.py`: Utility for standardizing size strings.
-*   `api/data/analysis/brand_synonyms.py`: The Python file containing your curated brand synonym dictionary.
-*   `api/data/analysis/brand_non_matches.csv`: CSV file storing pairs you've explicitly marked as "No Match".
-*   `api/data/analysis/brand_unsure_matches.csv`: CSV file storing pairs you've marked as "Unsure".
-*   `api/data/analysis/brand_rule_based_matches.csv`: CSV file storing pairs you've marked for "Rule-Based" handling.
-*   `brand_matches.csv`: The CSV file generated by `find_brand_matches`, containing potential brand matches for review.
-*   `api/management/commands/find_brand_matches.py`: The Django management command to generate `brand_matches.csv`.
-*   `api/management/commands/create_synonyms.py`: The interactive Django management command to curate `brand_synonyms.py` and the other history files.
-*   `api/utils/management_utils/synonym_tool.py`: The utility file containing the core logic for the synonym management commands.
-*   `api/tests/util_tests/test_normalization_utils/test_get_normalized_string.py`: The unit test file for the `get_normalized_string` function, including verification of brand synonym integration.
+**Implementation Details:**
+- A `--generated` flag was added to the `create_brand_rules` command.
+- When run with this flag, the command now reads from `generated_brand_synonyms.json` instead of its default CSV file.
+- This allows for the use of the existing powerful and nuanced interactive review process for the new auto-generated synonyms.
 
-Future Enhancements to Product Matching:
+**Relevant Files:**
+- `api/management/commands/create_brand_rules.py`
+- `api/utils/management_utils/generated_synonym_reader.py`
 
-As we discussed, achieving perfect product de-duplication is an ongoing process. Here are some advanced ideas we've brainstormed for future enhancements:
+---
 
-1.  **Brand Synonym Chaining & Loop Detection:**
-    *   **Concept:** Allow synonyms to chain (e.g., 'coke' -> 'coca-cola' -> 'The Coca-Cola Company') to funnel all variations down to a single canonical name.
-    *   **Importance:** Crucial for robust brand normalization. Requires implementing recursive lookups in the normalization logic and detecting loops (e.g., 'coke' -> 'pepsi' -> 'coke') to prevent infinite recursion.
+### 3. Barcode Cleaning Utility
 
-2.  **Conditional Brand Rules:**
-    *   **Concept:** For ambiguous cases (like 'ocean' vs. 'Ocean Blue'), create rules that apply a synonym only if certain conditions are met (e.g., 'map 'ocean' to 'Ocean Blue' ONLY IF the product name contains 'salmon').
-    *   **Importance:** Provides highly precise matching for context-dependent brands, avoiding false positives. This would require a significant architectural change to the synonym storage (from a simple dictionary to a rule-based system) and the normalization pipeline.
+**Concept:**
+During our work, we identified several data quality issues with the barcodes themselves. To address this, we created a new "barcode cleaner" utility to standardize and validate barcodes as soon as they are scraped, ensuring better data integrity downstream.
 
-3.  **Category Mapping for Product Matching:**
-    *   **Concept:** First, identify and map equivalent categories between different companies (e.g., Coles 'Fresh Produce' == Woolworths 'Fruit & Veg').
-    *   **Importance:** When searching for product matches, the system could first narrow down the search to products within the equivalent categories, significantly improving accuracy and efficiency by reducing the search space.
+**Implementation Details:**
+The `clean_barcode` utility, located at `api/utils/scraper_utils/clean_barcode.py`, was created to handle:
+- **Paired Barcodes:** Correctly processes fields containing both 12- and 13-digit barcodes (e.g., `"123, 0123"`), preferring the 13-digit EAN.
+- **UPC to EAN Conversion:** Automatically converts 12-digit UPCs to 13-digit EANs by prepending a "0".
+- **Internal Store Codes:** Identifies and nullifies short barcodes that are likely internal PLU codes by comparing them to the `store_product_id`.
+- **Invalid Data:** Discards invalid data like "notfound" and barcodes of incorrect lengths.
 
-4.  **Interactive Tool for 'Unsure' and 'Rule-Based' Matches:**
-    *   **Concept:** Develop dedicated interactive tools (similar to `create_synonyms`) to systematically review and process the `brand_unsure_matches.csv` and `brand_rule_based_matches.csv` files.
-    *   **Importance:** Provides a structured way to tackle the most challenging matches, potentially offering more context (e.g., all products for a given brand) or guiding the creation of conditional rules.
+**Integration:**
+This new utility was integrated into the data cleaning process for all scrapers that provide barcode data.
+- `api/utils/scraper_utils/clean_raw_data_iga.py`
+- `api/utils/scraper_utils/clean_raw_data_woolworths.py`
+
+---
+
+### 4. Simplifications & Improvements
+
+- **Code Simplification:** We removed the `clean_brand_name` utility and replaced it with a more direct `.lower().strip()` call inside the synonym generation logic, making the code more straightforward.
+- **Logging Removal:** After debugging the initial implementation, we removed the dedicated logging for the synonym generation (`auto_synonyms.log` and its corresponding utility) to keep the production code clean.
+
+---
+
+### 5. Additional Thoughts & Future Considerations
+
+- **`store_product_id` Cleaning:** A similar cleaning utility for the `store_product_id` field would be a valuable next step to ensure that no universal barcodes have been mistakenly placed in this field.
+- **Scraper Maintenance:** The discovery that Coles and Aldi do not provide barcode data, and that the Spudshed cleaning script is empty, highlights the ongoing need to monitor and maintain the scrapers to adapt to changes in the source websites.

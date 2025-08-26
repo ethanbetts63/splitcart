@@ -1,3 +1,4 @@
+
 Splitcart is a grocery price comparison application designed to help users find the best prices for their favorite products across different Australian grocery stores. To achieve this, it is crucial to accurately identify the same product even when it is listed with slight variations in different stores. This document outlines the entire data cleaning and de-duplication process, from raw data scraping to final database entry.
 
 **Data Cleaning and De-duplication Pipeline**
@@ -10,12 +11,18 @@ The data pipeline has been redesigned into a simplified and more robust two-stag
 
 2.  **Store-Specific Cleaning:** For each grocery store, a specialized cleaning function (e.g., `clean_raw_data_woolworths`) processes the raw JSON data. This function extracts and standardizes key information like name, brand, price, and category.
 
-3.  **Centralized Normalization:** After the initial cleaning, a central utility, `normalize_product_data`, is applied to each product. This function performs several key tasks:
+3.  **Barcode Standardization:** A new `clean_barcode` utility has been introduced to standardize and validate barcodes at the source. This utility is called from within each store-specific cleaning function and performs the following crucial tasks:
+    *   **Handles Paired Barcodes:** It can process fields that contain both a 12-digit UPC and a 13-digit EAN, correctly selecting the more universal 13-digit EAN.
+    *   **Standardizes to EAN-13:** It automatically converts all valid 12-digit UPCs to the 13-digit EAN format by prepending a "0".
+    *   **Identifies and Removes Internal Codes:** It detects and removes short, store-specific codes (like PLUs) by comparing them to the `store_product_id`.
+    *   **Removes Invalid Data:** It discards any invalid barcode data, such as the "notfound" placeholder.
+
+4.  **Centralized Normalization:** After the initial cleaning, a central utility, `normalize_product_data`, is applied to each product. This function performs several key tasks:
     *   **Size Extraction:** It intelligently extracts size information (e.g., "500g", "1L") from the product's name, brand, and size fields.
     *   **Name Cleaning:** It cleans the product name by removing redundant information that has already been extracted, such as brand and size.
     *   **De-duplication Key Generation:** It creates a `normalized_name_brand_size` key by combining the cleaned name, brand, and extracted sizes. This key is crucial for accurately identifying duplicate products.
 
-4.  **Save to Product Inbox:** Instead of being saved in large batches, each cleaned and normalized product is saved as a separate JSON file in the `api/data/product_inbox/` directory. This isolates products and prevents an error with one product from affecting others.
+5.  **Save to Product Inbox:** Instead of being saved in large batches, each cleaned and normalized product is saved as a separate JSON file in the `api/data/product_inbox/` directory. This isolates products and prevents an error with one product from affecting others.
 
 **Part 2: Database Update and De-duplication**
 
@@ -31,7 +38,11 @@ The data pipeline has been redesigned into a simplified and more robust two-stag
     *   **Create Prices:** It creates `Price` records for all products, linking them to the correct store and recording the current price.
     *   **Create Category Relationships:** It creates the necessary category relationships for the products.
 
-5.  **Clean Up Inbox:** After a product's data has been successfully committed to the database, its corresponding file in the `product_inbox` is deleted.
+5.  **Automatic Brand Synonym Generation:** During the tiered matching process, if two products are found to share the same valid barcode but have different brand names, the system now automatically flags this pair as a potential synonym.
+    *   **Synonym File:** These newly discovered synonyms are saved to the `api/data/analysis/generated_brand_synonyms.json` file.
+    *   **Interactive Review:** A new `--generated` flag has been added to the `create_brand_rules` management command. Running `python manage.py create_brand_rules --generated` allows for a guided, interactive review of these new synonyms to confirm their validity and establish the correct canonical brand.
+
+6.  **Clean Up Inbox:** After a product's data has been successfully committed to the database, its corresponding file in the `product_inbox` is deleted.
 
 **Key Benefits of the New Architecture:**
 
