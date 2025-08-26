@@ -1,5 +1,5 @@
 
-from .save_name_variation import save_name_variation
+from api.utils.database_updating_utils.save_name_variation import save_name_variation
 
 def handle_name_variations(incoming_product_details, existing_product):
     """

@@ -1,6 +1,6 @@
 from api.utils.synonym_utils.handle_barcode_match import handle_barcode_match
 from products.models import Product, Price
-from api.utils.database_updating_utils import handle_name_variations
+from api.utils.database_updating_utils.handle_name_variations import handle_name_variations
 
 def batch_create_new_products(command, consolidated_data: dict):
     """
