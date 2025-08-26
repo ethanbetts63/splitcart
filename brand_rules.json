@@ -1324,5 +1324,166 @@
             "milk",
             "goat"
         ]
+    },
+    {
+        "brands": [
+            "peters"
+        ],
+        "canonical_brand": "peters icecream",
+        "condition_type": "name_contains_any",
+        "condition_values": [
+            "icecream",
+            "ice-cream",
+            "vanilla",
+            "cones",
+            "chocolate",
+            "strawberry",
+            "ice",
+            "original",
+            "maxibon",
+            "creamy",
+            "Drumstick"
+        ]
+    },
+    {
+        "brands": [
+            "smith's",
+            "tasty mix"
+        ],
+        "canonical_brand": "smith's",
+        "condition_type": "name_contains_any",
+        "condition_values": [
+            "smiths",
+            "smith's"
+        ]
+    },
+    {
+        "brands": [
+            "simply",
+            "simple"
+        ],
+        "canonical_brand": "simply",
+        "condition_type": "name_contains_any",
+        "condition_values": [
+            "chips",
+            "chip",
+            "potato"
+        ]
+    },
+    {
+        "brands": [
+            "caffe aurora",
+            "aurora"
+        ],
+        "canonical_brand": "caffe aurora",
+        "condition_type": "name_contains_any",
+        "condition_values": [
+            "caffe",
+            "coffee"
+        ]
+    },
+    {
+        "brands": [
+            "continental",
+            "hot pot"
+        ],
+        "canonical_brand": "continental",
+        "condition_type": "name_contains_any",
+        "condition_values": [
+            "casserole",
+            "onion",
+            "french",
+            "curry"
+        ]
+    },
+    {
+        "brands": [
+            "ssm",
+            "ssm pure"
+        ],
+        "canonical_brand": "ssm pure",
+        "condition_type": "name_contains_any",
+        "condition_values": [
+            "coconut",
+            "cream",
+            "milk"
+        ]
+    },
+    {
+        "brands": [
+            "fudge professional",
+            "fudge"
+        ],
+        "canonical_brand": "fudge professional",
+        "condition_type": "name_contains_any",
+        "condition_values": [
+            "shampoo",
+            "conditioner",
+            "clean",
+            "blonde",
+            "styling",
+            "wax",
+            "gel"
+        ]
+    },
+    {
+        "brands": [
+            "piksters",
+            "supergrip"
+        ],
+        "canonical_brand": "piksters",
+        "condition_type": "name_contains_any",
+        "condition_values": [
+            "piksters"
+        ]
+    },
+    {
+        "brands": [
+            "bull dog",
+            "bulldog skincare"
+        ],
+        "canonical_brand": "bulldog skincare",
+        "condition_type": "name_contains_any",
+        "condition_values": [
+            "skincare",
+            "skin",
+            "care"
+        ]
+    },
+    {
+        "brands": [
+            "tom organic",
+            "tom"
+        ],
+        "canonical_brand": "tom organic",
+        "condition_type": "name_contains_any",
+        "condition_values": [
+            "pads",
+            "liners",
+            "tampons",
+            "pad",
+            "liner",
+            "tampon",
+            "thin",
+            "long",
+            "regular"
+        ]
+    },
+    {
+        "brands": [
+            "ultimates indulge",
+            "ultimates"
+        ],
+        "canonical_brand": "ultimates indulge",
+        "condition_type": "name_contains_any",
+        "condition_values": [
+            "dog",
+            "cat",
+            "mince",
+            "loaf",
+            "can",
+            "chicken",
+            "fish"
+        ]
     }
 ]
