@@ -3,6 +3,7 @@ from datetime import datetime
 from api.utils.normalization_utils.get_extracted_sizes import get_extracted_sizes
 from api.utils.normalization_utils.get_normalized_string import get_normalized_string
 from .wrap_cleaned_products import wrap_cleaned_products
+from .clean_barcode import clean_barcode
 
 
 def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, timestamp: datetime) -> dict:
@@ -74,9 +75,11 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
         # Clean up the final path by title-casing and removing empty strings
         category_path = [part.strip().title() for part in category_path if part]
 
+        cleaned_barcode = clean_barcode(product.get('Barcode'), product.get('Stockcode'))
+
         clean_product = {
             "product_id_store": str(stockcode) if stockcode else None,
-            "barcode": product.get('Barcode'),
+            "barcode": cleaned_barcode,
             "name": product.get('Name'),
             "brand": product.get('Brand'),
             "description_short": product.get('Description'),

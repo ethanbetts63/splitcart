@@ -3,6 +3,7 @@ import re
 from api.utils.normalization_utils.get_extracted_sizes import get_extracted_sizes
 from api.utils.normalization_utils.get_normalized_string import get_normalized_string
 from .wrap_cleaned_products import wrap_cleaned_products
+from .clean_barcode import clean_barcode
 
 def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, timestamp: datetime) -> dict:
     """
@@ -90,9 +91,11 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
         if size_parts:
             package_size_str = " ".join(size_parts)
 
+        cleaned_barcode = clean_barcode(product.get('barcode'), product.get('sku'))
+
         clean_product = {
             "product_id_store": product.get('sku'),
-            "barcode": product.get('barcode'),
+            "barcode": cleaned_barcode,
             "name": product.get('name') if product.get('name') else None,
             "brand": product.get('brand') if product.get('brand') else None,
             "description_short": None, # IGA provides one description field
