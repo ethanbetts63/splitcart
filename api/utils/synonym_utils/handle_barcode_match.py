@@ -1,7 +1,5 @@
-
 from api.utils.synonym_utils.load_synonyms import load_synonyms
 from api.utils.synonym_utils.save_synonym import save_synonym
-from api.utils.synonym_utils.log_synonym import log_synonym
 
 def handle_barcode_match(incoming_product_details, existing_product):
     """
@@ -39,5 +37,3 @@ def handle_barcode_match(incoming_product_details, existing_product):
         new_synonym = {cleaned_incoming_brand: cleaned_existing_brand}
         
         save_synonym(new_synonym)
-        log_synonym('info', f"NEW SYNONYM DETECTED: {new_synonym}")
-
