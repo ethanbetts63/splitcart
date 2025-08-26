@@ -1813,3 +1813,228 @@
 2025-08-26 00:01:32,522 - INFO - [INFO] NEW SYNONYM DETECTED: {'armada (9310049706001)': 'multix (9310049706001)'}
 2025-08-26 00:01:32,554 - INFO - [INFO] NEW SYNONYM DETECTED: {"selley's (9300697115683)": 'selleys (9300697115683)'}
 2025-08-26 00:01:32,583 - INFO - [INFO] NEW SYNONYM DETECTED: {"selley's (9300697123237)": 'selleys (9300697123237)'}
+2025-08-26 00:06:14,504 - INFO - [INFO] NEW SYNONYM DETECTED: {'zerella fresh': 'spud lite'}
+2025-08-26 00:06:14,536 - INFO - [INFO] NEW SYNONYM DETECTED: {'yopro': 'danone'}
+2025-08-26 00:06:14,549 - INFO - [INFO] NEW SYNONYM DETECTED: {'daily juice co': 'daily juice'}
+2025-08-26 00:06:14,561 - INFO - [INFO] NEW SYNONYM DETECTED: {'boost': 'boost juice'}
+2025-08-26 00:06:14,570 - INFO - [INFO] NEW SYNONYM DETECTED: {'divine classic': 'divine'}
+2025-08-26 00:06:14,583 - INFO - [INFO] NEW SYNONYM DETECTED: {'kellogg’s': "kellogg's"}
+2025-08-26 00:06:14,592 - INFO - [INFO] NEW SYNONYM DETECTED: {'nestle': 'nestlé'}
+2025-08-26 00:06:14,610 - INFO - [INFO] NEW SYNONYM DETECTED: {'twisted': 'twisted healthy treats'}
+2025-08-26 00:06:14,621 - INFO - [INFO] NEW SYNONYM DETECTED: {'none': 'la famiglia'}
+2025-08-26 00:06:14,632 - INFO - [INFO] NEW SYNONYM DETECTED: {'latina fresh': 'latina'}
+2025-08-26 00:06:14,643 - INFO - [INFO] NEW SYNONYM DETECTED: {"simson's pantry": 'true foods'}
+2025-08-26 00:06:14,657 - INFO - [INFO] NEW SYNONYM DETECTED: {'h2melon': 'h2juice'}
+2025-08-26 00:06:14,668 - INFO - [INFO] NEW SYNONYM DETECTED: {'h2coco': 'h2juice'}
+2025-08-26 00:06:14,679 - INFO - [INFO] NEW SYNONYM DETECTED: {'glicks': "glick's"}
+2025-08-26 00:06:14,690 - INFO - [INFO] NEW SYNONYM DETECTED: {'original juice co.': 'original juice co'}
+2025-08-26 00:06:14,711 - INFO - [INFO] NEW SYNONYM DETECTED: {'up&go': 'up & go'}
+2025-08-26 00:06:14,735 - INFO - [INFO] NEW SYNONYM DETECTED: {'the juice brothers': 'juice brothers'}
+2025-08-26 00:06:14,757 - INFO - [INFO] NEW SYNONYM DETECTED: {"abe's bagels": "abe's"}
+2025-08-26 00:06:14,775 - INFO - [INFO] NEW SYNONYM DETECTED: {'arnotts': "arnott's"}
+2025-08-26 00:06:14,786 - INFO - [INFO] NEW SYNONYM DETECTED: {'blue ribbon': 'streets'}
+2025-08-26 00:06:14,795 - INFO - [INFO] NEW SYNONYM DETECTED: {'skinny cow': 'peters'}
+2025-08-26 00:06:14,805 - INFO - [INFO] NEW SYNONYM DETECTED: {'viennetta': 'streets'}
+2025-08-26 00:06:14,813 - INFO - [INFO] NEW SYNONYM DETECTED: {'sanitarium': 'so good'}
+2025-08-26 00:06:14,822 - INFO - [INFO] NEW SYNONYM DETECTED: {'oreo': 'nestlé'}
+2025-08-26 00:06:14,836 - INFO - [INFO] NEW SYNONYM DETECTED: {'milo': 'nestlé'}
+2025-08-26 00:06:14,857 - INFO - [INFO] NEW SYNONYM DETECTED: {"chris'": "chris' dip"}
+2025-08-26 00:06:14,879 - INFO - [INFO] NEW SYNONYM DETECTED: {'snowdonia cheese co': 'snowdonia'}
+2025-08-26 00:06:14,901 - INFO - [INFO] NEW SYNONYM DETECTED: {'sartori': 'bellavitano'}
+2025-08-26 00:06:14,913 - INFO - [INFO] NEW SYNONYM DETECTED: {'oatly!': 'oatly'}
+2025-08-26 00:06:14,930 - INFO - [INFO] NEW SYNONYM DETECTED: {'pauls zymil': 'pauls'}
+2025-08-26 00:06:14,950 - INFO - [INFO] NEW SYNONYM DETECTED: {'la casa': 'la casa del formaggio'}
+2025-08-26 00:06:14,970 - INFO - [INFO] NEW SYNONYM DETECTED: {'laughing cow': 'bel'}
+2025-08-26 00:06:14,993 - INFO - [INFO] NEW SYNONYM DETECTED: {'babybel': 'bel babybel'}
+2025-08-26 00:06:15,016 - INFO - [INFO] NEW SYNONYM DETECTED: {'farmhouse gold': 'pauls'}
+2025-08-26 00:06:15,035 - INFO - [INFO] NEW SYNONYM DETECTED: {'a2 milk': 'a2'}
+2025-08-26 00:06:15,060 - INFO - [INFO] NEW SYNONYM DETECTED: {'suntory': 'suntory boss coffee'}
+2025-08-26 00:06:15,082 - INFO - [INFO] NEW SYNONYM DETECTED: {'tamar valley': 'tamar valley dairy'}
+2025-08-26 00:06:15,115 - INFO - [INFO] NEW SYNONYM DETECTED: {'activia': 'danone'}
+2025-08-26 00:06:15,143 - INFO - [INFO] NEW SYNONYM DETECTED: {'ultimate': 'danone'}
+2025-08-26 00:06:15,173 - INFO - [INFO] NEW SYNONYM DETECTED: {'bio cheese': 'my life'}
+2025-08-26 00:06:15,198 - INFO - [INFO] NEW SYNONYM DETECTED: {'bakery du jour': 'du jour'}
+2025-08-26 00:06:15,221 - INFO - [INFO] NEW SYNONYM DETECTED: {"abbott's bakery": "abbott's"}
+2025-08-26 00:06:15,236 - INFO - [INFO] NEW SYNONYM DETECTED: {'little bellies': 'baby bellies'}
+2025-08-26 00:06:15,246 - INFO - [INFO] NEW SYNONYM DETECTED: {'bhuja': 'majans'}
+2025-08-26 00:06:15,267 - INFO - [INFO] NEW SYNONYM DETECTED: {'infuzions': 'majans'}
+2025-08-26 00:06:15,279 - INFO - [INFO] NEW SYNONYM DETECTED: {'calbee': 'harvest snaps'}
+2025-08-26 00:06:15,290 - INFO - [INFO] NEW SYNONYM DETECTED: {'the natural chip co': 'the natural chip company'}
+2025-08-26 00:06:15,308 - INFO - [INFO] NEW SYNONYM DETECTED: {'vege chips': 'ajitas'}
+2025-08-26 00:06:15,333 - INFO - [INFO] NEW SYNONYM DETECTED: {"smith's": 'tasty mix'}
+2025-08-26 00:06:15,355 - INFO - [INFO] NEW SYNONYM DETECTED: {'aeroplane': 'aeroplane jelly'}
+2025-08-26 00:06:15,374 - INFO - [INFO] NEW SYNONYM DETECTED: {'sunbites': 'grain waves'}
+2025-08-26 00:06:15,387 - INFO - [INFO] NEW SYNONYM DETECTED: {'kooee': 'kooee!'}
+2025-08-26 00:06:15,411 - INFO - [INFO] NEW SYNONYM DETECTED: {'pop box': 'popbox'}
+2025-08-26 00:06:15,431 - INFO - [INFO] NEW SYNONYM DETECTED: {"parker's": 'parker'}
+2025-08-26 00:06:15,461 - INFO - [INFO] NEW SYNONYM DETECTED: {'byron': 'byron beef jerky'}
+2025-08-26 00:06:15,476 - INFO - [INFO] NEW SYNONYM DETECTED: {'goodness me': 'goodnessme'}
+2025-08-26 00:06:15,498 - INFO - [INFO] NEW SYNONYM DETECTED: {'fun faves': 'fun fave'}
+2025-08-26 00:06:15,523 - INFO - [INFO] NEW SYNONYM DETECTED: {'uncle tobys': 'nestlé'}
+2025-08-26 00:06:15,544 - INFO - [INFO] NEW SYNONYM DETECTED: {'pump': 'pumped'}
+2025-08-26 00:06:15,568 - INFO - [INFO] NEW SYNONYM DETECTED: {'bc snacks': 'bc'}
+2025-08-26 00:06:15,594 - INFO - [INFO] NEW SYNONYM DETECTED: {'paddle pop': 'streets'}
+2025-08-26 00:06:15,619 - INFO - [INFO] NEW SYNONYM DETECTED: {"ingham's": 'ingham'}
+2025-08-26 00:06:15,644 - INFO - [INFO] NEW SYNONYM DETECTED: {'splice': 'streets'}
+2025-08-26 00:06:15,674 - INFO - [INFO] NEW SYNONYM DETECTED: {'golden gaytime': 'streets'}
+2025-08-26 00:06:15,695 - INFO - [INFO] NEW SYNONYM DETECTED: {'bubble o bill': 'streets'}
+2025-08-26 00:06:15,721 - INFO - [INFO] NEW SYNONYM DETECTED: {'kitkat': 'nestlé'}
+2025-08-26 00:06:15,747 - INFO - [INFO] NEW SYNONYM DETECTED: {'ferrero': 'ferrero rocher'}
+2025-08-26 00:06:15,774 - INFO - [INFO] NEW SYNONYM DETECTED: {'kinder': 'kinder bueno'}
+2025-08-26 00:06:15,797 - INFO - [INFO] NEW SYNONYM DETECTED: {'scotts': "scott's"}
+2025-08-26 00:06:15,818 - INFO - [INFO] NEW SYNONYM DETECTED: {"keith's foods": 'keiths'}
+2025-08-26 00:06:15,836 - INFO - [INFO] NEW SYNONYM DETECTED: {'mccain': 'pickers'}
+2025-08-26 00:06:15,854 - INFO - [INFO] NEW SYNONYM DETECTED: {'cadbury': 'chomp'}
+2025-08-26 00:06:15,876 - INFO - [INFO] NEW SYNONYM DETECTED: {'mr beast': 'mr beast feastables'}
+2025-08-26 00:06:15,887 - INFO - [INFO] NEW SYNONYM DETECTED: {'aero': 'nestlé'}
+2025-08-26 00:06:15,909 - INFO - [INFO] NEW SYNONYM DETECTED: {'smarties': 'nestlé'}
+2025-08-26 00:06:15,928 - INFO - [INFO] NEW SYNONYM DETECTED: {'chokito': 'nestlé'}
+2025-08-26 00:06:15,952 - INFO - [INFO] NEW SYNONYM DETECTED: {'sour patch kids': 'sour patch'}
+2025-08-26 00:06:15,974 - INFO - [INFO] NEW SYNONYM DETECTED: {'nerds': 'willy wonka'}
+2025-08-26 00:06:15,997 - INFO - [INFO] NEW SYNONYM DETECTED: {'soothers': 'butter menthol'}
+2025-08-26 00:06:16,021 - INFO - [INFO] NEW SYNONYM DETECTED: {'cooks confectionery': 'scorched peanut'}
+2025-08-26 00:06:16,045 - INFO - [INFO] NEW SYNONYM DETECTED: {'simply': 'simple'}
+2025-08-26 00:06:16,071 - INFO - [INFO] NEW SYNONYM DETECTED: {'orion turtle': 'orion'}
+2025-08-26 00:06:16,096 - INFO - [INFO] NEW SYNONYM DETECTED: {'milkybar': 'nestlé'}
+2025-08-26 00:06:16,119 - INFO - [INFO] NEW SYNONYM DETECTED: {'crunch': 'nestlé'}
+2025-08-26 00:06:16,146 - INFO - [INFO] NEW SYNONYM DETECTED: {'rolo': 'nestlé'}
+2025-08-26 00:06:16,175 - INFO - [INFO] NEW SYNONYM DETECTED: {'so soft': 'so soft marshmallow co'}
+2025-08-26 00:06:16,203 - INFO - [INFO] NEW SYNONYM DETECTED: {'menz': 'polly waffle'}
+2025-08-26 00:06:16,240 - INFO - [INFO] NEW SYNONYM DETECTED: {'ferrero collection': 'ferrero rocher'}
+2025-08-26 00:06:16,284 - INFO - [INFO] NEW SYNONYM DETECTED: {'jila': 'jols'}
+2025-08-26 00:06:16,329 - INFO - [INFO] NEW SYNONYM DETECTED: {"double 'd'": 'double d'}
+2025-08-26 00:06:16,364 - INFO - [INFO] NEW SYNONYM DETECTED: {"wrigley's": 'juicy fruit'}
+2025-08-26 00:06:16,400 - INFO - [INFO] NEW SYNONYM DETECTED: {'allens': 'anticol'}
+2025-08-26 00:06:16,428 - INFO - [INFO] NEW SYNONYM DETECTED: {'toobs': 'tasty toobs'}
+2025-08-26 00:06:16,454 - INFO - [INFO] NEW SYNONYM DETECTED: {'j crackleton': "jack daniel's"}
+2025-08-26 00:06:16,480 - INFO - [INFO] NEW SYNONYM DETECTED: {'mcvities': "mcvitie's"}
+2025-08-26 00:06:16,520 - INFO - [INFO] NEW SYNONYM DETECTED: {"kooka's country": "kooka's"}
+2025-08-26 00:06:16,547 - INFO - [INFO] NEW SYNONYM DETECTED: {'maltesers': 'mars'}
+2025-08-26 00:06:16,565 - INFO - [INFO] NEW SYNONYM DETECTED: {'passage to asia': 'passage to thailand'}
+2025-08-26 00:06:16,575 - INFO - [INFO] NEW SYNONYM DETECTED: {'coca-cola': 'coca cola'}
+2025-08-26 00:06:16,596 - INFO - [INFO] NEW SYNONYM DETECTED: {'jacobs': "jacob's"}
+2025-08-26 00:06:16,617 - INFO - [INFO] NEW SYNONYM DETECTED: {'f.whitlock & sons': 'f. whitlock & sons'}
+2025-08-26 00:06:16,642 - INFO - [INFO] NEW SYNONYM DETECTED: {'providore': "leggo's"}
+2025-08-26 00:06:16,657 - INFO - [INFO] NEW SYNONYM DETECTED: {'freedom': 'freedom foods'}
+2025-08-26 00:06:16,682 - INFO - [INFO] NEW SYNONYM DETECTED: {'pocky': 'glico'}
+2025-08-26 00:06:16,708 - INFO - [INFO] NEW SYNONYM DETECTED: {'starbucks by nespresso': 'starbucks'}
+2025-08-26 00:06:16,724 - INFO - [INFO] NEW SYNONYM DETECTED: {'yorkshire': 'taylors'}
+2025-08-26 00:06:16,736 - INFO - [INFO] NEW SYNONYM DETECTED: {'cobram': 'cobram estate'}
+2025-08-26 00:06:16,751 - INFO - [INFO] NEW SYNONYM DETECTED: {'promite': 'masterfoods'}
+2025-08-26 00:06:16,777 - INFO - [INFO] NEW SYNONYM DETECTED: {"pic's": 'pics'}
+2025-08-26 00:06:16,792 - INFO - [INFO] NEW SYNONYM DETECTED: {'leatherwood': 'r stephens'}
+2025-08-26 00:06:16,804 - INFO - [INFO] NEW SYNONYM DETECTED: {'t2 tea': 't2'}
+2025-08-26 00:06:16,825 - INFO - [INFO] NEW SYNONYM DETECTED: {'caffe aurora': 'aurora'}
+2025-08-26 00:06:16,849 - INFO - [INFO] NEW SYNONYM DETECTED: {'dr. oetker': 'queen'}
+2025-08-26 00:06:16,870 - INFO - [INFO] NEW SYNONYM DETECTED: {'the creative kitchen': 'creative kitchen'}
+2025-08-26 00:06:16,896 - INFO - [INFO] NEW SYNONYM DETECTED: {"cornwell's": 'cornwells'}
+2025-08-26 00:06:16,909 - INFO - [INFO] NEW SYNONYM DETECTED: {"baxter's": 'baxters'}
+2025-08-26 00:06:16,924 - INFO - [INFO] NEW SYNONYM DETECTED: {'south australian gourmet food company': 'sa gourmet food co.'}
+2025-08-26 00:06:16,938 - INFO - [INFO] NEW SYNONYM DETECTED: {'sole mare': 'solemare'}
+2025-08-26 00:06:16,958 - INFO - [INFO] NEW SYNONYM DETECTED: {'ichiban delicious': 'welih'}
+2025-08-26 00:06:16,971 - INFO - [INFO] NEW SYNONYM DETECTED: {'continental': 'hot pot'}
+2025-08-26 00:06:16,983 - INFO - [INFO] NEW SYNONYM DETECTED: {'masterfoods x my muscle chef': 'masterfoods'}
+2025-08-26 00:06:17,002 - INFO - [INFO] NEW SYNONYM DETECTED: {'pandaroo': 'pandora'}
+2025-08-26 00:06:17,026 - INFO - [INFO] NEW SYNONYM DETECTED: {'vegeta': 'podravka'}
+2025-08-26 00:06:17,053 - INFO - [INFO] NEW SYNONYM DETECTED: {'double phoenix': 'double pheonix'}
+2025-08-26 00:06:17,073 - INFO - [INFO] NEW SYNONYM DETECTED: {'pigeon': 'pigeon brand'}
+2025-08-26 00:06:17,098 - INFO - [INFO] NEW SYNONYM DETECTED: {'ssm': 'ssm pure'}
+2025-08-26 00:06:17,120 - INFO - [INFO] NEW SYNONYM DETECTED: {'galaxy': 'mars'}
+2025-08-26 00:06:17,143 - INFO - [INFO] NEW SYNONYM DETECTED: {"o'food": 'ofood'}
+2025-08-26 00:06:17,171 - INFO - [INFO] NEW SYNONYM DETECTED: {'walkers': 'monster munch'}
+2025-08-26 00:06:17,196 - INFO - [INFO] NEW SYNONYM DETECTED: {'mama': 'amoy'}
+2025-08-26 00:06:17,222 - INFO - [INFO] NEW SYNONYM DETECTED: {'hot kids': 'want want'}
+2025-08-26 00:06:17,248 - INFO - [INFO] NEW SYNONYM DETECTED: {"rowntree's": 'rowntree'}
+2025-08-26 00:06:17,274 - INFO - [INFO] NEW SYNONYM DETECTED: {'pan': 'p.a.n'}
+2025-08-26 00:06:17,299 - INFO - [INFO] NEW SYNONYM DETECTED: {'sonora': 'sonora foods'}
+2025-08-26 00:06:17,329 - INFO - [INFO] NEW SYNONYM DETECTED: {'mount franklin': 'mt. franklin'}
+2025-08-26 00:06:17,351 - INFO - [INFO] NEW SYNONYM DETECTED: {'monster energy': 'monster'}
+2025-08-26 00:06:17,370 - INFO - [INFO] NEW SYNONYM DETECTED: {'pepsi max': 'pepsi'}
+2025-08-26 00:06:17,389 - INFO - [INFO] NEW SYNONYM DETECTED: {'v energy': 'v'}
+2025-08-26 00:06:17,421 - INFO - [INFO] NEW SYNONYM DETECTED: {'barnes and brown': 'barnes & brown'}
+2025-08-26 00:06:17,446 - INFO - [INFO] NEW SYNONYM DETECTED: {'boss': 'boss coffee'}
+2025-08-26 00:06:17,469 - INFO - [INFO] NEW SYNONYM DETECTED: {'fever-tree': 'fever tree'}
+2025-08-26 00:06:17,491 - INFO - [INFO] NEW SYNONYM DETECTED: {'passiona': 'schweppes'}
+2025-08-26 00:06:17,519 - INFO - [INFO] NEW SYNONYM DETECTED: {'mother': 'mother energy'}
+2025-08-26 00:06:17,548 - INFO - [INFO] NEW SYNONYM DETECTED: {'oxyshred': 'ehplabs'}
+2025-08-26 00:06:17,573 - INFO - [INFO] NEW SYNONYM DETECTED: {'carlton': 'carlton zero'}
+2025-08-26 00:06:17,593 - INFO - [INFO] NEW SYNONYM DETECTED: {'great northern brewing co': 'great northern brewing co.'}
+2025-08-26 00:06:17,613 - INFO - [INFO] NEW SYNONYM DETECTED: {'wynns': 'wynns coonawarra estate'}
+2025-08-26 00:06:17,634 - INFO - [INFO] NEW SYNONYM DETECTED: {"mcwilliam's wines": "mcwilliam's"}
+2025-08-26 00:06:17,656 - INFO - [INFO] NEW SYNONYM DETECTED: {"hawke's brewing co": "hawke's brewing co."}
+2025-08-26 00:06:17,680 - INFO - [INFO] NEW SYNONYM DETECTED: {'1800': '1800 tequila'}
+2025-08-26 00:06:17,712 - INFO - [INFO] NEW SYNONYM DETECTED: {'kirin': 'kirin ichiban'}
+2025-08-26 00:06:17,739 - INFO - [INFO] NEW SYNONYM DETECTED: {'yak ales': 'fat yak brewing'}
+2025-08-26 00:06:17,770 - INFO - [INFO] NEW SYNONYM DETECTED: {'calabria family wines': 'calabria'}
+2025-08-26 00:06:17,795 - INFO - [INFO] NEW SYNONYM DETECTED: {'colpasso': 'squealing pig'}
+2025-08-26 00:06:17,817 - INFO - [INFO] NEW SYNONYM DETECTED: {'georg jensen': 'georg jensen hallmark'}
+2025-08-26 00:06:17,841 - INFO - [INFO] NEW SYNONYM DETECTED: {'sierra': 'sierra tequila'}
+2025-08-26 00:06:17,859 - INFO - [INFO] NEW SYNONYM DETECTED: {'the kraken': 'kraken'}
+2025-08-26 00:06:17,884 - INFO - [INFO] NEW SYNONYM DETECTED: {'tresemme': 'tresemmé'}
+2025-08-26 00:06:17,912 - INFO - [INFO] NEW SYNONYM DETECTED: {'schwarzkopf': 'extra'}
+2025-08-26 00:06:17,937 - INFO - [INFO] NEW SYNONYM DETECTED: {"burt's bees": 'burts bees'}
+2025-08-26 00:06:17,962 - INFO - [INFO] NEW SYNONYM DETECTED: {"lucas' papaw remedies": "lucas'"}
+2025-08-26 00:06:17,988 - INFO - [INFO] NEW SYNONYM DETECTED: {"plunkett's": "plunkett's pure aloe vera"}
+2025-08-26 00:06:18,011 - INFO - [INFO] NEW SYNONYM DETECTED: {"l'oreal paris": "l'oréal"}
+2025-08-26 00:06:18,035 - INFO - [INFO] NEW SYNONYM DETECTED: {"l'oreal": "l'oréal"}
+2025-08-26 00:06:18,057 - INFO - [INFO] NEW SYNONYM DETECTED: {'napro palette': 'napro'}
+2025-08-26 00:06:18,088 - INFO - [INFO] NEW SYNONYM DETECTED: {'cottons': 'cottons organic'}
+2025-08-26 00:06:18,110 - INFO - [INFO] NEW SYNONYM DETECTED: {'thankyou.': 'thankyou'}
+2025-08-26 00:06:18,133 - INFO - [INFO] NEW SYNONYM DETECTED: {'gillette': 'venus'}
+2025-08-26 00:06:18,154 - INFO - [INFO] NEW SYNONYM DETECTED: {'fudge professional': 'fudge'}
+2025-08-26 00:06:18,175 - INFO - [INFO] NEW SYNONYM DETECTED: {'oc naturals': 'organic care'}
+2025-08-26 00:06:18,205 - INFO - [INFO] NEW SYNONYM DETECTED: {'australian botanical soap': 'australian botanical'}
+2025-08-26 00:06:18,240 - INFO - [INFO] NEW SYNONYM DETECTED: {'pro:voke': 'provoke'}
+2025-08-26 00:06:18,270 - INFO - [INFO] NEW SYNONYM DETECTED: {'toni & guy': 'toni&guy'}
+2025-08-26 00:06:18,296 - INFO - [INFO] NEW SYNONYM DETECTED: {'piksters': 'supergrip'}
+2025-08-26 00:06:18,324 - INFO - [INFO] NEW SYNONYM DETECTED: {'imperial leather': 'cussons'}
+2025-08-26 00:06:18,349 - INFO - [INFO] NEW SYNONYM DETECTED: {'bull dog': 'bulldog skincare'}
+2025-08-26 00:06:18,370 - INFO - [INFO] NEW SYNONYM DETECTED: {'tom organic': 'tom'}
+2025-08-26 00:06:18,396 - INFO - [INFO] NEW SYNONYM DETECTED: {'gullon': 'gullón'}
+2025-08-26 00:06:18,425 - INFO - [INFO] NEW SYNONYM DETECTED: {'imodium': 'imodium rx'}
+2025-08-26 00:06:18,448 - INFO - [INFO] NEW SYNONYM DETECTED: {'salts & co.': 'salt & co'}
+2025-08-26 00:06:18,473 - INFO - [INFO] NEW SYNONYM DETECTED: {'bar counter': 'the bar counter'}
+2025-08-26 00:06:18,500 - INFO - [INFO] NEW SYNONYM DETECTED: {'pana': 'pana organic'}
+2025-08-26 00:06:18,529 - INFO - [INFO] NEW SYNONYM DETECTED: {'sweet william': 'sweet william chocolate'}
+2025-08-26 00:06:18,557 - INFO - [INFO] NEW SYNONYM DETECTED: {'coloxyl & senna': 'coloxyl'}
+2025-08-26 00:06:18,581 - INFO - [INFO] NEW SYNONYM DETECTED: {'deep heat': 'mentholatum'}
+2025-08-26 00:06:18,603 - INFO - [INFO] NEW SYNONYM DETECTED: {'four seasons': '4 seasons'}
+2025-08-26 00:06:18,625 - INFO - [INFO] NEW SYNONYM DETECTED: {'duro tuss': 'duro-tuss'}
+2025-08-26 00:06:18,646 - INFO - [INFO] NEW SYNONYM DETECTED: {'durotuss': 'duro-tuss'}
+2025-08-26 00:06:18,669 - INFO - [INFO] NEW SYNONYM DETECTED: {'vileda': 'ansell'}
+2025-08-26 00:06:18,695 - INFO - [INFO] NEW SYNONYM DETECTED: {"selley's": 'selleys'}
+2025-08-26 00:06:18,723 - INFO - [INFO] NEW SYNONYM DETECTED: {'easy off': 'easy-off'}
+2025-08-26 00:06:18,760 - INFO - [INFO] NEW SYNONYM DETECTED: {'botanica': 'air wick'}
+2025-08-26 00:06:18,786 - INFO - [INFO] NEW SYNONYM DETECTED: {'sard wonder': 'sard'}
+2025-08-26 00:06:18,818 - INFO - [INFO] NEW SYNONYM DETECTED: {'cavalier': 'cavalier bremworth'}
+2025-08-26 00:06:18,843 - INFO - [INFO] NEW SYNONYM DETECTED: {'liquid-plumr': 'clorox'}
+2025-08-26 00:06:18,867 - INFO - [INFO] NEW SYNONYM DETECTED: {'cove': 'earth choice'}
+2025-08-26 00:06:18,890 - INFO - [INFO] NEW SYNONYM DETECTED: {'scotchgard': '3m'}
+2025-08-26 00:06:18,913 - INFO - [INFO] NEW SYNONYM DETECTED: {'drano': 'mr muscle'}
+2025-08-26 00:06:18,942 - INFO - [INFO] NEW SYNONYM DETECTED: {'earth tiger': 'anchor tiger'}
+2025-08-26 00:06:18,964 - INFO - [INFO] NEW SYNONYM DETECTED: {'antex': 'david grays'}
+2025-08-26 00:06:18,992 - INFO - [INFO] NEW SYNONYM DETECTED: {'huggies': 'drynites'}
+2025-08-26 00:06:19,020 - INFO - [INFO] NEW SYNONYM DETECTED: {"bellamy's organic": "bellamy's"}
+2025-08-26 00:06:19,046 - INFO - [INFO] NEW SYNONYM DETECTED: {'karicare': 'nutricia'}
+2025-08-26 00:06:19,066 - INFO - [INFO] NEW SYNONYM DETECTED: {'nan': 'nestlé'}
+2025-08-26 00:06:19,092 - INFO - [INFO] NEW SYNONYM DETECTED: {'purina one': 'purina'}
+2025-08-26 00:06:19,118 - INFO - [INFO] NEW SYNONYM DETECTED: {'fancy feast': 'purina'}
+2025-08-26 00:06:19,145 - INFO - [INFO] NEW SYNONYM DETECTED: {'breeders choice': "breeder's choice"}
+2025-08-26 00:06:19,164 - INFO - [INFO] NEW SYNONYM DETECTED: {'fresh pet food co': 'macro'}
+2025-08-26 00:06:19,185 - INFO - [INFO] NEW SYNONYM DETECTED: {'v.i.p.': 'v.i.p. petfoods'}
+2025-08-26 00:06:19,208 - INFO - [INFO] NEW SYNONYM DETECTED: {"love 'em": "love'em"}
+2025-08-26 00:06:19,239 - INFO - [INFO] NEW SYNONYM DETECTED: {"world's best": "world's best cat litter"}
+2025-08-26 00:06:19,268 - INFO - [INFO] NEW SYNONYM DETECTED: {'felix': 'purina'}
+2025-08-26 00:06:19,293 - INFO - [INFO] NEW SYNONYM DETECTED: {'fussy cat': 'v.i.p. petfoods'}
+2025-08-26 00:06:19,315 - INFO - [INFO] NEW SYNONYM DETECTED: {'vip': 'v.i.p. petfoods'}
+2025-08-26 00:06:19,341 - INFO - [INFO] NEW SYNONYM DETECTED: {'friskies': 'purina'}
+2025-08-26 00:06:19,362 - INFO - [INFO] NEW SYNONYM DETECTED: {'total care': 'purina'}
+2025-08-26 00:06:19,384 - INFO - [INFO] NEW SYNONYM DETECTED: {'ultimates indulge': 'ultimates'}
+2025-08-26 00:06:19,406 - INFO - [INFO] NEW SYNONYM DETECTED: {'paws fresh': 'v.i.p. petfoods'}
+2025-08-26 00:06:19,436 - INFO - [INFO] NEW SYNONYM DETECTED: {'lucky dog': 'purina'}
+2025-08-26 00:06:19,459 - INFO - [INFO] NEW SYNONYM DETECTED: {'the paw grocer': 'paw grocer'}
+2025-08-26 00:06:19,489 - INFO - [INFO] NEW SYNONYM DETECTED: {'supercoat': 'purina'}
+2025-08-26 00:06:19,520 - INFO - [INFO] NEW SYNONYM DETECTED: {'fibre cycle': 'back 2 nature'}
+2025-08-26 00:06:19,544 - INFO - [INFO] NEW SYNONYM DETECTED: {'maseur': 'footcare'}
+2025-08-26 00:06:19,577 - INFO - [INFO] NEW SYNONYM DETECTED: {'hot hands': 'hothands'}
+2025-08-26 00:06:19,602 - INFO - [INFO] NEW SYNONYM DETECTED: {'armada': 'multix'}
