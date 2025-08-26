@@ -1,5 +1,6 @@
 from api.utils.synonym_utils.handle_barcode_match import handle_barcode_match
 from products.models import Product, Price
+from api.utils.database_updating_utils import handle_name_variations
 
 def batch_create_new_products(command, consolidated_data: dict):
     """
@@ -40,8 +41,9 @@ def batch_create_new_products(command, consolidated_data: dict):
         barcode = product_details.get('barcode')
         if barcode and barcode in barcode_cache:
             product = barcode_cache[barcode]
-            # When a barcode match is found, check for potential brand synonyms.
+            # When a barcode match is found, check for potential brand synonyms and name variations.
             handle_barcode_match(product_details, product)
+            handle_name_variations(product_details, product)
 
         # Tier 2: Match by Store Product ID
         if not product:
