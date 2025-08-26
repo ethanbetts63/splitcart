@@ -12,6 +12,7 @@ from api.utils.management_utils.synonym_tool import (
     append_unsure_match,
     append_rule_based_match,
 )
+from api.utils.management_utils.generated_synonym_reader import read_generated_synonyms
 from products.models import Product
 
 import csv
@@ -40,9 +41,22 @@ def read_rule_based_matches():
 class Command(BaseCommand):
     help = 'Interactively create conditional brand rules from a list of potential matches.'
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--generated',
+            action='store_true',
+            help='Review synonyms from the auto-generated file instead of the rule-based matches CSV.',
+        )
+
     def handle(self, *args, **options):
         brand_rules = load_brand_rules()
-        rule_based_matches = read_rule_based_matches()
+        
+        if options['generated']:
+            self.stdout.write(self.style.SUCCESS("Loading synonyms from auto-generated file..."))
+            matches_to_process = read_generated_synonyms()
+        else:
+            self.stdout.write(self.style.SUCCESS("Loading synonyms from rule-based matches file..."))
+            matches_to_process = read_rule_based_matches()
 
         # Load existing decisions to avoid re-processing
         processed_synonyms = load_existing_synonyms()
@@ -56,7 +70,7 @@ class Command(BaseCommand):
             processed_rule_pairs.add(tuple(sorted(rule["brands"])))
 
         matches_to_review = []
-        for brand1, brand2 in rule_based_matches:
+        for brand1, brand2 in matches_to_process:
             # Check if already processed as a simple synonym
             if brand1 in processed_synonyms or brand2 in processed_synonyms:
                 continue
@@ -70,7 +84,7 @@ class Command(BaseCommand):
             matches_to_review.append((brand1, brand2))
 
         if not matches_to_review:
-            self.stdout.write(self.style.SUCCESS("No new rule-based matches to review."))
+            self.stdout.write(self.style.SUCCESS("No new matches to review."))
             return
 
         self.stdout.write(self.style.SUCCESS(f"Starting brand rule creation tool. {len(matches_to_review)} pairs to review."))
