@@ -91,7 +91,8 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
         if size_parts:
             package_size_str = " ".join(size_parts)
 
-        cleaned_barcode = clean_barcode(product.get('barcode'), product.get('sku'))
+        # cleaned_barcode = clean_barcode(product.get('barcode'), product.get('sku'))
+        cleaned_barcode = "TEST_BARCODE"
 
         clean_product = {
             "product_id_store": product.get('sku'),
