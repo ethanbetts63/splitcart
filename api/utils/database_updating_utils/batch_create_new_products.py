@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from api.utils.synonym_utils.handle_barcode_match import handle_barcode_match
 from api.utils.database_updating_utils.handle_name_variations import handle_name_variations
 from products.models import Product, Price
@@ -93,7 +94,42 @@ def batch_create_new_products(command, consolidated_data: dict):
 
         if new_product_objects:
             command.stdout.write(f"Creating {len(new_product_objects)} new unique products...")
-            Product.objects.bulk_create(new_product_objects, batch_size=999)
+            try:
+                Product.objects.bulk_create(new_product_objects, batch_size=999)
+            except IntegrityError as e:
+                command.stderr.write(command.style.ERROR(f'--- DEBUG: Bulk create failed. Error: {e} ---'))
+                command.stderr.write(command.style.ERROR('--- DEBUG: Finding the exact conflicting product (without new DB queries)... ---'))
+                
+                if 'products_product.barcode' in str(e):
+                    # Get barcodes that were already in the DB at the start
+                    existing_barcodes = set(barcode_cache.keys())
+                    
+                    # First, check if any of the "new" products have a barcode that already existed.
+                    offender_found = False
+                    for product_obj in new_product_objects:
+                        if product_obj.barcode in existing_barcodes:
+                            command.stderr.write(command.style.ERROR('--- DEBUG: CONFLICT FOUND ---'))
+                            command.stderr.write(f'  - This product\'s barcode already exists in the database.')
+                            command.stderr.write(f'  - Name: {product_obj.name}')
+                            command.stderr.write(f'  - Barcode: {product_obj.barcode}')
+                            offender_found = True
+                            break
+                    
+                    # If not, the conflict must be a duplicate barcode within the new batch itself.
+                    if not offender_found:
+                        command.stderr.write(command.style.ERROR('--- DEBUG: Conflict is a duplicate barcode within this batch ---'))
+                        seen_barcodes_in_batch = set()
+                        for product_obj in new_product_objects:
+                            if product_obj.barcode in seen_barcodes_in_batch:
+                                command.stderr.write(command.style.ERROR('--- DEBUG: CONFLICT FOUND ---'))
+                                command.stderr.write(f'  - This product has a barcode that is duplicated earlier in this same batch.')
+                                command.stderr.write(f'  - Name: {product_obj.name}')
+                                command.stderr.write(f'  - Barcode: {product_obj.barcode}')
+                                break
+                            if product_obj.barcode:
+                                seen_barcodes_in_batch.add(product_obj.barcode)
+
+                raise e # Re-raise the exception to halt the script as before
             
             # --- Step 4: Refresh cache with newly created products ---
             command.stdout.write("Refreshing cache with newly created products...")
