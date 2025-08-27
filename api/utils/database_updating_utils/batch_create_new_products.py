@@ -1,3 +1,5 @@
+from api.utils.synonym_utils.bulk_save_synonyms import bulk_save_synonyms
+from api.utils.database_updating_utils.create_update_name_variation_hotlist import bulk_add_to_hotlist
 from api.utils.synonym_utils.handle_barcode_match import handle_barcode_match
 from api.utils.database_updating_utils.handle_name_variations import handle_name_variations
 from products.models import Product, Price
@@ -32,8 +34,18 @@ def batch_create_new_products(command, consolidated_data: dict):
     product_lookup_cache = {}  # This is the final cache we will return
     products_to_create_data = []  # Store tuples of (key, data) for new products
     
+    # In-memory collectors for new discoveries
+    newly_discovered_synonyms = {}
+    new_hotlist_entries = []
+
+    total_products = len(consolidated_data)
+    processed_count = 0
     command.stdout.write("Identifying existing vs. new products...")
+    
     for key, data in consolidated_data.items():
+        processed_count += 1
+        command.stdout.write(f'\r  Processed {processed_count}/{total_products} products...', ending='')
+
         product = None
         product_details = data['product_details']
         
@@ -42,8 +54,13 @@ def batch_create_new_products(command, consolidated_data: dict):
         if barcode and barcode in barcode_cache:
             product = barcode_cache[barcode]
             # When a barcode match is found, check for potential brand synonyms and name variations.
-            handle_barcode_match(product_details, product)
-            handle_name_variations(product_details, product, data['company_name'])
+            new_synonym = handle_barcode_match(product_details, product)
+            if new_synonym:
+                newly_discovered_synonyms.update(new_synonym)
+            
+            hotlist_entry = handle_name_variations(product_details, product, data['company_name'])
+            if hotlist_entry:
+                new_hotlist_entries.append(hotlist_entry)
 
         # Tier 2: Match by Store Product ID
         if not product:
@@ -62,6 +79,13 @@ def batch_create_new_products(command, consolidated_data: dict):
             product_lookup_cache[key] = product
         else:
             products_to_create_data.append((key, data))
+
+    command.stdout.write('') # Newline after progress indicator
+
+    # --- After the loop, perform bulk saves ---
+    bulk_save_synonyms(newly_discovered_synonyms)
+    bulk_add_to_hotlist(new_hotlist_entries)
+    command.stdout.write(f"Saved {len(newly_discovered_synonyms)} new brand synonyms and {len(new_hotlist_entries)} new name variations.")
 
     # --- Step 3: Batch create new products ---
     if products_to_create_data:
@@ -92,7 +116,6 @@ def batch_create_new_products(command, consolidated_data: dict):
                 seen_normalized_strings.add(normalized_string)
 
         if new_product_objects:
-            command.stdout.write(f"Creating {len(new_product_objects)} new unique products...")
             command.stdout.write(f"Creating {len(new_product_objects)} new unique products...")
             Product.objects.bulk_create(new_product_objects, batch_size=999)
             

@@ -1,19 +1,11 @@
 from api.utils.synonym_utils.load_synonyms import load_synonyms
-from api.utils.synonym_utils.save_synonym import save_synonym
-
 def handle_barcode_match(incoming_product_details, existing_product):
     """
-    When a barcode match is found, this function compares the brands,
-    and if they are different, it creates a new synonym.
+    When a barcode match is found, this function compares the brands.
+    If they are different and not already known, it returns a new synonym pair.
     """
     incoming_brand = incoming_product_details.get('brand', '')
-    incoming_barcode = incoming_product_details.get('barcode', '')
     existing_brand = existing_product.brand
-    existing_barcode = existing_product.barcode
-
-    # Do not generate synonyms for products with "notfound" barcodes.
-    if incoming_barcode == 'notfound' or existing_barcode == 'notfound':
-        return
 
     # For a consistent comparison, we clean the brand names by making them lowercase
     # and stripping leading/trailing whitespace.
@@ -21,19 +13,20 @@ def handle_barcode_match(incoming_product_details, existing_product):
     cleaned_existing_brand = str(existing_brand).lower().strip()
 
     if not cleaned_incoming_brand or not cleaned_existing_brand:
-        return
+        return None
 
     if cleaned_incoming_brand != cleaned_existing_brand:
         all_synonyms = load_synonyms()
         
-        # Check for existing synonyms using the clean brand names
-        if cleaned_incoming_brand in all_synonyms or cleaned_incoming_brand in all_synonyms.values():
-            return
+        # Check if this relationship is already known.
+        if cleaned_incoming_brand in all_synonyms and all_synonyms[cleaned_incoming_brand] == cleaned_existing_brand:
+            return None
+        if cleaned_existing_brand in all_synonyms and all_synonyms[cleaned_existing_brand] == cleaned_incoming_brand:
+            return None
+        if cleaned_incoming_brand == cleaned_existing_brand:
+            return None
 
-        if cleaned_existing_brand in all_synonyms:
-            return
-
-        # Create the final synonym pair
-        new_synonym = {cleaned_incoming_brand: cleaned_existing_brand}
-        
-        save_synonym(new_synonym)
+        # Return the new synonym pair to be collected.
+        return {cleaned_incoming_brand: cleaned_existing_brand}
+    
+    return None

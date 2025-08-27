@@ -28,3 +28,15 @@ def clear_hotlist():
     """Clears all entries from the hotlist."""
     with open(HOTLIST_PATH, 'w') as f:
         json.dump([], f)
+
+def bulk_add_to_hotlist(new_entries: list):
+    """
+    Adds a list of new variations to the hotlist in a single batch operation.
+    """
+    if not new_entries:
+        return
+        
+    hotlist = read_hotlist()
+    hotlist.extend(new_entries)
+    with open(HOTLIST_PATH, 'w') as f:
+        json.dump(hotlist, f, indent=4)
