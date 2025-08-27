@@ -48,3 +48,5 @@ We are currently at a logical impasse.
 1.  **The Error**: The `update_db` command is failing because multiple new products from the IGA scraper have the barcode `'notfound'`, which violates the database's `UNIQUE` constraint.
 2.  **The Code**: The `clean_raw_data_iga.py` script, which processes the IGA data, correctly calls the `clean_barcode()` utility. The `clean_barcode()` utility is correctly written to find the string `'notfound'` and convert it into a `None` value. A `None` value would be ignored by the `UNIQUE` constraint and would not cause this error.
 3.  **The Contradiction**: The code we are looking at shows that it's impossible for the string `'notfound'` to be passed to the database, yet the error proves that it is happening. Given that you have confirmed the bytecode cache (`__pycache__`) was also cleared, the reason for this discrepancy between the code's logic and its runtime behavior is currently unknown.
+
+i think i've fixed this now. I changed an import to be explicit and it seems to be working. 
