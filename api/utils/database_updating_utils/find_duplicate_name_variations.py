@@ -36,9 +36,8 @@ def find_duplicates_from_hotlist(hotlist):
             })
 
         except Product.DoesNotExist:
-            # This can happen if a product was already merged or deleted in the same run. Safe to ignore.
-            print(f"Could not find one or both products for variation: {item}. Skipping.")
             continue
+        
         except Product.MultipleObjectsReturned:
             print(f"Found multiple products for variation: {item}. This indicates a deeper data issue. Skipping.")
             continue
