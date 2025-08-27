@@ -43,7 +43,7 @@ def batch_create_new_products(command, consolidated_data: dict):
             product = barcode_cache[barcode]
             # When a barcode match is found, check for potential brand synonyms and name variations.
             handle_barcode_match(product_details, product)
-            handle_name_variations(product_details, product)
+            handle_name_variations(product_details, product, data['company_name'])
 
         # Tier 2: Match by Store Product ID
         if not product:

@@ -18,13 +18,12 @@ This document outlines the plan to implement a robust data reconciliation and na
 ---
 
 **Files to be Created:**
-- `C:\Users\ethan\coding\splitcart\api\data\product_name_translation_table.py` (autocreated by util)
-- `C:\Users\ethan\coding\splitcart\api\data\name_variation_hotlist.json` (autocreated by util)
-- `C:\Users\ethan\coding\splitcart\api\utils\database_updating_utils\merge_duplicate_products.py`
-- `C:\Users\ethan\coding\splitcart\api\utils\database_updating_utils\create_update_product_name_translation_table.py
-- `C:\Users\ethan\coding\splitcart\api\utils\database_updating_utils\create_update_name_variation_hotlist.py
-- `C:\Users\ethan\coding\splitcart\api\utils\database_updating_utils\find_duplicate_name_variations.py
-- 
+- `C:\Users\ethan\coding\splitcart\api\data\product_name_translation_table.py` (autocreated by util) - **(Utility created)**
+- `C:\Users\ethan\coding\splitcart\api\data\name_variation_hotlist.json` (autocreated by util) - **(Utility created)**
+- `C:\Users\ethan\coding\splitcart\api\utils\database_updating_utils\merge_duplicate_products.py` - **(DONE)**
+- `C:\Users\ethan\coding\splitcart\api\utils\database_updating_utils\create_update_product_name_translation_table.py` - **(DONE)**
+- `C:\Users\ethan\coding\splitcart\api\utils\database_updating_utils\create_update_name_variation_hotlist.py` - **(DONE)**
+- `C:\Users\ethan\coding\splitcart\api\utils\database_updating_utils\find_duplicate_name_variations.py` - **(DONE)**
 
 files to be edited: 
 - C:\Users\ethan\coding\splitcart\api\utils\database_updating_utils we are entirely working in here. 

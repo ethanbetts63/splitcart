@@ -49,6 +49,11 @@ class Product(models.Model):
         symmetrical=True,
         help_text="Optional: Other products that can be used as substitutes."
     )
+    name_variations = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="A list of (name, store) tuples for discovered name variations."
+    )
     size_variants = models.ManyToManyField(
         'self',
         blank=True,
