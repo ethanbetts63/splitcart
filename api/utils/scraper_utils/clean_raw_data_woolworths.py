@@ -3,7 +3,7 @@ from datetime import datetime
 from api.utils.normalization_utils.get_extracted_sizes import get_extracted_sizes
 from api.utils.normalization_utils.get_normalized_string import get_normalized_string
 from .wrap_cleaned_products import wrap_cleaned_products
-from .clean_barcode import clean_barcode
+from ..normalization_utils.clean_barcode import clean_barcode
 
 
 def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, timestamp: datetime) -> dict:

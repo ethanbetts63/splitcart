@@ -1,5 +1,4 @@
 import re
-from api.utils.normalization_utils.extract_sizes import extract_sizes
 
 def get_cleaned_name(name, brand, sizes):
     name_to_clean = name
