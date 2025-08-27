@@ -2,9 +2,7 @@ import requests
 import json
 import time
 import random
-import os
 from datetime import datetime
-from django.utils.text import slugify
 from api.utils.scraper_utils.clean_raw_data_iga import clean_raw_data_iga
 from api.utils.scraper_utils.get_iga_categories import get_iga_categories
 from api.utils.scraper_utils.jsonl_writer import JsonlWriter

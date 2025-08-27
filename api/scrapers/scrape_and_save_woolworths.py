@@ -1,7 +1,5 @@
 import requests
 import json
-import time
-import random
 from datetime import datetime
 from django.utils.text import slugify
 from api.utils.scraper_utils.clean_raw_data_woolworths import clean_raw_data_woolworths
