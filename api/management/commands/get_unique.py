@@ -16,14 +16,35 @@ class Command(BaseCommand):
             action='store_true',
             help='Get all normalized strings.'
         )
+        parser.add_argument(
+            '--barcodes',
+            action='store_true',
+            help='Get unique barcodes.'
+        )
 
     def handle(self, *args, **options):
         if options['brands']:
             self.get_unique_brands()
         elif options['normalized']:
             self.get_normalized_strings()
+        elif options['barcodes']:
+            self.get_unique_barcodes()
         else:
-            self.stdout.write(self.style.ERROR("Please specify either --brands or --normalized."))
+            self.stdout.write(self.style.ERROR("Please specify either --brands, --normalized, or --barcodes."))
+
+    def get_unique_barcodes(self):
+        self.stdout.write("Getting unique barcodes...")
+        # Using .values_list() and .distinct() is efficient
+        barcodes = Product.objects.values_list('barcode', flat=True).distinct()
+
+        output_file = os.path.join('unique_barcodes.txt')
+
+        with open(output_file, 'w', encoding='utf-8') as f:
+            for barcode in barcodes:
+                if barcode: # Filter out None or empty strings
+                    f.write(f"{barcode}\n")
+
+        self.stdout.write(self.style.SUCCESS(f"Successfully wrote unique barcodes to {output_file}"))
 
     def get_unique_brands(self):
         self.stdout.write("Getting unique brands with example products...")
