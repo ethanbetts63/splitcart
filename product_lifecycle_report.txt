@@ -1,96 +1,94 @@
-========================================
-Product Data Processing Lifecycle Report
-========================================
+  ### Core Responsibilities of the Database Update Process
 
-This document outlines the step-by-step journey of a single product record, from initial scraping to its final state in the database after the `update_db` command is run.
-
----
-### Phase 1: Scrape & Normalize (The "Scrapers")
----
-This phase happens *before* the `update_db` command is run. It is responsible for gathering and pre-processing the data.
-
-**Step 1: Fetch Raw Data**
-- A scraper script (e.g., `scrape_and_save_coles.py`) is run for a specific company.
-- It fetches the raw product data directly from the store's website or API.
-
-**Step 2: Clean and Normalize Data**
-- The scraper passes the raw data to a dedicated "cleaner" utility.
-- This utility performs the critical data cleaning and normalization tasks to generate the `normalized_name_brand_size` string. The original raw product `name` is never modified. The process is:
-  a) Calling `get_extracted_sizes` to standardize size information.
-  b) Using `get_cleaned_name` on a copy of the product's name to create a temporary, cleaned version (this removes brand and size info).
-  c) Using `get_normalized_string`, which takes the cleaned name from the step above, to generate the final `normalized_name_brand_size` string.
-
-**Step 3: Save to Inbox**
-- The scraper takes the original raw data and adds the newly generated `normalized_name_brand_size` to it.
-- This complete record is then saved as a line in a `.jsonl` file in the `api/data/product_inbox/` directory.
+  Here is a step-by-step breakdown of the system's current
+  functionality, from reading the inbox files to the final cleanup:
 
 
----
-### Phase 2: Data Transfer (`update_db` command begins)
----
-This phase begins when `python manage.py update_db --products` is executed. Its primary role is to transfer the pre-processed data from the files into the database.
-
-**Step 4: Read Pre-processed File**
-- The system opens a single `.jsonl` file from the `product_inbox`.
-- It reads the file line by line. Each line contains the product data, including the **pre-calculated** normalized string from Phase 1.
-
-**Step 5: Check for Existing Product in Database**
-- For each product record from the file, the system checks for a match against existing database products using a three-tier priority system:
-  **Tier 1 (Highest Priority): Barcode**
-  - It first checks for an existing product with the same `barcode`.
-
-  **Tier 2: Store-Specific ID**
-  - If no match is found, it then checks for an existing product with the same `store_product_id` from that specific `store_id`.
-
-  **Tier 3 (Fallback): Normalized String**
-  - If still no match is found, it finally checks for an existing product with the same pre-calculated `normalized_name_brand_size` string.
-
-**Step 6: New Product vs. Existing Product**
-- **If NO match is found:** The system determines this is a new product. It creates a `Product` object, copying the data directly from the file record (including the `name`, `brand`, `barcode`, and the pre-calculated `normalized_name_brand_size`). This new product is then added to a list for bulk creation.
-- **If a match IS found (primarily by barcode):** The system determines it's dealing with a potential variation of an existing product. This triggers the Name Variation workflow.
+  1. Data Aggregation & In-Memory Consolidation
+  *   It reads one .jsonl file from the inbox at a time.
+  *   It processes the file line-by-line, consolidating multiple scraped
+   entries for the same product (identified by barcode or name) into a
+  single, more complete in-memory object. This happens *before* any
+  database checks.
+  *   It collects all associated price points, name variations, and
+  other details for each unique product within that file.
 
 
----
-### Phase 3: Name Variation Handling
----
-This phase is triggered only when an incoming product from a file shares a barcode with a product already in the database.
-
-**Step 7: Compare Names**
-- The system compares the `name` of the incoming product with the `name` of the existing product found in the database.
-
-**Step 8: Decision: Same Name or Different Name?**
-- **If names are the same:** The system assumes it's the identical product. It creates a new `Price` record and attaches it to the *existing* `Product` record.
-- **If names are different:** This is flagged as a "name variation".
-
-**Step 9: Update and Flag for Cleanup**
-- The incoming product's name is added to the `name_variations` list (a JSON field) on the *existing* canonical product record.
-- A "hotlist entry" is created and saved to the `name_variation_hotlist.json` file, flagging it for the next phase.
-
-**Step 10: Bulk Create New Products**
-- After checking all products in the file, the system takes the list of new products generated in Step 6 and creates them in the database in a single, efficient `bulk_create` operation.
+  2. Database State Caching
+  *   Before checking for products, it pre-fetches and caches critical
+  database information for fast, in-memory lookups. This includes:
+         Barcode Cache*: A dictionary mapping every existing barcode to
+  its Product object.
+         Store Product ID Cache*: A dictionary mapping (store_id,
+  store_product_id) tuples to their Product objects.
+         Normalized String Cache*: A dictionary mapping
+  normalized_name_brand_size strings to their Product objects.
 
 
----
-### Phase 4: Post-Update Reconciliation & Merging
----
-This phase begins only after **all** `.jsonl` files in the inbox have been processed through Phases 2-3.
-
-**Step 11: Read the Hotlist**
-- The system reads the entire `name_variation_hotlist.json` file.
-
-**Step 12: Conflict Resolution & Merging**
-- The system iterates through the hotlist, checks for barcode conflicts, and merges the valid duplicate pairs. This involves moving `Price` records and deleting the redundant `Product` record.
-
-**Step 13: Clear the Hotlist**
-- The `name_variation_hotlist.json` file is cleared out, ready for the next run.
+  3. Product Matching & Resolution (The 3-Tier System)
+  *   For each consolidated product from the inbox file, it attempts to
+  find a match in the database using the caches, in this specific order
+  of priority:
+         Tier 1 (Highest):* By barcode.
+         Tier 2:* By (store_id, store_product_id).
+         Tier 3 (Fallback):* By normalized_name_brand_size.
 
 
----
-### Phase 5: Regenerating the (Unused) Translation Table
----
-This is the final step of the entire process.
+  4. Entity State Management
+     For Existing Products:* If a match is found, it identifies the
+  incoming data as an update to an existing Product.
+     For New Products:* If no match is found after checking all three
+  tiers, it identifies the incoming data as a completely new Product.
 
-**Step 14: Build and Write the Table**
-- The system queries the database, reads the `name_variations` fields, and builds the `PRODUCT_NAME_TRANSLATIONS` dictionary.
-- It overwrites the `product_name_translation_table.py` file.
-- **Note:** this generated table is not used by any part of the `update_db` process. Its intended use would be by the scraper cleaners (Phase 1) on subsequent runs.
+
+  5. Name Variation & Synonym Handling
+     Detection:* When a barcode match occurs (Tier 1), it specifically
+  checks if the incoming brand or name differs from the existing
+  product's data.
+     Updating the Product:* If a name variation is found, it appends the
+   new (name, company) tuple to the name_variations list on the existing
+   Product object.
+     Hotlist Logging:* It creates an entry in the
+  name_variation_hotlist.json file, recording the canonical name, the
+  new variation, and the shared barcode. This flags the event for later
+  reconciliation.
+     Synonym Discovery:* It performs a similar check for brand names and
+   logs potential brand synonyms separately.
+
+
+  6. Batch Database Operations
+  *   The system does not perform database writes one-by-one. It
+  collects all changes in memory first.
+  *   It creates lists of new Product objects, new Price objects, and
+  new category relationships.
+  *   It uses Django's bulk_create to insert all new products and prices
+   in efficient, atomic batches.
+  *   It uses bulk_update to save changes to existing products (like the
+   name_variations list).
+
+
+  7. Post-Update Reconciliation (Merging Duplicates)
+     This phase runs only once*, after all files in the inbox have been
+  processed.
+     Hotlist Analysis:* It reads the entire name_variation_hotlist.json.
+     Duplicate Finding:* It queries the database to find the Product
+  objects corresponding to the "canonical" and "variation" names from
+  the hotlist, creating pairs of products to be merged.
+     Conflict Prevention:* It includes a critical sanity check to
+  prevent merging products that have different barcodes, logging these
+  conflicts to a file for manual review instead.
+     Merging Logic:* For valid pairs, it performs an atomic merge:
+      1.  It reassigns all Price records from the duplicate product to
+  the canonical one.
+      2.  It deletes the now-empty duplicate Product.
+     Cleanup:* It clears the name_variation_hotlist.json file, preparing
+   it for the next run.
+
+
+  8. Translation Table Generation
+  *   As the absolute final step, it queries the database for all
+  products that have entries in their name_variations field.
+  *   It builds a dictionary mapping every variation name to its
+  canonical product name.
+  *   It overwrites the product_name_translation_table.py file with this
+   dictionary.
