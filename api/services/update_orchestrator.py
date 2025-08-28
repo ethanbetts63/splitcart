@@ -1,6 +1,5 @@
 import os
 import json
-from datetime import datetime
 from products.models import Product, Price
 from .product_resolver import ProductResolver
 from .unit_of_work import UnitOfWork
@@ -11,37 +10,46 @@ class UpdateOrchestrator:
     def __init__(self, command, inbox_path):
         self.command = command
         self.inbox_path = inbox_path
-        self.unit_of_work = UnitOfWork(command)
-        self.resolver = ProductResolver(command)
-        self.variation_manager = VariationManager(command, self.unit_of_work)
-        self.translator_generator = TranslationTableGenerator(command)
         self.processed_files = []
 
     def run(self):
-        self.command.stdout.write(self.command.style.SQL_FIELD("--- Starting OOP Refactored Product Update ---"))
+        self.command.stdout.write(self.command.style.SQL_FIELD("-- Starting Simplified Refactored Product Update --"))
         
+        # The resolver and other services are now created per file, using a simpler, one-store-at-a-time logic
         all_files = [os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')]
         
         for file_path in all_files:
             self.command.stdout.write(f"--- Processing file: {os.path.basename(file_path)} ---")
+            
+            # Services are re-instantiated for each file to keep logic simple and memory clean
+            resolver = ProductResolver(self.command)
+            unit_of_work = UnitOfWork(self.command)
+            variation_manager = VariationManager(self.command, unit_of_work)
+
             consolidated_data = self._consolidate_from_file(file_path)
             if not consolidated_data:
                 self.processed_files.append(file_path)
                 continue
 
-            product_cache = self._process_consolidated_data(consolidated_data)
+            product_cache = self._process_consolidated_data(consolidated_data, resolver, unit_of_work, variation_manager)
             
-            if self.unit_of_work.commit(consolidated_data, product_cache, self.resolver):
+            if unit_of_work.commit(consolidated_data, product_cache, resolver):
                 self.processed_files.append(file_path)
+                variation_manager.commit_hotlist() # Only commit hotlist if DB commit was successful
 
-        self.variation_manager.commit_hotlist()
-        self.variation_manager.reconcile_duplicates()
-        self.translator_generator.generate()
+        # Post-run reconciliation and translation generation
+        # These still need a manager, but they are run once at the end.
+        # For now, we instantiate them here.
+        final_variation_manager = VariationManager(self.command, None) # UoW not needed for reconciliation part
+        final_variation_manager.reconcile_duplicates()
+        translator_generator = TranslationTableGenerator(self.command)
+        translator_generator.generate()
         self._cleanup_processed_files()
 
-        self.command.stdout.write(self.command.style.SUCCESS("--- Orchestrator finished ---"))
+        self.command.stdout.write(self.command.style.SUCCESS("-- Orchestrator finished --"))
 
     def _consolidate_from_file(self, file_path):
+        """Reads a file and returns a dictionary of unique products, ignoring duplicates."""
         consolidated_data = {}
         with open(file_path, 'r', encoding='utf-8') as f:
             lines = f.readlines()
@@ -50,78 +58,57 @@ class UpdateOrchestrator:
                 try:
                     data = json.loads(line)
                     product_data = data.get('product')
-                    metadata = data.get('metadata')
-                    if not product_data or not metadata:
+                    if not product_data:
                         continue
-
+                    
                     key = product_data.get('normalized_name_brand_size')
                     if not key:
                         continue
                     
-                    if key not in consolidated_data:
-                        consolidated_data[key] = {
-                            'product_details': product_data,
-                            'metadata': metadata,
-                            'price_history': []
-                        }
+                    # If we have seen this product before in this file, ignore the duplicate.
+                    if key in consolidated_data:
+                        continue
                     
-                    price_entry = {
-                        'store_id': metadata.get('store_id'),
-                        'price': product_data.get('price_current'),
-                        'date': metadata.get('scraped_at')
-                    }
-                    consolidated_data[key]['price_history'].append(price_entry)
+                    # First time seeing this product in this file, store it.
+                    consolidated_data[key] = data # Store the whole original line data
+
                 except json.JSONDecodeError:
                     continue
         self.command.stdout.write(f"  - Consolidated into {len(consolidated_data)} unique products.")
         return consolidated_data
 
-    def _process_consolidated_data(self, consolidated_data):
+    def _process_consolidated_data(self, consolidated_data, resolver, unit_of_work, variation_manager):
         product_cache = {}
         total = len(consolidated_data)
         for i, (key, data) in enumerate(consolidated_data.items()):
             self.command.stdout.write(f'\r    - Identifying products: {i+1}/{total}', ending='')
             product_details = data['product_details']
-            price_history = data['price_history']
-            company_name = data['metadata'].get('company', '')
+            metadata = data['metadata']
+            company_name = metadata.get('company', '')
 
-            existing_product = self.resolver.find_match(product_details, price_history)
+            # We pass an empty price history because the resolver doesn't need it for this simplified flow
+            existing_product = resolver.find_match(product_details, [])
+
+            store_obj = resolver.store_cache.get(metadata['store_id'])
+            if not store_obj:
+                continue # Cannot proceed without a valid store
 
             if existing_product:
                 product_cache[key] = existing_product
-                self.variation_manager.check_for_variation(product_details, existing_product, company_name)
-                self._add_prices_to_unit_of_work(existing_product, product_details, price_history)
+                variation_manager.check_for_variation(product_details, existing_product, company_name)
+                unit_of_work.add_price(existing_product, store_obj, product_details)
             else:
                 new_product = Product(
                     name=product_details.get('name', ''),
                     brand=product_details.get('brand'),
                     barcode=product_details.get('barcode'),
-                    normalized_name_brand_size=product_details.get('normalized_name_brand_size')
+                    normalized_name_brand_size=key
                 )
                 product_cache[key] = new_product
-                self.unit_of_work.add_new_product(new_product)
-                self._add_prices_to_unit_of_work(new_product, product_details, price_history)
+                unit_of_work.add_new_product(new_product)
+                unit_of_work.add_price(new_product, store_obj, product_details)
         self.command.stdout.write('\n')
         return product_cache
-
-    def _add_prices_to_unit_of_work(self, product, product_details, price_history):
-        for price in price_history:
-            store_obj = self.resolver.store_cache.get(price['store_id'])
-            if not store_obj:
-                continue
-
-            # Check against the cache to prevent creating duplicate prices
-            try:
-                scraped_date = datetime.fromisoformat(price['date']).date()
-                price_key = (product.id, store_obj.id, scraped_date)
-
-                if price_key not in self.resolver.price_cache:
-                    self.unit_of_work.add_new_price(Price(product=product, store=store_obj, price=price['price'], store_product_id=product_details.get('product_id_store')))
-                    # Add the new price to the cache to prevent duplicates within the same run
-                    self.resolver.price_cache.add(price_key)
-            except (ValueError, TypeError):
-                # Handle cases where the date format is invalid
-                continue
 
     def _cleanup_processed_files(self):
         self.command.stdout.write("--- Cleaning up processed inbox files ---")

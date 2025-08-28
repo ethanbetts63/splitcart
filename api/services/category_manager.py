@@ -1,5 +1,6 @@
+from django.utils.text import slugify
 from products.models import Product
-from companies.models import Category
+from companies.models import Category, Company
 
 class CategoryManager:
     """
@@ -15,8 +16,19 @@ class CategoryManager:
         """
         self.command.stdout.write("--- Pass 3: Batch creating category relationships ---")
         
+        if not consolidated_data:
+            return
+
+        # All products in a file are from the same company, so we can grab it from the first entry.
+        try:
+            company_name = next(iter(consolidated_data.values()))['metadata']['company']
+            company_obj, _ = Company.objects.get_or_create(name__iexact=company_name, defaults={'name': company_name})
+        except (StopIteration, KeyError):
+            self.command.stderr.write(self.command.style.ERROR("Could not determine company from file data. Skipping category processing."))
+            return
+
         all_category_paths = self._collect_all_paths(consolidated_data)
-        self._create_new_categories(all_category_paths)
+        self._create_new_categories(all_category_paths, company_obj)
         self._create_parent_child_links(all_category_paths)
         self._link_products_to_categories(consolidated_data, product_cache)
 
@@ -24,13 +36,12 @@ class CategoryManager:
         """Collects all unique category paths from the data."""
         all_paths = set()
         for data in consolidated_data.values():
-            # Assuming category_path is stored in product_details
             path = data.get('product_details', {}).get('category_path')
             if path and isinstance(path, list):
                 all_paths.add(tuple(path))
         return all_paths
 
-    def _create_new_categories(self, all_category_paths):
+    def _create_new_categories(self, all_category_paths, company_obj):
         """Part A: Ensuring all categories exist."""
         self.command.stdout.write("  Part A: Ensuring all categories exist...")
         existing_names = set(self.category_cache.keys())
@@ -42,20 +53,24 @@ class CategoryManager:
             return
 
         self.command.stdout.write(f"    - Creating {len(new_names)} new categories...")
-        new_categories = [Category(name=name) for name in new_names]
-        Category.objects.bulk_create(new_categories)
+        new_categories = [
+            Category(name=name, slug=slugify(name), company=company_obj) 
+            for name in new_names
+        ]
         
-        # Refresh cache
-        for category in new_categories:
-            self.category_cache[category.name] = category
+        try:
+            created_cats = Category.objects.bulk_create(new_categories, ignore_conflicts=True)
+            # Refresh cache
+            for category in created_cats:
+                self.category_cache[category.name] = category
+        except Exception as e:
+            self.command.stderr.write(self.command.style.ERROR(f"An error occurred during category creation: {e}"))
 
     def _create_parent_child_links(self, all_category_paths):
         """Part B: Creating parent-child relationships."""
         self.command.stdout.write("  Part B: Creating parent-child relationships...")
         CategoryParents = Category.parents.through
         links_to_create = []
-        
-        # To avoid creating duplicate links in the bulk create list
         seen_links = set()
 
         for path in all_category_paths:
@@ -87,7 +102,6 @@ class CategoryManager:
             product = product_cache.get(key)
             path = data.get('product_details', {}).get('category_path')
             if product and path:
-                # Link product to the most specific (last) category in the path
                 leaf_category_name = path[-1]
                 category = self.category_cache.get(leaf_category_name)
                 if category:
