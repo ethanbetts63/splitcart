@@ -28,13 +28,13 @@ class TestBatchCreatePrices(TestCase):
         self.consolidated_data = {
             "key1": {
                 "price_history": [
-                    {"store_id": "store1", "price": 1.00, "is_on_special": False, "is_available": True, "store_product_id": "p1s1"},
-                    {"store_id": "store2", "price": 1.10, "is_on_special": True, "is_available": True, "store_product_id": "p1s2"}
+                    {"store_id": "store1", "price": 1.00, "is_on_special": False, "is_available": True, "sku": "p1s1"},
+                    {"store_id": "store2", "price": 1.10, "is_on_special": True, "is_available": True, "sku": "p1s2"}
                 ]
             },
             "key2": {
                 "price_history": [
-                    {"store_id": "store1", "price": 2.00, "is_on_special": False, "is_available": False, "store_product_id": "p2s1"}
+                    {"store_id": "store1", "price": 2.00, "is_on_special": False, "is_available": False, "sku": "p2s1"}
                 ]
             }
         }
@@ -88,7 +88,7 @@ class TestBatchCreatePrices(TestCase):
 
     def test_batch_create_prices_skip_missing_store(self):
         self.consolidated_data['key1']['price_history'].append(
-            {"store_id": "store3", "price": 4.00, "store_product_id": "p1s3"}
+            {"store_id": "store3", "price": 4.00, "sku": "p1s3"}
         )
 
         batch_create_prices(self.mock_command, self.consolidated_data, self.product_cache)

@@ -20,7 +20,7 @@ class TestProductMatching(TestCase):
 
         self.existing_product_spid = ProductFactory()
         self.existing_product_spid.save()
-        Price.objects.create(product=self.existing_product_spid, store=self.store1, store_product_id="spid1", price=1.0)
+        Price.objects.create(product=self.existing_product_spid, store=self.store1, sku="spid1", price=1.0)
 
         self.existing_product_norm = ProductFactory(
             name="Test Product",
@@ -41,7 +41,7 @@ class TestProductMatching(TestCase):
                 "price_history": [{"store_id": "store1", "price": 1.0}]
             },
             "key_spid": {
-                "product_details": {"store_product_id": "spid1", "name": "SPID Product"},
+                "product_details": {"sku": "spid1", "name": "SPID Product"},
                 "price_history": [{"store_id": "store1", "price": 1.0}]
             },
             "key_norm": {

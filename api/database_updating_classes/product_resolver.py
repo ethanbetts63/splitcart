@@ -33,21 +33,19 @@ class ProductResolver:
         self.store_cache = {s.store_id: s for s in Store.objects.all()}
         self.command.stdout.write(f"  - Built cache for {len(self.store_cache)} stores.")
 
-        # Filter prices by current company (and store for IGA) for relevant caches
+        # Filter prices by the current store for relevant caches to prevent SKU conflicts.
         relevant_prices_query = Price.objects.select_related('product', 'store').filter(
-            store__company=current_company_obj
+            store=current_store_obj
         )
-        if current_company_obj.name.lower() == 'iga':
-            relevant_prices_query = relevant_prices_query.filter(store=current_store_obj)
         
         relevant_prices = list(relevant_prices_query.all())
 
         # Cache 2: Store-Specific Product ID (contextual)
         self.store_product_id_cache = {}
-        prices_with_ids = [p for p in relevant_prices if p.store_product_id]
+        prices_with_ids = [p for p in relevant_prices if p.sku]
         for price in prices_with_ids:
-            # Key is just the store_product_id, as the cache is already filtered by company/store
-            self.store_product_id_cache[price.store_product_id] = price.product
+            # Key is just the sku, as the cache is already filtered by company/store
+            self.store_product_id_cache[price.sku] = price.product
         self.command.stdout.write(f"  - Built cache for {len(self.store_product_id_cache)} contextual store-specific product IDs.")
 
         # Cache 5: Existing Prices (contextual)
@@ -75,12 +73,12 @@ class ProductResolver:
             product = self.barcode_cache[barcode]
             return product
 
-        # Tier 2: Match by Store Product ID (contextual lookup) - DISABLED FOR TESTING
-        # if not product:
-        #     store_product_id = product_details.get('product_id_store')
-        #     if store_product_id and store_product_id in self.store_product_id_cache:
-        #         product = self.store_product_id_cache[store_product_id]
-        #         return product
+        # Tier 2: Match by Store Product ID (contextual lookup)
+        if not product:
+            sku = product_details.get('product_id_store')
+            if sku and sku in self.store_product_id_cache:
+                product = self.store_product_id_cache[sku]
+                return product
 
         # Tier 3: Match by Normalized String
         if not product:
@@ -100,4 +98,4 @@ class ProductResolver:
             self.barcode_cache[product.barcode] = product
         if product.normalized_name_brand_size:
             self.normalized_string_cache[product.normalized_name_brand_size] = product
-        # store_product_id cache is not updated here as it's handled by the UnitOfWork's price creation
+        # sku cache is not updated here as it's handled by the UnitOfWork's price creation

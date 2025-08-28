@@ -28,7 +28,7 @@ class UnitOfWork:
                 product=product, 
                 store=store, 
                 price=price_value, 
-                store_product_id=product_details.get('product_id_store')
+                sku=product_details.get('product_id_store')
             )
         )
 

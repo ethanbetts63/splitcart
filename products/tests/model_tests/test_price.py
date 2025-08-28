@@ -12,7 +12,7 @@ class PriceModelTest(TestCase):
         self.assertIsNotNone(price.id)
         self.assertIsNotNone(price.product)
         self.assertIsNotNone(price.store)
-        self.assertIsNotNone(price.store_product_id)
+        self.assertIsNotNone(price.sku)
         self.assertTrue(price.price > 0)
         self.assertIsNotNone(price.scraped_at)
 
@@ -46,7 +46,7 @@ class PriceModelTest(TestCase):
         """Test the default values for boolean fields."""
         product = ProductFactory()
         store = StoreFactory(store_name="DefaultStore")
-        price = Price.objects.create(product=product, store=store, store_product_id="123", price=10.0)
+        price = Price.objects.create(product=product, store=store, sku="123", price=10.0)
         self.assertFalse(price.is_on_special)
         self.assertTrue(price.is_available)
         self.assertTrue(price.is_active)

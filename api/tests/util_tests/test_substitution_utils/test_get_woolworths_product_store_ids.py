@@ -17,15 +17,15 @@ class GetWoolworthsProductStoreIdsTest(TestCase):
         self.product3 = ProductFactory()
 
         # Woolworths products
-        PriceFactory(product=self.product1, store=self.woolworths_store, store_product_id='ww1', is_active=True)
-        PriceFactory(product=self.product2, store=self.woolworths_store, store_product_id='ww2', is_active=True)
+        PriceFactory(product=self.product1, store=self.woolworths_store, sku='ww1', is_active=True)
+        PriceFactory(product=self.product2, store=self.woolworths_store, sku='ww2', is_active=True)
         # Inactive Woolworths product
-        PriceFactory(product=self.product3, store=self.woolworths_store, store_product_id='ww3', is_active=False)
-        # Duplicate store_product_id for Woolworths (should still be unique in result)
-        PriceFactory(product=self.product1, store=self.woolworths_store, store_product_id='ww1', is_active=True)
+        PriceFactory(product=self.product3, store=self.woolworths_store, sku='ww3', is_active=False)
+        # Duplicate sku for Woolworths (should still be unique in result)
+        PriceFactory(product=self.product1, store=self.woolworths_store, sku='ww1', is_active=True)
 
         # Coles product
-        PriceFactory(product=self.product1, store=self.coles_store, store_product_id='coles1', is_active=True)
+        PriceFactory(product=self.product1, store=self.coles_store, sku='coles1', is_active=True)
 
     def test_get_woolworths_product_store_ids(self):
         product_ids = get_woolworths_product_store_ids()

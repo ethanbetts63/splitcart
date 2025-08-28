@@ -1,4 +1,3 @@
-
 from django.test import TestCase
 from unittest.mock import MagicMock
 from api.utils.database_updating_utils.tally_counter import TallyCounter

@@ -21,9 +21,9 @@ def batch_create_new_products(command, consolidated_data: dict):
 
     # Cache 2: Store-Specific Product ID
     store_product_id_cache = {}
-    prices_with_ids = Price.objects.filter(store_product_id__isnull=False).exclude(store_product_id='').select_related('product', 'store')
+    prices_with_ids = Price.objects.filter(store_product_id__isnull=False).exclude(sku='').select_related('product', 'store')
     for price in prices_with_ids:
-        key = (price.store.store_id, price.store_product_id)
+        key = (price.store.store_id, price.sku)
         store_product_id_cache[key] = price.product
     command.stdout.write(f"Built cache for {len(store_product_id_cache)} store-specific product IDs.")
 
@@ -66,9 +66,9 @@ def batch_create_new_products(command, consolidated_data: dict):
         # Tier 2: Match by Store Product ID
         if not product:
             store_id = data['price_history'][0].get('store_id')
-            store_product_id = product_details.get('store_product_id')
-            if store_id and store_product_id and (store_id, store_product_id) in store_product_id_cache:
-                product = store_product_id_cache[(store_id, store_product_id)]
+            sku = product_details.get('sku')
+            if store_id and sku and (store_id, sku) in store_product_id_cache:
+                product = store_product_id_cache[(store_id, sku)]
 
         # Tier 3: Match by Normalized String
         if not product:

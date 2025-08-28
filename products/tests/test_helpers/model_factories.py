@@ -25,7 +25,7 @@ class PriceFactory(DjangoModelFactory):
 
     product = factory.SubFactory(ProductFactory)
     store = factory.SubFactory(StoreFactory)
-    store_product_id = factory.Faker('uuid4')
+    sku = factory.Faker('uuid4')
     price = factory.Faker('pydecimal', left_digits=2, right_digits=2, positive=True)
     was_price = factory.Faker('pydecimal', left_digits=2, right_digits=2, positive=True)
     unit_price = factory.Faker('pydecimal', left_digits=2, right_digits=2, positive=True)

@@ -1,7 +1,6 @@
 from django.test import TestCase
 from unittest.mock import Mock
-from products.models import Product
-from companies.models import Company, Category
+from companies.models import Category
 from companies.tests.test_helpers.model_factories import CompanyFactory
 from products.tests.test_helpers.model_factories import ProductFactory
 from api.utils.database_updating_utils.batch_create_category_relationships import batch_create_category_relationships

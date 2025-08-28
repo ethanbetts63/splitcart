@@ -17,7 +17,7 @@ def process_product_data(data, consolidated_data, barcode_to_key_map, command, f
         'price': product_details.get('price_current'),
         'is_on_special': product_details.get('is_on_special', False),
         'is_available': product_details.get('is_available', True),
-        'store_product_id': product_details.get('product_id_store')
+        'sku': product_details.get('product_id_store')
     }
 
     barcode = product_details.get('barcode')

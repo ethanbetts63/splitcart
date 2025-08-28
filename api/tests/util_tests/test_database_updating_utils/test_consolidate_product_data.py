@@ -1,5 +1,3 @@
-
-import unittest
 import tempfile
 import shutil
 import json

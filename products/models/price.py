@@ -15,7 +15,7 @@ class Price(models.Model):
         on_delete=models.PROTECT,
         related_name="prices"
     )
-    store_product_id = models.CharField(max_length=100, db_index=True)
+    sku = models.CharField(max_length=100, db_index=True)
     
     price = models.DecimalField(
         max_digits=10,

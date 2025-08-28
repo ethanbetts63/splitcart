@@ -1,11 +1,11 @@
-def clean_barcode(barcode, store_product_id=None):
+def clean_barcode(barcode, sku=None):
     """
     Cleans a barcode value according to defined business rules.
 
     - Handles single or comma-separated pairs of barcodes.
     - Converts 'notfound', 'null', or empty values to None.
     - Converts 12-digit UPCs to 13-digit EANs by prepending a '0'.
-    - Nullifies short barcodes if they match the store_product_id.
+    - Nullifies short barcodes if they match the sku.
     - Discards barcodes that are not 12 or 13 digits long.
     - Strips leading/trailing whitespace.
     """
@@ -44,7 +44,7 @@ def clean_barcode(barcode, store_product_id=None):
     # that might be internal store IDs. This part of the logic is kept from before.
     for b in barcodes:
         if len(b) < 12:
-            if store_product_id and b == str(store_product_id):
+            if sku and b == str(sku):
                 return None  # It's an internal code, not a universal barcode
     
     # If we get here, no valid 12 or 13-digit barcode was found in any part

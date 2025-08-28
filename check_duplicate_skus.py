@@ -24,7 +24,7 @@ def find_duplicate_skus():
         duplicates = (
             Price.objects
             .filter(store__company=company)
-            .values('store_product_id')
+            .values('sku')
             .annotate(product_count=Count('product', distinct=True))
             .filter(product_count__gt=1)
             .order_by('-product_count')
@@ -45,7 +45,7 @@ def find_duplicate_skus():
             report_content.append("\n")
 
             for dup in duplicates:
-                sku = dup['store_product_id']
+                sku = dup['sku']
                 count = dup['product_count']
                 
                 report_content.append("-" * 60)
@@ -58,7 +58,7 @@ def find_duplicate_skus():
                 ).distinct()
                 
                 for i, product in enumerate(conflicting_products, 1):
-                    stores = product.prices.filter(store_product_id=sku, store__company=company).values_list('store__store_name', flat=True).distinct()
+                    stores = product.prices.filter(sku=sku, store__company=company).values_list('store__store_name', flat=True).distinct()
                     store_list = ", ".join(stores)
                     
                     report_content.append(f"  Product {i}:")
