@@ -1,5 +1,5 @@
 import os
-import pprint
+
 from products.models import Product
 
 TRANSLATION_TABLE_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'product_name_translation_table.py')

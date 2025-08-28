@@ -26,7 +26,6 @@ class UpdateOrchestrator:
                 self.processed_files.append(file_path)
                 continue
 
-            # Extract company and store info from the first product in the consolidated data
             first_product_data = next(iter(consolidated_data.values()))
             company_name = first_product_data['metadata'].get('company')
             store_id = first_product_data['metadata'].get('store_id')
@@ -48,21 +47,17 @@ class UpdateOrchestrator:
                 self.processed_files.append(file_path)
                 continue
 
-            # Services are re-instantiated for each file to keep logic simple and memory clean
             resolver = ProductResolver(self.command, company_obj, store_obj)
             unit_of_work = UnitOfWork(self.command)
             variation_manager = VariationManager(self.command, unit_of_work)
 
             product_cache = self._process_consolidated_data(consolidated_data, resolver, unit_of_work, variation_manager, store_obj)
             
-            if unit_of_work.commit(consolidated_data, product_cache, resolver):
+            if unit_of_work.commit(consolidated_data, product_cache, resolver, store_obj):
                 self.processed_files.append(file_path)
-                variation_manager.commit_hotlist() # Only commit hotlist if DB commit was successful
+                variation_manager.commit_hotlist()
 
-        # Post-run reconciliation and translation generation
-        # These still need a manager, but they are run once at the end.
-        # For now, we instantiate them here.
-        final_variation_manager = VariationManager(self.command, None) # UoW not needed for reconciliation part
+        final_variation_manager = VariationManager(self.command, None)
         final_variation_manager.reconcile_duplicates()
         translator_generator = TranslationTableGenerator(self.command)
         translator_generator.generate()
@@ -71,7 +66,6 @@ class UpdateOrchestrator:
         self.command.stdout.write(self.command.style.SUCCESS("-- Orchestrator finished --"))
 
     def _consolidate_from_file(self, file_path):
-        """Reads a file and returns a dictionary of unique products, ignoring duplicates."""
         consolidated_data = {}
         with open(file_path, 'r', encoding='utf-8') as f:
             lines = f.readlines()
@@ -87,12 +81,10 @@ class UpdateOrchestrator:
                     if not key:
                         continue
                     
-                    # If we have seen this product before in this file, ignore the duplicate.
                     if key in consolidated_data:
                         continue
                     
-                    # First time seeing this product in this file, store it.
-                    consolidated_data[key] = data # Store the whole original line data
+                    consolidated_data[key] = data
 
                 except json.JSONDecodeError:
                     continue
@@ -108,7 +100,6 @@ class UpdateOrchestrator:
             metadata = data['metadata']
             company_name = metadata.get('company', '')
 
-            # We pass an empty price history because the resolver doesn't need it for this simplified flow
             existing_product = resolver.find_match(product_details, [])
 
             if existing_product:
@@ -122,10 +113,8 @@ class UpdateOrchestrator:
                     barcode=product_details.get('barcode'),
                     normalized_name_brand_size=key
                 )
-                # Temporarily attach price data to the new product instance
-                new_product._price_data = product_details # Store product_details for price creation
                 product_cache[key] = new_product
-                unit_of_work.add_new_product(new_product)
+                unit_of_work.add_new_product(new_product, product_details)
         self.command.stdout.write('\n')
         return product_cache
 
