@@ -14,11 +14,16 @@ class UnitOfWork:
         self.products_to_create.append(product_instance)
 
     def add_price(self, product, store, product_details):
+        price_value = product_details.get('price_current')
+        # If price is None or 0, skip creating the record.
+        if not price_value:
+            return
+
         self.prices_to_create.append(
             Price(
                 product=product, 
                 store=store, 
-                price=product_details.get('price_current'), 
+                price=price_value, 
                 store_product_id=product_details.get('product_id_store')
             )
         )

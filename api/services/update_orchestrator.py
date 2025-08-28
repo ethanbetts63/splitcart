@@ -82,7 +82,7 @@ class UpdateOrchestrator:
         total = len(consolidated_data)
         for i, (key, data) in enumerate(consolidated_data.items()):
             self.command.stdout.write(f'\r    - Identifying products: {i+1}/{total}', ending='')
-            product_details = data['product_details']
+            product_details = data['product']
             metadata = data['metadata']
             company_name = metadata.get('company', '')
 
