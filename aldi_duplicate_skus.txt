@@ -1,0 +1,124 @@
+================================================================================
+DUPLICATE SKU REPORT FOR: ALDI
+Generated on: 2025-08-28 11:43:01
+================================================================================
+
+
+------------------------------------------------------------
+[CONFLICT] SKU: '000000000000403494' is linked to 2 different products.
+------------------------------------------------------------
+  Product 1:
+    -      ID: 4282
+    -    Name: Tasty Cheese Slices 250g
+    -   Brand: WESTACRE
+    - Barcode: N/A
+    -  Stores: Wyong, Warners Bay, Wallsend, Toukley, Toronto, Taree, Tamworth
+
+  Product 2:
+    -      ID: 6203
+    -    Name: Tasty Cheese Slices 250g
+    -   Brand: WESTACRE
+    - Barcode: N/A
+    -  Stores: Wyoming, Umina Beach, Tuggerah
+
+------------------------------------------------------------
+[CONFLICT] SKU: '000000000000403433' is linked to 2 different products.
+------------------------------------------------------------
+  Product 1:
+    -      ID: 4276
+    -    Name: Light Tasty Cheese Slices 500g
+    -   Brand: WESTACRE
+    - Barcode: N/A
+    -  Stores: Wyong, Warners Bay, Wallsend, Toukley, Toronto, Taree, Tamworth
+
+  Product 2:
+    -      ID: 6202
+    -    Name: Light Tasty Cheese Slices 500g
+    -   Brand: WESTACRE
+    - Barcode: N/A
+    -  Stores: Wyoming, Umina Beach, Tuggerah
+
+------------------------------------------------------------
+[CONFLICT] SKU: '000000000000401611' is linked to 2 different products.
+------------------------------------------------------------
+  Product 1:
+    -      ID: 4259
+    -    Name: Mozzarella Cheese 350g
+    -   Brand: WESTACRE
+    - Barcode: N/A
+    -  Stores: Wyong, Warners Bay, Wallsend, Toukley, Toronto, Taree, Tamworth
+
+  Product 2:
+    -      ID: 6201
+    -    Name: Mozzarella Cheese 350g
+    -   Brand: WESTACRE
+    - Barcode: N/A
+    -  Stores: Wyoming, Umina Beach, Tuggerah
+
+------------------------------------------------------------
+[CONFLICT] SKU: '000000000000399926' is linked to 2 different products.
+------------------------------------------------------------
+  Product 1:
+    -      ID: 4250
+    -    Name: Cream Cheese Block 250g
+    -   Brand: WESTACRE
+    - Barcode: N/A
+    -  Stores: Wyong, Warners Bay, Wallsend, Toukley, Toronto, Taree, Tamworth
+
+  Product 2:
+    -      ID: 6200
+    -    Name: Cream Cheese Block 250g
+    -   Brand: WESTACRE
+    - Barcode: N/A
+    -  Stores: Wyoming, Umina Beach, Tuggerah
+
+------------------------------------------------------------
+[CONFLICT] SKU: '000000000000308281' is linked to 2 different products.
+------------------------------------------------------------
+  Product 1:
+    -      ID: 5390
+    -    Name: Sliced Brioche Burger Buns with Sesame Seeds 4 Pack 200g
+    -   Brand: BON APPETIT
+    - Barcode: N/A
+    -  Stores: Wyong, Warners Bay, Wallsend, Tuggerah, Toukley, Toronto, Taree, Tamworth
+
+  Product 2:
+    -      ID: 6207
+    -    Name: Sliced Brioche Burger Buns with Sesame Seeds 4 Pack 200g
+    -   Brand: BON APPETIT
+    - Barcode: N/A
+    -  Stores: Wyoming, Umina Beach
+
+------------------------------------------------------------
+[CONFLICT] SKU: '000000000000308278' is linked to 2 different products.
+------------------------------------------------------------
+  Product 1:
+    -      ID: 5389
+    -    Name: Sliced Brioche Burger Buns 4 Pack 200g
+    -   Brand: BON APPETIT
+    - Barcode: N/A
+    -  Stores: Wyong, Warners Bay, Wallsend, Tuggerah, Toukley, Toronto, Taree, Tamworth
+
+  Product 2:
+    -      ID: 6206
+    -    Name: Sliced Brioche Burger Buns 4 Pack 200g
+    -   Brand: BON APPETIT
+    - Barcode: N/A
+    -  Stores: Wyoming, Umina Beach
+
+------------------------------------------------------------
+[CONFLICT] SKU: '000000000000308272' is linked to 2 different products.
+------------------------------------------------------------
+  Product 1:
+    -      ID: 5388
+    -    Name: Brioche Hot Dog Rolls 6 Pack 270g
+    -   Brand: BON APPETIT
+    - Barcode: N/A
+    -  Stores: Wyong, Warners Bay, Wallsend, Tuggerah, Toukley, Toronto, Taree, Tamworth
+
+  Product 2:
+    -      ID: 6205
+    -    Name: Brioche Hot Dog Rolls 6 Pack 270g
+    -   Brand: BON APPETIT
+    - Barcode: N/A
+    -  Stores: Wyoming, Umina Beach

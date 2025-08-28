@@ -30,12 +30,41 @@ def find_duplicates_from_hotlist(hotlist):
                 with open('barcode_mismatch_log.txt', 'a', encoding='utf-8') as f:
                     from datetime import datetime
                     f.write(f"--- Mismatch Detected at {datetime.now().isoformat()} ---\n")
-                    
-                    # Get details for Canonical Product
+
+                    # Get details for both products to compare
+                    canonical_prices = canonical_product.prices.all()
+                    canonical_stores = {price.store.store_name for price in canonical_prices if price.store}
+                    canonical_store_str = ', '.join(sorted(list(canonical_stores))) if canonical_stores else 'N/A'
                     canonical_sku = 'N/A'
-                    canonical_price = canonical_product.prices.first()
-                    if canonical_price:
-                        canonical_sku = canonical_price.store_product_id
+                    if canonical_prices:
+                        canonical_sku = canonical_prices[0].store_product_id
+
+                    duplicate_prices = duplicate_product.prices.all()
+                    duplicate_stores = {price.store.store_name for price in duplicate_prices if price.store}
+                    duplicate_store_str = ', '.join(sorted(list(duplicate_stores))) if duplicate_stores else 'N/A'
+                    duplicate_sku = 'N/A'
+                    if duplicate_prices:
+                        duplicate_sku = duplicate_prices[0].store_product_id
+                    
+                    # --- MISMATCH DETAILS ---
+                    mismatch_details = []
+                    if canonical_product.name != duplicate_product.name:
+                        mismatch_details.append("Name")
+                    if canonical_product.brand != duplicate_product.brand:
+                        mismatch_details.append("Brand")
+                    if canonical_product.sizes != duplicate_product.sizes:
+                        mismatch_details.append("Sizes")
+                    if canonical_product.barcode != duplicate_product.barcode:
+                        mismatch_details.append("Barcode")
+                    if canonical_sku != duplicate_sku:
+                        mismatch_details.append("SKU")
+                    if canonical_stores != duplicate_stores:
+                        mismatch_details.append("Stores")
+
+                    if mismatch_details:
+                        f.write(f"--- MISMATCH DETAILS: {', '.join(mismatch_details)} ---\n")
+                    else:
+                        f.write("--- MISMATCH DETAILS: No obvious field differences, requires manual check. ---\n")
                         
                     f.write("--- CANONICAL (Original Product) ---\n")
                     f.write(f"  Name: {canonical_product.name}\n")
@@ -44,12 +73,7 @@ def find_duplicates_from_hotlist(hotlist):
                     f.write(f"  Normalized: {canonical_product.normalized_name_brand_size}\n")
                     f.write(f"  Barcode: {canonical_product.barcode}\n")
                     f.write(f"  SKU (one of): {canonical_sku}\n")
-
-                    # Get details for Duplicate Product
-                    duplicate_sku = 'N/A'
-                    duplicate_price = duplicate_product.prices.first()
-                    if duplicate_price:
-                        duplicate_sku = duplicate_price.store_product_id
+                    f.write(f"  Stores: {canonical_store_str}\n")
 
                     f.write("--- DUPLICATE (New Variation Product) ---\n")
                     f.write(f"  Name: {duplicate_product.name}\n")
@@ -58,6 +82,7 @@ def find_duplicates_from_hotlist(hotlist):
                     f.write(f"  Normalized: {duplicate_product.normalized_name_brand_size}\n")
                     f.write(f"  Barcode: {duplicate_product.barcode}\n")
                     f.write(f"  SKU (one of): {duplicate_sku}\n")
+                    f.write(f"  Stores: {duplicate_store_str}\n")
                     f.write("----------------------------------------------------\n")
                 continue
 

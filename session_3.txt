@@ -86,3 +86,5 @@ it should therefor be checking for duplicates as it makes it caches.
 C:\Users\ethan\coding\splitcart\api\management\commands\update_db.py
 
 so i have a solution. We are going ot move to processinng one jsonl file at a time. This should make the logic a lot simpler and less prone to errors. It will be slower but that is my solution that i want to try. 
+
+this worked. We have now implemented this. 
