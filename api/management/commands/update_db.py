@@ -1,11 +1,10 @@
 import os
-import time
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from api.utils.database_updating_utils.update_stores_from_discovery import update_stores_from_discovery
 from api.utils.database_updating_utils.update_stores_from_archive import update_stores_from_archive
 from api.utils.database_updating_utils.update_products_from_archive import update_products_from_archive
-from api.utils.database_updating_utils.update_products_from_inbox import update_products_from_inbox
+from api.services.update_orchestrator import UpdateOrchestrator
 
 class Command(BaseCommand):
     help = 'Updates the database with data from various sources.'
@@ -49,8 +48,13 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS('--- Store update from discovery complete ---'))
 
         if run_products_processed:
-            self.stdout.write(self.style.SQL_FIELD('--- Running product update from inbox ---'))
-            update_products_from_inbox(self)
+            self.stdout.write(self.style.SQL_FIELD('--- Running product update from inbox (OOP Refactor) ---'))
+            inbox_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'product_inbox')
+            if not os.path.exists(inbox_path):
+                self.stdout.write(self.style.WARNING("Product inbox directory not found."))
+            else:
+                orchestrator = UpdateOrchestrator(self, inbox_path)
+                orchestrator.run()
             self.stdout.write(self.style.SUCCESS('--- Product update from inbox complete ---'))
 
         self.stdout.write(self.style.SUCCESS('All update tasks finished.'))
