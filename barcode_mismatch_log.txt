@@ -35870,3 +35870,2118 @@
   SKU (one of): N/A
   Stores: N/A
 ----------------------------------------------------
+--- Mismatch Detected at 2025-08-28T11:59:04.846289 ------ Mismatch Detected at 2025-08-28T12:00:06.540638 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Green's Pancake Mix Buttermilk Shake
+  Brand: Green's
+  Sizes: ['325g']
+  Normalized: buttermilkmixpancakeshakegreens325g
+  Barcode: 9310273105120
+  SKU (one of): 350081
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Green's Buttermilk Pancake Shake Mix
+  Brand: Green's
+  Sizes: ['190g']
+  Normalized: bananasgreens190g
+  Barcode: 9310273002399
+  SKU (one of): 905348
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Trinity Heights, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.560810 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Heinz Beanz Canned Baked Beans No Added Sugar
+  Brand: Heinz
+  Sizes: ['220g', '3pk', 'pk']
+  Normalized: addedbakedbeansbeanzcannednosugarheinz1pk220g3pk
+  Barcode: 9300657234843
+  SKU (one of): 853903
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Heinz Baked Beans No Added Sugar
+  Brand: Heinz
+  Sizes: ['3ea', 'ea']
+  Normalized: addedbakedbnsnosugarheinz1ea3ea
+  Barcode: 9300657235123
+  SKU (one of): 93420
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA X-press Thaikee, Nambour, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.570841 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Cobram Extra Light & Delicate Olive Oil Spray
+  Brand: Cobram
+  Sizes: ['225g']
+  Normalized: cobramdelicateextralightoilolivespraycobramestate225g
+  Barcode: 0852696000099
+  SKU (one of): 160000013706
+  Stores: IGA Clearview
+--- DUPLICATE (New Variation Product) ---  Name: Cobram Estate Extra Light & Delicate Olive Oil Spray
+  Brand: Cobram Estate
+  Sizes: ['225g', 'ea']
+  Normalized: delicateextralightoilolivespraycobramestate1ea225g
+  Barcode: 852696000099
+  SKU (one of): 160000013706
+  Stores: Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.576381 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Cobram Olive Oil Garlic
+  Brand: Cobram
+  Sizes: ['500ml']
+  Normalized: cobramgarlicoilolivecobramestate500ml
+  Barcode: 0852696001102
+  SKU (one of): 16000001539
+  Stores: IGA Clearview, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Cobram Estate Olive Oil Garlic
+  Brand: Cobram Estate
+  Sizes: ['500ml', 'ea']
+  Normalized: garlicoilolivecobramestate1ea500ml
+  Barcode: 852696001102
+  SKU (one of): 16000001539
+  Stores: Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.584478 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Cadbury Fry's Turkish Delight Twin Pack Milk Chocolate Bar
+  Brand: Cadbury
+  Sizes: ['70g', 'pk']
+  Normalized: barchocolatedelightfrysmilkpackturkishtwincadbury1pk70g
+  Barcode: 9300617301554
+  SKU (one of): 560733
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Fry's Turkish Delight Twin Pack
+  Brand: Fry's
+  Sizes: ['76g', 'ea', 'pk']
+  Normalized: delightpackturkishtwinfrys1ea1pk76g
+  Barcode: 9300617395034
+  SKU (one of): 386414
+  Stores: IGA Clearview, IGA Local Grocer Adelaide City East, IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.596736 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Quest Tortilla Style Protein Chips Nacho Cheese Flavour
+  Brand: Quest
+  Sizes: ['32g']
+  Normalized: cheesechipsflavournachoproteinstyletortillaquest32g
+  Barcode: 0888849013326
+  SKU (one of): 260508
+  Stores: IGA Clearview, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Quest Tortilla Style Protein Chips Nacho Cheese
+  Brand: Quest
+  Sizes: ['32g', 'ea']
+  Normalized: cheesechipsnachoproteinstyletortillaquest1ea32g
+  Barcode: 888849013326
+  SKU (one of): 276832
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.602276 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Temole Almond Chips BBQ
+  Brand: Temole
+  Sizes: ['40g']
+  Normalized: almondbbqchipstemole40g
+  Barcode: 0850210006954
+  SKU (one of): 190000001297
+  Stores: Beaudesert, IGA Clearview, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Temole Almond Chips Barbecue
+  Brand: Temole
+  Sizes: ['40g', 'ea']
+  Normalized: almondbarbecuechipstemole1ea40g
+  Barcode: 850210006954
+  SKU (one of): 150879
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.608814 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Doritos Salsa Dip Mild
+  Brand: Doritos
+  Sizes: ['300g']
+  Normalized: dipmildsalsadoritos300g
+  Barcode: 9310015250286
+  SKU (one of): 381977
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Doritos Mild Salsa
+  Brand: Doritos
+  Sizes: ['300g', 'ea']
+  Normalized: mildsalsadoritos1ea300g
+  Barcode: 9310015224072
+  SKU (one of): 170000003647
+  Stores: IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.616932 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Kinder Tronky Creamy Chocolate Wafer Biscuit Multipack
+  Brand: Kinder
+  Sizes: ['5pk']
+  Normalized: biscuitchocolatecreamymultipacktronkywaferkinder5pk
+  Barcode: 8000500384794
+  SKU (one of): 132297
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Kinder Tronky
+  Brand: Kinder
+  Sizes: ['18g', 'ea']
+  Normalized: tronkykinder18g1ea
+  Barcode: 80906032
+  SKU (one of): 132006
+  Stores: Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.625621 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Nutella B Ready Biscuit Multipack
+  Brand: Nutella
+  Sizes: ['6pk']
+  Normalized: bbiscuitmultipackreadynutella6pk
+  Barcode: 9300698503762
+  SKU (one of): 178515
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Nutella B-ready Wafer Biscuit
+  Brand: Nutella
+  Sizes: ['6ea', 'ea']
+  Normalized: brdybiscuitwafernutella1ea6ea
+  Barcode:  9300698503762
+  SKU (one of): 178515
+  Stores: IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.635383 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Oak Plus Protein Chocolate No Added Sugar Flavoured Milk
+  Brand: Oak
+  Sizes: ['500ml']
+  Normalized: addedchocolateflavouredmilknoplusproteinsugaroak500ml
+  Barcode: 9310036070528
+  SKU (one of): 29596
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Coles Albany Creek, Coles Arundel, Coles Ayr, Coles Bay Central, Coles Beaudesert, Coles Birtinya, Coles Cairns Central, Coles Cairns Smithfield, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour, Tamworth, Taree, Toronto, Toukley, Tuggerah, U-Go Taren Point, Umina Beach, Wallsend, Warners Bay, Wyoming, Wyong
+--- DUPLICATE (New Variation Product) ---  Name: OAK Plus Protein Chocolate
+  Brand: Oak
+  Sizes: ['500ml', 'ea']
+  Normalized: chocolateplusproteinoak1ea500ml
+  Barcode:  9310036070528
+  SKU (one of): 29596
+  Stores: IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.654866 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Oak Plus Protein Vanilla No Added Sugar Flavoured Milk
+  Brand: Oak
+  Sizes: ['500ml']
+  Normalized: addedflavouredmilknoplusproteinsugarvanillaoak500ml
+  Barcode: 9310036070535
+  SKU (one of): 29619
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: OAK Plus Protein Vanilla Flavoured Milk
+  Brand: Oak
+  Sizes: ['500ml', 'ea']
+  Normalized: flavouredmilkplusproteinvanillaoak1ea500ml
+  Barcode:  9310036070535
+  SKU (one of): 29619
+  Stores: IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.669317 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Pauls Plus Protein Vanilla Yoghurt
+  Brand: Pauls
+  Sizes: ['160g']
+  Normalized: plusproteinvanillayoghurtpauls160g
+  Barcode: 9310036079415
+  SKU (one of): 548553
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Coles Albany Creek, Coles Arundel, Coles Ayr, Coles Bay Central, Coles Beaudesert, Coles Birtinya, Coles Cairns Central, Coles Cairns Smithfield, IGA Clearview, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Pauls High Protein Vanilla Yoghurt
+  Brand: Pauls
+  Sizes: ['700g', 'ea']
+  Normalized: highproteinvanillayoghurtpauls1ea700g
+  Barcode: 9310036079149
+  SKU (one of): 548605
+  Stores: North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.682307 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Perfect Italiano Parmesan Cheese Grated
+  Brand: Perfect Italiano
+  Sizes: ['250g']
+  Normalized: cheesegratedparmesanitalianoperfect250g
+  Barcode: 9300665023408
+  SKU (one of): 144016
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Perfect Italiano Parmesan Cheese
+  Brand: Perfect Italiano
+  Sizes: ['100g', 'ea']
+  Normalized: cheeseparmesanitalianoperfect100g1ea
+  Barcode: 9300665023118
+  SKU (one of): 391972
+  Stores: IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA Raby, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.700809 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Don Double Smoked Leg Ham
+  Brand: Don
+  Sizes: ['200g']
+  Normalized: doublehamlegsmokeddon200g
+  Barcode: 9326451016294
+  SKU (one of): 150000008004
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Coles Albany Creek, Coles Arundel, Coles Ayr, Coles Bay Central, Coles Beaudesert, Coles Birtinya, Coles Cairns Central, Coles Cairns Smithfield, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: DON Thinly Sliced Double Smoked Leg Ham
+  Brand: DON
+  Sizes: ['250g', 'ea']
+  Normalized: doublehamlegslicedsmokedthinlydon1ea250g
+  Barcode: 9313886025137
+  SKU (one of): 127357
+  Stores: IGA Local Grocer Stanmore, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.715810 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Mountain Bread Natural Light Wraps
+  Brand: Mountain Bread
+  Sizes: ['8pk']
+  Normalized: lightnaturalwrapsbreadmountain8pk
+  Barcode: 0789673000080
+  SKU (one of): 924034
+  Stores: Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Mountain Bread Natural
+  Brand: Mountain Bread
+  Sizes: ['200g', 'ea']
+  Normalized: naturalbreadmountain1ea200g
+  Barcode: 789673000080
+  SKU (one of): 118406
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.723726 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Fanta Pineapple Zero Sugar 
+  Brand: Fanta
+  Sizes: ['1.25l', 'ea']
+  Normalized: pinpplesugarzerofanta125l1ea
+  Barcode: 9300675094320
+  SKU (one of): 180000002413
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA Raby, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Fanta Pineapple Zero Sugar
+  Brand: Fanta
+  Sizes: ['600ml', 'ea']
+  Normalized: pinpplesugarzerofanta1ea600ml
+  Barcode: 9300675094306
+  SKU (one of): 578396
+  Stores: IGA Clearview, IGA Local Grocer Adelaide City East, IGA X-press Thaikee
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.734597 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Fever-Tree Mediterranean Tonic Water Bottles
+  Brand: Fever-Tree
+  Sizes: ['500ml']
+  Normalized: bottlesmediterraneantonicwaterfevertree500ml
+  Barcode: 5060108450546
+  SKU (one of): 6601629
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Fever-Tree Mediterranean Tonic Water
+  Brand: Fever-Tree
+  Sizes: ['4ea', 'ea']
+  Normalized: mediterranntonicwaterfevertree1ea4ea
+  Barcode: 5060108450515
+  SKU (one of): 587471
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.745592 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: OxyShred Energy Drink Passionfruit Can
+  Brand: OxyShred
+  Sizes: ['355ml']
+  Normalized: candrinkpassionfruitenergyoxyshred355ml
+  Barcode: 0850029937265
+  SKU (one of): 62882
+  Stores: IGA Clearview, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: EHP Labs Oxyshred Ultra Energy Passionfruit
+  Brand: EHPLabs
+  Sizes: ['355ml', 'ea']
+  Normalized: ehpenergylabsoxyshredpassionfruitultraehplabs1ea355ml
+  Barcode: 850029937265
+  SKU (one of): 230703
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA X-press Thaikee, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.750595 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Monster Energy Pipeline Punch Can
+  Brand: Monster
+  Sizes: ['500ml']
+  Normalized: canenergypipelinepunchmonster500ml
+  Barcode: 9342866000772
+  SKU (one of): 449500
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Monster Energy Drink Pipeline Punch
+  Brand: Monster
+  Sizes: ['500ml', 'ea']
+  Normalized: drinkenergypipelinepunchmonster1ea500ml
+  Barcode: 9342866000802
+  SKU (one of): 190000002901
+  Stores: IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.757596 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Rockstar Guava Punched Energy Drink
+  Brand: Rockstar
+  Sizes: ['500ml']
+  Normalized: drinkenergyguavapunchedrockstar500ml
+  Barcode: 0818094004626
+  SKU (one of): 16925
+  Stores: IGA Clearview, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Rockstar Punched Energy & Guava Drink
+  Brand: Rockstar
+  Sizes: ['500ml', 'ea']
+  Normalized: drinkenergyguavapunchedrockstar1ea500ml
+  Barcode: 818094004626
+  SKU (one of): 16925
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.769685 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Impressed Pressed Juice Apple
+  Brand: Impressed
+  Sizes: ['1l']
+  Normalized: applejuicepressedimpressed1l
+  Barcode: 9336243005733
+  SKU (one of): 180000003593
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Impressed Essentials Apple Juice
+  Brand: Impressed
+  Sizes: ['425ml', 'ea']
+  Normalized: appleessentialsjuiceimpressed1ea425ml
+  Barcode: 9336243005597
+  SKU (one of): 180000003596
+  Stores: IGA Local Grocer Adelaide City East, IGA X-press Thaikee, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.779225 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Impressed Cold Pressed Juice Ginger Ninja
+  Brand: Impressed
+  Sizes: ['1l']
+  Normalized: coldgingerjuiceninjapressedimpressed1l
+  Barcode: 9336243006099
+  SKU (one of): 9302
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Impressed Ginger Ninja Juice
+  Brand: Impressed
+  Sizes: ['325ml', 'ea']
+  Normalized: gingerjuiceninjaimpressed1ea325ml
+  Barcode: 9336243005894
+  SKU (one of): 4845
+  Stores: IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.792226 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Grinders Crema Coffee Beans Coffee Beans
+  Brand: Grinders
+  Sizes: ['1kg']
+  Normalized: beansbeanscoffeecoffeecremagrinders1kg
+  Barcode: 9329214001018
+  SKU (one of): 473952
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Grinders Crema Coffee Beans
+  Brand: Grinders
+  Sizes: ['500g']
+  Normalized: beanscoffeecremagrinders500g
+  Barcode: 9329214006587
+  SKU (one of): 6024149
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Adelaide City East, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.802715 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Califia Farms Barista Oat Long Life Milk UHT
+  Brand: Califia Farms
+  Sizes: ['1l']
+  Normalized: baristalifelongmilkoatuhtcalifiafarms1l
+  Barcode: 0813636021949
+  SKU (one of): 827457
+  Stores: Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Califia Farms Oat Barista Blend
+  Brand: Califia Farms
+  Sizes: ['1l', 'ea']
+  Normalized: baristablendoatcalifiafarms1ea1l
+  Barcode: 813636021949
+  SKU (one of): 827457
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Stanmore, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.812718 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Vitasoy Oat Milky Long Life Milk UHT
+  Brand: Vitasoy
+  Sizes: ['1l']
+  Normalized: lifelongmilkmilkyoatuhtvitasoy1l
+  Barcode: 9341650001599
+  SKU (one of): 160000003599
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Vitasoy Oat Milky
+  Brand: Vitasoy
+  Sizes: ['1l', 'ea']
+  Normalized: milkyoatvitasoy1ea1l
+  Barcode: 9341650001551
+  SKU (one of): 155962
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Adelaide City East, Nambour, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.836715 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Connoisseur Gourmet Ice Cream Honeycomb & Australian Honey
+  Brand: Connoisseur
+  Sizes: ['1l']
+  Normalized: australiancreamgourmethoneyhoneycombiceconnoisseur1l
+  Barcode: 9347042003547
+  SKU (one of): 180000004528
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Connoisseur Honeycomb & Australian Honey Ice Cream
+  Brand: Connoisseur
+  Sizes: ['4ea', 'ea']
+  Normalized: australiancrmhoneyhoneycombiceconnoisseur1ea4ea
+  Barcode: 9347042003530
+  SKU (one of): 973134
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.855073 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Colgate Whitening Toothpaste Advanced Whitening
+  Brand: Colgate
+  Sizes: ['200g']
+  Normalized: advancedtoothpastewhiteningwhiteningcolgate200g
+  Barcode: 8850006943496
+  SKU (one of): 514973
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Colgate Advanced Whitening Toothpaste
+  Brand: Colgate
+  Sizes: ['115g', 'ea']
+  Normalized: advancedtoothpastewhiteningcolgate115g1ea
+  Barcode: 8850006943489
+  SKU (one of): 197389
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Raby, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.871929 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: U by Kotex Teen Ultrathins Pads Regular With Wings
+  Brand: U by Kotex
+  Sizes: ['14pk']
+  Normalized: padsregularteenultrathinswingswithbykotexu14pk
+  Barcode: 9310088015591
+  SKU (one of): 658379
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: U By Kotex Feminine Pad Petite Ultrathin Overnight
+  Brand: U By Kotex
+  Sizes: ['12ea', 'ea']
+  Normalized: feminineovernightpadpetiteultrathinbykotexu12ea1ea
+  Barcode: 9310088015959
+  SKU (one of): 656908
+  Stores: IGA Local Grocer Adelaide City East, IGA Raby, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.879932 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: U by Kotex Teen Ultrathins Pads Super With Wings
+  Brand: U by Kotex
+  Sizes: ['12pk']
+  Normalized: padssuperteenultrathinswingswithbykotexu12pk
+  Barcode: 9310088015607
+  SKU (one of): 659312
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: U By Kotex Feminine Pad Petite Ultrathin Regular Wing
+  Brand: U By Kotex
+  Sizes: ['14ea', 'ea']
+  Normalized: femininepadpetiteregularultrathinwingbykotexu14ea1ea
+  Barcode: 9310088015942
+  SKU (one of): 653366
+  Stores: IGA Local Grocer Adelaide City East, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.886962 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Atkins Endulge Bar Caramel Nut
+  Brand: Atkins
+  Sizes: ['5pk']
+  Normalized: barcaramelendulgenutatkins5pk
+  Barcode: 0637480010559
+  SKU (one of): 797238
+  Stores: IGA Clearview, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Atkins Endulge Bar Caramel Nut Multipack
+  Brand: Atkins
+  Sizes: ['5ea', 'ea']
+  Normalized: barcaramelendulgemultipacknutatkins1ea5ea
+  Barcode: 637480010559
+  SKU (one of): 376747
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.895984 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Bref Power Active Lemon Toilet Cleaner Block
+  Brand: Bref
+  Sizes: ['2pk', '50g', 'pk']
+  Normalized: activeblockcleanerlemonpowertoiletbref1pk2pk50g
+  Barcode: 9350376001776
+  SKU (one of): 851121
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Bref Power Active Juicy Lemon Rim Block Toilet Cleaner
+  Brand: Bref
+  Sizes: ['50g', 'ea']
+  Normalized: activeblockclnerjuicylemonpowerrimtoiletbref1ea50g
+  Barcode: 9350376000007
+  SKU (one of): 610583
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA Raby, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.912988 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Willow Medium Ice Brick 350ml
+  Brand: Willow
+  Sizes: ['350ml', 'ea']
+  Normalized: brickicemediumwillow1ea350ml
+  Barcode: 9310046049170
+  SKU (one of): 724345
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Willow Ice Brick Medium
+  Brand: Willow
+  Sizes: ['1ea', 'ea']
+  Normalized: brickicemediumwillow1ea
+  Barcode:  9310046049170
+  SKU (one of): 724345
+  Stores: IGA Local Grocer Stanmore, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.921988 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Surf Liquid Washing Detergent Tropical
+  Brand: Surf
+  Sizes: ['4l']
+  Normalized: detergentliquidtropicalwashingsurf4l
+  Barcode: 9300830023356
+  SKU (one of): 160000004744
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Surf Laundry Liquid Tropical
+  Brand: SURF
+  Sizes: ['1l', 'ea']
+  Normalized: laundryliquidtropicalsurf1ea1l
+  Barcode: 9300830023233
+  SKU (one of): 160000004739
+  Stores: IGA Clearview, IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.928969 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: OMO Active Laundry Capsules 3-In-1 3 In 1
+  Brand: OMO
+  Sizes: ['50pk']
+  Normalized: 133in1activecapsulesinlaundryomo50pk
+  Barcode: 9300830070053
+  SKU (one of): 541608
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: OMO Laundry Powder 3in1 Active Capsules
+  Brand: OMO
+  Sizes: ['17ea', 'ea']
+  Normalized: 3in1activecapsuleslaundrypowderomo17ea1ea
+  Barcode: 9300830069996
+  SKU (one of): 541739
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.939986 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Green's Pancake Mix Buttermilk Shake
+  Brand: Green's
+  Sizes: ['325g']
+  Normalized: buttermilkmixpancakeshakegreens325g
+  Barcode: 9310273105120
+  SKU (one of): 350081
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Green's Buttermilk Pancake Shake Mix
+  Brand: Green's
+  Sizes: ['190g']
+  Normalized: bananasgreens190g
+  Barcode: 9310273002399
+  SKU (one of): 905348
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Trinity Heights, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.960050 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Heinz Beanz Canned Baked Beans No Added Sugar
+  Brand: Heinz
+  Sizes: ['220g', '3pk', 'pk']
+  Normalized: addedbakedbeansbeanzcannednosugarheinz1pk220g3pk
+  Barcode: 9300657234843
+  SKU (one of): 853903
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Heinz Baked Beans No Added Sugar
+  Brand: Heinz
+  Sizes: ['3ea', 'ea']
+  Normalized: addedbakedbnsnosugarheinz1ea3ea
+  Barcode: 9300657235123
+  SKU (one of): 93420
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA X-press Thaikee, Nambour, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.972980 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Pico Organic Vegan Chocolate Salted Caramel
+  Brand: Pico
+  Sizes: ['80g']
+  Normalized: caramelchocolateorganicsaltedveganpico80g
+  Barcode: 9340784001925
+  SKU (one of): 7725
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Pico Organic Chocolate Salted Caramel
+  Brand: Pico
+  Sizes: ['80g', 'ea']
+  Normalized: caramelchocolateorganicsaltedpico1ea80g
+  Barcode: 9340784001888
+  SKU (one of): 531666
+  Stores: IGA X-press Thaikee, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.978972 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Pico Organic Vegan Chocolate Super Dark
+  Brand: Pico
+  Sizes: ['80g']
+  Normalized: chocolatedarkorganicsuperveganpico80g
+  Barcode: 9340784001970
+  SKU (one of): 7726
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Pico Organic Chocolate Super Dark
+  Brand: Pico
+  Sizes: ['80g', 'ea']
+  Normalized: chocolatedarkorganicsuperpico1ea80g
+  Barcode: 9340784001864
+  SKU (one of): 531632
+  Stores: IGA X-press Thaikee, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:06.992573 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Nice & Natural Nut Bars Salted Caramel With Dark Choc Multipack Snacks
+  Brand: Nice & Natural
+  Sizes: ['6pk']
+  Normalized: barscaramelchocdarkmultipacknutsaltedsnackswithnaturalnice6pk
+  Barcode: 9400563462023
+  SKU (one of): 180000004616
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Stanmore, Nambour, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Nice & Natural Chocolate Nut Bars Salted Caramel
+  Brand: Nice & Natural
+  Sizes: ['6ea', 'ea']
+  Normalized: barscaramelchocolatenutsaltednaturalnice1ea6ea
+  Barcode: 9400563457142
+  SKU (one of): 160000013166
+  Stores: IGA Local Grocer Adelaide City East, IGA Raby, IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.004096 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Mamee Noodle Snacks Chicken 8Pk
+  Brand: Mamee
+  Sizes: ['200g', '8pk']
+  Normalized: chickennoodlesnacksmamee200g8pk
+  Barcode: 9555022309286
+  SKU (one of): 489372
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Stanmore, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Mamee Monster Noodle Snack Chicken
+  Brand: Mamee
+  Sizes: ['300g', 'ea']
+  Normalized: chickenmonsternoodlesnackmamee1ea300g
+  Barcode: 9555022309248
+  SKU (one of): 10568
+  Stores: IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA X-press Thaikee
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.012201 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Kinder Tronky Creamy Chocolate Wafer Biscuit Multipack
+  Brand: Kinder
+  Sizes: ['5pk']
+  Normalized: biscuitchocolatecreamymultipacktronkywaferkinder5pk
+  Barcode: 8000500384794
+  SKU (one of): 132297
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Kinder Tronky
+  Brand: Kinder
+  Sizes: ['18g', 'ea']
+  Normalized: tronkykinder18g1ea
+  Barcode: 80906032
+  SKU (one of): 132006
+  Stores: Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.023183 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Chobani Fit High Protein Greek Yogurt Pot Passionfruit
+  Brand: Chobani
+  Sizes: ['160g']
+  Normalized: fitgreekhighpassionfruitpotproteinyogurtchobani160g
+  Barcode: 9310653106051
+  SKU (one of): 160000018279
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Chobani FiT High Protein Greek Yoghurt Passion Fruit
+  Brand: Chobani
+  Sizes: ['170g', 'ea']
+  Normalized: fitfruitgreekhighpassionproteinyoghurtchobani170g1ea
+  Barcode: 9310653104088
+  SKU (one of): 180000000035
+  Stores: IGA Local Grocer Stanmore, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.030103 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Chobani Fit High Protein Greek Yogurt Pot Tropical
+  Brand: Chobani
+  Sizes: ['160g']
+  Normalized: fitgreekhighpotproteintropicalyogurtchobani160g
+  Barcode: 9310653106044
+  SKU (one of): 160000018283
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Chobani FiT High Protein Greek Yoghurt Tropical
+  Brand: Chobani
+  Sizes: ['170g', 'ea']
+  Normalized: fitgreekhighproteintropicalyoghurtchobani170g1ea
+  Barcode: 9310653104477
+  SKU (one of): 160000011930
+  Stores: North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.038102 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Chobani Greek Yogurt Natural Light
+  Brand: Chobani
+  Sizes: ['160g']
+  Normalized: greeklightnaturalyogurtchobani160g
+  Barcode: 9310653105658
+  SKU (one of): 20000007120
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Coles Albany Creek, Coles Arundel, Coles Ayr, Coles Bay Central, Coles Beaudesert, Coles Birtinya, Coles Cairns Central, Coles Cairns Smithfield, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Chobani Greek Yoghurt Natural Light
+  Brand: Chobani
+  Sizes: ['907g', 'ea']
+  Normalized: greeklightnaturalyoghurtchobani1ea907g
+  Barcode: 9310653102626
+  SKU (one of): 180000000002
+  Stores: IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.051108 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Farmers Union Greek Style Yoghurt Pouch Passionfruit
+  Brand: Farmers Union
+  Sizes: ['130g']
+  Normalized: greekpassionfruitpouchstyleyoghurtfarmersunion130g
+  Barcode: 9300658408243
+  SKU (one of): 664121
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Coles Albany Creek, Coles Arundel, Coles Ayr, Coles Bay Central, Coles Beaudesert, Coles Birtinya, Coles Cairns Central, Coles Cairns Smithfield, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Farmers Union Yoghurt Greek Yoghurt
+  Brand: Farmers Union
+  Sizes: ['240g', 'ea']
+  Normalized: greekyoghurtyoghurtfarmersunion1ea240g
+  Barcode: 9300658410659
+  SKU (one of): 309873
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.071195 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Perfect Italiano Parmesan Cheese Grated
+  Brand: Perfect Italiano
+  Sizes: ['250g']
+  Normalized: cheesegratedparmesanitalianoperfect250g
+  Barcode: 9300665023408
+  SKU (one of): 144016
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Perfect Italiano Parmesan Cheese
+  Brand: Perfect Italiano
+  Sizes: ['100g', 'ea']
+  Normalized: cheeseparmesanitalianoperfect100g1ea
+  Barcode: 9300665023118
+  SKU (one of): 391972
+  Stores: IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA Raby, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.093191 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Fanta Pineapple Zero Sugar 
+  Brand: Fanta
+  Sizes: ['1.25l', 'ea']
+  Normalized: pinpplesugarzerofanta125l1ea
+  Barcode: 9300675094320
+  SKU (one of): 180000002413
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA Raby, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Fanta Pineapple Zero Sugar
+  Brand: Fanta
+  Sizes: ['600ml', 'ea']
+  Normalized: pinpplesugarzerofanta1ea600ml
+  Barcode: 9300675094306
+  SKU (one of): 578396
+  Stores: IGA Clearview, IGA Local Grocer Adelaide City East, IGA X-press Thaikee
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.105197 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Monster Energy Pipeline Punch Can
+  Brand: Monster
+  Sizes: ['500ml']
+  Normalized: canenergypipelinepunchmonster500ml
+  Barcode: 9342866000772
+  SKU (one of): 449500
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Monster Energy Drink Pipeline Punch
+  Brand: Monster
+  Sizes: ['500ml', 'ea']
+  Normalized: drinkenergypipelinepunchmonster1ea500ml
+  Barcode: 9342866000802
+  SKU (one of): 190000002901
+  Stores: IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.116648 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Impressed Pressed Juice Apple
+  Brand: Impressed
+  Sizes: ['1l']
+  Normalized: applejuicepressedimpressed1l
+  Barcode: 9336243005733
+  SKU (one of): 180000003593
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Impressed Essentials Apple Juice
+  Brand: Impressed
+  Sizes: ['425ml', 'ea']
+  Normalized: appleessentialsjuiceimpressed1ea425ml
+  Barcode: 9336243005597
+  SKU (one of): 180000003596
+  Stores: IGA Local Grocer Adelaide City East, IGA X-press Thaikee, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.127790 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Impressed Cold Pressed Juice Ginger Ninja
+  Brand: Impressed
+  Sizes: ['1l']
+  Normalized: coldgingerjuiceninjapressedimpressed1l
+  Barcode: 9336243006099
+  SKU (one of): 9302
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Impressed Ginger Ninja Juice
+  Brand: Impressed
+  Sizes: ['325ml', 'ea']
+  Normalized: gingerjuiceninjaimpressed1ea325ml
+  Barcode: 9336243005894
+  SKU (one of): 4845
+  Stores: IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.144511 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Nudie Nothing But Carrot Ginger & More
+  Brand: Nudie
+  Sizes: ['400ml']
+  Normalized: butcarrotgingermorenothingnudie400ml
+  Barcode: 9332991000198
+  SKU (one of): 180000000090
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Nudie Juice Nothing But Carrot, Apple, Orange & Ginger
+  Brand: Nudie
+  Sizes: ['1l', 'ea']
+  Normalized: applebutcarrotgingerjuicenothingorangenudie1ea1l
+  Barcode: 9332991000938
+  SKU (one of): 180000000087
+  Stores: IGA X-press Thaikee, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.155422 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Nudie Nothing But Orange Pulp Free
+  Brand: Nudie
+  Sizes: ['400ml']
+  Normalized: butfreenothingorangepulpnudie400ml
+  Barcode: 9332991002864
+  SKU (one of): 180000000066
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Nudie Juice Nothing But Orange Pulp Free
+  Brand: Nudie
+  Sizes: ['3l', 'ea']
+  Normalized: butfreejuicenothingorangepulpnudie1ea3l
+  Barcode: 9332991001607
+  SKU (one of): 180000000071
+  Stores: IGA X-press Thaikee
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.174916 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Sunraysia Natural Prune Juice
+  Brand: Sunraysia
+  Sizes: ['250ml']
+  Normalized: juicenaturalprunesunraysia250ml
+  Barcode: 9310865109208
+  SKU (one of): 456544
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Sunraysia Prune Juice
+  Brand: Sunraysia
+  Sizes: ['1l', 'ea']
+  Normalized: juiceprunesunraysia1ea1l
+  Barcode: 9310865816052
+  SKU (one of): 403009
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Stanmore, IGA Trinity Heights, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.197636 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Vitasoy Oat Milky Long Life Milk UHT
+  Brand: Vitasoy
+  Sizes: ['1l']
+  Normalized: lifelongmilkmilkyoatuhtvitasoy1l
+  Barcode: 9341650001599
+  SKU (one of): 160000003599
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Vitasoy Oat Milky
+  Brand: Vitasoy
+  Sizes: ['1l', 'ea']
+  Normalized: milkyoatvitasoy1ea1l
+  Barcode: 9341650001551
+  SKU (one of): 155962
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Adelaide City East, Nambour, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.233750 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name:  NIVEA 3in1 Refreshing Cleansing Wipes
+  Brand: NIVEA
+  Sizes: ['25ea', 'ea']
+  Normalized: 3in1clnsingrefreshingwipesnivea1ea25ea
+  Barcode: 4005808179008
+  SKU (one of): 494526
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: NIVEA 3in1 Refreshing Cleansing Wipes
+  Brand: NIVEA
+  Sizes: ['7ea', 'ea']
+  Normalized: 3in1clnsingrefreshingwipesnivea1ea7ea
+  Barcode: 4005900072276
+  SKU (one of): 787574
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA X-press Thaikee, Nambour, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.243746 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Thursday Plantation Oil Lavender
+  Brand: Thursday Plantation
+  Sizes: ['50ml']
+  Normalized: lavenderoilplantationthursday50ml
+  Barcode: 9312146007487
+  SKU (one of): 836972
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Thursday Plantation Lavender Oil Calming
+  Brand: Thursday Plantation
+  Sizes: ['25ml', 'ea']
+  Normalized: calminglavenderoilplantationthursday1ea25ml
+  Barcode: 9312146006039
+  SKU (one of): 837033
+  Stores: IGA X-press Thaikee
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:00:07.255864 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Love 'Em Dog Treats Beef Liver
+  Brand: Love 'Em
+  Sizes: ['90g']
+  Normalized: beefdoglivertreatsemlove90g
+  Barcode: 9325242000504
+  SKU (one of): 160000000427
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Love'em Air Dried Beef Liver
+  Brand: Love'em
+  Sizes: ['200g', 'ea']
+  Normalized: airbeefdriedliverloveem1ea200g
+  Barcode: 9325242000535
+  SKU (one of): 160000000437
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.342808 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Green's Pancake Mix Buttermilk Shake
+  Brand: Green's
+  Sizes: ['325g']
+  Normalized: buttermilkmixpancakeshakegreens325g
+  Barcode: 9310273105120
+  SKU (one of): 350081
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Green's Buttermilk Pancake Shake Mix
+  Brand: Green's
+  Sizes: ['190g']
+  Normalized: bananasgreens190g
+  Barcode: 9310273002399
+  SKU (one of): 905348
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Trinity Heights, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.372814 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Heinz Beanz Canned Baked Beans No Added Sugar
+  Brand: Heinz
+  Sizes: ['220g', '3pk', 'pk']
+  Normalized: addedbakedbeansbeanzcannednosugarheinz1pk220g3pk
+  Barcode: 9300657234843
+  SKU (one of): 853903
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Heinz Baked Beans No Added Sugar
+  Brand: Heinz
+  Sizes: ['3ea', 'ea']
+  Normalized: addedbakedbnsnosugarheinz1ea3ea
+  Barcode: 9300657235123
+  SKU (one of): 93420
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA X-press Thaikee, Nambour, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.388447 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Cobram Extra Light & Delicate Olive Oil Spray
+  Brand: Cobram
+  Sizes: ['225g']
+  Normalized: cobramdelicateextralightoilolivespraycobramestate225g
+  Barcode: 0852696000099
+  SKU (one of): 160000013706
+  Stores: IGA Clearview, IGA Local Grocer Glenelg East
+--- DUPLICATE (New Variation Product) ---  Name: Cobram Estate Extra Light & Delicate Olive Oil Spray
+  Brand: Cobram Estate
+  Sizes: ['225g', 'ea']
+  Normalized: delicateextralightoilolivespraycobramestate1ea225g
+  Barcode: 852696000099
+  SKU (one of): 160000013706
+  Stores: Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.398446 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Cobram Olive Oil Garlic
+  Brand: Cobram
+  Sizes: ['500ml']
+  Normalized: cobramgarlicoilolivecobramestate500ml
+  Barcode: 0852696001102
+  SKU (one of): 16000001539
+  Stores: IGA Clearview, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Cobram Estate Olive Oil Garlic
+  Brand: Cobram Estate
+  Sizes: ['500ml', 'ea']
+  Normalized: garlicoilolivecobramestate1ea500ml
+  Barcode: 852696001102
+  SKU (one of): 16000001539
+  Stores: Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.410459 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Cadbury Fry's Turkish Delight Twin Pack Milk Chocolate Bar
+  Brand: Cadbury
+  Sizes: ['70g', 'pk']
+  Normalized: barchocolatedelightfrysmilkpackturkishtwincadbury1pk70g
+  Barcode: 9300617301554
+  SKU (one of): 560733
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Fry's Turkish Delight Twin Pack
+  Brand: Fry's
+  Sizes: ['76g', 'ea', 'pk']
+  Normalized: delightpackturkishtwinfrys1ea1pk76g
+  Barcode: 9300617395034
+  SKU (one of): 386414
+  Stores: IGA Clearview, IGA Local Grocer Adelaide City East, IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.427590 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Quest Tortilla Style Protein Chips Nacho Cheese Flavour
+  Brand: Quest
+  Sizes: ['32g']
+  Normalized: cheesechipsflavournachoproteinstyletortillaquest32g
+  Barcode: 0888849013326
+  SKU (one of): 260508
+  Stores: IGA Clearview, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Quest Tortilla Style Protein Chips Nacho Cheese
+  Brand: Quest
+  Sizes: ['32g', 'ea']
+  Normalized: cheesechipsnachoproteinstyletortillaquest1ea32g
+  Barcode: 888849013326
+  SKU (one of): 276832
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.438589 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Temole Almond Chips BBQ
+  Brand: Temole
+  Sizes: ['40g']
+  Normalized: almondbbqchipstemole40g
+  Barcode: 0850210006954
+  SKU (one of): 190000001297
+  Stores: Beaudesert, IGA Clearview, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Temole Almond Chips Barbecue
+  Brand: Temole
+  Sizes: ['40g', 'ea']
+  Normalized: almondbarbecuechipstemole1ea40g
+  Barcode: 850210006954
+  SKU (one of): 150879
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.448589 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Doritos Salsa Dip Mild
+  Brand: Doritos
+  Sizes: ['300g']
+  Normalized: dipmildsalsadoritos300g
+  Barcode: 9310015250286
+  SKU (one of): 381977
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Glenelg East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Doritos Mild Salsa
+  Brand: Doritos
+  Sizes: ['300g', 'ea']
+  Normalized: mildsalsadoritos1ea300g
+  Barcode: 9310015224072
+  SKU (one of): 170000003647
+  Stores: IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.464591 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Kinder Tronky Creamy Chocolate Wafer Biscuit Multipack
+  Brand: Kinder
+  Sizes: ['5pk']
+  Normalized: biscuitchocolatecreamymultipacktronkywaferkinder5pk
+  Barcode: 8000500384794
+  SKU (one of): 132297
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Kinder Tronky
+  Brand: Kinder
+  Sizes: ['18g', 'ea']
+  Normalized: tronkykinder18g1ea
+  Barcode: 80906032
+  SKU (one of): 132006
+  Stores: Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.474590 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Nutella B Ready Biscuit Multipack
+  Brand: Nutella
+  Sizes: ['6pk']
+  Normalized: bbiscuitmultipackreadynutella6pk
+  Barcode: 9300698503762
+  SKU (one of): 178515
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Nutella B-ready Wafer Biscuit
+  Brand: Nutella
+  Sizes: ['6ea', 'ea']
+  Normalized: brdybiscuitwafernutella1ea6ea
+  Barcode:  9300698503762
+  SKU (one of): 178515
+  Stores: IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.493590 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Oak Plus Protein Chocolate No Added Sugar Flavoured Milk
+  Brand: Oak
+  Sizes: ['500ml']
+  Normalized: addedchocolateflavouredmilknoplusproteinsugaroak500ml
+  Barcode: 9310036070528
+  SKU (one of): 29596
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Coles Albany Creek, Coles Arundel, Coles Ayr, Coles Bay Central, Coles Beaudesert, Coles Birtinya, Coles Cairns Central, Coles Cairns Smithfield, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, Nambour, Tamworth, Taree, Toronto, Toukley, Tuggerah, U-Go Taren Point, Umina Beach, Wallsend, Warners Bay, Wyoming, Wyong
+--- DUPLICATE (New Variation Product) ---  Name: OAK Plus Protein Chocolate
+  Brand: Oak
+  Sizes: ['500ml', 'ea']
+  Normalized: chocolateplusproteinoak1ea500ml
+  Barcode:  9310036070528
+  SKU (one of): 29596
+  Stores: IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.518590 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Oak Plus Protein Vanilla No Added Sugar Flavoured Milk
+  Brand: Oak
+  Sizes: ['500ml']
+  Normalized: addedflavouredmilknoplusproteinsugarvanillaoak500ml
+  Barcode: 9310036070535
+  SKU (one of): 29619
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: OAK Plus Protein Vanilla Flavoured Milk
+  Brand: Oak
+  Sizes: ['500ml', 'ea']
+  Normalized: flavouredmilkplusproteinvanillaoak1ea500ml
+  Barcode:  9310036070535
+  SKU (one of): 29619
+  Stores: IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.537089 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Pauls Plus Protein Vanilla Yoghurt
+  Brand: Pauls
+  Sizes: ['160g']
+  Normalized: plusproteinvanillayoghurtpauls160g
+  Barcode: 9310036079415
+  SKU (one of): 548553
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Coles Albany Creek, Coles Arundel, Coles Ayr, Coles Bay Central, Coles Beaudesert, Coles Birtinya, Coles Cairns Central, Coles Cairns Smithfield, IGA Clearview, IGA Local Grocer Glenelg East, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Pauls High Protein Vanilla Yoghurt
+  Brand: Pauls
+  Sizes: ['700g', 'ea']
+  Normalized: highproteinvanillayoghurtpauls1ea700g
+  Barcode: 9310036079149
+  SKU (one of): 548605
+  Stores: North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.559361 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Perfect Italiano Parmesan Cheese Grated
+  Brand: Perfect Italiano
+  Sizes: ['250g']
+  Normalized: cheesegratedparmesanitalianoperfect250g
+  Barcode: 9300665023408
+  SKU (one of): 144016
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Perfect Italiano Parmesan Cheese
+  Brand: Perfect Italiano
+  Sizes: ['100g', 'ea']
+  Normalized: cheeseparmesanitalianoperfect100g1ea
+  Barcode: 9300665023118
+  SKU (one of): 391972
+  Stores: IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, IGA Raby, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.580521 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Don Double Smoked Leg Ham
+  Brand: Don
+  Sizes: ['200g']
+  Normalized: doublehamlegsmokeddon200g
+  Barcode: 9326451016294
+  SKU (one of): 150000008004
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Coles Albany Creek, Coles Arundel, Coles Ayr, Coles Bay Central, Coles Beaudesert, Coles Birtinya, Coles Cairns Central, Coles Cairns Smithfield, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: DON Thinly Sliced Double Smoked Leg Ham
+  Brand: DON
+  Sizes: ['250g', 'ea']
+  Normalized: doublehamlegslicedsmokedthinlydon1ea250g
+  Barcode: 9313886025137
+  SKU (one of): 127357
+  Stores: IGA Local Grocer Stanmore, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.599047 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Mountain Bread Natural Light Wraps
+  Brand: Mountain Bread
+  Sizes: ['8pk']
+  Normalized: lightnaturalwrapsbreadmountain8pk
+  Barcode: 0789673000080
+  SKU (one of): 924034
+  Stores: Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Mountain Bread Natural
+  Brand: Mountain Bread
+  Sizes: ['200g', 'ea']
+  Normalized: naturalbreadmountain1ea200g
+  Barcode: 789673000080
+  SKU (one of): 118406
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.610629 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Fanta Pineapple Zero Sugar 
+  Brand: Fanta
+  Sizes: ['1.25l', 'ea']
+  Normalized: pinpplesugarzerofanta125l1ea
+  Barcode: 9300675094320
+  SKU (one of): 180000002413
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, IGA Raby, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Fanta Pineapple Zero Sugar
+  Brand: Fanta
+  Sizes: ['600ml', 'ea']
+  Normalized: pinpplesugarzerofanta1ea600ml
+  Barcode: 9300675094306
+  SKU (one of): 578396
+  Stores: IGA Clearview, IGA Local Grocer Adelaide City East, IGA X-press Thaikee
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.623827 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Fever-Tree Mediterranean Tonic Water Bottles
+  Brand: Fever-Tree
+  Sizes: ['500ml']
+  Normalized: bottlesmediterraneantonicwaterfevertree500ml
+  Barcode: 5060108450546
+  SKU (one of): 6601629
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Fever-Tree Mediterranean Tonic Water
+  Brand: Fever-Tree
+  Sizes: ['4ea', 'ea']
+  Normalized: mediterranntonicwaterfevertree1ea4ea
+  Barcode: 5060108450515
+  SKU (one of): 587471
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.635951 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: OxyShred Energy Drink Passionfruit Can
+  Brand: OxyShred
+  Sizes: ['355ml']
+  Normalized: candrinkpassionfruitenergyoxyshred355ml
+  Barcode: 0850029937265
+  SKU (one of): 62882
+  Stores: IGA Clearview, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: EHP Labs Oxyshred Ultra Energy Passionfruit
+  Brand: EHPLabs
+  Sizes: ['355ml', 'ea']
+  Normalized: ehpenergylabsoxyshredpassionfruitultraehplabs1ea355ml
+  Barcode: 850029937265
+  SKU (one of): 230703
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA X-press Thaikee, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.642951 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Monster Energy Pipeline Punch Can
+  Brand: Monster
+  Sizes: ['500ml']
+  Normalized: canenergypipelinepunchmonster500ml
+  Barcode: 9342866000772
+  SKU (one of): 449500
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Monster Energy Drink Pipeline Punch
+  Brand: Monster
+  Sizes: ['500ml', 'ea']
+  Normalized: drinkenergypipelinepunchmonster1ea500ml
+  Barcode: 9342866000802
+  SKU (one of): 190000002901
+  Stores: IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.651459 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Rockstar Guava Punched Energy Drink
+  Brand: Rockstar
+  Sizes: ['500ml']
+  Normalized: drinkenergyguavapunchedrockstar500ml
+  Barcode: 0818094004626
+  SKU (one of): 16925
+  Stores: IGA Clearview, IGA Local Grocer Glenelg East, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Rockstar Punched Energy & Guava Drink
+  Brand: Rockstar
+  Sizes: ['500ml', 'ea']
+  Normalized: drinkenergyguavapunchedrockstar1ea500ml
+  Barcode: 818094004626
+  SKU (one of): 16925
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.665737 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Impressed Pressed Juice Apple
+  Brand: Impressed
+  Sizes: ['1l']
+  Normalized: applejuicepressedimpressed1l
+  Barcode: 9336243005733
+  SKU (one of): 180000003593
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Impressed Essentials Apple Juice
+  Brand: Impressed
+  Sizes: ['425ml', 'ea']
+  Normalized: appleessentialsjuiceimpressed1ea425ml
+  Barcode: 9336243005597
+  SKU (one of): 180000003596
+  Stores: IGA Local Grocer Adelaide City East, IGA X-press Thaikee, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.677738 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Impressed Cold Pressed Juice Ginger Ninja
+  Brand: Impressed
+  Sizes: ['1l']
+  Normalized: coldgingerjuiceninjapressedimpressed1l
+  Barcode: 9336243006099
+  SKU (one of): 9302
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Impressed Ginger Ninja Juice
+  Brand: Impressed
+  Sizes: ['325ml', 'ea']
+  Normalized: gingerjuiceninjaimpressed1ea325ml
+  Barcode: 9336243005894
+  SKU (one of): 4845
+  Stores: IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.695735 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Grinders Crema Coffee Beans Coffee Beans
+  Brand: Grinders
+  Sizes: ['1kg']
+  Normalized: beansbeanscoffeecoffeecremagrinders1kg
+  Barcode: 9329214001018
+  SKU (one of): 473952
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Grinders Crema Coffee Beans
+  Brand: Grinders
+  Sizes: ['500g']
+  Normalized: beanscoffeecremagrinders500g
+  Barcode: 9329214006587
+  SKU (one of): 6024149
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Adelaide City East, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.710382 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Califia Farms Barista Oat Long Life Milk UHT
+  Brand: Califia Farms
+  Sizes: ['1l']
+  Normalized: baristalifelongmilkoatuhtcalifiafarms1l
+  Barcode: 0813636021949
+  SKU (one of): 827457
+  Stores: Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Califia Farms Oat Barista Blend
+  Brand: Califia Farms
+  Sizes: ['1l', 'ea']
+  Normalized: baristablendoatcalifiafarms1ea1l
+  Barcode: 813636021949
+  SKU (one of): 827457
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Stanmore, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.724632 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Vitasoy Oat Milky Long Life Milk UHT
+  Brand: Vitasoy
+  Sizes: ['1l']
+  Normalized: lifelongmilkmilkyoatuhtvitasoy1l
+  Barcode: 9341650001599
+  SKU (one of): 160000003599
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Vitasoy Oat Milky
+  Brand: Vitasoy
+  Sizes: ['1l', 'ea']
+  Normalized: milkyoatvitasoy1ea1l
+  Barcode: 9341650001551
+  SKU (one of): 155962
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Adelaide City East, Nambour, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.758965 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Connoisseur Gourmet Ice Cream Honeycomb & Australian Honey
+  Brand: Connoisseur
+  Sizes: ['1l']
+  Normalized: australiancreamgourmethoneyhoneycombiceconnoisseur1l
+  Barcode: 9347042003547
+  SKU (one of): 180000004528
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, Nambour, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Connoisseur Honeycomb & Australian Honey Ice Cream
+  Brand: Connoisseur
+  Sizes: ['4ea', 'ea']
+  Normalized: australiancrmhoneyhoneycombiceconnoisseur1ea4ea
+  Barcode: 9347042003530
+  SKU (one of): 973134
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.785623 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Colgate Whitening Toothpaste Advanced Whitening
+  Brand: Colgate
+  Sizes: ['200g']
+  Normalized: advancedtoothpastewhiteningwhiteningcolgate200g
+  Barcode: 8850006943496
+  SKU (one of): 514973
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Colgate Advanced Whitening Toothpaste
+  Brand: Colgate
+  Sizes: ['115g', 'ea']
+  Normalized: advancedtoothpastewhiteningcolgate115g1ea
+  Barcode: 8850006943489
+  SKU (one of): 514847
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Glenelg East, IGA Raby, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.808433 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: U by Kotex Teen Ultrathins Pads Regular With Wings
+  Brand: U by Kotex
+  Sizes: ['14pk']
+  Normalized: padsregularteenultrathinswingswithbykotexu14pk
+  Barcode: 9310088015591
+  SKU (one of): 658379
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: U By Kotex Feminine Pad Petite Ultrathin Overnight
+  Brand: U By Kotex
+  Sizes: ['12ea', 'ea']
+  Normalized: feminineovernightpadpetiteultrathinbykotexu12ea1ea
+  Barcode: 9310088015959
+  SKU (one of): 656908
+  Stores: IGA Local Grocer Adelaide City East, IGA Raby, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.818460 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: U by Kotex Teen Ultrathins Pads Super With Wings
+  Brand: U by Kotex
+  Sizes: ['12pk']
+  Normalized: padssuperteenultrathinswingswithbykotexu12pk
+  Barcode: 9310088015607
+  SKU (one of): 659312
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: U By Kotex Feminine Pad Petite Ultrathin Regular Wing
+  Brand: U By Kotex
+  Sizes: ['14ea', 'ea']
+  Normalized: femininepadpetiteregularultrathinwingbykotexu14ea1ea
+  Barcode: 9310088015942
+  SKU (one of): 653366
+  Stores: IGA Local Grocer Adelaide City East, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.825763 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Atkins Endulge Bar Caramel Nut
+  Brand: Atkins
+  Sizes: ['5pk']
+  Normalized: barcaramelendulgenutatkins5pk
+  Barcode: 0637480010559
+  SKU (one of): 797238
+  Stores: IGA Clearview, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Atkins Endulge Bar Caramel Nut Multipack
+  Brand: Atkins
+  Sizes: ['5ea', 'ea']
+  Normalized: barcaramelendulgemultipacknutatkins1ea5ea
+  Barcode: 637480010559
+  SKU (one of): 376747
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.840001 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Bref Power Active Lemon Toilet Cleaner Block
+  Brand: Bref
+  Sizes: ['2pk', '50g', 'pk']
+  Normalized: activeblockcleanerlemonpowertoiletbref1pk2pk50g
+  Barcode: 9350376001776
+  SKU (one of): 851121
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Bref Power Active Juicy Lemon Rim Block Toilet Cleaner
+  Brand: Bref
+  Sizes: ['50g', 'ea']
+  Normalized: activeblockclnerjuicylemonpowerrimtoiletbref1ea50g
+  Barcode: 9350376000007
+  SKU (one of): 610583
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, IGA Raby, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.857969 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Willow Medium Ice Brick 350ml
+  Brand: Willow
+  Sizes: ['350ml', 'ea']
+  Normalized: brickicemediumwillow1ea350ml
+  Barcode: 9310046049170
+  SKU (one of): 724345
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Willow Ice Brick Medium
+  Brand: Willow
+  Sizes: ['1ea', 'ea']
+  Normalized: brickicemediumwillow1ea
+  Barcode:  9310046049170
+  SKU (one of): 724345
+  Stores: IGA Local Grocer Stanmore, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.868308 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Surf Liquid Washing Detergent Tropical
+  Brand: Surf
+  Sizes: ['4l']
+  Normalized: detergentliquidtropicalwashingsurf4l
+  Barcode: 9300830023356
+  SKU (one of): 160000004744
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Glenelg East, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Surf Laundry Liquid Tropical
+  Brand: SURF
+  Sizes: ['1l', 'ea']
+  Normalized: laundryliquidtropicalsurf1ea1l
+  Barcode: 9300830023233
+  SKU (one of): 160000004739
+  Stores: IGA Clearview, IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.877165 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: OMO Active Laundry Capsules 3-In-1 3 In 1
+  Brand: OMO
+  Sizes: ['50pk']
+  Normalized: 133in1activecapsulesinlaundryomo50pk
+  Barcode: 9300830070053
+  SKU (one of): 541608
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: OMO Laundry Powder 3in1 Active Capsules
+  Brand: OMO
+  Sizes: ['17ea', 'ea']
+  Normalized: 3in1activecapsuleslaundrypowderomo17ea1ea
+  Barcode: 9300830069996
+  SKU (one of): 541739
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.893164 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Green's Pancake Mix Buttermilk Shake
+  Brand: Green's
+  Sizes: ['325g']
+  Normalized: buttermilkmixpancakeshakegreens325g
+  Barcode: 9310273105120
+  SKU (one of): 350081
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Green's Buttermilk Pancake Shake Mix
+  Brand: Green's
+  Sizes: ['190g']
+  Normalized: bananasgreens190g
+  Barcode: 9310273002399
+  SKU (one of): 905348
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Trinity Heights, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.912448 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Heinz Beanz Canned Baked Beans No Added Sugar
+  Brand: Heinz
+  Sizes: ['220g', '3pk', 'pk']
+  Normalized: addedbakedbeansbeanzcannednosugarheinz1pk220g3pk
+  Barcode: 9300657234843
+  SKU (one of): 853903
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Heinz Baked Beans No Added Sugar
+  Brand: Heinz
+  Sizes: ['3ea', 'ea']
+  Normalized: addedbakedbnsnosugarheinz1ea3ea
+  Barcode: 9300657235123
+  SKU (one of): 93420
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA X-press Thaikee, Nambour, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.928189 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Pico Organic Vegan Chocolate Salted Caramel
+  Brand: Pico
+  Sizes: ['80g']
+  Normalized: caramelchocolateorganicsaltedveganpico80g
+  Barcode: 9340784001925
+  SKU (one of): 7725
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Pico Organic Chocolate Salted Caramel
+  Brand: Pico
+  Sizes: ['80g', 'ea']
+  Normalized: caramelchocolateorganicsaltedpico1ea80g
+  Barcode: 9340784001888
+  SKU (one of): 531666
+  Stores: IGA X-press Thaikee, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.936117 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Pico Organic Vegan Chocolate Super Dark
+  Brand: Pico
+  Sizes: ['80g']
+  Normalized: chocolatedarkorganicsuperveganpico80g
+  Barcode: 9340784001970
+  SKU (one of): 7726
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Pico Organic Chocolate Super Dark
+  Brand: Pico
+  Sizes: ['80g', 'ea']
+  Normalized: chocolatedarkorganicsuperpico1ea80g
+  Barcode: 9340784001864
+  SKU (one of): 531632
+  Stores: IGA X-press Thaikee, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.948928 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Nice & Natural Nut Bars Salted Caramel With Dark Choc Multipack Snacks
+  Brand: Nice & Natural
+  Sizes: ['6pk']
+  Normalized: barscaramelchocdarkmultipacknutsaltedsnackswithnaturalnice6pk
+  Barcode: 9400563462023
+  SKU (one of): 180000004616
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Stanmore, Nambour, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Nice & Natural Chocolate Nut Bars Salted Caramel
+  Brand: Nice & Natural
+  Sizes: ['6ea', 'ea']
+  Normalized: barscaramelchocolatenutsaltednaturalnice1ea6ea
+  Barcode: 9400563457142
+  SKU (one of): 160000013166
+  Stores: IGA Local Grocer Adelaide City East, IGA Raby, IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.958927 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Mamee Noodle Snacks Chicken 8Pk
+  Brand: Mamee
+  Sizes: ['200g', '8pk']
+  Normalized: chickennoodlesnacksmamee200g8pk
+  Barcode: 9555022309286
+  SKU (one of): 489372
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Stanmore, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Mamee Monster Noodle Snack Chicken
+  Brand: Mamee
+  Sizes: ['300g', 'ea']
+  Normalized: chickenmonsternoodlesnackmamee1ea300g
+  Barcode: 9555022309248
+  SKU (one of): 10568
+  Stores: IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA X-press Thaikee
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.967974 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Kinder Tronky Creamy Chocolate Wafer Biscuit Multipack
+  Brand: Kinder
+  Sizes: ['5pk']
+  Normalized: biscuitchocolatecreamymultipacktronkywaferkinder5pk
+  Barcode: 8000500384794
+  SKU (one of): 132297
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Kinder Tronky
+  Brand: Kinder
+  Sizes: ['18g', 'ea']
+  Normalized: tronkykinder18g1ea
+  Barcode: 80906032
+  SKU (one of): 132006
+  Stores: Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.977889 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Chobani Fit High Protein Greek Yogurt Pot Passionfruit
+  Brand: Chobani
+  Sizes: ['160g']
+  Normalized: fitgreekhighpassionfruitpotproteinyogurtchobani160g
+  Barcode: 9310653106051
+  SKU (one of): 160000018279
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Chobani FiT High Protein Greek Yoghurt Passion Fruit
+  Brand: Chobani
+  Sizes: ['170g', 'ea']
+  Normalized: fitfruitgreekhighpassionproteinyoghurtchobani170g1ea
+  Barcode: 9310653104088
+  SKU (one of): 180000000035
+  Stores: IGA Local Grocer Stanmore, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.985023 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Chobani Fit High Protein Greek Yogurt Pot Tropical
+  Brand: Chobani
+  Sizes: ['160g']
+  Normalized: fitgreekhighpotproteintropicalyogurtchobani160g
+  Barcode: 9310653106044
+  SKU (one of): 160000018283
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Chobani FiT High Protein Greek Yoghurt Tropical
+  Brand: Chobani
+  Sizes: ['170g', 'ea']
+  Normalized: fitgreekhighproteintropicalyoghurtchobani170g1ea
+  Barcode: 9310653104477
+  SKU (one of): 160000011930
+  Stores: North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:22.993893 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Chobani Greek Yogurt Natural Light
+  Brand: Chobani
+  Sizes: ['160g']
+  Normalized: greeklightnaturalyogurtchobani160g
+  Barcode: 9310653105658
+  SKU (one of): 20000007120
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Coles Albany Creek, Coles Arundel, Coles Ayr, Coles Bay Central, Coles Beaudesert, Coles Birtinya, Coles Cairns Central, Coles Cairns Smithfield, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Chobani Greek Yoghurt Natural Light
+  Brand: Chobani
+  Sizes: ['907g', 'ea']
+  Normalized: greeklightnaturalyoghurtchobani1ea907g
+  Barcode: 9310653102626
+  SKU (one of): 180000000002
+  Stores: IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.008978 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Farmers Union Greek Style Yoghurt Pouch Passionfruit
+  Brand: Farmers Union
+  Sizes: ['130g']
+  Normalized: greekpassionfruitpouchstyleyoghurtfarmersunion130g
+  Barcode: 9300658408243
+  SKU (one of): 664121
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Coles Albany Creek, Coles Arundel, Coles Ayr, Coles Bay Central, Coles Beaudesert, Coles Birtinya, Coles Cairns Central, Coles Cairns Smithfield, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Farmers Union Yoghurt Greek Yoghurt
+  Brand: Farmers Union
+  Sizes: ['240g', 'ea']
+  Normalized: greekyoghurtyoghurtfarmersunion1ea240g
+  Barcode: 9300658410659
+  SKU (one of): 309873
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.030330 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Perfect Italiano Parmesan Cheese Grated
+  Brand: Perfect Italiano
+  Sizes: ['250g']
+  Normalized: cheesegratedparmesanitalianoperfect250g
+  Barcode: 9300665023408
+  SKU (one of): 144016
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Perfect Italiano Parmesan Cheese
+  Brand: Perfect Italiano
+  Sizes: ['100g', 'ea']
+  Normalized: cheeseparmesanitalianoperfect100g1ea
+  Barcode: 9300665023118
+  SKU (one of): 391972
+  Stores: IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, IGA Raby, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.061336 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Fanta Pineapple Zero Sugar 
+  Brand: Fanta
+  Sizes: ['1.25l', 'ea']
+  Normalized: pinpplesugarzerofanta125l1ea
+  Barcode: 9300675094320
+  SKU (one of): 180000002413
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, IGA Raby, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Fanta Pineapple Zero Sugar
+  Brand: Fanta
+  Sizes: ['600ml', 'ea']
+  Normalized: pinpplesugarzerofanta1ea600ml
+  Barcode: 9300675094306
+  SKU (one of): 578396
+  Stores: IGA Clearview, IGA Local Grocer Adelaide City East, IGA X-press Thaikee
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.076331 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Monster Energy Pipeline Punch Can
+  Brand: Monster
+  Sizes: ['500ml']
+  Normalized: canenergypipelinepunchmonster500ml
+  Barcode: 9342866000772
+  SKU (one of): 449500
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Monster Energy Drink Pipeline Punch
+  Brand: Monster
+  Sizes: ['500ml', 'ea']
+  Normalized: drinkenergypipelinepunchmonster1ea500ml
+  Barcode: 9342866000802
+  SKU (one of): 190000002901
+  Stores: IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.092332 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Impressed Pressed Juice Apple
+  Brand: Impressed
+  Sizes: ['1l']
+  Normalized: applejuicepressedimpressed1l
+  Barcode: 9336243005733
+  SKU (one of): 180000003593
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Impressed Essentials Apple Juice
+  Brand: Impressed
+  Sizes: ['425ml', 'ea']
+  Normalized: appleessentialsjuiceimpressed1ea425ml
+  Barcode: 9336243005597
+  SKU (one of): 180000003596
+  Stores: IGA Local Grocer Adelaide City East, IGA X-press Thaikee, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.104335 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Impressed Cold Pressed Juice Ginger Ninja
+  Brand: Impressed
+  Sizes: ['1l']
+  Normalized: coldgingerjuiceninjapressedimpressed1l
+  Barcode: 9336243006099
+  SKU (one of): 9302
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Impressed Ginger Ninja Juice
+  Brand: Impressed
+  Sizes: ['325ml', 'ea']
+  Normalized: gingerjuiceninjaimpressed1ea325ml
+  Barcode: 9336243005894
+  SKU (one of): 4845
+  Stores: IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.117337 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Nudie Nothing But Carrot Ginger & More
+  Brand: Nudie
+  Sizes: ['400ml']
+  Normalized: butcarrotgingermorenothingnudie400ml
+  Barcode: 9332991000198
+  SKU (one of): 180000000090
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Nudie Juice Nothing But Carrot, Apple, Orange & Ginger
+  Brand: Nudie
+  Sizes: ['1l', 'ea']
+  Normalized: applebutcarrotgingerjuicenothingorangenudie1ea1l
+  Barcode: 9332991000938
+  SKU (one of): 180000000087
+  Stores: IGA X-press Thaikee, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.131408 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Nudie Nothing But Orange Pulp Free
+  Brand: Nudie
+  Sizes: ['400ml']
+  Normalized: butfreenothingorangepulpnudie400ml
+  Barcode: 9332991002864
+  SKU (one of): 180000000066
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Nudie Juice Nothing But Orange Pulp Free
+  Brand: Nudie
+  Sizes: ['3l', 'ea']
+  Normalized: butfreejuicenothingorangepulpnudie1ea3l
+  Barcode: 9332991001607
+  SKU (one of): 180000000071
+  Stores: IGA X-press Thaikee
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.144415 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Sunraysia Natural Prune Juice
+  Brand: Sunraysia
+  Sizes: ['250ml']
+  Normalized: juicenaturalprunesunraysia250ml
+  Barcode: 9310865109208
+  SKU (one of): 456544
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Sunraysia Prune Juice
+  Brand: Sunraysia
+  Sizes: ['1l', 'ea']
+  Normalized: juiceprunesunraysia1ea1l
+  Barcode: 9310865816052
+  SKU (one of): 403009
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Stanmore, IGA Trinity Heights, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.166186 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Vitasoy Oat Milky Long Life Milk UHT
+  Brand: Vitasoy
+  Sizes: ['1l']
+  Normalized: lifelongmilkmilkyoatuhtvitasoy1l
+  Barcode: 9341650001599
+  SKU (one of): 160000003599
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Vitasoy Oat Milky
+  Brand: Vitasoy
+  Sizes: ['1l', 'ea']
+  Normalized: milkyoatvitasoy1ea1l
+  Barcode: 9341650001551
+  SKU (one of): 155962
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Adelaide City East, Nambour, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.216250 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name:  NIVEA 3in1 Refreshing Cleansing Wipes
+  Brand: NIVEA
+  Sizes: ['25ea', 'ea']
+  Normalized: 3in1clnsingrefreshingwipesnivea1ea25ea
+  Barcode: 4005808179008
+  SKU (one of): 494526
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: NIVEA 3in1 Refreshing Cleansing Wipes
+  Brand: NIVEA
+  Sizes: ['7ea', 'ea']
+  Normalized: 3in1clnsingrefreshingwipesnivea1ea7ea
+  Barcode: 4005900072276
+  SKU (one of): 483871
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Glenelg East, IGA X-press Thaikee, Nambour, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.233694 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Thursday Plantation Oil Lavender
+  Brand: Thursday Plantation
+  Sizes: ['50ml']
+  Normalized: lavenderoilplantationthursday50ml
+  Barcode: 9312146007487
+  SKU (one of): 836972
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Thursday Plantation Lavender Oil Calming
+  Brand: Thursday Plantation
+  Sizes: ['25ml', 'ea']
+  Normalized: calminglavenderoilplantationthursday1ea25ml
+  Barcode: 9312146006039
+  SKU (one of): 837033
+  Stores: IGA X-press Thaikee
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.243417 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Burt's Bees Beeswax Lip Balm
+  Brand: Burt's Bees
+  Sizes: ['4.25g']
+  Normalized: balmbeeswaxlipbeesburts425g
+  Barcode: 792850140998
+  SKU (one of): 291282
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Burts Bees Bees Wax Lip Balm
+  Brand: Burts Bees
+  Sizes: ['4.25g', 'ea']
+  Normalized: balmbeeslipwaxbeesburts1ea425g
+  Barcode: 0792850140998
+  SKU (one of): 291282
+  Stores: IGA Local Grocer Glenelg East
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.264661 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Love 'Em Dog Treats Beef Liver
+  Brand: Love 'Em
+  Sizes: ['90g']
+  Normalized: beefdoglivertreatsemlove90g
+  Barcode: 9325242000504
+  SKU (one of): 160000000427
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Love'em Air Dried Beef Liver
+  Brand: Love'em
+  Sizes: ['200g', 'ea']
+  Normalized: airbeefdriedliverloveem1ea200g
+  Barcode: 9325242000535
+  SKU (one of): 160000000437
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.299828 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Green's Pancake Mix Buttermilk Shake
+  Brand: Green's
+  Sizes: ['325g']
+  Normalized: buttermilkmixpancakeshakegreens325g
+  Barcode: 9310273105120
+  SKU (one of): 350081
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Green's Buttermilk Pancake Shake Mix
+  Brand: Green's
+  Sizes: ['190g']
+  Normalized: bananasgreens190g
+  Barcode: 9310273002399
+  SKU (one of): 905348
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Trinity Heights, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.325828 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Heinz Beanz Canned Baked Beans No Added Sugar
+  Brand: Heinz
+  Sizes: ['220g', '3pk', 'pk']
+  Normalized: addedbakedbeansbeanzcannednosugarheinz1pk220g3pk
+  Barcode: 9300657234843
+  SKU (one of): 853903
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Heinz Baked Beans No Added Sugar
+  Brand: Heinz
+  Sizes: ['3ea', 'ea']
+  Normalized: addedbakedbnsnosugarheinz1ea3ea
+  Barcode: 9300657235123
+  SKU (one of): 93420
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA X-press Thaikee, Nambour, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.339177 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Hakubaku Organic Japanese Soba Buckwheat Noodles 98% Ff
+  Brand: Hakubaku
+  Sizes: ['270g']
+  Normalized: 98buckwheatffjapanesenoodlesorganicsobahakubaku270g
+  Barcode: 0837328000029
+  SKU (one of): 835829
+  Stores: IGA Local Grocer Glenelg East, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Hakubaku Organic Soba
+  Brand: Hakubaku
+  Sizes: ['270g', 'ea']
+  Normalized: organicsobahakubaku1ea270g
+  Barcode: 837328000029
+  SKU (one of): 835829
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Stanmore, IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.349267 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Cobram Extra Light & Delicate Olive Oil Spray
+  Brand: Cobram
+  Sizes: ['225g']
+  Normalized: cobramdelicateextralightoilolivespraycobramestate225g
+  Barcode: 0852696000099
+  SKU (one of): 160000013706
+  Stores: IGA Clearview, IGA Local Grocer Glenelg East
+--- DUPLICATE (New Variation Product) ---  Name: Cobram Estate Extra Light & Delicate Olive Oil Spray
+  Brand: Cobram Estate
+  Sizes: ['225g', 'ea']
+  Normalized: delicateextralightoilolivespraycobramestate1ea225g
+  Barcode: 852696000099
+  SKU (one of): 160000013706
+  Stores: Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.355181 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Cobram Extra Virgin Olive Oil Garlic Infused
+  Brand: Cobram
+  Sizes: ['250ml']
+  Normalized: cobramextragarlicinfusedoilolivevirgincobramestate250ml
+  Barcode: 0852696000167
+  SKU (one of): 16000001538
+  Stores: IGA Local Grocer Glenelg East, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Cobram Estate Extra Virgin Olive Oil Garlic Infused
+  Brand: Cobram Estate
+  Sizes: ['250ml', 'ea']
+  Normalized: extragarlicinfusedoilolivevirgincobramestate1ea250ml
+  Barcode: 852696000167
+  SKU (one of): 16000001538
+  Stores: Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.363177 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Cobram Olive Oil Extra Virgin
+  Brand: Cobram
+  Sizes: ['375ml']
+  Normalized: cobramextraoilolivevirgincobramestate375ml
+  Barcode: 0852696000037
+  SKU (one of): 180000000309
+  Stores: IGA Local Grocer Glenelg East, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Cobram Estate Olive Oil Extra Virgin
+  Brand: Cobram Estate
+  Sizes: ['375ml', 'ea']
+  Normalized: extraoilolivevirgincobramestate1ea375ml
+  Barcode: 852696000037
+  SKU (one of): 180000000309
+  Stores: Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Stanmore, IGA Raby, IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.374787 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Cadbury Fry's Turkish Delight Twin Pack Milk Chocolate Bar
+  Brand: Cadbury
+  Sizes: ['70g', 'pk']
+  Normalized: barchocolatedelightfrysmilkpackturkishtwincadbury1pk70g
+  Barcode: 9300617301554
+  SKU (one of): 560733
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Fry's Turkish Delight Twin Pack
+  Brand: Fry's
+  Sizes: ['76g', 'ea', 'pk']
+  Normalized: delightpackturkishtwinfrys1ea1pk76g
+  Barcode: 9300617395034
+  SKU (one of): 386414
+  Stores: IGA Clearview, IGA Local Grocer Adelaide City East, IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.382797 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Nestle Milo Minis Cereal
+  Brand: Nestle
+  Sizes: ['330g']
+  Normalized: cerealmilominisnestle330g
+  Barcode: 9300605155152
+  SKU (one of): 180000003155
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Glenelg East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Nestlé Milo Breakfast Cereal
+  Brand: Nestlé
+  Sizes: ['620g', 'ea']
+  Normalized: brkfastcerlmilonestl1ea620g
+  Barcode: 9300605153578
+  SKU (one of): 301668
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Glenelg East, IGA Raby, IGA X-press Thaikee, Nambour, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.399793 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Orgran Gluten Free Crispbread Quinoa
+  Brand: Orgran
+  Sizes: ['125g']
+  Normalized: crispbreadfreeglutenquinoaorgran125g
+  Barcode: 0720516022234
+  SKU (one of): 160000018044
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Glenelg East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Orgran Quinoa Crispbread
+  Brand: Orgran
+  Sizes: ['125g', 'ea']
+  Normalized: crispbrdquinoaorgran125g1ea
+  Barcode: 720516022234, 0720516022234
+  SKU (one of): 160000018044
+  Stores: IGA Local Grocer Stanmore, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.410809 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Carman's Oat Slices Cranberry & Blueberry
+  Brand: Carman's
+  Sizes: ['5pk']
+  Normalized: blueberrycranberryoatslicescarmans5pk
+  Barcode: 9319133336353
+  SKU (one of): 313717
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Glenelg East, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Carman's Oat Slice Cranberry & Blueberry
+  Brand: Carman's
+  Sizes: ['70g', 'ea']
+  Normalized: blueberrycranberryoatslicecarmans1ea70g
+  Barcode: 9319133333826
+  SKU (one of): 578883
+  Stores: North Sydney IGA Plus Liquor Romeos
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.427808 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Doritos Salsa Dip Mild
+  Brand: Doritos
+  Sizes: ['300g']
+  Normalized: dipmildsalsadoritos300g
+  Barcode: 9310015250286
+  SKU (one of): 381977
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Glenelg East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Doritos Mild Salsa
+  Brand: Doritos
+  Sizes: ['300g', 'ea']
+  Normalized: mildsalsadoritos1ea300g
+  Barcode: 9310015224072
+  SKU (one of): 170000003647
+  Stores: IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.437809 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Nutella B Ready Biscuit Multipack
+  Brand: Nutella
+  Sizes: ['6pk']
+  Normalized: bbiscuitmultipackreadynutella6pk
+  Barcode: 9300698503762
+  SKU (one of): 178515
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Nutella B-ready Wafer Biscuit
+  Brand: Nutella
+  Sizes: ['6ea', 'ea']
+  Normalized: brdybiscuitwafernutella1ea6ea
+  Barcode:  9300698503762
+  SKU (one of): 178515
+  Stores: IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.450895 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Oak Plus Protein Chocolate No Added Sugar Flavoured Milk
+  Brand: Oak
+  Sizes: ['500ml']
+  Normalized: addedchocolateflavouredmilknoplusproteinsugaroak500ml
+  Barcode: 9310036070528
+  SKU (one of): 29596
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Coles Albany Creek, Coles Arundel, Coles Ayr, Coles Bay Central, Coles Beaudesert, Coles Birtinya, Coles Cairns Central, Coles Cairns Smithfield, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, Nambour, Tamworth, Taree, Toronto, Toukley, Tuggerah, U-Go Taren Point, Umina Beach, Wallsend, Warners Bay, Wyoming, Wyong
+--- DUPLICATE (New Variation Product) ---  Name: OAK Plus Protein Chocolate
+  Brand: Oak
+  Sizes: ['500ml', 'ea']
+  Normalized: chocolateplusproteinoak1ea500ml
+  Barcode:  9310036070528
+  SKU (one of): 29596
+  Stores: IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.464866 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Oak Plus Protein Vanilla No Added Sugar Flavoured Milk
+  Brand: Oak
+  Sizes: ['500ml']
+  Normalized: addedflavouredmilknoplusproteinsugarvanillaoak500ml
+  Barcode: 9310036070535
+  SKU (one of): 29619
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: OAK Plus Protein Vanilla Flavoured Milk
+  Brand: Oak
+  Sizes: ['500ml', 'ea']
+  Normalized: flavouredmilkplusproteinvanillaoak1ea500ml
+  Barcode:  9310036070535
+  SKU (one of): 29619
+  Stores: IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.476377 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Pauls Plus Protein Vanilla Yoghurt
+  Brand: Pauls
+  Sizes: ['160g']
+  Normalized: plusproteinvanillayoghurtpauls160g
+  Barcode: 9310036079415
+  SKU (one of): 548553
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Coles Albany Creek, Coles Arundel, Coles Ayr, Coles Bay Central, Coles Beaudesert, Coles Birtinya, Coles Cairns Central, Coles Cairns Smithfield, IGA Clearview, IGA Local Grocer Glenelg East, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Pauls High Protein Vanilla Yoghurt
+  Brand: Pauls
+  Sizes: ['700g', 'ea']
+  Normalized: highproteinvanillayoghurtpauls1ea700g
+  Barcode: 9310036079149
+  SKU (one of): 548605
+  Stores: North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.495368 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Perfect Italiano Parmesan Cheese Grated
+  Brand: Perfect Italiano
+  Sizes: ['250g']
+  Normalized: cheesegratedparmesanitalianoperfect250g
+  Barcode: 9300665023408
+  SKU (one of): 144016
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Perfect Italiano Parmesan Cheese
+  Brand: Perfect Italiano
+  Sizes: ['100g', 'ea']
+  Normalized: cheeseparmesanitalianoperfect100g1ea
+  Barcode: 9300665023118
+  SKU (one of): 391972
+  Stores: IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, IGA Raby, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.510115 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Snowdonia Cheese Co Black Bomber Cheddar
+  Brand: Snowdonia Cheese Co
+  Sizes: ['150g']
+  Normalized: blackbombercheddarcheesecosnowdonia150g
+  Barcode: 5060011706860
+  SKU (one of): 190000002031
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Snowdonia Black Bomber Extra Mature Cheddar
+  Brand: Snowdonia
+  Sizes: ['400g', 'ea']
+  Normalized: blackbombercheddarextramaturesnowdonia1ea400g
+  Barcode: 5060011707386
+  SKU (one of): 190000002035
+  Stores: North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.523738 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: South Cape Sweet Chilli Cream Cheese
+  Brand: South Cape
+  Sizes: ['200g']
+  Normalized: cheesechillicreamsweetcapesouth200g
+  Barcode: 9314441712448
+  SKU (one of): 761350
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Trinity Heights, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: South Cape Cream Cheese Sweet Chilli
+  Brand: South Cape
+  Sizes: ['80g']
+  Normalized: cheesechillicreamsweetcapesouth80g
+  Barcode: 9314441715715
+  SKU (one of): 517293
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Coles Albany Creek, Coles Arundel, Coles Ayr, Coles Bay Central, Coles Beaudesert, Coles Birtinya, Coles Cairns Central, Coles Cairns Smithfield, IGA Local Grocer Glenelg East, IGA Raby, IGA Trinity Heights, Nambour, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.551079 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Don Double Smoked Leg Ham
+  Brand: Don
+  Sizes: ['200g']
+  Normalized: doublehamlegsmokeddon200g
+  Barcode: 9326451016294
+  SKU (one of): 150000008004
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Coles Albany Creek, Coles Arundel, Coles Ayr, Coles Bay Central, Coles Beaudesert, Coles Birtinya, Coles Cairns Central, Coles Cairns Smithfield, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: DON Thinly Sliced Double Smoked Leg Ham
+  Brand: DON
+  Sizes: ['250g', 'ea']
+  Normalized: doublehamlegslicedsmokedthinlydon1ea250g
+  Barcode: 9313886025137
+  SKU (one of): 127357
+  Stores: IGA Local Grocer Stanmore, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.567079 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Fanta Pineapple Zero Sugar 
+  Brand: Fanta
+  Sizes: ['1.25l', 'ea']
+  Normalized: pinpplesugarzerofanta125l1ea
+  Barcode: 9300675094320
+  SKU (one of): 180000002413
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, IGA Raby, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Fanta Pineapple Zero Sugar
+  Brand: Fanta
+  Sizes: ['600ml', 'ea']
+  Normalized: pinpplesugarzerofanta1ea600ml
+  Barcode: 9300675094306
+  SKU (one of): 578396
+  Stores: IGA Clearview, IGA Local Grocer Adelaide City East, IGA X-press Thaikee
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.578079 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Monster Energy Pipeline Punch Can
+  Brand: Monster
+  Sizes: ['500ml']
+  Normalized: canenergypipelinepunchmonster500ml
+  Barcode: 9342866000772
+  SKU (one of): 449500
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Monster Energy Drink Pipeline Punch
+  Brand: Monster
+  Sizes: ['500ml', 'ea']
+  Normalized: drinkenergypipelinepunchmonster1ea500ml
+  Barcode: 9342866000802
+  SKU (one of): 190000002901
+  Stores: IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.585079 ------ MISMATCH DETAILS: Name, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: Rockstar Guava Punched Energy Drink
+  Brand: Rockstar
+  Sizes: ['500ml']
+  Normalized: drinkenergyguavapunchedrockstar500ml
+  Barcode: 0818094004626
+  SKU (one of): 16925
+  Stores: IGA Clearview, IGA Local Grocer Glenelg East, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Rockstar Punched Energy & Guava Drink
+  Brand: Rockstar
+  Sizes: ['500ml', 'ea']
+  Normalized: drinkenergyguavapunchedrockstar1ea500ml
+  Barcode: 818094004626
+  SKU (one of): 16925
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.595159 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Golden Circle Apple Blackcurrant Juice No Added Sugar Fruit Juices
+  Brand: Golden Circle
+  Sizes: ['3l']
+  Normalized: addedappleblackcurrantfruitjuicejuicesnosugarcirclegolden3l
+  Barcode: 9310179005203
+  SKU (one of): 170000000800
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Glenelg East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Golden Circle Apple Blackcurrant Juice
+  Brand: Golden Circle
+  Sizes: ['2l', 'ea']
+  Normalized: appleblackcurrantjuicecirclegolden1ea2l
+  Barcode: 9310179188098
+  SKU (one of): 76784
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.615485 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Minor Figures Barista Oat Long Life Milk UHT
+  Brand: Minor Figures
+  Sizes: ['1l']
+  Normalized: baristalifelongmilkoatuhtfiguresminor1l
+  Barcode: 5060406080896
+  SKU (one of): 160000013883
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Glenelg East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Minor Figures Oat Milk
+  Brand: Minor Figures
+  Sizes: ['1l', 'ea']
+  Normalized: milkoatfiguresminor1ea1l
+  Barcode: 5060406080223
+  SKU (one of): 160000013877
+  Stores: IGA Local Grocer Stanmore, IGA X-press Thaikee
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.624572 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Ovaltine Sleep Chocolate
+  Brand: Ovaltine
+  Sizes: ['400g']
+  Normalized: chocolatesleepovaltine400g
+  Barcode: 7612100915080
+  SKU (one of): 214400
+  Stores: IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East
+--- DUPLICATE (New Variation Product) ---  Name: Ovaltine Sleep Calming Chocolate
+  Brand: Ovaltine
+  Sizes: ['10ea', 'ea']
+  Normalized: calmingchocolatesleepovaltine10ea1ea
+  Barcode: 7612100918760
+  SKU (one of): 578998
+  Stores: IGA Raby
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.633553 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: On The Menu Beef Lasagne NULL
+  Brand: On The Menu
+  Sizes: ['1kg']
+  Normalized: beeflasagnenullmenuonthe1kg
+  Barcode: 9310761714582
+  SKU (one of): 749811
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Local Grocer Glenelg East, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: On The Menu Beef Lasagne
+  Brand: On The Menu
+  Sizes: ['2kg', 'ea']
+  Normalized: beeflasagnemenuonthe1ea2kg
+  Barcode: 9310761715060
+  SKU (one of): 190000004197
+  Stores: IGA Raby, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.651555 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Connoisseur Gourmet Ice Cream Honeycomb & Australian Honey
+  Brand: Connoisseur
+  Sizes: ['1l']
+  Normalized: australiancreamgourmethoneyhoneycombiceconnoisseur1l
+  Barcode: 9347042003547
+  SKU (one of): 180000004528
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, Nambour, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Connoisseur Honeycomb & Australian Honey Ice Cream
+  Brand: Connoisseur
+  Sizes: ['4ea', 'ea']
+  Normalized: australiancrmhoneyhoneycombiceconnoisseur1ea4ea
+  Barcode: 9347042003530
+  SKU (one of): 973134
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, Beaudesert, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.675552 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Colgate Whitening Toothpaste Advanced Whitening
+  Brand: Colgate
+  Sizes: ['200g']
+  Normalized: advancedtoothpastewhiteningwhiteningcolgate200g
+  Barcode: 8850006943496
+  SKU (one of): 514973
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Colgate Advanced Whitening Toothpaste
+  Brand: Colgate
+  Sizes: ['115g', 'ea']
+  Normalized: advancedtoothpastewhiteningcolgate115g1ea
+  Barcode: 8850006943489
+  SKU (one of): 514847
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Glenelg East, IGA Raby, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.693840 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name:  NIVEA 3in1 Refreshing Cleansing Wipes
+  Brand: NIVEA
+  Sizes: ['25ea', 'ea']
+  Normalized: 3in1clnsingrefreshingwipesnivea1ea25ea
+  Barcode: 4005808179008
+  SKU (one of): 494526
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Adelaide City East, IGA Local Grocer Glenelg East, IGA Local Grocer Stanmore, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: NIVEA 3in1 Refreshing Cleansing Wipes
+  Brand: NIVEA
+  Sizes: ['7ea', 'ea']
+  Normalized: 3in1clnsingrefreshingwipesnivea1ea7ea
+  Barcode: 4005900072276
+  SKU (one of): 483871
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Glenelg East, IGA X-press Thaikee, Nambour, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.713838 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, Stores ------ CANONICAL (Original Product) ---  Name: OzKleen Carpet Power Lavender Floor Carpet Cleaner Trigger
+  Brand: OzKleen
+  Sizes: ['500ml']
+  Normalized: carpetcarpetcleanerfloorlavenderpowertriggerozkleen500ml
+  Barcode: 0803678000095
+  SKU (one of): 60822
+  Stores: IGA Local Grocer Glenelg East, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Ozkleen Floor Carpet Cleaner Lavender
+  Brand: Ozkleen
+  Sizes: ['500ml', 'ea']
+  Normalized: carpetclnerfloorlavenderozkleen1ea500ml
+  Barcode: 803678000095
+  SKU (one of): 60822
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA Raby, IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.723630 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: OzKleen Oven Power Odourless Oven Cleaner Kit
+  Brand: OzKleen
+  Sizes: ['ea']
+  Normalized: clnerkitodourlessovenovenpowerozkleen1ea
+  Barcode: 0803678000651
+  SKU (one of): 367193
+  Stores: IGA Local Grocer Glenelg East, Nambour
+--- DUPLICATE (New Variation Product) ---  Name: Ozkleen Oven Cleaner Power Kit
+  Brand: Ozkleen
+  Sizes: ['1ea', 'ea']
+  Normalized: clnerkitovenpowerozkleen1ea
+  Barcode: 803678000651
+  SKU (one of): 322104
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.732629 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Dettol Multipurpose Disinfectant Wipes Extra Large Lemon Burst
+  Brand: Dettol
+  Sizes: ['150pk']
+  Normalized: burstdisinfectantextralargelemonmultipurposewipesdettol150pk
+  Barcode: 9300631819424
+  SKU (one of): 634503
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Glenelg East, Nambour, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Dettol Multipurpose Wipes Lemon Burst
+  Brand: Dettol
+  Sizes: ['110ea', 'ea']
+  Normalized: burstlemonmultipurposewipesdettol110ea1ea
+  Barcode: 9300631430414
+  SKU (one of): 309974
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Raby, IGA X-press Thaikee, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.744847 ------ MISMATCH DETAILS: Name, Brand, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Surf Liquid Washing Detergent Tropical
+  Brand: Surf
+  Sizes: ['4l']
+  Normalized: detergentliquidtropicalwashingsurf4l
+  Barcode: 9300830023356
+  SKU (one of): 160000004744
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Clearview, IGA Local Grocer Glenelg East, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Surf Laundry Liquid Tropical
+  Brand: SURF
+  Sizes: ['1l', 'ea']
+  Normalized: laundryliquidtropicalsurf1ea1l
+  Barcode: 9300830023233
+  SKU (one of): 160000004739
+  Stores: IGA Clearview, IGA Trinity Heights, IGA X-press Thaikee, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+------------------------------------------------------- Mismatch Detected at 2025-08-28T12:16:23.755852 ------ MISMATCH DETAILS: Name, Sizes, Barcode, SKU, Stores ------ CANONICAL (Original Product) ---  Name: Energizer Max Plus High Performance AA Alkaline Batteries
+  Brand: Energizer
+  Sizes: ['16pk']
+  Normalized: aaalkalinebatterieshighmaxperformanceplusenergizer16pk
+  Barcode: 8888021206036
+  SKU (one of): 739471
+  Stores: Ampol Foodary Dubbo Talmac, Ampol Foodary Leumeah, Ampol Foodary Merrylands, Ampol Foodary North Ryde, IGA Local Grocer Glenelg East, Nambour, North Sydney IGA Plus Liquor Romeos, U-Go Taren Point
+--- DUPLICATE (New Variation Product) ---  Name: Energizer Max Plus Advanced AA
+  Brand: Energizer
+  Sizes: ['2ea', 'ea']
+  Normalized: aaadvancedmaxplusenergizer1ea2ea
+  Barcode: 8888021203318
+  SKU (one of): 717851
+  Stores: IGA Local Grocer Adelaide City East, IGA Local Grocer Stanmore, IGA Trinity Heights, North Sydney IGA Plus Liquor Romeos, Romeos IGA Food Hall Paddington
+----------------------------------------------------

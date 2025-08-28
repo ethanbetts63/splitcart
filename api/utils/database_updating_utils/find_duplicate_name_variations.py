@@ -25,11 +25,23 @@ def find_duplicates_from_hotlist(hotlist):
             if duplicate_product.id == canonical_product.id:
                 continue
 
-            # 2. Ensure they share the same barcode, which is our ground truth for a match
-            if duplicate_product.barcode != canonical_product.barcode:
+            # 2. Barcode Sanity Check
+            # The goal is to merge duplicates, but we need to be careful about conflicts.
+            # A conflict is when BOTH products have a barcode, but they are DIFFERENT.
+            # If one is missing a barcode, we assume it's a data quality issue and proceed
+            # with the merge, trusting the barcode that exists.
+            
+            c_barcode = canonical_product.barcode
+            d_barcode = duplicate_product.barcode
+            
+            # A true conflict is when both barcodes exist and they don't match.
+            is_conflict = bool(c_barcode and d_barcode and c_barcode != d_barcode)
+
+            if is_conflict:
+                # This is a real mismatch that requires manual review. Log it and skip merging.
                 with open('barcode_mismatch_log.txt', 'a', encoding='utf-8') as f:
                     from datetime import datetime
-                    f.write(f"--- Mismatch Detected at {datetime.now().isoformat()} ---\n")
+                    f.write(f"--- Mismatch Detected at {datetime.now().isoformat()} ---")
 
                     # Get details for both products to compare
                     canonical_prices = canonical_product.prices.all()
@@ -54,7 +66,7 @@ def find_duplicates_from_hotlist(hotlist):
                         mismatch_details.append("Brand")
                     if canonical_product.sizes != duplicate_product.sizes:
                         mismatch_details.append("Sizes")
-                    if canonical_product.barcode != duplicate_product.barcode:
+                    if c_barcode != d_barcode:
                         mismatch_details.append("Barcode")
                     if canonical_sku != duplicate_sku:
                         mismatch_details.append("SKU")
@@ -62,30 +74,34 @@ def find_duplicates_from_hotlist(hotlist):
                         mismatch_details.append("Stores")
 
                     if mismatch_details:
-                        f.write(f"--- MISMATCH DETAILS: {', '.join(mismatch_details)} ---\n")
+                        f.write(f"--- MISMATCH DETAILS: {', '.join(mismatch_details)} ---")
                     else:
-                        f.write("--- MISMATCH DETAILS: No obvious field differences, requires manual check. ---\n")
+                        f.write("--- MISMATCH DETAILS: No obvious field differences, requires manual check. ---")
                         
-                    f.write("--- CANONICAL (Original Product) ---\n")
+                    f.write("--- CANONICAL (Original Product) ---")
+
                     f.write(f"  Name: {canonical_product.name}\n")
                     f.write(f"  Brand: {canonical_product.brand}\n")
                     f.write(f"  Sizes: {canonical_product.sizes}\n")
                     f.write(f"  Normalized: {canonical_product.normalized_name_brand_size}\n")
-                    f.write(f"  Barcode: {canonical_product.barcode}\n")
+                    f.write(f"  Barcode: {c_barcode}\n")
                     f.write(f"  SKU (one of): {canonical_sku}\n")
                     f.write(f"  Stores: {canonical_store_str}\n")
 
-                    f.write("--- DUPLICATE (New Variation Product) ---\n")
+                    f.write("--- DUPLICATE (New Variation Product) ---")
+
                     f.write(f"  Name: {duplicate_product.name}\n")
                     f.write(f"  Brand: {duplicate_product.brand}\n")
                     f.write(f"  Sizes: {duplicate_product.sizes}\n")
                     f.write(f"  Normalized: {duplicate_product.normalized_name_brand_size}\n")
-                    f.write(f"  Barcode: {duplicate_product.barcode}\n")
+                    f.write(f"  Barcode: {d_barcode}\n")
                     f.write(f"  SKU (one of): {duplicate_sku}\n")
                     f.write(f"  Stores: {duplicate_store_str}\n")
-                    f.write("----------------------------------------------------\n")
+                    f.write("----------------------------------------------------")
+
                 continue
 
+            # If there's no conflict, we can merge.
             duplicates_to_merge.append({
                 'canonical': canonical_product,
                 'duplicate': duplicate_product

@@ -21,13 +21,10 @@ def merge_products(canonical_product, duplicate_product):
     # 2. Fill in any fields on the canonical product that it's missing but the duplicate has
     # This is a simple example; you can expand this to any fields you want to preserve.
     updated_fields = []
-    if not canonical_product.size_unit and duplicate_product.size_unit:
-        canonical_product.size_unit = duplicate_product.size_unit
-        updated_fields.append('size_unit')
 
-    if not canonical_product.size_quantity and duplicate_product.size_quantity:
-        canonical_product.size_quantity = duplicate_product.size_quantity
-        updated_fields.append('size_quantity')
+    # TODO: Implement more sophisticated merging logic here if needed.
+    # For example, merging 'sizes' JSON fields, taking the most complete
+    # 'description', or combining 'name_variations'.
 
     # Add any other fields you want to check and merge here
 
