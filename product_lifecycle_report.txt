@@ -1,0 +1,92 @@
+========================================
+Product Data Processing Lifecycle Report
+========================================
+
+This document outlines the step-by-step journey of a single product record from a raw `.jsonl` scrape file through the entire `update_db` process.
+
+---
+### Phase 1: Initial File Processing & Consolidation
+---
+The process starts by picking a single raw data file from the `product_inbox`.
+
+**Step 1: Read Raw Data**
+- The system opens a single `.jsonl` file (e.g., from an Aldi scrape). Every product in this file has a unique normalized_name_brand_size but its possible although unlikely to have barcode duplicates. 
+- It reads the file line by line. Each line represents one raw product scraped from the store's website.
+
+**Step 2: Consolidate Products (within the file)**
+- The system uses a dictionary to ensure it only processes unique products *from this specific file*. This prevents duplicate work if the same product appears multiple times in one scrape.
+
+
+---
+### Phase 2: Core Database Update (for each product)
+---
+For each unique product from the file, the system decides if it's new or an update to an existing product.
+
+**Step 3: Check the Translation Table**
+- The system first checks the `product_name_translation_table.py` file. 
+- If the incoming product's name is found in this table, it means we have handled this "variation" before. The system immediately maps it to its known "canonical" product and skips directly to updating the price (see Phase 3, Step 8a).
+
+**Step 4: Check for Existing Product in Database**
+- If the product was not in the translation table, the system queries the database to see if the product already exists.
+- It checks for a match using two fields:
+  a) The product's `barcode`.
+  b) The product's `normalized_name_brand_size` string.
+
+**Step 5: New Product vs. Existing Product**
+- **If NO match is found** by either barcode or normalized string, the system determines this is a brand new product. It creates a new `Product` record, creates a new `Price` record, links them, and saves both to the database. The journey for this specific product ends here.
+- **If a match IS found** by barcode or normalized string, the system determines it's dealing with a potential variation of an existing product. This triggers the Name Variation workflow.
+
+
+---
+### Phase 3: Name Variation Handling
+---
+This phase is triggered only when a product from the scrape shares a barcode/normalized-string with a product already in the database.
+
+**Step 6: Compare Names**
+- The system compares the `name` of the incoming product with the `name` of the existing product found in the database.
+
+**Step 7: Decision: Same Name or Different Name?**
+- **Step 7a (Names are the same):** If the names match, the system assumes it's the identical product. It creates a new `Price` record and attaches it to the *existing* `Product` record. The journey ends here.
+- **Step 7b (Names are different):** If the names are different, the system flags this as a "name variation".
+
+**Step 8: Update and Flag for Cleanup**
+- The incoming product's name is added to the `name_variations` list (a JSON field) on the *existing* canonical product record.
+- A "hotlist entry" is created in memory. This entry contains the new variation name, the canonical name, and the shared barcode. This entry is then saved to the `name_variation_hotlist.json` file, flagging it for the next phase.
+
+
+---
+### Phase 4: Post-Update Reconciliation & Merging
+---
+This phase begins only after **all** `.jsonl` files in the inbox have been processed through Phases 1-3.
+
+**Step 9: Read the Hotlist**
+- The system reads the entire `name_variation_hotlist.json` file, which now contains all the variations discovered during the run.
+
+**Step 10: Conflict Resolution**
+- The system iterates through each item on the hotlist. For each pair of "variation" and "canonical" products, it performs a final sanity check.
+- The main check is for barcode conflicts. If both products have a barcode and they are *different*, it logs this as an error in `barcode_mismatch_log.txt` and will **not** merge them.
+
+**Step 11: Merge Duplicates**
+- For pairs that pass the conflict check, the system merges them.
+- It moves all `Price` records from the duplicate product over to the canonical product.
+- It then deletes the now-redundant duplicate `Product` record from the database.
+
+**Step 12: Clear the Hotlist**
+- After processing all items, the `name_variation_hotlist.json` file is cleared out, ready for the next run.
+
+
+---
+### Phase 5: Regenerating the Translation Table
+---
+This is the final step of the entire process.
+
+**Step 13: Query the Database**
+- The system queries every single product currently in the database.
+
+**Step 14: Build the Translation Dictionary**
+- It reads the `name_variations` list from each product (which was populated in Step 8 and cleaned in Step 11).
+- It builds a large dictionary, mapping every variation name to its true canonical name.
+
+**Step 15: Write to File**
+- The system completely overwrites the `product_name_translation_table.py` file with the newly built, up-to-date dictionary. 
+- This makes future runs more efficient, as the check in Step 3 will be more effective.

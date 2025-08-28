@@ -10,13 +10,15 @@ def regenerate_translation_table():
     and overwrites the product_name_translation_table.py file.
     """
     translations = {}
-    # Assuming product.name_variations is a JSONField or similar storing a list of names
-    all_products = Product.objects.exclude(name_variations__isnull=True).exclude(name_variations__exact='[]')
+    # Get all products and filter in Python, as querying for empty JSONField lists can be unreliable.
+    all_products = Product.objects.all()
 
     for product in all_products:
-        # Ensure name_variations is a list
-        variations = product.name_variations if isinstance(product.name_variations, list) else []
-        for variation_tuple in variations:
+        # Ensure name_variations is a non-empty list before processing
+        if not product.name_variations or not isinstance(product.name_variations, list):
+            continue
+
+        for variation_tuple in product.name_variations:
             # variation_tuple is expected to be (name, store)
             if isinstance(variation_tuple, (list, tuple)) and len(variation_tuple) > 0:
                 variation_name = variation_tuple[0]
