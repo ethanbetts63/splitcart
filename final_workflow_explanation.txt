@@ -1,0 +1,71 @@
+# Detailed Workflow of the Refactored & Simplified Database Update Process (v2)
+
+This document outlines the step-by-step journey of product data through the new, simplified, and robust object-oriented update system. This version reflects all recent bug fixes and design improvements.
+
+### Core Components
+
+- **UpdateOrchestrator:** The main controller that manages the overall process flow, file by file.
+- **ProductResolver:** A read-only service (now created per-file) that holds a snapshot of the database state for fast lookups.
+- **UnitOfWork:** A service (now created per-file) that collects all proposed database changes and commits them in a single, atomic transaction.
+- **CategoryManager:** A sub-service used by the UnitOfWork to handle all category and product-relationship logic.
+- **VariationManager:** A service that handles the detection of name variations and the post-commit reconciliation of duplicate products.
+- **TranslationTableGenerator:** A final-step service to generate the translation table.
+
+---
+
+### Phase 1: File-by-File Processing Loop
+
+1.  **Command Start:** The `python manage.py update_db --products` command is executed.
+2.  **File Discovery:** The `UpdateOrchestrator` is created and scans the product inbox for all `.jsonl` files to be processed.
+3.  **Per-File Loop:** The orchestrator begins a loop, processing one file at a time. For each file, it performs the following steps from a clean slate:
+
+---
+
+### Phase 2: Per-File Initialization & Consolidation
+
+4.  **Service Instantiation:** At the start of the loop for a new file, fresh instances of `ProductResolver`, `UnitOfWork`, and `VariationManager` are created. This ensures the process is clean and state does not leak between files from different companies or stores.
+5.  **Build Caches:** The `ProductResolver` builds its in-memory caches. This is a snapshot of the database state relevant to the current operation.
+6.  **Consolidate Data:** The `UpdateOrchestrator` reads the entire file and consolidates the raw data.
+    - It uses the `normalized_name_brand_size` as a unique key.
+    - **Crucially, it now ignores any duplicate entries for the same key within the file.** This ensures that each unique product from the scrape is processed only once, generating only a single price record. The flawed `price_history` concept has been removed.
+
+---
+
+### Phase 3: Product Identification & Change Collection
+
+7.  **Identify Products:** The orchestrator loops through the clean, unique `consolidated_data`. For each product, it asks the `ProductResolver` to find a match against the database snapshot.
+8.  **Fetch Store:** It fetches the single `Store` object required for this file from the resolver's cache.
+9.  **Decision Making & Collection:**
+    - **If a match IS found (Existing Product):**
+        - It calls `variation_manager.check_for_variation()` to log name differences.
+        - It calls `unit_of_work.add_price()`. This method now contains a check to **skip creating a price record if the price is null**.
+    - **If no match is found (New Product):**
+        - A new `Product` object is created in memory.
+        - **Crucially, the raw price data is temporarily attached to this new product instance** (e.g., `new_product._price_data = ...`). This is done because the product does not have a database ID yet.
+        - The new `Product` object is added to the `UnitOfWork`.
+
+---
+
+### Phase 4: The Atomic Commit (The Transaction)
+
+10. **Commit Trigger:** After processing all unique products from the file, the orchestrator calls `unit_of_work.commit()`.
+11. **Inside the Transaction:** The `commit` method executes the following steps in the correct order of dependency, all within a single database transaction:
+    a.  **De-duplicate New Products:** It takes the list of potential new products and de-duplicates it against the resolver's caches and against itself. This prevents `UNIQUE constraint` errors on products.
+    b.  **Create Products:** It performs a `bulk_create` on the truly unique new products. These product objects now have database IDs.
+    c.  **Create Prices for New Products:** It now iterates through the list of newly created products. For each one, it accesses the temporarily attached price data and creates the `Price` objects, which now correctly link to the new product's ID.
+    d.  **Create Prices for Existing Products:** It adds the prices for existing products to the same list.
+    e.  **Bulk Create All Prices:** It performs a single `bulk_create` for all the new `Price` objects.
+    f.  **Process Categories:** It calls the `CategoryManager`. The manager now correctly:
+        i.  Associates new categories with their parent `Company`.
+        ii. Generates a `slug` for new categories.
+        iii. Creates the category hierarchy using the `parents` ManyToManyField.
+        iv. Links products to their categories.
+    g.  **Update Products:** It performs a `bulk_update` for products with new name variations.
+12. **Transaction End:** If any step fails, the entire transaction is rolled back.
+
+---
+
+### Phase 5: Post-Run Cleanup & Reconciliation
+
+13. **Cleanup & Hotlist:** If the commit for a file was successful, the file is deleted, and any discovered name variations are written to the hotlist.
+14. **Final Reconciliation:** After all files have been processed, the `VariationManager` is called one last time to read the hotlist and merge any duplicates, and the `TranslationTableGenerator` runs.

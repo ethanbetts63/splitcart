@@ -1,6 +1,7 @@
 import os
 import json
 from products.models import Product, Price
+from companies.models import Company, Store
 from .product_resolver import ProductResolver
 from .unit_of_work import UnitOfWork
 from .variation_manager import VariationManager
@@ -15,23 +16,44 @@ class UpdateOrchestrator:
     def run(self):
         self.command.stdout.write(self.command.style.SQL_FIELD("-- Starting Simplified Refactored Product Update --"))
         
-        # The resolver and other services are now created per file, using a simpler, one-store-at-a-time logic
         all_files = [os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')]
         
         for file_path in all_files:
             self.command.stdout.write(f"--- Processing file: {os.path.basename(file_path)} ---")
             
-            # Services are re-instantiated for each file to keep logic simple and memory clean
-            resolver = ProductResolver(self.command)
-            unit_of_work = UnitOfWork(self.command)
-            variation_manager = VariationManager(self.command, unit_of_work)
-
             consolidated_data = self._consolidate_from_file(file_path)
             if not consolidated_data:
                 self.processed_files.append(file_path)
                 continue
 
-            product_cache = self._process_consolidated_data(consolidated_data, resolver, unit_of_work, variation_manager)
+            # Extract company and store info from the first product in the consolidated data
+            first_product_data = next(iter(consolidated_data.values()))
+            company_name = first_product_data['metadata'].get('company')
+            store_id = first_product_data['metadata'].get('store_id')
+
+            if not company_name or not store_id:
+                self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Missing company or store_id in metadata."))
+                self.processed_files.append(file_path)
+                continue
+
+            try:
+                company_obj, _ = Company.objects.get_or_create(name__iexact=company_name, defaults={'name': company_name})
+                store_obj = Store.objects.get(store_id=store_id)
+            except Store.DoesNotExist:
+                self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Store with ID {store_id} not found in database."))
+                self.processed_files.append(file_path)
+                continue
+            except Exception as e:
+                self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Error fetching company/store: {e}"))
+                self.processed_files.append(file_path)
+                continue
+
+            # Services are re-instantiated for each file to keep logic simple and memory clean
+            resolver = ProductResolver(self.command, company_obj, store_obj)
+            unit_of_work = UnitOfWork(self.command)
+            variation_manager = VariationManager(self.command, unit_of_work)
+
+            product_cache = self._process_consolidated_data(consolidated_data, resolver, unit_of_work, variation_manager, store_obj)
             
             if unit_of_work.commit(consolidated_data, product_cache, resolver):
                 self.processed_files.append(file_path)
@@ -77,7 +99,7 @@ class UpdateOrchestrator:
         self.command.stdout.write(f"  - Consolidated into {len(consolidated_data)} unique products.")
         return consolidated_data
 
-    def _process_consolidated_data(self, consolidated_data, resolver, unit_of_work, variation_manager):
+    def _process_consolidated_data(self, consolidated_data, resolver, unit_of_work, variation_manager, store_obj):
         product_cache = {}
         total = len(consolidated_data)
         for i, (key, data) in enumerate(consolidated_data.items()):
@@ -88,10 +110,6 @@ class UpdateOrchestrator:
 
             # We pass an empty price history because the resolver doesn't need it for this simplified flow
             existing_product = resolver.find_match(product_details, [])
-
-            store_obj = resolver.store_cache.get(metadata['store_id'])
-            if not store_obj:
-                continue # Cannot proceed without a valid store
 
             if existing_product:
                 product_cache[key] = existing_product
@@ -104,9 +122,10 @@ class UpdateOrchestrator:
                     barcode=product_details.get('barcode'),
                     normalized_name_brand_size=key
                 )
+                # Temporarily attach price data to the new product instance
+                new_product._price_data = product_details # Store product_details for price creation
                 product_cache[key] = new_product
                 unit_of_work.add_new_product(new_product)
-                unit_of_work.add_price(new_product, store_obj, product_details)
         self.command.stdout.write('\n')
         return product_cache
 
