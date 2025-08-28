@@ -26,7 +26,7 @@ def handle_name_variations(incoming_product_details, existing_product, company_n
 
         if new_variation_tuple not in existing_product.name_variations:
             existing_product.name_variations.append(new_variation_tuple)
-            existing_product.save()
+            # existing_product.save() # This is the source of the bug, it makes the cache stale.
 
         # 2. Return the discovery to be added to the hotlist
         hotlist_entry = {
