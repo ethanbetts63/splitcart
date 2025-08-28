@@ -1,4 +1,5 @@
 from products.models import Product, Price
+from companies.models import Store
 
 class ProductResolver:
     """
@@ -11,7 +12,7 @@ class ProductResolver:
 
     def _build_caches(self):
         """
-        Builds the in-memory caches for products and prices.
+        Builds the in-memory caches for products, prices, and stores.
         """
         self.command.stdout.write("--- Building resolver caches ---")
         
@@ -23,7 +24,8 @@ class ProductResolver:
 
         # Cache 2: Store-Specific Product ID
         self.store_product_id_cache = {}
-        prices_with_ids = Price.objects.filter(store_product_id__isnull=False).exclude(store_product_id='').select_related('product', 'store')
+        all_prices = Price.objects.select_related('product', 'store').all()
+        prices_with_ids = [p for p in all_prices if p.store_product_id]
         for price in prices_with_ids:
             key = (price.store.store_id, price.store_product_id)
             self.store_product_id_cache[key] = price.product
@@ -32,6 +34,15 @@ class ProductResolver:
         # Cache 3: Normalized Name-Brand-Size String (Fallback)
         self.normalized_string_cache = {p.normalized_name_brand_size: p for p in all_products if p.normalized_name_brand_size}
         self.command.stdout.write(f"  - Built cache for {len(self.normalized_string_cache)} normalized strings.")
+
+        # Cache 4: Stores
+        self.store_cache = {s.store_id: s for s in Store.objects.all()}
+        self.command.stdout.write(f"  - Built cache for {len(self.store_cache)} stores.")
+
+        # Cache 5: Existing Prices
+        self.price_cache = {(p.product_id, p.store_id, p.scraped_at.date()) for p in all_prices}
+        self.command.stdout.write(f"  - Built cache for {len(self.price_cache)} existing prices.")
+
         self.command.stdout.write("--- Caches built successfully ---")
 
     def find_match(self, product_details, price_history):
@@ -55,11 +66,13 @@ class ProductResolver:
 
         # Tier 2: Match by Store Product ID
         if not product:
-            store_id = price_history[0].get('store_id')
-            store_product_id = product_details.get('store_product_id')
-            if store_id and store_product_id and (store_id, store_product_id) in self.store_product_id_cache:
-                product = self.store_product_id_cache[(store_id, store_product_id)]
-                return product
+            # Use the first price entry to get the store_id for this product
+            if price_history:
+                store_id = price_history[0].get('store_id')
+                store_product_id = product_details.get('product_id_store') # Corrected key
+                if store_id and store_product_id and (store_id, store_product_id) in self.store_product_id_cache:
+                    product = self.store_product_id_cache[(store_id, store_product_id)]
+                    return product
 
         # Tier 3: Match by Normalized String
         if not product:
@@ -69,3 +82,10 @@ class ProductResolver:
                 return product
         
         return None
+
+    def add_new_product_to_cache(self, product):
+        """Updates the caches with a new product that is about to be created."""
+        if product.barcode:
+            self.barcode_cache[product.barcode] = product
+        if product.normalized_name_brand_size:
+            self.normalized_string_cache[product.normalized_name_brand_size] = product
