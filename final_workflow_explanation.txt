@@ -34,7 +34,7 @@ This document outlines the step-by-step journey of product data through the new,
 ### Phase 3: Product Identification & Change Collection
 
 7.  **Identify Products:** The orchestrator loops through the clean, unique `consolidated_data`. For each product, it asks the `ProductResolver` to find a match against the database snapshot.
-8.  **Fetch Store:** It fetches the single `Store` object required for this file from the resolver's cache.
+8.  **Fetch Store Context:** Before processing products, the `UpdateOrchestrator` extracts the `company_name` and `store_id` from the file's metadata. It then fetches the corresponding `Company` and `Store` objects directly from the database. These objects are then passed as context to the `ProductResolver` and other services for the current file's processing.
 9.  **Decision Making & Collection:**
     - **If a match IS found (Existing Product):**
         - It calls `variation_manager.check_for_variation()` to log name differences.

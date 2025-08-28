@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 from api.utils.database_updating_utils.update_stores_from_discovery import update_stores_from_discovery
 from api.utils.database_updating_utils.update_stores_from_archive import update_stores_from_archive
 from api.utils.database_updating_utils.update_products_from_archive import update_products_from_archive
-from api.services.update_orchestrator import UpdateOrchestrator
+from api.database_updating_classes.update_orchestrator import UpdateOrchestrator
 
 class Command(BaseCommand):
     help = 'Updates the database with data from various sources.'
