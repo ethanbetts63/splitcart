@@ -14,8 +14,6 @@ def update_database_from_consolidated_data(consolidated_data, processed_files, c
             command.stdout.write(command.style.SUCCESS(f'  Processed and removed {len(processed_files)} files from the inbox (contained no valid products).'))
         return
 
-    command.stdout.write(f"Consolidated to {len(consolidated_data)} unique products.")
-
     try:
         with transaction.atomic():
             product_cache = batch_create_new_products(command, consolidated_data)

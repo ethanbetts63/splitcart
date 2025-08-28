@@ -38,10 +38,10 @@ def batch_create_category_relationships(consolidated_data: dict, product_cache: 
     
     category_cache = {(c.slug, c.company_id): c for c in Category.objects.all()}
 
-    # Part B: Create parent-child relationships
+    # Part B: Create parent-child relationships (Optimized)
     print("  Part B: Creating parent-child relationships...")
-    parent_relations_to_create = []
-    CategoryParents = Category.parents.through
+    parent_links_to_create = set() # Use a set to store unique (child_id, parent_id) tuples
+
     for data in consolidated_data.values():
         company_name = data.get('company_name')
         if not company_name:
@@ -54,12 +54,14 @@ def batch_create_category_relationships(consolidated_data: dict, product_cache: 
                 slug = slugify(name)
                 cat_obj = category_cache.get((slug, company.id))
                 if parent_obj and cat_obj:
-                    parent_relations_to_create.append(CategoryParents(from_category_id=cat_obj.id, to_category_id=parent_obj.id))
+                    parent_links_to_create.add((cat_obj.id, parent_obj.id))
                 parent_obj = cat_obj
     
-    if parent_relations_to_create:
-        print(f"  Creating {len(parent_relations_to_create)} parent-child links...")
-        CategoryParents.objects.bulk_create(parent_relations_to_create, ignore_conflicts=True)
+    if parent_links_to_create:
+        CategoryParents = Category.parents.through
+        relations_to_bulk_create = [CategoryParents(from_category_id=child_id, to_category_id=parent_id) for child_id, parent_id in parent_links_to_create]
+        print(f"  Creating {len(relations_to_bulk_create)} unique parent-child links...")
+        CategoryParents.objects.bulk_create(relations_to_bulk_create, ignore_conflicts=True)
 
     # Part C: Create product-category relationships
     print("  Part C: Creating product-category relationships...")
