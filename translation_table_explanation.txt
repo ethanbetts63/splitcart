@@ -1,0 +1,36 @@
+# Product Name Translation Table Explanation
+
+This document provides a brief overview of the product name translation system.
+
+## 1. How the Translation Table is Generated
+
+The translation table is created by the `TranslationTableGenerator` class at the very end of a successful `python manage.py update_db --products` run.
+
+- **Generator Class:** `api/database_updating_classes/translation_table_generator.py`
+- **Output File:** `api/data/product_name_translation_table.py`
+
+The process is as follows:
+1.  During the database update, the `VariationManager` identifies when an incoming product's name (e.g., "Coles Brand Milk 2L") is different from the canonical product name it was matched with (e.g., "Milk 2L").
+2.  This different name is stored as a "variation" in the database record of the canonical product.
+3.  At the end of the process, `TranslationTableGenerator` reads all these stored variations from the entire database.
+4.  It writes a dictionary to the output file, mapping each variation to its single, canonical name.
+
+## 2. How the Translation Table is Used
+
+For the system to improve its matching accuracy, this table **must** be used during the initial scraping and normalization phase, before products are even written to the inbox files.
+
+- **Relevant Normalization Function:** `api/utils/normalization_utils/get_normalized_string.py`
+
+The intended workflow is:
+1.  A scraper fetches a raw product name.
+2.  The `get_normalized_string` function should look up this raw name in the translation table.
+3.  If a match is found, it replaces the variation with the canonical name.
+4.  It then normalizes the canonical name to produce the `normalized_name_brand_size` string.
+
+**NOTE:** As of now, this feedback loop is not yet implemented. The `get_normalized_string.py` function currently does not consult the translation table.
+
+## 3. Accuracy Issues
+
+The accuracy of the translation table is directly tied to the accuracy of the `ProductResolver` during the `update_db` process.
+
+If the resolver incorrectly matches two different products, an erroneous translation rule will be automatically generated. This is a known limitation of the current automated approach and may require manual review or more advanced matching logic in the future to perfect.

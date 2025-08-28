@@ -75,12 +75,12 @@ class ProductResolver:
             product = self.barcode_cache[barcode]
             return product
 
-        # Tier 2: Match by Store Product ID (contextual lookup)
-        if not product:
-            store_product_id = product_details.get('product_id_store')
-            if store_product_id and store_product_id in self.store_product_id_cache:
-                product = self.store_product_id_cache[store_product_id]
-                return product
+        # Tier 2: Match by Store Product ID (contextual lookup) - DISABLED FOR TESTING
+        # if not product:
+        #     store_product_id = product_details.get('product_id_store')
+        #     if store_product_id and store_product_id in self.store_product_id_cache:
+        #         product = self.store_product_id_cache[store_product_id]
+        #         return product
 
         # Tier 3: Match by Normalized String
         if not product:

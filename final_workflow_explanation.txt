@@ -1,6 +1,6 @@
-# Detailed Workflow of the Refactored & Simplified Database Update Process (v2)
+# Detailed Workflow of the Refactored & Simplified Database Update Process (v3)
 
-This document outlines the step-by-step journey of product data through the new, simplified, and robust object-oriented update system. This version reflects all recent bug fixes and design improvements.
+This document outlines the step-by-step journey of product data through the new, simplified, and robust object-oriented update system. This version reflects the fix for the price creation bug for new products.
 
 ### Core Components
 
@@ -41,8 +41,7 @@ This document outlines the step-by-step journey of product data through the new,
         - It calls `unit_of_work.add_price()`. This method now contains a check to **skip creating a price record if the price is null**.
     - **If no match is found (New Product):**
         - A new `Product` object is created in memory.
-        - **Crucially, the raw price data is temporarily attached to this new product instance** (e.g., `new_product._price_data = ...`). This is done because the product does not have a database ID yet.
-        - The new `Product` object is added to the `UnitOfWork`.
+        - **Crucially, both the new `Product` object and its corresponding raw `product_details` dictionary are passed to the `UnitOfWork` together.** The `UnitOfWork` stores them as a pair, ensuring the price data is never lost during the commit process.
 
 ---
 
@@ -50,17 +49,16 @@ This document outlines the step-by-step journey of product data through the new,
 
 10. **Commit Trigger:** After processing all unique products from the file, the orchestrator calls `unit_of_work.commit()`.
 11. **Inside the Transaction:** The `commit` method executes the following steps in the correct order of dependency, all within a single database transaction:
-    a.  **De-duplicate New Products:** It takes the list of potential new products and de-duplicates it against the resolver's caches and against itself. This prevents `UNIQUE constraint` errors on products.
-    b.  **Create Products:** It performs a `bulk_create` on the truly unique new products. These product objects now have database IDs.
-    c.  **Create Prices for New Products:** It now iterates through the list of newly created products. For each one, it accesses the temporarily attached price data and creates the `Price` objects, which now correctly link to the new product's ID.
-    d.  **Create Prices for Existing Products:** It adds the prices for existing products to the same list.
-    e.  **Bulk Create All Prices:** It performs a single `bulk_create` for all the new `Price` objects.
-    f.  **Process Categories:** It calls the `CategoryManager`. The manager now correctly:
+    a.  **De-duplicate New Products:** It takes the list of potential new products (and their associated details) and de-duplicates it against the resolver's caches and against itself. This prevents `UNIQUE constraint` errors on products.
+    b.  **Create Products:** It performs a `bulk_create` on the truly unique new products. After this operation, Django populates the in-memory product objects with their new database IDs.
+    c.  **Create Prices for New Products:** The `UnitOfWork` now iterates through its stored list of `(product, details)` pairs. Since the `product` object now has its ID, it can reliably create a `Price` object for it using the stored `details`.
+    d.  **Bulk Create All Prices:** The newly created prices for new products are added to the same list as the prices for existing products (collected in Phase 3). A single `bulk_create` is then performed for **all** `Price` objects at once, ensuring maximum efficiency.
+    e.  **Process Categories:** It calls the `CategoryManager`. The manager now correctly:
         i.  Associates new categories with their parent `Company`.
         ii. Generates a `slug` for new categories.
         iii. Creates the category hierarchy using the `parents` ManyToManyField.
         iv. Links products to their categories.
-    g.  **Update Products:** It performs a `bulk_update` for products with new name variations.
+    f.  **Update Products:** It performs a `bulk_update` for products with new name variations.
 12. **Transaction End:** If any step fails, the entire transaction is rolled back.
 
 ---
