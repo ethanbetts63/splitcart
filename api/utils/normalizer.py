@@ -2,7 +2,13 @@ import re
 import unicodedata
 import json
 import os
-from api.data.brand_synonyms import BRAND_SYNONYMS
+from api.data.analysis.brand_synonyms import BRAND_SYNONYMS
+
+# Safely import the translation table
+try:
+    from api.data.product_name_translation_table import PRODUCT_NAME_TRANSLATIONS
+except (ImportError, SyntaxError):
+    PRODUCT_NAME_TRANSLATIONS = {}
 
 # Load brand rules once when the module is loaded
 BRAND_RULES_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'brand_rules.json')
@@ -142,22 +148,30 @@ class ProductNormalizer:
         return cleaned_brand
 
     def _get_cleaned_name(self) -> str:
-        """ Corresponds to get_cleaned_name.py logic. """
-        cleaned_name = self.name
-        # Use the brand that has been cleaned by synonyms and rules
+        name_to_clean = self.name
+
+        # Step 1: Use the translation table to find the canonical name
+        if PRODUCT_NAME_TRANSLATIONS and self.name in PRODUCT_NAME_TRANSLATIONS:
+            name_to_clean = PRODUCT_NAME_TRANSLATIONS[self.name]
+
+        # Step 2: Remove cleaned brand from name using word boundaries
         brand_to_remove = self.cleaned_brand
         if brand_to_remove:
-            # Case-insensitive replacement
-            cleaned_name = re.sub(re.escape(brand_to_remove), '', cleaned_name, flags=re.IGNORECASE)
+            name_to_clean = re.sub(r'\b' + re.escape(brand_to_remove) + r'\b', '', name_to_clean, flags=re.IGNORECASE).strip()
+        
+        # Step 3: Remove all identified size strings from the name
+        if self.raw_sizes:
+            for s in self.raw_sizes:
+                name_to_clean = re.sub(re.escape(s), '', name_to_clean, flags=re.IGNORECASE).strip()
 
-        # Also remove the original brand string, just in case it's different
-        if self.brand:
-            cleaned_name = re.sub(re.escape(self.brand), '', cleaned_name, flags=re.IGNORECASE)
-
-        for size in self.raw_sizes:
-            cleaned_name = re.sub(re.escape(size), '', cleaned_name, flags=re.IGNORECASE)
-            
-        return cleaned_name.strip()
+        # Step 4: A more general regex to remove any remaining size-like patterns
+        units = ['g', 'gram', 'grams', 'kg', 'kilogram', 'kilograms', 'ml', 'millilitre', 'millilitres', 'l', 'litre', 'litres', 'pk', 'pack', 'each', 'ea']
+        size_pattern = r'\b\d+\.?\d*\s*(' + '|'.join(units) + r')s?\b'
+        name_to_clean = re.sub(size_pattern, '', name_to_clean, flags=re.IGNORECASE)
+        
+        # Step 5: Clean up extra spaces that might be left after removal
+        name_to_clean = re.sub(r'\s+', ' ', name_to_clean).strip()
+        return name_to_clean
 
     def _get_standardized_sizes(self) -> list:
         """ Corresponds to standardize_sizes_for_norm_string.py logic. """
