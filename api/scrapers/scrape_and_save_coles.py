@@ -140,13 +140,20 @@ def scrape_and_save_coles_data(command, company: str, store_id: str, store_name:
             # Get the path to the temp file we just created
             temp_file_path = jsonl_writer.temp_file_path
             
-            # Automatically trigger the barcode enrichment process on this file
-            command.stdout.write(command.style.SQL_FIELD(f"--- Handing over {os.path.basename(temp_file_path)} for barcode enrichment ---"))
-            enrich_coles_file(temp_file_path, command)
-            
-            # Commit the now-enriched file to the product_inbox
-            command.stdout.write(command.style.SUCCESS(f"--- Enrichment complete. Committing {os.path.basename(temp_file_path)} to inbox. ---"))
-            jsonl_writer.commit()
+            try:
+                # Automatically trigger the barcode enrichment process on this file
+                command.stdout.write(command.style.SQL_FIELD(f"--- Handing over {os.path.basename(temp_file_path)} for barcode enrichment ---"))
+                enrich_coles_file(temp_file_path, command)
+                
+                # Commit the now-enriched file to the product_inbox
+                command.stdout.write(command.style.SUCCESS(f"--- Enrichment complete. Committing {os.path.basename(temp_file_path)} to inbox. ---"))
+                jsonl_writer.commit()
+            except InterruptedError as e:
+                command.stderr.write(command.style.ERROR(f"\n{e}"))
+                # Don't commit the file, the enrichment was stopped part-way through.
+                # The progress is already saved in the temp file which has replaced the original.
+                # The next run of the scraper will re-process this file.
+                pass # Gracefully stop.
         else:
             # If the initial scrape failed, clean up the temp file
             jsonl_writer.cleanup()

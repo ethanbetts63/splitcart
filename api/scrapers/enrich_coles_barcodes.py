@@ -18,8 +18,7 @@ from selenium.webdriver.support import expected_conditions as EC
 def enrich_coles_file(file_path, command):
     """
     Orchestrates the enrichment of a single Coles product file.
-    Handles the nested {"product": ..., "metadata": ...} structure.
-    Writes back to a temp file and replaces original after each scrape.
+    Handles interruptions (like a CAPTCHA) by saving partial progress.
     """
     command.stdout.write(f"\n--- Enriching file: {os.path.basename(file_path)} ---")
     
@@ -28,16 +27,16 @@ def enrich_coles_file(file_path, command):
             line_list = [json.loads(line) for line in f if line.strip()]
     except (IOError, json.JSONDecodeError) as e:
         command.stderr.write(command.style.ERROR(f"  - Could not read or parse file: {e}"))
-        return 0, 0
+        return
 
     if not line_list:
         command.stdout.write("  - File is empty. Skipping.")
-        return 0, 0
+        return
 
     product_list = [line.get('product') for line in line_list if line.get('product')]
     if not product_list:
         command.stdout.write("  - No products found in file. Skipping.")
-        return 0, 0
+        return
 
     # Stage 1: Prefill from Database (in memory)
     enriched_product_list = prefill_barcodes_from_db(product_list, command)
@@ -46,22 +45,24 @@ def enrich_coles_file(file_path, command):
             line_data['product'] = enriched_product_list[i]
 
     # Stage 2: Web Scraping for remaining products
-    lines_to_scrape_count = len([line for line in line_list if line.get('product') and not line['product'].get('barcode') and line['product'].get('url')])
+    lines_to_scrape = [line for line in line_list if line.get('product') and not line['product'].get('barcode') and line['product'].get('url') and line.get('product', {}).get('brand', '').lower() != 'coles']
     
-    if lines_to_scrape_count == 0:
+    if not lines_to_scrape:
         command.stdout.write("  - No products require web scraping in this file.")
         with open(file_path, 'w') as f:
             for line_data in line_list:
                 f.write(json.dumps(line_data) + '\n')
-        return 0, 0
+        return
 
-    command.stdout.write(f"  - Found {lines_to_scrape_count} products that require web scraping.")
+    command.stdout.write(f"  - Found {len(lines_to_scrape)} products that require web scraping.")
 
     session = None
-    store_id = [line.get('metadata', {}).get('store_id') for line in line_list if line.get('metadata')][0]
-    if not store_id:
-        command.stderr.write(command.style.ERROR("  - Cannot initialize session: store_id not found."))
-        return 0, 0
+    try:
+        store_id = [line.get('metadata', {}).get('store_id') for line in line_list if line.get('metadata')][0]
+    except IndexError:
+        command.stderr.write(command.style.ERROR("  - Cannot initialize session: store_id not found in metadata."))
+        return
+
     numeric_store_id = store_id.split(':')[-1] if ':' in store_id else store_id
     driver = None
     try:
@@ -82,25 +83,34 @@ def enrich_coles_file(file_path, command):
         driver.quit()
     except Exception as e:
         if driver: driver.quit()
-        command.stderr.write(command.style.ERROR(f"A critical error occurred during Selenium phase: {e}"))
-        return 0, 0
+        raise InterruptedError(f"A critical error occurred during the Selenium phase: {e}")
 
     if not session:
-        command.stderr.write(command.style.ERROR("Failed to create a requests session. Aborting."))
-        return 0, 0
+        raise InterruptedError("Failed to create a requests session. Aborting.")
 
     file_updated, file_failed = 0, 0
     temp_dir = os.path.join(settings.BASE_DIR, 'api', 'data', 'temp_inbox')
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
     temp_file_path = os.path.join(temp_dir, os.path.basename(file_path) + ".tmp")
+    
+    captcha_detected = False
     try:
         with open(temp_file_path, 'w') as temp_f:
             for i, line_data in enumerate(line_list):
                 product_data = line_data.get('product')
-                if product_data and not product_data.get('barcode') and product_data.get('url'):
+                # Check if this line needs scraping
+                if product_data and not product_data.get('barcode') and product_data.get('url') and product_data.get('brand', '').lower() != 'coles':
                     try:
                         response = session.get(product_data['url'], timeout=30)
+                        # CAPTCHA check
+                        if '<script id="__NEXT_DATA__"' not in response.text:
+                            command.stderr.write(command.style.ERROR(f"\n    - CAPTCHA or block detected for {product_data.get('name')}. Stopping to save progress."))
+                            captcha_detected = True
+                            # Write the unmodified line and break the loop
+                            temp_f.write(json.dumps(line_data) + '\n')
+                            break
+
                         response.raise_for_status()
                         soup = BeautifulSoup(response.text, 'html.parser')
                         gtin = None
@@ -147,13 +157,12 @@ def enrich_coles_file(file_path, command):
                 # Write line to temp file regardless of outcome
                 temp_f.write(json.dumps(line_data) + '\n')
 
-        # After processing all lines, replace the original file
-        os.replace(temp_file_path, file_path)
-        command.stdout.write(f"  - Processing complete for file. Updated: {file_updated}, Failed: {file_failed}")
-        return file_updated, file_failed
-
-    except Exception as e:
-        command.stderr.write(command.style.ERROR(f"An error occurred during file writing: {e}"))
+    finally:
+        # This block runs whether the loop finishes or is interrupted by a break.
+        # It ensures we always save the progress made so far.
         if os.path.exists(temp_file_path):
-            os.remove(temp_file_path)
-        return 0, 0
+            os.replace(temp_file_path, file_path)
+            command.stdout.write(f"  - Progress saved for {os.path.basename(file_path)}. Updated: {file_updated}, Failed: {file_failed}")
+
+    if captcha_detected:
+        raise InterruptedError("CAPTCHA detected, stopping scrape process. Please re-run the command.")
