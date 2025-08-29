@@ -1,5 +1,18 @@
 import re
 import unicodedata
+import json
+import os
+from api.data.brand_synonyms import BRAND_SYNONYMS
+
+# Load brand rules once when the module is loaded
+BRAND_RULES_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'brand_rules.json')
+BRAND_RULES = []
+if os.path.exists(BRAND_RULES_PATH):
+    try:
+        with open(BRAND_RULES_PATH, 'r') as f:
+            BRAND_RULES = json.load(f)
+    except (IOError, json.JSONDecodeError):
+        BRAND_RULES = [] # Ensure it's an empty list on error
 
 class ProductNormalizer:
     """
@@ -107,22 +120,43 @@ class ProductNormalizer:
         return sorted(list(all_sizes))
 
     def _get_cleaned_brand(self) -> str:
-        """ Corresponds to get_cleaned_brand.py logic. """
-        if self.brand:
-            return self.brand
-        known_brands = ["Coles", "Woolworths", "Aldi", "IGA", "Black & Gold"]
-        for b in known_brands:
-            if b.lower() in self.name.lower():
-                return b
-        return ""
+        """ Corresponds to the original, more precise get_cleaned_brand.py logic. """
+        if not self.brand:
+            return ''
+
+        brand_str = str(self.brand)
+        name_str = str(self.name).lower()
+
+        cleaned_brand_for_lookup = self._clean_value(brand_str)
+        cleaned_brand = BRAND_SYNONYMS.get(cleaned_brand_for_lookup, brand_str)
+
+        for rule in BRAND_RULES:
+            rule_brands = [b.lower() for b in rule.get('brands', [])]
+            condition_values = [v.lower() for v in rule.get('condition_values', [])]
+
+            if cleaned_brand.lower() in rule_brands:
+                if any(keyword in name_str for keyword in condition_values):
+                    cleaned_brand = rule['canonical_brand']
+                    break
+
+        return cleaned_brand
 
     def _get_cleaned_name(self) -> str:
         """ Corresponds to get_cleaned_name.py logic. """
         cleaned_name = self.name
-        if self.cleaned_brand:
-            cleaned_name = cleaned_name.replace(self.cleaned_brand, '')
+        # Use the brand that has been cleaned by synonyms and rules
+        brand_to_remove = self.cleaned_brand
+        if brand_to_remove:
+            # Case-insensitive replacement
+            cleaned_name = re.sub(re.escape(brand_to_remove), '', cleaned_name, flags=re.IGNORECASE)
+
+        # Also remove the original brand string, just in case it's different
+        if self.brand:
+            cleaned_name = re.sub(re.escape(self.brand), '', cleaned_name, flags=re.IGNORECASE)
+
         for size in self.raw_sizes:
-            cleaned_name = cleaned_name.replace(size, '')
+            cleaned_name = re.sub(re.escape(size), '', cleaned_name, flags=re.IGNORECASE)
+            
         return cleaned_name.strip()
 
     def _get_standardized_sizes(self) -> list:
