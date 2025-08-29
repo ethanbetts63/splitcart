@@ -1,9 +1,12 @@
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 from api.utils.management_utils.run_woolworths_scraper import run_woolworths_scraper
 from api.utils.management_utils.run_coles_scraper import run_coles_scraper
-from api.utils.management_utils.run_aldi_scraper import run_aldi_scraper
 from api.utils.management_utils.run_iga_scraper import run_iga_scraper
+from companies.models.company import Company
+from companies.models.store import Store
+from api.scrapers.scrape_and_save_aldi import AldiScraper
 
 class Command(BaseCommand):
     help = 'Runs the scrapers for the specified companies.'
@@ -25,7 +28,23 @@ class Command(BaseCommand):
             run_coles_scraper(self, batch_size)
 
         if options['aldi'] or run_all:
-            run_aldi_scraper(self, batch_size)
+            try:
+                aldi_company = Company.objects.get(name="Aldi")
+                stores = Store.objects.filter(company=aldi_company, is_active=True)
+                stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
+                for store in stores_to_scrape:
+                    scraper = AldiScraper(
+                        command=self,
+                        company=aldi_company.name,
+                        store_id=store.store_id,
+                        store_name=store.store_name,
+                        state=store.state
+                    )
+                    scraper.run()
+                    store.last_scraped_products = timezone.now()
+                    store.save()
+            except Company.DoesNotExist:
+                self.stdout.write(self.style.ERROR('Company "Aldi" not found.'))
 
         if options['iga'] or run_all:
             run_iga_scraper(self, batch_size)

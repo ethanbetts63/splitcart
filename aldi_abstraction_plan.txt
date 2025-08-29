@@ -1,0 +1,42 @@
+Plan: Abstracting the ALDI Scraper
+
+The goal is to refactor the existing ALDI scraping logic into a class-based structure that inherits from the new `BaseScraper`. This will reduce code duplication and improve maintainability.
+
+**1. `api/scrapers/base_scraper.py` (Already Created)**
+*   This file contains the `BaseScraper` class, which defines the common scraping workflow and abstract methods that all specific scrapers must implement.
+
+**2. Refactor `api/scrapers/scrape_and_save_aldi.py` into `AldiScraper` Class**
+*   This file will be transformed from a standalone function (`scrape_and_save_aldi_data`) into a class named `AldiScraper`.
+*   `AldiScraper` will inherit from `BaseScraper`.
+*   **`__init__(self, command, company, store_id, store_name, state)`:**
+    *   Will call `super().__init__(command, company, store_id, store_name, state)`.
+    *   Will initialize any ALDI-specific attributes (e.g., `session` for requests).
+*   **`setup(self)`:**
+    *   Will contain the logic for initializing the `requests.Session` and the `JsonlWriter` (which needs the `store_name_slug`).
+*   **`get_work_items(self)`:**
+    *   Will contain the logic from the original `scrape_and_save_aldi_data` function that calls `get_aldi_categories` to fetch the list of categories to scrape.
+    *   **Relevant utility:** `api/utils/scraper_utils/get_aldi_categories.py`
+*   **`fetch_data_for_item(self, item)`:**
+    *   Will contain the ALDI-specific API call logic for a single category, including pagination.
+    *   It will fetch the raw product data for a given `category_slug` and `category_key`.
+*   **`clean_raw_data(self, raw_product_list)`:**
+    *   Will call the existing ALDI-specific cleaning utility.
+    *   **Relevant utility:** `api/utils/scraper_utils/clean_raw_data_aldi.py`
+*   **`post_scrape_enrichment(self)`:**
+    *   For ALDI, this method will likely remain empty as there's no specific post-scrape enrichment step identified yet (unlike Coles' barcode enrichment).
+
+**3. Modify `api/management/commands/scrape.py`**
+*   This file is the entry point for the `scrape` management command.
+*   It will be updated to:
+    *   Import the new `AldiScraper` class.
+    *   When the `--aldi` flag is detected, it will instantiate `AldiScraper` with the necessary parameters.
+    *   It will then call the `run()` method on the `AldiScraper` instance to start the scraping process.
+
+**Relevant Files:**
+*   `api/scrapers/base_scraper.py` (New, already created)
+*   `api/scrapers/scrape_and_save_aldi.py` (Will be refactored into `AldiScraper` class)
+*   `api/utils/scraper_utils/clean_raw_data_aldi.py` (Utility, called by `AldiScraper`)
+*   `api/utils/scraper_utils/get_aldi_categories.py` (Utility, called by `AldiScraper`)
+*   `api/utils/scraper_utils/jsonl_writer.py` (Used by `BaseScraper`)
+*   `api/utils/scraper_utils/output_utils.py` (Used by `BaseScraper`)
+*   `api/management/commands/scrape.py` (Will be updated to use `AldiScraper`)
