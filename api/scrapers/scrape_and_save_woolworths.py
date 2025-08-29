@@ -34,7 +34,7 @@ class WoolworthsScraper(BaseScraper):
         try:
             self.session.get("https://www.woolworths.com.au/", timeout=60)
         except requests.exceptions.RequestException as e:
-            self.output.log_error(f"Failed to initialize session: {e}")
+            self.command.stderr.write(self.command.style.ERROR(f"Failed to initialize session: {e}"))
             return
 
         store_name_slug = f"{slugify(self.store_name)}-{self.store_id}"
