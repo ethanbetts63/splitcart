@@ -1,14 +1,14 @@
 from django.core.management.base import BaseCommand
-from api.scrapers.enrich_coles_barcodes import fetch_and_update_coles_barcodes
+from api.scrapers.enrich_coles_barcodes import enrich_coles_inbox_files
 
 class Command(BaseCommand):
     """
-    A Django management command to find and update barcodes for Coles products.
+    A Django management command to enrich Coles .jsonl files in the product inbox.
     """
-    help = 'Scrapes individual Coles product pages to find and save the barcode (GTIN) for products that are missing it.'
+    help = 'Enriches Coles .jsonl files with barcodes by checking the DB and scraping the web.'
 
     def handle(self, *args, **options):
         """
         The main entry point for the command.
         """
-        fetch_and_update_coles_barcodes(self)
+        enrich_coles_inbox_files(self)
