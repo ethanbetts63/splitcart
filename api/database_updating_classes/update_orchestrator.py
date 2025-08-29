@@ -55,10 +55,10 @@ class UpdateOrchestrator:
             
             if unit_of_work.commit(consolidated_data, product_cache, resolver, store_obj):
                 self.processed_files.append(file_path)
-                variation_manager.commit_hotlist()
+                # Reconcile duplicates from memory immediately after a successful commit
+                variation_manager.reconcile_duplicates()
 
-        final_variation_manager = VariationManager(self.command, None)
-        final_variation_manager.reconcile_duplicates()
+        
         translator_generator = TranslationTableGenerator(self.command)
         translator_generator.generate()
         self._cleanup_processed_files()
@@ -119,10 +119,17 @@ class UpdateOrchestrator:
         return product_cache
 
     def _cleanup_processed_files(self):
-        self.command.stdout.write("--- Cleaning up processed inbox files ---")
+        self.command.stdout.write("--- Moving processed inbox files to temp storage ---")
+        temp_storage_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'temp_product_storage')
+        
+        # Ensure the destination directory exists
+        os.makedirs(temp_storage_path, exist_ok=True)
+
         for file_path in self.processed_files:
             try:
-                os.remove(file_path)
-                self.command.stdout.write(f"  - Removed {os.path.basename(file_path)}")
+                file_name = os.path.basename(file_path)
+                destination_path = os.path.join(temp_storage_path, file_name)
+                os.rename(file_path, destination_path)
+                self.command.stdout.write(f"  - Moved {file_name} to temp_product_storage")
             except OSError as e:
-                self.command.stderr.write(self.command.style.ERROR(f'Could not remove file {file_path}: {e}'))
+                self.command.stderr.write(self.command.style.ERROR(f'Could not move file {file_path}: {e}'))

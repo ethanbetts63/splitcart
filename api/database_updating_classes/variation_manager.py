@@ -3,11 +3,10 @@ import os
 from django.db import transaction
 from products.models import Product, Price
 
-HOTLIST_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'name_variation_hotlist.json')
-
 class VariationManager:
     """
     Centralizes all logic for handling product name and brand variations.
+    Now works entirely in-memory for a single file's processing cycle.
     """
     def __init__(self, command, unit_of_work):
         self.command = command
@@ -39,38 +38,28 @@ class VariationManager:
             }
             self.new_hotlist_entries.append(hotlist_entry)
 
-    def commit_hotlist(self):
-        if not self.new_hotlist_entries:
-            return
-        self.command.stdout.write(f"--- Adding {len(self.new_hotlist_entries)} entries to name variation hotlist ---")
-        # Implementation remains the same...
-
     def reconcile_duplicates(self):
-        self.command.stdout.write(self.command.style.SQL_FIELD("--- Reconciling duplicate products from hotlist ---"))
-        if not os.path.exists(HOTLIST_PATH):
-            self.command.stdout.write(self.command.style.SUCCESS("Hotlist not found. No duplicates to process."))
-            return
-
-        try:
-            with open(HOTLIST_PATH, 'r', encoding='utf-8') as f:
-                hotlist = json.load(f)
-            if not hotlist:
-                self.command.stdout.write(self.command.style.SUCCESS("Hotlist is empty. No duplicates to process."))
-                return
-        except (json.JSONDecodeError, IOError) as e:
-            self.command.stderr.write(self.command.style.ERROR(f"Could not read or parse hotlist: {e}"))
+        """
+        Reads the hotlist from memory and merges any potential duplicates.
+        """
+        self.command.stdout.write(self.command.style.SQL_FIELD("--- Reconciling duplicate products from memory hotlist ---"))
+        
+        hotlist = self.new_hotlist_entries
+        if not hotlist:
+            self.command.stdout.write("Hotlist is empty. No duplicates to process.")
             return
 
         duplicates_to_merge = self._find_duplicates_from_hotlist(hotlist)
         
         if not duplicates_to_merge:
-            self.command.stdout.write(self.command.style.SUCCESS("No valid duplicate pairs found to merge."))
+            self.command.stdout.write("No valid duplicate pairs found to merge.")
         else:
             self.command.stdout.write(f"Found {len(duplicates_to_merge)} duplicate products to merge.")
             for item in duplicates_to_merge:
                 self._merge_products(item['canonical'], item['duplicate'])
         
-        self._clear_hotlist()
+        # Clear the in-memory hotlist for the next file
+        self.new_hotlist_entries.clear()
 
     def _find_duplicates_from_hotlist(self, hotlist):
         duplicates_to_merge = []
@@ -108,8 +97,6 @@ class VariationManager:
         price_count = prices_to_move.count()
         prices_to_move.update(product=canonical_product)
         
-        # Simple merge logic, can be expanded
-        # For example, merge name_variations from duplicate into canonical
         if duplicate_product.name_variations:
             if not canonical_product.name_variations:
                 canonical_product.name_variations = []
@@ -122,15 +109,9 @@ class VariationManager:
         self.command.stdout.write(f"    - Moved {price_count} prices and deleted duplicate product.")
 
     def _log_barcode_mismatch(self, canonical_product, duplicate_product):
-        # Logic to log barcode mismatches to a file
         with open('barcode_mismatch_log.txt', 'a', encoding='utf-8') as f:
             from datetime import datetime
-            f.write(f"--- Mismatch Detected at {datetime.now().isoformat()} ---\n")
-            f.write(f"  Canonical: {canonical_product.name} (Barcode: {canonical_product.barcode})\n")
-            f.write(f"  Duplicate: {duplicate_product.name} (Barcode: {duplicate_product.barcode})\n")
-            f.write("----------------------------------------------------\n")
-
-    def _clear_hotlist(self):
-        self.command.stdout.write("--- Clearing hotlist ---")
-        with open(HOTLIST_PATH, 'w', encoding='utf-8') as f:
-            json.dump([], f)
+            f.write(f"--- Mismatch Detected at {datetime.now().isoformat()} ---")
+            f.write(f"  Canonical: {canonical_product.name} (Barcode: {canonical_product.barcode})")
+            f.write(f"  Duplicate: {duplicate_product.name} (Barcode: {duplicate_product.barcode})")
+            f.write("----------------------------------------------------")
