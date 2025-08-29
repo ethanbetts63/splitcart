@@ -48,22 +48,31 @@ class JsonlWriter:
                 return False
         return False # Product was a duplicate or missing key
 
+    def close(self):
+        """Closes the file handle if it's open."""
+        if self.temp_file_handle:
+            self.temp_file_handle.close()
+            self.temp_file_handle = None
+
+    def commit(self):
+        """Moves the temporary file to the final inbox directory."""
+        if os.path.exists(self.temp_file_path):
+            final_file_name = os.path.basename(self.temp_file_path)
+            finalize_scrape(self.temp_file_path, self.inbox_path, final_file_name)
+
+    def cleanup(self):
+        """Closes and removes the temporary file."""
+        self.close()
+        if os.path.exists(self.temp_file_path):
+            os.remove(self.temp_file_path)
+
     def finalize(self, scrape_successful: bool):
         """
         Finalizes the scrape by moving the file to inbox or deleting it.
-        Must be called in a finally block.
+        Maintained for backward compatibility.
         """
-        if self.temp_file_handle:
-            self.temp_file_handle.close()
-            self.temp_file_handle = None # Clear handle after closing
-
         if scrape_successful:
-            # print(f"Finalizing scrape for {self.store_name_slug}.")
-            date_str = datetime.now().strftime('%Y-%m-%d')
-            final_file_name = f"{self.company.lower()}-{self.store_name_slug.lower()}-{date_str}.jsonl"
-            finalize_scrape(self.temp_file_path, self.inbox_path, final_file_name)
-            # print(f"Successfully moved file to inbox for {self.store_name_slug}.")
+            self.close()
+            self.commit()
         else:
-            if os.path.exists(self.temp_file_path):
-                os.remove(self.temp_file_path)
-            # print(f"Scrape for {self.store_name_slug} failed. File removed.")
+            self.cleanup()

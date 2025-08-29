@@ -1,3 +1,4 @@
+import os
 import json
 import time
 import math
@@ -14,6 +15,7 @@ from selenium.common.exceptions import TimeoutException
 from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
 from api.utils.scraper_utils.jsonl_writer import JsonlWriter
 from api.utils.scraper_utils.output_utils import ScraperOutput
+from api.scrapers.enrich_coles_barcodes import enrich_coles_file
 
 def scrape_and_save_coles_data(command, company: str, store_id: str, store_name: str, state: str, categories_to_fetch: list):
     """
@@ -131,5 +133,22 @@ def scrape_and_save_coles_data(command, company: str, store_id: str, store_name:
 
         scrape_successful = True
     finally:
-        jsonl_writer.finalize(scrape_successful)
+        # Close the file handle to ensure all data is written to the temp file
+        jsonl_writer.close()
+
+        if scrape_successful:
+            # Get the path to the temp file we just created
+            temp_file_path = jsonl_writer.temp_file_path
+            
+            # Automatically trigger the barcode enrichment process on this file
+            command.stdout.write(command.style.SQL_FIELD(f"--- Handing over {os.path.basename(temp_file_path)} for barcode enrichment ---"))
+            enrich_coles_file(temp_file_path, command)
+            
+            # Commit the now-enriched file to the product_inbox
+            command.stdout.write(command.style.SUCCESS(f"--- Enrichment complete. Committing {os.path.basename(temp_file_path)} to inbox. ---"))
+            jsonl_writer.commit()
+        else:
+            # If the initial scrape failed, clean up the temp file
+            jsonl_writer.cleanup()
+            
         output.finalize()
