@@ -83,7 +83,7 @@ def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, st
             "purchase_limit": restrictions.get('retailLimit'),
 
             # --- Details & Attributes ---
-            "package_size": product_size.lower().strip() if product_size else None,
+            "package_size": product_size.strip() if product_size else None,
             "country_of_origin": None, # Not available
             "health_star_rating": None, # Not available
             "ingredients": None, # Not available in this part of the data

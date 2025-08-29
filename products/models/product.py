@@ -19,6 +19,12 @@ class Product(models.Model):
         db_index=True,
         help_text="The brand of the product, e.g., 'Coles', 'Coca-Cola'."
     )
+    size = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text="The original, raw size string for the product (e.g., 'approx. 300g')."
+    )
     
     sizes = models.JSONField(
         default=list,
