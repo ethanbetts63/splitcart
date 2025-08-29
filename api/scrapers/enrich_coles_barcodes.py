@@ -1,13 +1,12 @@
+from django.conf import settings
 import time
 import json
 import requests
 import os
 import glob
 from bs4 import BeautifulSoup
-
 from api.utils.normalizer import ProductNormalizer
 from api.utils.database_updating_utils.prefill_barcodes import prefill_barcodes_from_db
-
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
@@ -105,13 +104,16 @@ def enrich_coles_inbox_files(command):
             break
 
         file_updated, file_failed = 0, 0
-        temp_file_path = file_path + ".tmp"
+        temp_dir = os.path.join(settings.BASE_DIR, 'api', 'data', 'temp_inbox')
+        if not os.path.exists(temp_dir):
+            os.makedirs(temp_dir)
+        temp_file_path = os.path.join(temp_dir, os.path.basename(file_path) + ".tmp")
         try:
             with open(temp_file_path, 'w') as temp_f:
                 for i, line_data in enumerate(line_list):
                     product_data = line_data.get('product')
                     if product_data and not product_data.get('barcode') and product_data.get('url'):
-                        command.stdout.write(f"    - Scraping {i+1}/{len(line_list)}: {product_data.get('name')}")
+                        
                         try:
                             response = session.get(product_data['url'], timeout=30)
                             response.raise_for_status()
@@ -141,8 +143,9 @@ def enrich_coles_inbox_files(command):
                                 normalizer = ProductNormalizer({'barcode': str(gtin), 'sku': product_data.get('sku')})
                                 cleaned_barcode = normalizer.get_cleaned_barcode()
                                 if cleaned_barcode:
-                                    product_data['barcode'] = cleaned_barcode
-                                    command.stdout.write(command.style.SUCCESS(f"      -> Success! Updated barcode to: {cleaned_barcode}"))
+                                    name_part = f"    - Scraping {i+1}/{len(line_list)}: {product_data.get('name')}."
+                                    barcode_part = f" barcode: {cleaned_barcode}"
+                                    command.stdout.write(name_part + command.style.SUCCESS(barcode_part))
                                     file_updated += 1
                                 else:
                                     command.stderr.write(command.style.ERROR(f"      -> Found GTIN '{gtin}' but it was invalid after cleaning."))
