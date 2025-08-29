@@ -60,14 +60,18 @@ def clean_raw_data_aldi(raw_product_list: list, company: str, store_name: str, s
         # --- Tags ---
         tags = [badge.get('badgeText') for badge in product.get('badges', []) if badge.get('badgeText')]
 
+        sku = product.get('sku')
+        slug = product.get('urlSlugText', '')
+        product_url = f"https://www.aldi.com.au/product/{slug}-{sku}" if slug and sku else None
+
         clean_product = {
-            "product_id_store": product.get('sku'),
+            "product_id_store": sku,
             "barcode": None, # Not available
             "name": product.get('name'),
             "brand": product.get('brandName', ''),
             "description_short": None, # Not available
             "description_long": None, # Not available
-            "url": f"https://www.aldi.com.au/product/{product.get('urlSlugText', '')}" if product.get('urlSlugText') else None,
+            "url": product_url,
             "image_url_main": main_image,
             "image_urls_all": image_urls,
 
