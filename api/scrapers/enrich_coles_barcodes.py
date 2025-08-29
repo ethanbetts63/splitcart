@@ -19,6 +19,7 @@ def enrich_coles_inbox_files(command):
     """
     Orchestrates the enrichment of Coles product data in the inbox.
     Handles the nested {"product": ..., "metadata": ...} structure.
+    Writes back to a temp file and replaces original after each scrape.
     """
     command.stdout.write(command.style.SQL_FIELD("--- Starting Coles Inbox Enrichment Process ---"))
 
@@ -47,35 +48,32 @@ def enrich_coles_inbox_files(command):
             command.stdout.write("  - File is empty. Skipping.")
             continue
 
-        # Extract product dictionaries for processing, keeping original structure intact
         product_list = [line.get('product') for line in line_list if line.get('product')]
         if not product_list:
             command.stdout.write("  - No products found in file. Skipping.")
             continue
 
-        # Stage 1: Prefill from Database
+        # Stage 1: Prefill from Database (in memory)
         enriched_product_list = prefill_barcodes_from_db(product_list, command)
-
-        # Re-integrate the enriched data back into the original line structure
         for i, line_data in enumerate(line_list):
             if 'product' in line_data:
                 line_data['product'] = enriched_product_list[i]
 
         # Stage 2: Web Scraping for remaining products
-        lines_to_scrape = [line for line in line_list if line.get('product') and not line['product'].get('barcode') and line['product'].get('url')]
+        lines_to_scrape_count = len([line for line in line_list if line.get('product') and not line['product'].get('barcode') and line['product'].get('url')])
         
-        if not lines_to_scrape:
+        if lines_to_scrape_count == 0:
             command.stdout.write("  - No products require web scraping in this file.")
+            # Save file in case pre-fill made changes
             with open(file_path, 'w') as f:
                 for line_data in line_list:
                     f.write(json.dumps(line_data) + '\n')
             continue
 
-        command.stdout.write(f"  - Found {len(lines_to_scrape)} products that require web scraping.")
+        command.stdout.write(f"  - Found {lines_to_scrape_count} products that require web scraping.")
 
         if not session:
-            # ... Selenium warm-up logic ...
-            store_id = lines_to_scrape[0].get('metadata', {}).get('store_id')
+            store_id = [line.get('metadata', {}).get('store_id') for line in line_list if line.get('metadata')][0]
             if not store_id:
                 command.stderr.write(command.style.ERROR("  - Cannot initialize session: store_id not found."))
                 continue
@@ -107,56 +105,69 @@ def enrich_coles_inbox_files(command):
             break
 
         file_updated, file_failed = 0, 0
-        for i, line_data in enumerate(lines_to_scrape):
-            product_data = line_data['product']
-            command.stdout.write(f"    - Scraping {i+1}/{len(lines_to_scrape)}: {product_data.get('name')}")
-            try:
-                response = session.get(product_data['url'], timeout=30)
-                response.raise_for_status()
-                soup = BeautifulSoup(response.text, 'html.parser')
-                gtin = None
-                json_ld_scripts = soup.find_all('script', {'type': 'application/ld+json'})
-                for script in json_ld_scripts:
-                    if script.string:
+        temp_file_path = file_path + ".tmp"
+        try:
+            with open(temp_file_path, 'w') as temp_f:
+                for i, line_data in enumerate(line_list):
+                    product_data = line_data.get('product')
+                    if product_data and not product_data.get('barcode') and product_data.get('url'):
+                        command.stdout.write(f"    - Scraping {i+1}/{len(line_list)}: {product_data.get('name')}")
                         try:
-                            data = json.loads(script.string)
-                            items = [data] if isinstance(data, dict) else data if isinstance(data, list) else []
-                            for item in items:
-                                if isinstance(item, dict):
-                                    for key in ['gtin', 'gtin13', 'gtin14', 'mpn']:
-                                        if key in item and item[key]: gtin = item[key]; break
+                            response = session.get(product_data['url'], timeout=30)
+                            response.raise_for_status()
+                            soup = BeautifulSoup(response.text, 'html.parser')
+                            gtin = None
+                            json_ld_scripts = soup.find_all('script', {'type': 'application/ld+json'})
+                            for script in json_ld_scripts:
+                                if script.string:
+                                    try:
+                                        data = json.loads(script.string)
+                                        items = [data] if isinstance(data, dict) else data if isinstance(data, list) else []
+                                        for item in items:
+                                            if isinstance(item, dict):
+                                                for key in ['gtin', 'gtin13', 'gtin14', 'mpn']:
+                                                    if key in item and item[key]: gtin = item[key]; break
+                                            if gtin: break
+                                    except (json.JSONDecodeError): continue
                                 if gtin: break
-                        except (json.JSONDecodeError): continue
-                    if gtin: break
-                
-                if not gtin:
-                    json_element = soup.find('script', {'id': '__NEXT_DATA__'})
-                    if json_element and json_element.string:
-                        page_data = json.loads(json_element.string)
-                        gtin = page_data.get('pageProps', {}).get('product', {}).get('gtin')
+                            
+                            if not gtin:
+                                json_element = soup.find('script', {'id': '__NEXT_DATA__'}) 
+                                if json_element and json_element.string:
+                                    page_data = json.loads(json_element.string)
+                                    gtin = page_data.get('pageProps', {}).get('product', {}).get('gtin')
 
-                if gtin:
-                    normalizer = ProductNormalizer({'barcode': str(gtin), 'sku': product_data.get('sku')})
-                    cleaned_barcode = normalizer.get_cleaned_barcode()
-                    if cleaned_barcode:
-                        product_data['barcode'] = cleaned_barcode
-                        file_updated += 1
-                    else: file_failed += 1
-                else: file_failed += 1
-                time.sleep(1)
-            except Exception as e:
-                command.stderr.write(f"      - An error occurred: {e}")
-                file_failed += 1
-                continue
-        
-        command.stdout.write(f"  - Web scraping complete. Updated: {file_updated}, Failed: {file_failed}")
-        updated_count_total += file_updated
-        failed_count_total += file_failed
+                            if gtin:
+                                normalizer = ProductNormalizer({'barcode': str(gtin), 'sku': product_data.get('sku')})
+                                cleaned_barcode = normalizer.get_cleaned_barcode()
+                                if cleaned_barcode:
+                                    product_data['barcode'] = cleaned_barcode
+                                    command.stdout.write(command.style.SUCCESS(f"      -> Success! Updated barcode to: {cleaned_barcode}"))
+                                    file_updated += 1
+                                else:
+                                    command.stderr.write(command.style.ERROR(f"      -> Found GTIN '{gtin}' but it was invalid after cleaning."))
+                                    file_failed += 1
+                            else:
+                                command.stderr.write(command.style.ERROR("      -> Could not find GTIN using any method."))
+                                file_failed += 1
+                            time.sleep(1)
+                        except Exception as e:
+                            command.stderr.write(f"      - An error occurred: {e}")
+                            file_failed += 1
+                    
+                    # Write line to temp file regardless of outcome
+                    temp_f.write(json.dumps(line_data) + '\n')
 
-        command.stdout.write(f"  - Saving enriched data back to {os.path.basename(file_path)}")
-        with open(file_path, 'w') as f:
-            for p_data in line_list:
-                f.write(json.dumps(p_data) + '\n')
+            # After processing all lines, replace the original file
+            os.replace(temp_file_path, file_path)
+            command.stdout.write(f"  - Processing complete for file. Updated: {file_updated}, Failed: {file_failed}")
+            updated_count_total += file_updated
+            failed_count_total += file_failed
+
+        except Exception as e:
+            command.stderr.write(command.style.ERROR(f"An error occurred during file writing: {e}"))
+            if os.path.exists(temp_file_path):
+                os.remove(temp_file_path)
 
     command.stdout.write(command.style.SUCCESS(f"\n--- Coles Inbox Enrichment Complete ---"))
     command.stdout.write(f"Successfully updated {updated_count_total} products via web scraping.")
