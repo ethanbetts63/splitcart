@@ -113,7 +113,12 @@ class UpdateOrchestrator:
                     barcode=product_details.get('barcode'),
                     normalized_name_brand_size=key,
                     size=product_details.get('package_size'),
-                    sizes=product_details.get('sizes', [])
+                    sizes=product_details.get('sizes', []),
+                    url=product_details.get('url'),
+                    image_url=product_details.get('image_url_main'),
+                    description=(product_details.get('description_long') or product_details.get('description_short')),
+                    country_of_origin=product_details.get('country_of_origin'),
+                    ingredients=product_details.get('ingredients')
                 )
                 product_cache[key] = new_product
                 unit_of_work.add_new_product(new_product, product_details)

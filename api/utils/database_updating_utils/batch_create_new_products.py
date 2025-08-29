@@ -115,7 +115,6 @@ def batch_create_new_products(command, consolidated_data: dict):
                     description=product_details.get('description_long'),
                     country_of_origin=product_details.get('country_of_origin'),
                     ingredients=product_details.get('ingredients'),
-                    allergens=product_details.get('allergens_may_be_present'),
                     normalized_name_brand_size=normalized_string
                 ))
                 seen_normalized_strings.add(normalized_string)
