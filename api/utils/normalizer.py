@@ -147,12 +147,18 @@ class ProductNormalizer:
 
         return cleaned_brand
 
-    def _get_cleaned_name(self) -> str:
-        name_to_clean = self.name
+    @staticmethod
+    def get_canonical_name(name: str) -> str:
+        """
+        Looks up a product name in the translation table to find its canonical form.
+        """
+        if PRODUCT_NAME_TRANSLATIONS and name in PRODUCT_NAME_TRANSLATIONS:
+            return PRODUCT_NAME_TRANSLATIONS[name]
+        return name
 
+    def _get_cleaned_name(self) -> str:
         # Step 1: Use the translation table to find the canonical name
-        if PRODUCT_NAME_TRANSLATIONS and self.name in PRODUCT_NAME_TRANSLATIONS:
-            name_to_clean = PRODUCT_NAME_TRANSLATIONS[self.name]
+        name_to_clean = self.get_canonical_name(self.name)
 
         # Step 2: Remove cleaned brand from name using word boundaries
         brand_to_remove = self.cleaned_brand

@@ -91,10 +91,15 @@ class Product(models.Model):
 
     def clean(self):
         super().clean()
-        # Use the ProductNormalizer class to generate normalized fields
-        # Note: The normalizer expects a dictionary-like object.
-        # The model instance 'self' works because the normalizer uses getattr().
-        normalizer = ProductNormalizer(self)
+        # Use the ProductNormalizer class to generate normalized fields.
+        # The normalizer expects a dictionary, so we create one from the model's fields.
+        product_data = {
+            'name': self.name,
+            'brand': self.brand,
+            'package_size': self.size,  # Map model's 'size' field to 'package_size'
+            'barcode': self.barcode,
+        }
+        normalizer = ProductNormalizer(product_data)
         self.sizes = normalizer.get_raw_sizes()
         self.normalized_name_brand_size = normalizer.get_normalized_string()
 
