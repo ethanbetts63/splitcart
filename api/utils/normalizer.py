@@ -38,7 +38,7 @@ class ProductNormalizer:
         self.brand = str(product_data.get('brand', ''))
         self.package_size = str(product_data.get('package_size', ''))
         self.barcode = product_data.get('barcode')
-        self.sku = product_data.get('product_id_store')
+        self.sku = product_data.get('sku')
         
         # Immediately process the data to populate internal state
         self.raw_sizes = self._extract_all_sizes()

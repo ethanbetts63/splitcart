@@ -7,73 +7,73 @@ from api.utils.normalizer import ProductNormalizer
 
 def fetch_and_update_coles_barcodes(command):
     """
-    Finds Coles products without a barcode and attempts to fetch the GTIN
-    from the individual product page.
+    Finds a single Coles product without a barcode and attempts to fetch the GTIN
+    from the individual product page for debugging purposes.
     """
-    command.stdout.write(command.style.SQL_FIELD("--- Starting Coles Barcode Enrichment Process ---"))
+    command.stdout.write(command.style.SQL_FIELD("--- Starting Coles Barcode Enrichment Process (Single Product Debug Mode) ---"))
     
-    # Find all unique products that have a price from a Coles store and have no barcode.
-    products_to_enrich = Product.objects.filter(
+    # Find the first unique product that has a price from a Coles store and has no barcode.
+    product_to_enrich = Product.objects.filter(
         prices__store__company__name__iexact='Coles',
         barcode__isnull=True
-    ).distinct()
+    ).distinct().first()
 
-    product_count = products_to_enrich.count()
-    command.stdout.write(f"Found {product_count} Coles products missing a barcode.")
-
-    if product_count == 0:
+    if not product_to_enrich:
+        command.stdout.write("No Coles products missing a barcode were found.")
         return
+
+    command.stdout.write(f"Found product to test: {product_to_enrich.name}")
+    price_record = product_to_enrich.prices.filter(store__company__name__iexact='Coles').first()
+    sku = price_record.sku if price_record else 'Not Found'
+
+    command.stdout.write(f"  - Brand: {product_to_enrich.brand}")
+    command.stdout.write(f"  - Sizes: {product_to_enrich.sizes}")
+    command.stdout.write(f"  - SKU: {sku}")
+    command.stdout.write(f"  - DB URL: {product_to_enrich.url}")
 
     session = requests.Session()
     session.headers.update({"User-Agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)"})
     
-    updated_count = 0
-    failed_count = 0
+    updated = False
 
-    for i, product in enumerate(products_to_enrich):
-        command.stdout.write(f"\rProcessing product {i+1}/{product_count}: {product.name[:50]}", ending='')
-
-        if not product.url:
-            failed_count += 1
-            continue
-
+    if not product_to_enrich.url:
+        command.stderr.write(command.style.ERROR("Product has no URL."))
+    else:
         try:
-            response = session.get(product.url, timeout=20)
+            command.stdout.write(f"Fetching URL: {product_to_enrich.url}")
+            response = session.get(product_to_enrich.url, timeout=30)
             response.raise_for_status()
             soup = BeautifulSoup(response.text, 'html.parser')
 
-            json_element = soup.find('script', {'id': '__NEXT_DATA__'}) # Corrected: removed unnecessary escaping for single quotes
+            json_element = soup.find('script', {'id': '__NEXT_DATA__'})
             if not json_element:
-                failed_count += 1
-                continue
-
-            data = json.loads(json_element.string)
-            gtin = data.get('pageProps', {}).get('product', {}).get('gtin')
-
-            if gtin:
-                # Use the ProductNormalizer to clean the barcode
-                # We need the SKU for the cleaning logic, get it from the first available price record
-                price_record = product.prices.filter(store__company__name__iexact='Coles').first()
-                sku = price_record.store_product_id if price_record else None
-
-                normalizer = ProductNormalizer({'barcode': gtin, 'product_id_store': sku})
-                cleaned_barcode = normalizer.get_cleaned_barcode()
-
-                if cleaned_barcode:
-                    product.barcode = cleaned_barcode
-                    product.save(update_fields=['barcode'])
-                    updated_count += 1
+                command.stderr.write(command.style.ERROR("Could not find __NEXT_DATA__ script tag on page."))
             else:
-                failed_count += 1
+                data = json.loads(json_element.string)
+                gtin = data.get('pageProps', {}).get('product', {}).get('gtin')
 
-            # Be respectful to the server
-            time.sleep(1)
+                if gtin:
+                    price_record = product_to_enrich.prices.filter(store__company__name__iexact='Coles').first()
+                    sku = price_record.store_product_id if price_record else None
 
-        except Exception:
-            failed_count += 1
-            continue
+                    normalizer = ProductNormalizer({'barcode': gtin, 'sku': sku})
+                    cleaned_barcode = normalizer.get_cleaned_barcode()
 
-    command.stdout.write("\n") # Newline after progress bar
-    command.stdout.write(command.style.SUCCESS("--- Enrichment Complete ---"))
-    command.stdout.write(f"Successfully updated {updated_count} products.")
-    command.stdout.write(f"Failed to find barcodes for {failed_count} products.")
+                    if cleaned_barcode:
+                        command.stdout.write(command.style.SUCCESS(f"Found and cleaned barcode: {cleaned_barcode}"))
+                        product_to_enrich.barcode = cleaned_barcode
+                        product_to_enrich.save(update_fields=['barcode'])
+                        updated = True
+                    else:
+                        command.stderr.write(command.style.ERROR(f"Found GTIN '{gtin}' but it was deemed invalid after cleaning."))
+                else:
+                    command.stderr.write(command.style.ERROR("Could not find GTIN in the __NEXT_DATA__ JSON."))
+
+        except Exception as e:
+            command.stderr.write(command.style.ERROR(f"An error occurred: {e}"))
+
+    command.stdout.write(command.style.SUCCESS(f"--- Enrichment Complete ---"))
+    if updated:
+        command.stdout.write("Successfully updated 1 product.")
+    else:
+        command.stdout.write("Failed to update product.")
