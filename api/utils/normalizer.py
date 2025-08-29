@@ -18,6 +18,8 @@ class ProductNormalizer:
         self.name = str(product_data.get('name', ''))
         self.brand = str(product_data.get('brand', ''))
         self.package_size = str(product_data.get('package_size', ''))
+        self.barcode = product_data.get('barcode')
+        self.sku = product_data.get('product_id_store')
         
         # Immediately process the data to populate internal state
         self.raw_sizes = self._extract_all_sizes()
@@ -97,6 +99,41 @@ class ProductNormalizer:
 
     # --- Public API ---
 
+    def get_cleaned_barcode(self) -> str or None:
+        """ Corresponds to clean_barcode.py logic. """
+        if not self.barcode:
+            return None
+
+        barcode_str = str(self.barcode).strip().lower()
+
+        if barcode_str == 'notfound' or barcode_str == 'null':
+            return None
+
+        barcodes = [b.strip() for b in barcode_str.split(',')]
+        
+        valid_ean13 = None
+        found_12_digit = None
+
+        for b in barcodes:
+            if len(b) == 13 and b.isdigit():
+                valid_ean13 = b
+                break
+            elif len(b) == 12 and b.isdigit():
+                if not found_12_digit:
+                    found_12_digit = f"0{b}"
+
+        if valid_ean13:
+            return valid_ean13
+        if found_12_digit:
+            return found_12_digit
+
+        for b in barcodes:
+            if len(b) < 12:
+                if self.sku and b == str(self.sku):
+                    return None
+        
+        return None
+
     def get_raw_sizes(self) -> list:
         """ Public method to get the originally extracted, unique size strings. """
         return self.raw_sizes
@@ -106,8 +143,5 @@ class ProductNormalizer:
         Public method to get the final normalized string for de-duplication.
         This now uses a "bag of words" approach, combining all parts before cleaning.
         """
-        # Combine all the cleaned parts into a single string
         combined_string = f"{self.cleaned_name} {self.cleaned_brand} {' '.join(self.standardized_sizes)}"
-        
-        # Clean the entire combined string at once to alphabetize all words together
         return self._clean_value(combined_string)

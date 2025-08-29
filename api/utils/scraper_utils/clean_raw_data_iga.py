@@ -2,7 +2,6 @@ from datetime import datetime
 import re
 from api.utils.normalizer import ProductNormalizer
 from api.utils.scraper_utils.wrap_cleaned_products import wrap_cleaned_products
-from api.utils.normalization_utils.clean_barcode import clean_barcode
 
 def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, timestamp: datetime) -> dict:
     """
@@ -17,49 +16,38 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
         if not product:
             continue
 
-        # --- Price and Special Transformation ---
-        # The presence of 'wasWholePrice' is the most reliable indicator of a special.
         is_on_special = 'wasWholePrice' in product
         current_price = None
         was_price = None
         save_amount = None
 
         if is_on_special:
-            # For specials, the original price is wasWholePrice.
             was_price = product.get('wasWholePrice')
-            # The special price is inside the tprPrice list.
             tpr_price_info = product.get('tprPrice', [])
             if tpr_price_info:
                 current_price = tpr_price_info[0].get('wholePrice')
         else:
-            # For regular items, the price is wholePrice.
             current_price = product.get('wholePrice')
 
-        # Fallback logic in case 'wholePrice' is missing but 'priceNumeric' exists
         if current_price is None:
             current_price = product.get('priceNumeric')
         
-        # Calculate save amount if possible
         if was_price and current_price:
             save_amount = round(was_price - current_price, 2)
 
-        # --- Category Hierarchy ---
         category_path = []
         category_hierarchy = product.get('categories', [])
         if category_hierarchy:
-            # The last category in the list has the full breadcrumb
             last_category = category_hierarchy[-1]
             breadcrumb = last_category.get('categoryBreadcrumb', '')
             if breadcrumb:
                 category_path = [part.strip().title() for part in breadcrumb.split('/') if part]
 
-        # --- Description and Attributes ---
         description = product.get('description', '')
         country_of_origin = None
 
-        # --- Image URLs ---
         image_info = product.get('image', {}) or {}
-        image_urls = [url for url in image_info.values() if url] # Filter out nulls
+        image_urls = [url for url in image_info.values() if url]
 
         price_unit = None
         unit_of_measure = None
@@ -71,7 +59,7 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
                     price_unit = float(match.group(1))
                     unit_of_measure = match.group(2).strip().lower()
                 except ValueError:
-                    pass # Keep as None if parsing fails
+                    pass
 
         unit_of_size_info = product.get('unitOfSize')
         sell_by_info = product.get('sellBy')
@@ -90,48 +78,36 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
         if size_parts:
             package_size_str = " ".join(size_parts)
 
-        cleaned_barcode = clean_barcode(product.get('barcode'), product.get('sku'))
-
         clean_product = {
             "product_id_store": product.get('sku'),
-            "barcode": cleaned_barcode,
+            "barcode": product.get('barcode'), # Pass raw barcode to be cleaned by normalizer
             "name": product.get('name') if product.get('name') else None,
             "brand": product.get('brand') if product.get('brand') else None,
-            "description_short": None, # IGA provides one description field
+            "description_short": None,
             "description_long": description.strip() if description else None,
-            "url": None, # No direct URL available
+            "url": None,
             "image_url_main": image_info.get('default'),
             "image_urls_all": image_urls,
-
-            # --- Pricing ---
             "price_current": current_price,
             "price_was": was_price,
             "is_on_special": is_on_special,
             "price_save_amount": save_amount,
-            "promotion_type": product.get('priceSource'), # e.g., 'regular' or 'special'
+            "promotion_type": product.get('priceSource'),
             "price_unit": price_unit,
             "unit_of_measure": unit_of_measure,
             "unit_price_string": product.get('pricePerUnit'),
-
-            # --- Availability & Stock ---
             "is_available": product.get('available'),
-            "stock_level": None, # Not available
-            "purchase_limit": None, # Not available
-
-            # --- Details & Attributes ---
+            "stock_level": None,
+            "purchase_limit": None,
             "package_size": package_size_str,
             "country_of_origin": country_of_origin,
-            "health_star_rating": None, # Not available
-            "ingredients": None, # Not available
-            "allergens_may_be_present": None, # Not available
-
-            # --- Categorization ---
+            "health_star_rating": None,
+            "ingredients": None,
+            "allergens_may_be_present": None,
             "category_path": category_path,
-            "tags": [], # No specific tags available
-
-            # --- Ratings ---
-            "rating_average": None, # Not available
-            "rating_count": None, # Not available
+            "tags": [],
+            "rating_average": None,
+            "rating_count": None,
         }
         cleaned_products.append(clean_product)
 
@@ -141,6 +117,7 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
         normalizer = ProductNormalizer(p)
         p['sizes'] = normalizer.get_raw_sizes()
         p['normalized_name_brand_size'] = normalizer.get_normalized_string()
+        p['barcode'] = normalizer.get_cleaned_barcode()
         final_products.append(p)
     
     return wrap_cleaned_products(

@@ -2,8 +2,6 @@ import json
 from datetime import datetime
 from api.utils.normalizer import ProductNormalizer
 from .wrap_cleaned_products import wrap_cleaned_products
-from api.utils.normalization_utils.clean_barcode import clean_barcode
-
 
 def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, timestamp: datetime) -> dict:
     """
@@ -23,10 +21,8 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
         stockcode = product.get('Stockcode')
         url_slug = product.get('UrlFriendlyName')
 
-        # --- URL ---
         product_url = f"https://www.woolworths.com.au/shop/productdetails/{stockcode}/{url_slug}" if stockcode and url_slug else None
 
-        # --- Tags ---
         tags = []
         if product.get('IsNew'):
             tags.append('new')
@@ -35,11 +31,9 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
         if product.get('ImageTag', {}).get('FallbackText'):
             tags.append(product['ImageTag']['FallbackText'])
         
-        # --- Category Hierarchy ---
         category_path = []
         attrs = product.get('AdditionalAttributes', {}) or {}
         
-        # Primary Method: Use the detailed SAP fields if they exist
         dept = attrs.get('sapdepartmentname')
         cat = attrs.get('sapcategoryname')
         sub_cat = attrs.get('sapsubcategoryname')
@@ -54,7 +48,6 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
         if segment:
             category_path.append(segment)
 
-        # Fallback Method: If SAP fields are empty, use the PIES JSON fields
         if not category_path:
             try:
                 pies_dept = json.loads(attrs.get('piesdepartmentnamesjson', '[]'))
@@ -68,17 +61,13 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
                 if pies_sub_cat:
                     category_path.append(pies_sub_cat[0])
             except (json.JSONDecodeError, TypeError, IndexError):
-                # If parsing fails, leave the path empty
                 pass
         
-        # Clean up the final path by title-casing and removing empty strings
         category_path = [part.strip().title() for part in category_path if part]
-
-        cleaned_barcode = clean_barcode(product.get('Barcode'), product.get('Stockcode'))
 
         clean_product = {
             "product_id_store": str(stockcode) if stockcode else None,
-            "barcode": cleaned_barcode,
+            "barcode": product.get('Barcode'), # Pass raw barcode to be cleaned by normalizer
             "name": product.get('Name'),
             "brand": product.get('Brand'),
             "description_short": product.get('Description'),
@@ -86,8 +75,6 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
             "url": product_url,
             "image_url_main": product.get('LargeImageFile'),
             "image_urls_all": [product.get(f'{size}ImageFile') for size in ['Small', 'Medium', 'Large'] if product.get(f'{size}ImageFile')],
-
-            # --- Pricing ---
             "price_current": product.get('Price'),
             "price_was": product.get('WasPrice'),
             "is_on_special": product.get('IsOnSpecial', False),
@@ -96,24 +83,16 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
             "price_unit": product.get('CupPrice'),
             "unit_of_measure": product.get('CupMeasure'),
             "unit_price_string": product.get('CupString'),
-
-            # --- Availability & Stock ---
             "is_available": product.get('IsAvailable', False),
             "stock_level": "In Stock" if product.get('IsInStock') else "Out of Stock",
             "purchase_limit": product.get('SupplyLimit'),
-
-            # --- Details & Attributes ---
             "package_size": product.get('PackageSize'),
             "country_of_origin": attrs.get('countryoforigin'),
             "health_star_rating": float(attrs['healthstarrating']) if attrs.get('healthstarrating') else None,
             "ingredients": attrs.get('ingredients'),
             "allergens_may_be_present": [allergen.strip() for allergen in attrs['allergenmaybepresent'].split(',')] if attrs.get('allergenmaybepresent') else [],
-
-            # --- Categorization ---
             "category_path": category_path,
-            "tags": list(set(tags)), # Remove duplicates
-
-            # --- Ratings ---
+            "tags": list(set(tags)),
             "rating_average": rating_info.get('Average'),
             "rating_count": rating_info.get('ReviewCount'),
         }
@@ -125,6 +104,7 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
         normalizer = ProductNormalizer(p)
         p['sizes'] = normalizer.get_raw_sizes()
         p['normalized_name_brand_size'] = normalizer.get_normalized_string()
+        p['barcode'] = normalizer.get_cleaned_barcode()
         final_products.append(p)
     
     return wrap_cleaned_products(
