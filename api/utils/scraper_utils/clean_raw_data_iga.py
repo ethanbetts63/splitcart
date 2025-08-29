@@ -1,7 +1,6 @@
 from datetime import datetime
 import re
-from api.utils.normalization_utils.get_extracted_sizes import get_extracted_sizes
-from api.utils.normalization_utils.get_normalized_string import get_normalized_string
+from api.utils.normalizer import ProductNormalizer
 from api.utils.scraper_utils.wrap_cleaned_products import wrap_cleaned_products
 from api.utils.normalization_utils.clean_barcode import clean_barcode
 
@@ -139,10 +138,9 @@ def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, stor
     # --- Final generic cleaning and normalization ---
     final_products = []
     for p in cleaned_products:
-        extracted_sizes = get_extracted_sizes(p)
-        normalized_string = get_normalized_string(p, extracted_sizes)
-        p['sizes'] = extracted_sizes
-        p['normalized_name_brand_size'] = normalized_string
+        normalizer = ProductNormalizer(p)
+        p['sizes'] = normalizer.get_raw_sizes()
+        p['normalized_name_brand_size'] = normalizer.get_normalized_string()
         final_products.append(p)
     
     return wrap_cleaned_products(

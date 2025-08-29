@@ -1,0 +1,50 @@
+# OOP Refactoring Plan for Normalization Utilities
+
+This document outlines the plan to refactor the procedural normalization functions in `api/utils/normalization_utils/` into a more robust, object-oriented structure.
+
+## 1. Objective
+
+To consolidate the scattered normalization logic into a single, cohesive `ProductNormalizer` class. This will improve encapsulation, state management, and readability, making the normalization pipeline easier to understand and maintain.
+
+## 2. New Class Design
+
+A new class, `ProductNormalizer`, will be created.
+
+-   **New File Location:** `api/utils/normalizer.py`
+
+### Class Structure: `ProductNormalizer`
+
+-   `__init__(self, product_data)`: The constructor will accept a raw product dictionary as input. It will store the initial state (name, brand, package_size) and immediately call a private helper method, `_extract_all_sizes()`, to populate an internal list of raw size strings.
+
+-   `_extract_all_sizes(self)`: A private method encapsulating the logic from `extract_sizes.py` and `get_extracted_sizes.py`.
+
+-   `get_cleaned_name(self)`: A method containing the logic from `get_cleaned_name.py`.
+
+-   `get_cleaned_brand(self)`: A method containing the logic from `get_cleaned_brand.py`.
+
+-   `get_standardized_sizes(self)`: A method containing the logic from `standardize_sizes_for_norm_string.py`.
+
+-   `_clean_value(self, value)`: A private helper method containing the logic from `clean_value.py`.
+
+-   `get_raw_sizes(self)`: A public method that returns the list of unique, raw size strings found by `_extract_all_sizes()`. This will be used to populate the `Product.sizes` field.
+
+-   `get_normalized_string(self)`: The main public method that will be called from outside. It will orchestrate the calls to the other internal methods to generate and return the final `normalized_name_brand_size` string.
+
+## 3. Implementation Steps
+
+1.  **Create New Module**: Create the new file `api/utils/normalizer.py` and implement the `ProductNormalizer` class as designed above, consolidating the logic from all the old utility files.
+
+2.  **Find Usage**: Search the codebase (primarily in `api/scrapers/`) to find where the old normalization functions (`get_normalized_string` and `get_extracted_sizes`) are being called.
+
+3.  **Refactor Calling Code**: Replace the old procedural calls with the new, cleaner OOP interface. The new implementation will look like this:
+
+    ```python
+    # Create an instance of the new class
+    normalizer = ProductNormalizer(product_data)
+
+    # Get the required values from the normalizer
+    product_data['sizes'] = normalizer.get_raw_sizes()
+    product_data['normalized_name_brand_size'] = normalizer.get_normalized_string()
+    ```
+
+4.  **Cleanup**: After confirming the new implementation works correctly, delete the entire `api/utils/normalization_utils/` directory and all the files within it.
