@@ -86,13 +86,13 @@ def enrich_coles_file(source_file_path, command):
 
         # --- Step 3: Selenium Session Creation ---
         session = None
+        driver = None
         try:
             store_id = [line.get('metadata', {}).get('store_id') for line in master_line_list if line.get('metadata')][0]
             numeric_store_id = store_id.split(':')[-1] if ':' in store_id else store_id
             options = webdriver.ChromeOptions()
             options.add_argument("user-agent=SplitCartScraper/1.0 (Contact: admin@splitcart.com)")
             driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
-            command.stdout.write(command.style.WARNING("\nNOTE: The browser window will remain open. Please close it manually."))
             driver.get("https://www.coles.com.au")
             driver.delete_all_cookies()
             driver.add_cookie({"name": "fulfillmentStoreId", "value": str(numeric_store_id)})
@@ -106,6 +106,9 @@ def enrich_coles_file(source_file_path, command):
                 session.cookies.set(cookie['name'], cookie['value'])
         except Exception as e:
             raise InterruptedError(f"A critical error occurred during the Selenium phase: {e}")
+        finally:
+            if driver:
+                driver.quit()
 
         if not session:
             raise InterruptedError("Failed to create a requests session. Aborting.")
@@ -114,6 +117,7 @@ def enrich_coles_file(source_file_path, command):
         session_interrupted = False
         consecutive_failures = 0
         
+        total_to_scrape = len(lines_to_scrape)
         with open(progress_file_path, 'a') as progress_f:
             for i, line_data in enumerate(lines_to_scrape):
                 product_data = line_data['product']
@@ -154,7 +158,7 @@ def enrich_coles_file(source_file_path, command):
                         cleaned_barcode = normalizer.get_cleaned_barcode()
                         if cleaned_barcode:
                             product_data['barcode'] = cleaned_barcode
-                            command.stdout.write(command.style.SUCCESS(f"    - Found barcode for {product_data.get('name')}"))
+                            command.stdout.write(command.style.SUCCESS(f"    - ({i + 1}/{total_to_scrape}) Found barcode for {product_data.get('name')}"))
                             progress_f.write(json.dumps(line_data) + '\n')
                     else:
                         consecutive_failures += 1
