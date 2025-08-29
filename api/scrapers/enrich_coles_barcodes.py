@@ -124,13 +124,17 @@ def enrich_coles_file(source_file_path, command):
                 try:
                     response = session.get(product_data['url'], timeout=30)
                     if '<script id="__NEXT_DATA__"' not in response.text:
-                        command.stderr.write(command.style.ERROR(f"\n    - CAPTCHA or block detected. Ending session."))
+                        command.stderr.write(command.style.ERROR(f"\n    - High-level block detected. Ending session."))
                         session_interrupted = True
-                        break # Exit scraping loop for this session
+                        break
 
                     response.raise_for_status()
                     soup = BeautifulSoup(response.text, 'html.parser')
+                    
+                    page_scrape_successful = False
                     gtin = None
+
+                    # Try ld+json first
                     json_ld_scripts = soup.find_all('script', {'type': 'application/ld+json'})
                     for script in json_ld_scripts:
                         if script.string:
@@ -138,47 +142,74 @@ def enrich_coles_file(source_file_path, command):
                                 data = json.loads(script.string)
                                 items = [data] if isinstance(data, dict) else data if isinstance(data, list) else []
                                 for item in items:
-                                    if isinstance(item, dict):
-                                        for key in ['gtin', 'gtin13', 'gtin14', 'mpn']:
-                                            if key in item and item[key]: gtin = item[key]; break
-                                    if gtin: break
-                            except (json.JSONDecodeError):
-                                continue
-                        if gtin: break
-                    
-                    if not gtin:
-                        json_element = soup.find('script', {'id': '__NEXT_DATA__'}) 
+                                    if isinstance(item, dict) and item.get('@type') == 'Product':
+                                        page_scrape_successful = True
+                                        gtin = item.get('gtin') or item.get('gtin13') or item.get('gtin14') or item.get('mpn')
+                                        break
+                                if page_scrape_successful: break
+                            except (json.JSONDecodeError): continue
+                        if page_scrape_successful: break
+
+                    # If not in ld+json, try __NEXT_DATA__
+                    if not page_scrape_successful:
+                        json_element = soup.find('script', {'id': '__NEXT_DATA__'})
                         if json_element and json_element.string:
                             page_data = json.loads(json_element.string)
-                            gtin = page_data.get('pageProps', {}).get('product', {}).get('gtin')
+                            product_json = None
+                            # Try to find the product data in a few common locations
+                            if page_data.get('pageProps', {}).get('product'):
+                                product_json = page_data.get('pageProps', {}).get('product')
+                            elif page_data.get('pageProps', {}).get('pdpLayout', {}).get('product'):
+                                product_json = page_data.get('pageProps', {}).get('pdpLayout', {}).get('product')
+                            
+                            if product_json:
+                                page_scrape_successful = True
+                                gtin = product_json.get('gtin')
 
-                    if gtin:
+                    # --- Process Scrape Outcome ---
+                    if page_scrape_successful:
                         consecutive_failures = 0
-                        normalizer = ProductNormalizer({'barcode': str(gtin), 'sku': product_data.get('sku')})
+                        normalizer = ProductNormalizer({'barcode': str(gtin) if gtin else None, 'sku': product_data.get('sku')})
                         cleaned_barcode = normalizer.get_cleaned_barcode()
+                        
                         if cleaned_barcode:
                             product_data['barcode'] = cleaned_barcode
                             command.stdout.write(command.style.SUCCESS(f"    - ({i + 1}/{total_to_scrape}) Found barcode for {product_data.get('name')}"))
-                            progress_f.write(json.dumps(line_data) + '\n')
+                        else:
+                            product_data['barcode'] = None # Mark as processed
+                            command.stdout.write(f"    - ({i + 1}/{total_to_scrape}) Product has no barcode: {product_data.get('name')}")
+                        
+                        progress_f.write(json.dumps(line_data) + '\n')
                     else:
+                        # This is a true failure - page structure is unexpected
                         consecutive_failures += 1
+                        command.stderr.write(command.style.ERROR(f"    - Failed to find product data for {product_data.get('name')}"))
+                        command.stderr.write(f"      -> URL: {product_data.get('url')}")
+                        debug_dir = os.path.join(settings.BASE_DIR, 'debug_output')
+                        if not os.path.exists(debug_dir):
+                            os.makedirs(debug_dir)
+                        file_name = f"coles_failure_{consecutive_failures}.html"
+                        debug_file_path = os.path.join(debug_dir, file_name)
+                        try:
+                            with open(debug_file_path, 'w', encoding='utf-8') as f:
+                                f.write(response.text)
+                            command.stderr.write(f"      -> Saved failing page HTML to {debug_file_path}")
+                        except Exception as write_e:
+                            command.stderr.write(f"      -> Could not write debug file: {write_e}")
 
                     if consecutive_failures >= 15:
-                        command.stderr.write(command.style.ERROR("\n    - 15 consecutive failures detected. Assuming block. Ending session."))
+                        command.stderr.write(command.style.ERROR("\n    - 15 consecutive structural failures detected. Assuming block. Ending session."))
                         session_interrupted = True
-                        break # Exit scraping loop for this session
+                        break
 
-                    time.sleep(1)
                 except Exception as e:
                     command.stderr.write(command.style.ERROR(f"    - Error scraping {product_data.get('name')}: {e}"))
-                    continue # Try next product
+                    continue
 
         if session_interrupted:
             command.stdout.write("--------------------------------------------------")
             time.sleep(2)
-            continue # Restart the main while loop to get a new session
+            continue
         else:
-            # If the inner loop finished, all work is done for this run.
-            # The main loop will re-evaluate on the next iteration and find completion.
             command.stdout.write("  - Finished scraping batch.")
             continue
