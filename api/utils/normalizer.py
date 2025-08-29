@@ -227,7 +227,16 @@ class ProductNormalizer:
     def get_normalized_string(self) -> str:
         """ 
         Public method to get the final normalized string for de-duplication.
-        This now uses a "bag of words" approach, combining all parts before cleaning.
+        This uses a "bag of words" approach to be robust against data entry errors.
         """
+        # 1. Get the full string together with spaces intact.
         combined_string = f"{self.cleaned_name} {self.cleaned_brand} {' '.join(self.standardized_sizes)}"
-        return self._clean_value(combined_string)
+
+        # 2. Clean the string to remove punctuation and standardize case.
+        cleaned_string = unicodedata.normalize('NFKD', combined_string).encode('ascii', 'ignore').decode('utf-8')
+        cleaned_string = cleaned_string.lower()
+        cleaned_string = re.sub(r'[^a-z0-9\s]', '', cleaned_string)
+
+        # 3. Split into words, sort alphabetically, and join to create the final key.
+        words = sorted(list(set(cleaned_string.split())))
+        return "".join(words)
