@@ -38,26 +38,64 @@ class ProductNormalizer:
         return "".join(words)
 
     def _extract_sizes_from_string(self, text: str) -> list:
-        """ Corresponds to extract_sizes.py logic. """
-        if not isinstance(text, str):
+        """ Corresponds to the original, more precise extract_sizes.py logic. """
+        if not text:
             return []
-        patterns = [
-            r'(\d+\s*x\s*\d+\s*g)',      # 4x100g
-            r'(\d+\s*x\s*\d+\s*ml)',     # 4x250ml
-            r'(\d+\.?\d*\s*k?g)',       # 1kg, 1.5kg, 500g
-            r'(\d+\.?\d*\s*l)',         # 1l, 1.5l
-            r'(\d+\s*ml)',              # 750ml
-            r'(\d+\s*pack)',            # 6 pack
-            r'(\d+\s*pk)',              # 6 pk
-            r'(\d+\s*each)',            # 1 each
-            r'(\d+\s*ea)',              # 1 ea
-        ]
-        found_sizes = []
-        for pattern in patterns:
-            matches = re.findall(pattern, text, re.IGNORECASE)
-            for match in matches:
-                found_sizes.append(str(match))
-        return found_sizes
+
+        sizes = set()
+        processed_text = text.lower()
+
+        prefixes_to_remove = ['approx. ', 'approx ', 'around ', 'about ']
+        for prefix in prefixes_to_remove:
+            if processed_text.startswith(prefix):
+                processed_text = processed_text[len(prefix):]
+
+        units = {
+            'g': ['g', 'gram', 'grams'],
+            'kg': ['kg', 'kilogram', 'kilograms'],
+            'ml': ['ml', 'millilitre', 'millilitres'],
+            'l': ['l', 'litre', 'litres'],
+            'pk': ['pk', 'pack', 'packs'],
+            'ea': ['each', 'ea'],
+        }
+        
+        unit_map = {variation: standard for standard, variations in units.items() for variation in variations}
+        all_unit_variations = list(unit_map.keys())
+
+        range_pattern = r'(\d+\.?\d*)\s*-\s*(\d+\.?\d*)\s*(' + '|'.join(all_unit_variations) + r')\b'
+        for match in re.finditer(range_pattern, processed_text):
+            unit = unit_map[match.group(3)]
+            sizes.add(f"{match.group(1)}{unit}")
+            sizes.add(f"{match.group(2)}{unit}")
+        processed_text = re.sub(range_pattern, '', processed_text)
+
+        multipack_pattern_1 = r'(\d+)\s*[xX]\s*(\d+\.?\d*)\s*(' + '|'.join(all_unit_variations) + r')\b'
+        for match in re.finditer(multipack_pattern_1, processed_text):
+            unit = unit_map[match.group(3)]
+            sizes.add(f"{match.group(1)}pk")
+            sizes.add(f"{match.group(2)}{unit}")
+        processed_text = re.sub(multipack_pattern_1, '', processed_text)
+
+        multipack_pattern_2 = r'(\d+\.?\d*)\s*(' + '|'.join(all_unit_variations) + r')\s*[xX]\s*(\d+)'
+        for match in re.finditer(multipack_pattern_2, processed_text):
+            unit = unit_map[match.group(2)]
+            sizes.add(f"{match.group(1)}{unit}")
+            sizes.add(f"{match.group(3)}pk")
+        processed_text = re.sub(multipack_pattern_2, '', processed_text)
+
+        number_unit_pattern = r'(\d+\.?\d*)\s*(' + '|'.join(all_unit_variations) + r')\b'
+        for match in re.finditer(number_unit_pattern, processed_text):
+            unit = unit_map[match.group(2)]
+            sizes.add(f"{match.group(1)}{unit}")
+        processed_text = re.sub(number_unit_pattern, '', processed_text)
+        
+        standalone_units = [u for u in all_unit_variations if len(u) > 1] + ['ea']
+        standalone_unit_pattern = r'\b(' + '|'.join(standalone_units) + r')\b'
+        for match in re.finditer(standalone_unit_pattern, processed_text):
+            unit = unit_map[match.group(1)]
+            sizes.add(unit)
+
+        return list(sizes)
 
     def _extract_all_sizes(self) -> list:
         """ Corresponds to get_extracted_sizes.py logic. """
