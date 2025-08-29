@@ -46,7 +46,7 @@ def prefill_barcodes_from_db(product_list: list, command=None) -> list:
 
             if matching_product:
                 if command and (i % 50 == 0): # Log progress periodically
-                    command.stdout.write(f"    - Found barcode for \"{original_name}\" -> \"{matching_product.name}\")
+                    command.stdout.write(f"    - Found barcode for \"{original_name}\" -> \"{matching_product.name}\"")
                 product_data['barcode'] = matching_product.barcode
                 prefilled_count += 1
     
