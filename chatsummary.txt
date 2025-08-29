@@ -1,0 +1,113 @@
+# Chat Summary: SplitCart Project Refactoring and Feature Development
+
+This document summarizes the key tasks, discussions, and code changes performed during this conversation.
+
+## 1. Translation Table Formatting Fix
+
+*   **Problem:** The `product_name_translation_table.py` file was poorly formatted due to `pprint.pformat`.
+*   **Change:** Modified `TranslationTableGenerator` to write the dictionary with one entry per line.
+*   **Files Affected:**
+    *   `api/data/product_name_translation_table.py` (output file)
+    *   `api/database_updating_classes/translation_table_generator.py` (logic changed)
+
+## 2. Database Update Process (Price Creation Bug Fix)
+
+*   **Problem:** New product price records were not being created during `update_db --products` due to price data being lost during `bulk_create`.
+*   **Change:** Refactored `UnitOfWork` to store product and price details together, ensuring price records are created for new products. Updated `UpdateOrchestrator` to pass the necessary data.
+*   **Files Affected:**
+    *   `api/database_updating_classes/unit_of_work.py`
+    *   `api/database_updating_classes/update_orchestrator.py`
+    *   `final_workflow_explanation.txt` (documentation updated to v3)
+
+## 3. Variation Manager Refactoring (In-Memory Hotlist)
+
+*   **Problem:** The `VariationManager` used a file-based hotlist (`name_variation_hotlist.json`), which added unnecessary I/O and complexity.
+*   **Change:** Refactored `VariationManager` to manage the hotlist entirely in-memory for each file's processing. Moved `reconcile_duplicates` call into the per-file loop in `UpdateOrchestrator`.
+*   **Files Affected:**
+    *   `api/database_updating_classes/variation_manager.py` (removed file I/O, simplified methods)
+    *   `api/database_updating_classes/update_orchestrator.py` (moved `reconcile_duplicates` call, removed `commit_hotlist` and final reconciliation block)
+    *   `api/data/name_variation_hotlist.json` (file no longer used)
+
+## 4. Normalization Utilities OOP Refactoring (ProductNormalizer)
+
+*   **Problem:** Normalization logic was spread across multiple procedural utility files, making it less cohesive and harder to maintain.
+*   **Change:** Consolidated all normalization logic into a single `ProductNormalizer` class.
+*   **Files Affected:**
+    *   `api/utils/normalizer.py` (NEW FILE: Contains the `ProductNormalizer` class)
+    *   `api/utils/normalization_utils/` (OLD DIRECTORY: Files within this directory are now obsolete and can be deleted after validation: `clean_barcode.py`, `clean_value.py`, `extract_sizes.py`, `get_cleaned_brand.py`, `get_cleaned_name.py`, `get_extracted_sizes.py`, `get_normalized_string.py`, `standardize_sizes_for_norm_string.py`, `README.md`)
+
+### 4.1. Integration of ProductNormalizer
+
+*   **Change:** Updated all calling code to use the new `ProductNormalizer` class.
+*   **Files Affected:**
+    *   `api/utils/scraper_utils/clean_raw_data_aldi.py`
+    *   `api/utils/scraper_utils/clean_raw_data_coles.py`
+    *   `api/utils/scraper_utils/clean_raw_data_iga.py`
+    *   `api/utils/scraper_utils/clean_raw_data_woolworths.py`
+    *   `products/models/product.py` (updated `clean()` method)
+
+### 4.2. ProductNormalizer Logic Refinements & Bug Fixes
+
+*   **Problem:** Initial `ProductNormalizer` implementation missed or oversimplified critical logic from original utilities.
+*   **Changes:**
+    *   **Bag of Words:** Implemented "bag of words" approach for `get_normalized_string` to ensure all words are alphabetized regardless of original component (name, brand, size).
+    *   **Precise Size Extraction:** Restored detailed regex patterns and logic for `_extract_sizes_from_string`.
+    *   **Robust Brand Cleaning:** Restored use of `BRAND_SYNONYMS` and `brand_rules.json` for `_get_cleaned_brand`.
+    *   **Comprehensive Name Cleaning:** Restored translation table lookup, robust brand/size removal, and whitespace cleanup in `_get_cleaned_name`.
+    *   **Unicode Handling & Word Deduplication:** Ensured `_clean_value` handles Unicode and de-duplicates words.
+*   **Files Affected:**
+    *   `api/utils/normalizer.py` (all methods within `ProductNormalizer` were refined)
+    *   `api/data/brand_synonyms.py` (referenced)
+    *   `api/data/brand_rules.json` (referenced)
+    *   `api/data/product_name_translation_table.py` (referenced)
+
+## 5. Product Model Enhancement (Raw Size Field)
+
+*   **Problem:** The `Product` model only stored extracted `sizes` (list), losing the original raw size string.
+*   **Change:** Added a new `size` (CharField) field to the `Product` model to store the original raw size string.
+*   **Files Affected:**
+    *   `products/models/product.py` (model definition updated)
+    *   `products/migrations/` (new migration file created, e.g., `0002_product_size.py`)
+*   **Database Operations:** `makemigrations` and `migrate` commands were run.
+*   **Change:** Updated `UpdateOrchestrator` to populate the new `size` field and the `sizes` list when creating `Product` objects.
+*   **Files Affected:**
+    *   `api/database_updating_classes/update_orchestrator.py`
+
+## 6. Coles Barcode Enrichment Feature
+
+*   **Problem:** Coles products lacked barcodes on list pages, but had GTINs on individual product pages.
+*   **Solution:** Created a separate, dedicated process to fetch missing Coles barcodes.
+*   **Files Affected:**
+    *   `api/scrapers/enrich_coles_barcodes.py` (NEW FILE: Core logic for fetching and updating barcodes)
+    *   `api/management/commands/scrape_coles_barcodes.py` (NEW FILE: Django management command wrapper)
+
+### 6.1. Debugging and Refinements for Barcode Enrichment
+
+*   **Problem:** Initial runs failed due to missing URLs and `AttributeError` (due to `store_product_id` vs `sku` rename).
+*   **Changes:**
+    *   **Debug Mode:** Modified `enrich_coles_barcodes.py` to process single/batch of products for debugging.
+    *   **SKU Field Fix:** Corrected field name from `store_product_id` to `sku` in `enrich_coles_barcodes.py` and `ProductNormalizer`.
+    *   **URL Generation Debugging:** Added debug prints to `clean_raw_data_coles.py` to investigate missing URLs.
+    *   **URL Population Fix:** Identified and fixed the `UpdateOrchestrator` not populating `url` (and other fields) from the `.jsonl` file into the `Product` model.
+*   **Files Affected:**
+    *   `api/scrapers/enrich_coles_barcodes.py`
+    *   `api/database_updating_classes/update_orchestrator.py`
+    *   `api/utils/normalizer.py`
+
+## 7. Aldi URL Generation Fix
+
+*   **Problem:** Aldi URLs were missing the SKU, leading to incorrect product page links.
+*   **Change:** Modified `clean_raw_data_aldi.py` to include the SKU in the generated URL.
+*   **Files Affected:**
+    *   `api/utils/scraper_utils/clean_raw_data_aldi.py`
+
+## 8. Temporary Processed File Storage
+
+*   **Problem:** Processed `.jsonl` files were deleted, making debugging harder.
+*   **Change:** Modified `UpdateOrchestrator` to move processed files to a temporary storage directory instead of deleting them.
+*   **Files Affected:**
+    *   `api/database_updating_classes/update_orchestrator.py`
+    *   `api/data/temp_product_storage/` (NEW DIRECTORY: for moved files)
+
+---
+This summary covers all the major changes and discussions.
