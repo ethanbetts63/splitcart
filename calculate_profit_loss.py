@@ -6,7 +6,8 @@ import copy
 def calculate_profit_loss(file_path):
     trades = {}
     report_lines = []
-    total_profit_loss = 0.0
+    total_profit_loss_aud = 0.0
+    usd_to_aud_rate = 1.53
     
     with open(file_path, 'r', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
@@ -15,26 +16,31 @@ def calculate_profit_loss(file_path):
         for row in reader:
             trade_date_str = row.get('Trade Date')
             instrument = row.get('Instrument Code')
+            market = row.get('Market Code', 'N/A').upper()
             if not trade_date_str or not instrument:
                 continue
 
             try:
                 trade_date = datetime.strptime(trade_date_str, '%Y-%m-%d')
                 
-                if instrument not in trades:
-                    trades[instrument] = {'buys': deque(), 'sells': []}
+                # Use a tuple of (instrument, market) as the unique key
+                stock_key = (instrument, market)
+
+                if stock_key not in trades:
+                    trades[stock_key] = {'buys': deque(), 'sells': []}
                 
                 transaction = {
                     'date': trade_date,
                     'quantity': float(row['Quantity']),
                     'price': float(row['Price']),
-                    'brokerage': float(row.get('Brokerage', 0))
+                    'brokerage': float(row.get('Brokerage', 0)),
+                    'currency': row.get('Brokerage Currency', 'N/A').upper()
                 }
 
                 if row['Transaction Type'].upper() == 'BUY':
-                    trades[instrument]['buys'].append(transaction)
+                    trades[stock_key]['buys'].append(transaction)
                 elif row['Transaction Type'].upper() == 'SELL':
-                    trades[instrument]['sells'].append(transaction)
+                    trades[stock_key]['sells'].append(transaction)
 
             except (ValueError, KeyError) as e:
                 report_lines.append(f"Skipping row due to error: {row} - {e}")
@@ -43,17 +49,19 @@ def calculate_profit_loss(file_path):
     start_date = datetime(2024, 8, 30)
     end_date = datetime(2025, 8, 30)
 
-    sorted_instruments = sorted(trades.keys())
+    # Sort by the tuple key (instrument, market)
+    sorted_stock_keys = sorted(trades.keys())
 
-    for instrument in sorted_instruments:
-        data = trades[instrument]
+    for stock_key in sorted_stock_keys:
+        instrument, market = stock_key
+        data = trades[stock_key]
         sells_in_range = [s for s in data['sells'] if start_date <= s['date'] <= end_date]
         
         if not sells_in_range:
             continue
 
         report_lines.append(f"\n\n========================================")
-        report_lines.append(f"Stock: {instrument}")
+        report_lines.append(f"Stock: {instrument} ({market})")
         report_lines.append(f"========================================")
 
         buys_for_processing = copy.deepcopy(data['buys'])
@@ -63,12 +71,13 @@ def calculate_profit_loss(file_path):
             report_lines.append("  No purchase transactions found.")
         else:
             for buy in buys_for_processing:
-                report_lines.append(f"  - BOUGHT {buy['quantity']:.4f} on {buy['date'].date()} at {buy['price']:.2f}")
+                report_lines.append(f"  - BOUGHT {buy['quantity']:.4f} on {buy['date'].date()} at {buy['price']:.2f} {buy['currency']}")
 
         for sell in sorted(sells_in_range, key=lambda x: x['date']):
             sell_quantity = sell['quantity']
             sell_price = sell['price']
             sell_brokerage = sell['brokerage']
+            sell_currency = sell['currency']
             
             proceeds = (sell_quantity * sell_price) - sell_brokerage
             cost_basis = 0
@@ -103,15 +112,22 @@ def calculate_profit_loss(file_path):
                 report_lines.append(f"  Warning: Not enough buy history for this sale. {quantity_to_sell} shares unaccounted for.")
 
             profit_loss = proceeds - cost_basis
-            total_profit_loss += profit_loss
-            report_lines.append(f"  Total Proceeds: {proceeds:.2f}")
-            report_lines.append(f"  Total Cost Basis: {cost_basis:.2f}")
-            report_lines.append(f"  Profit/Loss: {profit_loss:.2f}")
+            profit_loss_aud = profit_loss * usd_to_aud_rate if sell_currency == 'USD' else profit_loss
+            total_profit_loss_aud += profit_loss_aud
+
+            aud_conversion_str = f" ({proceeds * usd_to_aud_rate:.2f} AUD)" if sell_currency == 'USD' else ""
+            report_lines.append(f"  Total Proceeds: {proceeds:.2f} {sell_currency}{aud_conversion_str}")
+            
+            aud_conversion_str = f" ({cost_basis * usd_to_aud_rate:.2f} AUD)" if sell_currency == 'USD' else ""
+            report_lines.append(f"  Total Cost Basis: {cost_basis:.2f} {sell_currency}{aud_conversion_str}")
+
+            aud_conversion_str = f" ({profit_loss_aud:.2f} AUD)" if sell_currency == 'USD' else ""
+            report_lines.append(f"  Profit/Loss: {profit_loss:.2f} {sell_currency}{aud_conversion_str}")
 
     report_lines.append(f"\n\n========================================")
     report_lines.append(f"         Overall Summary")
     report_lines.append(f"========================================")
-    report_lines.append(f"Total Profit/Loss for Period: {total_profit_loss:.2f}")
+    report_lines.append(f"Total Profit/Loss for Period: {total_profit_loss_aud:.2f} AUD")
 
     with open('profit_loss_report.txt', 'w') as f:
         for line in report_lines:

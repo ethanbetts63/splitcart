@@ -82,7 +82,7 @@ class WoolworthsScraper(BaseScraper):
                 all_raw_products.extend(raw_products_on_page)
 
             except (requests.exceptions.RequestException, json.JSONDecodeError) as e:
-                self.output.log_error(f"Error fetching data for category {category_slug}: {e}")
+                self.command.stderr.write(self.command.style.ERROR(f"Error fetching data for category {category_slug}: {e}"))
                 break
             
             page_num += 1

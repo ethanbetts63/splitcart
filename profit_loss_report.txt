@@ -1,426 +1,419 @@
 
 
 ========================================
-Stock: AAPL
+Stock: AAPL (NASDAQ)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 0.0300 on 2024-09-16 at 216.32
-  - BOUGHT 0.0300 on 2024-09-16 at 216.32
-  - BOUGHT 6.0000 on 2025-06-16 at 197.41
+  - BOUGHT 0.0300 on 2024-09-16 at 216.32 USD
+  - BOUGHT 0.0300 on 2024-09-16 at 216.32 USD
+  - BOUGHT 6.0000 on 2025-06-16 at 197.41 USD
 
 --- Analyzing Sale of 0.06 on 2025-02-20 ---
   - Sold 0.0300 shares from 2024-09-16 (Short-term)
   - Sold 0.0300 shares from 2024-09-16 (Short-term)
-  Total Proceeds: 14.57
-  Total Cost Basis: 12.98
-  Profit/Loss: 1.59
+  Total Proceeds: 14.57 USD (22.30 AUD)
+  Total Cost Basis: 12.98 USD (19.86 AUD)
+  Profit/Loss: 1.59 USD (2.44 AUD)
 
 
 ========================================
-Stock: AMD
+Stock: AMD (NASDAQ)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 3.0000 on 2024-12-10 at 129.23
+  - BOUGHT 3.0000 on 2024-12-10 at 129.23 USD
 
 --- Analyzing Sale of 3.0 on 2025-07-23 ---
   - Sold 3.0000 shares from 2024-12-10 (Short-term)
-  Total Proceeds: 465.49
-  Total Cost Basis: 388.69
-  Profit/Loss: 76.80
+  Total Proceeds: 465.49 USD (712.20 AUD)
+  Total Cost Basis: 388.69 USD (594.70 AUD)
+  Profit/Loss: 76.80 USD (117.50 AUD)
 
 
 ========================================
-Stock: BRK.B
+Stock: BRK.B (NYSE)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 2.0000 on 2024-11-15 at 466.89
-  - BOUGHT 1.0000 on 2025-06-24 at 491.72
-  - BOUGHT 1.0000 on 2025-06-25 at 486.07
+  - BOUGHT 2.0000 on 2024-11-15 at 466.89 USD
+  - BOUGHT 1.0000 on 2025-06-24 at 491.72 USD
+  - BOUGHT 1.0000 on 2025-06-25 at 486.07 USD
 
 --- Analyzing Sale of 2.0 on 2025-01-21 ---
   - Sold 2.0000 shares from 2024-11-15 (Short-term)
-  Total Proceeds: 941.96
-  Total Cost Basis: 933.79
-  Profit/Loss: 8.17
+  Total Proceeds: 941.96 USD (1441.20 AUD)
+  Total Cost Basis: 933.79 USD (1428.70 AUD)
+  Profit/Loss: 8.17 USD (12.50 AUD)
 
 
 ========================================
-Stock: CAT
+Stock: CAT (NYSE)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 5.0000 on 2025-02-04 at 360.49
-  - BOUGHT 1.0000 on 2025-05-08 at 328.64
+  - BOUGHT 5.0000 on 2025-02-04 at 360.49 USD
+  - BOUGHT 1.0000 on 2025-05-08 at 328.64 USD
 
 --- Analyzing Sale of 3.0 on 2025-06-24 ---
   - Sold 3.0000 shares from 2025-02-04 (Short-term)
-  Total Proceeds: 1119.10
-  Total Cost Basis: 1082.08
-  Profit/Loss: 37.02
+  Total Proceeds: 1119.10 USD (1712.22 AUD)
+  Total Cost Basis: 1082.08 USD (1655.58 AUD)
+  Profit/Loss: 37.02 USD (56.65 AUD)
 
 --- Analyzing Sale of 3.0 on 2025-07-08 ---
   - Sold 2.0000 shares from 2025-02-04 (Short-term)
   - Sold 1.0000 shares from 2025-05-08 (Short-term)
-  Total Proceeds: 1178.74
-  Total Cost Basis: 1051.62
-  Profit/Loss: 127.12
+  Total Proceeds: 1178.74 USD (1803.47 AUD)
+  Total Cost Basis: 1051.62 USD (1608.98 AUD)
+  Profit/Loss: 127.12 USD (194.49 AUD)
 
 
 ========================================
-Stock: DPZ
+Stock: DPZ (NASDAQ)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 2.0000 on 2024-11-15 at 461.78
+  - BOUGHT 2.0000 on 2024-11-15 at 461.78 USD
 
 --- Analyzing Sale of 1.0 on 2025-01-30 ---
   - Sold 1.0000 shares from 2024-11-15 (Short-term)
-  Total Proceeds: 450.79
-  Total Cost Basis: 461.78
-  Profit/Loss: -10.99
+  Total Proceeds: 450.79 USD (689.71 AUD)
+  Total Cost Basis: 461.78 USD (706.53 AUD)
+  Profit/Loss: -10.99 USD (-16.82 AUD)
 
 --- Analyzing Sale of 1.0 on 2025-01-31 ---
   - Sold 1.0000 shares from 2024-11-15 (Short-term)
-  Total Proceeds: 453.22
-  Total Cost Basis: 461.79
-  Profit/Loss: -8.57
+  Total Proceeds: 453.22 USD (693.43 AUD)
+  Total Cost Basis: 461.79 USD (706.54 AUD)
+  Profit/Loss: -8.57 USD (-13.11 AUD)
 
 
 ========================================
-Stock: IVV
+Stock: IVV (ASX)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 30.0000 on 2025-02-21 at 63.85
-  - BOUGHT 22.0000 on 2025-02-25 at 62.93
-  - BOUGHT 2.0000 on 2025-02-26 at 599.77
-  - BOUGHT 1.0000 on 2025-02-27 at 593.00
-  - BOUGHT 2.0000 on 2025-02-28 at 589.77
-  - BOUGHT 25.0000 on 2025-03-07 at 60.65
-  - BOUGHT 10.0000 on 2025-03-19 at 58.92
-  - BOUGHT 13.0000 on 2025-04-09 at 54.41
-  - BOUGHT 2.0000 on 2025-05-08 at 572.92
+  - BOUGHT 30.0000 on 2025-02-21 at 63.85 AUD
+  - BOUGHT 22.0000 on 2025-02-25 at 62.93 AUD
+  - BOUGHT 25.0000 on 2025-03-07 at 60.65 AUD
+  - BOUGHT 10.0000 on 2025-03-19 at 58.92 AUD
+  - BOUGHT 13.0000 on 2025-04-09 at 54.41 AUD
 
 --- Analyzing Sale of 15.0 on 2025-06-24 ---
   - Sold 15.0000 shares from 2025-02-21 (Short-term)
-  Total Proceeds: 932.25
-  Total Cost Basis: 959.25
-  Profit/Loss: -27.00
+  Total Proceeds: 932.25 AUD
+  Total Cost Basis: 959.25 AUD
+  Profit/Loss: -27.00 AUD
 
 --- Analyzing Sale of 16.0 on 2025-07-15 ---
   - Sold 15.0000 shares from 2025-02-21 (Short-term)
   - Sold 1.0000 shares from 2025-02-25 (Short-term)
-  Total Proceeds: 1017.48
-  Total Cost Basis: 1023.82
-  Profit/Loss: -6.34
+  Total Proceeds: 1017.48 AUD
+  Total Cost Basis: 1023.82 AUD
+  Profit/Loss: -6.34 AUD
 
 --- Analyzing Sale of 2.0 on 2025-07-15 ---
   - Sold 2.0000 shares from 2025-02-25 (Short-term)
-  Total Proceeds: 127.56
-  Total Cost Basis: 126.15
-  Profit/Loss: 1.41
+  Total Proceeds: 127.56 AUD
+  Total Cost Basis: 126.15 AUD
+  Profit/Loss: 1.41 AUD
 
 --- Analyzing Sale of 15.0 on 2025-08-08 ---
   - Sold 15.0000 shares from 2025-02-25 (Short-term)
-  Total Proceeds: 971.55
-  Total Cost Basis: 946.32
-  Profit/Loss: 25.23
+  Total Proceeds: 971.55 AUD
+  Total Cost Basis: 946.32 AUD
+  Profit/Loss: 25.23 AUD
 
 --- Analyzing Sale of 1.0 on 2025-08-08 ---
   - Sold 1.0000 shares from 2025-02-25 (Short-term)
-  Total Proceeds: 64.97
-  Total Cost Basis: 63.68
-  Profit/Loss: 1.29
+  Total Proceeds: 64.97 AUD
+  Total Cost Basis: 63.68 AUD
+  Profit/Loss: 1.29 AUD
 
 --- Analyzing Sale of 16.0 on 2025-08-12 ---
   - Sold 3.0000 shares from 2025-02-25 (Short-term)
-  - Sold 2.0000 shares from 2025-02-26 (Short-term)
-  - Sold 1.0000 shares from 2025-02-27 (Short-term)
-  - Sold 2.0000 shares from 2025-02-28 (Short-term)
-  - Sold 8.0000 shares from 2025-03-07 (Short-term)
-  Total Proceeds: 1041.96
-  Total Cost Basis: 3653.02
-  Profit/Loss: -2611.06
+  - Sold 13.0000 shares from 2025-03-07 (Short-term)
+  Total Proceeds: 1041.96 AUD
+  Total Cost Basis: 981.80 AUD
+  Profit/Loss: 60.16 AUD
 
 
 ========================================
-Stock: JD
+Stock: JD (NASDAQ)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 28.0000 on 2024-11-29 at 37.06
+  - BOUGHT 28.0000 on 2024-11-29 at 37.06 USD
 
 --- Analyzing Sale of 28.0 on 2025-01-17 ---
   - Sold 28.0000 shares from 2024-11-29 (Short-term)
-  Total Proceeds: 1085.29
-  Total Cost Basis: 1037.76
-  Profit/Loss: 47.53
+  Total Proceeds: 1085.29 USD (1660.49 AUD)
+  Total Cost Basis: 1037.76 USD (1587.77 AUD)
+  Profit/Loss: 47.53 USD (72.72 AUD)
 
 
 ========================================
-Stock: KO
+Stock: KO (NYSE)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 15.0000 on 2024-11-08 at 64.05
-  - BOUGHT 25.0000 on 2024-11-12 at 63.56
-  - BOUGHT 25.0000 on 2024-11-12 at 63.56
+  - BOUGHT 15.0000 on 2024-11-08 at 64.05 USD
+  - BOUGHT 25.0000 on 2024-11-12 at 63.56 USD
+  - BOUGHT 25.0000 on 2024-11-12 at 63.56 USD
 
 --- Analyzing Sale of 40.0 on 2025-02-19 ---
   - Sold 15.0000 shares from 2024-11-08 (Short-term)
   - Sold 25.0000 shares from 2024-11-12 (Short-term)
-  Total Proceeds: 2801.60
-  Total Cost Basis: 2549.88
-  Profit/Loss: 251.72
+  Total Proceeds: 2801.60 USD (4286.45 AUD)
+  Total Cost Basis: 2549.88 USD (3901.32 AUD)
+  Profit/Loss: 251.72 USD (385.13 AUD)
 
 --- Analyzing Sale of 25.0 on 2025-02-21 ---
   - Sold 25.0000 shares from 2024-11-12 (Short-term)
-  Total Proceeds: 1781.12
-  Total Cost Basis: 1589.08
-  Profit/Loss: 192.04
+  Total Proceeds: 1781.12 USD (2725.11 AUD)
+  Total Cost Basis: 1589.08 USD (2431.29 AUD)
+  Profit/Loss: 192.04 USD (293.82 AUD)
 
 
 ========================================
-Stock: LCID
+Stock: LCID (NASDAQ)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 1.0000 on 2024-07-12 at 4.25
-  - BOUGHT 1.0000 on 2024-07-12 at 4.25
-  - BOUGHT 1.0000 on 2024-07-12 at 4.25
-  - BOUGHT 1.0000 on 2024-07-12 at 4.25
+  - BOUGHT 1.0000 on 2024-07-12 at 4.25 USD
+  - BOUGHT 1.0000 on 2024-07-12 at 4.25 USD
+  - BOUGHT 1.0000 on 2024-07-12 at 4.25 USD
+  - BOUGHT 1.0000 on 2024-07-12 at 4.25 USD
 
 --- Analyzing Sale of 4.0 on 2025-02-10 ---
   - Sold 1.0000 shares from 2024-07-12 (Short-term)
   - Sold 1.0000 shares from 2024-07-12 (Short-term)
   - Sold 1.0000 shares from 2024-07-12 (Short-term)
   - Sold 1.0000 shares from 2024-07-12 (Short-term)
-  Total Proceeds: 10.14
-  Total Cost Basis: 17.00
-  Profit/Loss: -6.86
+  Total Proceeds: 10.14 USD (15.51 AUD)
+  Total Cost Basis: 17.00 USD (26.01 AUD)
+  Profit/Loss: -6.86 USD (-10.50 AUD)
 
 
 ========================================
-Stock: MCD
+Stock: MCD (NYSE)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 2.0000 on 2024-11-04 at 295.25
+  - BOUGHT 2.0000 on 2024-11-04 at 295.25 USD
 
 --- Analyzing Sale of 2.0 on 2025-01-14 ---
   - Sold 2.0000 shares from 2024-11-04 (Short-term)
-  Total Proceeds: 559.39
-  Total Cost Basis: 590.51
-  Profit/Loss: -31.12
+  Total Proceeds: 559.39 USD (855.87 AUD)
+  Total Cost Basis: 590.51 USD (903.48 AUD)
+  Profit/Loss: -31.12 USD (-47.61 AUD)
 
 
 ========================================
-Stock: MOH
+Stock: MOH (NYSE)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 2.0000 on 2024-11-29 at 297.26
-  - BOUGHT 2.0000 on 2025-02-06 at 288.00
-  - BOUGHT 1.0000 on 2025-02-19 at 270.06
+  - BOUGHT 2.0000 on 2024-11-29 at 297.26 USD
+  - BOUGHT 2.0000 on 2025-02-06 at 288.00 USD
+  - BOUGHT 1.0000 on 2025-02-19 at 270.06 USD
 
 --- Analyzing Sale of 2.0 on 2025-02-25 ---
   - Sold 2.0000 shares from 2024-11-29 (Short-term)
-  Total Proceeds: 611.09
-  Total Cost Basis: 594.53
-  Profit/Loss: 16.56
+  Total Proceeds: 611.09 USD (934.97 AUD)
+  Total Cost Basis: 594.53 USD (909.63 AUD)
+  Profit/Loss: 16.56 USD (25.34 AUD)
 
 --- Analyzing Sale of 3.0 on 2025-02-27 ---
   - Sold 2.0000 shares from 2025-02-06 (Short-term)
   - Sold 1.0000 shares from 2025-02-19 (Short-term)
-  Total Proceeds: 883.58
-  Total Cost Basis: 848.05
-  Profit/Loss: 35.53
+  Total Proceeds: 883.58 USD (1351.88 AUD)
+  Total Cost Basis: 848.05 USD (1297.52 AUD)
+  Profit/Loss: 35.53 USD (54.36 AUD)
 
 
 ========================================
-Stock: MPL
+Stock: MPL (ASX)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 270.0000 on 2024-11-08 at 3.72
+  - BOUGHT 270.0000 on 2024-11-08 at 3.72 AUD
 
 --- Analyzing Sale of 270.0 on 2025-01-17 ---
   - Sold 270.0000 shares from 2024-11-08 (Short-term)
-  Total Proceeds: 1020.30
-  Total Cost Basis: 1004.40
-  Profit/Loss: 15.90
+  Total Proceeds: 1020.30 AUD
+  Total Cost Basis: 1004.40 AUD
+  Profit/Loss: 15.90 AUD
 
 
 ========================================
-Stock: MSFT
+Stock: MSFT (NASDAQ)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 1.0000 on 2024-11-04 at 411.30
-  - BOUGHT 1.0000 on 2025-02-11 at 411.50
+  - BOUGHT 1.0000 on 2024-11-04 at 411.30 USD
+  - BOUGHT 1.0000 on 2025-02-11 at 411.50 USD
 
 --- Analyzing Sale of 2.0 on 2025-05-08 ---
   - Sold 1.0000 shares from 2024-11-04 (Short-term)
   - Sold 1.0000 shares from 2025-02-11 (Short-term)
-  Total Proceeds: 885.21
-  Total Cost Basis: 823.79
-  Profit/Loss: 61.42
+  Total Proceeds: 885.21 USD (1354.37 AUD)
+  Total Cost Basis: 823.79 USD (1260.40 AUD)
+  Profit/Loss: 61.42 USD (93.97 AUD)
 
 
 ========================================
-Stock: NGI
+Stock: NGI (ASX)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 320.0000 on 2024-11-08 at 1.66
+  - BOUGHT 320.0000 on 2024-11-08 at 1.66 AUD
 
 --- Analyzing Sale of 320.0 on 2025-01-20 ---
   - Sold 320.0000 shares from 2024-11-08 (Short-term)
-  Total Proceeds: 526.60
-  Total Cost Basis: 531.20
-  Profit/Loss: -4.60
+  Total Proceeds: 526.60 AUD
+  Total Cost Basis: 531.20 AUD
+  Profit/Loss: -4.60 AUD
 
 
 ========================================
-Stock: NKE
+Stock: NKE (NYSE)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 16.0000 on 2024-11-21 at 75.18
+  - BOUGHT 16.0000 on 2024-11-21 at 75.18 USD
 
 --- Analyzing Sale of 16.0 on 2025-02-28 ---
   - Sold 16.0000 shares from 2024-11-21 (Short-term)
-  Total Proceeds: 1276.83
-  Total Cost Basis: 1202.93
-  Profit/Loss: 73.90
+  Total Proceeds: 1276.83 USD (1953.55 AUD)
+  Total Cost Basis: 1202.93 USD (1840.48 AUD)
+  Profit/Loss: 73.90 USD (113.07 AUD)
 
 
 ========================================
-Stock: NU
+Stock: NU (NYSE)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 100.0000 on 2025-02-25 at 11.04
+  - BOUGHT 100.0000 on 2025-02-25 at 11.04 USD
 
 --- Analyzing Sale of 100.0 on 2025-05-08 ---
   - Sold 100.0000 shares from 2025-02-25 (Short-term)
-  Total Proceeds: 1297.67
-  Total Cost Basis: 1105.29
-  Profit/Loss: 192.38
+  Total Proceeds: 1297.67 USD (1985.44 AUD)
+  Total Cost Basis: 1105.29 USD (1691.09 AUD)
+  Profit/Loss: 192.38 USD (294.34 AUD)
 
 
 ========================================
-Stock: NVDA
+Stock: NVDA (NASDAQ)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 0.1000 on 2024-07-31 at 117.02
+  - BOUGHT 0.1000 on 2024-07-31 at 117.02 USD
 
 --- Analyzing Sale of 0.1 on 2025-02-20 ---
   - Sold 0.1000 shares from 2024-07-31 (Short-term)
-  Total Proceeds: 13.87
-  Total Cost Basis: 11.70
-  Profit/Loss: 2.16
+  Total Proceeds: 13.87 USD (21.21 AUD)
+  Total Cost Basis: 11.70 USD (17.90 AUD)
+  Profit/Loss: 2.16 USD (3.31 AUD)
 
 
 ========================================
-Stock: OXY
+Stock: OXY (NYSE)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 5.0000 on 2024-09-13 at 51.32
-  - BOUGHT 9.0000 on 2025-02-14 at 48.05
+  - BOUGHT 5.0000 on 2024-09-13 at 51.32 USD
+  - BOUGHT 9.0000 on 2025-02-14 at 48.05 USD
 
 --- Analyzing Sale of 5.0 on 2024-12-05 ---
   - Sold 5.0000 shares from 2024-09-13 (Short-term)
-  Total Proceeds: 242.02
-  Total Cost Basis: 257.61
-  Profit/Loss: -15.59
+  Total Proceeds: 242.02 USD (370.29 AUD)
+  Total Cost Basis: 257.61 USD (394.14 AUD)
+  Profit/Loss: -15.59 USD (-23.85 AUD)
 
 
 ========================================
-Stock: PAC
+Stock: PAC (ASX)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 32.0000 on 2024-11-08 at 10.60
-  - BOUGHT 43.0000 on 2024-11-08 at 10.60
+  - BOUGHT 32.0000 on 2024-11-08 at 10.60 AUD
+  - BOUGHT 43.0000 on 2024-11-08 at 10.60 AUD
 
 --- Analyzing Sale of 73.0 on 2024-12-23 ---
   - Sold 32.0000 shares from 2024-11-08 (Short-term)
   - Sold 41.0000 shares from 2024-11-08 (Short-term)
-  Total Proceeds: 854.83
-  Total Cost Basis: 773.80
-  Profit/Loss: 81.03
+  Total Proceeds: 854.83 AUD
+  Total Cost Basis: 773.80 AUD
+  Profit/Loss: 81.03 AUD
 
 --- Analyzing Sale of 2.0 on 2024-12-23 ---
   - Sold 2.0000 shares from 2024-11-08 (Short-term)
-  Total Proceeds: 20.42
-  Total Cost Basis: 21.20
-  Profit/Loss: -0.78
+  Total Proceeds: 20.42 AUD
+  Total Cost Basis: 21.20 AUD
+  Profit/Loss: -0.78 AUD
 
 
 ========================================
-Stock: PFP
+Stock: PFP (ASX)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 300.0000 on 2024-11-08 at 6.02
+  - BOUGHT 300.0000 on 2024-11-08 at 6.02 AUD
 
 --- Analyzing Sale of 300.0 on 2025-02-06 ---
   - Sold 300.0000 shares from 2024-11-08 (Short-term)
-  Total Proceeds: 1782.00
-  Total Cost Basis: 1806.00
-  Profit/Loss: -24.00
+  Total Proceeds: 1782.00 AUD
+  Total Cost Basis: 1806.00 AUD
+  Profit/Loss: -24.00 AUD
 
 
 ========================================
-Stock: SABR
+Stock: SABR (NASDAQ)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 1.0000 on 2024-07-12 at 3.12
-  - BOUGHT 1.0000 on 2024-07-12 at 3.12
-  - BOUGHT 1.0000 on 2024-07-12 at 3.12
+  - BOUGHT 1.0000 on 2024-07-12 at 3.12 USD
+  - BOUGHT 1.0000 on 2024-07-12 at 3.12 USD
+  - BOUGHT 1.0000 on 2024-07-12 at 3.12 USD
 
 --- Analyzing Sale of 3.0 on 2025-02-10 ---
   - Sold 1.0000 shares from 2024-07-12 (Short-term)
   - Sold 1.0000 shares from 2024-07-12 (Short-term)
   - Sold 1.0000 shares from 2024-07-12 (Short-term)
-  Total Proceeds: 9.42
-  Total Cost Basis: 9.36
-  Profit/Loss: 0.06
+  Total Proceeds: 9.42 USD (14.41 AUD)
+  Total Cost Basis: 9.36 USD (14.32 AUD)
+  Profit/Loss: 0.06 USD (0.09 AUD)
 
 
 ========================================
-Stock: SIRI
+Stock: SIRI (NASDAQ)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 27.0000 on 2025-01-16 at 21.65
+  - BOUGHT 27.0000 on 2025-01-16 at 21.65 USD
 
 --- Analyzing Sale of 27.0 on 2025-02-10 ---
   - Sold 27.0000 shares from 2025-01-16 (Short-term)
-  Total Proceeds: 704.41
-  Total Cost Basis: 585.62
-  Profit/Loss: 118.79
+  Total Proceeds: 704.41 USD (1077.75 AUD)
+  Total Cost Basis: 585.62 USD (896.00 AUD)
+  Profit/Loss: 118.79 USD (181.75 AUD)
 
 
 ========================================
-Stock: TSM
+Stock: TSM (NYSE)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 5.0000 on 2025-02-12 at 207.53
-  - BOUGHT 1.0000 on 2025-02-13 at 201.17
-  - BOUGHT 1.0000 on 2025-02-24 at 198.03
-  - BOUGHT 1.0000 on 2025-02-24 at 198.03
-  - BOUGHT 1.0000 on 2025-02-24 at 191.99
-  - BOUGHT 1.0000 on 2025-02-27 at 187.11
-  - BOUGHT 1.0000 on 2025-03-18 at 170.79
+  - BOUGHT 5.0000 on 2025-02-12 at 207.53 USD
+  - BOUGHT 1.0000 on 2025-02-13 at 201.17 USD
+  - BOUGHT 1.0000 on 2025-02-24 at 198.03 USD
+  - BOUGHT 1.0000 on 2025-02-24 at 198.03 USD
+  - BOUGHT 1.0000 on 2025-02-24 at 191.99 USD
+  - BOUGHT 1.0000 on 2025-02-27 at 187.11 USD
+  - BOUGHT 1.0000 on 2025-03-18 at 170.79 USD
 
 --- Analyzing Sale of 9.0 on 2025-06-10 ---
   - Sold 5.0000 shares from 2025-02-12 (Short-term)
@@ -428,37 +421,37 @@ Stock: TSM
   - Sold 1.0000 shares from 2025-02-24 (Short-term)
   - Sold 1.0000 shares from 2025-02-24 (Short-term)
   - Sold 1.0000 shares from 2025-02-24 (Short-term)
-  Total Proceeds: 1894.01
-  Total Cost Basis: 1830.85
-  Profit/Loss: 63.16
+  Total Proceeds: 1894.01 USD (2897.84 AUD)
+  Total Cost Basis: 1830.85 USD (2801.20 AUD)
+  Profit/Loss: 63.16 USD (96.63 AUD)
 
 --- Analyzing Sale of 2.0 on 2025-06-24 ---
   - Sold 1.0000 shares from 2025-02-27 (Short-term)
   - Sold 1.0000 shares from 2025-03-18 (Short-term)
-  Total Proceeds: 436.88
-  Total Cost Basis: 359.88
-  Profit/Loss: 77.00
+  Total Proceeds: 436.88 USD (668.43 AUD)
+  Total Cost Basis: 359.88 USD (550.62 AUD)
+  Profit/Loss: 77.00 USD (117.81 AUD)
 
 
 ========================================
-Stock: UBER
+Stock: UBER (NYSE)
 ========================================
 
 --- Full Purchase History ---
-  - BOUGHT 13.0000 on 2024-12-16 at 60.51
-  - BOUGHT 11.0000 on 2024-12-16 at 60.51
-  - BOUGHT 1.0000 on 2024-12-23 at 61.92
+  - BOUGHT 13.0000 on 2024-12-16 at 60.51 USD
+  - BOUGHT 11.0000 on 2024-12-16 at 60.51 USD
+  - BOUGHT 1.0000 on 2024-12-23 at 61.92 USD
 
 --- Analyzing Sale of 25.0 on 2025-02-07 ---
   - Sold 13.0000 shares from 2024-12-16 (Short-term)
   - Sold 11.0000 shares from 2024-12-16 (Short-term)
   - Sold 1.0000 shares from 2024-12-23 (Short-term)
-  Total Proceeds: 1862.12
-  Total Cost Basis: 1516.21
-  Profit/Loss: 345.91
+  Total Proceeds: 1862.12 USD (2849.04 AUD)
+  Total Cost Basis: 1516.21 USD (2319.80 AUD)
+  Profit/Loss: 345.91 USD (529.24 AUD)
 
 
 ========================================
          Overall Summary
 ========================================
-Total Profit/Loss for Period: -893.17
+Total Profit/Loss for Period: 2655.59 AUD
