@@ -38,17 +38,21 @@ def prefill_barcodes_from_db(product_list: list, command=None) -> list:
             if not normalized_key:
                 continue
 
-            # Query the database for a match with a barcode
+            # Query the database for a match
             matching_product = Product.objects.filter(
-                normalized_name_brand_size=normalized_key,
-                barcode__isnull=False
-            ).exclude(barcode='').first()
+                normalized_name_brand_size=normalized_key
+            ).first()
 
             if matching_product:
-                if command and (i % 50 == 0): # Log progress periodically
-                    command.stdout.write(f"    - Found barcode for \"{original_name}\" -> \"{matching_product.name}\"")
-                product_data['barcode'] = matching_product.barcode
-                prefilled_count += 1
+                # If the match has a real barcode, use it.
+                if matching_product.barcode:
+                    if command and (i % 50 == 0): # Log progress periodically
+                        command.stdout.write(f"    - Found barcode for \"{original_name}\" -> \"{matching_product.name}\"")
+                    product_data['barcode'] = matching_product.barcode
+                    prefilled_count += 1
+                # If the match is known to have no Coles barcode, mark the current product as such to prevent re-scraping.
+                elif matching_product.has_no_coles_barcode:
+                    product_data['barcode'] = None
     
     if command:
         command.stdout.write(command.style.SUCCESS(f"  - Prefilled {prefilled_count} barcodes from the database."))

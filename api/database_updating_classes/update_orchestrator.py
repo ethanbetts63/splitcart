@@ -120,6 +120,9 @@ class UpdateOrchestrator:
                     country_of_origin=product_details.get('country_of_origin'),
                     ingredients=product_details.get('ingredients')
                 )
+                if company_name.lower() == 'coles' and not product_details.get('barcode'):
+                    new_product.has_no_coles_barcode = True
+
                 product_cache[key] = new_product
                 unit_of_work.add_new_product(new_product, product_details)
         self.command.stdout.write('\n')
