@@ -1,6 +1,6 @@
 import os
 import json
-from products.models import Product, Price
+from products.models import Product
 from companies.models import Company, Store
 from .product_resolver import ProductResolver
 from .unit_of_work import UnitOfWork
@@ -105,6 +105,41 @@ class UpdateOrchestrator:
             if existing_product:
                 product_cache[key] = existing_product
                 variation_manager.check_for_variation(product_details, existing_product, company_name)
+
+                # --- Enrich existing product --- 
+                updated = False
+                # Barcode
+                if not existing_product.barcode and product_details.get('barcode'):
+                    existing_product.barcode = product_details.get('barcode')
+                    updated = True
+                # URLs
+                if not existing_product.url and product_details.get('url'):
+                    existing_product.url = product_details.get('url')
+                    updated = True
+                if not existing_product.image_url and product_details.get('image_url_main'):
+                    existing_product.image_url = product_details.get('image_url_main')
+                    updated = True
+                # Description (prefer shorter)
+                new_description = product_details.get('description_long') or product_details.get('description_short')
+                if new_description:
+                    if not existing_product.description or len(new_description) < len(existing_product.description):
+                        existing_product.description = new_description
+                        updated = True
+                # Other text fields
+                if not existing_product.country_of_origin and product_details.get('country_of_origin'):
+                    existing_product.country_of_origin = product_details.get('country_of_origin')
+                    updated = True
+                if not existing_product.ingredients and product_details.get('ingredients'):
+                    existing_product.ingredients = product_details.get('ingredients')
+                    updated = True
+                # Coles-specific flag
+                if company_name.lower() == 'coles' and not product_details.get('barcode') and not existing_product.has_no_coles_barcode:
+                    existing_product.has_no_coles_barcode = True
+                    updated = True
+
+                if updated:
+                    unit_of_work.add_for_update(existing_product)
+                
                 unit_of_work.add_price(existing_product, store_obj, product_details)
             else:
                 new_product = Product(

@@ -5,7 +5,6 @@ from .category_manager import CategoryManager
 class UnitOfWork:
     def __init__(self, command):
         self.command = command
-        # This will now store tuples of (product_instance, product_details_dict)
         self.new_products_to_process = []
         self.prices_to_create = []
         self.products_to_update = []
@@ -85,8 +84,13 @@ class UnitOfWork:
 
                 # Stage 4: Update existing products
                 if self.products_to_update:
-                    Product.objects.bulk_update(self.products_to_update, ['name_variations'], batch_size=500)
-                    self.command.stdout.write(f"  - Updated {len(self.products_to_update)} products with name variations.")
+                    update_fields = [
+                        'barcode', 'url', 'image_url', 'description', 
+                        'country_of_origin', 'ingredients', 'has_no_coles_barcode', 
+                        'name_variations'
+                    ]
+                    Product.objects.bulk_update(self.products_to_update, update_fields, batch_size=500)
+                    self.command.stdout.write(f"  - Updated {len(self.products_to_update)} products with new information.")
             
             self.command.stdout.write(self.command.style.SUCCESS("--- Commit successful ---"))
             return True
