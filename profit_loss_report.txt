@@ -456,3 +456,9 @@ Stock: UBER
   Total Proceeds: 1862.12
   Total Cost Basis: 1516.21
   Profit/Loss: 345.91
+
+
+========================================
+         Overall Summary
+========================================
+Total Profit/Loss for Period: -893.17

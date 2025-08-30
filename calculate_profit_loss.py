@@ -115,4 +115,4 @@ def calculate_profit_loss(file_path):
             f.write(line + '\n')
 
 if __name__ == "__main__":
-    calculate_profit_loss('C:\Users\ethan\coding\splitcart\TradeHistory_2706934239_6_20230830-20250830_20250830161332 (1).csv')
+    calculate_profit_loss('C:\\Users\\ethan\\coding\\splitcart\\TradeHistory_2706934239_6_20230830-20250830_20250830161332 (1).csv')
