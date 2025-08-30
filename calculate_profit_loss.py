@@ -1,5 +1,5 @@
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 from collections import deque
 import copy
 
@@ -83,17 +83,20 @@ def calculate_profit_loss(file_path):
                 if buy['date'] > sell['date']:
                     break
 
+                holding_period = sell['date'] - buy['date']
+                term_status = "(Long-term)" if holding_period > timedelta(days=365) else "(Short-term)"
+
                 if quantity_to_sell >= buy['quantity']:
                     buy_lot_quantity = buy['quantity']
                     cost_basis += (buy_lot_quantity * buy['price']) + buy['brokerage']
                     quantity_to_sell -= buy_lot_quantity
                     buys_for_processing.popleft()
-                    report_lines.append(f"  - Sold {buy_lot_quantity:.4f} shares from {buy['date'].date()} (Cost: {buy['price']:.2f})")
+                    report_lines.append(f"  - Sold {buy_lot_quantity:.4f} shares from {buy['date'].date()} {term_status}")
                 else:
                     brokerage_for_partial = buy['brokerage'] * (quantity_to_sell / buy['quantity'])
                     cost_basis += (quantity_to_sell * buy['price']) + brokerage_for_partial
                     buy['quantity'] -= quantity_to_sell
-                    report_lines.append(f"  - Sold {quantity_to_sell:.4f} shares from {buy['date'].date()} (Cost: {buy['price']:.2f})")
+                    report_lines.append(f"  - Sold {quantity_to_sell:.4f} shares from {buy['date'].date()} {term_status}")
                     quantity_to_sell = 0
 
             if quantity_to_sell > 0:

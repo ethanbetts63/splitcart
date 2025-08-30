@@ -10,8 +10,8 @@ Stock: AAPL
   - BOUGHT 6.0000 on 2025-06-16 at 197.41
 
 --- Analyzing Sale of 0.06 on 2025-02-20 ---
-  - Sold 0.0300 shares from 2024-09-16 (Cost: 216.32)
-  - Sold 0.0300 shares from 2024-09-16 (Cost: 216.32)
+  - Sold 0.0300 shares from 2024-09-16 (Short-term)
+  - Sold 0.0300 shares from 2024-09-16 (Short-term)
   Total Proceeds: 14.57
   Total Cost Basis: 12.98
   Profit/Loss: 1.59
@@ -25,7 +25,7 @@ Stock: AMD
   - BOUGHT 3.0000 on 2024-12-10 at 129.23
 
 --- Analyzing Sale of 3.0 on 2025-07-23 ---
-  - Sold 3.0000 shares from 2024-12-10 (Cost: 129.23)
+  - Sold 3.0000 shares from 2024-12-10 (Short-term)
   Total Proceeds: 465.49
   Total Cost Basis: 388.69
   Profit/Loss: 76.80
@@ -41,7 +41,7 @@ Stock: BRK.B
   - BOUGHT 1.0000 on 2025-06-25 at 486.07
 
 --- Analyzing Sale of 2.0 on 2025-01-21 ---
-  - Sold 2.0000 shares from 2024-11-15 (Cost: 466.89)
+  - Sold 2.0000 shares from 2024-11-15 (Short-term)
   Total Proceeds: 941.96
   Total Cost Basis: 933.79
   Profit/Loss: 8.17
@@ -56,14 +56,14 @@ Stock: CAT
   - BOUGHT 1.0000 on 2025-05-08 at 328.64
 
 --- Analyzing Sale of 3.0 on 2025-06-24 ---
-  - Sold 3.0000 shares from 2025-02-04 (Cost: 360.49)
+  - Sold 3.0000 shares from 2025-02-04 (Short-term)
   Total Proceeds: 1119.10
   Total Cost Basis: 1082.08
   Profit/Loss: 37.02
 
 --- Analyzing Sale of 3.0 on 2025-07-08 ---
-  - Sold 2.0000 shares from 2025-02-04 (Cost: 360.49)
-  - Sold 1.0000 shares from 2025-05-08 (Cost: 328.64)
+  - Sold 2.0000 shares from 2025-02-04 (Short-term)
+  - Sold 1.0000 shares from 2025-05-08 (Short-term)
   Total Proceeds: 1178.74
   Total Cost Basis: 1051.62
   Profit/Loss: 127.12
@@ -77,13 +77,13 @@ Stock: DPZ
   - BOUGHT 2.0000 on 2024-11-15 at 461.78
 
 --- Analyzing Sale of 1.0 on 2025-01-30 ---
-  - Sold 1.0000 shares from 2024-11-15 (Cost: 461.78)
+  - Sold 1.0000 shares from 2024-11-15 (Short-term)
   Total Proceeds: 450.79
   Total Cost Basis: 461.78
   Profit/Loss: -10.99
 
 --- Analyzing Sale of 1.0 on 2025-01-31 ---
-  - Sold 1.0000 shares from 2024-11-15 (Cost: 461.78)
+  - Sold 1.0000 shares from 2024-11-15 (Short-term)
   Total Proceeds: 453.22
   Total Cost Basis: 461.79
   Profit/Loss: -8.57
@@ -105,42 +105,42 @@ Stock: IVV
   - BOUGHT 2.0000 on 2025-05-08 at 572.92
 
 --- Analyzing Sale of 15.0 on 2025-06-24 ---
-  - Sold 15.0000 shares from 2025-02-21 (Cost: 63.85)
+  - Sold 15.0000 shares from 2025-02-21 (Short-term)
   Total Proceeds: 932.25
   Total Cost Basis: 959.25
   Profit/Loss: -27.00
 
 --- Analyzing Sale of 16.0 on 2025-07-15 ---
-  - Sold 15.0000 shares from 2025-02-21 (Cost: 63.85)
-  - Sold 1.0000 shares from 2025-02-25 (Cost: 62.93)
+  - Sold 15.0000 shares from 2025-02-21 (Short-term)
+  - Sold 1.0000 shares from 2025-02-25 (Short-term)
   Total Proceeds: 1017.48
   Total Cost Basis: 1023.82
   Profit/Loss: -6.34
 
 --- Analyzing Sale of 2.0 on 2025-07-15 ---
-  - Sold 2.0000 shares from 2025-02-25 (Cost: 62.93)
+  - Sold 2.0000 shares from 2025-02-25 (Short-term)
   Total Proceeds: 127.56
   Total Cost Basis: 126.15
   Profit/Loss: 1.41
 
 --- Analyzing Sale of 15.0 on 2025-08-08 ---
-  - Sold 15.0000 shares from 2025-02-25 (Cost: 62.93)
+  - Sold 15.0000 shares from 2025-02-25 (Short-term)
   Total Proceeds: 971.55
   Total Cost Basis: 946.32
   Profit/Loss: 25.23
 
 --- Analyzing Sale of 1.0 on 2025-08-08 ---
-  - Sold 1.0000 shares from 2025-02-25 (Cost: 62.93)
+  - Sold 1.0000 shares from 2025-02-25 (Short-term)
   Total Proceeds: 64.97
   Total Cost Basis: 63.68
   Profit/Loss: 1.29
 
 --- Analyzing Sale of 16.0 on 2025-08-12 ---
-  - Sold 3.0000 shares from 2025-02-25 (Cost: 62.93)
-  - Sold 2.0000 shares from 2025-02-26 (Cost: 599.77)
-  - Sold 1.0000 shares from 2025-02-27 (Cost: 593.00)
-  - Sold 2.0000 shares from 2025-02-28 (Cost: 589.77)
-  - Sold 8.0000 shares from 2025-03-07 (Cost: 60.65)
+  - Sold 3.0000 shares from 2025-02-25 (Short-term)
+  - Sold 2.0000 shares from 2025-02-26 (Short-term)
+  - Sold 1.0000 shares from 2025-02-27 (Short-term)
+  - Sold 2.0000 shares from 2025-02-28 (Short-term)
+  - Sold 8.0000 shares from 2025-03-07 (Short-term)
   Total Proceeds: 1041.96
   Total Cost Basis: 3653.02
   Profit/Loss: -2611.06
@@ -154,7 +154,7 @@ Stock: JD
   - BOUGHT 28.0000 on 2024-11-29 at 37.06
 
 --- Analyzing Sale of 28.0 on 2025-01-17 ---
-  - Sold 28.0000 shares from 2024-11-29 (Cost: 37.06)
+  - Sold 28.0000 shares from 2024-11-29 (Short-term)
   Total Proceeds: 1085.29
   Total Cost Basis: 1037.76
   Profit/Loss: 47.53
@@ -170,14 +170,14 @@ Stock: KO
   - BOUGHT 25.0000 on 2024-11-12 at 63.56
 
 --- Analyzing Sale of 40.0 on 2025-02-19 ---
-  - Sold 15.0000 shares from 2024-11-08 (Cost: 64.05)
-  - Sold 25.0000 shares from 2024-11-12 (Cost: 63.56)
+  - Sold 15.0000 shares from 2024-11-08 (Short-term)
+  - Sold 25.0000 shares from 2024-11-12 (Short-term)
   Total Proceeds: 2801.60
   Total Cost Basis: 2549.88
   Profit/Loss: 251.72
 
 --- Analyzing Sale of 25.0 on 2025-02-21 ---
-  - Sold 25.0000 shares from 2024-11-12 (Cost: 63.56)
+  - Sold 25.0000 shares from 2024-11-12 (Short-term)
   Total Proceeds: 1781.12
   Total Cost Basis: 1589.08
   Profit/Loss: 192.04
@@ -194,10 +194,10 @@ Stock: LCID
   - BOUGHT 1.0000 on 2024-07-12 at 4.25
 
 --- Analyzing Sale of 4.0 on 2025-02-10 ---
-  - Sold 1.0000 shares from 2024-07-12 (Cost: 4.25)
-  - Sold 1.0000 shares from 2024-07-12 (Cost: 4.25)
-  - Sold 1.0000 shares from 2024-07-12 (Cost: 4.25)
-  - Sold 1.0000 shares from 2024-07-12 (Cost: 4.25)
+  - Sold 1.0000 shares from 2024-07-12 (Short-term)
+  - Sold 1.0000 shares from 2024-07-12 (Short-term)
+  - Sold 1.0000 shares from 2024-07-12 (Short-term)
+  - Sold 1.0000 shares from 2024-07-12 (Short-term)
   Total Proceeds: 10.14
   Total Cost Basis: 17.00
   Profit/Loss: -6.86
@@ -211,7 +211,7 @@ Stock: MCD
   - BOUGHT 2.0000 on 2024-11-04 at 295.25
 
 --- Analyzing Sale of 2.0 on 2025-01-14 ---
-  - Sold 2.0000 shares from 2024-11-04 (Cost: 295.25)
+  - Sold 2.0000 shares from 2024-11-04 (Short-term)
   Total Proceeds: 559.39
   Total Cost Basis: 590.51
   Profit/Loss: -31.12
@@ -227,14 +227,14 @@ Stock: MOH
   - BOUGHT 1.0000 on 2025-02-19 at 270.06
 
 --- Analyzing Sale of 2.0 on 2025-02-25 ---
-  - Sold 2.0000 shares from 2024-11-29 (Cost: 297.26)
+  - Sold 2.0000 shares from 2024-11-29 (Short-term)
   Total Proceeds: 611.09
   Total Cost Basis: 594.53
   Profit/Loss: 16.56
 
 --- Analyzing Sale of 3.0 on 2025-02-27 ---
-  - Sold 2.0000 shares from 2025-02-06 (Cost: 288.00)
-  - Sold 1.0000 shares from 2025-02-19 (Cost: 270.06)
+  - Sold 2.0000 shares from 2025-02-06 (Short-term)
+  - Sold 1.0000 shares from 2025-02-19 (Short-term)
   Total Proceeds: 883.58
   Total Cost Basis: 848.05
   Profit/Loss: 35.53
@@ -248,7 +248,7 @@ Stock: MPL
   - BOUGHT 270.0000 on 2024-11-08 at 3.72
 
 --- Analyzing Sale of 270.0 on 2025-01-17 ---
-  - Sold 270.0000 shares from 2024-11-08 (Cost: 3.72)
+  - Sold 270.0000 shares from 2024-11-08 (Short-term)
   Total Proceeds: 1020.30
   Total Cost Basis: 1004.40
   Profit/Loss: 15.90
@@ -263,8 +263,8 @@ Stock: MSFT
   - BOUGHT 1.0000 on 2025-02-11 at 411.50
 
 --- Analyzing Sale of 2.0 on 2025-05-08 ---
-  - Sold 1.0000 shares from 2024-11-04 (Cost: 411.30)
-  - Sold 1.0000 shares from 2025-02-11 (Cost: 411.50)
+  - Sold 1.0000 shares from 2024-11-04 (Short-term)
+  - Sold 1.0000 shares from 2025-02-11 (Short-term)
   Total Proceeds: 885.21
   Total Cost Basis: 823.79
   Profit/Loss: 61.42
@@ -278,7 +278,7 @@ Stock: NGI
   - BOUGHT 320.0000 on 2024-11-08 at 1.66
 
 --- Analyzing Sale of 320.0 on 2025-01-20 ---
-  - Sold 320.0000 shares from 2024-11-08 (Cost: 1.66)
+  - Sold 320.0000 shares from 2024-11-08 (Short-term)
   Total Proceeds: 526.60
   Total Cost Basis: 531.20
   Profit/Loss: -4.60
@@ -292,7 +292,7 @@ Stock: NKE
   - BOUGHT 16.0000 on 2024-11-21 at 75.18
 
 --- Analyzing Sale of 16.0 on 2025-02-28 ---
-  - Sold 16.0000 shares from 2024-11-21 (Cost: 75.18)
+  - Sold 16.0000 shares from 2024-11-21 (Short-term)
   Total Proceeds: 1276.83
   Total Cost Basis: 1202.93
   Profit/Loss: 73.90
@@ -306,7 +306,7 @@ Stock: NU
   - BOUGHT 100.0000 on 2025-02-25 at 11.04
 
 --- Analyzing Sale of 100.0 on 2025-05-08 ---
-  - Sold 100.0000 shares from 2025-02-25 (Cost: 11.04)
+  - Sold 100.0000 shares from 2025-02-25 (Short-term)
   Total Proceeds: 1297.67
   Total Cost Basis: 1105.29
   Profit/Loss: 192.38
@@ -320,7 +320,7 @@ Stock: NVDA
   - BOUGHT 0.1000 on 2024-07-31 at 117.02
 
 --- Analyzing Sale of 0.1 on 2025-02-20 ---
-  - Sold 0.1000 shares from 2024-07-31 (Cost: 117.02)
+  - Sold 0.1000 shares from 2024-07-31 (Short-term)
   Total Proceeds: 13.87
   Total Cost Basis: 11.70
   Profit/Loss: 2.16
@@ -335,7 +335,7 @@ Stock: OXY
   - BOUGHT 9.0000 on 2025-02-14 at 48.05
 
 --- Analyzing Sale of 5.0 on 2024-12-05 ---
-  - Sold 5.0000 shares from 2024-09-13 (Cost: 51.32)
+  - Sold 5.0000 shares from 2024-09-13 (Short-term)
   Total Proceeds: 242.02
   Total Cost Basis: 257.61
   Profit/Loss: -15.59
@@ -350,14 +350,14 @@ Stock: PAC
   - BOUGHT 43.0000 on 2024-11-08 at 10.60
 
 --- Analyzing Sale of 73.0 on 2024-12-23 ---
-  - Sold 32.0000 shares from 2024-11-08 (Cost: 10.60)
-  - Sold 41.0000 shares from 2024-11-08 (Cost: 10.60)
+  - Sold 32.0000 shares from 2024-11-08 (Short-term)
+  - Sold 41.0000 shares from 2024-11-08 (Short-term)
   Total Proceeds: 854.83
   Total Cost Basis: 773.80
   Profit/Loss: 81.03
 
 --- Analyzing Sale of 2.0 on 2024-12-23 ---
-  - Sold 2.0000 shares from 2024-11-08 (Cost: 10.60)
+  - Sold 2.0000 shares from 2024-11-08 (Short-term)
   Total Proceeds: 20.42
   Total Cost Basis: 21.20
   Profit/Loss: -0.78
@@ -371,7 +371,7 @@ Stock: PFP
   - BOUGHT 300.0000 on 2024-11-08 at 6.02
 
 --- Analyzing Sale of 300.0 on 2025-02-06 ---
-  - Sold 300.0000 shares from 2024-11-08 (Cost: 6.02)
+  - Sold 300.0000 shares from 2024-11-08 (Short-term)
   Total Proceeds: 1782.00
   Total Cost Basis: 1806.00
   Profit/Loss: -24.00
@@ -387,9 +387,9 @@ Stock: SABR
   - BOUGHT 1.0000 on 2024-07-12 at 3.12
 
 --- Analyzing Sale of 3.0 on 2025-02-10 ---
-  - Sold 1.0000 shares from 2024-07-12 (Cost: 3.12)
-  - Sold 1.0000 shares from 2024-07-12 (Cost: 3.12)
-  - Sold 1.0000 shares from 2024-07-12 (Cost: 3.12)
+  - Sold 1.0000 shares from 2024-07-12 (Short-term)
+  - Sold 1.0000 shares from 2024-07-12 (Short-term)
+  - Sold 1.0000 shares from 2024-07-12 (Short-term)
   Total Proceeds: 9.42
   Total Cost Basis: 9.36
   Profit/Loss: 0.06
@@ -403,7 +403,7 @@ Stock: SIRI
   - BOUGHT 27.0000 on 2025-01-16 at 21.65
 
 --- Analyzing Sale of 27.0 on 2025-02-10 ---
-  - Sold 27.0000 shares from 2025-01-16 (Cost: 21.65)
+  - Sold 27.0000 shares from 2025-01-16 (Short-term)
   Total Proceeds: 704.41
   Total Cost Basis: 585.62
   Profit/Loss: 118.79
@@ -423,18 +423,18 @@ Stock: TSM
   - BOUGHT 1.0000 on 2025-03-18 at 170.79
 
 --- Analyzing Sale of 9.0 on 2025-06-10 ---
-  - Sold 5.0000 shares from 2025-02-12 (Cost: 207.53)
-  - Sold 1.0000 shares from 2025-02-13 (Cost: 201.17)
-  - Sold 1.0000 shares from 2025-02-24 (Cost: 198.03)
-  - Sold 1.0000 shares from 2025-02-24 (Cost: 198.03)
-  - Sold 1.0000 shares from 2025-02-24 (Cost: 191.99)
+  - Sold 5.0000 shares from 2025-02-12 (Short-term)
+  - Sold 1.0000 shares from 2025-02-13 (Short-term)
+  - Sold 1.0000 shares from 2025-02-24 (Short-term)
+  - Sold 1.0000 shares from 2025-02-24 (Short-term)
+  - Sold 1.0000 shares from 2025-02-24 (Short-term)
   Total Proceeds: 1894.01
   Total Cost Basis: 1830.85
   Profit/Loss: 63.16
 
 --- Analyzing Sale of 2.0 on 2025-06-24 ---
-  - Sold 1.0000 shares from 2025-02-27 (Cost: 187.11)
-  - Sold 1.0000 shares from 2025-03-18 (Cost: 170.79)
+  - Sold 1.0000 shares from 2025-02-27 (Short-term)
+  - Sold 1.0000 shares from 2025-03-18 (Short-term)
   Total Proceeds: 436.88
   Total Cost Basis: 359.88
   Profit/Loss: 77.00
@@ -450,9 +450,9 @@ Stock: UBER
   - BOUGHT 1.0000 on 2024-12-23 at 61.92
 
 --- Analyzing Sale of 25.0 on 2025-02-07 ---
-  - Sold 13.0000 shares from 2024-12-16 (Cost: 60.51)
-  - Sold 11.0000 shares from 2024-12-16 (Cost: 60.51)
-  - Sold 1.0000 shares from 2024-12-23 (Cost: 61.92)
+  - Sold 13.0000 shares from 2024-12-16 (Short-term)
+  - Sold 11.0000 shares from 2024-12-16 (Short-term)
+  - Sold 1.0000 shares from 2024-12-23 (Short-term)
   Total Proceeds: 1862.12
   Total Cost Basis: 1516.21
   Profit/Loss: 345.91
