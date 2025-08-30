@@ -87,7 +87,7 @@ class UnitOfWork:
                     update_fields = [
                         'barcode', 'url', 'image_url', 'description', 
                         'country_of_origin', 'ingredients', 'has_no_coles_barcode', 
-                        'name_variations'
+                        'name_variations', 'normalized_string_variations'
                     ]
                     Product.objects.bulk_update(self.products_to_update, update_fields, batch_size=500)
                     self.command.stdout.write(f"  - Updated {len(self.products_to_update)} products with new information.")

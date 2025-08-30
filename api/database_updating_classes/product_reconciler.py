@@ -1,4 +1,5 @@
 from products.models import Product, Price
+from api.data.product_name_translation_table import PRODUCT_NAME_TRANSLATIONS
 
 class ProductReconciler:
     def __init__(self, command):
@@ -6,7 +7,42 @@ class ProductReconciler:
 
     def run(self):
         self.command.stdout.write(self.command.style.SUCCESS("Product Reconciler run started."))
-        # Main logic for finding duplicates will be added here later.
+        
+        if not PRODUCT_NAME_TRANSLATIONS:
+            self.command.stdout.write("Translation table is empty. Nothing to reconcile.")
+            return
+
+        variation_strings = list(PRODUCT_NAME_TRANSLATIONS.keys())
+        potential_duplicates = Product.objects.filter(normalized_name_brand_size__in=variation_strings)
+
+        if not potential_duplicates:
+            self.command.stdout.write("No products found matching any variation strings.")
+            return
+
+        self.command.stdout.write(f"Found {len(potential_duplicates)} potential duplicate products to process.")
+
+        for duplicate_product in potential_duplicates:
+            # Find the canonical string from the table
+            canonical_string = PRODUCT_NAME_TRANSLATIONS.get(duplicate_product.normalized_name_brand_size)
+            if not canonical_string:
+                continue
+
+            try:
+                # Use .get() which is safe because normalized_name_brand_size is unique
+                canonical_product = Product.objects.get(normalized_name_brand_size=canonical_string)
+                
+                if canonical_product.id == duplicate_product.id:
+                    continue
+
+                self._merge_products(canonical_product, duplicate_product)
+
+            except Product.DoesNotExist:
+                self.command.stderr.write(self.command.style.ERROR(f"Could not find canonical product for {canonical_string}. Skipping."))
+                continue
+            except Exception as e:
+                self.command.stderr.write(self.command.style.ERROR(f"An unexpected error occurred for {duplicate_product.normalized_name_brand_size}: {e}"))
+                continue
+
         self.command.stdout.write(self.command.style.SUCCESS("Product Reconciler run finished."))
 
     def _merge_products(self, canonical, duplicate):

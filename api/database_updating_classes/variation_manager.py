@@ -23,12 +23,27 @@ class VariationManager:
         cleaned_incoming_name = str(incoming_name).strip()
 
         if cleaned_incoming_name and existing_name and cleaned_incoming_name.lower() != existing_name.lower():
+            updated = False
+            # Handle name_variations (human-readable)
             if not existing_product.name_variations:
                 existing_product.name_variations = []
             
             new_variation_tuple = (cleaned_incoming_name, company_name)
             if new_variation_tuple not in existing_product.name_variations:
                 existing_product.name_variations.append(new_variation_tuple)
+                updated = True
+
+            # Handle normalized_string_variations (for machine reconciliation)
+            variation_normalized_string = incoming_product_details.get('normalized_name_brand_size')
+            if variation_normalized_string:
+                if not existing_product.normalized_string_variations:
+                    existing_product.normalized_string_variations = []
+                
+                if variation_normalized_string not in existing_product.normalized_string_variations:
+                    existing_product.normalized_string_variations.append(variation_normalized_string)
+                    updated = True
+            
+            if updated:
                 self.unit_of_work.add_for_update(existing_product)
 
             hotlist_entry = {

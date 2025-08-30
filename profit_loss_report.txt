@@ -1,0 +1,458 @@
+
+
+========================================
+Stock: AAPL
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 0.0300 on 2024-09-16 at 216.32
+  - BOUGHT 0.0300 on 2024-09-16 at 216.32
+  - BOUGHT 6.0000 on 2025-06-16 at 197.41
+
+--- Analyzing Sale of 0.06 on 2025-02-20 ---
+  - Sold 0.0300 shares from 2024-09-16 (Cost: 216.32)
+  - Sold 0.0300 shares from 2024-09-16 (Cost: 216.32)
+  Total Proceeds: 14.57
+  Total Cost Basis: 12.98
+  Profit/Loss: 1.59
+
+
+========================================
+Stock: AMD
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 3.0000 on 2024-12-10 at 129.23
+
+--- Analyzing Sale of 3.0 on 2025-07-23 ---
+  - Sold 3.0000 shares from 2024-12-10 (Cost: 129.23)
+  Total Proceeds: 465.49
+  Total Cost Basis: 388.69
+  Profit/Loss: 76.80
+
+
+========================================
+Stock: BRK.B
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 2.0000 on 2024-11-15 at 466.89
+  - BOUGHT 1.0000 on 2025-06-24 at 491.72
+  - BOUGHT 1.0000 on 2025-06-25 at 486.07
+
+--- Analyzing Sale of 2.0 on 2025-01-21 ---
+  - Sold 2.0000 shares from 2024-11-15 (Cost: 466.89)
+  Total Proceeds: 941.96
+  Total Cost Basis: 933.79
+  Profit/Loss: 8.17
+
+
+========================================
+Stock: CAT
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 5.0000 on 2025-02-04 at 360.49
+  - BOUGHT 1.0000 on 2025-05-08 at 328.64
+
+--- Analyzing Sale of 3.0 on 2025-06-24 ---
+  - Sold 3.0000 shares from 2025-02-04 (Cost: 360.49)
+  Total Proceeds: 1119.10
+  Total Cost Basis: 1082.08
+  Profit/Loss: 37.02
+
+--- Analyzing Sale of 3.0 on 2025-07-08 ---
+  - Sold 2.0000 shares from 2025-02-04 (Cost: 360.49)
+  - Sold 1.0000 shares from 2025-05-08 (Cost: 328.64)
+  Total Proceeds: 1178.74
+  Total Cost Basis: 1051.62
+  Profit/Loss: 127.12
+
+
+========================================
+Stock: DPZ
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 2.0000 on 2024-11-15 at 461.78
+
+--- Analyzing Sale of 1.0 on 2025-01-30 ---
+  - Sold 1.0000 shares from 2024-11-15 (Cost: 461.78)
+  Total Proceeds: 450.79
+  Total Cost Basis: 461.78
+  Profit/Loss: -10.99
+
+--- Analyzing Sale of 1.0 on 2025-01-31 ---
+  - Sold 1.0000 shares from 2024-11-15 (Cost: 461.78)
+  Total Proceeds: 453.22
+  Total Cost Basis: 461.79
+  Profit/Loss: -8.57
+
+
+========================================
+Stock: IVV
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 30.0000 on 2025-02-21 at 63.85
+  - BOUGHT 22.0000 on 2025-02-25 at 62.93
+  - BOUGHT 2.0000 on 2025-02-26 at 599.77
+  - BOUGHT 1.0000 on 2025-02-27 at 593.00
+  - BOUGHT 2.0000 on 2025-02-28 at 589.77
+  - BOUGHT 25.0000 on 2025-03-07 at 60.65
+  - BOUGHT 10.0000 on 2025-03-19 at 58.92
+  - BOUGHT 13.0000 on 2025-04-09 at 54.41
+  - BOUGHT 2.0000 on 2025-05-08 at 572.92
+
+--- Analyzing Sale of 15.0 on 2025-06-24 ---
+  - Sold 15.0000 shares from 2025-02-21 (Cost: 63.85)
+  Total Proceeds: 932.25
+  Total Cost Basis: 959.25
+  Profit/Loss: -27.00
+
+--- Analyzing Sale of 16.0 on 2025-07-15 ---
+  - Sold 15.0000 shares from 2025-02-21 (Cost: 63.85)
+  - Sold 1.0000 shares from 2025-02-25 (Cost: 62.93)
+  Total Proceeds: 1017.48
+  Total Cost Basis: 1023.82
+  Profit/Loss: -6.34
+
+--- Analyzing Sale of 2.0 on 2025-07-15 ---
+  - Sold 2.0000 shares from 2025-02-25 (Cost: 62.93)
+  Total Proceeds: 127.56
+  Total Cost Basis: 126.15
+  Profit/Loss: 1.41
+
+--- Analyzing Sale of 15.0 on 2025-08-08 ---
+  - Sold 15.0000 shares from 2025-02-25 (Cost: 62.93)
+  Total Proceeds: 971.55
+  Total Cost Basis: 946.32
+  Profit/Loss: 25.23
+
+--- Analyzing Sale of 1.0 on 2025-08-08 ---
+  - Sold 1.0000 shares from 2025-02-25 (Cost: 62.93)
+  Total Proceeds: 64.97
+  Total Cost Basis: 63.68
+  Profit/Loss: 1.29
+
+--- Analyzing Sale of 16.0 on 2025-08-12 ---
+  - Sold 3.0000 shares from 2025-02-25 (Cost: 62.93)
+  - Sold 2.0000 shares from 2025-02-26 (Cost: 599.77)
+  - Sold 1.0000 shares from 2025-02-27 (Cost: 593.00)
+  - Sold 2.0000 shares from 2025-02-28 (Cost: 589.77)
+  - Sold 8.0000 shares from 2025-03-07 (Cost: 60.65)
+  Total Proceeds: 1041.96
+  Total Cost Basis: 3653.02
+  Profit/Loss: -2611.06
+
+
+========================================
+Stock: JD
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 28.0000 on 2024-11-29 at 37.06
+
+--- Analyzing Sale of 28.0 on 2025-01-17 ---
+  - Sold 28.0000 shares from 2024-11-29 (Cost: 37.06)
+  Total Proceeds: 1085.29
+  Total Cost Basis: 1037.76
+  Profit/Loss: 47.53
+
+
+========================================
+Stock: KO
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 15.0000 on 2024-11-08 at 64.05
+  - BOUGHT 25.0000 on 2024-11-12 at 63.56
+  - BOUGHT 25.0000 on 2024-11-12 at 63.56
+
+--- Analyzing Sale of 40.0 on 2025-02-19 ---
+  - Sold 15.0000 shares from 2024-11-08 (Cost: 64.05)
+  - Sold 25.0000 shares from 2024-11-12 (Cost: 63.56)
+  Total Proceeds: 2801.60
+  Total Cost Basis: 2549.88
+  Profit/Loss: 251.72
+
+--- Analyzing Sale of 25.0 on 2025-02-21 ---
+  - Sold 25.0000 shares from 2024-11-12 (Cost: 63.56)
+  Total Proceeds: 1781.12
+  Total Cost Basis: 1589.08
+  Profit/Loss: 192.04
+
+
+========================================
+Stock: LCID
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 1.0000 on 2024-07-12 at 4.25
+  - BOUGHT 1.0000 on 2024-07-12 at 4.25
+  - BOUGHT 1.0000 on 2024-07-12 at 4.25
+  - BOUGHT 1.0000 on 2024-07-12 at 4.25
+
+--- Analyzing Sale of 4.0 on 2025-02-10 ---
+  - Sold 1.0000 shares from 2024-07-12 (Cost: 4.25)
+  - Sold 1.0000 shares from 2024-07-12 (Cost: 4.25)
+  - Sold 1.0000 shares from 2024-07-12 (Cost: 4.25)
+  - Sold 1.0000 shares from 2024-07-12 (Cost: 4.25)
+  Total Proceeds: 10.14
+  Total Cost Basis: 17.00
+  Profit/Loss: -6.86
+
+
+========================================
+Stock: MCD
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 2.0000 on 2024-11-04 at 295.25
+
+--- Analyzing Sale of 2.0 on 2025-01-14 ---
+  - Sold 2.0000 shares from 2024-11-04 (Cost: 295.25)
+  Total Proceeds: 559.39
+  Total Cost Basis: 590.51
+  Profit/Loss: -31.12
+
+
+========================================
+Stock: MOH
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 2.0000 on 2024-11-29 at 297.26
+  - BOUGHT 2.0000 on 2025-02-06 at 288.00
+  - BOUGHT 1.0000 on 2025-02-19 at 270.06
+
+--- Analyzing Sale of 2.0 on 2025-02-25 ---
+  - Sold 2.0000 shares from 2024-11-29 (Cost: 297.26)
+  Total Proceeds: 611.09
+  Total Cost Basis: 594.53
+  Profit/Loss: 16.56
+
+--- Analyzing Sale of 3.0 on 2025-02-27 ---
+  - Sold 2.0000 shares from 2025-02-06 (Cost: 288.00)
+  - Sold 1.0000 shares from 2025-02-19 (Cost: 270.06)
+  Total Proceeds: 883.58
+  Total Cost Basis: 848.05
+  Profit/Loss: 35.53
+
+
+========================================
+Stock: MPL
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 270.0000 on 2024-11-08 at 3.72
+
+--- Analyzing Sale of 270.0 on 2025-01-17 ---
+  - Sold 270.0000 shares from 2024-11-08 (Cost: 3.72)
+  Total Proceeds: 1020.30
+  Total Cost Basis: 1004.40
+  Profit/Loss: 15.90
+
+
+========================================
+Stock: MSFT
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 1.0000 on 2024-11-04 at 411.30
+  - BOUGHT 1.0000 on 2025-02-11 at 411.50
+
+--- Analyzing Sale of 2.0 on 2025-05-08 ---
+  - Sold 1.0000 shares from 2024-11-04 (Cost: 411.30)
+  - Sold 1.0000 shares from 2025-02-11 (Cost: 411.50)
+  Total Proceeds: 885.21
+  Total Cost Basis: 823.79
+  Profit/Loss: 61.42
+
+
+========================================
+Stock: NGI
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 320.0000 on 2024-11-08 at 1.66
+
+--- Analyzing Sale of 320.0 on 2025-01-20 ---
+  - Sold 320.0000 shares from 2024-11-08 (Cost: 1.66)
+  Total Proceeds: 526.60
+  Total Cost Basis: 531.20
+  Profit/Loss: -4.60
+
+
+========================================
+Stock: NKE
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 16.0000 on 2024-11-21 at 75.18
+
+--- Analyzing Sale of 16.0 on 2025-02-28 ---
+  - Sold 16.0000 shares from 2024-11-21 (Cost: 75.18)
+  Total Proceeds: 1276.83
+  Total Cost Basis: 1202.93
+  Profit/Loss: 73.90
+
+
+========================================
+Stock: NU
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 100.0000 on 2025-02-25 at 11.04
+
+--- Analyzing Sale of 100.0 on 2025-05-08 ---
+  - Sold 100.0000 shares from 2025-02-25 (Cost: 11.04)
+  Total Proceeds: 1297.67
+  Total Cost Basis: 1105.29
+  Profit/Loss: 192.38
+
+
+========================================
+Stock: NVDA
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 0.1000 on 2024-07-31 at 117.02
+
+--- Analyzing Sale of 0.1 on 2025-02-20 ---
+  - Sold 0.1000 shares from 2024-07-31 (Cost: 117.02)
+  Total Proceeds: 13.87
+  Total Cost Basis: 11.70
+  Profit/Loss: 2.16
+
+
+========================================
+Stock: OXY
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 5.0000 on 2024-09-13 at 51.32
+  - BOUGHT 9.0000 on 2025-02-14 at 48.05
+
+--- Analyzing Sale of 5.0 on 2024-12-05 ---
+  - Sold 5.0000 shares from 2024-09-13 (Cost: 51.32)
+  Total Proceeds: 242.02
+  Total Cost Basis: 257.61
+  Profit/Loss: -15.59
+
+
+========================================
+Stock: PAC
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 32.0000 on 2024-11-08 at 10.60
+  - BOUGHT 43.0000 on 2024-11-08 at 10.60
+
+--- Analyzing Sale of 73.0 on 2024-12-23 ---
+  - Sold 32.0000 shares from 2024-11-08 (Cost: 10.60)
+  - Sold 41.0000 shares from 2024-11-08 (Cost: 10.60)
+  Total Proceeds: 854.83
+  Total Cost Basis: 773.80
+  Profit/Loss: 81.03
+
+--- Analyzing Sale of 2.0 on 2024-12-23 ---
+  - Sold 2.0000 shares from 2024-11-08 (Cost: 10.60)
+  Total Proceeds: 20.42
+  Total Cost Basis: 21.20
+  Profit/Loss: -0.78
+
+
+========================================
+Stock: PFP
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 300.0000 on 2024-11-08 at 6.02
+
+--- Analyzing Sale of 300.0 on 2025-02-06 ---
+  - Sold 300.0000 shares from 2024-11-08 (Cost: 6.02)
+  Total Proceeds: 1782.00
+  Total Cost Basis: 1806.00
+  Profit/Loss: -24.00
+
+
+========================================
+Stock: SABR
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 1.0000 on 2024-07-12 at 3.12
+  - BOUGHT 1.0000 on 2024-07-12 at 3.12
+  - BOUGHT 1.0000 on 2024-07-12 at 3.12
+
+--- Analyzing Sale of 3.0 on 2025-02-10 ---
+  - Sold 1.0000 shares from 2024-07-12 (Cost: 3.12)
+  - Sold 1.0000 shares from 2024-07-12 (Cost: 3.12)
+  - Sold 1.0000 shares from 2024-07-12 (Cost: 3.12)
+  Total Proceeds: 9.42
+  Total Cost Basis: 9.36
+  Profit/Loss: 0.06
+
+
+========================================
+Stock: SIRI
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 27.0000 on 2025-01-16 at 21.65
+
+--- Analyzing Sale of 27.0 on 2025-02-10 ---
+  - Sold 27.0000 shares from 2025-01-16 (Cost: 21.65)
+  Total Proceeds: 704.41
+  Total Cost Basis: 585.62
+  Profit/Loss: 118.79
+
+
+========================================
+Stock: TSM
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 5.0000 on 2025-02-12 at 207.53
+  - BOUGHT 1.0000 on 2025-02-13 at 201.17
+  - BOUGHT 1.0000 on 2025-02-24 at 198.03
+  - BOUGHT 1.0000 on 2025-02-24 at 198.03
+  - BOUGHT 1.0000 on 2025-02-24 at 191.99
+  - BOUGHT 1.0000 on 2025-02-27 at 187.11
+  - BOUGHT 1.0000 on 2025-03-18 at 170.79
+
+--- Analyzing Sale of 9.0 on 2025-06-10 ---
+  - Sold 5.0000 shares from 2025-02-12 (Cost: 207.53)
+  - Sold 1.0000 shares from 2025-02-13 (Cost: 201.17)
+  - Sold 1.0000 shares from 2025-02-24 (Cost: 198.03)
+  - Sold 1.0000 shares from 2025-02-24 (Cost: 198.03)
+  - Sold 1.0000 shares from 2025-02-24 (Cost: 191.99)
+  Total Proceeds: 1894.01
+  Total Cost Basis: 1830.85
+  Profit/Loss: 63.16
+
+--- Analyzing Sale of 2.0 on 2025-06-24 ---
+  - Sold 1.0000 shares from 2025-02-27 (Cost: 187.11)
+  - Sold 1.0000 shares from 2025-03-18 (Cost: 170.79)
+  Total Proceeds: 436.88
+  Total Cost Basis: 359.88
+  Profit/Loss: 77.00
+
+
+========================================
+Stock: UBER
+========================================
+
+--- Full Purchase History ---
+  - BOUGHT 13.0000 on 2024-12-16 at 60.51
+  - BOUGHT 11.0000 on 2024-12-16 at 60.51
+  - BOUGHT 1.0000 on 2024-12-23 at 61.92
+
+--- Analyzing Sale of 25.0 on 2025-02-07 ---
+  - Sold 13.0000 shares from 2024-12-16 (Cost: 60.51)
+  - Sold 11.0000 shares from 2024-12-16 (Cost: 60.51)
+  - Sold 1.0000 shares from 2024-12-23 (Cost: 61.92)
+  Total Proceeds: 1862.12
+  Total Cost Basis: 1516.21
+  Profit/Loss: 345.91

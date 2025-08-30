@@ -21,14 +21,16 @@ class TranslationTableGenerator:
         all_products = Product.objects.all()
 
         for product in all_products:
-            if not product.name_variations or not isinstance(product.name_variations, list):
+            if not product.normalized_string_variations or not isinstance(product.normalized_string_variations, list):
                 continue
 
-            for variation_tuple in product.name_variations:
-                if isinstance(variation_tuple, (list, tuple)) and len(variation_tuple) > 0:
-                    variation_name = variation_tuple[0]
-                    if variation_name.lower() != product.name.lower():
-                        translations[variation_name] = product.name
+            canonical_normalized_string = product.normalized_name_brand_size
+            if not canonical_normalized_string:
+                continue
+
+            for variation_normalized_string in product.normalized_string_variations:
+                if variation_normalized_string.lower() != canonical_normalized_string.lower():
+                    translations[variation_normalized_string] = canonical_normalized_string
 
         try:
             with open(TRANSLATION_TABLE_PATH, 'w', encoding='utf-8') as f:
