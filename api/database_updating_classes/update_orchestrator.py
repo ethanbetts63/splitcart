@@ -56,7 +56,7 @@ class UpdateOrchestrator:
             if unit_of_work.commit(consolidated_data, product_cache, resolver, store_obj):
                 self.processed_files.append(file_path)
                 # Reconcile duplicates from memory immediately after a successful commit
-                variation_manager.reconcile_duplicates()
+                # variation_manager.reconcile_duplicates()
 
         
         translator_generator = TranslationTableGenerator(self.command)
