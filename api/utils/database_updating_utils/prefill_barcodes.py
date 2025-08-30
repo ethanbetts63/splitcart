@@ -16,38 +16,35 @@ def prefill_barcodes_from_db(product_list: list, command=None) -> list:
     if command:
         command.stdout.write(f"  - Prefilling barcodes from DB for {len(product_list)} products...")
 
+    # Safely import the translation table
+    try:
+        from api.data.product_name_translation_table import PRODUCT_NAME_TRANSLATIONS
+    except (ImportError, SyntaxError):
+        PRODUCT_NAME_TRANSLATIONS = {}
+
     prefilled_count = 0
     for i, product_data in enumerate(product_list):
         # Only process products that are missing a barcode
         if not product_data.get('barcode'):
-            original_name = product_data.get('name', '')
-            # Use the normalizer to find the canonical name and generate the lookup key
-            canonical_name = ProductNormalizer.get_canonical_name(original_name)
-            
-            # Create a temporary dictionary for the normalizer
-            # The normalizer expects 'package_size', but the JSONL has 'size'
-            temp_data_for_norm = {
-                'name': canonical_name,
-                'brand': product_data.get('brand', ''),
-                'package_size': product_data.get('size', '') 
-            }
-            
-            normalizer = ProductNormalizer(temp_data_for_norm)
-            normalized_key = normalizer.get_normalized_string()
-
-            if not normalized_key:
+            # The normalized string is already generated in the JSONL file.
+            incoming_normalized_string = product_data.get('normalized_name_brand_size')
+            if not incoming_normalized_string:
                 continue
 
-            # Query the database for a match
+            # Look up the incoming string in the translation table to find the canonical string.
+            # If it's not in the table, it is its own canonical string.
+            canonical_normalized_string = PRODUCT_NAME_TRANSLATIONS.get(incoming_normalized_string, incoming_normalized_string)
+
+            # Query the database for a match using the canonical normalized string
             matching_product = Product.objects.filter(
-                normalized_name_brand_size=normalized_key
+                normalized_name_brand_size=canonical_normalized_string
             ).first()
 
             if matching_product:
                 # If the match has a real barcode, use it.
                 if matching_product.barcode:
                     if command and (i % 50 == 0): # Log progress periodically
-                        command.stdout.write(f"    - Found barcode for \"{original_name}\" -> \"{matching_product.name}\"")
+                        command.stdout.write(f"    - Prefilled barcode for \"{product_data.get('name', '')}\"")
                     product_data['barcode'] = matching_product.barcode
                     prefilled_count += 1
                 # If the match is known to have no Coles barcode, mark the current product as such to prevent re-scraping.

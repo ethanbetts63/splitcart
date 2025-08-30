@@ -55,8 +55,9 @@ def calculate_profit_loss(file_path):
                 report_lines.append(f"Skipping row due to error: {row} - {e}")
                 continue
 
-    start_date = datetime(2024, 8, 30)
-    end_date = datetime(2025, 8, 30)
+    # Updated to 2025 Financial Year
+    start_date = datetime(2024, 7, 1)
+    end_date = datetime(2025, 6, 30)
 
     sorted_stock_keys = sorted(trades.keys())
 
@@ -142,7 +143,8 @@ def calculate_profit_loss(file_path):
             report_lines.append(f"  Profit/Loss: {profit_loss:.2f} {sell_currency}{aud_conversion_str}")
 
     report_lines.append(f"\n\n========================================")
-    report_lines.append(f"         Overall Summary")
+    report_lines.append(f"         Overall Summary for FY 2025")
+    report_lines.append(f"       (1 July 2024 - 30 June 2025)")
     report_lines.append(f"========================================")
     report_lines.append(f"Total Profit/Loss for Period: {total_profit_loss_aud:.2f} AUD")
 
