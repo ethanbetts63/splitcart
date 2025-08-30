@@ -65,6 +65,8 @@ git push
 
 python manage.py update_db --archive stores
 python manage.py update_db --products
+python manage.py reconcile_products 
+python manage.py analyze --report company_heatmap
 python manage.py update_db stores
 python manage.py update_db categories
 python manage.py build_company_jsons
