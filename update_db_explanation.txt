@@ -48,3 +48,32 @@ The process is managed by the `UpdateOrchestrator`, which iterates through `.jso
 - **Status:** **Disabled**
 - **Description:** The `final_workflow_explanation.txt` document describes a step where a `VariationManager` reconciles and merges duplicate products after all files have been processed. However, the call to the `reconcile_duplicates()` method in the `UpdateOrchestrator` is currently **commented out**.
 - **Reason:** This feature is not yet complete. The logic for merging duplicate products is still under development and has been disabled to prevent unintended side effects.
+
+
+## Updates and Clarifications (Based on Recent Changes)
+
+This section provides updates to the workflow description to reflect recent changes and new features implemented in the codebase.
+
+### Phase 3: Product Identification & Change Collection (Updated)
+
+- **Existing Product:** If a match is found, the `VariationManager` checks for name variations. Additionally, the existing product record is now intelligently enriched. Any blank fields (e.g., `barcode`, `url`, `image_url`, `description`, `country_of_origin`, `ingredients`) are filled with new information from the scraped file. For descriptions, the shorter value is preferred. If the product is from Coles and has no barcode, its `has_no_coles_barcode` flag is set to `True`.
+- **New Product:** If no match is found, a new `Product` object is created. For Coles products without a barcode, the `has_no_coles_barcode` flag is set to `True` on creation.
+
+### Phase 4: The Atomic Commit - Order of Operations (Updated)
+
+- **f. Existing products are updated in bulk:** The `bulk_update` operation now includes a broader set of fields beyond just `name_variations`. These include `barcode`, `url`, `image_url`, `description`, `country_of_origin`, `ingredients`, `has_no_coles_barcode`, and `normalized_string_variations`.
+
+### Variation Reconciliation (Updated Status)
+
+- **Status:** **Replaced by New System**
+- **Description:** The old `reconcile_duplicates()` method is disabled. It has been replaced by a new, robust reconciliation system. This new system is implemented as a separate management command (`reconcile_products`) and uses a precise translation table based on unique normalized strings (`variation_normalized_string` to `canonical_normalized_string`) to find and merge duplicates. This new system is designed to be run independently to clean up the database.
+
+### New Product Model Fields
+
+- `has_no_coles_barcode`: A boolean field to mark products confirmed to have no barcode from Coles.
+- `normalized_string_variations`: A JSON field to store unique normalized strings of product name variations, used for the new reconciliation system.
+
+### Data Pipeline Corrections
+
+- The `ProductNormalizer` no longer performs pre-emptive name translation. This allows products with name variations to be created as distinct items, which are then handled by the new reconciliation system.
+- The `prefill_barcodes_from_db` function was rewritten to correctly use the new normalized string-based translation table for looking up existing products, ensuring consistency across the data flow.
