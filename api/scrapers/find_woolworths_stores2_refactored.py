@@ -37,15 +37,8 @@ class WoolworthsStoreScraper2(BaseStoreScraper):
         """Cleans the raw Woolworths store data."""
         return clean_raw_store_data_woolworths(raw_data, self.company, datetime.now())
 
-    def print_progress(self, iteration, total, item):
-        """Prints the progress of the Woolworths scraper."""
-        postcode = item
-        percentage = 100 * (iteration / total)
-        bar_length = 40
-        filled_length = int(bar_length * iteration // total)
-        bar = '█' * filled_length + '-' * (bar_length - filled_length)
-        self.stdout.write(f'Progress: |{bar}| {percentage:.2f}% ({iteration}/{total}) | Stores Found: {self.found_stores} | Postcode: {postcode}')
-        self.stdout.flush()
+    def get_item_type(self) -> str:
+        return "Postcode"
 
 def find_woolworths_stores2(command):
     """Main function to drive the Woolworths store scraping process."""

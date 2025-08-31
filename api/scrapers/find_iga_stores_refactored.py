@@ -66,20 +66,8 @@ class IgaStoreScraper(BaseStoreScraper):
         """Cleans the raw IGA store data."""
         return clean_raw_store_data_iga(raw_data, self.company, datetime.now())
 
-    def print_progress(self, iteration, total, item):
-        """Prints the progress of the IGA scraper."""
-        store_id_num = item
-        message = f"Checking ID: {store_id_num}..."
-        if is_in_excluded_range(store_id_num):
-            message = f"Skipping ID {store_id_num} (excluded)."
-
-        percentage = 100 * (iteration / total)
-        bar_length = 30
-        filled_length = int(bar_length * iteration // total)
-        bar = '█' * filled_length + '-' * (bar_length - filled_length)
-        status_message = message.ljust(40)
-        self.stdout.write(f'Progress: |{bar}| {percentage:.2f}% | Found: {self.found_stores} | {status_message}')
-        self.stdout.flush()
+    def get_item_type(self) -> str:
+        return "ID"
 
 def find_iga_stores(command):
     """Main function to drive the IGA store scraping process."""

@@ -51,15 +51,8 @@ class AldiStoreScraper(BaseStoreScraper):
         """Cleans the raw ALDI store data."""
         return clean_raw_store_data_aldi(raw_data, self.company, datetime.now())
 
-    def print_progress(self, iteration, total, item):
-        """Prints the progress of the ALDI scraper."""
-        lat, lon = item
-        percentage = 100 * (iteration / total)
-        bar_length = 40
-        filled_length = int(bar_length * iteration // total)
-        bar = '█' * filled_length + '-' * (bar_length - filled_length)
-        self.stdout.write(f'\rProgress: |{bar}| {percentage:.2f}% ({iteration}/{total}) | Stores Found: {self.found_stores} | Coords: ({lat:.2f}, {lon:.2f})')
-        self.stdout.flush()
+    def get_item_type(self) -> str:
+        return "Coords"
 
     def drange(self, start, stop, step):
         """A simple generator for float ranges."""

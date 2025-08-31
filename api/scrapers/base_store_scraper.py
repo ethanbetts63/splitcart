@@ -102,7 +102,13 @@ class BaseStoreScraper(ABC):
         """Cleans the raw store data."""
         pass
 
-    @abstractmethod
     def print_progress(self, iteration, total, item):
         """Prints the progress of the scraper."""
+        item_type = self.get_item_type()
+        self.stdout.write(f'{iteration}/{total} | Stores Found: {self.found_stores} | {item_type}: {item}')
+        self.stdout.flush()
+
+    @abstractmethod
+    def get_item_type(self) -> str:
+        """Returns the type of the item being processed."""
         pass
