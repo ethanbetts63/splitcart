@@ -2,12 +2,18 @@ from datetime import datetime
 from api.scrapers.base_store_scraper import BaseStoreScraper
 from api.utils.shop_scraping_utils.woolworths.clean_raw_store_data_woolworths import clean_raw_store_data_woolworths
 
+import requests
+
 class WoolworthsStoreScraper2(BaseStoreScraper):
     """
     A class to scrape Woolworths store data using postcodes.
     """
     def __init__(self, command):
         super().__init__(command, 'woolworths')
+        self.session = requests.Session()
+        self.session.headers.update({
+            "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
+        })
         self.api_url = "https://www.woolworths.com.au/api/v3/ui/fulfilment/stores"
 
     def setup(self):

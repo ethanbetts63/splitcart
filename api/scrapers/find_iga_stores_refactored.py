@@ -7,12 +7,18 @@ from api.scrapers.base_store_scraper import BaseStoreScraper
 from api.utils.shop_scraping_utils.iga.clean_raw_store_data_iga import clean_raw_store_data_iga
 
 
+import requests
+
 class IgaStoreScraper(BaseStoreScraper):
     """
     A class to scrape IGA store data.
     """
     def __init__(self, command):
         super().__init__(command, 'iga')
+        self.session = requests.Session()
+        self.session.headers.update({
+            "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
+        })
         self.max_store_id = 23001
 
     def setup(self):

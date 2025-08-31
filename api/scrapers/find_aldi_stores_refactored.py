@@ -5,12 +5,18 @@ from datetime import datetime
 from api.scrapers.base_store_scraper import BaseStoreScraper
 from api.utils.shop_scraping_utils.aldi.clean_raw_store_data_aldi import clean_raw_store_data_aldi
 
+import requests
+
 class AldiStoreScraper(BaseStoreScraper):
     """
     A class to scrape ALDI store data.
     """
     def __init__(self, command):
         super().__init__(command, 'aldi')
+        self.session = requests.Session()
+        self.session.headers.update({
+            "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
+        })
         self.api_url = "https://api.aldi.com.au/v2/service-points"
         self.lat_min = -44.0
         self.lat_max = -10.0

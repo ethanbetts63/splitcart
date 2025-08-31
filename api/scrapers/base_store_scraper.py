@@ -14,10 +14,6 @@ class BaseStoreScraper(ABC):
         self.company = company
         self.discovered_stores_dir = r'C:\Users\ethan\coding\splitcart\api\data\discovered_stores'
         self.progress_file = f"C:\\Users\\ethan\\coding\\splitcart\\api\\data\\archive\\store_data\\find_{self.company}_stores_progress.json"
-        self.session = requests.Session()
-        self.session.headers.update({
-            "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
-        })
         self.found_stores = 0
         self.stdout = command.stdout
 
