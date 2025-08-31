@@ -102,10 +102,16 @@ class BaseStoreScraper(ABC):
         """Cleans the raw store data."""
         pass
 
+    def _format_item(self, item):
+        if isinstance(item, tuple) and len(item) == 2:
+            return f"({item[0]:.2f}, {item[1]:.2f})"
+        return item
+
     def print_progress(self, iteration, total, item):
         """Prints the progress of the scraper."""
         item_type = self.get_item_type()
-        self.stdout.write(f'{iteration}/{total} | Stores Found: {self.found_stores} | {item_type}: {item}')
+        formatted_item = self._format_item(item)
+        self.stdout.write(f'{iteration}/{total} | [32mStores Found: {self.found_stores}[0m | [36m{item_type}: {formatted_item}[0m')
         self.stdout.flush()
 
     @abstractmethod
