@@ -39,7 +39,7 @@ class ColesStoreScraper(SeleniumBaseStoreScraper):
         graphql_query = self._get_graphql_query(lat, lon)
         js_code = f'''
         const callback = arguments[arguments.length - 1];
-        fetch('{self.api_url}', {{
+        fetch('{COLES_API_URL}', {{
             method: 'POST',
             credentials: 'include',
             headers: {{
@@ -47,21 +47,22 @@ class ColesStoreScraper(SeleniumBaseStoreScraper):
                 'Accept': '*/*',
                 'Referer': 'https://www.coles.com.au/find-stores',
                 'Origin': 'https://www.coles.com.au',
-                'ocp-apim-subscription-key': '{self.subscription_key}'
+                'ocp-apim-subscription-key': '{SUBSCRIPTION_KEY}'
             }},
             body: JSON.stringify({json.dumps(graphql_query)})
         }})
-        .then(response => response.ok ? response.json() : response.text().then(text => Promise.reject(new Error(f"HTTP error! status: {{response.status}}, body: {{text}}"))))
+        .then(response => response.ok ? response.json() : response.text().then(text => Promise.reject(new Error(`HTTP error! status: ${{response.status}}, body: ${{text}}`))))
         .then(data => callback(JSON.stringify(data)))
         .catch(error => callback(JSON.stringify({{'error': error.toString()}})));
         '''
+        
         try:
             json_response_str = self.driver.execute_async_script(js_code)
             data = json.loads(json_response_str)
             if "error" in data:
                 raise Exception(f"API Error: {data['error']}")
             elif data.get("data") and data["data"].get("stores") and "results" in data["data"]["stores"]:
-                return [result.get('store', {{}}) for result in data["data"]["stores"]["results"]]
+                return [result.get('store', {}) for result in data["data"]["stores"]["results"]]
         except Exception as e:
             self.stdout.write(f"An error occurred: {e}")
         return []
@@ -82,7 +83,23 @@ class ColesStoreScraper(SeleniumBaseStoreScraper):
                 "latitude": latitude,
                 "longitude": longitude
             },
-            "query": "query GetStores($brandIds: [BrandId!], $latitude: Float!, $longitude: Float!) {\n  stores(brandIds: $brandIds, latitude: $latitude, longitude: $longitude) {\n    results {\n      store {\n        id\n        name\n        address {\n          state\n          suburb\n          addressLine\n          postcode\n        }\n        position {\n          latitude\n          longitude\n        }\n        brand {
+            "query": """query GetStores($brandIds: [BrandId!], $latitude: Float!, $longitude: Float!) {
+  stores(brandIds: $brandIds, latitude: $latitude, longitude: $longitude) {
+    results {
+      store {
+        id
+        name
+        address {
+          state
+          suburb
+          addressLine
+          postcode
+        }
+        position {
+          latitude
+          longitude
+        }
+        brand {
           name
           storeFinderId
           id
@@ -95,7 +112,7 @@ class ColesStoreScraper(SeleniumBaseStoreScraper):
       }
     }
   }
-}"
+}"""
         }
 
     def drange(self, start, stop, step):
@@ -103,6 +120,7 @@ class ColesStoreScraper(SeleniumBaseStoreScraper):
         while r <= stop:
             yield r
             r += step
+
 
 def find_coles_stores(command):
     """Main function to drive the Coles store scraping process."""
