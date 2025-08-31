@@ -37,17 +37,30 @@ class ColesStoreScraper(BaseStoreScraper):
 
     def setup(self):
         """Initializes the Selenium driver and warms up the session."""
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+
         self.stdout.write("\n--- Launching Selenium browser to warm up session and make API calls ---")
         chrome_options = Options()
         chrome_options.add_argument("user-agent=SplitCartScraper/1.0 (Contact: admin@splitcart.com)")
         self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
-        self.driver.set_script_timeout(60)
+        self.driver.set_script_timeout(120) # Increased timeout for potentially slow network
 
         self.driver.get("https://www.coles.com.au")
-        self.command.stdout.write("ACTION REQUIRED: Please solve any CAPTCHA in the browser, then press Enter here to continue...")
-        input()
-        self.driver.minimize_window()
-        self.stdout.write("Starting Coles store data scraping...")
+        
+        self.command.stdout.write("ACTION REQUIRED: Please solve any CAPTCHA in the browser.\n")
+        self.command.stdout.write("Waiting for page to load completely (__NEXT_DATA__ script to appear)...")
+
+        try:
+            WebDriverWait(self.driver, 300, poll_frequency=2).until(
+                EC.presence_of_element_located((By.ID, "__NEXT_DATA__"))
+            )
+            self.stdout.write("Page loaded successfully. Starting Coles store data scraping...")
+        except Exception:
+            self.stdout.write("Could not detect __NEXT_DATA__ script. The scraper may fail.")
+            self.stdout.write("Press Enter to continue anyway...")
+            input()
 
     def get_work_items(self) -> list:
         """Generates the grid of coordinates to scan."""
@@ -74,7 +87,7 @@ class ColesStoreScraper(BaseStoreScraper):
             }},
             body: JSON.stringify({json.dumps(graphql_query)})
         }})
-        .then(response => response.ok ? response.json() : response.text().then(text => Promise.reject(new Error(f'HTTP error! status: ${{response.status}}, body: ${{text}}'))))
+        .then(response => response.ok ? response.json() : response.text().then(text => Promise.reject(new Error(`HTTP error! status: ${{response.status}}, body: ${{text}}`))))
         .then(data => callback(JSON.stringify(data)))
         .catch(error => callback(JSON.stringify({{'error': error.toString()}})));
         '''
