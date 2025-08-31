@@ -110,10 +110,8 @@ class ColesStoreScraper(BaseStoreScraper):
         return clean_raw_store_data_coles(store_details, self.company, datetime.now())
 
     def cleanup(self):
-        """Closes the browser and removes the progress file."""
-        if self.driver:
-            self.driver.quit()
-            self.stdout.write("\nBrowser closed.")
+        """Removes the progress file on successful completion."""
+        # The driver is now closed in the finally block of run()
         super().cleanup()
 
     def get_item_type(self) -> str:
@@ -124,13 +122,12 @@ class ColesStoreScraper(BaseStoreScraper):
     def run(self):
         """Main execution method, faithfully replicating the original script's loop."""
         self.setup()
+        success = False
         try:
             work_items = self.get_work_items()
             total_steps = len(work_items)
             
-            # The original script used a different progress mechanism. We adapt it here.
-            # We will iterate through all items and save progress by index.
-            start_step = self.load_progress() 
+            start_step = self.load_progress()
 
             for i, item in enumerate(work_items[start_step:]):
                 current_step = start_step + i
@@ -144,16 +141,22 @@ class ColesStoreScraper(BaseStoreScraper):
 
                 for result in results:
                     cleaned_data = self.clean_raw_data(result)
-                    self.save_store(cleaned_data) # save_store checks for existence
+                    self.save_store(cleaned_data)
                 
                 self.save_progress(current_step + 1)
                 time.sleep(self.REQUEST_DELAY)
+            
+            success = True # Mark as successful only if the loop completes
 
         except Exception as e:
             self.stdout.write(f"\n\nA critical error occurred: {e}")
-            raise e # Re-raise to be handled by the restart loop in find_coles_stores
+            raise e # Re-raise to be handled by the restart loop
         finally:
-            self.cleanup()
+            if success:
+                self.cleanup()
+            if self.driver:
+                self.driver.quit()
+                self.stdout.write("\nBrowser closed.")
 
 
 def find_coles_stores(command):
@@ -165,5 +168,5 @@ def find_coles_stores(command):
             command.stdout.write(command.style.SUCCESS("\n--- Coles store location scraping complete ---"))
             break # Exit loop on success
         except (Exception, KeyboardInterrupt) as e:
-            command.stdout.write(f"\nScraper failed with error: {e}. Restarting in 10 seconds...")
+            command.stdout.write(f"\nScraper failed with error: {e} (repr: {repr(e)}). Restarting in 10 seconds...")
             time.sleep(10)
