@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 from datetime import datetime
 
-from api.scrapers.iga_scraper import scrape_and_save_iga_data
+from api.scrapers.product_scraper_iga import scrape_and_save_iga_data
 
 class TestScrapeAndSaveIga(unittest.TestCase):
 

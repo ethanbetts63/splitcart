@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 from datetime import datetime
 
-from api.scrapers.aldi_scraper import scrape_and_save_aldi_data
+from api.scrapers.product_scraper_aldi import scrape_and_save_aldi_data
 
 class TestScrapeAndSaveAldi(unittest.TestCase):
 

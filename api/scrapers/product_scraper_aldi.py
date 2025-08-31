@@ -4,12 +4,12 @@ import random
 from datetime import datetime
 from django.utils.text import slugify
 
-from api.scrapers.base_scraper import BaseScraper
+from api.scrapers.base_product_scraper import BaseProductScraper
 from api.utils.scraper_utils.clean_raw_data_aldi import clean_raw_data_aldi
 from api.utils.scraper_utils.get_aldi_categories import get_aldi_categories
 from api.utils.scraper_utils.jsonl_writer import JsonlWriter
 
-class AldiScraper(BaseScraper):
+class ProductScraperAldi(BaseProductScraper):
     """
     A scraper for ALDI stores.
     """

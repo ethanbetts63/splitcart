@@ -1,4 +1,3 @@
-
 import json
 import time
 import os
@@ -17,7 +16,7 @@ from api.utils.shop_scraping_utils.coles.get_graphql_query import get_graphql_qu
 # find_coles_stores.py script. It avoids using the base class's run loop
 # to maintain the exact logic that is known to work for the sensitive Coles API.
 
-class ColesStoreScraper(BaseStoreScraper):
+class StoreScraperColes(BaseStoreScraper):
     """A class to find Coles stores, wrapping the original, successful script logic."""
     COLES_API_URL = "https://www.coles.com.au/api/graphql"
     SUBSCRIPTION_KEY = "eae83861d1cd4de6bb9cd8a2cd6f041e"
@@ -33,7 +32,7 @@ class ColesStoreScraper(BaseStoreScraper):
         self.driver = None
         self.all_stores = {}
 
-    # --- Override base class methods to implement the original script's logic --- 
+    # --- Override base class methods to implement the original script's logic ---
 
     def setup(self):
         """Initializes the Selenium driver and warms up the session."""
@@ -117,7 +116,7 @@ class ColesStoreScraper(BaseStoreScraper):
     def get_item_type(self) -> str:
         return "Coordinates"
 
-    # --- Main execution loop, overriding the base class's run() method --- 
+    # --- Main execution loop, overriding the base class's run() method ---
 
     def run(self):
         """Main execution method, faithfully replicating the original script's loop."""
@@ -163,7 +162,7 @@ def find_coles_stores(command):
     """Main function to drive the Coles store scraping process, with a restart loop."""
     while True:
         try:
-            scraper = ColesStoreScraper(command)
+            scraper = StoreScraperColes(command)
             scraper.run()
             command.stdout.write(command.style.SUCCESS("\n--- Coles store location scraping complete ---"))
             break # Exit loop on success

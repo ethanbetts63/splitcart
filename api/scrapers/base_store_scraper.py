@@ -1,8 +1,6 @@
-
 import os
 import json
 import time
-import requests
 from abc import ABC, abstractmethod
 
 class BaseStoreScraper(ABC):

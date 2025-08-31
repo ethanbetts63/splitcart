@@ -1,7 +1,5 @@
-
 import os
 import json
-import time
 import math
 import requests
 from bs4 import BeautifulSoup
@@ -12,8 +10,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
-
 from api.scrapers.base_scraper import BaseScraper
 from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
 from api.utils.scraper_utils.jsonl_writer import JsonlWriter

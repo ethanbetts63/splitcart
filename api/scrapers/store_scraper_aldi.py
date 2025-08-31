@@ -1,4 +1,3 @@
-
 import random
 import sys
 from datetime import datetime
@@ -7,7 +6,7 @@ from api.utils.shop_scraping_utils.aldi.clean_raw_store_data_aldi import clean_r
 
 import requests
 
-class AldiStoreScraper(BaseStoreScraper):
+class StoreScraperAldi(BaseStoreScraper):
     """
     A class to scrape ALDI store data.
     """
@@ -69,5 +68,5 @@ class AldiStoreScraper(BaseStoreScraper):
 
 def find_aldi_stores(command):
     """Main function to drive the ALDI store scraping process."""
-    scraper = AldiStoreScraper(command)
+    scraper = StoreScraperAldi(command)
     scraper.run()

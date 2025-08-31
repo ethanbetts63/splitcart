@@ -1,9 +1,7 @@
-import os
 from abc import ABC, abstractmethod
-from api.utils.scraper_utils.jsonl_writer import JsonlWriter
 from api.utils.scraper_utils.output_utils import ScraperOutput
 
-class BaseScraper(ABC):
+class BaseProductScraper(ABC):
     """
     An abstract base class for company-specific scrapers.
 

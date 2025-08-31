@@ -3,10 +3,10 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 from companies.models.company import Company
 from companies.models.store import Store
-from api.scrapers.coles_scraper import ColesScraper
-from api.scrapers.aldi_scraper import AldiScraper
-from api.scrapers.iga_scraper import IgaScraper
-from api.scrapers.woolworths_scraper import WoolworthsScraper
+from api.scrapers.product_scraper_coles import ColesScraper
+from api.scrapers.product_scraper_aldi import AldiScraper
+from api.scrapers.product_scraper_iga import IgaScraper
+from api.scrapers.product_scraper_woolworths import WoolworthsScraper
 from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
 from api.utils.scraper_utils.get_coles_categories import get_coles_categories
 

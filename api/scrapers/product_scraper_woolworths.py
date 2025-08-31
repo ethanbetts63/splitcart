@@ -3,12 +3,12 @@ import json
 from datetime import datetime
 from django.utils.text import slugify
 
-from api.scrapers.base_scraper import BaseScraper
+from api.scrapers.base_product_scraper import BaseProductScraper
 from api.utils.scraper_utils.clean_raw_data_woolworths import clean_raw_data_woolworths
 from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
 from api.utils.scraper_utils.jsonl_writer import JsonlWriter
 
-class WoolworthsScraper(BaseScraper):
+class ProductScraperWoolworths(BaseProductScraper):
     """
     A scraper for Woolworths stores.
     """

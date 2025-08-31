@@ -1,4 +1,3 @@
-
 import json
 import html
 import re
@@ -9,7 +8,7 @@ from api.utils.shop_scraping_utils.iga.clean_raw_store_data_iga import clean_raw
 
 import requests
 
-class IgaStoreScraper(BaseStoreScraper):
+class StoreScraperIga(BaseStoreScraper):
     """
     A class to scrape IGA store data.
     """
@@ -75,5 +74,5 @@ class IgaStoreScraper(BaseStoreScraper):
 
 def find_iga_stores(command):
     """Main function to drive the IGA store scraping process."""
-    scraper = IgaStoreScraper(command)
+    scraper = StoreScraperIga(command)
     scraper.run()
