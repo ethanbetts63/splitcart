@@ -14,10 +14,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
-from .base_scraper import BaseScraper
-from ..utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
-from ..utils.scraper_utils.jsonl_writer import JsonlWriter
-from .enrich_coles_barcodes import enrich_coles_file
+from api.scrapers.base_scraper import BaseScraper
+from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
+from api.utils.scraper_utils.jsonl_writer import JsonlWriter
+from api.scrapers.enrich_coles_barcodes import enrich_coles_file
 
 class ColesScraper(BaseScraper):
     """

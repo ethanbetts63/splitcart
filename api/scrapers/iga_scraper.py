@@ -5,16 +5,15 @@ import random
 import uuid
 from datetime import datetime
 from django.utils.text import slugify
-from .base_scraper import BaseScraper
-from ..utils.scraper_utils.clean_raw_data_iga import clean_raw_data_iga
-from ..utils.scraper_utils.get_iga_categories import get_iga_categories
-from ..utils.scraper_utils.jsonl_writer import JsonlWriter
+from api.scrapers.base_scraper import BaseScraper
+from api.utils.scraper_utils.clean_raw_data_iga import clean_raw_data_iga
+from api.utils.scraper_utils.get_iga_categories import get_iga_categories
+from api.utils.scraper_utils.jsonl_writer import JsonlWriter
 
 class IgaScraper(BaseScraper):
     """
     A scraper for IGA stores.
     """
-
     def __init__(self, command, company: str, store_id: str, retailer_store_id: str, store_name: str, state: str):
         super().__init__(command, company, store_id, store_name, state)
         self.session = None

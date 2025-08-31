@@ -3,10 +3,10 @@ import json
 from datetime import datetime
 from django.utils.text import slugify
 
-from .base_scraper import BaseScraper
-from ..utils.scraper_utils.clean_raw_data_woolworths import clean_raw_data_woolworths
-from ..utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
-from ..utils.scraper_utils.jsonl_writer import JsonlWriter
+from api.scrapers.base_scraper import BaseScraper
+from api.utils.scraper_utils.clean_raw_data_woolworths import clean_raw_data_woolworths
+from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
+from api.utils.scraper_utils.jsonl_writer import JsonlWriter
 
 class WoolworthsScraper(BaseScraper):
     """
