@@ -5,7 +5,7 @@ from api.utils.shop_scraping_utils.woolworths.clean_raw_store_data_woolworths im
 
 import requests
 
-class WoolworthsStoreScraper(BaseStoreScraper):
+class StoreScraperWoolworths1(BaseStoreScraper):
     """
     A class to scrape Woolworths store data.
     """
@@ -68,5 +68,5 @@ class WoolworthsStoreScraper(BaseStoreScraper):
 
 def find_woolworths_stores(command):
     """Main function to drive the Woolworths store scraping process."""
-    scraper = WoolworthsStoreScraper(command)
+    scraper = StoreScraperWoolworths1(command)
     scraper.run()

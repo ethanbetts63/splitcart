@@ -3,10 +3,10 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 from companies.models.company import Company
 from companies.models.store import Store
-from api.scrapers.product_scraper_coles import ColesScraper
-from api.scrapers.product_scraper_aldi import AldiScraper
-from api.scrapers.product_scraper_iga import IgaScraper
-from api.scrapers.product_scraper_woolworths import WoolworthsScraper
+from api.scrapers.product_scraper_coles import ProductScraperColes
+from api.scrapers.product_scraper_aldi import ProductScraperAldi
+from api.scrapers.product_scraper_iga import ProductScraperIga
+from api.scrapers.product_scraper_woolworths import ProductScraperWoolworths
 from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
 from api.utils.scraper_utils.get_coles_categories import get_coles_categories
 
@@ -33,7 +33,7 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.ERROR('Could not fetch Woolworths categories. Aborting Woolworths scrape.'))
                 else:
                     for store in stores_to_scrape:
-                        scraper = WoolworthsScraper(
+                        scraper = ProductScraperWoolworths(
                             command=self,
                             company=woolworths_company.name,
                             store_id=store.store_id,
@@ -57,7 +57,7 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.ERROR('Could not fetch Coles categories. Aborting Coles scrape.'))
                 else:
                     for store in stores_to_scrape:
-                        scraper = ColesScraper(
+                        scraper = ProductScraperColes(
                             command=self,
                             company=coles_company.name,
                             store_id=store.store_id,
@@ -77,7 +77,7 @@ class Command(BaseCommand):
                 stores = Store.objects.filter(company=aldi_company, is_active=True)
                 stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
                 for store in stores_to_scrape:
-                    scraper = AldiScraper(
+                    scraper = ProductScraperAldi(
                         command=self,
                         company=aldi_company.name,
                         store_id=store.store_id,
@@ -96,7 +96,7 @@ class Command(BaseCommand):
                 stores = Store.objects.filter(company=iga_company, is_active=True)
                 stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
                 for store in stores_to_scrape:
-                    scraper = IgaScraper(
+                    scraper = ProductScraperIga(
                         command=self,
                         company=iga_company.name,
                         store_id=store.store_id,
