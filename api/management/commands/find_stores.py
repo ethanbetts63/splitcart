@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from api.scrapers.find_aldi_stores_refactored import find_aldi_stores
-from api.scrapers.find_coles_stores import find_coles_stores
+from api.scrapers.find_coles_stores_refactored import find_coles_stores
 from api.scrapers.find_iga_stores_refactored import find_iga_stores
 from api.scrapers.find_woolworths_stores_refactored import find_woolworths_stores
 from api.scrapers.find_woolworths_stores2_refactored import find_woolworths_stores2
@@ -21,7 +21,7 @@ class Command(BaseCommand):
         if not any_specific_store:
             self.stdout.write(self.style.SUCCESS("--- Starting all store discovery processes ---"))
             find_aldi_stores(self)
-            find_coles_stores()
+            find_coles_stores(self)
             find_iga_stores(self)
             find_woolworths_stores(self)
             find_woolworths_stores2(self)
@@ -33,7 +33,7 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS("--- ALDI store discovery process complete ---"))
             if options['coles']:
                 self.stdout.write(self.style.SUCCESS("--- Starting Coles store location scraping process ---"))
-                find_coles_stores()
+                find_coles_stores(self)
                 self.stdout.write(self.style.SUCCESS("\n--- Coles store location scraping complete ---"))
             if options['iga']:
                 self.stdout.write(self.style.SUCCESS("--- Starting IGA store location scraping process ---"))
