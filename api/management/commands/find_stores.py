@@ -2,8 +2,8 @@ from django.core.management.base import BaseCommand
 from api.scrapers.find_aldi_stores_refactored import find_aldi_stores
 from api.scrapers.find_coles_stores import find_coles_stores
 from api.scrapers.find_iga_stores_refactored import find_iga_stores
-from api.scrapers.find_woolworths_stores import find_woolworths_stores
-from api.scrapers.find_woolworths_stores2 import find_woolworths_stores2
+from api.scrapers.find_woolworths_stores_refactored import find_woolworths_stores
+from api.scrapers.find_woolworths_stores2_refactored import find_woolworths_stores2
 
 class Command(BaseCommand):
     help = 'Finds store locations for various supermarkets.'
@@ -23,8 +23,8 @@ class Command(BaseCommand):
             find_aldi_stores(self)
             find_coles_stores()
             find_iga_stores(self)
-            find_woolworths_stores()
-            find_woolworths_stores2()
+            find_woolworths_stores(self)
+            find_woolworths_stores2(self)
             self.stdout.write(self.style.SUCCESS("--- All store discovery processes complete ---"))
         else:
             if options['aldi']:
@@ -41,9 +41,9 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS("\n--- IGA store location scraping complete ---"))
             if options['woolworths']:
                 self.stdout.write(self.style.SUCCESS("--- Starting Woolworths store discovery process ---"))
-                find_woolworths_stores()
+                find_woolworths_stores(self)
                 self.stdout.write(self.style.SUCCESS("--- Woolworths store discovery process complete ---"))
             if options['woolworths2']:
                 self.stdout.write(self.style.SUCCESS("--- Starting Woolworths store discovery process (alternative method) ---"))
-                find_woolworths_stores2()
+                find_woolworths_stores2(self)
                 self.stdout.write(self.style.SUCCESS("--- Woolworths store discovery process (alternative method) complete ---"))
