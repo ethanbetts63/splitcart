@@ -3,7 +3,7 @@ import html
 import re
 from datetime import datetime
 from api.scrapers.base_store_scraper import BaseStoreScraper
-from api.utils.shop_scraping_utils.iga.clean_raw_store_data_iga import clean_raw_store_data_iga
+from api.utils.shop_scraping_utils.clean_raw_store_data_iga import clean_raw_store_data_iga
 
 
 import requests

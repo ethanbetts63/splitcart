@@ -2,7 +2,7 @@ import random
 import sys
 from datetime import datetime
 from api.scrapers.base_store_scraper import BaseStoreScraper
-from api.utils.shop_scraping_utils.aldi.clean_raw_store_data_aldi import clean_raw_store_data_aldi
+from api.utils.shop_scraping_utils.clean_raw_store_data_aldi import clean_raw_store_data_aldi
 
 import requests
 
