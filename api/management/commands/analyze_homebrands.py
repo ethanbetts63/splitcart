@@ -38,7 +38,6 @@ class Command(BaseCommand):
                         f.write(f"Name: {product.name}\n")
                         f.write(f"Brand: {product.brand}\n")
                         f.write(f"Barcode: {product.barcode}\n")
-                        f.write(f"PLU Code: {product.plu_code}\n")
                         f.write(f"Normalized String: {product.normalized_name_brand_size}\n")
                         f.write(f"--------------------------------------------------\n\n")
                 self.stdout.write(f"Details saved to {output_filename}")

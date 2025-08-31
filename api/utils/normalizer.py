@@ -20,9 +20,6 @@ if os.path.exists(BRAND_RULES_PATH):
     except (IOError, json.JSONDecodeError):
         BRAND_RULES = [] # Ensure it's an empty list on error
 
-PLU_LOG_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'plu_candidates_log.txt')
-
-
 class ProductNormalizer:
     """
     A class to encapsulate all product normalization logic.
@@ -37,24 +34,6 @@ class ProductNormalizer:
         Args:
             product_data (dict): A dictionary containing product info like 'name', 'brand', etc.
         """
-        # --- Temp logging for PLU candidates ---
-        barcode_val = product_data.get('barcode')
-        if isinstance(barcode_val, str):
-            cleaned_barcode = barcode_val.strip()
-            if cleaned_barcode.isdigit(): # Ensure it's all digits first
-                if len(cleaned_barcode) == 4:
-                    try:
-                        with open(PLU_LOG_PATH, 'a', encoding='utf-8') as f:
-                            f.write(json.dumps(product_data) + '\n')
-                    except IOError:
-                        pass # Do not crash the main process if logging fails
-                elif len(cleaned_barcode) == 5 and cleaned_barcode.startswith('9'):
-                    try:
-                        with open(PLU_LOG_PATH, 'a', encoding='utf-8') as f:
-                            f.write(json.dumps(product_data) + '\n')
-                    except IOError:
-                        pass # Do not crash the main process if logging fails
-
         self.name = str(product_data.get('name', ''))
         self.brand = str(product_data.get('brand', ''))
         self.package_size = str(product_data.get('package_size', ''))
