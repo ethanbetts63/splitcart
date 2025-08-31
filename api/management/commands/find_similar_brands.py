@@ -1,114 +1,38 @@
-import difflib
-import os
-import re
-import sys
 from django.core.management.base import BaseCommand
-from products.models.product import Product
+from products.models import Product
+from api.utils.normalizer import ProductNormalizer
+import os
+import json
 
 class Command(BaseCommand):
-    help = 'Finds similar brand names based on string similarity for potential merging.'
-
-    def add_arguments(self, parser):
-        parser.add_argument(
-            '--threshold',
-            type=float,
-            default=0.90,
-            help='Similarity threshold (0.0 to 1.0) for considering brands as similar. Default is 0.95.'
-        )
-        parser.add_argument(
-            '--output',
-            type=str,
-            default='similar_brands.txt',
-            help='Output file name for similar brand matches. Default is similar_brands.txt.'
-        )
-        parser.add_argument(
-            '--dry-run',
-            action='store_true',
-            help='Print results to console instead of writing to file.'
-        )
+    help = 'Finds brand names similar to Coles or Woolworths based on naming conventions.'
 
     def handle(self, *args, **options):
-        threshold = options['threshold']
-        output_file = options['output']
-        dry_run = options['dry_run']
+        output_filename = 'similar_brands_log.txt'
+        self.stdout.write("Starting brand similarity analysis...")
 
-        self.stdout.write(f"Finding similar brands with a threshold of {threshold}...")
+        unique_brands = Product.objects.values_list('brand', flat=True).distinct().order_by('brand')
+        self.stdout.write(f"Found {len(unique_brands)} unique brand names in the database.")
 
-        # Get all unique brands (lowercased, stripped, and punctuation removed)
-        all_brands_raw_products = Product.objects.values('brand', 'name', 'sizes').filter(brand__isnull=False).exclude(brand='')
-        
-        # Store unique brands and their first encountered example product
-        unique_brands_map = {} # {normalized_brand: (raw_name, sizes_list)}
-        for p_data in all_brands_raw_products:
-            # Remove punctuation, then strip and lower
-            cleaned_brand = re.sub(r'[^\w\s]', '', p_data['brand']).strip().lower()
-            if cleaned_brand and cleaned_brand not in unique_brands_map:
-                unique_brands_map[cleaned_brand] = (p_data['name'], p_data['sizes'])
+        companies_to_check = ["coles", "woolworths"]
 
-        unique_brands_list = sorted(list(unique_brands_map.keys()))
+        try:
+            with open(output_filename, 'w', encoding='utf-8') as f:
+                f.write("--- Brand Similarity Analysis ---\n\n")
+                for brand_name in unique_brands:
+                    if not brand_name: # Skip empty brand names
+                        continue
 
-        if len(unique_brands_list) < 2:
-            self.stdout.write(self.style.WARNING("Not enough unique brands to compare."))
-            return
+                    contains_company_name = False
+                    for company in companies_to_check:
+                        if company in brand_name.lower():
+                            contains_company_name = True
+                            break
 
-        total_unique_brands = len(unique_brands_list)
-        total_comparisons = (total_unique_brands * (total_unique_brands - 1)) / 2
-        self.stdout.write(f"Total unique brands: {total_unique_brands}")
-        self.stdout.write(f"Estimated total comparisons: {int(total_comparisons)}")
-        self.stdout.write("Starting pairwise comparisons...")
+                    if contains_company_name: # Only output if it contains a company name keyword
+                        f.write(f"Brand: {brand_name}\n\n")
+            self.stdout.write(self.style.SUCCESS(f"Successfully wrote brand analysis to {output_filename}"))
+        except IOError as e:
+            self.stderr.write(self.style.ERROR(f"Failed to write to file: {e}"))
 
-        similar_pairs = []
-        comparisons_made = 0
-        
-        for i in range(total_unique_brands):
-            brand1_name = unique_brands_list[i]
-            for j in range(i + 1, total_unique_brands):
-                brand2_name = unique_brands_list[j]
-
-                # Calculate similarity ratio
-                s = difflib.SequenceMatcher(None, brand1_name, brand2_name)
-                ratio = s.ratio()
-
-                if ratio >= threshold:
-                    # Get example product data for output
-                    example_name1, example_sizes1 = unique_brands_map[brand1_name]
-                    example_name2, example_sizes2 = unique_brands_map[brand2_name]
-                    
-                    # Format sizes list to string
-                    sizes_str1 = ", ".join(example_sizes1) if example_sizes1 else "N/A"
-                    sizes_str2 = ", ".join(example_sizes2) if example_sizes2 else "N/A"
-
-                    similar_pairs.append((
-                        brand1_name, brand2_name, ratio,
-                        example_name1, sizes_str1,
-                        example_name2, sizes_str2
-                    ))
-                
-                comparisons_made += 1
-                if comparisons_made % 1000 == 0:
-                    sys.stdout.write(f"\r  Processed {comparisons_made} comparisons...")
-                    sys.stdout.flush()
-        
-        sys.stdout.write("\r" + " " * 50 + "\r") # Clear the line
-        sys.stdout.flush()
-        self.stdout.write(f"Finished {comparisons_made} comparisons.")
-
-        if not similar_pairs:
-            self.stdout.write(self.style.SUCCESS("No similar brand pairs found above the specified threshold."))
-            return
-
-        # Sort by ratio (descending) and then by brand names for consistent output
-        similar_pairs.sort(key=lambda x: (-x[2], x[0], x[1]))
-
-        if dry_run:
-            self.stdout.write(self.style.SQL_FIELD("\n--- Similar Brand Pairs (Dry Run) ---"))
-            for b1, b2, r, n1, s1, n2, s2 in similar_pairs:
-                self.stdout.write(f"'{b1}' vs '{b2}', '{n1}' vs '{n2}'")
-            self.stdout.write(self.style.SQL_FIELD("-------------------------------------"))
-        else:
-            with open(output_file, 'w', encoding='utf-8') as f:
-                f.write(f"Similar Brand Pairs (Threshold: {threshold})\n")
-                f.write("-----------------------------------------\n")
-                for b1, b2, r, n1, s1, n2, s2 in similar_pairs:
-                    f.write(f"'{b1}' vs '{b2}', '{n1}' vs '{n2}'\n")
-            self.stdout.write(self.style.SUCCESS(f"Successfully wrote similar brand pairs to {output_file}"))
+        self.stdout.write(self.style.SUCCESS("\nBrand similarity analysis complete."))

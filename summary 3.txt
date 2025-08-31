@@ -30,3 +30,8 @@ Here is a summary of the work completed in this session:
 - **Data Pipeline Correction:**
     - We identified that the old `ProductNormalizer` was pre-emptively translating names, which conflicted with the new reconciliation system. This was removed from the main normalization pipeline.
     - The `prefill_barcodes_from_db` function was then completely rewritten to work correctly with the new normalized string-based translation table, making the entire data flow consistent.
+
+**4. PLU Code Integration (Initial Steps)**
+- **Problem Identification:** Discussed the issue of PLU codes (4/5 digit numbers for produce) often being present in barcode fields and being discarded by the current system.
+- **Database Field:** Added a new `plu_code` field to the `Product` model to store these identifiers.
+- **Temporary Logging:** Implemented a temporary logging mechanism in `ProductNormalizer` to identify and log products whose raw barcode field contains a 4-digit number or a 5-digit number starting with '9'. This helps in investigating the source and prevalence of PLU codes.
