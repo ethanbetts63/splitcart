@@ -1,0 +1,50 @@
+# update_db Workflow Explanation
+
+This document provides a verified explanation of the `update_db --products` command's workflow, based on the current codebase.
+
+## Overall Process
+
+The process is managed by the `UpdateOrchestrator`, which iterates through `.jsonl` files in the `product_inbox`, processes them one by one, and commits the changes to the database in a transactional manner.
+
+### Phase 1: File-by-File Processing Loop
+
+1.  **Initiation:** The `update_db --products` command is run.
+2.  **File Discovery:** The `UpdateOrchestrator` finds all `.jsonl` files in the `product_inbox`.
+3.  **Looping:** It processes one file at a time.
+
+### Phase 2: Per-File Initialization & Consolidation
+
+1.  **Service Instantiation:** For each file, new instances of `ProductResolver`, `UnitOfWork`, and `VariationManager` are created.
+2.  **Cache Building:** The `ProductResolver` builds in-memory caches of products, prices, and stores for fast lookups.
+3.  **Data Consolidation:** The `UpdateOrchestrator` reads the file and consolidates the data, using `normalized_name_brand_size` as a unique key to ignore duplicate product entries within the same file.
+
+### Phase 3: Product Identification & Change Collection
+
+1.  **Product Matching:** The `ProductResolver` attempts to match each product in the consolidated data to an existing product in the database using a 3-tier logic (barcode, store product ID, normalized string).
+2.  **Change Collection:**
+    *   **Existing Product:** If a match is found, the `VariationManager` checks for name variations, and a new price is added to the `UnitOfWork`.
+    *   **New Product:** If no match is found, a new `Product` object is created and passed to the `UnitOfWork` along with its price data.
+
+### Phase 4: The Atomic Commit
+
+1.  **Transaction:** The `UnitOfWork.commit()` method is called, which wraps all database operations in a single atomic transaction.
+2.  **Order of Operations:**
+    a.  New products are de-duplicated.
+    b.  New products are created in bulk (`bulk_create`).
+    c.  Prices for the new products are prepared.
+    d.  All new prices (for both new and existing products) are created in bulk.
+    e.  Categories are processed and linked to products.
+    f.  Existing products are updated in bulk (`bulk_update`) with any new information (e.g., name variations).
+
+### Phase 5: Post-Run Cleanup & Finalization
+
+1.  **File Cleanup:** After a file is successfully processed, it is moved to the `temp_product_storage` directory. This is a temporary measure during development to avoid re-scraping.
+2.  **Translation Table Generation:** After all files have been processed, the `TranslationTableGenerator` runs to create a translation table for product name variations.
+
+## Discrepancies and Unfinished Features
+
+### Variation Reconciliation
+
+- **Status:** **Disabled**
+- **Description:** The `final_workflow_explanation.txt` document describes a step where a `VariationManager` reconciles and merges duplicate products after all files have been processed. However, the call to the `reconcile_duplicates()` method in the `UpdateOrchestrator` is currently **commented out**.
+- **Reason:** This feature is not yet complete. The logic for merging duplicate products is still under development and has been disabled to prevent unintended side effects.
