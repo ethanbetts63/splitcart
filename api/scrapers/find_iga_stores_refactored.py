@@ -5,7 +5,7 @@ import re
 from datetime import datetime
 from api.scrapers.base_store_scraper import BaseStoreScraper
 from api.utils.shop_scraping_utils.iga.clean_raw_store_data_iga import clean_raw_store_data_iga
-from api.utils.shop_scraping_utils.iga.is_in_excluded_range import is_in_excluded_range
+
 
 class IgaStoreScraper(BaseStoreScraper):
     """
@@ -25,9 +25,7 @@ class IgaStoreScraper(BaseStoreScraper):
 
     def fetch_data_for_item(self, item) -> list:
         """Fetches store data for a given store ID."""
-        store_id_num = item
-        if is_in_excluded_range(store_id_num):
-            return []
+        store_id_num = item  
 
         url = f"https://embed.salefinder.com.au/location/storelocator/183/?format=json&saleGroup=0&limit=1500&locationId={store_id_num}"
         try:

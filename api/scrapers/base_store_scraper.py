@@ -4,7 +4,6 @@ import json
 import time
 import requests
 from abc import ABC, abstractmethod
-from datetime import datetime
 
 class BaseStoreScraper(ABC):
     """
