@@ -4,7 +4,7 @@ from unittest.mock import patch, MagicMock
 from datetime import datetime
 import json
 
-from api.scrapers.scrape_and_save_woolworths import scrape_and_save_woolworths_data
+from api.scrapers.woolworths_scraper import scrape_and_save_woolworths_data
 
 class TestScrapeAndSaveWoolworths(unittest.TestCase):
 

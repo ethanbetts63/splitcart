@@ -3,12 +3,9 @@ import time
 import json
 import requests
 import os
-import shutil
 from bs4 import BeautifulSoup
-
 from api.utils.normalizer import ProductNormalizer
 from api.utils.database_updating_utils.prefill_barcodes import prefill_barcodes_from_db
-
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager

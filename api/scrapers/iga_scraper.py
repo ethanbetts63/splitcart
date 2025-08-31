@@ -5,7 +5,6 @@ import random
 import uuid
 from datetime import datetime
 from django.utils.text import slugify
-
 from .base_scraper import BaseScraper
 from ..utils.scraper_utils.clean_raw_data_iga import clean_raw_data_iga
 from ..utils.scraper_utils.get_iga_categories import get_iga_categories

@@ -1,13 +1,14 @@
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.utils import timezone
-from api.utils.management_utils.run_coles_scraper import run_coles_scraper
 from companies.models.company import Company
 from companies.models.store import Store
-from api.scrapers.scrape_and_save_aldi import AldiScraper
-from api.scrapers.scrape_and_save_iga import IgaScraper
-from api.scrapers.scrape_and_save_woolworths import WoolworthsScraper
+from api.scrapers.coles_scraper import ColesScraper
+from api.scrapers.aldi_scraper import AldiScraper
+from api.scrapers.iga_scraper import IgaScraper
+from api.scrapers.woolworths_scraper import WoolworthsScraper
 from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
+from api.utils.scraper_utils.get_coles_categories import get_coles_categories
 
 class Command(BaseCommand):
     help = 'Runs the scrapers for the specified companies.'
@@ -47,7 +48,28 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.ERROR('Company "Woolworths" not found.'))
 
         if options['coles'] or run_all:
-            run_coles_scraper(self, batch_size)
+            try:
+                coles_company = Company.objects.get(name="Coles")
+                stores = Store.objects.filter(company=coles_company, is_active=True)
+                stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
+                categories = get_coles_categories()
+                if not categories:
+                    self.stdout.write(self.style.ERROR('Could not fetch Coles categories. Aborting Coles scrape.'))
+                else:
+                    for store in stores_to_scrape:
+                        scraper = ColesScraper(
+                            command=self,
+                            company=coles_company.name,
+                            store_id=store.store_id,
+                            store_name=store.store_name,
+                            state=store.state,
+                            categories_to_fetch=categories
+                        )
+                        scraper.run()
+                        store.last_scraped_products = timezone.now()
+                        store.save()
+            except Company.DoesNotExist:
+                self.stdout.write(self.style.ERROR('Company "Coles" not found.'))
 
         if options['aldi'] or run_all:
             try:
