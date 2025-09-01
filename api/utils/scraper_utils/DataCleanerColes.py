@@ -1,23 +1,21 @@
 from datetime import datetime
 from django.utils.text import slugify
-from api.utils.product_normalizer import ProductNormalizer
-from api.utils.price_normalizer import PriceNormalizer
-from .wrap_cleaned_products import wrap_cleaned_products
+from .BaseDataCleaner import BaseDataCleaner
 
-
-def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, timestamp: datetime) -> dict:
+class DataCleanerColes(BaseDataCleaner):
     """
-    Cleans a list of raw Coles product data according to the V2 schema and
-    wraps it in a dictionary containing metadata about the scrape.
+    Concrete cleaner class for Coles product data.
     """
-    cleaned_products = []
-    if not raw_product_list:
-        raw_product_list = []
+    def __init__(self, raw_product_list: list, company: str, store_name: str, store_id: str, state: str, timestamp: datetime):
+        super().__init__(raw_product_list, company, store_name, store_id, state, timestamp)
 
-    for product in raw_product_list:
-        if not product or product.get('_type') != 'PRODUCT':
-            continue
+    def _is_valid_product(self, raw_product: dict) -> bool:
+        return super()._is_valid_product(raw_product) and raw_product.get('_type') == 'PRODUCT'
 
+    def _transform_product(self, product: dict) -> dict:
+        """
+        Transforms a single raw Coles product into the standardized schema.
+        """
         pricing = product.get('pricing', {}) or {}
         unit_info = pricing.get('unit', {}) or {}
         online_heirs = product.get('onlineHeirs', [{}])[0] or {}
@@ -99,32 +97,4 @@ def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, st
             "rating_average": None, # Not available
             "rating_count": None, # Not available
         }
-        cleaned_products.append(clean_product)
-
-    # --- Final generic cleaning and normalization ---
-    final_products = []
-    for p in cleaned_products:
-        normalizer = ProductNormalizer(p)
-        p['sizes'] = normalizer.get_raw_sizes()
-        p['normalized_name_brand_size'] = normalizer.get_normalized_string()
-        
-        # Add normalized price key
-        price_normalizer = PriceNormalizer()
-        p['normalized_key'] = price_normalizer.get_normalized_key(
-            product_id=p.get('product_id_store'), 
-            store_id=store_id, 
-            price=p.get('price_current'), 
-            date=timestamp.date().isoformat()
-        )
-        p['scraped_date'] = timestamp.date().isoformat()
-
-        final_products.append(p)
-    
-    return wrap_cleaned_products(
-        products=final_products,
-        company=company,
-        store_name=store_name,
-        store_id=store_id,
-        state=state,
-        timestamp=timestamp
-    )
+        return clean_product

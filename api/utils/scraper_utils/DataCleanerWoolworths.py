@@ -1,22 +1,18 @@
 import json
 from datetime import datetime
-from api.utils.price_normalizer import PriceNormalizer
-from api.utils.product_normalizer import ProductNormalizer
-from .wrap_cleaned_products import wrap_cleaned_products
+from .BaseDataCleaner import BaseDataCleaner
 
-def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, timestamp: datetime) -> dict:
+class DataCleanerWoolworths(BaseDataCleaner):
     """
-    Cleans a list of raw Woolworths product data according to the V2 schema and
-    wraps it in a dictionary containing metadata about the scrape.
+    Concrete cleaner class for Woolworths product data.
     """
-    cleaned_products = []
-    if not raw_product_list:
-        raw_product_list = []
+    def __init__(self, raw_product_list: list, company: str, store_name: str, store_id: str, state: str, timestamp: datetime):
+        super().__init__(raw_product_list, company, store_name, store_id, state, timestamp)
 
-    for product in raw_product_list:
-        if not product:
-            continue
-
+    def _transform_product(self, product: dict) -> dict:
+        """
+        Transforms a single raw Woolworths product into the standardized schema.
+        """
         attrs = product.get('AdditionalAttributes', {}) or {}
         rating_info = product.get('Rating', {}) or {}
         stockcode = product.get('Stockcode')
@@ -97,33 +93,4 @@ def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: st
             "rating_average": rating_info.get('Average'),
             "rating_count": rating_info.get('ReviewCount'),
         }
-        cleaned_products.append(clean_product)
-
-    # --- Final generic cleaning and normalization ---
-    final_products = []
-    for p in cleaned_products:
-        normalizer = ProductNormalizer(p)
-        p['sizes'] = normalizer.get_raw_sizes()
-        p['normalized_name_brand_size'] = normalizer.get_normalized_string()
-        p['barcode'] = normalizer.get_cleaned_barcode()
-
-        # Add normalized price key
-        price_normalizer = PriceNormalizer()
-        p['normalized_key'] = price_normalizer.get_normalized_key(
-            product_id=p.get('product_id_store'), 
-            store_id=store_id, 
-            price=p.get('price_current'), 
-            date=timestamp.date().isoformat()
-        )
-        p['scraped_date'] = timestamp.date().isoformat()
-
-        final_products.append(p)
-    
-    return wrap_cleaned_products(
-        products=final_products,
-        company=company,
-        store_name=store_name,
-        store_id=store_id,
-        state=state,
-        timestamp=timestamp
-    )
+        return clean_product
