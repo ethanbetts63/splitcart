@@ -3,7 +3,7 @@ import html
 import re
 from datetime import datetime
 from api.scrapers.base_store_scraper import BaseStoreScraper
-from api.utils.shop_scraping_utils.clean_raw_store_data_iga import clean_raw_store_data_iga
+from api.utils.shop_scraping_utils.StoreCleanerIga import StoreCleanerIga
 import requests
 
 class StoreScraperIga(BaseStoreScraper):
@@ -65,7 +65,8 @@ class StoreScraperIga(BaseStoreScraper):
 
     def clean_raw_data(self, raw_data: dict) -> dict:
         """Cleans the raw IGA store data."""
-        return clean_raw_store_data_iga(raw_data, self.company, datetime.now())
+        cleaner = StoreCleanerIga(raw_data, self.company, datetime.now())
+        return cleaner.clean()
 
     def get_item_type(self) -> str:
         return "ID"

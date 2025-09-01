@@ -2,7 +2,7 @@ import random
 import sys
 from datetime import datetime
 from api.scrapers.base_store_scraper import BaseStoreScraper
-from api.utils.shop_scraping_utils.clean_raw_store_data_aldi import clean_raw_store_data_aldi
+from api.utils.shop_scraping_utils.StoreCleanerAldi import StoreCleanerAldi
 
 import requests
 
@@ -54,7 +54,8 @@ class StoreScraperAldi(BaseStoreScraper):
 
     def clean_raw_data(self, raw_data: dict) -> dict:
         """Cleans the raw ALDI store data."""
-        return clean_raw_store_data_aldi(raw_data, self.company, datetime.now())
+        cleaner = StoreCleanerAldi(raw_data, self.company, datetime.now())
+        return cleaner.clean()
 
     def get_item_type(self) -> str:
         return "Coords"

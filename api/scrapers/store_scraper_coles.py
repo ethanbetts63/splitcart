@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from api.scrapers.base_store_scraper import BaseStoreScraper
-from api.utils.shop_scraping_utils.clean_raw_store_data_coles import clean_raw_store_data_coles
+from api.utils.shop_scraping_utils.StoreCleanerColes import StoreCleanerColes
 from api.utils.shop_scraping_utils.drange import drange
 from api.utils.shop_scraping_utils.get_graphql_query import get_graphql_query
 
@@ -100,7 +100,8 @@ class StoreScraperColes(BaseStoreScraper):
     def clean_raw_data(self, raw_data: dict) -> dict:
         """Cleans the raw store data dictionary from the API."""
         store_details = raw_data.get('store', {})
-        return clean_raw_store_data_coles(store_details, self.company, datetime.now())
+        cleaner = StoreCleanerColes(store_details, self.company, datetime.now())
+        return cleaner.clean()
 
     def cleanup(self):
         """Removes the progress file on successful completion."""

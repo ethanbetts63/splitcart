@@ -1,7 +1,7 @@
 import random
 from datetime import datetime
 from api.scrapers.base_store_scraper import BaseStoreScraper
-from api.utils.shop_scraping_utils.clean_raw_store_data_woolworths import clean_raw_store_data_woolworths
+from api.utils.shop_scraping_utils.StoreCleanerWoolworths import StoreCleanerWoolworths
 
 import requests
 
@@ -54,7 +54,8 @@ class StoreScraperWoolworths1(BaseStoreScraper):
 
     def clean_raw_data(self, raw_data: dict) -> dict:
         """Cleans the raw Woolworths store data."""
-        return clean_raw_store_data_woolworths(raw_data, self.company, datetime.now())
+        cleaner = StoreCleanerWoolworths(raw_data, self.company, datetime.now())
+        return cleaner.clean()
 
     def get_item_type(self) -> str:
         return "Coords"
