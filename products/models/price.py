@@ -1,6 +1,6 @@
+import datetime
 from django.db import models
 from api.utils.price_normalizer import PriceNormalizer
-from datetime import datetime
 
 class Price(models.Model):
     """
@@ -72,7 +72,7 @@ class Price(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        pass
+        ordering = ['-scraped_date']
 
     def __str__(self):
         return f"{self.product.name} at {self.store.store_name} for ${self.price} on {self.scraped_date}"
