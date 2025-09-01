@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 from django.utils.text import slugify
 from api.scrapers.base_product_scraper import BaseProductScraper
-from api.utils.scraper_utils.clean_raw_data_woolworths import clean_raw_data_woolworths
+from api.utils.scraper_utils.DataCleanerWoolworths import DataCleanerWoolworths
 from api.utils.scraper_utils.jsonl_writer import JsonlWriter
 
 class ProductScraperWoolworths(BaseProductScraper):
@@ -91,7 +91,7 @@ class ProductScraperWoolworths(BaseProductScraper):
         """
         Cleans the raw Woolworths product data.
         """
-        return clean_raw_data_woolworths(
+        cleaner = DataCleanerWoolworths(
             raw_product_list=raw_data,
             company=self.company,
             store_id=self.store_id,
@@ -99,3 +99,4 @@ class ProductScraperWoolworths(BaseProductScraper):
             state=self.state,
             timestamp=datetime.now()
         )
+        return cleaner.clean_data()

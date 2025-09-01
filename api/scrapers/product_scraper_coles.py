@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from api.scrapers.base_product_scraper import BaseProductScraper
-from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
+from api.utils.scraper_utils.DataCleanerColes import DataCleanerColes
 from api.utils.scraper_utils.jsonl_writer import JsonlWriter
 from api.scrapers.barcode_scraper_coles import ColesBarcodeScraper
 
@@ -125,7 +125,7 @@ class ColesScraper(BaseProductScraper):
     def clean_raw_data(self, raw_data: list) -> dict:
         """Cleans the raw Coles product data."""
         from datetime import datetime
-        return clean_raw_data_coles(
+        cleaner = DataCleanerColes(
             raw_product_list=raw_data,
             company=self.company,
             store_id=self.store_id,
@@ -133,6 +133,7 @@ class ColesScraper(BaseProductScraper):
             state=self.state,
             timestamp=datetime.now()
         )
+        return cleaner.clean_data()
 
     def post_scrape_enrichment(self):
         """Enriches the scraped data with barcode information."""

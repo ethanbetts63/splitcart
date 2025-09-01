@@ -6,7 +6,7 @@ import uuid
 from datetime import datetime
 from django.utils.text import slugify
 from api.scrapers.base_product_scraper import BaseProductScraper
-from api.utils.scraper_utils.clean_raw_data_iga import clean_raw_data_iga
+from api.utils.scraper_utils.DataCleanerIga import DataCleanerIga
 from api.utils.scraper_utils.get_iga_categories import get_iga_categories
 from api.utils.scraper_utils.jsonl_writer import JsonlWriter
 
@@ -96,7 +96,7 @@ class IgaScraper(BaseProductScraper):
         """
         Cleans the raw IGA product data.
         """
-        return clean_raw_data_iga(
+        cleaner = DataCleanerIga(
             raw_product_list=raw_data,
             company=self.company,
             store_id=self.store_id,
@@ -104,3 +104,4 @@ class IgaScraper(BaseProductScraper):
             state=self.state,
             timestamp=datetime.now()
         )
+        return cleaner.clean_data()

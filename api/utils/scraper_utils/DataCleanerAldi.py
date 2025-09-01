@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-from .BaseDataCleaner import BaseDataCleaner
+from api.utils.scraper_utils.BaseDataCleaner import BaseDataCleaner
 
 class DataCleanerAldi(BaseDataCleaner):
     """

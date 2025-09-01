@@ -4,7 +4,7 @@ import random
 from datetime import datetime
 from django.utils.text import slugify
 from api.scrapers.base_product_scraper import BaseProductScraper
-from api.utils.scraper_utils.clean_raw_data_aldi import clean_raw_data_aldi
+from api.utils.scraper_utils.DataCleanerAldi import DataCleanerAldi
 from api.utils.scraper_utils.get_aldi_categories import get_aldi_categories
 from api.utils.scraper_utils.jsonl_writer import JsonlWriter
 
@@ -83,7 +83,7 @@ class ProductScraperAldi(BaseProductScraper):
         Cleans the raw ALDI product data.
         """
         effective_store_name = self.store_name if self.store_name else f"ALDI Store {self.store_id}"
-        return clean_raw_data_aldi(
+        cleaner = DataCleanerAldi(
             raw_product_list=raw_data,
             company=self.company,
             store_name=effective_store_name,
@@ -91,6 +91,7 @@ class ProductScraperAldi(BaseProductScraper):
             state=self.state,
             timestamp=datetime.now()
         )
+        return cleaner.clean_data()
 
     def post_scrape_enrichment(self):
         """
