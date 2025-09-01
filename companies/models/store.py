@@ -1,6 +1,6 @@
 from django.db import models
-from .company import Company
-from .division import Division
+from companies.models.company import Company
+from companies.models.division import Division
 
 class Store(models.Model):
     """
