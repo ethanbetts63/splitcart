@@ -7,36 +7,6 @@ easier to maintain.
 Dot notation is used to access nested fields in the raw JSON data.
 """
 
-# --- Standardized Internal Fields ---
-# {
-#     "product_id_store": str,
-#     "name": str,
-#     "brand": str,
-#     "barcode": str,
-#     "description": str,
-#     "ingredients": str,
-#     "allergens": str,
-#     "country_of_origin": str,
-#     "package_size": str,
-#     "image_url": str,
-#     "url": str,
-#     "category_path": list,
-#
-#     # Price related fields
-#     "price_current": float,
-#     "price_was": float,
-#     "per_unit_price_string": str, # e.g., "$1.68 per 100 g"
-#
-#     # The following are calculated by the BaseDataCleaner, not mapped directly
-#     # "is_on_special": bool,
-#     # "price_save_amount": float,
-#     # "sizes": list,
-#     # "normalized_name_brand_size": str,
-#     # "normalized_key": str,
-#     # "scraped_date": str,
-# }
-# ------------------------------------
-
 
 COLES_FIELD_MAP = {
     # Standardized Field : Raw Field from Coles API
@@ -54,6 +24,13 @@ COLES_FIELD_MAP = {
     "price_current": "pricing.now",
     "price_was": "pricing.was",
     "per_unit_price_string": "pricing.comparable",
+    "per_unit_price_value": "pricing.unit.price",
+    "per_unit_price_measure": "pricing.unit.ofMeasureUnits",
+
+    # Ratings and Health Stars
+    "average_rating": None,
+    "review_count": None,
+    "health_star_rating": None,
 }
 
 WOOLWORTHS_FIELD_MAP = {
@@ -75,6 +52,13 @@ WOOLWORTHS_FIELD_MAP = {
     "price_current": "Price",
     "price_was": "WasPrice",
     "per_unit_price_string": "CupString",
+    "per_unit_price_value": "InstoreCupPrice",
+    "per_unit_price_measure": "CupMeasure",
+
+    # Ratings and Health Stars
+    "average_rating": "Rating.Average",
+    "review_count": "Rating.ReviewCount",
+    "health_star_rating": "AdditionalAttributes.healthstarrating",
 }
 
 IGA_FIELD_MAP = {
@@ -96,6 +80,13 @@ IGA_FIELD_MAP = {
     "price_current": "priceNumeric",
     "price_was": None, # Not available in the provided IGA data
     "per_unit_price_string": "pricePerUnit",
+    "per_unit_price_value": None,
+    "per_unit_price_measure": None,
+
+    # Ratings and Health Stars
+    "average_rating": None,
+    "review_count": None,
+    "health_star_rating": None,
 }
 
 ALDI_FIELD_MAP = {
@@ -117,4 +108,11 @@ ALDI_FIELD_MAP = {
     "price_current": "price.amount", # Note: in cents, needs division by 100
     "price_was": "price.wasPriceDisplay", # Note: seems to be a string like "$x.xx"
     "per_unit_price_string": "price.comparisonDisplay",
+    "per_unit_price_value": "price.comparison", # Note: in cents
+    "per_unit_price_measure": None, # Must be parsed from comparisonDisplay
+
+    # Ratings and Health Stars
+    "average_rating": None,
+    "review_count": None,
+    "health_star_rating": None,
 }
