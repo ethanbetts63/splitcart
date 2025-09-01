@@ -1,0 +1,105 @@
+ALDI: 
+        {
+            "name": "Cooked Peeled Prawn Cutlets 500g",
+            "brand": "OCEAN ROYALE",
+            "sizes": [
+                "0.5kg",
+                "500g"
+            ],
+            "image_url": "https://dm.apac.cms.aldi.cx/is/image/aldiprodapac/product/jpg/scaleWidth/{width}/c7664fa7-cf8f-4189-a139-d52a5eff7974/{slug}",
+            "normalized_name_brand_size": "05kg500gcookedcutletsoceanpeeledprawnroyale",
+            "price_history": [
+                {
+                    "sku": "000000000000332441",
+                    "price": "12.99",
+                    "is_on_special": false,
+                    "scraped_at": "2025-08-30T15:01:24.504041+00:00",
+                    "url": "https://www.aldi.com.au/product/ocean-royale-frozen-cooked-peeled-prawn-cutlets-500g-000000000000332441"
+                }
+            ]
+        },
+
+IGA: 
+        {
+            "name": "Carnation Lite Cooking Cream",
+            "brand": "Nestle",
+            "sizes": [
+                "300ml"
+            ],
+            "description": "<br />Allergen may be present: Soy, Milk",
+            "image_url": "https://www.coles.com.au/3/3989624.jpg",
+            "ingredients": "Skim Milk, Cream, Thickeners (1442, 1450), Water, Emulsifier (Soy Lecithin). Contains Milk & Soy",
+            "barcode": "9300605138711",
+            "normalized_name_brand_size": "300mlcarnationcookingcreamlitenestle",
+            "price_history": [
+                {
+                    "sku": "83139",
+                    "price": "3.50",
+                    "is_on_special": false,
+                    "scraped_at": "2025-08-30T15:02:07.695221+00:00",
+                    "url": "https://www.coles.com.au/product/carnation-lite-cooking-cream-3989624"
+                }
+            ]
+        },
+
+WOOLWORTHS: 
+ {
+            "name": "Skinny Legging Mix Colour Medium/large",
+            "brand": "Bonds",
+            "sizes": [
+                "1pk"
+            ],
+            "description": "BONDS SKINNY LEGGING MIX COLOUR:MEDIUM/LARGE:.:1 PACK",
+            "image_url": "https://www.coles.com.au/1/1721926.jpg",
+            "barcode": "9313022887957",
+            "normalized_name_brand_size": "1pkbondscolourleggingmediumlargemixskinny",
+            "price_history": [
+                {
+                    "sku": "109300",
+                    "price": "22.00",
+                    "is_on_special": false,
+                    "scraped_at": "2025-08-30T15:04:48.089385+00:00",
+                    "url": "https://www.coles.com.au/product/skinny-legging-mix-colour-mediumlarge-1721926"
+                }
+            ]
+        },
+
+COLES: 
+        {
+            "name": "Rock Solid Wax",
+            "brand": "Dominate",
+            "sizes": [
+                "95g"
+            ],
+            "description": "DOMINATE ROCK SOLID WAX 95G",
+            "image_url": "https://www.coles.com.au/4/4261061.jpg",
+            "barcode": "9421008706519",
+            "normalized_name_brand_size": "95gdominaterocksolidwax",
+            "price_history": [
+                {
+                    "sku": "4261061",
+                    "price": "13.00",
+                    "is_on_special": false,
+                    "scraped_at": "2025-08-30T15:01:36.575510+00:00",
+                    "url": "https://www.coles.com.au/product/rock-solid-wax-4261061"
+                },
+                {
+                    "sku": "4261061",
+                    "price": "13.00",
+                    "is_on_special": false,
+                    "scraped_at": "2025-08-30T15:01:32.790692+00:00",
+                    "url": "https://www.coles.com.au/product/rock-solid-wax-4261061"
+                }
+            ]
+        },
+
+
+
+
+C:\Users\ethan\coding\splitcart\products\models\product.py
+C:\Users\ethan\coding\splitcart\products\models\price.py
+
+C:\Users\ethan\coding\splitcart\raw_product_comparison_aldi.txt
+C:\Users\ethan\coding\splitcart\raw_product_comparison_coles.txt
+C:\Users\ethan\coding\splitcart\raw_product_comparison_iga.txt
+C:\Users\ethan\coding\splitcart\raw_product_comparison_woolworths.txt

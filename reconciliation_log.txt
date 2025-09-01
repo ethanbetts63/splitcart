@@ -14,3 +14,253 @@
 ----------------------------------------------------
 
 --- Reconciliation Run Started at 2025-09-01T20:17:45.611009 ---
+
+--- Reconciliation Run Started at 2025-09-01T20:40:25.811125 ---
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Lindor Milk Chocolate Block | Brand: Lindt | Size: 100g
+  [CANONICAL] Name: Lindor Tablet Milk Block Chocolate | Brand: Lindt | Size: 100g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Libra Invisible Super Pads With Wings | Brand: Libra | Size: 10each Each
+  [CANONICAL] Name: Invisible Pads Super Wing | Brand: Libra | Size: 10 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Edgell Diced Capsicum | Brand: Edgell | Size: 125gram Each
+  [CANONICAL] Name: Australian Grown Diced Capsicum | Brand: Edgell | Size: 125g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: McKenzie's Cream of Tartar | Brand: McKenzie's | Size: 125gram Each
+  [CANONICAL] Name: Cream Of Tartar | Brand: McKenzie's | Size: 125g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Tena Pads Extra Standard Length | Brand: Tena | Size: 12each Each
+  [CANONICAL] Name: Extra Standard Length Incontinence Pads | Brand: Tena | Size: 12 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Movietime Popcorn Bag Multi Coloured | Brand: Movietime | Size: 150gram Each
+  [CANONICAL] Name: Multi Coloured Popcorn | Brand: Movietime | Size: 150g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: In A Biskit Chicken Crackers 160g | Brand: IN A BISKIT | Size: 160 g
+  [CANONICAL] Name: Biscuits Chicken Flavour | Brand: In A Biskit | Size: 160g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Cheddar Cheese Crackers 160g | Brand: SMITH'S | Size: 160 g
+  [CANONICAL] Name: Crackers Cheddar | Brand: Smith's | Size: 160g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Decor Tellfresh Storer Oblong | Brand: Decor | Size: 1each Each
+  [CANONICAL] Name: Decor Tellfresh Container | Brand: Decor Tellfresh Container | Size: 1LITRE
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Birds Eye Snap Frozen Garden Mix Carrot Beans Brocoli Cauli Capsicum | Brand: Birds Eye | Size: 1kilogram Each
+  [CANONICAL] Name: Snap Frozen Mixed Garden Vegetables | Brand: Birds Eye | Size: 1kg
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Steggles Chicken Tenders Sweet Chilli | Brand: Steggles | Size: 1kilogram Each
+  [CANONICAL] Name: Sweet Chilli Tenders | Brand: Steggles | Size: 1kg
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dairy Farmers Heart Active Milk | Brand: Dairy Farmers | Size: 1litre Each
+  [CANONICAL] Name: Heart Active Milk | Brand: Dairy Farmers | Size: 1L
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Vitasoy Almond Milky | Brand: Vitasoy | Size: 1litre Each
+  [CANONICAL] Name: Almond Milky | Brand: Vitasoy | Size: 1L
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Vitasoy Oat Milky | Brand: Vitasoy | Size: 1litre Each
+  [CANONICAL] Name: Oat Milky | Brand: Vitasoy | Size: 1L
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Sanpellegrino Mineral Water Sparkling | Brand: Sanpellegrino | Size: 1litre Each
+  [CANONICAL] Name: Pet Sparkling Mineral Water Bottle | Brand: Sanpellegrino | Size: 1L
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Balla Stixx Rainbow 200g | Brand: HARIBO | Size: 200 g
+  [CANONICAL] Name: Haribo Confectionery Balla Stixx Sour Rainbow | Brand: Haribo | Size: 200gram Each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Balla Stixx Strawberry 200g | Brand: HARIBO | Size: 200 g
+  [CANONICAL] Name: Haribo Confectionery Balla Stixx Strawberry | Brand: Haribo | Size: 200gram Each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Parmigiano Reggiano | Brand: Zanetti | Size: 200g
+  [CANONICAL] Name: Parmigiano Reggiano Pdo | Brand: Zanetti | Size: 200g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dry Shampoo Blush 200ml | Brand: BATISTE | Size: 200 ml
+  [CANONICAL] Name: Floral & Flirty Blush Dry Shampoo | Brand: Batiste | Size: 200mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Rexona Women Advanced Protection Antiperspirant Shower Fresh | Brand: Rexona | Size: 220millilitre Each
+  [CANONICAL] Name: Women Deodorant 72hr Advanced Aerosol Shower Fresh | Brand: Rexona | Size: 220mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Cough Cold & Flu Tablets 24 Pack | Brand: EASEACOLD | Size: None
+  [CANONICAL] Name: Cough Cold & Flu Day & Night Capsules | Brand: Ease A Cold | Size: 24 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Angas Park Prunes Pitted | Brand: Angas Park | Size: 250g
+  [CANONICAL] Name: Australian Pitted Prunes | Brand: Angas Park | Size: 250g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Monte Carlo Cream Biscuits 250g | Brand: ARNOTT'S | Size: 250 g
+  [CANONICAL] Name: Monte Carlo Biscuits | Brand: Arnott's | Size: 250g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Lavazza Barista Intenso Ground Coffee  | Brand: Lavazza | Size: 250gram Each
+  [CANONICAL] Name: Barista Intenso Ground Coffee | Brand: Lavazza | Size: 250g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Ben's Original Original Tomato & Basil Microwave Rice Pouch | Brand: Ben's Original | Size: 250gram Each
+  [CANONICAL] Name: Tomato & Basil Rice Pouch | Brand: Ben's Original | Size: 250g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Jols Sugar Free Pastilles Forest Berries | Brand: Jols | Size: 25gram Each
+  [CANONICAL] Name: Refreshing Pastilles Forest Berries | Brand: Jols | Size: 23g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Nestlé Carnation Lite Cooking Cream | Brand: Nestlé | Size: 300millilitre Each
+  [CANONICAL] Name: Carnation Lite Cooking Cream | Brand: Nestle | Size: 300mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: McKenzie's Chickpea Flour | Brand: McKenzie's | Size: 330gram Each
+  [CANONICAL] Name: Chick Pea Flour Resealable | Brand: Mckenzie's | Size: 330g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Bega Peanut Butter Crunchy | Brand: Bega | Size: 375gram Each
+  [CANONICAL] Name: Crunchy Peanut Butter | Brand: Bega | Size: 375g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Steggles Chicken Dino Snacks Tempura | Brand: Steggles | Size: 400gram Each
+  [CANONICAL] Name: Frozen Tempura Chicken Breast Dino Snacks | Brand: Steggles | Size: 400g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Campbell's Condensed Soup Vegetable & Beef | Brand: Campbell's | Size: 420g
+  [CANONICAL] Name: Condensed Soup Can Vegetable Beef | Brand: Campbell's | Size: 420g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Campbell's Condensed Soup Cream of Mushroom | Brand: Campbell's | Size: 420g
+  [CANONICAL] Name: Condensed Soup Can Cream Of Mushroom | Brand: Campbell's | Size: 420g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Sirena Tuna In Springwater | Brand: Sirena | Size: 425gram Each
+  [CANONICAL] Name: Tuna In Springwater | Brand: Sirena | Size: 425g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Quest Cups Peanut Butter | Brand: Quest | Size: 42gram Each
+  [CANONICAL] Name: Peanut Butter Cups | Brand: Quest | Size: 42g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Campbell's Country Ladle Soup Minestrone | Brand: Campbell's | Size: 495g
+  [CANONICAL] Name: Country Ladle Soup Can Minestrone | Brand: Campbell's | Size: 495g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: V Refresh Energy Drink Green Apple Lemonade | Brand: V Energy | Size: 4each Each
+  [CANONICAL] Name: Energy Drink Green Apple 4x250ml | Brand: V | Size: 4 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Bulla Creamy Classics Ice Cream Sandwich Vanilla | Brand: Bulla | Size: 4each Each
+  [CANONICAL] Name: Creamy Classics Vanilla Sandwich 4 Pack | Brand: Bulla | Size: 560mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Extra White Spearmint Chewing Gum Sugar Free | Brand: Extra | Size: 4each Each
+  [CANONICAL] Name: Spearmint Sugar Free Chewing Gum 4x14g | Brand: Extra | Size: 56g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Nestlé KitKat Ice Cream Stick | Brand: Nestlé | Size: 4each Each
+  [CANONICAL] Name: Kitkat Ice Cream 4 Pack | Brand: Nestle | Size: 360mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: SPC Diced Peaches In Juice | Brand: SPC | Size: 4each Each
+  [CANONICAL] Name: Aussie Diced Peaches in Juice 120g | Brand: SPC | Size: 4 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: CSR Caster Sugar | Brand: CSR | Size: 500gram Each
+  [CANONICAL] Name: Caster Sugar | Brand: CSR | Size: 500g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: CSR White Sugar | Brand: CSR | Size: 500gram Each
+  [CANONICAL] Name: White Sugar | Brand: CSR | Size: 500g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Flora Margarine Spread Light | Brand: Flora | Size: 500gram Each
+  [CANONICAL] Name: Margarine Spread Light | Brand: Flora | Size: 500g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Mother Black Energy Drink | Brand: Mother | Size: 500millilitre Each
+  [CANONICAL] Name: Original Energy Drink Can | Brand: Mother | Size: 500mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dare Iced Coffee Double Espresso | Brand: Dare | Size: 500millilitre Each
+  [CANONICAL] Name: Double Espresso Iced Coffee Flavoured Milk | Brand: Dare | Size: 500mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dare Iced Coffee Espresso | Brand: Dare | Size: 500millilitre Each
+  [CANONICAL] Name: Expresso Iced Coffee Flavoured Milk | Brand: Dare | Size: 500mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dare Iced Coffee Triple Espresso | Brand: Dare | Size: 500millilitre Each
+  [CANONICAL] Name: Triple Espresso Robusta & Arabica Iced Coffee | Brand: Dare | Size: 500mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Mother Energy Sugar Free Drink | Brand: Mother | Size: 500millilitre Each
+  [CANONICAL] Name: Sugar Free Energy Drink Can | Brand: Mother | Size: 500mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Monster Energy Drink Pipeline Punch | Brand: Monster | Size: 500millilitre Each
+  [CANONICAL] Name: Pipeline Punch Can | Brand: Monster | Size: 500mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Toblerone Milk Chocolate Bar | Brand: Toblerone | Size: 50gram Each
+  [CANONICAL] Name: Milk Chocolate Bar | Brand: Toblerone | Size: 50g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Marshmallows Pink & White 520g | Brand: PASCALL | Size: 520 g
+  [CANONICAL] Name: Pink And White Marshmallows Jumbo Pack | Brand: Pascall | Size: 520g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Barilla Spaghetti Pasta No 5 | Brand: Barilla | Size: 500gram Each
+  [CANONICAL] Name: Spaghetti No 5 | Brand: Barilla | Size: 500g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Neutrogena Norwegian Formula Hand Cream | Brand: Neutrogena | Size: 56gram Each
+  [CANONICAL] Name: Norwegian Formula Hand Cream | Brand: Neutrogena | Size: 56g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Old El Paso Burrito Tortillas Jumbo | Brand: Old El Paso | Size: 6each Each
+  [CANONICAL] Name: Jumbo Tortillas Burrito 6 Pack | Brand: Old El Paso | Size: 450g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Tip Top English Muffins Original | Brand: Tip Top | Size: 6each Each
+  [CANONICAL] Name: Muffins English Original | Brand: Tip Top | Size: 400g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: White King Toilet Gel Lemon | Brand: White King | Size: 700millilitre Each
+  [CANONICAL] Name: Lemon Power Toilet Cleaner Gel | Brand: White King | Size: 700mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: CLR Calcium Limescale & Rust Multipurpose Cleaner | Brand: CLR | Size: 750millilitre Each
+  [CANONICAL] Name: Calcium Lime Rust All Purpose Cleaner | Brand: CLR | Size: 750mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dare Iced Coffee Double Espresso | Brand: Dare | Size: 750millilitre Each
+  [CANONICAL] Name: Double Espresso Flavoured Milk | Brand: Dare | Size: 750mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dare Iced Coffee Espresso | Brand: Dare | Size: 750millilitre Each
+  [CANONICAL] Name: Espresso Iced Coffee Flavoured Milk | Brand: Dare | Size: 750mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Cancer Council Face Day Wear Moisturiser Matte Invisible SPF50+ | Brand: Cancer Council | Size: 75millilitre Each
+  [CANONICAL] Name: Face Day Wear Matte Invisible Spf 50+ | Brand: Cancer Council | Size: 75mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Pico Organic Chocolate Salted Caramel | Brand: Pico | Size: 80gram Each
+  [CANONICAL] Name: Salted Caramel Chocolate | Brand: Pico | Size: 80g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Pico Organic Chocolate Mint Crisp | Brand: Pico | Size: 80gram Each
+  [CANONICAL] Name: Vegan Organic Chocolate Mint Crisp | Brand: Pico | Size: 80g
+----------------------------------------------------
