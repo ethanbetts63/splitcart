@@ -5,12 +5,9 @@ from api.utils.management_utils.synonym_tool import (
     load_existing_synonyms,
     load_non_matches,
     load_unsure_matches,
-    load_rule_based_matches,
-    read_brand_matches,
     append_synonym,
     append_non_match,
     append_unsure_match,
-    append_rule_based_match,
 )
 from api.utils.management_utils.generated_synonym_reader import read_generated_synonyms
 from products.models import Product
