@@ -77,7 +77,7 @@ class UnitOfWork:
                 # Stage 2: Create all prices (for both new and existing products)
                 if self.prices_to_create:
                     self.command.stdout.write(f"  - Creating {len(self.prices_to_create)} new price records.")
-                    Price.objects.bulk_create(self.prices_to_create, batch_size=500)
+                    Price.objects.bulk_create(self.prices_to_create, batch_size=500, ignore_conflicts=True)
 
                 # Stage 3: Process categories now that all products exist
                 self.category_manager.process_categories(consolidated_data, product_cache, store_obj)
@@ -96,4 +96,5 @@ class UnitOfWork:
             return True
         except Exception as e:
             self.command.stderr.write(self.command.style.ERROR(f'An error occurred during commit: {e}'))
+            return False.command.stderr.write(self.command.style.ERROR(f'An error occurred during commit: {e}'))
             return False

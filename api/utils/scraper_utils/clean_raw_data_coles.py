@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.utils.text import slugify
-from api.utils.product_normalizer import ProductNormalizer
+from api.utils.normalizer import ProductNormalizer
+from api.utils.price_normalizer import PriceNormalizer
 from .wrap_cleaned_products import wrap_cleaned_products
 
 
@@ -106,6 +107,17 @@ def clean_raw_data_coles(raw_product_list: list, company: str, store_id: str, st
         normalizer = ProductNormalizer(p)
         p['sizes'] = normalizer.get_raw_sizes()
         p['normalized_name_brand_size'] = normalizer.get_normalized_string()
+        
+        # Add normalized price key
+        price_normalizer = PriceNormalizer()
+        p['normalized_key'] = price_normalizer.get_normalized_key(
+            product_id=p.get('product_id_store'), 
+            store_id=store_id, 
+            price=p.get('price_current'), 
+            date=timestamp.date().isoformat()
+        )
+        p['scraped_date'] = timestamp.date().isoformat()
+
         final_products.append(p)
     
     return wrap_cleaned_products(
