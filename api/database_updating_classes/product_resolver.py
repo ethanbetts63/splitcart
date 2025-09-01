@@ -49,7 +49,7 @@ class ProductResolver:
         self.command.stdout.write(f"  - Built cache for {len(self.store_product_id_cache)} contextual store-specific product IDs.")
 
         # Cache 5: Existing Prices (contextual)
-        self.price_cache = {(p.product_id, p.store_id, p.scraped_at.date()) for p in relevant_prices}
+        self.price_cache = {(p.product_id, p.store_id, p.scraped_date) for p in relevant_prices}
         self.command.stdout.write(f"  - Built cache for {len(self.price_cache)} contextual existing prices.")
 
         self.command.stdout.write("--- Caches built successfully ---")
