@@ -10,7 +10,7 @@ class CategoryManager:
         self.command = command
         self.category_cache = {c.name: c for c in Category.objects.all()}
 
-    def process_categories(self, consolidated_data, product_cache):
+    def process_categories(self, consolidated_data, product_cache, store_obj):
         """
         The main method to orchestrate category processing.
         """
