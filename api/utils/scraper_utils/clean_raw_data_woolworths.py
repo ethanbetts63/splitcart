@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from api.utils.normalizer import ProductNormalizer
+from api.utils.product_normalizer import ProductNormalizer
 from .wrap_cleaned_products import wrap_cleaned_products
 
 def clean_raw_data_woolworths(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, timestamp: datetime) -> dict:

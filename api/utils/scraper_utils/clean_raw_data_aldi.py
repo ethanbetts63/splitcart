@@ -1,6 +1,6 @@
 from datetime import datetime
 import re
-from api.utils.normalizer import ProductNormalizer
+from api.utils.product_normalizer import ProductNormalizer
 from .wrap_cleaned_products import wrap_cleaned_products
 
 

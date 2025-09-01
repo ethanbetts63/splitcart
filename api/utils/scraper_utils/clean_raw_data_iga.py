@@ -1,6 +1,6 @@
 from datetime import datetime
 import re
-from api.utils.normalizer import ProductNormalizer
+from api.utils.product_normalizer import ProductNormalizer
 from api.utils.scraper_utils.wrap_cleaned_products import wrap_cleaned_products
 
 def clean_raw_data_iga(raw_product_list: list, company: str, store_id: str, store_name: str, state: str, timestamp: datetime) -> dict:

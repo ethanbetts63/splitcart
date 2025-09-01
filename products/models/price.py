@@ -1,4 +1,6 @@
 from django.db import models
+from api.utils.price_normalizer import PriceNormalizer
+from datetime import datetime
 
 class Price(models.Model):
     """
@@ -55,11 +57,22 @@ class Price(models.Model):
         help_text="Whether this is the latest price record for the product at this store."
     )
     
-    scraped_at = models.DateTimeField(auto_now_add=True)
+    scraped_date = models.DateField(default=datetime.date.today)
     
 
+    def clean(self):
+        super().clean()
+        if self.product_id and self.store_id and self.price and self.scraped_date:
+            self.normalized_key = PriceNormalizer.get_normalized_key(
+                self.product_id, self.store_id, self.price, self.scraped_date.isoformat()
+            )
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
+
     class Meta:
-        ordering = ['-scraped_at']
+        pass
 
     def __str__(self):
-        return f"{self.product.name} at {self.store.store_name} for ${self.price} on {self.scraped_at.date()}"
+        return f"{self.product.name} at {self.store.store_name} for ${self.price} on {self.scraped_date}"

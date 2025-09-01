@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from products.models import Product
-from api.utils.normalizer import ProductNormalizer
+from api.utils.product_normalizer import ProductNormalizer
 import os
 import json
 
