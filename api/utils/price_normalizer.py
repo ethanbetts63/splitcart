@@ -1,4 +1,3 @@
-
 class PriceNormalizer:
     """
     A utility class to generate a normalized key for a price record.
