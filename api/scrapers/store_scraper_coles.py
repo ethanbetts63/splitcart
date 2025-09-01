@@ -1,20 +1,14 @@
 import json
 import time
-import os
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
-
 from api.scrapers.base_store_scraper import BaseStoreScraper
-from api.utils.shop_scraping_utils.coles.clean_raw_store_data_coles import clean_raw_store_data_coles
-from api.utils.shop_scraping_utils.coles.drange import drange
-from api.utils.shop_scraping_utils.coles.get_graphql_query import get_graphql_query
-
-# This refactored scraper is a direct, class-based translation of the original
-# find_coles_stores.py script. It avoids using the base class's run loop
-# to maintain the exact logic that is known to work for the sensitive Coles API.
+from api.utils.shop_scraping_utils.clean_raw_store_data_coles import clean_raw_store_data_coles
+from api.utils.shop_scraping_utils.drange import drange
+from api.utils.shop_scraping_utils.get_graphql_query import get_graphql_query
 
 class StoreScraperColes(BaseStoreScraper):
     """A class to find Coles stores, wrapping the original, successful script logic."""

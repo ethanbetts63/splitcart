@@ -17,7 +17,7 @@ The scraping process is initiated by the `scrape` management command, which depl
     - Instantiates and runs the appropriate scraper for each store.
     - Updates the `last_scraped_products` timestamp for the store after a successful scrape.
 
-### 2. `BaseScraper` Abstract Class
+### 2. `BaseProductScraper` Abstract Class
 
 - **Purpose:** Provides a common structure and workflow for all company-specific scrapers.
 - **Key Methods:**
@@ -31,11 +31,11 @@ The scraping process is initiated by the `scrape` management command, which depl
 ### 3. Scraper Implementations
 
 - **`WoolworthsScraper`:**
-    - Inherits from `BaseScraper`.
+    - Inherits from `BaseProductScraper`.
     - It is API-based, directly calling the Woolworths API to get product data in JSON format.
 
 - **`scrape_and_save_coles_data` (Coles Scraper):
-    - **Inconsistency:** This scraper is implemented as a function, not a class inheriting from `BaseScraper`.
+    - **Inconsistency:** This scraper is implemented as a function, not a class inheriting from `BaseProductScraper`.
     - **Hybrid Approach:** It uses Selenium to open a browser and obtain session cookies (requiring manual CAPTCHA solving), then uses a `requests` session for the actual scraping.
     - **HTML Scraping:** It extracts data from a JSON object embedded in the HTML of the category pages.
     - **Enrichment:** It has a unique post-scraping step to enrich the data with barcode information.
@@ -54,5 +54,5 @@ The scraping process is initiated by the `scrape` management command, which depl
 
 ## Potential Improvements
 
-- **Refactor Coles Scraper:** The Coles scraper should be refactored into a class that inherits from `BaseScraper` to ensure consistency and better maintainability.
+- **Refactor Coles Scraper:** The Coles scraper should be refactored into a class that inherits from `BaseProductScraper` to ensure consistency and better maintainability.
 - **Automate Coles CAPTCHA:** The manual CAPTCHA solving required for the Coles scraper is a major bottleneck. Investigating automated solutions would significantly improve the scraping process.

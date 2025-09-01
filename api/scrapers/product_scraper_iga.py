@@ -5,12 +5,12 @@ import random
 import uuid
 from datetime import datetime
 from django.utils.text import slugify
-from api.scrapers.base_scraper import BaseScraper
+from api.scrapers.base_product_scraper import BaseProductScraper
 from api.utils.scraper_utils.clean_raw_data_iga import clean_raw_data_iga
 from api.utils.scraper_utils.get_iga_categories import get_iga_categories
 from api.utils.scraper_utils.jsonl_writer import JsonlWriter
 
-class IgaScraper(BaseScraper):
+class IgaScraper(BaseProductScraper):
     """
     A scraper for IGA stores.
     """

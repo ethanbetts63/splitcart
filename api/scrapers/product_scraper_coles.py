@@ -10,14 +10,14 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from api.scrapers.base_scraper import BaseScraper
+from api.scrapers.base_product_scraper import BaseProductScraper
 from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
 from api.utils.scraper_utils.jsonl_writer import JsonlWriter
-from api.scrapers.enrich_coles_barcodes import enrich_coles_file
+from api.scrapers.barcode_scraper_coles import ColesBarcodeScraper
 
-class ColesScraper(BaseScraper):
+class ColesScraper(BaseProductScraper):
     """
-    A scraper for Coles stores, using the BaseScraper class.
+    A scraper for Coles stores, using the BaseProductScraper class.
     """
 
     def __init__(self, command, company: str, store_id: str, store_name: str, state: str, categories_to_fetch: list):
@@ -139,8 +139,12 @@ class ColesScraper(BaseScraper):
         temp_file_path = self.jsonl_writer.temp_file_path
         try:
             self.command.stdout.write(self.command.style.SQL_FIELD(f"--- Handing over {os.path.basename(temp_file_path)} for barcode enrichment ---"))
-            enrich_coles_file(temp_file_path, self.command)
+            
+            # Instantiate and run the barcode scraper directly
+            barcode_scraper = ColesBarcodeScraper(command=self.command, source_file_path=temp_file_path)
+            barcode_scraper.run()
+
             self.command.stdout.write(self.command.style.SUCCESS(f"--- Enrichment complete. Committing {os.path.basename(temp_file_path)} to inbox. ---"))
-        except InterruptedError as e:
-            self.command.stderr.write(self.command.style.ERROR(f"\n{e}"))
+        except Exception as e:
+            self.command.stderr.write(self.command.style.ERROR(f"\nBarcode enrichment failed: {e}"))
             raise e

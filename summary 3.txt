@@ -1,7 +1,7 @@
 Here is a summary of the work completed in this session:
 
 **1. Scraper Refactoring**
-- The Aldi, IGA, and Woolworths scrapers were refactored from standalone functions into modern, class-based scrapers (`AldiScraper`, `IgaScraper`, `WoolworthsScraper`) that inherit from a common `BaseScraper`. This improves code reuse and maintainability.
+- The Aldi, IGA, and Woolworths scrapers were refactored from standalone functions into modern, class-based scrapers (`AldiScraper`, `IgaScraper`, `WoolworthsScraper`) that inherit from a common `BaseProductScraper`. This improves code reuse and maintainability.
 - The main `scrape` management command was updated to use these new classes.
 - A recurring bug (`AttributeError: 'ScraperOutput' object has no attribute 'log_error'`) in the Woolworths scraper was fixed.
 
