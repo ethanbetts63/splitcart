@@ -13,32 +13,30 @@ class DataCleanerIga(BaseDataCleaner):
         """
         Transforms a single raw IGA product into the standardized schema.
         """
-        is_on_special = 'wasWholePrice' in product
-        current_price = None
-        was_price = None
-        save_amount = None
-
-        if is_on_special:
-            was_price = product.get('wasWholePrice')
+        # --- Price Calculation ---
+        was_price_val = product.get('wasWholePrice')
+        current_price_val = None
+        if was_price_val:
             tpr_price_info = product.get('tprPrice', [])
             if tpr_price_info:
-                current_price = tpr_price_info[0].get('wholePrice')
+                current_price_val = tpr_price_info[0].get('wholePrice')
         else:
-            current_price = product.get('wholePrice')
+            current_price_val = product.get('wholePrice')
 
-        if current_price is None:
-            current_price = product.get('priceNumeric')
-        
-        if was_price and current_price:
-            save_amount = round(was_price - current_price, 2)
+        if current_price_val is None:
+            current_price_val = product.get('priceNumeric')
 
+        price_info = self._calculate_price_info(current_price_val, was_price_val)
+
+        # --- Category Hierarchy ---
         category_path = []
         category_hierarchy = product.get('categories', [])
         if category_hierarchy:
             last_category = category_hierarchy[-1]
             breadcrumb = last_category.get('categoryBreadcrumb', '')
             if breadcrumb:
-                category_path = [part.strip().title() for part in breadcrumb.split('/') if part]
+                raw_category_path = [part for part in breadcrumb.split('/') if part]
+                category_path = self._clean_category_path(raw_category_path)
 
         description = product.get('description', '')
         country_of_origin = None
@@ -85,10 +83,7 @@ class DataCleanerIga(BaseDataCleaner):
             "url": None,
             "image_url_main": image_info.get('default'),
             "image_urls_all": image_urls,
-            "price_current": current_price,
-            "price_was": was_price,
-            "is_on_special": is_on_special,
-            "price_save_amount": save_amount,
+            **price_info,
             "promotion_type": product.get('priceSource'),
             "price_unit": price_unit,
             "unit_of_measure": unit_of_measure,

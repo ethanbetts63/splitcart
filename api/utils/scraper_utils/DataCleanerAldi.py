@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-from api.utils.scraper_utils.BaseDataCleaner import BaseDataCleaner
+from .BaseDataCleaner import BaseDataCleaner
 
 class DataCleanerAldi(BaseDataCleaner):
     """
@@ -24,13 +24,15 @@ class DataCleanerAldi(BaseDataCleaner):
         if comparison_price is not None:
             comparison_price /= 100.0
 
-        was_price = price_info.get('wasPriceDisplay') # This seems to be a string, not a number
-        if was_price:
+        was_price_str = price_info.get('wasPriceDisplay')
+        was_price = None
+        if was_price_str:
             try:
-                # Attempt to extract a float from a string like '$5.99'
-                was_price = float(re.sub(r'[^\d.]', '', was_price))
+                was_price = float(re.sub(r'[^\d.]', '', was_price_str))
             except (ValueError, TypeError):
                 was_price = None
+        
+        price_info = self._calculate_price_info(current_price, was_price)
 
         # --- Unit of Measure ---
         unit_of_measure = None
@@ -41,12 +43,8 @@ class DataCleanerAldi(BaseDataCleaner):
                 unit_of_measure = match.group(1).strip()
 
         # --- Category Hierarchy ---
-        category_path = []
-        category_hierarchy = product.get('categories', [])
-        for category in category_hierarchy:
-            name = category.get('name')
-            if name:
-                category_path.append(name.strip().title())
+        raw_category_names = [cat.get('name') for cat in product.get('categories', [])]
+        category_path = self._clean_category_path(raw_category_names)
 
         # --- Image URLs ---
         assets = product.get('assets', []) or []
@@ -72,10 +70,7 @@ class DataCleanerAldi(BaseDataCleaner):
             "image_urls_all": image_urls,
 
             # --- Pricing ---
-            "price_current": current_price,
-            "price_was": was_price,
-            "is_on_special": was_price is not None,
-            "price_save_amount": round(was_price - current_price, 2) if was_price and current_price else None,
+            **price_info,
             "promotion_type": None, # Not available
             "price_unit": comparison_price,
             "unit_of_measure": unit_of_measure,

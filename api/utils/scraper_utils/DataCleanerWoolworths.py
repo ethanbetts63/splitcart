@@ -28,39 +28,41 @@ class DataCleanerWoolworths(BaseDataCleaner):
         if product.get('ImageTag', {}).get('FallbackText'):
             tags.append(product['ImageTag']['FallbackText'])
         
-        category_path = []
-        attrs = product.get('AdditionalAttributes', {}) or {}
-        
+        # --- Price Calculation ---
+        price_info = self._calculate_price_info(product.get('Price'), product.get('WasPrice'))
+
+        # --- Category Hierarchy ---
+        raw_category_path = []
         dept = attrs.get('sapdepartmentname')
         cat = attrs.get('sapcategoryname')
         sub_cat = attrs.get('sapsubcategoryname')
         segment = attrs.get('sapsegmentname')
 
         if dept:
-            category_path.append(dept)
+            raw_category_path.append(dept)
         if cat:
-            category_path.extend([part.strip() for part in cat.split('/')])
+            raw_category_path.extend([part.strip() for part in cat.split('/')])
         if sub_cat:
-            category_path.append(sub_cat)
+            raw_category_path.append(sub_cat)
         if segment:
-            category_path.append(segment)
+            raw_category_path.append(segment)
 
-        if not category_path:
+        if not raw_category_path:
             try:
                 pies_dept = json.loads(attrs.get('piesdepartmentnamesjson', '[]'))
                 pies_cat = json.loads(attrs.get('piescategorynamesjson', '[]'))
                 pies_sub_cat = json.loads(attrs.get('piessubcategorynamesjson', '[]'))
                 
                 if pies_dept:
-                    category_path.append(pies_dept[0])
+                    raw_category_path.append(pies_dept[0])
                 if pies_cat:
-                    category_path.append(pies_cat[0])
+                    raw_category_path.append(pies_cat[0])
                 if pies_sub_cat:
-                    category_path.append(pies_sub_cat[0])
+                    raw_category_path.append(pies_sub_cat[0])
             except (json.JSONDecodeError, TypeError, IndexError):
                 pass
         
-        category_path = [part.strip().title() for part in category_path if part]
+        category_path = self._clean_category_path(raw_category_path)
 
         clean_product = {
             "product_id_store": str(stockcode) if stockcode else None,
@@ -72,10 +74,7 @@ class DataCleanerWoolworths(BaseDataCleaner):
             "url": product_url,
             "image_url_main": product.get('LargeImageFile'),
             "image_urls_all": [product.get(f'{size}ImageFile') for size in ['Small', 'Medium', 'Large'] if product.get(f'{size}ImageFile')],
-            "price_current": product.get('Price'),
-            "price_was": product.get('WasPrice'),
-            "is_on_special": product.get('IsOnSpecial', False),
-            "price_save_amount": product.get('SavingsAmount'),
+            **price_info,
             "promotion_type": product.get('CentreTag', {}).get('TagType'),
             "price_unit": product.get('CupPrice'),
             "unit_of_measure": product.get('CupMeasure'),

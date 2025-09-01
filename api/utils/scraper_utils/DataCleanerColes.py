@@ -38,24 +38,20 @@ class DataCleanerColes(BaseDataCleaner):
         # --- Pricing ---
         price_now = pricing.get('now')
         price_was = pricing.get('was') if pricing.get('was') != 0 else None
-        
+        price_info = self._calculate_price_info(price_now, price_was)
+
         # --- Tags & Promotions ---
         tags = []
         if pricing.get('promotionType') == 'SPECIAL':
             tags.append('special')
 
         # --- Category Hierarchy ---
-        category_path = []
-        if online_heirs:
-            sub_cat = online_heirs.get('subCategory')
-            cat = online_heirs.get('category')
-            aisle = online_heirs.get('aisle')
-            if sub_cat:
-                category_path.append(sub_cat.strip().title())
-            if cat:
-                category_path.append(cat.strip().title())
-            if aisle:
-                category_path.append(aisle.strip().title())
+        raw_category_path = [
+            online_heirs.get('aisle'),
+            online_heirs.get('category'),
+            online_heirs.get('subCategory')
+        ]
+        category_path = self._clean_category_path(raw_category_path)
         
         clean_product = {
             "product_id_store": str(product_id) if product_id else None,
@@ -69,10 +65,7 @@ class DataCleanerColes(BaseDataCleaner):
             "image_urls_all": [f"https://www.coles.com.au{img['uri']}" for img in image_uris],
 
             # --- Pricing ---
-            "price_current": price_now,
-            "price_was": price_was,
-            "is_on_special": pricing.get('onlineSpecial', False),
-            "price_save_amount": pricing.get('saveAmount'),
+            **price_info,
             "promotion_type": pricing.get('promotionType'),
             "price_unit": unit_info.get('price'),
             "unit_of_measure": unit_info.get('ofMeasureUnits').lower().strip() if unit_info.get('ofMeasureUnits') else None,

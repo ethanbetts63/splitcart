@@ -88,3 +88,25 @@ class BaseDataCleaner(ABC):
         product['scraped_date'] = self.timestamp.date().isoformat()
 
         return product
+
+    def _calculate_price_info(self, current_price: float | None, was_price: float | None) -> dict:
+        """
+        Calculates derived price fields based on current and was prices.
+        """
+        is_on_special = was_price is not None and current_price is not None and was_price > current_price
+        save_amount = round(was_price - current_price, 2) if is_on_special else None
+        
+        return {
+            "price_current": current_price,
+            "price_was": was_price,
+            "is_on_special": is_on_special,
+            "price_save_amount": save_amount,
+        }
+
+    def _clean_category_path(self, path_list: list) -> list:
+        """
+        Cleans a list of category strings by stripping whitespace and applying title case.
+        """
+        if not path_list:
+            return []
+        return [str(part).strip().title() for part in path_list if part]
