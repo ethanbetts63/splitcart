@@ -30,8 +30,8 @@ Dot notation is used to access nested fields in the raw JSON data.
 #     "per_unit_price_measure": str,
 #
 #     # Ratings and Health Stars
-#     "average_rating": float,
-#     "review_count": int,
+#     "average_user_rating": float,
+#     "rating_count": int,
 #     "health_star_rating": float,
 #
 #     # The following are calculated by the BaseDataCleaner, not mapped directly
@@ -59,8 +59,8 @@ COLES_FIELD_MAP = {
     "per_unit_price_string": "pricing.comparable",
     "per_unit_price_value": "pricing.unit.price",
     "per_unit_price_measure": "pricing.unit.ofMeasureUnits",
-    "average_rating": None,
-    "review_count": None,
+    "average_user_rating": None,
+    "rating_count": None,
     "health_star_rating": None,
 }
 
@@ -82,8 +82,8 @@ WOOLWORTHS_FIELD_MAP = {
     "per_unit_price_string": "CupString",
     "per_unit_price_value": "InstoreCupPrice",
     "per_unit_price_measure": "CupMeasure",
-    "average_rating": "Rating.Average",
-    "review_count": "Rating.ReviewCount",
+    "average_user_rating": "Rating.Average",
+    "rating_count": "Rating.ReviewCount",
     "health_star_rating": "AdditionalAttributes.healthstarrating",
 }
 
@@ -105,8 +105,8 @@ IGA_FIELD_MAP = {
     "per_unit_price_string": "pricePerUnit",
     "per_unit_price_value": None,
     "per_unit_price_measure": None,
-    "average_rating": None,
-    "review_count": None,
+    "average_user_rating": None,
+    "rating_count": None,
     "health_star_rating": None,
 }
 
@@ -128,7 +128,7 @@ ALDI_FIELD_MAP = {
     "per_unit_price_string": "price.comparisonDisplay",
     "per_unit_price_value": "price.comparison",
     "per_unit_price_measure": None,
-    "average_rating": None,
-    "review_count": None,
+    "average_user_rating": None,
+    "rating_count": None,
     "health_star_rating": None,
 }

@@ -52,6 +52,12 @@ class Product(models.Model):
     country_of_origin = models.CharField(max_length=100, blank=True, null=True)
     allergens = models.TextField(blank=True, null=True)
     ingredients = models.TextField(blank=True, null=True)
+    health_star_rating = models.FloatField(null=True, blank=True)
+    average_user_rating = models.FloatField(null=True, blank=True)
+    rating_count = models.IntegerField(null=True, blank=True)
+    unit_of_sale = models.CharField(max_length=50, blank=True, null=True)
+    dietary_and_lifestyle_tags = models.JSONField(default=list, blank=True)
+    is_age_restricted = models.BooleanField(default=False)
     substitute_goods = models.ManyToManyField(
         'self',
         blank=True,

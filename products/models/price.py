@@ -44,6 +44,12 @@ class Price(models.Model):
         blank=True,
         help_text="The standard unit for the unit_price, e.g., '100g', '1L'."
     )
+    per_unit_price_string = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text="The raw string for the per unit price, e.g., '$1.68 per 100 g'."
+    )
     
     is_on_special = models.BooleanField(default=False)
     is_available = models.BooleanField(
