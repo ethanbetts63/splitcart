@@ -7,6 +7,8 @@ def calculate_profit_loss(file_path):
     trades = {}
     report_lines = []
     total_profit_loss_aud = 0.0
+    total_proceeds_aud = 0.0
+    total_costs_aud = 0.0
 
     exchange_rates = {
         # 2024
@@ -132,6 +134,12 @@ def calculate_profit_loss(file_path):
             profit_loss_aud = profit_loss * usd_to_aud_rate if sell_currency == 'USD' else profit_loss
             total_profit_loss_aud += profit_loss_aud
 
+            proceeds_aud = proceeds * usd_to_aud_rate if sell_currency == 'USD' else proceeds
+            total_proceeds_aud += proceeds_aud
+
+            costs_aud = total_cost_basis * usd_to_aud_rate if sell_currency == 'USD' else total_cost_basis
+            total_costs_aud += costs_aud
+
             aud_conversion_str = f" ({proceeds * usd_to_aud_rate:.2f} AUD)" if sell_currency == 'USD' else ""
             report_lines.append(f"  Total Proceeds: {proceeds:.2f} {sell_currency}{aud_conversion_str}")
             
@@ -147,6 +155,8 @@ def calculate_profit_loss(file_path):
     report_lines.append(f"       (1 July 2024 - 30 June 2025)")
     report_lines.append(f"========================================")
     report_lines.append(f"Total Profit/Loss for Period: {total_profit_loss_aud:.2f} AUD")
+    report_lines.append(f"Total Proceeds for Period: {total_proceeds_aud:.2f} AUD")
+    report_lines.append(f"Total Costs for Period: {total_costs_aud:.2f} AUD")
 
     report_lines.append(f"\n\n========================================")
     report_lines.append(f"        USD to AUD Rates Used")
