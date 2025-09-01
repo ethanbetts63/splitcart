@@ -56,4 +56,8 @@ class DataCleanerWoolworths(BaseDataCleaner):
             except (ValueError, TypeError):
                 cleaned_product['health_star_rating'] = None
 
+        # Standardize unit price
+        unit_price_info = self._get_standardized_unit_price_info(cleaned_product)
+        cleaned_product.update(unit_price_info)
+
         return cleaned_product

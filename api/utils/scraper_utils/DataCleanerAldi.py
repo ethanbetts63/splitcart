@@ -62,4 +62,8 @@ class DataCleanerAldi(BaseDataCleaner):
         if slug and sku:
             cleaned_product['url'] = f"https://www.aldi.com.au/product/{slug}-{sku}"
 
+        # Standardize unit price
+        unit_price_info = self._get_standardized_unit_price_info(cleaned_product)
+        cleaned_product.update(unit_price_info)
+
         return cleaned_product

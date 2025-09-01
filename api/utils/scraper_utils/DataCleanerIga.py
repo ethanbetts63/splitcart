@@ -57,4 +57,8 @@ class DataCleanerIga(BaseDataCleaner):
         else:
             cleaned_product['package_size'] = None
 
+        # Standardize unit price
+        unit_price_info = self._get_standardized_unit_price_info(cleaned_product)
+        cleaned_product.update(unit_price_info)
+
         return cleaned_product

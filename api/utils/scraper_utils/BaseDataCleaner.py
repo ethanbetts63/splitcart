@@ -35,11 +35,9 @@ class BaseDataCleaner(ABC):
         if not raw_field_key:
             return None
         
-        # Simple key
         if '.' not in raw_field_key:
             return raw_product.get(raw_field_key)
         
-        # Nested key (e.g., 'price.current')
         value = raw_product
         for key_part in raw_field_key.split('.'):
             if not isinstance(value, dict):
@@ -50,11 +48,7 @@ class BaseDataCleaner(ABC):
     def clean_data(self) -> dict:
         """
         Main orchestration method.
-        1. Transforms raw data using store-specific logic.
-        2. Performs common post-processing and normalization.
-        3. Wraps the final data with metadata.
         """
-        # 1. Store-specific cleaning
         for raw_product in self.raw_product_list:
             if not self._is_valid_product(raw_product):
                 continue
@@ -62,12 +56,10 @@ class BaseDataCleaner(ABC):
             if cleaned_product:
                 self.cleaned_products.append(cleaned_product)
 
-        # 2. Common post-processing
         for p in self.cleaned_products:
             processed_product = self._post_process_product(p)
             self.final_products.append(processed_product)
 
-        # 3. Wrap for output
         return wrap_cleaned_products(
             products=self.final_products,
             company=self.company,
@@ -78,51 +70,28 @@ class BaseDataCleaner(ABC):
         )
 
     def _is_valid_product(self, raw_product: dict) -> bool:
-        """
-        Optional hook for subclasses to perform initial validation on a raw product item.
-        """
         return raw_product is not None
 
     @abstractmethod
     def _transform_product(self, raw_product: dict) -> dict:
-        """
-        Abstract method to be implemented by subclasses.
-        Transforms a single raw product from a specific store into the
-        standardized clean product schema.
-        """
         raise NotImplementedError
 
     def _post_process_product(self, product: dict) -> dict:
         """
-        Performs generic normalization and key generation on a cleaned product.
-        This logic is common across all cleaners.
+        Performs generic normalization on a cleaned product.
         """
-        # Product Normalization
         normalizer = ProductNormalizer(product)
         product['sizes'] = normalizer.get_raw_sizes()
         product['normalized_name_brand_size'] = normalizer.get_normalized_string()
         if 'barcode' in product and product.get('barcode'):
              product['barcode'] = normalizer.get_cleaned_barcode()
 
-        # Price Normalization & Date
-        price_normalizer = PriceNormalizer()
-        product['normalized_key'] = price_normalizer.get_normalized_key(
-            product_id=product.get('product_id_store'),
-            store_id=self.store_id,
-            price=product.get('price_current'),
-            date=self.timestamp.date().isoformat()
-        )
         product['scraped_date'] = self.timestamp.date().isoformat()
-
         return product
 
     def _calculate_price_info(self, current_price: float | None, was_price: float | None) -> dict:
-        """
-        Calculates derived price fields based on current and was prices.
-        """
         is_on_special = was_price is not None and current_price is not None and was_price > current_price
         save_amount = round(was_price - current_price, 2) if is_on_special else None
-        
         return {
             "price_current": current_price,
             "price_was": was_price,
@@ -130,10 +99,43 @@ class BaseDataCleaner(ABC):
             "price_save_amount": save_amount,
         }
 
+    def _get_standardized_unit_price_info(self, price_data: dict) -> dict:
+        """
+        Uses the PriceNormalizer to extract and calculate a standardized
+        unit price (e.g., price per 1kg or 1L).
+        """
+        normalizer = PriceNormalizer(price_data, self.company)
+        
+        unit_price = normalizer.get_normalized_unit_price()
+        measure_info = normalizer.get_normalized_unit_measure()
+
+        if not all([unit_price, measure_info]):
+            return {"unit_price": None, "unit_of_measure": None}
+
+        unit, quantity = measure_info
+        final_price = unit_price
+        final_measure = f"{quantity}{unit}"
+
+        # Standardize to per 1kg or 1L
+        if unit == 'g' and quantity != 1000:
+            final_price = (unit_price / quantity) * 1000
+            final_measure = "1kg"
+        elif unit == 'ml' and quantity != 1000:
+            final_price = (unit_price / quantity) * 1000
+            final_measure = "1l"
+        elif unit == 'kg' and quantity != 1:
+            final_price = unit_price / quantity
+            final_measure = "1kg"
+        elif unit == 'l' and quantity != 1:
+            final_price = unit_price / quantity
+            final_measure = "1l"
+
+        return {
+            "unit_price": round(final_price, 2),
+            "unit_of_measure": final_measure
+        }
+
     def _clean_category_path(self, path_list: list) -> list:
-        """
-        Cleans a list of category strings by stripping whitespace and applying title case.
-        """
         if not path_list:
             return []
         return [str(part).strip().title() for part in path_list if part]

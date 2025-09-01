@@ -62,4 +62,8 @@ class DataCleanerColes(BaseDataCleaner):
             slug = slugify(product_name)
             cleaned_product['url'] = f"https://www.coles.com.au/product/{slug}-{product_id}"
 
+        # Standardize unit price
+        unit_price_info = self._get_standardized_unit_price_info(cleaned_product)
+        cleaned_product.update(unit_price_info)
+
         return cleaned_product
