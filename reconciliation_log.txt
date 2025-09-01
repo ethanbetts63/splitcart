@@ -1,0 +1,14 @@
+
+--- Reconciliation Run Started at 2025-09-01T20:16:12.089367 ---
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Tena Pads Extra Standard Length | Brand: Tena | Size: 12each Each
+  [CANONICAL] Name: Extra Standard Length Incontinence Pads | Brand: Tena | Size: 12 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: McKenzie's Chickpea Flour | Brand: McKenzie's | Size: 330gram Each
+  [CANONICAL] Name: Chick Pea Flour Resealable | Brand: Mckenzie's | Size: 330g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Cancer Council Face Day Wear Moisturiser Matte Invisible SPF50+ | Brand: Cancer Council | Size: 75millilitre Each
+  [CANONICAL] Name: Cancer Council Face Day Wear Moisturiser Matte Invisible SPF 50+ | Brand: Cancer Council | Size: 75mL
+----------------------------------------------------

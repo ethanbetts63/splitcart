@@ -1,9 +1,26 @@
 from products.models import Product, Price
 from api.data.product_name_translation_table import PRODUCT_NAME_TRANSLATIONS
+from datetime import datetime
 
 class ProductReconciler:
     def __init__(self, command):
         self.command = command
+        self.log_file = 'reconciliation_log.txt'
+        self._initialize_log_file()
+
+    def _initialize_log_file(self):
+        # Write a header to the log file to indicate a new run
+        with open(self.log_file, 'a', encoding='utf-8') as f:
+            f.write(f"\n--- Reconciliation Run Started at {datetime.now().isoformat()} ---\n")
+
+    def _log_merge(self, canonical, duplicate):
+        # Log the details of the merge to the file
+        with open(self.log_file, 'a', encoding='utf-8') as f:
+            f.write("----------------------------------------------------")
+            f.write(f"Merging duplicate into canonical:\n")
+            f.write(f"  [DUPLICATE] Name: {duplicate.name} | Brand: {duplicate.brand} | Size: {duplicate.size}\n")
+            f.write(f"  [CANONICAL] Name: {canonical.name} | Brand: {canonical.brand} | Size: {canonical.size}\n")
+            f.write("----------------------------------------------------\n")
 
     def run(self):
         self.command.stdout.write(self.command.style.SUCCESS("Product Reconciler run started."))
@@ -49,6 +66,9 @@ class ProductReconciler:
         """
         Merges the duplicate product into the canonical product.
         """
+        # Log the action before doing anything else
+        self._log_merge(canonical, duplicate)
+
         self.command.stdout.write(f"  - Merging '{duplicate.name}' into '{canonical.name}'")
         
         # --- Enrich Fields ---
