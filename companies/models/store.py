@@ -50,6 +50,7 @@ class Store(models.Model):
     phone_number = models.CharField(
         max_length=20,
         blank=True,
+        null=True,
         help_text="The contact phone number for the store."
         # Coles: phone
         # Aldi: publicPhoneNumber
@@ -59,6 +60,7 @@ class Store(models.Model):
     address_line_1 = models.CharField(
         max_length=255,
         blank=True,
+        null=True,
         help_text="The first line of the store's address."
         # Coles: address.addressLine
         # Aldi: address.address1
@@ -68,6 +70,7 @@ class Store(models.Model):
     address_line_2 = models.CharField(
         max_length=255,
         blank=True,
+        null=True,
         help_text="The second line of the store's address."
         # Aldi: address.address2
         # Woolworths: AddressLine2
@@ -75,6 +78,7 @@ class Store(models.Model):
     suburb = models.CharField(
         max_length=100,
         blank=True,
+        null=True,
         db_index=True,
         help_text="The suburb where the store is located."
         # Coles: address.suburb
@@ -85,6 +89,7 @@ class Store(models.Model):
     state = models.CharField(
         max_length=50,
         blank=True,
+        null=True,
         db_index=True,
         help_text="The state or territory of the store."
         # Coles: address.state
@@ -95,6 +100,7 @@ class Store(models.Model):
     postcode = models.CharField(
         max_length=10,
         blank=True,
+        null=True,
         help_text="The postcode of the store."
         # Coles: address.postcode
         # Aldi: address.zipCode

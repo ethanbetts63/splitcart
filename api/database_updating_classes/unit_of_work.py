@@ -96,5 +96,4 @@ class UnitOfWork:
             return True
         except Exception as e:
             self.command.stderr.write(self.command.style.ERROR(f'An error occurred during commit: {e}'))
-            return False.command.stderr.write(self.command.style.ERROR(f'An error occurred during commit: {e}'))
             return False
