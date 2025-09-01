@@ -2,9 +2,8 @@ import os
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from api.utils.database_updating_utils.update_stores_from_discovery import update_stores_from_discovery
-from api.utils.database_updating_utils.update_stores_from_archive import update_stores_from_archive
-from api.utils.database_updating_utils.update_products_from_archive import update_products_from_archive
 from api.database_updating_classes.update_orchestrator import UpdateOrchestrator
+from api.database_updating_classes.archive_update_orchestrator import ArchiveUpdateOrchestrator
 
 class Command(BaseCommand):
     help = 'Updates the database with data from various sources.'
@@ -14,7 +13,7 @@ class Command(BaseCommand):
         parser.add_argument('--products', action='store_true', help='Update products from the product_inbox directory.')
         parser.add_argument(
             '--archive', 
-            nargs='*', 
+            nargs='*',
             help='Update from archives. Can specify "stores" and/or "products". No args means both.'
         )
 
@@ -32,15 +31,8 @@ class Command(BaseCommand):
             run_stores_archive = 'stores' in archive_options or run_all_archives
             run_products_archive = 'products' in archive_options or run_all_archives
 
-            if run_stores_archive:
-                self.stdout.write(self.style.SQL_FIELD('--- Running store update from company archives ---'))
-                update_stores_from_archive(self)
-                self.stdout.write(self.style.SUCCESS('--- Store update from company archives complete ---'))
-            
-            if run_products_archive:
-                self.stdout.write(self.style.SQL_FIELD('--- Running FAST product update from store archives ---'))
-                update_products_from_archive(self)
-                self.stdout.write(self.style.SUCCESS('--- Product update from store archives complete ---'))
+            orchestrator = ArchiveUpdateOrchestrator(self)
+            orchestrator.run(update_stores=run_stores_archive, update_products=run_products_archive)
 
         if run_stores_discovery:
             self.stdout.write(self.style.SQL_FIELD('--- Running store update from discovery ---'))

@@ -80,7 +80,7 @@ class UnitOfWork:
                     Price.objects.bulk_create(self.prices_to_create, batch_size=500)
 
                 # Stage 3: Process categories now that all products exist
-                self.category_manager.process_categories(consolidated_data, product_cache)
+                self.category_manager.process_categories(consolidated_data, product_cache, store_obj)
 
                 # Stage 4: Update existing products
                 if self.products_to_update:

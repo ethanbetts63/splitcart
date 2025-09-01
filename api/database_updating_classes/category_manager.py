@@ -100,14 +100,14 @@ class CategoryManager:
 
         for key, data in consolidated_data.items():
             product = product_cache.get(key)
-            path = data.get('product_details', {}).get('category_path')
-            if product and path:
-                leaf_category_name = path[-1]
-                category = self.category_cache.get(leaf_category_name)
-                if category:
-                    links_to_create.append(
-                        ProductCategory(product_id=product.id, category_id=category.id)
-                    )
+            for path in data.get('product', {}).get('category_paths', []):
+                if product and path:
+                    leaf_category_name = path[-1]
+                    category = self.category_cache.get(leaf_category_name)
+                    if category:
+                        links_to_create.append(
+                            ProductCategory(product_id=product.id, category_id=category.id)
+                        )
         
         if links_to_create:
             self.command.stdout.write(f"    - Creating {len(links_to_create)} product-category links...")
