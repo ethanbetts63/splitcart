@@ -1,6 +1,7 @@
 import re
 from datetime import datetime
 from .BaseDataCleaner import BaseDataCleaner
+from .field_maps import ALDI_FIELD_MAP
 
 class DataCleanerAldi(BaseDataCleaner):
     """
@@ -9,91 +10,56 @@ class DataCleanerAldi(BaseDataCleaner):
     def __init__(self, raw_product_list: list, company: str, store_name: str, store_id: str, state: str, timestamp: datetime):
         super().__init__(raw_product_list, company, store_name, store_id, state, timestamp)
 
-    def _transform_product(self, product: dict) -> dict:
+    @property
+    def field_map(self):
+        return ALDI_FIELD_MAP
+
+    def _transform_product(self, raw_product: dict) -> dict:
         """
-        Transforms a single raw ALDI product into the standardized schema.
+        Transforms a single raw ALDI product into the standardized schema
+        using the field map.
         """
-        price_info = product.get('price', {}) or {}
+        # Use the base class helper to get most fields
+        cleaned_product = {
+            standard_field: self._get_value(raw_product, standard_field)
+            for standard_field in self.field_map.keys()
+        }
 
-        # --- Price Transformation ---
-        current_price = price_info.get('amount')
-        if current_price is not None:
-            current_price /= 100.0
+        # --- Handle special cases and transformations for ALDI ---
 
-        comparison_price = price_info.get('comparison')
-        if comparison_price is not None:
-            comparison_price /= 100.0
+        # Price is in cents, needs conversion
+        if cleaned_product.get('price_current') is not None:
+            cleaned_product['price_current'] /= 100.0
+        
+        if cleaned_product.get('per_unit_price_value') is not None:
+            cleaned_product['per_unit_price_value'] /= 100.0
 
-        was_price_str = price_info.get('wasPriceDisplay')
+        # Was price needs to be parsed from a string like "$x.xx"
+        was_price_str = cleaned_product.get('price_was')
         was_price = None
-        if was_price_str:
+        if was_price_str and isinstance(was_price_str, str):
             try:
                 was_price = float(re.sub(r'[^\d.]', '', was_price_str))
             except (ValueError, TypeError):
                 was_price = None
-        
-        price_info = self._calculate_price_info(current_price, was_price)
+        cleaned_product['price_was'] = was_price
 
-        # --- Unit of Measure ---
-        unit_of_measure = None
-        comparison_display = price_info.get('comparisonDisplay')
-        if comparison_display:
-            match = re.search(r'/\s*(.*)', comparison_display)
-            if match:
-                unit_of_measure = match.group(1).strip()
+        # Combine price info
+        price_info = self._calculate_price_info(
+            current_price=cleaned_product.get('price_current'),
+            was_price=cleaned_product.get('price_was')
+        )
+        cleaned_product.update(price_info)
 
-        # --- Category Hierarchy ---
-        raw_category_names = [cat.get('name') for cat in product.get('categories', [])]
-        category_path = self._clean_category_path(raw_category_names)
+        # Category path needs to be extracted from a list of dicts
+        raw_categories = cleaned_product.get('category_path', []) or []
+        category_names = [cat.get('name') for cat in raw_categories]
+        cleaned_product['category_path'] = self._clean_category_path(category_names)
 
-        # --- Image URLs ---
-        assets = product.get('assets', []) or []
-        image_urls = [asset.get('url') for asset in assets if asset.get('url')]
-        main_image = image_urls[0] if image_urls else None
+        # Construct full URL
+        slug = cleaned_product.get('url', '')
+        sku = cleaned_product.get('product_id_store', '')
+        if slug and sku:
+            cleaned_product['url'] = f"https://www.aldi.com.au/product/{slug}-{sku}"
 
-        # --- Tags ---
-        tags = [badge.get('badgeText') for badge in product.get('badges', []) if badge.get('badgeText')]
-
-        sku = product.get('sku')
-        slug = product.get('urlSlugText', '')
-        product_url = f"https://www.aldi.com.au/product/{slug}-{sku}" if slug and sku else None
-
-        clean_product = {
-            "product_id_store": sku,
-            "barcode": None, # Not available
-            "name": product.get('name'),
-            "brand": product.get('brandName', ''),
-            "description_short": None, # Not available
-            "description_long": None, # Not available
-            "url": product_url,
-            "image_url_main": main_image,
-            "image_urls_all": image_urls,
-
-            # --- Pricing ---
-            **price_info,
-            "promotion_type": None, # Not available
-            "price_unit": comparison_price,
-            "unit_of_measure": unit_of_measure,
-            "unit_price_string": comparison_display,
-
-            # --- Availability & Stock ---
-            "is_available": not product.get('notForSale', True),
-            "stock_level": None, # Not available
-            "purchase_limit": product.get('quantityMax'),
-
-            # --- Details & Attributes ---
-            "package_size": product.get('sellingSize').lower().strip() if product.get('sellingSize') else None,
-            "country_of_origin": None, # Not available
-            "health_star_rating": None, # Not available
-            "ingredients": None, # Not available
-            "allergens_may_be_present": None, # Not available
-
-            # --- Categorization ---
-            "category_path": category_path,
-            "tags": tags,
-
-            # --- Ratings ---
-            "rating_average": None, # Not available
-            "rating_count": None, # Not available
-        }
-        return clean_product
+        return cleaned_product

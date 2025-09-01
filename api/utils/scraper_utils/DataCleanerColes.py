@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.utils.text import slugify
 from .BaseDataCleaner import BaseDataCleaner
+from .field_maps import COLES_FIELD_MAP
 
 class DataCleanerColes(BaseDataCleaner):
     """
@@ -9,85 +10,56 @@ class DataCleanerColes(BaseDataCleaner):
     def __init__(self, raw_product_list: list, company: str, store_name: str, store_id: str, state: str, timestamp: datetime):
         super().__init__(raw_product_list, company, store_name, store_id, state, timestamp)
 
+    @property
+    def field_map(self):
+        return COLES_FIELD_MAP
+
     def _is_valid_product(self, raw_product: dict) -> bool:
+        # Coles search results include non-product tiles we need to filter out.
         return super()._is_valid_product(raw_product) and raw_product.get('_type') == 'PRODUCT'
 
-    def _transform_product(self, product: dict) -> dict:
+    def _transform_product(self, raw_product: dict) -> dict:
         """
-        Transforms a single raw Coles product into the standardized schema.
+        Transforms a single raw Coles product into the standardized schema
+        using the field map.
         """
-        pricing = product.get('pricing', {}) or {}
-        unit_info = pricing.get('unit', {}) or {}
-        online_heirs = product.get('onlineHeirs', [{}])[0] or {}
-        restrictions = product.get('restrictions', {}) or {}
-        image_uris = product.get('imageUris', []) or []
+        # Use the base class helper to get most fields
+        cleaned_product = {
+            standard_field: self._get_value(raw_product, standard_field)
+            for standard_field in self.field_map.keys()
+        }
 
-        # --- Basic Info ---
-        product_id = product.get('id')
-        product_name = product.get('name')
-        product_size = product.get('size')
-        
-        # --- URL ---
-        product_url = None
+        # --- Handle special cases and transformations for Coles ---
+
+        # Was price is 0 if not on special, convert to None
+        if cleaned_product.get('price_was') == 0:
+            cleaned_product['price_was'] = None
+
+        # Combine price info
+        price_info = self._calculate_price_info(
+            current_price=cleaned_product.get('price_current'),
+            was_price=cleaned_product.get('price_was')
+        )
+        cleaned_product.update(price_info)
+
+        # Category path needs to be extracted from a nested dict
+        raw_category_dict = cleaned_product.get('category_path', {}) or {}
+        raw_category_path = [
+            raw_category_dict.get('aisle'),
+            raw_category_dict.get('category'),
+            raw_category_dict.get('subCategory')
+        ]
+        cleaned_product['category_path'] = self._clean_category_path(raw_category_path)
+
+        # Image URL needs the domain prepended
+        if cleaned_product.get('image_url'):
+            cleaned_product['image_url'] = f"https://www.coles.com.au{cleaned_product['image_url']}"
+
+        # Construct full URL
+        product_id = cleaned_product.get('product_id_store')
+        product_name = cleaned_product.get('name')
         if product_id and product_name:
             slug = slugify(product_name)
-            product_url = f"https://www.coles.com.au/product/{slug}-{product_id}"
-        else:
-            print(f"DEBUG: URL generation failed for product with ID={product_id} and Name={product_name}")
+            cleaned_product['url'] = f"https://www.coles.com.au/product/{slug}-{product_id}"
 
-        # --- Pricing ---
-        price_now = pricing.get('now')
-        price_was = pricing.get('was') if pricing.get('was') != 0 else None
-        price_info = self._calculate_price_info(price_now, price_was)
-
-        # --- Tags & Promotions ---
-        tags = []
-        if pricing.get('promotionType') == 'SPECIAL':
-            tags.append('special')
-
-        # --- Category Hierarchy ---
-        raw_category_path = [
-            online_heirs.get('aisle'),
-            online_heirs.get('category'),
-            online_heirs.get('subCategory')
-        ]
-        category_path = self._clean_category_path(raw_category_path)
-        
-        clean_product = {
-            "product_id_store": str(product_id) if product_id else None,
-            "barcode": None,  # Not available in Coles data from list pages. 
-            "name": product_name if product_name else None,
-            "brand": product.get('brand') if product.get('brand') else None,
-            "description_short": product.get('description').strip() if product.get('description') else None,
-            "description_long": None, # Not available in Coles data
-            "url": product_url,
-            "image_url_main": f"https://www.coles.com.au{image_uris[0]['uri']}" if image_uris else None,
-            "image_urls_all": [f"https://www.coles.com.au{img['uri']}" for img in image_uris],
-
-            # --- Pricing ---
-            **price_info,
-            "promotion_type": pricing.get('promotionType'),
-            "price_unit": unit_info.get('price'),
-            "unit_of_measure": unit_info.get('ofMeasureUnits').lower().strip() if unit_info.get('ofMeasureUnits') else None,
-            "unit_price_string": pricing.get('comparable'),
-
-            # --- Availability & Stock ---
-            "is_available": product.get('availability', False),
-            "stock_level": None, # Not available
-            "purchase_limit": restrictions.get('retailLimit'),
-
-            # --- Details & Attributes ---
-            "package_size": product_size.strip() if product_size else None,
-            "country_of_origin": None, # Not available
-            "health_star_rating": None, # Not available
-            "ingredients": None, # Not available in this part of the data
-
-            # --- Categorization ---
-            "category_path": category_path,
-            "tags": tags,
-            
-            # --- Ratings ---
-            "rating_average": None, # Not available
-            "rating_count": None, # Not available
-        }
-        return clean_product
+        return cleaned_product

@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 from .BaseDataCleaner import BaseDataCleaner
+from .field_maps import WOOLWORTHS_FIELD_MAP
 
 class DataCleanerWoolworths(BaseDataCleaner):
     """
@@ -9,87 +10,50 @@ class DataCleanerWoolworths(BaseDataCleaner):
     def __init__(self, raw_product_list: list, company: str, store_name: str, store_id: str, state: str, timestamp: datetime):
         super().__init__(raw_product_list, company, store_name, store_id, state, timestamp)
 
-    def _transform_product(self, product: dict) -> dict:
+    @property
+    def field_map(self):
+        return WOOLWORTHS_FIELD_MAP
+
+    def _transform_product(self, raw_product: dict) -> dict:
         """
-        Transforms a single raw Woolworths product into the standardized schema.
+        Transforms a single raw Woolworths product into the standardized schema
+        using the field map.
         """
-        attrs = product.get('AdditionalAttributes', {}) or {}
-        rating_info = product.get('Rating', {}) or {}
-        stockcode = product.get('Stockcode')
-        url_slug = product.get('UrlFriendlyName')
-
-        product_url = f"https://www.woolworths.com.au/shop/productdetails/{stockcode}/{url_slug}" if stockcode and url_slug else None
-
-        tags = []
-        if product.get('IsNew'):
-            tags.append('new')
-        if attrs.get('lifestyleanddietarystatement'):
-            tags.extend([tag.strip() for tag in attrs['lifestyleanddietarystatement'].split(',')])
-        if product.get('ImageTag', {}).get('FallbackText'):
-            tags.append(product['ImageTag']['FallbackText'])
-        
-        # --- Price Calculation ---
-        price_info = self._calculate_price_info(product.get('Price'), product.get('WasPrice'))
-
-        # --- Category Hierarchy ---
-        raw_category_path = []
-        dept = attrs.get('sapdepartmentname')
-        cat = attrs.get('sapcategoryname')
-        sub_cat = attrs.get('sapsubcategoryname')
-        segment = attrs.get('sapsegmentname')
-
-        if dept:
-            raw_category_path.append(dept)
-        if cat:
-            raw_category_path.extend([part.strip() for part in cat.split('/')])
-        if sub_cat:
-            raw_category_path.append(sub_cat)
-        if segment:
-            raw_category_path.append(segment)
-
-        if not raw_category_path:
-            try:
-                pies_dept = json.loads(attrs.get('piesdepartmentnamesjson', '[]'))
-                pies_cat = json.loads(attrs.get('piescategorynamesjson', '[]'))
-                pies_sub_cat = json.loads(attrs.get('piessubcategorynamesjson', '[]'))
-                
-                if pies_dept:
-                    raw_category_path.append(pies_dept[0])
-                if pies_cat:
-                    raw_category_path.append(pies_cat[0])
-                if pies_sub_cat:
-                    raw_category_path.append(pies_sub_cat[0])
-            except (json.JSONDecodeError, TypeError, IndexError):
-                pass
-        
-        category_path = self._clean_category_path(raw_category_path)
-
-        clean_product = {
-            "product_id_store": str(stockcode) if stockcode else None,
-            "barcode": product.get('Barcode'), # Pass raw barcode to be cleaned by normalizer
-            "name": product.get('Name'),
-            "brand": product.get('Brand'),
-            "description_short": product.get('Description'),
-            "description_long": attrs.get('description'),
-            "url": product_url,
-            "image_url_main": product.get('LargeImageFile'),
-            "image_urls_all": [product.get(f'{size}ImageFile') for size in ['Small', 'Medium', 'Large'] if product.get(f'{size}ImageFile')],
-            **price_info,
-            "promotion_type": product.get('CentreTag', {}).get('TagType'),
-            "price_unit": product.get('CupPrice'),
-            "unit_of_measure": product.get('CupMeasure'),
-            "unit_price_string": product.get('CupString'),
-            "is_available": product.get('IsAvailable', False),
-            "stock_level": "In Stock" if product.get('IsInStock') else "Out of Stock",
-            "purchase_limit": product.get('SupplyLimit'),
-            "package_size": product.get('PackageSize'),
-            "country_of_origin": attrs.get('countryoforigin'),
-            "health_star_rating": float(attrs['healthstarrating']) if attrs.get('healthstarrating') else None,
-            "ingredients": attrs.get('ingredients'),
-            "allergens_may_be_present": [allergen.strip() for allergen in attrs['allergenmaybepresent'].split(',')] if attrs.get('allergenmaybepresent') else [],
-            "category_path": category_path,
-            "tags": list(set(tags)),
-            "rating_average": rating_info.get('Average'),
-            "rating_count": rating_info.get('ReviewCount'),
+        # Use the base class helper to get most fields
+        cleaned_product = {
+            standard_field: self._get_value(raw_product, standard_field)
+            for standard_field in self.field_map.keys()
         }
-        return clean_product
+
+        # --- Handle special cases and transformations for Woolworths ---
+
+        # Combine price info
+        price_info = self._calculate_price_info(
+            current_price=cleaned_product.get('price_current'),
+            was_price=cleaned_product.get('price_was')
+        )
+        cleaned_product.update(price_info)
+
+        # Category path is a JSON string that needs to be parsed
+        raw_cat_json = cleaned_product.get('category_path', '[]') or '[]'
+        try:
+            category_list = json.loads(raw_cat_json)
+        except json.JSONDecodeError:
+            category_list = []
+        cleaned_product['category_path'] = self._clean_category_path(category_list)
+
+        # Construct full URL
+        stockcode = cleaned_product.get('product_id_store')
+        slug = cleaned_product.get('url')
+        if stockcode and slug:
+            cleaned_product['url'] = f"https://www.woolworths.com.au/shop/productdetails/{stockcode}/{slug}"
+
+        # Convert health star rating to float
+        hsr = cleaned_product.get('health_star_rating')
+        if hsr:
+            try:
+                cleaned_product['health_star_rating'] = float(hsr)
+            except (ValueError, TypeError):
+                cleaned_product['health_star_rating'] = None
+
+        return cleaned_product

@@ -20,6 +20,33 @@ class BaseDataCleaner(ABC):
         self.cleaned_products = []
         self.final_products = []
 
+    @property
+    @abstractmethod
+    def field_map(self) -> dict:
+        """Subclasses must provide their field mapping dictionary."""
+        raise NotImplementedError
+
+    def _get_value(self, raw_product: dict, standard_field: str):
+        """
+        Gets a value from the raw product dict using the field_map.
+        Handles dot notation for nested objects.
+        """
+        raw_field_key = self.field_map.get(standard_field)
+        if not raw_field_key:
+            return None
+        
+        # Simple key
+        if '.' not in raw_field_key:
+            return raw_product.get(raw_field_key)
+        
+        # Nested key (e.g., 'price.current')
+        value = raw_product
+        for key_part in raw_field_key.split('.'):
+            if not isinstance(value, dict):
+                return None
+            value = value.get(key_part)
+        return value
+
     def clean_data(self) -> dict:
         """
         Main orchestration method.
