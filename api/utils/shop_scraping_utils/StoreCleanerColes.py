@@ -54,9 +54,4 @@ class StoreCleanerColes(BaseStoreCleaner):
         
         return cleaned_data
 
-    def _get_extra_metadata(self) -> dict:
-        """
-        Adds the brand to the metadata for Coles stores.
-        """
-        brand = self.raw_store_data.get('brand', {})
-        return {"brand": brand.get('id')}
+    

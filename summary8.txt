@@ -1,0 +1,51 @@
+# Summary of Today's Work
+
+This document outlines the debugging and refactoring work completed today.
+
+## 1. Initial Woolworths Division Debugging
+
+- **Problem:** Woolworths stores were being created without a 'division'. We needed to see the raw API response for the stores that were causing this.
+- **Initial Action:** Modified the Woolworths scrapers to log the full API response to a `.jsonl` file, but only when a store was found without a `Division` field.
+- **Files Modified:**
+  - `C:\Users\ethan\coding\splitcart\api\scrapers\store_scraper_woolworths1.py`
+  - `C:\Users\ethan\coding\splitcart\api\scrapers\store_scraper_woolworths2.py`
+
+## 2. Fixing Scraper Progress File Creation
+
+- **Problem:** The `woolworths2` scraper was not creating its progress file, making it impossible to resume.
+- **Investigation:** The `BaseStoreScraper` was only saving progress after successfully finding stores. Since the postcode scraper was checking many empty postcodes first, it never got to the point of saving.
+- **Action:** Refactored the base scraper's main loop to save progress after every single attempt, regardless of success.
+- **File Modified:**
+  - `C:\Users\ethan\coding\splitcart\api\scrapers\base_store_scraper.py`
+
+## 3. Major Refactoring of Store Cleaners
+
+- **Problem:** The scrapers were creating files like `woolworths_None.json`, indicating a failure in the data cleaning process. The `StoreCleanerWoolworths` class was just an empty stub.
+- **Solution (User-suggested):** We decided to refactor all store cleaners to use a more robust, declarative, field-map-based architecture, similar to the existing product cleaners.
+- **Actions:**
+  1.  **Created `store_field_maps.py`:** A new file to centralize the mappings from raw API fields to our internal standard fields for all stores.
+      - `C:\Users\ethan\coding\splitcart\api\utils\shop_scraping_utils\store_field_maps.py`
+  2.  **Refactored `BaseStoreCleaner.py`:** The base class was updated with the core logic to process data using these field maps.
+      - `C:\Users\ethan\coding\splitcart\api\utils\shop_scraping_utils\BaseStoreCleaner.py`
+  3.  **Rewrote All Store Cleaners:** Each specific store cleaner (`Woolworths`, `Coles`, `Aldi`, `IGA`) was rewritten to use the new base class and its corresponding field map. This involved porting the old cleaning logic into the new, standardized architecture.
+      - `C:\Users\ethan\coding\splitcart\api\utils\shop_scraping_utils\StoreCleanerWoolworths.py`
+      - `C:\Users\ethan\coding\splitcart\api\utils\shop_scraping_utils\StoreCleanerColes.py`
+      - `C:\Users\ethan\coding\splitcart\api\utils\shop_scraping_utils\StoreCleanerAldi.py`
+      - `C:\Users\ethan\coding\splitcart\api\utils\shop_scraping_utils\StoreCleanerIga.py`
+
+## 4. Fixing Coles Filename Issue
+
+- **Problem:** The Coles scraper was creating directories (e.g., `coles_COL`) instead of files because the colon (`:`) in its `store_id` is an invalid character for Windows filenames.
+- **Action:** Modified the `save_store` method in the base scraper to sanitize the `store_id` before creating a filename, replacing `:` with `_`.
+- **File Modified:**
+  - `C:\Users\ethan\coding\splitcart\api\scrapers\base_store_scraper.py`
+
+## 5. Determining the Value of the `woolworths2` Scraper
+
+- **Problem:** Now that the cleaners are working, we returned to the original issue: the `woolworths2` scraper finds stores but doesn't get their `Division`. We need to know if it's finding unique stores that the main `woolworths1` scraper is missing.
+- **Actions:**
+  1.  **Modified Woolworths Scrapers:** Both scrapers were updated to log every store ID they find into `woolworths1_ids.txt` and `woolworths2_ids.txt`.
+      - `C:\Users\ethan\coding\splitcart\api\scrapers\store_scraper_woolworths1.py`
+      - `C:\Users\ethan\coding\splitcart\api\scrapers\store_scraper_woolworths2.py`
+  2.  **Created Comparison Command:** A new temporary management command was created to compare these two files and report on the number of unique and common stores.
+      - `C:\Users\ethan\coding\splitcart\api\management\commands\compare_woolworths_ids.py`
