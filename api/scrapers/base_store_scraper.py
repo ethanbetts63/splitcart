@@ -7,11 +7,14 @@ class BaseStoreScraper(ABC):
     """
     An abstract base class for company-specific store scrapers.
     """
-    def __init__(self, command, company: str):
+    def __init__(self, command, company: str, progress_file_name: str = None):
         self.command = command
         self.company = company
         self.discovered_stores_dir = r'C:\Users\ethan\coding\splitcart\api\data\discovered_stores'
-        self.progress_file = f"C:\\Users\\ethan\\coding\\splitcart\\api\\data\\archive\\store_data\\find_{self.company}_stores_progress.json"
+        if progress_file_name:
+            self.progress_file = f"C:\\Users\\ethan\\coding\\splitcart\\api\\data\\archive\\store_data\\{progress_file_name}.json"
+        else:
+            self.progress_file = f"C:\\Users\\ethan\\coding\\splitcart\\api\\data\\archive\\store_data\\find_{self.company}_stores_progress.json"
         self.found_stores = 0
         self.stdout = command.stdout
 

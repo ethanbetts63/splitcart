@@ -1,6 +1,7 @@
 from datetime import datetime
 from api.scrapers.base_store_scraper import BaseStoreScraper
 from api.utils.shop_scraping_utils.StoreCleanerWoolworths import StoreCleanerWoolworths
+import json
 
 import requests
 
@@ -9,7 +10,7 @@ class StoreScraperWoolworths2(BaseStoreScraper):
     A class to scrape Woolworths store data using postcodes.
     """
     def __init__(self, command):
-        super().__init__(command, 'woolworths')
+        super().__init__(command, 'woolworths', progress_file_name='find_woolworths_stores_progress_2')
         self.session = requests.Session()
         self.session.headers.update({
             "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
@@ -34,10 +35,14 @@ class StoreScraperWoolworths2(BaseStoreScraper):
             response = self.session.get(self.api_url, params=params, timeout=60)
             response.raise_for_status()
             data = response.json()
+            with open("woolworths_store_response2.json", "a") as f:
+                f.write(json.dumps(data, indent=4))
+                f.write("\n")
             return data.get("Stores", [])
         except Exception as e:
             self.stdout.write(f"Request failed for postcode {postcode}: {e}")
             return []
+
 
     def clean_raw_data(self, raw_data: dict) -> dict:
         """Cleans the raw Woolworths store data."""
