@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from api.scrapers.base_store_scraper import BaseStoreScraper
 from api.utils.shop_scraping_utils.StoreCleanerWoolworths import StoreCleanerWoolworths
@@ -16,14 +17,19 @@ class StoreScraperWoolworths2(BaseStoreScraper):
         })
         self.api_url = "https://www.woolworths.com.au/api/v3/ui/fulfilment/stores"
         self.raw_response_logged = False
+        self.woolworths_ids = set()
+        self.ids_file = "woolworths2_ids.txt"
 
     def setup(self):
         """Initial setup for the Woolworths scraper."""
         self.stdout.write("\nStarting Woolworths store data scraping (postcode method).")
+        if os.path.exists(self.ids_file):
+            with open(self.ids_file, 'r') as f:
+                self.woolworths_ids = {line.strip() for line in f if line.strip()}
 
     def get_work_items(self) -> list:
         """Generates a list of postcodes to scrape."""
-        return list(range(1, 10000, 10))
+        return list(range(1, 10000, 5))
 
     def fetch_data_for_item(self, item) -> list:
         """Fetches store data for a given postcode."""
@@ -43,10 +49,9 @@ class StoreScraperWoolworths2(BaseStoreScraper):
             elif isinstance(data, dict):
                 stores_list = data.get("Stores", [])
 
-            with open("woolworths2_ids.txt", "a") as f:
-                for store in stores_list:
-                    if store_id := store.get("FulfilmentStoreId"):
-                        f.write(f"{store_id}\n")
+            for store in stores_list:
+                if store_id := store.get("FulfilmentStoreId"):
+                    self.woolworths_ids.add(str(store_id))
 
             if isinstance(data, list):
                 return data
@@ -60,6 +65,13 @@ class StoreScraperWoolworths2(BaseStoreScraper):
         """Cleans the raw Woolworths store data."""
         cleaner = StoreCleanerWoolworths(raw_data, self.company, datetime.now())
         return cleaner.clean()
+
+    def cleanup(self):
+        """Saves the unique store IDs and then calls the base cleanup."""
+        with open(self.ids_file, 'w') as f:
+            for store_id in sorted(list(self.woolworths_ids)):
+                f.write(f"{store_id}\n")
+        super().cleanup()
 
     def get_item_type(self) -> str:
         return "Postcode"

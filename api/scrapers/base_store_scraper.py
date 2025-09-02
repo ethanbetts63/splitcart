@@ -18,6 +18,7 @@ class BaseStoreScraper(ABC):
             self.progress_file = f"C:\\Users\\ethan\\coding\\splitcart\\api\\data\\archive\\store_data\\find_{self.company}_stores_progress.json"
         self.found_stores = 0
         self.stdout = command.stdout
+        self.processed_store_ids = set()
 
     def run(self):
         """The main public method that orchestrates the entire scraping process."""
@@ -62,9 +63,14 @@ class BaseStoreScraper(ABC):
 
 
     def save_store(self, cleaned_data):
-        """Saves a single cleaned store to a JSON file."""
+        """Saves a single cleaned store to a JSON file if not already processed in this session."""
         store_id = cleaned_data['store_data']['store_id']
-        
+
+        if store_id in self.processed_store_ids:
+            return
+
+        self.processed_store_ids.add(store_id)
+
         # Sanitize the store_id for use in a filename by replacing colons
         safe_store_id = str(store_id).replace(':', '_')
 
@@ -75,20 +81,25 @@ class BaseStoreScraper(ABC):
             self.found_stores += 1
 
     def load_progress(self):
-        """Loads the last completed step from a progress file."""
+        """Loads the last completed step and processed store IDs from a progress file."""
         if os.path.exists(self.progress_file):
             try:
                 with open(self.progress_file, 'r', encoding='utf-8') as f:
                     progress = json.load(f)
+                    self.processed_store_ids = set(progress.get('processed_store_ids', []))
                     return progress.get('completed_steps', 0)
             except (json.JSONDecodeError, IOError):
                 self.stdout.write(f"\nWarning: {self.progress_file} is corrupted or unreadable. Starting from the beginning.")
         return 0
 
     def save_progress(self, completed_steps):
-        """Saves the last completed step to a progress file."""
+        """Saves the last completed step and processed store IDs to a progress file."""
+        progress_data = {
+            'completed_steps': completed_steps,
+            'processed_store_ids': list(self.processed_store_ids)
+        }
         with open(self.progress_file, 'w', encoding='utf-8') as f:
-            json.dump({'completed_steps': completed_steps}, f)
+            json.dump(progress_data, f)
 
     def cleanup(self):
         """Removes the progress file upon successful completion."""

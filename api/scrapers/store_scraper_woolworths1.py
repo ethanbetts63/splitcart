@@ -1,4 +1,5 @@
 import random
+import os
 from datetime import datetime
 from api.scrapers.base_store_scraper import BaseStoreScraper
 from api.utils.shop_scraping_utils.StoreCleanerWoolworths import StoreCleanerWoolworths
@@ -23,10 +24,15 @@ class StoreScraperWoolworths1(BaseStoreScraper):
         self.lon_max = 154.0
         self.lat_step = random.uniform(0.25, 0.75)
         self.lon_step = random.uniform(0.25, 0.75)
+        self.woolworths_ids = set()
+        self.ids_file = "woolworths1_ids.txt"
 
     def setup(self):
         """Initial setup for the Woolworths scraper."""
         self.stdout.write("\nStarting Woolworths store data scraping...")
+        if os.path.exists(self.ids_file):
+            with open(self.ids_file, 'r') as f:
+                self.woolworths_ids = {line.strip() for line in f if line.strip()}
 
     def get_work_items(self) -> list:
         """Generates a grid of coordinates to scrape."""
@@ -49,10 +55,9 @@ class StoreScraperWoolworths1(BaseStoreScraper):
             response.raise_for_status()
             data = response.json()
             stores = data.get("Stores", [])
-            with open("woolworths1_ids.txt", "a") as f:
-                for store in stores:
-                    if store_id := store.get("StoreNo"):
-                        f.write(f"{store_id}\n")
+            for store in stores:
+                if store_id := store.get("StoreNo"):
+                    self.woolworths_ids.add(str(store_id))
             return stores
         except Exception as e:
             self.stdout.write(f"Request failed: {e}")
@@ -63,6 +68,13 @@ class StoreScraperWoolworths1(BaseStoreScraper):
         """Cleans the raw Woolworths store data."""
         cleaner = StoreCleanerWoolworths(raw_data, self.company, datetime.now())
         return cleaner.clean()
+
+    def cleanup(self):
+        """Saves the unique store IDs and then calls the base cleanup."""
+        with open(self.ids_file, 'w') as f:
+            for store_id in sorted(list(self.woolworths_ids)):
+                f.write(f"{store_id}\n")
+        super().cleanup()
 
     def get_item_type(self) -> str:
         return "Coords"
