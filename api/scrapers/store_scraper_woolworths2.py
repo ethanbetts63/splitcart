@@ -15,6 +15,7 @@ class StoreScraperWoolworths2(BaseStoreScraper):
             "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
         })
         self.api_url = "https://www.woolworths.com.au/api/v3/ui/fulfilment/stores"
+        self.raw_response_logged = False
 
     def setup(self):
         """Initial setup for the Woolworths scraper."""
@@ -33,6 +34,7 @@ class StoreScraperWoolworths2(BaseStoreScraper):
         try:
             response = self.session.get(self.api_url, params=params, timeout=60)
             response.raise_for_status()
+
             data = response.json()
 
             stores_list = []
@@ -41,11 +43,10 @@ class StoreScraperWoolworths2(BaseStoreScraper):
             elif isinstance(data, dict):
                 stores_list = data.get("Stores", [])
 
-            for store in stores_list:
-                if isinstance(store, dict) and not store.get("Division"):
-                    with open("woolworths_no_division_response2.jsonl", "a") as f:
-                        f.write(json.dumps(data) + '\n')
-                    break  # Log the response once
+            with open("woolworths2_ids.txt", "a") as f:
+                for store in stores_list:
+                    if store_id := store.get("FulfilmentStoreId"):
+                        f.write(f"{store_id}\n")
 
             if isinstance(data, list):
                 return data

@@ -49,11 +49,10 @@ class StoreScraperWoolworths1(BaseStoreScraper):
             response.raise_for_status()
             data = response.json()
             stores = data.get("Stores", [])
-            for store in stores:
-                if not store.get("Division"):
-                    with open("woolworths_no_division_response.jsonl", "a") as f:
-                        f.write(json.dumps(data) + '\n')
-                    break  # Log the response once and exit the loop
+            with open("woolworths1_ids.txt", "a") as f:
+                for store in stores:
+                    if store_id := store.get("StoreNo"):
+                        f.write(f"{store_id}\n")
             return stores
         except Exception as e:
             self.stdout.write(f"Request failed: {e}")
