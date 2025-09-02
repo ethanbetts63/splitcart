@@ -274,7 +274,7 @@ class ColesBarcodeScraper(BaseProductScraper):
                 # Loop will continue, causing a session restart
                 continue
             finally:
-                if self.jsonl_writer and self.jsonl_writer.is_open():
+                if self.jsonl_writer and self.jsonl_writer.temp_file_handle:
                     self.jsonl_writer.close()
                     if scrape_successful:
                         self.post_scrape_enrichment()

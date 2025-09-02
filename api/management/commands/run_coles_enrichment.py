@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.conf import settings
 import os
-from api.scrapers.enrich_coles_barcodes import enrich_coles_file
+from api.scrapers.barcode_scraper_coles import ColesBarcodeScraper
 
 class Command(BaseCommand):
     help = 'Manually runs the Coles barcode enrichment process on a specific file.'
@@ -22,7 +22,8 @@ class Command(BaseCommand):
 
         self.stdout.write(f"Starting enrichment for: {file_path}")
         try:
-            enrich_coles_file(file_path, self)
+            scraper = ColesBarcodeScraper(self, file_path)
+            scraper.run()
             self.stdout.write(self.style.SUCCESS("Enrichment process completed."))
         except InterruptedError as e:
             self.stdout.write(self.style.WARNING(f"Process stopped: {e}"))

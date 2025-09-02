@@ -49,3 +49,29 @@ This document outlines the debugging and refactoring work completed today.
       - `C:\Users\ethan\coding\splitcart\api\scrapers\store_scraper_woolworths2.py`
   2.  **Created Comparison Command:** A new temporary management command was created to compare these two files and report on the number of unique and common stores.
       - `C:\Users\ethan\coding\splitcart\api\management\commands\compare_woolworths_ids.py`
+
+## 6. Testing Store Scrapers
+
+- **Action:** Wrote unit tests for the `StoreScraperWoolworths1`, `StoreScraperWoolworths2`, and `StoreScraperColes` classes. These tests mock network requests to ensure the scrapers correctly handle API responses and errors.
+- **Files:**
+  - `C:\Users\ethan\coding\splitcart\api\tests\scrapers_tests\test_StoreScraperWoolworths1.py`
+  - `C:\Users\ethan\coding\splitcart\api\tests\scrapers_tests\test_StoreScraperWoolworths2.py`
+  - `C:\Users\ethan\coding\splitcart\api\tests\scrapers_tests\test_StoreScraperColes.py`
+
+## 7. Testing Product Cleaners
+
+- **Action:** Started writing unit tests for the product cleaner classes, beginning with `DataCleanerWoolworths` and `DataCleanerColes`.
+- **Files:**
+  - `C:\Users\ethan\coding\splitcart\api\tests\util_tests\test_scraper_utils\test_product_data_cleaners.py`
+- **Bugs/Fixes Encountered:**
+  - **Coles Cleaner Test Failure 1:** Initial mock data for Coles was missing the `_type: "PRODUCT"` field, causing the cleaner to filter out the product.
+  - **Coles Cleaner Test Failure 2:** The `_get_value` helper method in `BaseDataCleaner.py` (which is used by all product cleaners) could not correctly parse paths with list indexing (e.g., `imageUris.0.uri`). This is a bug in the `BaseDataCleaner` that needs to be fixed.
+
+## 8. Barcode Scraper and Enrichment Command Fixes
+
+- **Problem 1:** `AttributeError: 'JsonlWriter' object has no attribute 'is_open'` in `barcode_scraper_coles.py`.
+- **Action 1:** Corrected the check to use `self.jsonl_writer.temp_file_handle` which correctly indicates if the file is open.
+- **File Modified:** `C:\Users\ethan\coding\splitcart\api\scrapers\barcode_scraper_coles.py`
+- **Problem 2:** Incorrect import path in `run_coles_enrichment.py` for the barcode enrichment logic.
+- **Action 2:** Corrected the import to use `ColesBarcodeScraper` from `barcode_scraper_coles.py` and updated the call to instantiate and run the scraper.
+- **File Modified:** `C:\Users\ethan\coding\splitcart\api\management\commands\run_coles_enrichment.py`
