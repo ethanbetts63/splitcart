@@ -30,6 +30,8 @@ class BaseStoreScraper(ABC):
                 self.print_progress(completed_steps + i, total_steps, item)
                 
                 raw_data_list = self.fetch_data_for_item(item)
+
+                self.save_progress(completed_steps + i)
                 
                 if not raw_data_list:
                     continue
@@ -37,8 +39,6 @@ class BaseStoreScraper(ABC):
                 for raw_data in raw_data_list:
                     cleaned_data = self.clean_raw_data(raw_data)
                     self.save_store(cleaned_data)
-                
-                self.save_progress(completed_steps + i)
 
             self.cleanup()
         except Exception as e:

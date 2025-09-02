@@ -48,10 +48,13 @@ class StoreScraperWoolworths1(BaseStoreScraper):
             response = self.session.get(self.api_url, params=params, timeout=60)
             response.raise_for_status()
             data = response.json()
-            with open("woolworths_store_response.json", "a") as f:
-                f.write(json.dumps(data, indent=4))
-                f.write("\n")
-            return data.get("Stores", [])
+            stores = data.get("Stores", [])
+            for store in stores:
+                if not store.get("Division"):
+                    with open("woolworths_no_division_response.jsonl", "a") as f:
+                        f.write(json.dumps(data) + '\n')
+                    break  # Log the response once and exit the loop
+            return stores
         except Exception as e:
             self.stdout.write(f"Request failed: {e}")
             return []

@@ -34,9 +34,19 @@ class StoreScraperWoolworths2(BaseStoreScraper):
             response = self.session.get(self.api_url, params=params, timeout=60)
             response.raise_for_status()
             data = response.json()
-            with open("woolworths_store_response2.json", "a") as f:
-                f.write(json.dumps(data, indent=4))
-                f.write("\n")
+
+            stores_list = []
+            if isinstance(data, list):
+                stores_list = data
+            elif isinstance(data, dict):
+                stores_list = data.get("Stores", [])
+
+            for store in stores_list:
+                if isinstance(store, dict) and not store.get("Division"):
+                    with open("woolworths_no_division_response2.jsonl", "a") as f:
+                        f.write(json.dumps(data) + '\n')
+                    break  # Log the response once
+
             if isinstance(data, list):
                 return data
             return data.get("Stores", [])
