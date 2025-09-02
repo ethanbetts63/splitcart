@@ -50,7 +50,11 @@ class BaseStoreScraper(ABC):
     def save_store(self, cleaned_data):
         """Saves a single cleaned store to a JSON file."""
         store_id = cleaned_data['store_data']['store_id']
-        filename = os.path.join(self.discovered_stores_dir, f"{self.company}_{store_id}.json")
+        
+        # Sanitize the store_id for use in a filename by replacing colons
+        safe_store_id = str(store_id).replace(':', '_')
+
+        filename = os.path.join(self.discovered_stores_dir, f"{self.company}_{safe_store_id}.json")
         if not os.path.exists(filename):
             with open(filename, 'w', encoding='utf-8') as f:
                 json.dump(cleaned_data, f, indent=4)
