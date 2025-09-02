@@ -69,11 +69,15 @@ class StoreScraperWoolworths1(BaseStoreScraper):
         cleaner = StoreCleanerWoolworths(raw_data, self.company, datetime.now())
         return cleaner.clean()
 
-    def cleanup(self):
-        """Saves the unique store IDs and then calls the base cleanup."""
+    def save_progress(self, completed_steps):
+        """Saves progress and updates the store IDs file."""
+        super().save_progress(completed_steps)
         with open(self.ids_file, 'w') as f:
             for store_id in sorted(list(self.woolworths_ids)):
                 f.write(f"{store_id}\n")
+
+    def cleanup(self):
+        """Calls the base cleanup."""
         super().cleanup()
 
     def get_item_type(self) -> str:

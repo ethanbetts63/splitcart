@@ -29,7 +29,7 @@ class StoreScraperWoolworths2(BaseStoreScraper):
 
     def get_work_items(self) -> list:
         """Generates a list of postcodes to scrape."""
-        return list(range(1, 10000, 5))
+        return list(range(1, 10000, 10))
 
     def fetch_data_for_item(self, item) -> list:
         """Fetches store data for a given postcode."""
@@ -66,11 +66,15 @@ class StoreScraperWoolworths2(BaseStoreScraper):
         cleaner = StoreCleanerWoolworths(raw_data, self.company, datetime.now())
         return cleaner.clean()
 
-    def cleanup(self):
-        """Saves the unique store IDs and then calls the base cleanup."""
+    def save_progress(self, completed_steps):
+        """Saves progress and updates the store IDs file."""
+        super().save_progress(completed_steps)
         with open(self.ids_file, 'w') as f:
             for store_id in sorted(list(self.woolworths_ids)):
                 f.write(f"{store_id}\n")
+
+    def cleanup(self):
+        """Calls the base cleanup."""
         super().cleanup()
 
     def get_item_type(self) -> str:
