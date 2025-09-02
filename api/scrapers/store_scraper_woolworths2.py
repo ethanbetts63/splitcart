@@ -29,7 +29,7 @@ class StoreScraperWoolworths2(BaseStoreScraper):
 
     def get_work_items(self) -> list:
         """Generates a list of postcodes to scrape."""
-        return list(range(1, 10000, 10))
+        return list(range(1, 10000, 5))
 
     def fetch_data_for_item(self, item) -> list:
         """Fetches store data for a given postcode."""
