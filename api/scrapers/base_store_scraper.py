@@ -1,6 +1,7 @@
 import os
 import json
 import time
+import requests
 from abc import ABC, abstractmethod
 
 class BaseStoreScraper(ABC):
@@ -25,11 +26,23 @@ class BaseStoreScraper(ABC):
             work_items = self.get_work_items()
             total_steps = len(work_items)
             completed_steps = self.load_progress()
+            consecutive_failures = 0
+            MAX_FAILURES = 3
 
             for i, item in enumerate(work_items[completed_steps:]):
                 self.print_progress(completed_steps + i, total_steps, item)
                 
-                raw_data_list = self.fetch_data_for_item(item)
+                raw_data_list = None
+                try:
+                    raw_data_list = self.fetch_data_for_item(item)
+                    consecutive_failures = 0  # Reset on success
+                except requests.exceptions.RequestException as e:
+                    self.stdout.write(f"\nNetwork error: {e}")
+                    consecutive_failures += 1
+                    self.stdout.write(f"Consecutive network failures: {consecutive_failures}")
+                    if consecutive_failures >= MAX_FAILURES:
+                        self.stdout.write(f"\nStopping scraper due to {MAX_FAILURES} consecutive network failures.")
+                        break  # Exit loop
 
                 self.save_progress(completed_steps + i)
                 
@@ -46,6 +59,7 @@ class BaseStoreScraper(ABC):
             self.stdout.write("Restarting scraper in 10 seconds...")
             time.sleep(10)
             self.run()
+
 
     def save_store(self, cleaned_data):
         """Saves a single cleaned store to a JSON file."""
