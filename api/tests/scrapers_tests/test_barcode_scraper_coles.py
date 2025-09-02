@@ -53,6 +53,57 @@ class TestColesBarcodeScraper(unittest.TestCase):
         # 4. Check that the final success message is not present
         self.assertNotIn("Barcode enrichment complete.", stdout_output)
 
+    @patch('os.remove')
+    @patch('os.path.exists', return_value=True)
+    @patch('api.scrapers.barcode_scraper_coles.prefill_barcodes_from_db', return_value=[])
+    @patch('api.scrapers.barcode_scraper_coles.JsonlWriter')
+    @patch('builtins.open', new_callable=mock_open, read_data='{"metadata": {"store_id": "123", "store_name": "Test Store", "state": "TS"}}\n')
+    def test_run_completes_successfully(self, mock_file, mock_jsonl_writer, mock_prefill, mock_exists, mock_remove):
+        """
+        Test the successful execution path of the barcode scraper.
+        """
+        # Arrange
+        mock_command = MagicMock()
+        mock_stdout = io.StringIO()
+        mock_command.stdout.write = mock_stdout.write
+        mock_command.style.SUCCESS = lambda x: x # Make the style wrapper transparent
+
+        scraper = ColesBarcodeScraper(command=mock_command, source_file_path='fake/path.jsonl')
+
+        # Mock methods to isolate the run loop
+        scraper.setup = MagicMock()
+        scraper.get_work_items = MagicMock(return_value=[{'product': {'url': 'http://fake.url'}}] * 5)
+        scraper.fetch_data_for_item = MagicMock(return_value=[{'html': '<html></html>', 'original_item': {'product': {}}}])
+        scraper.clean_raw_data = MagicMock(return_value={'products': [{'barcode': '123'}], 'metadata': {}})
+        scraper.write_data = MagicMock()
+        scraper.post_scrape_enrichment = MagicMock()
+
+        # Configure the mock JsonlWriter and its handle
+        mock_writer_instance = MagicMock()
+        mock_writer_instance.temp_file_handle = MagicMock()
+        scraper.jsonl_writer = mock_writer_instance
+        
+        scraper.output = MagicMock()
+
+        # Act
+        scraper.run()
+
+        # Assert
+        # 1. Check that fetch_data_for_item was called for all items
+        self.assertEqual(scraper.fetch_data_for_item.call_count, 5)
+
+        # 2. Check that write_data was called for all items
+        self.assertEqual(scraper.write_data.call_count, 5)
+
+        # 3. Check that the final methods were called on success
+        scraper.post_scrape_enrichment.assert_called_once()
+        scraper.jsonl_writer.commit.assert_called_once()
+        mock_remove.assert_called_with(scraper.progress_file_path)
+
+        # 4. Check for the final success message
+        # We can't check stdout directly because post_scrape_enrichment is mocked,
+        # but we can check that it was called.
+        scraper.post_scrape_enrichment.assert_called_once()
 
 if __name__ == '__main__':
     unittest.main()

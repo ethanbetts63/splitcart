@@ -8,7 +8,7 @@ from api.scrapers.base_store_scraper import BaseStoreScraper
 # A minimal concrete implementation of the abstract BaseStoreScraper for testing purposes
 class ConcreteStoreScraper(BaseStoreScraper):
     def __init__(self, command):
-        super().__init__(command, 'test_company', 'test_progress.json')
+        super().__init__(command, 'test_company', 'test_progress')
 
     def setup(self):
         pass
@@ -66,7 +66,7 @@ class TestBaseStoreScraper(unittest.TestCase):
         # 3. Check that the loop terminated and didn't try a 4th time
         self.assertNotIn("Consecutive network failures: 4", output)
 
-    @patch('os.path.exists', return_value=False)
+    @patch('os.path.exists')
     @patch('builtins.open')
     @patch('os.remove')
     def test_run_completes_successfully(self, mock_remove, mock_open, mock_exists):
@@ -74,6 +74,9 @@ class TestBaseStoreScraper(unittest.TestCase):
         Test the successful execution path of the scraper.
         """
         # Arrange
+        # 1st call in load_progress(), 2nd in cleanup()
+        mock_exists.side_effect = [False, True]
+
         self.scraper.fetch_data_for_item = MagicMock(return_value=[{'data': 'some_data'}])
         self.scraper.clean_raw_data = MagicMock(return_value={'store_data': {'store_id': '123'}})
         self.scraper.save_store = MagicMock()
