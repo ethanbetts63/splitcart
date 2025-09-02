@@ -2,6 +2,8 @@ from django.test import TestCase
 from datetime import datetime
 from api.utils.shop_scraping_utils.StoreCleanerWoolworths import StoreCleanerWoolworths
 from api.utils.shop_scraping_utils.StoreCleanerColes import StoreCleanerColes
+from api.utils.shop_scraping_utils.StoreCleanerAldi import StoreCleanerAldi
+from api.utils.shop_scraping_utils.StoreCleanerIga import StoreCleanerIga
 
 class TestStoreCleanerWoolworths(TestCase):
 
@@ -115,7 +117,6 @@ class TestStoreCleanerColes(TestCase):
         # Check metadata
         self.assertEqual(cleaned_output['metadata']['company'], self.company)
         
-
         # Check store data
         store_data = cleaned_output['store_data']
         self.assertEqual(store_data['store_id'], "COL:0432")
@@ -142,3 +143,84 @@ class TestStoreCleanerColes(TestCase):
 
         self.assertEqual(store_data['store_name'], "Liquorland Richmond")
         self.assertEqual(store_data['division'], "Liquorland")
+
+
+class TestStoreCleanerAldi(TestCase):
+
+    def setUp(self):
+        self.company = "aldi"
+        self.timestamp = datetime.now()
+
+    def test_cleaner_with_standard_data(self):
+        """Test that the cleaner correctly processes a standard store."""
+        raw_data = {
+            "id": "ALDI-123",
+            "name": "ALDI Preston",
+            "publicPhoneNumber": "0312345678",
+            "address": {
+                "address1": "123 High St",
+                "address2": "Preston Market",
+                "city": "Preston",
+                "regionName": "VIC",
+                "zipCode": "3072",
+                "latitude": -37.74,
+                "longitude": 145.00
+            },
+            "isOpenNow": False,
+            "facilities": ["Parking"],
+            "availableCustomerServiceTypes": ["Returns"],
+            "alcoholAvailability": ["Beer", "Wine"]
+        }
+
+        cleaner = StoreCleanerAldi(raw_data, self.company, self.timestamp)
+        cleaned_output = cleaner.clean()
+        store_data = cleaned_output['store_data']
+
+        self.assertEqual(store_data['store_id'], "ALDI-123")
+        self.assertEqual(store_data['store_name'], "ALDI Preston")
+        self.assertEqual(store_data['suburb'], "Preston")
+        self.assertEqual(store_data['state'], "VIC")
+        self.assertFalse(store_data['is_trading'])
+        self.assertEqual(store_data['facilities'], ["Parking"])
+
+
+class TestStoreCleanerIga(TestCase):
+
+    def setUp(self):
+        self.company = "iga"
+        self.timestamp = datetime.now()
+
+    def test_cleaner_with_standard_data(self):
+        """Test that the cleaner correctly processes a standard store."""
+        raw_data = {
+            "storeId": 987,
+            "tag": "IGA-987-Tag",
+            "storeName": "IGA Express",
+            "email": "contact@iga.com",
+            "phone": "0899998888",
+            "address": "456 Flinders St",
+            "suburb": "Perth",
+            "state": "WA",
+            "postcode": "6000",
+            "latitude": -31.95,
+            "longitude": 115.86,
+            "hours": "Every day 8am-9pm",
+            "onlineShopUrl": "https://shop.iga.com.au",
+            "storeUrl": "https://iga.com.au/perth",
+            "ecommerceUrl": "https://ecom.iga.com.au",
+            "id": "rec-123",
+            "status": "Active",
+            "type": "Supermarket",
+            "siteId": "site-456",
+            "shoppingModes": ["InStore"]
+        }
+
+        cleaner = StoreCleanerIga(raw_data, self.company, self.timestamp)
+        cleaned_output = cleaner.clean()
+        store_data = cleaned_output['store_data']
+
+        self.assertEqual(store_data['store_id'], 987)
+        self.assertEqual(store_data['retailer_store_id'], "IGA-987-Tag")
+        self.assertEqual(store_data['store_name'], "IGA Express")
+        self.assertEqual(store_data['suburb'], "Perth")
+        self.assertEqual(store_data['online_shop_url'], "https://shop.iga.com.au")
