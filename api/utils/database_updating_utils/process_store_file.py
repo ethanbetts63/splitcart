@@ -4,7 +4,6 @@ from django.conf import settings
 from api.utils.database_updating_utils.get_or_create_company import get_or_create_company
 from api.utils.database_updating_utils.get_or_create_division import get_or_create_division
 from api.utils.database_updating_utils.get_or_create_store import get_or_create_store
-from api.utils.database_updating_utils.tally_counter import TallyCounter
 
 def process_store_file(file_name, directory, command, tally):
     file_path = os.path.join(directory, file_name)
