@@ -8,7 +8,6 @@ from api.utils.database_updating_utils.tally_counter import TallyCounter
 
 def process_store_file(file_name, directory, command, tally):
     file_path = os.path.join(directory, file_name)
-    command.stdout.write(command.style.SQL_FIELD(f"Processing file: {file_name}"))
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             store_data_full = json.load(f)

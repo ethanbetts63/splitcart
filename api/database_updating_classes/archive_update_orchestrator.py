@@ -38,7 +38,6 @@ class ArchiveUpdateOrchestrator:
                 continue
 
             file_path = os.path.join(self.company_archive_path, filename)
-            self.command.stdout.write(self.command.style.SQL_FIELD(f"Processing file: {filename}..."))
             
             updater = StoreUpdater(self.command, file_path)
             company_name, stores_processed = updater.run()
