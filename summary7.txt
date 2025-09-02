@@ -1,0 +1,9 @@
+## Summary 7:
+
+### Woolworths Scraper Update
+
+-   **Goal:** Limit Woolworths product scraping to only include stores from the 'supermarkets' division, excluding 'ampol', 'eg', and 'no-division' stores to prevent data pollution.
+-   **Action:**
+    -   Modified `api/management/commands/scrape.py`.
+    -   Updated the Django ORM query to filter for stores where `division__name__iexact='supermarkets'`.
+-   **Note:** Will keep an eye out for implicit imports and fix them as I go.

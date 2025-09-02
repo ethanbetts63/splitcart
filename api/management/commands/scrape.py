@@ -26,7 +26,7 @@ class Command(BaseCommand):
         if options['woolworths'] or run_all:
             try:
                 woolworths_company = Company.objects.get(name="Woolworths")
-                stores = Store.objects.filter(company=woolworths_company, is_active=True)
+                stores = Store.objects.filter(company=woolworths_company, is_active=True, division__name__iexact='supermarkets')
                 stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
                 categories = get_woolworths_categories(self)
                 if not categories:
