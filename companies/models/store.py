@@ -166,6 +166,7 @@ class Store(models.Model):
     retailer_store_id = models.CharField(
         max_length=50,
         blank=True,
+        null=True,
         help_text="The retailer-specific identifier for the store, if available."
         # IGA: retailerStoreId
     )

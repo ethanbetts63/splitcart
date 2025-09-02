@@ -92,8 +92,7 @@ class StoreUpdater:
         if not store_id:
             return
 
-        store, created = Store.objects.get_or_create(store_id=store_id, defaults={
-            'company': company_obj,
+        store_defaults = {
             'division': division_obj,
             'store_name': store_data.get('store_name'),
             'address_line_1': store_data.get('address_line_1'),
@@ -103,18 +102,18 @@ class StoreUpdater:
             'latitude': store_data.get('latitude'),
             'longitude': store_data.get('longitude'),
             'phone_number': store_data.get('phone_number'),
-            'is_active': store_data.get('is_active', True)
-        })
+            'is_active': store_data.get('is_active', True),
+            'retailer_store_id': store_data.get('retailer_store_id')
+        }
+
+        store, created = Store.objects.get_or_create(
+            store_id=store_id,
+            company=company_obj,
+            defaults=store_defaults
+        )
 
         if not created:
             # Update existing store
-            store.store_name = store_data.get('store_name', store.store_name)
-            store.address_line_1 = store_data.get('address_line_1', store.address_line_1)
-            store.suburb = store_data.get('suburb', store.suburb)
-            store.state = store_data.get('state', store.state)
-            store.postcode = store_data.get('postcode', store.postcode)
-            store.latitude = store_data.get('latitude', store.latitude)
-            store.longitude = store_data.get('longitude', store.longitude)
-            store.phone_number = store_data.get('phone_number', store.phone_number)
-            store.is_active = store_data.get('is_active', store.is_active)
+            for key, value in store_defaults.items():
+                setattr(store, key, value)
             store.save()

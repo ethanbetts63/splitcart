@@ -28,5 +28,8 @@ class ScraperOutput:
         self.command.stdout.write(output)
         self.command.stdout.flush()
 
+    def log_error(self, message):
+        self.command.stderr.write(f"{colorama.Fore.RED}ERROR: {message}{colorama.Style.RESET_ALL}")
+
     def finalize(self):
         self.command.stdout.write("\n")

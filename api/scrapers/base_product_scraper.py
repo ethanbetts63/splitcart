@@ -38,12 +38,13 @@ class BaseProductScraper(ABC):
             
             scrape_successful = True
         finally:
-            self.jsonl_writer.close()
-            if scrape_successful:
-                self.post_scrape_enrichment()
-                self.jsonl_writer.commit()
-            else:
-                self.jsonl_writer.cleanup()
+            if self.jsonl_writer:
+                self.jsonl_writer.close()
+                if scrape_successful:
+                    self.post_scrape_enrichment()
+                    self.jsonl_writer.commit()
+                else:
+                    self.jsonl_writer.cleanup()
             self.output.finalize()
 
     # --- Methods to be implemented by subclasses ---
