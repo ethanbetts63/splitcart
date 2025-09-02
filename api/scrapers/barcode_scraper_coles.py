@@ -172,7 +172,7 @@ class ColesBarcodeScraper(BaseProductScraper):
 
         except requests.exceptions.RequestException as e:
             self.command.stderr.write(self.command.style.ERROR(f"Request failed for {product_data.get('name')}: {e}"))
-            return []
+            raise  # Re-raise to be caught by the run loop
 
 
     def clean_raw_data(self, raw_data_list: list) -> dict:
@@ -234,18 +234,24 @@ class ColesBarcodeScraper(BaseProductScraper):
         """
         while True:
             scrape_successful = False
+            stop_scraping = False  # Flag to signal a hard stop
             try:
                 self.setup()
                 self.jsonl_writer.open()
                 work_items = self.get_work_items()
                 self.output.update_progress(total_categories=len(work_items))
 
+                consecutive_failures = 0
+                MAX_FAILURES = 3
+
                 for i, item in enumerate(work_items):
                     self.output.update_progress(categories_scraped=i + 1)
                     try:
                         raw_data_list = self.fetch_data_for_item(item)
+                        consecutive_failures = 0  # Reset on success
+
                         if not raw_data_list:
-                            # Write original data back if fetch fails
+                            # Write original data back if fetch fails (e.g., no URL)
                             self.write_data({'products': [item['product']], 'metadata': item.get('metadata')})
                             continue
 
@@ -254,24 +260,38 @@ class ColesBarcodeScraper(BaseProductScraper):
 
                         # Write to progress file immediately after successful processing
                         with open(self.progress_file_path, 'a') as progress_f:
-                            # The cleaned_data_packet has the updated product info
                             updated_line_data = {
                                 'product': cleaned_data_packet['products'][0],
                                 'metadata': cleaned_data_packet['metadata']
                             }
                             progress_f.write(json.dumps(updated_line_data) + '\n')
 
+                    except requests.exceptions.RequestException:
+                        consecutive_failures += 1
+                        self.command.stdout.write(f"Consecutive network failures: {consecutive_failures}")
+                        self.write_data({'products': [item['product']], 'metadata': item.get('metadata')})
+                        if consecutive_failures >= MAX_FAILURES:
+                            self.command.stderr.write(self.command.style.ERROR(f"\nStopping scraper due to {MAX_FAILURES} consecutive network failures."))
+                            stop_scraping = True
+                            break  # Exit the for loop
+                        continue
+
                     except InterruptedError:
                         self.command.stderr.write(self.command.style.ERROR("Session interrupted. Attempting to restart..."))
-                        raise # Re-raise to be caught by the outer loop
+                        raise  # Re-raise to be caught by the outer loop
 
-                scrape_successful = True
-                break # Exit the while loop on success
+                if not stop_scraping:
+                    scrape_successful = True
+                
+                break  # Exit the while loop on success or controlled failure
 
             except InterruptedError:
-                self.jsonl_writer.cleanup() # Clean up partial file from the failed session
+                self.jsonl_writer.cleanup()  # Clean up partial file from the failed session
                 self.command.stdout.write("--------------------------------------------------")
-                # Loop will continue, causing a session restart
+                # If we stopped due to network errors, don't restart.
+                if stop_scraping:
+                    break
+                # Otherwise, loop will continue, causing a session restart
                 continue
             finally:
                 if self.jsonl_writer and self.jsonl_writer.temp_file_handle:
