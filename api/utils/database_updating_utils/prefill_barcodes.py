@@ -43,8 +43,6 @@ def prefill_barcodes_from_db(product_list: list, command=None) -> list:
             if matching_product:
                 # If the match has a real barcode, use it.
                 if matching_product.barcode:
-                    if command and (i % 50 == 0): # Log progress periodically
-                        command.stdout.write(f"    - Prefilled barcode for \"{product_data.get('name', '')}\"")
                     product_data['barcode'] = matching_product.barcode
                     prefilled_count += 1
                 # If the match is known to have no Coles barcode, mark the current product as such to prevent re-scraping.
