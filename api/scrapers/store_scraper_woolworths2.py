@@ -2,7 +2,6 @@ from datetime import datetime
 from api.scrapers.base_store_scraper import BaseStoreScraper
 from api.utils.shop_scraping_utils.StoreCleanerWoolworths import StoreCleanerWoolworths
 import json
-
 import requests
 
 class StoreScraperWoolworths2(BaseStoreScraper):
@@ -38,6 +37,8 @@ class StoreScraperWoolworths2(BaseStoreScraper):
             with open("woolworths_store_response2.json", "a") as f:
                 f.write(json.dumps(data, indent=4))
                 f.write("\n")
+            if isinstance(data, list):
+                return data
             return data.get("Stores", [])
         except Exception as e:
             self.stdout.write(f"Request failed for postcode {postcode}: {e}")
