@@ -314,5 +314,5 @@ class ColesBarcodeScraper(BaseProductScraper):
         The enriched file is already created. We just need to inform the user.
         """
         self.command.stdout.write(self.command.style.SUCCESS(
-            f"Barcode enrichment complete. Final file at: {self.jsonl_writer.final_file_path}"
+            f"Barcode enrichment complete."
         ))
