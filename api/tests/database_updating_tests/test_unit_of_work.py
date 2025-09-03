@@ -6,7 +6,7 @@ from products.models import Product, Price
 from companies.models import Store
 
 # Correcting the import path based on user feedback
-from products.tests.test_helpers.model_factories import ProductFactory
+from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory
 from companies.tests.test_helpers.model_factories import StoreFactory
 
 class UnitOfWorkTests(TestCase):
@@ -30,8 +30,9 @@ class UnitOfWorkTests(TestCase):
 
     def test_add_price(self):
         """Test that a price record is correctly added to the creation list."""
+        from datetime import date
         product = ProductFactory() # Create a persistent instance to link the price to
-        product_details = {'price_current': 12.50, 'product_id_store': '67890'}
+        product_details = {'price_current': 12.50, 'product_id_store': '67890', 'scraped_date': date.today().isoformat()}
 
         self.uow.add_price(product, self.store, product_details)
 
@@ -45,15 +46,16 @@ class UnitOfWorkTests(TestCase):
 
     def test_add_price_does_not_add_if_price_is_none_or_zero(self):
         """Test that a price record is not created if the price is None or 0."""
+        from datetime import date
         product = ProductFactory()
         
         # Test with None
-        product_details_none = {'price_current': None, 'product_id_store': '111'}
+        product_details_none = {'price_current': None, 'product_id_store': '111', 'scraped_date': date.today().isoformat()}
         self.uow.add_price(product, self.store, product_details_none)
         self.assertEqual(len(self.uow.prices_to_create), 0)
 
         # Test with 0
-        product_details_zero = {'price_current': 0, 'product_id_store': '222'}
+        product_details_zero = {'price_current': 0, 'product_id_store': '222', 'scraped_date': date.today().isoformat()}
         self.uow.add_price(product, self.store, product_details_zero)
         self.assertEqual(len(self.uow.prices_to_create), 0)
 
@@ -72,6 +74,42 @@ class UnitOfWorkTests(TestCase):
         self.uow.add_for_update(product) # Add the same instance again
 
         self.assertEqual(len(self.uow.products_to_update), 1)
+
+    def test_commit_creates_objects_in_database(self):
+        """An integration test to ensure commit actually creates products and prices."""
+        # 1. Setup initial state
+        from datetime import date, timedelta
+        yesterday = date.today() - timedelta(days=1)
+        
+        existing_product = ProductFactory()
+        # Create a price with a different date and price to avoid unique key collision
+        PriceFactory(product=existing_product, store=self.store, scraped_date=yesterday, price=99.99)
+
+        initial_product_count = Product.objects.count()
+        initial_price_count = Price.objects.count()
+
+        # 2. Add work to the UoW
+        # A new price for the existing product
+        existing_product_details = {'price_current': 20.0, 'product_id_store': 'existing-sku', 'scraped_date': date.today().isoformat()}
+        self.uow.add_price(existing_product, self.store, existing_product_details)
+
+        # A new product
+        new_product_instance = ProductFactory.build(barcode='111', normalized_name_brand_size='new-item-1l')
+        new_product_details = {'price_current': 10.0, 'product_id_store': 'new-sku', 'scraped_date': date.today().isoformat()}
+        self.uow.add_new_product(new_product_instance, new_product_details)
+
+        # 3. Call commit with real data
+        mock_consolidated_data = {}
+        mock_product_cache = {}
+        mock_resolver = Mock()
+        mock_resolver.barcode_cache = {}
+        mock_resolver.normalized_string_cache = {}
+
+        self.uow.commit(mock_consolidated_data, mock_product_cache, mock_resolver, self.store)
+
+        # 4. Assert database state
+        self.assertEqual(Product.objects.count(), initial_product_count + 1)
+        self.assertEqual(Price.objects.count(), initial_price_count + 2)
 
     def test_internal_deduplication_of_new_products(self):
         """Test the _deduplicate_new_products method directly."""
@@ -101,10 +139,12 @@ class UnitOfWorkTests(TestCase):
         self.assertEqual(unique_products[0][0], p3)
 
     @patch('api.database_updating_classes.unit_of_work.Product.objects.bulk_update')
-    @patch('api.database_updating_classes.unit_of_work.Price.objects.bulk_create')
-    @patch('api.database_updating_classes.unit_of_work.Product.objects.bulk_create')
-    def test_commit_flow(self, mock_product_create, mock_price_create, mock_product_update):
-        """Test the main commit logic, ensuring bulk methods are called."""
+    def test_commit_flow(self, mock_product_update):
+        """Test the main commit logic, ensuring objects are created."""
+        from datetime import date
+        initial_product_count = Product.objects.count()
+        initial_price_count = Price.objects.count()
+
         # 1. Setup mock objects required for commit
         mock_resolver = Mock()
         mock_resolver.barcode_cache = {}
@@ -115,7 +155,7 @@ class UnitOfWorkTests(TestCase):
         # 2. Add items to the UoW
         # A new product
         new_product_instance = ProductFactory.build(id=None, barcode='111', normalized_name_brand_size='new-item-1l')
-        new_product_details = {'price_current': 10.0, 'product_id_store': 'new-sku'}
+        new_product_details = {'price_current': 10.0, 'product_id_store': 'new-sku', 'scraped_date': date.today().isoformat()}
         self.uow.add_new_product(new_product_instance, new_product_details)
 
         # An existing product to update
@@ -123,22 +163,12 @@ class UnitOfWorkTests(TestCase):
         self.uow.add_for_update(existing_product)
 
         # A price for an existing product
-        self.uow.add_price(existing_product, self.store, {'price_current': 20.0, 'product_id_store': 'existing-sku'})
+        self.uow.add_price(existing_product, self.store, {'price_current': 20.0, 'product_id_store': 'existing-sku', 'scraped_date': date.today().isoformat()})
 
         # 3. Call commit
         self.uow.commit(mock_consolidated_data, mock_product_cache, mock_resolver, self.store)
 
-        # 4. Assert that the bulk methods were called
-        mock_product_create.assert_called_once()
-        # Prices are created for new products AND existing products, so 2 calls are wrapped in one bulk_create
-        self.assertEqual(mock_price_create.call_count, 1)
-        mock_product_update.assert_called_once()
-
-        # Assert on the contents of the calls
-        self.assertEqual(len(mock_product_create.call_args[0][0]), 1)
-        self.assertEqual(mock_product_create.call_args[0][0][0].barcode, '111')
-
-        self.assertEqual(len(mock_price_create.call_args[0][0]), 2)
-
-        self.assertEqual(len(mock_product_update.call_args[0][0]), 1)
-        self.assertEqual(mock_product_update.call_args[0][0][0], existing_product)
+        # 4. Assert that the objects were created
+        self.assertEqual(Product.objects.count(), initial_product_count + 2) # +1 for existing_product, +1 for new_product_instance
+        self.assertEqual(Price.objects.count(), initial_price_count + 2)
+        mock_product_update.assert_called_once_with([existing_product], ['barcode', 'url', 'image_url', 'description', 'country_of_origin', 'ingredients', 'has_no_coles_barcode', 'name_variations', 'normalized_string_variations'], batch_size=500)

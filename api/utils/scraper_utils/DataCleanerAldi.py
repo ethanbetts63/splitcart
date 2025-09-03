@@ -66,4 +66,7 @@ class DataCleanerAldi(BaseDataCleaner):
         unit_price_info = self._get_standardized_unit_price_info(cleaned_product)
         cleaned_product.update(unit_price_info)
 
+        # Handle availability
+        cleaned_product['is_available'] = not raw_product.get('notForSale', False)
+
         return cleaned_product

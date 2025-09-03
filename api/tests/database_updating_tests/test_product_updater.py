@@ -4,12 +4,9 @@ import json
 import shutil
 import tempfile
 from django.test import TestCase
-from unittest.mock import Mock, MagicMock
-
+from unittest.mock import MagicMock
 from api.database_updating_classes.product_updater import ProductUpdater
 from products.models import Product, Price
-from companies.models import Store, Company
-
 from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory
 from companies.tests.test_helpers.model_factories import CompanyFactory, StoreFactory
 
@@ -31,7 +28,7 @@ class ProductUpdaterTests(TestCase):
             barcode='1234567890123',
             normalized_name_brand_size='existing-item-brand-a-500g'
         )
-        PriceFactory(product=self.existing_product, store=self.store, price=10.00)
+        PriceFactory(product=self.existing_product, store=self.store, price=10.00, sku='sku001')
 
         # Create a dummy archive file
         self.company_archive_path = os.path.join(self.archive_path, self.company.name.lower())

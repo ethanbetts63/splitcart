@@ -8,9 +8,8 @@ from decimal import Decimal
 from django.test import TestCase, override_settings
 from products.models import Product, Price
 from companies.tests.test_helpers.model_factories import CompanyFactory, DivisionFactory, StoreFactory
-from api.utils.scraper_utils.clean_raw_data_aldi import clean_raw_data_aldi
-from api.utils.database_updating_utils.consolidate_inbox_data import consolidate_inbox_data
-from api.utils.database_updating_utils.update_database_from_consolidated_data import update_database_from_consolidated_data
+from api.utils.scraper_utils.DataCleanerAldi import DataCleanerAldi
+from api.database_updating_classes.update_orchestrator import UpdateOrchestrator
 
 RAW_ALDI_PRODUCTS = [
   {
@@ -100,7 +99,7 @@ class TestDataFlowAldi(TestCase):
     def test_aldi_data_flow_from_inbox(self):
         # --- Stage 1: Create a realistic inbox file ---
         timestamp = datetime.now()
-        cleaned_data_packet = clean_raw_data_aldi(
+        cleaner = DataCleanerAldi(
             raw_product_list=RAW_ALDI_PRODUCTS,
             company=self.company.name,
             store_id=self.store.store_id,
@@ -108,6 +107,7 @@ class TestDataFlowAldi(TestCase):
             state=self.store.state,
             timestamp=timestamp
         )
+        cleaned_data_packet = cleaner.clean_data()
 
         inbox_file_path = os.path.join(self.inbox_path, "aldi_test.jsonl")
         with open(inbox_file_path, 'w') as f:
@@ -117,8 +117,8 @@ class TestDataFlowAldi(TestCase):
                 f.write('\n')
 
         # --- Stage 2: Update Database ---
-        consolidated_data, processed_files = consolidate_inbox_data(self.inbox_path, self.mock_command)
-        update_database_from_consolidated_data(consolidated_data, processed_files, self.mock_command)
+        orchestrator = UpdateOrchestrator(self.mock_command, self.inbox_path)
+        orchestrator.run()
 
         # --- Stage 3: Assert Database State ---
         self.assertEqual(Product.objects.count(), 1)

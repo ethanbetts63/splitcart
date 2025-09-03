@@ -1,6 +1,7 @@
 from django.db import transaction
 from products.models import Product, Price
 from .category_manager import CategoryManager
+from api.utils.price_normalizer import PriceNormalizer
 
 class UnitOfWork:
     def __init__(self, command):
@@ -18,16 +19,39 @@ class UnitOfWork:
 
     def add_price(self, product, store, product_details):
         price_value = product_details.get('price_current')
-        # If price is None or 0, skip creating the record.
         if not price_value:
+            return
+
+        scraped_date = product_details.get('scraped_date')
+        if not scraped_date:
+            # Or handle this error more gracefully
+            return
+
+        # Generate normalized_key for the price
+        price_data = {
+            'product_id': product.id,
+            'store_id': store.id,
+            'price': price_value,
+            'date': scraped_date
+        }
+        normalizer = PriceNormalizer(price_data=price_data, company=store.company.name)
+        normalized_key = normalizer.get_normalized_key()
+
+        if not normalized_key:
+            # Or handle this error
             return
 
         self.prices_to_create.append(
             Price(
-                product=product, 
-                store=store, 
-                price=price_value, 
-                sku=product_details.get('product_id_store')
+                product=product,
+                store=store,
+                price=price_value,
+                sku=product_details.get('product_id_store'),
+                scraped_date=scraped_date,
+                normalized_key=normalized_key,
+                is_available=product_details.get('is_available'),
+                is_on_special=product_details.get('is_on_special', False),
+                was_price=product_details.get('price_was')
             )
         )
 

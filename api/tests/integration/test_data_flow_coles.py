@@ -1,4 +1,3 @@
-
 import json
 import os
 import tempfile
@@ -13,9 +12,8 @@ from django.test import TestCase, override_settings
 from companies.models import Company, Division, Store
 from products.models import Product, Price
 from companies.tests.test_helpers.model_factories import CompanyFactory, DivisionFactory, StoreFactory
-from api.utils.scraper_utils.clean_raw_data_coles import clean_raw_data_coles
-from api.utils.database_updating_utils.consolidate_inbox_data import consolidate_inbox_data
-from api.utils.database_updating_utils.update_database_from_consolidated_data import update_database_from_consolidated_data
+from api.utils.scraper_utils.DataCleanerColes import DataCleanerColes
+from api.database_updating_classes.update_orchestrator import UpdateOrchestrator
 
 RAW_COLES_PRODUCTS = [
   {
@@ -93,7 +91,7 @@ class TestDataFlowColes(TestCase):
     def test_coles_data_flow_from_inbox(self):
         # --- Stage 1: Create a realistic inbox file ---
         timestamp = datetime.now()
-        cleaned_data_packet = clean_raw_data_coles(
+        cleaner = DataCleanerColes(
             raw_product_list=RAW_COLES_PRODUCTS,
             company=self.company.name,
             store_id=self.store.store_id,
@@ -101,6 +99,7 @@ class TestDataFlowColes(TestCase):
             state=self.store.state,
             timestamp=timestamp
         )
+        cleaned_data_packet = cleaner.clean_data()
 
         inbox_file_path = os.path.join(self.inbox_path, "coles_test.jsonl")
         with open(inbox_file_path, 'w') as f:
@@ -109,11 +108,9 @@ class TestDataFlowColes(TestCase):
                 json.dump(line_data, f)
                 f.write('\n')
 
-        print(cleaned_data_packet)
-
         # --- Stage 2: Update Database ---
-        consolidated_data, processed_files = consolidate_inbox_data(self.inbox_path, self.mock_command)
-        update_database_from_consolidated_data(consolidated_data, processed_files, self.mock_command)
+        orchestrator = UpdateOrchestrator(self.mock_command, self.inbox_path)
+        orchestrator.run()
 
         # --- Stage 3: Assert Database State ---
         self.assertEqual(Product.objects.count(), 2)
@@ -121,7 +118,6 @@ class TestDataFlowColes(TestCase):
 
         # Product 1: Lamb Cutlets
         product1 = Product.objects.get(name="Graze Lamb Extra Trim Cutlets")
-        print(product1.sizes)
         self.assertEqual(product1.brand, "Coles")
         self.assertEqual(product1.sizes, ["300g"])
         
@@ -133,7 +129,6 @@ class TestDataFlowColes(TestCase):
 
         # Product 2: Smoked Salmon
         product2 = Product.objects.get(name="Tasmanian Smoked Salmon")
-        print(product2.sizes)
         self.assertEqual(product2.brand, "Tassal")
         self.assertEqual(product2.sizes, ["250g"])
 
