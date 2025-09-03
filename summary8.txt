@@ -42,7 +42,7 @@ This document outlines the debugging and refactoring work completed today.
 
 ## 5. Determining the Value of the `woolworths2` Scraper
 
-- **Problem:** Now that the cleaners are working, we returned to the original issue: the `woolworths2` scraper finds stores but doesn't get their `Division`. We need to know if it's finding unique stores that the main `woolworths1` scraper is missing.
+- **Problem:** Now that the cleaners are working, we returned to the original issue: the `woolworths2` scraper finds stores but doesn't get their `Division`. We need to know if it's finding unique stores that the main `woolworths` scraper is missing.
 - **Actions:**
   1.  **Modified Woolworths Scrapers:** Both scrapers were updated to log every store ID they find into `woolworths1_ids.txt` and `woolworths2_ids.txt`.
       - `C:\Users\ethan\coding\splitcart\api\scrapers\store_scraper_woolworths1.py`
@@ -52,7 +52,7 @@ This document outlines the debugging and refactoring work completed today.
 
 ## 6. Testing Store Scrapers
 
-- **Action:** Wrote unit tests for the `StoreScraperWoolworths1`, `StoreScraperWoolworths2`, and `StoreScraperColes` classes. These tests mock network requests to ensure the scrapers correctly handle API responses and errors.
+- **Action:** Wrote unit tests for the `StoreScraperWoolworths`, `StoreScraperWoolworths2`, and `StoreScraperColes` classes. These tests mock network requests to ensure the scrapers correctly handle API responses and errors.
 - **Files:**
   - `C:\Users\ethan\coding\splitcart\api\tests\scrapers_tests\test_StoreScraperWoolworths1.py`
   - `C:\Users\ethan\coding\splitcart\api\tests\scrapers_tests\test_StoreScraperWoolworths2.py`

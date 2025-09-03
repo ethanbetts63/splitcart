@@ -1,13 +1,13 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from api.scrapers.store_scraper_woolworths1 import StoreScraperWoolworths1
+from api.scrapers.store_scraper_woolworths import StoreScraperWoolworths
 
 class TestStoreScraperWoolworths1(unittest.TestCase):
 
     def setUp(self):
         mock_command = MagicMock()
         mock_command.stdout.write = MagicMock()
-        self.scraper = StoreScraperWoolworths1(mock_command)
+        self.scraper = StoreScraperWoolworths(mock_command)
 
     @patch('requests.Session.get')
     def test_fetch_data_for_item_success(self, mock_get):

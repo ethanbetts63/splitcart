@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from api.scrapers.store_scraper_aldi import find_aldi_stores
 from api.scrapers.store_scraper_coles import find_coles_stores
 from api.scrapers.store_scraper_iga import find_iga_stores
-from api.scrapers.store_scraper_woolworths1 import find_woolworths_stores
+from api.scrapers.store_scraper_woolworths import find_woolworths_stores
 from api.scrapers.store_scraper_woolworths2 import find_woolworths_stores2
 
 class Command(BaseCommand):
