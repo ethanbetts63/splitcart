@@ -1,6 +1,3 @@
-
-import os
-import tempfile
 from django.test import TestCase
 from unittest.mock import MagicMock, patch
 

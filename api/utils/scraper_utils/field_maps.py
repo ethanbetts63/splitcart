@@ -62,6 +62,7 @@ COLES_FIELD_MAP = {
     "average_user_rating": None,
     "rating_count": None,
     "health_star_rating": None,
+    "is_available": "availability",
 }
 
 WOOLWORTHS_FIELD_MAP = {
