@@ -51,11 +51,19 @@ class DataCleanerIga(BaseDataCleaner):
 
         # Package size needs to be constructed from unitOfSize
         size_value = cleaned_product.get('package_size') # Mapped to unitOfSize.size
-        size_type = self._get_value(raw_product, 'unitOfSize.type')
+        size_type = raw_product.get('unitOfSize', {}).get('abbreviation')
+        package_size_str = ""
         if size_value and size_type:
-            cleaned_product['package_size'] = f"{size_value}{size_type}"
-        else:
-            cleaned_product['package_size'] = None
+            package_size_str = f"{size_value}{size_type}"
+        
+        sell_by = raw_product.get('sellBy')
+        if sell_by:
+            package_size_str += f" {sell_by}"
+
+        cleaned_product['package_size'] = package_size_str.strip()
+
+        # Handle availability
+        cleaned_product['is_available'] = raw_product.get('available', False)
 
         # Standardize unit price
         unit_price_info = self._get_standardized_unit_price_info(cleaned_product)

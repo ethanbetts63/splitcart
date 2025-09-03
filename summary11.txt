@@ -1,0 +1,40 @@
+This summary covers the work done to fix the outdated integration tests and ensure data integrity from scraping to database update.
+
+**Objective:**
+- Update the integration tests in `api/tests/integration/` to use the new refactored database update system (`UpdateOrchestrator`).
+- Ensure that for each company (Aldi, Coles, IGA, Woolworths), the data flow is correct and the database is populated as expected.
+
+**Key Changes and Fixes:**
+
+1.  **Replaced Old Database Update Logic in Tests:**
+    - The old integration tests used deprecated functions like `clean_raw_data_*`, `consolidate_inbox_data`, and `update_database_from_consolidated_data`.
+    - These were replaced with the new workflow:
+        1.  Instantiate the appropriate `DataCleaner*` class (e.g., `DataCleanerAldi`).
+        2.  Call the cleaner's `clean_data()` method to produce the cleaned product data packet.
+        3.  Write this packet to a `.jsonl` file in a temporary inbox directory.
+        4.  Instantiate the `UpdateOrchestrator` with the path to the inbox.
+        5.  Call the orchestrator's `run()` method to process the data and update the database.
+
+2.  **Fixed Bug in `UnitOfWork`:**
+    - **File Modified:** `api/database_updating_classes/unit_of_work.py`
+    - **Problem:** The `Price` objects were not being created because the `bulk_create` operation bypasses the model's `save()` and `clean()` methods. This meant the required `scraped_date` and `normalized_key` fields were not being set.
+    - **Solution:** Modified the `add_price` method in `UnitOfWork` to manually set these fields before adding the `Price` object to the creation list. It now correctly pulls `scraped_date` from the product data and uses the `PriceNormalizer` to generate the `normalized_key`.
+
+3.  **Updated Data Cleaners:**
+    - **Files Modified:**
+        - `api/utils/scraper_utils/DataCleanerAldi.py`
+        - `api/utils/scraper_utils/DataCleanerColes.py`
+        - `api/utils/scraper_utils/DataCleanerIga.py`
+        - `api/utils/scraper_utils/DataCleanerWoolworths.py`
+    - **Problem:** The tests were failing on assertions for `is_available` and `is_on_special`, and `sizes` because the data cleaners were not correctly extracting this information from the raw product data.
+    - **Solution:** Added logic to each specific data cleaner to correctly parse the store-specific fields (e.g., `notForSale` for Aldi, `availability` for Coles, `available` for IGA, `IsAvailable` for Woolworths) and populate the `is_available`, `is_on_special`, and `package_size` fields in the cleaned product dictionary.
+
+**Affected Test Files:**
+
+- `api/tests/integration/test_data_flow_aldi.py`
+- `api/tests/integration/test_data_flow_coles.py`
+- `api/tests/integration/test_data_flow_iga.py`
+- `api/tests/integration/test_data_flow_woolworths.py`
+
+**Outcome:**
+All integration tests in the `api/tests/integration/` directory are now passing, confirming the end-to-end data pipeline is working as expected for all major companies.

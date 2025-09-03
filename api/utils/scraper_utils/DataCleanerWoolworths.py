@@ -60,4 +60,6 @@ class DataCleanerWoolworths(BaseDataCleaner):
         unit_price_info = self._get_standardized_unit_price_info(cleaned_product)
         cleaned_product.update(unit_price_info)
 
+        cleaned_product['is_available'] = raw_product.get('IsAvailable', False)
+
         return cleaned_product
