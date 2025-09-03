@@ -61,7 +61,7 @@ class DataCleanerColes(BaseDataCleaner):
 
         # Image URL needs the domain prepended
         if cleaned_product.get('image_url'):
-            cleaned_product['image_url'] = f"https://www.coles.com.au{cleaned_product['image_url']}"
+            cleaned_product['image_url'] = f"https://www.coles.com.au/{cleaned_product['image_url']}"
 
         # Construct full URL
         product_id = cleaned_product.get('product_id_store')

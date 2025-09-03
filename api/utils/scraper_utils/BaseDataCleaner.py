@@ -29,7 +29,7 @@ class BaseDataCleaner(ABC):
     def _get_value(self, raw_product: dict, standard_field: str):
         """
         Gets a value from the raw product dict using the field_map.
-        Handles dot notation for nested objects.
+        Handles dot notation for nested objects and lists.
         """
         raw_field_key = self.field_map.get(standard_field)
         if not raw_field_key:
@@ -40,9 +40,16 @@ class BaseDataCleaner(ABC):
         
         value = raw_product
         for key_part in raw_field_key.split('.'):
-            if not isinstance(value, dict):
+            if isinstance(value, list):
+                try:
+                    key_part = int(key_part)
+                    value = value[key_part]
+                except (ValueError, IndexError):
+                    return None
+            elif isinstance(value, dict):
+                value = value.get(key_part)
+            else:
                 return None
-            value = value.get(key_part)
         return value
 
     def clean_data(self) -> dict:
