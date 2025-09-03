@@ -3,7 +3,6 @@ from api.scrapers.store_scraper_aldi import find_aldi_stores
 from api.scrapers.store_scraper_coles import find_coles_stores
 from api.scrapers.store_scraper_iga import find_iga_stores
 from api.scrapers.store_scraper_woolworths import find_woolworths_stores
-from api.scrapers.store_scraper_woolworths2 import find_woolworths_stores2
 
 class Command(BaseCommand):
     help = 'Finds store locations for various supermarkets.'
@@ -24,7 +23,6 @@ class Command(BaseCommand):
             find_coles_stores(self)
             find_iga_stores(self)
             find_woolworths_stores(self)
-            find_woolworths_stores2(self)
             self.stdout.write(self.style.SUCCESS("--- All store discovery processes complete ---"))
         else:
             if options['aldi']:
@@ -43,7 +41,3 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS("--- Starting Woolworths store discovery process ---"))
                 find_woolworths_stores(self)
                 self.stdout.write(self.style.SUCCESS("--- Woolworths store discovery process complete ---"))
-            if options['woolworths2']:
-                self.stdout.write(self.style.SUCCESS("--- Starting Woolworths store discovery process (alternative method) ---"))
-                find_woolworths_stores2(self)
-                self.stdout.write(self.style.SUCCESS("--- Woolworths store discovery process (alternative method) complete ---"))
