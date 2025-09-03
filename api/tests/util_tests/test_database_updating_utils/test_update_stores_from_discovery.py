@@ -1,5 +1,3 @@
-
-import unittest
 from unittest.mock import patch, MagicMock
 from django.test import TestCase
 from api.utils.database_updating_utils.update_stores_from_discovery import update_stores_from_discovery
@@ -30,4 +28,4 @@ class UpdateStoresFromDiscoveryTest(TestCase):
         update_stores_from_discovery(self.mock_command)
 
         mock_process.assert_not_called()
-        mock_sleep.assert_called_once_with(30)
+        mock_sleep.assert_called_once_with(1000)
