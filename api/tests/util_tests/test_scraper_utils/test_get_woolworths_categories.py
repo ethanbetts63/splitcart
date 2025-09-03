@@ -6,6 +6,7 @@ import requests
 class GetWoolworthsCategoriesTest(TestCase):
     @patch('api.utils.scraper_utils.get_woolworths_categories.requests.get')
     def test_get_woolworths_categories_success(self, mock_get):
+        mock_command = MagicMock()
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {
@@ -26,7 +27,7 @@ class GetWoolworthsCategoriesTest(TestCase):
         }
         mock_get.return_value = mock_response
 
-        categories = get_woolworths_categories()
+        categories = get_woolworths_categories(mock_command)
         self.assertEqual(categories, [
             ("cat1-slug", "cat1-id"),
             ("cat2-slug", "cat2-id"),
@@ -36,24 +37,27 @@ class GetWoolworthsCategoriesTest(TestCase):
 
     @patch('api.utils.scraper_utils.get_woolworths_categories.requests.get')
     def test_get_woolworths_categories_api_error(self, mock_get):
+        mock_command = MagicMock()
         mock_get.side_effect = requests.exceptions.RequestException("Test Error")
-        categories = get_woolworths_categories()
+        categories = get_woolworths_categories(mock_command)
         self.assertEqual(categories, [])
 
     @patch('api.utils.scraper_utils.get_woolworths_categories.requests.get')
     def test_get_woolworths_categories_json_decode_error(self, mock_get):
+        mock_command = MagicMock()
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.side_effect = ValueError("Invalid JSON")
         mock_get.return_value = mock_response
-        categories = get_woolworths_categories()
+        categories = get_woolworths_categories(mock_command)
         self.assertEqual(categories, [])
 
     @patch('api.utils.scraper_utils.get_woolworths_categories.requests.get')
     def test_get_woolworths_categories_empty_response(self, mock_get):
+        mock_command = MagicMock()
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"Categories": []}
         mock_get.return_value = mock_response
-        categories = get_woolworths_categories()
+        categories = get_woolworths_categories(mock_command)
         self.assertEqual(categories, [])

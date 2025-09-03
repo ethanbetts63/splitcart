@@ -102,7 +102,7 @@ class ProductReconciler:
 
         # --- De-duplicate and Move Prices ---
         canonical_price_keys = set(
-            (p.store_id, p.scraped_at.date()) for p in Price.objects.filter(product=canonical)
+            (p.store_id, p.scraped_date) for p in Price.objects.filter(product=canonical)
         )
         prices_to_move = Price.objects.filter(product=duplicate)
         moved_count = 0

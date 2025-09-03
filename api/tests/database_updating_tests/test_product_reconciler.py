@@ -55,11 +55,15 @@ class ProductReconcilerTests(TestCase):
         translations = {duplicate.normalized_name_brand_size: canonical.normalized_name_brand_size}
 
         # Price that should be moved
-        PriceFactory(product=duplicate, store=self.store, scraped_date=date.today())
+        p1 = PriceFactory(product=duplicate, store=self.store, scraped_date=date.today())
         # Price that should be deleted (same date as canonical's price)
-        PriceFactory(product=duplicate, store=self.store, scraped_date=date.today() - timedelta(days=1))
+        p2 = PriceFactory(product=duplicate, store=self.store, scraped_date=date.today() - timedelta(days=1))
         # Canonical's original price
-        PriceFactory(product=canonical, store=self.store, scraped_date=date.today() - timedelta(days=1))
+        p3 = PriceFactory(product=canonical, store=self.store, scraped_date=date.today() - timedelta(days=1))
+
+        print(f"P1 date: {p1.scraped_date}")
+        print(f"P2 date: {p2.scraped_date}")
+        print(f"P3 date: {p3.scraped_date}")
 
         self.assertEqual(Price.objects.count(), 3)
 

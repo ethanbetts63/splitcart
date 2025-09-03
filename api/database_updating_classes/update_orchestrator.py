@@ -147,7 +147,7 @@ class UpdateOrchestrator:
                     brand=product_details.get('brand'),
                     barcode=product_details.get('barcode'),
                     normalized_name_brand_size=key,
-                    size=product_details.get('package_size'),
+                    size=product_details.get('size'),
                     sizes=product_details.get('sizes', []),
                     url=product_details.get('url'),
                     image_url=product_details.get('image_url_main'),

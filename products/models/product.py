@@ -111,7 +111,7 @@ class Product(models.Model):
         product_data = {
             'name': self.name,
             'brand': self.brand,
-            'package_size': self.size,  # Map model's 'size' field to 'package_size'
+            'size': self.size,  # Map model's 'size' field to 'size'
             'barcode': self.barcode,
         }
         normalizer = ProductNormalizer(product_data)

@@ -36,7 +36,7 @@ class ProductNormalizer:
         """
         self.name = str(product_data.get('name', ''))
         self.brand = str(product_data.get('brand', ''))
-        self.package_size = str(product_data.get('package_size', ''))
+        self.size = str(product_data.get('size', ''))
         self.barcode = product_data.get('barcode')
         self.sku = product_data.get('sku')
         
@@ -119,7 +119,7 @@ class ProductNormalizer:
     def _extract_all_sizes(self) -> list:
         """ Corresponds to get_extracted_sizes.py logic. """
         all_sizes = set()
-        for text in [self.name, self.brand, self.package_size]:
+        for text in [self.name, self.brand, self.size]:
             sizes = self._extract_sizes_from_string(text)
             for size in sizes:
                 all_sizes.add(size.lower())

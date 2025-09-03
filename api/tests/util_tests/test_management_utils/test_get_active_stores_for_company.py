@@ -22,8 +22,8 @@ class GetActiveStoresForCompanyTest(TestCase):
 
     def test_get_active_stores_for_company_no_active_stores(self):
         company_no_active = CompanyFactory(name='Company C')
-        StoreFactory(company=company_no_active, name='Store 1 C3', is_active=False)
-        StoreFactory(company=company_no_active, name='Store 2 C3', is_active=False)
+        StoreFactory(company=company_no_active, store_name='Store 1 C3', is_active=False)
+        StoreFactory(company=company_no_active, store_name='Store 2 C3', is_active=False)
 
         active_stores = get_active_stores_for_company(company_no_active)
         self.assertIsNone(active_stores)

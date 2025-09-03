@@ -27,7 +27,7 @@ This summary covers the work done to fix the outdated integration tests and ensu
         - `api/utils/scraper_utils/DataCleanerIga.py`
         - `api/utils/scraper_utils/DataCleanerWoolworths.py`
     - **Problem:** The tests were failing on assertions for `is_available` and `is_on_special`, and `sizes` because the data cleaners were not correctly extracting this information from the raw product data.
-    - **Solution:** Added logic to each specific data cleaner to correctly parse the store-specific fields (e.g., `notForSale` for Aldi, `availability` for Coles, `available` for IGA, `IsAvailable` for Woolworths) and populate the `is_available`, `is_on_special`, and `package_size` fields in the cleaned product dictionary.
+    - **Solution:** Added logic to each specific data cleaner to correctly parse the store-specific fields (e.g., `notForSale` for Aldi, `availability` for Coles, `available` for IGA, `IsAvailable` for Woolworths) and populate the `is_available`, `is_on_special`, and `size` fields in the cleaned product dictionary.
 
 **Affected Test Files:**
 

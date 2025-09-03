@@ -66,7 +66,8 @@ class GetAldiCategoriesTest(TestCase):
 
         session = Mock()
         session.get = mock_get
-        categories = get_aldi_categories('store123', session)
+        mock_command = Mock()
+        categories = get_aldi_categories(mock_command, 'store123', session)
 
         self.assertEqual(sorted(categories), sorted([('subcat-a', 'keyA'), ('subcat-b', 'keyB'), ('cat-2', 'keyC')]))
         mock_get.assert_called_once_with('https://api.aldi.com.au/v2/product-category-tree?serviceType=walk-in&servicePoint=store123', timeout=60)
@@ -81,7 +82,8 @@ class GetAldiCategoriesTest(TestCase):
 
         session = Mock()
         session.get = mock_get
-        categories = get_aldi_categories('store123', session)
+        mock_command = Mock()
+        categories = get_aldi_categories(mock_command, 'store123', session)
 
         self.assertEqual(categories, [])
 
@@ -92,7 +94,8 @@ class GetAldiCategoriesTest(TestCase):
 
         session = Mock()
         session.get = mock_get
-        categories = get_aldi_categories('store123', session)
+        mock_command = Mock()
+        categories = get_aldi_categories(mock_command, 'store123', session)
 
         self.assertEqual(categories, [])
 
@@ -106,6 +109,7 @@ class GetAldiCategoriesTest(TestCase):
 
         session = Mock()
         session.get = mock_get
-        categories = get_aldi_categories('store123', session)
+        mock_command = Mock()
+        categories = get_aldi_categories(mock_command, 'store123', session)
 
         self.assertEqual(categories, [])
