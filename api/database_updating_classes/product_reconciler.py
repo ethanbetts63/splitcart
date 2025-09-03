@@ -5,7 +5,6 @@ class ProductReconciler:
     def __init__(self, command):
         self.command = command
         self.log_file = 'reconciliation_log.txt'
-        self._initialize_log_file()
 
     def _log_merge(self, canonical, duplicate):
         # Log the details of the merge to the file
