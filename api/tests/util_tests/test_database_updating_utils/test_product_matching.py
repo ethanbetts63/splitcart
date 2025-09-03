@@ -1,14 +1,14 @@
 from django.test import TestCase
 from unittest.mock import Mock
-from products.models import Product
-from companies.models.store import Store
+from products.models import Product, Price
+from companies.models import Store
 from products.tests.test_helpers.model_factories import ProductFactory
 from companies.tests.test_helpers.model_factories import StoreFactory, CompanyFactory, DivisionFactory
-from api.utils.database_updating_utils.batch_create_new_products import batch_create_new_products
-from products.models.price import Price
-from api.utils.normalization_utils.get_normalized_string import get_normalized_string
+from api.database_updating_classes.product_resolver import ProductResolver
+from api.database_updating_classes.unit_of_work import UnitOfWork
+from api.utils.product_normalizer import ProductNormalizer
 
-class TestProductMatching(TestCase):
+class TestProductMatchingAndCreation(TestCase):
 
     def setUp(self):
         self.company = CompanyFactory()
@@ -16,59 +16,92 @@ class TestProductMatching(TestCase):
         self.store1 = StoreFactory(company=self.company, division=self.division, store_id="store1")
 
         self.existing_product_barcode = ProductFactory(barcode="123456789")
-        self.existing_product_barcode.save()
 
         self.existing_product_spid = ProductFactory()
-        self.existing_product_spid.save()
-        Price.objects.create(product=self.existing_product_spid, store=self.store1, sku="spid1", price=1.0)
+        # The Price model now generates its own normalized_key, so we don't set it manually
+        # We also need to provide a scraped_date
+        from datetime import date
+        Price.objects.create(product=self.existing_product_spid, store=self.store1, sku="spid1", price=1.0, scraped_date=date.today())
 
         self.existing_product_norm = ProductFactory(
             name="Test Product",
             brand="TestBrand",
-            sizes=["1kg"]
+            package_size="1kg"
         )
-        self.existing_product_norm.save()
 
         self.mock_command = Mock()
-        self.mock_command.stdout = Mock()
+        self.mock_command.stdout.write = Mock()
         self.mock_command.style.SQL_FIELD = lambda x: x
         self.mock_command.style.SUCCESS = lambda x: x
+        self.mock_command.style.ERROR = lambda x: x
 
-    def test_product_matching_and_creation(self):
+    def test_product_matching_and_creation_flow(self):
+        # This test replicates the core logic of UpdateOrchestrator._process_consolidated_data
+        # to test the interaction between ProductResolver and UnitOfWork.
+        
+        # 1. Setup
+        resolver = ProductResolver(self.mock_command, self.company, self.store1)
+        unit_of_work = UnitOfWork(self.mock_command)
+        product_cache = {}
+
         consolidated_data = {
+            # Match via barcode
             "key_barcode": {
-                "product_details": {"barcode": "123456789", "name": "Barcode Product"},
-                "price_history": [{"store_id": "store1", "price": 1.0}]
+                "product": {"barcode": "123456789", "name": "Barcode Product", "price_current": 1.0, "scraped_date": "2025-01-01"},
+                "metadata": {"company": self.company.name, "store_id": self.store1.store_id}
             },
+            # Match via store product id (sku)
             "key_spid": {
-                "product_details": {"sku": "spid1", "name": "SPID Product"},
-                "price_history": [{"store_id": "store1", "price": 1.0}]
+                "product": {"product_id_store": "spid1", "name": "SPID Product", "price_current": 1.0, "scraped_date": "2025-01-01"},
+                "metadata": {"company": self.company.name, "store_id": self.store1.store_id}
             },
+            # Match via normalized string
             "key_norm": {
-                "product_details": {"name": "Test Product", "brand": "TestBrand", "sizes": ["1kg"]},
-                "price_history": [{"store_id": "store1", "price": 1.0}]
+                "product": {"name": "Test Product", "brand": "TestBrand", "package_size": "1kg", "price_current": 1.0, "scraped_date": "2025-01-01"},
+                "metadata": {"company": self.company.name, "store_id": self.store1.store_id}
             },
+            # A new product that should be created
             "key_new": {
-                "product_details": {"name": "New Product", "brand": "NewBrand", "sizes": ["500g"], "barcode": "987654321"},
-                "price_history": [{"store_id": "store1", "price": 1.0}]
+                "product": {"name": "New Product", "brand": "NewBrand", "package_size": "500g", "barcode": "987654321", "price_current": 1.0, "scraped_date": "2025-01-01"},
+                "metadata": {"company": self.company.name, "store_id": self.store1.store_id}
             }
         }
 
         # Add normalized strings to the test data
         for key, data in consolidated_data.items():
-            product_details = data['product_details']
-            product_details['normalized_name_brand_size'] = get_normalized_string(product_details, product_details.get('sizes', []))
+            normalizer = ProductNormalizer(data['product'])
+            data['product']['normalized_name_brand_size'] = normalizer.get_normalized_string()
 
-        product_lookup_cache = batch_create_new_products(self.mock_command, consolidated_data)
+        # 2. Processing Logic (from UpdateOrchestrator._process_consolidated_data)
+        for key, data in consolidated_data.items():
+            product_details = data['product']
+            existing_product = resolver.find_match(product_details, [])
 
-        # Assertions
-        self.assertEqual(len(product_lookup_cache), 4)
-        self.assertEqual(product_lookup_cache["key_barcode"], self.existing_product_barcode)
-        self.assertEqual(product_lookup_cache["key_spid"], self.existing_product_spid)
-        self.assertEqual(product_lookup_cache["key_norm"], self.existing_product_norm)
-        self.assertIn("key_new", product_lookup_cache)
+            if existing_product:
+                product_cache[key] = existing_product
+                unit_of_work.add_for_update(existing_product)
+                unit_of_work.add_price(existing_product, self.store1, product_details)
+            else:
+                new_product = Product(
+                    name=product_details.get('name', ''),
+                    brand=product_details.get('brand'),
+                    barcode=product_details.get('barcode'),
+                    normalized_name_brand_size=product_details.get('normalized_name_brand_size')
+                )
+                product_cache[key] = new_product
+                unit_of_work.add_new_product(new_product, product_details)
+        
+        # 3. Commit changes
+        unit_of_work.commit(consolidated_data, product_cache, resolver, self.store1)
 
-        # Check if the new product was created
+        # 4. Assertions
+        self.assertEqual(len(product_cache), 4)
+        self.assertEqual(product_cache["key_barcode"], self.existing_product_barcode)
+        self.assertEqual(product_cache["key_spid"], self.existing_product_spid)
+        self.assertEqual(product_cache["key_norm"].name, self.existing_product_norm.name) # Compare by attribute as they are different instances
+        self.assertIn("key_new", product_cache)
+
+        # Check if the new product was created in the database
         self.assertTrue(Product.objects.filter(barcode="987654321").exists())
-        new_product = Product.objects.get(barcode="987654321")
-        self.assertEqual(product_lookup_cache["key_new"], new_product)
+        new_product_from_db = Product.objects.get(barcode="987654321")
+        self.assertEqual(product_cache["key_new"], new_product_from_db)

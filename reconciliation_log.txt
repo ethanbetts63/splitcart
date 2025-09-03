@@ -312,3 +312,75 @@
   [DUPLICATE] Name: Mutti Passata Tomato Puree | Brand: Mutti | Size: None
   [CANONICAL] Name: Tomato Passata | Brand: Mutti | Size: 400g
 ----------------------------------------------------
+
+--- Reconciliation Run Started at 2025-09-03T13:44:19.013510 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:44:19.026748 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:44:19.036751 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:44:19.046759 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:44:49.844882 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:44:49.860393 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:44:49.873486 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:44:49.883482 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:45:17.625818 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:45:17.639978 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:45:17.649976 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:45:17.663181 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:46:04.496367 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:46:04.510273 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:46:04.521382 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:46:04.533370 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:46:28.989643 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:46:29.011089 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:46:29.025090 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:46:29.041104 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:46:40.723619 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:46:40.735781 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:46:40.776024 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:46:40.787008 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:47:16.286139 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:47:16.302820 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:47:16.313141 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:47:16.323143 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:47:33.189412 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:47:33.211415 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:47:33.256525 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:47:33.274606 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:48:15.181181 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:48:15.199180 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:48:15.213184 ---
+
+--- Reconciliation Run Started at 2025-09-03T13:48:15.234331 ---

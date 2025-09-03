@@ -38,3 +38,20 @@ This summary covers the work done to fix the outdated integration tests and ensu
 
 **Outcome:**
 All integration tests in the `api/tests/integration/` directory are now passing, confirming the end-to-end data pipeline is working as expected for all major companies.
+
+**Additional Test Fixes:**
+
+1.  **`SyntaxError` in `test_store_scraper_iga.py`:**
+    - **File Modified:** `api/tests/scrapers_tests/test_store_scraper_iga.py`
+    - **Problem:** An f-string syntax error due to incorrect quote escaping.
+    - **Solution:** Rewrote the problematic f-string using triple quotes to avoid escaping issues.
+
+2.  **`NameError` in `test_product_matching.py`:**
+    - **File Modified:** `api/tests/util_tests/test_database_updating_utils/test_product_matching.py`
+    - **Problem:** Missing import for the `Price` model.
+    - **Solution:** Added `Price` to the import statement from `products.models`.
+
+3.  **`TypeError: Store() got unexpected keyword arguments: 'name'` in `test_get_active_stores_for_company.py`:**
+    - **File Modified:** `api/tests/util_tests/test_management_utils/test_get_active_stores_for_company.py`
+    - **Problem:** The `StoreFactory` was called with a `name` argument, but the `Store` model now uses `store_name`.
+    - **Solution:** Replaced `name=` with `store_name=` in all `StoreFactory` calls within the test file.

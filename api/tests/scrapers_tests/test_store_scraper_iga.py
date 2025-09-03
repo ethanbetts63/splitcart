@@ -44,7 +44,7 @@ class TestStoreScraperIga(unittest.TestCase):
         """Test the parsing of the HTML content."""
         store_info1 = {"storeId": 1, "name": "IGA A", "distance": 1.2}
         store_info2 = {"storeId": 2, "name": "IGA B", "distance": 2.3}
-        html_content = f'<div data-storedata=\'{json.dumps(store_info1)}\''></div><div data-storedata=\'{json.dumps(store_info2)}\''></div>'
+        html_content = f"""<div data-storedata='{json.dumps(store_info1)}'></div><div data-storedata='{json.dumps(store_info2)}'></div>"""
         
         result = self.scraper.parse_and_clean_stores(html_content)
 
@@ -67,6 +67,3 @@ class TestStoreScraperIga(unittest.TestCase):
         self.assertEqual(result, {"cleaned": "data"})
         MockStoreCleanerIga.assert_called_once_with(raw_data, self.scraper.company, unittest.mock.ANY)
         mock_cleaner_instance.clean.assert_called_once()
-
-if __name__ == '__main__':
-    unittest.main()

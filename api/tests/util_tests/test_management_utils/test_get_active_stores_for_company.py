@@ -7,10 +7,10 @@ class GetActiveStoresForCompanyTest(TestCase):
         self.company1 = CompanyFactory(name='Company A')
         self.company2 = CompanyFactory(name='Company B')
 
-        self.store1_c1 = StoreFactory(company=self.company1, name='Store 1 C1', is_active=True)
-        self.store2_c1 = StoreFactory(company=self.company1, name='Store 2 C1', is_active=False)
-        self.store3_c1 = StoreFactory(company=self.company1, name='Store 3 C1', is_active=True)
-        self.store1_c2 = StoreFactory(company=self.company2, name='Store 1 C2', is_active=True)
+        self.store1_c1 = StoreFactory(company=self.company1, store_name='Store 1 C1', is_active=True)
+        self.store2_c1 = StoreFactory(company=self.company1, store_name='Store 2 C1', is_active=False)
+        self.store3_c1 = StoreFactory(company=self.company1, store_name='Store 3 C1', is_active=True)
+        self.store1_c2 = StoreFactory(company=self.company2, store_name='Store 1 C2', is_active=True)
 
     def test_get_active_stores_for_company_with_active_stores(self):
         active_stores = get_active_stores_for_company(self.company1)
