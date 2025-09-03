@@ -33,3 +33,4 @@ class PriceFactory(DjangoModelFactory):
     is_on_special = factory.Faker('boolean')
     is_available = factory.Faker('boolean')
     is_active = True
+    scraped_date = factory.Faker('date_object')

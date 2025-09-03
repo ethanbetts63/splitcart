@@ -71,9 +71,19 @@ class Price(models.Model):
     def clean(self):
         super().clean()
         if self.product_id and self.store_id and self.price and self.scraped_date:
-            self.normalized_key = PriceNormalizer.get_normalized_key(
-                self.product_id, self.store_id, self.price, self.scraped_date.isoformat()
-            )
+            # Build the data structure that PriceNormalizer expects
+            price_data = {
+                'product_id': self.product_id,
+                'store_id': self.store_id,
+                'price': self.price,
+                'date': self.scraped_date.isoformat()
+            }
+            # The Price model doesn't have a direct company link, so we get it from the store
+            company_name = self.store.company.name
+            
+            # Instantiate the normalizer and then call the method
+            normalizer = PriceNormalizer(price_data=price_data, company=company_name)
+            self.normalized_key = normalizer.get_normalized_key()
 
     def save(self, *args, **kwargs):
         self.clean()

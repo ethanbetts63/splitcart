@@ -37,9 +37,9 @@ class UpdateOrchestrator:
 
             try:
                 company_obj, _ = Company.objects.get_or_create(name__iexact=company_name, defaults={'name': company_name})
-                store_obj = Store.objects.get(store_id=store_id)
+                store_obj = Store.objects.get(store_id=store_id, company=company_obj)
             except Store.DoesNotExist:
-                self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Store with ID {store_id} not found in database."))
+                self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Store with ID {store_id} for company {company_name} not found in database."))
                 self.processed_files.append(file_path)
                 continue
             except Exception as e:
