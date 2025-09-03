@@ -1,5 +1,7 @@
+import sys
+from io import StringIO
 from django.test import TestCase
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from products.models import Product, Price
 from companies.models import Store
 from products.tests.test_helpers.model_factories import ProductFactory
@@ -35,7 +37,8 @@ class TestProductMatchingAndCreation(TestCase):
         self.mock_command.style.SUCCESS = lambda x: x
         self.mock_command.style.ERROR = lambda x: x
 
-    def test_product_matching_and_creation_flow(self):
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_product_matching_and_creation_flow(self, mock_stdout):
         # This test replicates the core logic of UpdateOrchestrator._process_consolidated_data
         # to test the interaction between ProductResolver and UnitOfWork.
         
@@ -95,8 +98,6 @@ class TestProductMatchingAndCreation(TestCase):
         unit_of_work.commit(consolidated_data, product_cache, resolver, self.store1)
 
         # 4. Assertions
-        print(f"Product cache keys: {list(product_cache.keys())}")
-        # self.assertEqual(len(product_cache), 4)
         self.assertEqual(product_cache["key_barcode"], self.existing_product_barcode)
         self.assertEqual(product_cache["key_spid"], self.existing_product_spid)
         self.assertEqual(product_cache["key_norm"].name, self.existing_product_norm.name) # Compare by attribute as they are different instances
