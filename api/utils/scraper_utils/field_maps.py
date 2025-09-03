@@ -53,7 +53,7 @@ COLES_FIELD_MAP = {
     "size": "size",
     "image_url": "imageUris.0.uri",
     "url": None,
-    "category_path": "onlineHeirs.0",
+    "category_path": "onlineHeirs",
     "price_current": "pricing.now",
     "price_was": "pricing.was",
     "per_unit_price_string": "pricing.comparable",

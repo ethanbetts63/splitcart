@@ -126,7 +126,7 @@ class TestDataCleanerColes(TestCase):
         self.assertEqual(product['name'], "Coles Test Product")
         self.assertEqual(product['brand'], "Coles Brand")
         self.assertEqual(product['size'], "1L")
-        self.assertEqual(product['image_url'], "image.png")
+        self.assertEqual(product['image_url'], "https://www.coles.com.au/image.png")
         self.assertTrue(product['is_on_special'])
         self.assertEqual(product['price_current'], 2.50)
 

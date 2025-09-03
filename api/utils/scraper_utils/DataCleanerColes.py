@@ -42,14 +42,22 @@ class DataCleanerColes(BaseDataCleaner):
         )
         cleaned_product.update(price_info)
 
-        # Category path needs to be extracted from a nested dict
-        raw_category_dict = cleaned_product.get('category_path', {}) or {}
-        raw_category_path = [
-            raw_category_dict.get('aisle'),
-            raw_category_dict.get('category'),
-            raw_category_dict.get('subCategory')
-        ]
-        cleaned_product['category_path'] = self._clean_category_path(raw_category_path)
+        # Category path needs to be extracted from the 'onlineHeirs' field.
+        online_heirs = cleaned_product.get('category_path')
+        category_path = []
+        if online_heirs and isinstance(online_heirs, list) and online_heirs[0]:
+            heir_list = online_heirs[0]
+            if isinstance(heir_list, list):
+                category_path = [heir.get('name') for heir in heir_list if heir.get('name')]
+            elif isinstance(heir_list, dict):
+                 category_path = [
+                    heir_list.get('subCategory'),
+                    heir_list.get('category'),
+                    heir_list.get('aisle')
+                ]
+
+        cleaned_product['category_path'] = self._clean_category_path(category_path)
+
 
         # Image URL needs the domain prepended
         if cleaned_product.get('image_url'):
@@ -65,7 +73,5 @@ class DataCleanerColes(BaseDataCleaner):
         # Standardize unit price
         unit_price_info = self._get_standardized_unit_price_info(cleaned_product)
         cleaned_product.update(unit_price_info)
-
-        cleaned_product['is_available'] = raw_product.get('availability', False)
 
         return cleaned_product
