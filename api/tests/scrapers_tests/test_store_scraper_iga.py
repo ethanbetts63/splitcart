@@ -1,6 +1,8 @@
 import unittest
 import json
+import html
 from unittest.mock import patch, MagicMock
+import requests
 from api.scrapers.store_scraper_iga import StoreScraperIga
 
 class TestStoreScraperIga(unittest.TestCase):
@@ -16,7 +18,7 @@ class TestStoreScraperIga(unittest.TestCase):
         # Arrange: Create a realistic JSONP response structure
         store_info = {"storeId": 123, "storeName": "Test IGA"}
         store_data_attr = json.dumps(store_info)
-        html_content = f'<div data-storedata="{store_data_attr}"></div>'
+        html_content = f'<div data-storedata="{html.escape(store_data_attr)}"></div>'
         json_payload = json.dumps({"content": html_content})
         jsonp_response = f"callback({json_payload});"
 
@@ -36,7 +38,7 @@ class TestStoreScraperIga(unittest.TestCase):
     @patch('requests.Session.get')
     def test_fetch_data_for_item_request_error(self, mock_get):
         """Test that an empty list is returned on a request exception."""
-        mock_get.side_effect = Exception("Network Error")
+        mock_get.side_effect = requests.exceptions.RequestException("Network Error")
         result = self.scraper.fetch_data_for_item(1)
         self.assertEqual(result, [])
 
@@ -44,7 +46,7 @@ class TestStoreScraperIga(unittest.TestCase):
         """Test the parsing of the HTML content."""
         store_info1 = {"storeId": 1, "name": "IGA A", "distance": 1.2}
         store_info2 = {"storeId": 2, "name": "IGA B", "distance": 2.3}
-        html_content = f"""<div data-storedata='{json.dumps(store_info1)}'></div><div data-storedata='{json.dumps(store_info2)}'></div>"""
+        html_content = f'''<div data-storedata="{html.escape(json.dumps(store_info1))}"></div><div data-storedata="{html.escape(json.dumps(store_info2))}"></div>'''
         
         result = self.scraper.parse_and_clean_stores(html_content)
 

@@ -17,16 +17,22 @@ class TranslationTableGeneratorTests(TestCase):
         self.generator = TranslationTableGenerator(self.mock_command)
         # Create products that will be used to generate the translation table
         p1 = ProductFactory(
+            name='canonical-one',
+            brand='brand-one',
             normalized_name_brand_size='canonical-one',
             normalized_string_variations=['variation-a', 'variation-b']
         )
         p2 = ProductFactory(
+            name='canonical-two',
+            brand='brand-two',
             normalized_name_brand_size='canonical-two',
             normalized_string_variations=['variation-c', 'CANONICAL-TWO'] # Test case-insensitivity
         )
         p3 = ProductFactory(
+            name='canonical-three',
+            brand='brand-three',
             normalized_name_brand_size='canonical-three',
-            normalized_string_variations=None # Test product with no variations
+            normalized_string_variations=[] # Test product with no variations
         )
 
         # Define the expected output based on the products created

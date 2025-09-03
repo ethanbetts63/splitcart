@@ -1,17 +1,11 @@
 from products.models import Product, Price
 from api.data.product_name_translation_table import PRODUCT_NAME_TRANSLATIONS
-from datetime import datetime
 
 class ProductReconciler:
     def __init__(self, command):
         self.command = command
         self.log_file = 'reconciliation_log.txt'
         self._initialize_log_file()
-
-    def _initialize_log_file(self):
-        # Write a header to the log file to indicate a new run
-        with open(self.log_file, 'a', encoding='utf-8') as f:
-            f.write(f"\n--- Reconciliation Run Started at {datetime.now().isoformat()} ---\n")
 
     def _log_merge(self, canonical, duplicate):
         # Log the details of the merge to the file

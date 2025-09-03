@@ -17,6 +17,7 @@ class ProductFactory(DjangoModelFactory):
     country_of_origin = factory.Faker('country')
     allergens = factory.Faker('text')
     ingredients = factory.Faker('text')
+    normalized_string_variations = []
     # category, substitute_goods and size_variants will be handled post-generation for ManyToMany
 
 class PriceFactory(DjangoModelFactory):
