@@ -1,9 +1,12 @@
 from django.test import TestCase
-from unittest.mock import patch, Mock
+from unittest.mock import patch, Mock, MagicMock
 from requests.exceptions import RequestException
 from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
 
 class GetWoolworthsCategoriesTest(TestCase):
+
+    def setUp(self):
+        self.mock_command = MagicMock()
 
     @patch('requests.get')
     def test_successful_category_fetch(self, mock_get):
@@ -30,7 +33,7 @@ class GetWoolworthsCategoriesTest(TestCase):
         }
         mock_get.return_value = mock_response
 
-        categories = get_woolworths_categories()
+        categories = get_woolworths_categories(self.mock_command)
         self.assertEqual(categories, [
             ("fruit-veg", "123"),
             ("meat", "456"),
@@ -46,7 +49,7 @@ class GetWoolworthsCategoriesTest(TestCase):
         mock_response.json.return_value = {"Categories": []}
         mock_get.return_value = mock_response
 
-        categories = get_woolworths_categories()
+        categories = get_woolworths_categories(self.mock_command)
         self.assertEqual(categories, [])
 
     @patch('requests.get')
@@ -57,7 +60,7 @@ class GetWoolworthsCategoriesTest(TestCase):
         mock_response.json.return_value = {"data": "some other data"}
         mock_get.return_value = mock_response
 
-        categories = get_woolworths_categories()
+        categories = get_woolworths_categories(self.mock_command)
         self.assertEqual(categories, [])
 
     @patch('requests.get')
@@ -65,7 +68,7 @@ class GetWoolworthsCategoriesTest(TestCase):
         """Test handling of a RequestException during API call."""
         mock_get.side_effect = RequestException("Network error")
 
-        categories = get_woolworths_categories()
+        categories = get_woolworths_categories(self.mock_command)
         self.assertEqual(categories, [])
 
     @patch('requests.get')
@@ -76,7 +79,7 @@ class GetWoolworthsCategoriesTest(TestCase):
         mock_response.json.side_effect = ValueError("Invalid JSON")
         mock_get.return_value = mock_response
 
-        categories = get_woolworths_categories()
+        categories = get_woolworths_categories(self.mock_command)
         self.assertEqual(categories, [])
 
     @patch('requests.get')
@@ -98,6 +101,6 @@ class GetWoolworthsCategoriesTest(TestCase):
         }
         mock_get.return_value = mock_response
 
-        categories = get_woolworths_categories()
+        categories = get_woolworths_categories(self.mock_command)
         # Expecting only valid tuples to be added
         self.assertEqual(categories, [("fruit-veg", None), (None, "456")])
