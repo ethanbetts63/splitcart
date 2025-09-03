@@ -26,9 +26,9 @@ class VariationManager:
             if not existing_product.name_variations:
                 existing_product.name_variations = []
             
-            new_variation_tuple = (cleaned_incoming_name, company_name)
-            if new_variation_tuple not in existing_product.name_variations:
-                existing_product.name_variations.append(new_variation_tuple)
+            new_variation_entry = [cleaned_incoming_name, company_name]
+            if new_variation_entry not in existing_product.name_variations:
+                existing_product.name_variations.append(new_variation_entry)
                 updated = True
 
             # Handle normalized_string_variations (for machine reconciliation)

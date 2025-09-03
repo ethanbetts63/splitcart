@@ -50,7 +50,7 @@ class VariationManagerTests(TestCase):
 
         # Assert
         # 1. Product object is updated in memory
-        self.assertIn(('A New Variation Name', 'coles'), existing_product.name_variations)
+        self.assertIn(['A New Variation Name', 'coles'], existing_product.name_variations)
         self.assertIn('new-variation-normalized', existing_product.normalized_string_variations)
 
         # 2. Unit of Work is notified
