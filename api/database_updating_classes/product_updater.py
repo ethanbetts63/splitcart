@@ -95,6 +95,8 @@ class ProductUpdater:
                 most_recent_price = sorted(product_data['price_history'], key=lambda x: x['scraped_at'], reverse=True)[0]
                 product_data['price_current'] = most_recent_price.get('price')
                 product_data['product_id_store'] = most_recent_price.get('sku')
+                # Extract the date part from the ISO format timestamp
+                product_data['scraped_date'] = most_recent_price.get('scraped_at', '').split('T')[0]
             consolidated_data[key] = {'product': product_data, 'metadata': {'company': ''}} 
         return consolidated_data
 
