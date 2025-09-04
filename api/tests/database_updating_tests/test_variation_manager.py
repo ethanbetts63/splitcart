@@ -38,7 +38,7 @@ class VariationManagerTests(TestCase):
             name='Canonical Product', 
             barcode='12345', 
             name_variations=[],
-            normalized_string_variations=[]
+            normalized_name_brand_size_variations=[]
         )
         incoming_details = {
             'name': 'A New Variation Name',
@@ -51,7 +51,7 @@ class VariationManagerTests(TestCase):
         # Assert
         # 1. Product object is updated in memory
         self.assertIn(['A New Variation Name', 'coles'], existing_product.name_variations)
-        self.assertIn('new-variation-normalized', existing_product.normalized_string_variations)
+        self.assertIn('new-variation-normalized', existing_product.normalized_name_brand_size_variations)
 
         # 2. Unit of Work is notified
         self.mock_uow.add_for_update.assert_called_once_with(existing_product)
@@ -69,7 +69,7 @@ class VariationManagerTests(TestCase):
             name='Canonical Product', 
             barcode='12345',
             name_variations=[['Existing Variation', 'coles']],
-            normalized_string_variations=['existing-normalized']
+            normalized_name_brand_size_variations=['existing-normalized']
         )
         incoming_details = {
             'name': 'Existing Variation',
@@ -80,7 +80,7 @@ class VariationManagerTests(TestCase):
 
         # Assert that the lists have not grown
         self.assertEqual(len(existing_product.name_variations), 1)
-        self.assertEqual(len(existing_product.normalized_string_variations), 1)
+        self.assertEqual(len(existing_product.normalized_name_brand_size_variations), 1)
         # Assert that UoW was not called as no update was made
         self.mock_uow.add_for_update.assert_not_called()
 

@@ -31,14 +31,14 @@ class VariationManager:
                 existing_product.name_variations.append(new_variation_entry)
                 updated = True
 
-            # Handle normalized_string_variations (for machine reconciliation)
+            # Handle normalized_name_brand_size_variations (for machine reconciliation)
             variation_normalized_string = incoming_product_details.get('normalized_name_brand_size')
             if variation_normalized_string:
-                if not existing_product.normalized_string_variations:
-                    existing_product.normalized_string_variations = []
+                if not existing_product.normalized_name_brand_size_variations:
+                    existing_product.normalized_name_brand_size_variations = []
                 
-                if variation_normalized_string not in existing_product.normalized_string_variations:
-                    existing_product.normalized_string_variations.append(variation_normalized_string)
+                if variation_normalized_string not in existing_product.normalized_name_brand_size_variations:
+                    existing_product.normalized_name_brand_size_variations.append(variation_normalized_string)
                     updated = True
             
             if updated:

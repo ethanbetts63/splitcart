@@ -171,4 +171,4 @@ class UnitOfWorkTests(TestCase):
         # 4. Assert that the objects were created
         self.assertEqual(Product.objects.count(), initial_product_count + 2) # +1 for existing_product, +1 for new_product_instance
         self.assertEqual(Price.objects.count(), initial_price_count + 2)
-        mock_product_update.assert_called_once_with([existing_product], ['barcode', 'url', 'image_url', 'description', 'country_of_origin', 'ingredients', 'has_no_coles_barcode', 'name_variations', 'normalized_string_variations'], batch_size=500)
+        mock_product_update.assert_called_once_with([existing_product], ['barcode', 'url', 'image_url', 'description', 'country_of_origin', 'ingredients', 'has_no_coles_barcode', 'name_variations', 'normalized_name_brand_size_variations'], batch_size=500)

@@ -78,7 +78,7 @@ This structure allows for a clear separation of concerns, with the `companies` a
 ### `Product` Model
 - **Problem:** The `has_no_coles_barcode` field is not scalable. If we need to track barcode availability for other companies, we would have to add more boolean fields.
 - **Suggestion:** A better approach would be to create a separate model, `ProductBarcodeAvailability`, with a foreign key to `Product` and `Company`. This model could have a boolean field `has_barcode` to indicate whether a barcode is available for that product at that company. This would be a more flexible and scalable solution.
-- **Problem:** The `name_variations` and `normalized_string_variations` are stored as `JSONField`. This is good for flexibility, but it can be difficult to query efficiently.
+- **Problem:** The `name_variations` and `normalized_name_brand_size_variations` are stored as `JSONField`. This is good for flexibility, but it can be difficult to query efficiently.
 - **Suggestion:** If there is a need for frequent querying of these variations, it would be better to move them to a separate `ProductVariation` model with a foreign key to the `Product` model. This would allow for easier querying and indexing of variations.
 
 ### Address Fields in `Store` Model

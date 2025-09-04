@@ -18,11 +18,11 @@ class TranslationTableGeneratorTests(unittest.TestCase):
         # Arrange
         product1 = MagicMock()
         product1.normalized_name_brand_size = 'brandonecanonicalone'
-        product1.normalized_string_variations = ['variation-a', 'variation-b']
+        product1.normalized_name_brand_size_variations = ['variation-a', 'variation-b']
 
         product2 = MagicMock()
         product2.normalized_name_brand_size = 'brandtwocanonicaltwo'
-        product2.normalized_string_variations = ['variation-c', 'CANONICAL-TWO']
+        product2.normalized_name_brand_size_variations = ['variation-c', 'CANONICAL-TWO']
 
         mock_get_products.return_value = [product1, product2]
 

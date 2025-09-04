@@ -61,7 +61,7 @@ This section provides updates to the workflow description to reflect recent chan
 
 ### Phase 4: The Atomic Commit - Order of Operations (Updated)
 
-- **f. Existing products are updated in bulk:** The `bulk_update` operation now includes a broader set of fields beyond just `name_variations`. These include `barcode`, `url`, `image_url`, `description`, `country_of_origin`, `ingredients`, `has_no_coles_barcode`, and `normalized_string_variations`.
+- **f. Existing products are updated in bulk:** The `bulk_update` operation now includes a broader set of fields beyond just `name_variations`. These include `barcode`, `url`, `image_url`, `description`, `country_of_origin`, `ingredients`, `has_no_coles_barcode`, and `normalized_name_brand_size_variations`.
 
 ### Variation Reconciliation (Updated Status)
 
@@ -71,7 +71,7 @@ This section provides updates to the workflow description to reflect recent chan
 ### New Product Model Fields
 
 - `has_no_coles_barcode`: A boolean field to mark products confirmed to have no barcode from Coles.
-- `normalized_string_variations`: A JSON field to store unique normalized strings of product name variations, used for the new reconciliation system.
+- `normalized_name_brand_size_variations`: A JSON field to store unique normalized strings of product name variations, used for the new reconciliation system.
 
 ### Data Pipeline Corrections
 

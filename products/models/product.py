@@ -77,7 +77,7 @@ class Product(models.Model):
         blank=True,
         help_text="A list of (name, store) tuples for discovered name variations."
     )
-    normalized_string_variations = models.JSONField(
+    normalized_name_brand_size_variations = models.JSONField(
         default=list,
         blank=True,
         help_text="A list of normalized strings for discovered variations."

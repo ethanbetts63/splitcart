@@ -94,7 +94,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "normalized_string_variations",
+                    "normalized_name_brand_size_variations",
                     models.JSONField(
                         blank=True,
                         default=list,
