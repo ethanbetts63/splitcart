@@ -9,7 +9,7 @@ from api.scrapers.product_scraper_aldi import ProductScraperAldi
 from api.scrapers.product_scraper_iga import IgaScraper as ProductScraperIga
 from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
 from api.utils.scraper_utils.get_coles_categories import get_coles_categories
-from api.scrapers.gs1_company_scraper import scrape_gs1_company_info
+from api.scrapers.gs1_company_scraper import scrape_gs1_with_selenium
 
 class Command(BaseCommand):
     help = 'Runs the scrapers for the specified companies.'
@@ -117,4 +117,4 @@ class Command(BaseCommand):
         if options['gs1']:
             self.stdout.write(self.style.SQL_FIELD('--- Running GS1 Company Prefix Scraper Test ---'))
             test_barcode = "9421907143040"
-            scrape_gs1_company_info(test_barcode)
+            scrape_gs1_with_selenium(test_barcode)
