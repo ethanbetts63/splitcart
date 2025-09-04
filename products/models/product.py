@@ -1,6 +1,8 @@
 from api.utils.product_normalizer import ProductNormalizer
 from django.db import models
 from django.db.models import Q
+from .substitution import ProductSubstitution
+from .size_variant import ProductSizeVariant
 
 class Product(models.Model):
     """
@@ -58,12 +60,19 @@ class Product(models.Model):
     unit_of_sale = models.CharField(max_length=50, blank=True, null=True)
     dietary_and_lifestyle_tags = models.JSONField(default=list, blank=True)
     is_age_restricted = models.BooleanField(default=False)
+    size_variants = models.ManyToManyField(
+        'self',
+        through='ProductSizeVariant',
+        symmetrical=True,
+        blank=True,
+        help_text="Products that are the same item but in a different size."
+    )
     substitutes = models.ManyToManyField(
         'self',
         through='ProductSubstitution',
-        symmetrical=False,
+        symmetrical=True,
         blank=True,
-        help_text="Products that can be substituted for this one, ranked by a score."
+        help_text="Other products that can be used as substitutes, ranked by a score."
     )
     name_variations = models.JSONField(
         default=list,

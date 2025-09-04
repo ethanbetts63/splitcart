@@ -1,0 +1,47 @@
+# Summary of Product Substitution Methods
+
+This document summarizes the different methods discussed for identifying and ranking product substitutes, from the initial MVP implementation to a state-of-the-art hybrid model.
+
+---
+
+### Method 1: Attribute-Based Scoring (The V1 Engine)
+
+This method is a rule-based system that finds substitutes by comparing their explicit product attributes.
+
+*   **How it Works:** It uses a tiered algorithm to compare a base product to others based on its `name`, `brand`, `category`, and `size`. It identifies "Size Variants," "Strong Matches" (same category, different brand), and "Weak Matches" (same parent category). The output is a numerical similarity score.
+*   **Pros:**
+    *   Does not require any user purchase history, so it can be used from day one.
+    *   The logic is explainable and deterministic.
+    *   Reliable for finding obvious, logical substitutes.
+*   **Cons:**
+    *   May miss non-obvious substitutes that are only revealed by user behavior.
+*   **Use Case:** The foundational substitution engine for the MVP.
+
+---
+
+### Method 2: Behavior-Based Embeddings (The V2 Engine)
+
+This is a machine learning approach that learns from user behavior, as detailed in the research papers from Cleora and Target.
+
+*   **How it Works:** It analyzes a large dataset of user transaction baskets to see which products are purchased together. It then uses a graph embedding algorithm to assign a unique vector (an "embedding") to each product. Products with similar vectors are considered strong substitutes.
+*   **Pros:**
+    *   Excellent at discovering non-obvious, real-world substitution patterns.
+    *   Adapts to evolving consumer trends automatically.
+*   **Cons:**
+    *   Requires a large volume of historical user transaction data to be effective.
+    *   The reasoning is a "black box"—it can't easily explain *why* two products are substitutes.
+*   **Use Case:** A V2 or V3 enhancement, to be implemented once sufficient user data has been collected in our `db_behavior`.
+
+---
+
+### Method 3: Hybrid Model (The Ultimate Goal)
+
+This approach combines the strengths of the first two methods to create a state-of-the-art system.
+
+*   **How it Works:** The final similarity score for a substitute pair is a weighted average of the scores from the two other methods: `Final_Score = (Weight_A * Attribute_Score) + (Weight_B * Behavior_Score)`.
+*   **Pros:**
+    *   Achieves the highest possible accuracy and relevance.
+    *   Combines the reliable, explainable logic of the attribute model with the powerful, data-driven insights of the behavior model.
+*   **Cons:**
+    *   The most complex to build, deploy, and maintain, as it requires running both underlying systems.
+*   **Use Case:** The long-term goal for the substitution engine to provide the best possible user experience.
