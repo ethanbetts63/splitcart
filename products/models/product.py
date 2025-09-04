@@ -12,6 +12,7 @@ class Product(models.Model):
         db_index=True,
         help_text="The full name of the product as seen in the store."
     )
+    normalized_name = models.CharField(max_length=255, db_index=True, blank=True, help_text="The normalized version of the product name.")
     brand = models.CharField(
         max_length=100,
         null=True,

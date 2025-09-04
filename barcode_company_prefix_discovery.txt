@@ -1,0 +1,35 @@
+This document summarizes the discovery of how to build a local dataset to map product barcodes to their respective brand owners/companies.
+
+### The Core Problem
+
+It is difficult to programmatically determine the company associated with a barcode because there is no freely available, public, and downloadable dataset for this purpose. The official GS1 GEPIR database is proprietary and access is restricted.
+
+### The Key Insight
+
+Online barcode lookup tools can be used to find company information for a given barcode. Crucially, these tools often provide a "Licence Key" or a similar field. We have identified that this "Licence Key" is the **GS1 Company Prefix**.
+
+The GS1 Company Prefix is a unique code assigned to a company and makes up the first several digits of every barcode that company issues.
+
+### The Solution: Building a Local Dataset
+
+This insight makes it feasible to build a local database that maps company prefixes to company names. The process is as follows:
+
+1.  **Scrape Data:** Programmatically scrape an online barcode lookup tool to gather two key pieces of information for a range of barcodes:
+    *   The Company Prefix (from the "Licence Key" field).
+    *   The Company Name.
+
+2.  **Create a Prefix-to-Company Map:** Store the scraped data in a local database or dictionary, creating a mapping from the prefix to the name.
+    *Example:* `{"9421907143": "RASCALS INTERNATIONAL LIMITED", ...}`
+
+3.  **Implement Local Lookup Logic:** For any given barcode, you can now identify the company by checking if the barcode string starts with one of the prefixes in your local database. This is an efficient, local operation that does not require an external API call for every lookup.
+
+### Concrete Example:
+
+*   **Full Barcode:** `9421907143040`
+*   **Company Prefix / Licence Key:** `9421907143`
+*   **Company Name:** `RASCALS INTERNATIONAL LIMITED`
+
+By matching the start of the full barcode with the company prefix, we can identify the company.
+
+
+and not to mention that we don't always need to search for a barcode. we first check our list of discovered company codes. if we dont find a match in there then we can go ahead and try and scrape for it. 
