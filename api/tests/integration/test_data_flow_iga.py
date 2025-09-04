@@ -186,10 +186,9 @@ class TestDataFlowIga(TestCase):
     def setUp(self):
         self.company = CompanyFactory(name="IGA")
         self.division = DivisionFactory(company=self.company)
-        self.store = StoreFactory(company=self.company, division=self.division, store_name="IGA Test Store", store_id="IGA:5678")
+        self.store = StoreFactory(company=self.company, division=self.division, store_name="IGA Test Store", store_id="5678")
         self.temp_dir = tempfile.mkdtemp()
-        self.inbox_path = os.path.join(self.temp_dir, 'product_inbox')
-        os.makedirs(self.inbox_path, exist_ok=True)
+        self.inbox_path = self.temp_dir
 
         self.mock_command = Mock()
         self.mock_command.stdout.write = Mock()
