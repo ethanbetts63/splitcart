@@ -9,6 +9,7 @@ from api.scrapers.product_scraper_aldi import ProductScraperAldi
 from api.scrapers.product_scraper_iga import IgaScraper as ProductScraperIga
 from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
 from api.utils.scraper_utils.get_coles_categories import get_coles_categories
+from api.scrapers.gs1_company_scraper import scrape_gs1_company_info
 
 class Command(BaseCommand):
     help = 'Runs the scrapers for the specified companies.'
@@ -18,10 +19,11 @@ class Command(BaseCommand):
         parser.add_argument('--coles', action='store_true', help='Run the Coles scraper.')
         parser.add_argument('--aldi', action='store_true', help='Run the Aldi scraper.')
         parser.add_argument('--iga', action='store_true', help='Run the IGA scraper.')
+        parser.add_argument('--gs1', action='store_true', help='Run the GS1 company prefix scraper test.')
         parser.add_argument('--batch-size', type=int, default=100, help='The number of stores to scrape per run.')
 
     def handle(self, *args, **options):
-        run_all = not any(options[company] for company in ['woolworths', 'coles', 'aldi', 'iga'])
+        run_all = not any(options[company] for company in ['woolworths', 'coles', 'aldi', 'iga', 'gs1'])
         batch_size = options['batch_size']
         if options['woolworths'] or run_all:
             try:
@@ -111,3 +113,8 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.ERROR('Company "Iga" not found.'))
 
         self.stdout.write(self.style.SUCCESS('Scraping complete.'))
+
+        if options['gs1']:
+            self.stdout.write(self.style.SQL_FIELD('--- Running GS1 Company Prefix Scraper Test ---'))
+            test_barcode = "9421907143040"
+            scrape_gs1_company_info(test_barcode)
