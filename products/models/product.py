@@ -1,8 +1,6 @@
 from api.utils.product_normalizer import ProductNormalizer
 from django.db import models
 from django.db.models import Q
-from .substitution import ProductSubstitution
-from .size_variant import ProductSizeVariant
 
 class Product(models.Model):
     """
