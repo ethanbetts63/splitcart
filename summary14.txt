@@ -1,0 +1,32 @@
+# Session Summary: September 4, 2025
+
+This session focused on debugging, architectural planning, and designing core features for the SplitCart application.
+
+## 1. Debugging & Refinements
+*   **ProductReconciler Error:** Addressed an AttributeError, confirming the file was already fixed on disk.
+*   **IGA Scraper Empty Files:** Fixed the issue of empty .jsonl files being created by modifying BaseProductScraper to only commit if products were scraped.
+
+## 2. Application Architecture & Strategy
+*   **User Shopping Flow:** Designed a detailed user journey for the app, saved to `user_flow_plan.txt`.
+*   **Core Architecture:** Evolved from a single-DB concept to a robust **three-database model** (`db_users`, `db_products`, `db_behavior`) to support data commercialization and enhanced security. Documented in `architecture_plan_v1.txt`.
+*   **MVP Strategy:** Deep-dived into a "Minimum Viable Product" approach, focusing on a stateless app interacting only with `db_products` for rapid validation. This was appended to `architecture_plan_v1.txt`.
+
+## 3. Substitution Engine Design
+*   **Core Algorithm:** Planned a tiered, attribute-based substitution algorithm (Size Variant, Strong Match, Weak Match) that calculates a numerical similarity score.
+*   **Data Model:** Designed and implemented new Django models:
+    *   `ProductSizeVariant` (through model for size variants).
+    *   `ProductSubstitution` (through model for other substitutes, storing a numerical score).
+    *   Modified the `Product` model to use these two new `through` models and added a `normalized_name` field.
+*   **Research Validation:** Reviewed academic papers (Cleora, Target, DoorDash) which validated our hybrid approach (attribute-based + behavior-based ML) and confirmed our phased implementation strategy (V1 attribute-based, V2 behavior-based, V3 hybrid). Noted ML as a future enhancement in `future_substitution_model_ideas.txt`.
+
+## 4. Brand Management & Barcode Enrichment
+*   **ProductBrand Model:** Designed and implemented a new `ProductBrand` model to store canonical brand names, variations, and link to `companies.Company`.
+*   **Barcode-to-Company Prefix:** Discovered and planned a method to map barcode prefixes to owning companies. This involves building a local database and a `CompanyPrefixEnricher` process to enrich product data post-scrape. The plan was saved to `company_prefix_enrichment_plan.txt`.
+*   **GS1 Scraper:** Started implementing a simple `Gs1CompanyScraper` to test the GS1 API for company prefix lookups.
+
+## 5. Model Updates Performed
+*   `products/models/substitution.py` created.
+*   `products/models/size_variant.py` created.
+*   `products/models/brand.py` created.
+*   `products/models/product.py` modified (added `normalized_name`, updated `size_variants` and `substitutes` to use new `through` models).
+*   `products/models/__init__.py` updated to import all new models.

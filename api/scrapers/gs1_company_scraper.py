@@ -1,0 +1,1 @@
+# This file will contain the simple GS1 company scraper.

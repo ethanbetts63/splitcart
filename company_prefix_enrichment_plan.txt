@@ -1,0 +1,55 @@
+# Company Prefix Enrichment Plan
+
+This document outlines the strategy for enriching product data with parent company information using GS1 barcode prefixes.
+
+---
+
+### 1. The Goal
+
+To accurately identify and link products to their owning companies based on GS1 barcode prefixes, and to build a local, persistent database of these prefix-to-company mappings.
+
+---
+
+### 2. The `CompanyPrefixEnricher` (The Orchestrator)
+
+This will be a new, reusable class/script responsible for orchestrating the enrichment process.
+
+*   **Input:** A path to a `.jsonl` file containing scraped product data (including barcodes).
+*   **Output:** The same `.jsonl` file, but with product records enriched with `parent_company_name` where possible.
+*   **Internal Database:** It will manage a local, persistent database (e.g., a simple JSON file or SQLite DB) mapping GS1 prefixes to company names.
+
+*   **Workflow:**
+    1.  **Read Input File:** Reads product records from the input `.jsonl` file.
+    2.  **Local Lookup Pass:** For each product with a barcode:
+        *   Extracts the GS1 Company Prefix from the barcode.
+        *   Checks if the prefix exists in its local prefix-to-company database.
+        *   If found, the product record is immediately enriched with the `parent_company_name`.
+        *   If not found, the prefix is added to a temporary "unknown prefixes" list.
+    3.  **Online Scrape Pass (for unknowns):** If the "unknown prefixes" list is not empty:
+        *   It calls a specialized scraper (e.g., `Gs1CompanyScraper`) to look up company information for each unknown prefix online.
+        *   New findings are added to the local prefix-to-company database for future use.
+    4.  **Second Enrichment Pass:** The product records corresponding to the newly discovered prefixes are now enriched.
+    5.  **Overwrite File:** The enriched product data is written back to the original `.jsonl` file, overwriting its content.
+
+---
+
+### 3. The `Gs1CompanyScraper` (The Online Lookup Tool)
+
+This will be a specialized scraper responsible for fetching company information for a given GTIN (or prefix) from an online GS1 lookup service.
+
+*   **Input:** A GTIN (Global Trade Item Number, which is the full barcode).
+*   **Output:** The company name associated with that GTIN/prefix.
+*   **Implementation:** It will make a `POST` request to the GS1 Verified by GS1 service, parse the JSON response, and extract the company name. It will handle session management and error handling.
+
+---
+
+### 4. Integration into the Data Pipeline
+
+*   The `CompanyPrefixEnricher` will be called as a `post_scrape_enrichment` step for relevant product scrapers (e.g., `ColesScraper`, `WoolworthsScraper`).
+*   This ensures that product data is enriched with parent company information *before* it is moved to the main `product_inbox` and processed by the `update_db` command.
+
+---
+
+### 5. Initial Implementation Focus
+
+*   The immediate task is to build a simple version of the `Gs1CompanyScraper` to verify the API interaction. This involves hardcoding a single GTIN and confirming that the company name can be successfully extracted from the GS1 API response.
