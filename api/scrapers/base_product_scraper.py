@@ -26,18 +26,18 @@ class BaseProductScraper(ABC):
             work_items = self.get_work_items()
             self.output.update_progress(total_categories=len(work_items))
 
-            if work_items:
-                for i, item in enumerate(work_items):
-                    self.output.update_progress(categories_scraped=i + 1)
-                    raw_data_list = self.fetch_data_for_item(item)
-                    
-                    if not raw_data_list:
-                        continue
+            for i, item in enumerate(work_items):
+                self.output.update_progress(categories_scraped=i + 1)
+                raw_data_list = self.fetch_data_for_item(item)
+                
+                if not raw_data_list:
+                    continue
 
                 cleaned_data_packet = self.clean_raw_data(raw_data_list)
                 self.write_data(cleaned_data_packet)
             
-            scrape_successful = True
+            if self.output.new_products > 0 or self.output.duplicate_products > 0:
+                scrape_successful = True
         finally:
             if self.jsonl_writer:
                 self.jsonl_writer.close()

@@ -62,7 +62,7 @@ class ProductNormalizer:
             return []
 
         sizes = set()
-        processed_text = text.lower()
+        processed_text = text.lower().replace(',', '')
 
         prefixes_to_remove = ['approx. ', 'approx ', 'around ', 'about ']
         for prefix in prefixes_to_remove:
