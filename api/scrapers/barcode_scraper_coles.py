@@ -302,6 +302,9 @@ class ColesBarcodeScraper(BaseProductScraper):
                         # Clean up progress file on full success
                         if os.path.exists(self.progress_file_path):
                             os.remove(self.progress_file_path)
+                        # On full success, remove the original source file as it has been replaced
+                        if os.path.exists(self.source_file_path):
+                            os.remove(self.source_file_path)
                     else:
                         # Don't cleanup the main jsonl file, but progress file is kept
                         self.jsonl_writer.cleanup()

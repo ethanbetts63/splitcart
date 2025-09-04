@@ -50,6 +50,8 @@ class BaseDataCleaner(ABC):
                 value = value.get(key_part)
             else:
                 return None
+        if isinstance(value, str) and not value.strip():
+            return None
         return value
 
     def clean_data(self) -> dict:
