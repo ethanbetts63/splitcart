@@ -58,11 +58,12 @@ class Product(models.Model):
     unit_of_sale = models.CharField(max_length=50, blank=True, null=True)
     dietary_and_lifestyle_tags = models.JSONField(default=list, blank=True)
     is_age_restricted = models.BooleanField(default=False)
-    substitute_goods = models.ManyToManyField(
+    substitutes = models.ManyToManyField(
         'self',
+        through='ProductSubstitution',
+        symmetrical=False,
         blank=True,
-        symmetrical=True,
-        help_text="Optional: Other products that can be used as substitutes."
+        help_text="Products that can be substituted for this one, ranked by a score."
     )
     name_variations = models.JSONField(
         default=list,
@@ -73,12 +74,6 @@ class Product(models.Model):
         default=list,
         blank=True,
         help_text="A list of normalized strings for discovered variations."
-    )
-    size_variants = models.ManyToManyField(
-        'self',
-        blank=True,
-        symmetrical=True,
-        help_text="Products that are the same item but in a different size."
     )
 
     normalized_name_brand_size = models.CharField(

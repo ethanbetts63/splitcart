@@ -47,3 +47,47 @@ This document outlines the step-by-step user experience for creating a shopping 
 - The final result is displayed to the user as a set of clear, actionable shopping lists—one for each store they need to visit.
 - For each store, the list will show exactly which items (whether the original or an approved substitute) to buy there.
 - The display will prominently feature the total cost, the stores to visit, and the total savings achieved compared to buying their original list without optimization.
+
+
+`
+  +--------------------------------+
+  |                                |
+  |      Data Engine (Offline)     |
+  | (manage.py scrape/update_db)   |
+  |                                |
+  +--------------------------------+
+             |
+             | (WRITES product & price data)
+             v
+  +--------------------------------+
+  |                                |
+  |         Django Database        |
+  |  (Products, Prices, Stores)    |
+  |                                |
+  +--------------------------------+
+             ^
+             | (READS product & price data)
+             | (WRITES user-specific data)
+             v
+  +--------------------------------+
+  |                                |
+  |    User-Facing API (Online)    |
+  |      (Django REST API)         |
+  |                                |
+  +--------------------------------+
+             ^
+             | (HTTP Requests)
+             v
+  +--------------------------------+
+  |                                |
+  |       Frontend (Browser)       |
+  |                                |
+  +--------------------------------+
+  `
+
+
+
+  what does a user need to query to get through this process: 
+  1. every time they search for an item they are querying the product database via a string match i guess. 
+  2. when it comes to subsititution they are query the db for each products subsistute list. \
+  3. finally the user will have a list of goods. Each good is actually a list. for non negotiable goods that list is len 1. but when the user gives the go ahead on a subsitute that list becomes [the orginal product, subsitute]

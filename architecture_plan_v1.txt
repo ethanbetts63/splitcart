@@ -1,0 +1,82 @@
+# Architecture Plan v1: The Three-Database Model
+
+This document outlines the three-database architecture designed to meet the business goals of having two separate, sellable data assets while maintaining high security for user PII.
+
+---
+
+### **Core Architecture**
+
+The system is divided into three distinct databases, each with a specific purpose:
+
+**1. `db_users` (The Vault)**
+*   **Contains:** Only Personally Identifiable Information (PII). This includes user credentials (username, hashed password, email) and a mapping from a user's primary ID to an `anonymous_user_id`.
+*   **Purpose:** Strictly for user authentication and providing the anonymous key. It is the most secured and least-frequently accessed database.
+
+**2. `db_products` (The Catalog)**
+*   **Contains:** All pristine product, price, store, and category data populated by the scraping engine.
+*   **Purpose:** To serve as the master catalog of all product information. This is a clean, standalone data asset intended for commercialization (e.g., via a dedicated API or data dumps).
+
+**3. `db_behavior` (The Trend Data)**
+*   **Contains:** All user-generated data, made anonymous by using the `anonymous_user_id` as the key instead of a direct user ID. This includes shopping lists, item preferences, and substitution choices.
+*   **Purpose:** To serve as a second, sellable data asset for market research and trend analysis.
+
+---
+
+### **Pros of this Architecture**
+
+*   **Creates Two Sellable Assets:** The architecture is explicitly designed to produce two clean, independent data products (the product catalog and the behavioral trends) that can be packaged, sold, and managed separately.
+*   **Maximum Security & Compartmentalization:** By separating the three data types, the "blast radius" of any potential security breach is severely limited. A compromise of one database does not automatically grant access to the others, providing a robust, layered defense for PII.
+*   **Independent Scalability & Performance:** Each database has a different workload (e.g., `db_products` is read-heavy, `db_behavior` is write-heavy). This model allows each one to be scaled, optimized, and backed up independently according to its specific needs.
+*   **Architectural Clarity:** The structure of the system is a direct reflection of the business goals. This makes the system easier to reason about, maintain, and evolve over time.
+
+---
+
+### **Cons of this Architecture**
+
+*   **Configuration Complexity:** This is the most complex of the options to set up initially. It requires configuring multiple databases in Django and implementing a database router to direct queries to the correct destination.
+*   **Application Logic Complexity:** Because database-level `JOIN`s cannot be performed across the different databases, the application code must handle this by making multiple queries and joining the data in Python. For example, displaying a user's shopping list requires querying all three databases in sequence (get anonymous key, get list, get product details). This is the necessary trade-off for achieving the high degree of separation and security.
+
+---
+---
+
+# Appendix: The Minimum Viable Product (MVP) Approach
+
+This section outlines a strategic, simplified "Version 1" of the application designed for rapid development and validation of the core concept.
+
+### Core Principle: Statelessness
+
+The MVP operates on the principle of being "stateless." It does not have user accounts and does not store any user data (lists, preferences) permanently. All user activity is confined to a single browser session.
+
+### The User Experience: A "Stateless" Session
+
+1.  **Arrive & Search:** The user lands on the website. There are no login or signup buttons. They are immediately presented with a search bar to find products.
+2.  **Build a List:** As they search for items (e.g., "milk," "bread"), they see a list of real products. They click a "+" button next to the ones they want. A simple shopping list appears on the side of the screen, tracking the items for their **current session only**.
+3.  **Set Preferences:** When they're done, they go to an "Optimize" page. Here, they see their final list and are asked for their preferences for this specific trip:
+    *   Their postcode.
+    *   Which stores they're willing to visit (e.g., Coles, Woolworths).
+    *   The maximum number of stores they'll go to.
+4.  **Optimize:** They click a "Calculate Savings" button.
+5.  **View Results:** The page displays the final, optimized shopping lists, showing which items to buy at which store for the lowest total price.
+6.  **Session End:** If the user closes their browser or tab, the list is gone. The next time they visit, the experience starts fresh.
+
+### The Technology: How It Works
+
+This approach dramatically simplifies the architecture. It requires only **one database** (`products_db`) and two main components:
+
+#### 1. The Frontend (Browser)
+
+*   **The Shopping List:** The user's shopping list is stored directly in the browser using `sessionStorage`. This data is automatically cleared when the user's session ends.
+*   **API Requests:** The frontend makes two main types of requests to the backend:
+    1.  **Search Request:** `GET /api/products/search?q=<term>` to find products.
+    2.  **Optimization Request:** `POST /api/optimize` to calculate the best shopping split. This request sends a self-contained package of data including the list of product IDs from `sessionStorage` and the user's location preferences.
+
+#### 2. The Backend (Server)
+
+*   **The Database:** The backend only ever communicates with the single, read-only `products_db` to get product and price information.
+*   **Stateless API:** The backend API does not know who the user is or save any information about them. It simply responds to requests:
+    *   For a search, it queries the `products_db` and returns results.
+    *   For an optimization, it uses the data provided in the request to query the `products_db` for prices, run the optimization logic, and return the final result. The server immediately forgets the request.
+
+### Strategic Advantage
+
+This MVP approach is the fastest path to a real, working product. It allows for the validation of the core feature (the optimization engine) before investing in the significant overhead of user accounts, data storage, and the full three-database architecture. If V1 is successful, these features can be added in V2.
