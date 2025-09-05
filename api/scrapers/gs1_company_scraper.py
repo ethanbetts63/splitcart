@@ -4,6 +4,7 @@ import re
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
 
 class Gs1CompanyScraper:
     """
@@ -14,6 +15,7 @@ class Gs1CompanyScraper:
         self.command = command
         self.session = None
         self.driver = None
+        self.form_build_id = None
 
     def warm_up_session(self, barcode: str):
         """
@@ -40,10 +42,13 @@ class Gs1CompanyScraper:
             self.session = requests.Session()
             # Using a simplified header, as requested
             self.session.headers.update({
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
+                'Referer': url
             })
             for cookie in self.driver.get_cookies():
                 self.session.cookies.set(cookie['name'], cookie['value'])
+
+            self.form_build_id = self.driver.find_element(By.NAME, "form_build_id").get_attribute("value")
 
         except Exception as e:
             raise InterruptedError(f"An error occurred during the Selenium phase: {e}")
@@ -64,7 +69,14 @@ class Gs1CompanyScraper:
         url = f"https://www.gs1.org/services/verified-by-gs1/results?gtin={barcode}&ajax_form=1&_wrapper_format=drupal_ajax"
 
         try:
-            response = self.session.get(url)
+            data = {
+                'gtin': barcode,
+                'search_type': 'gtin',
+                'form_build_id': self.form_build_id,
+                'form_id': 'verified_search_form',
+                'gtin_submit': 'Search',
+            }
+            response = self.session.post(url, data=data)
             response.raise_for_status()
             json_response = response.json()
 
