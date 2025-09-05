@@ -120,6 +120,7 @@ class Product(models.Model):
         normalizer = ProductNormalizer(product_data)
         self.sizes = normalizer.get_raw_sizes()
         self.normalized_name_brand_size = normalizer.get_normalized_string()
+        self.normalized_name = normalizer.cleaned_name
 
     def save(self, *args, **kwargs):
         self.clean()  # Ensure data is cleaned and normalized_name_brand_size is set
