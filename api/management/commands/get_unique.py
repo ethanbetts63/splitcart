@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from products.models.product import Product
+from api.utils.product_normalizer import ProductNormalizer
 import os
 
 class Command(BaseCommand):
@@ -49,19 +50,18 @@ class Command(BaseCommand):
     def get_unique_brands(self):
         self.stdout.write("Getting unique brands with example products...")
         
-        # Get all products that have a brand, ordered by brand
         products = Product.objects.filter(brand__isnull=False).exclude(brand='').order_by('brand')
 
-        # Use a dictionary to store unique brands and their first encountered example product
-        unique_brands_with_examples = {} # {normalized_brand: (raw_name, sizes_list)}
+        unique_brands_with_examples = {}
 
         for product in products:
-            normalized_brand = product.brand.strip().lower()
-            if normalized_brand not in unique_brands_with_examples:
-                # Store the raw name and the sizes list
+            product_data = {'brand': product.brand, 'name': product.name}
+            normalizer = ProductNormalizer(product_data)
+            normalized_brand = normalizer.cleaned_brand
+
+            if normalized_brand and normalized_brand not in unique_brands_with_examples:
                 unique_brands_with_examples[normalized_brand] = (product.name, product.sizes)
         
-        # Sort the unique brands alphabetically
         unique_sorted_brands = sorted(unique_brands_with_examples.keys())
 
         output_file = os.path.join('unique_brands.txt')
@@ -69,8 +69,7 @@ class Command(BaseCommand):
         with open(output_file, 'w', encoding='utf-8') as f:
             for brand in unique_sorted_brands:
                 raw_name, sizes_list = unique_brands_with_examples[brand]
-                # Format the sizes list into a readable string
-                sizes_str = ", ".join(sizes_list) if sizes_list else "N/A"
+                sizes_str = ", ".join(map(str, sizes_list)) if sizes_list else "N/A"
                 f.write(f"{brand} ({raw_name}, {sizes_str})\n")
 
         self.stdout.write(self.style.SUCCESS(f"Successfully wrote unique brands with examples to {output_file}"))

@@ -6,7 +6,6 @@ from products.models import Product
 def find_longest_common_prefix(strs):
     if not strs:
         return ""
-    # Ensure all items are strings and not None
     strs = [s for s in strs if isinstance(s, str)]
     if not strs:
         return ""
@@ -18,42 +17,45 @@ def find_longest_common_prefix(strs):
     return shortest_str
 
 class Command(BaseCommand):
-    help = 'Analyzes product barcodes to find common prefixes for brands.'
+    help = 'Analyzes product barcodes to find common prefixes for brands and saves the report to a file.'
 
     def handle(self, *args, **options):
+        output_file = 'prefix_analysis.txt'
         self.stdout.write(self.style.SUCCESS("--- Starting Barcode Prefix Analysis ---"))
+        self.stdout.write(f"Results will be saved to {output_file}")
 
-        # Get brands with a significant number of products (e.g., > 5)
         brands_with_multiple_products = Product.objects.values('brand').annotate(product_count=Count('id')).filter(product_count__gt=5).order_by('-product_count')
 
         if not brands_with_multiple_products:
             self.stdout.write("No brands found with more than 5 products.")
             return
 
-        self.stdout.write(f"Found {len(brands_with_multiple_products)} brands to analyze...")
-        self.stdout.write("-" * 40)
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write("--- Barcode Prefix Analysis Results ---")
 
-        for brand_data in brands_with_multiple_products:
-            brand_name = brand_data['brand']
-            product_count = brand_data['product_count']
+            for brand_data in brands_with_multiple_products:
+                brand_name = brand_data['brand']
+                product_count = brand_data['product_count']
 
-            if not brand_name:
-                continue
+                if not brand_name:
+                    continue
 
-            # Get all products for the current brand that have a barcode
-            products = Product.objects.filter(brand=brand_name).exclude(barcode__isnull=True).exclude(barcode__exact='')
-            barcodes = [p.barcode for p in products]
+                products = Product.objects.filter(brand=brand_name).exclude(barcode__isnull=True).exclude(barcode__exact='')
+                barcodes = [p.barcode for p in products]
 
-            if len(barcodes) < 2:
-                continue
+                if len(barcodes) < 2:
+                    continue
 
-            # Find the common prefix
-            common_prefix = find_longest_common_prefix(barcodes)
+                common_prefix = find_longest_common_prefix(barcodes)
 
-            if len(common_prefix) > 3:  # Only show prefixes of a reasonable length
-                self.stdout.write(self.style.SUCCESS(f"Brand: {brand_name} ({product_count} products)"))
-                self.stdout.write(f"  Potential Prefix: {common_prefix}")
-                self.stdout.write(f"  Sample Barcode:   {barcodes[0]}")
-                self.stdout.write("-" * 40)
+                plausible_prefixes = [common_prefix[:i] for i in range(6, min(len(common_prefix), 11) + 1)]
 
-        self.stdout.write(self.style.SUCCESS("--- Analysis Complete ---"))
+                if plausible_prefixes:
+                    f.write(f"Brand: {brand_name} ({len(barcodes)} products with barcodes)")
+                    f.write(f"  Sample Barcode: {barcodes[0]}")
+                    f.write(f"  Plausible Prefixes:")
+                    for prefix in plausible_prefixes:
+                        f.write(f"    - {prefix} (Length: {len(prefix)}")
+                    f.write("-" * 40 + "")
+
+        self.stdout.write(self.style.SUCCESS(f"--- Analysis Complete. Results saved to {output_file} ---"))
