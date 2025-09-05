@@ -13,24 +13,23 @@ class Gs1CompanyScraper:
     def __init__(self, command):
         self.command = command
         self.session = None
+        self.driver = None
 
     def warm_up_session(self, barcode: str):
         """
         Uses Selenium to allow the user to manually accept cookies, then creates
         a valid requests session.
         """
-        driver = None
         try:
-            # The initial search page URL
             url = f"https://www.gs1.org/services/verified-by-gs1/results?gtin={barcode}"
             
             options = webdriver.ChromeOptions()
             options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36")
             
             self.command.stdout.write("--- Initializing Selenium browser ---")
-            driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+            self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
             
-            driver.get(url)
+            self.driver.get(url)
             
             self.command.stdout.write("\n--------------------------------------------------")
             self.command.stdout.write("ACTION REQUIRED: Please accept cookies in the browser.")
@@ -39,18 +38,15 @@ class Gs1CompanyScraper:
             
             self.command.stdout.write("Creating session from browser cookies...")
             self.session = requests.Session()
+            # Using a simplified header, as requested
             self.session.headers.update({
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
-                'X-Requested-With': 'XMLHttpRequest',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
             })
-            for cookie in driver.get_cookies():
+            for cookie in self.driver.get_cookies():
                 self.session.cookies.set(cookie['name'], cookie['value'])
 
         except Exception as e:
             raise InterruptedError(f"An error occurred during the Selenium phase: {e}")
-        finally:
-            if driver:
-                driver.quit()
 
         if not self.session:
             raise InterruptedError("Failed to create a requests session. Aborting.")
@@ -64,6 +60,7 @@ class Gs1CompanyScraper:
             return None
 
         self.command.stdout.write(f"--- Scraping GS1 API for barcode: {barcode} ---")
+        # NOTE: This is the AJAX URL the page calls, not the page URL itself.
         url = f"https://www.gs1.org/services/verified-by-gs1/results?gtin={barcode}&ajax_form=1&_wrapper_format=drupal_ajax"
 
         try:
@@ -84,11 +81,10 @@ class Gs1CompanyScraper:
                 self.command.stdout.write(self.command.style.SUCCESS(f"Success! Company Name: {company_name}"))
                 return company_name
             else:
-                self.command.stderr.write(self.command.style.ERROR("Could not find company name in the response."))
-                # Save the response for debugging if parsing fails
+                self.command.stderr.write(self.command.style.ERROR("Could not find company name in the API response."))
                 with open('gs1_response.json', 'w') as f:
                     json.dump(json_response, f, indent=4)
-                self.command.stdout.write("Saved failing response to gs1_response.json")
+                self.command.stdout.write("Saved API response to gs1_response.json")
                 return None
 
         except requests.exceptions.RequestException as e:
@@ -105,5 +101,13 @@ class Gs1CompanyScraper:
         try:
             self.warm_up_session(barcode)
             self.get_company_info(barcode)
+
+            self.command.stdout.write("\n--------------------------------------------------")
+            input("Process complete. Browser is still open for inspection. Press Enter to close...")
+            self.command.stdout.write("--------------------------------------------------\n")
+
         except InterruptedError as e:
             self.command.stderr.write(self.command.style.ERROR(f"Process stopped: {e}"))
+        finally:
+            if self.driver:
+                self.driver.quit()
