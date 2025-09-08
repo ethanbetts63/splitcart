@@ -60,16 +60,17 @@ class Gs1CompanyScraper:
     def get_company_info(self, barcode: str):
         """
         Uses the warmed-up session to fetch and parse the company info.
+        Now extracts the precise License Key from the response data.
         """
-        if not self.session:
+        if not self.session or not self.form_build_id:
             self.command.stderr.write(self.command.style.ERROR("Session not warmed up. Please run warm_up_session first."))
             return None
 
         self.command.stdout.write(f"--- Scraping GS1 API for barcode: {barcode} ---")
-        # NOTE: This is the AJAX URL the page calls, not the page URL itself.
         url = f"https://www.gs1.org/services/verified-by-gs1/results?gtin={barcode}&ajax_form=1&_wrapper_format=drupal_ajax"
 
         try:
+            # This data payload is crucial for the POST request to be valid.
             data = {
                 'gtin': barcode,
                 'search_type': 'gtin',
@@ -81,20 +82,22 @@ class Gs1CompanyScraper:
             response.raise_for_status()
             json_response = response.json()
 
-            company_name = None
+            license_key = None
+            # The license key is in an HTML snippet inside the JSON response.
             for command in json_response:
-                if command.get('command') == 'settings':
-                    status_message = command.get('settings', {}).get('gsone_verified_search', {}).get('statusMessage', '')
-                    match = re.search(r'registered to (?:company: )?(.*?)\.', status_message, re.IGNORECASE)
+                if command.get('command') == 'insert' and 'data' in command:
+                    html_data = command['data']
+                    # Use regex to find the License Key
+                    match = re.search(r"License Key</td>\s*<td><strong>(\d+)</strong></td>", html_data)
                     if match:
-                        company_name = match.group(1).strip()
+                        license_key = match.group(1)
                         break
             
-            if company_name:
-                self.command.stdout.write(self.command.style.SUCCESS(f"Success! Company Name: {company_name}"))
-                return company_name
+            if license_key:
+                self.command.stdout.write(self.command.style.SUCCESS(f"Success! Found License Key: {license_key}"))
+                return license_key
             else:
-                self.command.stderr.write(self.command.style.ERROR("Could not find company name in the API response."))
+                self.command.stderr.write(self.command.style.ERROR("Could not find License Key in the API response."))
                 with open('gs1_response.json', 'w') as f:
                     json.dump(json_response, f, indent=4)
                 self.command.stdout.write("Saved API response to gs1_response.json")
