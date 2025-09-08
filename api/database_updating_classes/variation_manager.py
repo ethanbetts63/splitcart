@@ -10,6 +10,7 @@ class VariationManager:
         self.command = command
         self.unit_of_work = unit_of_work
         self.new_hotlist_entries = []
+        self.brand_reconciliation_list = []
 
     def check_for_variation(self, incoming_product_details, existing_product, company_name):
         barcode = existing_product.barcode
@@ -55,21 +56,12 @@ class VariationManager:
         canonical_brand_name = existing_product.brand
 
         if incoming_brand and canonical_brand_name and incoming_brand.lower() != canonical_brand_name.lower():
-            try:
-                product_brand = ProductBrand.objects.get(name=canonical_brand_name)
-                
-                if not product_brand.name_variations:
-                    product_brand.name_variations = []
-
-                if incoming_brand not in product_brand.name_variations:
-                    product_brand.name_variations.append(incoming_brand)
-                    product_brand.save()
-                    self.command.stdout.write(f"\n  - Captured new brand variation for '{canonical_brand_name}': '{incoming_brand}'")
-
-            except ProductBrand.DoesNotExist:
-                self.command.stderr.write(f"\nCould not find ProductBrand entry for '{canonical_brand_name}' to save variation.")
-            except Exception as e:
-                self.command.stderr.write(f"\nError saving brand variation for '{canonical_brand_name}': {e}")
+            hotlist_entry = {
+                'canonical_brand_name': canonical_brand_name,
+                'duplicate_brand_name': incoming_brand
+            }
+            if hotlist_entry not in self.brand_reconciliation_list:
+                self.brand_reconciliation_list.append(hotlist_entry)
 
     def reconcile_duplicates(self):
         """
@@ -148,3 +140,59 @@ class VariationManager:
             f.write(f"  Canonical: {canonical_product.name} (Barcode: {canonical_product.barcode})")
             f.write(f"  Duplicate: {duplicate_product.name} (Barcode: {duplicate_product.barcode})")
             f.write("----------------------------------------------------")
+
+    def reconcile_brand_duplicates(self):
+        """
+        Reads the brand hotlist from memory and merges any potential duplicates.
+        """
+        self.command.stdout.write(self.command.style.SQL_FIELD("--- Reconciling duplicate brands from memory hotlist ---"))
+        
+        if not self.brand_reconciliation_list:
+            self.command.stdout.write("Brand hotlist is empty. No duplicates to process.")
+            return
+
+        self.command.stdout.write(f"Found {len(self.brand_reconciliation_list)} potential brand duplicates to merge.")
+        
+        for item in self.brand_reconciliation_list:
+            canonical_name = item['canonical_brand_name']
+            duplicate_name = item['duplicate_brand_name']
+
+            try:
+                with transaction.atomic():
+                    canonical_brand = ProductBrand.objects.get(name=canonical_name)
+                    duplicate_brand = ProductBrand.objects.get(name=duplicate_name)
+
+                    if canonical_brand.id == duplicate_brand.id:
+                        continue
+
+                    # Update all products pointing to the duplicate brand
+                    Product.objects.filter(brand=duplicate_brand.name).update(brand=canonical_brand.name)
+
+                    # Merge name variations
+                    if duplicate_brand.name_variations:
+                        if not canonical_brand.name_variations:
+                            canonical_brand.name_variations = []
+                        for variation in duplicate_brand.name_variations:
+                            if variation not in canonical_brand.name_variations:
+                                canonical_brand.name_variations.append(variation)
+                    
+                    # Ensure the duplicate name itself is in the variations list
+                    if duplicate_brand.name not in canonical_brand.name_variations:
+                        canonical_brand.name_variations.append(duplicate_brand.name)
+                        
+                    canonical_brand.save()
+                    
+                    # Delete the duplicate brand
+                    duplicate_brand.delete()
+                    
+                    self.command.stdout.write(f"  - Merged brand '{duplicate_name}' into '{canonical_name}'.")
+
+            except ProductBrand.DoesNotExist:
+                self.command.stderr.write(f"Could not find brand for reconciliation: '{canonical_name}' or '{duplicate_name}'. Skipping.")
+                continue
+            except Exception as e:
+                self.command.stderr.write(f"Error merging brand '{duplicate_name}': {e}")
+                continue
+        
+        # Clear the in-memory hotlist
+        self.brand_reconciliation_list.clear()

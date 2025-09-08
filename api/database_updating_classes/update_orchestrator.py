@@ -59,6 +59,8 @@ class UpdateOrchestrator:
 
             if unit_of_work.commit(consolidated_data, product_cache, resolver, store_obj):
                 self.processed_files.append(file_path)
+                variation_manager.reconcile_brand_duplicates()
+                variation_manager.reconcile_duplicates()
 
         translator_generator = TranslationTableGenerator(self.command)
         translator_generator.generate()
