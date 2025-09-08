@@ -41,6 +41,7 @@ class UpdateOrchestratorLogicTests(TestCase):
         mock_resolver.find_match.return_value = existing_product
         mock_uow = Mock()
         mock_variation_manager = Mock()
+        mock_brand_manager = Mock()
         mock_store_obj = StoreFactory()
 
         # 2. Act
@@ -49,6 +50,7 @@ class UpdateOrchestratorLogicTests(TestCase):
             mock_resolver, 
             mock_uow, 
             mock_variation_manager, 
+            mock_brand_manager,
             mock_store_obj
         )
 

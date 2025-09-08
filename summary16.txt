@@ -23,3 +23,15 @@ We then moved on to fixing and optimizing the strategic GS1 scraper.
 2.  **Optimized Performance:** We addressed a major inefficiency where the scraper was launching a new Selenium browser for every single brand. We re-architected the process to only use the browser **once** at the very beginning to get the necessary session cookies. For all subsequent scrapes, it now uses the fast and lightweight `requests` library, dramatically speeding up the overall process.
 
 3.  **Refactored for Code Quality:** Finally, we cleaned up the design. All the complex logic for prioritizing brands, looping, and saving results was moved out of the `scrape.py` command file and into a `run()` method within the `Gs1CompanyScraper` class itself. This makes the scraper self-contained and aligns its design with the other scrapers in the project.
+
+### Part 3: Automated Brand Inference and Reconciliation
+
+Finally, we created a powerful new tool to intelligently clean up brand data without relying on official GS1 information.
+
+1.  **New Command:** We built the `infer_and_reconcile_brands` command (`api/management/commands/infer_and_reconcile_brands.py`).
+
+2.  **Intelligent Inference:** The first phase of the command analyzes barcodes for every eligible brand. It calculates the Longest Common Prefix (LCP) and then uses an "address space" plausibility rule to determine the most likely correct prefix length. This inferred prefix is then saved to the `BrandPrefix` model (`products/models/brand_prefix.py`).
+
+3.  **Automated Reconciliation:** The second phase uses these inferred prefixes to find products with inconsistent brand names. It queues them for merging and uses the `VariationManager` (`api/database_updating_classes/variation_manager.py`) to automatically merge the brands, re-assign all associated products, and clean up the database.
+
+4.  **Resilient Error Handling:** We made the `VariationManager` more robust by teaching it how to handle the complex, sometimes contradictory merge tasks that arise from the inference process. It can now safely and silently skip redundant operations, preventing crashes and cleaning up the log output.

@@ -20,7 +20,7 @@ class VariationManagerTests(TestCase):
         self.manager.check_for_variation(incoming_details, existing_product, 'coles')
 
         self.mock_uow.add_for_update.assert_not_called()
-        self.assertEqual(len(self.manager.new_hotlist_entries), 0)
+        self.assertEqual(len(self.manager.product_reconciliation_list), 0)
 
     def test_check_for_variation_no_change_if_no_barcode(self):
         """Test that no variation is recorded if the existing product has no barcode."""
@@ -30,7 +30,7 @@ class VariationManagerTests(TestCase):
         self.manager.check_for_variation(incoming_details, existing_product, 'coles')
 
         self.mock_uow.add_for_update.assert_not_called()
-        self.assertEqual(len(self.manager.new_hotlist_entries), 0)
+        self.assertEqual(len(self.manager.product_reconciliation_list), 0)
 
     def test_check_for_new_variation(self):
         """Test that a new variation is correctly identified and processed."""
@@ -38,8 +38,10 @@ class VariationManagerTests(TestCase):
             name='Canonical Product', 
             barcode='12345', 
             name_variations=[],
-            normalized_name_brand_size_variations=[]
+            normalized_name_brand_size_variations=[],
+            normalized_name_brand_size='canonical-product-normalized-string'
         )
+
         incoming_details = {
             'name': 'A New Variation Name',
             'normalized_name_brand_size': 'new-variation-normalized'
@@ -62,6 +64,8 @@ class VariationManagerTests(TestCase):
         self.assertEqual(product_entry['new_variation'], 'A New Variation Name')
         self.assertEqual(product_entry['canonical_name'], 'Canonical Product')
         self.assertEqual(product_entry['barcode'], '12345')
+        self.assertEqual(product_entry['canonical_normalized_string'], 'canonical-product-normalized-string')
+        self.assertEqual(product_entry['duplicate_normalized_string'], 'new-variation-normalized')
 
     def test_check_for_variation_deduplicates_variations(self):
         """Test that the same variation is not added twice."""
@@ -87,8 +91,17 @@ class VariationManagerTests(TestCase):
     def test_reconcile_duplicates_merges_products(self):
         """Test that a duplicate product is correctly merged into the canonical one."""
         # 1. Arrange
-        canonical_product = ProductFactory(name='Canonical Product', barcode='123')
-        duplicate_product = ProductFactory(name='Duplicate Product Name', barcode=None) # No barcode conflict
+        canonical_product = ProductFactory(
+            name='Canonical Product', 
+            barcode='123',
+            normalized_name_brand_size='canonical-normalized'
+        )
+
+        duplicate_product = ProductFactory(
+            name='Duplicate Product Name', 
+            barcode=None, # No barcode conflict
+            normalized_name_brand_size='duplicate-normalized'
+        )
         
         # Give the duplicate product a price record
         price_to_move = PriceFactory(product=duplicate_product)
@@ -98,7 +111,9 @@ class VariationManagerTests(TestCase):
         self.manager.product_reconciliation_list = [{
             'new_variation': 'Duplicate Product Name',
             'canonical_name': 'Canonical Product',
-            'barcode': '123'
+            'barcode': '123',
+            'canonical_normalized_string': 'canonical-normalized',
+            'duplicate_normalized_string': 'duplicate-normalized'
         }]
 
         # 2. Act
