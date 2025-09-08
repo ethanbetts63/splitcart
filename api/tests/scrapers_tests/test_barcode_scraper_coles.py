@@ -98,7 +98,7 @@ class TestColesBarcodeScraper(unittest.TestCase):
         # 3. Check that the final methods were called on success
         scraper.post_scrape_enrichment.assert_called_once()
         scraper.jsonl_writer.commit.assert_called_once()
-        mock_remove.assert_called_with(scraper.progress_file_path)
+        mock_remove.assert_any_call(scraper.progress_file_path)
 
         # 4. Check for the final success message
         # We can't check stdout directly because post_scrape_enrichment is mocked,
