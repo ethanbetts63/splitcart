@@ -14,6 +14,7 @@ class BrandPrefix(models.Model):
 
     # --- Verified Data ---
     confirmed_official_prefix = models.CharField(max_length=12, null=True, blank=True, db_index=True)
+    brand_name_gs1 = models.CharField(max_length=255, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         # If a prefix is officially confirmed, it overrides any inferred data.
