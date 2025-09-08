@@ -54,7 +54,7 @@ class BrandManager:
         brands_to_create = []
         for normalized_name in new_normalized_names:
             original_name = self.processed_brands[normalized_name]
-            brands_to_create.append(ProductBrand(name=original_name))
+            brands_to_create.append(ProductBrand(name=original_name, normalized_name=normalized_name))
 
         try:
             # Create all new brands in a single database call
