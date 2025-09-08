@@ -10,10 +10,9 @@ from api.scrapers.product_scraper_iga import IgaScraper as ProductScraperIga
 from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
 from api.utils.scraper_utils.get_coles_categories import get_coles_categories
 from api.scrapers.gs1_company_scraper import Gs1CompanyScraper
-from products.models import BrandPrefix, Product
+from products.models import BrandPrefix, Product, ProductBrand
 import time
 import os
-import json
 
 class Command(BaseCommand):
     help = 'Runs the scrapers for the specified companies.'
@@ -121,6 +120,7 @@ class Command(BaseCommand):
         if options['gs1']:
             self.stdout.write(self.style.SUCCESS('--- Running GS1 Strategic Scraper to Inbox ---'))
             
+            # Setup inbox file
             inbox_dir = os.path.join(settings.BASE_DIR, 'api', 'data', 'prefix_inbox')
             os.makedirs(inbox_dir, exist_ok=True)
             timestamp = timezone.now().strftime('%Y-%m-%d_%H-%M-%S')
@@ -131,22 +131,49 @@ class Command(BaseCommand):
             successful_scrapes = 0
             brands_attempted_this_run = set()
 
-            for i in range(30):
-                self.stdout.write(self.style.HTTP_INFO(f"--- Scrape Attempt {i + 1}/30 ---"))
+            # 1. Get all ProductBrands and their counts, sort them once.
+            self.stdout.write("Calculating product counts for all brands to determine priority...")
+            all_brands = ProductBrand.objects.all()
+            brand_counts = []
+            for brand in all_brands:
+                count = Product.objects.filter(brand=brand.name).count()
+                if count > 0:
+                    brand_counts.append({'brand': brand, 'count': count})
+            
+            sorted_brands = sorted(brand_counts, key=lambda x: x['count'], reverse=True)
+            self.stdout.write(f"Prioritized a list of {len(sorted_brands)} brands.")
 
-                best_candidate = BrandPrefix.objects.filter(
-                    confirmed_official_prefix__isnull=True
-                ).exclude(
-                    brand__id__in=brands_attempted_this_run
-                ).select_related('brand').order_by('-product_count').first()
+            # 2. Main scraping loop
+            for i in range(2):
+                if successful_scrapes >= 30: break
 
-                if not best_candidate:
+                # 3. Find the next target from the sorted list
+                target_brand = None
+                for brand_info in sorted_brands:
+                    brand_obj = brand_info['brand']
+                    if brand_obj.id in brands_attempted_this_run:
+                        continue
+
+                    try:
+                        prefix_analysis = brand_obj.prefix_analysis
+                        if prefix_analysis.confirmed_official_prefix:
+                            brands_attempted_this_run.add(brand_obj.id)
+                            continue
+                    except BrandPrefix.DoesNotExist:
+                        pass
+                    
+                    target_brand = brand_obj
+                    break
+
+                if not target_brand:
                     self.stdout.write(self.style.SUCCESS("No more unverified brands to scrape. Ending run."))
                     break
-                
-                target_brand = best_candidate.brand
+
+                # 4. Process the target brand
                 brands_attempted_this_run.add(target_brand.id)
-                
+                self.stdout.write(f"--- Scrape Attempt {i + 1}/30 ---")
+                self.stdout.write(f"Selected brand: {target_brand.name}")
+
                 product_with_barcode = Product.objects.filter(
                     brand=target_brand.name
                 ).exclude(barcode__isnull=True).exclude(barcode__exact='').first()
@@ -155,6 +182,7 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.WARNING(f"Brand {target_brand.name} has no products with barcodes. Skipping."))
                     continue
 
+                # 5. Run scraper
                 success = scraper.run(
                     barcode=product_with_barcode.barcode,
                     target_brand=target_brand,
@@ -164,7 +192,8 @@ class Command(BaseCommand):
                 if success:
                     successful_scrapes += 1
 
-                if i < 29 and successful_scrapes < 30:
+                # 6. Wait
+                if successful_scrapes < 30:
                     self.stdout.write("Waiting 5 seconds before next scrape...")
                     time.sleep(5)
             
