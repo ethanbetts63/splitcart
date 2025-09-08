@@ -44,14 +44,14 @@ class VariationManager:
             if updated:
                 self.unit_of_work.add_for_update(existing_product)
 
-            product_hotlist_entry = {
+            product_reconciliation_entry = {
                 'new_variation': cleaned_incoming_name,
                 'canonical_name': existing_name,
                 'barcode': barcode,
                 'canonical_normalized_string': existing_product.normalized_name_brand_size,
                 'duplicate_normalized_string': incoming_product_details.get('normalized_name_brand_size')
             }
-            self.product_reconciliation_list.append(product_hotlist_entry)
+            self.product_reconciliation_list.append(product_reconciliation_entry)
 
         # --- Handle Brand Variations ---
         incoming_brand = incoming_product_details.get('brand')
@@ -92,8 +92,8 @@ class VariationManager:
         duplicates_to_merge = []
         for item in product_reconciliation_list:
             try:
-                duplicate_product = Product.objects.get(name=item['new_variation'])
-                canonical_product = Product.objects.get(name=item['canonical_name'])
+                duplicate_product = Product.objects.get(normalized_name_brand_size=item['duplicate_normalized_string'])
+                canonical_product = Product.objects.get(normalized_name_brand_size=item['canonical_normalized_string'])
 
                 if duplicate_product.id == canonical_product.id:
                     continue
