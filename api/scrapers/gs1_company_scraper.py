@@ -1,6 +1,9 @@
 import requests
 import json
 import re
+import os
+from django.conf import settings
+from django.utils import timezone
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
@@ -9,68 +12,80 @@ from selenium.webdriver.common.by import By
 class Gs1CompanyScraper:
     """
     Scrapes GS1 to find company information for a given barcode.
-    Uses a Selenium warm-up phase to handle cookie consent, then uses requests.
+    Encapsulates the entire process of scraping and writing to an inbox file.
     """
     def __init__(self, command):
         self.command = command
-        self.session = None
         self.driver = None
+        self.session = None
         self.form_build_id = None
 
-    def warm_up_session(self, barcode: str):
+    def run(self, barcode: str, target_brand, output_file: str) -> bool:
         """
-        Uses Selenium to allow the user to manually accept cookies, then creates
-        a valid requests session.
+        Orchestrates a single scrape and writes the result to the output file.
+        Returns True on success, False on failure.
         """
         try:
-            url = f"https://www.gs1.org/services/verified-by-gs1/results?gtin={barcode}"
-            
-            options = webdriver.ChromeOptions()
-            options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36")
-            options.add_argument("--incognito")
-            
-            self.command.stdout.write("--- Initializing Selenium browser ---")
-            self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
-            
-            self.driver.get(url)
-            
-            self.command.stdout.write("\n--------------------------------------------------")
-            self.command.stdout.write("ACTION REQUIRED: Please accept cookies in the browser.")
-            input("Press Enter in this terminal after you have accepted the cookies...")
-            self.command.stdout.write("--------------------------------------------------\n")
-            
-            self.command.stdout.write("Creating session from browser cookies...")
-            self.session = requests.Session()
-            # Using a simplified header, as requested
-            self.session.headers.update({
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
-                'Referer': url
-            })
-            for cookie in self.driver.get_cookies():
-                self.session.cookies.set(cookie['name'], cookie['value'])
+            self._initialize_driver()
+            self._warm_up_session(barcode)
+            result = self._get_company_info(barcode)
 
-            self.form_build_id = self.driver.find_element(By.NAME, "form_build_id").get_attribute("value")
-
+            if result and result.get('license_key'):
+                self.command.stdout.write(self.command.style.SUCCESS(f"Successfully scraped {target_brand.name}."))
+                output_record = {
+                    'scraped_at': timezone.now().isoformat(),
+                    'target_brand_id': target_brand.id,
+                    'target_brand_name': target_brand.name,
+                    'scraped_barcode': barcode,
+                    'confirmed_license_key': result['license_key'],
+                    'confirmed_company_name': result['company_name'],
+                }
+                with open(output_file, 'a', encoding='utf-8') as f:
+                    f.write(json.dumps(output_record) + '\n')
+                return True
+            else:
+                self.command.stderr.write(self.command.style.ERROR(f"Scrape failed for {target_brand.name}."))
+                return False
         except Exception as e:
-            raise InterruptedError(f"An error occurred during the Selenium phase: {e}")
+            self.command.stderr.write(self.command.style.ERROR(f"An unexpected error occurred during scrape for {barcode}: {e}"))
+            return False
+        finally:
+            self.close()
 
-        if not self.session:
-            raise InterruptedError("Failed to create a requests session. Aborting.")
+    def _initialize_driver(self):
+        self.command.stdout.write("--- Initializing Selenium browser ---")
+        options = webdriver.ChromeOptions()
+        options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36")
+        options.add_argument("--incognito")
+        self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
 
-    def get_company_info(self, barcode: str):
-        """
-        Uses the warmed-up session to fetch and parse the company info.
-        Now extracts the precise License Key from the response data.
-        """
+    def _warm_up_session(self, barcode: str):
+        url = f"https://www.gs1.org/services/verified-by-gs1/results?gtin={barcode}"
+        self.driver.get(url)
+        
+        self.command.stdout.write("\n--------------------------------------------------")
+        self.command.stdout.write("ACTION REQUIRED: Please accept cookies in the browser.")
+        input("Press Enter in this terminal after you have accepted the cookies...")
+        self.command.stdout.write("--------------------------------------------------\n")
+        
+        self.command.stdout.write("Creating session from browser cookies...")
+        self.session = requests.Session()
+        self.session.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
+            'Referer': url
+        })
+        for cookie in self.driver.get_cookies():
+            self.session.cookies.set(cookie['name'], cookie['value'])
+        
+        self.form_build_id = self.driver.find_element(By.NAME, "form_build_id").get_attribute("value")
+
+    def _get_company_info(self, barcode: str):
         if not self.session or not self.form_build_id:
-            self.command.stderr.write(self.command.style.ERROR("Session not warmed up. Please run warm_up_session first."))
+            self.command.stderr.write(self.command.style.ERROR("Session not warmed up."))
             return None
 
-        self.command.stdout.write(f"--- Scraping GS1 API for barcode: {barcode} ---")
         url = f"https://www.gs1.org/services/verified-by-gs1/results?gtin={barcode}&ajax_form=1&_wrapper_format=drupal_ajax"
-
         try:
-            # This data payload is crucial for the POST request to be valid.
             data = {
                 'gtin': barcode,
                 'search_type': 'gtin',
@@ -83,26 +98,26 @@ class Gs1CompanyScraper:
             json_response = response.json()
 
             license_key = None
-            # The license key is in an HTML snippet inside the JSON response.
+            company_name = None
+            
             for command in json_response:
                 if command.get('command') == 'insert' and 'data' in command:
                     html_data = command['data']
-                    # Use regex to find the License Key
-                    match = re.search(r"License Key</td>\s*<td><strong>(\d+)</strong></td>", html_data)
-                    if match:
-                        license_key = match.group(1)
-                        break
-            
-            if license_key:
-                self.command.stdout.write(self.command.style.SUCCESS(f"Success! Found License Key: {license_key}"))
-                return license_key
+                    key_match = re.search(r"License Key</td>\s*<td><strong>(\d+)</strong></td>", html_data)
+                    if key_match:
+                        license_key = key_match.group(1)
+                if command.get('command') == 'settings' and not company_name:
+                    status_message = command.get('settings', {}).get('gsone_verified_search', {}).get('statusMessage', '')
+                    name_match = re.search(r'registered to company: (.*?)\\.', status_message, re.IGNORECASE)
+                    if name_match:
+                        company_name = name_match.group(1).strip()
+
+            if license_key and company_name:
+                return {'license_key': license_key, 'company_name': company_name}
             else:
-                self.command.stderr.write(self.command.style.ERROR("Could not find License Key in the API response."))
                 with open('gs1_response.json', 'w') as f:
                     json.dump(json_response, f, indent=4)
-                self.command.stdout.write("Saved API response to gs1_response.json")
                 return None
-
         except requests.exceptions.RequestException as e:
             self.command.stderr.write(self.command.style.ERROR(f"An error occurred during the request: {e}"))
             return None
@@ -110,20 +125,7 @@ class Gs1CompanyScraper:
             self.command.stderr.write(self.command.style.ERROR("Failed to decode JSON from the response."))
             return None
 
-    def run(self, barcode: str):
-        """
-        Orchestrates the entire scraping process.
-        """
-        try:
-            self.warm_up_session(barcode)
-            self.get_company_info(barcode)
-
-            self.command.stdout.write("\n--------------------------------------------------")
-            input("Process complete. Browser is still open for inspection. Press Enter to close...")
-            self.command.stdout.write("--------------------------------------------------\n")
-
-        except InterruptedError as e:
-            self.command.stderr.write(self.command.style.ERROR(f"Process stopped: {e}"))
-        finally:
-            if self.driver:
-                self.driver.quit()
+    def close(self):
+        if self.driver:
+            self.driver.quit()
+            self.command.stdout.write("Browser closed.")
