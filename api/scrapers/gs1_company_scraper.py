@@ -99,18 +99,25 @@ class Gs1CompanyScraper:
 
             license_key = None
             company_name = None
-            
+
+            # Find the single 'insert' command that contains the final rendered HTML data.
             for command in json_response:
-                if command.get('command') == 'insert' and 'data' in command:
+                if command.get('command') == 'insert' and command.get('selector') == '#product-container':
                     html_data = command['data']
+
+                    # Extract License Key from the HTML
                     key_match = re.search(r"License Key</td>\s*<td><strong>(\d+)</strong></td>", html_data)
                     if key_match:
                         license_key = key_match.group(1)
-                if command.get('command') == 'settings' and not company_name:
-                    status_message = command.get('settings', {}).get('gsone_verified_search', {}).get('statusMessage', '')
-                    name_match = re.search(r'registered to company: (.*?)\\.', status_message, re.IGNORECASE)
+
+                    # Extract Company Name from the HTML
+                    # This is more robust than relying on the settings -> statusMessage path.
+                    name_match = re.search(r"registered to <strong>(.*?)</strong>", html_data)
                     if name_match:
                         company_name = name_match.group(1).strip()
+
+                    # Once we've processed the main data block, we can exit the loop.
+                    break
 
             if license_key and company_name:
                 return {'license_key': license_key, 'company_name': company_name}
