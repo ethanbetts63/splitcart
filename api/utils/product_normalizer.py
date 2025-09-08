@@ -36,7 +36,8 @@ class ProductNormalizer:
             brand_cache (dict): A cache of brand information, including name variations.
         """
         self.name = str(product_data.get('name', ''))
-        self.brand = str(product_data.get('brand', ''))
+        raw_brand = product_data.get('brand')
+        self.brand = str(raw_brand) if raw_brand else ''
         self.size = str(product_data.get('size', ''))
         self.barcode = product_data.get('barcode')
         self.sku = product_data.get('sku')
