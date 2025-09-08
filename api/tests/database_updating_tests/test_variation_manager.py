@@ -56,12 +56,12 @@ class VariationManagerTests(TestCase):
         # 2. Unit of Work is notified
         self.mock_uow.add_for_update.assert_called_once_with(existing_product)
 
-        # 3. Hotlist is updated
-        self.assertEqual(len(self.manager.new_hotlist_entries), 1)
-        hotlist_entry = self.manager.new_hotlist_entries[0]
-        self.assertEqual(hotlist_entry['new_variation'], 'A New Variation Name')
-        self.assertEqual(hotlist_entry['canonical_name'], 'Canonical Product')
-        self.assertEqual(hotlist_entry['barcode'], '12345')
+        # 3. Product reconciliation list is updated
+        self.assertEqual(len(self.manager.product_reconciliation_list), 1)
+        product_entry = self.manager.product_reconciliation_list[0]
+        self.assertEqual(product_entry['new_variation'], 'A New Variation Name')
+        self.assertEqual(product_entry['canonical_name'], 'Canonical Product')
+        self.assertEqual(product_entry['barcode'], '12345')
 
     def test_check_for_variation_deduplicates_variations(self):
         """Test that the same variation is not added twice."""
@@ -94,15 +94,15 @@ class VariationManagerTests(TestCase):
         price_to_move = PriceFactory(product=duplicate_product)
         self.assertEqual(Price.objects.filter(product=canonical_product).count(), 0)
 
-        # Manually populate the hotlist to simulate a variation having been found
-        self.manager.new_hotlist_entries = [{
+        # Manually populate the product reconciliation list to simulate a variation having been found
+        self.manager.product_reconciliation_list = [{
             'new_variation': 'Duplicate Product Name',
             'canonical_name': 'Canonical Product',
             'barcode': '123'
         }]
 
         # 2. Act
-        self.manager.reconcile_duplicates()
+        self.manager.reconcile_product_duplicates()
 
         # 3. Assert
         # Price record should have been moved
@@ -115,5 +115,5 @@ class VariationManagerTests(TestCase):
         with self.assertRaises(Product.DoesNotExist):
             Product.objects.get(id=duplicate_product.id)
 
-        # Hotlist should be cleared
-        self.assertEqual(len(self.manager.new_hotlist_entries), 0)
+        # Product reconciliation list should be cleared
+        self.assertEqual(len(self.manager.product_reconciliation_list), 0)

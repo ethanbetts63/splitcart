@@ -67,7 +67,7 @@ Finally, we significantly improved the accuracy of the data cleaning process.
     -   **Why:** Just like products, brand names can have variations (e.g., "Arnott's" vs "Arnotts") that might lead to duplicate `ProductBrand` entries in the database. While our `BrandManager` prevents most new duplicates, existing ones or those created by other means might still exist. This feature ensures our `ProductBrand` table remains clean and canonical.
     -   **How:**
         1.  **Detect Potential Duplicates:** When the `VariationManager` (in `check_for_variation`) discovers that an `incoming_brand` is a variation of an `existing_product.brand` (and thus, its canonical `ProductBrand`), it should flag this as a potential brand merge.
-        2.  **Queue for Reconciliation:** Instead of directly saving the `ProductBrand` (as we currently do), it should add this potential merge (e.g., `{'canonical_brand_name': 'Arnott\'s', 'duplicate_brand_name': 'Arnotts'}`) to a new in-memory list within the `VariationManager` (similar to `new_hotlist_entries`).
+        2.  **Queue for Reconciliation:** Instead of directly saving the `ProductBrand` (as we currently do), it should add this potential merge (e.g., `{'canonical_brand_name': 'Arnott\'s', 'duplicate_brand_name': 'Arnotts'}`) to a new in-memory list within the `VariationManager` (similar to `product_reconciliation_list`).
         3.  **Process at End of File:** After the main `UnitOfWork.commit()` for products and prices, the `UpdateOrchestrator` should call a new method on the `VariationManager` (e.g., `reconcile_brand_duplicates`).
         4.  **Merge Logic:** This new method would:
             -   Iterate through the queued brand merges.

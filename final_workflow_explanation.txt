@@ -65,5 +65,5 @@ This document outlines the step-by-step journey of product data through the new,
 
 ### Phase 5: Post-Run Cleanup & Reconciliation
 
-13. **Cleanup & Hotlist:** If the commit for a file was successful, the file is deleted, and any discovered name variations are written to the hotlist.
-14. **Final Reconciliation:** After all files have been processed, the `VariationManager` is called one last time to read the hotlist and merge any duplicates, and the `TranslationTableGenerator` runs.
+13. **Cleanup & Reconciliation List:** If the commit for a file was successful, the file is deleted, and any discovered name variations are added to the reconciliation list in the VariationManager.
+14. **Final Reconciliation:** After all files have been processed, the `VariationManager` is called to process the reconciliation lists and merge any duplicates, and the `TranslationTableGenerator` runs.
