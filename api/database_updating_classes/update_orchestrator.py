@@ -101,7 +101,10 @@ class UpdateOrchestrator:
             metadata = data['metadata']
             company_name = metadata.get('company', '')
 
-            brand_manager.process_brand(product_details.get('brand'))
+            brand_manager.process_brand(
+                brand_name=product_details.get('brand'), 
+                normalized_brand_name=product_details.get('normalized_brand')
+            )
 
             existing_product = resolver.find_match(product_details, [])
 

@@ -90,6 +90,7 @@ class BaseDataCleaner(ABC):
         Performs generic normalization on a cleaned product.
         """
         normalizer = ProductNormalizer(product)
+        product['normalized_brand'] = normalizer.cleaned_brand
         product['sizes'] = normalizer.get_raw_sizes()
         product['normalized_name_brand_size'] = normalizer.get_normalized_string()
         if 'barcode' in product and product.get('barcode'):
