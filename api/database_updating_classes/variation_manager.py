@@ -9,7 +9,7 @@ class VariationManager:
     def __init__(self, command, unit_of_work):
         self.command = command
         self.unit_of_work = unit_of_work
-        self.new_hotlist_entries = []
+        self.product_reconciliation_list = []
         self.brand_reconciliation_list = []
 
     def check_for_variation(self, incoming_product_details, existing_product, company_name):
@@ -44,37 +44,37 @@ class VariationManager:
             if updated:
                 self.unit_of_work.add_for_update(existing_product)
 
-            hotlist_entry = {
+            product_hotlist_entry = {
                 'new_variation': cleaned_incoming_name,
                 'canonical_name': existing_name,
                 'barcode': barcode
             }
-            self.new_hotlist_entries.append(hotlist_entry)
+            self.product_reconciliation_list.append(product_hotlist_entry)
 
         # --- Handle Brand Variations ---
         incoming_brand = incoming_product_details.get('brand')
         canonical_brand_name = existing_product.brand
 
         if incoming_brand and canonical_brand_name and incoming_brand.lower() != canonical_brand_name.lower():
-            hotlist_entry = {
+            brand_reconciliation_entry = {
                 'canonical_brand_name': canonical_brand_name,
                 'duplicate_brand_name': incoming_brand
             }
-            if hotlist_entry not in self.brand_reconciliation_list:
-                self.brand_reconciliation_list.append(hotlist_entry)
+            if brand_reconciliation_entry not in self.brand_reconciliation_list:
+                self.brand_reconciliation_list.append(brand_reconciliation_entry)
 
-    def reconcile_duplicates(self):
+    def reconcile_product_duplicates(self):
         """
-        Reads the hotlist from memory and merges any potential duplicates.
+        Reads the product reconciliation list from memory and merges any potential duplicates.
         """
-        self.command.stdout.write(self.command.style.SQL_FIELD("--- Reconciling duplicate products from memory hotlist ---"))
+        self.command.stdout.write(self.command.style.SQL_FIELD("--- Reconciling duplicate products from memory ---"))
         
-        hotlist = self.new_hotlist_entries
-        if not hotlist:
-            self.command.stdout.write("Hotlist is empty. No duplicates to process.")
+        product_reconciliation_list = self.product_reconciliation_list
+        if not product_reconciliation_list:
+            self.command.stdout.write("Product reconciliation list is empty. No duplicates to process.")
             return
 
-        duplicates_to_merge = self._find_duplicates_from_hotlist(hotlist)
+        duplicates_to_merge = self._find_product_duplicates(product_reconciliation_list)
         
         if not duplicates_to_merge:
             self.command.stdout.write("No valid duplicate pairs found to merge.")
@@ -83,12 +83,12 @@ class VariationManager:
             for item in duplicates_to_merge:
                 self._merge_products(item['canonical'], item['duplicate'])
         
-        # Clear the in-memory hotlist for the next file
-        self.new_hotlist_entries.clear()
+        # Clear the in-memory list for the next file
+        self.product_reconciliation_list.clear()
 
-    def _find_duplicates_from_hotlist(self, hotlist):
+    def _find_product_duplicates(self, product_reconciliation_list):
         duplicates_to_merge = []
-        for item in hotlist:
+        for item in product_reconciliation_list:
             try:
                 duplicate_product = Product.objects.get(name=item['new_variation'])
                 canonical_product = Product.objects.get(name=item['canonical_name'])
@@ -143,12 +143,12 @@ class VariationManager:
 
     def reconcile_brand_duplicates(self):
         """
-        Reads the brand hotlist from memory and merges any potential duplicates.
+        Reads the brand reconciliation list from memory and merges any potential duplicates.
         """
-        self.command.stdout.write(self.command.style.SQL_FIELD("--- Reconciling duplicate brands from memory hotlist ---"))
+        self.command.stdout.write(self.command.style.SQL_FIELD("--- Reconciling duplicate brands from memory ---"))
         
         if not self.brand_reconciliation_list:
-            self.command.stdout.write("Brand hotlist is empty. No duplicates to process.")
+            self.command.stdout.write("Brand reconciliation list is empty. No duplicates to process.")
             return
 
         self.command.stdout.write(f"Found {len(self.brand_reconciliation_list)} potential brand duplicates to merge.")
@@ -194,5 +194,5 @@ class VariationManager:
                 self.command.stderr.write(f"Error merging brand '{duplicate_name}': {e}")
                 continue
         
-        # Clear the in-memory hotlist
+        # Clear the in-memory list
         self.brand_reconciliation_list.clear()
