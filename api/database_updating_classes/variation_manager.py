@@ -190,7 +190,13 @@ class VariationManager:
                     self.command.stdout.write(f"  - Merged brand '{duplicate_name}' into '{canonical_name}'.")
 
             except ProductBrand.DoesNotExist:
-                self.command.stderr.write(f"Could not find brand for reconciliation: '{canonical_name}' or '{duplicate_name}'. Skipping.")
+                # This can happen if a brand is both a canonical and a duplicate in the same run,
+                # and the duplicate gets deleted before its own merge operation runs.
+                # We check if the duplicate brand still exists. If not, we can safely skip.
+                if not ProductBrand.objects.filter(name=duplicate_name).exists():
+                    self.command.stdout.write(f"  - Skipping merge for '{duplicate_name}' as it has already been merged in this run.")
+                else:
+                    self.command.stderr.write(f"Could not find canonical brand '{canonical_name}' for merge. Skipping.")
                 continue
             except Exception as e:
                 self.command.stderr.write(f"Error merging brand '{duplicate_name}': {e}")
