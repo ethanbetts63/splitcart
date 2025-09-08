@@ -4,6 +4,7 @@ from django.core.management.base import BaseCommand
 from api.utils.database_updating_utils.update_stores_from_discovery import update_stores_from_discovery
 from api.database_updating_classes.update_orchestrator import UpdateOrchestrator
 from api.database_updating_classes.archive_update_orchestrator import ArchiveUpdateOrchestrator
+from api.database_updating_classes.prefix_update_orchestrator import PrefixUpdateOrchestrator
 
 class Command(BaseCommand):
     help = 'Updates the database with data from various sources.'
@@ -11,6 +12,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--stores', action='store_true', help='Update stores from the discovered_stores directory.')
         parser.add_argument('--products', action='store_true', help='Update products from the product_inbox directory.')
+        parser.add_argument('--prefixes', action='store_true', help='Update brand prefixes from the prefix_inbox directory.')
         parser.add_argument(
             '--archive', 
             nargs='*',
@@ -20,11 +22,16 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         run_stores_discovery = options['stores']
         run_products_processed = options['products']
+        run_prefixes = options['prefixes']
         archive_options = options['archive']
 
-        if not any([run_stores_discovery, run_products_processed, archive_options is not None]):
+        if not any([run_stores_discovery, run_products_processed, run_prefixes, archive_options is not None]):
             run_stores_discovery = True
             run_products_processed = True
+
+        if run_prefixes:
+            orchestrator = PrefixUpdateOrchestrator(self)
+            orchestrator.run()
 
         if archive_options is not None:
             run_all_archives = len(archive_options) == 0
