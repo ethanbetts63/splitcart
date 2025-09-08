@@ -3,60 +3,63 @@ from products.models import ProductBrand
 class BrandManager:
     """
     Manages the creation of new ProductBrand objects during a database update.
-    It ensures that only genuinely new brands are created, avoiding duplicates.
+    It collects all brands from a file, de-duplicates them, and creates new ones
+    in a single, efficient batch.
     """
     def __init__(self, command):
         self.command = command
-        self.new_brands_cache = set()
-        self.brands_to_create = []
-        self._build_cache()
-
-    def _build_cache(self):
-        """
-        Builds an in-memory cache of all existing normalized brand names for fast lookups.
-        """
-        self.command.stdout.write("--- Building BrandManager cache ---")
-        self.existing_brands_cache = set(ProductBrand.objects.values_list('normalized_name', flat=True))
-        self.command.stdout.write(f"  - Cached {len(self.existing_brands_cache)} existing brands.")
+        # Use a dict to store the original name, de-duplicating by normalized name.
+        # Format: {normalized_name: original_name}
+        self.processed_brands = {}
 
     def process_brand(self, brand_name: str, normalized_brand_name: str):
         """
-        Processes a brand name from a product. If the brand is new (based on its
-        normalized name), it's queued for creation using its original name.
+        Collects a brand from a product, preparing it for batch creation.
+        The first-seen original name for a given normalized name is preserved.
         """
         if not brand_name or not normalized_brand_name:
             return
-
-        # Check against cache of normalized names
-        if normalized_brand_name in self.existing_brands_cache:
-            return
         
-        if normalized_brand_name in self.new_brands_cache:
-            return
-
-        # If we get here, it's a genuinely new brand.
-        self.command.stdout.write(f"  - Discovered new brand for creation: '{brand_name}' (Normalized: '{normalized_brand_name}')")
-        # Create the object with the original, prettier name.
-        # The model's save() method will handle creating the normalized_name field.
-        new_brand = ProductBrand(name=brand_name)
-        self.brands_to_create.append(new_brand)
-        self.new_brands_cache.add(normalized_brand_name)
-        self.existing_brands_cache.add(normalized_brand_name)
+        # If we see a normalized name again, we don't overwrite it.
+        # This keeps the first-seen original name as the canonical one for this batch.
+        if normalized_brand_name not in self.processed_brands:
+            self.processed_brands[normalized_brand_name] = brand_name
 
     def commit(self):
         """
-        Commits all the new brands to the database in a single batch.
+        Finds all genuinely new brands from the ones collected and commits them
+        to the database in a single, efficient bulk_create operation.
         """
-        if not self.brands_to_create:
-            self.command.stdout.write("  - No new brands to create.")
+        if not self.processed_brands:
+            self.command.stdout.write("  - No brand information to process.")
             return
-        
-        created_count = 0
-        for brand in self.brands_to_create:
-            try:
-                brand.save()
-                created_count += 1
-            except Exception as e:
-                self.command.stderr.write(self.command.style.ERROR(f"Could not save brand '{brand.name}': {e}"))
 
-        self.command.stdout.write(self.command.style.SUCCESS(f"  - Successfully created {created_count} new brands."))
+        all_normalized_names = self.processed_brands.keys()
+
+        # Find which brands from this batch already exist in the DB
+        existing_brands = set(
+            ProductBrand.objects.filter(
+                normalized_name__in=all_normalized_names
+            ).values_list('normalized_name', flat=True)
+        )
+
+        # Determine which brands are truly new by set difference
+        new_normalized_names = all_normalized_names - existing_brands
+
+        if not new_normalized_names:
+            self.command.stdout.write("  - All processed brands already exist in the database.")
+            return
+
+        # Create new ProductBrand objects for the new names
+        brands_to_create = []
+        for normalized_name in new_normalized_names:
+            original_name = self.processed_brands[normalized_name]
+            brands_to_create.append(ProductBrand(name=original_name))
+
+        try:
+            # Create all new brands in a single database call
+            ProductBrand.objects.bulk_create(brands_to_create)
+            self.command.stdout.write(self.command.style.SUCCESS(f"  - Successfully created {len(brands_to_create)} new brands."))
+        except Exception as e:
+            # This might catch errors during the model's clean() method if bulk_create is complex
+            self.command.stderr.write(self.command.style.ERROR(f"Could not bulk create brands: {e}"))
