@@ -3,6 +3,7 @@ from datetime import datetime
 from api.utils.product_normalizer import ProductNormalizer
 from api.utils.price_normalizer import PriceNormalizer
 from .wrap_cleaned_products import wrap_cleaned_products
+from products.models import ProductBrand
 
 class BaseDataCleaner(ABC):
     """
@@ -19,6 +20,16 @@ class BaseDataCleaner(ABC):
         self.timestamp = timestamp
         self.cleaned_products = []
         self.final_products = []
+        self.brand_cache = self._build_brand_cache()
+
+    def _build_brand_cache(self):
+        """Builds a cache of brand data for the normalizer to use."""
+        brand_cache = {}
+        for brand in ProductBrand.objects.all():
+            brand_cache[brand.name] = {
+                'name_variations': brand.name_variations
+            }
+        return brand_cache
 
     @property
     @abstractmethod
@@ -89,8 +100,11 @@ class BaseDataCleaner(ABC):
         """
         Performs generic normalization on a cleaned product.
         """
-        normalizer = ProductNormalizer(product)
-        product['normalized_brand'] = normalizer.cleaned_brand
+        normalizer = ProductNormalizer(product, self.brand_cache)
+        # Overwrite the brand with the canonical version
+        product['brand'] = normalizer.cleaned_brand
+        # Add the new normalized brand key
+        product['normalized_brand'] = normalizer.get_normalized_brand_key()
         product['sizes'] = normalizer.get_raw_sizes()
         product['normalized_name_brand_size'] = normalizer.get_normalized_string()
         if 'barcode' in product and product.get('barcode'):

@@ -27,18 +27,20 @@ class ProductNormalizer:
     This class takes raw product data, processes it through a pipeline of cleaning
     and standardization methods, and provides clean, normalized outputs.
     """
-    def __init__(self, product_data):
+    def __init__(self, product_data, brand_cache=None):
         """
         Initializes the normalizer with raw product data.
 
         Args:
             product_data (dict): A dictionary containing product info like 'name', 'brand', etc.
+            brand_cache (dict): A cache of brand information, including name variations.
         """
         self.name = str(product_data.get('name', ''))
         self.brand = str(product_data.get('brand', ''))
         self.size = str(product_data.get('size', ''))
         self.barcode = product_data.get('barcode')
         self.sku = product_data.get('sku')
+        self.brand_cache = brand_cache if brand_cache is not None else {}
         
         # Immediately process the data to populate internal state
         self.raw_sizes = self._extract_all_sizes()
@@ -148,25 +150,38 @@ class ProductNormalizer:
         return cleaned_brand
 
     def _get_cleaned_name(self) -> str:
-        # Step 1: The name to be cleaned is the raw name from the product.
         name_to_clean = self.name
+        canonical_brand = self.cleaned_brand
 
-        # Step 2: Remove cleaned brand from name using word boundaries
-        brand_to_remove = self.cleaned_brand
-        if brand_to_remove:
-            name_to_clean = re.sub(r'\b' + re.escape(brand_to_remove) + r'\b', '', name_to_clean, flags=re.IGNORECASE).strip()
+        if not canonical_brand:
+            return name_to_clean
+
+        # Compile a list of all possible brand variations to remove.
+        brand_details = self.brand_cache.get(canonical_brand, {})
+        variations = brand_details.get('name_variations', [])
         
-        # Step 3: Remove all identified size strings from the name
+        # Also include the canonical name itself and the original raw brand string.
+        strings_to_remove = [canonical_brand, self.brand] + variations
+        
+        # Remove duplicates and None/empty strings, sort by length descending.
+        unique_strings_to_remove = sorted(list(set(s for s in strings_to_remove if s)), key=len, reverse=True)
+
+        # Find the first variation that exists in the name and remove it.
+        for s in unique_strings_to_remove:
+            pattern = r'(\b' + re.escape(s) + r'\b)'
+            if re.search(pattern, name_to_clean, re.IGNORECASE):
+                name_to_clean = re.sub(pattern, '', name_to_clean, flags=re.IGNORECASE).strip()
+                break
+        
+        # Final cleanup of extra spaces and size strings.
         if self.raw_sizes:
             for s in self.raw_sizes:
                 name_to_clean = re.sub(re.escape(s), '', name_to_clean, flags=re.IGNORECASE).strip()
 
-        # Step 4: A more general regex to remove any remaining size-like patterns
         units = ['g', 'gram', 'grams', 'kg', 'kilogram', 'kilograms', 'ml', 'millilitre', 'millilitres', 'l', 'litre', 'litres', 'pk', 'pack', 'each', 'ea']
         size_pattern = r'\b\d+\.?\d*\s*(' + '|'.join(units) + r')s?\b'
         name_to_clean = re.sub(size_pattern, '', name_to_clean, flags=re.IGNORECASE)
         
-        # Step 5: Clean up extra spaces that might be left after removal
         name_to_clean = re.sub(r'\s+', ' ', name_to_clean).strip()
         return name_to_clean
 
@@ -220,6 +235,13 @@ class ProductNormalizer:
     def get_raw_sizes(self) -> list:
         """ Public method to get the originally extracted, unique size strings. """
         return self.raw_sizes
+
+    def get_normalized_brand_key(self) -> str:
+        """
+        Returns a fully normalized version of the cleaned (canonical) brand name.
+        This is suitable for use as a unique key.
+        """
+        return self._clean_value(self.cleaned_brand)
 
     def get_normalized_string(self) -> str:
         """ 
