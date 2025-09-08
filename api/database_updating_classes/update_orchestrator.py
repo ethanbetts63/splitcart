@@ -2,10 +2,11 @@ import os
 import json
 from products.models import Product
 from companies.models import Company, Store
-from .product_resolver import ProductResolver
-from .unit_of_work import UnitOfWork
-from .variation_manager import VariationManager
-from .translation_table_generator import TranslationTableGenerator
+from api.database_updating_classes.product_resolver import ProductResolver
+from api.database_updating_classes.unit_of_work import UnitOfWork
+from api.database_updating_classes.variation_manager import VariationManager
+from api.database_updating_classes.translation_table_generator import TranslationTableGenerator
+from api.database_updating_classes.brand_manager import BrandManager
 
 class UpdateOrchestrator:
     def __init__(self, command, inbox_path):
@@ -50,15 +51,15 @@ class UpdateOrchestrator:
             resolver = ProductResolver(self.command, company_obj, store_obj)
             unit_of_work = UnitOfWork(self.command)
             variation_manager = VariationManager(self.command, unit_of_work)
+            brand_manager = BrandManager(self.command)
 
-            product_cache = self._process_consolidated_data(consolidated_data, resolver, unit_of_work, variation_manager, store_obj)
+            product_cache = self._process_consolidated_data(consolidated_data, resolver, unit_of_work, variation_manager, brand_manager, store_obj)
             
+            brand_manager.commit()
+
             if unit_of_work.commit(consolidated_data, product_cache, resolver, store_obj):
                 self.processed_files.append(file_path)
-                # Reconcile duplicates from memory immediately after a successful commit
-                # variation_manager.reconcile_duplicates()
 
-        
         translator_generator = TranslationTableGenerator(self.command)
         translator_generator.generate()
         self._cleanup_processed_files()
@@ -91,7 +92,7 @@ class UpdateOrchestrator:
         self.command.stdout.write(f"  - Consolidated into {len(consolidated_data)} unique products.")
         return consolidated_data
 
-    def _process_consolidated_data(self, consolidated_data, resolver, unit_of_work, variation_manager, store_obj):
+    def _process_consolidated_data(self, consolidated_data, resolver, unit_of_work, variation_manager, brand_manager, store_obj):
         product_cache = {}
         total = len(consolidated_data)
         for i, (key, data) in enumerate(consolidated_data.items()):
@@ -100,39 +101,36 @@ class UpdateOrchestrator:
             metadata = data['metadata']
             company_name = metadata.get('company', '')
 
+            brand_manager.process_brand(product_details.get('brand'))
+
             existing_product = resolver.find_match(product_details, [])
 
             if existing_product:
                 product_cache[key] = existing_product
                 variation_manager.check_for_variation(product_details, existing_product, company_name)
 
-                # --- Enrich existing product --- 
+                # --- Enrich existing product ---
                 updated = False
-                # Barcode
                 if not existing_product.barcode and product_details.get('barcode'):
                     existing_product.barcode = product_details.get('barcode')
                     updated = True
-                # URLs
                 if not existing_product.url and product_details.get('url'):
                     existing_product.url = product_details.get('url')
                     updated = True
                 if not existing_product.image_url and product_details.get('image_url_main'):
                     existing_product.image_url = product_details.get('image_url_main')
                     updated = True
-                # Description (prefer shorter)
                 new_description = product_details.get('description_long') or product_details.get('description_short')
                 if new_description:
                     if not existing_product.description or len(new_description) < len(existing_product.description):
                         existing_product.description = new_description
                         updated = True
-                # Other text fields
                 if not existing_product.country_of_origin and product_details.get('country_of_origin'):
                     existing_product.country_of_origin = product_details.get('country_of_origin')
                     updated = True
                 if not existing_product.ingredients and product_details.get('ingredients'):
                     existing_product.ingredients = product_details.get('ingredients')
                     updated = True
-                # Coles-specific flag
                 if company_name.lower() == 'coles' and not product_details.get('barcode') and not existing_product.has_no_coles_barcode:
                     existing_product.has_no_coles_barcode = True
                     updated = True
@@ -167,7 +165,6 @@ class UpdateOrchestrator:
         self.command.stdout.write("--- Moving processed inbox files to temp storage ---")
         temp_storage_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'temp_product_storage')
         
-        # Ensure the destination directory exists
         os.makedirs(temp_storage_path, exist_ok=True)
 
         for file_path in self.processed_files:
