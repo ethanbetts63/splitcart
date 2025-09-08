@@ -194,7 +194,7 @@ class VariationManager:
                 # and the duplicate gets deleted before its own merge operation runs.
                 # We check if the duplicate brand still exists. If not, we can safely skip.
                 if not ProductBrand.objects.filter(name=duplicate_name).exists():
-                    self.command.stdout.write(f"  - Skipping merge for '{duplicate_name}' as it has already been merged in this run.")
+                    pass
                 else:
                     self.command.stderr.write(f"Could not find canonical brand '{canonical_name}' for merge. Skipping.")
                 continue
