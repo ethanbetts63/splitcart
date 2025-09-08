@@ -47,7 +47,9 @@ class VariationManager:
             product_hotlist_entry = {
                 'new_variation': cleaned_incoming_name,
                 'canonical_name': existing_name,
-                'barcode': barcode
+                'barcode': barcode,
+                'canonical_normalized_string': existing_product.normalized_name_brand_size,
+                'duplicate_normalized_string': incoming_product_details.get('normalized_name_brand_size')
             }
             self.product_reconciliation_list.append(product_hotlist_entry)
 
