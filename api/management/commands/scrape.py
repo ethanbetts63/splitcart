@@ -10,6 +10,8 @@ from api.scrapers.product_scraper_iga import IgaScraper as ProductScraperIga
 from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
 from api.utils.scraper_utils.get_coles_categories import get_coles_categories
 from api.scrapers.gs1_company_scraper import Gs1CompanyScraper
+from products.models import BrandPrefix, Product
+import time
 
 class Command(BaseCommand):
     help = 'Runs the scrapers for the specified companies.'
@@ -115,7 +117,47 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('Scraping complete.'))
 
         if options['gs1']:
-            self.stdout.write(self.style.SQL_FIELD('--- Running GS1 Company Prefix Scraper Test ---'))
-            test_barcode = "9421907143040"
-            scraper = Gs1CompanyScraper(self)
-            scraper.run(test_barcode)
+            self.stdout.write(self.style.SUCCESS('--- Running GS1 Strategic Scraper ---'))
+            
+            for i in range(30):
+                self.stdout.write(self.style.HTTP_INFO(f"--- Scrape Attempt {i + 1}/30 ---"))
+
+                best_candidate = BrandPrefix.objects.filter(
+                    confirmed_official_prefix__isnull=True
+                ).select_related('brand').order_by('-product_count').first()
+
+                if not best_candidate:
+                    self.stdout.write(self.style.SUCCESS("No more unverified brands with product data to scrape. Ending run."))
+                    break
+                
+                target_brand = best_candidate.brand
+                self.stdout.write(f"Selected brand: {target_brand.name} ({best_candidate.product_count} products)")
+
+                product_with_barcode = Product.objects.filter(
+                    brand=target_brand.name
+                ).exclude(barcode__isnull=True).exclude(barcode__exact='').first()
+
+                if not product_with_barcode:
+                    self.stdout.write(self.style.WARNING(f"Brand {target_brand.name} has no products with barcodes. Marking as unscrapable for now."))
+                    best_candidate.confirmed_official_prefix = "NO_BARCODE_FOUND"
+                    best_candidate.save()
+                    continue
+
+                scraper = Gs1CompanyScraper(self)
+                result = scraper.run(product_with_barcode.barcode)
+
+                if result and result.get('license_key'):
+                    self.stdout.write(self.style.SUCCESS(f"Successfully scraped {target_brand.name}."))
+                    best_candidate.confirmed_official_prefix = result['license_key']
+                    best_candidate.brand_name_gs1 = result['company_name']
+                    best_candidate.save()
+                else:
+                    self.stdout.write(self.style.ERROR(f"Scrape failed for {target_brand.name}."))
+                    best_candidate.confirmed_official_prefix = "SCRAPE_FAILED"
+                    best_candidate.save()
+
+                if i < 29: # Don't sleep after the last one
+                    self.stdout.write("Waiting 5 seconds before next scrape...")
+                    time.sleep(5)
+            
+            self.stdout.write(self.style.SUCCESS('--- GS1 Strategic Scraper Run Complete ---'))
