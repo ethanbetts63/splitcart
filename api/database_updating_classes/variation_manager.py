@@ -1,5 +1,5 @@
 from django.db import transaction
-from products.models import Product, Price
+from products.models import Product, Price, ProductBrand
 
 class VariationManager:
     """
@@ -16,13 +16,13 @@ class VariationManager:
         if not barcode or barcode == 'notfound':
             return
 
+        # --- Handle Name Variations ---
         incoming_name = incoming_product_details.get('name', '')
         existing_name = existing_product.name
         cleaned_incoming_name = str(incoming_name).strip()
 
         if cleaned_incoming_name and existing_name and cleaned_incoming_name.lower() != existing_name.lower():
             updated = False
-            # Handle name_variations (human-readable)
             if not existing_product.name_variations:
                 existing_product.name_variations = []
             
@@ -31,7 +31,6 @@ class VariationManager:
                 existing_product.name_variations.append(new_variation_entry)
                 updated = True
 
-            # Handle normalized_name_brand_size_variations (for machine reconciliation)
             variation_normalized_string = incoming_product_details.get('normalized_name_brand_size')
             if variation_normalized_string:
                 if not existing_product.normalized_name_brand_size_variations:
@@ -50,6 +49,27 @@ class VariationManager:
                 'barcode': barcode
             }
             self.new_hotlist_entries.append(hotlist_entry)
+
+        # --- Handle Brand Variations ---
+        incoming_brand = incoming_product_details.get('brand')
+        canonical_brand_name = existing_product.brand
+
+        if incoming_brand and canonical_brand_name and incoming_brand.lower() != canonical_brand_name.lower():
+            try:
+                product_brand = ProductBrand.objects.get(name=canonical_brand_name)
+                
+                if not product_brand.name_variations:
+                    product_brand.name_variations = []
+
+                if incoming_brand not in product_brand.name_variations:
+                    product_brand.name_variations.append(incoming_brand)
+                    product_brand.save()
+                    self.command.stdout.write(f"\n  - Captured new brand variation for '{canonical_brand_name}': '{incoming_brand}'")
+
+            except ProductBrand.DoesNotExist:
+                self.command.stderr.write(f"\nCould not find ProductBrand entry for '{canonical_brand_name}' to save variation.")
+            except Exception as e:
+                self.command.stderr.write(f"\nError saving brand variation for '{canonical_brand_name}': {e}")
 
     def reconcile_duplicates(self):
         """
