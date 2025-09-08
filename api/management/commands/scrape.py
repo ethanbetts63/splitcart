@@ -120,18 +120,14 @@ class Command(BaseCommand):
         if options['gs1']:
             self.stdout.write(self.style.SUCCESS('--- Running GS1 Strategic Scraper to Inbox ---'))
             
-            # Setup inbox file
+            # --- Setup --- 
             inbox_dir = os.path.join(settings.BASE_DIR, 'api', 'data', 'prefix_inbox')
             os.makedirs(inbox_dir, exist_ok=True)
             timestamp = timezone.now().strftime('%Y-%m-%d_%H-%M-%S')
             output_file = os.path.join(inbox_dir, f'gs1_results_{timestamp}.jsonl')
             self.stdout.write(f"Saving results to: {output_file}")
 
-            scraper = Gs1CompanyScraper(self)
-            successful_scrapes = 0
-            brands_attempted_this_run = set()
-
-            # 1. Get all ProductBrands and their counts, sort them once.
+            # --- Prioritize Brands --- 
             self.stdout.write("Calculating product counts for all brands to determine priority...")
             all_brands = ProductBrand.objects.all()
             brand_counts = []
@@ -143,17 +139,27 @@ class Command(BaseCommand):
             sorted_brands = sorted(brand_counts, key=lambda x: x['count'], reverse=True)
             self.stdout.write(f"Prioritized a list of {len(sorted_brands)} brands.")
 
-            # 2. Main scraping loop
-            for i in range(2):
-                if successful_scrapes >= 30: break
+            # --- Initialize Scraper Session (ONCE) --- 
+            scraper = Gs1CompanyScraper(self)
+            first_product_for_session = Product.objects.exclude(barcode__isnull=True).exclude(barcode__exact='').first()
+            if not first_product_for_session:
+                self.stdout.write(self.style.ERROR("No products with barcodes found in the database. Cannot initialize GS1 session."))
+                return
 
-                # 3. Find the next target from the sorted list
+            if not scraper.initialize_session(first_product_for_session.barcode):
+                self.stdout.write(self.style.ERROR("Failed to initialize GS1 session. Aborting scrape."))
+                return
+
+            # --- Main Scraping Loop --- 
+            successful_scrapes = 0
+            brands_attempted_this_run = set()
+            for i in range(30): # Max 30 scrapes per run
+                # Find the next target brand
                 target_brand = None
                 for brand_info in sorted_brands:
                     brand_obj = brand_info['brand']
                     if brand_obj.id in brands_attempted_this_run:
                         continue
-
                     try:
                         prefix_analysis = brand_obj.prefix_analysis
                         if prefix_analysis.confirmed_official_prefix:
@@ -161,7 +167,6 @@ class Command(BaseCommand):
                             continue
                     except BrandPrefix.DoesNotExist:
                         pass
-                    
                     target_brand = brand_obj
                     break
 
@@ -169,9 +174,8 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.SUCCESS("No more unverified brands to scrape. Ending run."))
                     break
 
-                # 4. Process the target brand
                 brands_attempted_this_run.add(target_brand.id)
-                self.stdout.write(f"--- Scrape Attempt {i + 1}/30 ---")
+                self.stdout.write(f"--- Scrape Attempt {successful_scrapes + 1}/30 ---")
                 self.stdout.write(f"Selected brand: {target_brand.name}")
 
                 product_with_barcode = Product.objects.filter(
@@ -182,19 +186,30 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.WARNING(f"Brand {target_brand.name} has no products with barcodes. Skipping."))
                     continue
 
-                # 5. Run scraper
-                success = scraper.run(
-                    barcode=product_with_barcode.barcode,
-                    target_brand=target_brand,
-                    output_file=output_file
-                )
+                # Run the lightweight scrape
+                result = scraper.scrape_barcode(product_with_barcode.barcode)
 
-                if success:
+                if result and result.get('license_key'):
+                    self.stdout.write(self.command.style.SUCCESS(f"Successfully scraped {target_brand.name}."))
+                    output_record = {
+                        'scraped_at': timezone.now().isoformat(),
+                        'target_brand_id': target_brand.id,
+                        'target_brand_name': target_brand.name,
+                        'scraped_barcode': product_with_barcode.barcode,
+                        'confirmed_license_key': result['license_key'],
+                        'confirmed_company_name': result['company_name'],
+                    }
+                    with open(output_file, 'a', encoding='utf-8') as f:
+                        f.write(json.dumps(output_record) + '\n')
                     successful_scrapes += 1
+                else:
+                    self.stderr.write(self.command.style.ERROR(f"Scrape failed for {target_brand.name}."))
 
-                # 6. Wait
-                if successful_scrapes < 30:
-                    self.stdout.write("Waiting 5 seconds before next scrape...")
-                    time.sleep(5)
+                if successful_scrapes >= 30:
+                    break
+
+                # Wait before next scrape
+                self.stdout.write("Waiting 5 seconds before next scrape...")
+                time.sleep(5)
             
             self.stdout.write(self.style.SUCCESS(f'--- GS1 Scraper Run Complete. {successful_scrapes} new records saved to inbox. ---'))
