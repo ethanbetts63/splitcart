@@ -55,12 +55,7 @@ Finally, we significantly improved the accuracy of the data cleaning process.
 
 ### TO-DO LIST
 
-1.  **Run the full data pipeline** from a fresh start:
-    - `python manage.py scrape --coles` (or another store) to populate the `product_inbox`.
-    - `python manage.py update_db --products` to process the inbox, which will now also create the `ProductBrand` records and capture brand variations.
-
-2.  **Run the prefix analysis:**
-    - `python manage.py analyze_prefixes` to populate the `BrandPrefix` table with our best-guess inferred data.
+2. build the update_db --prefix argument. 
 
 3.  **Run the strategic GS1 scraper:**
     - `python manage.py scrape --gs1` to scrape the highest-priority brands and save the confirmed results to the `prefix_inbox`.
@@ -68,5 +63,15 @@ Finally, we significantly improved the accuracy of the data cleaning process.
 4.  **Create the final database updater:**
     - Build a new command (e.g., `update_db --prefixes`) that reads from the `prefix_inbox` and updates the `confirmed_official_prefix` and `brand_name_gs1` fields in the `BrandPrefix` table.
 
-5.  **Create a reconciliation/cleanup tool:**
-    - Build a final command that uses the completed `BrandPrefix` table (both inferred and confirmed data) to find and fix brand name inconsistencies across the `Product` table.
+6.  **Implement Brand Reconciliation:**
+    -   **Why:** Just like products, brand names can have variations (e.g., "Arnott's" vs "Arnotts") that might lead to duplicate `ProductBrand` entries in the database. While our `BrandManager` prevents most new duplicates, existing ones or those created by other means might still exist. This feature ensures our `ProductBrand` table remains clean and canonical.
+    -   **How:**
+        1.  **Detect Potential Duplicates:** When the `VariationManager` (in `check_for_variation`) discovers that an `incoming_brand` is a variation of an `existing_product.brand` (and thus, its canonical `ProductBrand`), it should flag this as a potential brand merge.
+        2.  **Queue for Reconciliation:** Instead of directly saving the `ProductBrand` (as we currently do), it should add this potential merge (e.g., `{'canonical_brand_name': 'Arnott\'s', 'duplicate_brand_name': 'Arnotts'}`) to a new in-memory list within the `VariationManager` (similar to `new_hotlist_entries`).
+        3.  **Process at End of File:** After the main `UnitOfWork.commit()` for products and prices, the `UpdateOrchestrator` should call a new method on the `VariationManager` (e.g., `reconcile_brand_duplicates`).
+        4.  **Merge Logic:** This new method would:
+            -   Iterate through the queued brand merges.
+            -   For each pair, fetch the `ProductBrand` objects for the canonical and duplicate names.
+            -   **Crucially:** Update all `Product` records that currently point to the `duplicate_brand.name` to instead point to the `canonical_brand.name`. This is the most complex part, as `Product.brand` is a `CharField`. This means we would need to update the `brand` field on all affected `Product` objects.
+            -   Move any `name_variations` from the duplicate `ProductBrand` to the canonical `ProductBrand`.
+            -   Delete the `duplicate_brand` record.
