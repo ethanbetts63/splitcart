@@ -157,6 +157,7 @@ class UpdateOrchestrator:
             else:
                 new_product = Product(
                     name=product_details.get('name', ''),
+                    normalized_name=product_details.get('normalized_name'),
                     brand=product_details.get('brand'),
                     barcode=product_details.get('barcode'),
                     normalized_name_brand_size=key,
