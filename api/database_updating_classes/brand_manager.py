@@ -2,71 +2,65 @@ from products.models import ProductBrand
 
 class BrandManager:
     """
-    Manages the creation of new ProductBrand objects during a database update.
-    It collects all brands from a file, de-duplicates them, and creates new ones
-    in a single, efficient batch.
+    Manages the creation of and updates to ProductBrand objects during a database update.
+    It uses a cache to be efficient and handles the logic for consolidating brand name variations.
     """
     def __init__(self, command):
         self.command = command
-        # Use a dict to store the original name, de-duplicating by normalized name.
-        # Format: {normalized_name: original_name}
-        self.processed_brands = {}
+        # In-memory cache to hold brand objects for the duration of a file-processing run.
+        # Format: {normalized_name: brand_obj}
+        self.brand_cache = {}
+        # A set of brand objects whose name_variations list has been modified.
+        self.brands_to_update = set()
 
     def process_brand(self, brand_name: str, normalized_brand_name: str):
         """
-        Collects a brand from a product, preparing it for batch creation.
-        The first-seen original name for a given normalized name is preserved.
+        Processes a single brand from a product record. It uses a cache to avoid
+        repeated database queries for the same brand within a single file.
+        It finds or creates the canonical brand based on the normalized name and
+        queues up any new name variations to be saved later.
         """
         if not brand_name or not normalized_brand_name:
             return
-        
-        # If we see a normalized name again, we don't overwrite it.
-        # This keeps the first-seen original name as the canonical one for this batch.
-        if normalized_brand_name not in self.processed_brands:
-            self.processed_brands[normalized_brand_name] = brand_name
+
+        # Check the local cache first to minimize DB hits.
+        if normalized_brand_name in self.brand_cache:
+            brand = self.brand_cache[normalized_brand_name]
+        else:
+            # If not in cache, get or create the brand from the database.
+            # The normalized_name is the unique key.
+            brand, created = ProductBrand.objects.get_or_create(
+                normalized_name=normalized_brand_name,
+                defaults={'name': brand_name}
+            )
+            self.brand_cache[normalized_brand_name] = brand
+            if created:
+                self.command.stdout.write(f"  - Created new canonical brand: '{brand_name}' (normalized: '{normalized_brand_name}')")
+
+        # --- Variation Management ---
+        # Ensure the name_variations field is a list.
+        if not isinstance(brand.name_variations, list):
+            brand.name_variations = []
+            
+        # If the incoming name is different from the canonical display name and
+        # not already recorded, add it to the variations list.
+        if brand_name != brand.name and brand_name not in brand.name_variations:
+            brand.name_variations.append(brand_name)
+            # Add the brand object to a set of brands that need to be saved.
+            self.brands_to_update.add(brand)
 
     def commit(self):
         """
-        Finds all genuinely new brands from the ones collected and commits them
-        to the database in a single, efficient bulk_create operation.
+        Commits all pending changes to the database.
+        Specifically, it saves all new name variations that have been collected.
         """
-        if not self.processed_brands:
-            self.command.stdout.write("  - No brand information to process.")
+        if not self.brands_to_update:
+            self.command.stdout.write("  - No brand variations to update.")
             return
-
-        all_normalized_names = self.processed_brands.keys()
-
-        # Find which brands from this batch already exist in the DB
-        existing_brands = set(
-            ProductBrand.objects.filter(
-                normalized_name__in=all_normalized_names
-            ).values_list('normalized_name', flat=True)
-        )
-
-        # Determine which brands are truly new by set difference
-        new_normalized_names = all_normalized_names - existing_brands
-
-        if not new_normalized_names:
-            self.command.stdout.write("  - All processed brands already exist in the database.")
-            return
-
-        # Create new ProductBrand objects for the new names, ensuring the original name is unique within this batch
-        brands_to_create = []
-        names_in_batch = set()
-        for normalized_name in new_normalized_names:
-            original_name = self.processed_brands[normalized_name]
-            if original_name not in names_in_batch:
-                brands_to_create.append(ProductBrand(name=original_name, normalized_name=normalized_name))
-                names_in_batch.add(original_name)
-
-        if not brands_to_create:
-            self.command.stdout.write("  - All new brands were duplicates within the same batch. Nothing to create.")
-            return
-
-        try:
-            # Create all new brands in a single database call
-            ProductBrand.objects.bulk_create(brands_to_create)
-            self.command.stdout.write(self.command.style.SUCCESS(f"  - Successfully created {len(brands_to_create)} new brands."))
-        except Exception as e:
-            # This might catch errors during the model's clean() method if bulk_create is complex
-            self.command.stderr.write(self.command.style.ERROR(f"Could not bulk create brands: {e}"))
+            
+        # Use bulk_update to save all changes to the name_variations field in one query.
+        ProductBrand.objects.bulk_update(self.brands_to_update, ['name_variations'])
+        self.command.stdout.write(self.command.style.SUCCESS(f"  - Successfully updated {len(self.brands_to_update)} brands with new name variations."))
+        
+        # Clear the set for the next file run.
+        self.brands_to_update.clear()
