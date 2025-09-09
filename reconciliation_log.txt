@@ -426,3 +426,15 @@
   [DUPLICATE] Name: Gillette Skinguard Razor | Brand: PROCTER Y GAMBLE COLOMBIA LTDA | Size: Each
   [CANONICAL] Name: Gillette Skinguard Razor Handle + 2 Cartridges | Brand: PROCTER Y GAMBLE COLOMBIA LTDA | Size: Each
 ----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: McKenzie's Chickpea Flour | Brand: FTA FOOD SOLUTIONS PTY LTD | Size: 330g Each
+  [CANONICAL] Name: McKenzie's Chick Pea Flour Resealable | Brand: FTA FOOD SOLUTIONS PTY LTD | Size: 330g Each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Oral-B Vitality Precision Clean Electric Toothbrush | Brand: PROCTER ET GAMBLE FRANCE SAS | Size: Each
+  [CANONICAL] Name: Oral-B Pro 300 Mint Green Electric Toothbrush Mint | Brand: PROCTER ET GAMBLE FRANCE SAS | Size: Each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Gillette Skinguard Razor | Brand: PROCTER Y GAMBLE COLOMBIA LTDA | Size: Each
+  [CANONICAL] Name: Gillette Skinguard Razor Handle + 2 Cartridges | Brand: PROCTER Y GAMBLE COLOMBIA LTDA | Size: Each
+----------------------------------------------------
