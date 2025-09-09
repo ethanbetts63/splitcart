@@ -91,7 +91,7 @@ class Command(BaseCommand):
 
         for i, sub in enumerate(random_samples):
             lines.append(f"\n--- Sample {i+1}/{sample_size} (Score: {sub.score}) ---")
-            lines.append(f"  [A] {sub.product_a.name} ({sub.product_a.brand})")
-            lines.append(f"  [B] {sub.product_b.name} ({sub.product_b.brand})")
+            lines.append(f"  [A] Name: {sub.product_a.name} | Brand: {sub.product_a.brand} | Sizes: {sub.product_a.sizes}")
+            lines.append(f"  [B] Name: {sub.product_b.name} | Brand: {sub.product_b.brand} | Sizes: {sub.product_b.sizes}")
             
         return "\n".join(lines)
