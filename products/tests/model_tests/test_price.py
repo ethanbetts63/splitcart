@@ -28,10 +28,9 @@ class PriceModelTest(TestCase):
         self.assertIn("$10.5", price_str)
 
     def test_ordering(self):
-        """Test that prices are ordered by scraped_at in descending order."""
-        price1 = PriceFactory()
-        time.sleep(0.01) # Ensure scraped_at is different
-        price2 = PriceFactory()
+        """Test that prices are ordered by scraped_date in descending order."""
+        price1 = PriceFactory(scraped_date=datetime.date.today() - datetime.timedelta(days=1))
+        price2 = PriceFactory(scraped_date=datetime.date.today())
         prices = Price.objects.all()
         self.assertEqual(prices[0], price2)
         self.assertEqual(prices[1], price1)
@@ -49,5 +48,5 @@ class PriceModelTest(TestCase):
         store = StoreFactory(store_name="DefaultStore")
         price = Price.objects.create(product=product, store=store, sku="123", price=10.0, scraped_date=datetime.date.today())
         self.assertFalse(price.is_on_special)
-        self.assertTrue(price.is_available)
+        self.assertIsNone(price.is_available)
         self.assertTrue(price.is_active)
