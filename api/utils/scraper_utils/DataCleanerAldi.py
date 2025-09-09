@@ -2,6 +2,7 @@ import re
 from datetime import datetime
 from .BaseDataCleaner import BaseDataCleaner
 from .field_maps import ALDI_FIELD_MAP
+from api.utils.product_normalizer import ProductNormalizer
 
 class DataCleanerAldi(BaseDataCleaner):
     """
@@ -68,5 +69,9 @@ class DataCleanerAldi(BaseDataCleaner):
 
         # Handle availability
         cleaned_product['is_available'] = not raw_product.get('notForSale', False)
+
+        # Add normalized name for better matching
+        normalizer = ProductNormalizer(cleaned_product)
+        cleaned_product['normalized_name'] = normalizer.get_fully_normalized_name()
 
         return cleaned_product

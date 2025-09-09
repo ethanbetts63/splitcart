@@ -242,7 +242,22 @@ class ProductNormalizer:
         """
         return self._clean_value(self.cleaned_brand)
 
-    def get_normalized_name_brand_size_string(self) -> str:
+    def get_fully_normalized_name(self) -> str:
+        """
+        Returns a fully normalized version of the cleaned name, suitable for similarity matching.
+        This version is lowercased and has punctuation removed, but retains spaces.
+        """
+        value = self.cleaned_name
+        # Normalize unicode characters, remove accents, etc.
+        value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('utf-8')
+        value = value.lower()
+        # Remove all non-alphanumeric characters except for whitespace
+        value = re.sub(r'[^a-z0-9\s]', '', value)
+        # Condense multiple whitespace characters into a single space
+        value = re.sub(r'\s+', ' ', value).strip()
+        return value
+
+    def get_normalized_string(self) -> str:
         """ 
         Public method to get the final normalized string for de-duplication.
         This uses a "bag of words" approach to be robust against data entry errors.

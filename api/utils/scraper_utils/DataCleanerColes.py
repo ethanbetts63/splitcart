@@ -2,6 +2,7 @@ from datetime import datetime
 from django.utils.text import slugify
 from .BaseDataCleaner import BaseDataCleaner
 from .field_maps import COLES_FIELD_MAP
+from api.utils.product_normalizer import ProductNormalizer
 
 class DataCleanerColes(BaseDataCleaner):
     """
@@ -73,5 +74,10 @@ class DataCleanerColes(BaseDataCleaner):
         # Standardize unit price
         unit_price_info = self._get_standardized_unit_price_info(cleaned_product)
         cleaned_product.update(unit_price_info)
+
+        # Add normalized name for better matching
+        # This uses the already cleaned fields to generate the normalized name
+        normalizer = ProductNormalizer(cleaned_product)
+        cleaned_product['normalized_name'] = normalizer.get_fully_normalized_name()
 
         return cleaned_product
