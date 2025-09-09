@@ -116,6 +116,16 @@ class UpdateOrchestrator:
 
                 # --- Enrich existing product ---
                 updated = False
+
+                # Merge sizes lists
+                incoming_sizes = set(product_details.get('sizes', []))
+                if incoming_sizes:
+                    existing_sizes = set(existing_product.sizes)
+                    if not incoming_sizes.issubset(existing_sizes):
+                        combined_sizes = sorted(list(existing_sizes.union(incoming_sizes)))
+                        existing_product.sizes = combined_sizes
+                        updated = True
+
                 if not existing_product.barcode and product_details.get('barcode'):
                     existing_product.barcode = product_details.get('barcode')
                     updated = True

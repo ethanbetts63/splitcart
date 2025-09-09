@@ -45,3 +45,12 @@ Finally, we diagnosed and fixed a critical bug in the data pipeline that was pre
 - **Improving `ProductNormalizer`**: We identified that for similarity matching, we needed a new kind of normalization (lowercase, no punctuation, but with spaces preserved). I added a new `get_fully_normalized_name()` method to the `ProductNormalizer` to produce this.
 - **Updating the Data Cleaners**: I updated the data cleaner class for all four scrapers (Coles, Woolworths, Aldi, IGA) to use this new method, ensuring the `.jsonl` files are now generated with the correct `normalized_name` needed for the substitution engine.
 - **Bug Fix**: We also found and fixed an `AttributeError` in the `BaseDataCleaner` that was caused by a typo in a method name.
+
+### Part 6: Implementing Size Merging Logic
+
+We addressed a crucial data enrichment gap related to product sizes.
+
+- **Problem Diagnosis**: We identified that the `sizes` list from incoming scraped products was being discarded when a product match was found in the database. This led to data loss and missed opportunities for better substitution matching.
+- **Solution Implementation**: I implemented logic in `UpdateOrchestrator._process_consolidated_data` to intelligently merge the `sizes` list from incoming products with the `sizes` list of existing products. This combines all known size variations for a product.
+- **Database Persistence**: I ensured that the `sizes` field is correctly included in the `UnitOfWork.commit`'s `bulk_update` operation, so these merged size lists are saved to the database.
+- **Confirmation**: We confirmed that these changes are all that's needed to get the size merging working, making product size data much richer and more accurate for substitution purposes.

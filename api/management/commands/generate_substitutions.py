@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from api.utils.substitution_utils.substitution_generator import SizeSubstitutionGenerator
+from api.utils.substitution_utils.size_substitution_generator import SizeSubstitutionGenerator
 from api.utils.substitution_utils.variant_substitution_generator import VariantSubstitutionGenerator
 
 class Command(BaseCommand):
