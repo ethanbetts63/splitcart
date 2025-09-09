@@ -84,6 +84,15 @@ class Product(models.Model):
         help_text="A list of normalized strings for discovered variations."
     )
 
+    # TODO: This field should be populated with the normalized versions of the names
+    # in `name_variations` to make substitution matching more efficient.
+    # This avoids having to re-normalize them on the fly every time.
+    normalized_name_variations = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="A list of just the normalized names from the name_variations list."
+    )
+
     normalized_name_brand_size = models.CharField(
         max_length=500,
         unique=True,
