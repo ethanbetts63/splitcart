@@ -1,97 +1,97 @@
+import os
+import datetime
 from django.core.management.base import BaseCommand
-from django.db.models import Count, Q, F
+from django.db.models import Count
 from products.models import Product, ProductSubstitution
 
 class Command(BaseCommand):
-    help = 'Analyzes the quality and distribution of generated product substitutions.'
-
-    def add_arguments(self, parser):
-        parser.add_argument(
-            '--sample',
-            type=int,
-            default=0,
-            help='Display a random sample of N substitutions for manual review.'
-        )
-        parser.add_argument(
-            '--type',
-            type=str,
-            help='Filter samples by a specific type (e.g., SIZE, VARIANT).'
-        )
-        parser.add_argument(
-            '--hubs',
-            type=int,
-            default=0,
-            help='Show the top N products with the most substitution links.'
-        )
+    help = 'Analyzes product substitutions and saves the report to a file.'
 
     def handle(self, *args, **options):
-        sample_size = options['sample']
-        sub_type = options['type']
-        hub_count = options['hubs']
+        self.stdout.write(self.style.SUCCESS("--- Starting Substitution Analysis ---"))
 
-        self._show_overall_stats()
+        HUB_COUNT = 20
+        SAMPLE_SIZE = 20
 
-        if hub_count > 0:
-            self._show_hub_products(hub_count)
+        report_parts = []
+        report_parts.append(self._get_overall_stats_text())
+        report_parts.append(self._get_hub_products_text(HUB_COUNT))
 
-        if sample_size > 0:
-            self._show_random_samples(sample_size, sub_type)
+        # Get distinct substitution types from the database
+        sub_types = ProductSubstitution.objects.values_list('type', flat=True).distinct()
 
-    def _show_overall_stats(self):
-        self.stdout.write(self.style.SUCCESS("\n--- Overall Substitution Statistics ---"))
+        for sub_type in sub_types:
+            report_parts.append(self._get_random_samples_text(SAMPLE_SIZE, sub_type))
+
+        # --- File Output ---
+        report_content = "\n\n".join(report_parts)
+        
+        # Construct the path relative to the project root
+        output_dir = os.path.join('api', 'data', 'analysis', 'subs')
+        os.makedirs(output_dir, exist_ok=True)
+        
+        file_name = f"{datetime.date.today()}-subs_analysis.txt"
+        file_path = os.path.join(output_dir, file_name)
+
+        try:
+            with open(file_path, 'w', encoding='utf-8') as f:
+                f.write(report_content)
+            self.stdout.write(self.style.SUCCESS(f"\nSuccessfully wrote analysis report to: {file_path}"))
+        except IOError as e:
+            self.stderr.write(self.style.ERROR(f"Error writing to file: {e}"))
+
+    def _get_overall_stats_text(self):
+        lines = ["--- Overall Substitution Statistics ---"]
         
         total_products = Product.objects.count()
         total_substitutions = ProductSubstitution.objects.count()
 
         if total_substitutions == 0:
-            self.stdout.write("No substitutions found in the database.")
-            return
+            lines.append("No substitutions found in the database.")
+            return "\n".join(lines)
 
-        # Find the number of unique products that have at least one substitution
         products_in_subs_a = ProductSubstitution.objects.values_list('product_a_id', flat=True)
         products_in_subs_b = ProductSubstitution.objects.values_list('product_b_id', flat=True)
         products_with_subs_count = len(set(list(products_in_subs_a) + list(products_in_subs_b)))
 
-        self.stdout.write(f"- Total Products in DB: {total_products}")
-        self.stdout.write(f"- Total Substitution Links: {total_substitutions}")
-        self.stdout.write(f"- Products with at least one substitute: {products_with_subs_count} ({products_with_subs_count/total_products:.2%})")
+        lines.append(f"- Total Products in DB: {total_products}")
+        lines.append(f"- Total Substitution Links: {total_substitutions}")
+        lines.append(f"- Products with at least one substitute: {products_with_subs_count} ({products_with_subs_count/total_products:.2%})")
 
-        self.stdout.write("\n--- Substitutions by Type ---")
+        lines.append("\n--- Substitutions by Type ---")
         type_counts = ProductSubstitution.objects.values('type').annotate(count=Count('type')).order_by('-count')
         for item in type_counts:
             percentage = (item['count'] / total_substitutions) * 100
-            self.stdout.write(f"- {item['type']}: {item['count']} ({percentage:.2f}%)")
-
-    def _show_hub_products(self, hub_count):
-        self.stdout.write(self.style.SUCCESS(f"\n--- Top {hub_count} Substitution Hubs ---"))
+            lines.append(f"- {item['type']}: {item['count']} ({percentage:.2f}%)")
         
-        # Annotate products with the count of their substitution links
-        # This is a simplified approach; a more complex query could be more precise
-        # but this is a good indicator.
+        return "\n".join(lines)
+
+    def _get_hub_products_text(self, hub_count):
+        lines = [f"--- Top {hub_count} Substitution Hubs ---"]
+        
         hub_products = Product.objects.annotate(
             num_subs=Count('substitutions_a', distinct=True) + Count('substitutions_b', distinct=True)
         ).order_by('-num_subs')[:hub_count]
 
         for i, product in enumerate(hub_products):
-            self.stdout.write(f"  {i+1}. \"{product.name}\" ({product.brand}) - {product.num_subs} links")
+            lines.append(f"  {i+1}. \"{product.name}\" ({product.brand}) - {product.num_subs} links")
+        
+        return "\n".join(lines)
 
-    def _show_random_samples(self, sample_size, sub_type):
-        self.stdout.write(self.style.SUCCESS(f"\n--- Random Sample of {sample_size} Substitutions ---"))
-        if sub_type:
-            self.stdout.write(self.style.SUCCESS(f"--- (Filtered by Type: {sub_type.upper()}) ---"))
+    def _get_random_samples_text(self, sample_size, sub_type):
+        lines = [f"--- Random Sample of {sample_size} Substitutions (Type: {sub_type.upper()}) ---"]
 
-        queryset = ProductSubstitution.objects.all()
-        if sub_type:
-            queryset = queryset.filter(type__iexact=sub_type)
+        queryset = ProductSubstitution.objects.filter(type__iexact=sub_type)
 
         if queryset.count() == 0:
-            self.stdout.write(self.style.WARNING("No substitutions found matching the specified criteria."))
-            return
+            lines.append("No substitutions found for this type.")
+            return "\n".join(lines)
 
-        # Get random samples
         random_samples = queryset.order_by('?')[:sample_size]
 
         for i, sub in enumerate(random_samples):
-            self.stdout.write(f"\n--- Sample {i+1}/{sample_size} (Type: {sub.type}, Score: {sub.score}) ---")
-            self.stdout.write(f"  [A] {sub.product_a.name} ({sub.product_a.brand})")
-            self.stdout.write(f"  [B] {sub.product_b.name} ({sub.product_b.brand})")
+            lines.append(f"\n--- Sample {i+1}/{sample_size} (Score: {sub.score}) ---")
+            lines.append(f"  [A] {sub.product_a.name} ({sub.product_a.brand})")
+            lines.append(f"  [B] {sub.product_b.name} ({sub.product_b.brand})")
+            
+        return "\n".join(lines)
