@@ -73,7 +73,7 @@ class TestProductMatchingAndCreation(TestCase):
         # Add normalized strings to the test data
         for key, data in consolidated_data.items():
             normalizer = ProductNormalizer(data['product'])
-            data['product']['normalized_name_brand_size'] = normalizer.get_normalized_string()
+            data['product']['normalized_name_brand_size'] = normalizer.get_normalized_name_brand_size_string()
 
         # 2. Processing Logic (from UpdateOrchestrator._process_consolidated_data)
         for key, data in consolidated_data.items():

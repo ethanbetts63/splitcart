@@ -3,8 +3,6 @@ import unicodedata
 import json
 import os
 from api.data.analysis.brand_synonyms import BRAND_SYNONYMS
-
-# Safely import the translation table
 try:
     from api.data.product_name_translation_table import PRODUCT_NAME_TRANSLATIONS
 except (ImportError, SyntaxError):
@@ -244,7 +242,7 @@ class ProductNormalizer:
         """
         return self._clean_value(self.cleaned_brand)
 
-    def get_normalized_string(self) -> str:
+    def get_normalized_name_brand_size_string(self) -> str:
         """ 
         Public method to get the final normalized string for de-duplication.
         This uses a "bag of words" approach to be robust against data entry errors.

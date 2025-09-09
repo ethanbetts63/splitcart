@@ -27,7 +27,7 @@ class Command(BaseCommand):
         if options['brands']:
             self.get_unique_brands()
         elif options['normalized']:
-            self.get_normalized_strings()
+            self.get_normalized_name_brand_size_strings()
         elif options['barcodes']:
             self.get_unique_barcodes()
         else:
@@ -74,7 +74,7 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS(f"Successfully wrote unique brands with examples to {output_file}"))
 
-    def get_normalized_strings(self):
+    def get_normalized_name_brand_size_strings(self):
         self.stdout.write("Getting all normalized strings...")
         normalized_strings = Product.objects.values_list('normalized_name_brand_size', flat=True)
         

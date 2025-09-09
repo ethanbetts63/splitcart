@@ -106,7 +106,7 @@ class BaseDataCleaner(ABC):
         # Add the new normalized brand key
         product['normalized_brand'] = normalizer.get_normalized_brand_key()
         product['sizes'] = normalizer.get_raw_sizes()
-        product['normalized_name_brand_size'] = normalizer.get_normalized_string()
+        product['normalized_name_brand_size'] = normalizer.get_normalized_name_brand_size_string()
         if 'barcode' in product and product.get('barcode'):
              product['barcode'] = normalizer.get_cleaned_barcode()
 
