@@ -177,6 +177,5 @@ class UpdateOrchestrator:
                 file_name = os.path.basename(file_path)
                 destination_path = os.path.join(temp_storage_path, file_name)
                 os.rename(file_path, destination_path)
-                self.command.stdout.write(f"  - Moved {file_name} to temp_product_storage")
             except OSError as e:
                 self.command.stderr.write(self.command.style.ERROR(f'Could not move file {file_path}: {e}'))
