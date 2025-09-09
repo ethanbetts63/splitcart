@@ -9,8 +9,8 @@ class ProductFactory(DjangoModelFactory):
 
     name = factory.Faker('word')
     brand = factory.Faker('company')
-    sizes = factory.List([factory.Faker('word')])
-    barcode = factory.Faker('ean')
+    size = factory.Faker('word')
+    barcode = factory.Sequence(lambda n: f'123456789012{n}')
     image_url = factory.Faker('image_url')
     url = factory.Faker('url')
     description = factory.Faker('text')
@@ -23,14 +23,10 @@ class ProductFactory(DjangoModelFactory):
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
         """
-        Override the default _create method to allow for manually setting
-        the normalized_name_brand_size field, bypassing the model's clean() method.
+        Override the default _create method to ensure the model's clean() method is called.
         """
-        normalized_name_brand_size = kwargs.pop('normalized_name_brand_size', None)
-        obj = super()._create(model_class, *args, **kwargs)
-        if normalized_name_brand_size:
-            model_class.objects.filter(pk=obj.pk).update(normalized_name_brand_size=normalized_name_brand_size)
-            obj.refresh_from_db()
+        obj = model_class(*args, **kwargs)
+        obj.save()
         return obj
 
 class PriceFactory(DjangoModelFactory):

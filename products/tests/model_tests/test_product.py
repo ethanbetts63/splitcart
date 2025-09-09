@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.db.utils import IntegrityError
+from django.core.exceptions import ValidationError
 from products.models import Product
 from products.tests.test_helpers.model_factories import ProductFactory
 from companies.tests.test_helpers.model_factories import CategoryFactory
@@ -8,34 +9,33 @@ class ProductModelTest(TestCase):
 
     def test_product_creation(self):
         """Test that a product can be created with all fields."""
-        product = ProductFactory()
+        product = ProductFactory(size="100g")
         self.assertIsNotNone(product.id)
         self.assertIsNotNone(product.name)
-        self.assertIsInstance(product.sizes, list)
         self.assertTrue(len(product.sizes) > 0)
 
     def test_product_str_representation(self):
         """Test the string representation of the product."""
-        product = ProductFactory(brand="TestBrand", name="TestProduct", sizes=["100g", "200g"])
+        product = ProductFactory(brand="TestBrand", name="TestProduct", size="100g, 200g")
         self.assertEqual(str(product), "TestBrand TestProduct (100g, 200g)")
 
     def test_product_str_representation_no_sizes(self):
         """Test the string representation of the product with no sizes."""
-        product = ProductFactory(brand="TestBrand", name="TestProduct", sizes=[])
+        product = ProductFactory(brand="TestBrand", name="TestProduct", size="")
         self.assertEqual(str(product), "TestBrand TestProduct ()")
 
     def test_normalized_name_brand_size_generation(self):
         """Test that normalized_name_brand_size is generated on save."""
-        product = ProductFactory(name="Test Product", brand="Test Brand", sizes=["100g"])
+        product = ProductFactory(name="Test Product", brand="Test Brand", size="100g")
         self.assertIsNotNone(product.normalized_name_brand_size)
-        self.assertEqual(product.normalized_name_brand_size, "producttestbrandtest100g")
+        self.assertEqual(product.normalized_name_brand_size, "100gbrandproducttest")
 
     def test_unique_normalized_name_brand_size_constraint(self):
         """Test the unique constraint on normalized_name_brand_size."""
         product_info = {
             "name": "UniqueProduct",
             "brand": "UniqueBrand",
-            "sizes": ["500g"]
+            "size": "500g"
         }
         ProductFactory(**product_info)
         with self.assertRaises(IntegrityError):
@@ -54,10 +54,10 @@ class ProductModelTest(TestCase):
         product2 = ProductFactory()
         product3 = ProductFactory()
 
-        product1.substitute_goods.add(product2, product3)
-        self.assertEqual(product1.substitute_goods.count(), 2)
-        self.assertIn(product2, product1.substitute_goods.all())
-        self.assertIn(product3, product1.substitute_goods.all())
+        product1.substitutes.add(product2, product3, through_defaults={'score': 0.5})
+        self.assertEqual(product1.substitutes.count(), 2)
+        self.assertIn(product2, product1.substitutes.all())
+        self.assertIn(product3, product1.substitutes.all())
 
     def test_size_variants_relationship(self):
         """Test the many-to-many relationship for size variants."""
@@ -85,7 +85,7 @@ class ProductModelTest(TestCase):
         """Test that fields that can be null are correctly handled."""
         product = ProductFactory(
             brand=None,
-            sizes=[],
+            size="",
             barcode=None,
             image_url=None,
             url=None,
