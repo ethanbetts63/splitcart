@@ -23,12 +23,9 @@ class ProductReconciler:
             return
 
         variation_strings = list(PRODUCT_NAME_TRANSLATIONS.keys())
-        self.command.stdout.write(f"DEBUG: Variations to search for: {variation_strings}")
-        self.command.stdout.write(f"DEBUG: All products in DB: {list(Product.objects.values_list('normalized_name_brand_size', flat=True))}")
         potential_duplicates = Product.objects.filter(normalized_name_brand_size__in=variation_strings)
 
         if not potential_duplicates:
-            self.command.stdout.write("DEBUG: No potential duplicates found in DB.")
             self.command.stdout.write("No products found matching any variation strings.")
             return
 
