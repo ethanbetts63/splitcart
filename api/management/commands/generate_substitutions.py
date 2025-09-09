@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from api.utils.substitution_utils.substitution_generator import SizeSubstitutionGenerator
+from api.utils.substitution_utils.variant_substitution_generator import VariantSubstitutionGenerator
 
 class Command(BaseCommand):
     help = 'Generates product substitutions based on different heuristic levels.'
@@ -44,9 +45,11 @@ class Command(BaseCommand):
             generator = SizeSubstitutionGenerator(command=self)
             generator.generate()
         
-        # Placeholders for future generator implementations
         if lvl2:
-            self.stdout.write(self.style.WARNING("Level 2 generator is not yet implemented."))
+            generator = VariantSubstitutionGenerator(command=self)
+            generator.generate()
+
+        # Placeholders for future generator implementations
         if lvl3:
             self.stdout.write(self.style.WARNING("Level 3 generator is not yet implemented."))
         if lvl4:
