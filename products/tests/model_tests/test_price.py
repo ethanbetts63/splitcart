@@ -1,4 +1,5 @@
 import time
+import datetime
 from django.test import TestCase
 from products.models import Price
 from products.tests.test_helpers.model_factories import PriceFactory, ProductFactory
@@ -14,7 +15,7 @@ class PriceModelTest(TestCase):
         self.assertIsNotNone(price.store)
         self.assertIsNotNone(price.sku)
         self.assertTrue(price.price > 0)
-        self.assertIsNotNone(price.scraped_at)
+        self.assertIsNotNone(price.scraped_date)
 
     def test_price_str_representation(self):
         """Test the string representation of the price."""
@@ -46,7 +47,7 @@ class PriceModelTest(TestCase):
         """Test the default values for boolean fields."""
         product = ProductFactory()
         store = StoreFactory(store_name="DefaultStore")
-        price = Price.objects.create(product=product, store=store, sku="123", price=10.0)
+        price = Price.objects.create(product=product, store=store, sku="123", price=10.0, scraped_date=datetime.date.today())
         self.assertFalse(price.is_on_special)
         self.assertTrue(price.is_available)
         self.assertTrue(price.is_active)
