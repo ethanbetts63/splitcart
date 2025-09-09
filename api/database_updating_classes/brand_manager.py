@@ -50,11 +50,18 @@ class BrandManager:
             self.command.stdout.write("  - All processed brands already exist in the database.")
             return
 
-        # Create new ProductBrand objects for the new names
+        # Create new ProductBrand objects for the new names, ensuring the original name is unique within this batch
         brands_to_create = []
+        names_in_batch = set()
         for normalized_name in new_normalized_names:
             original_name = self.processed_brands[normalized_name]
-            brands_to_create.append(ProductBrand(name=original_name, normalized_name=normalized_name))
+            if original_name not in names_in_batch:
+                brands_to_create.append(ProductBrand(name=original_name, normalized_name=normalized_name))
+                names_in_batch.add(original_name)
+
+        if not brands_to_create:
+            self.command.stdout.write("  - All new brands were duplicates within the same batch. Nothing to create.")
+            return
 
         try:
             # Create all new brands in a single database call
