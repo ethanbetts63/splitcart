@@ -71,12 +71,11 @@ class VariationManager:
         """
         self.command.stdout.write(self.command.style.SQL_FIELD("--- Reconciling duplicate products from memory ---"))
         
-        product_reconciliation_list = self.product_reconciliation_list
-        if not product_reconciliation_list:
+        if not self.product_reconciliation_list:
             self.command.stdout.write("Product reconciliation list is empty. No duplicates to process.")
             return
 
-        duplicates_to_merge = self._find_product_duplicates(product_reconciliation_list)
+        duplicates_to_merge = self._find_product_duplicates(self.product_reconciliation_list)
         
         if not duplicates_to_merge:
             self.command.stdout.write("No valid duplicate pairs found to merge.")
