@@ -34,8 +34,6 @@ class BrandManager:
                 defaults={'name': brand_name}
             )
             self.brand_cache[normalized_brand_name] = brand
-            if created:
-                self.command.stdout.write(f"  - Created new canonical brand: '{brand_name}' (normalized: '{normalized_brand_name}')")
 
         # --- Variation Management ---
         # Ensure the name_variations field is a list.
