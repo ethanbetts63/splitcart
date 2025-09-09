@@ -1,5 +1,6 @@
 import os
 import datetime
+from collections import defaultdict
 from django.core.management.base import BaseCommand
 from django.db.models import Count
 from products.models import Product, ProductSubstitution
@@ -17,16 +18,13 @@ class Command(BaseCommand):
         report_parts.append(self._get_overall_stats_text())
         report_parts.append(self._get_hub_products_text(HUB_COUNT))
 
-        # Get distinct substitution types from the database
         sub_types = ProductSubstitution.objects.values_list('type', flat=True).distinct()
 
         for sub_type in sub_types:
             report_parts.append(self._get_random_samples_text(SAMPLE_SIZE, sub_type))
 
-        # --- File Output ---
         report_content = "\n\n".join(report_parts)
         
-        # Construct the path relative to the project root
         output_dir = os.path.join('api', 'data', 'analysis', 'subs')
         os.makedirs(output_dir, exist_ok=True)
         
@@ -42,7 +40,6 @@ class Command(BaseCommand):
 
     def _get_overall_stats_text(self):
         lines = ["--- Overall Substitution Statistics ---"]
-        
         total_products = Product.objects.count()
         total_substitutions = ProductSubstitution.objects.count()
 
@@ -67,20 +64,58 @@ class Command(BaseCommand):
         return "\n".join(lines)
 
     def _get_hub_products_text(self, hub_count):
-        lines = [f"--- Top {hub_count} Substitution Hubs ---"]
+        lines = [f"--- Top {hub_count} Substitution Hubs (Grouped) ---"]
         
-        hub_products = Product.objects.annotate(
-            num_subs=Count('substitutions_a', distinct=True) + Count('substitutions_b', distinct=True)
-        ).order_by('-num_subs')[:hub_count]
+        adj_list = defaultdict(set)
+        substitutions = ProductSubstitution.objects.all()
+        for sub in substitutions:
+            adj_list[sub.product_a_id].add(sub.product_b_id)
+            adj_list[sub.product_b_id].add(sub.product_a_id)
 
-        for i, product in enumerate(hub_products):
-            lines.append(f"  {i+1}. \"{product.name}\" ({product.brand}) - {product.num_subs} links")
+        if not adj_list:
+            lines.append("No substitution links to analyze.")
+            return "\n".join(lines)
+
+        visited = set()
+        all_hubs = []
+        for product_id in adj_list:
+            if product_id not in visited:
+                component = []
+                q = [product_id]
+                visited.add(product_id)
+                head = 0
+                while head < len(q):
+                    curr_id = q[head]
+                    head += 1
+                    component.append(curr_id)
+                    for neighbor_id in adj_list[curr_id]:
+                        if neighbor_id not in visited:
+                            visited.add(neighbor_id)
+                            q.append(neighbor_id)
+                
+                if not component:
+                    continue
+                
+                hub_in_component = max(component, key=lambda pid: len(adj_list.get(pid, [])))
+                link_count = len(component) - 1
+                if link_count > 0:
+                    all_hubs.append((hub_in_component, link_count))
+
+        all_hubs.sort(key=lambda x: x[1], reverse=True)
+        top_hubs_data = all_hubs[:hub_count]
+        
+        hub_product_ids = [hub_id for hub_id, count in top_hubs_data]
+        hub_products = Product.objects.in_bulk(hub_product_ids)
+
+        for i, (hub_id, count) in enumerate(top_hubs_data):
+            product = hub_products.get(hub_id)
+            if product:
+                lines.append(f"  {i+1}. \"{product.name}\" ({product.brand}) - {count} links in group")
         
         return "\n".join(lines)
 
     def _get_random_samples_text(self, sample_size, sub_type):
         lines = [f"--- Random Sample of {sample_size} Substitutions (Type: {sub_type.upper()}) ---"]
-
         queryset = ProductSubstitution.objects.filter(type__iexact=sub_type)
 
         if queryset.count() == 0:
