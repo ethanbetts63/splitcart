@@ -1,5 +1,3 @@
-import os
-import datetime
 from collections import defaultdict
 from django.db.models import Count
 from products.models import Product, ProductSubstitution

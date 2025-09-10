@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from api.utils.substitution_utils.lv1_same_brand_same_product_similar_size import Lvl1SubstitutionGenerator
+from api.utils.substitution_utils.lv1_substitution_generator import Lvl1SubstitutionGenerator
 from api.utils.substitution_utils.lvl2_substitution_generator import Lvl2SubstitutionGenerator
 
 class Command(BaseCommand):
