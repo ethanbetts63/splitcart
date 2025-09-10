@@ -61,29 +61,24 @@ class PrefixUpdateOrchestrator:
             self.command.stderr.write(f"Skipping record due to missing data: {data}")
             return
 
-        try:
-            brand = ProductBrand.objects.get(id=target_brand_id)
-        except ProductBrand.DoesNotExist:
-            self.command.stderr.write(f"Could not find ProductBrand with ID {target_brand_id}. Skipping record.")
-            return
+        # --- Corrected Logic ---
+        # 1. Get or create the CANONICAL brand first.
+        canonical_brand, _ = ProductBrand.objects.get_or_create(
+            name=confirmed_name,
+            defaults={'normalized_name': ProductNormalizer({'brand': confirmed_name, 'name': ''}).get_normalized_brand_key()}
+        )
 
-        # Update the BrandPrefix model
+        # 2. Attach the BrandPrefix to the CANONICAL brand.
         BrandPrefix.objects.update_or_create(
-            brand=brand,
+            brand=canonical_brand,
             defaults={
                 'confirmed_official_prefix': confirmed_key,
                 'brand_name_gs1': confirmed_name
             }
         )
 
-        # Check for and queue up new brand synonyms for reconciliation
+        # 3. If the scraped brand is different, queue it for merging.
         if confirmed_name.lower() != target_brand_name.lower():
-            # Ensure the canonical brand exists
-            ProductBrand.objects.get_or_create(
-                name=confirmed_name,
-                defaults={'normalized_name': ProductNormalizer({'brand': confirmed_name, 'name': ''}).get_normalized_brand_key()}
-            )
-            
             reconciliation_entry = {
                 'canonical_brand_name': confirmed_name,
                 'duplicate_brand_name': target_brand_name
