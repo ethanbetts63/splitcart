@@ -56,3 +56,30 @@ class SizeComparer:
                 canonical_sizes.add(parsed_size)
         
         return canonical_sizes
+
+    def are_sizes_compatible(self, product_a, product_b, tolerance=0.1) -> bool:
+        """
+        Compares two products to see if they have at least one pair of compatible sizes.
+        Compatibility is defined as having the same base unit and a value within a certain tolerance.
+        This is intended for finding 'similar' but not identical sizes (Lvl 2).
+        """
+        sizes_a = self.get_canonical_sizes(product_a)
+        sizes_b = self.get_canonical_sizes(product_b)
+
+        if not sizes_a or not sizes_b:
+            return False
+
+        for val_a, unit_a in sizes_a:
+            for val_b, unit_b in sizes_b:
+                # Must have the same base unit to be comparable
+                if unit_a == unit_b:
+                    # For pack sizes, require an exact match
+                    if unit_a == 'pk':
+                        if val_a == val_b:
+                            return True
+                    # For other units, check if they are within the tolerance
+                    else:
+                        if abs(val_a - val_b) <= (val_a * tolerance):
+                            return True
+        
+        return False

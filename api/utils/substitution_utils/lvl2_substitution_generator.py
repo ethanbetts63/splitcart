@@ -2,6 +2,7 @@ from itertools import combinations
 from .substitution_generator import BaseSubstitutionGenerator
 from products.models import Product, ProductBrand
 from thefuzz import fuzz
+from .size_comparer import SizeComparer
 
 class Lvl2SubstitutionGenerator(BaseSubstitutionGenerator):
     """
@@ -12,6 +13,7 @@ class Lvl2SubstitutionGenerator(BaseSubstitutionGenerator):
         level_definition = "Same brand, similar product, similar size."
         self.command.stdout.write(f"--- Generating Level 2: {level_definition} ---")
         
+        size_comparer = SizeComparer()
         brands = ProductBrand.objects.all()
         new_substitutions_count = 0
 
@@ -28,11 +30,12 @@ class Lvl2SubstitutionGenerator(BaseSubstitutionGenerator):
                 if len(group) > 1:
                     # Create substitutions for all pairs within the group
                     for prod_a, prod_b in combinations(group, 2):
-                        _, created = self._create_substitution(
-                            prod_a, prod_b, level='LVL2', score=0.95, source='size_similarity_v1'
-                            )                        
-                        if created:
-                            new_substitutions_count += 1
+                        if size_comparer.are_sizes_compatible(prod_a, prod_b):
+                            _, created = self._create_substitution(
+                                prod_a, prod_b, level='LVL2', score=0.95, source='size_similarity_v1'
+                                )                        
+                            if created:
+                                new_substitutions_count += 1
         
         self.command.stdout.write(self.command.style.SUCCESS(f"Generated {new_substitutions_count} new Level 2 substitutions."))
 
@@ -60,7 +63,7 @@ class Lvl2SubstitutionGenerator(BaseSubstitutionGenerator):
                 )
                 
                 # A high threshold is used to ensure we're only grouping clear size variants.
-                if similarity_score > 90:
+                if similarity_score > 90 and similarity_score < 100:
                     group.append(product)
                     placed_in_group = True
                     break

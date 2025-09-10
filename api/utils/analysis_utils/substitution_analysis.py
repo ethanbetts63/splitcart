@@ -1,3 +1,4 @@
+import random
 from collections import defaultdict
 from django.db.models import Count
 from products.models import Product, ProductSubstitution
@@ -102,18 +103,50 @@ def _get_random_samples_text(sample_size, level):
     level_display = choices_dict.get(level)
     header = f"--- Level {level.replace('LVL', '')}: {level_display} ---"
     lines = [header]
-    
-    queryset = ProductSubstitution.objects.filter(level=level)
 
-    if queryset.count() == 0:
+    queryset = ProductSubstitution.objects.filter(level=level)
+    if not queryset.exists():
         lines.append("No substitutions found for this level.")
         return "\n".join(lines)
 
-    random_samples = queryset.order_by('?')[:sample_size]
+    # New logic for LVL1 grouping
+    if level == 'LVL1':
+        adj_list = defaultdict(set)
+        for sub in queryset:
+            adj_list[sub.product_a_id].add(sub.product_b_id)
+            adj_list[sub.product_b_id].add(sub.product_a_id)
 
-    for i, sub in enumerate(random_samples):
-        lines.append(f"\n--- Sample {i+1}/{sample_size} (Score: {sub.score}) ---")
-        lines.append(f"  [A] Name: {sub.product_a.name} | Brand: {sub.product_a.brand} | Sizes: {sub.product_a.sizes}")
-        lines.append(f"  [B] Name: {sub.product_b.name} | Brand: {sub.product_b.brand} | Sizes: {sub.product_b.sizes}")
+        visited = set()
+        all_groups = []
+        for product_id in adj_list:
+            if product_id not in visited:
+                component = []
+                q = [product_id]
+                visited.add(product_id)
+                head = 0
+                while head < len(q):
+                    curr_id = q[head]
+                    head += 1
+                    component.append(curr_id)
+                    for neighbor_id in adj_list[curr_id]:
+                        if neighbor_id not in visited:
+                            visited.add(neighbor_id)
+                            q.append(neighbor_id)
+                all_groups.append(component)
         
+        random.shuffle(all_groups)
+        
+        for i, group in enumerate(all_groups[:sample_size]):
+            lines.append(f"\n--- Group {i+1}/{len(all_groups[:sample_size])} ---")
+            products_in_group = Product.objects.filter(id__in=group)
+            for product in products_in_group:
+                lines.append(f"  - Name: {product.name} | Brand: {product.brand} | Sizes: {product.sizes}")
+
+    else: # Fallback to original pair-based sampling for other levels
+        random_samples = queryset.order_by('?')[:sample_size]
+        for i, sub in enumerate(random_samples):
+            lines.append(f"\n--- Sample {i+1}/{sample_size} (Score: {sub.score}) ---")
+            lines.append(f"  [A] Name: {sub.product_a.name} | Brand: {sub.product_a.brand} | Sizes: {sub.product_a.sizes}")
+            lines.append(f"  [B] Name: {sub.product_b.name} | Brand: {sub.product_b.brand} | Sizes: {sub.product_b.sizes}")
+            
     return "\n".join(lines)
