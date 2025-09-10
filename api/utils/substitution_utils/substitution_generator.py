@@ -22,7 +22,7 @@ class BaseSubstitutionGenerator:
         if product_a.id > product_b.id:
             product_a, product_b = product_b, product_a
 
-        sub, created = ProductSubstitution.objects.update_or_create(
+        sub, created = ProductSubstitution.objects.get_or_create(
             product_a=product_a,
             product_b=product_b,
             defaults={

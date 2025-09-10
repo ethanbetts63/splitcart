@@ -9,7 +9,8 @@ class Lvl2SubstitutionGenerator(BaseSubstitutionGenerator):
     This implementation now uses string similarity on normalized names to group products.
     """
     def generate(self):
-        self.command.stdout.write("--- Generating Level 2: Size Substitutions (Similarity Method) ---")
+        level_definition = "Same brand, similar product, similar size."
+        self.command.stdout.write(f"--- Generating Level 2: {level_definition} ---")
         
         brands = ProductBrand.objects.all()
         new_substitutions_count = 0
@@ -33,7 +34,7 @@ class Lvl2SubstitutionGenerator(BaseSubstitutionGenerator):
                         if created:
                             new_substitutions_count += 1
         
-        self.command.stdout.write(self.command.style.SUCCESS(f"Generated {new_substitutions_count} new size substitutions."))
+        self.command.stdout.write(self.command.style.SUCCESS(f"Generated {new_substitutions_count} new Level 2 substitutions."))
 
     def _group_by_similarity(self, products):
         """
