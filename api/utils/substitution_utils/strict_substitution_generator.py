@@ -25,7 +25,9 @@ class StrictSubstitutionGenerator(BaseSubstitutionGenerator):
 
         for product in products:
             # Use the product's own normalized_name and its list of variations.
-            all_normalized_names = {product.normalized_name}.union(set(product.name_variations or []))
+            # Extract just the name (the first element) from each sublist in name_variations.
+            variation_names = {item[0] for item in product.name_variations if isinstance(item, list) and len(item) > 0} if product.name_variations else set()
+            all_normalized_names = {product.normalized_name}.union(variation_names)
             
             for name in all_normalized_names:
                 if name:
