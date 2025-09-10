@@ -20,7 +20,7 @@ class Lvl3SubstitutionGenerator(BaseSubstitutionGenerator):
         
         new_substitutions_count = 0
         size_comparer = SizeComparer()
-        similarity_threshold = 0.7  # Similarity score threshold
+        similarity_threshold = 0.65  # Similarity score threshold
 
         # Get all categories that have products from at least two different brands
         categories = Category.objects.annotate(

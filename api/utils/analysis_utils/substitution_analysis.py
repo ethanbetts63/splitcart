@@ -161,7 +161,9 @@ def _get_random_samples_text(sample_size, level):
 
             if bucket_samples:
                 lines.append(f"\n--- {bucket_name} ---")
-                for sub in bucket_samples:
-                    lines.append(f"  [Score: {sub.score:.2f}] {sub.product_a.name} ({sub.product_a.brand}) <--> {sub.product_b.name} ({sub.product_b.brand})")
+                for i, sub in enumerate(bucket_samples):
+                    lines.append(f"  --- Sample {i+1}/{len(bucket_samples)} (Score: {sub.score:.2f}) ---")
+                    lines.append(f"    [A] Name: {sub.product_a.name} | Brand: {sub.product_a.brand} | Sizes: {sub.product_a.sizes}")
+                    lines.append(f"    [B] Name: {sub.product_b.name} | Brand: {sub.product_b.brand} | Sizes: {sub.product_b.sizes}")
             
     return "\n".join(lines)
