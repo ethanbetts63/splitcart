@@ -1,3 +1,5 @@
+import os
+import datetime
 from django.core.management.base import BaseCommand
 from api.analysers.company_analysis import generate_store_product_counts_chart
 from api.analysers.company_product_overlap import generate_company_product_overlap_heatmap
@@ -5,6 +7,7 @@ from api.analysers.store_product_overlap import generate_store_product_overlap_h
 from api.analysers.store_pricing_heatmap import generate_store_pricing_heatmap
 from api.analysers.category_price_correlation import generate_category_price_correlation_heatmap
 from api.utils.analysis_utils.category_tree import generate_category_tree
+from api.utils.analysis_utils.substitution_analysis import generate_substitution_analysis_report
 from companies.models import Company, Category
 
 class Command(BaseCommand):
@@ -16,7 +19,7 @@ class Command(BaseCommand):
             type=str,
             required=True,
             help='Specifies which type of analysis or report to generate.',
-            choices=['store_product_counts', 'company_heatmap', 'store_heatmap', 'pricing_heatmap', 'category_heatmap', 'category_tree']
+            choices=['store_product_counts', 'company_heatmap', 'store_heatmap', 'pricing_heatmap', 'category_heatmap', 'category_tree', 'subs']
         )
         parser.add_argument(
             '--company-name',
@@ -97,6 +100,23 @@ class Command(BaseCommand):
                 f"Generating category tree for '{company_name}'..."))
             tree_output = generate_category_tree(company_name)
             self.stdout.write(tree_output)
+
+        elif report_type == 'subs':
+            self.stdout.write(self.style.SUCCESS("--- Starting Substitution Analysis ---"))
+            report_content = generate_substitution_analysis_report()
+            
+            output_dir = os.path.join('api', 'data', 'analysis', 'subs')
+            os.makedirs(output_dir, exist_ok=True)
+            
+            file_name = f"{datetime.date.today()}-subs_analysis.txt"
+            file_path = os.path.join(output_dir, file_name)
+
+            try:
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    f.write(report_content)
+                self.stdout.write(self.style.SUCCESS(f"\nSuccessfully wrote analysis report to: {file_path}"))
+            except IOError as e:
+                self.stderr.write(self.style.ERROR(f"Error writing to file: {e}"))
 
         else:
             self.stdout.write(self.style.WARNING(
