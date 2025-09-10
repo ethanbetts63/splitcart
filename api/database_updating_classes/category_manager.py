@@ -36,9 +36,12 @@ class CategoryManager:
         """Collects all unique category paths from the data."""
         all_paths = set()
         for data in consolidated_data.values():
-            path = data.get('product_details', {}).get('category_path')
-            if path and isinstance(path, list):
-                all_paths.add(tuple(path))
+            # Corrected to look in data['product']['category_paths']
+            paths = data.get('product', {}).get('category_paths', [])
+            if paths and isinstance(paths, list):
+                for path in paths:
+                    if path and isinstance(path, list):
+                        all_paths.add(tuple(path))
         return all_paths
 
     def _create_new_categories(self, all_category_paths, company_obj):
