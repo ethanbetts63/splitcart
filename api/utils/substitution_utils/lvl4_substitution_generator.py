@@ -9,14 +9,14 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
-class Lvl3SubstitutionGenerator(BaseSubstitutionGenerator):
+class Lvl4SubstitutionGenerator(BaseSubstitutionGenerator):
     """
-    Generates substitutions for Level 3: Different brand, similar product, similar size.
+    Generates substitutions for Level 4: Different brand, similar product, different size.
     Uses TF-IDF and cosine similarity to find textually similar product names.
     """
     def generate(self):
-        level_definition = "Different brand, similar product, similar size."
-        self.command.stdout.write(f"--- Generating Level 3: {level_definition} ---")
+        level_definition = "Different brand, similar product, different size."
+        self.command.stdout.write(f"--- Generating Level 4: {level_definition} ---")
         
         new_substitutions_count = 0
         size_comparer = SizeComparer()
@@ -29,8 +29,7 @@ class Lvl3SubstitutionGenerator(BaseSubstitutionGenerator):
 
         self.command.stdout.write(f"Found {len(categories)} categories with products from multiple brands to analyze.")
 
-        for i, category in enumerate(categories):
-            
+        for i, category in enumerate(categories):            
             products_in_cat = list(Product.objects.filter(category=category))
             if len(products_in_cat) < 2:
                 continue
@@ -60,13 +59,13 @@ class Lvl3SubstitutionGenerator(BaseSubstitutionGenerator):
                 prod_a = products_in_cat[prod_idx_a]
                 prod_b = products_in_cat[prod_idx_b]
 
-                # --- Apply Level 3 Conditions ---
+                # --- Apply Level 4 Conditions ---
                 # 1. Different Brands
                 if prod_a.brand == prod_b.brand:
                     continue
 
-                # 2. Similar Sizes
-                if not size_comparer.are_sizes_compatible(prod_a, prod_b):
+                # 2. Different Sizes
+                if not size_comparer.are_sizes_different(prod_a, prod_b):
                     continue
                 
                 # 3. Create the substitution
@@ -74,11 +73,11 @@ class Lvl3SubstitutionGenerator(BaseSubstitutionGenerator):
                 _, created = self._create_substitution(
                     prod_a, 
                     prod_b, 
-                    level='LVL3',
+                    level='LVL4',
                     score=score, 
-                    source='tfidf_v1'
+                    source='tfidf_v1_diff_size'
                 )
                 if created:
                     new_substitutions_count += 1
 
-        self.command.stdout.write(self.command.style.SUCCESS(f"Generated {new_substitutions_count} new Level 3 substitutions."))
+        self.command.stdout.write(self.command.style.SUCCESS(f"Generated {new_substitutions_count} new Level 4 substitutions."))

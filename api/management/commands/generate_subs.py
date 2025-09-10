@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from api.utils.substitution_utils.lv1_substitution_generator import Lvl1SubstitutionGenerator
 from api.utils.substitution_utils.lvl2_substitution_generator import Lvl2SubstitutionGenerator
 from api.utils.substitution_utils.lvl3_substitution_generator import Lvl3SubstitutionGenerator
+from api.utils.substitution_utils.lvl4_substitution_generator import Lvl4SubstitutionGenerator
 
 class Command(BaseCommand):
     help = 'Generates product substitutions based on different heuristic levels.'
@@ -55,6 +56,7 @@ class Command(BaseCommand):
             generator.generate()
 
         if lvl4:
-            self.stdout.write(self.style.WARNING("Level 4 generator is not yet implemented."))
+            generator = Lvl4SubstitutionGenerator(command=self)
+            generator.generate()
 
         self.stdout.write(self.style.SUCCESS("--- Substitution Generation Complete ---"))

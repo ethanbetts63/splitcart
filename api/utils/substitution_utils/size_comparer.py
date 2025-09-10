@@ -83,3 +83,16 @@ class SizeComparer:
                             return True
         
         return False
+
+    def are_sizes_different(self, product_a, product_b) -> bool:
+        """
+        Compares two products and returns True if their canonical size sets are different.
+        This is a simple check for inequality, suitable for Lvl 1 and Lvl 4.
+        """
+        sizes_a = self.get_canonical_sizes(product_a)
+        sizes_b = self.get_canonical_sizes(product_b)
+
+        if not sizes_a or not sizes_b:
+            return False
+
+        return sizes_a != sizes_b

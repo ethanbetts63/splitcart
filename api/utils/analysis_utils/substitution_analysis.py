@@ -110,8 +110,8 @@ def _get_random_samples_text(sample_size, level):
         lines.append("No substitutions found for this level.")
         return "\n".join(lines)
 
-    # New logic for LVL1 grouping
     if level == 'LVL1':
+        # ... (existing LVL1 logic remains the same)
         adj_list = defaultdict(set)
         for sub in queryset:
             adj_list[sub.product_a_id].add(sub.product_b_id)
@@ -142,12 +142,26 @@ def _get_random_samples_text(sample_size, level):
             products_in_group = Product.objects.filter(id__in=group)
             for product in products_in_group:
                 lines.append(f"  - Name: {product.name} | Brand: {product.brand} | Sizes: {product.sizes}")
+    else:
+        # New stratified sampling for LVL2, LVL3, LVL4
+        score_buckets = {
+            "High Confidence (Score > 0.95)": (0.95, 1.01), # 1.01 to be inclusive of 1.0
+            "Medium Confidence (0.85-0.95)": (0.85, 0.95),
+            "Low Confidence (0.7-0.85)": (0.7, 0.85),
+            "Very Low Confidence (< 0.7)": (0.0, 0.7),
+        }
+        
+        samples_per_bucket = sample_size // len(score_buckets)
 
-    else: # Fallback to original pair-based sampling for other levels
-        random_samples = queryset.order_by('?')[:sample_size]
-        for i, sub in enumerate(random_samples):
-            lines.append(f"\n--- Sample {i+1}/{sample_size} (Score: {sub.score}) ---")
-            lines.append(f"  [A] Name: {sub.product_a.name} | Brand: {sub.product_a.brand} | Sizes: {sub.product_a.sizes}")
-            lines.append(f"  [B] Name: {sub.product_b.name} | Brand: {sub.product_b.brand} | Sizes: {sub.product_b.sizes}")
+        for bucket_name, (lower_bound, upper_bound) in score_buckets.items():
+            bucket_samples = queryset.filter(
+                score__gt=lower_bound, 
+                score__lte=upper_bound
+            ).order_by('?')[:samples_per_bucket]
+
+            if bucket_samples:
+                lines.append(f"\n--- {bucket_name} ---")
+                for sub in bucket_samples:
+                    lines.append(f"  [Score: {sub.score:.2f}] {sub.product_a.name} ({sub.product_a.brand}) <--> {sub.product_b.name} ({sub.product_b.brand})")
             
     return "\n".join(lines)
