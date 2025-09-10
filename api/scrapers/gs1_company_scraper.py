@@ -37,16 +37,24 @@ class Gs1CompanyScraper:
         self.command.stdout.write(f"Saving results to: {output_file}\n")
 
         # --- Prioritize Brands ---
-        self.command.stdout.write("Calculating product counts for all brands to determine priority...")
-        all_brands = ProductBrand.objects.all()
-        brand_counts = []
+        self.command.stdout.write("Prioritizing unconfirmed brands by product count...")
+        
+        unconfirmed_brands = []
+        all_brands = ProductBrand.objects.all().prefetch_related('prefix_analysis')
+
         for brand in all_brands:
+            try:
+                if brand.prefix_analysis.confirmed_official_prefix:
+                    continue
+            except BrandPrefix.DoesNotExist:
+                pass
+            
             count = Product.objects.filter(brand=brand.name).count()
             if count > 0:
-                brand_counts.append({'brand': brand, 'count': count})
+                unconfirmed_brands.append({'brand': brand, 'count': count})
         
-        sorted_brands = sorted(brand_counts, key=lambda x: x['count'], reverse=True)
-        self.command.stdout.write(f"Prioritized a list of {len(sorted_brands)} brands.")
+        sorted_brands = sorted(unconfirmed_brands, key=lambda x: x['count'], reverse=True)
+        self.command.stdout.write(f"Found {len(sorted_brands)} unconfirmed brands with products to scrape.")
 
         # --- Initialize Scraper Session (ONCE) ---
         first_product_for_session = Product.objects.exclude(barcode__isnull=True).exclude(barcode__exact='').first()
@@ -60,16 +68,11 @@ class Gs1CompanyScraper:
 
         # --- Main Scraping Loop ---
         successful_scrapes = 0
-        brands_attempted_this_run = set()
-        for i in range(30): # Max 30 scrapes per run
-            target_brand = self._get_next_target_brand(sorted_brands, brands_attempted_this_run)
+        target_brands = sorted_brands[:30]
 
-            if not target_brand:
-                self.command.stdout.write(self.command.style.SUCCESS("No more unverified brands to scrape. Ending run."))
-                break
-
-            brands_attempted_this_run.add(target_brand.id)
-            self.command.stdout.write(f"--- Scrape Attempt {successful_scrapes + 1}/30 ---\n")
+        for i, brand_info in enumerate(target_brands):
+            target_brand = brand_info['brand']
+            self.command.stdout.write(f"--- Scrape Attempt {i + 1}/{len(target_brands)} ---\n")
             self.command.stdout.write(f"Selected brand: {target_brand.name}\n")
 
             product_with_barcode = Product.objects.filter(
@@ -88,28 +91,11 @@ class Gs1CompanyScraper:
             else:
                 self.command.stderr.write(self.command.style.ERROR(f"Scrape failed for {target_brand.name}."))
 
-            if successful_scrapes >= 30:
-                break
-
-            self.command.stdout.write("Waiting 5 seconds before next scrape...")
-            time.sleep(5)
+            if i < len(target_brands) - 1:
+                self.command.stdout.write("Waiting 5 seconds before next scrape...")
+                time.sleep(5)
         
         self.command.stdout.write(self.command.style.SUCCESS(f'--- GS1 Scraper Run Complete. {successful_scrapes} new records saved to inbox. ---\n'))
-
-    def _get_next_target_brand(self, sorted_brands, brands_attempted_this_run):
-        for brand_info in sorted_brands:
-            brand_obj = brand_info['brand']
-            if brand_obj.id in brands_attempted_this_run:
-                continue
-            try:
-                prefix_analysis = brand_obj.prefix_analysis
-                if prefix_analysis.confirmed_official_prefix:
-                    brands_attempted_this_run.add(brand_obj.id)
-                    continue
-            except BrandPrefix.DoesNotExist:
-                pass
-            return brand_obj
-        return None
 
     def _write_result_to_inbox(self, result, target_brand, barcode, output_file):
         self.command.stdout.write(self.command.style.SUCCESS(f"Successfully scraped {target_brand.name}."))
