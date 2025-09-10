@@ -2,10 +2,8 @@ import random
 import pulp
 import statistics
 
-from django.core.management.base import BaseCommand
 from django.db.models import Count
-
-from companies.models import Store
+from companies.models import Company, Store
 from products.models import Product, Price
 
 
@@ -82,10 +80,8 @@ def calculate_baseline_cost_for_main_store(main_store_id, slots, all_stores):
         options_at_main_store = [opt for opt in slot if opt['store_id'] == main_store_id]
         
         if options_at_main_store:
-            # If the main store has options for this slot, find the cheapest one there.
             main_shop_cost += min(opt['price'] for opt in options_at_main_store)
         else:
-            # If not, find the absolute cheapest price for this slot across all other stores.
             forced_trips_cost += min(opt['price'] for opt in slot)
             
     return main_shop_cost + forced_trips_cost
@@ -95,7 +91,6 @@ def calculate_baseline_cost(slots, stores):
     if not slots:
         return 0
 
-    # Step 1: Find which store(s) can fill the most slots.
     slots_filled_by_store = {store.id: 0 for store in stores}
     for store in stores:
         for slot in slots:
@@ -109,9 +104,8 @@ def calculate_baseline_cost(slots, stores):
         best_main_stores = [store_id for store_id, count in slots_filled_by_store.items() if count == max_slots_filled]
 
     if not best_main_stores:
-        return 0 # Should not happen if slots exist
+        return 0
 
-    # Step 2: Calculate the total baseline for each potential best store and find the minimum.
     min_baseline_cost = float('inf')
     for store_id in best_main_stores:
         current_baseline = calculate_baseline_cost_for_main_store(store_id, slots, stores)
@@ -120,58 +114,57 @@ def calculate_baseline_cost(slots, stores):
             
     return min_baseline_cost
 
-class Command(BaseCommand):
-    help = 'Runs a benchmark to calculate the average savings percentage of the cart optimizer.'
+def run_savings_benchmark(file_path):
+    """Main function to run the benchmark and write results to a file."""
+    report_lines = []
+    
+    NUM_RUNS = 10
+    PRODUCTS_PER_RUN = 100
+    STORES_PER_RUN = 3
+    MAX_STORES_FOR_SOLVER = 3 # Increased to 3 for more reliable results
 
-    def handle(self, *args, **options):
-        NUM_RUNS = 10
-        PRODUCTS_PER_RUN = 100
-        STORES_PER_RUN = 3
-        MAX_STORES_FOR_SOLVER = 2
+    report_lines.append(f"Starting benchmark with {NUM_RUNS} runs...\n")
+    
+    all_savings = []
 
-        self.stderr.write(f"Starting benchmark with {NUM_RUNS} runs...\n")
+    viable_stores = Store.objects.annotate(num_prices=Count('prices')).filter(num_prices__gte=PRODUCTS_PER_RUN)
+    if len(viable_stores) < STORES_PER_RUN:
+        report_lines.append("Not enough viable stores in the database to run the benchmark.")
+        with open(file_path, 'w') as f:
+            f.write("\n".join(report_lines))
+        return
+
+    for i in range(NUM_RUNS):
+        report_lines.append(f"--- Run {i + 1}/{NUM_RUNS} ---")
         
-        all_savings = []
+        selected_stores = random.sample(list(viable_stores), STORES_PER_RUN)
+        slots = generate_random_cart(selected_stores, PRODUCTS_PER_RUN)
+        if not slots:
+            report_lines.append("Could not generate a valid cart for this run. Skipping.")
+            continue
 
-        # Get a pool of stores that have a decent number of products
-        viable_stores = Store.objects.annotate(num_prices=Count('prices')).filter(num_prices__gte=PRODUCTS_PER_RUN)
-        if len(viable_stores) < STORES_PER_RUN:
-            self.stderr.write(self.style.ERROR("Not enough viable stores in the database to run the benchmark."))
-            return
+        optimized_cost = calculate_optimized_cost(slots, MAX_STORES_FOR_SOLVER)
+        if optimized_cost is None:
+            report_lines.append("Solver could not find an optimal solution. Skipping run.")
+            continue
 
-        for i in range(NUM_RUNS):
-            self.stderr.write(f"--- Run {i + 1}/{NUM_RUNS} ---")
-            
-            # 1. Generate a random cart
-            selected_stores = random.sample(list(viable_stores), STORES_PER_RUN)
-            slots = generate_random_cart(selected_stores, PRODUCTS_PER_RUN)
-            if not slots:
-                self.stderr.write("Could not generate a valid cart for this run. Skipping.")
-                continue
+        baseline_cost = calculate_baseline_cost(slots, selected_stores)
 
-            # 2. Calculate Optimized Cost
-            optimized_cost = calculate_optimized_cost(slots, MAX_STORES_FOR_SOLVER)
-            if optimized_cost is None:
-                self.stderr.write("Solver could not find an optimal solution. Skipping run.")
-                continue
-
-            # 3. Calculate Baseline Cost
-            baseline_cost = calculate_baseline_cost(slots, selected_stores)
-
-            # 4. Calculate and store savings
-            if baseline_cost > 0 and baseline_cost > optimized_cost:
-                savings = ((baseline_cost - optimized_cost) / baseline_cost) * 100
-                all_savings.append(savings)
-                self.stderr.write(f"Baseline: ${baseline_cost:.2f}, Optimized: ${optimized_cost:.2f}, Savings: {savings:.2f}%")
-            else:
-                all_savings.append(0)
-                self.stderr.write(f"Baseline: ${baseline_cost:.2f}, Optimized: ${optimized_cost:.2f}, Savings: 0.00%")
-
-        # 5. Report final results
-        self.stdout.write("\n--- Benchmark Complete ---")
-        self.stdout.write(f"Individual savings percentages: {[f'{s:.2f}%' for s in all_savings]}")
-        if all_savings:
-            average_savings = statistics.mean(all_savings)
-            self.stdout.write(f"\nAverage Savings: {average_savings:.2f}%")
+        if baseline_cost > 0 and baseline_cost > optimized_cost:
+            savings = ((baseline_cost - optimized_cost) / baseline_cost) * 100
+            all_savings.append(savings)
+            report_lines.append(f"Baseline: ${baseline_cost:.2f}, Optimized: ${optimized_cost:.2f}, Savings: {savings:.2f}%")
         else:
-            self.stdout.write("\nNo valid runs were completed.")
+            all_savings.append(0)
+            report_lines.append(f"Baseline: ${baseline_cost:.2f}, Optimized: ${optimized_cost:.2f}, Savings: 0.00%")
+
+    report_lines.append("\n--- Benchmark Complete ---")
+    report_lines.append(f"Individual savings percentages: {[f'{s:.2f}%' for s in all_savings]}")
+    if all_savings:
+        average_savings = statistics.mean(all_savings)
+        report_lines.append(f"\nAverage Savings: {average_savings:.2f}%")
+    else:
+        report_lines.append("\nNo valid runs were completed.")
+
+    with open(file_path, 'w') as f:
+        f.write("\n".join(report_lines))
