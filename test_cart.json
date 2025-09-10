@@ -1,0 +1,842 @@
+[
+  [
+    {
+      "product_id": 418,
+      "product_name": "Afourer Mandarins Loose",
+      "brand": "",
+      "store_id": 24,
+      "store_name": "Kelvin Grove",
+      "price": 3.99,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 495,
+      "product_name": "Red Sweet Potato 1kg",
+      "brand": "",
+      "store_id": 24,
+      "store_name": "Kelvin Grove",
+      "price": 4.99,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 656,
+      "product_name": "Crumbed Chicken Tenders Buffalo Style 400g",
+      "brand": "READY, SET\u2026COOK!",
+      "store_id": 24,
+      "store_name": "Kelvin Grove",
+      "price": 7.39,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 2185,
+      "product_name": "No Sugar Cola Soft Drink 12x375ml",
+      "brand": "REGAL",
+      "store_id": 24,
+      "store_name": "Kelvin Grove",
+      "price": 8.99,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 3677,
+      "product_name": "ETA Vegetable Blend Oil",
+      "brand": "ETA",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 4.58,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 5251,
+      "product_name": "Ajitas Vege Chips Natural",
+      "brand": "Ajita",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 4.75,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 5251,
+      "product_name": "Ajitas Vege Chips Natural",
+      "brand": "Ajita",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 4.9,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 5255,
+      "product_name": "Always Fresh Mini Toasts",
+      "brand": "Always Fresh",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 2.7,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 5361,
+      "product_name": "The Natural Cracker Co. Honey Soy Chicken",
+      "brand": "The Natural Cracker Co.",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 4.28,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 5383,
+      "product_name": "Carman's Super Berry Muesli Bars",
+      "brand": "Carman's",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 7.95,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 5383,
+      "product_name": "Carman's Super Berry Muesli Bars",
+      "brand": "Carman's",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 6.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 5891,
+      "product_name": "Campbell's Chunky Canned Soup Roast Chicken & Vegetable",
+      "brand": "Campbell's",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 4.75,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 5891,
+      "product_name": "Campbell's Chunky Canned Soup Roast Chicken & Vegetable",
+      "brand": "Campbell's",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 4.5,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 7304,
+      "product_name": "Mother Energy Drink Rainbow Sherbet Cans",
+      "brand": "Mother Energy",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 13.35,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 17526,
+      "product_name": "Mother Energy Drink Rainbow Sherbet Cans",
+      "brand": "Mother Energy",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 3.3,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 17526,
+      "product_name": "Mother Energy Drink Rainbow Sherbet Cans",
+      "brand": "Mother Energy",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 3.3,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 7786,
+      "product_name": "Moccona Ristretto Coffee Capsules",
+      "brand": "Moccona",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 7.65,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 7786,
+      "product_name": "Moccona Ristretto Coffee Capsules",
+      "brand": "Moccona",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 7.2,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 8132,
+      "product_name": "Weight Watchers Chicken & Mushroom Fettuccine",
+      "brand": "Weight Watchers",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 6.9,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 15946,
+      "product_name": "Bref Blue Active Eucalyptus Rim Block Toilet Cleaner",
+      "brand": "Bref",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 11.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 8627,
+      "product_name": "Bref Blue Active Eucalyptus Rim Block Toilet Cleaner",
+      "brand": "Bref",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 7.4,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 8627,
+      "product_name": "Bref Blue Active Eucalyptus Rim Block Toilet Cleaner",
+      "brand": "Bref",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 3.5,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 8983,
+      "product_name": "Food Guru Stainless Steel Can Opener",
+      "brand": "Food Guru",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 10.6,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 9845,
+      "product_name": "John West Salmon with Chilli",
+      "brand": "Simplot Australia Pty Limited",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 3.5,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 9845,
+      "product_name": "John West Salmon with Chilli",
+      "brand": "Simplot Australia Pty Limited",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 1.65,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 9959,
+      "product_name": "Black & Gold Whole Champignon Mushrooms",
+      "brand": "Metcash Trading Limited Australasia",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 1.25,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 11635,
+      "product_name": "Kellogg's Crunchy Nut Peanut Snack Bars",
+      "brand": "Kellogg's",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 6.35,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 13046,
+      "product_name": "Yarrows Cinnamon Jam Donut",
+      "brand": "Yarrows",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 6.35,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 15041,
+      "product_name": "Gillette Fusion 5 Manual Cartridges",
+      "brand": "PROCTER Y GAMBLE COLOMBIA LTDA",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 38.7,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 15265,
+      "product_name": "Poise Adult Care Liner Charcoal Extra Long",
+      "brand": "Poise",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 6.4,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 15618,
+      "product_name": "Dine Wet Cat Food Succulent Chicken Slices Tray",
+      "brand": "Dine",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 1.7,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 15618,
+      "product_name": "Dine Wet Cat Food Succulent Chicken Slices Tray",
+      "brand": "Dine",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 1.6,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 15643,
+      "product_name": "Fancy Feast Royale Adult Cat Food Tuna With Shrimp",
+      "brand": "Fancy Feast",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 2.85,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 18755,
+      "product_name": "Five Taste Thai Red Paste",
+      "brand": "Five Taste",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 4.08,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 20246,
+      "product_name": "GARNIER Pure Active 3 In 1 Face Mask Wash & Scrub",
+      "brand": "L OREAL SA",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 13.5,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 20246,
+      "product_name": "GARNIER Pure Active 3 In 1 Face Mask Wash & Scrub",
+      "brand": "L OREAL SA",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 6.75,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 20539,
+      "product_name": "Fancy Feast Adult Inspirations Chicken Courgette & Tomato and Chicken Pasta Pearls & Spinach Wet Cat Food",
+      "brand": "FANCY FEAST",
+      "store_id": 2210,
+      "store_name": "Redwood Park IGA",
+      "price": 20.15,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 20539,
+      "product_name": "Fancy Feast Adult Inspirations Chicken Courgette & Tomato and Chicken Pasta Pearls & Spinach Wet Cat Food",
+      "brand": "FANCY FEAST",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 11.4,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 21552,
+      "product_name": "Somersby Cider Apple",
+      "brand": "Somersby",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 32.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 21975,
+      "product_name": "Organic Pak Choy Baby",
+      "brand": "Organic",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 4.9,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 23055,
+      "product_name": "Beak & Sons Slow Cooked Meatballs In Italian Herb Sauce",
+      "brand": "Beak & Sons",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 12.5,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 23096,
+      "product_name": "Picasso Kitchen Pizza Thin & Crispy BBQ Meat Deluxe",
+      "brand": "Picasso Kitchen",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 6.5,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 24371,
+      "product_name": "Chris' Heritage Dips Vintage Cheddar & Caramelised Onion Cheese",
+      "brand": "Chris'",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 10.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 24401,
+      "product_name": "Le Dauphin Double Creme From The Deli",
+      "brand": "Le Dauphin",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 98.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 24840,
+      "product_name": "Pace Farm 12 For Everyone Barn Laid Jumbo Eggs",
+      "brand": "Pace Farm",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 10.45,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 25083,
+      "product_name": "Brioche Gourmet Hot Dog Rolls",
+      "brand": "Brioche Gourmet",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 6.5,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 1965,
+      "product_name": "Hot Dog Rolls 6 Pack 450g",
+      "brand": "BAKERS LIFE",
+      "store_id": 24,
+      "store_name": "Kelvin Grove",
+      "price": 2.49,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 26840,
+      "product_name": "Health Lab Holy Hazelnut Nut Butter Filled Balls",
+      "brand": "Health Lab",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 8.9,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 27813,
+      "product_name": "Sanitarium Marmite Spread",
+      "brand": "Sanitarium",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 4.8,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 27856,
+      "product_name": "Kellogg\u2019s Corn Flakes Breakfast Cereal",
+      "brand": "Kellogg\u2019s",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 6.9,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 27835,
+      "product_name": "Kellogg\u2019s Corn Flakes Breakfast Cereal",
+      "brand": "Kellogg\u2019s",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 5.9,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 28018,
+      "product_name": "Madame Flavour Green Lychee & Rose Tea Bags",
+      "brand": "Madame Flavour",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 7.5,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 31293,
+      "product_name": "Sidewood Pinot Gris",
+      "brand": "Sidewood",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 28.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 31306,
+      "product_name": "Isabel Estate Pinot Gris",
+      "brand": "Isabel Estate",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 32.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 31214,
+      "product_name": "Noble Fellows Pinot Gris",
+      "brand": "Noble Fellows",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 20.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 31190,
+      "product_name": "Marlborough Sounds Pinot Gris",
+      "brand": "Marlborough Sounds",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 20.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 31291,
+      "product_name": "Rabbit Ranch Pinot Gris",
+      "brand": "Rabbit Ranch",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 28.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 31195,
+      "product_name": "Kim Crawford Pinot Gris",
+      "brand": "Kim Crawford",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 20.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 31133,
+      "product_name": "Elephant In The Room Pinot Gris",
+      "brand": "Elephant In The Room",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 15.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 31167,
+      "product_name": "Old Fat Unicorn Pinot Gris",
+      "brand": "Old Fat Unicorn",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 17.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 31715,
+      "product_name": "Dean & Munroe Style Series Rose' Prosecco",
+      "brand": "Dean & Munroe",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 19.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 32155,
+      "product_name": "Jameson Irish Whisky",
+      "brand": "Jameson",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 82.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 21604,
+      "product_name": "Jameson Irish Whisky",
+      "brand": "Jameson",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 67.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 32021,
+      "product_name": "Finnlaigh Irish Whisky",
+      "brand": "Finnlaigh",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 53.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    },
+    {
+      "product_id": 32079,
+      "product_name": "Tullamore Dew Irish Whisky",
+      "brand": "Tullamore Dew",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 66.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 32719,
+      "product_name": "L'Oreal Paris Extraordinary Oil Midnight Serum",
+      "brand": "L OREAL SA",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 11.5,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 33316,
+      "product_name": "Maybelline Superstay Teddy Tint Skinny Dip",
+      "brand": "L&#039;Oreal Australia Pty Ltd",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 27.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 33422,
+      "product_name": "MCoBeauty Magic Makeup Blender",
+      "brand": "MCO BEAUTY PTY LIMITED",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 12.95,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 34396,
+      "product_name": "Maui Moisture Coconut Oil Shampoo For Curly Hair",
+      "brand": "Maui Moisture",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 12.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 35134,
+      "product_name": "Mitchum Clinical 8 Hour Sport For Men Antiperspirant & Deodorant",
+      "brand": "Mitchum",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 11.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 36492,
+      "product_name": "Demazin Cold & Flu Relief Tablets",
+      "brand": "Demazin",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 12.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 37443,
+      "product_name": "Shine Optimum All-In-One Ultimate Clean Dishwashing Pods",
+      "brand": "Shine",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 11.7,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 39360,
+      "product_name": "Calidad Hp 65 XL Colour Ink Cartridge",
+      "brand": "Calidad",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 49.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ],
+  [
+    {
+      "product_id": 40129,
+      "product_name": "Essentials Tealights Candles",
+      "brand": "Woolworths Group Ltd - Supermarkets",
+      "store_id": 4056,
+      "store_name": "Chatswood East",
+      "price": 12.0,
+      "unit_price": null,
+      "unit_of_measurement": null
+    }
+  ]
+]
