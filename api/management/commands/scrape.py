@@ -26,6 +26,12 @@ class Command(BaseCommand):
         parser.add_argument('--batch-size', type=int, default=100, help='The number of stores to scrape per run.')
 
     def handle(self, *args, **options):
+        # Clean up a previous stop file at the beginning of a new run.
+        stop_file = 'stop.txt'
+        if os.path.exists(stop_file):
+            os.remove(stop_file)
+            self.stdout.write(self.style.SUCCESS(f"Removed previous stop file: {stop_file}"))
+
         run_all = not any(options[company] for company in ['woolworths', 'coles', 'aldi', 'iga', 'gs1'])
         batch_size = options['batch_size']
         if options['woolworths'] or run_all:
@@ -38,6 +44,9 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.ERROR('Could not fetch Woolworths categories. Aborting Woolworths scrape.'))
                 else:
                     for store in stores_to_scrape:
+                        if os.path.exists('stop.txt'):
+                            self.stdout.write(self.style.WARNING("Stop signal detected. Halting before next store."))
+                            break
                         scraper = ProductScraperWoolworths(
                             command=self,
                             company=woolworths_company.name,
@@ -62,6 +71,9 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.ERROR('Could not fetch Coles categories. Aborting Coles scrape.'))
                 else:
                     for store in stores_to_scrape:
+                        if os.path.exists('stop.txt'):
+                            self.stdout.write(self.style.WARNING("Stop signal detected. Halting before next store."))
+                            break
                         scraper = ProductScraperColes(
                             command=self,
                             company=coles_company.name,
@@ -82,6 +94,9 @@ class Command(BaseCommand):
                 stores = Store.objects.filter(company=aldi_company, is_active=True)
                 stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
                 for store in stores_to_scrape:
+                    if os.path.exists('stop.txt'):
+                        self.stdout.write(self.style.WARNING("Stop signal detected. Halting before next store."))
+                        break
                     scraper = ProductScraperAldi(
                         command=self,
                         company=aldi_company.name,
@@ -101,6 +116,9 @@ class Command(BaseCommand):
                 stores = Store.objects.filter(company=iga_company, is_active=True)
                 stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
                 for store in stores_to_scrape:
+                    if os.path.exists('stop.txt'):
+                        self.stdout.write(self.style.WARNING("Stop signal detected. Halting before next store."))
+                        break
                     scraper = ProductScraperIga(
                         command=self,
                         company=iga_company.name,
