@@ -24,17 +24,10 @@ class StrictSubstitutionGenerator(BaseSubstitutionGenerator):
         products = Product.objects.all()
 
         for product in products:
-            # Create a set of all possible normalized names for the product.
-            known_names = {product.normalized_name}
-            if product.name_variations:
-                for name_variation, store in product.name_variations:
-                    # Normalize each variation on the fly.
-                    # We only use the 'name' for normalization, ignoring brand/size context here.
-                    normalizer = ProductNormalizer({'name': name_variation})
-                    known_names.add(normalizer.get_fully_normalized_name())
+            # Use the product's own normalized_name and its list of variations.
+            all_normalized_names = {product.normalized_name}.union(set(product.name_variations or []))
             
-            # Add the product to the map for each of its known names.
-            for name in known_names:
+            for name in all_normalized_names:
                 if name:
                     name_map[name].append(product)
 
