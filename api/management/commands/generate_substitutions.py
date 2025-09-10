@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
-from api.utils.substitution_utils.strict_substitution_generator import StrictSubstitutionGenerator
-from api.utils.substitution_utils.size_substitution_generator import SizeSubstitutionGenerator
+from api.utils.substitution_utils.lv1_same_brand_same_product_similar_size import StrictSubstitutionGenerator
+from api.utils.substitution_utils.lvl2_same_brand_similar_product_similar_size import SizeSubstitutionGenerator
 
 class Command(BaseCommand):
     help = 'Generates product substitutions based on different heuristic levels.'

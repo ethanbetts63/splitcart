@@ -3,8 +3,7 @@ from collections import defaultdict
 from itertools import combinations
 from collections import defaultdict
 from .substitution_generator import BaseSubstitutionGenerator
-from products.models import Product, ProductBrand
-from api.utils.product_normalizer import ProductNormalizer
+from products.models import Product
 from .size_comparer import SizeComparer
 
 class StrictSubstitutionGenerator(BaseSubstitutionGenerator):

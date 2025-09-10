@@ -1,7 +1,7 @@
 from django.test import TestCase
 from unittest.mock import Mock
 
-from api.utils.substitution_utils.size_substitution_generator import SizeSubstitutionGenerator
+from api.utils.substitution_utils.lvl2_same_brand_similar_product_similar_size import SizeSubstitutionGenerator
 from products.models import Product, ProductBrand, ProductSubstitution
 from products.tests.test_helpers.model_factories import ProductFactory, ProductBrandFactory
 

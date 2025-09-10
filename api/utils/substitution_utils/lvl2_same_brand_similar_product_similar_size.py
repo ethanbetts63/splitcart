@@ -1,7 +1,6 @@
 from itertools import combinations
 from .substitution_generator import BaseSubstitutionGenerator
 from products.models import Product, ProductBrand
-from api.utils.product_normalizer import ProductNormalizer
 from thefuzz import fuzz
 
 class SizeSubstitutionGenerator(BaseSubstitutionGenerator):
