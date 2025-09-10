@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from api.utils.substitution_utils.lv1_substitution_generator import Lvl1SubstitutionGenerator
 from api.utils.substitution_utils.lvl2_substitution_generator import Lvl2SubstitutionGenerator
+from api.utils.substitution_utils.lvl3_substitution_generator import Lvl3SubstitutionGenerator
 
 class Command(BaseCommand):
     help = 'Generates product substitutions based on different heuristic levels.'
@@ -47,6 +48,10 @@ class Command(BaseCommand):
         
         if lvl2:
             generator = Lvl2SubstitutionGenerator(command=self)
+            generator.generate()
+
+        if lvl3:
+            generator = Lvl3SubstitutionGenerator(command=self)
             generator.generate()
 
         if lvl4:

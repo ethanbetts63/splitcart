@@ -97,18 +97,22 @@ class CategoryManager:
         self.command.stdout.write("  Part C: Creating product-category relationships...")
         ProductCategory = Product.category.through
         links_to_create = []
+        seen_links = set()
 
         for key, data in consolidated_data.items():
             product = product_cache.get(key)
-            for path in data.get('product', {}).get('category_paths', []):
-                if product and path:
-                    leaf_category_name = path[-1]
-                    category = self.category_cache.get(leaf_category_name)
-                    if category:
+            path = data.get('product_details', {}).get('category_path')
+            if product and path and isinstance(path, list):
+                leaf_category_name = path[-1]
+                category = self.category_cache.get(leaf_category_name)
+                if category:
+                    link_key = (product.id, category.id)
+                    if link_key not in seen_links:
                         links_to_create.append(
                             ProductCategory(product_id=product.id, category_id=category.id)
                         )
+                        seen_links.add(link_key)
         
         if links_to_create:
-            self.command.stdout.write(f"    - Creating {len(links_to_create)} product-category links...")
+            self.command.stdout.write(f"    - Creating {len(links_to_create)} unique product-category links...")
             ProductCategory.objects.bulk_create(links_to_create, ignore_conflicts=True, batch_size=999)
