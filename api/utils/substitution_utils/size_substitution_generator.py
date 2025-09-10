@@ -6,11 +6,11 @@ from thefuzz import fuzz
 
 class SizeSubstitutionGenerator(BaseSubstitutionGenerator):
     """
-    Generates substitutions for Level 1: Same brand, same product, different size.
+    Generates substitutions for Level 2: Same brand, similar product.
     This implementation now uses string similarity on normalized names to group products.
     """
     def generate(self):
-        self.command.stdout.write("--- Generating Level 1: Size Substitutions (Similarity Method) ---")
+        self.command.stdout.write("--- Generating Level 2: Size Substitutions (Similarity Method) ---")
         
         brands = ProductBrand.objects.all()
         new_substitutions_count = 0

@@ -17,7 +17,7 @@ class StrictSubstitutionGenerator(BaseSubstitutionGenerator):
         # 1. Build a map where keys are normalized names and values are lists of products.
         # This will group all products that share at least one common normalized name.
         name_map = defaultdict(list)
-        products = Product.objects.prefetch_related('name_variations').all()
+        products = Product.objects.all()
 
         for product in products:
             # Create a set of all possible normalized names for the product.

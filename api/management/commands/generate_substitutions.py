@@ -10,22 +10,22 @@ class Command(BaseCommand):
         parser.add_argument(
             '--lvl1',
             action='store_true',
-            help='Generate Level 1: Same product, different size (Exact Name Match).'
+            help='Generate Level 1: Same brand, same product, different size.'
         )
         parser.add_argument(
             '--lvl2',
             action='store_true',
-            help='Generate Level 2: Similar product, same brand (Fuzzy Name Match).'
+            help='Generate Level 2: Same brand, similar product, similar size.'
         )
         parser.add_argument(
             '--lvl3',
             action='store_true',
-            help='Generate Level 3: Same brand, different product (Variant/Flavor Match).'
+            help='Generate Level 3: Different brand, similar product, similar size.'
         )
         parser.add_argument(
             '--lvl4',
             action='store_true',
-            help='Generate Level 4: Different brand, similar product (Not Implemented).'
+            help='Generate Level 4: Different brand, similar product, different size.'
         )
 
     def handle(self, *args, **options):
