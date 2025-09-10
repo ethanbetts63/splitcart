@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
-from api.utils.substitution_utils.lv1_same_brand_same_product_similar_size import StrictSubstitutionGenerator
-from api.utils.substitution_utils.lvl2_same_brand_similar_product_similar_size import SizeSubstitutionGenerator
+from api.utils.substitution_utils.lv1_same_brand_same_product_similar_size import Lvl1SubstitutionGenerator
+from api.utils.substitution_utils.lvl2_substitution_generator import Lvl2SubstitutionGenerator
 
 class Command(BaseCommand):
     help = 'Generates product substitutions based on different heuristic levels.'
@@ -42,11 +42,11 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("--- Starting Substitution Generation ---"))
 
         if lvl1:
-            generator = StrictSubstitutionGenerator(command=self)
+            generator = Lvl1SubstitutionGenerator(command=self)
             generator.generate()
         
         if lvl2:
-            generator = SizeSubstitutionGenerator(command=self)
+            generator = Lvl2SubstitutionGenerator(command=self)
             generator.generate()
 
         if lvl4:

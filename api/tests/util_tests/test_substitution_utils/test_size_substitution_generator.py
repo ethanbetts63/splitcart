@@ -1,11 +1,11 @@
 from django.test import TestCase
 from unittest.mock import Mock
 
-from api.utils.substitution_utils.lvl2_same_brand_similar_product_similar_size import SizeSubstitutionGenerator
+from api.utils.substitution_utils.lvl2_substitution_generator import Lvl2SubstitutionGenerator
 from products.models import Product, ProductBrand, ProductSubstitution
 from products.tests.test_helpers.model_factories import ProductFactory, ProductBrandFactory
 
-class SizeSubstitutionGeneratorTests(TestCase):
+class Lvl2SubstitutionGeneratorTests(TestCase):
 
     def setUp(self):
         self.mock_command = Mock()
@@ -38,7 +38,7 @@ class SizeSubstitutionGeneratorTests(TestCase):
             normalized_name='arnotts digestive biscuits'
         )
 
-        generator = SizeSubstitutionGenerator(self.mock_command)
+        generator = Lvl2SubstitutionGenerator(self.mock_command)
 
         # 2. Act
         self.assertEqual(ProductSubstitution.objects.count(), 0)

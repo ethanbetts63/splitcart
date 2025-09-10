@@ -9,7 +9,7 @@ Our first major focus was improving the health and coverage of the test suite.
 - **Improving Test Coverage**: Based on the previous session's summary, we systematically added new tests for recently implemented features:
     - **Size Merging**: Added a test to `api/tests/database_updating_tests/test_update_orchestrator.py` to verify the logic that merges `sizes` lists in the `UpdateOrchestrator`.
     - **Normalization**: Created a new test file (`api/tests/util_tests/test_product_normalizer.py`) to ensure the `get_fully_normalized_name` method in `ProductNormalizer` works as expected.
-    - **Substitution Engine**: Created a new test file (`api/tests/util_tests/test_substitution_utils/test_size_substitution_generator.py`) to validate the fuzzy name matching logic in the `SizeSubstitutionGenerator`.
+    - **Substitution Engine**: Created a new test file (`api/tests/util_tests/test_substitution_utils/test_size_substitution_generator.py`) to validate the fuzzy name matching logic in the `Lvl2SubstitutionGenerator`.
     - **Substitution Model**: Created a new test file (`products/tests/model_tests/test_substitution.py`) to ensure the `ProductSubstitution` model can be created correctly.
 
 ### Part 2: Debugging and Improving the Substitution Pipeline
@@ -38,6 +38,6 @@ Finally, we designed and began implementing a more robust and accurate substitut
 
 - **Model Enhancement**: To support this, we added a new `normalized_name_variations` field to the `Product` model (`products/models/product.py`) and successfully migrated the database (`products/migrations/0002_add_normalized_name_variations_field.py`). This field will be used to create a set of all known names for a product for more robust matching.
 
-- **New Generator Implementation**: We created a new `StrictSubstitutionGenerator` (`api/utils/substitution_utils/strict_substitution_generator.py`) that contains this new exact-matching logic.
+- **New Generator Implementation**: We created a new `Lvl1SubstitutionGenerator` (`api/utils/substitution_utils/strict_substitution_generator.py`) that contains this new exact-matching logic.
 
-- **Command Restructuring**: We rewired the main `generate_substitutions` command (`api/management/commands/generate_substitutions.py`) to use our new `StrictSubstitutionGenerator` as Level 1, and re-classified the old fuzzy-matching generator as Level 2.
+- **Command Restructuring**: We rewired the main `generate_substitutions` command (`api/management/commands/generate_substitutions.py`) to use our new `Lvl1SubstitutionGenerator` as Level 1, and re-classified the old fuzzy-matching generator as Level 2.

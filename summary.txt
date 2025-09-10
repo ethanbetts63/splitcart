@@ -22,7 +22,7 @@ We had a detailed discussion about the architecture of the upcoming product subs
 
 We built the first stage of the substitution engine and then debugged and improved it based on the initial results.
 
-- **Level 1 Generator**: I created the `BaseSubstitutionGenerator` and the `SizeSubstitutionGenerator` (for Level 1) and added a `generate_substitutions` management command to run them.
+- **Level 1 Generator**: I created the `BaseSubstitutionGenerator` and the `Lvl2SubstitutionGenerator` (for Level 1) and added a `generate_substitutions` management command to run them.
 - **Quality Analysis Tool**: To measure our progress, I built an `analyze_substitutions` command. This tool provides overall statistics, hub analysis for finding problem products, and random sampling for manual review.
 - **Debugging the Level 1 Generator**: The analysis tool immediately revealed that the initial heuristic for finding size variants (a simple "first three words" rule) was flawed and producing many incorrect matches.
 - **Refactoring the Level 1 Generator**: Based on your direction, I replaced the flawed logic with a much more robust approach that uses the `thefuzz` library to compare the string similarity of `normalized_name` fields, yielding far more accurate results.
@@ -41,7 +41,7 @@ We diagnosed and fixed several deeper bugs in the data processing pipeline that 
 
 Finally, we diagnosed and fixed a critical bug in the data pipeline that was preventing the new substitution generator from working.
 
-- **Problem Diagnosis**: After refactoring the `SizeSubstitutionGenerator`, it produced zero results. You correctly diagnosed that this was because the `normalized_name` field was not being calculated and saved during the initial scraping phase; it only existed within the database, not in the intermediate `.jsonl` files.
+- **Problem Diagnosis**: After refactoring the `Lvl2SubstitutionGenerator`, it produced zero results. You correctly diagnosed that this was because the `normalized_name` field was not being calculated and saved during the initial scraping phase; it only existed within the database, not in the intermediate `.jsonl` files.
 - **Improving `ProductNormalizer`**: We identified that for similarity matching, we needed a new kind of normalization (lowercase, no punctuation, but with spaces preserved). I added a new `get_fully_normalized_name()` method to the `ProductNormalizer` to produce this.
 - **Updating the Data Cleaners**: I updated the data cleaner class for all four scrapers (Coles, Woolworths, Aldi, IGA) to use this new method, ensuring the `.jsonl` files are now generated with the correct `normalized_name` needed for the substitution engine.
 - **Bug Fix**: We also found and fixed an `AttributeError` in the `BaseDataCleaner` that was caused by a typo in a method name.

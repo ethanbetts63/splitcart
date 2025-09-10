@@ -6,7 +6,7 @@ from .substitution_generator import BaseSubstitutionGenerator
 from products.models import Product
 from .size_comparer import SizeComparer
 
-class StrictSubstitutionGenerator(BaseSubstitutionGenerator):
+class Lvl1SubstitutionGenerator(BaseSubstitutionGenerator):
     """
     Generates substitutions for Level 1: Same product, different size.
     This is a high-accuracy generator that requires names to match exactly.
@@ -48,7 +48,7 @@ class StrictSubstitutionGenerator(BaseSubstitutionGenerator):
                             _, created = self._create_substitution(
                                 prod_a, 
                                 prod_b, 
-                                type='STRICT', # Using a new type to distinguish from the old fuzzy match
+                                level='LVL1',
                                 score=1.0, 
                                 source='strict_name_match_v1'
                             )

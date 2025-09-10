@@ -3,7 +3,7 @@ from .substitution_generator import BaseSubstitutionGenerator
 from products.models import Product, ProductBrand
 from thefuzz import fuzz
 
-class SizeSubstitutionGenerator(BaseSubstitutionGenerator):
+class Lvl2SubstitutionGenerator(BaseSubstitutionGenerator):
     """
     Generates substitutions for Level 2: Same brand, similar product.
     This implementation now uses string similarity on normalized names to group products.

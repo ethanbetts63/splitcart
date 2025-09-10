@@ -3,13 +3,13 @@ from django.db import models
 class ProductSubstitution(models.Model):
     """
     Represents a Symmetrical substitution relationship between two products,
-    ranked by a similarity score and classified by type.
+    ranked by a similarity score and classified by level.
     """
-    SUBSTITUTION_TYPES = [
-        ('SIZE', 'Same product, different size'),
-        ('VARIANT', 'Same brand, similar product'),
-        ('COMPETITOR', 'Different brand, similar product'),
-        ('OTHER', 'Other/Unknown'),
+    SUBSTITUTION_LEVELS = [
+        ('LVL1', 'Same brand, same product, different size.'),
+        ('LVL2', 'Same brand, similar product, similar size.'),
+        ('LVL3', 'Different brand, similar product, similar size.'),
+        ('LVL4', 'Different brand, similar product, different size.'),
     ]
 
     product_a = models.ForeignKey(
@@ -23,12 +23,12 @@ class ProductSubstitution(models.Model):
         related_name='substitutions_b'
     )
 
-    type = models.CharField(
+    level = models.CharField(
         max_length=20, 
-        choices=SUBSTITUTION_TYPES, 
+        choices=SUBSTITUTION_LEVELS, 
         db_index=True,
-        help_text="The classification of the substitution type based on heuristics.",
-        default='OTHER'
+        help_text="The classification of the substitution level based on heuristics.",
+        default='LVL4'
     )
     score = models.FloatField(
         db_index=True,
@@ -48,4 +48,4 @@ class ProductSubstitution(models.Model):
         ordering = ['-score']
 
     def __str__(self):
-        return f"{self.product_a} <-> {self.product_b} (Type: {self.get_type_display()}, Score: {self.score})"
+        return f"{self.product_a} <-> {self.product_b} (Level: {self.get_level_display()}, Score: {self.score})"
