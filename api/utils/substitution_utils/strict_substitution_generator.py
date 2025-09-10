@@ -1,8 +1,11 @@
 from itertools import combinations
 from collections import defaultdict
+from itertools import combinations
+from collections import defaultdict
 from .substitution_generator import BaseSubstitutionGenerator
 from products.models import Product, ProductBrand
 from api.utils.product_normalizer import ProductNormalizer
+from .size_comparer import SizeComparer
 
 class StrictSubstitutionGenerator(BaseSubstitutionGenerator):
     """
@@ -13,6 +16,7 @@ class StrictSubstitutionGenerator(BaseSubstitutionGenerator):
         self.command.stdout.write("--- Generating Level 1: Strict Substitutions (Exact Name Match) ---")
         
         new_substitutions_count = 0
+        size_comparer = SizeComparer()
 
         # 1. Build a map where keys are normalized names and values are lists of products.
         # This will group all products that share at least one common normalized name.
@@ -42,20 +46,19 @@ class StrictSubstitutionGenerator(BaseSubstitutionGenerator):
                 unique_products = list(set(product_group))
                 
                 if len(unique_products) > 1:
-                    # TODO: Add size comparison logic here.
-                    # For now, we link all pairs in the group.
-                    # Future logic should check `standardized_sizes` and only link
-                    # products with different, but comparable, physical sizes.
-
                     for prod_a, prod_b in combinations(unique_products, 2):
-                        _, created = self._create_substitution(
-                            prod_a, 
-                            prod_b, 
-                            type='STRICT', # Using a new type to distinguish from the old fuzzy match
-                            score=1.0, 
-                            source='strict_name_match_v1'
-                        )
-                        if created:
-                            new_substitutions_count += 1
+                        sizes_a = size_comparer.get_canonical_sizes(prod_a)
+                        sizes_b = size_comparer.get_canonical_sizes(prod_b)
+
+                        if sizes_a and sizes_b and sizes_a != sizes_b:
+                            _, created = self._create_substitution(
+                                prod_a, 
+                                prod_b, 
+                                type='STRICT', # Using a new type to distinguish from the old fuzzy match
+                                score=1.0, 
+                                source='strict_name_match_v1'
+                            )
+                            if created:
+                                new_substitutions_count += 1
         
         self.command.stdout.write(self.command.style.SUCCESS(f"Generated {new_substitutions_count} new strict substitutions."))

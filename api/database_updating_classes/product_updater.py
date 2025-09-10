@@ -111,6 +111,10 @@ class ProductUpdater:
 
             if existing_product:
                 product_cache[key] = existing_product
+                new_normalized_name = product_details.get('normalized_name')
+                if new_normalized_name and new_normalized_name not in existing_product.name_variations:
+                    existing_product.name_variations.append(new_normalized_name)
+                    unit_of_work.add_for_update(existing_product)
                 unit_of_work.add_price(existing_product, store_obj, product_details)
             else:
                 new_product = Product(
@@ -118,6 +122,7 @@ class ProductUpdater:
                     brand=product_details.get('brand'),
                     barcode=product_details.get('barcode'),
                     normalized_name_brand_size=key,
+                    name_variations=[product_details.get('normalized_name')],
                     size=product_details.get('sizes', [])[0] if product_details.get('sizes') else None,
                     sizes=product_details.get('sizes', []),
                     url=product_details.get('price_history', [{}])[0].get('url'),
