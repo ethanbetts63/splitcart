@@ -11,9 +11,10 @@ def generate_substitution_analysis_report():
     report_parts.append(_get_overall_stats_text())
     report_parts.append(_get_hub_products_text(20))
 
-    levels = ProductSubstitution.objects.values_list('level', flat=True).distinct()
+    # Use Python's set() to guarantee uniqueness, as .distinct() was behaving unexpectedly.
+    levels = set(ProductSubstitution.objects.values_list('level', flat=True))
 
-    for level in sorted(levels):
+    for level in sorted(list(levels)):
         report_parts.append(_get_random_samples_text(20, level))
 
     return "\n\n".join(report_parts)
