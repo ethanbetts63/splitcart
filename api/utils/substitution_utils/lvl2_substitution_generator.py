@@ -27,14 +27,12 @@ class Lvl2SubstitutionGenerator(BaseSubstitutionGenerator):
                 if len(group) > 1:
                     # Create substitutions for all pairs within the group
                     for prod_a, prod_b in combinations(group, 2):
-                        self._create_substitution(
-                            prod_a, 
-                            prod_b, 
-                            level='LVL2', 
-                            score=0.95, 
-                            source='size_similarity_v1'
-                        )
-                        new_substitutions_count += 1
+                        _, created = self._create_substitution(
+                            prod_a, prod_b, level='LVL2', score=0.95, source='size_similarity_v1'
+                            )                        
+                        if created:
+                            new_substitutions_count += 1
+        
         self.command.stdout.write(self.command.style.SUCCESS(f"Generated {new_substitutions_count} new size substitutions."))
 
     def _group_by_similarity(self, products):
