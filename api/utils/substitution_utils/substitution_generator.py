@@ -11,7 +11,7 @@ class BaseSubstitutionGenerator:
         """The main method to find and create substitutions."""
         raise NotImplementedError("Subclasses must implement the 'generate' method.")
 
-    def _create_substitution(self, product_a, product_b, type, score, source):
+    def _create_substitution(self, product_a, product_b, level, score, source):
         """
         Creates a symmetrical substitution entry in the database, ensuring no duplicates.
         The product with the lower ID is always stored as product_a to prevent duplicates like (A,B) and (B,A).
@@ -26,7 +26,7 @@ class BaseSubstitutionGenerator:
             product_a=product_a,
             product_b=product_b,
             defaults={
-                'type': type,
+                'level': level,
                 'score': score,
                 'source': source
             }

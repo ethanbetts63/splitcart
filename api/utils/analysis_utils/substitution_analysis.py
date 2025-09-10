@@ -39,8 +39,10 @@ def _get_overall_stats_text():
     lines.append("\n--- Substitutions by Level ---")
     level_counts = ProductSubstitution.objects.values('level').annotate(count=Count('level')).order_by('level')
 
+    choices_dict = dict(ProductSubstitution._meta.get_field('level').choices)
+
     for item in level_counts:
-        level_display = ProductSubstitution._meta.get_field('level').get_choices(include_blank=False)[int(item['level'].replace('LVL', '')) - 1][1]
+        level_display = choices_dict.get(item['level'])
         percentage = (item['count'] / total_substitutions) * 100
         lines.append(f"- Level {item['level'].replace('LVL', '')}: {level_display} - {item['count']} ({percentage:.2f}%)")
     
@@ -98,7 +100,8 @@ def _get_hub_products_text(hub_count):
     return "\n".join(lines)
 
 def _get_random_samples_text(sample_size, level):
-    level_display = ProductSubstitution._meta.get_field('level').get_choices(include_blank=False)[int(level.replace('LVL', '')) - 1][1]
+    choices_dict = dict(ProductSubstitution._meta.get_field('level').choices)
+    level_display = choices_dict.get(level)
     header = f"--- Level {level.replace('LVL', '')}: {level_display} ---"
     lines = [header]
     
