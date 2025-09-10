@@ -69,6 +69,7 @@ python manage.py update_db --prefixes
 python manage.py reconcile_products 
 python manage.py generate_substitutions
 python manage.py analyze --report company_heatmap
+python manage.py analyze --report subs
 python manage.py update_db stores
 python manage.py update_db categories
 python manage.py build_company_jsons

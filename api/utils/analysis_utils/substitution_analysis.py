@@ -12,10 +12,8 @@ def generate_substitution_analysis_report():
     report_parts.append(_get_overall_stats_text())
     report_parts.append(_get_hub_products_text(20))
 
-    sub_types = ProductSubstitution.objects.values_list('type', flat=True).distinct()
-
-    for sub_type in sub_types:
-        report_parts.append(_get_random_samples_text(20, sub_type))
+    for level in range(1, 5):
+        report_parts.append(_get_random_samples_text(20, level))
 
     return "\n\n".join(report_parts)
 
@@ -36,11 +34,35 @@ def _get_overall_stats_text():
     lines.append(f"- Total Substitution Links: {total_substitutions}")
     lines.append(f"- Products with at least one substitute: {products_with_subs_count} ({products_with_subs_count/total_products:.2%})")
 
-    lines.append("\n--- Substitutions by Type ---")
-    type_counts = ProductSubstitution.objects.values('type').annotate(count=Count('type')).order_by('-count')
+    lines.append("\n--- Substitutions by Level ---")
+    type_counts = ProductSubstitution.objects.values('type').annotate(count=Count('type'))
+    level_counts = {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0
+    }
     for item in type_counts:
-        percentage = (item['count'] / total_substitutions) * 100
-        lines.append(f"- {item['type']}: {item['count']} ({percentage:.2f}%)")
+        if item['type'] in ['STRICT', 'SIZE']:
+            level_counts[1] += item['count']
+        elif item['type'] == 'SIMILAR_PRODUCT':
+            level_counts[2] += item['count']
+        elif item['type'] == 'CROSS_BRAND_SIMILAR_PRODUCT':
+            level_counts[3] += item['count']
+        elif item['type'] == 'CROSS_BRAND_DIFFERENT_SIZE':
+            level_counts[4] += item['count']
+
+    definitions = {
+        1: 'Same brand, same product, different size.',
+        2: 'Same brand, similar product, similar size.',
+        3: 'Different brand, similar product, similar size.',
+        4: 'Different brand, similar product, different size.'
+    }
+
+    for level, count in sorted(level_counts.items()):
+        if count > 0:
+            percentage = (count / total_substitutions) * 100
+            lines.append(f"- Level {level}: {definitions[level]} - {count} ({percentage:.2f}%)")
     
     return "\n".join(lines)
 
@@ -95,12 +117,29 @@ def _get_hub_products_text(hub_count):
     
     return "\n".join(lines)
 
-def _get_random_samples_text(sample_size, sub_type):
-    lines = [f"--- Random Sample of {sample_size} Substitutions (Type: {sub_type.upper()}) ---"]
-    queryset = ProductSubstitution.objects.filter(type__iexact=sub_type)
+def _get_random_samples_text(sample_size, level):
+    definitions = {
+        1: 'Same brand, same product, different size.',
+        2: 'Same brand, similar product, similar size.',
+        3: 'Different brand, similar product, similar size.',
+        4: 'Different brand, similar product, different size.'
+    }
+    definition = definitions.get(level, 'N/A')
+
+    types_for_level = {
+        1: ['STRICT', 'SIZE'],
+        2: ['SIMILAR_PRODUCT'],
+        3: ['CROSS_BRAND_SIMILAR_PRODUCT'],
+        4: ['CROSS_BRAND_DIFFERENT_SIZE']
+    }.get(level, [])
+
+    header = f"--- Level {level}: {definition} ---"
+    lines = [header]
+    
+    queryset = ProductSubstitution.objects.filter(type__in=types_for_level)
 
     if queryset.count() == 0:
-        lines.append("No substitutions found for this type.")
+        lines.append("No substitutions found for this level.")
         return "\n".join(lines)
 
     random_samples = queryset.order_by('?')[:sample_size]
