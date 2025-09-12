@@ -2,9 +2,9 @@ import random
 import pulp
 import statistics
 
-from django.db.models import Count
+from django.db.models import Count, Q
 from companies.models import Company, Store
-from products.models import Product, Price
+from products.models import Product, Price, ProductSubstitution
 
 
 def generate_random_cart(stores, num_products):
@@ -19,10 +19,26 @@ def generate_random_cart(stores, num_products):
 
     all_slots = []
     for anchor_product in anchor_products:
+        # Start with the anchor product itself
         products_in_slot = {anchor_product}
-        substitutes = Product.objects.filter(normalized_name=anchor_product.normalized_name).exclude(id=anchor_product.id)
-        if substitutes.exists():
-            for sub in substitutes:
+
+        # Find all substitution relationships for the anchor product
+        sub_relations = ProductSubstitution.objects.filter(
+            Q(product_a=anchor_product) | Q(product_b=anchor_product)
+        )
+
+        # Collect all unique product IDs from those relationships
+        substitute_ids = set()
+        for rel in sub_relations:
+            if rel.product_a_id == anchor_product.id:
+                substitute_ids.add(rel.product_b_id)
+            else:
+                substitute_ids.add(rel.product_a_id)
+
+        # Fetch the actual Product objects for the substitutes
+        if substitute_ids:
+            substitute_products = Product.objects.filter(id__in=substitute_ids)
+            for sub in substitute_products:
                 products_in_slot.add(sub)
 
         current_slot = []
