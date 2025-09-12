@@ -12,7 +12,7 @@ def generate_random_cart(stores, num_products):
     product_ids_in_stores = Price.objects.filter(store__in=stores).values_list('product_id', flat=True).distinct()
     
     if len(product_ids_in_stores) < num_products:
-        return None
+        return None, None
 
     random_product_ids = random.sample(list(product_ids_in_stores), num_products)
     anchor_products = Product.objects.filter(id__in=random_product_ids)
@@ -58,12 +58,13 @@ def generate_random_cart(stores, num_products):
         if current_slot:
             all_slots.append(current_slot)
     
-    return all_slots
+    return all_slots, anchor_products
 
 def calculate_optimized_cost(slots, max_stores):
     """Calculates the optimized cost using the PuLP solver."""
     prob = pulp.LpProblem("GroceryOptimization", pulp.LpMinimize)
     all_store_ids = {option['store_id'] for slot in slots for option in slot}
+    all_store_names = {option['store_name'] for slot in slots for option in slot}
 
     choice_vars = pulp.LpVariable.dicts("Choice", ((i, j) for i, slot in enumerate(slots) for j, option in enumerate(slot)), cat="Binary")
     store_usage = pulp.LpVariable.dicts("UseStore", all_store_ids, cat="Binary")
@@ -83,9 +84,28 @@ def calculate_optimized_cost(slots, max_stores):
     prob.solve(pulp.PULP_CBC_CMD(msg=0))
 
     if pulp.LpStatus[prob.status] == "Optimal":
-        return pulp.value(prob.objective)
+        final_cost = pulp.value(prob.objective)
+
+        shopping_plan = {name: [] for name in all_store_names}
+
+        for i, slot in enumerate(slots):
+            for j, option in enumerate(slot):
+                if choice_vars[(i, j)].varValue == 1:
+                    store_name = option['store_name']
+                    product_name = option['product_name']
+                    brand = option['brand']
+                    price = option['price']
+                    
+                    plan_item = {
+                        "product": f"{brand} {product_name}",
+                        "price": price
+                    }
+                    shopping_plan[store_name].append(plan_item)
+                    break
+
+        return final_cost, shopping_plan
     else:
-        return None
+        return None, None
 
 def calculate_baseline_cost_for_main_store(main_store_id, slots, all_stores):
     """Helper function to calculate the baseline cost for one potential main store."""
