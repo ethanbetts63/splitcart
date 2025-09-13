@@ -1,5 +1,34 @@
 from django.db import models
 
+class CategoryEquivalence(models.Model):
+    from_category = models.ForeignKey(
+        'Category', 
+        on_delete=models.CASCADE, 
+        related_name='from_equivalences'
+    )
+    to_category = models.ForeignKey(
+        'Category', 
+        on_delete=models.CASCADE, 
+        related_name='to_equivalences'
+    )
+
+    class RelationshipType(models.TextChoices):
+        EQUIVALENT = 'EQ', 'Equivalent'
+        IS_SUBSET_OF = 'SUB', 'Is Subset Of'
+
+    relationship_type = models.CharField(
+        max_length=3, 
+        choices=RelationshipType.choices,
+        help_text="'Equivalent' is a symmetrical relationship. 'Is Subset Of' is a directed relationship (e.g., from_category is a subset of to_category)."
+    )
+
+    class Meta:
+        unique_together = ('from_category', 'to_category')
+
+    def __str__(self):
+        return f"{self.from_category.name} -> {self.to_category.name} ({self.get_relationship_type_display()})"
+
+
 class Category(models.Model):
     name = models.CharField(
         max_length=100,
@@ -21,9 +50,6 @@ class Category(models.Model):
         blank=True,
         help_text="The category ID from the store's website, if available."
     )
-    # A category can appear in multiple places in a store's hierarchy, 
-    # e.g., a top-level "Specials" and a nested "Meat -> Specials".
-    # A ManyToManyField allows a category to have multiple parents to reflect this.
     parents = models.ManyToManyField(
         'self',
         symmetrical=False,
@@ -32,17 +58,17 @@ class Category(models.Model):
         help_text="The parent categories of this category."
     )
 
-    equivalent_categories = models.ManyToManyField(
+    equivalences = models.ManyToManyField(
         'self',
+        through=CategoryEquivalence,
+        symmetrical=False,
         blank=True,
-        help_text="Links to categories in other companies that are considered equivalent."
+        help_text="Links to categories in other companies with a defined relationship type."
     )
 
     class Meta:
         verbose_name_plural = "Categories"
-        # A company can't have two categories with the same slug.
         unique_together = ('slug', 'company')
 
     def __str__(self):
-        # A category can have multiple parent paths, so we just return its name.
         return self.name
