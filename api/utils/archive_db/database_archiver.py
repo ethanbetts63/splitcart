@@ -40,10 +40,9 @@ class DatabaseArchiver(BaseArchiver):
             env['PYTHONIOENCODING'] = 'utf-8'
 
             try:
-                subprocess.run(command, check=True, capture_output=True, env=env)
+                subprocess.run(command, check=True, capture_output=True, text=True, env=env, encoding='utf-8', errors='replace')
             except subprocess.CalledProcessError as e:
-                stderr_output = e.stderr.decode('utf-8', errors='replace')
-                self.command.stderr.write(self.command.style.ERROR(f"    Failed to archive {app_label}.{model_name}.\n    Error: {stderr_output}"))
+                self.command.stderr.write(self.command.style.ERROR(f"    Failed to archive {app_label}.{model_name}.\n    Error: {e.stderr}"))
 
         self.command.stdout.write(self.command.style.SUCCESS("\nDatabase archive complete."))
         self.command.stdout.write(f"Files saved in: {self.archive_dir}")
