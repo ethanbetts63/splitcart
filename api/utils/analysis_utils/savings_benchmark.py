@@ -199,6 +199,29 @@ def run_savings_benchmark(file_path):
             report_lines.append("Could not generate a valid cart for this run. Skipping.")
             continue
 
+        # --- Run Analysis --- #
+        num_slots = len(slots)
+        total_options = sum(len(slot) for slot in slots)
+        avg_options_per_slot = total_options / num_slots if num_slots > 0 else 0
+        
+        slots_with_brand_subs = 0
+        total_price_range = 0
+        
+        for slot in slots:
+            if not slot:
+                continue
+            
+            brands = {option['brand'] for option in slot}
+            if len(brands) > 1:
+                slots_with_brand_subs += 1
+            
+            prices = [option['price'] for option in slot]
+            if len(prices) > 1:
+                total_price_range += max(prices) - min(prices)
+            
+        avg_price_range = total_price_range / num_slots if num_slots > 0 else 0
+        # --- End Analysis --- #
+
         optimized_cost, _ = calculate_optimized_cost(slots, MAX_STORES_FOR_SOLVER)
         if optimized_cost is None:
             report_lines.append("Solver could not find an optimal solution. Skipping run.")
@@ -213,6 +236,11 @@ def run_savings_benchmark(file_path):
         else:
             all_savings.append(0)
             report_lines.append(f"Baseline: ${baseline_cost:.2f}, Optimized: ${optimized_cost:.2f}, Savings: 0.00%")
+
+        report_lines.append("  Run Characteristics:")
+        report_lines.append(f"    - Avg Options per Item: {avg_options_per_slot:.2f}")
+        report_lines.append(f"    - Items with Brand Subs: {slots_with_brand_subs} / {num_slots}")
+        report_lines.append(f"    - Avg Price Range per Item: ${avg_price_range:.2f}")
 
     report_lines.append("\n--- Benchmark Complete ---")
     report_lines.append(f"Individual savings percentages: {[f'{s:.2f}%' for s in all_savings]}")
