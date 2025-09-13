@@ -9,7 +9,7 @@ from api.analysers.category_price_correlation import generate_category_price_cor
 from api.utils.analysis_utils.category_tree import generate_category_tree
 from api.utils.analysis_utils.substitution_analysis import generate_substitution_analysis_report
 from api.utils.analysis_utils.savings_benchmark import run_savings_benchmark
-from api.utils.analysis_utils.substitution_overlap import calculate_substitution_overlap_matrix, generate_substitution_heatmap_image, calculate_company_substitution_overlap_matrix
+from api.utils.analysis_utils.substitution_overlap import calculate_strict_substitution_overlap_matrix, generate_substitution_heatmap_image
 from companies.models import Company, Category, Store
 
 class Command(BaseCommand):
@@ -72,29 +72,9 @@ class Command(BaseCommand):
             generate_store_pricing_heatmap(company_name, state)
 
         elif report_type == 'sub_heatmap':
-            self.stdout.write(self.style.SUCCESS("Generating substitution overlap heatmap..."))
-            if company_name:
-                # Perform store-level analysis for the specified company
-                try:
-                    company = Company.objects.get(name__iexact=company_name)
-                    stores = Store.objects.filter(company=company)
-                    if state:
-                        stores = stores.filter(state__iexact=state)
-                    
-                    if not stores.exists():
-                        self.stdout.write(self.style.ERROR("No stores found for the given criteria."))
-                        return
-
-                    overlap_matrix = calculate_substitution_overlap_matrix(stores)
-                    generate_substitution_heatmap_image(overlap_matrix, 'store', company_name, state)
-
-                except Company.DoesNotExist:
-                    self.stdout.write(self.style.ERROR(f"Company '{company_name}' not found."))
-                    return
-            else:
-                # Perform company-level analysis
-                overlap_matrix = calculate_company_substitution_overlap_matrix()
-                generate_substitution_heatmap_image(overlap_matrix, 'company')
+            self.stdout.write(self.style.SUCCESS("Generating strict substitution overlap heatmap for companies..."))
+            overlap_matrix = calculate_strict_substitution_overlap_matrix()
+            generate_substitution_heatmap_image(overlap_matrix)
 
         elif report_type == 'category_heatmap':
             if not company_name:
