@@ -38,6 +38,7 @@ class DatabaseArchiver(BaseArchiver):
 
             env = os.environ.copy()
             env['PYTHONIOENCODING'] = 'utf-8'
+            env['PYTHONUTF8'] = '1'
 
             try:
                 subprocess.run(command, check=True, capture_output=True, text=True, env=env, encoding='utf-8', errors='replace')
