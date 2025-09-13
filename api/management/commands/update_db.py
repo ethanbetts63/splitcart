@@ -2,8 +2,8 @@ import os
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from api.utils.database_updating_utils.update_stores_from_discovery import update_stores_from_discovery
+from api.utils.database_updating_utils.load_db_from_archive import load_db_from_latest_archive
 from api.database_updating_classes.update_orchestrator import UpdateOrchestrator
-from api.database_updating_classes.archive_update_orchestrator import ArchiveUpdateOrchestrator
 from api.database_updating_classes.prefix_update_orchestrator import PrefixUpdateOrchestrator
 
 class Command(BaseCommand):
@@ -13,33 +13,24 @@ class Command(BaseCommand):
         parser.add_argument('--stores', action='store_true', help='Update stores from the discovered_stores directory.')
         parser.add_argument('--products', action='store_true', help='Update products from the product_inbox directory.')
         parser.add_argument('--prefixes', action='store_true', help='Update brand prefixes from the prefix_inbox directory.')
-        parser.add_argument(
-            '--archive', 
-            nargs='*',
-            help='Update from archives. Can specify "stores" and/or "products". No args means both.'
-        )
+        parser.add_argument('--archive', action='store_true', help='Flush DB and load data from the most recent archive.')
 
     def handle(self, *args, **options):
+        if options['archive']:
+            load_db_from_latest_archive(self)
+            return
+
         run_stores_discovery = options['stores']
         run_products_processed = options['products']
         run_prefixes = options['prefixes']
-        archive_options = options['archive']
 
-        if not any([run_stores_discovery, run_products_processed, run_prefixes, archive_options is not None]):
+        if not any([run_stores_discovery, run_products_processed, run_prefixes]):
             run_stores_discovery = True
             run_products_processed = True
 
         if run_prefixes:
             orchestrator = PrefixUpdateOrchestrator(self)
             orchestrator.run()
-
-        if archive_options is not None:
-            run_all_archives = len(archive_options) == 0
-            run_stores_archive = 'stores' in archive_options or run_all_archives
-            run_products_archive = 'products' in archive_options or run_all_archives
-
-            orchestrator = ArchiveUpdateOrchestrator(self)
-            orchestrator.run(update_stores=run_stores_archive, update_products=run_products_archive)
 
         if run_stores_discovery:
             self.stdout.write(self.style.SQL_FIELD('--- Running store update from discovery ---'))
