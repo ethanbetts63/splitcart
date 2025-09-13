@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 import random
 from django.db.models import Count
-from companies.models import Store
+from companies.models import Company, Store
 from api.utils.analysis_utils.savings_benchmark import generate_random_cart, calculate_optimized_cost, calculate_baseline_cost
 
 class Command(BaseCommand):
@@ -9,18 +9,33 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         PRODUCTS_PER_RUN = 20
-        STORES_PER_RUN = 3
-        MAX_STORES_FOR_SOLVER = 3
 
         self.stdout.write("--- Setting up a single shopping run for inspection ---")
 
-        # 1. Select stores
-        viable_stores = Store.objects.annotate(num_prices=Count('prices')).filter(num_prices__gte=PRODUCTS_PER_RUN)
-        if len(viable_stores) < STORES_PER_RUN:
-            self.stdout.write(self.style.ERROR("Not enough viable stores in the database to run the inspection."))
+        # 1. Select one viable store from each company.
+        selected_stores = []
+        all_companies = Company.objects.all()
+
+        for company in all_companies:
+            viable_stores_for_company = Store.objects.filter(
+                company=company
+            ).annotate(
+                num_prices=Count('prices')
+            ).filter(
+                num_prices__gte=PRODUCTS_PER_RUN
+            )
+
+            if viable_stores_for_company.exists():
+                random_store = random.choice(list(viable_stores_for_company))
+                selected_stores.append(random_store)
+
+        if not selected_stores:
+            self.stdout.write(self.style.ERROR("Could not find any viable stores from any company."))
             return
 
-        selected_stores = random.sample(list(viable_stores), STORES_PER_RUN)
+        # The number of stores for the solver is now dynamic.
+        MAX_STORES_FOR_SOLVER = len(selected_stores)
+
         store_names = [s.store_name for s in selected_stores]
         self.stdout.write(self.style.SUCCESS(f"Selected Stores: {', '.join(store_names)}"))
 

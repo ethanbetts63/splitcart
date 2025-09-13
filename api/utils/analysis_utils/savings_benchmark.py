@@ -41,20 +41,27 @@ def generate_random_cart(stores, num_products):
             for sub in substitute_products:
                 products_in_slot.add(sub)
 
-        current_slot = []
+        # Find the cheapest option for this slot at each store.
+        options_by_store = {}
         for product in products_in_slot:
             prices_in_stores = Price.objects.filter(product=product, store__in=stores)
             for price_obj in prices_in_stores:
-                option = {
-                    "product_id": product.id,
-                    "product_name": product.name,
-                    "brand": product.brand,
-                    "store_id": price_obj.store.id,
-                    "store_name": price_obj.store.store_name,
-                    "price": float(price_obj.price),
-                }
-                current_slot.append(option)
+                store_id = price_obj.store.id
+                current_price = float(price_obj.price)
+
+                if store_id not in options_by_store or current_price < options_by_store[store_id]['price']:
+                    options_by_store[store_id] = {
+                        "product_id": product.id,
+                        "product_name": product.name,
+                        "brand": product.brand,
+                        "store_id": store_id,
+                        "store_name": price_obj.store.store_name,
+                        "price": current_price,
+                    }
         
+        # The slot is the list of cheapest options from each store.
+        current_slot = list(options_by_store.values())
+
         if current_slot:
             all_slots.append(current_slot)
     
@@ -156,30 +163,43 @@ def run_savings_benchmark(file_path):
     
     NUM_RUNS = 10
     PRODUCTS_PER_RUN = 100
-    STORES_PER_RUN = 3
-    MAX_STORES_FOR_SOLVER = 3 # Increased to 3 for more reliable results
 
     report_lines.append(f"Starting benchmark with {NUM_RUNS} runs...\n")
     
     all_savings = []
 
-    viable_stores = Store.objects.annotate(num_prices=Count('prices')).filter(num_prices__gte=PRODUCTS_PER_RUN)
-    if len(viable_stores) < STORES_PER_RUN:
-        report_lines.append("Not enough viable stores in the database to run the benchmark.")
-        with open(file_path, 'w') as f:
-            f.write("\n".join(report_lines))
-        return
-
     for i in range(NUM_RUNS):
         report_lines.append(f"--- Run {i + 1}/{NUM_RUNS} ---")
         
-        selected_stores = random.sample(list(viable_stores), STORES_PER_RUN)
-        slots = generate_random_cart(selected_stores, PRODUCTS_PER_RUN)
-        if not slots:
+        # Select one viable store from each company for the run.
+        selected_stores = []
+        all_companies = Company.objects.all()
+
+        for company in all_companies:
+            viable_stores_for_company = Store.objects.filter(
+                company=company
+            ).annotate(
+                num_prices=Count('prices')
+            ).filter(
+                num_prices__gte=PRODUCTS_PER_RUN
+            )
+
+            if viable_stores_for_company.exists():
+                random_store = random.choice(list(viable_stores_for_company))
+                selected_stores.append(random_store)
+
+        if len(selected_stores) < 2:
+            report_lines.append("Not enough companies with viable stores to run a comparison. Skipping run.")
+            continue
+
+        MAX_STORES_FOR_SOLVER = len(selected_stores)
+
+        slots, anchor_products = generate_random_cart(selected_stores, PRODUCTS_PER_RUN)
+        if not slots or not anchor_products:
             report_lines.append("Could not generate a valid cart for this run. Skipping.")
             continue
 
-        optimized_cost = calculate_optimized_cost(slots, MAX_STORES_FOR_SOLVER)
+        optimized_cost, _ = calculate_optimized_cost(slots, MAX_STORES_FOR_SOLVER)
         if optimized_cost is None:
             report_lines.append("Solver could not find an optimal solution. Skipping run.")
             continue
