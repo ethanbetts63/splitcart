@@ -15,7 +15,7 @@ class Category(models.Model):
         related_name='categories',
         help_text="The company that this category belongs to."
     )
-    store_category_id = models.CharField(
+    category_id = models.CharField(
         max_length=50,
         null=True,
         blank=True,
@@ -30,6 +30,12 @@ class Category(models.Model):
         blank=True,
         related_name='subcategories',
         help_text="The parent categories of this category."
+    )
+
+    equivalent_categories = models.ManyToManyField(
+        'self',
+        blank=True,
+        help_text="Links to categories in other companies that are considered equivalent."
     )
 
     class Meta:

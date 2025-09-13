@@ -38,8 +38,8 @@ class CategoryModelTest(TestCase):
 
     def test_nullable_and_blankable_fields(self):
         """Test that nullable and blankable fields are handled correctly."""
-        category = CategoryFactory(store_category_id=None)
-        self.assertIsNone(category.store_category_id)
+        category = CategoryFactory(category_id=None)
+        self.assertIsNone(category.category_id)
         
         # Test that parents can be blank
         category_with_no_parents = CategoryFactory()

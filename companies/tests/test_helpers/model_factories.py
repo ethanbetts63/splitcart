@@ -59,5 +59,5 @@ class CategoryFactory(DjangoModelFactory):
     name = factory.Faker('word')
     slug = factory.LazyAttribute(lambda obj: f"{obj.name.lower()}-slug")
     company = factory.SubFactory(CompanyFactory)
-    store_category_id = factory.Faker('uuid4')
+    category_id = factory.Faker('uuid4')
     # parents will be handled post-generation for ManyToMany

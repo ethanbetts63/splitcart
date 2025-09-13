@@ -117,7 +117,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "store_category_id",
+                    "category_id",
                     models.CharField(
                         blank=True,
                         help_text="The category ID from the store's website, if available.",
