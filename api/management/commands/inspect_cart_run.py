@@ -48,9 +48,11 @@ class Command(BaseCommand):
 
         # 3. Print original list
         self.stdout.write(self.style.HTTP_INFO("\n--- Original Shopping List ---"))
-        anchor_products_sorted = sorted(anchor_products, key=lambda p: f"{p.brand} {p.name}")
+        anchor_products_sorted = sorted(anchor_products, key=lambda p: f"{p.brand or ''} {p.name or ''}")
         for i, product in enumerate(anchor_products_sorted):
-            self.stdout.write(f"{i+1}. {product.brand} {product.name}")
+            brand_safe = (product.brand or '').encode('ascii', 'ignore').decode('ascii')
+            name_safe = (product.name or '').encode('ascii', 'ignore').decode('ascii')
+            self.stdout.write(f"{i+1}. {brand_safe} {name_safe}")
 
         # 4. Solve for the optimal plan
         optimized_cost, shopping_plan = calculate_optimized_cost(slots, MAX_STORES_FOR_SOLVER)
@@ -73,12 +75,14 @@ class Command(BaseCommand):
 
         for store, items in shopping_plan.items():
             if items:
-                self.stdout.write(self.style.SUCCESS(f"\nGo to {store}:"))
+                store_name_safe = (store or '').encode('ascii', 'ignore').decode('ascii')
+                self.stdout.write(self.style.SUCCESS(f"\nGo to {store_name_safe}:"))
                 # Sort items for consistent output
                 sorted_items = sorted(items, key=lambda x: x['product'])
                 store_subtotal = 0
                 for item_details in sorted_items:
-                    self.stdout.write(f"  - Buy {item_details['product']}: ${item_details['price']:.2f}")
+                    product_name_safe = (item_details['product'] or '').encode('ascii', 'ignore').decode('ascii')
+                    self.stdout.write(f"  - Buy {product_name_safe}: ${item_details['price']:.2f}")
                     store_subtotal += item_details['price']
                 self.stdout.write(self.style.HTTP_REDIRECT(f"  Subtotal for {store}: ${store_subtotal:.2f}"))
         

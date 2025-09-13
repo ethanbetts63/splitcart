@@ -41,26 +41,40 @@ def generate_random_cart(stores, num_products):
             for sub in substitute_products:
                 products_in_slot.add(sub)
 
-        # Find the cheapest option for this slot at each store.
-        options_by_store = {}
-        for product in products_in_slot:
-            prices_in_stores = Price.objects.filter(product=product, store__in=stores)
-            for price_obj in prices_in_stores:
-                store_id = price_obj.store.id
-                current_price = float(price_obj.price)
+        # --- New logic for selecting sensible, random substitutes ---
 
-                if store_id not in options_by_store or current_price < options_by_store[store_id]['price']:
-                    options_by_store[store_id] = {
-                        "product_id": product.id,
-                        "product_name": product.name,
-                        "brand": product.brand,
-                        "store_id": store_id,
-                        "store_name": price_obj.store.store_name,
-                        "price": current_price,
-                    }
-        
-        # The slot is the list of cheapest options from each store.
-        current_slot = list(options_by_store.values())
+        # First, find the cheapest price for the anchor product across all stores to set a ceiling.
+        anchor_prices = Price.objects.filter(product=anchor_product, store__in=stores).values_list('price', flat=True)
+        min_anchor_price = min([float(p) for p in anchor_prices]) if anchor_prices else float('inf')
+
+        # Set the price ceiling at 110% of the cheapest anchor price.
+        price_ceiling = min_anchor_price * 1.10
+
+        current_slot = []
+        # For each store, find sensible substitutes and pick up to 3 at random.
+        for store in stores:
+            sensible_options = []
+            # Check all products in the slot (anchor + all its substitutes)
+            for product in products_in_slot:
+                # Use .filter().first() to safely get the most recent price, handling duplicates.
+                price_obj = Price.objects.filter(product=product, store=store).first()
+
+                if price_obj:
+                    price = float(price_obj.price)
+                    # Only consider options under the price ceiling
+                    if price <= price_ceiling:
+                        sensible_options.append({
+                            "product_id": product.id,
+                            "product_name": product.name,
+                            "brand": product.brand,
+                            "store_id": store.id,
+                            "store_name": store.store_name,
+                            "price": price,
+                        })
+            
+            # Shuffle the sensible options and select up to 3.
+            random.shuffle(sensible_options)
+            current_slot.extend(sensible_options[:3])
 
         if current_slot:
             all_slots.append(current_slot)
@@ -220,6 +234,24 @@ def run_savings_benchmark(file_path):
                 total_price_range += max(prices) - min(prices)
             
         avg_price_range = total_price_range / num_slots if num_slots > 0 else 0
+
+        cheapest_store_wins = {}
+        for slot in slots:
+            if not slot:
+                continue
+            cheapest_option = min(slot, key=lambda x: x['price'])
+            winner_store = cheapest_option['store_name']
+            cheapest_store_wins[winner_store] = cheapest_store_wins.get(winner_store, 0) + 1
+        
+        distribution_str = ", ".join(sorted([f"{store}: {count}" for store, count in cheapest_store_wins.items()]))
+
+        avg_ideal_item_price = 0
+        if num_slots > 0:
+            ideal_cost = 0
+            for slot in slots:
+                if slot:
+                    ideal_cost += min(option['price'] for option in slot)
+            avg_ideal_item_price = ideal_cost / num_slots
         # --- End Analysis --- #
 
         optimized_cost, _ = calculate_optimized_cost(slots, MAX_STORES_FOR_SOLVER)
@@ -237,10 +269,18 @@ def run_savings_benchmark(file_path):
             all_savings.append(0)
             report_lines.append(f"Baseline: ${baseline_cost:.2f}, Optimized: ${optimized_cost:.2f}, Savings: 0.00%")
 
+        # Final metrics calculations
+        avg_baseline_item_price = baseline_cost / num_slots if num_slots > 0 else 0
+        avg_optimized_item_price = optimized_cost / num_slots if num_slots > 0 else 0
+
         report_lines.append("  Run Characteristics:")
         report_lines.append(f"    - Avg Options per Item: {avg_options_per_slot:.2f}")
         report_lines.append(f"    - Items with Brand Subs: {slots_with_brand_subs} / {num_slots}")
         report_lines.append(f"    - Avg Price Range per Item: ${avg_price_range:.2f}")
+        report_lines.append(f"    - Cheapest Store Dist: ({distribution_str})")
+        report_lines.append(f"    - Avg Ideal Item Price: ${avg_ideal_item_price:.2f}")
+        report_lines.append(f"    - Avg Baseline Item Price: ${avg_baseline_item_price:.2f}")
+        report_lines.append(f"    - Avg Optimized Item Price: ${avg_optimized_item_price:.2f}")
 
     report_lines.append("\n--- Benchmark Complete ---")
     report_lines.append(f"Individual savings percentages: {[f'{s:.2f}%' for s in all_savings]}")
