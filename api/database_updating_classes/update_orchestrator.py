@@ -71,20 +71,17 @@ class UpdateOrchestrator:
         from api.utils.synonym_utils.brand_synonym_generator import generate_brand_synonym_file
         generate_brand_synonym_file(self.command)
 
-        # Final step: Regenerate the translation table to include new variations
+        # Regenerate the product name translation table to include new variations
         self.command.stdout.write("--- Regenerating product name translation table ---")
         translator_generator = TranslationTableGenerator(self.command)
         translator_generator.generate()
 
-        # Final, final step: Run the file-based reconciler to catch non-barcode duplicates
+        # Run the file-based reconciler to catch non-barcode duplicates
         from api.database_updating_classes.product_reconciler import ProductReconciler
         reconciler = ProductReconciler(self.command)
         reconciler.run()
 
-        self._cleanup()
-
-        translator_generator = TranslationTableGenerator(self.command)
-        translator_generator.generate()
+        # Final cleanup of processed files
         self._cleanup_processed_files()
 
         self.command.stdout.write(self.command.style.SUCCESS("-- Orchestrator finished --"))

@@ -1378,3 +1378,187 @@
   [DUPLICATE] Name: Silky White Toilet Tissue | Brand: Sorbent | Size: Each
   [CANONICAL] Name: 3 Ply Silky White Toilet Paper | Brand: Sorbent | Size: 16 Pack
 ----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Huggies Ultra Dry Nappies Boys Size 4 (10-15kg) | Brand: Huggies | Size: Each
+  [CANONICAL] Name: Ultra Dry Nappies Boys Size 4 (10-15kg) | Brand: Huggies | Size: 36 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Birds Eye Snap Frozen Garden Mix Carrot Beans Brocoli Cauli Capsicum | Brand: Birds Eye | Size: 1kg Each
+  [CANONICAL] Name: Snap Frozen Mixed Garden Vegetables | Brand: Birds Eye | Size: 1kg
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Almond Milky | Brand: Vitasoy | Size: 1L
+  [CANONICAL] Name: Almond Milky Low Sugar | Brand: Vitasoy | Size: 1L
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Vitasoy Soy Milk Original | Brand: Vitasoy | Size: 1l Each
+  [CANONICAL] Name: Natural Creamy Long Life Soy Milk 1l | Brand: Vitasoy | Size: 1L
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Duracell Lithium Batteries 2016 | Brand: Duracell | Size: Each
+  [CANONICAL] Name: Lithium 2016 Battery | Brand: Duracell | Size: 4 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Ben's Original Original Tomato & Basil Microwave Rice Pouch | Brand: Ben's Original | Size: 250g Each
+  [CANONICAL] Name: Tomato & Basil Rice Pouch | Brand: Ben's Original | Size: 250g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Kraft Grated Parmesan Cheese Cannister | Brand: Kraft | Size: 250g Each
+  [CANONICAL] Name: Grated Parmesan Cheese Cannister | Brand: Kraft | Size: 250g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Energizer Max Plus High Performance 9V Alkaline Battery | Brand: Energizer | Size: 2 pack
+  [CANONICAL] Name: Energizer Max Plus Advanced 9V | Brand: Energizer | Size: each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Doritos Hot Salsa | Brand: Doritos | Size: 300g Each
+  [CANONICAL] Name: Dip Platter Entertaining Size Hot Salsa | Brand: Doritos | Size: 300g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Sorbent Toilet Tissue White 3 Ply | Brand: Sorbent | Size: Each
+  [CANONICAL] Name: 3 Ply Silky White Toilet Paper | Brand: Sorbent | Size: 24 Pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Johnson's Baby Powder | Brand: Johnson's | Size: 400g Each
+  [CANONICAL] Name: Johnson?s Baby Pure Cornstarch Moisture Absorbing Baby Powder | Brand: Johnson's | Size: 400g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Glico Pocky Chocolate Biscuit Sticks | Brand: Glico Pocky | Size: 47g Each
+  [CANONICAL] Name: Chocolate Biscuit Sticks | Brand: Glico Pocky | Size: 47g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Eveready Gold AAA Alkaline Batteries | Brand: Eveready | Size: 4 pack
+  [CANONICAL] Name: Eveready Gold AAA Batteries | Brand: Eveready | Size: Each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Eveready Gold AA Alkaline Batteries | Brand: Eveready | Size: 4 pack
+  [CANONICAL] Name: Eveready Gold AA Batteries | Brand: Eveready | Size: Each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dare Iced Coffee Double Espresso | Brand: Dare | Size: 500ml Each
+  [CANONICAL] Name: Double Espresso Iced Coffee Flavoured Milk | Brand: Dare | Size: 500mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dare Iced Coffee Espresso | Brand: Dare | Size: 500ml Each
+  [CANONICAL] Name: Expresso Iced Coffee Flavoured Milk | Brand: Dare | Size: 500mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dare Iced Coffee Triple Espresso | Brand: Dare | Size: 500ml Each
+  [CANONICAL] Name: Triple Espresso Robusta & Arabica Iced Coffee | Brand: Dare | Size: 500mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Mother Energy Sugar Free Drink | Brand: Mother | Size: 500ml Each
+  [CANONICAL] Name: Sugar Free Energy Drink Can | Brand: Mother | Size: 500mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Toblerone Milk Chocolate Bar | Brand: Toblerone | Size: 50g Each
+  [CANONICAL] Name: Milk Chocolate Bar | Brand: Toblerone | Size: 50g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Barilla Spaghetti Pasta No 5 | Brand: Barilla | Size: 500g Each
+  [CANONICAL] Name: Spaghetti No 5 | Brand: Barilla | Size: 500g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dari's Creamy Pumpkin Soup | Brand: Dari's | Size: 550g Each
+  [CANONICAL] Name: Creamy Pumpkin Soup | Brand: Dari's | Size: 550g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Korbond Elastic Braided 6Mm X5M | Brand: Korbond | Size: each
+  [CANONICAL] Name: White Rayon Elastic 3m | Brand: Korbond | Size: 1 each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Sunny Queen Free Range Eggs XLarge | Brand: Sunny Queen | Size: 700g Each
+  [CANONICAL] Name: Free Range Extra Large Eggs 12 Pack | Brand: Sunny Queen | Size: 700g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: White King Toilet Gel Lemon | Brand: White King | Size: 700ml Each
+  [CANONICAL] Name: Lemon Power Toilet Cleaner Gel | Brand: White King | Size: 700mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dare Iced Coffee Double Espresso | Brand: Dare | Size: 750ml Each
+  [CANONICAL] Name: Double Espresso Flavoured Milk | Brand: Dare | Size: 750mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dare Iced Coffee Espresso | Brand: Dare | Size: 750ml Each
+  [CANONICAL] Name: Espresso Iced Coffee Flavoured Milk | Brand: Dare | Size: 750mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Purina Fancy Feast Gravy Lovers Chicken Feast | Brand: Purina | Size: 85g Each
+  [CANONICAL] Name: Gravy Lovers With Chicken Cat Food | Brand: Fancy Feast | Size: 85g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Up & Go Liquid Breakfast Choc Ice With No Added Sugar | Brand: UP&GO | Size: Each
+  [CANONICAL] Name: No Added Sugar Choc Ice 12 x 250ml | Brand: UP&GO | Size: 3L
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Finish Ultimate Plus Auto Dishwash Tablets Lemon | Brand: Finish | Size: Each
+  [CANONICAL] Name: Ultimate Plus Dishwashing Tablets Lemon Sparkle | Brand: Finish | Size: 31 Pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Nice & Natural Chocolate Nut Bars Salted Caramel | Brand: Nice & Natural | Size: Each
+  [CANONICAL] Name: Nut Bars Salted Caramel With Dark Choc Multipack Snacks 6 Pack | Brand: Nice & Natural | Size: 180g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Schweppes Solo Thirst Crusher Original Lemon Multipack Cans | Brand: Solo | Size: Each
+  [CANONICAL] Name: Thirst Crusher Original Lemon Soft Drink Cans Multipack 375mL x 30 Pack | Brand: Solo | Size: 30 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Sprite Zero Sugar Lemonade Soft Drink Multipack Cans | Brand: Sprite | Size: Each
+  [CANONICAL] Name: Zero Sugar Lemonade Soft Drink Multipack Mini Cans 6 x 250ml | Brand: Sprite | Size: 6 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Panadol Liquid Caps | Brand: Panadol | Size: Each
+  [CANONICAL] Name: Liquid Paracetamol Pain Relief Capsules | Brand: Panadol | Size: 16 Pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Carefree Original Tampons Regular | Brand: Carefree | Size: Each
+  [CANONICAL] Name: Original Fragrance Free Regular Tampons | Brand: Carefree | Size: 16 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Clearwipe Lens Cleaner | Brand: Clearwipe | Size: Each
+  [CANONICAL] Name: Lens Cleaner | Brand: Clearwipe | Size: 60 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Kleenex Complete Clean Toilet Tissue | Brand: Kleenex | Size: Each
+  [CANONICAL] Name: Complete Clean Toilet Paper | Brand: Kleenex | Size: 9 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Elite Condoms | Brand: SKYN | Size: Each
+  [CANONICAL] Name: Elite Condoms | Brand: SKYN | Size: 10 Pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: LifeStyles Regular Condoms | Brand: LifeStyles | Size: Each
+  [CANONICAL] Name: Regular Condoms | Brand: Lifestyles | Size: 10 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dettol Disinfectant Wipes Fresh | Brand: Dettol | Size: Each
+  [CANONICAL] Name: Disinfectant Fresh Multipurpose Cleaning Wipes | Brand: Dettol | Size: 45 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: SPC Diced Peaches In Juice | Brand: SPC | Size: Each
+  [CANONICAL] Name: Aussie Diced Peaches in Juice 120g | Brand: SPC | Size: 4 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dishmatic General Purpose Refill | Brand: Dishmatic | Size: Each
+  [CANONICAL] Name: General Purpose | Brand: Dishmatic | Size: 6 Pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Finish Quantum Ultimate Pro Dishwasher Tablets Lemon | Brand: Finish | Size: Each
+  [CANONICAL] Name: Ultimate Lemon Dishwasher Tablets | Brand: Finish | Size: 16 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Kleenex Double Length Toilet Tissue | Brand: Kleenex | Size: Each
+  [CANONICAL] Name: Complete Clean Double Length Toilet Paper | Brand: Kleenex | Size: 12 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Tena Pads Extra Standard Length | Brand: Tena | Size: Each
+  [CANONICAL] Name: Extra Standard Length Incontinence Pads | Brand: Tena | Size: 12 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Great Temptations Mufnutz | Brand: Great Temptations | Size: Each
+  [CANONICAL] Name: Mufnutz 5 Pack | Brand: Great Temptations | Size: 120g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Silky White Toilet Tissue | Brand: Sorbent | Size: Each
+  [CANONICAL] Name: 3 Ply Silky White Toilet Paper | Brand: Sorbent | Size: 16 Pack
+----------------------------------------------------
