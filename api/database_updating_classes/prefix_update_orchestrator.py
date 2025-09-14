@@ -93,7 +93,8 @@ class PrefixUpdateOrchestrator:
         self.command.stdout.write("--- Reconciling newly discovered brand synonyms ---")
         # We can reuse the existing VariationManager for this
         variation_manager = VariationManager(self.command, unit_of_work=None)
-        variation_manager.brand_reconciliation_list = brand_reconciliation_list
+        # Pass a copy of the list so the original isn't cleared by the manager
+        variation_manager.brand_reconciliation_list = brand_reconciliation_list.copy()
         variation_manager.reconcile_brand_duplicates()
 
     def _move_processed_files(self, processed_files: list):
