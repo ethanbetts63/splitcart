@@ -1750,3 +1750,7 @@
   [DUPLICATE] Name: Stayfree UltraThin Regular Pads with Wings | Brand: Stayfree | Size: Each
   [CANONICAL] Name: Ultra Thin Regular Pads With Wings | Brand: Stayfree | Size: 14 Pack
 ----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Korbond Elastic Braided 6Mm X5M | Brand: Korbond | Size: each
+  [CANONICAL] Name: White Rayon Elastic 3m | Brand: Korbond | Size: 1 each
+----------------------------------------------------

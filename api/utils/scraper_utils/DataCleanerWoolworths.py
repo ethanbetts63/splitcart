@@ -16,11 +16,6 @@ class DataCleanerWoolworths(BaseDataCleaner):
         return WOOLWORTHS_FIELD_MAP
 
     def _transform_product(self, raw_product: dict) -> dict:
-        """
-        Transforms a single raw Woolworths product into the standardized schema
-        using the field map.
-        """
-        # Use the base class helper to get most fields
         cleaned_product = {
             standard_field: self._get_value(raw_product, standard_field)
             for standard_field in self.field_map.keys()
@@ -28,28 +23,48 @@ class DataCleanerWoolworths(BaseDataCleaner):
 
         # --- Handle special cases and transformations for Woolworths ---
 
-        # Combine price info
         price_info = self._calculate_price_info(
             current_price=cleaned_product.get('price_current'),
             was_price=cleaned_product.get('price_was')
         )
         cleaned_product.update(price_info)
 
-        # Category path is a JSON string that needs to be parsed
-        raw_cat_json = cleaned_product.get('category_path', '[]') or '[]'
-        try:
-            category_list = json.loads(raw_cat_json)
-        except json.JSONDecodeError:
-            category_list = []
-        cleaned_product['category_path'] = self._clean_category_path(category_list)
+        # --- THE FIX: Assemble category path from multiple fragmented fields ---
+        def parse_json_field(field_name):
+            raw_json_str = self._get_value(raw_product, field_name)
+            if not raw_json_str or not isinstance(raw_json_str, str):
+                return []
+            try:
+                return json.loads(raw_json_str)
+            except json.JSONDecodeError:
+                return []
 
-        # Construct full URL
+        # Define the paths to the raw fields
+        dept_field = 'AdditionalAttributes.piesdepartmentnamesjson'
+        cat_field = 'AdditionalAttributes.piescategorynamesjson'
+        subcat_field = 'AdditionalAttributes.piessubcategorynamesjson'
+
+        # Extract and parse each part of the hierarchy
+        departments = parse_json_field(dept_field)
+        categories = parse_json_field(cat_field)
+        subcategories = parse_json_field(subcat_field)
+
+        # Combine them into a single path, preserving order and removing duplicates
+        full_path = []
+        seen = set()
+        for item in departments + categories + subcategories:
+            if item and item not in seen:
+                seen.add(item)
+                full_path.append(item)
+
+        cleaned_product['category_path'] = self._clean_category_path(full_path)
+
+        # --- Other transformations ---
         stockcode = cleaned_product.get('product_id_store')
         slug = cleaned_product.get('url')
         if stockcode and slug:
             cleaned_product['url'] = f"https://www.woolworths.com.au/shop/productdetails/{stockcode}/{slug}"
 
-        # Convert health star rating to float
         hsr = cleaned_product.get('health_star_rating')
         if hsr:
             try:
@@ -57,13 +72,11 @@ class DataCleanerWoolworths(BaseDataCleaner):
             except (ValueError, TypeError):
                 cleaned_product['health_star_rating'] = None
 
-        # Standardize unit price
         unit_price_info = self._get_standardized_unit_price_info(cleaned_product)
         cleaned_product.update(unit_price_info)
 
         cleaned_product['is_available'] = raw_product.get('IsAvailable', False)
 
-        # Add normalized name for better matching
         normalizer = ProductNormalizer(cleaned_product)
         cleaned_product['normalized_name'] = normalizer.get_fully_normalized_name()
 
