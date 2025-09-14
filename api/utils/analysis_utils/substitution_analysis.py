@@ -1,7 +1,8 @@
 import random
 from collections import defaultdict
-from django.db.models import Count
+from django.db.models import Q, Count
 from products.models import Product, ProductSubstitution
+from companies.models import Company
 
 def generate_substitution_analysis_report():
     """
@@ -9,12 +10,18 @@ def generate_substitution_analysis_report():
     """
     report_parts = []
     report_parts.append(_get_overall_stats_text())
+
+    # --- Per-Company Breakdown ---
+    companies = Company.objects.all().order_by('name')
+    for company in companies:
+        report_parts.append(_get_company_stats_text(company))
+
+    # --- Hubs and Samples (Existing functionality is preserved) ---
     report_parts.append(_get_hub_products_text(20))
 
-    # Use Python's set() to guarantee uniqueness, as .distinct() was behaving unexpectedly.
-    levels = set(ProductSubstitution.objects.values_list('level', flat=True))
+    levels = sorted([choice[0] for choice in ProductSubstitution.SUBSTITUTION_LEVELS])
 
-    for level in sorted(list(levels)):
+    for level in levels:
         report_parts.append(_get_random_samples_text(20, level))
 
     return "\n\n".join(report_parts)
@@ -28,24 +35,47 @@ def _get_overall_stats_text():
         lines.append("No substitutions found in the database.")
         return "\n".join(lines)
 
-    products_in_subs_a = ProductSubstitution.objects.values_list('product_a_id', flat=True)
-    products_in_subs_b = ProductSubstitution.objects.values_list('product_b_id', flat=True)
-    products_with_subs_count = len(set(list(products_in_subs_a) + list(products_in_subs_b)))
+    products_with_subs_count = Product.objects.annotate(
+        num_subs=Count('substitutions_a') + Count('substitutions_b')
+    ).filter(num_subs__gt=0).count()
 
     lines.append(f"- Total Products in DB: {total_products}")
     lines.append(f"- Total Substitution Links: {total_substitutions}")
-    lines.append(f"- Products with at least one substitute: {products_with_subs_count} ({products_with_subs_count/total_products:.2%})")
+    if total_products > 0:
+        lines.append(f"- Products with at least one substitute: {products_with_subs_count} ({products_with_subs_count/total_products:.2%})")
 
-    lines.append("\n--- Substitutions by Level ---")
-    level_counts = ProductSubstitution.objects.values('level').annotate(count=Count('level')).order_by('level')
-
-    choices_dict = dict(ProductSubstitution._meta.get_field('level').choices)
-
-    for item in level_counts:
-        level_display = choices_dict.get(item['level'])
-        percentage = (item['count'] / total_substitutions) * 100
-        lines.append(f"- Level {item['level'].replace('LVL', '')}: {level_display} - {item['count']} ({percentage:.2f}%)")
+    lines.append("\n--- Substitutions by Level (Overall) ---")
+    level_choices = ProductSubstitution.SUBSTITUTION_LEVELS
+    for level_code, level_desc in level_choices:
+        count = ProductSubstitution.objects.filter(level=level_code).count()
+        percentage = (count / total_substitutions) * 100 if total_substitutions > 0 else 0
+        lines.append(f"- {level_desc} - {count} ({percentage:.2f}%)")
     
+    return "\n".join(lines)
+
+def _get_company_stats_text(company):
+    lines = [f"--- Substitutions by Level ({company.name}) ---"]
+    
+    company_products = Product.objects.filter(prices__store__company=company).distinct()
+    
+    company_substitutions = ProductSubstitution.objects.filter(
+        Q(product_a__in=company_products) | Q(product_b__in=company_products)
+    ).distinct()
+    
+    total_company_subs = company_substitutions.count()
+
+    if total_company_subs == 0:
+        lines.append("  No substitution links found for this company.")
+        return "\n".join(lines)
+        
+    lines.append(f"  (Total links involving {company.name}: {total_company_subs})")
+
+    level_choices = ProductSubstitution.SUBSTITUTION_LEVELS
+    for level_code, level_desc in level_choices:
+        count = company_substitutions.filter(level=level_code).count()
+        percentage = (count / total_company_subs) * 100 if total_company_subs > 0 else 0
+        lines.append(f"- {level_desc} - {count} ({percentage:.2f}%)")
+        
     return "\n".join(lines)
 
 def _get_hub_products_text(hub_count):
