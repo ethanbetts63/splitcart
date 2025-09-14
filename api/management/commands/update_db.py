@@ -3,6 +3,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from api.utils.database_updating_utils.update_stores_from_discovery import update_stores_from_discovery
 from api.utils.database_updating_utils.load_db_from_archive import load_db_from_latest_archive
+from api.utils.database_updating_utils.update_category_links import update_category_links_from_inbox
 from api.database_updating_classes.update_orchestrator import UpdateOrchestrator
 from api.database_updating_classes.prefix_update_orchestrator import PrefixUpdateOrchestrator
 
@@ -14,10 +15,15 @@ class Command(BaseCommand):
         parser.add_argument('--products', action='store_true', help='Update products from the product_inbox directory.')
         parser.add_argument('--prefixes', action='store_true', help='Update brand prefixes from the prefix_inbox directory.')
         parser.add_argument('--archive', action='store_true', help='Flush DB and load data from the most recent archive.')
+        parser.add_argument('--category-links', action='store_true', help='Update category equivalence links from the inbox.')
 
     def handle(self, *args, **options):
         if options['archive']:
             load_db_from_latest_archive(self)
+            return
+        
+        if options['category_links']:
+            update_category_links_from_inbox(self)
             return
 
         run_stores_discovery = options['stores']
