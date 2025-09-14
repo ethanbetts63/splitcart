@@ -5,7 +5,8 @@ from companies.models import Category, Company
 class CategoryManager:
     """
     Handles the creation of categories and their relationships to products.
-    This version uses a company-aware cache to prevent cross-company data corruption.
+    This version uses a company-aware cache and re-fetches categories after
+    bulk creation to ensure data integrity on all database backends.
     """
     def __init__(self, command):
         self.command = command
@@ -52,15 +53,26 @@ class CategoryManager:
             return
 
         self.command.stdout.write(f"    - Creating {len(new_cat_tuples)} new categories for {company_obj.name}...")
-        new_categories = [
+        new_category_names = {t[0] for t in new_cat_tuples}
+        new_categories_to_create = [
             Category(name=name, slug=slugify(name), company=company_obj) 
-            for name, comp_id in new_cat_tuples
+            for name in new_category_names
         ]
         
         try:
-            created_cats = Category.objects.bulk_create(new_categories, ignore_conflicts=True)
-            for category in created_cats:
+            # NOTE: ignore_conflicts is not fully supported on SQLite with multi-column constraints,
+            # but we proceed assuming names within a company are not duplicated in the source file.
+            Category.objects.bulk_create(new_categories_to_create, ignore_conflicts=True)
+
+            # --- THE FIX --- 
+            # Re-fetch newly created categories to get complete objects with DB IDs,
+            # as bulk_create on SQLite does not return them.
+            self.command.stdout.write("    - Refreshing cache with newly created categories...")
+            newly_created_cats = Category.objects.filter(company=company_obj, name__in=new_category_names)
+            
+            for category in newly_created_cats:
                 self.category_cache[(category.name, category.company_id)] = category
+
         except Exception as e:
             self.command.stderr.write(self.command.style.ERROR(f"An error occurred during category creation: {e}"))
 
@@ -79,9 +91,9 @@ class CategoryManager:
                 child_cat = self.category_cache.get((child_name, company_obj.id))
 
                 if parent_cat and child_cat:
+                    # Use parent and child IDs for the seen_links key to be robust
                     link_key = (parent_cat.id, child_cat.id)
                     if link_key not in seen_links:
-                        # THE FIX IS HERE: The 'from_category' is the child, 'to_category' is the parent.
                         links_to_create.append(
                             CategoryParents(from_category_id=child_cat.id, to_category_id=parent_cat.id)
                         )

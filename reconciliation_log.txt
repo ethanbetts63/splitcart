@@ -1634,3 +1634,119 @@
   [DUPLICATE] Name: Finish Quantum Ultimate Pro Dishwasher Tablets Lemon | Brand: Finish | Size: Each
   [CANONICAL] Name: Ultimate Lemon Dishwasher Tablets | Brand: Finish | Size: 16 pack
 ----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: John West Tuna Sweetcorn & Mayonnaise With Crackers Lunch Kit | Brand: John West | Size: 108g
+  [CANONICAL] Name: John West Lunch Kit With Crackers Tuna With Sweetcorn In Mayonnaise | Brand: John West | Size: 108g Each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Equal Spoonful Spoon for Spoon Sugar Replacement | Brand: Equal | Size: 113g
+  [CANONICAL] Name: Equal Low Calorie Sweetener Spoonful | Brand: Equal | Size: 113g Each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Energizer Max AA Alkaline Batteries | Brand: Energizer | Size: 16 pack
+  [CANONICAL] Name: Energizer Max AA Batteries | Brand: Energizer | Size: Each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Birds Eye Snap Frozen Garden Mix Carrot Beans Brocoli Cauli Capsicum | Brand: Birds Eye | Size: 1kg Each
+  [CANONICAL] Name: Snap Frozen Mixed Garden Vegetables | Brand: Birds Eye | Size: 1kg
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Almond Milky | Brand: Vitasoy | Size: 1L
+  [CANONICAL] Name: Almond Milky Low Sugar | Brand: Vitasoy | Size: 1L
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Vitasoy Soy Milk Original | Brand: Vitasoy | Size: 1l Each
+  [CANONICAL] Name: Natural Creamy Long Life Soy Milk 1l | Brand: Vitasoy | Size: 1L
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Rexona Women Advanced Protection Antiperspirant Shower Fresh | Brand: Rexona | Size: 220ml Each
+  [CANONICAL] Name: Women Deodorant 72hr Advanced Aerosol Shower Fresh | Brand: Rexona | Size: 220mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Ben's Original Original Tomato & Basil Microwave Rice Pouch | Brand: Ben's Original | Size: 250g Each
+  [CANONICAL] Name: Tomato & Basil Rice Pouch | Brand: Ben's Original | Size: 250g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Doritos Hot Salsa | Brand: Doritos | Size: 300g Each
+  [CANONICAL] Name: Dip Platter Entertaining Size Hot Salsa | Brand: Doritos | Size: 300g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Doritos Mild Salsa | Brand: Doritos | Size: 300g Each
+  [CANONICAL] Name: Mild Salsa Dips | Brand: Doritos | Size: 300g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Johnson's Baby Powder | Brand: Johnson's | Size: 400g Each
+  [CANONICAL] Name: Johnson?s Baby Pure Cornstarch Moisture Absorbing Baby Powder | Brand: Johnson's | Size: 400g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Glico Pocky Chocolate Biscuit Sticks | Brand: Glico Pocky | Size: 47g Each
+  [CANONICAL] Name: Chocolate Biscuit Sticks | Brand: Glico Pocky | Size: 47g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Energizer Ultimate Lithium Performance AA Lithium Batteries | Brand: Energizer | Size: 4 pack
+  [CANONICAL] Name: Energizer Lithium Ultimate AA Batteries | Brand: Energizer | Size: Each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Radox Bath Salts Muscle Soothe | Brand: Radox | Size: 500 mL
+  [CANONICAL] Name: Mineral Herbal Bath Salts Muscle Soak | Brand: Radox | Size: 500g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Monster Energy Pipeline Punch Can | Brand: Monster Energy Can | Size: 500mL
+  [CANONICAL] Name: Monster Energy Drink Pipeline Punch | Brand: Monster Energy Can | Size: 500ml Each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dare Iced Coffee Double Espresso | Brand: Dare | Size: 500ml Each
+  [CANONICAL] Name: Double Espresso Iced Coffee Flavoured Milk | Brand: Dare | Size: 500mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dare Iced Coffee Espresso | Brand: Dare | Size: 500ml Each
+  [CANONICAL] Name: Expresso Iced Coffee Flavoured Milk | Brand: Dare | Size: 500mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Korbond Elastic Braided 6Mm X5M | Brand: Korbond | Size: each
+  [CANONICAL] Name: White Rayon Elastic 3m | Brand: Korbond | Size: 1 each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: CLR Calcium Limescale & Rust Multipurpose Cleaner | Brand: CLR | Size: 750ml Each
+  [CANONICAL] Name: Calcium Lime Rust All Purpose Cleaner | Brand: CLR | Size: 750mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Dare Iced Coffee Espresso | Brand: Dare | Size: 750ml Each
+  [CANONICAL] Name: Espresso Iced Coffee Flavoured Milk | Brand: Dare | Size: 750mL
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Continental Classics Cup A Soup Italian Minestrone With Pasta | Brand: Hot Pot | Size: 75g
+  [CANONICAL] Name: Cup A Soup Italian Minestrone Serves 2 | Brand: Hot Pot | Size: 75g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Schweppes Solo Thirst Crusher Original Lemon Multipack Cans | Brand: Solo | Size: Each
+  [CANONICAL] Name: Thirst Crusher Original Lemon Soft Drink Cans Multipack 375mL x 30 Pack | Brand: Solo | Size: 30 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Chux Original Superwipes Giant | Brand: Chux | Size: Each
+  [CANONICAL] Name: Original Extra Large Superwipes | Brand: Chux | Size: 5 Pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Oral-B Vitality Precision Clean Electric Toothbrush | Brand: Oral B | Size: Each
+  [CANONICAL] Name: Vitality Precision Clean Electric Toothbrush | Brand: Oral B | Size: 1 Pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Tip Top English Muffins Original | Brand: Tip Top Cafe | Size: Each
+  [CANONICAL] Name: Muffins English Original | Brand: Tip Top Cafe | Size: 400g
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Gillette Skinguard Razor | Brand: Gilette | Size: Each
+  [CANONICAL] Name: Skinguuard Razor Handle +2 Blade | Brand: Gilette | Size: 1 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Libra Invisible Super Pads With Wings | Brand: Libra | Size: Each
+  [CANONICAL] Name: Invisible Pads Super Wing | Brand: Libra | Size: 10 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Schweppes Lemonade | Brand: Schweppes | Size: Each
+  [CANONICAL] Name: Lemonade Soft Drink Bottle Glass Multipack 300mL x 4 Pack | Brand: Schweppes | Size: 4 pack
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Stayfree UltraThin Regular Pads with Wings | Brand: Stayfree | Size: Each
+  [CANONICAL] Name: Ultra Thin Regular Pads With Wings | Brand: Stayfree | Size: 14 Pack
+----------------------------------------------------
