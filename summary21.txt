@@ -1,0 +1,40 @@
+This session focused on improving the product substitution system by creating equivalence links between categories from different companies. The process involved several iterations of tool development and debugging, ultimately leading to the discovery of a core issue in the data import process.
+
+### 1. Initial Goal & Automatic Approaches
+
+- **Objective:** To solve the problem of Aldi products having very few cross-company substitutes.
+- **Initial Plan:** Create a management command, `api/management/commands/generate_category_equivalences.py`, to automatically find products that exist in multiple companies and link their respective categories.
+- **Problem Encountered:** This automatic approach created many inaccurate links due to promotional categories (e.g., 'Footy Finals Kiosk') and did not respect the hierarchical nature of categories (e.g., incorrectly treating 'Womens Socks' and 'Clothing' as simple equivalents).
+
+### 2. A New Interactive, Hierarchical Approach
+
+To address the inaccuracy, we pivoted to a more sophisticated, user-driven, hierarchical approach.
+
+- **Model Refactoring:** We first upgraded the database model to support complex relationships.
+    - The simple `ManyToManyField` on the `Category` model was replaced.
+    - A new model, `CategoryEquivalence`, was created in its own file: `companies/models/category_equivalence.py`.
+    - The `Category` model in `companies/models/category.py` was updated to use this new `through` model.
+    - The model package initializer, `companies/models/__init__.py`, was updated to reflect the new file structure.
+    - A new database migration (`companies/migrations/0002...`) was created and applied to support these changes.
+
+- **New Workflow:** We designed a two-stage, decoupled workflow:
+    1.  **Interactive Generation:** A new command, `api/management/commands/create_category_links.py`, was built. This tool suggests potential category matches and prompts the user to define the relationship type (Equivalent, Subset Of, etc.). The user's decisions are saved to a JSON file in a new inbox directory: `api/data/category_link_inbox/`.
+    2.  **Database Update:** A corresponding update mechanism was created. This involved a new utility function in `api/utils/database_updating_utils/update_category_links.py` and a new `--category-links` flag for the `api/management/commands/update_db.py` command, which processes the inbox files.
+
+- **Persistence Fix:** We identified and fixed a bug where "Skip" and "Not a match" decisions were not being saved correctly between runs. This involved creating persistent JSON files for these decisions (`api/data/analysis/category_non_matches.json` and `api/data/analysis/category_skipped.json`).
+
+### 3. The "Cycle" Detour & Data Integrity Issues
+
+The hierarchical approach failed, which led us to investigate the integrity of the category data itself.
+
+- **Problem:** An `analyze` command failed for the "woolworths" company, suggesting a data cycle.
+- **Diagnosis:** We created a diagnostic tool, `api/management/commands/find_category_cycles.py`, which confirmed the presence of infinite loops in the category parent-child relationships.
+- **Repair:** To fix this, we built an automatic pruning tool. The logic was encapsulated in `api/database_updating_classes/category_cycle_manager.py` and driven by the `api/management/commands/manage_category_cycles.py` command. This tool successfully found and removed 50 cycles from the Aldi data.
+
+### 4. Final Diagnosis: The Root Cause
+
+Even after fixing the cycles, the Level 1 matching still failed to find any pairs.
+
+- **Final Diagnostic Tool:** We created one last tool, `api/management/commands/debug_level1_matcher.py`, to do a verbose, step-by-step printout of the matching logic.
+- **The Discovery:** The output of this tool was the key. It revealed that the database contains **1115 Level 0 (root) categories** and only 245 Level 1 categories.
+- **Conclusion:** This confirms the root cause of our problems. The category hierarchy is almost completely "flat." The initial data import process that populates the database is creating thousands of "orphan" categories with no parent-child links. The substitution logic fails because it relies on a properly structured category tree, which does not exist in the current data.
