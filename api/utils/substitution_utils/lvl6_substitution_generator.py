@@ -28,15 +28,15 @@ class Lvl6SubstitutionGenerator(BaseSubstitutionGenerator):
         graph = defaultdict(set)
         all_category_ids = set()
 
-        # Consider only 'MATCH' links for now, as per discussion
-        for link in CategoryLink.objects.filter(link_type='MATCH'):
+        # Consider all linked types for this consolidated level
+        for link in CategoryLink.objects.filter(link_type__in=['MATCH', 'CLOSE', 'DISTANT']):
             graph[link.category_a_id].add(link.category_b_id)
             graph[link.category_b_id].add(link.category_a_id)
             all_category_ids.add(link.category_a_id)
             all_category_ids.add(link.category_b_id)
 
         if not all_category_ids:
-            self.command.stdout.write("No 'MATCH' category links found. Skipping Level 6 generation.")
+            self.command.stdout.write("No category links found. Skipping Level 6 generation.")
             return
 
         # 2. Find connected components (super-groups of linked categories)
