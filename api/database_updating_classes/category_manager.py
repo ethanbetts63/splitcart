@@ -9,7 +9,6 @@ class CategoryManager:
     """
     def __init__(self, command):
         self.command = command
-        # The cache key is now a tuple: (category_name, company_id)
         self.category_cache = {
             (c.name, c.company_id): c 
             for c in Category.objects.select_related('company').all()
@@ -43,7 +42,6 @@ class CategoryManager:
 
     def _create_new_categories(self, all_category_paths, company_obj):
         self.command.stdout.write("  Part A: Ensuring all categories exist...")
-        # The set of all categories that should exist for THIS company
         all_required_cat_tuples = {(name, company_obj.id) for path in all_category_paths for name in path}
         
         existing_cat_tuples = set(self.category_cache.keys())
@@ -61,7 +59,6 @@ class CategoryManager:
         
         try:
             created_cats = Category.objects.bulk_create(new_categories, ignore_conflicts=True)
-            # Refresh cache with the newly created categories
             for category in created_cats:
                 self.category_cache[(category.name, category.company_id)] = category
         except Exception as e:
@@ -78,15 +75,15 @@ class CategoryManager:
                 parent_name = path[i]
                 child_name = path[i+1]
                 
-                # Use company-aware cache keys for lookup
                 parent_cat = self.category_cache.get((parent_name, company_obj.id))
                 child_cat = self.category_cache.get((child_name, company_obj.id))
 
                 if parent_cat and child_cat:
                     link_key = (parent_cat.id, child_cat.id)
                     if link_key not in seen_links:
+                        # THE FIX IS HERE: The 'from_category' is the child, 'to_category' is the parent.
                         links_to_create.append(
-                            CategoryParents(from_category_id=parent_cat.id, to_category_id=child_cat.id)
+                            CategoryParents(from_category_id=child_cat.id, to_category_id=parent_cat.id)
                         )
                         seen_links.add(link_key)
         
@@ -105,7 +102,6 @@ class CategoryManager:
             path = data.get('product', {}).get('category_path')
             if product and path and isinstance(path, list):
                 leaf_category_name = path[-1]
-                # Use company-aware cache key for lookup
                 category = self.category_cache.get((leaf_category_name, company_obj.id))
                 if category:
                     link_key = (product.id, category.id)
