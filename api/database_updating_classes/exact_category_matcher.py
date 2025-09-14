@@ -13,10 +13,21 @@ class ExactCategoryMatcher:
         """ Normalizes a category name for exact matching. """
         if not isinstance(value, str):
             return ""
+        value = value.replace('&', 'and') # Replace & with and
         value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('utf-8')
         value = value.lower()
         value = re.sub(r'[^a-z0-9\s]', '', value)
-        words = sorted(list(set(value.split())))
+        
+        # Remove trailing 's' from words
+        words = value.split()
+        processed_words = []
+        for word in words:
+            if word.endswith('s') and len(word) > 1: # Avoid removing 's' from single-letter words or words like 'bus'
+                processed_words.append(word[:-1])
+            else:
+                processed_words.append(word)
+        
+        words = sorted(list(set(processed_words))) # Use processed_words here
         return "".join(words)
 
     def run(self):
@@ -56,8 +67,17 @@ class ExactCategoryMatcher:
 
         # 4. Bulk create the new links, ignoring any that violate the unique constraint
         try:
-            created_links = CategoryLink.objects.bulk_create(links_to_create, ignore_conflicts=True)
-            self.links_created = len(created_links)
-            self.command.stdout.write(self.command.style.SUCCESS(f"  Automatically created {self.links_created} new 'MATCH' links."))
+            count_before = CategoryLink.objects.count()
+            CategoryLink.objects.bulk_create(links_to_create, ignore_conflicts=True)
+            count_after = CategoryLink.objects.count()
+            
+            self.links_created = count_after - count_before
+            total_potential_matches = len(links_to_create)
+
+            self.command.stdout.write(self.command.style.SUCCESS(f"  Found {total_potential_matches} potential 'MATCH' links."))
+            if self.links_created > 0:
+                self.command.stdout.write(self.command.style.SUCCESS(f"  Created {self.links_created} new 'MATCH' links."))
+            else:
+                self.command.stdout.write(self.command.style.SUCCESS("  No new links were created (already exist)."))
         except Exception as e:
             self.command.stderr.write(self.command.style.ERROR(f"  Error bulk creating links: {e}"))

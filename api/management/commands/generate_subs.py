@@ -4,6 +4,7 @@ from api.utils.substitution_utils.lvl2_substitution_generator import Lvl2Substit
 from api.utils.substitution_utils.lvl3_substitution_generator import Lvl3SubstitutionGenerator
 from api.utils.substitution_utils.lvl4_substitution_generator import Lvl4SubstitutionGenerator
 from api.utils.substitution_utils.lvl5_substitution_generator import Lvl5SubstitutionGenerator
+from api.utils.substitution_utils.lvl6_substitution_generator import Lvl6SubstitutionGenerator
 
 class Command(BaseCommand):
     help = 'Generates product substitutions based on different heuristic levels.'
@@ -34,6 +35,11 @@ class Command(BaseCommand):
             action='store_true',
             help='Generate Level 5: Semantic Similarity.'
         )
+        parser.add_argument(
+            '--lvl6',
+            action='store_true',
+            help='Generate Level 6: Linked Category Semantic Similarity.'
+        )
 
     def handle(self, *args, **options):
         lvl1 = options['lvl1']
@@ -41,12 +47,13 @@ class Command(BaseCommand):
         lvl3 = options['lvl3']
         lvl4 = options['lvl4']
         lvl5 = options['lvl5']
+        lvl6 = options['lvl6']
 
         # If no specific level is requested, default to running all levels.
-        run_all = not any([lvl1, lvl2, lvl3, lvl4, lvl5])
+        run_all = not any([lvl1, lvl2, lvl3, lvl4, lvl5, lvl6])
         if run_all:
             self.stdout.write(self.style.SUCCESS("No specific level requested, running all available generators."))
-            lvl1 = lvl2 = lvl3 = lvl4 = lvl5 = True
+            lvl1 = lvl2 = lvl3 = lvl4 = lvl5 = lvl6 = True
         
         self.stdout.write(self.style.SUCCESS("--- Starting Substitution Generation ---"))
 
@@ -68,6 +75,10 @@ class Command(BaseCommand):
 
         if lvl5:
             generator = Lvl5SubstitutionGenerator(command=self)
+            generator.generate()
+
+        if lvl6:
+            generator = Lvl6SubstitutionGenerator(command=self)
             generator.generate()
 
         self.stdout.write(self.style.SUCCESS("--- Substitution Generation Complete ---"))

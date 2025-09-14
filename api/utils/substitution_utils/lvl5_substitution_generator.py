@@ -3,7 +3,6 @@ from .substitution_generator import BaseSubstitutionGenerator
 from products.models import Product
 from companies.models import Category
 from sentence_transformers import SentenceTransformer, util
-import numpy as np
 import torch
 
 class Lvl5SubstitutionGenerator(BaseSubstitutionGenerator):
