@@ -3,25 +3,19 @@ from companies.models import Company
 from api.database_updating_classes.category_cycle_manager import CategoryCycleManager
 
 class Command(BaseCommand):
-    help = 'Detects and interactively repairs cycles in category hierarchies.'
-
-    def add_arguments(self, parser):
-        parser.add_argument(
-            '--company-name',
-            type=str,
-            required=True,
-            help='The name of the company to diagnose.'
-        )
-        # In the future, we can add --repair and --detect-only flags
+    help = 'Automatically detects and prunes cycles in all company category hierarchies.'
 
     def handle(self, *args, **options):
-        company_name = options['company_name']
-        try:
-            company = Company.objects.get(name__iexact=company_name)
-        except Company.DoesNotExist:
-            self.stderr.write(self.style.ERROR(f"Company '{company_name}' not found."))
+        self.stdout.write(self.style.SUCCESS("--- Starting Category Cycle Pruning for All Companies ---"))
+        all_companies = Company.objects.all()
+
+        if not all_companies.exists():
+            self.stdout.write(self.style.WARNING("No companies found in the database."))
             return
 
-        # Instantiate the manager and run the interactive repair
-        manager = CategoryCycleManager(self, company)
-        manager.repair_cycles_interactive()
+        for company in all_companies:
+            # Instantiate the manager for each company and run the pruning
+            manager = CategoryCycleManager(self, company)
+            manager.prune_cycles()
+        
+        self.stdout.write(self.style.SUCCESS("\n--- All companies processed. ---"))

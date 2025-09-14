@@ -60,7 +60,22 @@ class UpdateOrchestrator:
             if unit_of_work.commit(consolidated_data, product_cache, resolver, store_obj):
                 self.processed_files.append(file_path)
                 variation_manager.reconcile_brand_duplicates()
-                variation_manager.reconcile_product_duplicates()
+        # Post-processing: Reconcile potential duplicates found during the run
+        self.variation_manager.reconcile_product_duplicates()
+
+        # Post-processing: Reconcile brand duplicates
+        self.variation_manager.reconcile_brand_duplicates()
+
+        # Regenerate the brand synonym file from the database state
+        from api.utils.synonym_utils.brand_synonym_generator import generate_brand_synonym_file
+        generate_brand_synonym_file(self.command)
+
+        # Final step: Regenerate the translation table to include new variations
+        self.command.stdout.write("--- Regenerating product name translation table ---")
+        translator_generator = TranslationTableGenerator(self.command)
+        translator_generator.generate()
+
+        self._cleanup()
 
         translator_generator = TranslationTableGenerator(self.command)
         translator_generator.generate()
