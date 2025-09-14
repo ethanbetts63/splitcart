@@ -175,7 +175,7 @@ def run_savings_benchmark(file_path):
     """Main function to run the benchmark and write results to a file."""
     report_lines = []
     
-    NUM_RUNS = 100
+    NUM_RUNS = 50
     PRODUCTS_PER_RUN = 100
 
     report_lines.append(f"Starting benchmark with {NUM_RUNS} runs...\n")

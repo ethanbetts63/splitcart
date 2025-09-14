@@ -66,10 +66,13 @@ git push
 python manage.py update_db --archive
 python manage.py update_db --products
 python manage.py update_db --prefixes
-#python manage.py reconcile_products 
+python manage.py update_db --category-links
 python manage.py generate_subs
 python manage.py analyze --report company_heatmap
 python manage.py analyze --report subs
+python manage.py analyze --report savings
+
+
 python manage.py update_db stores
 python manage.py build_company_jsons
 python manage.py build_store_jsons
