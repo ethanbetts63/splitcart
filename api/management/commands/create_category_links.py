@@ -39,12 +39,16 @@ append_skipped = lambda id1, id2: _append_to_decision_file(SKIPPED_FILE, id1, id
 
 
 class Command(BaseCommand):
-    help = 'Interactively create equivalence rules for categories at a specific nesting level.'
+    help = 'Interactively create equivalence rules for categories.'
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--level', type=int, required=True,
-            help='The category nesting level to process (0 for roots, 1 for their children, etc.).'
+            '--level', type=int, required=False,
+            help='The category nesting level to process. Required if not using suggestions.'
+        )
+        parser.add_argument(
+            '--use-suggestions', action='store_true',
+            help='Use the pre-generated suggestions file instead of level-based matching.'
         )
 
     def _calculate_levels(self):
@@ -69,64 +73,99 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         level_to_process = options['level']
-        
-        category_levels = self._calculate_levels()
-        categories_at_level = [cat_id for cat_id, lvl in category_levels.items() if lvl == level_to_process]
-        
-        all_cats = Category.objects.filter(id__in=categories_at_level).prefetch_related('products', 'company', 'parents')
-        product_sets = {cat.id: set(p.id for p in cat.products.all()) for cat in all_cats}
+        use_suggestions = options['use_suggestions']
 
-        potential_pairs = []
+        if not use_suggestions and level_to_process is None:
+            self.stdout.write(self.style.ERROR("You must specify either --level or --use-suggestions."))
+            return
 
-        if level_to_process == 0:
-            self.stdout.write("--- Generating pairs for Level 0 (Root Categories) ---")
-            cats_by_comp = defaultdict(list)
-            for cat in all_cats: cats_by_comp[cat.company_id].append(cat)
-            for comp1, comp2 in combinations(cats_by_comp.keys(), 2):
-                for cat1 in cats_by_comp[comp1]:
-                    for cat2 in cats_by_comp[comp2]:
-                        potential_pairs.append((cat1, cat2))
-        else:
-            self.stdout.write(f"--- Generating pairs for Level {level_to_process} (Child Categories) ---")
-            parent_level = level_to_process - 1
-            for cat1 in all_cats:
-                parent_equivalents = set()
-                for parent in cat1.parents.all():
-                    if category_levels.get(parent.id) == parent_level:
-                        # **THE FIX IS HERE: Query both sides of the relationship**
-                        equiv_links = CategoryEquivalence.objects.filter(
-                            Q(from_category=parent) | Q(to_category=parent)
-                        ).select_related('from_category', 'to_category')
-                        
-                        for link in equiv_links:
-                            if link.from_category_id == parent.id:
-                                parent_equivalents.add(link.to_category)
-                            else:
-                                parent_equivalents.add(link.from_category)
-                
-                for equiv_parent in parent_equivalents:
-                    for cat2 in equiv_parent.subcategories.filter(id__in=categories_at_level):
-                        if cat1.company_id != cat2.company_id:
-                            potential_pairs.append((cat1, cat2))
-
-        # --- Scoring and Filtering (same for all levels) ---
         scored_pairs = []
-        unique_pairs = set()
-        for cat1, cat2 in potential_pairs:
-            pair_key = tuple(sorted((cat1.id, cat2.id)))
-            if pair_key in unique_pairs: continue
-            unique_pairs.add(pair_key)
 
-            set1, set2 = product_sets.get(cat1.id, set()), product_sets.get(cat2.id, set())
-            if not set1 or not set2: continue
-            intersection = set1.intersection(set2)
-            union = set1.union(set2)
-            score = len(intersection) / len(union) if union else 0
-            if score > 0.01:
+        if use_suggestions:
+            self.stdout.write(self.style.SUCCESS("--- Loading suggestions from file ---"))
+            try:
+                with open('api/data/suggested_category_links.json', 'r') as f:
+                    suggestions = json.load(f)
+            except (FileNotFoundError, json.JSONDecodeError):
+                self.stdout.write(self.style.ERROR("Could not load or parse suggestion file. Please run `suggest_category_links` first."))
+                return
+            
+            # Convert suggestion format to the scored_pairs format
+            cat_ids = set()
+            for s in suggestions:
+                cat_ids.add(s['cat1_id'])
+                cat_ids.add(s['cat2_id'])
+            
+            cats_by_id = {cat.id: cat for cat in Category.objects.filter(id__in=cat_ids).prefetch_related('company')}
+
+            for s in suggestions:
+                cat1 = cats_by_id.get(s['cat1_id'])
+                cat2 = cats_by_id.get(s['cat2_id'])
+                if not cat1 or not cat2: continue
+
                 scored_pairs.append({
-                    'cat1': cat1, 'cat2': cat2, 'score': score, 'shared_products': intersection
+                    'cat1': cat1, 
+                    'cat2': cat2, 
+                    'score': s['score'], 
+                    'shared_products': set(range(s['shared_products'])) # Create a dummy set of the correct size
                 })
-        scored_pairs.sort(key=lambda x: x['score'], reverse=True)
+
+        else: # Original level-based logic
+            category_levels = self._calculate_levels()
+            categories_at_level = [cat_id for cat_id, lvl in category_levels.items() if lvl == level_to_process]
+            
+            all_cats = Category.objects.filter(id__in=categories_at_level).prefetch_related('products', 'company', 'parents')
+            product_sets = {cat.id: set(p.id for p in cat.products.all()) for cat in all_cats}
+
+            potential_pairs = []
+
+            if level_to_process == 0:
+                self.stdout.write("--- Generating pairs for Level 0 (Root Categories) ---")
+                cats_by_comp = defaultdict(list)
+                for cat in all_cats: cats_by_comp[cat.company_id].append(cat)
+                for comp1, comp2 in combinations(cats_by_comp.keys(), 2):
+                    for cat1 in cats_by_comp[comp1]:
+                        for cat2 in cats_by_comp[comp2]:
+                            potential_pairs.append((cat1, cat2))
+            else:
+                self.stdout.write(f"--- Generating pairs for Level {level_to_process} (Child Categories) ---")
+                parent_level = level_to_process - 1
+                for cat1 in all_cats:
+                    parent_equivalents = set()
+                    for parent in cat1.parents.all():
+                        if category_levels.get(parent.id) == parent_level:
+                            equiv_links = CategoryEquivalence.objects.filter(
+                                Q(from_category=parent) | Q(to_category=parent)
+                            ).select_related('from_category', 'to_category')
+                            
+                            for link in equiv_links:
+                                if link.from_category_id == parent.id:
+                                    parent_equivalents.add(link.to_category)
+                                else:
+                                    parent_equivalents.add(link.from_category)
+                    
+                    for equiv_parent in parent_equivalents:
+                        for cat2 in equiv_parent.subcategories.filter(id__in=categories_at_level):
+                            if cat1.company_id != cat2.company_id:
+                                potential_pairs.append((cat1, cat2))
+
+            # --- Scoring and Filtering (same for all levels) ---
+            unique_pairs = set()
+            for cat1, cat2 in potential_pairs:
+                pair_key = tuple(sorted((cat1.id, cat2.id)))
+                if pair_key in unique_pairs: continue
+                unique_pairs.add(pair_key)
+
+                set1, set2 = product_sets.get(cat1.id, set()), product_sets.get(cat2.id, set())
+                if not set1 or not set2: continue
+                intersection = set1.intersection(set2)
+                union = set1.union(set2)
+                score = len(intersection) / len(union) if union else 0
+                if score > 0.01:
+                    scored_pairs.append({
+                        'cat1': cat1, 'cat2': cat2, 'score': score, 'shared_products': intersection
+                    })
+            scored_pairs.sort(key=lambda x: x['score'], reverse=True)
 
         # --- Filtering and Interactive Loop (same as before) ---
         processed_db_pairs = set()
