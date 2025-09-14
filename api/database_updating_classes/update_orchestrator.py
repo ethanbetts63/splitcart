@@ -13,6 +13,7 @@ class UpdateOrchestrator:
         self.command = command
         self.inbox_path = inbox_path
         self.processed_files = []
+        self.variation_manager = VariationManager(self.command, unit_of_work=None)
 
     def run(self):
         self.command.stdout.write(self.command.style.SQL_FIELD("-- Starting Product Update --"))
@@ -50,16 +51,16 @@ class UpdateOrchestrator:
 
             resolver = ProductResolver(self.command, company_obj, store_obj)
             unit_of_work = UnitOfWork(self.command)
-            variation_manager = VariationManager(self.command, unit_of_work)
+            self.variation_manager.unit_of_work = unit_of_work  # Inject UoW
             brand_manager = BrandManager(self.command)
 
-            product_cache = self._process_consolidated_data(consolidated_data, resolver, unit_of_work, variation_manager, brand_manager, store_obj)
+            product_cache = self._process_consolidated_data(consolidated_data, resolver, unit_of_work, self.variation_manager, brand_manager, store_obj)
             
             brand_manager.commit()
 
             if unit_of_work.commit(consolidated_data, product_cache, resolver, store_obj):
                 self.processed_files.append(file_path)
-                variation_manager.reconcile_brand_duplicates()
+                self.variation_manager.reconcile_brand_duplicates()
         # Post-processing: Reconcile potential duplicates found during the run
         self.variation_manager.reconcile_product_duplicates()
 
@@ -74,6 +75,11 @@ class UpdateOrchestrator:
         self.command.stdout.write("--- Regenerating product name translation table ---")
         translator_generator = TranslationTableGenerator(self.command)
         translator_generator.generate()
+
+        # Final, final step: Run the file-based reconciler to catch non-barcode duplicates
+        from api.database_updating_classes.product_reconciler import ProductReconciler
+        reconciler = ProductReconciler(self.command)
+        reconciler.run()
 
         self._cleanup()
 
