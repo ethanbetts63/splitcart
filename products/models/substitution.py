@@ -12,6 +12,7 @@ class ProductSubstitution(models.Model):
         ('LVL4', 'Different brand, similar product, different size.'),
         ('LVL5', 'Same category, semantic match.'),
         ('LVL6', 'Linked category, semantic match.'),
+        ('LVL7', 'Close-linked category, semantic match.'),
     ]
 
     product_a = models.ForeignKey(

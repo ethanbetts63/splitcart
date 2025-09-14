@@ -31,106 +31,139 @@ class ExactCategoryMatcher:
         return "".join(words)
 
     def run(self):
-        self.command.stdout.write(self.command.style.SUCCESS("--- Running Automatic Exact Category Matcher ---"))
+        self.command.stdout.write(self.command.style.SUCCESS("--- Running Automatic Category Linker ---"))
         
-        # 1. Fetch all categories and clean their names for exact matching
-        all_categories = list(Category.objects.all().prefetch_related('company', 'products')) # Fetch products for Jaccard
+        # 1. Fetch all categories and prepare data structures
+        all_categories = list(Category.objects.all().prefetch_related('company', 'products'))
         cleaned_groups = defaultdict(list)
-
         for category in all_categories:
             cleaned_name = self._clean_value(category.name)
             if cleaned_name:
                 cleaned_groups[cleaned_name].append(category)
 
-        # 2. Create 'MATCH' links based on exact cleaned name matches
+        # --- Stage 1: Create 'MATCH' links ---
+        self.command.stdout.write("--- Finding 'MATCH' links based on exact name ---")
+        
+        # Find all potential MATCH links
         match_links_to_create = []
         for cleaned_name, group in cleaned_groups.items():
             if len(group) < 2:
                 continue
-
             for cat_a, cat_b in combinations(group, 2):
                 if cat_a.company_id == cat_b.company_id:
                     continue
-                
                 cat_a, cat_b = (cat_a, cat_b) if cat_a.id < cat_b.id else (cat_b, cat_a)
                 match_links_to_create.append(
                     CategoryLink(category_a=cat_a, category_b=cat_b, link_type='MATCH')
                 )
-
+        
+        # Create new MATCH links and report accurately
+        new_matches_created = 0
         if match_links_to_create:
+            self.command.stdout.write(f"  Found {len(match_links_to_create)} potential 'MATCH' links.")
             try:
-                created_matches = CategoryLink.objects.bulk_create(match_links_to_create, ignore_conflicts=True)
-                self.links_created += len(created_matches)
-                self.command.stdout.write(self.command.style.SUCCESS(f"  Automatically created {len(created_matches)} new 'MATCH' links."))
+                count_before = CategoryLink.objects.count()
+                CategoryLink.objects.bulk_create(match_links_to_create, ignore_conflicts=True)
+                count_after = CategoryLink.objects.count()
+                new_matches_created = count_after - count_before
+                self.links_created += new_matches_created
+                if new_matches_created > 0:
+                    self.command.stdout.write(self.command.style.SUCCESS(f"  Created {new_matches_created} new 'MATCH' links."))
+                else:
+                    self.command.stdout.write("  No new 'MATCH' links created (all potential links already exist).")
             except Exception as e:
                 self.command.stderr.write(self.command.style.ERROR(f"  Error bulk creating MATCH links: {e}"))
+        else:
+            self.command.stdout.write("  No potential 'MATCH' links found.")
 
-        # 3. Prepare for Jaccard Similarity calculation for CLOSE and DISTANT relations
-        self.command.stdout.write("--- Calculating Jaccard Similarities for CLOSE/DISTANT relations ---")
+
+        # --- Stage 2: Create 'CLOSE' and 'DISTANT' links ---
+        self.command.stdout.write("--- Finding 'CLOSE'/'DISTANT' links based on Jaccard similarity ---")
+        
+        # Prepare data for Jaccard
         product_sets = {cat.id: set(p.id for p in cat.products.all()) for cat in all_categories}
         categories_by_company = defaultdict(list)
         for cat in all_categories: categories_by_company[cat.company.name].append(cat)
 
+        # Get all links that now exist in the DB (including newly created MATCH links)
         existing_links = set()
         for link in CategoryLink.objects.all():
             existing_links.add(tuple(sorted((link.category_a_id, link.category_b_id))))
 
+        # Find potential CLOSE and DISTANT links
         close_distant_links_to_create = []
         company_names = list(categories_by_company.keys())
 
         for company1_name, company2_name in combinations(company_names, 2):
-            cat_list1 = categories_by_company[company1_name]
-            cat_list2 = categories_by_company[company2_name]
-
-            for cat1 in cat_list1:
-                for cat2 in cat_list2:
-                    # Ensure they are from different companies (already handled by combinations, but good check)
-                    if cat1.company_id == cat2.company_id:
-                        continue
-                    
-                    # Sort by ID for consistent key for existing_links check
+            for cat1 in categories_by_company[company1_name]:
+                for cat2 in categories_by_company[company2_name]:
                     sorted_cat_ids = tuple(sorted((cat1.id, cat2.id)))
                     if sorted_cat_ids in existing_links:
-                        continue # Skip if already linked
+                        continue
 
                     set1 = product_sets.get(cat1.id, set())
                     set2 = product_sets.get(cat2.id, set())
 
-                    if not set1 or not set2: # Skip if either category has no products
-                        continue
-
+                    if not set1 or not set2: continue
                     intersection_size = len(set1.intersection(set2))
-                    if intersection_size == 0: # Skip if no shared products
-                        continue
+                    if intersection_size == 0: continue
 
                     union_size = len(set1.union(set2))
                     jaccard_similarity = intersection_size / union_size if union_size > 0 else 0
 
-                    if jaccard_similarity >= 0.80:
+                    link_type = None
+                    if jaccard_similarity >= 0.80: link_type = 'CLOSE'
+                    elif jaccard_similarity >= 0.60: link_type = 'DISTANT'
+                    
+                    if link_type:
                         close_distant_links_to_create.append(
-                            CategoryLink(category_a=cat1, category_b=cat2, link_type='CLOSE')
-                        )
-                    elif jaccard_similarity >= 0.60:
-                        close_distant_links_to_create.append(
-                            CategoryLink(category_a=cat1, category_b=cat2, link_type='DISTANT')
+                            CategoryLink(category_a=cat1, category_b=cat2, link_type=link_type)
                         )
         
+        # Create new CLOSE/DISTANT links and report accurately
+        new_close_created = 0
+        new_distant_created = 0
         if close_distant_links_to_create:
-            try:
-                created_close_distant = CategoryLink.objects.bulk_create(close_distant_links_to_create, ignore_conflicts=True)
-                
-                close_count = sum(1 for link in created_close_distant if link.link_type == 'CLOSE')
-                distant_count = sum(1 for link in created_close_distant if link.link_type == 'DISTANT')
+            potential_close = sum(1 for link in close_distant_links_to_create if link.link_type == 'CLOSE')
+            potential_distant = sum(1 for link in close_distant_links_to_create if link.link_type == 'DISTANT')
+            self.command.stdout.write(f"  Found {potential_close} potential 'CLOSE' links.")
+            self.command.stdout.write(f"  Found {potential_distant} potential 'DISTANT' links.")
 
-                self.links_created += len(created_close_distant)
-                if close_count > 0:
-                    self.command.stdout.write(self.command.style.SUCCESS(f"  Automatically created {close_count} new 'CLOSE' links."))
-                if distant_count > 0:
-                    self.command.stdout.write(self.command.style.SUCCESS(f"  Automatically created {distant_count} new 'DISTANT' links."))
+            try:
+                # We can't easily get separate counts for new CLOSE vs DISTANT links with one bulk_create
+                # So we do it in two passes. It's less efficient but gives correct output.
+                close_links = [l for l in close_distant_links_to_create if l.link_type == 'CLOSE']
+                distant_links = [l for l in close_distant_links_to_create if l.link_type == 'DISTANT']
+
+                if close_links:
+                    count_before = CategoryLink.objects.count()
+                    CategoryLink.objects.bulk_create(close_links, ignore_conflicts=True)
+                    count_after = CategoryLink.objects.count()
+                    new_close_created = count_after - count_before
+                    self.links_created += new_close_created
+                    if new_close_created > 0:
+                        self.command.stdout.write(self.command.style.SUCCESS(f"  Created {new_close_created} new 'CLOSE' links."))
+
+                if distant_links:
+                    count_before = CategoryLink.objects.count()
+                    CategoryLink.objects.bulk_create(distant_links, ignore_conflicts=True)
+                    count_after = CategoryLink.objects.count()
+                    new_distant_created = count_after - count_before
+                    self.links_created += new_distant_created
+                    if new_distant_created > 0:
+                        self.command.stdout.write(self.command.style.SUCCESS(f"  Created {new_distant_created} new 'DISTANT' links."))
+                
+                if new_close_created == 0 and new_distant_created == 0:
+                    self.command.stdout.write("  No new 'CLOSE' or 'DISTANT' links created (all potential links already exist).")
+
             except Exception as e:
                 self.command.stderr.write(self.command.style.ERROR(f"  Error bulk creating CLOSE/DISTANT links: {e}"))
-
-        if self.links_created == 0:
-            self.command.stdout.write("No new automatic matches found.")
         else:
-            self.command.stdout.write(self.command.style.SUCCESS(f"Total automatic links created: {self.links_created}"))
+            self.command.stdout.write("  No potential 'CLOSE' or 'DISTANT' links found.")
+
+        # --- Final Summary ---
+        self.command.stdout.write("--- Summary ---")
+        if self.links_created == 0:
+            self.command.stdout.write("No new automatic links were created in this run.")
+        else:
+            self.command.stdout.write(self.command.style.SUCCESS(f"Total new automatic links created: {self.links_created}"))
