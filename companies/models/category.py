@@ -1,5 +1,4 @@
 from django.db import models
-from .category_equivalence import CategoryEquivalence
 
 class Category(models.Model):
     name = models.CharField(
@@ -28,14 +27,6 @@ class Category(models.Model):
         blank=True,
         related_name='subcategories',
         help_text="The parent categories of this category."
-    )
-
-    equivalences = models.ManyToManyField(
-        'self',
-        through=CategoryEquivalence,
-        symmetrical=False,
-        blank=True,
-        help_text="Links to categories in other companies with a defined relationship type."
     )
 
     class Meta:
