@@ -1,4 +1,5 @@
 from django.db import models
+from .category_link import CategoryLink
 
 class Category(models.Model):
     name = models.CharField(
@@ -27,6 +28,13 @@ class Category(models.Model):
         blank=True,
         related_name='subcategories',
         help_text="The parent categories of this category."
+    )
+    links = models.ManyToManyField(
+        'self',
+        through=CategoryLink,
+        symmetrical=True, # This can be true now as the model is symmetrical
+        blank=True,
+        help_text="Links to categories in other companies with a defined relationship type."
     )
 
     class Meta:

@@ -1,14 +1,20 @@
 import os
 import json
 import shutil
-from companies.models import Category, CategoryEquivalence
+from companies.models import Category, CategoryLink
+from api.database_updating_classes.exact_category_matcher import ExactCategoryMatcher
 
 INBOX_DIR = 'api/data/category_link_inbox'
 PROCESSED_DIR = os.path.join(INBOX_DIR, 'processed')
 
 def update_category_links_from_inbox(command):
     """Processes equivalence decisions from the inbox directory."""
-    command.stdout.write(command.style.SUCCESS("--- Checking for category link files in inbox... ---"))
+    # --- Run automatic exact matcher first ---
+    matcher = ExactCategoryMatcher(command)
+    matcher.run()
+
+    # --- Then, process the manual inbox files ---
+    command.stdout.write(command.style.SUCCESS("--- Checking for manual category link files in inbox... ---"))
 
     if not os.path.exists(INBOX_DIR):
         command.stdout.write(command.style.WARNING("Category link inbox directory not found."))
@@ -30,16 +36,21 @@ def update_category_links_from_inbox(command):
         filepath = os.path.join(INBOX_DIR, filename)
         command.stdout.write(f"  - Processing {filename}...")
         
-        with open(filepath, 'r') as f:
-            decisions = json.load(f)
+        try:
+            with open(filepath, 'r') as f:
+                decisions = json.load(f)
+        except (IOError, json.JSONDecodeError) as e:
+            command.stderr.write(command.style.ERROR(f"    Could not read or parse file {filename}: {e}"))
+            continue
 
         links_in_file = 0
         for decision in decisions:
             try:
-                _, created = CategoryEquivalence.objects.get_or_create(
-                    from_category_id=decision['from'],
-                    to_category_id=decision['to'],
-                    defaults={'relationship_type': decision['type']}
+                # The new format is symmetrical, using category_a_id and category_b_id
+                _, created = CategoryLink.objects.get_or_create(
+                    category_a_id=decision['category_a_id'],
+                    category_b_id=decision['category_b_id'],
+                    defaults={'link_type': decision['type']}
                 )
                 if created:
                     links_in_file += 1
@@ -47,7 +58,7 @@ def update_category_links_from_inbox(command):
                 command.stderr.write(command.style.ERROR(f"    Error processing decision {decision}: {e}"))
         
         if links_in_file > 0:
-            command.stdout.write(command.style.SUCCESS(f"    Created {links_in_file} new equivalence links."))
+            command.stdout.write(command.style.SUCCESS(f"    Created {links_in_file} new category links."))
         total_links_created += links_in_file
 
         # Move the processed file to the archive

@@ -7,7 +7,7 @@ from itertools import combinations
 from collections import defaultdict
 from django.core.management.base import BaseCommand
 from django.db.models import Q
-from companies.models import Category, CategoryEquivalence
+from companies.models import Category, CategoryLink
 
 # --- Persistence Helper Functions (same as before) ---
 def _load_decision_file(filepath):
@@ -209,6 +209,19 @@ class Command(BaseCommand):
             elif choice == '1': decisions.append({'from': cat1.id, 'to': cat2.id, 'type': 'SUB'}); self.stdout.write(self.style.SUCCESS("Decision recorded."));
             elif choice == '2': decisions.append({'from': cat2.id, 'to': cat1.id, 'type': 'SUB'}); self.stdout.write(self.style.SUCCESS("Decision recorded."));
             elif choice == '3': decisions.append({'from': cat1.id, 'to': cat2.id, 'type': 'EQ'}); decisions.append({'from': cat2.id, 'to': cat1.id, 'type': 'EQ'}); self.stdout.write(self.style.SUCCESS("Decision recorded."));
+            time.sleep(0.75)
+
+        if decisions:
+            inbox_dir = 'api/data/category_link_inbox'
+            if not os.path.exists(inbox_dir): os.makedirs(inbox_dir)
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            filename = os.path.join(inbox_dir, f"{timestamp}.json")
+            with open(filename, 'w') as f: json.dump(decisions, f, indent=4)
+            self.stdout.write(self.style.SUCCESS(f"\nSession finished. {len(decisions)} decisions saved to {filename}"))
+        else:
+            self.stdout.write(self.style.SUCCESS("\nSession finished. No new decisions were made."))
+dout.write(self.style.SUCCESS("Decision recorded: DISTANT Relation."))
+            
             time.sleep(0.75)
 
         if decisions:
