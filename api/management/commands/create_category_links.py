@@ -9,7 +9,7 @@ from django.core.management.base import BaseCommand
 from django.db.models import Q
 from companies.models import Category, CategoryLink
 
-# --- Persistence Helper Functions (same as before) ---
+# --- Persistence Helper Functions ---
 def _load_decision_file(filepath):
     if not os.path.exists(filepath):
         return set()
@@ -36,7 +36,6 @@ load_non_matches = lambda: _load_decision_file(NON_MATCH_FILE)
 load_skipped = lambda: _load_decision_file(SKIPPED_FILE)
 append_non_match = lambda id1, id2: _append_to_decision_file(NON_MATCH_FILE, id1, id2)
 append_skipped = lambda id1, id2: _append_to_decision_file(SKIPPED_FILE, id1, id2)
-
 
 class Command(BaseCommand):
     help = 'Interactively create equivalence rules for categories.'
@@ -90,7 +89,6 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.ERROR("Could not load or parse suggestion file. Please run `suggest_category_links` first."))
                 return
             
-            # Convert suggestion format to the scored_pairs format
             cat_ids = set()
             for s in suggestions:
                 cat_ids.add(s['cat1_id'])
@@ -107,7 +105,7 @@ class Command(BaseCommand):
                     'cat1': cat1, 
                     'cat2': cat2, 
                     'score': s['score'], 
-                    'shared_products': set(range(s['shared_products'])) # Create a dummy set of the correct size
+                    'shared_products': set(range(s['shared_products']))
                 })
 
         else: # Original level-based logic
@@ -134,22 +132,21 @@ class Command(BaseCommand):
                     parent_equivalents = set()
                     for parent in cat1.parents.all():
                         if category_levels.get(parent.id) == parent_level:
-                            equiv_links = CategoryEquivalence.objects.filter(
-                                Q(from_category=parent) | Q(to_category=parent)
-                            ).select_related('from_category', 'to_category')
+                            equiv_links = CategoryLink.objects.filter(
+                                Q(category_a=parent) | Q(category_b=parent)
+                            ).select_related('category_a', 'category_b')
                             
                             for link in equiv_links:
-                                if link.from_category_id == parent.id:
-                                    parent_equivalents.add(link.to_category)
+                                if link.category_a_id == parent.id:
+                                    parent_equivalents.add(link.category_b)
                                 else:
-                                    parent_equivalents.add(link.from_category)
+                                    parent_equivalents.add(link.category_a)
                     
                     for equiv_parent in parent_equivalents:
                         for cat2 in equiv_parent.subcategories.filter(id__in=categories_at_level):
                             if cat1.company_id != cat2.company_id:
                                 potential_pairs.append((cat1, cat2))
 
-            # --- Scoring and Filtering (same for all levels) ---
             unique_pairs = set()
             for cat1, cat2 in potential_pairs:
                 pair_key = tuple(sorted((cat1.id, cat2.id)))
@@ -167,12 +164,20 @@ class Command(BaseCommand):
                     })
             scored_pairs.sort(key=lambda x: x['score'], reverse=True)
 
-        # --- Filtering and Interactive Loop (same as before) ---
+        # --- Filtering and Interactive Loop ---
         processed_db_pairs = set()
-        for eq in CategoryEquivalence.objects.all(): processed_db_pairs.add(tuple(sorted((eq.from_category_id, eq.to_category_id))))
+        for link in CategoryLink.objects.all():
+            processed_db_pairs.add(tuple(sorted((link.category_a_id, link.category_b_id))))
+        
         non_matches = load_non_matches()
         skipped_pairs = load_skipped()
-        pairs_to_review = [p for p in scored_pairs if tuple(sorted((p['cat1'].id, p['cat2'].id))) not in processed_db_pairs and tuple(sorted((p['cat1'].id, p['cat2'].id))) not in non_matches and tuple(sorted((p['cat1'].id, p['cat2'].id))) not in skipped_pairs]
+        
+        pairs_to_review = [
+            p for p in scored_pairs 
+            if tuple(sorted((p['cat1'].id, p['cat2'].id))) not in processed_db_pairs and \
+               tuple(sorted((p['cat1'].id, p['cat2'].id))) not in non_matches and \
+               tuple(sorted((p['cat1'].id, p['cat2'].id))) not in skipped_pairs
+        ]
 
         if not pairs_to_review: self.stdout.write(self.style.SUCCESS("No new category pairs to review.")); return
 
@@ -180,20 +185,27 @@ class Command(BaseCommand):
         for i, pair_data in enumerate(pairs_to_review):
             os.system('cls' if os.name == 'nt' else 'clear')
             cat1, cat2, score = pair_data['cat1'], pair_data['cat2'], pair_data['score']
-            self.stdout.write(self.style.SUCCESS(f"--- Pair {i + 1} of {len(pairs_to_review)} [LEVEL {level_to_process}] ---"))
-            self.stdout.write(f"A: {self.style.SQL_FIELD(cat1.name)} ({cat1.company.name})\nB: {self.style.SQL_FIELD(cat2.name)} ({cat2.company.name})")
+            
+            review_title = f"LEVEL {level_to_process}" if not use_suggestions else "SUGGESTIONS"
+            self.stdout.write(self.style.SUCCESS(f"--- Pair {i + 1} of {len(pairs_to_review)} [{review_title}] ---"))
+
+            self.stdout.write(f"A: {self.style.SQL_FIELD(cat1.name)} ({cat1.company.name})\nA: {self.style.SQL_FIELD(cat2.name)} ({cat2.company.name})")
             self.stdout.write(f"Similarity Score: {self.style.HTTP_INFO(f'{score:.2f}')}")
             self.stdout.write("Shared Products:")
             shared_product_ids = pair_data['shared_products']
             from products.models import Product
-            shared_products = Product.objects.filter(id__in=list(shared_product_ids)[:5])
-            for p in shared_products: self.stdout.write(f"  - {p.name}")
-            if len(shared_product_ids) > 5: self.stdout.write(f"  ...and {len(shared_product_ids) - 5} more.")
+            try:
+                shared_products = Product.objects.filter(id__in=list(shared_product_ids)[:5])
+                for p in shared_products: self.stdout.write(f"  - {p.name}")
+                if len(shared_product_ids) > 5: self.stdout.write(f"  ...and {len(shared_product_ids) - 5} more.")
+            except (TypeError, ValueError):
+                 self.stdout.write(f"  ({len(shared_product_ids)} shared products)")
+
             self.stdout.write("-" * 50)
-            self.stdout.write(f"  {self.style.SQL_KEYWORD('[1]')} (A -> B) '{cat1.name}' is a SUBSET of '{cat2.name}'")
-            self.stdout.write(f"  {self.style.SQL_KEYWORD('[2]')} (B -> A) '{cat2.name}' is a SUBSET of '{cat1.name}'")
-            self.stdout.write(f"  {self.style.SQL_KEYWORD('[3]')} (A <=> B) Mutually EQUIVALENT")
-            self.stdout.write(f"  {self.style.SQL_KEYWORD('[4]')} Skip")
+            self.stdout.write(f"  {self.style.SQL_KEYWORD('[1]')} MATCH")
+            self.stdout.write(f"  {self.style.SQL_KEYWORD('[2]')} CLOSE Relation")
+            self.stdout.write(f"  {self.style.SQL_KEYWORD('[3]')} DISTANT Relation")
+            self.stdout.write(f"  {self.style.SQL_KEYWORD('[4]')} Skip for now")
             self.stdout.write(f"  {self.style.SQL_KEYWORD('[5]')} NOT a match")
             self.stdout.write(f"  {self.style.SQL_KEYWORD('[q]')} Quit")
             while True:
@@ -203,27 +215,27 @@ class Command(BaseCommand):
                 self.stdout.write(choice + '\n')
                 if choice in ['1', '2', '3', '4', '5', 'q']: break
                 self.stdout.write(self.style.ERROR("Invalid input."))
-            if choice == 'q': break
-            if choice == '4': append_skipped(cat1.id, cat2.id); self.stdout.write(self.style.SUCCESS("Skipped."));
-            elif choice == '5': append_non_match(cat1.id, cat2.id); self.stdout.write(self.style.SUCCESS("Marked as not a match."));
-            elif choice == '1': decisions.append({'from': cat1.id, 'to': cat2.id, 'type': 'SUB'}); self.stdout.write(self.style.SUCCESS("Decision recorded."));
-            elif choice == '2': decisions.append({'from': cat2.id, 'to': cat1.id, 'type': 'SUB'}); self.stdout.write(self.style.SUCCESS("Decision recorded."));
-            elif choice == '3': decisions.append({'from': cat1.id, 'to': cat2.id, 'type': 'EQ'}); decisions.append({'from': cat2.id, 'to': cat1.id, 'type': 'EQ'}); self.stdout.write(self.style.SUCCESS("Decision recorded."));
-            time.sleep(0.75)
-
-        if decisions:
-            inbox_dir = 'api/data/category_link_inbox'
-            if not os.path.exists(inbox_dir): os.makedirs(inbox_dir)
-            timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            filename = os.path.join(inbox_dir, f"{timestamp}.json")
-            with open(filename, 'w') as f: json.dump(decisions, f, indent=4)
-            self.stdout.write(self.style.SUCCESS(f"\nSession finished. {len(decisions)} decisions saved to {filename}"))
-        else:
-            self.stdout.write(self.style.SUCCESS("\nSession finished. No new decisions were made."))
-dout.write(self.style.SUCCESS("Decision recorded: DISTANT Relation."))
             
-            time.sleep(0.75)
+            if choice == 'q': break
+            
+            cat_a_id, cat_b_id = tuple(sorted((cat1.id, cat2.id)))
 
+            if choice == '4': 
+                append_skipped(cat_a_id, cat_b_id)
+                self.stdout.write(self.style.SUCCESS("Skipped."))
+            elif choice == '5': 
+                append_non_match(cat_a_id, cat_b_id)
+                self.stdout.write(self.style.SUCCESS("Marked as not a match."))
+            elif choice == '1': 
+                decisions.append({'category_a_id': cat_a_id, 'category_b_id': cat_b_id, 'type': 'MATCH'})
+                self.stdout.write(self.style.SUCCESS("Decision recorded: MATCH."))
+            elif choice == '2': 
+                decisions.append({'category_a_id': cat_a_id, 'category_b_id': cat_b_id, 'type': 'CLOSE'})
+                self.stdout.write(self.style.SUCCESS("Decision recorded: CLOSE Relation."))
+            elif choice == '3': 
+                decisions.append({'category_a_id': cat_a_id, 'category_b_id': cat_b_id, 'type': 'DISTANT'})
+                self.stdout.write(self.style.SUCCESS("Decision recorded: DISTANT Relation."))
+            
         if decisions:
             inbox_dir = 'api/data/category_link_inbox'
             if not os.path.exists(inbox_dir): os.makedirs(inbox_dir)
