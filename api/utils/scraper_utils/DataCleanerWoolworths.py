@@ -8,6 +8,8 @@ class DataCleanerWoolworths(BaseDataCleaner):
     """
     Concrete cleaner class for Woolworths product data.
     """
+    INVALID_CATEGORIES = {"Footy Finals Kiosk"}
+
     def __init__(self, raw_product_list: list, company: str, store_name: str, store_id: str, state: str, timestamp: datetime):
         super().__init__(raw_product_list, company, store_name, store_id, state, timestamp)
 
@@ -21,17 +23,22 @@ class DataCleanerWoolworths(BaseDataCleaner):
             for standard_field in self.field_map.keys()
         }
 
-        # --- Handle special cases and transformations for Woolworths ---
-
         price_info = self._calculate_price_info(
             current_price=cleaned_product.get('price_current'),
             was_price=cleaned_product.get('price_was')
         )
         cleaned_product.update(price_info)
 
-        # --- THE FIX: Assemble category path from multiple fragmented fields ---
-        def parse_json_field(field_name):
-            raw_json_str = self._get_value(raw_product, field_name)
+        def deep_get(data, keys):
+            for key in keys:
+                if isinstance(data, dict) and key in data:
+                    data = data[key]
+                else:
+                    return None
+            return data
+
+        def parse_json_field(field_path):
+            raw_json_str = deep_get(raw_product, field_path.split('.'))
             if not raw_json_str or not isinstance(raw_json_str, str):
                 return []
             try:
@@ -39,27 +46,26 @@ class DataCleanerWoolworths(BaseDataCleaner):
             except json.JSONDecodeError:
                 return []
 
-        # Define the paths to the raw fields
         dept_field = 'AdditionalAttributes.piesdepartmentnamesjson'
         cat_field = 'AdditionalAttributes.piescategorynamesjson'
         subcat_field = 'AdditionalAttributes.piessubcategorynamesjson'
 
-        # Extract and parse each part of the hierarchy
         departments = parse_json_field(dept_field)
         categories = parse_json_field(cat_field)
         subcategories = parse_json_field(subcat_field)
 
-        # Combine them into a single path, preserving order and removing duplicates
         full_path = []
         seen = set()
         for item in departments + categories + subcategories:
             if item and item not in seen:
                 seen.add(item)
                 full_path.append(item)
+        
+        # THE NEW CHANGE: Filter out invalid categories
+        final_path = [item for item in full_path if item not in self.INVALID_CATEGORIES]
 
-        cleaned_product['category_path'] = self._clean_category_path(full_path)
+        cleaned_product['category_path'] = self._clean_category_path(final_path)
 
-        # --- Other transformations ---
         stockcode = cleaned_product.get('product_id_store')
         slug = cleaned_product.get('url')
         if stockcode and slug:

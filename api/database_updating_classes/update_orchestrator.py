@@ -77,9 +77,9 @@ class UpdateOrchestrator:
         translator_generator.generate()
 
         # Run the file-based reconciler to catch non-barcode duplicates
-        from api.database_updating_classes.product_reconciler import ProductReconciler
-        reconciler = ProductReconciler(self.command)
-        reconciler.run()
+        # from api.database_updating_classes.product_reconciler import ProductReconciler
+        # reconciler = ProductReconciler(self.command)
+        # reconciler.run()
 
         # Final cleanup of processed files
         self._cleanup_processed_files()

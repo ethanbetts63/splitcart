@@ -1754,3 +1754,7 @@
   [DUPLICATE] Name: Korbond Elastic Braided 6Mm X5M | Brand: Korbond | Size: each
   [CANONICAL] Name: White Rayon Elastic 3m | Brand: Korbond | Size: 1 each
 ----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Vitasoy Oat Milky Long Life Milk UHT | Brand: Vitasoy | Size: 1L
+  [CANONICAL] Name: Vitasoy Oat Milky | Brand: Vitasoy | Size: 1L
+----------------------------------------------------

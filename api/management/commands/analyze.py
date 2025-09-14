@@ -105,7 +105,7 @@ class Command(BaseCommand):
                 return
             self.stdout.write(self.style.SUCCESS(
                 f"Generating category tree for '{company_name}'..."))
-            tree_output = generate_category_tree(company_name)
+            tree_output = generate_category_tree(company_name, self)
             self.stdout.write(tree_output)
 
         elif report_type == 'subs':

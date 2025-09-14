@@ -1,15 +1,25 @@
 from collections import defaultdict
 from companies.models import Category, Company
 
-def _build_tree_string_from_map(category, children_map, prefix="", is_last=True, visited=None):
-    """Recursively builds the tree string from an in-memory map."""
+def _build_tree_string_from_map(category, children_map, prefix="", is_last=True, visited=None, command=None, counter=None):
+    """Recursively builds the tree string, now with correct visited tracking."""
+    # The 'visited' set is now passed by reference and shared across all calls for a single root tree.
     if visited is None:
         visited = set()
     
+    # If we have seen this node before in this traversal, it's part of a cycle with its parent.
+    # However, the more general case is that it's a node we have already processed completely.
+    # The check below handles both.
     if category['id'] in visited:
-        return f"{prefix}└── [CYCLE DETECTED: {category['name']}]\n"
-    
+        # We simply don't render it again. If it's a true cycle, the path will just end here.
+        return f"{prefix}{connector}[... {category['name']} already rendered ...]\n"
+
     visited.add(category['id'])
+    counter[0] += 1
+
+    if command and counter[0] % 100 == 0:
+        command.stdout.write(".", ending="")
+        command.stdout.flush()
 
     connector = "└── " if is_last else "├── "
     tree_string = f"{prefix}{connector}{category['name']}\n"
@@ -19,29 +29,43 @@ def _build_tree_string_from_map(category, children_map, prefix="", is_last=True,
 
     for i, child in enumerate(children):
         new_prefix = prefix + ("    " if is_last else "│   ")
+        # Pass the SAME visited set down, not a copy.
         tree_string += _build_tree_string_from_map(
-            child, children_map, prefix=new_prefix, is_last=(i == child_count - 1), visited=visited.copy()
+            child, children_map, 
+            prefix=new_prefix, 
+            is_last=(i == child_count - 1), 
+            visited=visited,
+            command=command,
+            counter=counter
         )
         
     return tree_string
 
-def generate_category_tree(company_name: str):
+def generate_category_tree(company_name: str, command=None):
     """
-    Generates a string representation of the category tree for a given company
-    by fetching all data first to prevent recursion issues with the ORM.
+    Generates a string representation of the category tree for a given company.
     """
+    def log(message, style=None):
+        if command:
+            if style:
+                command.stdout.write(style(message))
+            else:
+                command.stdout.write(message)
+
     try:
         company = Company.objects.get(name__iexact=company_name)
     except Company.DoesNotExist:
         return f"Error: Company '{company_name}' not found."
 
-    # 1. Fetch all categories and their parent relationships for the company
+    log("  - Fetching all category data from database...")
     all_categories_data = Category.objects.filter(company=company).values('id', 'name', 'parents__id')
 
     if not all_categories_data:
         return f"No categories found for {company.name}."
+    
+    log(f"  - Found {len(all_categories_data)} total category entries.")
+    log("  - Building in-memory hierarchy...")
 
-    # 2. Build in-memory maps
     categories_by_id = {cat['id']: {'id': cat['id'], 'name': cat['name']} for cat in all_categories_data}
     
     children_map = defaultdict(list)
@@ -49,23 +73,33 @@ def generate_category_tree(company_name: str):
 
     for cat_data in all_categories_data:
         parent_id = cat_data.get('parents__id')
-        if parent_id:
-            # Ensure the child is unique in the list for a given parent
+        if parent_id and parent_id in categories_by_id:
             if categories_by_id[cat_data['id']] not in children_map[parent_id]:
                 children_map[parent_id].append(categories_by_id[cat_data['id']])
             if cat_data['id'] in root_ids:
-                root_ids.remove(cat_data['id']) # It has a parent, so it's not a root
+                root_ids.remove(cat_data['id'])
 
-    # 3. Get the root category objects
     root_nodes = sorted([categories_by_id[rid] for rid in root_ids], key=lambda x: x['name'])
 
     if not root_nodes:
         return f"Error: No root categories found for {company.name}. There might be a cycle in the data."
 
-    # 4. Build the tree string
+    log(f"  - Found {len(root_nodes)} root categories. Rendering tree...", style=command.style.SUCCESS if command else None)
+
     tree_output = f"Category Tree for {company.name}:\n"
     category_count = len(root_nodes)
+    # This set will be shared across all branches of all root nodes.
+    globally_visited_nodes = set()
     for i, category in enumerate(root_nodes):
-        tree_output += _build_tree_string_from_map(category, children_map, prefix="", is_last=(i == category_count - 1))
+        tree_output += _build_tree_string_from_map(
+            category, children_map, 
+            prefix="", 
+            is_last=(i == category_count - 1),
+            visited=globally_visited_nodes, # Pass the same set to all
+            command=command,
+            counter=[0]
+        )
+        if command:
+            command.stdout.write("\n")
 
     return tree_output
