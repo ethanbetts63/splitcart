@@ -44,7 +44,6 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS('--- Store update from discovery complete ---'))
 
         if run_products_processed:
-            self.stdout.write(self.style.SQL_FIELD('--- Running product update from inbox (OOP Refactor) ---'))
             inbox_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'product_inbox')
             if not os.path.exists(inbox_path):
                 self.stdout.write(self.style.WARNING("Product inbox directory not found."))

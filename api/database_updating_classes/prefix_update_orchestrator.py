@@ -43,12 +43,9 @@ class PrefixUpdateOrchestrator:
         if brand_reconciliation_list:
             self._reconcile_brands(brand_reconciliation_list)
 
-            # --- Update the generated brand synonyms JSON file ---
-            self.command.stdout.write("--- Updating generated brand synonyms ---")
-            from api.utils.synonym_utils.bulk_save_synonyms import bulk_save_synonyms
-            new_synonyms = {item['duplicate_brand_name']: item['canonical_brand_name'] for item in brand_reconciliation_list}
-            bulk_save_synonyms(new_synonyms)
-            self.command.stdout.write(self.command.style.SUCCESS(f"Saved {len(new_synonyms)} new brand synonyms."))
+            # Regenerate the brand synonym file from the database state
+            from api.utils.synonym_utils.brand_synonym_generator import generate_brand_synonym_file
+            generate_brand_synonym_file(self.command)
 
         self._move_processed_files(processed_files)
         self.command.stdout.write(self.command.style.SUCCESS("--- Prefix Database Updater finished ---"))

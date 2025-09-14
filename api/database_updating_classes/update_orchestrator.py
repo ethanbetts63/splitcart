@@ -15,7 +15,7 @@ class UpdateOrchestrator:
         self.processed_files = []
 
     def run(self):
-        self.command.stdout.write(self.command.style.SQL_FIELD("-- Starting Simplified Refactored Product Update --"))
+        self.command.stdout.write(self.command.style.SQL_FIELD("-- Starting Product Update --"))
         
         all_files = [os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')]
         
