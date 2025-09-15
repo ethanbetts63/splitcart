@@ -3,10 +3,7 @@ import unicodedata
 import json
 import os
 from api.data.brand_translation_table import BRAND_NAME_TRANSLATIONS
-try:
-    from api.data.product_translation_table import PRODUCT_NAME_TRANSLATIONS
-except (ImportError, SyntaxError):
-    PRODUCT_NAME_TRANSLATIONS = {}
+from api.data.product_translation_table import PRODUCT_NAME_TRANSLATIONS
 
 # Load brand rules once when the module is loaded
 BRAND_RULES_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'brand_rules.json')
