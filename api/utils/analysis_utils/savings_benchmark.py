@@ -83,8 +83,8 @@ def generate_random_cart(stores, num_products):
             if sub.id == anchor_product.id:
                 size_compatible_group.append(sub)
                 continue
-            # Use a 50% tolerance for finding substitutes
-            if size_comparer.are_sizes_compatible(anchor_product, sub, tolerance=0.2):
+            # Use a 30% tolerance for finding substitutes
+            if size_comparer.are_sizes_compatible(anchor_product, sub, tolerance=0.3):
                 size_compatible_group.append(sub)
 
         # --- Step 1: Conditional Culling by Price ---
@@ -114,9 +114,9 @@ def generate_random_cart(stores, num_products):
         if not candidate_subs:
             continue
 
-        # --- Tiered Portfolio Selection (New cap of 3) ---
+        # --- Tiered Portfolio Selection (New cap of 4) ---
         final_options = []
-        portfolio_cap = 3 # Reduced from 10
+        portfolio_cap = 4 # Updated from 3
 
         candidate_ids = {sub.id for sub, price in candidate_subs}
         sub_relations = ProductSubstitution.objects.filter(
