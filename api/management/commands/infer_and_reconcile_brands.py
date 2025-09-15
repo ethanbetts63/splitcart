@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand
 from django.db.models import Count
 from products.models import Product, ProductBrand, BrandPrefix
 from api.database_updating_classes.variation_manager import VariationManager
-from api.database_updating_classes.translation_table_generator import TranslationTableGenerator
+from api.database_updating_classes.product_translation_table_generator import ProductTranslationTableGenerator
 
 def find_longest_common_prefix(strs):
     if not strs:
@@ -120,8 +120,7 @@ class Command(BaseCommand):
         variation_manager.brand_reconciliation_list = reconciliation_list
         variation_manager.reconcile_brand_duplicates()
 
-        self.stdout.write("--- Regenerating product name translation table ---")
-        translator_generator = TranslationTableGenerator(self)
-        translator_generator.generate()
+        # Regenerate the product name translation table
+        ProductTranslationTableGenerator().run()
 
         self.stdout.write(self.style.SUCCESS("--- Brand reconciliation complete ---"))

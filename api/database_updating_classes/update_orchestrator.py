@@ -5,7 +5,8 @@ from companies.models import Company, Store
 from api.database_updating_classes.product_resolver import ProductResolver
 from api.database_updating_classes.unit_of_work import UnitOfWork
 from api.database_updating_classes.variation_manager import VariationManager
-from api.database_updating_classes.translation_table_generator import TranslationTableGenerator
+from api.database_updating_classes.product_translation_table_generator import ProductTranslationTableGenerator
+from api.database_updating_classes.brand_translation_table_generator import BrandTranslationTableGenerator
 from api.database_updating_classes.brand_manager import BrandManager
 
 class UpdateOrchestrator:
@@ -68,13 +69,10 @@ class UpdateOrchestrator:
         self.variation_manager.reconcile_brand_duplicates()
 
         # Regenerate the brand synonym file from the database state
-        from api.utils.synonym_utils.brand_synonym_generator import generate_brand_synonym_file
-        generate_brand_synonym_file(self.command)
+        BrandTranslationTableGenerator().run()
 
         # Regenerate the product name translation table to include new variations
-        self.command.stdout.write("--- Regenerating product name translation table ---")
-        translator_generator = TranslationTableGenerator(self.command)
-        translator_generator.generate()
+        ProductTranslationTableGenerator().run()
 
         # Run the file-based reconciler to catch non-barcode duplicates
         from api.database_updating_classes.product_reconciler import ProductReconciler

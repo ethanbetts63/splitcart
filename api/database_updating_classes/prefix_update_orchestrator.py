@@ -4,6 +4,7 @@ from django.conf import settings
 from products.models import ProductBrand, BrandPrefix
 from api.database_updating_classes.variation_manager import VariationManager
 from api.utils.product_normalizer import ProductNormalizer
+from api.database_updating_classes.brand_translation_table_generator import BrandTranslationTableGenerator
 
 class PrefixUpdateOrchestrator:
     """
@@ -43,8 +44,7 @@ class PrefixUpdateOrchestrator:
             self._reconcile_brands(brand_reconciliation_list)
 
             # Regenerate the brand synonym file from the database state
-            from api.utils.synonym_utils.brand_synonym_generator import generate_brand_synonym_file
-            generate_brand_synonym_file(self.command)
+            BrandTranslationTableGenerator().run()
 
         self._move_processed_files(processed_files)
         self.command.stdout.write(self.command.style.SUCCESS("--- Prefix Database Updater finished ---"))
