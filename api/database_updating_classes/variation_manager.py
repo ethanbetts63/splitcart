@@ -137,10 +137,10 @@ class VariationManager:
     def _log_barcode_mismatch(self, canonical_product, duplicate_product):
         with open('barcode_mismatch_log.txt', 'a', encoding='utf-8') as f:
             from datetime import datetime
-            f.write(f"--- Mismatch Detected at {datetime.now().isoformat()} ---")
-            f.write(f"  Canonical: {canonical_product.name} (Barcode: {canonical_product.barcode})")
-            f.write(f"  Duplicate: {duplicate_product.name} (Barcode: {duplicate_product.barcode})")
-            f.write("----------------------------------------------------")
+            f.write(f"--- Mismatch Detected at {datetime.now().isoformat()} ---\n")
+            f.write(f"  Canonical: {canonical_product.name} (Barcode: {canonical_product.barcode})\n")
+            f.write(f"  Duplicate: {duplicate_product.name} (Barcode: {duplicate_product.barcode})\n")
+            f.write("----------------------------------------------------\n")
 
     def reconcile_brand_duplicates(self):
         """
