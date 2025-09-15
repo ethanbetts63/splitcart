@@ -79,13 +79,13 @@ class Command(BaseCommand):
                 if choice_vars[(i, j)].varValue == 1:
                     chosen_option_index = j
                 
-                line = f"    - {option['brand']} {option['product_name']} @ {option['store_name']} for ${option['price']:.2f}"
+                line = f"    - {option['brand']} {option['product_name']} {option.get('sizes', '')} @ {option['store_name']} for ${option['price']:.2f}"
                 report_lines.append(line)
 
             report_lines.append("\n  Chosen Option:")
             if chosen_option_index != -1:
                 chosen_option = slot[chosen_option_index]
-                chosen_line = f"    -> {chosen_option['brand']} {chosen_option['product_name']} @ {chosen_option['store_name']} for ${chosen_option['price']:.2f}"
+                chosen_line = f"    -> {chosen_option['brand']} {chosen_option['product_name']} {chosen_option.get('sizes', '')} @ {chosen_option['store_name']} for ${chosen_option['price']:.2f}"
                 report_lines.append(chosen_line)
             else:
                 report_lines.append("    - No option chosen for this slot (error in solver). ")

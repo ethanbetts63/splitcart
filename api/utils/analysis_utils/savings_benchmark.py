@@ -56,6 +56,8 @@ def get_substitution_group(anchor_product, depth_limit=3):
     return Product.objects.filter(id__in=group_ids)
 
 
+from api.utils.substitution_utils.size_comparer import SizeComparer
+
 def generate_random_cart(stores, num_products):
     """Generates a random shopping cart using the intelligent portfolio selection algorithm."""
     # Get a pool of potential products that exist in the selected stores
@@ -68,35 +70,42 @@ def generate_random_cart(stores, num_products):
     anchor_products = Product.objects.filter(id__in=random_product_ids).prefetch_related('prices__store')
 
     all_slots = []
+    size_comparer = SizeComparer()
+
     for anchor_product in anchor_products:
         # --- Step 0: Intelligent Graph Traversal ---
         full_sub_group = get_substitution_group(anchor_product)
 
+        # --- New Step: Filter by Size Similarity ---
+        size_compatible_group = []
+        for sub in full_sub_group:
+            # The anchor product is always considered compatible with itself
+            if sub.id == anchor_product.id:
+                size_compatible_group.append(sub)
+                continue
+            # Use a 50% tolerance for finding substitutes
+            if size_comparer.are_sizes_compatible(anchor_product, sub, tolerance=0.5):
+                size_compatible_group.append(sub)
+
         # --- Step 1: Conditional Culling by Price ---
-        # Get the price of the anchor product at its original store.
-        # This requires finding which of the selected stores the random product came from.
-        # For simplicity in this benchmark, we'll use the CHEAPEST price of the anchor as the ceiling.
-        # A real app would know the "original store" context.
         anchor_prices = anchor_product.prices.filter(store__in=stores)
         if not anchor_prices.exists():
-            continue # This product isn't actually sold in any of the selected stores.
+            continue
         
         price_ceiling = min([p.price for p in anchor_prices])
         
         candidate_subs = []
-        # Pre-fetch prices for all substitutes in the group to avoid N+1 queries
-        sub_prices = Price.objects.filter(product__in=full_sub_group, store__in=stores).select_related('store')
+        sub_prices = Price.objects.filter(product__in=size_compatible_group, store__in=stores).select_related('store')
         sub_prices_map = { (p.product_id, p.store_id): p for p in sub_prices }
 
-        # If the group is large, apply the price filter
-        if len(full_sub_group) > 20:
-            for sub in full_sub_group:
+        if len(size_compatible_group) > 20:
+            for sub in size_compatible_group:
                 for store in stores:
                     price_obj = sub_prices_map.get((sub.id, store.id))
                     if price_obj and price_obj.price <= price_ceiling:
                         candidate_subs.append((sub, price_obj))
         else:
-            for sub in full_sub_group:
+            for sub in size_compatible_group:
                  for store in stores:
                     price_obj = sub_prices_map.get((sub.id, store.id))
                     if price_obj:
@@ -105,11 +114,10 @@ def generate_random_cart(stores, num_products):
         if not candidate_subs:
             continue
 
-        # --- Tiered Portfolio Selection ---
+        # --- Tiered Portfolio Selection (New cap of 3) ---
         final_options = []
-        portfolio_cap = 10
+        portfolio_cap = 3 # Reduced from 10
 
-        # Get substitution relationships for the candidates to know their levels/scores
         candidate_ids = {sub.id for sub, price in candidate_subs}
         sub_relations = ProductSubstitution.objects.filter(
             (Q(product_a__in=candidate_ids) & Q(product_b__in=candidate_ids))
@@ -129,32 +137,30 @@ def generate_random_cart(stores, num_products):
                 clones.append((sub, price_obj))
         
         final_options.extend(clones)
-        # Remove selected clones from candidates
         candidate_subs = [c for c in candidate_subs if c not in clones]
 
         # --- Step 3: Tier 2 Selection - The "Ambassadors" ---
         if len(final_options) < portfolio_cap:
             ambassadors = {}
-            other_stores = [s for s in stores if s.id != anchor_prices.first().store.id]
+            # Find the store of the anchor product to correctly identify "other" stores
+            anchor_store_id = anchor_prices.first().store.id
+            other_stores = [s for s in stores if s.id != anchor_store_id]
             for store in other_stores:
                 store_candidates = [(s, p) for s, p in candidate_subs if p.store_id == store.id]
                 if not store_candidates:
                     continue
                 
-                # Find the best ambassador by highest similarity score
                 best_ambassador = max(store_candidates, key=lambda x: get_relation(anchor_product, x[0]).score if get_relation(anchor_product, x[0]) else 0)
                 ambassadors[store.id] = best_ambassador
 
-            # Add unique ambassadors to the final list
             for amb in ambassadors.values():
-                if amb not in final_options:
+                if amb not in final_options and len(final_options) < portfolio_cap:
                     final_options.append(amb)
             
             candidate_subs = [c for c in candidate_subs if c not in ambassadors.values()]
 
         # --- Step 4: Tier 3 Selection - The "Best of the Rest" ---
         if len(final_options) < portfolio_cap:
-            # Sort remaining candidates by score
             candidate_subs.sort(key=lambda x: get_relation(anchor_product, x[0]).score if get_relation(anchor_product, x[0]) else 0, reverse=True)
             needed = portfolio_cap - len(final_options)
             for sub, price_obj in candidate_subs[:needed]:
@@ -163,11 +169,18 @@ def generate_random_cart(stores, num_products):
 
         # Format the final selected options for the solver
         current_slot = []
+        # Ensure the anchor product itself is always an option, if priced
+        anchor_price_obj = anchor_prices.first()
+        final_options_products = [opt[0] for opt in final_options]
+        if anchor_product not in final_options_products:
+             final_options.append((anchor_product, anchor_price_obj))
+
         for product, price_obj in final_options:
             current_slot.append({
                 "product_id": product.id,
                 "product_name": product.name,
                 "brand": product.brand,
+                "sizes": product.sizes,
                 "store_id": price_obj.store.id,
                 "store_name": price_obj.store.store_name,
                 "price": float(price_obj.price),
