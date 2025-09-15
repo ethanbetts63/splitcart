@@ -2,9 +2,9 @@ import re
 import unicodedata
 import json
 import os
-from api.data.analysis.brand_synonyms import BRAND_SYNONYMS
+from api.data.brand_translation_table import BRAND_NAME_TRANSLATIONS
 try:
-    from api.data.product_name_translation_table import PRODUCT_NAME_TRANSLATIONS
+    from api.data.product_translation_table import PRODUCT_NAME_TRANSLATIONS
 except (ImportError, SyntaxError):
     PRODUCT_NAME_TRANSLATIONS = {}
 
@@ -135,7 +135,7 @@ class ProductNormalizer:
         name_str = str(self.name).lower()
 
         cleaned_brand_for_lookup = self._clean_value(brand_str)
-        cleaned_brand = BRAND_SYNONYMS.get(cleaned_brand_for_lookup, brand_str)
+        cleaned_brand = BRAND_NAME_TRANSLATIONS.get(cleaned_brand_for_lookup, brand_str)
 
         for rule in BRAND_RULES:
             rule_brands = [b.lower() for b in rule.get('brands', [])]

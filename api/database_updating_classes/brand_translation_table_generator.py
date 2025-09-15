@@ -7,7 +7,7 @@ TRANSLATION_TABLE_PATH = os.path.abspath(os.path.join(
     os.path.dirname(__file__),
     '..',
     'data',
-    'generated_brand_synonyms.py'
+    'brand_translation_table.py'
 ))
 
 class BrandTranslationTableGenerator(BaseTranslationTableGenerator):
@@ -20,7 +20,7 @@ class BrandTranslationTableGenerator(BaseTranslationTableGenerator):
         """
         super().__init__(
             output_path=TRANSLATION_TABLE_PATH,
-            variable_name="BRAND_SYNONYMS"
+            variable_name="BRAND_NAME_TRANSLATIONS"
         )
 
     def generate_translation_dict(self) -> dict:

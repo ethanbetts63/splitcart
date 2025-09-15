@@ -16,7 +16,7 @@ def _get_synonyms_module():
         with open(SYNONYM_FILE_PATH, 'w', encoding='utf-8') as f:
             f.write("# This file contains the mapping of brand variations to a canonical brand name.\n")
             f.write("# It is generated and used by the 'create_synonyms' and normalization utilities.\n\n")
-            f.write("BRAND_SYNONYMS = {\n}\n")
+            f.write("BRAND_NAME_TRANSLATIONS = {\n}\n")
 
     spec = importlib.util.spec_from_file_location("brand_synonyms", SYNONYM_FILE_PATH)
     brand_synonyms_module = importlib.util.module_from_spec(spec)
@@ -24,11 +24,11 @@ def _get_synonyms_module():
     return brand_synonyms_module
 
 def load_existing_synonyms():
-    """Loads the BRAND_SYNONYMS dictionary and returns a set of all processed brands."""
+    """Loads the BRAND_NAME_TRANSLATIONS dictionary and returns a set of all processed brands."""
     brand_synonyms_module = _get_synonyms_module()
-    BRAND_SYNONYMS = getattr(brand_synonyms_module, 'BRAND_SYNONYMS', {})
-    processed_brands = set(BRAND_SYNONYMS.keys())
-    processed_brands.update(BRAND_SYNONYMS.values())
+    BRAND_NAME_TRANSLATIONS = getattr(brand_synonyms_module, 'BRAND_NAME_TRANSLATIONS', {})
+    processed_brands = set(BRAND_NAME_TRANSLATIONS.keys())
+    processed_brands.update(BRAND_NAME_TRANSLATIONS.values())
     return processed_brands
 
 def _load_csv_to_set(filepath):

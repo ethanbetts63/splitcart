@@ -7,7 +7,7 @@ TRANSLATION_TABLE_PATH = os.path.abspath(os.path.join(
     os.path.dirname(__file__),
     '..',
     'data',
-    'product_name_translation_table.py'
+    'product_translation_table.py'
 ))
 
 class ProductTranslationTableGenerator(BaseTranslationTableGenerator):
