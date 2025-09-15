@@ -1,5 +1,5 @@
 import os
-from products.models import Brand as ProductBrand
+from products.models import brand as ProductBrand
 from .base_translation_table_generator import BaseTranslationTableGenerator
 
 # Define the output path relative to this file's location
