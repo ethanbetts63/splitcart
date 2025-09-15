@@ -1,106 +1,55 @@
-# Summary of Work Performed in Chat Session
+# Summary of Session: Savings Calculation Overhaul & Data Normalization
 
-This document details all the changes, new features, bug fixes, and refactorings implemented during this chat session.
+This session focused on a deep dive into the savings calculation benchmark, a complete overhaul of its logic to be more realistic, and fixing a core data normalization issue for product sizes.
 
-## 1. Fixing `update_db --prefixes` Command & Brand Synonym Generation
+## 1. Initial Problem: Low Savings & The Aldi Anomaly
 
-**Problem:** The `update_db --prefixes` command was incorrectly regenerating the *product* name translation table twice, instead of a *brand* specific one.
+We started by observing that the savings benchmark was reporting a lower-than-expected average saving (~5.5%). We hypothesized this was due to a low number of cross-company substitutions for Aldi, whose products often lack barcodes and share few brands with other stores. Our initial theory was that the semantic matching (LVL5/6) was failing.
 
-**Initial Investigation & Fix:**
-*   Discovered that `VariationManager` (`api/database_updating_classes/variation_manager.py`) handles brand merges directly in the database.
-*   Identified that `generated_brand_synonyms.json` (`api/data/analysis/generated_brand_synonyms.json`) was managed by unused `save_synonym.py` and `bulk_save_synonyms.py`.
-*   **Modified:** `api/database_updating_classes/prefix_update_orchestrator.py`
-    *   **Change:** Initially, updated to call `_reconcile_brands` and pass a *copy* of `brand_reconciliation_list` to `VariationManager` to prevent it from being cleared. Then called `bulk_save_synonyms` to update `generated_brand_synonyms.json` from this list.
+## 2. Improving Semantic Matching Logic
 
-**User Clarification & Final Fix:**
-*   The user clarified that `generated_brand_synonyms.json` should be fully regenerated from the database's `ProductBrand.name_variations` field, not incrementally updated from an in-memory list.
-*   **Created:** `api/utils/synonym_utils/brand_synonym_generator.py`
-    *   **Purpose:** A new utility to fully regenerate `generated_brand_synonyms.json` by querying all `ProductBrand` instances.
-*   **Modified:** `api/database_updating_classes/prefix_update_orchestrator.py`
-    *   **Change:** Replaced the call to `bulk_save_synonyms` with a call to the new `brand_synonym_generator.py`.
+- **Insight:** The user correctly pointed out that the semantic comparison should be done on the `normalized_name` of a product, not its raw `name`.
+- **Change:** The Level 5 and Level 6 substitution generators were modified to use `product.normalized_name` when building the corpus for the AI model.
+- **Files Modified:**
+    - `api/utils/substitution_utils/lvl5_substitution_generator.py`
+    - `api/utils/substitution_utils/lvl6_substitution_generator.py`
 
-## 2. Dead Code Removal
+## 3. Designing the "Intelligent Savings Benchmark"
 
-**Discovery:** Through investigation, the following files were identified as unused or superseded by new implementations:
-*   `api/utils/synonym_utils/save_synonym.py`
-*   `api/utils/synonym_utils/bulk_save_synonyms.py`
-*   `api/utils/synonym_utils/handle_barcode_match.py`
-*   `api/utils/synonym_utils/load_synonyms.py`
+We had a long architectural discussion about the flaws in the existing benchmark and designed a much more sophisticated approach. The full plan was documented in `savings_upgrade_plan.txt`.
 
-**Action:**
-*   **Deleted:**
-    *   `api/utils/synonym_utils/save_synonym.py`
-    *   `api/utils/synonym_utils/bulk_save_synonyms.py`
-    *   `api/utils/synonym_utils/handle_barcode_match.py`
-    *   `api/utils/synonym_utils/load_synonyms.py`
+The key design decisions were:
 
-## 3. Integrating `reconcile_products` into `update_db`
+- **On-the-Fly Transitivity:** Instead of pre-calculating all possible substitutions (which would cause a "data explosion"), we decided to find them on-the-fly by traversing the substitution graph.
+- **Intelligent Traversal:** We refined the traversal logic with two critical rules:
+    1.  **Traversal Depth Limit:** The search is capped at **3 steps** from the original product to prevent "semantic drift".
+    2.  **Selective Transitivity:** The search only travels across size-agnostic links (LVL 1, 4, 5, 6). Size-constrained links (LVL 2, 3) are treated as terminal.
+- **The "Substitution Portfolio":** For each cart item, we don't consider all substitutes. We build a small, high-value portfolio (cap set to **4**) using a tiered selection algorithm:
+    1.  **Size Filter:** Only consider substitutes within a **30% size tolerance**.
+    2.  **Price Cull:** If there are many options, discard any that are more expensive than the original.
+    3.  **Tiered Selection:** Select **Clones** (LVL1/2), then **Ambassadors** (best-rated sub from each other store), then the **Best of the Rest**.
 
-**Problem:** The standalone `reconcile_products` command found duplicates that the `update_db` command missed (specifically, non-barcode-based duplicates).
+## 4. Implementing the New Savings Benchmark
 
-**Explanation:**
-*   `VariationManager` (used by `update_db`) handles product merges based on *barcode matches*.
-*   `ProductReconciler` (used by `reconcile_products`) handles merges based on *name variations* from the translation table, catching duplicates where barcodes might be missing or different.
+- **Change:** The logic in `savings_benchmark.py` was completely overhauled to implement the new plan.
+- **File Modified:** `api/utils/analysis_utils/savings_benchmark.py`
+    - A new `get_substitution_group` function was created to handle the intelligent graph traversal.
+    - The `generate_random_cart` function was rewritten to execute the full portfolio selection algorithm.
+    - A bug was fixed in `run_savings_benchmark` to handle the correct number of return values from the modified solver function.
 
-**Fix & Integration:**
-*   **Modified:** `api/database_updating_classes/update_orchestrator.py`
-    *   **Fix:** Resolved `AttributeError: 'UpdateOrchestrator' object has no attribute 'variation_manager'` by correctly initializing `self.variation_manager` in `__init__` and injecting `unit_of_work` per file.
-    *   **Fix:** Corrected `AttributeError: 'UpdateOrchestrator' object has no attribute '_cleanup'` by changing the call to `_cleanup_processed_files()`.
-    *   **Fix:** Removed duplicate `TranslationTableGenerator` calls.
-    *   **Change:** Integrated the `ProductReconciler` logic by adding a call to `ProductReconciler.run()` at the end of the `run` method. This makes `update_db` a comprehensive reconciliation command.
-    *   **Temporary Change:** At user's request, the `ProductReconciler` call was temporarily commented out, then re-enabled.
+## 5. Creating a Debug Tool
 
-**Obsolete Files (Pending Deletion):**
-*   `api/management/commands/reconcile_products.py`
-*   `api/database_updating_classes/product_reconciler.py`
+- **Goal:** To see inside the new complex process, the user requested a detailed report for a single run.
+- **Change:** A new management command was created to produce this report.
+- **File Created:** `api/management/commands/debug_savings_run.py`
+- **Functionality:** This command runs one simulation and outputs a text file (`debug_savings_run_output.txt`) detailing the original product, the full list of considered substitutes in the portfolio, and the final chosen option for each slot in the cart.
+- The command was iteratively improved to include the original product's price and size for better context.
 
-## 4. Refactoring Category Linking System
+## 6. Fixing the Size Normalization Issue
 
-**Goal:** Simplify category linking (remove directionality), and introduce `MATCH`, `CLOSE_RELATION`, `DISTANT_RELATION` types for more nuanced relationships.
-
-**Phase 1: Database Model Refactoring**
-*   **Deleted:** `companies/models/category_equivalence.py` (old through model).
-*   **Modified:** `companies/models/category.py`
-    *   **Change:** Removed the old `equivalences` ManyToManyField.
-*   **Modified:** `companies/models/__init__.py`
-    *   **Change:** Removed the old `CategoryEquivalence` import.
-*   **Action:** Ran `python manage.py makemigrations companies` (generated `0002_remove_category_equivalences_and_more.py`).
-*   **Created:** `companies/models/category_link.py`
-    *   **Purpose:** New symmetrical `CategoryLink` model with `category_a`, `category_b`, and `link_type` (choices: `MATCH`, `CLOSE_RELATION`, `DISTANT_RELATION`).
-*   **Modified:** `companies/models/category.py`
-    *   **Change:** Added new `links` ManyToManyField, using `CategoryLink` as the through model.
-*   **Modified:** `companies/models/__init__.py`
-    *   **Change:** Added import for `CategoryLink`.
-*   **Action:** Ran `python manage.py makemigrations companies` (generated `0003_categorylink_category_links_and_more.py`).
-*   **Action:** Ran `python manage.py migrate companies` to apply all schema changes.
-
-**Phase 2: Interactive Tool (`create_category_links.py`) Refactoring**
-*   **Created:** `api/management/commands/suggest_category_links.py`
-    *   **Purpose:** New command to analyze all categories and generate `api/data/suggested_category_links.json` (a ranked list of potential links based on shared products).
-*   **Modified:** `api/management/commands/create_category_links.py`
-    *   **Change:** Added `--use-suggestions` flag and made `--level` optional.
-    *   **Change:** Overhauled the interactive prompt to present the 5 new options (`MATCH`, `CLOSE`, `DISTANT`, `SKIP`, `NO-MATCH`).
-    *   **Change:** Modified decision-saving logic to store decisions in the new non-directional format in the inbox.
-    *   **Fix:** Resolved `IndentationError` and other syntax issues introduced during refactoring.
-
-**Phase 3: DB Update Logic (`update_category_links.py`) Refactoring**
-*   **Modified:** `api/utils/database_updating_utils/update_category_links.py`
-    *   **Change:** Updated to import `CategoryLink` and process the new inbox file format, creating `CategoryLink` objects.
-    *   **Integrated:** `ExactCategoryMatcher`.
-*   **Created:** `api/database_updating_classes/exact_category_matcher.py`
-    *   **Purpose:** New class to automatically find and create `MATCH` links for categories with identical normalized names. This runs at the start of `update_db --category-links`.
-
-## 5. Substitution Generation Enhancements
-
-**Problem:** Existing Level 5 substitution generator was siloed (only compared products within the same category), and the `ProductSubstitution` model lacked `LVL5` and `LVL6` choices.
-
-**Action:**
-*   **Modified:** `products/models/substitution.py`
-    *   **Change:** Added `LVL5` ('Same category, semantic match.') and `LVL6` ('Linked category, semantic match.') choices to `SUBSTITUTION_LEVELS`.
-*   **Action:** Ran `python manage.py makemigrations products` and `python manage.py migrate products`.
-*   **Created:** `api/utils/substitution_utils/lvl6_substitution_generator.py`
-    *   **Purpose:** New generator class to implement cross-category semantic matching using the new `CategoryLink` model. It groups linked categories and performs semantic analysis on the combined product pool.
-*   **Modified:** `api/management/commands/generate_subs.py`
-    *   **Change:** Added `--lvl6` argument and integrated the call to `Lvl6SubstitutionGenerator`.
-
-This concludes the summary of our work.
+- **Observation:** We noticed that a product's `sizes` list in the database contained duplicates in different units (e.g., `['0.095kg', '95g']`).
+- **Investigation:** We confirmed that the `ProductNormalizer` was de-duplicating based on strings, not on the canonical numerical value.
+- **Change 1 (The Fix):** The `_get_standardized_sizes` method in the normalizer was rewritten. It now uses the `SizeComparer` utility to parse all size strings into their canonical form (e.g., converting kg to g) and de-duplicates them based on their actual value.
+    - **File Modified:** `api/utils/product_normalizer.py`
+- **Change 2 (Applying the Fix):** We discovered the `Product` model was still saving the old, "raw" size list. We updated it to save the new, fully standardized and de-duplicated list.
+    - **File Modified:** `products/models/product.py`

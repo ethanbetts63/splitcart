@@ -2,7 +2,6 @@ import re
 import unicodedata
 import json
 import os
-from api.utils.substitution_utils.size_comparer import SizeComparer
 from api.data.analysis.brand_synonyms import BRAND_SYNONYMS
 try:
     from api.data.product_name_translation_table import PRODUCT_NAME_TRANSLATIONS
@@ -186,24 +185,28 @@ class ProductNormalizer:
         return name_to_clean
 
     def _get_standardized_sizes(self) -> list:
+        from api.utils.substitution_utils.size_comparer import SizeComparer
         """
         Performs a multi-pass standardization of raw size strings.
-        1. Standardizes text variations (e.g., 'pack' -> 'pk').
+        1. Standardizes text variations (e.g., 'pack' -> 'pk', '1ea' -> 'ea').
         2. Parses numerical values and converts to a canonical unit (e.g., '0.095kg' -> '95g').
         3. De-duplicates based on the final canonical value.
         """
-        # --- Pass 1: Standardize text variations (the existing logic) ---
+        # --- Pass 1: Standardize text variations ---
         initial_standardized_strings = set()
         for size in self.raw_sizes:
             s = size.lower().replace(" ", "")
             s = s.replace("pack", "pk")
             s = s.replace("each", "ea")
+            # New rule: if the result is '1ea', change it to just 'ea'
+            if s == '1ea':
+                s = 'ea'
             initial_standardized_strings.add(s)
-    
+
         # --- Pass 2: Canonical numerical conversion and de-duplication ---
         size_comparer = SizeComparer()
         canonical_sizes = {} # Use a dict to de-duplicate while preserving a preferred string
-    
+
         for size_str in initial_standardized_strings:
             # Use the parser from SizeComparer
             parsed_tuple = size_comparer._parse_size(size_str)
@@ -218,7 +221,7 @@ class ProductNormalizer:
                 # Use the string itself as a key to avoid duplicates.
                 if size_str not in canonical_sizes.values():
                     canonical_sizes[('str', size_str)] = size_str
-    
+
         return sorted(list(canonical_sizes.values()))
     # --- Public API ---
 
