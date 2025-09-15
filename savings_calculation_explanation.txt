@@ -36,7 +36,8 @@ Instead of considering every possible substitute, we first find a high-quality g
 **B) Building the "Substitution Portfolio":**
 From the candidate group found above, we intelligently select a final list of up to 10 options:
 
-  - **Conditional Price Culling:** If the candidate group is very large (e.g., > 20 options), we first perform a culling. We define a **Price Ceiling** (the price of the anchor product at its original store) and discard any substitute that costs more.
+  - **Size-Similarity Filter:** Before considering price, the candidate group is first filtered to include only substitutes that are reasonably close in size (e.g., within a 30% size tolerance) to the anchor product. This removes nonsensical comparisons early.
+  - **Conditional Price Culling:** If the remaining candidate group is very large (e.g., > 20 options), we then perform a price culling. We define a **Price Ceiling** (the cheapest available price of the anchor product across all stores in the analysis) and discard any substitute that costs more.
   - **Tier 1 (Clones):** We automatically include all high-quality LVL1 and LVL2 substitutes from the candidate list.
   - **Tier 2 (Ambassadors):** To ensure we can find cross-store savings, we select one "ambassador" from each of the other competing stores. This ambassador is the product with the **highest similarity score** to our anchor product, ensuring it's a high-quality representative.
   - **Tier 3 (Best of the Rest):** We fill the remaining slots in our 10-item portfolio with the substitutes that have the highest similarity scores from the remaining pool.
@@ -53,3 +54,11 @@ The final portfolio of ~10 high-quality, diverse options for each cart slot is t
 The final percentage is calculated with a simple formula:
 
 `Savings % = ((Baseline Cost - Optimized Cost) / Baseline Cost) * 100`
+
+## 4. Key Assumptions & Limitations
+
+This benchmark operates on a few key assumptions:
+
+- **User Flexibility:** It assumes the user is willing to accept any of the substitutes chosen by the optimizer and is willing to travel to multiple stores.
+- **No Travel Costs:** The calculation does not currently factor in the real-world costs of travel between stores (e.g., time, fuel).
+- **Baseline Behavior:** The "Baseline Cost" simulates a shopper who prioritizes minimizing the number of stores they visit above all else.

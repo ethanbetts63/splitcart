@@ -770,3 +770,23 @@
   [DUPLICATE] Name: Korbond Elastic Braided 6Mm X5M | Brand: Korbond Industries Pty Ltd | Size: each
   [CANONICAL] Name: White Rayon Elastic 3m | Brand: Korbond Industries Pty Ltd | Size: 1 each
 ----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Strawberry Flavoured Milk | Brand: Oak | Size: 2L
+  [CANONICAL] Name: OAK Strawberry | Brand: OAK | Size: 2l Each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: McKenzie's Chickpea Flour | Brand: FTA FOOD SOLUTIONS PTY LTD | Size: 330g Each
+  [CANONICAL] Name: McKenzie's Chick Pea Flour Resealable | Brand: FTA FOOD SOLUTIONS PTY LTD | Size: 330g Each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Korbond Elastic Braided 6Mm X5M | Brand: Korbond Industries Pty Ltd | Size: each
+  [CANONICAL] Name: White Rayon Elastic 3m | Brand: Korbond Industries Pty Ltd | Size: 1 each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Strawberry Flavoured Milk | Brand: Oak | Size: 750 mL
+  [CANONICAL] Name: OAK Strawberry | Brand: OAK | Size: 750ml Each
+----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Oral-B Vitality Precision Clean Electric Toothbrush | Brand: Ｐ＆Ｇジャパン（同） | Size: Each
+  [CANONICAL] Name: Vitality Precision Clean Electric Toothbrush | Brand: Ｐ＆Ｇジャパン（同） | Size: 1 Pack
+----------------------------------------------------

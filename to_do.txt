@@ -1,0 +1,18 @@
+# Savings Benchmark To-Do List
+
+## File: api/utils/analysis_utils/savings_benchmark.py
+
+### 1. Refactor Ambassador Selection Logic
+- **Goal:** Select ambassadors based on value, not just similarity.
+- **Current:** The "Ambassador" from each store is chosen based on the highest similarity score alone, ignoring price.
+- **Improvement:** Modify the selection to use a combined score that factors in both similarity and price (e.g., rank by `similarity_score / price`) to find the substitute that represents the best value-for-match.
+
+### 2. Simplify `generate_random_cart` function
+- **Goal:** Improve readability and maintainability.
+- **Current:** The `generate_random_cart` function is long and handles many different tasks (data fetching, filtering, tiered selection).
+- **Improvement:** Extract the entire tiered portfolio selection logic (Clones, Ambassadors, Best of the Rest) into its own dedicated helper function or a separate class. This will make the main function shorter and easier to understand.
+
+### 3. Integrate Unit Price into Portfolio Selection
+- **Goal:** Improve accuracy of substitute selection by comparing items based on unit price, not absolute price.
+- **Current:** The selection algorithm compares absolute prices, which is not ideal for products of different sizes.
+- **Improvement:** Refactor the portfolio selection logic. The "Price Culling" and "Ambassador" selection steps should be modified to operate on a normalized unit price instead of the absolute price. This will provide a more accurate "apples-to-apples" comparison of value.
