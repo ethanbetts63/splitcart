@@ -16,7 +16,6 @@ class Command(BaseCommand):
         selected_stores = []
         all_companies = Company.objects.all()
         for company in all_companies:
-            # Find a store from each company that has at least 50 products
             viable_store = Store.objects.filter(company=company).annotate(num_prices=Count('prices')).filter(num_prices__gte=50).first()
             if viable_store:
                 selected_stores.append(viable_store)
@@ -31,7 +30,6 @@ class Command(BaseCommand):
         anchor_product = Product.objects.filter(name__icontains='tortellini').first()
         if not anchor_product:
             self.stdout.write(self.style.WARNING("Could not find a 'tortellini' product, picking a random one."))
-            # Get a random product that is available in at least one of the selected stores
             product_ids_in_stores = Price.objects.filter(store__in=selected_stores).values_list('product_id', flat=True).distinct()
             if not product_ids_in_stores:
                 self.stdout.write(self.style.ERROR("No products found in the selected stores."))
@@ -41,12 +39,10 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f"Using anchor product: {anchor_product.brand} {anchor_product.name}"))
 
         # --- 3. Generate the list of product-price pairs ---
-        # This mimics the logic from the savings benchmark
         substitute_products = get_substitution_group(anchor_product)
         self.stdout.write(f"Found {len(substitute_products)} substitutes (including anchor). Now finding prices...")
 
         product_price_pairs = []
-        # Fetch all relevant prices in a single query for efficiency
         prices_in_stores = Price.objects.filter(
             product__in=substitute_products,
             store__in=selected_stores,
@@ -67,16 +63,22 @@ class Command(BaseCommand):
         sorter = UnitPriceSorter()
         sorted_products = sorter.sort_by_unit_price(product_price_pairs)
 
-        self.stdout.write(self.style.SUCCESS('--- Sorted Products (by Unit Price) ---'))
+        self.stdout.write(self.style.SUCCESS('--- Sorted Products (by Normalized Unit Price) ---'))
+        current_base_unit = None
         for item in sorted_products:
             product = item['product']
             price = item['price']
-            unit_price = item['unit_price']
+            normalized_unit_price = item['normalized_unit_price']
+            base_unit = item['base_unit']
+
+            # Print a header when the base unit changes
+            if base_unit != current_base_unit:
+                self.stdout.write(self.style.HTTP_INFO(f"\n--- Sorting by Price per '{base_unit.upper()}' ---"))
+                current_base_unit = base_unit
 
             self.stdout.write(f"  Product: {product.brand} {product.name}")
             self.stdout.write(f"    Store: {price.store.store_name}")
-            self.stdout.write(f"    Raw Sizes: {product.sizes}")
             self.stdout.write(f"    Absolute Price: ${price.price}")
-            self.stdout.write(f"    Canonical Size: {item['canonical_size']}")
-            self.stdout.write(self.style.SUCCESS(f"    Calculated Unit Price: ${unit_price:.4f} per base unit"))
+            self.stdout.write(f"    Original Unit Price: ${price.unit_price} {price.unit_of_measure}")
+            self.stdout.write(self.style.SUCCESS(f"    NORMALIZED Unit Price: ${normalized_unit_price:.2f} / per {base_unit}"))
             self.stdout.write('---')

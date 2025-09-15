@@ -1,57 +1,77 @@
-from api.utils.substitution_utils.size_comparer import SizeComparer
+import re
+from decimal import Decimal, InvalidOperation
 
 class UnitPriceSorter:
     """
-    A utility to sort product-price pairs by their calculated unit price.
+    A utility to sort product-price pairs by a normalized unit price
+    derived from the Price model's `unit_price` and `unit_of_measure` fields.
     """
 
     def __init__(self):
-        self.size_comparer = SizeComparer()
+        # Regex to extract value and unit from strings like '100g', '1kg', 'ea', etc.
+        self.uom_pattern = re.compile(r'(\d*\.?\d+)?\s*([a-zA-Z]+)')
+        self.conversion_map = {
+            'g':    {'base': 'g', 'multiplier': 1},
+            'kg':   {'base': 'g', 'multiplier': 1000},
+            'ml':   {'base': 'ml', 'multiplier': 1},
+            'l':    {'base': 'ml', 'multiplier': 1000},
+            # 'each' or 'pack' items are treated as their own base
+            'ea':   {'base': 'ea', 'multiplier': 1},
+            'pk':   {'base': 'pk', 'multiplier': 1},
+        }
 
-    def _calculate_unit_price(self, product, price):
+    def _get_normalized_unit_price(self, price_obj):
         """
-        Calculates the unit price for a single product-price pair.
-        Returns the unit price and the canonical size string, or (None, None) if not calculable.
+        Calculates a normalized unit price (per kg, per L, or per each) for a given Price object.
+        Returns a tuple of (Decimal(normalized_price), str(base_unit)) or (None, None).
         """
-        canonical_sizes = self.size_comparer.get_canonical_sizes(product)
-
-        # We can only calculate unit price if there's one unambiguous canonical size.
-        if len(canonical_sizes) != 1:
+        if price_obj.unit_price is None or not price_obj.unit_of_measure:
             return None, None
 
-        canonical_value, base_unit = list(canonical_sizes)[0]
-
-        if canonical_value is None or canonical_value == 0:
+        match = self.uom_pattern.match(price_obj.unit_of_measure.lower())
+        if not match:
             return None, None
 
-        unit_price = float(price.price) / canonical_value
-        canonical_size_str = f"{canonical_value}{base_unit}"
+        value_str, unit_str = match.groups()
+        value = Decimal(value_str) if value_str else Decimal('1')
         
-        return unit_price, canonical_size_str
+        unit_info = self.conversion_map.get(unit_str)
+        if not unit_info:
+            return None, None # Unknown unit
+
+        try:
+            # How many of the scraped units (e.g., 100g) fit into the base unit (e.g., 1000g)?
+            # Example: unit_price is per 100g. Base is 1000g. factor = 1000 / 100 = 10.
+            # Normalized price = price_obj.unit_price * 10.
+            factor = Decimal(unit_info['multiplier']) / value
+            normalized_price = price_obj.unit_price * factor
+            base_unit = unit_info['base']
+            
+            # Standardize the reporting base unit string
+            if base_unit == 'g': base_unit = 'kg'
+            if base_unit == 'ml': base_unit = 'L'
+
+            return normalized_price, base_unit
+
+        except (InvalidOperation, ZeroDivisionError):
+            return None, None
 
     def sort_by_unit_price(self, product_price_pairs: list) -> list:
         """
-        Sorts a list of (Product, Price) tuples by their unit price in ascending order.
-
-        Args:
-            product_price_pairs: A list of tuples, where each tuple contains a
-                                 Product object and its corresponding Price object.
-
-        Returns:
-            A sorted list of dictionaries, each containing the product, price,
-            calculated unit price, and canonical size string. Products that
-            could not be sorted are excluded.
+        Sorts a list of (Product, Price) tuples by their normalized unit price.
         """
         sortable_products = []
         for product, price in product_price_pairs:
-            unit_price, canonical_size = self._calculate_unit_price(product, price)
-            if unit_price is not None:
+            normalized_price, base_unit = self._get_normalized_unit_price(price)
+            
+            if normalized_price is not None:
                 sortable_products.append({
                     'product': product,
                     'price': price,
-                    'unit_price': unit_price,
-                    'canonical_size': canonical_size
+                    'normalized_unit_price': normalized_price,
+                    'base_unit': base_unit
                 })
 
-        # Sort the list of dictionaries by the 'unit_price' key
-        return sorted(sortable_products, key=lambda x: x['unit_price'])
+        # Sort by normalized price, but also group by the base unit.
+        # This prevents comparing price per 'kg' with price per 'each'.
+        return sorted(sortable_products, key=lambda x: (x['base_unit'], x['normalized_unit_price']))
