@@ -46,9 +46,9 @@ class PrefixUpdateOrchestratorTests(TestCase):
         # Check that stdout shows the inbox is empty
         self.mock_command.stdout.write.assert_any_call("Prefix inbox is empty. No new data to process.")
 
+    @patch('api.database_updating_classes.prefix_update_orchestrator.generate_brand_synonym_file')
     @patch('api.database_updating_classes.prefix_update_orchestrator.VariationManager')
-    @patch('api.database_updating_classes.prefix_update_orchestrator.TranslationTableGenerator')
-    def test_run_updates_brand_prefix_and_moves_file(self, mock_translator, mock_variation_manager):
+    def test_run_updates_brand_prefix_and_moves_file(self, mock_variation_manager, mock_synonym_generator):
         """Test the happy path: a file is processed, DB is updated, and file is moved."""
         # 1. Arrange
         # Create a brand that the inbox file will reference
@@ -70,11 +70,19 @@ class PrefixUpdateOrchestratorTests(TestCase):
         self.orchestrator.run()
 
         # 3. Assert
-        # Check that the BrandPrefix was created/updated
+        # Check that the BrandPrefix was created/updated and linked to the CANONICAL brand
         self.assertEqual(BrandPrefix.objects.count(), 1)
-        brand_prefix = BrandPrefix.objects.get(brand=target_brand)
+
+        # Find the canonical brand created by the orchestrator
+        canonical_brand = ProductBrand.objects.get(name='Official GS1 Name')
+
+        # Check that the prefix is linked to this canonical brand
+        brand_prefix = BrandPrefix.objects.get(brand=canonical_brand)
         self.assertEqual(brand_prefix.confirmed_official_prefix, '1234567')
         self.assertEqual(brand_prefix.brand_name_gs1, 'Official GS1 Name')
+
+        # Also assert that the original brand still exists
+        self.assertTrue(ProductBrand.objects.filter(name='Original Brand Name').exists())
 
         # Check that the file was moved
         self.assertFalse(os.path.exists(file_path))
@@ -83,8 +91,8 @@ class PrefixUpdateOrchestratorTests(TestCase):
         # Check that brand reconciliation was triggered
         mock_variation_manager.return_value.reconcile_brand_duplicates.assert_called_once()
 
-        # Check that the translation table generation was triggered
-        mock_translator.return_value.generate.assert_called_once()
+        # Check that the synonym file generation was triggered
+        mock_synonym_generator.assert_called_once_with(self.mock_command)
 
     def test_process_record_skips_missing_data(self):
         """Test that records with incomplete data are skipped."""
