@@ -51,7 +51,10 @@ class UnitOfWork:
                 normalized_key=normalized_key,
                 is_available=product_details.get('is_available'),
                 is_on_special=product_details.get('is_on_special', False),
-                was_price=product_details.get('price_was')
+                was_price=product_details.get('price_was'),
+                unit_price=product_details.get('unit_price'),
+                unit_of_measure=product_details.get('unit_of_measure'),
+                per_unit_price_string=product_details.get('per_unit_price_string')
             )
         )
 

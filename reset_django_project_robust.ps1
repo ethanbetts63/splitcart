@@ -71,6 +71,8 @@ python manage.py generate_subs
 python manage.py analyze --report company_heatmap
 python manage.py analyze --report subs
 python manage.py analyze --report savings
+python manage.py debug_savings_run
+python manage.py test_unit_price_sorter
 
 
 python manage.py update_db stores

@@ -1,4 +1,5 @@
 import random
+import re
 from django.core.management.base import BaseCommand
 from django.db.models import Count
 from products.models import Product, Price
@@ -59,7 +60,27 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f'Found {len(product_price_pairs)} product-price pairs to test.'))
         self.stdout.write('---')
 
-        # --- 4. Instantiate the sorter and sort the products ---
+        # --- 4. DEBUGGING: Inspect the raw data before sorting ---
+        self.stdout.write(self.style.HTTP_INFO('--- Inspecting Raw Data Before Sorting ---'))
+        for product, price in product_price_pairs:
+            self.stdout.write(f"  Product: {product.name}")
+            self.stdout.write(f"    Store: {price.store.store_name}")
+            u_price = price.unit_price
+            u_measure = price.unit_of_measure
+            self.stdout.write(f"    Unit Price from DB: {u_price}")
+            self.stdout.write(f"    Unit Measure from DB: {u_measure}")
+            if u_price is None or not u_measure:
+                self.stdout.write(self.style.WARNING('    -> REASON: Missing data in database.'))
+            else:
+                # Simulate the regex match from the sorter
+                uom_pattern = re.compile(r'(\d*\.?\d+)?\s*([a-zA-Z]+)')
+                match = uom_pattern.match(u_measure.lower())
+                if not match:
+                    self.stdout.write(self.style.WARNING(f'    -> REASON: unit_of_measure "{u_measure}" failed to parse.'))
+            self.stdout.write('---')
+
+
+        # --- 5. Instantiate the sorter and sort the products ---
         sorter = UnitPriceSorter()
         sorted_products = sorter.sort_by_unit_price(product_price_pairs)
 
@@ -71,7 +92,6 @@ class Command(BaseCommand):
             normalized_unit_price = item['normalized_unit_price']
             base_unit = item['base_unit']
 
-            # Print a header when the base unit changes
             if base_unit != current_base_unit:
                 self.stdout.write(self.style.HTTP_INFO(f"\n--- Sorting by Price per '{base_unit.upper()}' ---"))
                 current_base_unit = base_unit
@@ -79,6 +99,6 @@ class Command(BaseCommand):
             self.stdout.write(f"  Product: {product.brand} {product.name}")
             self.stdout.write(f"    Store: {price.store.store_name}")
             self.stdout.write(f"    Absolute Price: ${price.price}")
-            self.stdout.write(f"    Original Unit Price: ${price.unit_price} {price.unit_of_measure}")
+            self.stdout.write(f"    Original Unit Price: ${price.unit_price} / {price.unit_of_measure}")
             self.stdout.write(self.style.SUCCESS(f"    NORMALIZED Unit Price: ${normalized_unit_price:.2f} / per {base_unit}"))
             self.stdout.write('---')
