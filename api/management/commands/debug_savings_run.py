@@ -42,6 +42,7 @@ class Command(BaseCommand):
         self.stdout.write(f"Running comparison across {len(selected_stores)} stores: {', '.join([s.store_name for s in selected_stores])}")
 
         # --- Step 1: Generate the Cart with Portfolios ---
+        # We prefetch prices here to easily find the anchor's price later
         slots, anchor_products = generate_random_cart(selected_stores, PRODUCTS_PER_RUN)
         if not slots or not anchor_products:
             self.stderr.write(self.style.ERROR("Could not generate a valid cart for this run."))
@@ -58,19 +59,23 @@ class Command(BaseCommand):
         self.stdout.write(f"Solver found an optimal cost of ${optimized_cost:.2f}")
 
         # --- Step 3: Generate the Detailed Report ---
-        anchor_map = {p.id: p for p in anchor_products}
-        # We need to find the original anchor for each slot. The slot itself doesn't store it.
-        # This is a limitation. For now, we'll just label slots by index.
-
         for i, slot in enumerate(slots):
+            anchor = anchor_products[i]
+            
+            # Find the cheapest price for the anchor product among the selected stores
+            anchor_min_price = float('inf')
+            for price_obj in anchor.prices.all():
+                if price_obj.store in selected_stores and price_obj.price < anchor_min_price:
+                    anchor_min_price = price_obj.price
+
             report_lines.append(f"\n--- Cart Slot {i+1} ---")
-            # In a real app, we would know the anchor product for the slot.
-            # Here, we can just show the options.
+            price_str = f"(Cheapest: ${anchor_min_price:.2f})" if anchor_min_price != float('inf') else "(Price not found)"
+            report_lines.append(f"  Original Product: {anchor.brand} {anchor.name} {price_str}")
+            
             report_lines.append("\n  Considered Options:")
             
             chosen_option_index = -1
             for j, option in enumerate(slot):
-                # Check if this option was chosen by the solver
                 if choice_vars[(i, j)].varValue == 1:
                     chosen_option_index = j
                 
