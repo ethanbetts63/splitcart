@@ -766,3 +766,7 @@
   [DUPLICATE] Name: Silky White Toilet Tissue | Brand: Sorbent | Size: Each
   [CANONICAL] Name: 3 Ply Silky White Toilet Paper | Brand: Sorbent | Size: 16 Pack
 ----------------------------------------------------
+----------------------------------------------------Merging duplicate into canonical:
+  [DUPLICATE] Name: Korbond Elastic Braided 6Mm X5M | Brand: Korbond Industries Pty Ltd | Size: each
+  [CANONICAL] Name: White Rayon Elastic 3m | Brand: Korbond Industries Pty Ltd | Size: 1 each
+----------------------------------------------------

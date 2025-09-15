@@ -70,7 +70,7 @@ class Command(BaseCommand):
 
             report_lines.append(f"\n--- Cart Slot {i+1} ---")
             price_str = f"(Cheapest: ${anchor_min_price:.2f})" if anchor_min_price != float('inf') else "(Price not found)"
-            report_lines.append(f"  Original Product: {anchor.brand} {anchor.name} {price_str}")
+            report_lines.append(f"  Original Product: {anchor.brand} {anchor.name} {anchor.sizes} {price_str}")
             
             report_lines.append("\n  Considered Options:")
             

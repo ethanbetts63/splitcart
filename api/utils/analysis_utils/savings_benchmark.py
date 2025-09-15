@@ -84,7 +84,7 @@ def generate_random_cart(stores, num_products):
                 size_compatible_group.append(sub)
                 continue
             # Use a 50% tolerance for finding substitutes
-            if size_comparer.are_sizes_compatible(anchor_product, sub, tolerance=0.5):
+            if size_comparer.are_sizes_compatible(anchor_product, sub, tolerance=0.2):
                 size_compatible_group.append(sub)
 
         # --- Step 1: Conditional Culling by Price ---
@@ -365,7 +365,7 @@ def run_savings_benchmark(file_path):
             avg_ideal_item_price = ideal_cost / num_slots
         # --- End Analysis --- #
 
-        optimized_cost, _ = calculate_optimized_cost(slots, MAX_STORES_FOR_SOLVER)
+        optimized_cost, _, _ = calculate_optimized_cost(slots, MAX_STORES_FOR_SOLVER)
         if optimized_cost is None:
             report_lines.append("Solver could not find an optimal solution. Skipping run.")
             continue
