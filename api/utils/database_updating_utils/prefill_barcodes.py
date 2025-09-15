@@ -1,5 +1,5 @@
 from products.models import Product
-from api.utils.product_normalizer import ProductNormalizer
+from api.data.product_translation_table import PRODUCT_NAME_TRANSLATIONS
 
 def prefill_barcodes_from_db(product_list: list, command=None) -> list:
     """
@@ -15,12 +15,6 @@ def prefill_barcodes_from_db(product_list: list, command=None) -> list:
     """
     if command:
         command.stdout.write(f"  - Prefilling barcodes from DB for {len(product_list)} products...")
-
-    # Safely import the translation table
-    try:
-        from api.data.product_name_translation_table import PRODUCT_NAME_TRANSLATIONS
-    except (ImportError, SyntaxError):
-        PRODUCT_NAME_TRANSLATIONS = {}
 
     prefilled_count = 0
     for i, product_data in enumerate(product_list):

@@ -1,5 +1,5 @@
 from products.models import Product, Price
-from api.data.product_name_translation_table import PRODUCT_NAME_TRANSLATIONS
+from api.data.product_translation_table import PRODUCT_NAME_TRANSLATIONS
 
 class ProductReconciler:
     def __init__(self, command):
