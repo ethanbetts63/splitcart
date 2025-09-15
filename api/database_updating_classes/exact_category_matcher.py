@@ -53,9 +53,7 @@ class ExactCategoryMatcher:
 
         # Load model
         model_name = 'all-MiniLM-L6-v2'
-        self.command.stdout.write(f"  Loading Sentence Transformer model: {model_name}...")
         model = SentenceTransformer(model_name)
-        self.command.stdout.write("  Model loaded successfully.")
 
         similarity_threshold = 0.75
 

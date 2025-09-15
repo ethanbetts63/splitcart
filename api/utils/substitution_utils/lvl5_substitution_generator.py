@@ -18,9 +18,7 @@ class Lvl5SubstitutionGenerator(BaseSubstitutionGenerator):
         new_substitutions_count = 0
         # Using a pre-trained model specialized for semantic similarity
         model_name = 'all-MiniLM-L6-v2'
-        self.command.stdout.write(f"Loading Sentence Transformer model: {model_name}...")
         model = SentenceTransformer(model_name)
-        self.command.stdout.write("Model loaded successfully.")
 
         similarity_threshold = 0.75  # Higher threshold for this more powerful model
 
@@ -38,8 +36,8 @@ class Lvl5SubstitutionGenerator(BaseSubstitutionGenerator):
             if len(products_in_cat) < 2:
                 continue
 
-            # Use the product name for semantic encoding
-            corpus = [p.name for p in products_in_cat]
+            # Use the product's normalized_name for semantic encoding
+            corpus = [p.normalized_name for p in products_in_cat]
             corpus_embeddings = model.encode(corpus, convert_to_tensor=True)
 
             # Compute cosine similarity scores
