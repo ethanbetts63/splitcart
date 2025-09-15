@@ -3,7 +3,6 @@ import json
 from django.conf import settings
 from products.models import ProductBrand, BrandPrefix
 from api.database_updating_classes.variation_manager import VariationManager
-from api.database_updating_classes.translation_table_generator import TranslationTableGenerator
 from api.utils.product_normalizer import ProductNormalizer
 
 class PrefixUpdateOrchestrator:
