@@ -11,16 +11,6 @@ try:
 except (ImportError, SyntaxError):
     PRODUCT_NAME_TRANSLATIONS = {}
 
-# Load brand rules once when the module is loaded
-BRAND_RULES_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'brand_rules.json')
-BRAND_RULES = []
-if os.path.exists(BRAND_RULES_PATH):
-    try:
-        with open(BRAND_RULES_PATH, 'r') as f:
-            BRAND_RULES = json.load(f)
-    except (IOError, json.JSONDecodeError):
-        BRAND_RULES = [] # Ensure it's an empty list on error
-
 class ProductNormalizer:
     """
     A class to encapsulate all product normalization logic.
@@ -140,14 +130,7 @@ class ProductNormalizer:
         cleaned_brand_for_lookup = self._clean_value(brand_str)
         cleaned_brand = BRAND_NAME_TRANSLATIONS.get(cleaned_brand_for_lookup, brand_str)
 
-        for rule in BRAND_RULES:
-            rule_brands = [b.lower() for b in rule.get('brands', [])]
-            condition_values = [v.lower() for v in rule.get('condition_values', [])]
 
-            if cleaned_brand.lower() in rule_brands:
-                if any(keyword in name_str for keyword in condition_values):
-                    cleaned_brand = rule['canonical_brand']
-                    break
 
         return cleaned_brand
 
@@ -226,7 +209,6 @@ class ProductNormalizer:
                     canonical_sizes[('str', size_str)] = size_str
 
         return sorted(list(canonical_sizes.values()))
-    # --- Public API ---
 
     def get_cleaned_barcode(self) -> str or None:
         """ Corresponds to clean_barcode.py logic. """
