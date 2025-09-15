@@ -222,9 +222,9 @@ def calculate_optimized_cost(slots, max_stores):
                     shopping_plan[store_name].append(plan_item)
                     break
 
-        return final_cost, shopping_plan
+        return final_cost, shopping_plan, choice_vars
     else:
-        return None, None
+        return None, None, None
 
 def calculate_baseline_cost_for_main_store(main_store_id, slots, all_stores):
     """Helper function to calculate the baseline cost for one potential main store."""
