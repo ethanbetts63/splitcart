@@ -1,6 +1,6 @@
 import factory
 from factory.django import DjangoModelFactory
-from products.models import Product, Price, ProductBrand, BrandPrefix, ProductSizeVariant, ProductSubstitution
+from products.models import Product, Price, ProductBrand, BrandPrefix, ProductSubstitution
 from companies.tests.test_helpers.model_factories import StoreFactory
 
 class ProductFactory(DjangoModelFactory):
@@ -70,13 +70,6 @@ class BrandPrefixFactory(DjangoModelFactory):
         model = BrandPrefix
 
     brand = factory.SubFactory(ProductBrandFactory)
-
-class ProductSizeVariantFactory(DjangoModelFactory):
-    class Meta:
-        model = ProductSizeVariant
-
-    product_a = factory.SubFactory(ProductFactory)
-    product_b = factory.SubFactory(ProductFactory)
 
 class ProductSubstitutionFactory(DjangoModelFactory):
     class Meta:
