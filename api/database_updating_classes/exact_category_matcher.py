@@ -41,21 +41,63 @@ class ExactCategoryMatcher:
             if cleaned_name:
                 cleaned_groups[cleaned_name].append(category)
 
-        # --- Stage 1: Create 'MATCH' links ---
-        self.command.stdout.write("--- Finding 'MATCH' links based on exact name ---")
+        # --- Stage 1: Create 'MATCH' links using Semantic Similarity ---
+        self.command.stdout.write("--- Finding 'MATCH' links based on semantic name similarity (>=75%) ---")
         
-        # Find all potential MATCH links
+        try:
+            from sentence_transformers import SentenceTransformer, util
+            import torch
+        except ImportError:
+            self.command.stderr.write(self.command.style.ERROR("SentenceTransformers library not found. Please run 'pip install sentence-transformers torch'"))
+            return
+
+        # Load model
+        model_name = 'all-MiniLM-L6-v2'
+        self.command.stdout.write(f"  Loading Sentence Transformer model: {model_name}...")
+        model = SentenceTransformer(model_name)
+        self.command.stdout.write("  Model loaded successfully.")
+
+        similarity_threshold = 0.75
+
+        # Prepare corpus of category names
+        category_list = all_categories
+        corpus = [cat.name for cat in category_list]
+        corpus_embeddings = model.encode(corpus, convert_to_tensor=True)
+
+        # Calculate cosine similarity
+        cosine_scores = util.cos_sim(corpus_embeddings, corpus_embeddings)
+        
+        # Find pairs above threshold
+        indices_rows, indices_cols = torch.where(cosine_scores > similarity_threshold)
+
+        # Get existing links to avoid duplication
+        existing_links = set()
+        for link in CategoryLink.objects.all():
+            existing_links.add(tuple(sorted((link.category_a_id, link.category_b_id))))
+
         match_links_to_create = []
-        for cleaned_name, group in cleaned_groups.items():
-            if len(group) < 2:
+        for idx_a, idx_b in zip(indices_rows, indices_cols):
+            idx_a = idx_a.item()
+            idx_b = idx_b.item()
+
+            if idx_a >= idx_b:
                 continue
-            for cat_a, cat_b in combinations(group, 2):
-                if cat_a.company_id == cat_b.company_id:
-                    continue
-                cat_a, cat_b = (cat_a, cat_b) if cat_a.id < cat_b.id else (cat_b, cat_a)
-                match_links_to_create.append(
-                    CategoryLink(category_a=cat_a, category_b=cat_b, link_type='MATCH')
-                )
+
+            cat_a = category_list[idx_a]
+            cat_b = category_list[idx_b]
+
+            # Ensure they are from different companies
+            if cat_a.company_id == cat_b.company_id:
+                continue
+            
+            # Check if a link (of any type) already exists
+            if tuple(sorted((cat_a.id, cat_b.id))) in existing_links:
+                continue
+
+            # This is a new potential MATCH link
+            match_links_to_create.append(
+                CategoryLink(category_a=cat_a, category_b=cat_b, link_type='MATCH')
+            )
         
         # Create new MATCH links and report accurately
         new_matches_created = 0

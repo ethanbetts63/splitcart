@@ -54,29 +54,50 @@ def _get_overall_stats_text():
     return "\n".join(lines)
 
 def _get_company_stats_text(company):
-    lines = [f"--- Substitutions by Level ({company.name}) ---"]
+    report_lines = [f"--- Detailed Analysis for {company.name} ---"]
     
+    # Get all unique products for this company
     company_products = Product.objects.filter(prices__store__company=company).distinct()
+    if not company_products.exists():
+        report_lines.append("  No products found for this company.")
+        return "\n".join(report_lines)
+
+    # --- Internal Substitutions ---
+    report_lines.append("\n--- Internal Substitutions ({} <-> {}) ---".format(company.name, company.name))
+    internal_subs_qs = ProductSubstitution.objects.filter(
+        product_a__in=company_products, 
+        product_b__in=company_products
+    )
+    total_internal_subs = internal_subs_qs.count()
+    report_lines.append(f"  Total: {total_internal_subs}")
+
+    if total_internal_subs > 0:
+        level_choices = ProductSubstitution.SUBSTITUTION_LEVELS
+        for level_code, level_desc in level_choices:
+            count = internal_subs_qs.filter(level=level_code).count()
+            percentage = (count / total_internal_subs) * 100
+            report_lines.append(f"  - {level_desc} - {count} ({percentage:.2f}%)")
+
+    # --- Cross-Company Substitutions ---
+    report_lines.append("\n--- Cross-Company Substitutions ({} <-> Other) ---".format(company.name))
     
-    company_substitutions = ProductSubstitution.objects.filter(
-        Q(product_a__in=company_products) | Q(product_b__in=company_products)
+    # Find substitutions where one product is in the company's set and the other is not.
+    cross_subs_qs = ProductSubstitution.objects.filter(
+        (Q(product_a__in=company_products) & ~Q(product_b__in=company_products)) |
+        (Q(product_b__in=company_products) & ~Q(product_a__in=company_products))
     ).distinct()
     
-    total_company_subs = company_substitutions.count()
+    total_cross_subs = cross_subs_qs.count()
+    report_lines.append(f"  Total: {total_cross_subs}")
 
-    if total_company_subs == 0:
-        lines.append("  No substitution links found for this company.")
-        return "\n".join(lines)
-        
-    lines.append(f"  (Total links involving {company.name}: {total_company_subs})")
-
-    level_choices = ProductSubstitution.SUBSTITUTION_LEVELS
-    for level_code, level_desc in level_choices:
-        count = company_substitutions.filter(level=level_code).count()
-        percentage = (count / total_company_subs) * 100 if total_company_subs > 0 else 0
-        lines.append(f"- {level_desc} - {count} ({percentage:.2f}%)")
-        
-    return "\n".join(lines)
+    if total_cross_subs > 0:
+        level_choices = ProductSubstitution.SUBSTITUTION_LEVELS
+        for level_code, level_desc in level_choices:
+            count = cross_subs_qs.filter(level=level_code).count()
+            percentage = (count / total_cross_subs) * 100
+            report_lines.append(f"  - {level_desc} - {count} ({percentage:.2f}%)")
+            
+    return "\n".join(report_lines)
 
 def _get_hub_products_text(hub_count):
     lines = [f"--- Top {hub_count} Substitution Hubs (Grouped) ---"]
