@@ -13,7 +13,6 @@ def load_db_from_latest_archive(command):
         'products.product.json',
         'products.price.json',
         'products.productsubstitution.json',
-        'products.productsizevariant.json',
     ]
 
     if not os.path.exists(base_archive_dir):
