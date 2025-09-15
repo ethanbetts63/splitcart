@@ -156,8 +156,6 @@ class Gs1CompanyScraper:
             if license_key and company_name:
                 return {'license_key': license_key, 'company_name': company_name}
             else:
-                with open('gs1_response.json', 'w') as f:
-                    json.dump(json_response, f, indent=4)
                 return None
         except requests.exceptions.RequestException as e:
             self.command.stderr.write(self.command.style.ERROR(f"An error occurred during the request for {barcode}: {e}"))

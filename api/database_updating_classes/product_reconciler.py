@@ -4,16 +4,6 @@ from api.data.product_translation_table import PRODUCT_NAME_TRANSLATIONS
 class ProductReconciler:
     def __init__(self, command):
         self.command = command
-        self.log_file = 'reconciliation_log.txt'
-
-    def _log_merge(self, canonical, duplicate):
-        # Log the details of the merge to the file
-        with open(self.log_file, 'a', encoding='utf-8') as f:
-            f.write("----------------------------------------------------")
-            f.write(f"Merging duplicate into canonical:\n")
-            f.write(f"  [DUPLICATE] Name: {duplicate.name} | Brand: {duplicate.brand} | Size: {duplicate.size}\n")
-            f.write(f"  [CANONICAL] Name: {canonical.name} | Brand: {canonical.brand} | Size: {canonical.size}\n")
-            f.write("----------------------------------------------------\n")
 
     def run(self):
         self.command.stdout.write(self.command.style.SUCCESS("Product Reconciler run started."))
@@ -59,8 +49,6 @@ class ProductReconciler:
         """
         Merges the duplicate product into the canonical product.
         """
-        # Log the action before doing anything else
-        self._log_merge(canonical, duplicate)
 
         self.command.stdout.write(f"  - Merging '{duplicate.name}' into '{canonical.name}'")
         

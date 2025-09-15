@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from api.utils.database_updating_utils.update_stores_from_discovery import update_stores_from_discovery
 from api.utils.database_updating_utils.load_db_from_archive import load_db_from_latest_archive
-from api.utils.database_updating_utils.update_category_links import update_category_links_from_inbox
+from api.utils.database_updating_utils.update_category_links import run_automatic_category_linker
 from api.database_updating_classes.update_orchestrator import UpdateOrchestrator
 from api.database_updating_classes.prefix_update_orchestrator import PrefixUpdateOrchestrator
 
@@ -23,7 +23,7 @@ class Command(BaseCommand):
             return
         
         if options['category_links']:
-            update_category_links_from_inbox(self)
+            run_automatic_category_linker(self)
             return
 
         run_stores_discovery = options['stores']
