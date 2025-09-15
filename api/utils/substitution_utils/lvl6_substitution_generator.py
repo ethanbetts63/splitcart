@@ -4,6 +4,7 @@ from companies.models import CategoryLink
 from sentence_transformers import SentenceTransformer, util
 import torch
 from collections import defaultdict
+from api.config import SEMANTIC_SIMILARITY_THRESHOLD
 
 class Lvl6SubstitutionGenerator(BaseSubstitutionGenerator):
     """
@@ -19,7 +20,7 @@ class Lvl6SubstitutionGenerator(BaseSubstitutionGenerator):
         model_name = 'all-MiniLM-L6-v2'
         model = SentenceTransformer(model_name)
 
-        similarity_threshold = 0.75  # Can be adjusted
+        similarity_threshold = SEMANTIC_SIMILARITY_THRESHOLD
 
         # 1. Build graph of linked categories
         self.command.stdout.write("Building graph of linked categories...")

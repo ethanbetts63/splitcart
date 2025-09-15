@@ -3,12 +3,19 @@ import pulp
 import statistics
 from collections import deque
 
+from api.config import (
+    SUBSTITUTION_SEARCH_DEPTH, 
+    SUBSTITUTION_PORTFOLIO_CAP, 
+    SUBSTITUTION_SIZE_TOLERANCE, 
+    PRICE_CULLING_THRESHOLD
+)
+
 from django.db.models import Count, Q
 from companies.models import Company, Store
 from products.models import Product, Price, ProductSubstitution
 
 
-def get_substitution_group(anchor_product, depth_limit=3):
+def get_substitution_group(anchor_product, depth_limit=SUBSTITUTION_SEARCH_DEPTH):
     """
     Performs an intelligent graph traversal to find a high-quality group of substitutes.
     - Traverses only size-agnostic links (LVL1, 4, 5, 6).
@@ -84,7 +91,7 @@ def generate_random_cart(stores, num_products):
                 size_compatible_group.append(sub)
                 continue
             # Use a 30% tolerance for finding substitutes
-            if size_comparer.are_sizes_compatible(anchor_product, sub, tolerance=0.3):
+            if size_comparer.are_sizes_compatible(anchor_product, sub, tolerance=SUBSTITUTION_SIZE_TOLERANCE):
                 size_compatible_group.append(sub)
 
         # --- Step 1: Conditional Culling by Price ---
@@ -98,7 +105,7 @@ def generate_random_cart(stores, num_products):
         sub_prices = Price.objects.filter(product__in=size_compatible_group, store__in=stores).select_related('store')
         sub_prices_map = { (p.product_id, p.store_id): p for p in sub_prices }
 
-        if len(size_compatible_group) > 20:
+        if len(size_compatible_group) > PRICE_CULLING_THRESHOLD:
             for sub in size_compatible_group:
                 for store in stores:
                     price_obj = sub_prices_map.get((sub.id, store.id))
@@ -114,9 +121,9 @@ def generate_random_cart(stores, num_products):
         if not candidate_subs:
             continue
 
-        # --- Tiered Portfolio Selection (New cap of 4) ---
+        # --- Tiered Portfolio Selection ---
         final_options = []
-        portfolio_cap = 4 # Updated from 3
+        portfolio_cap = SUBSTITUTION_PORTFOLIO_CAP
 
         candidate_ids = {sub.id for sub, price in candidate_subs}
         sub_relations = ProductSubstitution.objects.filter(

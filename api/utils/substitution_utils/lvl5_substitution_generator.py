@@ -4,6 +4,7 @@ from products.models import Product
 from companies.models import Category
 from sentence_transformers import SentenceTransformer, util
 import torch
+from api.config import SEMANTIC_SIMILARITY_THRESHOLD
 
 class Lvl5SubstitutionGenerator(BaseSubstitutionGenerator):
     """
@@ -18,9 +19,11 @@ class Lvl5SubstitutionGenerator(BaseSubstitutionGenerator):
         new_substitutions_count = 0
         # Using a pre-trained model specialized for semantic similarity
         model_name = 'all-MiniLM-L6-v2'
+        self.command.stdout.write(f"Loading Sentence Transformer model: {model_name}...")
         model = SentenceTransformer(model_name)
+        self.command.stdout.write("Model loaded successfully.")
 
-        similarity_threshold = 0.75  # Higher threshold for this more powerful model
+        similarity_threshold = SEMANTIC_SIMILARITY_THRESHOLD
 
         # Get all categories that have at least 2 products
         categories = Category.objects.annotate(
