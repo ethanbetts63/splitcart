@@ -177,11 +177,13 @@ class UpdateOrchestrator:
                 
                 unit_of_work.add_price(existing_product, store_obj, product_details)
             else:
+                normalized_brand_key = product_details.get('normalized_brand')
+                brand_obj = brand_manager.brand_cache.get(normalized_brand_key)
                 new_product = Product(
                     name=product_details.get('name', ''),
                     normalized_name=product_details.get('normalized_name'),
                     name_variations=[product_details.get('normalized_name')],
-                    brand=product_details.get('brand'),
+                    brand=brand_obj,
                     barcode=product_details.get('barcode'),
                     normalized_name_brand_size=key,
                     size=product_details.get('size'),
