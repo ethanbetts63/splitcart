@@ -12,7 +12,7 @@ class Command(BaseCommand):
 
         self.stdout.write("Calculating product counts for all brands...")
         for brand in all_brands:
-            count = Product.objects.filter(brand=brand.name).count()
+            count = Product.objects.filter(brand=brand).count()
             brand_counts.append({'brand': brand, 'count': count})
         
         sorted_brands = sorted(brand_counts, key=lambda x: x['count'], reverse=True)
