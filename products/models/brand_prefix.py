@@ -23,4 +23,4 @@ class BrandPrefix(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Prefix analysis for {self.brand.canonical_name}"
+        return f"Prefix analysis for {self.brand.name}"

@@ -26,7 +26,7 @@ class BaseDataCleaner(ABC):
         """Builds a cache of brand data for the normalizer to use."""
         brand_cache = {}
         for brand in ProductBrand.objects.all():
-            brand_cache[brand.canonical_name] = {
+            brand_cache[brand.name] = {
                 'name_variations': brand.name_variations
             }
         return brand_cache

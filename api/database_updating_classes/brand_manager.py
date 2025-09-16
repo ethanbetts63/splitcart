@@ -32,7 +32,7 @@ class BrandManager:
             # The normalized_name is the unique key.
             brand, created = ProductBrand.objects.get_or_create(
                 normalized_name=normalized_brand_name,
-                defaults={'canonical_name': brand_name}
+                defaults={'name': brand_name}
             )
             self.brand_cache[normalized_brand_name] = brand
 
@@ -46,7 +46,7 @@ class BrandManager:
         # Check if the raw brand name is a new variation.
         # We check against the raw names already stored in the tuples.
         existing_raw_variations = {item[0] for item in brand.name_variations}
-        if brand_name != brand.canonical_name and brand_name not in existing_raw_variations:
+        if brand_name != brand.name and brand_name not in existing_raw_variations:
             # Store as a (name, company) tuple
             brand.name_variations.append((brand_name, company_name))
 

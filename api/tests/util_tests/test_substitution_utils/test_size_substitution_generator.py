@@ -20,12 +20,12 @@ class Lvl2SubstitutionGeneratorTests(TestCase):
         # 1. Arrange
         # These two products should be matched as size variants
         product_a = ProductFactory(
-            brand=self.brand.canonical_name, 
+            brand=self.brand.name, 
             name='Arnott\'s Choc Ripple Biscuits 250g',
             normalized_name='arnotts choc ripple biscuits'
         )
         product_b = ProductFactory(
-            brand=self.brand.canonical_name, 
+            brand=self.brand.name, 
             name='Choc Ripple Biscuits by Arnott\'s 200g',
             # token_set_ratio should handle the different word order
             normalized_name='choc ripple biscuits by arnotts' 
@@ -33,7 +33,7 @@ class Lvl2SubstitutionGeneratorTests(TestCase):
 
         # This product should not be matched
         product_c = ProductFactory(
-            brand=self.brand.canonical_name, 
+            brand=self.brand.name, 
             name='Arnott\'s Digestive Biscuits 300g',
             normalized_name='arnotts digestive biscuits'
         )

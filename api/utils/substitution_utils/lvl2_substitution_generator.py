@@ -19,7 +19,7 @@ class Lvl2SubstitutionGenerator(BaseSubstitutionGenerator):
 
         for brand in brands:
             # Eagerly load products to avoid N+1 queries
-            products = list(Product.objects.filter(brand=brand.canonical_name))
+            products = list(Product.objects.filter(brand=brand.name))
             if len(products) < 2:
                 continue
 
