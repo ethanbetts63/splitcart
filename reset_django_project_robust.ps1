@@ -67,8 +67,3 @@ python manage.py analyze --report subs
 python manage.py analyze --report savings
 python manage.py debug_savings_run
 python manage.py test_unit_price_sorter
-
-
-python manage.py update_db stores
-python manage.py build_company_jsons
-python manage.py build_store_jsons
