@@ -63,7 +63,7 @@ class UpdateOrchestrator:
 
             if unit_of_work.commit(consolidated_data, product_cache, resolver, store_obj):
                 self.processed_files.append(file_path)
-                self.variation_manager.reconcile_brand_duplicates()
+
                 
         # Regenerate the translation tables to include new variations
         BrandTranslationTableGenerator().run()
