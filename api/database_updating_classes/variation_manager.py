@@ -54,16 +54,44 @@ class VariationManager:
             self.product_reconciliation_list.append(product_reconciliation_entry)
 
         # --- Handle Brand Variations ---
-        incoming_brand = incoming_product_details.get('brand')
-        canonical_brand_name = existing_product.brand
+        # Get the Normalized Brand Name from both the incoming and existing products.
+        incoming_normalized_brand = incoming_product_details.get('normalized_brand')
+        existing_normalized_brand = existing_product.normalized_brand
 
-        if incoming_brand and canonical_brand_name and incoming_brand.lower() != canonical_brand_name.lower():
-            brand_reconciliation_entry = {
-                'canonical_brand_name': canonical_brand_name,
-                'duplicate_brand_name': incoming_brand
-            }
-            if brand_reconciliation_entry not in self.brand_reconciliation_list:
-                self.brand_reconciliation_list.append(brand_reconciliation_entry)
+        # If they are different, it means the translation table has changed, or our matching is imperfect.
+        # This is a signal to add a variation.
+        if incoming_normalized_brand and existing_normalized_brand and incoming_normalized_brand != existing_normalized_brand:
+            
+            # The "existing" product's brand is the source of truth.
+            try:
+                brand_to_update = ProductBrand.objects.get(normalized_name=existing_normalized_brand)
+            except ProductBrand.DoesNotExist:
+                return # Should not happen in practice
+
+            new_variation_name = incoming_product_details.get('brand')
+            new_variation_key = incoming_normalized_brand
+            
+            updated = False
+            # Add to name_variations
+            if not brand_to_update.name_variations:
+                brand_to_update.name_variations = []
+            # The variations are stored as (name, company_name) tuples
+            new_entry = (new_variation_name, company_name)
+            
+            if new_entry not in brand_to_update.name_variations:
+                brand_to_update.name_variations.append(new_entry)
+                updated = True
+                
+            # Add to normalized_name_variations
+            if not brand_to_update.normalized_name_variations:
+                brand_to_update.normalized_name_variations = []
+            if new_variation_key not in brand_to_update.normalized_name_variations:
+                brand_to_update.normalized_name_variations.append(new_variation_key)
+                updated = True
+
+            # Queue the update
+            if updated:
+                self.unit_of_work.add_for_update(brand_to_update)
 
     def reconcile_product_duplicates(self):
         """
@@ -141,65 +169,3 @@ class VariationManager:
             f.write(f"  Canonical: {canonical_product.name} (Barcode: {canonical_product.barcode})\n")
             f.write(f"  Duplicate: {duplicate_product.name} (Barcode: {duplicate_product.barcode})\n")
             f.write("----------------------------------------------------\n")
-
-    def reconcile_brand_duplicates(self):
-        """
-        Reads the brand reconciliation list from memory and merges any potential duplicates.
-        """
-        self.command.stdout.write(self.command.style.SQL_FIELD("--- Reconciling duplicate brands from memory ---"))
-        
-        if not self.brand_reconciliation_list:
-            self.command.stdout.write("Brand reconciliation list is empty. No duplicates to process.")
-            return
-
-        self.command.stdout.write(f"Found {len(self.brand_reconciliation_list)} potential brand duplicates to merge.")
-        
-        for item in self.brand_reconciliation_list:
-            canonical_name = item['canonical_brand_name']
-            duplicate_name = item['duplicate_brand_name']
-
-            try:
-                with transaction.atomic():
-                    canonical_brand = ProductBrand.objects.get(name=canonical_name)
-                    duplicate_brand = ProductBrand.objects.get(name=duplicate_name)
-
-                    if canonical_brand.id == duplicate_brand.id:
-                        continue
-
-                    # Update all products pointing to the duplicate brand
-                    Product.objects.filter(brand=duplicate_brand.name).update(brand=canonical_brand.name)
-
-                    # Merge name variations
-                    if duplicate_brand.name_variations:
-                        if not canonical_brand.name_variations:
-                            canonical_brand.name_variations = []
-                        for variation in duplicate_brand.name_variations:
-                            if variation not in canonical_brand.name_variations:
-                                canonical_brand.name_variations.append(variation)
-                    
-                    # Ensure the duplicate name itself is in the variations list
-                    if duplicate_brand.name not in canonical_brand.name_variations:
-                        canonical_brand.name_variations.append(duplicate_brand.name)
-                        
-                    canonical_brand.save()
-                    
-                    # Delete the duplicate brand
-                    duplicate_brand.delete()
-                    
-                    self.command.stdout.write(f"  - Merged brand '{duplicate_name}' into '{canonical_name}'.")
-
-            except ProductBrand.DoesNotExist:
-                # This can happen if a brand is both a canonical and a duplicate in the same run,
-                # and the duplicate gets deleted before its own merge operation runs.
-                # We check if the duplicate brand still exists. If not, we can safely skip.
-                if not ProductBrand.objects.filter(name=duplicate_name).exists():
-                    pass
-                else:
-                    self.command.stderr.write(f"Could not find canonical brand '{canonical_name}' for merge. Skipping.")
-                continue
-            except Exception as e:
-                self.command.stderr.write(f"Error merging brand '{duplicate_name}': {e}")
-                continue
-        
-        # Clear the in-memory list
-        self.brand_reconciliation_list.clear()

@@ -8,6 +8,8 @@ from api.database_updating_classes.variation_manager import VariationManager
 from api.database_updating_classes.product_translation_table_generator import ProductTranslationTableGenerator
 from api.database_updating_classes.brand_translation_table_generator import BrandTranslationTableGenerator
 from api.database_updating_classes.brand_manager import BrandManager
+from api.database_updating_classes.product_reconciler import ProductReconciler
+from api.database_updating_classes.brand_reconciler import BrandReconciler
 
 class UpdateOrchestrator:
     def __init__(self, command, inbox_path):
@@ -62,22 +64,18 @@ class UpdateOrchestrator:
             if unit_of_work.commit(consolidated_data, product_cache, resolver, store_obj):
                 self.processed_files.append(file_path)
                 self.variation_manager.reconcile_brand_duplicates()
-        # Post-processing: Reconcile potential duplicates found during the run
-        self.variation_manager.reconcile_product_duplicates()
-
-        # Post-processing: Reconcile brand duplicates
-        self.variation_manager.reconcile_brand_duplicates()
-
-        # Regenerate the brand synonym file from the database state
+                
+        # Regenerate the translation tables to include new variations
         BrandTranslationTableGenerator().run()
-
-        # Regenerate the product name translation table to include new variations
         ProductTranslationTableGenerator().run()
 
-        # Run the file-based reconciler to catch non-barcode duplicates
-        from api.database_updating_classes.product_reconciler import ProductReconciler
-        reconciler = ProductReconciler(self.command)
-        reconciler.run()
+        # Run the product reconciler to merge duplicates based on the translation table
+        product_reconciler = ProductReconciler(self.command)
+        product_reconciler.run()
+
+        # Run the brand reconciler to merge duplicates based on the translation table
+        brand_reconciler = BrandReconciler(self.command)
+        brand_reconciler.run()
 
         # Final cleanup of processed files
         self._cleanup_processed_files()
