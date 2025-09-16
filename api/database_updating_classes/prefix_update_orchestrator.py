@@ -88,11 +88,63 @@ class PrefixUpdateOrchestrator:
 
     def _reconcile_brands(self, brand_reconciliation_list):
         self.command.stdout.write("--- Reconciling newly discovered brand synonyms ---")
-        # We can reuse the existing VariationManager for this
-        variation_manager = VariationManager(self.command, unit_of_work=None)
-        # Pass a copy of the list so the original isn't cleared by the manager
-        variation_manager.brand_reconciliation_list = brand_reconciliation_list.copy()
-        variation_manager.reconcile_brand_duplicates()
+        
+        if not brand_reconciliation_list:
+            return
+
+        for item in brand_reconciliation_list:
+            canonical_name = item['canonical_brand_name']
+            duplicate_name = item['duplicate_brand_name']
+
+            # Use normalized names for lookups
+            norm_canonical = ProductNormalizer._clean_value(canonical_name)
+            norm_duplicate = ProductNormalizer._clean_value(duplicate_name)
+
+            try:
+                with transaction.atomic():
+                    canonical_brand = ProductBrand.objects.get(normalized_name=norm_canonical)
+                    duplicate_brand = ProductBrand.objects.get(normalized_name=norm_duplicate)
+
+                    if canonical_brand.id == duplicate_brand.id:
+                        continue
+
+                    # Merge name_variations lists
+                    if duplicate_brand.name_variations:
+                        if not canonical_brand.name_variations:
+                            canonical_brand.name_variations = []
+                        for variation in duplicate_brand.name_variations:
+                            if variation not in canonical_brand.name_variations:
+                                canonical_brand.name_variations.append(variation)
+                    
+                    # Merge normalized_name_variations lists
+                    if duplicate_brand.normalized_name_variations:
+                        if not canonical_brand.normalized_name_variations:
+                            canonical_brand.normalized_name_variations = []
+                        for norm_variation in duplicate_brand.normalized_name_variations:
+                            if norm_variation not in canonical_brand.normalized_name_variations:
+                                canonical_brand.normalized_name_variations.append(norm_variation)
+
+                    # Add the duplicate's own names to the variations list
+                    new_name_variation_entry = (duplicate_brand.name, 'gs1')
+                    if new_name_variation_entry not in canonical_brand.name_variations:
+                        canonical_brand.name_variations.append(new_name_variation_entry)
+                    
+                    if duplicate_brand.normalized_name not in canonical_brand.normalized_name_variations:
+                        canonical_brand.normalized_name_variations.append(duplicate_brand.normalized_name)
+                    
+                    canonical_brand.save()
+                    
+                    # Delete the duplicate brand
+                    duplicate_brand.delete()
+                    
+                    self.command.stdout.write(f"  - Merged brand '{duplicate_name}' into '{canonical_name}'.")
+
+            except ProductBrand.DoesNotExist:
+                self.command.stderr.write(f"Could not find brand for merge: {canonical_name} or {duplicate_name}. Skipping.")
+                continue
+            except Exception as e:
+                self.command.stderr.write(f"Error merging brand '{duplicate_name}': {e}")
+                continue
 
     def _move_processed_files(self, processed_files: list):
         self.command.stdout.write("--- Moving processed prefix files to temp storage ---")
