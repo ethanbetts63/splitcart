@@ -2,9 +2,9 @@ from django.db import models
 from api.utils.product_normalizer import ProductNormalizer
 
 class ProductBrand(models.Model):
-    name = models.CharField(
+    canonical_name = models.CharField(
         max_length=255,
-        help_text="The canonical (most common) name for this brand."
+        help_text="The canonical (most common) name for this brand, often from GS1."
     )
     normalized_name = models.CharField(
         max_length=255, 
@@ -15,7 +15,12 @@ class ProductBrand(models.Model):
     name_variations = models.JSONField(
         default=list, 
         blank=True,
-        help_text="A list of all other names this brand has been seen as."
+        help_text="A list of all other raw names this brand has been seen as."
+    )
+    normalized_name_variations = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="A list of normalized names from the name_variations list for faster lookups."
     )
     is_store_brand = models.BooleanField(default=False)
 

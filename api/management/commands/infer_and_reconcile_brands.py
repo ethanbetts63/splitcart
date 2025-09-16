@@ -1,6 +1,5 @@
 import time
 from django.core.management.base import BaseCommand
-from django.db.models import Count
 from products.models import Product, ProductBrand, BrandPrefix
 from api.database_updating_classes.variation_manager import VariationManager
 from api.database_updating_classes.product_translation_table_generator import ProductTranslationTableGenerator
