@@ -230,7 +230,7 @@ class TestDataFlowIga(TestCase):
 
         # Product 1: Coconut Milk
         product1 = Product.objects.get(name="Australia's Own Organic Coconut Milk Unsweetened")
-        self.assertEqual(product1.brand, "Australia's Own")
+        self.assertEqual(product1.brand.name, "Australia's Own")
         self.assertEqual(sorted(product1.sizes), sorted(['1l', 'ea']))
         
         price1 = Price.objects.get(product=product1)
@@ -241,7 +241,7 @@ class TestDataFlowIga(TestCase):
 
         # Product 2: Coconut Cream
         product2 = Product.objects.get(name="Ayam Coconut Cream Regular")
-        self.assertEqual(product2.brand, "Ayam")
+        self.assertEqual(product2.brand.name, "Ayam")
         self.assertEqual(sorted(product2.sizes), sorted(['200ml', 'ea']))
 
         price2 = Price.objects.get(product=product2)

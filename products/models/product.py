@@ -12,15 +12,12 @@ class Product(models.Model):
         db_index=True,
         help_text="The full name of the product as seen in the store."
     )
-    normalized_name = models.CharField(max_length=255, db_index=True, blank=True, help_text="The normalized version of the product name.")
-    brand = models.CharField(
-        max_length=100,
-        null=True,
+    name_variations = models.JSONField(
+        default=list,
         blank=True,
-        db_index=True,
-        help_text="DEPRECATED: The brand of the product as a raw string."
+        help_text="A list of (name, store) tuples for discovered name variations."
     )
-    brand_link = models.ForeignKey(
+    brand = models.ForeignKey(
         'ProductBrand',
         on_delete=models.SET_NULL,
         null=True,
@@ -28,6 +25,30 @@ class Product(models.Model):
         related_name='products',
         help_text="Link to the canonical ProductBrand entry."
     )
+    normalized_name = models.CharField(max_length=255, db_index=True, blank=True, help_text="The normalized version of the product name.")
+    
+    # TODO: This field should be populated with the normalized versions of the names
+    # in `name_variations` to make substitution matching more efficient.
+    # This avoids having to re-normalize them on the fly every time.
+    normalized_name_variations = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="A list of just the normalized names from the name_variations list."
+    )
+    normalized_name_brand_size = models.CharField(
+        max_length=500,
+        unique=True,
+        null=True,
+        blank=True,
+        db_index=True,
+        help_text="Normalized combination of name, brand, and size for uniqueness."
+    )
+    normalized_name_brand_size_variations = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="A list of normalized strings for discovered variations."
+    )
+
     size = models.CharField(
         max_length=100,
         blank=True,
@@ -74,34 +95,7 @@ class Product(models.Model):
         blank=True,
         help_text="Other products that can be used as substitutes, ranked by a score."
     )
-    name_variations = models.JSONField(
-        default=list,
-        blank=True,
-        help_text="A list of (name, store) tuples for discovered name variations."
-    )
-    normalized_name_brand_size_variations = models.JSONField(
-        default=list,
-        blank=True,
-        help_text="A list of normalized strings for discovered variations."
-    )
 
-    # TODO: This field should be populated with the normalized versions of the names
-    # in `name_variations` to make substitution matching more efficient.
-    # This avoids having to re-normalize them on the fly every time.
-    normalized_name_variations = models.JSONField(
-        default=list,
-        blank=True,
-        help_text="A list of just the normalized names from the name_variations list."
-    )
-
-    normalized_name_brand_size = models.CharField(
-        max_length=500,
-        unique=True,
-        null=True,
-        blank=True,
-        db_index=True,
-        help_text="Normalized combination of name, brand, and size for uniqueness."
-    )
 
     class Meta:
         constraints = [
@@ -121,9 +115,10 @@ class Product(models.Model):
         super().clean()
         # Use the ProductNormalizer class to generate normalized fields.
         # The normalizer expects a dictionary, so we create one from the model's fields.
+        brand_name = self.brand.name if self.brand else None
         product_data = {
             'name': self.name,
-            'brand': self.brand,
+            'brand': brand_name,
             'size': self.size,  # Map model's 'size' field to 'size'
             'barcode': self.barcode,
         }

@@ -186,7 +186,7 @@ def generate_random_cart(stores, num_products):
             current_slot.append({
                 "product_id": product.id,
                 "product_name": product.name,
-                "brand": product.brand,
+                "brand": product.brand.name if product.brand else None,
                 "sizes": product.sizes,
                 "store_id": price_obj.store.id,
                 "store_name": price_obj.store.store_name,

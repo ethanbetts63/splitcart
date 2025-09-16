@@ -124,7 +124,7 @@ class TestDataFlowAldi(TestCase):
         self.assertEqual(Price.objects.count(), 1)
 
         product1 = Product.objects.get(name="Chocolate Chip Brioche Milk Rolls 8 Pack 280g")
-        self.assertEqual(product1.brand, "BON APPETIT")
+        self.assertEqual(product1.brand.name, "BON APPETIT")
         self.assertEqual(sorted(product1.sizes), sorted(['280g', '8pk']))
         
         price1 = Price.objects.get(product=product1)

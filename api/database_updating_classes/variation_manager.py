@@ -46,7 +46,7 @@ class VariationManager:
         incoming_brand_name = incoming_product_details.get('brand')
         incoming_normalized_brand_key = incoming_product_details.get('normalized_brand_name')
 
-        existing_brand_instance = existing_product.brand_link
+        existing_brand_instance = existing_product.brand
         if not existing_brand_instance:
             return
 

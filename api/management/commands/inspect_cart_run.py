@@ -50,7 +50,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.HTTP_INFO("\n--- Original Shopping List ---"))
         anchor_products_sorted = sorted(anchor_products, key=lambda p: f"{p.brand or ''} {p.name or ''}")
         for i, product in enumerate(anchor_products_sorted):
-            brand_safe = (product.brand or '').encode('ascii', 'ignore').decode('ascii')
+            brand_safe = (product.brand.name if product.brand else '').encode('ascii', 'ignore').decode('ascii')
             name_safe = (product.name or '').encode('ascii', 'ignore').decode('ascii')
             self.stdout.write(f"{i+1}. {brand_safe} {name_safe}")
 

@@ -55,7 +55,7 @@ class Command(BaseCommand):
         unique_brands_with_examples = {}
 
         for product in products:
-            product_data = {'brand': product.brand, 'name': product.name}
+            product_data = {'brand': product.brand.name if product.brand else None, 'name': product.name}
             normalizer = ProductNormalizer(product_data)
             normalized_brand = normalizer.cleaned_brand
 

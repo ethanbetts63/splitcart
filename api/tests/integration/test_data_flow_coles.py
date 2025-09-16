@@ -117,7 +117,7 @@ class TestDataFlowColes(TestCase):
 
         # Product 1: Lamb Cutlets
         product1 = Product.objects.get(name="Graze Lamb Extra Trim Cutlets")
-        self.assertEqual(product1.brand, "Coles")
+        self.assertEqual(product1.brand.name, "Coles")
         self.assertEqual(product1.sizes, ["300g"])
         
         price1 = Price.objects.get(product=product1)
@@ -128,7 +128,7 @@ class TestDataFlowColes(TestCase):
 
         # Product 2: Smoked Salmon
         product2 = Product.objects.get(name="Tasmanian Smoked Salmon")
-        self.assertEqual(product2.brand, "Tassal")
+        self.assertEqual(product2.brand.name, "Tassal")
         self.assertEqual(product2.sizes, ["250g"])
 
         price2 = Price.objects.get(product=product2)

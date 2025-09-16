@@ -92,7 +92,7 @@ class StoreProductLister:
 
         product_data = {
             'name': product.name,
-            'brand': product.brand,
+            'brand': product.brand.name if product.brand else None,
             'sizes': product.sizes,
             'description': product.description,
             'image_url': product.image_url,
