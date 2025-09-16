@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from api.utils.substitution_utils.lv1_substitution_generator import Lvl1SubstitutionGenerator
+from api.utils.substitution_utils.lvl1_substitution_generator import Lvl1SubstitutionGenerator
 from api.utils.substitution_utils.lvl2_substitution_generator import Lvl2SubstitutionGenerator
 from api.utils.substitution_utils.lvl3_substitution_generator import Lvl3SubstitutionGenerator
 from api.utils.substitution_utils.lvl4_substitution_generator import Lvl4SubstitutionGenerator
