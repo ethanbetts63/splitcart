@@ -141,3 +141,68 @@ class VariationManager:
             f.write(f"  Canonical: {canonical_product.name} (Barcode: {canonical_product.barcode})\n")
             f.write(f"  Duplicate: {duplicate_product.name} (Barcode: {duplicate_product.barcode})\n")
             f.write("----------------------------------------------------\n")
+
+
+    def reconcile_brand_duplicates(self):
+        """
+        Reads the brand reconciliation list from memory and merges any potential duplicates.
+        """
+        self.command.stdout.write(self.command.style.SQL_FIELD("--- Reconciling duplicate brands from memory ---"))
+        
+        if not self.brand_reconciliation_list:
+            self.command.stdout.write("Brand reconciliation list is empty. No duplicates to process.")
+            return
+
+        self.command.stdout.write(f"Found {len(self.brand_reconciliation_list)} potential brand duplicates to merge.")
+        
+        for item in self.brand_reconciliation_list:
+            key_to_keep = item['brand_to_keep_key']
+            key_to_remove = item['brand_to_remove_key']
+
+            try:
+                with transaction.atomic():
+                    brand_to_keep = ProductBrand.objects.get(normalized_name=key_to_keep)
+                    brand_to_remove = ProductBrand.objects.get(normalized_name=key_to_remove)
+
+                    if brand_to_keep.id == brand_to_remove.id:
+                        continue
+
+                    Product.objects.filter(normalized_brand=key_to_remove).update(
+                        normalized_brand=key_to_keep,
+                        brand=brand_to_keep.name
+                    )
+
+                    if brand_to_remove.name_variations:
+                        if not brand_to_keep.name_variations:
+                            brand_to_keep.name_variations = []
+                        for variation in brand_to_remove.name_variations:
+                            if variation not in brand_to_keep.name_variations:
+                                brand_to_keep.name_variations.append(variation)
+                    
+                    if brand_to_remove.normalized_name_variations:
+                        if not brand_to_keep.normalized_name_variations:
+                            brand_to_keep.normalized_name_variations = []
+                        for norm_variation in brand_to_remove.normalized_name_variations:
+                            if norm_variation not in brand_to_keep.normalized_name_variations:
+                                brand_to_keep.normalized_name_variations.append(norm_variation)
+
+                    new_name_variation_entry = (brand_to_remove.name, 'reconciled')
+                    if new_name_variation_entry not in brand_to_keep.name_variations:
+                        brand_to_keep.name_variations.append(new_name_variation_entry)
+                    
+                    if brand_to_remove.normalized_name not in brand_to_keep.normalized_name_variations:
+                        brand_to_keep.normalized_name_variations.append(brand_to_remove.normalized_name)
+                    
+                    brand_to_keep.save()
+                    brand_to_remove.delete()
+                    
+                    self.command.stdout.write(f"  - Merged brand '{brand_to_remove.name}' into '{brand_to_keep.name}'.")
+
+            except ProductBrand.DoesNotExist:
+                self.command.stderr.write(f"Could not find brand for merge: {key_to_keep} or {key_to_remove}. Skipping.")
+                continue
+            except Exception as e:
+                self.command.stderr.write(f"Error merging brand '{key_to_remove}': {e}")
+                continue
+        
+        self.brand_reconciliation_list.clear()
