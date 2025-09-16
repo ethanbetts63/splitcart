@@ -121,7 +121,8 @@ class UpdateOrchestrator:
 
             brand_manager.process_brand(
                 brand_name=product_details.get('brand'), 
-                normalized_brand_name=product_details.get('normalized_brand')
+                normalized_brand_name=product_details.get('normalized_brand'),
+                company_name=company_name
             )
 
             existing_product = resolver.find_match(product_details, [])

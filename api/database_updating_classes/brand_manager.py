@@ -14,7 +14,7 @@ class BrandManager:
         # A set of brand objects whose name_variations list has been modified.
         self.brands_to_update = set()
 
-    def process_brand(self, brand_name: str, normalized_brand_name: str):
+    def process_brand(self, brand_name: str, normalized_brand_name: str, company_name: str):
         """
         Processes a single brand from a product record. It uses a cache to avoid
         repeated database queries for the same brand within a single file.
@@ -42,11 +42,13 @@ class BrandManager:
             brand.name_variations = []
         if not isinstance(brand.normalized_name_variations, list):
             brand.normalized_name_variations = []
-            
-        # If the incoming name is different from the canonical display name and
-        # not already recorded, add it to the variations list.
-        if brand_name != brand.canonical_name and brand_name not in brand.name_variations:
-            brand.name_variations.append(brand_name)
+
+        # Check if the raw brand name is a new variation.
+        # We check against the raw names already stored in the tuples.
+        existing_raw_variations = {item[0] for item in brand.name_variations}
+        if brand_name != brand.canonical_name and brand_name not in existing_raw_variations:
+            # Store as a (name, company) tuple
+            brand.name_variations.append((brand_name, company_name))
 
             # Normalize the new variation and add it to the normalized list
             normalizer = ProductNormalizer({'brand': brand_name, 'name': ''})
