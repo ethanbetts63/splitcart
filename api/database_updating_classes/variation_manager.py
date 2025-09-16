@@ -54,44 +54,16 @@ class VariationManager:
             self.product_reconciliation_list.append(product_reconciliation_entry)
 
         # --- Handle Brand Variations ---
-        # Get the Normalized Brand Name from both the incoming and existing products.
         incoming_normalized_brand = incoming_product_details.get('normalized_brand')
         existing_normalized_brand = existing_product.normalized_brand
 
-        # If they are different, it means the translation table has changed, or our matching is imperfect.
-        # This is a signal to add a variation.
         if incoming_normalized_brand and existing_normalized_brand and incoming_normalized_brand != existing_normalized_brand:
-            
-            # The "existing" product's brand is the source of truth.
-            try:
-                brand_to_update = ProductBrand.objects.get(normalized_name=existing_normalized_brand)
-            except ProductBrand.DoesNotExist:
-                return # Should not happen in practice
-
-            new_variation_name = incoming_product_details.get('brand')
-            new_variation_key = incoming_normalized_brand
-            
-            updated = False
-            # Add to name_variations
-            if not brand_to_update.name_variations:
-                brand_to_update.name_variations = []
-            # The variations are stored as (name, company_name) tuples
-            new_entry = (new_variation_name, company_name)
-            
-            if new_entry not in brand_to_update.name_variations:
-                brand_to_update.name_variations.append(new_entry)
-                updated = True
-                
-            # Add to normalized_name_variations
-            if not brand_to_update.normalized_name_variations:
-                brand_to_update.normalized_name_variations = []
-            if new_variation_key not in brand_to_update.normalized_name_variations:
-                brand_to_update.normalized_name_variations.append(new_variation_key)
-                updated = True
-
-            # Queue the update
-            if updated:
-                self.unit_of_work.add_for_update(brand_to_update)
+            brand_reconciliation_entry = {
+                'brand_to_keep_key': existing_normalized_brand,
+                'brand_to_remove_key': incoming_normalized_brand
+            }
+            if brand_reconciliation_entry not in self.brand_reconciliation_list:
+                self.brand_reconciliation_list.append(brand_reconciliation_entry)
 
     def reconcile_product_duplicates(self):
         """
