@@ -1,11 +1,11 @@
 import os
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from api.utils.database_updating_utils.update_stores_from_discovery import update_stores_from_discovery
 from api.utils.database_updating_utils.load_db_from_archive import load_db_from_latest_archive
 from api.database_updating_classes.exact_category_matcher import ExactCategoryMatcher
 from api.database_updating_classes.update_orchestrator import UpdateOrchestrator
 from api.database_updating_classes.prefix_update_orchestrator import PrefixUpdateOrchestrator
+from api.database_updating_classes.discovery_update_orchestrator import DiscoveryUpdateOrchestrator
 
 class Command(BaseCommand):
     help = 'Updates the database with data from various sources.'
@@ -40,9 +40,8 @@ class Command(BaseCommand):
             orchestrator.run()
 
         if run_stores_discovery:
-            self.stdout.write(self.style.SQL_FIELD('--- Running store update from discovery ---'))
-            update_stores_from_discovery(self)
-            self.stdout.write(self.style.SUCCESS('--- Store update from discovery complete ---'))
+            orchestrator = DiscoveryUpdateOrchestrator(self)
+            orchestrator.run()
 
         if run_products_processed:
             inbox_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'product_inbox')

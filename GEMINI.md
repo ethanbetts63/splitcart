@@ -42,8 +42,7 @@ Here is a brief overview of the available management commands:
 *   `find_stores`: Discovers store locations for a specific company and saves the data for processing.
 *   `scrape`: Scrapes product data from specified store websites, saving it to the `product_inbox`.
 *   `update_db`: A consolidated command that updates the database with new data. Its `--products` flag now uses the refactored OOP system for robust product and price updates from the inbox. It also supports updating stores from discovery (`--stores`) or from archives (`--archive`).
-*   `build_company_jsons`: Generates JSON archives containing data about companies and their stores.
-*   `build_store_jsons`: Generates detailed JSON archives for each store, including product and price history.
+
 *   `analyze_data`: A flexible tool for data analysis that can generate various reports, charts, and heatmaps.
 *   `compare_stores`: A utility to compare the product offerings between two specified stores.
 *   `get_woolworths_substitutes`: A specialized command to fetch substitute product information from Woolworths.
