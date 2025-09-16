@@ -50,7 +50,7 @@ class Command(BaseCommand):
             if (i + 1) % 100 == 0:
                 self.stdout.write(f"  - Processed {i + 1}/{total_brands} brands...")
 
-            products = Product.objects.filter(brand=brand.name).exclude(barcode__isnull=True).exclude(barcode__exact='')
+            products = Product.objects.filter(brand=brand.canonical_name).exclude(barcode__isnull=True).exclude(barcode__exact='')
             product_count = products.count()
             barcodes = list(products.values_list('barcode', flat=True))
 

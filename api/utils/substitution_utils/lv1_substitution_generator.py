@@ -20,7 +20,7 @@ class Lvl1SubstitutionGenerator(BaseSubstitutionGenerator):
 
         for brand in brands:
             name_map = defaultdict(list)
-            products = Product.objects.filter(brand=brand.name)
+            products = Product.objects.filter(brand=brand.canonical_name)
 
             for product in products:
                 variation_names = {item[0] for item in product.name_variations if isinstance(item, list) and len(item) > 0} if product.name_variations else set()

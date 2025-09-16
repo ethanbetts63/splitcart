@@ -18,7 +18,15 @@ class Product(models.Model):
         null=True,
         blank=True,
         db_index=True,
-        help_text="The brand of the product, e.g., 'Coles', 'Coca-Cola'."
+        help_text="DEPRECATED: The brand of the product as a raw string."
+    )
+    brand_link = models.ForeignKey(
+        'ProductBrand',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='products',
+        help_text="Link to the canonical ProductBrand entry."
     )
     size = models.CharField(
         max_length=100,

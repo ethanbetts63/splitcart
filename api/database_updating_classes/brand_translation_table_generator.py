@@ -26,25 +26,28 @@ class BrandTranslationTableGenerator(BaseTranslationTableGenerator):
     def generate_translation_dict(self) -> dict:
         """
         Queries all ProductBrand objects and builds a translation dictionary
-        from their name variations.
+        from their normalized name variations.
 
         Returns:
-            A dictionary mapping brand variations to canonical brand names.
+            A dictionary mapping normalized brand variations to normalized canonical brand names.
         """
         print("--- Generating brand synonym translation dictionary ---")
         synonyms = {}
 
         # Query all brands that have variations defined
-        all_brands = ProductBrand.objects.filter(name_variations__isnull=False)
+        all_brands = ProductBrand.objects.filter(normalized_name_variations__isnull=False)
 
         for brand in all_brands:
-            canonical_name = brand.name
-            if not brand.name_variations or not isinstance(brand.name_variations, list):
+            # The canonical name is the brand's own normalized name
+            canonical_normalized = brand.normalized_name
+            
+            if not brand.normalized_name_variations or not isinstance(brand.normalized_name_variations, list):
                 continue
 
-            for variation in brand.name_variations:
-                if variation.lower() != canonical_name.lower():
-                    synonyms[variation] = canonical_name
+            for normalized_variation in brand.normalized_name_variations:
+                # Map the normalized variation to the canonical normalized name
+                if normalized_variation != canonical_normalized:
+                    synonyms[normalized_variation] = canonical_normalized
         
         print(f"Generated {len(synonyms)} brand synonyms.")
         return synonyms

@@ -49,7 +49,7 @@ class Gs1CompanyScraper:
             except BrandPrefix.DoesNotExist:
                 pass
             
-            count = Product.objects.filter(brand=brand.name).count()
+            count = Product.objects.filter(brand=brand.canonical_name).count()
             if count > 0:
                 unconfirmed_brands.append({'brand': brand, 'count': count})
         

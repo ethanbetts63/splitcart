@@ -12,7 +12,7 @@ class Command(BaseCommand):
 
         self.stdout.write("Calculating product counts for all brands...")
         for brand in all_brands:
-            count = Product.objects.filter(brand=brand.name).count()
+            count = Product.objects.filter(brand=brand.canonical_name).count()
             brand_counts.append({'brand': brand, 'count': count})
         
         sorted_brands = sorted(brand_counts, key=lambda x: x['count'], reverse=True)
@@ -34,7 +34,7 @@ class Command(BaseCommand):
                 pass
 
             self.stdout.write(
-                f"{i+1}. Brand: '{brand.name}' (ID: {brand.id})\n"
+                f"{i+1}. Brand: '{brand.canonical_name}' (ID: {brand.id})\n"
                 f"   - Product Count: {count}\n"
                 f"   - Prefix Details: {prefix_details}\n"
                 f"--------------------------------------------------"

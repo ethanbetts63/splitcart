@@ -33,13 +33,13 @@ class ProductBrand(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        if self.name and not self.normalized_name:
+        if self.canonical_name and not self.normalized_name:
             # The normalizer expects a dictionary.
             # Pass brand name and an empty product name for context for brand rules.
-            product_data = {'brand': self.name, 'name': ''}
+            product_data = {'brand': self.canonical_name, 'name': ''}
             normalizer = ProductNormalizer(product_data)
             self.normalized_name = normalizer.get_normalized_brand_key()
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return self.canonical_name
