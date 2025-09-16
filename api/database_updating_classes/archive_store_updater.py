@@ -1,4 +1,3 @@
-
 import json
 from companies.models import Company, Division, Store
 

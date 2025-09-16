@@ -20,12 +20,20 @@ class DiscoveryStoreUpdater:
         except (json.JSONDecodeError, FileNotFoundError):
             return None, 0
 
-        company_name = data.get('company')
+        # Handle nested structure (Coles)
+        if 'metadata' in data and 'store_data' in data:
+            company_name = data.get('metadata', {}).get('company')
+            store_data = data.get('store_data', {})
+        # Handle flat structure (Woolworths)
+        else:
+            company_name = data.get('company')
+            store_data = data
+
         if not company_name:
             return None, 0
 
         company_obj = self._get_or_create_company(company_name)
-        self._get_or_create_store(company_obj, data)
+        self._get_or_create_store(company_obj, store_data)
         
         return company_name, 1
 
@@ -44,10 +52,10 @@ class DiscoveryStoreUpdater:
         if not store_id:
             return
 
-        # Map flat file fields to store model fields
+        # Map various field names to store model fields
         store_defaults = {
-            'store_name': store_data.get('name'),
-            'address_line_1': store_data.get('address'),
+            'store_name': store_data.get('store_name') or store_data.get('name'),
+            'address_line_1': store_data.get('address_line_1') or store_data.get('address'),
             'suburb': store_data.get('suburb'),
             'state': store_data.get('state'),
             'postcode': store_data.get('postcode'),
