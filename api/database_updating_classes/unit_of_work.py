@@ -1,5 +1,5 @@
 from django.db import transaction
-from products.models import Product, Price
+from products.models import Product, Price, ProductBrand
 from .category_manager import CategoryManager
 from api.utils.price_normalizer import PriceNormalizer
 
@@ -9,6 +9,7 @@ class UnitOfWork:
         self.new_products_to_process = []
         self.prices_to_create = []
         self.products_to_update = []
+        self.brands_to_update = []
         self.category_manager = CategoryManager(command)
 
     def add_new_product(self, product_instance, product_details):
@@ -58,9 +59,13 @@ class UnitOfWork:
             )
         )
 
-    def add_for_update(self, product_instance):
-        if product_instance not in self.products_to_update:
-            self.products_to_update.append(product_instance)
+    def add_for_update(self, instance):
+        if isinstance(instance, Product):
+            if instance not in self.products_to_update:
+                self.products_to_update.append(instance)
+        elif isinstance(instance, ProductBrand):
+            if instance not in self.brands_to_update:
+                self.brands_to_update.append(instance)
 
     def _deduplicate_new_products(self, resolver):
         unique_new_products_with_details = []
@@ -118,6 +123,12 @@ class UnitOfWork:
                     ]
                     Product.objects.bulk_update(self.products_to_update, update_fields, batch_size=500)
                     self.command.stdout.write(f"  - Updated {len(self.products_to_update)} products with new information.")
+
+                # Stage 5: Update existing brands
+                if self.brands_to_update:
+                    brand_update_fields = ['name_variations', 'normalized_name_variations']
+                    ProductBrand.objects.bulk_update(self.brands_to_update, brand_update_fields, batch_size=500)
+                    self.command.stdout.write(f"  - Updated {len(self.brands_to_update)} brands with new variation info.")
             
             self.command.stdout.write(self.command.style.SUCCESS("--- Commit successful ---"))
             return True
