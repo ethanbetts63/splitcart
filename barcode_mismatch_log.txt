@@ -1,0 +1,72 @@
+--- Mismatch Detected at 2025-09-16T11:37:06.713752 ---
+  Canonical: Aussie Diced Peaches in Juice 120g (Barcode: 9310006999811)
+  Duplicate: SPC Diced Peaches In Juice (Barcode: 9310006015382)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:07.630658 ---
+  Canonical: Tomato & Basil Rice Pouch (Barcode: 9310012060260)
+  Duplicate: Ben's Original Original Tomato & Basil Microwave Rice Pouch (Barcode: 5010034518001)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:08.364309 ---
+  Canonical: Dip Platter Entertaining Size Hot Salsa (Barcode: 9310015250149)
+  Duplicate: Doritos Hot Salsa (Barcode: 9310015224096)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:09.102734 ---
+  Canonical: Thirst Crusher Original Lemon Soft Drink Cans Multipack 375mL x 30 Pack (Barcode: 9315596003573)
+  Duplicate: Schweppes Solo Thirst Crusher Original Lemon Multipack Cans (Barcode: 9315596101019)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:09.591030 ---
+  Canonical: Natural Creamy Long Life Soy Milk 1l (Barcode: 9341650001704)
+  Duplicate: Vitasoy Soy Milk Original (Barcode: 9310232100104)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:09.841212 ---
+  Canonical: Snap Frozen Mixed Garden Vegetables (Barcode: 9310081410102)
+  Duplicate: Birds Eye Snap Frozen Garden Mix Carrot Beans Brocoli Cauli Capsicum (Barcode: 9310081427087)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:11.171102 ---
+  Canonical: Ultra Dry Nappies Boys Size 4 (10-15kg) (Barcode: 9310088023138)
+  Duplicate: Huggies Ultra Dry Nappies Boys Size 4 (10-15kg) (Barcode: 9310088010671)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:11.214105 ---
+  Canonical: Johnson?s Baby Pure Cornstarch Moisture Absorbing Baby Powder (Barcode: 9300607398687)
+  Duplicate: Johnson's Baby Powder (Barcode: 9300607210309)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:11.237401 ---
+  Canonical: 3 Ply Silky White Toilet Paper (Barcode: 9310004121306)
+  Duplicate: Sorbent Toilet Tissue White 3 Ply (Barcode: 9310004121313)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:11.526931 ---
+  Canonical: Ultimate Lemon Dishwasher Tablets (Barcode: 9300701053130)
+  Duplicate: Finish Quantum Ultimate Pro Dishwasher Tablets Lemon (Barcode: 9300701066512)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:12.562428 ---
+  Canonical: Spaghetti No 5 (Barcode: 8076800195057)
+  Duplicate: Barilla Spaghetti Pasta No 5 (Barcode: 8076809547826)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:13.247481 ---
+  Canonical: Chocolate Biscuit Sticks (Barcode: 8851019110110)
+  Duplicate: Glico Pocky Chocolate Biscuit Sticks (Barcode: 8851019710143)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:13.380576 ---
+  Canonical: Almond Milky (Barcode: 9341650001568)
+  Duplicate: Vitasoy Almond Milky (Barcode: 9341650000448)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:14.231001 ---
+  Canonical: Double Espresso Iced Coffee Flavoured Milk (Barcode: 9310199080853)
+  Duplicate: Dare Iced Coffee Double Espresso (Barcode: 9310232957500)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:14.237549 ---
+  Canonical: Expresso Iced Coffee Flavoured Milk (Barcode: 9310295081068)
+  Duplicate: Dare Iced Coffee Espresso (Barcode: 9310232957494)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:14.240559 ---
+  Canonical: Espresso Iced Coffee Flavoured Milk (Barcode: 9310199080839)
+  Duplicate: Dare Iced Coffee Espresso (Barcode: 9310232957531)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:14.960801 ---
+  Canonical: General Purpose (Barcode: 5013931012504)
+  Duplicate: Dishmatic General Purpose Refill (Barcode: 5013931012467)
+----------------------------------------------------
+--- Mismatch Detected at 2025-09-16T11:37:15.166126 ---
+  Canonical: White Rayon Elastic 3m (Barcode: 9310676103853)
+  Duplicate: Korbond Elastic Braided 6Mm X5M (Barcode: 9310676109053)
+----------------------------------------------------

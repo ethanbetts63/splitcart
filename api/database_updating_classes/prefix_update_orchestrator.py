@@ -60,10 +60,11 @@ class PrefixUpdateOrchestrator:
             return
 
         # --- Corrected Logic ---
-        # 1. Get or create the CANONICAL brand first.
+        # 1. Get or create the brand based on its normalized name.
+        normalized_name = ProductNormalizer._clean_value(confirmed_name)
         canonical_brand, _ = ProductBrand.objects.get_or_create(
-            name=confirmed_name,
-            defaults={'normalized_name': ProductNormalizer({'brand': confirmed_name, 'name': ''}).get_normalized_brand_key()}
+            normalized_name=normalized_name,
+            defaults={'name': confirmed_name}
         )
 
         # 2. Attach the BrandPrefix to the CANONICAL brand.

@@ -1,10 +1,4 @@
 # A PowerShell script to completely reset a Django project's database and migrations.
-# WARNING: This script is DESTRUCTIVE and will permanently delete your database and migration history.
-# This version will stop if it encounters an error.
-
-# --- CONFIGURATION ---
-# Update this list with the names of your Django apps.
-
 
 cd .\coding\splitcart\
 .\venv\Scripts\Activate.ps1

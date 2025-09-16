@@ -33,14 +33,21 @@ class ProductNormalizer:
         self.barcode = product_data.get('barcode')
         self.sku = product_data.get('sku')
         self.brand_cache = brand_cache if brand_cache is not None else {}
-        
+
         # Immediately process the data to populate internal state
+        self.normalized_brand_name = self._get_normalized_brand_name()
+
+        # Get the human-readable name from the cache using the normalized brand name
+        brand_info = self.brand_cache.get(self.normalized_brand_name, {})
+        # Fallback to the raw brand string if the key is somehow not in the cache
+        self.cleaned_brand = brand_info.get('name', self.brand)
+
         self.raw_sizes = self._extract_all_sizes()
-        self.cleaned_brand = self._get_cleaned_brand()
         self.cleaned_name = self._get_cleaned_name()
         self.standardized_sizes = self._get_standardized_sizes()
 
-    def _clean_value(self, value: str) -> str:
+    @staticmethod
+    def _clean_value(value: str) -> str:
         """ Corresponds to clean_value.py logic. """
         if not isinstance(value, str):
             return ""
@@ -119,34 +126,45 @@ class ProductNormalizer:
                 all_sizes.add(size.lower())
         return sorted(list(all_sizes))
 
-    def _get_cleaned_brand(self) -> str:
-        """ Corresponds to the original, more precise get_cleaned_brand.py logic. """
+    def _get_normalized_brand_name(self) -> str:
+        """
+        Resolves the raw brand string to normalized key.
+        """
         if not self.brand:
             return ''
 
         brand_str = str(self.brand)
-        name_str = str(self.name).lower()
-
-        cleaned_brand_for_lookup = self._clean_value(brand_str)
-        cleaned_brand = BRAND_NAME_TRANSLATIONS.get(cleaned_brand_for_lookup, brand_str)
-
-
-
-        return cleaned_brand
+        
+        # Normalize the raw brand string to create a lookup key
+        normalized_brand_str = self._clean_value(brand_str)
+        translated_normalized_brand_str = BRAND_NAME_TRANSLATIONS.get(normalized_brand_str)
+    
+        if translated_normalized_brand_str:
+            return translated_normalized_brand_str
+        else:
+            return normalized_brand_str
 
     def _get_cleaned_name(self) -> str:
         name_to_clean = self.name
-        canonical_brand = self.cleaned_brand
 
-        if not canonical_brand:
+        # Use the normalized_brand_name to look up details in the refactored cache.
+        brand_details = self.brand_cache.get(self.normalized_brand_name)
+
+        if not brand_details:
+            # If no details found, we can't reliably strip the brand.
+            # Fallback to basic cleaning.
+            name_to_clean = re.sub(r'\s+', ' ', name_to_clean).strip()
             return name_to_clean
 
+        # The human-readable name from the cache.
+        brand_name = brand_details.get('name')
+        # The list of variation tuples, e.g., [('Coke', 'Coles'), ('Coca Cola', 'Woolworths')]
+        variations_tuples = brand_details.get('name_variations', [])
+        # Extract just the names from the tuples
+        variations = [item[0] for item in variations_tuples]
+
         # Compile a list of all possible brand variations to remove.
-        brand_details = self.brand_cache.get(canonical_brand, {})
-        variations = brand_details.get('name_variations', [])
-        
-        # Also include the canonical name itself and the original raw brand string.
-        strings_to_remove = [canonical_brand, self.brand] + variations
+        strings_to_remove = [brand_name, self.brand] + variations
         
         # Remove duplicates and None/empty strings, sort by length descending.
         unique_strings_to_remove = sorted(list(set(s for s in strings_to_remove if s)), key=len, reverse=True)
@@ -249,12 +267,11 @@ class ProductNormalizer:
         """ Public method to get the originally extracted, unique size strings. """
         return self.raw_sizes
 
-    def get_normalized_brand_key(self) -> str:
+    def get_normalized_brand_name(self) -> str:
         """
-        Returns a fully normalized version of the cleaned (canonical) brand name.
-        This is suitable for use as a unique key.
+        Returns the non-human-readable, normalized name for the brand.
         """
-        return self._clean_value(self.cleaned_brand)
+        return self.normalized_brand_name
 
     def get_fully_normalized_name(self) -> str:
         """

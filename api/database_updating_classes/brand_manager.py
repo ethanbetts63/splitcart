@@ -36,28 +36,7 @@ class BrandManager:
             )
             self.brand_cache[normalized_brand_name] = brand
 
-        # --- Variation Management ---
-        # Ensure the variations fields are lists.
-        if not isinstance(brand.name_variations, list):
-            brand.name_variations = []
-        if not isinstance(brand.normalized_name_variations, list):
-            brand.normalized_name_variations = []
 
-        # Check if the raw brand name is a new variation.
-        # We check against the raw names already stored in the tuples.
-        existing_raw_variations = {item[0] for item in brand.name_variations}
-        if brand_name != brand.name and brand_name not in existing_raw_variations:
-            # Store as a (name, company) tuple
-            brand.name_variations.append((brand_name, company_name))
-
-            # Normalize the new variation and add it to the normalized list
-            normalizer = ProductNormalizer({'brand': brand_name, 'name': ''})
-            normalized_variation = normalizer.get_normalized_brand_key()
-            if normalized_variation and normalized_variation not in brand.normalized_name_variations:
-                brand.normalized_name_variations.append(normalized_variation)
-
-            # Add the brand object to a set of brands that need to be saved.
-            self.brands_to_update.add(brand)
 
     def commit(self):
         """

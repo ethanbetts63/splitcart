@@ -23,10 +23,15 @@ class BaseDataCleaner(ABC):
         self.brand_cache = self._build_brand_cache()
 
     def _build_brand_cache(self):
-        """Builds a cache of brand data for the normalizer to use."""
+        """
+        Builds a cache of brand data for the normalizer to use,
+        keyed by the normalized brand name.
+        """
         brand_cache = {}
         for brand in ProductBrand.objects.all():
-            brand_cache[brand.name] = {
+            # Use the normalized_name as the key
+            brand_cache[brand.normalized_name] = {
+                'name': brand.name,  # Include the human-readable name
                 'name_variations': brand.name_variations
             }
         return brand_cache
@@ -104,7 +109,7 @@ class BaseDataCleaner(ABC):
         # Overwrite the brand with the canonical version
         product['brand'] = normalizer.cleaned_brand
         # Add the new normalized brand key
-        product['normalized_brand'] = normalizer.get_normalized_brand_key()
+        product['normalized_brand'] = normalizer.get_normalized_brand_name()
         product['sizes'] = normalizer.get_raw_sizes()
         product['normalized_name_brand_size'] = normalizer.get_normalized_name_brand_size_string()
         if 'barcode' in product and product.get('barcode'):
