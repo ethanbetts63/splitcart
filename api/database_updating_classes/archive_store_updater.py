@@ -2,7 +2,7 @@
 import json
 from companies.models import Company, Division, Store
 
-class StoreUpdater:
+class ArchiveStoreUpdater:
     """
     Processes a single company archive JSON file and updates the database with store information.
     """

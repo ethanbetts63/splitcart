@@ -1,7 +1,7 @@
 
 import os
 from django.conf import settings
-from .store_updater import StoreUpdater
+from .discovery_store_updater import DiscoveryStoreUpdater
 
 class DiscoveryUpdateOrchestrator:
     """
@@ -27,7 +27,7 @@ class DiscoveryUpdateOrchestrator:
 
             file_path = os.path.join(self.discovered_stores_path, filename)
             
-            updater = StoreUpdater(self.command, file_path)
+            updater = DiscoveryStoreUpdater(self.command, file_path)
             company_name, stores_processed = updater.run()
             
             if company_name:
