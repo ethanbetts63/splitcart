@@ -34,7 +34,7 @@ class ProductBrand(models.Model):
 
     def save(self, *args, **kwargs):
         if self.name and not self.normalized_name:
-            self.normalized_name = ProductNormalizer._clean_value(self.name)
+            self.normalized_name = ProductNormalizer._get_normalized_brand_name(self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):

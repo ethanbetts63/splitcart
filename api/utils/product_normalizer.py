@@ -1,7 +1,5 @@
 import re
 import unicodedata
-import json
-import os
 try:
     from api.data.brand_translation_table import BRAND_NAME_TRANSLATIONS
 except (ImportError, SyntaxError):
@@ -35,7 +33,7 @@ class ProductNormalizer:
         self.brand_cache = brand_cache if brand_cache is not None else {}
 
         # Immediately process the data to populate internal state
-        self.normalized_brand_name = self._get_normalized_brand_name()
+        self.normalized_brand_name = ProductNormalizer._get_normalized_brand_name(self.brand)
 
         # Get the human-readable name from the cache using the normalized brand name
         brand_info = self.brand_cache.get(self.normalized_brand_name, {})
@@ -126,17 +124,18 @@ class ProductNormalizer:
                 all_sizes.add(size.lower())
         return sorted(list(all_sizes))
 
-    def _get_normalized_brand_name(self) -> str:
+    @staticmethod
+    def _get_normalized_brand_name(brand_str: str) -> str:
         """
-        Resolves the raw brand string to normalized key.
+        Resolves the raw brand string to a normalized key.
         """
-        if not self.brand:
+        if not brand_str:
             return ''
 
-        brand_str = str(self.brand)
-        
         # Normalize the raw brand string to create a lookup key
-        normalized_brand_str = self._clean_value(brand_str)
+        normalized_brand_str = ProductNormalizer._clean_value(brand_str)
+        
+        # Look for a translation
         translated_normalized_brand_str = BRAND_NAME_TRANSLATIONS.get(normalized_brand_str)
     
         if translated_normalized_brand_str:
