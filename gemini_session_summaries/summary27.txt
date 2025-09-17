@@ -26,3 +26,12 @@ The user reported seeing "Could not find canonical product" errors during the `u
 
 -   **`update_db --stores`:** The session began by fixing a bug where the `DiscoveryUpdateOrchestrator` was using the wrong class to process discovered store files with different JSON structures. A new, more flexible `DiscoveryStoreUpdater` was created to solve this.
 -   **Code Analysis:** We briefly analyzed the purpose of the `inspect_cart_run` command and discussed the redundancy of the `generate_category_equivalences.py` script.
+
+### 4. Brand Data Modeling Refactor (User-Driven)
+
+Following a detailed discussion, the user made a firm decision to implement a new brand data modeling approach to preserve raw brand context.
+
+-   **`ProductBrand` Model:** The `parent_company` ForeignKey was removed from this model.
+-   **`Product` Model:** A new `JSONField`, `brand_name_company_pairs`, was added to the `Product` model. This field will store a list of `[raw_brand_name, company_name]` tuples, capturing the original scraped brand context.
+-   **`UpdateOrchestrator` Logic:** The `_process_consolidated_data` method in `UpdateOrchestrator` was updated to populate the `brand_name_company_pairs` field for both new and existing `Product` instances, following the user's specific rules for adding new pairs (one raw brand name per company).
+-   **Next Steps:** The user needs to run `python manage.py makemigrations` and `python manage.py migrate` to apply these schema changes to the database.
