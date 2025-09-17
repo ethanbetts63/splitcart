@@ -1,6 +1,7 @@
 import time
 from django.core.management.base import BaseCommand
-from products.models import Product, BrandPrefix
+from django.db import models
+from products.models import Product, ProductBrand
 
 class Command(BaseCommand):
     help = 'Uses the BrandPrefix table to find and report on products with inconsistent brand names.'
@@ -12,19 +13,21 @@ class Command(BaseCommand):
         self.stdout.write(f"Report will be saved to {output_file}")
 
         self.stdout.write("Loading and preparing brand prefixes into memory...")
-        all_brand_prefixes = BrandPrefix.objects.select_related('brand').all()
+        all_brands = ProductBrand.objects.filter(
+            models.Q(confirmed_official_prefix__isnull=False) | models.Q(longest_inferred_prefix__isnull=False)
+        )
         prefixes = []
-        for p in all_brand_prefixes:
+        for brand in all_brands:
             # Prioritize the confirmed prefix, fall back to the longest inferred one
-            prefix_str = p.confirmed_official_prefix or p.longest_inferred_prefix
+            prefix_str = brand.confirmed_official_prefix or brand.longest_inferred_prefix
             if prefix_str:
-                prefixes.append({'prefix': prefix_str, 'brand': p.brand})
+                prefixes.append({'prefix': prefix_str, 'brand': brand})
         
         # Sort by prefix length in descending order to check most specific prefixes first
         prefixes.sort(key=lambda x: len(x['prefix']), reverse=True)
         self.stdout.write(f"Loaded {len(prefixes)} usable brand prefixes.")
 
-        products = Product.objects.exclude(barcode__isnull=True).exclude(barcode__exact='')
+        products = Product.objects.select_related('brand').exclude(barcode__isnull=True).exclude(barcode__exact='')
         total_products = products.count()
         self.stdout.write(f"Found {total_products} products with barcodes to check...")
 
@@ -39,13 +42,13 @@ class Command(BaseCommand):
                 for prefix_info in prefixes:
                     if product.barcode.startswith(prefix_info['prefix']):
                         canonical_brand_name = prefix_info['brand'].name
-                        product_brand_name = product.brand or ""
+                        product_brand_name = product.brand.name if product.brand else ""
 
                         if canonical_brand_name.lower() != product_brand_name.lower():
                             discrepancies_found += 1
                             f.write(
                                 f"Product ID {product.id}: Barcode {product.barcode} "
-                                f"suggests brand '{canonical_brand_name}', but is currently '{product.brand}'.\r\n"
+                                f"suggests brand '{canonical_brand_name}', but is currently '{product_brand_name}'.\r\n"
                             )
                         
                         break

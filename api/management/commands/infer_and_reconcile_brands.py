@@ -1,6 +1,6 @@
 import time
 from django.core.management.base import BaseCommand
-from products.models import Product, ProductBrand, BrandPrefix
+from products.models import Product, ProductBrand
 from api.database_updating_classes.variation_manager import VariationManager
 from api.database_updating_classes.product_translation_table_generator import ProductTranslationTableGenerator
 
@@ -40,7 +40,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SQL_FIELD("--- Phase 1: Inferring Prefixes from Barcodes ---"))
 
         # Get brands that do NOT have a confirmed prefix already
-        brands_with_confirmed_prefixes = BrandPrefix.objects.filter(confirmed_official_prefix__isnull=False).values_list('brand_id', flat=True)
+        brands_with_confirmed_prefixes = ProductBrand.objects.filter(confirmed_official_prefix__isnull=False).values_list('id', flat=True)
         brands_to_analyze = ProductBrand.objects.exclude(id__in=brands_with_confirmed_prefixes)
         
         total_brands = brands_to_analyze.count()
@@ -50,7 +50,7 @@ class Command(BaseCommand):
             if (i + 1) % 100 == 0:
                 self.stdout.write(f"  - Processed {i + 1}/{total_brands} brands...")
 
-            products = Product.objects.filter(brand=brand.name).exclude(barcode__isnull=True).exclude(barcode__exact='')
+            products = Product.objects.filter(brand=brand).exclude(barcode__isnull=True).exclude(barcode__exact='')
             product_count = products.count()
             barcodes = list(products.values_list('barcode', flat=True))
 
@@ -70,56 +70,63 @@ class Command(BaseCommand):
                     break
             
             if longest_plausible_prefix:
-                BrandPrefix.objects.update_or_create(
-                    brand=brand,
-                    defaults={'longest_inferred_prefix': longest_plausible_prefix}
-                )
+                brand.longest_inferred_prefix = longest_plausible_prefix
+                brand.save(update_fields=['longest_inferred_prefix'])
 
         self.stdout.write(self.style.SUCCESS("--- Prefix inference complete ---"))
 
     def _phase_two_reconcile_brands(self):
         self.stdout.write(self.style.SQL_FIELD("--- Phase 2: Reconciling Brands from Inferred Prefixes ---"))
 
-        prefixes_to_check = BrandPrefix.objects.filter(
+        brands_with_inferred_prefixes = ProductBrand.objects.filter(
             longest_inferred_prefix__isnull=False,
             confirmed_official_prefix__isnull=True # Only use inferred data
-        ).select_related('brand').order_by('-longest_inferred_prefix') # Process longer prefixes first
+        ).order_by('-longest_inferred_prefix') # Process longer prefixes first
 
-        if not prefixes_to_check.exists():
+        if not brands_with_inferred_prefixes.exists():
             self.stdout.write("No inferred prefixes to check. Skipping reconciliation.")
             return
 
-        reconciliation_list = []
-        processed_products = set()
+        synonyms_found = 0
+        for canonical_brand in brands_with_inferred_prefixes.iterator():
+            prefix = canonical_brand.longest_inferred_prefix
 
-        for prefix_entry in prefixes_to_check.iterator():
-            prefix = prefix_entry.longest_inferred_prefix
-            canonical_brand = prefix_entry.brand
-
-            # Find products that start with this prefix but have a different brand name
+            # Find products that start with this prefix but have a different brand
             inconsistent_products = Product.objects.filter(
                 barcode__startswith=prefix
-            ).exclude(brand=canonical_brand.name).exclude(id__in=processed_products)
+            ).exclude(brand=canonical_brand).select_related('brand')
 
             for product in inconsistent_products:
-                reconciliation_entry = {
-                    'canonical_brand_name': canonical_brand.name,
-                    'duplicate_brand_name': product.brand
-                }
-                if reconciliation_entry not in reconciliation_list:
-                    reconciliation_list.append(reconciliation_entry)
-                processed_products.add(product.id)
+                variation_brand = product.brand
+                if not variation_brand or variation_brand.id == canonical_brand.id:
+                    continue
 
-        if not reconciliation_list:
+                # Add the variation info to the canonical brand's variation lists
+                updated = False
+                if not canonical_brand.name_variations:
+                    canonical_brand.name_variations = []
+                new_name_variation_entry = [variation_brand.name, 'inferred']
+                if new_name_variation_entry not in canonical_brand.name_variations:
+                    canonical_brand.name_variations.append(new_name_variation_entry)
+                    updated = True
+
+                if not canonical_brand.normalized_name_variations:
+                    canonical_brand.normalized_name_variations = []
+                if variation_brand.normalized_name not in canonical_brand.normalized_name_variations:
+                    canonical_brand.normalized_name_variations.append(variation_brand.normalized_name)
+                    updated = True
+                
+                if updated:
+                    canonical_brand.save()
+                    synonyms_found += 1
+                    self.stdout.write(f"  - Recorded '{variation_brand.name}' as a variation of '{canonical_brand.name}'.")
+
+        if synonyms_found == 0:
             self.stdout.write("Found no brand discrepancies to reconcile.")
-            return
+        else:
+            self.stdout.write(f"Found and recorded {synonyms_found} potential brand synonyms.")
 
-        self.stdout.write(f"Found {len(reconciliation_list)} potential brand synonyms to merge.")
-        variation_manager = VariationManager(self, unit_of_work=None)
-        variation_manager.brand_reconciliation_list = reconciliation_list
-        variation_manager.reconcile_brand_duplicates()
-
-        # Regenerate the product name translation table
+        # Regenerate the product name translation table to include the new variations
         ProductTranslationTableGenerator().run()
 
         self.stdout.write(self.style.SUCCESS("--- Brand reconciliation complete ---"))
