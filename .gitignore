@@ -55,6 +55,9 @@ coverage.xml
 .idea/
 .vscode/
 
+# Gemini session summaries
+gemini_session_summaries.txt/
+
 api/data/
 db.sqlite3
 db.sqlite3-shm

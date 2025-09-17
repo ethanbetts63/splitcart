@@ -42,7 +42,8 @@ Here is a brief overview of the available management commands:
 *   `find_stores`: Discovers store locations for a specific company and saves the data for processing.
 *   `scrape`: Scrapes product data from specified store websites, saving it to the `product_inbox`.
 *   `update_db`: A consolidated command that updates the database with new data. Its `--products` flag now uses the refactored OOP system for robust product and price updates from the inbox. It also supports updating stores from discovery (`--stores`) or from archives (`--archive`).
-
+*   `build_company_jsons`: Generates JSON archives containing data about companies and their stores.
+*   `build_store_jsons`: Generates detailed JSON archives for each store, including product and price history.
 *   `analyze_data`: A flexible tool for data analysis that can generate various reports, charts, and heatmaps.
 *   `compare_stores`: A utility to compare the product offerings between two specified stores.
 *   `get_woolworths_substitutes`: A specialized command to fetch substitute product information from Woolworths.
@@ -87,3 +88,10 @@ This section outlines the standard workflow for collecting, processing, and arch
     python manage.py build_company_jsons
     python manage.py build_store_jsons
     ```
+
+## Session Summaries
+
+At the end of each session, a summary file must be created to document the work performed. This summary should cover all major changes, discussions, and decisions made during the session.
+
+-   **Location:** `C:\Users\ethan\coding\splitcart\gemini_session_summaries\`
+-   **Naming Convention:** The file must be named `summary<N>.txt`, where `N` is the number of the previous summary file plus one (e.g., `summary28.txt`).
