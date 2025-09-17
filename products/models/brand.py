@@ -24,6 +24,10 @@ class ProductBrand(models.Model):
     )
     is_store_brand = models.BooleanField(default=False)
 
+    # Fields from the former BrandPrefix model
+    longest_inferred_prefix = models.CharField(max_length=12, null=True, blank=True, db_index=True)
+    confirmed_official_prefix = models.CharField(max_length=12, null=True, blank=True, db_index=True)
+
     # Link to the top-level corporate owner.
     parent_company = models.ForeignKey(
         'companies.Company',

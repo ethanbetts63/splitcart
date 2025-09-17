@@ -9,7 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from products.models import BrandPrefix, Product, ProductBrand
+from products.models import Product, ProductBrand
 
 class Gs1CompanyScraper:
     """
@@ -43,11 +43,8 @@ class Gs1CompanyScraper:
         all_brands = ProductBrand.objects.all().prefetch_related('prefix_analysis')
 
         for brand in all_brands:
-            try:
-                if brand.prefix_analysis.confirmed_official_prefix:
-                    continue
-            except BrandPrefix.DoesNotExist:
-                pass
+            if brand.confirmed_official_prefix:
+                continue
             
             count = Product.objects.filter(brand=brand.name).count()
             if count > 0:

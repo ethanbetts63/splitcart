@@ -1,14 +1,14 @@
 import os
 import json
 from django.conf import settings
-from products.models import ProductBrand, BrandPrefix
+from products.models import ProductBrand
 from api.utils.product_normalizer import ProductNormalizer
 from api.database_updating_classes.brand_translation_table_generator import BrandTranslationTableGenerator
 
 class PrefixUpdateOrchestrator:
     """
     Orchestrates the process of updating brand prefix information from the GS1 scraper inbox.
-    It updates the BrandPrefix model and reconciles any discovered brand name synonyms.
+    It reconciles any discovered brand name synonyms.
     """
     def __init__(self, command):
         self.command = command
@@ -96,14 +96,11 @@ class PrefixUpdateOrchestrator:
             canonical_brand.save()
             self.command.stdout.write(f"  - Recorded '{variation_brand.name}' as a variation of '{canonical_brand.name}'.")
 
-        # 4. Ensure the BrandPrefix is attached to the CANONICAL brand.
-        BrandPrefix.objects.update_or_create(
-            brand=canonical_brand,
-            defaults={
-                'confirmed_official_prefix': confirmed_key,
-                'brand_name_gs1': confirmed_name
-            }
-        )
+        # 4. Update the canonical brand directly with the confirmed prefix.
+        canonical_brand.confirmed_official_prefix = confirmed_key
+        canonical_brand.save(update_fields=['confirmed_official_prefix'])
+
+        self.command.stdout.write(f"  - Set confirmed prefix for '{canonical_brand.name}' to '{confirmed_key}'.")
 
     def _move_processed_files(self, processed_files: list):
         self.command.stdout.write("--- Moving processed prefix files to temp storage ---")

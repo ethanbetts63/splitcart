@@ -9,7 +9,6 @@ def load_db_from_latest_archive(command):
         'companies.store.json',
         'companies.category.json',
         'products.productbrand.json',
-        'products.brandprefix.json',
         'products.product.json',
         'products.price.json',
         'products.productsubstitution.json',

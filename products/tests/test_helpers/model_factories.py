@@ -1,6 +1,6 @@
 import factory
 from factory.django import DjangoModelFactory
-from products.models import Product, Price, ProductBrand, BrandPrefix, ProductSubstitution
+from products.models import Product, Price, ProductBrand, ProductSubstitution
 from companies.tests.test_helpers.model_factories import StoreFactory
 
 class ProductFactory(DjangoModelFactory):
@@ -64,12 +64,6 @@ class ProductBrandFactory(DjangoModelFactory):
             model_class.objects.filter(pk=obj.pk).update(normalized_name=normalized_name)
             obj.refresh_from_db()
         return obj
-
-class BrandPrefixFactory(DjangoModelFactory):
-    class Meta:
-        model = BrandPrefix
-
-    brand = factory.SubFactory(ProductBrandFactory)
 
 class ProductSubstitutionFactory(DjangoModelFactory):
     class Meta:

@@ -10,7 +10,7 @@ from api.scrapers.product_scraper_iga import IgaScraper as ProductScraperIga
 from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
 from api.utils.scraper_utils.get_coles_categories import get_coles_categories
 from api.scrapers.gs1_company_scraper import Gs1CompanyScraper
-from products.models import BrandPrefix, Product, ProductBrand
+from products.models import Product, ProductBrand
 import time
 import os
 
