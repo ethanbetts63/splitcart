@@ -10,6 +10,7 @@ from api.database_updating_classes.brand_translation_table_generator import Bran
 from api.database_updating_classes.brand_manager import BrandManager
 from api.database_updating_classes.product_reconciler import ProductReconciler
 from api.database_updating_classes.brand_reconciler import BrandReconciler
+from api.database_updating_classes.category_cycle_manager import CategoryCycleManager
 
 class UpdateOrchestrator:
     def __init__(self, command, inbox_path):
@@ -75,6 +76,16 @@ class UpdateOrchestrator:
         # Run the brand reconciler to merge duplicates based on the translation table
         brand_reconciler = BrandReconciler(self.command)
         brand_reconciler.run()
+
+        # Run category cycle pruning as a final cleanup step
+        self.command.stdout.write(self.command.style.SUCCESS("--- Running Category Cycle Pruning ---"))
+        all_companies = Company.objects.all()
+        if not all_companies.exists():
+            self.command.stdout.write(self.command.style.WARNING("No companies found, skipping cycle pruning."))
+        else:
+            for company in all_companies:
+                manager = CategoryCycleManager(self.command, company)
+                manager.prune_cycles()
 
         # Final cleanup of processed files
         self._cleanup_processed_files()
@@ -171,6 +182,27 @@ class UpdateOrchestrator:
                     existing_product.has_no_coles_barcode = True
                     updated = True
 
+                # Update brand_name_company_pairs
+                raw_brand_name = product_details.get('brand')
+                new_pair = [raw_brand_name, company_name]
+                
+                found_existing_company_pair = False
+                if existing_product.brand_name_company_pairs:
+                    for i, pair in enumerate(existing_product.brand_name_company_pairs):
+                        if pair[1] == company_name: # Check if company already exists in a pair
+                            found_existing_company_pair = True
+                            if pair[0] != raw_brand_name: # If brand name is different, do nothing (user rule)
+                                pass
+                            else: # Same brand name, no change needed
+                                pass
+                            break
+                
+                if not found_existing_company_pair:
+                    if not existing_product.brand_name_company_pairs:
+                        existing_product.brand_name_company_pairs = []
+                    existing_product.brand_name_company_pairs.append(new_pair)
+                    updated = True
+
                 if updated:
                     unit_of_work.add_for_update(existing_product)
                 
@@ -183,6 +215,7 @@ class UpdateOrchestrator:
                     normalized_name=product_details.get('normalized_name'),
                     name_variations=[product_details.get('normalized_name')],
                     brand=brand_obj,
+                    brand_name_company_pairs=[[product_details.get('brand'), company_name]],
                     barcode=product_details.get('barcode'),
                     normalized_name_brand_size=key,
                     size=product_details.get('size'),

@@ -88,6 +88,12 @@ class Product(models.Model):
     unit_of_sale = models.CharField(max_length=50, blank=True, null=True)
     dietary_and_lifestyle_tags = models.JSONField(default=list, blank=True)
     is_age_restricted = models.BooleanField(default=False)
+
+    brand_name_company_pairs = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="List of [raw_brand_name, company_name] tuples for this product."
+    )
     substitutes = models.ManyToManyField(
         'self',
         through='ProductSubstitution',
@@ -95,7 +101,6 @@ class Product(models.Model):
         blank=True,
         help_text="Other products that can be used as substitutes, ranked by a score."
     )
-
 
     class Meta:
         constraints = [

@@ -28,14 +28,6 @@ class ProductBrand(models.Model):
     longest_inferred_prefix = models.CharField(max_length=12, null=True, blank=True, db_index=True)
     confirmed_official_prefix = models.CharField(max_length=12, null=True, blank=True, db_index=True)
 
-    # Link to the top-level corporate owner.
-    parent_company = models.ForeignKey(
-        'companies.Company',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
-    )
-
     def save(self, *args, **kwargs):
         if self.name and not self.normalized_name:
             self.normalized_name = ProductNormalizer._get_normalized_brand_name(self.name)
