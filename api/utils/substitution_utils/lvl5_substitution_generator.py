@@ -33,7 +33,8 @@ class Lvl5SubstitutionGenerator(BaseSubstitutionGenerator):
         self.command.stdout.write(f"Found {len(categories)} categories with 2 or more products to analyze.")
 
         for i, category in enumerate(categories):
-            self.command.stdout.write(f"-- Processing Category {i+1}/{len(categories)}: '{category.name}' --")
+            if (i + 1) % 100 == 0:
+                self.command.stdout.write(f"-- Processing {i + 1}/{len(categories)} categories --")
             
             products_in_cat = list(Product.objects.filter(category=category))
             if len(products_in_cat) < 2:

@@ -23,6 +23,7 @@ class BrandReconciler:
 
         self.command.stdout.write(f"Found {len(potential_duplicates)} potential duplicate brands to process.")
 
+        brands_to_delete = []
         for duplicate_brand in potential_duplicates:
             # Find the canonical key from the table
             canonical_key = BRAND_NAME_TRANSLATIONS.get(duplicate_brand.normalized_name)
@@ -36,7 +37,7 @@ class BrandReconciler:
                 if canonical_brand.id == duplicate_brand.id:
                     continue
 
-                self._merge_brands(canonical_brand, duplicate_brand)
+                self._merge_brands(canonical_brand, duplicate_brand, brands_to_delete)
 
             except ProductBrand.DoesNotExist:
                 self.command.stderr.write(self.command.style.ERROR(f"Could not find canonical brand for key {canonical_key}. Skipping."))
@@ -45,21 +46,23 @@ class BrandReconciler:
                 self.command.stderr.write(self.command.style.ERROR(f"An unexpected error occurred for {duplicate_brand.normalized_name}: {e}"))
                 continue
 
+        if brands_to_delete:
+            self.command.stdout.write(f"--- Deleting {len(brands_to_delete)} merged brands ---")
+            for brand in brands_to_delete:
+                brand.delete()
+
+
         self.command.stdout.write(self.command.style.SUCCESS("Brand Reconciler run finished."))
 
     @transaction.atomic
-    def _merge_brands(self, canonical, duplicate):
+    def _merge_brands(self, canonical, duplicate, brands_to_delete: list):
         """
         Merges the duplicate brand into the canonical brand.
         """
         self.command.stdout.write(f"  - Merging brand '{duplicate.name}' into '{canonical.name}'")
 
-        # 1. Update all products pointing to the duplicate brand's normalized_name
-        Product.objects.filter(normalized_brand=duplicate.normalized_name).update(
-            normalized_brand=canonical.normalized_name,
-            brand=canonical.name
-        )
-        self.command.stdout.write(f"    - Updated associated products.")
+        # 1. Re-assign all products from the duplicate brand to the canonical brand.
+        Product.objects.filter(brand=duplicate).update(brand=canonical)
 
         # 2. Merge name_variations lists
         if duplicate.name_variations:
@@ -86,8 +89,7 @@ class BrandReconciler:
             canonical.normalized_name_variations.append(duplicate.normalized_name)
 
         canonical.save()
-        self.command.stdout.write(f"    - Merged variation lists.")
 
-        # 5. Delete the duplicate brand
-        duplicate.delete()
-        self.command.stdout.write(f"    - Deleted duplicate brand.")
+        # 5. Add the duplicate brand to the deletion queue
+        if duplicate not in brands_to_delete:
+            brands_to_delete.append(duplicate)
