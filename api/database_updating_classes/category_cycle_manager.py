@@ -12,34 +12,25 @@ class CategoryCycleManager:
         self.command.stdout.write(self.command.style.SUCCESS(f"Starting automatic cycle pruning for {self.company.name}..."))
         
         # Load all categories for the company into memory once, prefetching parents
-        # This significantly reduces database queries during cycle detection.
         all_company_categories_cache = list(Category.objects.filter(company=self.company).prefetch_related('parents'))
         
-        # We need to re-query the categories in each pass, as links are being deleted.
-        while self._find_and_prune_a_cycle(all_company_categories_cache):
-            self.cycles_repaired += 1
+        visited_nodes = set()
+        for category in all_company_categories_cache:
+            if category.id not in visited_nodes:
+                # path_nodes tracks the current recursion stack for one traversal
+                self._prune_cycles_recursive(category, path_nodes=set(), visited_nodes=visited_nodes)
         
         if self.cycles_repaired > 0:
             self.command.stdout.write(self.command.style.SUCCESS(f"  - Finished for {self.company.name}. Pruned {self.cycles_repaired} cycle(s)."))
         else:
             self.command.stdout.write(self.command.style.SUCCESS(f"  - No cycles found for {self.company.name}."))
 
-    def _find_and_prune_a_cycle(self, all_company_categories_cache):
-        """Finds the first cycle and prunes it by re-implementing the working recursive logic."""
-        # visited_nodes tracks nodes checked in this entire pass to avoid re-validating clean branches
-        visited_nodes = set()
-        for category in all_company_categories_cache:
-            if category.id not in visited_nodes:
-                # path_nodes tracks the current recursion stack for one traversal
-                if self._prune_cycle_recursive(category, path_nodes=set(), visited_nodes=visited_nodes, all_company_categories_cache=all_company_categories_cache):
-                    return True # A cycle was found and pruned
-        return False # No cycles found in this pass
-
-    def _prune_cycle_recursive(self, current_node, path_nodes, visited_nodes, all_company_categories_cache):
+    def _prune_cycles_recursive(self, current_node, path_nodes, visited_nodes):
         path_nodes.add(current_node)
-        visited_nodes.add(current_node)
+        visited_nodes.add(current_node.id) # Use ID for consistency in the set
 
-        for parent in current_node.parents.all():
+        # Iterate over a copy of the parents list to allow safe removal during the loop
+        for parent in list(current_node.parents.all()):
             if parent in path_nodes:
                 # CYCLE DETECTED!
                 self.command.stdout.write(self.command.style.ERROR("\n--- Cycle Detected! ---"))
@@ -50,11 +41,10 @@ class CategoryCycleManager:
                     self.command.style.WARNING(f"  - Pruning Link: Removing parent '{parent.name}' from child '{current_node.name}'.")
                 )
                 current_node.parents.remove(parent)
-                return True # Signal that a cycle was pruned
+                self.cycles_repaired += 1
+                # Do not return; continue checking other parents for more complex cycles
             
             if parent.id not in visited_nodes:
-                if self._prune_cycle_recursive(parent, path_nodes, visited_nodes, all_company_categories_cache):
-                    return True # Pass the signal up
+                self._prune_cycles_recursive(parent, path_nodes, visited_nodes)
 
         path_nodes.remove(current_node)
-        return False # No cycle found in this branch
