@@ -1,20 +1,45 @@
+import os
+import ast
 from django.db import transaction
 from products.models import Product, ProductBrand
-from api.data.brand_translation_table import BRAND_NAME_TRANSLATIONS
+
+TRANSLATION_TABLE_PATH = os.path.abspath(os.path.join(
+    os.path.dirname(__file__),
+    '..',
+    'data',
+    'brand_translation_table.py'
+))
 
 class BrandReconciler:
     def __init__(self, command):
         self.command = command
 
+    def _load_translation_table(self):
+        """
+        Safely loads the BRAND_NAME_TRANSLATIONS dictionary from the .py file.
+        """
+        try:
+            with open(TRANSLATION_TABLE_PATH, 'r', encoding='utf-8') as f:
+                file_content = f.read()
+            
+            if '=' in file_content:
+                dict_str = file_content.split('=', 1)[1].strip()
+                return ast.literal_eval(dict_str)
+            return {}
+        except (FileNotFoundError, SyntaxError, ValueError) as e:
+            self.command.stderr.write(self.command.style.ERROR(f"Error loading brand translation table: {e}"))
+            return {}
+
     def run(self):
         self.command.stdout.write(self.command.style.SUCCESS("Brand Reconciler run started."))
         
-        if not BRAND_NAME_TRANSLATIONS:
-            self.command.stdout.write("Brand translation table is empty. Nothing to reconcile.")
+        brand_translations = self._load_translation_table()
+
+        if not brand_translations:
+            self.command.stdout.write("Brand translation table is empty or could not be loaded. Nothing to reconcile.")
             return
 
-        # These are the normalized names of brands that are variations.
-        variation_keys = list(BRAND_NAME_TRANSLATIONS.keys())
+        variation_keys = list(brand_translations.keys())
         potential_duplicates = ProductBrand.objects.filter(normalized_name__in=variation_keys)
 
         if not potential_duplicates:
@@ -25,13 +50,11 @@ class BrandReconciler:
 
         brands_to_delete = []
         for duplicate_brand in potential_duplicates:
-            # Find the canonical key from the table
-            canonical_key = BRAND_NAME_TRANSLATIONS.get(duplicate_brand.normalized_name)
+            canonical_key = brand_translations.get(duplicate_brand.normalized_name)
             if not canonical_key:
                 continue
 
             try:
-                # Get the two brand objects
                 canonical_brand = ProductBrand.objects.get(normalized_name=canonical_key)
                 
                 if canonical_brand.id == duplicate_brand.id:
@@ -61,10 +84,8 @@ class BrandReconciler:
         """
         self.command.stdout.write(f"  - Merging brand '{duplicate.name}' into '{canonical.name}'")
 
-        # 1. Re-assign all products from the duplicate brand to the canonical brand.
         Product.objects.filter(brand=duplicate).update(brand=canonical)
 
-        # 2. Merge name_variations lists
         if duplicate.name_variations:
             if not canonical.name_variations:
                 canonical.name_variations = []
@@ -72,7 +93,6 @@ class BrandReconciler:
                 if variation not in canonical.name_variations:
                     canonical.name_variations.append(variation)
         
-        # 3. Merge normalized_name_variations lists
         if duplicate.normalized_name_variations:
             if not canonical.normalized_name_variations:
                 canonical.normalized_name_variations = []
@@ -80,7 +100,6 @@ class BrandReconciler:
                 if norm_variation not in canonical.normalized_name_variations:
                     canonical.normalized_name_variations.append(norm_variation)
 
-        # 4. Ensure the duplicate's own names are added to the variations list
         new_name_variation_entry = (duplicate.name, 'reconciler')
         if new_name_variation_entry not in canonical.name_variations:
             canonical.name_variations.append(new_name_variation_entry)
@@ -90,6 +109,5 @@ class BrandReconciler:
 
         canonical.save()
 
-        # 5. Add the duplicate brand to the deletion queue
         if duplicate not in brands_to_delete:
             brands_to_delete.append(duplicate)
