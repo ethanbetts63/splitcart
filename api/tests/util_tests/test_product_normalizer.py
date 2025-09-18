@@ -15,8 +15,14 @@ class ProductNormalizerTests(TestCase):
 
         # --- Test Case 2: Stripping brand and size information ---
         # The normalizer's internal _get_cleaned_name method should remove brand and size first.
+        brand_cache = {
+            'kelloggs': {
+                'name': 'Kelloggs',
+                'name_variations': []
+            }
+        }
         product_data_2 = {'name': 'Kelloggs Corn Flakes 500g', 'brand': 'Kelloggs'}
-        normalizer_2 = ProductNormalizer(product_data_2)
+        normalizer_2 = ProductNormalizer(product_data_2, brand_cache=brand_cache)
         # After 'Kelloggs' and '500g' are stripped, "Corn Flakes" remains.
         self.assertEqual(normalizer_2.get_fully_normalized_name(), 'corn flakes')
 
