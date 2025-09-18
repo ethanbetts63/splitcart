@@ -7,8 +7,8 @@ Central configuration for substitution generation and savings benchmark paramete
 # --- Semantic Matching Parameters ---
 
 # Threshold for semantic substitution matching.
-# Used in: api/utils/substitution_utils/lvl5_substitution_generator.py
-#          api/utils/substitution_utils/lvl6_substitution_generator.py
+# Used in: api/utils/substitution_utils/lvl3_substitution_generator.py
+#          api/utils/substitution_utils/lvl4_substitution_generator.py
 SEMANTIC_SIMILARITY_THRESHOLD = 0.75
 
 

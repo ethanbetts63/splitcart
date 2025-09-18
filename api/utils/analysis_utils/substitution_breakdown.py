@@ -12,9 +12,6 @@ def generate_substitution_breakdown_report():
 
     # Get all substitution levels from the model definition
     levels = [level[0] for level in ProductSubstitution.SUBSTITUTION_LEVELS]
-    # Manually add LVL5 as it's not in the choices
-    if 'LVL5' not in levels:
-        levels.append('LVL5')
 
     print("Analyzing companies...")
     for company in companies:
