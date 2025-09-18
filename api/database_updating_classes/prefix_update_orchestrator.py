@@ -1,7 +1,7 @@
 import os
 import json
 from django.conf import settings
-from products.models import ProductBrand
+from products.models import ProductBrand, Product
 from api.utils.product_normalizer import ProductNormalizer
 from api.database_updating_classes.brand_translation_table_generator import BrandTranslationTableGenerator
 
@@ -38,76 +38,75 @@ class PrefixUpdateOrchestrator:
                         continue
             processed_files.append(file_path)
 
-        # After processing all files, regenerate the translation table to reflect any new variations.
-        self.command.stdout.write("--- Regenerating brand translation table ---")
-        BrandTranslationTableGenerator().run()
-
-        self._move_processed_files(processed_files)
         self.command.stdout.write(self.command.style.SUCCESS("--- Prefix Database Updater finished ---"))
 
     def _process_record(self, data: dict):
-        target_brand_id = data.get('target_brand_id')
         confirmed_key = data.get('confirmed_license_key')
         confirmed_name = data.get('confirmed_company_name')
-        target_brand_name = data.get('target_brand_name')
 
-        if not all([target_brand_id, confirmed_key, confirmed_name, target_brand_name]):
-            self.command.stderr.write(f"Skipping record due to missing data: {data}")
-            return
-
-        # If the official GS1 name and the name we scraped are the same, there's nothing to do.
-        if confirmed_name.lower() == target_brand_name.lower():
+        if not all([confirmed_key, confirmed_name]):
+            self.command.stderr.write(f"Skipping record due to missing prefix or name data: {data}")
             return
 
         # 1. Get or create the CANONICAL brand (from GS1 info)
         canonical_normalized_name = ProductNormalizer._clean_value(confirmed_name)
-        canonical_brand, _ = ProductBrand.objects.get_or_create(
+        canonical_brand, created = ProductBrand.objects.get_or_create(
             normalized_name=canonical_normalized_name,
             defaults={'name': confirmed_name}
         )
+        if created:
+            self.command.stdout.write(f"  - Created new canonical brand: '{confirmed_name}'")
 
-        # 2. Get or create the VARIATION brand (the one we looked up)
-        variation_normalized_name = ProductNormalizer._clean_value(target_brand_name)
-        variation_brand, _ = ProductBrand.objects.get_or_create(
-            normalized_name=variation_normalized_name,
-            defaults={'name': target_brand_name}
-        )
-        
-        # If they resolved to the same brand object (e.g. due to pre-existing translations), stop.
-        if canonical_brand.id == variation_brand.id:
+        # Always ensure the prefix is set on the canonical brand
+        if canonical_brand.confirmed_official_prefix != confirmed_key:
+            canonical_brand.confirmed_official_prefix = confirmed_key
+            canonical_brand.save(update_fields=['confirmed_official_prefix'])
+            self.command.stdout.write(f"  - Set confirmed prefix for '{canonical_brand.name}' to '{confirmed_key}'.")
+
+        # 2. Find all products with this prefix but an inconsistent brand
+        inconsistent_products = Product.objects.select_related('brand').filter(
+            barcode__startswith=confirmed_key
+        ).exclude(brand=canonical_brand)
+
+        if not inconsistent_products.exists():
+            self.command.stdout.write("  - No brand discrepancies found for this prefix.")
             return
 
-        # 3. Add the variation info to the canonical brand's variation lists
-        updated = False
-        if not canonical_brand.name_variations:
-            canonical_brand.name_variations = []
-        new_name_variation_entry = variation_brand.name  # Using 'gs1' as the source
-        if new_name_variation_entry not in canonical_brand.name_variations:
-            canonical_brand.name_variations.append(new_name_variation_entry)
-            updated = True
+        # 3. Segregate products into brandless and incorrectly branded
+        brandless_products_ids = []
+        incorrect_brands = set()
 
-        if not canonical_brand.normalized_name_variations:
-            canonical_brand.normalized_name_variations = []
-        if variation_brand.normalized_name not in canonical_brand.normalized_name_variations:
-            canonical_brand.normalized_name_variations.append(variation_brand.normalized_name)
-            updated = True
-        
+        for product in inconsistent_products:
+            if product.brand:
+                incorrect_brands.add(product.brand)
+            else:
+                brandless_products_ids.append(product.id)
+
+        # 4. Process incorrectly branded products by adding them as variations
+        updated = False
+        if incorrect_brands:
+            self.command.stdout.write(f"  - Found {len(incorrect_brands)} incorrect brands to mark as variations.")
+            if not canonical_brand.name_variations:
+                canonical_brand.name_variations = []
+            if not canonical_brand.normalized_name_variations:
+                canonical_brand.normalized_name_variations = []
+
+            for brand in incorrect_brands:
+                if brand.name not in canonical_brand.name_variations:
+                    canonical_brand.name_variations.append(brand.name)
+                    updated = True
+                    self.command.stdout.write(f"    - Recording '{brand.name}' as a name variation of '{canonical_brand.name}'.")
+
+                if brand.normalized_name not in canonical_brand.normalized_name_variations:
+                    canonical_brand.normalized_name_variations.append(brand.normalized_name)
+                    updated = True
+
         if updated:
             canonical_brand.save()
-            self.command.stdout.write(f"  - Recorded '{variation_brand.name}' as a variation of '{canonical_brand.name}'.")
 
-        # 4. Update the canonical brand directly with the confirmed prefix.
-        canonical_brand.confirmed_official_prefix = confirmed_key
-        canonical_brand.save(update_fields=['confirmed_official_prefix'])
+        # 5. Process brandless products by linking them to the canonical brand
+        if brandless_products_ids:
+            self.command.stdout.write(f"  - Found {len(brandless_products_ids)} products with no brand. Linking them to '{canonical_brand.name}'.")
+            Product.objects.filter(id__in=brandless_products_ids).update(brand=canonical_brand)
 
-        self.command.stdout.write(f"  - Set confirmed prefix for '{canonical_brand.name}' to '{confirmed_key}'.")
 
-    def _move_processed_files(self, processed_files: list):
-        self.command.stdout.write("--- Moving processed prefix files to temp storage ---")
-        for file_path in processed_files:
-            try:
-                file_name = os.path.basename(file_path)
-                destination_path = os.path.join(self.temp_storage_path, file_name)
-                os.rename(file_path, destination_path)
-            except OSError as e:
-                self.command.stderr.write(self.command.style.ERROR(f'Could not move file {file_path}: {e}'))

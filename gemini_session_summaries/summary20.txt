@@ -24,18 +24,18 @@ This session focused on two main objectives: addressing the low cross-company pr
 **3. Database Archiving System Implementation**
 
 *   **User Request:** Before wiping the database, the user requested a new, separate archiving system to create JSON backups of all model data for potential reconstruction.
-*   **Design:** A new management command `archive_db` was created, with its core logic separated into utility classes.
+*   **Design:** A new management command `archive` was created, with its core logic separated into utility classes.
 *   **Files Created:**
-    *   `api/utils/archive_db/__init__.py`
-    *   `api/utils/archive_db/base_archiver.py`
-    *   `api/utils/archive_db/model_lister.py`
-    *   `api/utils/archive_db/database_archiver.py`
-    *   `api/management/commands/archive_db.py`
+    *   `api/utils/archive/__init__.py`
+    *   `api/utils/archive/base_archiver.py`
+    *   `api/utils/archive/model_lister.py`
+    *   `api/utils/archive/database_archiver.py`
+    *   `api/management/commands/archive.py`
 *   **Problems Encountered during Archiving:**
     *   **`ModuleNotFoundError: No module named 'django_extensions'`:** The `subprocess.run` call in `DatabaseArchiver` was using the global Python interpreter instead of the virtual environment's.
-        *   **Fix:** Modified `api/utils/archive_db/database_archiver.py` to explicitly use the virtual environment's Python executable (`venv\Scripts\python.exe`).
+        *   **Fix:** Modified `api/utils/archive/database_archiver.py` to explicitly use the virtual environment's Python executable (`venv\Scripts\python.exe`).
     *   **`CommandError: Unable to serialize database: 'charmap' codec can't encode characters...`:** Django's `dumpdata` command was encountering encoding issues with special characters on Windows.
-        *   **Fix:** Modified `api/utils/archive_db/database_archiver.py` to set the `PYTHONIOENCODING='utf-8'` environment variable for the `subprocess.run` call.
+        *   **Fix:** Modified `api/utils/archive/database_archiver.py` to set the `PYTHONIOENCODING='utf-8'` environment variable for the `subprocess.run` call.
     *   **`CommandError: Unable to serialize database: no such column: companies_category.category_id`:** This error persisted for the `companies.category` model, indicating the underlying migration issue was still present in the database schema.
 
 **Current Status:**
