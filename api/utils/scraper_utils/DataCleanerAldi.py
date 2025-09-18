@@ -59,7 +59,7 @@ class DataCleanerAldi(BaseDataCleaner):
 
         # Construct full URL
         slug = cleaned_product.get('url', '')
-        sku = cleaned_product.get('product_id_store', '')
+        sku = cleaned_product.get('sku', '')
         if slug and sku:
             cleaned_product['url'] = f"https://www.aldi.com.au/product/{slug}-{sku}"
 

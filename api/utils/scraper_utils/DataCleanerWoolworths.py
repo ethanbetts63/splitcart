@@ -66,7 +66,7 @@ class DataCleanerWoolworths(BaseDataCleaner):
 
         cleaned_product['category_path'] = self._clean_category_path(final_path)
 
-        stockcode = cleaned_product.get('product_id_store')
+        stockcode = cleaned_product.get('sku')
         slug = cleaned_product.get('url')
         if stockcode and slug:
             cleaned_product['url'] = f"https://www.woolworths.com.au/shop/productdetails/{stockcode}/{slug}"

@@ -46,7 +46,7 @@ class TestDataCleanerWoolworths(TestCase):
         self.assertEqual(len(cleaned_data['products']), 1)
         product = cleaned_data['products'][0]
 
-        self.assertEqual(product['product_id_store'], 12345)
+        self.assertEqual(product['sku'], 12345)
         self.assertEqual(product['name'], "Test Product")
         self.assertEqual(product['brand'], "Test Brand")
         self.assertEqual(product['size'], "500g")
@@ -122,7 +122,7 @@ class TestDataCleanerColes(TestCase):
         self.assertEqual(len(cleaned_data['products']), 1)
         product = cleaned_data['products'][0]
 
-        self.assertEqual(product['product_id_store'], "34567")
+        self.assertEqual(product['sku'], "34567")
         self.assertEqual(product['name'], "Coles Test Product")
         self.assertEqual(product['brand'], "Coles Brand")
         self.assertEqual(product['size'], "1L")

@@ -65,7 +65,7 @@ class DataCleanerColes(BaseDataCleaner):
             cleaned_product['image_url'] = f"https://www.coles.com.au/{cleaned_product['image_url']}"
 
         # Construct full URL
-        product_id = cleaned_product.get('product_id_store')
+        product_id = cleaned_product.get('sku')
         product_name = cleaned_product.get('name')
         if product_id and product_name:
             slug = slugify(product_name)

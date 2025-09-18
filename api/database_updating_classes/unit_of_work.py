@@ -47,7 +47,7 @@ class UnitOfWork:
                 product=product,
                 store=store,
                 price=price_value,
-                sku=product_details.get('product_id_store'),
+                sku=product_details.get('sku'),
                 scraped_date=scraped_date,
                 normalized_key=normalized_key,
                 is_available=product_details.get('is_available'),

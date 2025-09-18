@@ -9,7 +9,7 @@ Dot notation is used to access nested fields in the raw JSON data.
 
 # --- Standardized Internal Fields Schema ---
 # {
-#     "product_id_store": str,
+#     "sku": str,
 #     "name": str,
 #     "brand": str,
 #     "barcode": str,
@@ -45,7 +45,7 @@ Dot notation is used to access nested fields in the raw JSON data.
 # ------------------------------------------
 
 COLES_FIELD_MAP = {
-    "product_id_store": "id",
+    "sku": "id",
     "name": "name",
     "brand": "brand",
     "barcode": "barcode",
@@ -66,7 +66,7 @@ COLES_FIELD_MAP = {
 }
 
 WOOLWORTHS_FIELD_MAP = {
-    "product_id_store": "Stockcode",
+    "sku": "Stockcode",
     "name": "Name",
     "brand": "Brand",
     "barcode": "Barcode",
@@ -89,7 +89,7 @@ WOOLWORTHS_FIELD_MAP = {
 }
 
 IGA_FIELD_MAP = {
-    "product_id_store": "productId",
+    "sku": "productId",
     "name": "name",
     "brand": "brand",
     "barcode": "barcode",
@@ -112,7 +112,7 @@ IGA_FIELD_MAP = {
 }
 
 ALDI_FIELD_MAP = {
-    "product_id_store": "sku",
+    "sku": "sku",
     "name": "name",
     "brand": "brandName",
     "barcode": None,

@@ -18,7 +18,7 @@ def save_to_inbox(product_data: dict, metadata: dict):
     }
 
     # Generate a unique filename
-    filename = f"{metadata.get('company', 'unknown')}_{product_data.get('product_id_store', 'no_id')}_{uuid.uuid4()}.json"
+    filename = f"{metadata.get('company', 'unknown')}_{product_data.get('sku', 'no_id')}_{uuid.uuid4()}.json"
     file_path = os.path.join(inbox_path, filename)
 
     try:

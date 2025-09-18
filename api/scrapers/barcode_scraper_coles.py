@@ -108,7 +108,7 @@ class ColesBarcodeScraper(BaseProductScraper):
                 for line in f:
                     try:
                         data = json.loads(line)
-                        sku = data.get('product', {}).get('product_id_store')
+                        sku = data.get('product', {}).get('sku')
                         if sku:
                             found_products[sku] = data
                     except json.JSONDecodeError:
@@ -132,7 +132,7 @@ class ColesBarcodeScraper(BaseProductScraper):
         lines_to_scrape = []
         for line_data in master_line_list:
             product_info = line_data.get('product', {})
-            sku = product_info.get('product_id_store')
+            sku = product_info.get('sku')
 
             # If already processed in a previous run, skip.
             if sku in found_products:
