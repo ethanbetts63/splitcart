@@ -194,7 +194,7 @@ def _get_random_samples_text(sample_size, level):
             for product in products_in_group:
                 lines.append(f"  - Name: {product.name} | Brand: {product.brand} | Sizes: {product.sizes}")
     else:
-        # New stratified sampling for LVL2, LVL3, LVL4
+        # New stratified sampling for LVL2
         score_buckets = {
             "High Confidence (Score > 0.95)": (0.95, 1.01), # 1.01 to be inclusive of 1.0
             "Medium Confidence (0.85-0.95)": (0.85, 0.95),

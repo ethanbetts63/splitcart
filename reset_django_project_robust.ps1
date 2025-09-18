@@ -61,6 +61,7 @@ python manage.py update_db --archive
 python manage.py update_db --products
 python manage.py update_db --prefixes
 python manage.py update_db --category-links
+python manage.py update_db --products
 python manage.py generate_subs
 python manage.py analyze --report company_heatmap
 python manage.py analyze --report subs

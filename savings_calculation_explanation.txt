@@ -14,10 +14,8 @@ Savings are only possible if the system has options to choose from. These option
 
 - **LVL1: Same Brand, Same Product, Different Size.** (e.g., 600ml Coke vs 1.25L Coke). Transitive.
 - **LVL2: Same Brand, Similar Product, Similar Size.** (e.g., "Coke Classic" vs "Coke No Sugar"). This link is size-constrained and therefore **Non-Transitive**.
-- **LVL3: Different Brand, Similar Product, Similar Size.** (e.g., "Coke Classic" vs "Pepsi"). This link is also size-constrained and **Non-Transitive**.
-- **LVL4: Different Brand, Similar Product, Different Size.** (e.g., 2L "Coke Classic" vs 1L "Pepsi"). Transitive.
-- **LVL5: Same Category, Semantic Match.** Finds substitutes within the same category (e.g., "Coles Milk") using an AI model to compare product names. Transitive.
-- **LVL6: Linked Category, Semantic Match.** Finds substitutes between linked categories (e.g., between "Coles Milk" and "Aldi Dairy") using the same AI model. This is key for finding matches for stores with unique product assortments. Transitive.
+- **LVL3: Same Category, Semantic Match.** Finds substitutes within the same category (e.g., "Coles Milk") using an AI model to compare product names. Transitive.
+- **LVL4: Linked Category, Semantic Match.** Finds substitutes between linked categories (e.g., between "Coles Milk" and "Aldi Dairy") using the same AI model. This is key for finding matches for stores with unique product assortments. Transitive.
 
 ## 3. The Benchmark Process: A Step-by-Step Guide
 

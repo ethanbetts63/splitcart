@@ -1,57 +1,59 @@
 from django.db.models import Count
-from itertools import combinations
-from collections import defaultdict
 from .substitution_generator import BaseSubstitutionGenerator
 from products.models import Product
 from companies.models import Category
-from .size_comparer import SizeComparer
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-import numpy as np
+from sentence_transformers import SentenceTransformer, util
+import torch
+from api.config import SEMANTIC_SIMILARITY_THRESHOLD
 
 class Lvl3SubstitutionGenerator(BaseSubstitutionGenerator):
     """
-    Generates substitutions for Level 3: Different brand, similar product, similar size.
-    Uses TF-IDF and cosine similarity to find textually similar product names.
+    Generates substitutions for Level 3: Semantic Similarity.
+    Uses a Sentence Transformer model to find semantically similar products,
+    regardless of textual similarity, brand, or size.
     """
     def generate(self):
-        level_definition = "Different brand, similar product, similar size."
+        level_definition = "Semantic Similarity (Sentence Transformer)"
         self.command.stdout.write(f"--- Generating Level 3: {level_definition} ---")
         
         new_substitutions_count = 0
-        size_comparer = SizeComparer()
-        similarity_threshold = 0.65  # Similarity score threshold
+        # Using a pre-trained model specialized for semantic similarity
+        model_name = 'all-MiniLM-L6-v2'
+        self.command.stdout.write(f"Loading Sentence Transformer model: {model_name}...")
+        model = SentenceTransformer(model_name)
+        self.command.stdout.write("Model loaded successfully.")
 
-        # Get all categories that have products from at least two different brands
+        similarity_threshold = SEMANTIC_SIMILARITY_THRESHOLD
+
+        # Get all categories that have at least 2 products
         categories = Category.objects.annotate(
-            num_brands=Count('products__brand', distinct=True)
-        ).filter(num_brands__gte=2)
+            num_products=Count('products')
+        ).filter(num_products__gte=2)
 
-        self.command.stdout.write(f"Found {len(categories)} categories with products from multiple brands to analyze.")
+        self.command.stdout.write(f"Found {len(categories)} categories with 2 or more products to analyze.")
 
         for i, category in enumerate(categories):
+            if (i + 1) % 100 == 0:
+                self.command.stdout.write(f"-- Processing {i + 1}/{len(categories)} categories --")
             
             products_in_cat = list(Product.objects.filter(category=category))
             if len(products_in_cat) < 2:
                 continue
 
-            # Use normalized_name for TF-IDF
+            # Use the product's normalized_name for semantic encoding
             corpus = [p.normalized_name for p in products_in_cat]
-            vectorizer = TfidfVectorizer(stop_words='english', min_df=1, ngram_range=(1, 2))
-            try:
-                tfidf_matrix = vectorizer.fit_transform(corpus)
-            except ValueError:
-                self.command.stdout.write(self.command.style.WARNING(f"Could not generate TF-IDF matrix for category '{category.name}' (likely empty vocabulary). Skipping."))
-                continue
+            corpus_embeddings = model.encode(corpus, convert_to_tensor=True)
 
-            # Calculate cosine similarity between all products in the category
-            cosine_sim_matrix = cosine_similarity(tfidf_matrix)
+            # Compute cosine similarity scores
+            cosine_scores = util.cos_sim(corpus_embeddings, corpus_embeddings)
 
-            # Get indices of pairs with similarity above the threshold
-            similar_indices = np.argwhere(cosine_sim_matrix > similarity_threshold)
+            # Use torch.where to find pairs above the threshold
+            indices_rows, indices_cols = torch.where(cosine_scores > similarity_threshold)
 
-            for pair in similar_indices:
-                prod_idx_a, prod_idx_b = pair
+            for prod_idx_a, prod_idx_b in zip(indices_rows, indices_cols):
+                # Convert tensor indices to python integers
+                prod_idx_a = prod_idx_a.item()
+                prod_idx_b = prod_idx_b.item()
 
                 # Ensure we are not comparing a product to itself and avoid duplicate pairs
                 if prod_idx_a >= prod_idx_b:
@@ -60,23 +62,15 @@ class Lvl3SubstitutionGenerator(BaseSubstitutionGenerator):
                 prod_a = products_in_cat[prod_idx_a]
                 prod_b = products_in_cat[prod_idx_b]
 
-                # --- Apply Level 3 Conditions ---
-                # 1. Different Brands
-                if prod_a.brand == prod_b.brand:
-                    continue
-
-                # 2. Similar Sizes
-                if not size_comparer.are_sizes_compatible(prod_a, prod_b):
-                    continue
+                # For Level 3, we are intentionally ignoring brand and size to find novel substitutes
                 
-                # 3. Create the substitution
-                score = cosine_sim_matrix[prod_idx_a, prod_idx_b]
+                score = cosine_scores[prod_idx_a, prod_idx_b].item()
                 _, created = self._create_substitution(
                     prod_a, 
                     prod_b, 
                     level='LVL3',
                     score=score, 
-                    source='tfidf_v1'
+                    source='sbert_v1'
                 )
                 if created:
                     new_substitutions_count += 1

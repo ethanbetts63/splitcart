@@ -22,8 +22,8 @@ def get_substitution_group(anchor_product, depth_limit=SUBSTITUTION_SEARCH_DEPTH
     - Obeys a depth limit to prevent semantic drift.
     - Includes terminal size-constrained links (LVL2, 3) connected to any visited product.
     """
-    transitive_levels = ['LVL1', 'LVL4', 'LVL5', 'LVL6']
-    terminal_levels = ['LVL2', 'LVL3']
+    transitive_levels = ['LVL1', 'LVL3', 'LVL4']
+    terminal_levels = ['LVL2']
 
     # Use a queue for Breadth-First Search (BFS)
     queue = deque([(anchor_product.id, 0)])  # (product_id, depth)

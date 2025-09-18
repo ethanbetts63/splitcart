@@ -8,10 +8,8 @@ class ProductSubstitution(models.Model):
     SUBSTITUTION_LEVELS = [
         ('LVL1', 'Same brand, same product, different size.'),
         ('LVL2', 'Same brand, similar product, similar size.'),
-        ('LVL3', 'Different brand, similar product, similar size.'),
-        ('LVL4', 'Different brand, similar product, different size.'),
-        ('LVL5', 'Same category, semantic match.'),
-        ('LVL6', 'Linked category, semantic match.'),
+        ('LVL3', 'Same category, semantic match.'),
+        ('LVL4', 'Linked category, semantic match.'),
     ]
 
     product_a = models.ForeignKey(
@@ -30,7 +28,7 @@ class ProductSubstitution(models.Model):
         choices=SUBSTITUTION_LEVELS, 
         db_index=True,
         help_text="The classification of the substitution level based on heuristics.",
-        default='LVL4'
+        default='LVL3'
     )
     score = models.FloatField(
         db_index=True,

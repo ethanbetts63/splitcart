@@ -3,8 +3,6 @@ from api.utils.substitution_utils.lvl1_substitution_generator import Lvl1Substit
 from api.utils.substitution_utils.lvl2_substitution_generator import Lvl2SubstitutionGenerator
 from api.utils.substitution_utils.lvl3_substitution_generator import Lvl3SubstitutionGenerator
 from api.utils.substitution_utils.lvl4_substitution_generator import Lvl4SubstitutionGenerator
-from api.utils.substitution_utils.lvl5_substitution_generator import Lvl5SubstitutionGenerator
-from api.utils.substitution_utils.lvl6_substitution_generator import Lvl6SubstitutionGenerator
 
 class Command(BaseCommand):
     help = 'Generates product substitutions based on different heuristic levels.'
@@ -23,22 +21,12 @@ class Command(BaseCommand):
         parser.add_argument(
             '--lvl3',
             action='store_true',
-            help='Generate Level 3: Different brand, similar product, similar size.'
+            help='Generate Level 3: Semantic Similarity.'
         )
         parser.add_argument(
             '--lvl4',
             action='store_true',
-            help='Generate Level 4: Different brand, similar product, different size.'
-        )
-        parser.add_argument(
-            '--lvl5',
-            action='store_true',
-            help='Generate Level 5: Semantic Similarity.'
-        )
-        parser.add_argument(
-            '--lvl6',
-            action='store_true',
-            help='Generate Level 6: Linked Category Semantic Similarity (includes MATCH, CLOSE, and DISTANT links).'
+            help='Generate Level 4: Linked Category Semantic Similarity (includes MATCH, CLOSE, and DISTANT links).'
         )
 
     def handle(self, *args, **options):
@@ -46,14 +34,12 @@ class Command(BaseCommand):
         lvl2 = options['lvl2']
         lvl3 = options['lvl3']
         lvl4 = options['lvl4']
-        lvl5 = options['lvl5']
-        lvl6 = options['lvl6']
 
         # If no specific level is requested, default to running all levels.
-        run_all = not any([lvl1, lvl2, lvl3, lvl4, lvl5, lvl6])
+        run_all = not any([lvl1, lvl2, lvl3, lvl4])
         if run_all:
             self.stdout.write(self.style.SUCCESS("No specific level requested, running all available generators."))
-            lvl1 = lvl2 = lvl3 = lvl4 = lvl5 = lvl6 = True
+            lvl1 = lvl2 = lvl3 = lvl4 = True
         
         self.stdout.write(self.style.SUCCESS("--- Starting Substitution Generation ---"))
 
@@ -71,14 +57,6 @@ class Command(BaseCommand):
 
         if lvl4:
             generator = Lvl4SubstitutionGenerator(command=self)
-            generator.generate()
-
-        if lvl5:
-            generator = Lvl5SubstitutionGenerator(command=self)
-            generator.generate()
-
-        if lvl6:
-            generator = Lvl6SubstitutionGenerator(command=self)
             generator.generate()
 
         self.stdout.write(self.style.SUCCESS("--- Substitution Generation Complete ---"))
