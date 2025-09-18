@@ -1,26 +1,16 @@
+### 4. Substitution System Simplification and Renumbering
 
-## Session Summary: Brand Data Model Refinement and Advanced Reconciliation
+We undertook a significant simplification of the product substitution system. After analyzing the logic of Level 3, 4, 5, and 6 substitution generators, we determined that Levels 3 and 4 (which used TF-IDF for textual similarity) were redundant, as their functionality was a less effective subset of what Level 5 (using Sentence Transformers for semantic similarity) already accomplished. Level 6, which finds semantic matches across linked categories, was deemed complementary and unique.
 
-This session focused on two main areas: refining the data structure for brand variations and implementing a more sophisticated brand reconciliation process based on GS1 barcode prefixes.
+Based on this analysis, the following changes were implemented:
 
-### 1. `ProductBrand.name_variations` Refactor
-
-The session began with a request to simplify the data model. The `name_variations` field on the `ProductBrand` model, which previously stored `[name, company]` pairs, was refactored to store only a simple list of brand name strings.
-
-This involved a systematic, project-wide update of all classes and methods that interact with this field. Key modifications were made to the `VariationManager`, `PrefixUpdateOrchestrator`, `BrandReconciler`, and `ProductNormalizer` to ensure they correctly read from and wrote to the new, simpler list format. Associated tests were also updated to reflect these changes.
-
-### 2. GS1 Prefix Reconciliation and Reporting
-
-The second major part of the session involved improving the brand reconciliation process that uses GS1 barcode prefixes.
-
-- **Understanding the Report:** We first clarified the output of the `reconcile_brands.py` script. We established that it was a reporting tool, not a data modification tool, and that the high number of "confirmed prefix" discrepancies it found was expected, reflecting parent company/sub-brand relationships in the data.
-
-- **Improving the Report:** To help verify the accuracy of these discrepancies, the user requested to improve the report. The script was renamed to `prefix_report.py`, and its logic was significantly overhauled. All functionality related to "inferred" prefixes was removed to focus solely on reliable, confirmed GS1 prefixes. The script was enhanced to provide a much more detailed output, showing a concrete example product for both the official brand and the conflicting brand for each discrepancy found.
-
-- **Implementing Automated Reconciliation:** Based on the confidence gained from the improved report, we implemented a new, more powerful reconciliation logic directly within the `PrefixUpdateOrchestrator`. Now, when the `update_db --prefixes` command processes a file containing a confirmed GS1 prefix, it triggers a database-wide search. It finds all products with that prefix that are either linked to an incorrect brand or have no brand at all. It then automatically adds the incorrect brands as variations of the official brand and links the brandless products directly to the official brand.
-
-### 3. Data Integrity Check
-
-Finally, to proactively check for data integrity issues, we addressed the user's concern that a single normalized brand variation might be shared across multiple different canonical brands. I created a temporary management command, `check_duplicate_variations.py`, to scan the database for this specific issue.
-
-The script successfully identified a significant number of these duplicate variations, confirming the user's suspicion. We concluded that this was due to messy data from the scraping process and imperfect brand extraction logic. We also discussed that while our new GS1 prefix reconciliation system is a powerful tool for correction, a future improvement would be to add a mechanism for removing these incorrect, legacy variations from the database.
+- **Removal of Redundant Levels:** The `lvl3_substitution_generator.py` and `lvl4_substitution_generator.py` files were deleted.
+- **Renumbering of Semantic Levels:** The former Level 5 (Semantic Similarity) was renumbered to Level 3, and the former Level 6 (Linked Category Semantic Similarity) was renumbered to Level 4. This involved:
+    - Renaming the corresponding generator files (`lvl5_substitution_generator.py` to `lvl3_substitution_generator.py`, and `lvl6_substitution_generator.py` to `lvl4_substitution_generator.py`).
+    - Updating class names, level parameters, comments, and log messages within these renamed files.
+- **Codebase-Wide Reference Updates:** All references to the old level numbers and generator names were updated across the codebase, including:
+    - The `ProductSubstitution` model (`products/models/substitution.py`) to reflect the new `SUBSTITUTION_LEVELS` choices and default value.
+    - The `generate_subs` management command (`api/management/commands/generate_subs.py`) to use the new imports, command-line arguments, and generator calls.
+    - The `savings_benchmark` analysis script (`api/utils/analysis_utils/savings_benchmark.py`) to update its `transitive_levels` list.
+    - The `savings_calculation_explanation.txt` documentation to reflect the updated substitution level descriptions.
+- **Defensive Code Removal:** A piece of defensive programming code in `api/utils/analysis_utils/substitution_breakdown.py` that manually added levels to a list was removed, as it is no longer necessary given the consistent model definition.

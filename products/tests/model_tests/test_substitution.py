@@ -8,14 +8,14 @@ class ProductSubstitutionModelTests(TestCase):
         """Test that a ProductSubstitution object can be created successfully."""
         # 1. Arrange
         # The factory will create product_a and product_b automatically.
-        sub_type = 'SIZE'
+        sub_level = 'LVL1'
         sub_score = 0.95
         sub_source = 'test_source'
 
         # 2. Act
         self.assertEqual(ProductSubstitution.objects.count(), 0)
         substitution = ProductSubstitutionFactory(
-            type=sub_type,
+            level=sub_level,
             score=sub_score,
             source=sub_source
         )
@@ -26,7 +26,7 @@ class ProductSubstitutionModelTests(TestCase):
         # Retrieve from DB to be sure
         db_sub = ProductSubstitution.objects.first()
         
-        self.assertEqual(db_sub.type, sub_type)
+        self.assertEqual(db_sub.level, sub_level)
         self.assertEqual(db_sub.score, sub_score)
         self.assertEqual(db_sub.source, sub_source)
         self.assertIsNotNone(db_sub.product_a)

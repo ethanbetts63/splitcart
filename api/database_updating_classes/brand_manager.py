@@ -36,6 +36,15 @@ class BrandManager:
             )
             self.brand_cache[normalized_brand_name] = brand
 
+        # Check if the raw brand name is a new variation.
+        if brand_name != brand.name and brand_name not in brand.name_variations:
+            brand.name_variations.append(brand_name)
+            # Also update the normalized variations for searching.
+            normalized_variation = ProductNormalizer._get_normalized_brand_name(brand_name)
+            if normalized_variation not in brand.normalized_name_variations:
+                brand.normalized_name_variations.append(normalized_variation)
+            self.brands_to_update.add(brand)
+
 
 
     def commit(self):

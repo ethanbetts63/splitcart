@@ -12,6 +12,7 @@ class BrandManagerTests(TestCase):
         self.mock_command.stdout.write = Mock()
         self.mock_command.style.SUCCESS = lambda x: x
         self.brand_manager = BrandManager(self.mock_command)
+        self.company_name = 'Test Company'
 
     def test_init(self):
         """Test that the BrandManager initializes with an empty cache and update set."""
@@ -21,7 +22,7 @@ class BrandManagerTests(TestCase):
     def test_process_brand_new_creates_in_db_and_cache(self):
         """Test that a new brand is created in the DB and added to the cache."""
         self.assertEqual(ProductBrand.objects.count(), 0)
-        self.brand_manager.process_brand(brand_name='Test Brand', normalized_brand_name='test-brand')
+        self.brand_manager.process_brand(brand_name='Test Brand', normalized_brand_name='test-brand', company_name=self.company_name)
         
         # It should be in the database and the cache
         self.assertEqual(ProductBrand.objects.count(), 1)
@@ -31,11 +32,11 @@ class BrandManagerTests(TestCase):
     def test_process_brand_duplicate_uses_cache_and_db(self):
         """Test that a duplicate brand (by normalized name) is fetched, not created."""
         # Create it once
-        self.brand_manager.process_brand(brand_name='First Brand', normalized_brand_name='test-brand')
+        self.brand_manager.process_brand(brand_name='First Brand', normalized_brand_name='test-brand', company_name=self.company_name)
         self.assertEqual(ProductBrand.objects.count(), 1)
         
         # Process a variation
-        self.brand_manager.process_brand(brand_name='Second Brand', normalized_brand_name='test-brand')
+        self.brand_manager.process_brand(brand_name='Second Brand', normalized_brand_name='test-brand', company_name=self.company_name)
         
         # Should not create a new DB entry
         self.assertEqual(ProductBrand.objects.count(), 1)
@@ -45,10 +46,10 @@ class BrandManagerTests(TestCase):
 
     def test_process_brand_empty_or_none_is_ignored(self):
         """Test that empty or None brand names are ignored."""
-        self.brand_manager.process_brand(brand_name='', normalized_brand_name='')
-        self.brand_manager.process_brand(brand_name=None, normalized_brand_name=None)
-        self.brand_manager.process_brand(brand_name='A Brand', normalized_brand_name=None)
-        self.brand_manager.process_brand(brand_name=None, normalized_brand_name='a-brand')
+        self.brand_manager.process_brand(brand_name='', normalized_brand_name='', company_name=self.company_name)
+        self.brand_manager.process_brand(brand_name=None, normalized_brand_name=None, company_name=self.company_name)
+        self.brand_manager.process_brand(brand_name='A Brand', normalized_brand_name=None, company_name=self.company_name)
+        self.brand_manager.process_brand(brand_name=None, normalized_brand_name='a-brand', company_name=self.company_name)
         
         self.assertEqual(self.brand_manager.brand_cache, {})
         self.assertEqual(ProductBrand.objects.count(), 0)
@@ -60,7 +61,7 @@ class BrandManagerTests(TestCase):
         self.brand_manager.brand_cache = {'canonical-brand': brand}
         
         # Process a product with a different name but same normalized name
-        self.brand_manager.process_brand(brand_name='A Different Brand Name', normalized_brand_name='canonical-brand')
+        self.brand_manager.process_brand(brand_name='A Different Brand Name', normalized_brand_name='canonical-brand', company_name=self.company_name)
         
         # Check that the variation was added to the object and queued for update
         self.assertIn('A Different Brand Name', brand.name_variations)
@@ -72,7 +73,7 @@ class BrandManagerTests(TestCase):
         self.brand_manager.brand_cache = {'canonical-brand': brand}
         
         # Add a variation
-        self.brand_manager.process_brand(brand_name='Variation Name', normalized_brand_name='canonical-brand')
+        self.brand_manager.process_brand(brand_name='Variation Name', normalized_brand_name='canonical-brand', company_name=self.company_name)
         
         # The variation is staged but not yet saved
         self.assertIn('Variation Name', self.brand_manager.brands_to_update.copy().pop().name_variations)
@@ -89,11 +90,12 @@ class BrandManagerTests(TestCase):
 
     def test_commit_no_changes(self):
         """Test that commit does nothing when there are no changes."""
-        ProductBrandFactory(name='Existing Brand', normalized_name='existing-brand')
+        brand = ProductBrandFactory(name='Existing Brand', normalized_name='existing-brand')
+        self.brand_manager.brand_cache = {'existing-brand': brand}
         self.assertEqual(ProductBrand.objects.count(), 1)
 
         # Process a brand that doesn't create a variation
-        self.brand_manager.process_brand(brand_name='Existing Brand', normalized_brand_name='existing-brand')
+        self.brand_manager.process_brand(brand_name='Existing Brand', normalized_brand_name='existing-brand', company_name=self.company_name)
         
         # There should be nothing to update
         self.assertEqual(self.brand_manager.brands_to_update, set())

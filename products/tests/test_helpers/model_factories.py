@@ -8,7 +8,7 @@ class ProductFactory(DjangoModelFactory):
         model = Product
 
     name = factory.Faker('word')
-    brand = factory.Faker('company')
+    brand = factory.SubFactory('products.tests.test_helpers.model_factories.ProductBrandFactory')
     size = factory.Faker('word')
     barcode = factory.Sequence(lambda n: f'123456789012{n}')
     image_url = factory.Faker('image_url')
