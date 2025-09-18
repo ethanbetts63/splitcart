@@ -69,7 +69,6 @@ class PrefixUpdateOrchestrator:
         ).exclude(brand=canonical_brand)
 
         if not inconsistent_products.exists():
-            self.command.stdout.write("  - No brand discrepancies found for this prefix.")
             return
 
         # 3. Segregate products into brandless and incorrectly branded

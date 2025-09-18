@@ -1,7 +1,6 @@
 import time
 from django.core.management.base import BaseCommand
 from products.models import Product, ProductBrand
-from api.database_updating_classes.variation_manager import VariationManager
 from api.database_updating_classes.product_translation_table_generator import ProductTranslationTableGenerator
 
 def find_longest_common_prefix(strs):
@@ -121,9 +120,7 @@ class Command(BaseCommand):
                     synonyms_found += 1
                     self.stdout.write(f"  - Recorded '{variation_brand.name}' as a variation of '{canonical_brand.name}'.")
 
-        if synonyms_found == 0:
-            self.stdout.write("Found no brand discrepancies to reconcile.")
-        else:
+        if synonyms_found != 0:
             self.stdout.write(f"Found and recorded {synonyms_found} potential brand synonyms.")
 
         # Regenerate the product name translation table to include the new variations
