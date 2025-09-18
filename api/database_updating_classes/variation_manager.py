@@ -1,6 +1,3 @@
-from django.db import transaction
-from products.models import Product, Price, ProductBrand
-
 class VariationManager:
     """
     Centralizes all logic for handling product name and brand variations.
