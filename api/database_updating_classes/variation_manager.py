@@ -44,37 +44,38 @@ class VariationManager:
 
         # --- Handle Brand Variations ---
         incoming_brand_name = incoming_product_details.get('brand')
-        incoming_normalized_brand_key = incoming_product_details.get('normalized_brand')
+        if incoming_brand_name:
+            incoming_normalized_brand_key = incoming_product_details.get('normalized_brand')
 
-        existing_brand_instance = existing_product.brand
-        if not existing_brand_instance:
-            return
+            existing_brand_instance = existing_product.brand
+            if not existing_brand_instance:
+                return
 
-        updated = False
+            updated = False
 
-        # --- Check for raw name variation ---
-        # If the incoming raw brand name is different from the existing canonical name, record it as a variation.
-        cleaned_incoming_brand_name = str(incoming_brand_name).strip()
-        if cleaned_incoming_brand_name and existing_brand_instance.name and cleaned_incoming_brand_name.lower() != existing_brand_instance.name.lower():
-            if not existing_brand_instance.name_variations:
-                existing_brand_instance.name_variations = []
-            
-            new_variation_entry = cleaned_incoming_brand_name
-            if new_variation_entry not in existing_brand_instance.name_variations:
-                existing_brand_instance.name_variations.append(new_variation_entry)
-                updated = True
+            # --- Check for raw name variation ---
+            # If the incoming raw brand name is different from the existing canonical name, record it as a variation.
+            cleaned_incoming_brand_name = str(incoming_brand_name).strip()
+            if cleaned_incoming_brand_name and existing_brand_instance.name and cleaned_incoming_brand_name.lower() != existing_brand_instance.name.lower():
+                if not existing_brand_instance.name_variations:
+                    existing_brand_instance.name_variations = []
+                
+                new_variation_entry = cleaned_incoming_brand_name
+                if new_variation_entry not in existing_brand_instance.name_variations:
+                    existing_brand_instance.name_variations.append(new_variation_entry)
+                    updated = True
 
-        # --- Check for normalized name variation ---
-        # If the normalized keys are different, it's a potential brand duplicate. Record it for the reconciler.
-        existing_normalized_brand_key = existing_brand_instance.normalized_name
-        if incoming_normalized_brand_key and existing_normalized_brand_key and incoming_normalized_brand_key != existing_normalized_brand_key:
-            if not existing_brand_instance.normalized_name_variations:
-                existing_brand_instance.normalized_name_variations = []
-            
-            if incoming_normalized_brand_key not in existing_brand_instance.normalized_name_variations:
-                existing_brand_instance.normalized_name_variations.append(incoming_normalized_brand_key)
-                updated = True
+            # --- Check for normalized name variation ---
+            # If the normalized keys are different, it's a potential brand duplicate. Record it for the reconciler.
+            existing_normalized_brand_key = existing_brand_instance.normalized_name
+            if incoming_normalized_brand_key and existing_normalized_brand_key and incoming_normalized_brand_key != existing_normalized_brand_key:
+                if not existing_brand_instance.normalized_name_variations:
+                    existing_brand_instance.normalized_name_variations = []
+                
+                if incoming_normalized_brand_key not in existing_brand_instance.normalized_name_variations:
+                    existing_brand_instance.normalized_name_variations.append(incoming_normalized_brand_key)
+                    updated = True
 
-        if updated:
-            self.unit_of_work.add_for_update(existing_brand_instance)
+            if updated:
+                self.unit_of_work.add_for_update(existing_brand_instance)
 
