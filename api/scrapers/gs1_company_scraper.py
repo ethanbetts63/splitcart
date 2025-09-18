@@ -40,13 +40,13 @@ class Gs1CompanyScraper:
         self.command.stdout.write("Prioritizing unconfirmed brands by product count...")
         
         unconfirmed_brands = []
-        all_brands = ProductBrand.objects.all().prefetch_related('prefix_analysis')
+        all_brands = ProductBrand.objects.all()
 
         for brand in all_brands:
             if brand.confirmed_official_prefix:
                 continue
             
-            count = Product.objects.filter(brand=brand.name).count()
+            count = Product.objects.filter(brand=brand).count()
             if count > 0:
                 unconfirmed_brands.append({'brand': brand, 'count': count})
         
@@ -73,7 +73,7 @@ class Gs1CompanyScraper:
             self.command.stdout.write(f"Selected brand: {target_brand.name}\n")
 
             product_with_barcode = Product.objects.filter(
-                brand=target_brand.name
+                brand=target_brand
             ).exclude(barcode__isnull=True).exclude(barcode__exact='').first()
 
             if not product_with_barcode:
