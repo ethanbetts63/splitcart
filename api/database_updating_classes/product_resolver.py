@@ -75,7 +75,7 @@ class ProductResolver:
 
         # Tier 2: Match by Store Product ID (contextual lookup)
         if not product:
-            sku = product_details.get('product_id_store')
+            sku = product_details.get('sku')
             if sku and sku in self.store_product_id_cache:
                 product = self.store_product_id_cache[sku]
                 return product

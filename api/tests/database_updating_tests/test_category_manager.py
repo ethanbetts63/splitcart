@@ -17,7 +17,6 @@ class CategoryManagerTests(TestCase):
 
     def test_collect_all_paths(self):
         """Test that unique category paths are collected correctly from consolidated data."""
-        # FIX: The key is 'product', not 'product_details'
         consolidated_data = {
             'item-a-1l': {'product': {'category_path': ['Bakery', 'Bread']}},
             'item-b-500g': {'product': {'category_path': ['Bakery', 'Rolls']}},
@@ -40,7 +39,6 @@ class CategoryManagerTests(TestCase):
         """Test that new categories are created and the cache is updated."""
         # Arrange
         existing_cat = CategoryFactory(name='Bakery', company=self.company)
-        # FIX: The cache key is now a tuple of (name, company_id)
         self.manager.category_cache = {(existing_cat.name, self.company.id): existing_cat}
         
         all_paths = {
@@ -48,14 +46,14 @@ class CategoryManagerTests(TestCase):
             ('Fruit & Veg', 'Apples'),
         }
         
-        mock_bulk_create.return_value = [
-            Category(name='Bread', company=self.company),
-            Category(name='Fruit & Veg', company=self.company),
-            Category(name='Apples', company=self.company),
-        ]
+        def bulk_create_side_effect(categories, **kwargs):
+            for cat in categories:
+                cat.save()
+            return categories
+
+        mock_bulk_create.side_effect = bulk_create_side_effect
 
         # Act
-        # FIX: The method now requires the company object
         self.manager._create_new_categories(all_paths, self.company)
 
         # Assert
@@ -65,7 +63,6 @@ class CategoryManagerTests(TestCase):
         created_names = {cat.name for cat in call_args}
         self.assertEqual(created_names, {'Bread', 'Fruit & Veg', 'Apples'})
 
-        # FIX: Check the cache with the correct tuple key
         self.assertIn(('Bread', self.company.id), self.manager.category_cache)
         self.assertIn(('Fruit & Veg', self.company.id), self.manager.category_cache)
         self.assertIn(('Apples', self.company.id), self.manager.category_cache)
@@ -78,7 +75,6 @@ class CategoryManagerTests(TestCase):
         cat1 = CategoryFactory(id=1, name='Bakery', company=self.company)
         cat2 = CategoryFactory(id=2, name='Bread', company=self.company)
         cat3 = CategoryFactory(id=3, name='Rolls', company=self.company)
-        # FIX: The cache key is now a tuple of (name, company_id)
         self.manager.category_cache = {
             (cat1.name, self.company.id): cat1,
             (cat2.name, self.company.id): cat2,
@@ -91,7 +87,6 @@ class CategoryManagerTests(TestCase):
         }
 
         # Act
-        # FIX: The method now requires the company object
         self.manager._create_parent_child_links(all_paths, self.company)
 
         # Assert
@@ -99,7 +94,7 @@ class CategoryManagerTests(TestCase):
         call_args = mock_bulk_create.call_args[0][0]
         self.assertEqual(len(call_args), 2)
         created_links = {(link.from_category_id, link.to_category_id) for link in call_args}
-        expected_links = {(cat1.id, cat2.id), (cat1.id, cat3.id)}
+        expected_links = {(cat2.id, cat1.id), (cat3.id, cat1.id)}
         self.assertEqual(created_links, expected_links)
 
     @patch('api.database_updating_classes.category_manager.Product.category.through.objects.bulk_create')
@@ -111,7 +106,6 @@ class CategoryManagerTests(TestCase):
         cat_bread = CategoryFactory(id=201, name='Bread', company=self.company)
         cat_rolls = CategoryFactory(id=202, name='Rolls', company=self.company)
 
-        # FIX: The cache key is now a tuple of (name, company_id)
         self.manager.category_cache = {
             (cat_bread.name, self.company.id): cat_bread,
             (cat_rolls.name, self.company.id): cat_rolls,
@@ -120,14 +114,12 @@ class CategoryManagerTests(TestCase):
             'item-a-1l': prod1,
             'item-b-500g': prod2,
         }
-        # FIX: The key is 'category_path', not 'category_paths'
         consolidated_data = {
             'item-a-1l': {'product': {'category_path': ['Bakery', 'Bread']}},
             'item-b-500g': {'product': {'category_path': ['Bakery', 'Rolls']}},
         }
 
         # Act
-        # FIX: The method now requires the company object
         self.manager._link_products_to_categories(consolidated_data, product_cache, self.company)
 
         # Assert

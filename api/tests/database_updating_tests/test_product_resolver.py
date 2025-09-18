@@ -5,7 +5,7 @@ from api.database_updating_classes.product_resolver import ProductResolver
 from products.models import Product, Price
 from companies.models import Store, Company
 
-from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory
+from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory, ProductBrandFactory
 from companies.tests.test_helpers.model_factories import CompanyFactory, StoreFactory
 
 class ProductResolverTests(TestCase):
@@ -16,28 +16,29 @@ class ProductResolverTests(TestCase):
         self.company = CompanyFactory(name="Test Company")
         self.store1 = StoreFactory(company=self.company, store_id="store:1")
         self.store2 = StoreFactory(company=self.company, store_id="store:2")
+        self.brand = ProductBrandFactory(name="brand")
 
         # Product 1: Let the model generate the normalized string
         self.p1 = ProductFactory(
-            name='item a', brand='brand', size='1l', barcode='111'
+            name='item a', brand=self.brand, size='1l', barcode='111'
         )
         PriceFactory(product=self.p1, store=self.store1, sku='sku111')
 
         # Product 2
         self.p2 = ProductFactory(
-            name='item b', brand='brand', size='2l', barcode=None
+            name='item b', brand=self.brand, size='2l', barcode=None
         )
         PriceFactory(product=self.p2, store=self.store1, sku='sku222')
 
         # Product 3
         self.p3 = ProductFactory(
-            name='item c', brand='brand', size='3l', barcode='333'
+            name='item c', brand=self.brand, size='3l', barcode='333'
         )
         PriceFactory(product=self.p3, store=self.store2, sku='sku333')
         
         # Product 4
         self.p4 = ProductFactory(
-            name='item d', brand='brand', size='4l', barcode=None
+            name='item d', brand=self.brand, size='4l', barcode=None
         )
         
         # This resolver is for store1 context
@@ -69,6 +70,7 @@ class ProductResolverTests(TestCase):
 
         # For a non-persistent instance, we can set the attribute directly for the test
         new_product = ProductFactory.build(
+            brand=self.brand,
             barcode='999',
             normalized_name_brand_size='new-item-9l'
         )
@@ -88,32 +90,32 @@ class ProductResolverTests(TestCase):
 
     def test_find_match_tier_2_sku(self):
         """Find a match using the second priority: store-specific SKU."""
-        product_details = {'barcode': None, 'product_id_store': 'sku222'}
+        product_details = {'barcode': None, 'sku': 'sku222'}
         match = self.resolver.find_match(product_details, [])
         self.assertEqual(match, self.p2)
 
     def test_find_match_tier_3_normalized_string(self):
         """Find a match using the third priority: normalized string."""
         # Use the actual, auto-generated value
-        product_details = {'barcode': None, 'product_id_store': None, 'normalized_name_brand_size': self.p4.normalized_name_brand_size}
+        product_details = {'barcode': None, 'sku': None, 'normalized_name_brand_size': self.p4.normalized_name_brand_size}
         match = self.resolver.find_match(product_details, [])
         self.assertEqual(match, self.p4)
 
     def test_find_match_no_match(self):
         """Test that None is returned when no match is found."""
-        product_details = {'barcode': '000', 'product_id_store': 'sku000', 'normalized_name_brand_size': 'item-z-0l'}
+        product_details = {'barcode': '000', 'sku': 'sku000', 'normalized_name_brand_size': 'item-z-0l'}
         match = self.resolver.find_match(product_details, [])
         self.assertIsNone(match)
 
     def test_find_match_priority_barcode_over_sku(self):
         """Test that barcode (Tier 1) is prioritized over SKU (Tier 2)."""
-        product_details = {'barcode': '333', 'product_id_store': 'sku111'}
+        product_details = {'barcode': '333', 'sku': 'sku111'}
         match = self.resolver.find_match(product_details, [])
         self.assertEqual(match, self.p3)
 
     def test_find_match_priority_sku_over_normalized_string(self):
         """Test that SKU (Tier 2) is prioritized over normalized string (Tier 3)."""
         # Use the actual, auto-generated value for p1
-        product_details = {'barcode': None, 'product_id_store': 'sku222', 'normalized_name_brand_size': self.p1.normalized_name_brand_size}
+        product_details = {'barcode': None, 'sku': 'sku222', 'normalized_name_brand_size': self.p1.normalized_name_brand_size}
         match = self.resolver.find_match(product_details, [])
         self.assertEqual(match, self.p2)
