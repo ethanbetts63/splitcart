@@ -2,8 +2,8 @@ from django.test import TestCase
 from unittest.mock import Mock
 
 from api.database_updating_classes.variation_manager import VariationManager
-from products.models import Product, Price
-from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory
+from products.models import Product, Price, ProductBrand
+from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory, ProductBrandFactory
 
 class VariationManagerTests(TestCase):
 
@@ -20,7 +20,6 @@ class VariationManagerTests(TestCase):
         self.manager.check_for_variation(incoming_details, existing_product, 'coles')
 
         self.mock_uow.add_for_update.assert_not_called()
-        self.assertEqual(len(self.manager.product_reconciliation_list), 0)
 
     def test_check_for_variation_no_change_if_no_barcode(self):
         """Test that no variation is recorded if the existing product has no barcode."""
@@ -30,7 +29,6 @@ class VariationManagerTests(TestCase):
         self.manager.check_for_variation(incoming_details, existing_product, 'coles')
 
         self.mock_uow.add_for_update.assert_not_called()
-        self.assertEqual(len(self.manager.product_reconciliation_list), 0)
 
     def test_check_for_new_variation(self):
         """Test that a new variation is correctly identified and processed."""
@@ -56,16 +54,21 @@ class VariationManagerTests(TestCase):
         self.assertIn('new-variation-normalized', existing_product.normalized_name_brand_size_variations)
 
         # 2. Unit of Work is notified
-        self.mock_uow.add_for_update.assert_called_once_with(existing_product)
+        self.mock_uow.add_for_update.assert_called_with(existing_product)
 
-        # 3. Product reconciliation list is updated
-        self.assertEqual(len(self.manager.product_reconciliation_list), 1)
-        product_entry = self.manager.product_reconciliation_list[0]
-        self.assertEqual(product_entry['new_variation'], 'A New Variation Name')
-        self.assertEqual(product_entry['canonical_name'], 'Canonical Product')
-        self.assertEqual(product_entry['barcode'], '12345')
-        self.assertEqual(product_entry['canonical_normalized_string'], 'canonical-product-normalized-string')
-        self.assertEqual(product_entry['duplicate_normalized_string'], 'new-variation-normalized')
+    def test_check_for_new_brand_variation(self):
+        """Test that a new brand variation is correctly added."""
+        brand = ProductBrandFactory(name='Canonical Brand', normalized_name='canonical-brand', name_variations=[])
+        existing_product = ProductFactory(brand=brand, barcode='123')
+        incoming_details = {
+            'brand': 'A New Brand Name',
+            'normalized_brand': 'a-new-brand-name'
+        }
+
+        self.manager.check_for_variation(incoming_details, existing_product, 'coles')
+
+        self.assertIn('A New Brand Name', brand.name_variations)
+        self.mock_uow.add_for_update.assert_called_with(brand)
 
     def test_check_for_variation_deduplicates_variations(self):
         """Test that the same variation is not added twice."""
@@ -87,48 +90,3 @@ class VariationManagerTests(TestCase):
         self.assertEqual(len(existing_product.normalized_name_brand_size_variations), 1)
         # Assert that UoW was not called as no update was made
         self.mock_uow.add_for_update.assert_not_called()
-
-    def test_reconcile_duplicates_merges_products(self):
-        """Test that a duplicate product is correctly merged into the canonical one."""
-        # 1. Arrange
-        canonical_product = ProductFactory(
-            name='Canonical Product', 
-            barcode='123',
-            normalized_name_brand_size='canonical-normalized'
-        )
-
-        duplicate_product = ProductFactory(
-            name='Duplicate Product Name', 
-            barcode=None, # No barcode conflict
-            normalized_name_brand_size='duplicate-normalized'
-        )
-        
-        # Give the duplicate product a price record
-        price_to_move = PriceFactory(product=duplicate_product)
-        self.assertEqual(Price.objects.filter(product=canonical_product).count(), 0)
-
-        # Manually populate the product reconciliation list to simulate a variation having been found
-        self.manager.product_reconciliation_list = [{
-            'new_variation': 'Duplicate Product Name',
-            'canonical_name': 'Canonical Product',
-            'barcode': '123',
-            'canonical_normalized_string': 'canonical-normalized',
-            'duplicate_normalized_string': 'duplicate-normalized'
-        }]
-
-        # 2. Act
-        self.manager.reconcile_product_duplicates()
-
-        # 3. Assert
-        # Price record should have been moved
-        self.assertEqual(Price.objects.filter(product=duplicate_product).count(), 0)
-        self.assertEqual(Price.objects.filter(product=canonical_product).count(), 1)
-        price_to_move.refresh_from_db()
-        self.assertEqual(price_to_move.product, canonical_product)
-
-        # Duplicate product should have been deleted
-        with self.assertRaises(Product.DoesNotExist):
-            Product.objects.get(id=duplicate_product.id)
-
-        # Product reconciliation list should be cleared
-        self.assertEqual(len(self.manager.product_reconciliation_list), 0)

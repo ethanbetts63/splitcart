@@ -100,7 +100,7 @@ class BrandReconciler:
                 if norm_variation not in canonical.normalized_name_variations:
                     canonical.normalized_name_variations.append(norm_variation)
 
-        new_name_variation_entry = (duplicate.name, 'reconciler')
+        new_name_variation_entry = duplicate.name
         if new_name_variation_entry not in canonical.name_variations:
             canonical.name_variations.append(new_name_variation_entry)
         

@@ -105,7 +105,7 @@ class Command(BaseCommand):
                 updated = False
                 if not canonical_brand.name_variations:
                     canonical_brand.name_variations = []
-                new_name_variation_entry = [variation_brand.name, 'inferred']
+                new_name_variation_entry = variation_brand.name
                 if new_name_variation_entry not in canonical_brand.name_variations:
                     canonical_brand.name_variations.append(new_name_variation_entry)
                     updated = True

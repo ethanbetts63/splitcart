@@ -158,9 +158,7 @@ class ProductNormalizer:
         # The human-readable name from the cache.
         brand_name = brand_details.get('name')
         # The list of variation tuples, e.g., [('Coke', 'Coles'), ('Coca Cola', 'Woolworths')]
-        variations_tuples = brand_details.get('name_variations', [])
-        # Extract just the names from the tuples
-        variations = [item[0] for item in variations_tuples]
+        variations = brand_details.get('name_variations', [])
 
         # Compile a list of all possible brand variations to remove.
         strings_to_remove = [brand_name, self.brand] + variations

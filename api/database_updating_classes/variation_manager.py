@@ -59,7 +59,7 @@ class VariationManager:
             if not existing_brand_instance.name_variations:
                 existing_brand_instance.name_variations = []
             
-            new_variation_entry = [cleaned_incoming_brand_name, company_name]
+            new_variation_entry = cleaned_incoming_brand_name
             if new_variation_entry not in existing_brand_instance.name_variations:
                 existing_brand_instance.name_variations.append(new_variation_entry)
                 updated = True
