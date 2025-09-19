@@ -1,44 +1,63 @@
-# Optimized Scraping Strategy
+# Optimized, Phased Scraping Strategy
 
-## 1. Goal
+## 1. High-Level Goal
 
-To move from a brute-force scraping model (scraping everything from every store) to a targeted, data-driven model. The aim is to significantly reduce redundant scraping while maintaining and even improving data quality by identifying and leveraging patterns in product ranges and pricing.
+To evolve from a brute-force scraping model (scraping all products from all stores, all the time) to a targeted, data-driven model. The aim is to significantly reduce redundant scraping and operational costs while maintaining high data accuracy and responsiveness through a dynamic, intelligent queuing system.
 
-## 2. Core Idea
+## 2. The Two-Phase Approach
 
-The central concept is to use price correlation and product overlap analysis at both the store and category levels to group similar stores. Instead of treating every store as an independent entity, we can identify "price-twins" and "category-twins" and use this information to make our scraping efforts much more efficient.
+A "cold start" problem exists: we cannot optimize scraping without a complete, time-synchronized dataset to base our analysis on. Therefore, the strategy for each company must be executed in two distinct phases.
 
-## 3. The Strategy
+### Phase 1: Discovery & Baseline
 
-### Step 1: Initial Full Scrape & Baseline Analysis
+*   **Objective:** Achieve 100% scrape coverage of all stores for a given company to build a foundational dataset.
+*   **Execution:** In this phase, the `scrape` command will operate in a simple "brute-force" mode, prioritizing stores that have never been scraped or have the oldest scrape dates.
+*   **Critical Constraint:** This phase is essential for calculating the "True Overlap" metric, as it requires comparing prices from different stores that were scraped on the same day (or as close as possible).
 
-*   **Action:** Perform a complete, deep scrape of all products from all stores for all companies.
-*   **Purpose:** To establish a comprehensive baseline dataset that can be used for the initial correlation analysis.
+### Phase 2: Optimized & Dynamic Scraping
 
-### Step 2: Grouping and Clustering
+*   **Objective:** Switch to an intelligent, efficient scraping model based on the analysis of the baseline data.
+*   **Execution:** Once the baseline is established and the initial groups are formed, the `scrape` command's logic changes to the "Intelligent Queue" model. This is the ongoing operational state.
 
-*   **Initial Grouping:** Group stores by Company, State, and Division/Brand. This creates a set of logical, high-level groups to work with.
-*   **Category-Level Price Correlation Analysis:** Within each of these groups, perform a price correlation analysis for each category between all pairs of stores. This will create a "correlation profile" for each store pair, showing how their pricing for different categories compares.
-*   **Identify Clusters:** Based on the correlation profiles, identify clusters of stores that have highly correlated pricing for specific categories (e.g., a correlation coefficient > 0.95).
+## 3. Core Concepts of the Optimized Model
 
-### Step 3: Designate "Lead" Stores and Categories
+### Store Grouping & The "True Overlap" Metric
+The core of the system is grouping stores that are effective "price-twins."
+*   **The Metric:** The primary metric for grouping will be **"True Overlap"**: the percentage of shared products between two stores that have the *exact same price*.
+*   **The Constraint:** This comparison must be performed on data scraped on the same day to be valid. A price difference could be due to a genuine store-level pricing difference or simply because one store's data is a week older than the other's.
+*   **Threshold:** We will start with a high threshold (e.g., >95% True Overlap) to create confident initial groups. This can be tuned over time.
 
-*   **Action:** For each category-specific cluster, designate one store as the "lead" store for that category.
-*   **Purpose:** The "lead" store will be the one that we scrape most thoroughly, and its data will be used as the benchmark for the other stores in the cluster.
+### The Intelligent Queue
+In Phase 2, the `scrape` command will no longer scrape the oldest stores. Instead, it will build a fresh, high-priority queue for each run, consisting of:
+1.  **Outliers:** Stores that do not fit into any group. These are scraped frequently to keep their unique data fresh and to see if they can be reclassified.
+2.  **Group Ambassadors (Rotating):** For each defined group, one store is chosen as the "ambassador" for that scrape run. Its data is used to infer prices for all other stores in the group. Crucially, the ambassador role will be *rotated* to a different store in the group on the next run, providing distributed validation over time.
 
-### Step 4: Implement Hyper-Optimized Scraping
+### Granularity: Category-Level Inference
+Even stores that don't qualify for a full-store group may have identical pricing for specific categories.
+*   **Strategy:** We can create groups at the category level (e.g., a "Woolworths Pantry QLD" group).
+*   **Benefit:** This allows for a more granular optimization. A scrape of a single store could provide "direct" data for some of its categories and "inferred" data for many other stores that share its category-level pricing.
 
-*   **Full Scrapes:** Only perform full, deep scrapes on the "lead" store for its designated category.
-*   **Spot Checks:** For the other stores in a category cluster, perform regular, lightweight "spot checks." This could involve scraping a small, representative sample of "canary" products (products whose prices are known to change frequently) to ensure they are still in line with the lead store.
-*   **Triggered Full Scrapes:** If a spot check reveals a significant deviation in pricing, automatically trigger a full scrape for that store and category to get the most up-to-date data.
+### Data Source Tracking
+To maintain data integrity and enable the feedback loop, every price in the database must be marked with its origin.
+*   **Implementation:** The `products.Price` model must be modified to include a `source` field.
+*   **Values:** This field will have states such as `'direct_scrape'` or `'inferred_group'`.
+*   **Purpose:** This allows us to measure the accuracy of our inferences and is the primary trigger for the re-grouping logic. When a direct scrape contradicts a previous inference, the system knows that the group's stability needs to be re-evaluated.
 
-### Step 5: Regular Re-evaluation
+## 4. Rollout & Execution
 
-*   **Action:** Periodically (e.g., monthly or quarterly), re-run the full correlation analysis on all stores.
-*   **Purpose:** To adapt to any changes in pricing strategies and to ensure that the store/category clusters remain valid over time.
+### Phased Geographic Rollout ("One City at a Time")
+To become operational in at least one region sooner, the entire Discovery/Optimization process can be focused on one geographic area at a time (e.g., Brisbane). Learnings from the first city's grouping patterns can then be used to accelerate the process for the next city. This is feasible as we have latitude/longitude data for most stores.
 
-## 4. Benefits
+### Dynamic Re-classification
+The system must be dynamic. The "True Overlap" scores and group memberships must be re-calculated periodically to adapt to changes in store strategies. The comparison of direct vs. inferred data serves as the primary trigger for this re-evaluation.
 
-*   **Massive Efficiency Gains:** Drastically reduces the number of products that need to be scraped on a regular basis, saving time, bandwidth, and computational resources.
-*   **Dynamic and Responsive:** The spot-check and trigger system ensures that the data remains accurate and up-to-date, even if stores change their pricing strategies.
-*   **Deeper Insights:** The correlation analysis itself becomes a valuable source of data, revealing the underlying pricing strategies of different companies and stores.
+## 5. Open Questions & Key Decisions
+
+This strategy opens up several questions that will need to be answered during implementation:
+
+1.  **Thresholds:** What is the initial "True Overlap" percentage required to form a group (95%, 98%)? What level of price deviation in a spot-check triggers a full re-scrape?
+2.  **Re-analysis Frequency:** How often should the full, system-wide re-analysis of all groups be performed (e.g., weekly, monthly, quarterly)?
+3.  **Ambassador Selection:** When rotating an ambassador, is the selection random, or round-robin?
+4.  **Canary Products:** If we implement "micro-scrapes," how many "canary" products are sufficient for a reliable spot check? How are these products selected?
+5.  **Geographic Boundaries:** How do we define the geographic boundaries for the "one city at a time" rollout (e.g., by postcode radius, council areas)?
+6.  **Data Freshness:** What is the maximum acceptable age for data used in the "True Overlap" analysis? (e.g., must be from the same 24-hour period).
