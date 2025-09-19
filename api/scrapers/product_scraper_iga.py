@@ -25,7 +25,7 @@ class IgaScraper(BaseProductScraper):
         """
         if not self.retailer_store_id:
             self.output.log_error("Retailer store ID is missing.")
-            return
+            return False
 
         self.session = requests.Session()
         self.session.headers.update({
@@ -38,10 +38,11 @@ class IgaScraper(BaseProductScraper):
             self.session.get("https://www.igashop.com.au/", timeout=60)
         except requests.exceptions.RequestException as e:
             self.output.log_error(f"Failed to initialize session: {e}")
-            return
+            return False
 
         store_name_slug = slugify(self.store_name.lower().replace('iga', '').replace('fresh', ''))
         self.jsonl_writer = JsonlWriter(self.company, store_name_slug, self.state)
+        return True
 
     def get_work_items(self) -> list:
         """

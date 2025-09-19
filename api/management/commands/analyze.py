@@ -6,6 +6,7 @@ from api.analysers.company_product_overlap import generate_company_product_overl
 from api.analysers.store_product_overlap import generate_store_product_overlap_heatmap
 from api.analysers.store_pricing_heatmap import generate_store_pricing_heatmap
 from api.analysers.category_price_correlation import generate_category_price_correlation_heatmap
+from api.analysers.internal_company_product_crossover import generate_internal_company_product_crossover_report
 from api.utils.analysis_utils.category_tree import generate_category_tree
 from api.utils.analysis_utils.substitution_analysis import generate_substitution_analysis_report
 from api.utils.analysis_utils.savings_benchmark import run_savings_benchmark
@@ -21,7 +22,7 @@ class Command(BaseCommand):
             type=str,
             required=True,
             help='Specifies which type of analysis or report to generate.',
-            choices=['store_product_counts', 'company_heatmap', 'store_heatmap', 'pricing_heatmap', 'category_heatmap', 'category_tree', 'subs', 'savings', 'sub_heatmap']
+            choices=['store_product_counts', 'company_heatmap', 'store_heatmap', 'pricing_heatmap', 'category_heatmap', 'category_tree', 'subs', 'savings', 'sub_heatmap', 'internal_crossover']
         )
         parser.add_argument(
             '--company-name',
@@ -135,6 +136,13 @@ class Command(BaseCommand):
 
             run_savings_benchmark(file_path)
             self.stdout.write(self.style.SUCCESS(f"Successfully wrote benchmark report to: {file_path}"))
+
+        elif report_type == 'internal_crossover':
+            if not company_name:
+                self.stdout.write(self.style.ERROR(
+                    'The --company-name argument is required for the internal_crossover report.'))
+                return
+            generate_internal_company_product_crossover_report(company_name)
 
         else:
             self.stdout.write(self.style.WARNING(

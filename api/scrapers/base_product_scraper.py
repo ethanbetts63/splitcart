@@ -20,7 +20,9 @@ class BaseProductScraper(ABC):
     def run(self):
         """The main public method that orchestrates the entire scraping process."""
         scrape_successful = False
-        self.setup()
+        if not self.setup():
+            return
+
         try:
             self.jsonl_writer.open()
             work_items = self.get_work_items()
