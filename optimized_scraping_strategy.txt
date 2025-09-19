@@ -21,16 +21,32 @@ A "cold start" problem exists: we cannot optimize scraping without a complete, t
 
 ## 3. Core Concepts of the Optimized Model
 
-### Store Grouping & The "True Overlap" Metric
-The core of the system is grouping stores that are effective "price-twins."
-*   **The Metric:** The primary metric for grouping will be **"True Overlap"**: the percentage of shared products between two stores that have the *exact same price*.
-*   **The Constraint:** This comparison must be performed on data scraped on the same day to be valid. A price difference could be due to a genuine store-level pricing difference or simply because one store's data is a week older than the other's.
-*   **Threshold:** We will start with a high threshold (e.g., >95% True Overlap) to create confident initial groups. This can be tuned over time.
+### The "Top-Down" Grouping Philosophy with Heuristic Seeding
+Instead of starting with a single, national "monolith" group for each company, we will adopt a more intelligent "top-down" approach using logical heuristics to form more plausible initial groups.
 
-### The Intelligent Queue
-In Phase 2, the `scrape` command will no longer scrape the oldest stores. Instead, it will build a fresh, high-priority queue for each run, consisting of:
-1.  **Outliers:** Stores that do not fit into any group. These are scraped frequently to keep their unique data fresh and to see if they can be reclassified.
-2.  **Group Ambassadors (Rotating):** For each defined group, one store is chosen as the "ambassador" for that scrape run. Its data is used to infer prices for all other stores in the group. Crucially, the ambassador role will be *rotated* to a different store in the group on the next run, providing distributed validation over time.
+*   **Heuristic Seeding:** Before any analysis, we will pre-group stores based on data we already have. The primary heuristics will be:
+    1.  **Geography:** As defined by our pilot program (e.g., the Perth metropolitan area).
+    2.  **Store Sub-Type:** Using clues in the store name or its designated division (e.g., "Metro", "Supermarket", "CBD").
+
+*   **Smarter Starting Point:** This means instead of one giant `[Woolworths-National]` group, we begin Phase 2 with a set of much stronger seed groups, such as `[Woolworths-Perth-Metro]` or `[Coles-Perth-Supermarket]`.
+
+*   **The "Chiseling" Process:** The core strategy of using the Two-Ambassador system to find outliers and split groups still applies, but it now operates on these much more coherent initial blocks. This will dramatically increase efficiency and reduce the number of "schisms" encountered, as the initial assumptions are far more likely to be correct.
+
+### The "True Overlap" Metric
+*   **The Metric:** The primary metric for grouping will be **"True Overlap"**: the percentage of shared products between two stores that have the *exact same price*.
+*   **The Constraint:** This comparison must be performed on data scraped on the same day (or within a tight 48-hour window) to be valid. This is to ensure we are comparing real pricing strategy, not just stale data.
+
+### Health Checks: The Two-Ambassador System
+Instead of scraping a single ambassador, the "Intelligent Queue" will select **two** rotating ambassadors from each group for each run. This creates a system of constant, paired re-validation.
+*   **If they match:** The group is considered `[Healthy]`. The data from one can be used to infer prices for the rest of the group.
+*   **If they don't match:** This is a **Divergence Event**, which triggers the handling process below.
+
+### Handling Divergence (Flag-less Method)
+When a divergence event occurs between ambassadors A and B, we will follow a simple, flag-less rule based on the principle: **"it's better to be outdated than completely wrong."**
+1.  **Immediate Action:** Stores A and B are both immediately re-classified as temporary **outliers**. This isolates them from the main group and ensures they are scraped individually until their status is resolved.
+2.  **Main Group Status:** The rest of the group (C, D, E...) becomes "headless." No new price inferences are made for these stores. Their existing data is allowed to age gracefully.
+3.  **Resolution:** A third tie-breaker store from the group, C, is placed into a high-priority queue.
+4.  **Re-integration:** Once C is scraped, it is compared to the fresh data from A. If they match, store A is re-admitted to the group, which is now healthy again. Store B is confirmed as a true, permanent outlier and is not re-admitted.
 
 ### Granularity: Category-Level Inference
 Even stores that don't qualify for a full-store group may have identical pricing for specific categories.
@@ -41,12 +57,19 @@ Even stores that don't qualify for a full-store group may have identical pricing
 To maintain data integrity and enable the feedback loop, every price in the database must be marked with its origin.
 *   **Implementation:** The `products.Price` model must be modified to include a `source` field.
 *   **Values:** This field will have states such as `'direct_scrape'` or `'inferred_group'`.
-*   **Purpose:** This allows us to measure the accuracy of our inferences and is the primary trigger for the re-grouping logic. When a direct scrape contradicts a previous inference, the system knows that the group's stability needs to be re-evaluated.
+*   **Purpose:** This allows us to measure the accuracy of our inferences and is the primary trigger for the re-grouping logic.
 
 ## 4. Rollout & Execution
 
-### Phased Geographic Rollout ("One City at a Time")
-To become operational in at least one region sooner, the entire Discovery/Optimization process can be focused on one geographic area at a time (e.g., Brisbane). Learnings from the first city's grouping patterns can then be used to accelerate the process for the next city. This is feasible as we have latitude/longitude data for most stores.
+### Initial Rollout Strategy: The Perth Pilot
+To solve the "cold start" problem, the initial rollout will be geographically focused. We will begin with a pilot program in a single city to build our baseline dataset in a controlled environment.
+
+*   **Pilot City:** Perth, Western Australia.
+*   **Execution:**
+    1.  Establish the central geographic coordinates for Perth.
+    2.  Define a radius (e.g., 50km) to create a "Perth metropolitan area" boundary.
+    3.  All stores from all companies that fall within this geographic radius will constitute the entire cohort for the **Phase 1: Discovery** scrape.
+    4.  Once the Perth discovery is complete and its data is being managed by the **Phase 2: Optimization** model, the learnings can be applied to the next target city (e.g., Adelaide, Brisbane).
 
 ### Dynamic Re-classification
 The system must be dynamic. The "True Overlap" scores and group memberships must be re-calculated periodically to adapt to changes in store strategies. The comparison of direct vs. inferred data serves as the primary trigger for this re-evaluation.
@@ -61,3 +84,4 @@ This strategy opens up several questions that will need to be answered during im
 4.  **Canary Products:** If we implement "micro-scrapes," how many "canary" products are sufficient for a reliable spot check? How are these products selected?
 5.  **Geographic Boundaries:** How do we define the geographic boundaries for the "one city at a time" rollout (e.g., by postcode radius, council areas)?
 6.  **Data Freshness:** What is the maximum acceptable age for data used in the "True Overlap" analysis? (e.g., must be from the same 24-hour period).
+7. for woolworths/aldi and coles we actually can actually start by having all stores in the same group. then the process of discovery isnt the process of adding to the group its the process of intelligently removing and regrouping. 
