@@ -67,16 +67,17 @@ def generate_internal_company_product_crossover_report(company_name, command=Non
         descendant_categories = get_all_descendants(category)
         
         # Get products for these categories
-        category_products = all_products.filter(category__in=descendant_categories).distinct()
+        category_products_qs = all_products.filter(category__in=descendant_categories).distinct()
+        category_product_ids = set(category_products_qs.values_list('id', flat=True))
         
-        if not category_products:
+        if not category_product_ids:
             category_analysis[category.name] = 0
             continue
 
         # Filter store_products to only include products from this category tree
         category_store_products = {}
         for store, products in store_products.items():
-            category_store_products[store] = {p for p in products if p in category_products}
+            category_store_products[store] = products.intersection(category_product_ids)
 
         # Filter out stores with no products from this category
         category_store_products = {k: v for k, v in category_store_products.items() if v}
