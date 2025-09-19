@@ -21,16 +21,12 @@ A "cold start" problem exists: we cannot optimize scraping without a complete, t
 
 ## 3. Core Concepts of the Optimized Model
 
-### The "Top-Down" Grouping Philosophy with Heuristic Seeding
-Instead of starting with a single, national "monolith" group for each company, we will adopt a more intelligent "top-down" approach using logical heuristics to form more plausible initial groups.
+### The "Top-Down" Grouping Philosophy with Geographic Seeding
+To start the process, we will adopt a "top-down" approach using a single, reliable heuristic: geography.
 
-*   **Heuristic Seeding:** Before any analysis, we will pre-group stores based on data we already have. The primary heuristics will be:
-    1.  **Geography:** As defined by our pilot program (e.g., the Perth metropolitan area).
-    2.  **Store Sub-Type:** Using clues in the store name or its designated division (e.g., "Metro", "Supermarket", "CBD").
+*   **Geographic Seeding:** We will not guess store sub-types from names. Instead, we will begin by creating initial "monolith" groups based purely on geographic location (e.g., the Perth metropolitan area). This means we start Phase 2 with seed groups like `[Woolworths-Perth]` and `[Coles-Perth]`.
 
-*   **Smarter Starting Point:** This means instead of one giant `[Woolworths-National]` group, we begin Phase 2 with a set of much stronger seed groups, such as `[Woolworths-Perth-Metro]` or `[Coles-Perth-Supermarket]`.
-
-*   **The "Chiseling" Process:** The core strategy of using the Two-Ambassador system to find outliers and split groups still applies, but it now operates on these much more coherent initial blocks. This will dramatically increase efficiency and reduce the number of "schisms" encountered, as the initial assumptions are far more likely to be correct.
+*   **Discovering Sub-Types:** The true store sub-types (e.g., "Metro", "Supermarket") will be *discovered* by the system. As the Two-Ambassador health checks run, the `[Woolworths-Perth]` group will naturally be "chiseled" into smaller, more accurate sub-groups based on the actual pricing behavior of its member stores. This is a more robust, data-driven method than relying on uncertain heuristics.
 
 ### The "True Overlap" Metric
 *   **The Metric:** The primary metric for grouping will be **"True Overlap"**: the percentage of shared products between two stores that have the *exact same price*.
@@ -61,15 +57,22 @@ To maintain data integrity and enable the feedback loop, every price in the data
 
 ## 4. Rollout & Execution
 
-### Initial Rollout Strategy: The Perth Pilot
-To solve the "cold start" problem, the initial rollout will be geographically focused. We will begin with a pilot program in a single city to build our baseline dataset in a controlled environment.
+### Immediate Next Step: Geographic Clustering Algorithm
+The first piece of technical work will be to develop an algorithm that can automatically process the full list of stores (with their latitude/longitude data) and group them into distinct geographic clusters (e.g., Perth, Greater Sydney, Melbourne, etc.). This algorithm is the prerequisite for the entire phased rollout.
 
-*   **Pilot City:** Perth, Western Australia.
+### Initial Rollout Strategy: The Perth Pilot
+Once the clustering algorithm is built, the initial rollout will be geographically focused.
+
+*   **Pilot Cluster:** Perth, Western Australia.
 *   **Execution:**
-    1.  Establish the central geographic coordinates for Perth.
-    2.  Define a radius (e.g., 50km) to create a "Perth metropolitan area" boundary.
-    3.  All stores from all companies that fall within this geographic radius will constitute the entire cohort for the **Phase 1: Discovery** scrape.
-    4.  Once the Perth discovery is complete and its data is being managed by the **Phase 2: Optimization** model, the learnings can be applied to the next target city (e.g., Adelaide, Brisbane).
+    1.  Run the geographic clustering algorithm to identify the "Perth" cluster of stores.
+    2.  All stores within this cluster will constitute the cohort for the **Phase 1: Discovery** scrape.
+    3.  Once the Perth discovery is complete and its data is being managed by the **Phase 2: Optimization** model, the learnings can be applied to the next target cluster (e.g., Adelaide).
+
+### Proposed Data Model
+To support the grouping logic, the database will be extended with two new models:
+*   **`StoreGroup`:** Represents a group itself (e.g., `woolworths-perth-1`). It will have a name and a link to its parent company.
+*   **`StoreGroupMembership`:** A linking table that connects a `Store` to a `StoreGroup`. This will hold metadata about the membership, such as a `last_scraped_as_ambassador` timestamp, which is essential for the rotating ambassador logic. Outliers will be stores with no entry in this table.
 
 ### Dynamic Re-classification
 The system must be dynamic. The "True Overlap" scores and group memberships must be re-calculated periodically to adapt to changes in store strategies. The comparison of direct vs. inferred data serves as the primary trigger for this re-evaluation.
