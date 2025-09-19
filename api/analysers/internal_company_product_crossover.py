@@ -1,3 +1,4 @@
+
 import os
 import datetime
 import numpy as np
@@ -35,20 +36,11 @@ def generate_internal_company_product_crossover_report(company_name, command=Non
     # Database fullness
     database_fullness = f"{stores_with_products} / {total_stores_in_db}"
 
-    # Average percentage of goods present in store pair
-    if len(store_products) > 1:
-        _, _, _, average_percentage_matrix = calculate_overlap_matrices(store_products, stdout=command.stdout if command else None)
-        # Exclude the diagonal (self-comparison) and calculate the mean of the upper triangle
-        iu = np.triu_indices(average_percentage_matrix.shape[0], k=1)
-        average_percentage_shared = np.mean(average_percentage_matrix.to_numpy()[iu]) if iu[0].size > 0 else 0
-    else:
-        average_percentage_shared = 0
-
-    print("    Analyzing Tier 0 categories...")
-    # Tier 0 category analysis
-    tier_0_categories = Category.objects.filter(company=company, parents__isnull=True)
+    # --- Analysis Section ---
+    average_percentage_shared = 0
     category_analysis = {}
-    detailed_report_content = "" # Initialize detailed report string
+    detailed_report_content = ""
+    level_name = "Tier 0"
 
     def get_all_descendants(root_category):
         """Helper function to get all descendants for a category."""
@@ -62,65 +54,125 @@ def generate_internal_company_product_crossover_report(company_name, command=Non
                     queue.append(child)
         return descendants
 
-    # Single loop for both summary and detailed analysis
-    for category in tier_0_categories:
-        if command:
-            command.stdout.write(f"    - Processing category: {category.name}...")
-            command.stdout.flush()
-        descendant_categories = get_all_descendants(category)
-        category_products_qs = all_products.filter(category__in=descendant_categories).distinct()
-        category_product_ids = set(category_products_qs.values_list('id', flat=True))
+    if company.name.lower() == 'woolworths' and stores_with_products > 1:
+        # --- WOOLWORTHS SPECIAL LOGIC (ONE-VS-ALL) ---
+        print("    Applying special logic for Woolworths: comparing against largest store only.")
+        main_store_name = max(store_products, key=lambda k: len(store_products[k]))
+        main_store_products = store_products[main_store_name]
+        other_stores = {k: v for k, v in store_products.items() if k != main_store_name}
+        print(f"    - Largest store found: {main_store_name} ({len(main_store_products)} products)")
 
-        if not category_product_ids:
-            category_analysis[category.name] = 0
-            continue
+        # Calculate overall average
+        overall_overlaps = []
+        for other_name, other_prods in other_stores.items():
+            intersection_len = len(main_store_products.intersection(other_prods))
+            len_main = len(main_store_products)
+            len_other = len(other_prods)
+            p1 = intersection_len / len_main if len_main > 0 else 0
+            p2 = intersection_len / len_other if len_other > 0 else 0
+            overall_overlaps.append((p1 + p2) / 2)
+        average_percentage_shared = np.mean(overall_overlaps) if overall_overlaps else 0
 
-        category_store_products = {}
-        for store, products in store_products.items():
-            category_store_products[store] = products.intersection(category_product_ids)
+        # Category analysis
+        print("    Analyzing categories...")
+        start_categories = Category.objects.filter(company=company, parents__isnull=True)
         
-        category_store_products = {k: v for k, v in category_store_products.items() if v}
+        for category in start_categories:
+            if command:
+                command.stdout.write(f"    - Processing category: {category.name}...")
+                command.stdout.flush()
 
-        if len(category_store_products) > 1:
-            # Calculate matrix for the category
-            _, _, _, cat_avg_matrix = calculate_overlap_matrices(category_store_products)
+            descendant_categories = get_all_descendants(category)
+            category_product_ids = set(all_products.filter(category__in=descendant_categories).values_list('id', flat=True))
+            if not category_product_ids:
+                category_analysis[category.name] = 0
+                continue
+
+            main_store_cat_prods = main_store_products.intersection(category_product_ids)
             
-            # 1. Calculate average for the summary
-            iu_cat = np.triu_indices(cat_avg_matrix.shape[0], k=1)
-            avg_cat_shared = np.mean(cat_avg_matrix.to_numpy()[iu_cat]) if iu_cat[0].size > 0 else 0
-            category_analysis[category.name] = avg_cat_shared
-
-            # 2. Generate detailed report section for this category
+            cat_overlaps = []
             detailed_report_content += f"\nCategory: {category.name}\n"
-            store_names = cat_avg_matrix.columns
-            # Use the same upper triangle indices
-            for i, j in zip(iu_cat[0], iu_cat[1]):
-                store1 = store_names[i]
-                store2 = store_names[j]
-                overlap_percent = cat_avg_matrix.iloc[i, j]
-                # Use f-string with percentage formatting, assuming value is 0-1
-                detailed_report_content += f"  - {store1} / {store2}: {overlap_percent:.2%}\n"
+            for other_name, other_prods in other_stores.items():
+                other_store_cat_prods = other_prods.intersection(category_product_ids)
+
+                # Only compare if the other store has products in this category
+                if not other_store_cat_prods:
+                    continue
+                
+                intersection_len = len(main_store_cat_prods.intersection(other_store_cat_prods))
+                len_main_cat = len(main_store_cat_prods)
+                len_other_cat = len(other_store_cat_prods)
+
+                p1 = intersection_len / len_main_cat if len_main_cat > 0 else 0
+                p2 = intersection_len / len_other_cat if len_other_cat > 0 else 0
+                avg_p = (p1 + p2) / 2
+                cat_overlaps.append(avg_p)
+                detailed_report_content += f"  - {main_store_name} / {other_name}: {avg_p:.2%}\n"
+
+            category_analysis[category.name] = np.mean(cat_overlaps) if cat_overlaps else 0
+            
+            if command:
+                command.stdout.write(f"\r    - Processing category: {category.name}... Done.\n")
+                command.stdout.flush()
+
+    elif stores_with_products > 1:
+        # --- STANDARD LOGIC (ALL-VS-ALL) ---
+        _, _, _, average_percentage_matrix = calculate_overlap_matrices(store_products, stdout=command.stdout if command else None)
+        iu = np.triu_indices(average_percentage_matrix.shape[0], k=1)
+        average_percentage_shared = np.mean(average_percentage_matrix.to_numpy()[iu]) if iu[0].size > 0 else 0
+
+        print("    Analyzing categories...")
+        if company.name.lower() == 'iga':
+            level_name = "Tier 1"
+            tier_0_categories_qs = Category.objects.filter(company=company, parents__isnull=True)
+            start_categories = Category.objects.filter(parents__in=tier_0_categories_qs).distinct()
         else:
-            category_analysis[category.name] = 0
+            start_categories = Category.objects.filter(company=company, parents__isnull=True)
 
-        if command:
-            command.stdout.write(f"\r    - Processing category: {category.name}... Done.\n")
-            command.stdout.flush()
+        for category in start_categories:
+            if command:
+                command.stdout.write(f"    - Processing category: {category.name}...")
+                command.stdout.flush()
+            
+            descendant_categories = get_all_descendants(category)
+            category_product_ids = set(all_products.filter(category__in=descendant_categories).values_list('id', flat=True))
 
-    # Prepare report content
+            if not category_product_ids:
+                category_analysis[category.name] = 0
+                continue
+
+            category_store_products = {store: prods.intersection(category_product_ids) for store, prods in store_products.items()}
+            category_store_products = {k: v for k, v in category_store_products.items() if v}
+
+            if len(category_store_products) > 1:
+                _, _, _, cat_avg_matrix = calculate_overlap_matrices(category_store_products)
+                iu_cat = np.triu_indices(cat_avg_matrix.shape[0], k=1)
+                avg_cat_shared = np.mean(cat_avg_matrix.to_numpy()[iu_cat]) if iu_cat[0].size > 0 else 0
+                category_analysis[category.name] = avg_cat_shared
+
+                detailed_report_content += f"\nCategory: {category.name}\n"
+                store_names = cat_avg_matrix.columns
+                for i, j in zip(iu_cat[0], iu_cat[1]):
+                    detailed_report_content += f"  - {store_names[i]} / {store_names[j]}: {cat_avg_matrix.iloc[i, j]:.2%}\n"
+            else:
+                category_analysis[category.name] = 0
+
+            if command:
+                command.stdout.write(f"\r    - Processing category: {category.name}... Done.\n")
+                command.stdout.flush()
+
+    # --- Report Assembly ---
     report_content = f"Internal Company Product Crossover Report for: {company.name}\n"
     report_content += f"Generated on: {datetime.date.today()}\n"
-    report_content += "---\n"
+    report_content += "---"
     report_content += f"Total unique products for {company.name}: {total_products}\n"
     report_content += f"Database fullness: {database_fullness}\n"
     report_content += f"Average product overlap between any two stores: {average_percentage_shared:.2%}\n"
-    report_content += "---\n"
-    report_content += "Average product overlap for Tier 0 Categories:\n"
-    # Sort and format the summary analysis
+    report_content += "---"
+    report_content += f"Average product overlap for {level_name} Categories:\n"
     for category_name, avg_shared in sorted(category_analysis.items(), key=lambda item: item[1], reverse=True):
         report_content += f"  - {category_name}: {avg_shared:.2%}\n"
 
-    # Add the detailed section if it has content
     if detailed_report_content:
         report_content += "\n--- Detailed Overlap per Category ---"
         report_content += detailed_report_content
