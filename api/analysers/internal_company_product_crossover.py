@@ -1,4 +1,3 @@
-
 import os
 import datetime
 import numpy as np
@@ -49,6 +48,7 @@ def generate_internal_company_product_crossover_report(company_name, command=Non
     # Tier 0 category analysis
     tier_0_categories = Category.objects.filter(company=company, parents__isnull=True)
     category_analysis = {}
+    detailed_report_content = "" # Initialize detailed report string
 
     def get_all_descendants(root_category):
         """Helper function to get all descendants for a category."""
@@ -62,45 +62,68 @@ def generate_internal_company_product_crossover_report(company_name, command=Non
                     queue.append(child)
         return descendants
 
+    # Single loop for both summary and detailed analysis
     for category in tier_0_categories:
-        # Get all descendant categories
+        if command:
+            command.stdout.write(f"    - Processing category: {category.name}...")
+            command.stdout.flush()
         descendant_categories = get_all_descendants(category)
-        
-        # Get products for these categories
         category_products_qs = all_products.filter(category__in=descendant_categories).distinct()
         category_product_ids = set(category_products_qs.values_list('id', flat=True))
-        
+
         if not category_product_ids:
             category_analysis[category.name] = 0
             continue
 
-        # Filter store_products to only include products from this category tree
         category_store_products = {}
         for store, products in store_products.items():
             category_store_products[store] = products.intersection(category_product_ids)
-
-        # Filter out stores with no products from this category
+        
         category_store_products = {k: v for k, v in category_store_products.items() if v}
 
         if len(category_store_products) > 1:
+            # Calculate matrix for the category
             _, _, _, cat_avg_matrix = calculate_overlap_matrices(category_store_products)
+            
+            # 1. Calculate average for the summary
             iu_cat = np.triu_indices(cat_avg_matrix.shape[0], k=1)
             avg_cat_shared = np.mean(cat_avg_matrix.to_numpy()[iu_cat]) if iu_cat[0].size > 0 else 0
             category_analysis[category.name] = avg_cat_shared
+
+            # 2. Generate detailed report section for this category
+            detailed_report_content += f"\nCategory: {category.name}\n"
+            store_names = cat_avg_matrix.columns
+            # Use the same upper triangle indices
+            for i, j in zip(iu_cat[0], iu_cat[1]):
+                store1 = store_names[i]
+                store2 = store_names[j]
+                overlap_percent = cat_avg_matrix.iloc[i, j]
+                # Use f-string with percentage formatting, assuming value is 0-1
+                detailed_report_content += f"  - {store1} / {store2}: {overlap_percent:.2%}\n"
         else:
             category_analysis[category.name] = 0
 
+        if command:
+            command.stdout.write(f"\r    - Processing category: {category.name}... Done.\n")
+            command.stdout.flush()
+
     # Prepare report content
     report_content = f"Internal Company Product Crossover Report for: {company.name}\n"
-    report_content += f"Generated on: {datetime.date.today()}"
+    report_content += f"Generated on: {datetime.date.today()}\n"
     report_content += "---\n"
     report_content += f"Total unique products for {company.name}: {total_products}\n"
     report_content += f"Database fullness: {database_fullness}\n"
     report_content += f"Average product overlap between any two stores: {average_percentage_shared:.2%}\n"
     report_content += "---\n"
     report_content += "Average product overlap for Tier 0 Categories:\n"
+    # Sort and format the summary analysis
     for category_name, avg_shared in sorted(category_analysis.items(), key=lambda item: item[1], reverse=True):
         report_content += f"  - {category_name}: {avg_shared:.2%}\n"
+
+    # Add the detailed section if it has content
+    if detailed_report_content:
+        report_content += "\n--- Detailed Overlap per Category ---"
+        report_content += detailed_report_content
 
     # Write report to file
     output_dir = os.path.join('api', 'data', 'analysis', 'internal_company_product_crossover')
