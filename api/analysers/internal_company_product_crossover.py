@@ -7,7 +7,7 @@ from products.models import Product
 from api.utils.analysis_utils.product_overlap.get_product_sets_by_entity import get_product_sets_by_entity
 from api.utils.analysis_utils.product_overlap.calculate_overlap_matrices import calculate_overlap_matrices
 
-def generate_internal_company_product_crossover_report(company_name):
+def generate_internal_company_product_crossover_report(company_name, command=None):
     """
     Analyzes the product overlap between stores of a specific company and generates a text report.
     """
@@ -20,6 +20,7 @@ def generate_internal_company_product_crossover_report(company_name):
     print(f"--- Generating Internal Company Product Crossover Report for {company.name} ---")
 
     # Get all products for the company
+    print("    Fetching all products for stores in company...")
     all_products = Product.objects.filter(prices__store__company=company).distinct()
     total_products = all_products.count()
 
@@ -28,6 +29,7 @@ def generate_internal_company_product_crossover_report(company_name):
     total_stores_in_db = all_stores.count()
 
     # Get product sets for all stores in the company
+    print("    Fetching product sets for each store...")
     store_products = get_product_sets_by_entity(entity_type='store', company_name=company.name)
     stores_with_products = len(store_products)
 
@@ -36,20 +38,33 @@ def generate_internal_company_product_crossover_report(company_name):
 
     # Average percentage of goods present in store pair
     if len(store_products) > 1:
-        _, _, _, average_percentage_matrix = calculate_overlap_matrices(store_products)
+        _, _, _, average_percentage_matrix = calculate_overlap_matrices(store_products, stdout=command.stdout if command else None)
         # Exclude the diagonal (self-comparison) and calculate the mean of the upper triangle
         iu = np.triu_indices(average_percentage_matrix.shape[0], k=1)
         average_percentage_shared = np.mean(average_percentage_matrix.to_numpy()[iu]) if iu[0].size > 0 else 0
     else:
         average_percentage_shared = 0
 
+    print("    Analyzing Tier 0 categories...")
     # Tier 0 category analysis
     tier_0_categories = Category.objects.filter(company=company, parents__isnull=True)
     category_analysis = {}
 
+    def get_all_descendants(root_category):
+        """Helper function to get all descendants for a category."""
+        descendants = {root_category}
+        queue = [root_category]
+        while queue:
+            current_cat = queue.pop(0)
+            for child in current_cat.subcategories.all():
+                if child not in descendants:
+                    descendants.add(child)
+                    queue.append(child)
+        return descendants
+
     for category in tier_0_categories:
         # Get all descendant categories
-        descendant_categories = category.get_descendants(include_self=True)
+        descendant_categories = get_all_descendants(category)
         
         # Get products for these categories
         category_products = all_products.filter(category__in=descendant_categories).distinct()

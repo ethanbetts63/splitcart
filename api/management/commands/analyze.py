@@ -142,7 +142,7 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.ERROR(
                     'The --company-name argument is required for the internal_crossover report.'))
                 return
-            generate_internal_company_product_crossover_report(company_name)
+            generate_internal_company_product_crossover_report(company_name, self)
 
         else:
             self.stdout.write(self.style.WARNING(
