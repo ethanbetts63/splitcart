@@ -37,6 +37,7 @@ class ProductScraperWoolworths(BaseProductScraper):
 
         store_name_slug = f"{slugify(self.store_name)}-{self.store_id}"
         self.jsonl_writer = JsonlWriter(self.company, store_name_slug, self.state)
+        return True
 
     def get_work_items(self) -> list:
         """

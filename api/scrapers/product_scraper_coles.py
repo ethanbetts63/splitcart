@@ -66,6 +66,8 @@ class ColesScraper(BaseProductScraper):
             self.command.stdout.write(f"A critical error occurred during the Selenium phase: {e}\n")
             raise e
 
+        return True
+
     def get_work_items(self) -> list:
         """Returns the list of categories to scrape."""
         return self.categories_to_fetch
