@@ -37,7 +37,7 @@ class ClusterMapGenerator(BaseMapGenerator):
 
         data = []
         for store in stores:
-            group_id = store.group_membership.group.id if hasattr(store, 'group_membership') else -1
+            group_id = store.group_membership.group.id if hasattr(store, 'group_membership') and store.group_membership is not None else -1
             data.append({
                 'latitude': float(store.latitude),
                 'longitude': float(store.longitude),
@@ -61,7 +61,7 @@ class ClusterMapGenerator(BaseMapGenerator):
         self.output_path = os.path.join(output_dir, output_filename)
 
     def _plot_data(self):
-        """Plots clustered stores with unique colors and outliers in black."""
+        """Plots clustered stores, adding top 10 largest clusters to the legend."""
         # Plot outliers first
         outliers = self.gdf[self.gdf['group_id'] == -1]
         if not outliers.empty:
@@ -72,24 +72,40 @@ class ClusterMapGenerator(BaseMapGenerator):
         # Plot clustered stores
         clustered = self.gdf[self.gdf['group_id'] != -1]
         if not clustered.empty:
+            # Identify top 10 largest clusters
+            cluster_counts = clustered['group_id'].value_counts()
+            top_10_clusters = cluster_counts.nlargest(10).index.tolist()
+
             unique_groups = sorted(clustered['group_id'].unique())
             colors = plt.cm.get_cmap('turbo', len(unique_groups))
             color_map = {group_id: colors(i) for i, group_id in enumerate(unique_groups)}
 
             for group_id, color in color_map.items():
                 subset = clustered[clustered['group_id'] == group_id]
+                count = len(subset)
+                label = None  # Default to no label
+
+                # Only create a label for the top 10 clusters
+                if group_id in top_10_clusters:
+                    try:
+                        # Fetch the group name for a more descriptive label
+                        group_name = StoreGroup.objects.get(id=group_id).name
+                        label = f"{group_name} ({count})"
+                    except StoreGroup.DoesNotExist:
+                        label = f"Cluster {group_id} ({count})"
+
                 self.ax.scatter(subset.geometry.x, subset.geometry.y,
                                 transform=ccrs.PlateCarree(), color=color,
-                                s=20, alpha=0.8, edgecolors='k', linewidths=0.5)
+                                label=label, s=20, alpha=0.8, edgecolors='k', linewidths=0.5)
 
     def _set_title_and_legend(self):
-        """Sets the title and a minimal legend for the cluster map."""
+        """Sets the title and a legend for the top clusters."""
         title = f'{self.company_name} Geographic Clusters\n'
         title += f'({self.num_clusters} clusters found, {self.num_outliers} outliers)'
         self.ax.set_title(title)
-        # We create a legend only for the outliers, if they exist.
-        if self.num_outliers > 0:
-            self.ax.legend()
+
+        # Create a legend for the labeled items (top 10 clusters + outliers)
+        self.ax.legend(title="Top 10 Clusters & Outliers")
 
 def generate_cluster_map(company_name):
     """Wrapper function to instantiate and run the ClusterMapGenerator."""
