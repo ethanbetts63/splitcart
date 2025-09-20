@@ -93,7 +93,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR(f"Store with PK {store_pk} not found."))
 
     def _scrape_batch(self, options):
-        run_all = not any(options[company] for company in ['woolworths', 'coles', 'aldi', 'iga'])
+        run_all = not any(options[company] for company in ['woolworths', 'coles', 'aldi', 'iga', 'gs1'])
         batch_size = options['batch_size']
 
         if options['woolworths'] or run_all:
