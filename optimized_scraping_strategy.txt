@@ -10,9 +10,17 @@ A "cold start" problem exists: we cannot optimize scraping without a complete, t
 
 ### Phase 1: Discovery & Baseline
 
-*   **Objective:** Achieve 100% scrape coverage of all stores for a given company to build a foundational dataset.
-*   **Execution:** In this phase, the `scrape` command will operate in a simple "brute-force" mode, prioritizing stores that have never been scraped or have the oldest scrape dates.
-*   **Critical Constraint:** This phase is essential for calculating the "True Overlap" metric, as it requires comparing prices from different stores that were scraped on the same day (or as close as possible).
+*   **Objective:** Achieve 100% scrape coverage of all stores to build a foundational dataset for the Phase 2 analysis.
+
+*   **Execution: The 80/20 Strategy:** The discovery process will be guided by a blended strategy to ensure both focused completion of major areas and broad, exploratory coverage.
+    1.  The system first identifies the largest geographic cluster (by store count) that contains unscraped stores. This becomes the "Primary Target Cluster".
+    2.  The scraping process then follows an 80/20 rule: for every 5 stores scraped, 4 will be from the primary target and 1 will be from outside of it.
+        *   **80% of Scrapes:** The system selects an unscraped store from within the "Primary Target Cluster". This provides a focused effort to rapidly achieve data completeness for a major geographic area.
+        *   **20% of Scrapes:** The system selects a random, unscraped store from anywhere outside the primary cluster. This includes smaller clusters and regional outliers, ensuring the entire dataset makes steady progress.
+    3.  Once all stores in the "Primary Target Cluster" have been scraped, the system designates the next largest unscraped cluster as the new primary target, and the process repeats.
+    4.  This phase is complete when there are no unscraped stores remaining.
+
+*   **Critical Constraint:** The goal of this phase is to produce a "time-synchronized" dataset, which is essential for the "True Overlap" analysis. This means scraping all stores in a given region as quickly as possible.
 
 ### Phase 2: Optimized & Dynamic Scraping
 
@@ -37,12 +45,11 @@ Instead of scraping a single ambassador, the "Intelligent Queue" will select **t
 *   **If they match:** The group is considered `[Healthy]`. The data from one can be used to infer prices for the rest of the group.
 *   **If they don't match:** This is a **Divergence Event**, which triggers the handling process below.
 
-### Handling Divergence (Flag-less Method)
-When a divergence event occurs between ambassadors A and B, we will follow a simple, flag-less rule based on the principle: **"it's better to be outdated than completely wrong."**
-1.  **Immediate Action:** Stores A and B are both immediately re-classified as temporary **outliers**. This isolates them from the main group and ensures they are scraped individually until their status is resolved.
-2.  **Main Group Status:** The rest of the group (C, D, E...) becomes "headless." No new price inferences are made for these stores. Their existing data is allowed to age gracefully.
-3.  **Resolution:** A third tie-breaker store from the group, C, is placed into a high-priority queue.
-4.  **Re-integration:** Once C is scraped, it is compared to the fresh data from A. If they match, store A is re-admitted to the group, which is now healthy again. Store B is confirmed as a true, permanent outlier and is not re-admitted.
+### Handling Divergence (Status Flag Method)
+When a two-ambassador health check fails, the decoupled `update_db` and `ScrapeScheduler` processes will communicate indirectly via the database.
+1.  **Detection (`update_db`):** After processing the files for ambassadors A and B and finding a mismatch, the `update_db` process will "stamp" their parent `StoreGroup`. It sets the group's `status` to `DIVERGENCE_DETECTED` and populates the `tie_breaker_store` field with a third store (C) from the group.
+2.  **Prioritization (`ScrapeScheduler`):** On its next run, the scheduler's highest priority is to query for any groups with the `DIVERGENCE_DETECTED` status. It will read the `tie_breaker_store` for each and place these stores at the top of the scrape queue.
+3.  **Resolution (`update_db`):** After the tie-breaker store C is scraped, the `update_db` process will detect it's resolving a divergence. It will perform the 3-way comparison, eject the rogue store by deleting its `StoreGroupMembership`, and finally set the `StoreGroup` status back to `HEALTHY`, clearing the `tie_breaker_store` field.
 
 ### Granularity: Category-Level Inference
 Even stores that don't qualify for a full-store group may have identical pricing for specific categories.
@@ -57,8 +64,8 @@ To maintain data integrity and enable the feedback loop, every price in the data
 
 ## 4. Rollout & Execution
 
-### Immediate Next Step: Geographic Clustering Algorithm
-The first piece of technical work will be to develop an algorithm that can automatically process the full list of stores (with their latitude/longitude data) and group them into distinct geographic clusters (e.g., Perth, Greater Sydney, Melbourne, etc.). This algorithm is the prerequisite for the entire phased rollout.
+### Geographic Clustering Algorithm
+A command, `cluster_stores`, has been implemented to serve as the foundation for the geographic rollout. This command uses the DBSCAN algorithm to process all stores for each company and automatically group them into distinct geographic clusters based on their location density. It saves these groups to the database, identifying isolated regional stores as outliers. A corresponding `visualize_clusters` command has also been created to generate map images of these results, providing a visual way to verify the clusters. This completes the prerequisite for the phased rollout.
 
 ### Initial Rollout Strategy: The Perth Pilot
 Once the clustering algorithm is built, the initial rollout will be geographically focused.
@@ -71,11 +78,23 @@ Once the clustering algorithm is built, the initial rollout will be geographical
 
 ### Proposed Data Model
 To support the grouping logic, the database will be extended with two new models:
-*   **`StoreGroup`:** Represents a group itself (e.g., `woolworths-perth-1`). It will have a name and a link to its parent company.
-*   **`StoreGroupMembership`:** A linking table that connects a `Store` to a `StoreGroup`. This will hold metadata about the membership, such as a `last_scraped_as_ambassador` timestamp, which is essential for the rotating ambassador logic. Outliers will be stores with no entry in this table.
+*   **`StoreGroup`:** Represents a group itself. It will have a name, a link to its parent company, and an `is_active` flag. To manage divergence events, it will also have:
+    *   `status`: A field to track the group's health (e.g., `HEALTHY`, `DIVERGENCE_DETECTED`).
+    *   `tie_breaker_store`: A nullable link to a `Store` that is designated for a priority scrape to resolve a divergence.
+*   **`StoreGroupMembership`:** A linking table that connects a `Store` to a `StoreGroup`. This will hold metadata about the membership, such as a `last_scraped_as_ambassador` timestamp. Outliers will be stores with no entry in this table.
 
 ### Dynamic Re-classification
 The system must be dynamic. The "True Overlap" scores and group memberships must be re-calculated periodically to adapt to changes in store strategies. The comparison of direct vs. inferred data serves as the primary trigger for this re-evaluation.
+
+### Scrape Scheduler Implementation
+The core intelligence of the scraping process will be encapsulated in a dedicated `ScrapeScheduler` class. This class will be responsible for generating the queue of stores to be scraped in any given run. It will have two primary methods, corresponding to the two phases of the project:
+
+*   **`get_discovery_mode_queue()`:** This method, which has already been designed, handles the initial discovery phase. It implements the 80/20 strategy by building a queue that is 80% focused on completing the largest unscraped geographic cluster and 20% focused on randomly exploring all other unscraped stores and outliers.
+
+*   **`get_optimization_mode_queue()`:** This method will be developed for Phase 2. It will generate the daily scrape queue with a different set of priorities:
+    1.  **Resolving Divergence:** First, it will queue any "tie-breaker" stores needed to resolve ambiguity in groups that have failed a health check.
+    2.  **Maintaining Outliers:** Next, it will queue the outlier store that has the most outdated data.
+    3.  **Routine Health Checks:** Finally, it will queue two rotating ambassadors from the healthy group that has gone the longest without a check.
 
 ## 5. Open Questions & Key Decisions
 
