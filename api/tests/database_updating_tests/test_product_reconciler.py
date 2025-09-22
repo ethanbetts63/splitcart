@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 from api.database_updating_classes.product_reconciler import ProductReconciler
 from products.models import Product, Price
 from companies.models import Store
-from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory, ProductBrandFactory
+from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory, ProductBrandFactory, PriceRecordFactory
 from companies.tests.test_helpers.model_factories import StoreFactory
 
 class ProductReconcilerTests(TestCase):
@@ -51,11 +51,11 @@ class ProductReconcilerTests(TestCase):
         translations = {duplicate.normalized_name_brand_size: canonical.normalized_name_brand_size}
 
         # Price that should be moved
-        PriceFactory(product=duplicate, store=self.store, scraped_date=date.today())
+        PriceFactory(price_record=PriceRecordFactory(product=duplicate), store=self.store, scraped_date=date.today())
         # Price that should be deleted (same date as canonical's price)
-        PriceFactory(product=duplicate, store=self.store, scraped_date=date.today() - timedelta(days=1))
+        PriceFactory(price_record=PriceRecordFactory(product=duplicate), store=self.store, scraped_date=date.today() - timedelta(days=1))
         # Canonical's original price
-        PriceFactory(product=canonical, store=self.store, scraped_date=date.today() - timedelta(days=1))
+        PriceFactory(price_record=PriceRecordFactory(product=canonical), store=self.store, scraped_date=date.today() - timedelta(days=1))
 
         self.assertEqual(Price.objects.count(), 3)
 

@@ -50,6 +50,7 @@ class PriceFactory(DjangoModelFactory):
     is_available = factory.Faker('boolean')
     is_active = True
     scraped_date = factory.Faker('date_object')
+    normalized_key = factory.Sequence(lambda n: f'key_{n}')
 
 class ProductBrandFactory(DjangoModelFactory):
     class Meta:
