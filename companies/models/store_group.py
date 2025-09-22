@@ -4,9 +4,15 @@ class StoreGroup(models.Model):
     """
     Represents a geographic or logical cluster of stores belonging to a single company.
     """
+    STATUS_CHOICES = [
+        ('HEALTHY', 'Healthy'),
+        ('DIVERGENCE_DETECTED', 'Divergence Detected'),
+    ]
+
     name = models.CharField(max_length=255, unique=True)
     company = models.ForeignKey('companies.Company', on_delete=models.CASCADE, related_name='store_groups')
     is_active = models.BooleanField(default=True)
+    status = models.CharField(max_length=25, choices=STATUS_CHOICES, default='HEALTHY')
 
     # The current source of truth for the group's pricing
     ambassador = models.ForeignKey(
@@ -26,4 +32,3 @@ class StoreGroup(models.Model):
 
     def __str__(self):
         return self.name
-
