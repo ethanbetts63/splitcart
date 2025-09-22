@@ -1,5 +1,5 @@
 from django.db import transaction
-from products.models import Product, Price, ProductBrand
+from products.models import Product, Price, ProductBrand, PriceRecord
 from .category_manager import CategoryManager
 from api.utils.price_normalizer import PriceNormalizer
 
@@ -25,37 +25,43 @@ class UnitOfWork:
 
         scraped_date = product_details.get('scraped_date')
         if not scraped_date:
-            # Or handle this error more gracefully
             return
 
-        # Generate normalized_key for the price
+        # Step 1 & 2: Get or Create PriceRecord
+        price_record, _ = PriceRecord.objects.get_or_create(
+            product=product,
+            price=price_value,
+            was_price=product_details.get('price_was'),
+            unit_price=product_details.get('unit_price'),
+            unit_of_measure=product_details.get('unit_of_measure'),
+            per_unit_price_string=product_details.get('per_unit_price_string'),
+            is_on_special=product_details.get('is_on_special', False)
+        )
+
+        # Step 3: Calculate normalized_key
         price_data = {
             'product_id': product.id,
             'store_id': store.id,
-            'price': price_value,
+            'price': price_value, # Still needed for the key
             'date': scraped_date
         }
         normalizer = PriceNormalizer(price_data=price_data, company=store.company.name)
         normalized_key = normalizer.get_normalized_key()
 
         if not normalized_key:
-            # Or handle this error
             return
 
+        # Step 4 & 5: Instantiate and append lightweight Price object
         self.prices_to_create.append(
             Price(
+                price_record=price_record,
                 product=product,
                 store=store,
-                price=price_value,
                 sku=product_details.get('sku'),
                 scraped_date=scraped_date,
                 normalized_key=normalized_key,
                 is_available=product_details.get('is_available'),
-                is_on_special=product_details.get('is_on_special', False),
-                was_price=product_details.get('price_was'),
-                unit_price=product_details.get('unit_price'),
-                unit_of_measure=product_details.get('unit_of_measure'),
-                per_unit_price_string=product_details.get('per_unit_price_string')
+                source='direct_scrape'
             )
         )
 
