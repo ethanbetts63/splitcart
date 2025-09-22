@@ -9,31 +9,32 @@ class GroupOrchestrator:
     Orchestrates the process of verifying group integrity after new data has been scraped.
     It compares new 'Candidate' stores against the group's 'Ambassador' to detect any divergence.
     """
-    def __init__(self, recently_scraped_stores, unit_of_work: UnitOfWork):
-        self.candidates = recently_scraped_stores
+    def __init__(self, unit_of_work: UnitOfWork):
         self.uow = unit_of_work
         self.true_overlap_threshold = 95.0  # e.g., 95%
 
     def run(self):
         """Main entry point to run the group integrity check."""
         print("Starting group integrity check...")
-        groups_to_check = self._group_candidates()
-
-        for group, candidates_in_group in groups_to_check.items():
-            self._perform_health_check(group, candidates_in_group)
         
-        print("Group integrity check complete.")
+        groups_with_candidates = StoreGroup.objects.filter(candidates__isnull=False).distinct()
+        
+        if not groups_with_candidates.exists():
+            print("No groups with candidates found to check.")
+            return
 
-    def _group_candidates(self):
-        """Groups candidate stores by their parent StoreGroup."""
-        grouped = {}
-        for store in self.candidates:
-            if hasattr(store, 'group_membership'):
-                group = store.group_membership.group
-                if group not in grouped:
-                    grouped[group] = []
-                grouped[group].append(store)
-        return grouped
+        for group in groups_with_candidates:
+            # Note: Convert queryset to list to avoid issues with modification during iteration
+            candidates_in_group = list(group.candidates.all())
+            if not candidates_in_group:
+                continue
+
+            self._perform_health_check(group, candidates_in_group)
+            
+            # Stage the group for candidate cleanup
+            self.uow.add_group_to_clear_candidates(group)
+
+        print("Group integrity check complete.")
 
     def _perform_health_check(self, group, candidates):
         """

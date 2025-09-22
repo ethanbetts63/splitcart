@@ -10,6 +10,7 @@ class UnitOfWork:
         self.prices_to_create = []
         self.products_to_update = []
         self.brands_to_update = []
+        self.groups_to_clear_candidates = []
         self.category_manager = CategoryManager(command)
 
     def add_new_product(self, product_instance, product_details):
