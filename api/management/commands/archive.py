@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from api.utils.archive.database_archiver import DatabaseArchiver
+from api.utils.archive_db.database_archiver import DatabaseArchiver
 
 class Command(BaseCommand):
     help = 'Archives all database models to individual JSON files.'

@@ -28,7 +28,7 @@ class GroupOrchestrator:
         """Groups candidate stores by their parent StoreGroup."""
         grouped = {}
         for store in self.candidates:
-            if store.group_membership:
+            if hasattr(store, 'group_membership'):
                 group = store.group_membership.group
                 if group not in grouped:
                     grouped[group] = []
