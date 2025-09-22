@@ -86,7 +86,7 @@ class Command(BaseCommand):
 
             if scraper:
                 scraper.run()
-                store.last_scraped_products = timezone.now()
+                store.last_scraped = timezone.now()
                 store.save()
 
         except Store.DoesNotExist:
@@ -101,7 +101,7 @@ class Command(BaseCommand):
             try:
                 woolworths_company = Company.objects.get(name="Woolworths")
                 stores = Store.objects.filter(company=woolworths_company, is_active=True, division__name__iexact='supermarkets')
-                stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
+                stores_to_scrape = stores.order_by('last_scraped')[:batch_size]
                 if not stores_to_scrape:
                     self.stdout.write(self.style.WARNING('No active Woolworths stores found to scrape.'))
                 else:
@@ -118,7 +118,7 @@ class Command(BaseCommand):
                                 store_name=store.store_name, state=store.state, categories_to_fetch=categories
                             )
                             scraper.run()
-                            store.last_scraped_products = timezone.now()
+                            store.last_scraped = timezone.now()
                             store.save()
             except Company.DoesNotExist:
                 self.stdout.write(self.style.ERROR('Company "Woolworths" not found.'))
@@ -128,7 +128,7 @@ class Command(BaseCommand):
             try:
                 coles_company = Company.objects.get(name="Coles")
                 stores = Store.objects.filter(company=coles_company, is_active=True)
-                stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
+                stores_to_scrape = stores.order_by('last_scraped')[:batch_size]
                 if not stores_to_scrape:
                     self.stdout.write(self.style.WARNING('No active Coles stores found to scrape.'))
                 else:
@@ -145,7 +145,7 @@ class Command(BaseCommand):
                                 store_name=store.store_name, state=store.state, categories_to_fetch=categories
                             )
                             scraper.run()
-                            store.last_scraped_products = timezone.now()
+                            store.last_scraped = timezone.now()
                             store.save()
             except Company.DoesNotExist:
                 self.stdout.write(self.style.ERROR('Company "Coles" not found.'))
@@ -155,7 +155,7 @@ class Command(BaseCommand):
             try:
                 aldi_company = Company.objects.get(name="Aldi")
                 stores = Store.objects.filter(company=aldi_company, is_active=True)
-                stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
+                stores_to_scrape = stores.order_by('last_scraped')[:batch_size]
                 if not stores_to_scrape:
                     self.stdout.write(self.style.WARNING('No active Aldi stores found to scrape.'))
                 else:
@@ -168,7 +168,7 @@ class Command(BaseCommand):
                             store_name=store.store_name, state=store.state
                         )
                         scraper.run()
-                        store.last_scraped_products = timezone.now()
+                        store.last_scraped = timezone.now()
                         store.save()
             except Company.DoesNotExist:
                 self.stdout.write(self.style.ERROR('Company "Aldi" not found.'))
@@ -178,7 +178,7 @@ class Command(BaseCommand):
             try:
                 iga_company = Company.objects.get(name="Iga")
                 stores = Store.objects.filter(company=iga_company, is_active=True)
-                stores_to_scrape = stores.order_by('last_scraped_products')[:batch_size]
+                stores_to_scrape = stores.order_by('last_scraped')[:batch_size]
                 if not stores_to_scrape:
                     self.stdout.write(self.style.WARNING('No active IGA stores found to scrape.'))
                 else:
@@ -191,7 +191,7 @@ class Command(BaseCommand):
                             retailer_store_id=store.retailer_store_id, store_name=store.store_name, state=store.state
                         )
                         scraper.run()
-                        store.last_scraped_products = timezone.now()
+                        store.last_scraped = timezone.now()
                         store.save()
             except Company.DoesNotExist:
                 self.stdout.write(self.style.ERROR('Company "Iga" not found.'))

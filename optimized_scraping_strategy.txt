@@ -127,6 +127,5 @@ This strategy opens up several questions that will need to be answered during im
 1.  **Thresholds:** What is the initial "True Overlap" percentage required to form a group (95%, 98%)? What level of price deviation in a spot-check triggers a full re-scrape?
 2.  **Re-analysis Frequency:** How often should the full, system-wide re-analysis of all groups be performed (e.g., weekly, monthly, quarterly)?
 3.  **Ambassador Selection:** When rotating an ambassador, is the selection random, or round-robin?
-4.  **Canary Products:** If we implement "micro-scrapes," how many "canary" products are sufficient for a reliable spot check? How are these products selected?
 6.  **Data Freshness:** What is the maximum acceptable age for data used in the "True Overlap" analysis? (e.g., must be from the same 24-hour period).
 7.  **Future Performance Optimizations:** For the "re-homing" process, could we use more advanced techniques like data fingerprinting (e.g., MD5 hashing for perfect matches, or SimHash for near-matches) to accelerate finding candidate groups even faster than the two-stage check?

@@ -63,6 +63,17 @@ class Price(models.Model):
         help_text="Whether this is the latest price record for the product at this store."
     )
     
+    SOURCE_CHOICES = [
+        ('direct_scrape', 'Direct Scrape'),
+        ('inferred_group', 'Inferred from Group'),
+    ]
+    source = models.CharField(
+        max_length=20,
+        choices=SOURCE_CHOICES,
+        default='direct_scrape',
+        help_text="How the price was obtained: from a direct scrape or inferred from a group ambassador."
+    )
+    
     scraped_date = models.DateField()
     
     normalized_key = models.CharField(max_length=255, unique=True, db_index=True)

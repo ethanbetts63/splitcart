@@ -154,7 +154,7 @@ class Store(models.Model):
         auto_now=True,
         help_text="The date and time when the stores details were last updated."
     )
-    last_scraped_products = models.DateTimeField(
+    last_scraped = models.DateTimeField(
         null=True,
         blank=True,
         help_text="The date and time when the store's products were last scraped."
