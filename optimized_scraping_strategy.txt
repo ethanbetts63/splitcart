@@ -20,7 +20,7 @@ A "cold start" problem exists: we cannot optimize scraping without a complete, t
     3.  Once all stores in the "Primary Target Cluster" have been scraped, the system designates the next largest unscraped cluster as the new primary target, and the process repeats.
     4.  This phase is complete when there are no unscraped stores remaining.
 
-*   **Critical Constraint:** The goal of this phase is to produce a "time-synchronized" dataset, which is essential for the "True Overlap" analysis. This means scraping all stores in a given region as quickly as possible.
+*   **Critical Constraint:** The goal of this phase is to produce a "time-synchronized" dataset, which is essential for the "True Overlap" analysis. This means scraping all stores in a given region as quickly as possible. "time-synchronized"being is a key challenge is there is just simply a limitation on how many stores can be scraped in a short enough period that you can call the data "time-synchronized".
 
 ### Phase 2: Optimized & Dynamic Scraping
 
@@ -28,6 +28,13 @@ A "cold start" problem exists: we cannot optimize scraping without a complete, t
 *   **Execution:** Once the baseline is established and the initial groups are formed, the `scrape` command's logic changes to the "Intelligent Queue" model. This is the ongoing operational state.
 
 ## 3. Core Concepts of the Optimized Model
+
+### Key Terminology
+To ensure clarity, we will use the following precise terms:
+*   **True Overlap:** The primary metric for grouping. It is the percentage of shared products between two stores that have the exact same price, based on data scraped within the same tight time window.
+*   **The Ambassador:** For each group, one store is designated the official Ambassador. It serves as the single "source of truth" for the group's current pricing. This is a rolling title, passed to the most recently confirmed matching store.
+*   **The Candidate:** A store selected by the `ScrapeScheduler` for a routine health check. Its data is tested against the group's current Ambassador.
+*   **The Rogue:** A store that was previously a member of a group but is found to no longer match the Ambassador's pricing. It is ejected from the group and becomes an outlier.
 
 ### The "Top-Down" Grouping Philosophy with Geographic Seeding
 To start the process, we will adopt a "top-down" approach using a single, reliable heuristic: geography.
@@ -40,16 +47,27 @@ To start the process, we will adopt a "top-down" approach using a single, reliab
 *   **The Metric:** The primary metric for grouping will be **"True Overlap"**: the percentage of shared products between two stores that have the *exact same price*.
 *   **The Constraint:** This comparison must be performed on data scraped on the same day (or within a tight 48-hour window) to be valid. This is to ensure we are comparing real pricing strategy, not just stale data.
 
-### Health Checks: The Two-Ambassador System
-Instead of scraping a single ambassador, the "Intelligent Queue" will select **two** rotating ambassadors from each group for each run. This creates a system of constant, paired re-validation.
-*   **If they match:** The group is considered `[Healthy]`. The data from one can be used to infer prices for the rest of the group.
-*   **If they don't match:** This is a **Divergence Event**, which triggers the handling process below.
+### Group Maintenance: The Ambassador & Candidate Workflow
+This new model provides a clear and robust process for maintaining group integrity. The `ScrapeScheduler` will still scrape pairs of `Candidates` for each health check, but the `update_db` process now follows this logic:
 
-### Handling Divergence (Status Flag Method)
-When a two-ambassador health check fails, the decoupled `update_db` and `ScrapeScheduler` processes will communicate indirectly via the database.
-1.  **Detection (`update_db`):** After processing the files for ambassadors A and B and finding a mismatch, the `update_db` process will "stamp" their parent `StoreGroup`. It sets the group's `status` to `DIVERGENCE_DETECTED` and populates the `tie_breaker_store` field with a third store (C) from the group.
-2.  **Prioritization (`ScrapeScheduler`):** On its next run, the scheduler's highest priority is to query for any groups with the `DIVERGENCE_DETECTED` status. It will read the `tie_breaker_store` for each and place these stores at the top of the scrape queue.
-3.  **Resolution (`update_db`):** After the tie-breaker store C is scraped, the `update_db` process will detect it's resolving a divergence. It will perform the 3-way comparison, eject the rogue store by deleting its `StoreGroupMembership`, and finally set the `StoreGroup` status back to `HEALTHY`, clearing the `tie_breaker_store` field.
+1.  **Fetch Data:** The grouper receives the data for one or more new `Candidate` stores (e.g., C1 and C2) from a specific group. It also fetches the group's current, official `Ambassador` (A) from the database.
+
+2.  **Perform Check:** It compares the first Candidate (C1) to the Ambassador (A) using the "True Overlap" metric.
+
+3.  **Handle Success:** If C1 is a match with A, the group is healthy. C1's data is used to infer new prices for all other members of the group. The "torch is passed": C1's `StoreGroupMembership` is flagged as the new `is_ambassador`, and the old ambassador's flag is removed. The process is complete.
+
+4.  **Handle Simple Divergence (Fallback):** If C1 does *not* match A, the grouper uses the second Candidate (C2) as an immediate fallback. It compares C2 to the Ambassador A.
+    *   If C2 matches A, the group is still healthy. C1 is identified as a `Rogue` and is ejected from the group (its `StoreGroupMembership` is deleted). C2's data is used for inference, and C2 becomes the new `Ambassador`.
+
+5.  **Handle Major Divergence (Schism):** If C1 does not match A, and C2 *also* does not match A, this signals a major problem. The Ambassador itself may be out of date, or a larger schism may have occurred. In this case, the `update_db` process flags the entire `StoreGroup` by setting its `is_active` flag to `False`. This effectively dissolves the group, turning all its members into individual outliers. These outliers will then be re-scraped individually by the scheduler and will organically form new, smaller, stable groups over time.
+
+### Outcasting & Re-homing Rogue Stores
+When a `Rogue` store is identified and outcast from its group, it is not immediately classified as a permanent outlier. The `update_db` process will first attempt to find a new home for it. This "re-homing" process must be efficient.
+
+*   **Two-Stage Check:** To avoid computationally expensive comparisons, we will use a two-stage check when comparing the Rogue store against the Ambassadors of other potential groups.
+    1.  **Stage 1 (Cheap Test): Range Overlap.** First, the system performs a fast comparison of the two stores' product catalogs (a list of product IDs).
+    2.  **Stage 2 (Expensive Test): True Overlap.** If, and only if, the Range Overlap is above a high threshold (e.g., 95%), the system will proceed with the full, computationally expensive "True Overlap" analysis to compare prices.
+*   **Final Status:** If the Rogue finds a new matching group, it is moved. If it cannot find a new home after being tested against all viable groups, it is then officially classified as a permanent outlier.
 
 ### Granularity: Category-Level Inference
 Even stores that don't qualify for a full-store group may have identical pricing for specific categories.
@@ -78,10 +96,10 @@ Once the clustering algorithm is built, the initial rollout will be geographical
 
 ### Proposed Data Model
 To support the grouping logic, the database will be extended with two new models:
-*   **`StoreGroup`:** Represents a group itself. It will have a name, a link to its parent company, and an `is_active` flag. To manage divergence events, it will also have:
-    *   `status`: A field to track the group's health (e.g., `HEALTHY`, `DIVERGENCE_DETECTED`).
-    *   `tie_breaker_store`: A nullable link to a `Store` that is designated for a priority scrape to resolve a divergence.
-*   **`StoreGroupMembership`:** A linking table that connects a `Store` to a `StoreGroup`. This will hold metadata about the membership, such as a `last_scraped_as_ambassador` timestamp. Outliers will be stores with no entry in this table.
+*   **`StoreGroup`:** Represents a group itself. It will have a name, a link to its parent company, and an `is_active` flag (to dissolve a group in case of a major schism).
+*   **`StoreGroupMembership`:** A linking table that connects a `Store` to a `StoreGroup`. This will hold metadata about the membership:
+    *   `is_ambassador`: A boolean flag to indicate if this member is the group's current, official Ambassador.
+    *   `last_scraped_as_candidate`: A timestamp to track when the store was last chosen for a health check, helping to ensure all members are checked over time.
 
 ### Dynamic Re-classification
 The system must be dynamic. The "True Overlap" scores and group memberships must be re-calculated periodically to adapt to changes in store strategies. The comparison of direct vs. inferred data serves as the primary trigger for this re-evaluation.
@@ -104,6 +122,5 @@ This strategy opens up several questions that will need to be answered during im
 2.  **Re-analysis Frequency:** How often should the full, system-wide re-analysis of all groups be performed (e.g., weekly, monthly, quarterly)?
 3.  **Ambassador Selection:** When rotating an ambassador, is the selection random, or round-robin?
 4.  **Canary Products:** If we implement "micro-scrapes," how many "canary" products are sufficient for a reliable spot check? How are these products selected?
-5.  **Geographic Boundaries:** How do we define the geographic boundaries for the "one city at a time" rollout (e.g., by postcode radius, council areas)?
 6.  **Data Freshness:** What is the maximum acceptable age for data used in the "True Overlap" analysis? (e.g., must be from the same 24-hour period).
-7. for woolworths/aldi and coles we actually can actually start by having all stores in the same group. then the process of discovery isnt the process of adding to the group its the process of intelligently removing and regrouping. 
+7.  **Future Performance Optimizations:** For the "re-homing" process, could we use more advanced techniques like data fingerprinting (e.g., MD5 hashing for perfect matches, or SimHash for near-matches) to accelerate finding candidate groups even faster than the two-stage check?
