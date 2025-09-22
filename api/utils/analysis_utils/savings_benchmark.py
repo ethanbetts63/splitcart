@@ -74,7 +74,7 @@ def generate_random_cart(stores, num_products):
         return None, None
 
     random_product_ids = random.sample(list(product_ids_in_stores), num_products)
-    anchor_products = Product.objects.filter(id__in=random_product_ids).prefetch_related('prices__store')
+    anchor_products = Product.objects.filter(id__in=random_product_ids).prefetch_related('prices__store', 'prices__price_record')
 
     all_slots = []
     size_comparer = SizeComparer()
@@ -99,17 +99,17 @@ def generate_random_cart(stores, num_products):
         if not anchor_prices.exists():
             continue
         
-        price_ceiling = min([p.price for p in anchor_prices])
+        price_ceiling = min([p.price_record.price for p in anchor_prices if p.price_record])
         
         candidate_subs = []
-        sub_prices = Price.objects.filter(product__in=size_compatible_group, store__in=stores).select_related('store')
+        sub_prices = Price.objects.filter(product__in=size_compatible_group, store__in=stores).select_related('store', 'price_record')
         sub_prices_map = { (p.product_id, p.store_id): p for p in sub_prices }
 
         if len(size_compatible_group) > PRICE_CULLING_THRESHOLD:
             for sub in size_compatible_group:
                 for store in stores:
                     price_obj = sub_prices_map.get((sub.id, store.id))
-                    if price_obj and price_obj.price <= price_ceiling:
+                    if price_obj and price_obj.price_record and price_obj.price_record.price <= price_ceiling:
                         candidate_subs.append((sub, price_obj))
         else:
             for sub in size_compatible_group:
@@ -183,6 +183,7 @@ def generate_random_cart(stores, num_products):
              final_options.append((anchor_product, anchor_price_obj))
 
         for product, price_obj in final_options:
+            if not price_obj.price_record: continue
             current_slot.append({
                 "product_id": product.id,
                 "product_name": product.name,
@@ -190,7 +191,7 @@ def generate_random_cart(stores, num_products):
                 "sizes": product.sizes,
                 "store_id": price_obj.store.id,
                 "store_name": price_obj.store.store_name,
-                "price": float(price_obj.price),
+                "price": float(price_obj.price_record.price),
             })
 
         if current_slot:

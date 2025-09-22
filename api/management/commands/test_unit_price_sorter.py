@@ -48,7 +48,7 @@ class Command(BaseCommand):
             product__in=substitute_products,
             store__in=selected_stores,
             is_active=True
-        ).select_related('product', 'store')
+        ).select_related('product', 'store', 'price_record')
 
         for price in prices_in_stores:
             product_price_pairs.append((price.product, price))
@@ -63,10 +63,13 @@ class Command(BaseCommand):
         # --- 4. DEBUGGING: Inspect the raw data before sorting ---
         self.stdout.write(self.style.HTTP_INFO('--- Inspecting Raw Data Before Sorting ---'))
         for product, price in product_price_pairs:
+            if not price.price_record:
+                self.stdout.write(self.style.WARNING(f"  Product {product.name} has a Price entry with no PriceRecord. Skipping."))
+                continue
             self.stdout.write(f"  Product: {product.name}")
             self.stdout.write(f"    Store: {price.store.store_name}")
-            u_price = price.unit_price
-            u_measure = price.unit_of_measure
+            u_price = price.price_record.unit_price
+            u_measure = price.price_record.unit_of_measure
             self.stdout.write(f"    Unit Price from DB: {u_price}")
             self.stdout.write(f"    Unit Measure from DB: {u_measure}")
             if u_price is None or not u_measure:
@@ -95,10 +98,12 @@ class Command(BaseCommand):
             if base_unit != current_base_unit:
                 self.stdout.write(self.style.HTTP_INFO(f"\n--- Sorting by Price per '{base_unit.upper()}' ---"))
                 current_base_unit = base_unit
+            
+            if not price.price_record: continue
 
             self.stdout.write(f"  Product: {product.brand} {product.name}")
             self.stdout.write(f"    Store: {price.store.store_name}")
-            self.stdout.write(f"    Absolute Price: ${price.price}")
-            self.stdout.write(f"    Original Unit Price: ${price.unit_price} / {price.unit_of_measure}")
+            self.stdout.write(f"    Absolute Price: ${price.price_record.price}")
+            self.stdout.write(f"    Original Unit Price: ${price.price_record.unit_price} / {price.price_record.unit_of_measure}")
             self.stdout.write(self.style.SUCCESS(f"    NORMALIZED Unit Price: ${normalized_unit_price:.2f} / per {base_unit}"))
             self.stdout.write('---')

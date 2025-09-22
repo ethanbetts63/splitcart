@@ -105,6 +105,29 @@ Migrating the existing data in the `products_price` table requires a careful, pe
 
 - **Increased Query Complexity:** Retrieving price information will now require a `JOIN` operation between the `Price` and `PriceRecord` tables, which is a minor performance consideration.
 
+## 8. Progress So Far
+
+- **Models Created/Updated:**
+    - Created the new `products.models.price_record.PriceRecord` model.
+    - Refactored the `products.models.price.Price` model to use the new structure.
+- **Admin Panel:**
+    - Updated `products.admin.PriceAdmin` to be compatible with the refactored `Price` model.
+- **Database:**
+    - Generated the new schema migration (`0003_remove_price_is_on_special_and_more`).
+    - Applied the migration to update the database schema.
+- **Data Creation Logic:**
+    - Refactored the `api.database_updating_classes.unit_of_work.UnitOfWork` class to correctly create `PriceRecord` and `Price` instances.
+
+- **Code Refactoring:**
+    - Updated `api.database_updating_classes.group_orchestrator.GroupOrchestrator` to use the new `PriceRecord` relationship.
+    - Updated `api/analysers/category_price_correlation.py` to use the new `PriceRecord` relationship.
+    - Analyzed `api/database_updating_classes/product_reconciler.py` and confirmed no changes were needed.
+    - Updated `api/utils/analysis_utils/savings_benchmark.py` to use the new `PriceRecord` relationship.
+    - Updated `api/management/commands/debug_savings_run.py` to use the new `PriceRecord` relationship.
+    - Updated `api/management/commands/test_unit_price_sorter.py` to use the new `PriceRecord` relationship.
+    - Updated `api/utils/substitution_utils/unit_price_sorter.py` to use the new `PriceRecord` relationship.
+    - Updated `api/utils/analysis_utils/pricing_analysis/get_product_prices_by_store.py` to use the new `PriceRecord` relationship.
+
 ## 7. Implementation Details for `UnitOfWork`
 
 The refactor will be highly concentrated in the `api.database_updating_classes.unit_of_work.UnitOfWork` class. The `UpdateOrchestrator` will not require changes as it only calls `unit_of_work.add_price`.

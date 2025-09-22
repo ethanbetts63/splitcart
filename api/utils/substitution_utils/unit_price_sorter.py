@@ -25,10 +25,10 @@ class UnitPriceSorter:
         Calculates a normalized unit price (per kg, per L, or per each) for a given Price object.
         Returns a tuple of (Decimal(normalized_price), str(base_unit)) or (None, None).
         """
-        if price_obj.unit_price is None or not price_obj.unit_of_measure:
+        if not price_obj.price_record or price_obj.price_record.unit_price is None or not price_obj.price_record.unit_of_measure:
             return None, None
 
-        match = self.uom_pattern.match(price_obj.unit_of_measure.lower())
+        match = self.uom_pattern.match(price_obj.price_record.unit_of_measure.lower())
         if not match:
             return None, None
 
@@ -42,9 +42,9 @@ class UnitPriceSorter:
         try:
             # How many of the scraped units (e.g., 100g) fit into the base unit (e.g., 1000g)?
             # Example: unit_price is per 100g. Base is 1000g. factor = 1000 / 100 = 10.
-            # Normalized price = price_obj.unit_price * 10.
+            # Normalized price = price_obj.price_record.unit_price * 10.
             factor = Decimal(unit_info['multiplier']) / value
-            normalized_price = price_obj.unit_price * factor
+            normalized_price = price_obj.price_record.unit_price * factor
             base_unit = unit_info['base']
             
             # Standardize the reporting base unit string

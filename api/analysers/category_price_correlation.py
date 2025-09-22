@@ -61,10 +61,11 @@ def generate_category_price_correlation_heatmap(company_name, category_name):
                     identical_price_count = 0
                     for product_id in common_product_ids:
                         try:
-                            price1 = Price.objects.filter(product_id=product_id, store=store1).latest('scraped_at').price
-                            price2 = Price.objects.filter(product_id=product_id, store=store2).latest('scraped_at').price
-                            if price1 is not None and price1 == price2:
-                                identical_price_count += 1
+                            price1_obj = Price.objects.select_related('price_record').filter(product_id=product_id, store=store1).latest('scraped_date')
+                            price2_obj = Price.objects.select_related('price_record').filter(product_id=product_id, store=store2).latest('scraped_date')
+                            if price1_obj.price_record and price2_obj.price_record:
+                                if price1_obj.price_record.price == price2_obj.price_record.price:
+                                    identical_price_count += 1
                         except Price.DoesNotExist:
                             continue
                     
