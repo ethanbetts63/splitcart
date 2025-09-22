@@ -9,29 +9,6 @@ class ScrapeScheduler:
     store groups with exploring smaller ones and outliers.
     """
 
-    def _get_candidates(self, stores_queryset, limit=1):
-        """
-        A reusable method that takes a queryset and returns the stores that were
-        scraped the longest time ago. It prioritizes stores that have never been scraped
-        and filters out any stores that are already serving as a group's ambassador or
-        are pending as a candidate.
-        """
-        # Get IDs of all stores currently assigned as an ambassador or a candidate
-        ambassador_ids = StoreGroup.objects.filter(ambassador__isnull=False).values_list('ambassador_id', flat=True)
-        candidate_members = StoreGroup.candidates.through.objects.values_list('store_id', flat=True)
-
-        # Combine and filter the main queryset
-        excluded_ids = set(list(ambassador_ids)) | set(list(candidate_members))
-        eligible_stores = stores_queryset.exclude(id__in=excluded_ids)
-
-        # Prioritize stores that have never been scraped from the eligible list
-        unscraped_stores = eligible_stores.filter(last_scraped__isnull=True)
-        if unscraped_stores.exists():
-            return list(unscraped_stores[:limit])
-
-        # If all eligible stores have been scraped at least once, find the oldest
-        return list(eligible_stores.order_by('last_scraped')[:limit])
-
     def _get_group(self):
         """
         Implements the 80/20 logic for selecting a store group to focus on.
@@ -60,17 +37,32 @@ class ScrapeScheduler:
             else:
                 return None # Signal to scrape an outlier
 
-    def get_scrape_queue(self, candidate_count=2):
+    def get_next_candidate(self):
         """
-        The main public method that generates the next queue of stores to scrape.
+        The main public method that determines and returns the single next
+        highest-priority store to scrape. It contains all logic for selecting
+        a candidate, from group selection to filtering.
         """
         target_group = self._get_group()
         
+        # Determine the base queryset based on the group selection
         if target_group:
-            # We are scraping a specific group
             stores_qs = Store.objects.filter(group_membership__group=target_group)
-            return self._get_candidates(stores_qs, limit=candidate_count)
         else:
-            # We are scraping an outlier
-            outlier_qs = Store.objects.filter(group_membership__isnull=True)
-            return self._get_candidates(outlier_qs, limit=candidate_count)
+            stores_qs = Store.objects.filter(group_membership__isnull=True)
+
+        # Get IDs of all stores currently assigned as an ambassador or a candidate
+        ambassador_ids = StoreGroup.objects.filter(ambassador__isnull=False).values_list('ambassador_id', flat=True)
+        candidate_members = StoreGroup.candidates.through.objects.values_list('store_id', flat=True)
+
+        # Combine and filter the main queryset
+        excluded_ids = set(list(ambassador_ids)) | set(list(candidate_members))
+        eligible_stores = stores_qs.exclude(id__in=excluded_ids)
+
+        # Prioritize the first store that has never been scraped from the eligible list
+        unscraped_store = eligible_stores.filter(last_scraped__isnull=True).first()
+        if unscraped_store:
+            return unscraped_store
+
+        # If all eligible stores have been scraped at least once, find the oldest
+        return eligible_stores.order_by('last_scraped').first()
