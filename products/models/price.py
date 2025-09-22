@@ -49,4 +49,4 @@ class Price(models.Model):
         ordering = ['-scraped_date']
 
     def __str__(self):
-        return f"{self.product.name} at {self.store.store_name} on {self.scraped_date}"
+        return f"{self.price_record.product.name} at {self.store.store_name} on {self.scraped_date}"

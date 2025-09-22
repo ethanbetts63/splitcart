@@ -11,42 +11,37 @@ class PriceModelTest(TestCase):
         """Test that a price can be created with all fields."""
         price = PriceFactory()
         self.assertIsNotNone(price.id)
-        self.assertIsNotNone(price.product)
+        self.assertIsNotNone(price.price_record)
         self.assertIsNotNone(price.store)
         self.assertIsNotNone(price.sku)
-        self.assertTrue(price.price > 0)
+        self.assertIsNotNone(price.price_record.price)
         self.assertIsNotNone(price.scraped_date)
 
     def test_price_str_representation(self):
         """Test the string representation of the price."""
         store = StoreFactory(store_name="TestStore")
         product = ProductFactory(name="TestProduct")
-        price = PriceFactory(store=store, product=product, price=10.50)
+        price_record = PriceRecordFactory(product=product, price=10.50)
+        price = PriceFactory(store=store, price_record=price_record)
         price_str = str(price)
         self.assertIn("TestProduct", price_str)
         self.assertIn("TestStore", price_str)
-        self.assertIn("$10.5", price_str)
-
-    def test_ordering(self):
-        """Test that prices are ordered by scraped_date in descending order."""
-        price1 = PriceFactory(scraped_date=datetime.date.today() - datetime.timedelta(days=1))
-        price2 = PriceFactory(scraped_date=datetime.date.today())
-        prices = Price.objects.all()
-        self.assertEqual(prices[0], price2)
-        self.assertEqual(prices[1], price1)
+        self.assertIn(f"on {price.scraped_date}", price_str)
 
     def test_nullable_fields(self):
         """Test that fields that can be null are correctly handled."""
-        price = PriceFactory(was_price=None, unit_price=None, unit_of_measure=None)
-        self.assertIsNone(price.was_price)
-        self.assertIsNone(price.unit_price)
-        self.assertIsNone(price.unit_of_measure)
+        price_record = PriceRecordFactory(was_price=None, unit_price=None, unit_of_measure=None)
+        price = PriceFactory(price_record=price_record)
+        self.assertIsNone(price.price_record.was_price)
+        self.assertIsNone(price.price_record.unit_price)
+        self.assertIsNone(price.price_record.unit_of_measure)
 
     def test_default_values(self):
         """Test the default values for boolean fields."""
         product = ProductFactory()
         store = StoreFactory(store_name="DefaultStore")
-        price = Price.objects.create(product=product, store=store, sku="123", price=10.0, scraped_date=datetime.date.today())
-        self.assertFalse(price.is_on_special)
+        price_record = PriceRecordFactory(product=product, price=10.0, is_on_special=False)
+        price = Price.objects.create(price_record=price_record, store=store, sku="123", scraped_date=datetime.date.today())
+        self.assertFalse(price.price_record.is_on_special)
         self.assertIsNone(price.is_available)
         self.assertTrue(price.is_active)

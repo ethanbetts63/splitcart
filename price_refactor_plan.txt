@@ -40,7 +40,7 @@ The existing `products.Price` model will be repurposed as a lightweight "pointer
     - `per_unit_price_string`
     - `is_on_special`
 - **Fields to be ADDED/MODIFIED:**
-    - `price_record` (ForeignKey to `products.PriceRecord`)
+    - `price_record` (ForeignKey to `products.PriceRecord`, now non-nullable)
 - **Fields to KEEP:**
     - `store` (ForeignKey to `companies.Store`)
     - `sku` (CharField)
@@ -76,6 +76,8 @@ actual_price = price_entry.price_record.price
 
 Migrating the existing data in the `products_price` table requires a careful, performance-conscious approach. This will be done via a custom data migration script.
 
+**NOTE:** The data migration steps outlined below were not necessary as the database was reset, effectively starting with an empty database.
+
 1.  **Schema Changes:**
     - Create the new `products.PriceRecord` model in a new `products/models/price_record.py` file.
     - Modify the `products.Price` model: add the `price_record` ForeignKey (initially nullable).
@@ -109,7 +111,7 @@ Migrating the existing data in the `products_price` table requires a careful, pe
 
 - **Models Created/Updated:**
     - Created the new `products.models.price_record.PriceRecord` model.
-    - Refactored the `products.models.price.Price` model to use the new structure.
+    - Refactored the `products.models.price.Price` model to use the new structure, including the removal of the redundant `product` ForeignKey and making the `price_record` ForeignKey non-nullable.
 - **Admin Panel:**
     - Updated `products.admin.PriceAdmin` to be compatible with the refactored `Price` model.
 - **Database:**
@@ -119,9 +121,9 @@ Migrating the existing data in the `products_price` table requires a careful, pe
     - Refactored the `api.database_updating_classes.unit_of_work.UnitOfWork` class to correctly create `PriceRecord` and `Price` instances.
 
 - **Code Refactoring:**
-    - Updated `api.database_updating_classes.group_orchestrator.GroupOrchestrator` to use the new `PriceRecord` relationship.
+    - Updated `api.database_updating_classes.group_orchestrator.GroupOrchestrator` to use the new `PriceRecord` relationship, specifically updating `_get_active_prices_for_store` to access product IDs via `price.price_record.product_id`.
     - Updated `api/analysers/category_price_correlation.py` to use the new `PriceRecord` relationship.
-    - Analyzed `api/database_updating_classes/product_reconciler.py` and confirmed no changes were needed.
+    - Updated `api/database_updating_classes/product_reconciler.py` to correctly handle price merging by creating new `PriceRecord` entries for canonical products and re-assigning `Price` objects.
     - Updated `api/utils/analysis_utils/savings_benchmark.py` to use the new `PriceRecord` relationship.
     - Updated `api/management/commands/debug_savings_run.py` to use the new `PriceRecord` relationship.
     - Updated `api/management/commands/test_unit_price_sorter.py` to use the new `PriceRecord` relationship.

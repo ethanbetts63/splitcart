@@ -51,7 +51,7 @@ class Command(BaseCommand):
         ).select_related('product', 'store', 'price_record')
 
         for price in prices_in_stores:
-            product_price_pairs.append((price.product, price))
+            product_price_pairs.append((price.price_record.product, price))
 
         if not product_price_pairs:
             self.stdout.write(self.style.ERROR('No product-price pairs were found for the selected substitutes. Aborting test.'))

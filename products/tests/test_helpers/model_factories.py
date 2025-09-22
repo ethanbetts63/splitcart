@@ -1,6 +1,6 @@
 import factory
 from factory.django import DjangoModelFactory
-from products.models import Product, Price, ProductBrand, ProductSubstitution
+from products.models import Product, Price, ProductBrand, ProductSubstitution, PriceRecord
 from companies.tests.test_helpers.model_factories import StoreFactory
 
 class ProductFactory(DjangoModelFactory):
@@ -29,18 +29,24 @@ class ProductFactory(DjangoModelFactory):
         obj.save()
         return obj
 
-class PriceFactory(DjangoModelFactory):
+class PriceRecordFactory(DjangoModelFactory):
     class Meta:
-        model = Price
+        model = PriceRecord
 
     product = factory.SubFactory(ProductFactory)
-    store = factory.SubFactory(StoreFactory)
-    sku = factory.Faker('uuid4')
     price = factory.Faker('pydecimal', left_digits=2, right_digits=2, positive=True)
     was_price = factory.Faker('pydecimal', left_digits=2, right_digits=2, positive=True)
     unit_price = factory.Faker('pydecimal', left_digits=2, right_digits=2, positive=True)
     unit_of_measure = factory.Faker('word')
     is_on_special = factory.Faker('boolean')
+
+class PriceFactory(DjangoModelFactory):
+    class Meta:
+        model = Price
+
+    price_record = factory.SubFactory(PriceRecordFactory)
+    store = factory.SubFactory(StoreFactory)
+    sku = factory.Faker('uuid4')
     is_available = factory.Faker('boolean')
     is_active = True
     scraped_date = factory.Faker('date_object')

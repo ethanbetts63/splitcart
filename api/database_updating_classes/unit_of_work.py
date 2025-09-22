@@ -55,7 +55,6 @@ class UnitOfWork:
         self.prices_to_create.append(
             Price(
                 price_record=price_record,
-                product=product,
                 store=store,
                 sku=product_details.get('sku'),
                 scraped_date=scraped_date,
