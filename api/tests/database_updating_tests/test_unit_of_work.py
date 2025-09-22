@@ -5,7 +5,7 @@ from api.database_updating_classes.unit_of_work import UnitOfWork
 from products.models import Product, Price
 from companies.models import Store
 
-from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory, ProductBrandFactory
+from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory, ProductBrandFactory, PriceRecordFactory
 from companies.tests.test_helpers.model_factories import StoreFactory
 
 class UnitOfWorkTests(TestCase):
@@ -37,12 +37,12 @@ class UnitOfWorkTests(TestCase):
         self.uow.add_price(product, self.store, product_details)
 
         self.assertEqual(len(self.uow.prices_to_create), 1)
-        price_record = self.uow.prices_to_create[0]
-        self.assertIsInstance(price_record, Price)
-        self.assertEqual(price_record.product, product)
-        self.assertEqual(price_record.store, self.store)
-        self.assertEqual(price_record.price, 12.50)
-        self.assertEqual(price_record.sku, '67890')
+        price_object = self.uow.prices_to_create[0]
+        self.assertIsInstance(price_object, Price)
+        self.assertEqual(price_object.price_record.product, product)
+        self.assertEqual(price_object.store, self.store)
+        self.assertEqual(price_object.price_record.price, 12.50)
+        self.assertEqual(price_object.sku, '67890')
 
     def test_add_price_does_not_add_if_price_is_none_or_zero(self):
         """Test that a price record is not created if the price is None or 0."""
@@ -83,7 +83,7 @@ class UnitOfWorkTests(TestCase):
         
         existing_product = ProductFactory(brand=self.brand)
         # Create a price with a different date and price to avoid unique key collision
-        PriceFactory(product=existing_product, store=self.store, scraped_date=yesterday, price=99.99)
+        PriceFactory(price_record=PriceRecordFactory(product=existing_product, price=99.99), store=self.store, scraped_date=yesterday)
 
         initial_product_count = Product.objects.count()
         initial_price_count = Price.objects.count()

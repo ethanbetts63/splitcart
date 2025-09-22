@@ -63,7 +63,7 @@ class ProductReconcilerTests(TestCase):
             self.reconciler.run()
 
         self.assertEqual(Price.objects.count(), 2)
-        self.assertEqual(canonical.prices.count(), 2)
+        self.assertEqual(Price.objects.filter(price_record__product=canonical).count(), 2)
         self.assertFalse(Product.objects.filter(id=duplicate.id).exists())
 
     @patch('api.database_updating_classes.product_reconciler.PRODUCT_NAME_TRANSLATIONS', {})

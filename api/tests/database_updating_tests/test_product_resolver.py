@@ -5,7 +5,7 @@ from api.database_updating_classes.product_resolver import ProductResolver
 from products.models import Product, Price
 from companies.models import Store, Company
 
-from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory, ProductBrandFactory
+from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory, ProductBrandFactory, PriceRecordFactory
 from companies.tests.test_helpers.model_factories import CompanyFactory, StoreFactory
 
 class ProductResolverTests(TestCase):
@@ -22,19 +22,19 @@ class ProductResolverTests(TestCase):
         self.p1 = ProductFactory(
             name='item a', brand=self.brand, size='1l', barcode='111'
         )
-        PriceFactory(product=self.p1, store=self.store1, sku='sku111')
+        PriceFactory(price_record=PriceRecordFactory(product=self.p1), store=self.store1, sku='sku111')
 
         # Product 2
         self.p2 = ProductFactory(
             name='item b', brand=self.brand, size='2l', barcode=None
         )
-        PriceFactory(product=self.p2, store=self.store1, sku='sku222')
+        PriceFactory(price_record=PriceRecordFactory(product=self.p2), store=self.store1, sku='sku222')
 
         # Product 3
         self.p3 = ProductFactory(
             name='item c', brand=self.brand, size='3l', barcode='333'
         )
-        PriceFactory(product=self.p3, store=self.store2, sku='sku333')
+        PriceFactory(price_record=PriceRecordFactory(product=self.p3), store=self.store2, sku='sku333')
         
         # Product 4
         self.p4 = ProductFactory(

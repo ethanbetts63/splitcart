@@ -257,8 +257,8 @@ class TestDataFlowWoolworths(TestCase):
         self.assertEqual(product1.sizes, ["ea"])
         self.assertEqual(product1.barcode, "0265178000003")
         
-        price1 = Price.objects.get(product=product1)
+        price1 = Price.objects.get(price_record__product=product1)
         self.assertEqual(price1.store, self.store)
-        self.assertEqual(price1.price, Decimal('0.14'))
-        self.assertFalse(price1.is_on_special)
+        self.assertEqual(price1.price_record.price, Decimal('0.14'))
+        self.assertFalse(price1.price_record.is_on_special)
         self.assertTrue(price1.is_available)

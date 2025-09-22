@@ -1,5 +1,6 @@
-from products.models import Product, Price
+from products.models import Product, Price, PriceRecord
 from api.data.product_translation_table import PRODUCT_NAME_TRANSLATIONS
+from api.utils.price_normalizer import PriceNormalizer
 
 class ProductReconciler:
     def __init__(self, command):
@@ -109,6 +110,17 @@ class ProductReconciler:
                 
                 # Update the Price object to point to the new record.
                 price.price_record = new_price_record
+
+                # Recalculate the normalized_key
+                price_data = {
+                    'product_id': canonical.id,
+                    'store_id': price.store_id,
+                    'price': new_price_record.price,
+                    'date': price.scraped_date
+                }
+                normalizer = PriceNormalizer(price_data=price_data, company=price.store.company.name)
+                price.normalized_key = normalizer.get_normalized_key()
+                
                 price.save()
                 moved_count += 1
             else:
