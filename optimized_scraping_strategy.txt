@@ -68,11 +68,11 @@ To keep the system's state clean and explicit, the `update_db` process will use 
 3.  **Cleanup:** At the end of the run, the process clears the `candidates` relationship for all the groups it has processed, ensuring the system is clean for the next run.
 
 ### Outcasting & Re-homing Rogue Stores
-When a `Rogue` store is identified and outcast from its group, it is not immediately classified as a permanent outlier. The `update_db` process will first attempt to find a new home for it. This "re-homing" process must be efficient.
+When a `Rogue` store is identified and outcast from its group, it is not immediately classified as a permanent outlier. The `update_db` process will first attempt to find a new home for it.
 
-*   **Two-Stage Check:** To avoid computationally expensive comparisons, we will use a two-stage check when comparing the Rogue store against the Ambassadors of other potential groups.
-    1.  **Stage 1 (Cheap Test): Range Overlap.** First, the system performs a fast comparison of the two stores' product catalogs (a list of product IDs).
-    2.  **Stage 2 (Expensive Test): True Overlap.** If, and only if, the Range Overlap is above a high threshold (e.g., 95%), the system will proceed with the full, computationally expensive "True Overlap" analysis to compare prices.
+*   **Re-homing Process:** The system attempts to find a new group for the rogue store by comparing it against the Ambassadors of other potential groups.
+*   **Current Implementation (Simplified):** For simplicity in the initial implementation, the re-homing process directly uses the computationally expensive "True Overlap" analysis to check for a match.
+*   **Future Optimization:** A more efficient two-stage check is planned for the future. This will involve a cheap "Range Overlap" test on product catalogs before proceeding to the full "True Overlap" analysis, avoiding unnecessary computation.
 *   **Final Status:** If the Rogue finds a new matching group, it is moved. If it cannot find a new home after being tested against all viable groups, it is then officially classified as a permanent outlier.
 
 ### Granularity: Category-Level Inference

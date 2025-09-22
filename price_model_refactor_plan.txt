@@ -1,4 +1,4 @@
-# Database Refactor Plan: Price Model Optimization
+1# Database Refactor Plan: Price Model Optimization
 
 ## 1. Objective
 

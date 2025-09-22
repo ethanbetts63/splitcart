@@ -1,0 +1,155 @@
+# Price Model Refactor Plan
+
+## 1. Objective
+
+To refactor the `products.Price` model to significantly reduce data duplication and storage footprint. The refactor will address two primary dimensions of redundancy:
+1.  **Cross-store duplication:** The same price for a product is stored for every store in a pricing group.
+2.  **Time-based duplication:** The same price is stored daily for a product, even when it hasn't changed.
+
+This plan aims to solve these issues while ensuring historical price accuracy is maintained.
+
+## 2. Proposed Architecture: A Normalized Two-Model Approach
+
+The core of this refactor is to separate the "what" (the price data) from the "where and when" (which store had that price on what day). We will introduce a new `PriceRecord` model and slim down the existing `Price` model.
+
+### New Model: `PriceRecord`
+
+This model will store a single, unique combination of price details for a product. It is the source of truth for the price data itself.
+
+- **Model Name:** `products.PriceRecord`
+- **Fields:**
+    - `product` (ForeignKey to `products.Product`)
+    - `price` (DecimalField)
+    - `was_price` (DecimalField, nullable)
+    - `unit_price` (DecimalField, nullable)
+    - `unit_of_measure` (CharField, nullable)
+    - `per_unit_price_string` (CharField, nullable)
+    - `is_on_special` (BooleanField)
+- **Uniqueness:** A `unique_together` constraint will be placed on all fields to guarantee that each row represents a truly unique set of price details for a product.
+
+### Modified Model: `Price`
+
+The existing `products.Price` model will be repurposed as a lightweight "pointer" table. It links a `Store` to a `PriceRecord` for a specific date.
+
+- **Model Name:** `products.Price`
+- **Fields to be REMOVED:**
+    - `price`
+    - `was_price`
+    - `unit_price`
+    - `unit_of_measure`
+    - `per_unit_price_string`
+    - `is_on_special`
+- **Fields to be ADDED/MODIFIED:**
+    - `price_record` (ForeignKey to `products.PriceRecord`)
+- **Fields to KEEP:**
+    - `store` (ForeignKey to `companies.Store`)
+    - `sku` (CharField)
+    - `is_available` (BooleanField, nullable) - *This stays here as availability can change daily and per store.*
+    - `is_active` (BooleanField)
+    - `source` (CharField: 'direct_scrape', 'inferred_group')
+    - `scraped_date` (DateField)
+    - `normalized_key` (CharField) - *This will need to be re-evaluated. It might be based on the PriceRecord now.*
+
+## 3. Workflow with the New Architecture
+
+### Data Update Process
+
+1.  **Scrape a store (e.g., a group Ambassador):** For each product scraped, the system will gather the price details.
+2.  **Get or Create `PriceRecord`:** It will use `PriceRecord.objects.get_or_create()` with the scraped price details to either find an existing `PriceRecord` or create a new one.
+3.  **Create `Price` entry for Ambassador:** A new `Price` object is created for the ambassador store. Its `price_record` field points to the `PriceRecord` from step 2, and its `source` is set to `'direct_scrape'`.
+4.  **Create `Price` entries for Group Members:** For all other stores in the ambassador's group, a new `Price` object is created for each. Their `price_record` fields all point to the *same* `PriceRecord` from step 2, and their `source` is set to `'inferred_group'`.
+
+### Price Query Process
+
+To find the price of a product at a specific store on a given date:
+```python
+# Example query
+price_entry = Price.objects.select_related('price_record').get(
+    store=some_store,
+    scraped_date=some_date,
+    is_active=True
+)
+actual_price = price_entry.price_record.price
+```
+
+## 4. Data Migration Strategy
+
+Migrating the existing data in the `products_price` table requires a careful, performance-conscious approach. This will be done via a custom data migration script.
+
+1.  **Schema Changes:**
+    - Create the new `products.PriceRecord` model in a new `products/models/price_record.py` file.
+    - Modify the `products.Price` model: add the `price_record` ForeignKey (initially nullable).
+    - Run `python manage.py makemigrations`.
+
+2.  **Custom Data Migration Script:**
+    - Create an empty migration file: `python manage.py makemigrations --empty products 000X_migrate_price_data`.
+    - **Inside the script:**
+        - The script will iterate through all existing `Price` objects in batches (e.g., using `iterator()` or slicing) to keep memory usage low.
+        - For each batch of old `Price` objects:
+            - For each `Price` in the batch:
+                - Use `PriceRecord.objects.get_or_create()` to find or create the corresponding `PriceRecord` based on the price data from the old `Price` object.
+                - Update the `price_record` field on the `Price` object to point to the new `PriceRecord`.
+        - This process will be slow but memory-efficient.
+
+3.  **Final Schema Cleanup:**
+    - After the data migration is successfully run, create a new migration that makes the `price_record` field non-nullable and removes the now-redundant price columns from the `products.Price` table.
+    - Run `python manage.py migrate`.
+
+## 5. Advantages
+
+- **Massive Storage Reduction:** The most significant benefit. Price data is stored once, not thousands of times.
+- **Historical Integrity:** The model correctly preserves historical price data, even when stores change groups.
+- **Improved Data Consistency:** Enforces that identical price points are represented by a single record.
+
+## 6. Trade-offs
+
+- **Increased Query Complexity:** Retrieving price information will now require a `JOIN` operation between the `Price` and `PriceRecord` tables, which is a minor performance consideration.
+
+## 7. Implementation Details for `UnitOfWork`
+
+The refactor will be highly concentrated in the `api.database_updating_classes.unit_of_work.UnitOfWork` class. The `UpdateOrchestrator` will not require changes as it only calls `unit_of_work.add_price`.
+
+### Changes to `UnitOfWork.add_price` method
+
+The current `add_price` method instantiates a full `Price` object. This method will be rewritten to orchestrate the creation of both `PriceRecord` and the new lightweight `Price` objects.
+
+**New `add_price` Logic:**
+
+1.  **Extract Price Details:** The method will receive `product`, `store`, and `product_details` as it does now. It will first extract all the fields necessary for the `PriceRecord` from the `product_details` dictionary (`price_current`, `price_was`, `unit_price`, etc.).
+
+2.  **Get or Create `PriceRecord`:** It will use these details to call `PriceRecord.objects.get_or_create()`. The `product` instance will also be part of the query. This ensures we find or create a unique price record for that specific product.
+
+    ```python
+    price_record, created = PriceRecord.objects.get_or_create(
+        product=product,
+        price=product_details.get('price_current'),
+        was_price=product_details.get('price_was'),
+        unit_price=product_details.get('unit_price'),
+        unit_of_measure=product_details.get('unit_of_measure'),
+        per_unit_price_string=product_details.get('per_unit_price_string'),
+        is_on_special=product_details.get('is_on_special', False)
+    )
+    ```
+
+3.  **Calculate `normalized_key`:** The `normalized_key` is a unique identifier for a price entry based on product, store, and date. It must remain on the `Price` model, as it includes the `store`, which `PriceRecord` does not have. The calculation logic will remain the same.
+
+4.  **Instantiate Lightweight `Price` Object:** The method will then instantiate the new, thinner `Price` object, linking it to the `price_record` obtained in step 2.
+
+    ```python
+    new_price_entry = Price(
+        price_record=price_record,
+        store=store,
+        sku=product_details.get('sku'),
+        scraped_date=product_details.get('scraped_date'),
+        normalized_key=normalized_key, # Calculated in the previous step
+        is_available=product_details.get('is_available'),
+        source='direct_scrape' # This will need to be passed in or determined logically
+    )
+    ```
+
+5.  **Append to `prices_to_create`:** This new `Price` instance is then appended to the `self.prices_to_create` list, just as before.
+
+### Changes to `UnitOfWork.commit` method
+
+The `commit` method will require **no significant changes**. The line `Price.objects.bulk_create(self.prices_to_create, ...)` will work as is, but it will now be creating the new lightweight `Price` objects instead of the old, larger ones. The `ignore_conflicts=True` argument will continue to rely on the `normalized_key` to prevent duplicate entries for the same product, store, and day.
+
