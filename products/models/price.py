@@ -5,8 +5,15 @@ from api.utils.price_normalizer import PriceNormalizer
 class Price(models.Model):
     """
     Represents a single, historical price point for a Product at a specific
-    Store on a specific date. A new record is created for each scrape.
+    Store on a specific date. This is a lightweight pointer to a PriceRecord.
     """
+    price_record = models.ForeignKey(
+        'PriceRecord',
+        on_delete=models.PROTECT,
+        related_name="price_entries",
+        null=True, # Nullable for migration purposes
+        blank=True
+    )
     product = models.ForeignKey(
         'Product', 
         on_delete=models.CASCADE,
@@ -19,39 +26,6 @@ class Price(models.Model):
     )
     sku = models.CharField(max_length=100, db_index=True)
     
-    price = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        help_text="The current price of the product."
-    )
-    was_price = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        null=True,
-        blank=True,
-        help_text="The previous price if the item is on special."
-    )
-    unit_price = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        null=True,
-        blank=True,
-        help_text="The price per standard unit (e.g., per 100g, per 1L)."
-    )
-    unit_of_measure = models.CharField(
-        max_length=50,
-        null=True,
-        blank=True,
-        help_text="The standard unit for the unit_price, e.g., '100g', '1L'."
-    )
-    per_unit_price_string = models.CharField(
-        max_length=255,
-        null=True,
-        blank=True,
-        help_text="The raw string for the per unit price, e.g., '$1.68 per 100 g'."
-    )
-    
-    is_on_special = models.BooleanField(default=False)
     is_available = models.BooleanField(
         null=True,
         default=None,
@@ -77,31 +51,9 @@ class Price(models.Model):
     scraped_date = models.DateField()
     
     normalized_key = models.CharField(max_length=255, unique=True, db_index=True)
-    
-
-    def clean(self):
-        super().clean()
-        if self.product_id and self.store_id and self.price and self.scraped_date:
-            # Build the data structure that PriceNormalizer expects
-            price_data = {
-                'product_id': self.product_id,
-                'store_id': self.store_id,
-                'price': self.price,
-                'date': self.scraped_date.isoformat()
-            }
-            # The Price model doesn't have a direct company link, so we get it from the store
-            company_name = self.store.company.name
-            
-            # Instantiate the normalizer and then call the method
-            normalizer = PriceNormalizer(price_data=price_data, company=company_name)
-            self.normalized_key = normalizer.get_normalized_key()
-
-    def save(self, *args, **kwargs):
-        self.clean()
-        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ['-scraped_date']
 
     def __str__(self):
-        return f"{self.product.name} at {self.store.store_name} for ${self.price} on {self.scraped_date}"
+        return f"{self.product.name} at {self.store.store_name} on {self.scraped_date}"

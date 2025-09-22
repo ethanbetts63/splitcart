@@ -9,5 +9,5 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Price)
 class PriceAdmin(admin.ModelAdmin):
-    list_display = ('product', 'store', 'price', 'is_on_special', 'scraped_date')
+    list_display = ('product', 'store', 'scraped_date')
     autocomplete_fields = ('product', 'store')
