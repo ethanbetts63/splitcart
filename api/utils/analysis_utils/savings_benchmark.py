@@ -68,7 +68,7 @@ from api.utils.substitution_utils.size_comparer import SizeComparer
 def generate_random_cart(stores, num_products):
     """Generates a random shopping cart using the intelligent portfolio selection algorithm."""
     # Get a pool of potential products that exist in the selected stores
-    product_ids_in_stores = Price.objects.filter(store__in=stores).values_list('product_id', flat=True).distinct()
+    product_ids_in_stores = Price.objects.filter(store__in=stores).values_list('price_record__product_id', flat=True).distinct()
     
     if len(product_ids_in_stores) < num_products:
         return None, None
@@ -102,7 +102,7 @@ def generate_random_cart(stores, num_products):
         price_ceiling = min([p.price_record.price for p in anchor_prices if p.price_record])
         
         candidate_subs = []
-        sub_prices = Price.objects.filter(product__in=size_compatible_group, store__in=stores).select_related('store', 'price_record')
+        sub_prices = Price.objects.filter(price_record__product__in=size_compatible_group, store__in=stores).select_related('store', 'price_record')
         sub_prices_map = { (p.product_id, p.store_id): p for p in sub_prices }
 
         if len(size_compatible_group) > PRICE_CULLING_THRESHOLD:

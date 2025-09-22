@@ -31,7 +31,7 @@ class Command(BaseCommand):
         anchor_product = Product.objects.filter(name__icontains='tortellini').first()
         if not anchor_product:
             self.stdout.write(self.style.WARNING("Could not find a 'tortellini' product, picking a random one."))
-            product_ids_in_stores = Price.objects.filter(store__in=selected_stores).values_list('product_id', flat=True).distinct()
+            product_ids_in_stores = Price.objects.filter(store__in=selected_stores).values_list('price_record__product_id', flat=True).distinct()
             if not product_ids_in_stores:
                 self.stdout.write(self.style.ERROR("No products found in the selected stores."))
                 return
@@ -45,10 +45,10 @@ class Command(BaseCommand):
 
         product_price_pairs = []
         prices_in_stores = Price.objects.filter(
-            product__in=substitute_products,
+            price_record__product__in=substitute_products,
             store__in=selected_stores,
             is_active=True
-        ).select_related('product', 'store', 'price_record')
+        ).select_related('price_record__product', 'store', 'price_record')
 
         for price in prices_in_stores:
             product_price_pairs.append((price.price_record.product, price))

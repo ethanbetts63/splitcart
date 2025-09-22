@@ -233,7 +233,7 @@ class TestDataFlowIga(TestCase):
         self.assertEqual(product1.brand.name, "Australia's Own")
         self.assertEqual(sorted(product1.sizes), sorted(['1l', 'ea']))
         
-        price1 = Price.objects.get(price_record__product=product1)
+        price1 = Price.objects.select_related('price_record').get(price_record__product=product1)
         self.assertEqual(price1.store, self.store)
         self.assertEqual(price1.price_record.price, Decimal('3.35'))
         self.assertFalse(price1.price_record.is_on_special)
@@ -244,7 +244,7 @@ class TestDataFlowIga(TestCase):
         self.assertEqual(product2.brand.name, "Ayam")
         self.assertEqual(sorted(product2.sizes), sorted(['200ml', 'ea']))
 
-        price2 = Price.objects.get(price_record__product=product2)
+        price2 = Price.objects.select_related('price_record').get(price_record__product=product2)
         self.assertEqual(price2.store, self.store)
         self.assertEqual(price2.price_record.price, Decimal('3.50'))
         self.assertFalse(price2.price_record.is_on_special)

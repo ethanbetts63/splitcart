@@ -59,9 +59,9 @@ class ProductResolverTests(TestCase):
         self.assertEqual(len(self.resolver.store_cache), 2)
         self.assertIn('store:1', self.resolver.store_cache)
 
-        self.assertEqual(len(self.resolver.store_product_id_cache), 2)
-        self.assertIn('sku111', self.resolver.store_product_id_cache)
-        self.assertEqual(self.resolver.store_product_id_cache['sku111'], self.p1)
+        self.assertEqual(len(self.resolver.sku_cache), 2)
+        self.assertIn('sku111', self.resolver.sku_cache)
+        self.assertEqual(self.resolver.sku_cache['sku111'], self.p1)
 
     def test_add_new_product_to_cache(self):
         """Test that a new product can be added to the caches dynamically."""

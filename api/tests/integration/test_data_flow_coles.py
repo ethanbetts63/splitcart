@@ -120,7 +120,7 @@ class TestDataFlowColes(TestCase):
         self.assertEqual(product1.brand.name, "Coles")
         self.assertEqual(product1.sizes, ["300g"])
         
-        price1 = Price.objects.get(price_record__product=product1)
+        price1 = Price.objects.select_related('price_record').get(price_record__product=product1)
         self.assertEqual(price1.store, self.store)
         self.assertEqual(price1.price_record.price, Decimal('12.00'))
         self.assertTrue(price1.price_record.is_on_special)
@@ -131,7 +131,7 @@ class TestDataFlowColes(TestCase):
         self.assertEqual(product2.brand.name, "Tassal")
         self.assertEqual(product2.sizes, ["250g"])
 
-        price2 = Price.objects.get(price_record__product=product2)
+        price2 = Price.objects.select_related('price_record').get(price_record__product=product2)
         self.assertEqual(price2.store, self.store)
         self.assertEqual(price2.price_record.price, Decimal('21.00'))
         self.assertFalse(price2.price_record.is_on_special)

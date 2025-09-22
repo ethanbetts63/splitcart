@@ -40,13 +40,13 @@ class ProductResolver:
         
         relevant_prices = list(relevant_prices_query.all())
 
-        # Cache 2: Store-Specific Product ID (contextual)
-        self.store_product_id_cache = {}
+        # Cache 2: SKU (contextual)
+        self.sku_cache = {}
         prices_with_ids = [p for p in relevant_prices if p.sku and p.price_record and p.price_record.product]
         for price in prices_with_ids:
             # Key is just the sku, as the cache is already filtered by company/store
-            self.store_product_id_cache[price.sku] = price.price_record.product
-        self.command.stdout.write(f"  - Built cache for {len(self.store_product_id_cache)} contextual store-specific product IDs.")
+            self.sku_cache[price.sku] = price.price_record.product
+        self.command.stdout.write(f"  - Built cache for {len(self.sku_cache)} contextual SKUs.")
 
         # Cache 5: Existing Prices (contextual)
         self.price_cache = {(p.price_record.product_id, p.store_id, p.scraped_date) for p in relevant_prices}
@@ -73,11 +73,11 @@ class ProductResolver:
             product = self.barcode_cache[barcode]
             return product
 
-        # Tier 2: Match by Store Product ID (contextual lookup)
+        # Tier 2: Match by SKU (contextual lookup)
         if not product:
             sku = product_details.get('sku')
-            if sku and sku in self.store_product_id_cache:
-                product = self.store_product_id_cache[sku]
+            if sku and sku in self.sku_cache:
+                product = self.sku_cache[sku]
                 return product
 
         # Tier 3: Match by Normalized String
