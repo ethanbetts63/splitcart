@@ -44,6 +44,12 @@ class UpdateOrchestrator:
             try:
                 company_obj, _ = Company.objects.get_or_create(name__iexact=company_name, defaults={'name': company_name})
                 store_obj = Store.objects.get(store_id=store_id, company=company_obj)
+
+                # Stamp the store as a candidate for its group, if it belongs to one.
+                if hasattr(store_obj, 'group_membership') and store_obj.group_membership:
+                    group = store_obj.group_membership.group
+                    group.candidates.add(store_obj)
+
             except Store.DoesNotExist:
                 self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Store with ID {store_id} for company {company_name} not found in database."))
                 self.processed_files.append(file_path)
