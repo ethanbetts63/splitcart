@@ -18,6 +18,11 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--store-pk', type=int, help='Scrape a specific store by its database primary key as a one-off task.')
         parser.add_argument('--gs1', action='store_true', help='Run the GS1 company prefix scraper test as a one-off task.')
+        # Company flags to filter the scheduler's scope
+        parser.add_argument('--woolworths', action='store_true', help='Limit the scraper to Woolworths stores.')
+        parser.add_argument('--coles', action='store_true', help='Limit the scraper to Coles stores.')
+        parser.add_argument('--aldi', action='store_true', help='Limit the scraper to Aldi stores.')
+        parser.add_argument('--iga', action='store_true', help='Limit the scraper to IGA stores.')
 
     def handle(self, *args, **options):
         stop_file = 'stop.txt'
@@ -38,11 +43,20 @@ class Command(BaseCommand):
             return
 
         # If no one-off task is specified, start the persistent worker loop
-        self._run_worker_loop()
+        self._run_worker_loop(options)
 
-    def _run_worker_loop(self):
-        scheduler = ScrapeScheduler()
-        self.stdout.write(self.style.SUCCESS("Starting scraper in persistent worker mode..."))
+    def _run_worker_loop(self, options):
+        companies_to_scrape = []
+        if options['woolworths']: companies_to_scrape.append('Woolworths')
+        if options['coles']: companies_to_scrape.append('Coles')
+        if options['aldi']: companies_to_scrape.append('Aldi')
+        if options['iga']: companies_to_scrape.append('Iga')
+
+        # If no specific companies are flagged, the scheduler will run on all companies
+        scheduler = ScrapeScheduler(companies=companies_to_scrape if companies_to_scrape else None)
+        
+        scope_message = f" for {', '.join(companies_to_scrape)}" if companies_to_scrape else " for all companies"
+        self.stdout.write(self.style.SUCCESS(f"Starting scraper in persistent worker mode{scope_message}..."))
         self.stdout.write(self.style.SUCCESS("Create a 'stop.txt' file in the root directory to gracefully stop the worker."))
 
         while True:

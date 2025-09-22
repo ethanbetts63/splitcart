@@ -1,6 +1,6 @@
 import random
-from companies.models import Store, StoreGroup, StoreGroupMembership
-from django.db.models import Count
+from companies.models import Store, StoreGroup
+from django.db.models import Count, Q
 
 class ScrapeScheduler:
     """
@@ -8,6 +8,14 @@ class ScrapeScheduler:
     This scheduler uses a continuous loop model, balancing scraping the largest
     store groups with exploring smaller ones and outliers.
     """
+    def __init__(self, companies=None):
+        """
+        Initializes the scheduler, optionally filtering its scope to a specific
+        list of company names.
+        """
+        self.company_filter = Q()
+        if companies:
+            self.company_filter = Q(company__name__in=companies)
 
     def _get_group(self):
         """
@@ -15,8 +23,8 @@ class ScrapeScheduler:
         80% of the time, it exploits the largest group.
         20% of the time, it explores smaller groups or outliers.
         """
-        # Annotate groups with their member count
-        groups = StoreGroup.objects.filter(is_active=True).annotate(member_count=Count('memberships'))
+        # Annotate groups with their member count, applying the company filter
+        groups = StoreGroup.objects.filter(self.company_filter, is_active=True).annotate(member_count=Count('memberships'))
         
         if not groups.exists():
             return None # No groups to choose from, default to outlier
@@ -47,13 +55,16 @@ class ScrapeScheduler:
         
         # Determine the base queryset based on the group selection
         if target_group:
+            # The group is already filtered by company, so members are implicitly filtered
             stores_qs = Store.objects.filter(group_membership__group=target_group)
         else:
-            stores_qs = Store.objects.filter(group_membership__isnull=True)
+            # Outlier query needs the company filter
+            stores_qs = Store.objects.filter(self.company_filter, group_membership__isnull=True)
 
-        # Get IDs of all stores currently assigned as an ambassador or a candidate
-        ambassador_ids = StoreGroup.objects.filter(ambassador__isnull=False).values_list('ambassador_id', flat=True)
-        candidate_members = StoreGroup.candidates.through.objects.values_list('store_id', flat=True)
+        # Get IDs of all stores currently assigned as an ambassador or a candidate within the scope
+        relevant_groups = StoreGroup.objects.filter(self.company_filter)
+        ambassador_ids = relevant_groups.filter(ambassador__isnull=False).values_list('ambassador_id', flat=True)
+        candidate_members = relevant_groups.prefetch_related('candidates').values_list('candidates__id', flat=True)
 
         # Combine and filter the main queryset
         excluded_ids = set(list(ambassador_ids)) | set(list(candidate_members))
