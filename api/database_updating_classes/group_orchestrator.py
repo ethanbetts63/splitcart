@@ -78,8 +78,8 @@ class GroupOrchestrator:
         Fetches the current, active prices for all products in a given store.
         Returns a dictionary mapping {product_id: price}.
         """
-        active_prices = Price.objects.filter(store=store, is_active=True).select_related('price_record')
-        return {price.product_id: price.price_record.price for price in active_prices}
+        active_prices = Price.objects.filter(store=store, is_active=True).select_related('price_record', 'price_record__product')
+        return {price.price_record.product_id: price.price_record.price for price in active_prices}
 
     def _is_match(self, store_a, store_b):
         """

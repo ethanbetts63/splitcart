@@ -10,14 +10,7 @@ class Price(models.Model):
     price_record = models.ForeignKey(
         'PriceRecord',
         on_delete=models.PROTECT,
-        related_name="price_entries",
-        null=True, # Nullable for migration purposes
-        blank=True
-    )
-    product = models.ForeignKey(
-        'Product', 
-        on_delete=models.CASCADE,
-        related_name="prices"
+        related_name="price_entries"
     )
     store = models.ForeignKey(
         'companies.Store',

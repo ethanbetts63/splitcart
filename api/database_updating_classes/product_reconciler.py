@@ -79,20 +79,41 @@ class ProductReconciler:
             canonical.save()
 
         # --- De-duplicate and Move Prices ---
+        # Get all prices associated with the duplicate product
+        prices_to_move = Price.objects.filter(price_record__product=duplicate).select_related('price_record')
+
+        # Get existing price keys for the canonical product to avoid creating duplicates
         canonical_price_keys = set(
-            (p.store_id, p.scraped_date) for p in Price.objects.filter(product=canonical)
+            (p.store_id, p.scraped_date) for p in Price.objects.filter(price_record__product=canonical)
         )
-        prices_to_move = Price.objects.filter(product=duplicate)
+
         moved_count = 0
         deleted_count = 0
 
         for price in prices_to_move:
             price_key = (price.store_id, price.scraped_date)
             if price_key not in canonical_price_keys:
-                price.product = canonical
+                # This price can be moved.
+                old_price_record = price.price_record
+                
+                # Find or create a new PriceRecord for the canonical product with the same details.
+                new_price_record, created = PriceRecord.objects.get_or_create(
+                    product=canonical,
+                    price=old_price_record.price,
+                    was_price=old_price_record.was_price,
+                    unit_price=old_price_record.unit_price,
+                    unit_of_measure=old_price_record.unit_of_measure,
+                    per_unit_price_string=old_price_record.per_unit_price_string,
+                    is_on_special=old_price_record.is_on_special
+                )
+                
+                # Update the Price object to point to the new record.
+                price.price_record = new_price_record
                 price.save()
                 moved_count += 1
             else:
+                # A price for this store and date already exists for the canonical product.
+                # This is a true duplicate price entry, so we can delete it.
                 price.delete()
                 deleted_count += 1
 
