@@ -1,4 +1,5 @@
 from products.models import Price
+from companies.models import StoreGroup, StoreGroupMembership
 
 class GroupOrchestrator:
     """
@@ -133,20 +134,41 @@ class GroupOrchestrator:
 
     def _outcast_rogue(self, rogue_store):
         """Removes a store from its group and attempts to re-home it."""
+        # Store the group membership before deleting it, to exclude it from re-homing search
+        old_group_id = rogue_store.group_membership.group.id if rogue_store.group_membership else None
         rogue_store.group_membership.delete()
         print(f"  Store {rogue_store.store_name} outcast. Attempting to find a new home...")
-        self._find_new_home_for_rogue(rogue_store)
+        self._find_new_home_for_rogue(rogue_store, old_group_id)
 
-    def _find_new_home_for_rogue(self, rogue_store):
-        """Implements the two-stage check to find a new group for a rogue store."""
-        # This is a placeholder for the re-homing logic.
-        # 1. Get all other groups.
-        # 2. For each group, run cheap "Range Overlap" check against its Ambassador.
-        # 3. If Range Overlap > threshold, run expensive "True Overlap" check.
-        # 4. If a match is found, create a new StoreGroupMembership.
-        # 5. If no match is found, the store remains an outlier.
-        print(f"  (Placeholder) Re-homing process for {rogue_store.store_name} would run here.")
-        return
+    def _find_new_home_for_rogue(self, rogue_store, old_group_id=None):
+        """
+        Attempts to find a new group for a rogue store by comparing it directly
+        against other group Ambassadors using the True Overlap metric.
+        """
+        print(f"  Attempting to re-home Rogue: {rogue_store.store_name}...")
+        
+        # Get all other active groups for the same company
+        potential_groups = StoreGroup.objects.filter(
+            company=rogue_store.company,
+            is_active=True
+        )
+        if old_group_id:
+            potential_groups = potential_groups.exclude(id=old_group_id) # Exclude its old group
+
+        for group in potential_groups:
+            ambassador = group.ambassador
+            if not ambassador:
+                continue # Skip groups without an ambassador
+
+            print(f"    Checking against Group: {group.name} (Ambassador: {ambassador.store_name})...")
+            
+            # Directly use the _is_match (True Overlap) for simplicity
+            if self._is_match(rogue_store, ambassador):
+                print(f"      Match found! Re-homing {rogue_store.store_name} to Group: {group.name}.")
+                StoreGroupMembership.objects.create(store=rogue_store, group=group)
+                return # Found a home, exit
+
+        print(f"  {rogue_store.store_name} could not be re-homed. It remains an outlier.")
 
     def _dissolve_group(self, group):
         """Deactivates a group and removes all its members."""
