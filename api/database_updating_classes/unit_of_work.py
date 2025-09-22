@@ -11,6 +11,7 @@ class UnitOfWork:
         self.products_to_update = []
         self.brands_to_update = []
         self.groups_to_clear_candidates = []
+        self.new_price_records_created = 0
         self.category_manager = CategoryManager(command)
 
     def add_new_product(self, product_instance, product_details):
@@ -29,7 +30,7 @@ class UnitOfWork:
             return
 
         # Step 1 & 2: Get or Create PriceRecord
-        price_record, _ = PriceRecord.objects.get_or_create(
+        price_record, created = PriceRecord.objects.get_or_create(
             product=product,
             price=price_value,
             was_price=product_details.get('price_was'),
@@ -38,6 +39,8 @@ class UnitOfWork:
             per_unit_price_string=product_details.get('per_unit_price_string'),
             is_on_special=product_details.get('is_on_special', False)
         )
+        if created:
+            self.new_price_records_created += 1
 
         # Step 3: Calculate normalized_key
         price_data = {
@@ -118,7 +121,8 @@ class UnitOfWork:
 
                 # Stage 2: Create all prices (for both new and existing products)
                 if self.prices_to_create:
-                    self.command.stdout.write(f"  - Creating {len(self.prices_to_create)} new price records.")
+                    self.command.stdout.write(f"  - Creating {self.new_price_records_created} new PriceRecord objects.")
+                    self.command.stdout.write(f"  - Creating {len(self.prices_to_create)} new Price objects (links).")
                     Price.objects.bulk_create(self.prices_to_create, batch_size=500, ignore_conflicts=True)
 
                 # Stage 3: Process categories now that all products exist

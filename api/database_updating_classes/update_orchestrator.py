@@ -11,6 +11,7 @@ from api.database_updating_classes.brand_manager import BrandManager
 from api.database_updating_classes.product_reconciler import ProductReconciler
 from api.database_updating_classes.brand_reconciler import BrandReconciler
 from api.database_updating_classes.category_cycle_manager import CategoryCycleManager
+from api.database_updating_classes.group_orchestrator import GroupOrchestrator
 
 class UpdateOrchestrator:
     def __init__(self, command, inbox_path):
