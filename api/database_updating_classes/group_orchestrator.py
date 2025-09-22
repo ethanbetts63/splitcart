@@ -81,7 +81,9 @@ class GroupOrchestrator:
         return {price.product_id: price.price for price in active_prices}
 
     def _is_match(self, store_a, store_b):
-        """Calculates the 'True Overlap' between two stores based on their active prices."""
+        """
+        Calculates the 'True Overlap' between two stores with a 'fail-fast' optimization.
+        """
         print(f"    Comparing prices for {store_a.store_name} and {store_b.store_name}...")
         prices_a = self._get_active_prices_for_store(store_a)
         prices_b = self._get_active_prices_for_store(store_b)
@@ -91,21 +93,35 @@ class GroupOrchestrator:
             return False
 
         common_product_ids = set(prices_a.keys()) & set(prices_b.keys())
+        num_common = len(common_product_ids)
 
         if not common_product_ids:
             print("    No common products found between the stores.")
             return False
 
-        identically_priced_count = 0
+        # Calculate the minimum number of matches required to meet the threshold
+        required_matches = num_common * (self.true_overlap_threshold / 100.0)
+
+        matches_found = 0
+        items_checked = 0
+        
         for product_id in common_product_ids:
+            items_checked += 1
             if prices_a[product_id] == prices_b[product_id]:
-                identically_priced_count += 1
+                matches_found += 1
+            
+            # Fail-fast check
+            items_remaining = num_common - items_checked
+            # If the best possible score we can get is less than what's required, fail now.
+            if (matches_found + items_remaining) < required_matches:
+                print(f"    Failing fast after checking {items_checked}/{num_common} items.")
+                return False
+
+        # If we finish the loop, calculate the final percentage
+        overlap_percentage = (matches_found / num_common) * 100
         
-        # The overlap percentage is based on the number of common products
-        overlap_percentage = (identically_priced_count / len(common_product_ids)) * 100
-        
-        print(f"    Found {len(common_product_ids)} common products.")
-        print(f"    Found {identically_priced_count} identically priced products.")
+        print(f"    Found {num_common} common products.")
+        print(f"    Found {matches_found} identically priced products.")
         print(f"    True Overlap: {overlap_percentage:.2f}%")
 
         return overlap_percentage >= self.true_overlap_threshold

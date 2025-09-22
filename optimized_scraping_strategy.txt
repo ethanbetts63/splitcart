@@ -46,6 +46,7 @@ To start the process, we will adopt a "top-down" approach using a single, reliab
 ### The "True Overlap" Metric
 *   **The Metric:** The primary metric for grouping will be **"True Overlap"**: the percentage of shared products between two stores that have the *exact same price*.
 *   **The Constraint:** This comparison must be performed on data scraped on the same day (or within a tight 48-hour window) to be valid. This is to ensure we are comparing real pricing strategy, not just stale data.
+*   **Optimization:** The calculation includes a "fail-fast" mechanism. It determines the maximum number of mismatches allowed to meet the overlap threshold and exits the comparison immediately once that number is exceeded, avoiding unnecessary computation on stores that are clearly not a match.
 
 ### Group Maintenance: The Ambassador & Candidate Workflow
 This model provides a clear and robust process for maintaining group integrity. The `GroupOrchestrator` within the `update_db` process will handle a batch of new `Candidates` for a group using the following iterative logic:
