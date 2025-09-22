@@ -11,6 +11,7 @@ from api.database_updating_classes.brand_manager import BrandManager
 from api.database_updating_classes.product_reconciler import ProductReconciler
 from api.database_updating_classes.brand_reconciler import BrandReconciler
 from api.database_updating_classes.category_cycle_manager import CategoryCycleManager
+from api.database_updating_classes.group_orchestrator import GroupOrchestrator
 
 class UpdateOrchestrator:
     def __init__(self, command, inbox_path):
@@ -24,6 +25,11 @@ class UpdateOrchestrator:
         
         all_files = [os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')]
         
+        # Create a single UoW and a list to track all scraped stores for this run
+        unit_of_work = UnitOfWork(self.command)
+        self.variation_manager.unit_of_work = unit_of_work  # Inject UoW
+        scraped_stores = []
+
         for file_path in all_files:
             self.command.stdout.write(f"--- Processing file: {os.path.basename(file_path)} ---")
             
@@ -44,6 +50,8 @@ class UpdateOrchestrator:
             try:
                 company_obj, _ = Company.objects.get_or_create(name__iexact=company_name, defaults={'name': company_name})
                 store_obj = Store.objects.get(store_id=store_id, company=company_obj)
+                if store_obj not in scraped_stores:
+                    scraped_stores.append(store_obj)
             except Store.DoesNotExist:
                 self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Store with ID {store_id} for company {company_name} not found in database."))
                 self.processed_files.append(file_path)
@@ -54,16 +62,26 @@ class UpdateOrchestrator:
                 continue
 
             resolver = ProductResolver(self.command, company_obj, store_obj)
-            unit_of_work = UnitOfWork(self.command)
-            self.variation_manager.unit_of_work = unit_of_work  # Inject UoW
             brand_manager = BrandManager(self.command)
 
             product_cache = self._process_consolidated_data(consolidated_data, resolver, unit_of_work, self.variation_manager, brand_manager, store_obj)
             
-            brand_manager.commit()
+            # Run per-file pre-commit processing
+            unit_of_work.pre_commit_processing(consolidated_data, product_cache, resolver, store_obj)
 
-            if unit_of_work.commit(consolidated_data, product_cache, resolver, store_obj):
-                self.processed_files.append(file_path)
+            brand_manager.commit()
+            self.processed_files.append(file_path)
+
+        # After processing all files, run the group orchestrator to infer prices
+        if scraped_stores:
+            self.command.stdout.write(self.command.style.SQL_FIELD("-- Starting Group Orchestration --"))
+            group_orchestrator = GroupOrchestrator(scraped_stores, unit_of_work)
+            group_orchestrator.run()
+
+        # Final commit of all staged changes (direct scrapes, inferred prices, group updates)
+        if not unit_of_work.commit():
+            self.command.stderr.write(self.command.style.ERROR("Aborting due to commit failure. Processed files will not be cleaned up."))
+            return
 
         # Regenerate the translation tables to include new variations
         BrandTranslationTableGenerator().run()

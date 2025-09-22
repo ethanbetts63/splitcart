@@ -1,13 +1,17 @@
 from products.models import Price
-from companies.models import StoreGroup, StoreGroupMembership
+from companies.models import Store, StoreGroup, StoreGroupMembership
+from api.database_updating_classes.unit_of_work import UnitOfWork
+from api.utils.price_normalizer import PriceNormalizer
+
 
 class GroupOrchestrator:
     """
     Orchestrates the process of verifying group integrity after new data has been scraped.
     It compares new 'Candidate' stores against the group's 'Ambassador' to detect any divergence.
     """
-    def __init__(self, recently_scraped_stores):
+    def __init__(self, recently_scraped_stores, unit_of_work: UnitOfWork):
         self.candidates = recently_scraped_stores
+        self.uow = unit_of_work
         self.true_overlap_threshold = 95.0  # e.g., 95%
 
     def run(self):
@@ -63,7 +67,9 @@ class GroupOrchestrator:
             new_ambassador = confirmed_matches[0]
             print(f"Group is healthy. Promoting {new_ambassador.store_name} to new Ambassador.")
             self._promote_new_ambassador(group, new_ambassador)
-            # Prices for the group would be inferred from new_ambassador here
+            
+            # Infer prices for the rest of the group based on the new ambassador's data
+            self._infer_prices_for_group(group, new_ambassador, confirmed_matches)
 
             for rogue in potential_rogues:
                 print(f"Outcasting rogue store: {rogue.store_name}")
@@ -82,8 +88,7 @@ class GroupOrchestrator:
 
             if other_members_exist:
                 print(f"  Group {group.name} has other members. Marking as 'Divergence Detected'.")
-                group.status = 'DIVERGENCE_DETECTED'
-                group.save()  # This will be replaced by a UoW call later.
+                self.uow.update_group_status(group, 'DIVERGENCE_DETECTED')
                 
                 # Even in a divergence, the failed candidates are considered rogue and must be outcast.
                 for rogue in candidates:
@@ -149,14 +154,16 @@ class GroupOrchestrator:
 
     def _promote_new_ambassador(self, group, new_ambassador_store):
         """Updates the group to set a new ambassador."""
-        group.ambassador = new_ambassador_store
-        group.save()
+        self.uow.update_group_ambassador(group, new_ambassador_store)
 
     def _outcast_rogue(self, rogue_store):
         """Removes a store from its group and attempts to re-home it."""
         # Store the group membership before deleting it, to exclude it from re-homing search
-        old_group_id = rogue_store.group_membership.group.id if rogue_store.group_membership else None
-        rogue_store.group_membership.delete()
+        membership = rogue_store.group_membership
+        old_group_id = membership.group.id if membership else None
+        
+        self.uow.add_membership_to_delete(membership)
+
         print(f"  Store {rogue_store.store_name} outcast. Attempting to find a new home...")
         self._find_new_home_for_rogue(rogue_store, old_group_id)
 
@@ -185,7 +192,7 @@ class GroupOrchestrator:
             # Directly use the _is_match (True Overlap) for simplicity
             if self._is_match(rogue_store, ambassador):
                 print(f"      Match found! Re-homing {rogue_store.store_name} to Group: {group.name}.")
-                StoreGroupMembership.objects.create(store=rogue_store, group=group)
+                self.uow.add_membership_to_create(rogue_store, group)
                 return # Found a home, exit
 
         print(f"  {rogue_store.store_name} could not be re-homed. It remains an outlier.")
@@ -193,6 +200,65 @@ class GroupOrchestrator:
     def _dissolve_group(self, group):
         """Deactivates a group and removes all its members."""
         print(f"  Dissolving group {group.name} due to major schism.")
-        group.memberships.all().delete()
+        for membership in group.memberships.all():
+            self.uow.add_membership_to_delete(membership)
+        
         group.is_active = False
-        group.save()
+        self.uow.add_group_for_update(group)
+
+    def _infer_prices_for_group(self, group, new_ambassador, candidates):
+        """
+        Infers prices for all non-scraped members of a group based on the new ambassador's data.
+        """
+        print(f"  Inferring prices for group {group.name} from ambassador {new_ambassador.store_name}.")
+
+        # Get the active prices for the ambassador store
+        ambassador_prices = Price.objects.filter(store=new_ambassador, is_active=True).select_related('price_record', 'price_record__product')
+        if not ambassador_prices:
+            print(f"  Warning: Ambassador {new_ambassador.store_name} has no active prices to infer from.")
+            return
+
+        # Find the stores in the group that were NOT scraped in this run
+        candidate_ids = {c.id for c in candidates}
+        target_stores = Store.objects.filter(group_membership__group=group).exclude(id__in=candidate_ids)
+
+        if not target_stores:
+            print("  No other member stores in the group to infer prices for.")
+            return
+            
+        print(f"  Found {len(target_stores)} member stores to infer prices for.")
+        
+        newly_inferred_prices = []
+        for store in target_stores:
+            for amb_price in ambassador_prices:
+                # This is the core logic: create a new Price entry for the member store,
+                # but link it to the ambassador's existing PriceRecord.
+                
+                # We need to generate a new normalized_key for this specific store/date combo
+                price_data = {
+                    'product_id': amb_price.price_record.product.id,
+                    'store_id': store.id,
+                    'price': amb_price.price_record.price,
+                    'date': amb_price.scraped_date
+                }
+                normalizer = PriceNormalizer(price_data=price_data, company=store.company.name)
+                normalized_key = normalizer.get_normalized_key()
+
+                if not normalized_key:
+                    continue
+
+                newly_inferred_prices.append(
+                    Price(
+                        price_record=amb_price.price_record,
+                        store=store,
+                        sku=None,  # SKU is store-specific and not known for inferred prices
+                        scraped_date=amb_price.scraped_date,
+                        normalized_key=normalized_key,
+                        is_available=amb_price.is_available,
+                        source='inferred_group'
+                    )
+                )
+        
+        if newly_inferred_prices:
+            print(f"  Staging {len(newly_inferred_prices)} new inferred prices for creation.")
+            self.uow.add_inferred_prices(newly_inferred_prices)
