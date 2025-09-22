@@ -105,7 +105,7 @@ To support the grouping logic, the database will be extended with two new models
 *   **`StoreGroup`:** Represents a group itself. It will have a name, a link to its parent company, and an `is_active` flag. It will also have two key relationships:
     *   `ambassador`: A nullable link (ForeignKey) to the single `Store` that is the current, official Ambassador for the group.
     *   `candidates`: A ManyToManyField linking to `Store`s that have been recently scraped and are awaiting a health check. This relationship is temporary and is cleared after each run.
-*   **`StoreGroupMembership`:** A linking table that connects a `Store` to a `StoreGroup`. This will hold metadata about the membership, such as a `last_scraped_as_candidate` timestamp to help with rotating health checks. Outliers will be stores with no entry in this table.
+*   **`StoreGroupMembership`:** A simple and pure linking table that connects a `Store` to a `StoreGroup`. Its existence signifies that a store is part of a group. The logic for rotating candidates will be handled by using the `last_scraped` timestamp directly on the `Store` model. Outliers are simply stores with no entry in this table.
 
 ### Dynamic Re-classification
 The system must be dynamic. The "True Overlap" scores and group memberships must be re-calculated periodically to adapt to changes in store strategies. The comparison of direct vs. inferred data serves as the primary trigger for this re-evaluation.

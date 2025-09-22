@@ -3,4 +3,5 @@ from .division import Division
 from .store import Store
 from .category import Category
 from .category_link import CategoryLink
-from .store_group import StoreGroup, StoreGroupMembership
+from .store_group import StoreGroup
+from .store_group_membership import StoreGroupMembership
