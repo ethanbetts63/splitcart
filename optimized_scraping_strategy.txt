@@ -61,9 +61,9 @@ This model provides a clear and robust process for maintaining group integrity. 
         *   **If no other members remain:** If the group consisted *only* of the Ambassador and the Candidates that just failed, there is nothing left to test. In this specific case, the orchestrator dissolves the group by setting its `is_active` flag to `False`.
 
 ### The Grouper Workflow (`update_db`)
-To keep the system's state clean and explicit, the `update_db` process will use the database to manage its list of stores to check.
+To keep the system's state clean and explicit, the `update_db` process will use the database to manage its list of stores to check. A `GroupOrchestrator` class has been implemented to contain this logic.
 1.  **Identify & Stamp Candidates:** At the beginning of a run, the process identifies all stores with new `.jsonl` files. For each of these stores, it adds the `Store` object to the `candidates` relationship on its parent `StoreGroup`. This "stamps" them as the work-list for this run.
-2.  **Process & Check:** The grouper logic then queries for groups that have pending candidates and performs the "Ambassador & Candidate Workflow" described above.
+2.  **Process & Check:** The `GroupOrchestrator` then queries for groups that have pending candidates and performs the "Ambassador & Candidate Workflow." The core "True Overlap" analysis method within the orchestrator has been implemented to fetch active prices and perform the comparison.
 3.  **Cleanup:** At the end of the run, the process clears the `candidates` relationship for all the groups it has processed, ensuring the system is clean for the next run.
 
 ### Outcasting & Re-homing Rogue Stores

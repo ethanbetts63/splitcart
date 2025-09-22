@@ -1,5 +1,4 @@
-from companies.models import Store, StoreGroup, StoreGroupMembership
-from products.models import Product
+from products.models import Price
 
 class GroupOrchestrator:
     """
@@ -73,23 +72,42 @@ class GroupOrchestrator:
             print(f"Major Divergence! All candidates failed to match Ambassador {ambassador.store_name}.")
             self._dissolve_group(group)
 
-    def _is_match(self, store_a, store_b):
-        """Calculates the 'True Overlap' between two stores."""
-        # This is a simplified representation. The actual implementation would need
-        # to query the Price model for the most recent prices for each store.
-        products_a = set(Product.objects.filter(prices__store=store_a).values_list('id', flat=True))
-        products_b = set(Product.objects.filter(prices__store=store_b).values_list('id', flat=True))
+    def _get_active_prices_for_store(self, store):
+        """
+        Fetches the current, active prices for all products in a given store.
+        Returns a dictionary mapping {product_id: price}.
+        """
+        active_prices = Price.objects.filter(store=store, is_active=True)
+        return {price.product_id: price.price for price in active_prices}
 
-        common_products = products_a.intersection(products_b)
-        if not common_products:
+    def _is_match(self, store_a, store_b):
+        """Calculates the 'True Overlap' between two stores based on their active prices."""
+        print(f"    Comparing prices for {store_a.store_name} and {store_b.store_name}...")
+        prices_a = self._get_active_prices_for_store(store_a)
+        prices_b = self._get_active_prices_for_store(store_b)
+
+        if not prices_a or not prices_b:
+            print("    One or both stores have no active prices. Cannot compare.")
             return False
 
-        # This is the expensive part. For each common product, get the latest price for each store.
-        # For this placeholder, we'll just assume a high match rate.
-        # In reality, we would loop through common_products and compare prices.
-        match_count = int(len(common_products) * 0.98) # Placeholder
+        common_product_ids = set(prices_a.keys()) & set(prices_b.keys())
+
+        if not common_product_ids:
+            print("    No common products found between the stores.")
+            return False
+
+        identically_priced_count = 0
+        for product_id in common_product_ids:
+            if prices_a[product_id] == prices_b[product_id]:
+                identically_priced_count += 1
         
-        overlap_percentage = (match_count / len(common_products)) * 100
+        # The overlap percentage is based on the number of common products
+        overlap_percentage = (identically_priced_count / len(common_product_ids)) * 100
+        
+        print(f"    Found {len(common_product_ids)} common products.")
+        print(f"    Found {identically_priced_count} identically priced products.")
+        print(f"    True Overlap: {overlap_percentage:.2f}%")
+
         return overlap_percentage >= self.true_overlap_threshold
 
     def _promote_new_ambassador(self, group, new_ambassador_store):
