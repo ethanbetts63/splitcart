@@ -9,7 +9,6 @@ class StoreGroup(models.Model):
         ('DIVERGENCE_DETECTED', 'Divergence Detected'),
     ]
 
-    name = models.CharField(max_length=255, unique=True)
     company = models.ForeignKey('companies.Company', on_delete=models.CASCADE, related_name='store_groups')
     is_active = models.BooleanField(default=True)
     status = models.CharField(max_length=25, choices=STATUS_CHOICES, default='HEALTHY')
@@ -31,4 +30,4 @@ class StoreGroup(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return f"{self.company.name} Group {self.id}"
