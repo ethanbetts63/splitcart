@@ -127,6 +127,7 @@ Migrating the existing data in the `products_price` table requires a careful, pe
     - Updated `api/management/commands/test_unit_price_sorter.py` to use the new `PriceRecord` relationship.
     - Updated `api/utils/substitution_utils/unit_price_sorter.py` to use the new `PriceRecord` relationship.
     - Updated `api/utils/analysis_utils/pricing_analysis/get_product_prices_by_store.py` to use the new `PriceRecord` relationship.
+    - Updated `api/utils/analysis_utils/store_grouping_utils/data_fetching.py` to use the new `PriceRecord` relationship.
 
 ## 7. Implementation Details for `UnitOfWork`
 
