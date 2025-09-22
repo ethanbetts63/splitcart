@@ -107,7 +107,7 @@ Migrating the existing data in the `products_price` table requires a careful, pe
 
 - **Increased Query Complexity:** Retrieving price information will now require a `JOIN` operation between the `Price` and `PriceRecord` tables, which is a minor performance consideration.
 
-## 8. Progress So Far
+## 7. Progress So Far
 
 - **Models Created/Updated:**
     - Created the new `products.models.price_record.PriceRecord` model.
@@ -134,7 +134,7 @@ Migrating the existing data in the `products_price` table requires a careful, pe
     - Updated `products/tests/test_helpers/model_factories.py` to introduce `PriceRecordFactory` and refactor `PriceFactory` to use it.
     - Updated `products/tests/model_tests/test_price.py` to align with the refactored `Price` model and `PriceFactory` changes.
 
-## 7. Implementation Details for `UnitOfWork`
+## 8. Implementation Details for `UnitOfWork`
 
 The refactor will be highly concentrated in the `api.database_updating_classes.unit_of_work.UnitOfWork` class. The `UpdateOrchestrator` will not require changes as it only calls `unit_of_work.add_price`.
 
@@ -182,3 +182,16 @@ The current `add_price` method instantiates a full `Price` object. This method w
 
 The `commit` method will require **no significant changes**. The line `Price.objects.bulk_create(self.prices_to_create, ...)` will work as is, but it will now be creating the new lightweight `Price` objects instead of the old, larger ones. The `ignore_conflicts=True` argument will continue to rely on the `normalized_key` to prevent duplicate entries for the same product, store, and day.
 
+## 9. Post-Refactor Cleanup and Bug Fixes
+
+After the initial refactor, a thorough review and testing phase revealed several areas that were missed or needed correction. These changes were crucial for ensuring the stability and consistency of the new `Price` and `PriceRecord` model structure across the entire application.
+
+The first step was to fix the application's test suite, which was failing due to the model changes. This involved updating test files to use the new `PriceRecordFactory`, correcting assertions that were still trying to access price data directly from `Price` objects, and ensuring that `PriceFactory` was called correctly without the deprecated `product` argument. The model factories themselves were also updated to ensure they generated valid data, for instance by adding a unique `normalized_key` to the `PriceFactory`.
+
+Fixing the tests revealed several bugs in the application code. In the `ProductReconciler`, the logic for moving prices from a duplicate product to a canonical one was flawed. It failed to recalculate the `normalized_key` after re-assigning the price to a new product, which would lead to database errors. This was corrected by importing the `PriceNormalizer` and regenerating the key during the merge process.
+
+The review also uncovered several other parts of the codebase that were not updated during the initial refactor. Various utility functions and management commands were still referencing `product_id` directly on the `Price` model. These queries were updated to use the correct `price_record__product_id` lookup path. This included files like `test_unit_price_sorter.py`, `savings_benchmark.py`, and `substitution_overlap.py`.
+
+For consistency and clarity, a cache variable in the `ProductResolver` was renamed from `store_product_id_cache` to `sku_cache`. This change better reflects the project's goal of using "sku" as the standard field name for store-specific product identifiers.
+
+Finally, a performance improvement was made to the integration tests. Queries for `Price` objects were updated to use `select_related('price_record')`. This prevents N+1 query problems by fetching the related `PriceRecord` in the same initial database query, making the tests more efficient.

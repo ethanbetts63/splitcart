@@ -71,7 +71,27 @@ class GroupOrchestrator:
         else:
             # All candidates failed to match the ambassador. This is a major divergence.
             print(f"Major Divergence! All candidates failed to match Ambassador {ambassador.store_name}.")
-            self._dissolve_group(group)
+
+            # Check if there are any other members in the group who were NOT part of this check.
+            # We exclude the ambassador and all the candidates we just tested.
+            other_members_exist = group.memberships.exclude(
+                store_id=group.ambassador_id
+            ).exclude(
+                store_id__in=[c.id for c in candidates]
+            ).exists()
+
+            if other_members_exist:
+                print(f"  Group {group.name} has other members. Marking as 'Divergence Detected'.")
+                group.status = 'DIVERGENCE_DETECTED'
+                group.save()  # This will be replaced by a UoW call later.
+                
+                # Even in a divergence, the failed candidates are considered rogue and must be outcast.
+                for rogue in candidates:
+                    print(f"  Outcasting failed candidate: {rogue.store_name}")
+                    self._outcast_rogue(rogue)
+            else:
+                print(f"  Group {group.name} has no other members left to test. Dissolving group.")
+                self._dissolve_group(group)
 
     def _get_active_prices_for_store(self, store):
         """
