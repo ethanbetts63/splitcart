@@ -1,6 +1,6 @@
 from django.test import TestCase
 from companies.tests.test_helpers.model_factories import CompanyFactory, StoreFactory
-from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory
+from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory, PriceRecordFactory
 from api.utils.substitution_utils.get_woolworths_product_store_ids import get_woolworths_product_store_ids
 from products.models import Price # Import Price model to query existing objects
 
@@ -17,15 +17,15 @@ class GetWoolworthsProductStoreIdsTest(TestCase):
         self.product3 = ProductFactory()
 
         # Woolworths products
-        PriceFactory(product=self.product1, store=self.woolworths_store, sku='ww1', is_active=True)
-        PriceFactory(product=self.product2, store=self.woolworths_store, sku='ww2', is_active=True)
+        PriceFactory(price_record=PriceRecordFactory(product=self.product1), store=self.woolworths_store, sku='ww1', is_active=True)
+        PriceFactory(price_record=PriceRecordFactory(product=self.product2), store=self.woolworths_store, sku='ww2', is_active=True)
         # Inactive Woolworths product
-        PriceFactory(product=self.product3, store=self.woolworths_store, sku='ww3', is_active=False)
+        PriceFactory(price_record=PriceRecordFactory(product=self.product3), store=self.woolworths_store, sku='ww3', is_active=False)
         # Duplicate sku for Woolworths (should still be unique in result)
-        PriceFactory(product=self.product1, store=self.woolworths_store, sku='ww1', is_active=True)
+        PriceFactory(price_record=PriceRecordFactory(product=self.product1), store=self.woolworths_store, sku='ww1', is_active=True)
 
         # Coles product
-        PriceFactory(product=self.product1, store=self.coles_store, sku='coles1', is_active=True)
+        PriceFactory(price_record=PriceRecordFactory(product=self.product1), store=self.coles_store, sku='coles1', is_active=True)
 
     def test_get_woolworths_product_store_ids(self):
         product_ids = get_woolworths_product_store_ids()

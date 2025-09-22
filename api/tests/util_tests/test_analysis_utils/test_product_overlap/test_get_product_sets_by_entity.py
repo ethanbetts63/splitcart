@@ -1,6 +1,6 @@
 from django.test import TestCase
 from companies.tests.test_helpers.model_factories import CompanyFactory, StoreFactory
-from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory
+from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory, PriceRecordFactory
 from api.utils.analysis_utils.product_overlap.get_product_sets_by_entity import get_product_sets_by_entity
 
 class GetProductSetsByEntityTest(TestCase):
@@ -16,10 +16,10 @@ class GetProductSetsByEntityTest(TestCase):
         self.product2 = ProductFactory()
         self.product3 = ProductFactory()
 
-        PriceFactory(product=self.product1, store=self.store1_c1)
-        PriceFactory(product=self.product1, store=self.store1_c2)
-        PriceFactory(product=self.product2, store=self.store1_c1)
-        PriceFactory(product=self.product3, store=self.store2_c1)
+        PriceFactory(price_record=PriceRecordFactory(product=self.product1), store=self.store1_c1)
+        PriceFactory(price_record=PriceRecordFactory(product=self.product1), store=self.store1_c2)
+        PriceFactory(price_record=PriceRecordFactory(product=self.product2), store=self.store1_c1)
+        PriceFactory(price_record=PriceRecordFactory(product=self.product3), store=self.store2_c1)
 
     def test_get_product_sets_by_company(self):
         entity_products = get_product_sets_by_entity(entity_type='company')

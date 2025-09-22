@@ -17,7 +17,7 @@ class Command(BaseCommand):
         selected_stores = []
         all_companies = Company.objects.all()
         for company in all_companies:
-            viable_store = Store.objects.filter(company=company).annotate(num_prices=Count('prices')).filter(num_prices__gte=50).first()
+            viable_store = Store.objects.filter(company=company).annotate(num_prices=Count('price')).filter(num_prices__gte=50).first()
             if viable_store:
                 selected_stores.append(viable_store)
 

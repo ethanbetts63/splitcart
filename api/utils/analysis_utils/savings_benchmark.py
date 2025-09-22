@@ -74,7 +74,20 @@ def generate_random_cart(stores, num_products):
         return None, None
 
     random_product_ids = random.sample(list(product_ids_in_stores), num_products)
-    anchor_products = Product.objects.filter(id__in=random_product_ids).prefetch_related('prices__store', 'prices__price_record')
+    anchor_products = Product.objects.filter(id__in=random_product_ids)
+
+    # Pre-fetch all prices for all anchor products in the selected stores to avoid N+1 queries
+    all_anchor_prices = Price.objects.filter(
+        price_record__product__in=anchor_products,
+        store__in=stores
+    ).select_related('store', 'price_record')
+
+    prices_by_product = {}
+    for price in all_anchor_prices:
+        product_id = price.price_record.product_id
+        if product_id not in prices_by_product:
+            prices_by_product[product_id] = []
+        prices_by_product[product_id].append(price)
 
     all_slots = []
     size_comparer = SizeComparer()
@@ -95,15 +108,15 @@ def generate_random_cart(stores, num_products):
                 size_compatible_group.append(sub)
 
         # --- Step 1: Conditional Culling by Price ---
-        anchor_prices = anchor_product.prices.filter(store__in=stores)
-        if not anchor_prices.exists():
+        anchor_prices = prices_by_product.get(anchor_product.id, [])
+        if not anchor_prices:
             continue
         
         price_ceiling = min([p.price_record.price for p in anchor_prices if p.price_record])
         
         candidate_subs = []
         sub_prices = Price.objects.filter(price_record__product__in=size_compatible_group, store__in=stores).select_related('store', 'price_record')
-        sub_prices_map = { (p.product_id, p.store_id): p for p in sub_prices }
+        sub_prices_map = { (p.price_record.product_id, p.store_id): p for p in sub_prices }
 
         if len(size_compatible_group) > PRICE_CULLING_THRESHOLD:
             for sub in size_compatible_group:
@@ -150,7 +163,7 @@ def generate_random_cart(stores, num_products):
         if len(final_options) < portfolio_cap:
             ambassadors = {}
             # Find the store of the anchor product to correctly identify "other" stores
-            anchor_store_id = anchor_prices.first().store.id
+            anchor_store_id = anchor_prices[0].store.id
             other_stores = [s for s in stores if s.id != anchor_store_id]
             for store in other_stores:
                 store_candidates = [(s, p) for s, p in candidate_subs if p.store_id == store.id]
@@ -177,7 +190,7 @@ def generate_random_cart(stores, num_products):
         # Format the final selected options for the solver
         current_slot = []
         # Ensure the anchor product itself is always an option, if priced
-        anchor_price_obj = anchor_prices.first()
+        anchor_price_obj = anchor_prices[0]
         final_options_products = [opt[0] for opt in final_options]
         if anchor_product not in final_options_products:
              final_options.append((anchor_product, anchor_price_obj))

@@ -10,6 +10,7 @@ from api.utils.analysis_utils.savings_benchmark import (
     calculate_optimized_cost
 )
 from companies.models import Company, Store
+from products.models import Price
 
 class Command(BaseCommand):
     help = 'Runs a single, detailed savings benchmark and outputs the results to a file for debugging.'
@@ -27,7 +28,7 @@ class Command(BaseCommand):
             viable_stores_for_company = Store.objects.filter(
                 company=company
             ).annotate(
-                num_prices=Count('prices')
+                num_prices=Count('price')
             ).filter(
                 num_prices__gte=PRODUCTS_PER_RUN
             )
@@ -64,7 +65,7 @@ class Command(BaseCommand):
             
             # Find the cheapest price for the anchor product among the selected stores
             anchor_min_price = float('inf')
-            for price_obj in anchor.prices.all():
+            for price_obj in Price.objects.filter(price_record__product=anchor):
                 if price_obj.store in selected_stores and price_obj.price_record and price_obj.price_record.price < anchor_min_price:
                     anchor_min_price = price_obj.price_record.price
 

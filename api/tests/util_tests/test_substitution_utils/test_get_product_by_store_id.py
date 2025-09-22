@@ -1,5 +1,5 @@
 from django.test import TestCase
-from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory
+from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory, PriceRecordFactory
 from companies.tests.test_helpers.model_factories import StoreFactory
 from api.utils.substitution_utils.get_product_by_store_id import get_product_by_store_id
 
@@ -8,8 +8,8 @@ class GetProductByStoreIdTest(TestCase):
         self.store = StoreFactory()
         self.product1 = ProductFactory()
         self.product2 = ProductFactory()
-        self.price1 = PriceFactory(product=self.product1, store=self.store, sku='prod123', is_active=True)
-        self.price2 = PriceFactory(product=self.product2, store=self.store, sku='prod456', is_active=True)
+        self.price1 = PriceFactory(price_record=PriceRecordFactory(product=self.product1), store=self.store, sku='prod123', is_active=True)
+        self.price2 = PriceFactory(price_record=PriceRecordFactory(product=self.product2), store=self.store, sku='prod456', is_active=True)
 
     def test_get_product_by_store_id_exists(self):
         product = get_product_by_store_id('prod123')
@@ -21,11 +21,11 @@ class GetProductByStoreIdTest(TestCase):
 
     def test_get_product_by_store_id_multiple_objects_returned(self):
         # Create another active price for the same sku
-        PriceFactory(product=self.product1, store=self.store, sku='prod123', is_active=True)
+        PriceFactory(price_record=PriceRecordFactory(product=self.product1), store=self.store, sku='prod123', is_active=True)
         product = get_product_by_store_id('prod123')
         self.assertIsNone(product)
 
     def test_get_product_by_store_id_inactive_price(self):
-        PriceFactory(product=self.product1, store=self.store, sku='prod789', is_active=False)
+        PriceFactory(price_record=PriceRecordFactory(product=self.product1), store=self.store, sku='prod789', is_active=False)
         product = get_product_by_store_id('prod789')
         self.assertIsNone(product)
