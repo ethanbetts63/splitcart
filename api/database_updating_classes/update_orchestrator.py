@@ -71,6 +71,11 @@ class UpdateOrchestrator:
             if unit_of_work.commit(consolidated_data, product_cache, resolver, store_obj):
                 self.processed_files.append(file_path)
 
+        # After processing all files, run the group orchestrator to infer prices
+        self.command.stdout.write(self.command.style.SQL_FIELD("-- Starting Group Orchestration --"))
+        group_orchestrator = GroupOrchestrator(unit_of_work)
+        group_orchestrator.run()
+
         # Regenerate the translation tables to include new variations
         BrandTranslationTableGenerator().run()
         ProductTranslationTableGenerator().run()

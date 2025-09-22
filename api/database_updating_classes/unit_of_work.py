@@ -73,6 +73,10 @@ class UnitOfWork:
             if instance not in self.brands_to_update:
                 self.brands_to_update.append(instance)
 
+    def add_group_to_clear_candidates(self, group):
+        if group not in self.groups_to_clear_candidates:
+            self.groups_to_clear_candidates.append(group)
+
     def _deduplicate_new_products(self, resolver):
         unique_new_products_with_details = []
         seen_barcodes = set(resolver.barcode_cache.keys())
@@ -135,6 +139,12 @@ class UnitOfWork:
                     brand_update_fields = ['name_variations', 'normalized_name_variations']
                     ProductBrand.objects.bulk_update(self.brands_to_update, brand_update_fields, batch_size=500)
                     self.command.stdout.write(f"  - Updated {len(self.brands_to_update)} brands with new variation info.")
+
+                # Stage 6: Clear candidates from groups that have been processed
+                if self.groups_to_clear_candidates:
+                    for group in self.groups_to_clear_candidates:
+                        group.candidates.clear()
+                    self.command.stdout.write(f"  - Cleared candidates from {len(self.groups_to_clear_candidates)} groups.")
             
             self.command.stdout.write(self.command.style.SUCCESS("--- Commit successful ---"))
             return True
