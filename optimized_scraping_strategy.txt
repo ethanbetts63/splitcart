@@ -50,16 +50,22 @@ To start the process, we will adopt a "top-down" approach using a single, reliab
 ### Group Maintenance: The Ambassador & Candidate Workflow
 This new model provides a clear and robust process for maintaining group integrity. The `ScrapeScheduler` will still scrape pairs of `Candidates` for each health check, but the `update_db` process now follows this logic:
 
-1.  **Fetch Data:** The grouper receives the data for one or more new `Candidate` stores (e.g., C1 and C2) from a specific group. It also fetches the group's current, official `Ambassador` (A) from the database.
+1.  **Fetch Data:** The grouper receives the data for one or more new `Candidate` stores (e.g., C1 and C2) from a specific group. It also fetches the group's current, official `Ambassador` (A) by reading the `ambassador` link on the `StoreGroup` model.
 
 2.  **Perform Check:** It compares the first Candidate (C1) to the Ambassador (A) using the "True Overlap" metric.
 
-3.  **Handle Success:** If C1 is a match with A, the group is healthy. C1's data is used to infer new prices for all other members of the group. The "torch is passed": C1's `StoreGroupMembership` is flagged as the new `is_ambassador`, and the old ambassador's flag is removed. The process is complete.
+3.  **Handle Success:** If C1 is a match with A, the group is healthy. C1's data is used to infer new prices for all other members of the group. The "torch is passed": the parent `StoreGroup`'s `ambassador` field is updated to point directly to the Candidate store C1. The process is complete.
 
 4.  **Handle Simple Divergence (Fallback):** If C1 does *not* match A, the grouper uses the second Candidate (C2) as an immediate fallback. It compares C2 to the Ambassador A.
-    *   If C2 matches A, the group is still healthy. C1 is identified as a `Rogue` and is ejected from the group (its `StoreGroupMembership` is deleted). C2's data is used for inference, and C2 becomes the new `Ambassador`.
+    *   If C2 matches A, the group is still healthy. C1 is identified as a `Rogue` and is outcast from the group (its `StoreGroupMembership` is deleted). C2's data is used for inference, and C2 becomes the new `Ambassador` by updating the group's `ambassador` field.
 
 5.  **Handle Major Divergence (Schism):** If C1 does not match A, and C2 *also* does not match A, this signals a major problem. The Ambassador itself may be out of date, or a larger schism may have occurred. In this case, the `update_db` process flags the entire `StoreGroup` by setting its `is_active` flag to `False`. This effectively dissolves the group, turning all its members into individual outliers. These outliers will then be re-scraped individually by the scheduler and will organically form new, smaller, stable groups over time.
+
+### The Grouper Workflow (`update_db`)
+To keep the system's state clean and explicit, the `update_db` process will use the database to manage its list of stores to check.
+1.  **Identify & Stamp Candidates:** At the beginning of a run, the process identifies all stores with new `.jsonl` files. For each of these stores, it adds the `Store` object to the `candidates` relationship on its parent `StoreGroup`. This "stamps" them as the work-list for this run.
+2.  **Process & Check:** The grouper logic then queries for groups that have pending candidates and performs the "Ambassador & Candidate Workflow" described above.
+3.  **Cleanup:** At the end of the run, the process clears the `candidates` relationship for all the groups it has processed, ensuring the system is clean for the next run.
 
 ### Outcasting & Re-homing Rogue Stores
 When a `Rogue` store is identified and outcast from its group, it is not immediately classified as a permanent outlier. The `update_db` process will first attempt to find a new home for it. This "re-homing" process must be efficient.
@@ -96,10 +102,10 @@ Once the clustering algorithm is built, the initial rollout will be geographical
 
 ### Proposed Data Model
 To support the grouping logic, the database will be extended with two new models:
-*   **`StoreGroup`:** Represents a group itself. It will have a name, a link to its parent company, and an `is_active` flag (to dissolve a group in case of a major schism).
-*   **`StoreGroupMembership`:** A linking table that connects a `Store` to a `StoreGroup`. This will hold metadata about the membership:
-    *   `is_ambassador`: A boolean flag to indicate if this member is the group's current, official Ambassador.
-    *   `last_scraped_as_candidate`: A timestamp to track when the store was last chosen for a health check, helping to ensure all members are checked over time.
+*   **`StoreGroup`:** Represents a group itself. It will have a name, a link to its parent company, and an `is_active` flag. It will also have two key relationships:
+    *   `ambassador`: A nullable link (ForeignKey) to the single `Store` that is the current, official Ambassador for the group.
+    *   `candidates`: A ManyToManyField linking to `Store`s that have been recently scraped and are awaiting a health check. This relationship is temporary and is cleared after each run.
+*   **`StoreGroupMembership`:** A linking table that connects a `Store` to a `StoreGroup`. This will hold metadata about the membership, such as a `last_scraped_as_candidate` timestamp to help with rotating health checks. Outliers will be stores with no entry in this table.
 
 ### Dynamic Re-classification
 The system must be dynamic. The "True Overlap" scores and group memberships must be re-calculated periodically to adapt to changes in store strategies. The comparison of direct vs. inferred data serves as the primary trigger for this re-evaluation.
