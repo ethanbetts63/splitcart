@@ -122,11 +122,17 @@ The core intelligence of the scraping process will be encapsulated in a dedicate
 
 *   **`get_discovery_mode_queue()`:** This method, which has already been designed, handles the initial discovery phase. It implements the 80/20 strategy by building a queue that is 80% focused on completing the largest unscraped geographic cluster and 20% focused on randomly exploring all other unscraped stores and outliers.
 
-*   **`get_optimization_mode_queue()`:** This method will be developed for Phase 2. It will generate the daily scrape queue with a different set of priorities:
-    1.  **Resolving Divergence:** First, it will queue any "tie-breaker" stores needed to resolve ambiguity in groups that have failed a health check.
-    2.  **Maintaining Outliers:** Next, it will queue the outlier store that has the most outdated data.
-    3.  **Routine Health Checks:** Finally, it will queue two rotating ambassadors from the healthy group that has gone the longest without a check.
+*   **`get_optimization_mode_queue()`:** This method will be developed for Phase 
+C:\Users\ethan\coding\splitcart\api\utils\scraper_utils\scrape_scheduler.py2. It will generate the daily scrape queue with a different set of priorities:
+  To summarize the implementation:
+  1.  It will first check for a group with a DIVERGENCE_DETECTED status and return it immediately if found.
+  2.  If none are found, it will proceed with the 80/20 logic.
+  3.  80% of the time, it will return the largest StoreGroup based on the total number of stores.
+  4.  20% of the time, it will choose to explore. This is further split, giving a 10% overall chance of picking
+  another random group and a 10% chance of returning None to signal that an outlier should be scraped.
 
+  just to note here. when picking ambassadors or outliers we always want to either the first store we find that has never been scraped or the store thats been the longest since being scraped. 
+  
 ## 5. Open Questions & Key Decisions
 
 This strategy opens up several questions that will need to be answered during implementation:
