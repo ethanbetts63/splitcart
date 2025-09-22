@@ -61,6 +61,11 @@ class ScrapeScheduler:
             # Outlier query needs the company filter
             stores_qs = Store.objects.filter(self.company_filter, group_membership__isnull=True)
 
+        # Define and apply the division-based exclusion filters
+        coles_exclusion = Q(company__name='Coles') & ~Q(division_id__in=[1, 2, 3])
+        woolworths_exclusion = Q(company__name='Woolworths') & ~Q(division_id=6)
+        stores_qs = stores_qs.exclude(coles_exclusion | woolworths_exclusion)
+
         # Get IDs of all stores currently assigned as an ambassador or a candidate within the scope
         relevant_groups = StoreGroup.objects.filter(self.company_filter)
         ambassador_ids = relevant_groups.filter(ambassador__isnull=False).values_list('ambassador_id', flat=True)
