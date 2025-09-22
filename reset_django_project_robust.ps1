@@ -68,3 +68,4 @@ python manage.py analyze --report subs
 python manage.py analyze --report savings
 python manage.py debug_savings_run
 python manage.py test_unit_price_sorter
+python manage.py archive
