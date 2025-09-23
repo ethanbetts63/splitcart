@@ -50,7 +50,7 @@ class BaseStoreCleaner(ABC):
         
         metadata = {
             "company": self.company,
-            "scraped_at": self.timestamp.isoformat()
+            "scraped_date": self.timestamp.date().isoformat()
         }
 
         return {

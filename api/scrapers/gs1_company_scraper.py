@@ -97,7 +97,7 @@ class Gs1CompanyScraper:
     def _write_result_to_inbox(self, result, target_brand, barcode, output_file):
         self.command.stdout.write(self.command.style.SUCCESS(f"Successfully scraped {target_brand.name}."))
         output_record = {
-            'scraped_at': timezone.now().isoformat(),
+            'scraped_date': timezone.now().date().isoformat(),
             'target_brand_id': target_brand.id,
             'target_brand_name': target_brand.name,
             'scraped_barcode': barcode,
