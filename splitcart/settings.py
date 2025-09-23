@@ -18,6 +18,8 @@ INSTALLED_APPS = [
     "companies.apps.CompaniesConfig",
     "products.apps.ProductsConfig",
     "api.apps.ApiConfig",
+    "scraping.apps.ScrapingConfig",
+    "rest_framework",
     "django_extensions",
     "debug_toolbar",
 ]
