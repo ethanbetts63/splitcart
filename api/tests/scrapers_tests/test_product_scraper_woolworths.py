@@ -3,7 +3,7 @@ import json
 from django.test import TestCase
 from unittest.mock import Mock, patch, MagicMock
 
-from api.scrapers.product_scraper_woolworths import ProductScraperWoolworths
+from scraping.scrapers.product_scraper_woolworths import ProductScraperWoolworths
 
 def create_mock_woolworths_bundle(products_list):
     """A minimal representation of a Bundle from Woolworths' product API."""
@@ -67,7 +67,7 @@ class ProductScraperWoolworthsTests(TestCase):
         self.assertEqual(call_args_list[1].kwargs['json']['pageNumber'], 2)
         self.assertEqual(call_args_list[2].kwargs['json']['pageNumber'], 3)
 
-    @patch('api.scrapers.product_scraper_woolworths.DataCleanerWoolworths')
+    @patch('scraping.scrapers.product_scraper_woolworths.DataCleanerWoolworths')
     def test_clean_raw_data_uses_data_cleaner(self, mock_data_cleaner):
         """Test that clean_raw_data correctly instantiates and uses DataCleanerWoolworths."""
         # Arrange

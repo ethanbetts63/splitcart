@@ -2,7 +2,7 @@ import json
 from django.test import TestCase
 from unittest.mock import Mock, patch, MagicMock
 
-from api.scrapers.product_scraper_coles import ColesScraper
+from scraping.scrapers.product_scraper_coles import ColesScraper
 
 # A minimal representation of the JSON structure found in Coles' __NEXT_DATA__ script
 def create_mock_next_data(products_list, store_id, page_num=1, total_results=1, page_size=48):
@@ -76,7 +76,7 @@ class ProductScraperColesTests(TestCase):
         self.assertIn('page=1', self.scraper.session.get.call_args_list[0].args[0])
         self.assertIn('page=2', self.scraper.session.get.call_args_list[1].args[0])
 
-    @patch('api.scrapers.product_scraper_coles.DataCleanerColes')
+    @patch('scraping.scrapers.product_scraper_coles.DataCleanerColes')
     def test_clean_raw_data_uses_data_cleaner(self, mock_data_cleaner):
         """Test that clean_raw_data correctly instantiates and uses DataCleanerColes."""
         # Arrange
@@ -96,7 +96,7 @@ class ProductScraperColesTests(TestCase):
         mock_cleaner_instance.clean_data.assert_called_once()
         self.assertEqual(cleaned_result, {'cleaned': True})
 
-    @patch('api.scrapers.product_scraper_coles.ColesBarcodeScraper')
+    @patch('scraping.scrapers.product_scraper_coles.ColesBarcodeScraper')
     def test_post_scrape_enrichment_calls_barcode_scraper(self, mock_barcode_scraper):
         """Test that post_scrape_enrichment calls the barcode scraper."""
         # Arrange

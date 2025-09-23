@@ -1,8 +1,8 @@
 from django.core.management.base import BaseCommand
-from api.scrapers.store_scraper_aldi import find_aldi_stores
-from api.scrapers.store_scraper_coles import find_coles_stores
-from api.scrapers.store_scraper_iga import find_iga_stores
-from api.scrapers.store_scraper_woolworths import find_woolworths_stores
+from scraping.scrapers.store_scraper_aldi import find_aldi_stores
+from scraping.scrapers.store_scraper_coles import find_coles_stores
+from scraping.scrapers.store_scraper_iga import find_iga_stores
+from scraping.scrapers.store_scraper_woolworths import find_woolworths_stores
 
 class Command(BaseCommand):
     help = 'Finds store locations for various supermarkets.'

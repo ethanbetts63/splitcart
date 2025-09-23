@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.conf import settings
 import os
-from api.scrapers.barcode_scraper_coles import ColesBarcodeScraper
+from scraping.scrapers.barcode_scraper_coles import ColesBarcodeScraper
 
 class Command(BaseCommand):
     help = 'Manually runs the Coles barcode enrichment process on a specific file.'

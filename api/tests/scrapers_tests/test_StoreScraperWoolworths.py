@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from api.scrapers.store_scraper_woolworths import StoreScraperWoolworths
+from scraping.scrapers.store_scraper_woolworths import StoreScraperWoolworths
 
 class TestStoreScraperWoolworths1(unittest.TestCase):
 

@@ -3,7 +3,7 @@ import json
 from django.test import TestCase
 from unittest.mock import Mock, patch, MagicMock
 
-from api.scrapers.product_scraper_iga import IgaScraper
+from scraping.scrapers.product_scraper_iga import IgaScraper
 
 def create_mock_iga_product_api_response(products_list):
     """A minimal representation of the JSON structure from IGA's product API."""
@@ -25,7 +25,7 @@ class ProductScraperIgaTests(TestCase):
         self.scraper.session = Mock()
         self.scraper.jsonl_writer = Mock()
 
-    @patch('api.scrapers.product_scraper_iga.get_iga_categories')
+    @patch('scraping.scrapers.product_scraper_iga.get_iga_categories')
     def test_get_work_items(self, mock_get_iga_categories):
         """Test that get_work_items calls the helper function and returns its result."""
         # Arrange
@@ -79,7 +79,7 @@ class ProductScraperIgaTests(TestCase):
         self.assertEqual(call_args_list[1].kwargs['params']['skip'], 36)
         self.assertEqual(call_args_list[2].kwargs['params']['skip'], 72)
 
-    @patch('api.scrapers.product_scraper_iga.DataCleanerIga')
+    @patch('scraping.scrapers.product_scraper_iga.DataCleanerIga')
     def test_clean_raw_data_uses_data_cleaner(self, mock_data_cleaner):
         """Test that clean_raw_data correctly instantiates and uses DataCleanerIga."""
         # Arrange

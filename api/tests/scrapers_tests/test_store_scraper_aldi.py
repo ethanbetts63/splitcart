@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from api.scrapers.store_scraper_aldi import StoreScraperAldi
+from scraping.scrapers.store_scraper_aldi import StoreScraperAldi
 
 class TestStoreScraperAldi(unittest.TestCase):
 
@@ -35,7 +35,7 @@ class TestStoreScraperAldi(unittest.TestCase):
         self.assertEqual(result, [])
         self.scraper.command.stdout.write.assert_called_once()
 
-    @patch('api.scrapers.store_scraper_aldi.StoreCleanerAldi')
+    @patch('scraping.scrapers.store_scraper_aldi.StoreCleanerAldi')
     def test_clean_raw_data(self, MockStoreCleanerAldi):
         """Test that the clean_raw_data method uses the StoreCleanerAldi."""
         mock_cleaner_instance = MagicMock()

@@ -1,7 +1,7 @@
 import unittest
 import json
 from unittest.mock import MagicMock
-from api.scrapers.store_scraper_coles import StoreScraperColes
+from scraping.scrapers.store_scraper_coles import StoreScraperColes
 
 class TestStoreScraperColes(unittest.TestCase):
 

@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, patch
 import requests
 import io
 
-from api.scrapers.base_store_scraper import BaseStoreScraper
+from scraping.scrapers.base_store_scraper import BaseStoreScraper
 
 # A minimal concrete implementation of the abstract BaseStoreScraper for testing purposes
 class ConcreteStoreScraper(BaseStoreScraper):

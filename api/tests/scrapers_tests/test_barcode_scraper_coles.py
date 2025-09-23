@@ -3,12 +3,12 @@ from unittest.mock import MagicMock, patch, mock_open
 import requests
 import io
 
-from api.scrapers.barcode_scraper_coles import ColesBarcodeScraper
+from scraping.scrapers.barcode_scraper_coles import ColesBarcodeScraper
 
 class TestColesBarcodeScraper(unittest.TestCase):
 
-    @patch('api.scrapers.barcode_scraper_coles.prefill_barcodes_from_db', return_value=[])
-    @patch('api.scrapers.barcode_scraper_coles.JsonlWriter')
+    @patch('scraping.scrapers.barcode_scraper_coles.prefill_barcodes_from_db', return_value=[])
+    @patch('scraping.scrapers.barcode_scraper_coles.JsonlWriter')
     @patch('builtins.open', new_callable=mock_open, read_data='{"metadata": {"store_id": "123", "store_name": "Test Store", "state": "TS"}}\n')
     def test_run_stops_after_3_consecutive_network_errors(self, mock_file, mock_jsonl_writer, mock_prefill):
         """
@@ -55,8 +55,8 @@ class TestColesBarcodeScraper(unittest.TestCase):
 
     @patch('os.remove')
     @patch('os.path.exists', return_value=True)
-    @patch('api.scrapers.barcode_scraper_coles.prefill_barcodes_from_db', return_value=[])
-    @patch('api.scrapers.barcode_scraper_coles.JsonlWriter')
+    @patch('scraping.scrapers.barcode_scraper_coles.prefill_barcodes_from_db', return_value=[])
+    @patch('scraping.scrapers.barcode_scraper_coles.JsonlWriter')
     @patch('builtins.open', new_callable=mock_open, read_data='{"metadata": {"store_id": "123", "store_name": "Test Store", "state": "TS"}}\n')
     def test_run_completes_successfully(self, mock_file, mock_jsonl_writer, mock_prefill, mock_exists, mock_remove):
         """

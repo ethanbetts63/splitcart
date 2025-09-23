@@ -3,7 +3,7 @@ import json
 import html
 from unittest.mock import patch, MagicMock
 import requests
-from api.scrapers.store_scraper_iga import StoreScraperIga
+from scraping.scrapers.store_scraper_iga import StoreScraperIga
 
 class TestStoreScraperIga(unittest.TestCase):
 
@@ -56,7 +56,7 @@ class TestStoreScraperIga(unittest.TestCase):
         self.assertEqual(result[0]['name'], 'IGA A')
         self.assertEqual(result[1]['name'], 'IGA B')
 
-    @patch('api.scrapers.store_scraper_iga.StoreCleanerIga')
+    @patch('scraping.scrapers.store_scraper_iga.StoreCleanerIga')
     def test_clean_raw_data(self, MockStoreCleanerIga):
         """Test that the clean_raw_data method uses the StoreCleanerIga."""
         mock_cleaner_instance = MagicMock()

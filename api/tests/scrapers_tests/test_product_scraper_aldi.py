@@ -1,7 +1,7 @@
 from django.test import TestCase
 from unittest.mock import Mock, patch, MagicMock
 
-from api.scrapers.product_scraper_aldi import ProductScraperAldi
+from scraping.scrapers.product_scraper_aldi import ProductScraperAldi
 
 class ProductScraperAldiTests(TestCase):
 
@@ -18,7 +18,7 @@ class ProductScraperAldiTests(TestCase):
         # We will patch the session's methods in individual tests
         self.scraper.setup()
 
-    @patch('api.scrapers.product_scraper_aldi.get_aldi_categories')
+    @patch('scraping.scrapers.product_scraper_aldi.get_aldi_categories')
     def test_get_work_items(self, mock_get_categories):
         """Test that get_work_items calls the category utility function."""
         # Arrange
@@ -66,7 +66,7 @@ class ProductScraperAldiTests(TestCase):
         self.assertEqual(first_call_params['offset'], 0)
         self.assertEqual(second_call_params['offset'], 30)
 
-    @patch('api.scrapers.product_scraper_aldi.DataCleanerAldi')
+    @patch('scraping.scrapers.product_scraper_aldi.DataCleanerAldi')
     def test_clean_raw_data_uses_data_cleaner(self, mock_data_cleaner):
         """Test that clean_raw_data correctly instantiates and uses DataCleanerAldi."""
         # Arrange

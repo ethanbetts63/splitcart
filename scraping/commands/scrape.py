@@ -1,14 +1,14 @@
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from companies.models.store import Store
-from api.scrapers.product_scraper_woolworths import ProductScraperWoolworths
-from api.scrapers.product_scraper_coles import ColesScraper as ProductScraperColes
-from api.scrapers.product_scraper_aldi import ProductScraperAldi
-from api.scrapers.product_scraper_iga import IgaScraper as ProductScraperIga
-from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
-from api.utils.scraper_utils.get_coles_categories import get_coles_categories
-from api.scrapers.gs1_company_scraper import Gs1CompanyScraper
-from api.utils.scraper_utils.scrape_scheduler import ScrapeScheduler
+from scraping.scrapers.product_scraper_woolworths import ProductScraperWoolworths
+from scraping.scrapers.product_scraper_coles import ColesScraper as ProductScraperColes
+from scraping.scrapers.product_scraper_aldi import ProductScraperAldi
+from scraping.scrapers.product_scraper_iga import IgaScraper as ProductScraperIga
+from scraping.utils.get_woolworths_categories import get_woolworths_categories
+from scraping.utils.get_coles_categories import get_coles_categories
+from scraping.scrapers.gs1_company_scraper import Gs1CompanyScraper
+from scraping.utils.scrape_scheduler import ScrapeScheduler
 import os
 import time
 
