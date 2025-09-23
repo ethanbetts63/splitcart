@@ -24,14 +24,11 @@ def generate_heatmap_image(overlap_matrix, percent_of_row_matrix, percent_of_col
         entity1 = overlap_matrix.index[row_idx]
         entity2 = overlap_matrix.columns[col_idx]
         
-        raw_count = overlap_matrix.loc[entity1, entity2]
-        percent_row = percent_of_row_matrix.loc[entity1, entity2]
-        percent_col = percent_of_col_matrix.loc[entity1, entity2]
-
-        if entity1 == entity2:
-            return f"{average_percentage_matrix.loc[entity1, entity2]:.1f}%"
-        else:
-            return f"{average_percentage_matrix.loc[entity1, entity2]:.1f}%"
+        # The value from average_percentage_matrix is a decimal (0.0 to 1.0)
+        # Multiply by 100 to display it as a percentage.
+        percentage_val = average_percentage_matrix.loc[entity1, entity2] * 100
+        
+        return f"{percentage_val:.1f}%"
 
     # Create a custom annotation array
     annot_array = overlap_matrix.copy().astype(str)
