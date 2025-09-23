@@ -62,7 +62,7 @@ class UpdateOrchestrator:
                 continue
 
             resolver = ProductResolver(self.command, company_obj, store_obj)
-            unit_of_work = UnitOfWork(self.command)
+            unit_of_work = UnitOfWork(self.command, resolver)
             self.variation_manager.unit_of_work = unit_of_work  # Inject UoW
             brand_manager = BrandManager(self.command)
 

@@ -134,9 +134,9 @@ class UnitOfWork:
                         product_cache[p.normalized_name_brand_size] = p
 
                 # Stage 2: Create all prices (for both new and existing products)
+                self.command.stdout.write(f"  - Creating {self.new_price_records_created} new PriceRecord objects.")
+                self.command.stdout.write(f"  - Creating {len(self.prices_to_create)} new Price objects (links).")
                 if self.prices_to_create:
-                    self.command.stdout.write(f"  - Creating {self.new_price_records_created} new PriceRecord objects.")
-                    self.command.stdout.write(f"  - Creating {len(self.prices_to_create)} new Price objects (links).")
                     Price.objects.bulk_create(self.prices_to_create, batch_size=500, ignore_conflicts=True)
 
                 # Stage 3: Process categories now that all products exist
