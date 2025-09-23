@@ -80,7 +80,8 @@ class CategoryManager:
         self.command.stdout.write("  Part B: Creating parent-child relationships...")
         CategoryParents = Category.parents.through
         links_to_create = []
-        seen_links = set()
+        # Pre-populate seen_links with all existing relationships from the database
+        seen_links = set(CategoryParents.objects.values_list('to_category_id', 'from_category_id'))
 
         for path in all_category_paths:
             for i in range(len(path) - 1):
@@ -102,12 +103,15 @@ class CategoryManager:
         if links_to_create:
             self.command.stdout.write(f"    - Creating {len(links_to_create)} unique parent-child links for {company_obj.name}...")
             CategoryParents.objects.bulk_create(links_to_create, ignore_conflicts=True, batch_size=999)
+        else:
+            self.command.stdout.write(f"    - Creating 0 unique parent-child links for {company_obj.name}...")
 
     def _link_products_to_categories(self, consolidated_data, product_cache, company_obj):
         self.command.stdout.write("  Part C: Creating product-category relationships...")
         ProductCategory = Product.category.through
         links_to_create = []
-        seen_links = set()
+        # Pre-populate seen_links with all existing relationships from the database
+        seen_links = set(ProductCategory.objects.values_list('product_id', 'category_id'))
 
         for key, data in consolidated_data.items():
             product = product_cache.get(key)
@@ -126,3 +130,5 @@ class CategoryManager:
         if links_to_create:
             self.command.stdout.write(f"    - Creating {len(links_to_create)} unique product-category links...")
             ProductCategory.objects.bulk_create(links_to_create, ignore_conflicts=True, batch_size=999)
+        else:
+            self.command.stdout.write(f"    - Creating 0 unique product-category links...")
