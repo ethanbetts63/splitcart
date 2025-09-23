@@ -27,7 +27,7 @@ class UpdateOrchestrator:
         
         unit_of_work = None # Initialize to handle cases with no processable files
         for file_path in all_files:
-            self.command.stdout.write(f"--- Processing file: {os.path.basename(file_path)} ---")
+            self.command.stdout.write(f"{self.command.style.WARNING('--- Processing file:')} {os.path.basename(file_path)} ---")
             
             consolidated_data = self._consolidate_from_file(file_path)
             if not consolidated_data:

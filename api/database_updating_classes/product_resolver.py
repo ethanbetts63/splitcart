@@ -16,7 +16,7 @@ class ProductResolver:
         """
         Builds the in-memory caches for products, prices, and stores, filtered by current context.
         """
-        self.command.stdout.write("--- Building resolver caches (contextual) ---")
+        self.command.stdout.write("--- Building Caches ---")
         
         # All products (not filtered by company/store, as barcode/normalized_string are global)
         all_products = list(Product.objects.all())
@@ -50,8 +50,6 @@ class ProductResolver:
         # Cache 5: Existing Prices (contextual)
         self.price_cache = {p.normalized_key for p in relevant_prices if p.normalized_key}
         self.command.stdout.write(f"  - Built cache for {len(self.price_cache)} contextual existing prices.")
-
-        self.command.stdout.write("--- Caches built successfully ---")
 
     def find_match(self, product_details, price_history):
         """
