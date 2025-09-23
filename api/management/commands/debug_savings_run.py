@@ -28,7 +28,7 @@ class Command(BaseCommand):
             viable_stores_for_company = Store.objects.filter(
                 company=company
             ).annotate(
-                num_prices=Count('price')
+                num_prices=Count('prices')
             ).filter(
                 num_prices__gte=PRODUCTS_PER_RUN
             )

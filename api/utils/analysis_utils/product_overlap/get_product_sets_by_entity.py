@@ -57,10 +57,5 @@ def get_product_sets_by_entity(entity_type='company', company_name=None, state=N
                         product_stores.add(price_entry.store_id)
             for store_id in product_stores:
                 entity_products[store_map[store_id]].add(product.id)
-    
-    print("--- DEBUG: Product counts per entity ---")
-    for entity, products in entity_products.items():
-        print(f"    - {entity}: {len(products)} products")
-    print("-----------------------------------------")
-
+                
     return entity_products
