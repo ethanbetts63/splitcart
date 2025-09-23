@@ -25,6 +25,7 @@ class UpdateOrchestrator:
         
         all_files = [os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')]
         
+        unit_of_work = None # Initialize to handle cases with no processable files
         for file_path in all_files:
             self.command.stdout.write(f"--- Processing file: {os.path.basename(file_path)} ---")
             
@@ -72,32 +73,34 @@ class UpdateOrchestrator:
             if unit_of_work.commit(consolidated_data, product_cache, resolver, store_obj):
                 self.processed_files.append(file_path)
 
-        # After processing all files, run the group orchestrator to infer prices
-        self.command.stdout.write(self.command.style.SQL_FIELD("-- Starting Group Orchestration --"))
-        group_orchestrator = GroupOrchestrator(unit_of_work)
-        group_orchestrator.run()
+        # After processing all files, run post-processing if a UoW was created
+        if unit_of_work:
+            # Run the group orchestrator to infer prices
+            self.command.stdout.write(self.command.style.SQL_FIELD("-- Starting Group Orchestration --"))
+            group_orchestrator = GroupOrchestrator(unit_of_work)
+            group_orchestrator.run()
 
-        # Regenerate the translation tables to include new variations
-        BrandTranslationTableGenerator().run()
-        ProductTranslationTableGenerator().run()
+            # Regenerate the translation tables to include new variations
+            BrandTranslationTableGenerator().run()
+            ProductTranslationTableGenerator().run()
 
-        # Run the product reconciler to merge duplicates based on the translation table
-        product_reconciler = ProductReconciler(self.command)
-        product_reconciler.run()
+            # Run the product reconciler to merge duplicates based on the translation table
+            product_reconciler = ProductReconciler(self.command)
+            product_reconciler.run()
 
-        # Run the brand reconciler to merge duplicates based on the translation table
-        brand_reconciler = BrandReconciler(self.command)
-        brand_reconciler.run()
+            # Run the brand reconciler to merge duplicates based on the translation table
+            brand_reconciler = BrandReconciler(self.command)
+            brand_reconciler.run()
 
-        # Run category cycle pruning as a final cleanup step
-        self.command.stdout.write(self.command.style.SUCCESS("--- Running Category Cycle Pruning ---"))
-        all_companies = Company.objects.all()
-        if not all_companies.exists():
-            self.command.stdout.write(self.command.style.WARNING("No companies found, skipping cycle pruning."))
-        else:
-            for company in all_companies:
-                manager = CategoryCycleManager(self.command, company)
-                manager.prune_cycles()
+            # Run category cycle pruning as a final cleanup step
+            self.command.stdout.write(self.command.style.SUCCESS("--- Running Category Cycle Pruning ---"))
+            all_companies = Company.objects.all()
+            if not all_companies.exists():
+                self.command.stdout.write(self.command.style.WARNING("No companies found, skipping cycle pruning."))
+            else:
+                for company in all_companies:
+                    manager = CategoryCycleManager(self.command, company)
+                    manager.prune_cycles()
 
         # Final cleanup of processed files
         self._cleanup_processed_files()

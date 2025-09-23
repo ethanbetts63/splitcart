@@ -1,11 +1,13 @@
 from django.db import transaction
+from datetime import datetime
 from products.models import Product, Price, ProductBrand, PriceRecord
 from .category_manager import CategoryManager
 from api.utils.price_normalizer import PriceNormalizer
 
 class UnitOfWork:
-    def __init__(self, command):
+    def __init__(self, command, resolver=None):
         self.command = command
+        self.resolver = resolver
         self.new_products_to_process = []
         self.prices_to_create = []
         self.products_to_update = []
@@ -21,15 +23,40 @@ class UnitOfWork:
         self.new_products_to_process.append((product_instance, product_details))
 
     def add_price(self, product, store, product_details):
+        scraped_date_str = product_details.get('scraped_date')
         price_value = product_details.get('price_current')
-        if not price_value:
+
+        if not scraped_date_str or not price_value:
             return
 
-        scraped_date = product_details.get('scraped_date')
-        if not scraped_date:
+        # Truncate timestamp to just the date part (YYYY-MM-DD)
+        scraped_date_str = scraped_date_str[:10]
+
+        # Generate the normalized_key first to check against the cache
+        price_data = {
+            'product_id': product.id,
+            'store_id': store.id,
+            'price': price_value,
+            'date': scraped_date_str
+        }
+        normalizer = PriceNormalizer(price_data=price_data, company=store.company.name)
+        normalized_key = normalizer.get_normalized_key()
+
+        if not normalized_key:
             return
 
-        # Step 1 & 2: Get or Create PriceRecord
+        # Check if this key already exists in the resolver's cache
+        if self.resolver and self.resolver.price_cache:
+            if normalized_key in self.resolver.price_cache:
+                return # This price already exists, do not add it again
+
+        # --- If we get here, it's a new price, so proceed ---
+        try:
+            scraped_date = datetime.strptime(scraped_date_str, '%Y-%m-%d').date()
+        except (ValueError, TypeError):
+            return # Invalid date format
+
+        # Get or Create PriceRecord
         price_record, created = PriceRecord.objects.get_or_create(
             product=product,
             price=price_value,
@@ -42,20 +69,7 @@ class UnitOfWork:
         if created:
             self.new_price_records_created += 1
 
-        # Step 3: Calculate normalized_key
-        price_data = {
-            'product_id': product.id,
-            'store_id': store.id,
-            'price': price_value, # Still needed for the key
-            'date': scraped_date
-        }
-        normalizer = PriceNormalizer(price_data=price_data, company=store.company.name)
-        normalized_key = normalizer.get_normalized_key()
-
-        if not normalized_key:
-            return
-
-        # Step 4 & 5: Instantiate and append lightweight Price object
+        # Instantiate and append lightweight Price object
         self.prices_to_create.append(
             Price(
                 price_record=price_record,

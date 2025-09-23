@@ -37,9 +37,8 @@ class ProductResolver:
         relevant_prices_query = Price.objects.select_related('price_record', 'price_record__product').filter(
             store=current_store_obj
         )
-        
-        relevant_prices = list(relevant_prices_query.all())
 
+        relevant_prices = list(relevant_prices_query.all())
         # Cache 2: SKU (contextual)
         self.sku_cache = {}
         prices_with_ids = [p for p in relevant_prices if p.sku and p.price_record and p.price_record.product]
@@ -49,7 +48,7 @@ class ProductResolver:
         self.command.stdout.write(f"  - Built cache for {len(self.sku_cache)} contextual SKUs.")
 
         # Cache 5: Existing Prices (contextual)
-        self.price_cache = {(p.price_record.product_id, p.store_id, p.scraped_date) for p in relevant_prices}
+        self.price_cache = {p.normalized_key for p in relevant_prices if p.normalized_key}
         self.command.stdout.write(f"  - Built cache for {len(self.price_cache)} contextual existing prices.")
 
         self.command.stdout.write("--- Caches built successfully ---")
