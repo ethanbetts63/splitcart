@@ -1,5 +1,5 @@
 from collections import defaultdict
-from products.models import Product
+from products.models import Product, Price
 from companies.models import Company, Store
 
 def get_product_sets_by_entity(entity_type='company', company_name=None, state=None):
