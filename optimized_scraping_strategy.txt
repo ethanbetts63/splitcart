@@ -1,31 +1,14 @@
-# Optimized, Phased Scraping Strategy
+# Optimized, Continuous Scraping Strategy
 
 ## 1. High-Level Goal
 
 To evolve from a brute-force scraping model (scraping all products from all stores, all the time) to a targeted, data-driven model. The aim is to significantly reduce redundant scraping and operational costs while maintaining high data accuracy and responsiveness through a dynamic, intelligent queuing system.
 
-## 2. The Two-Phase Approach
+## 2. A Unified, Continuous Scraping Model
 
-A "cold start" problem exists: we cannot optimize scraping without a complete, time-synchronized dataset to base our analysis on. Therefore, the strategy for each company must be executed in two distinct phases.
+The strategy has evolved from a distinct two-phase approach to a single, continuous process. The "cold start" problem of building a baseline dataset is now seamlessly integrated into the main scraping loop. There is no longer a separate "Discovery Phase"; instead, the `ScrapeScheduler` inherently prioritizes unscraped stores at all times, ensuring the dataset is naturally built out over time.
 
-### Phase 1: Discovery & Baseline
-
-*   **Objective:** Achieve 100% scrape coverage of all stores to build a foundational dataset for the Phase 2 analysis.
-
-*   **Execution: The 80/20 Strategy:** The discovery process will be guided by a blended strategy to ensure both focused completion of major areas and broad, exploratory coverage.
-    1.  The system first identifies the largest geographic cluster (by store count) that contains unscraped stores. This becomes the "Primary Target Cluster".
-    2.  The scraping process then follows an 80/20 rule: for every 5 stores scraped, 4 will be from the primary target (biggest unscraped cluster) and 1 will be from outside of it.
-        *   **80% of Scrapes:** The system selects an unscraped store from within the "Primary Target Cluster". This provides a focused effort to rapidly achieve data completeness for a major geographic area.
-        *   **20% of Scrapes:** The system selects a random, unscraped store from anywhere outside the primary cluster. This includes smaller clusters and regional outliers, ensuring the entire dataset makes steady progress.
-    3.  Once all stores in the "Primary Target Cluster" have been scraped, the system designates the next largest unscraped cluster as the new primary target, and the process repeats.
-    4.  This phase is complete when there are no unscraped stores remaining.
-
-*   **Critical Constraint:** The goal of this phase is to produce a "time-synchronized" dataset, which is essential for the "True Overlap" analysis. This means scraping all stores in a given region as quickly as possible. "time-synchronized"being is a key challenge is there is just simply a limitation on how many stores can be scraped in a short enough period that you can call the data "time-synchronized".
-
-### Phase 2: Optimized & Dynamic Scraping
-
-*   **Objective:** Switch to an intelligent, efficient scraping model based on the analysis of the baseline data.
-*   **Execution:** Once the baseline is established and the initial groups are formed, the `scrape` command's logic changes to the "Intelligent Queue" model. This is the ongoing operational state.
+The core of the system is the "Intelligent Scraping Loop," which is the ongoing operational state. It continuously balances maintaining the health of existing store groups with exploring outliers and expanding coverage.
 
 ## 3. Core Concepts of the Optimized Model
 
@@ -39,100 +22,59 @@ To ensure clarity, we will use the following precise terms:
 ### The "Top-Down" Grouping Philosophy with Geographic Seeding
 To start the process, we will adopt a "top-down" approach using a single, reliable heuristic: geography.
 
-*   **Geographic Seeding:** We will not guess store sub-types from names. Instead, we will begin by creating initial "monolith" groups based purely on geographic location (e.g., the Perth metropolitan area). This means we start Phase 2 with seed groups like `[Woolworths-Perth]` and `[Coles-Perth]`.
+*   **Geographic Seeding:** We will not guess store sub-types from names. Instead, we will begin by creating initial "monolith" groups based purely on geographic location (e.g., the Perth metropolitan area) using the `cluster_stores` command.
 
-*   **Discovering Sub-Types:** The true store sub-types (e.g., "Metro", "Supermarket") will be *discovered* by the system. As the Two-Ambassador health checks run, the `[Woolworths-Perth]` group will naturally be "chiseled" into smaller, more accurate sub-groups based on the actual pricing behavior of its member stores. This is a more robust, data-driven method than relying on uncertain heuristics.
+*   **Discovering Sub-Types:** The true store sub-types (e.g., "Metro", "Supermarket") will be *discovered* by the system. As the Ambassador health checks run, a large geographic group will naturally be "chiseled" into smaller, more accurate sub-groups based on the actual pricing behavior of its member stores. This is a more robust, data-driven method than relying on uncertain heuristics.
 
 ### The "True Overlap" Metric
 *   **The Metric:** The primary metric for grouping will be **"True Overlap"**: the percentage of shared products between two stores that have the *exact same price*.
-*   **The Constraint:** This comparison must be performed on data scraped on the same day (or within a tight 48-hour window) to be valid. This is to ensure we are comparing real pricing strategy, not just stale data.
-*   **Optimization:** The calculation includes a "fail-fast" mechanism. It determines the maximum number of mismatches allowed to meet the overlap threshold and exits the comparison immediately once that number is exceeded, avoiding unnecessary computation on stores that are clearly not a match.
+*   **The Constraint:** This comparison must be performed on data scraped on the same day (or within a tight 48-hour window) to be valid.
+*   **Optimization:** The calculation includes a "fail-fast" mechanism. It determines the maximum number of mismatches allowed to meet the overlap threshold and exits the comparison immediately once that number is exceeded.
 
 ### Group Maintenance: The Ambassador & Candidate Workflow
 This model provides a clear and robust process for maintaining group integrity. The `GroupOrchestrator` within the `update_db` process will handle a batch of new `Candidates` for a group using the following iterative logic:
 
-1.  **Fetch Data:** The orchestrator receives a list of all new `Candidate` stores for a specific group. It also fetches the group's current, official `Ambassador` (A).
+1.  **Fetch Data:** The orchestrator receives a list of all new `Candidate` stores for a specific group and fetches the group's current `Ambassador`.
 
-2.  **Iterate and Sort:** The orchestrator loops through every `Candidate`. It compares each one to the `Ambassador` and sorts them into two in-memory lists: `confirmed_matches` and `potential_rogues`.
+2.  **Iterate and Sort:** The orchestrator loops through every `Candidate`, compares it to the `Ambassador`, and sorts them into `confirmed_matches` and `potential_rogues`.
 
-3.  **Analyze Results and Act:** After checking all candidates, the orchestrator analyzes the lists:
-    *   **If `confirmed_matches` is not empty:** The group is considered healthy. The first store in the `confirmed_matches` list is promoted to be the new `Ambassador` (by updating the group's `ambassador` field). For every store that landed in the `potential_rogues` list, the "outcasting" process is initiated.
-    *   **If `confirmed_matches` is empty:** This is a "Major Divergence" signal. The action taken depends on the group's remaining membership.
-        *   **If other members remain:** If the group contains other stores besides the Ambassador and the failed Candidates, the group's `status` is set to `DIVERGENCE_DETECTED`. The failed candidates are outcast. This signals the `ScrapeScheduler` to queue a new member from the group as a tie-breaker on its next run.
-        *   **If no other members remain:** If the group consisted *only* of the Ambassador and the Candidates that just failed, there is nothing left to test. In this specific case, the orchestrator dissolves the group by setting its `is_active` flag to `False`.
+3.  **Analyze Results and Act:**
+    *   **If `confirmed_matches` is not empty:** The group is healthy. The first store in `confirmed_matches` is promoted to be the new `Ambassador`. Any `potential_rogues` are outcast.
+    *   **If `confirmed_matches` is empty:** This is a "Major Divergence."
+        *   **If other members remain:** The group's `status` is set to `DIVERGENCE_DETECTED`. The failed candidates are outcast. This signals the `ScrapeScheduler` to queue a new member from the group as a tie-breaker.
+        *   **If no other members remain:** The group is dissolved by setting its `is_active` flag to `False`.
 
 ### GroupOrchestrator Implementation Refinements
-
-To fully realize the group maintenance workflow, the `GroupOrchestrator`'s implementation requires several key refinements. Firstly, its most critical responsibility is to perform price inference. After a group's health is confirmed and a new ambassador is designated, the orchestrator must get the ambassador's full price list. It will then create new `Price` entries for all other member stores within that group, pointing to the same `PriceRecord` instances as the ambassador's prices but with their `source` field marked as 'inferred_group'. This step is the entire basis for reducing scraping.
-
-Secondly, for database integrity and atomicity, the `GroupOrchestrator` must not perform direct database writes. Instead of calling methods like `.save()` or `.delete()` itself, it must be integrated with the `UnitOfWork` class. All its intended changes, such as updating a group's status, changing an ambassador, modifying memberships, and creating inferred prices, should be passed to the `UnitOfWork` instance to be executed as part of a single, atomic transaction when the `commit` method is called.
-
-Finally, the logic for handling a "Major Divergence" needs to be implemented as designed. The current implementation dissolves a group if all candidates fail a health check. The refined logic must first check if the group has other members who were not part of the recent scrape. If other members exist, the group's status should be updated to `DIVERGENCE_DETECTED` and the failed candidates should be outcast. The group should only be dissolved if it consists of no other members besides the ambassador and the candidates that just failed the check. This prevents the premature destruction of potentially valid groups.
+The `GroupOrchestrator` is fully integrated with the `UnitOfWork` to ensure atomic transactions. It handles price inference by creating new `Price` entries for all non-scraped group members, linking them to the new ambassador's `PriceRecord` instances. The logic for handling a "Major Divergence" is implemented as designed, preventing premature group dissolution.
 
 ### The Grouper Workflow (`update_db`)
-
-The `update_db` command now uses a stateful, database-driven approach to manage the group analysis workflow. The process is orchestrated to ensure transactional integrity. As the `UpdateOrchestrator` processes each incoming `.jsonl` file, it performs the first key step of identifying and stamping candidates: for each store processed, the system adds the `Store` object to the `candidates` ManyToMany relationship on its parent `StoreGroup` model. After all files have been processed, the `GroupOrchestrator` takes over. It queries the database for all groups that have been stamped with candidates and then performs the "Ambassador & Candidate Workflow" for each one. This includes the "True Overlap" analysis, promoting new ambassadors, and inferring prices. The final step is cleanup. After a group has been processed, the `GroupOrchestrator` clears the `candidates` relationship, ensuring the system is in a clean state for the next run. All of these operations—stamping, processing, and cleanup—are committed together in a single atomic transaction by the `UnitOfWork`.
+The `update_db` command uses a stateful, database-driven approach. The `UpdateOrchestrator` processes incoming files and stamps stores as `candidates` on their respective `StoreGroup`. After processing all files, the `GroupOrchestrator` runs the "Ambassador & Candidate Workflow" on all groups with candidates. Finally, it clears the `candidates` list for the processed groups. All operations are committed in a single atomic transaction by the `UnitOfWork`.
 
 ### Outcasting & Re-homing Rogue Stores
-When a `Rogue` store is identified and outcast from its group, it is not immediately classified as a permanent outlier. The `update_db` process will first attempt to find a new home for it.
-
-*   **Re-homing Process:** The system attempts to find a new group for the rogue store by comparing it against the Ambassadors of other potential groups.
-*   **Current Implementation (Simplified):** For simplicity in the initial implementation, the re-homing process directly uses the computationally expensive "True Overlap" analysis to check for a match.
-*   **Future Optimization:** A more efficient two-stage check is planned for the future. This will involve a cheap "Range Overlap" test on product catalogs before proceeding to the full "True Overlap" analysis, avoiding unnecessary computation.
-*   **Final Status:** If the Rogue finds a new matching group, it is moved. If it cannot find a new home after being tested against all viable groups, it is then officially classified as a permanent outlier.
-
-### Granularity: Category-Level Inference
-Even stores that don't qualify for a full-store group may have identical pricing for specific categories.
-*   **Strategy:** We can create groups at the category level (e.g., a "Woolworths Pantry QLD" group).
-*   **Benefit:** This allows for a more granular optimization. A scrape of a single store could provide "direct" data for some of its categories and "inferred" data for many other stores that share its category-level pricing.
+When a `Rogue` store is outcast, the `update_db` process attempts to find a new home for it by comparing it against the Ambassadors of other potential groups using the "True Overlap" metric. If no match is found, it is classified as an outlier.
 
 ### Data Source Tracking
-To maintain data integrity and enable the feedback loop, every price in the database must be marked with its origin.
-*   **Implementation:** The `products.Price` model must be modified to include a `source` field.
-*   **Values:** This field will have states such as `'direct_scrape'` or `'inferred_group'`.
-*   **Purpose:** This allows us to measure the accuracy of our inferences and is the primary trigger for the re-grouping logic.
+The `products.Price` model includes a `source` field with values like `'direct_scrape'` or `'inferred_group'` to track the origin of every price, enabling accuracy measurement and feedback loops.
 
-## 4. Rollout & Execution
+## 4. Scrape Scheduler Implementation
 
-### Geographic Clustering Algorithm
-A command, `cluster_stores`, has been implemented to serve as the foundation for the geographic rollout. This command uses the DBSCAN algorithm to process all stores for each company and automatically group them into distinct geographic clusters based on their location density. It saves these groups to the database, identifying isolated regional stores as outliers. A corresponding `visualize_clusters` command has also been created to generate map images of these results, providing a visual way to verify the clusters. This completes the prerequisite for the phased rollout.
+The core intelligence of the scraping process is encapsulated in the `ScrapeScheduler` class. It generates a queue of stores to scrape based on a unified, continuous logic implemented in the `get_next_candidate` method.
 
-### Initial Rollout Strategy: The Perth Pilot
-Once the clustering algorithm is built, the initial rollout will be geographically focused.
+The process is as follows:
 
-*   **Pilot Cluster:** Perth, Western Australia.
-*   **Execution:**
-    1.  Run the geographic clustering algorithm to identify the "Perth" cluster of stores.
-    2.  All stores within this cluster will constitute the cohort for the **Phase 1: Discovery** scrape.
-    3.  Once the Perth discovery is complete and its data is being managed by the **Phase 2: Optimization** model, the learnings can be applied to the next target cluster (e.g., Adelaide).
+1.  **Select a Target Context:** The scheduler first decides *what* to scrape by calling the internal `_get_group` method. This method determines if the next scrape should target a specific group or an outlier. The priority is:
+    *   **Priority 1: Resolve Divergence:** It first queries for any active group with a `status` of `DIVERGENCE_DETECTED`. If one is found, it is returned immediately. This ensures the system actively tries to resolve group inconsistencies.
+    *   **Priority 2: Exploit vs. Explore (80/20 Rule):** If no diverging groups are found, it applies an 80/20 logic:
+        *   **80% (Exploit):** It selects the largest active `StoreGroup` (by member count).
+        *   **20% (Explore):** It explores other options. This is further split, giving a 15% overall chance of picking a random smaller group and a 5% chance of returning `None` to signal that an outlier (a store with no group membership) should be scraped.
 
-### Proposed Data Model
-To support the grouping logic, the database will be extended with two new models:
-*   **`StoreGroup`:** Represents a group itself. It will have a name, a link to its parent company, and an `is_active` flag. It will also have these key fields:
-    *   `status`: A field to track the group's health (e.g., `HEALTHY`, `DIVERGENCE_DETECTED`).
-    *   `ambassador`: A nullable link (ForeignKey) to the single `Store` that is the current, official Ambassador for the group.
-    *   `candidates`: A ManyToManyField linking to `Store`s that have been recently scraped and are awaiting a health check. This relationship is temporary and is cleared after each run.
-*   **`StoreGroupMembership`:** A simple and pure linking table that connects a `Store` to a `StoreGroup`. Its existence signifies that a store is part of a group. The logic for rotating candidates will be handled by using the `last_scraped` timestamp directly on the `Store` model. Outliers are simply stores with no entry in this table.
+2.  **Select a Candidate Store:** Once a target context (a group or outliers) is determined, the scheduler selects the single best `Store` to scrape from that context.
+    *   **Filter Eligible Stores:** It first builds a queryset of all stores in the target context and filters out any store that is already an ambassador or a candidate in the current run.
+    *   **Prioritize New Stores:** From the eligible list, it **always** prioritizes the first store it finds that has never been scraped (`last_scraped` is `null`). This is the primary mechanism for discovery and building out the dataset.
+    *   **Select Oldest Scraped:** If all eligible stores in the context have been scraped at least once, it selects the one with the oldest `last_scraped` timestamp, ensuring all stores are periodically re-checked.
 
-### Dynamic Re-classification
-The system must be dynamic. The "True Overlap" scores and group memberships must be re-calculated periodically to adapt to changes in store strategies. The comparison of direct vs. inferred data serves as the primary trigger for this re-evaluation.
+This unified model ensures that the system is always expanding its coverage of unscraped stores while simultaneously optimizing the maintenance of existing groups.
 
-### Scrape Scheduler Implementation
-The core intelligence of the scraping process will be encapsulated in a dedicated `ScrapeScheduler` class. This class will be responsible for generating the queue of stores to be scraped in any given run. It will have two primary methods, corresponding to the two phases of the project:
-
-*   **`get_discovery_mode_queue()`:** This method, which has already been designed, handles the initial discovery phase. It implements the 80/20 strategy by building a queue that is 80% focused on completing the largest unscraped geographic cluster and 20% focused on randomly exploring all other unscraped stores and outliers.
-
-*   **`get_optimization_mode_queue()`:** This method will be developed for Phase 
-C:\Users\ethan\coding\splitcart\api\utils\scraper_utils\scrape_scheduler.py2. It will generate the daily scrape queue with a different set of priorities:
-  To summarize the implementation:
-  1.  It will first check for a group with a DIVERGENCE_DETECTED status and return it immediately if found.
-  2.  If none are found, it will proceed with the 80/20 logic.
-  3.  80% of the time, it will return the largest StoreGroup based on the total number of stores.
-  4.  20% of the time, it will choose to explore. This is further split, giving a 10% overall chance of picking
-  another random group and a 10% chance of returning None to signal that an outlier should be scraped.
-
-  just to note here. when picking ambassadors or outliers we always want to either the first store we find that has never been scraped or the store thats been the longest since being scraped. 
-  
 ## 5. Open Questions & Key Decisions
 
 This strategy opens up several questions that will need to be answered during implementation:
@@ -140,5 +82,5 @@ This strategy opens up several questions that will need to be answered during im
 1.  **Thresholds:** What is the initial "True Overlap" percentage required to form a group (95%, 98%)? What level of price deviation in a spot-check triggers a full re-scrape?
 2.  **Re-analysis Frequency:** How often should the full, system-wide re-analysis of all groups be performed (e.g., weekly, monthly, quarterly)?
 3.  **Ambassador Selection:** When rotating an ambassador, is the selection random, or round-robin?
-6.  **Data Freshness:** What is the maximum acceptable age for data used in the "True Overlap" analysis? (e.g., must be from the same 24-hour period).
-7.  **Future Performance Optimizations:** For the "re-homing" process, could we use more advanced techniques like data fingerprinting (e.g., MD5 hashing for perfect matches, or SimHash for near-matches) to accelerate finding candidate groups even faster than the two-stage check?
+4.  **Data Freshness:** What is the maximum acceptable age for data used in the "True Overlap" analysis? (e.g., must be from the same 24-hour period).
+5.  **Future Performance Optimizations:** For the "re-homing" process, could we use more advanced techniques like data fingerprinting (e.g., MD5 hashing for perfect matches, or SimHash for near-matches) to accelerate finding candidate groups even faster than the two-stage check?

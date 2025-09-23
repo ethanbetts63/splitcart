@@ -19,10 +19,21 @@ class ScrapeScheduler:
 
     def _get_group(self):
         """
-        Implements the 80/20 logic for selecting a store group to focus on.
-        80% of the time, it exploits the largest group.
-        20% of the time, it explores smaller groups or outliers.
+        Implements the logic for selecting a store group to focus on.
+        It prioritizes groups with detected divergence, then follows an 80/20
+        logic for exploitation vs. exploration.
         """
+        # Priority 1: Check for groups with detected divergence
+        divergent_group = StoreGroup.objects.filter(
+            self.company_filter, 
+            is_active=True, 
+            status='DIVERGENCE_DETECTED'
+        ).first()
+        
+        if divergent_group:
+            return divergent_group
+
+        # If no divergence, proceed with 80/20 logic
         # Annotate groups with their member count, applying the company filter
         groups = StoreGroup.objects.filter(self.company_filter, is_active=True).annotate(member_count=Count('memberships'))
         
