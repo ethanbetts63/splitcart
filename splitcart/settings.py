@@ -1,4 +1,8 @@
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+load_dotenv() # Load environment variables from .env file
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -7,6 +11,9 @@ SECRET_KEY = "django-insecure-##_245mfnvq@dzyqr+&e59vw2aareqpw5^gk%4s%@06)sfvnkq
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+API_SECRET_KEY = os.getenv("API_SECRET_KEY")
+API_SERVER_URL = os.getenv("API_SERVER_URL")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -97,5 +104,3 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-API_SECRET_KEY = "_&z3m-f(q@dzyqr+&e59vw2aareqpw5^gk%4s%@06)sfvnkq"
