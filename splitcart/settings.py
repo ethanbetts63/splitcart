@@ -97,3 +97,5 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+API_SECRET_KEY = "_&z3m-f(q@dzyqr+&e59vw2aareqpw5^gk%4s%@06)sfvnkq"
