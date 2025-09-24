@@ -7,7 +7,7 @@ def save_to_inbox(product_data: dict, metadata: dict):
     """
     Saves a single product's data to a JSON file in the product_inbox directory.
     """
-    inbox_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'product_inbox')
+    inbox_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'product_inbox')
     if not os.path.exists(inbox_path):
         os.makedirs(inbox_path)
 

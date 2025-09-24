@@ -6,7 +6,7 @@ from .atomic_scraping_utils import finalize_scrape
 
 class JsonlWriter:
     def __init__(self, company: str, store_name_slug: str, state: str):
-        self.temp_dir = os.path.join(settings.BASE_DIR, 'api', 'data', 'temp_inbox')
+        self.temp_dir = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'temp_inbox')
         if not os.path.exists(self.temp_dir):
             os.makedirs(self.temp_dir)
         
@@ -19,7 +19,7 @@ class JsonlWriter:
         date_str = datetime.now().strftime('%Y-%m-%d')
         self.temp_file_path = os.path.join(self.temp_dir, f"{self.company.lower()}-{self.store_name_slug.lower()}-{date_str}.jsonl")
         
-        self.inbox_path = os.path.join(settings.BASE_DIR, 'api', 'data', 'product_inbox')
+        self.inbox_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'product_inbox')
         self.temp_file_handle = None
         self.seen_product_keys = set()
 
