@@ -1,30 +1,16 @@
 import os
 import gzip
 import requests
-from abc import ABC, abstractmethod
-from django.core.management.base import BaseCommand
 from django.conf import settings
 
-class BaseUploadCommand(BaseCommand, ABC):
-    """
-    An abstract base command for compressing and uploading .jsonl files.
-    """
-    @property
-    @abstractmethod
-    def outbox_path_name(self) -> str:
-        pass
+class ProductUploader:
+    def __init__(self, command):
+        self.command = command
+        self.outbox_path_name = 'product_outbox'
+        self.archive_path_name = 'temp_jsonl_product_storage'
+        self.upload_url_path = '/api/upload/products/'
 
-    @property
-    @abstractmethod
-    def archive_path_name(self) -> str:
-        pass
-
-    @property
-    @abstractmethod
-    def upload_url_path(self) -> str:
-        pass
-
-    def handle(self, *args, **options):
+    def run(self):
         outbox_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', self.outbox_path_name)
         archive_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', self.archive_path_name)
         os.makedirs(outbox_path, exist_ok=True)
@@ -34,7 +20,7 @@ class BaseUploadCommand(BaseCommand, ABC):
             server_url = settings.API_SERVER_URL
             api_key = settings.API_SECRET_KEY
         except AttributeError:
-            self.stderr.write(self.style.ERROR("API_SERVER_URL and API_SECRET_KEY must be configured in settings."))
+            self.command.stderr.write(self.command.style.ERROR("API_SERVER_URL and API_SECRET_KEY must be configured in settings."))
             return
 
         upload_url = f"{server_url.rstrip('/')}/{self.upload_url_path.lstrip('/')}"
@@ -43,7 +29,7 @@ class BaseUploadCommand(BaseCommand, ABC):
         files_to_upload = [f for f in os.listdir(outbox_path) if f.endswith('.jsonl')]
 
         if not files_to_upload:
-            self.stdout.write(self.style.SUCCESS(f"No files to upload in {self.outbox_path_name}."))
+            self.command.stdout.write(self.command.style.SUCCESS(f"No files to upload in {self.outbox_path_name}."))
             return
 
         for file_name in files_to_upload:
@@ -55,9 +41,9 @@ class BaseUploadCommand(BaseCommand, ABC):
                 with open(file_path, 'rb') as f_in:
                     with gzip.open(compressed_file_path, 'wb') as f_out:
                         f_out.writelines(f_in)
-                self.stdout.write(self.style.SUCCESS(f"Successfully compressed {file_name}"))
+                self.command.stdout.write(self.command.style.SUCCESS(f"Successfully compressed {file_name}"))
             except Exception as e:
-                self.stderr.write(self.style.ERROR(f"Failed to compress {file_name}: {e}"))
+                self.command.stderr.write(self.command.style.ERROR(f"Failed to compress {file_name}: {e}"))
                 continue
 
             # 2. Upload the compressed file
@@ -68,15 +54,15 @@ class BaseUploadCommand(BaseCommand, ABC):
                 
                 response.raise_for_status()  # Raise an exception for bad status codes
 
-                self.stdout.write(self.style.SUCCESS(f"Successfully uploaded {file_name}"))
+                self.command.stdout.write(self.command.style.SUCCESS(f"Successfully uploaded {file_name}"))
 
                 # 3. Archive the original file
                 archive_file_path = os.path.join(archive_path, file_name)
                 os.rename(file_path, archive_file_path)
-                self.stdout.write(self.style.SUCCESS(f"Archived {file_name}"))
+                self.command.stdout.write(self.command.style.SUCCESS(f"Archived {file_name}"))
 
             except requests.exceptions.RequestException as e:
-                self.stderr.write(self.style.ERROR(f"Failed to upload {file_name}: {e}"))
+                self.command.stderr.write(self.command.style.ERROR(f"Failed to upload {file_name}: {e}"))
             finally:
                 # 4. Clean up the compressed file
                 if os.path.exists(compressed_file_path):
