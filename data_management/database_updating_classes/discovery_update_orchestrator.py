@@ -1,4 +1,3 @@
-
 import os
 from django.conf import settings
 from .discovery_store_updater import DiscoveryStoreUpdater
