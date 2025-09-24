@@ -1,8 +1,8 @@
 import json
 from django.test import TestCase
 from datetime import datetime
-from api.utils.scraper_utils.DataCleanerWoolworths import DataCleanerWoolworths
-from api.utils.scraper_utils.DataCleanerColes import DataCleanerColes
+from scraping.utils.product_scraping_utils.DataCleanerWoolworths import DataCleanerWoolworths
+from scraping.utils.product_scraping_utils.DataCleanerColes import DataCleanerColes
 
 class TestDataCleanerWoolworths(TestCase):
 

@@ -3,7 +3,7 @@ import json
 from django.test import TestCase
 from unittest.mock import patch, Mock
 from requests.exceptions import RequestException
-from api.utils.scraper_utils.get_aldi_categories import get_aldi_categories, _find_leaf_categories
+from scraping.utils.product_scraping_utils.get_aldi_categories import get_aldi_categories, _find_leaf_categories
 
 class GetAldiCategoriesTest(TestCase):
 

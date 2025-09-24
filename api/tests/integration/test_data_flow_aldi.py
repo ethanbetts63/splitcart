@@ -8,7 +8,7 @@ from decimal import Decimal
 from django.test import TestCase, override_settings
 from products.models import Product, Price
 from companies.tests.test_helpers.model_factories import CompanyFactory, DivisionFactory, StoreFactory
-from api.utils.scraper_utils.DataCleanerAldi import DataCleanerAldi
+from scraping.utils.product_scraping_utils.DataCleanerAldi import DataCleanerAldi
 from api.database_updating_classes.update_orchestrator import UpdateOrchestrator
 
 RAW_ALDI_PRODUCTS = [

@@ -5,10 +5,10 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
-from api.scrapers.base_store_scraper import BaseStoreScraper
-from api.utils.shop_scraping_utils.StoreCleanerColes import StoreCleanerColes
-from api.utils.shop_scraping_utils.drange import drange
-from api.utils.shop_scraping_utils.get_graphql_query import get_graphql_query
+from scraping.scrapers.base_store_scraper import BaseStoreScraper
+from scraping.utils.shop_scraping_utils.StoreCleanerColes import StoreCleanerColes
+from scraping.utils.shop_scraping_utils.drange import drange
+from scraping.utils.shop_scraping_utils.get_graphql_query import get_graphql_query
 
 class StoreScraperColes(BaseStoreScraper):
     """A class to find Coles stores, wrapping the original, successful script logic."""

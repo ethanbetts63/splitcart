@@ -1,8 +1,8 @@
 import random
 import os
 from datetime import datetime
-from api.scrapers.base_store_scraper import BaseStoreScraper
-from api.utils.shop_scraping_utils.StoreCleanerWoolworths import StoreCleanerWoolworths
+from scraping.scrapers.base_store_scraper import BaseStoreScraper
+from scraping.utils.shop_scraping_utils.StoreCleanerWoolworths import StoreCleanerWoolworths
 import json
 
 import requests

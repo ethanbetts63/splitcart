@@ -3,10 +3,10 @@ import time
 import random
 from datetime import datetime
 from django.utils.text import slugify
-from api.scrapers.base_product_scraper import BaseProductScraper
-from api.utils.scraper_utils.DataCleanerAldi import DataCleanerAldi
-from api.utils.scraper_utils.get_aldi_categories import get_aldi_categories
-from api.utils.scraper_utils.jsonl_writer import JsonlWriter
+from scraping.scrapers.base_product_scraper import BaseProductScraper
+from scraping.utils.product_scraping_utils.DataCleanerAldi import DataCleanerAldi
+from scraping.utils.product_scraping_utils.get_aldi_categories import get_aldi_categories
+from scraping.utils.product_scraping_utils.jsonl_writer import JsonlWriter
 
 class ProductScraperAldi(BaseProductScraper):
     """

@@ -2,8 +2,8 @@ import json
 import html
 import re
 from datetime import datetime
-from api.scrapers.base_store_scraper import BaseStoreScraper
-from api.utils.shop_scraping_utils.StoreCleanerIga import StoreCleanerIga
+from scraping.scrapers.base_store_scraper import BaseStoreScraper
+from scraping.utils.shop_scraping_utils.StoreCleanerIga import StoreCleanerIga
 import requests
 
 class StoreScraperIga(BaseStoreScraper):

@@ -5,10 +5,10 @@ import random
 import uuid
 from datetime import datetime
 from django.utils.text import slugify
-from api.scrapers.base_product_scraper import BaseProductScraper
-from api.utils.scraper_utils.DataCleanerIga import DataCleanerIga
-from api.utils.scraper_utils.get_iga_categories import get_iga_categories
-from api.utils.scraper_utils.jsonl_writer import JsonlWriter
+from scraping.scrapers.base_product_scraper import BaseProductScraper
+from scraping.utils.product_scraping_utils.DataCleanerIga import DataCleanerIga
+from scraping.utils.product_scraping_utils.get_iga_categories import get_iga_categories
+from scraping.utils.product_scraping_utils.jsonl_writer import JsonlWriter
 
 class IgaScraper(BaseProductScraper):
     """

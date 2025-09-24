@@ -12,7 +12,7 @@ from django.test import TestCase, override_settings
 from companies.models import Company, Division, Store
 from products.models import Product, Price
 from companies.tests.test_helpers.model_factories import CompanyFactory, DivisionFactory, StoreFactory
-from api.utils.scraper_utils.DataCleanerColes import DataCleanerColes
+from scraping.utils.product_scraping_utils.DataCleanerColes import DataCleanerColes
 from api.database_updating_classes.update_orchestrator import UpdateOrchestrator
 
 RAW_COLES_PRODUCTS = [

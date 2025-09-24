@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from api.utils.scraper_utils.output_utils import ScraperOutput
+from scraping.utils.product_scraping_utils.output_utils import ScraperOutput
 
 class BaseProductScraper(ABC):
     """

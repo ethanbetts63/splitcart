@@ -1,5 +1,5 @@
 from django.test import TestCase
-from api.utils.scraper_utils.get_coles_categories import get_coles_categories
+from scraping.utils.product_scraping_utils.get_coles_categories import get_coles_categories
 
 class GetColesCategoriesTest(TestCase):
     def test_get_coles_categories(self):

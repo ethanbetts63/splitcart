@@ -1,6 +1,6 @@
 import unittest
 from datetime import datetime
-from api.utils.scraper_utils.DataCleanerAldi import DataCleanerAldi
+from scraping.utils.product_scraping_utils.DataCleanerAldi import DataCleanerAldi
 
 class TestDataCleanerAldi(unittest.TestCase):
 

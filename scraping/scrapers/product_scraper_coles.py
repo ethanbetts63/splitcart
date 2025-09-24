@@ -10,10 +10,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from api.scrapers.base_product_scraper import BaseProductScraper
-from api.utils.scraper_utils.DataCleanerColes import DataCleanerColes
-from api.utils.scraper_utils.jsonl_writer import JsonlWriter
-from api.scrapers.barcode_scraper_coles import ColesBarcodeScraper
+from scraping.scrapers.base_product_scraper import BaseProductScraper
+from scraping.utils.product_scraping_utils.DataCleanerColes import DataCleanerColes
+from scraping.utils.product_scraping_utils.jsonl_writer import JsonlWriter
+from scraping.scrapers.barcode_scraper_coles import ColesBarcodeScraper
 
 class ColesScraper(BaseProductScraper):
     """

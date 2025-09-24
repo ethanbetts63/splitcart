@@ -1,10 +1,10 @@
 from django.test import TestCase
 from unittest.mock import patch, MagicMock
-from api.utils.scraper_utils.get_woolworths_categories import get_woolworths_categories
+from scraping.utils.product_scraping_utils.get_woolworths_categories import get_woolworths_categories
 import requests
 
 class GetWoolworthsCategoriesTest(TestCase):
-    @patch('api.utils.scraper_utils.get_woolworths_categories.requests.get')
+    @patch('scraping.utils.product_scraping_utils.get_woolworths_categories.requests.get')
     def test_get_woolworths_categories_success(self, mock_get):
         mock_command = MagicMock()
         mock_response = MagicMock()
@@ -35,14 +35,14 @@ class GetWoolworthsCategoriesTest(TestCase):
         ])
         mock_get.assert_called_once()
 
-    @patch('api.utils.scraper_utils.get_woolworths_categories.requests.get')
+    @patch('scraping.utils.product_scraping_utils.get_woolworths_categories.requests.get')
     def test_get_woolworths_categories_api_error(self, mock_get):
         mock_command = MagicMock()
         mock_get.side_effect = requests.exceptions.RequestException("Test Error")
         categories = get_woolworths_categories(mock_command)
         self.assertEqual(categories, [])
 
-    @patch('api.utils.scraper_utils.get_woolworths_categories.requests.get')
+    @patch('scraping.utils.product_scraping_utils.get_woolworths_categories.requests.get')
     def test_get_woolworths_categories_json_decode_error(self, mock_get):
         mock_command = MagicMock()
         mock_response = MagicMock()
@@ -52,7 +52,7 @@ class GetWoolworthsCategoriesTest(TestCase):
         categories = get_woolworths_categories(mock_command)
         self.assertEqual(categories, [])
 
-    @patch('api.utils.scraper_utils.get_woolworths_categories.requests.get')
+    @patch('scraping.utils.product_scraping_utils.get_woolworths_categories.requests.get')
     def test_get_woolworths_categories_empty_response(self, mock_get):
         mock_command = MagicMock()
         mock_response = MagicMock()

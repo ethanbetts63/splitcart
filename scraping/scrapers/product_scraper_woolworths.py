@@ -2,9 +2,9 @@ import requests
 import json
 from datetime import datetime
 from django.utils.text import slugify
-from api.scrapers.base_product_scraper import BaseProductScraper
-from api.utils.scraper_utils.DataCleanerWoolworths import DataCleanerWoolworths
-from api.utils.scraper_utils.jsonl_writer import JsonlWriter
+from scraping.scrapers.base_product_scraper import BaseProductScraper
+from scraping.utils.product_scraping_utils.DataCleanerWoolworths import DataCleanerWoolworths
+from scraping.utils.product_scraping_utils.jsonl_writer import JsonlWriter
 
 class ProductScraperWoolworths(BaseProductScraper):
     """

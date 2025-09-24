@@ -1,8 +1,8 @@
 import random
 import sys
 from datetime import datetime
-from api.scrapers.base_store_scraper import BaseStoreScraper
-from api.utils.shop_scraping_utils.StoreCleanerAldi import StoreCleanerAldi
+from scraping.scrapers.base_store_scraper import BaseStoreScraper
+from scraping.utils.shop_scraping_utils.StoreCleanerAldi import StoreCleanerAldi
 
 import requests
 

@@ -1,6 +1,6 @@
 import unittest
 from datetime import datetime
-from api.utils.scraper_utils.DataCleanerIga import DataCleanerIga
+from scraping.utils.product_scraping_utils.DataCleanerIga import DataCleanerIga
 
 class TestDataCleanerIga(unittest.TestCase):
 
