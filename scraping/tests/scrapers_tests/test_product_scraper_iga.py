@@ -6,7 +6,7 @@ from unittest.mock import Mock, patch, MagicMock
 from scraping.scrapers.product_scraper_iga import IgaScraper
 
 def create_mock_iga_product_api_response(products_list):
-    """A minimal representation of the JSON structure from IGA's product data_management."""
+    """A minimal representation of the JSON structure from IGA's product API."""
     return {"items": products_list}
 
 class ProductScraperIgaTests(TestCase):
