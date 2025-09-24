@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import MagicMock, patch, mock_open
 import requests
 import io
-
 from scraping.scrapers.barcode_scraper_coles import ColesBarcodeScraper
 
 class TestColesBarcodeScraper(unittest.TestCase):

@@ -1,4 +1,3 @@
-import json
 from django.test import TestCase
 from datetime import datetime
 from scraping.utils.product_scraping_utils.DataCleanerWoolworths import DataCleanerWoolworths

@@ -1,9 +1,9 @@
 from django.test import TestCase
 from datetime import datetime
-from data_management.utils.shop_scraping_utils.StoreCleanerWoolworths import StoreCleanerWoolworths
-from data_management.utils.shop_scraping_utils.StoreCleanerColes import StoreCleanerColes
-from data_management.utils.shop_scraping_utils.StoreCleanerAldi import StoreCleanerAldi
-from data_management.utils.shop_scraping_utils.StoreCleanerIga import StoreCleanerIga
+from scraping.utils.shop_scraping_utils.StoreCleanerWoolworths import StoreCleanerWoolworths
+from scraping.utils.shop_scraping_utils.StoreCleanerColes import StoreCleanerColes
+from scraping.utils.shop_scraping_utils.StoreCleanerAldi import StoreCleanerAldi
+from scraping.utils.shop_scraping_utils.StoreCleanerIga import StoreCleanerIga
 
 class TestStoreCleanerWoolworths(TestCase):
 

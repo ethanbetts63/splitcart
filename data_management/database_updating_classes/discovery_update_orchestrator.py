@@ -10,22 +10,22 @@ class DiscoveryUpdateOrchestrator:
 
     def __init__(self, command):
         self.command = command
-        self.discovered_stores_path = os.path.join(settings.BASE_DIR, 'data_managementa_management', 'data', 'discovered_stores')
+        self.store_inbox_path = os.path.join(settings.BASE_DIR, 'data_managementa_management', 'data', 'store_inbox')
 
     def run(self):
         """
         The main public method that orchestrates the update process.
         """
         self.command.stdout.write(self.command.style.SQL_FIELD("--- Starting Store Update from Discovery ---"))
-        if not os.path.exists(self.discovered_stores_path):
+        if not os.path.exists(self.store_inbox_path):
             self.command.stdout.write(self.command.style.WARNING('Discovered stores directory not found.'))
             return
 
-        for filename in os.listdir(self.discovered_stores_path):
+        for filename in os.listdir(self.store_inbox_path):
             if not filename.endswith('.json'):
                 continue
 
-            file_path = os.path.join(self.discovered_stores_path, filename)
+            file_path = os.path.join(self.store_inbox_path, filename)
             
             updater = DiscoveryStoreUpdater(self.command, file_path)
             company_name, stores_processed = updater.run()

@@ -11,7 +11,7 @@ class Command(BaseCommand):
     help = 'Updates the database with data from various sources.'
 
     def add_arguments(self, parser):
-        parser.add_argument('--stores', action='store_true', help='Update stores from the discovered_stores directory.')
+        parser.add_argument('--stores', action='store_true', help='Update stores from the store_inbox directory.')
         parser.add_argument('--products', action='store_true', help='Update products from the product_inbox directory.')
         parser.add_argument('--prefixes', action='store_true', help='Update brand prefixes from the prefix_inbox directory.')
         parser.add_argument('--archive', action='store_true', help='Flush DB and load data from the most recent archive.')

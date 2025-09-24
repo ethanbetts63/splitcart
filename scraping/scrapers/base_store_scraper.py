@@ -11,7 +11,7 @@ class BaseStoreScraper(ABC):
     def __init__(self, command, company: str, progress_file_name: str = None):
         self.command = command
         self.company = company
-        self.discovered_stores_dir = r'C:\Users\ethan\coding\splitcart\data_management\data\discovered_stores'
+        self.store_inbox_dir = r'C:\Users\ethan\coding\splitcart\data_management\data\store_inbox'
         if progress_file_name:
             self.progress_file = f"C:\\Users\\ethan\\coding\\splitcart\\data_management\\data\\archive\\store_data\\{progress_file_name}.json"
         else:
@@ -74,7 +74,7 @@ class BaseStoreScraper(ABC):
         # Sanitize the store_id for use in a filename by replacing colons
         safe_store_id = str(store_id).replace(':', '_')
 
-        filename = os.path.join(self.discovered_stores_dir, f"{self.company}_{safe_store_id}.json")
+        filename = os.path.join(self.store_inbox_dir, f"{self.company}_{safe_store_id}.json")
         if not os.path.exists(filename):
             with open(filename, 'w', encoding='utf-8') as f:
                 json.dump(cleaned_data, f, indent=4)
