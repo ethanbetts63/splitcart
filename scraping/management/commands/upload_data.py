@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         outbox_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'product_outbox')
-        archive_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'archive')
+        archive_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'temp_jsonl_product_storage')
         os.makedirs(outbox_path, exist_ok=True)
         os.makedirs(archive_path, exist_ok=True)
 

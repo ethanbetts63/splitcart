@@ -77,3 +77,19 @@ The `scraping` app will act as a client, sending compressed data directly to a d
 2.  **Outbox and Archive Directories:**
     *   The `scraping/data/product_outbox/` directory has been created at `C:\Users\ethan\coding\splitcart\scraping\data\product_outbox`.
     *   The `scraping/data/archive/` directory has been created at `C:\Users\ethan\coding\splitcart\scraping\data\archive`.
+
+## Updates Since Initial Plan
+
+This section details the modifications and improvements made to the data transfer architecture since the initial plan was drafted.
+
+### 1. `upload_data` Command URL Construction Fix
+**Issue:** The `upload_data` management command was incorrectly constructing the server upload URL using `os.path.join`. On Windows systems, this resulted in backslashes in the URL (e.g., `/\api/upload/`), leading to a `404 Not Found` error during the HTTP POST request.
+**Resolution:** The `upload_url` construction in `scraping/management/commands/upload_data.py` was updated to use string concatenation with `rstrip('/')` to ensure forward slashes and platform-independent URL formation.
+
+### 2. Scraper Output Directory Relocation
+**Issue:** Scrapers were initially configured to output `.jsonl` files directly into `scraping/data/product_inbox`. This conflicted with the new workflow where the `product_inbox` is intended for files received by the server, and local scrapers should place files in an outbox for subsequent upload.
+**Resolution:** The `JsonlWriter` class in `scraping/utils/product_scraping_utils/jsonl_writer.py` was modified. The `self.inbox_path` variable, which determines the final destination of scraped files, was changed from `scraping/data/product_inbox` to `scraping/data/product_outbox`.
+
+### 3. Archive Directory Renaming
+**Issue:** The directory used by the `upload_data` command to store successfully uploaded files was named `archive`. The user requested a more descriptive name for this temporary storage.
+**Resolution:** The `archive` directory was renamed to `temp_jsonl_product_storage`. Correspondingly, the `archive_path` variable in `scraping/management/commands/upload_data.py` was updated to reflect this new directory name.
