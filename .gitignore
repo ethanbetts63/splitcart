@@ -66,3 +66,4 @@ db.sqlite3-wal
 processed_data/
 woolworths1_ids.txt
 woolworths2_ids.txt
+/scraping/data/

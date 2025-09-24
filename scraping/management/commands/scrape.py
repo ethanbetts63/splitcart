@@ -5,10 +5,10 @@ from scraping.scrapers.product_scraper_woolworths import ProductScraperWoolworth
 from scraping.scrapers.product_scraper_coles import ColesScraper as ProductScraperColes
 from scraping.scrapers.product_scraper_aldi import ProductScraperAldi
 from scraping.scrapers.product_scraper_iga import IgaScraper as ProductScraperIga
-from scraping.utils.get_woolworths_categories import get_woolworths_categories
-from scraping.utils.get_coles_categories import get_coles_categories
+from scraping.utils.product_scraping_utils.get_woolworths_categories import get_woolworths_categories
+from scraping.utils.product_scraping_utils.get_coles_categories import get_coles_categories
 from scraping.scrapers.gs1_company_scraper import Gs1CompanyScraper
-from scraping.utils.scrape_scheduler import ScrapeScheduler
+from scraping.utils.product_scraping_utils.scrape_scheduler import ScrapeScheduler
 import os
 import time
 
