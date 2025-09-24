@@ -25,7 +25,7 @@ class Command(BaseCommand):
         parser.add_argument('--iga', action='store_true', help='Limit the scraper to IGA stores.')
 
     def handle(self, *args, **options):
-        stop_file = 'stop.txt'
+        stop_file = os.path.join('scraping', 'stop.txt')
         if os.path.exists(stop_file):
             os.remove(stop_file)
             self.stdout.write(self.style.SUCCESS(f"Removed previous stop file: {stop_file}"))
@@ -57,10 +57,10 @@ class Command(BaseCommand):
         
         scope_message = f" for {', '.join(companies_to_scrape)}" if companies_to_scrape else " for all companies"
         self.stdout.write(self.style.SUCCESS(f"Starting scraper in persistent worker mode{scope_message}..."))
-        self.stdout.write(self.style.SUCCESS("Create a 'stop.txt' file in the root directory to gracefully stop the worker."))
+        self.stdout.write(self.style.SUCCESS("Create a 'stop.txt' file in the 'scraping' directory to gracefully stop the worker."))
 
         while True:
-            if os.path.exists('stop.txt'):
+            if os.path.exists(os.path.join('scraping', 'stop.txt')):
                 self.stdout.write(self.style.WARNING("Stop signal detected. Shutting down worker."))
                 break
 
