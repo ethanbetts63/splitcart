@@ -20,7 +20,7 @@ class Command(BaseCommand):
             self.stderr.write(self.style.ERROR("API_SERVER_URL and API_SECRET_KEY must be configured in settings."))
             return
 
-        upload_url = os.path.join(server_url, 'api/upload/')
+        upload_url = server_url.rstrip('/') + '/api/upload/'
         headers = {'X-API-KEY': api_key}
 
         files_to_upload = [f for f in os.listdir(outbox_path) if f.endswith('.jsonl')]
