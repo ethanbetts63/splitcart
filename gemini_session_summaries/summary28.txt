@@ -10,7 +10,7 @@ Based on this analysis, the following changes were implemented:
     - Updating class names, level parameters, comments, and log messages within these renamed files.
 - **Codebase-Wide Reference Updates:** All references to the old level numbers and generator names were updated across the codebase, including:
     - The `ProductSubstitution` model (`products/models/substitution.py`) to reflect the new `SUBSTITUTION_LEVELS` choices and default value.
-    - The `generate_subs` management command (`api/management/commands/generate_subs.py`) to use the new imports, command-line arguments, and generator calls.
-    - The `savings_benchmark` analysis script (`api/utils/analysis_utils/savings_benchmark.py`) to update its `transitive_levels` list.
+    - The `generate_subs` management command (`data_management/management/commands/generate_subs.py`) to use the new imports, command-line arguments, and generator calls.
+    - The `savings_benchmark` analysis script (`data_management/utils/analysis_utils/savings_benchmark.py`) to update its `transitive_levels` list.
     - The `savings_calculation_explanation.txt` documentation to reflect the updated substitution level descriptions.
-- **Defensive Code Removal:** A piece of defensive programming code in `api/utils/analysis_utils/substitution_breakdown.py` that manually added levels to a list was removed, as it is no longer necessary given the consistent model definition.
+- **Defensive Code Removal:** A piece of defensive programming code in `data_management/utils/analysis_utils/substitution_breakdown.py` that manually added levels to a list was removed, as it is no longer necessary given the consistent model definition.

@@ -1,0 +1,309 @@
+--- Overall Substitution Statistics ---
+- Total Products in DB: 57029
+- Total Substitution Links: 220727
+- Products with at least one substitute: 42972 (75.35%)
+
+--- Substitutions by Level (Overall) ---
+- Same brand, same product, different size. - 4157 (1.88%)
+- Same brand, similar product, similar size. - 3119 (1.41%)
+- Same category, semantic match. - 124381 (56.35%)
+- Linked category, semantic match. - 89070 (40.35%)
+
+--- Detailed Analysis for Aldi ---
+
+--- Internal Substitutions (Aldi <-> Aldi) ---
+  Total: 2213
+  - Same brand, same product, different size. - 82 (3.71%)
+  - Same brand, similar product, similar size. - 67 (3.03%)
+  - Same category, semantic match. - 1898 (85.77%)
+  - Linked category, semantic match. - 166 (7.50%)
+
+--- Cross-Company Substitutions (Aldi <-> Other) ---
+  Total: 17841
+  - Same brand, same product, different size. - 45 (0.25%)
+  - Same brand, similar product, similar size. - 40 (0.22%)
+  - Same category, semantic match. - 303 (1.70%)
+  - Linked category, semantic match. - 17453 (97.83%)
+
+--- Detailed Analysis for Coles ---
+
+--- Internal Substitutions (Coles <-> Coles) ---
+  Total: 59402
+  - Same brand, same product, different size. - 2310 (3.89%)
+  - Same brand, similar product, similar size. - 1500 (2.53%)
+  - Same category, semantic match. - 48143 (81.05%)
+  - Linked category, semantic match. - 7449 (12.54%)
+
+--- Cross-Company Substitutions (Coles <-> Other) ---
+  Total: 84736
+  - Same brand, same product, different size. - 566 (0.67%)
+  - Same brand, similar product, similar size. - 715 (0.84%)
+  - Same category, semantic match. - 32710 (38.60%)
+  - Linked category, semantic match. - 50745 (59.89%)
+
+--- Detailed Analysis for Iga ---
+
+--- Internal Substitutions (Iga <-> Iga) ---
+  Total: 64823
+  - Same brand, same product, different size. - 1452 (2.24%)
+  - Same brand, similar product, similar size. - 1126 (1.74%)
+  - Same category, semantic match. - 50740 (78.27%)
+  - Linked category, semantic match. - 11505 (17.75%)
+
+--- Cross-Company Substitutions (Iga <-> Other) ---
+  Total: 71539
+  - Same brand, same product, different size. - 675 (0.94%)
+  - Same brand, similar product, similar size. - 656 (0.92%)
+  - Same category, semantic match. - 24085 (33.67%)
+  - Linked category, semantic match. - 46123 (64.47%)
+
+--- Detailed Analysis for Woolworths ---
+
+--- Internal Substitutions (Woolworths <-> Woolworths) ---
+  Total: 60670
+  - Same brand, same product, different size. - 1799 (2.97%)
+  - Same brand, similar product, similar size. - 1363 (2.25%)
+  - Same category, semantic match. - 49977 (82.38%)
+  - Linked category, semantic match. - 7531 (12.41%)
+
+--- Cross-Company Substitutions (Woolworths <-> Other) ---
+  Total: 91222
+  - Same brand, same product, different size. - 866 (0.95%)
+  - Same brand, similar product, similar size. - 903 (0.99%)
+  - Same category, semantic match. - 34167 (37.45%)
+  - Linked category, semantic match. - 55286 (60.61%)
+
+--- Top 20 Substitution Hubs (Grouped) ---
+  1. "Woolworths Vanilla Yoghurt" (Woolworths Group Ltd - Supermarkets) - 16985 links in group
+  2. "Adult Dry Dog Food With Chicken" (SPC Operations Pty Ltd) - 824 links in group
+  3. "Shampoo Smooth & Silky" (Unilever Australia Limited) - 680 links in group
+  4. "GAIA Natural Baby Wipes" (Gaia) - 571 links in group
+  5. "Pf Sauvignon Blanc 750ml" (The Hero) - 530 links in group
+  6. "McAllister Scotch Whisky" (McAllister) - 485 links in group
+  7. "Pale Ale Can 375ml" (4 Pines Brewing) - 363 links in group
+  8. "Advanced Whitening Toothpaste" (Colgate-Palmolive (Thailand) Ltd) - 338 links in group
+  9. "Women Antiperspirant Aerosol Advanced Invisible Dry Pure Deodorant" (Unilever Australia Limited) - 324 links in group
+  10. "Zappo Strawberry" (Zappo) - 295 links in group
+  11. "Undo This Mess Laundry Liquid" (Undo This Mess) - 292 links in group
+  12. "Varta AAA Alkaline Batteries" (Varta) - 214 links in group
+  13. "Spf 50+ Ultra Pump Sunscreen" (Cancer Council) - 212 links in group
+  14. "Venus Smooth Women's Razor Blade" (Ｐ＆Ｇジャパン（同）) - 208 links in group
+  15. "Multivitamin" (Pharmacare Laboratories Pty Ltd) - 203 links in group
+  16. "Libra Ultra Thin Pads Super with Wings" (LIBRA) - 202 links in group
+  17. "3 Ply White Toilet Paper" (QUILTON) - 199 links in group
+  18. "Ultra Dry Nappy Pants Boys Size 6 (15kg+)" (Kimberly-Clark Australia Pty Ltd) - 189 links in group
+  19. "Ultimate Dishwasher Tablets Lemon" (Reckitt Benckiser (Australia) Pty Limited) - 188 links in group
+  20. "Banana Pear & Mango Baby Food Puree Pouch 4+ Months" (Raffertys) - 158 links in group
+
+--- Level 1: Same brand, same product, different size. ---
+
+--- Group 1/20 ---
+  - Name: Strawberry Sugar Free Chewing Gum | Brand: Extra | Sizes: ['27g']
+  - Name: Strawberry Sugar Free Chewing Gum | Brand: Extra | Sizes: ['64g', 'ea']
+
+--- Group 2/20 ---
+  - Name: Barista Intenso Ground Coffee | Brand: Lavazza | Sizes: ['250g', 'ea']
+  - Name: Barista Intenso Ground Coffee | Brand: Lavazza | Sizes: ['1kg']
+
+--- Group 3/20 ---
+  - Name: Longer & Stronger Conditioner | Brand: Unilever Australia Limited | Sizes: ['350ml', 'ea']
+  - Name: Longer & Stronger Conditioner | Brand: Unilever Australia Limited | Sizes: ['700ml', 'ea']
+
+--- Group 4/20 ---
+  - Name: Dry Bottle 355ml | Brand: Coopers | Sizes: ['24pk', '355ml']
+  - Name: Dry Bottle 355ml | Brand: Coopers | Sizes: ['355ml', '6pk']
+
+--- Group 5/20 ---
+  - Name: Pepsi Max No Sugar Creaming Soda Bottle | Brand: Soda Stream | Sizes: ['1.25l', 'ea']
+  - Name: Pepsi Max No Sugar Creaming Soda Bottle | Brand: Soda Stream | Sizes: ['600ml', 'ea']
+
+--- Group 6/20 ---
+  - Name: Conditioner Nourish & Shine | Brand: Unilever Australia Limited | Sizes: ['940ml', 'ea']
+  - Name: Conditioner Nourish & Shine | Brand: Unilever Australia Limited | Sizes: ['350ml']
+
+--- Group 7/20 ---
+  - Name: Classic Chocolate Flavoured Milk | Brand: Bega Cheese Limited | Sizes: ['375ml', 'ea']
+  - Name: Classic Chocolate Flavoured Milk | Brand: Bega Cheese Limited | Sizes: ['600ml', 'ea']
+  - Name: Classic Chocolate Flavoured Milk | Brand: Bega Cheese Limited | Sizes: ['2l', 'ea']
+
+--- Group 8/20 ---
+  - Name: Tuna Chunks in Oil 95g | Brand: PORTVIEW | Sizes: ['0.095kg', '95g']
+  - Name: Tuna Chunks in Oil 425g | Brand: PORTVIEW | Sizes: ['0.425kg', '425g']
+  - Name: Tuna Chunks in Oil 185g | Brand: PORTVIEW | Sizes: ['0.185kg', '185g']
+
+--- Group 9/20 ---
+  - Name: Baby & Newborn Sensitive Wipes | Brand: WaterWipes | Sizes: ['60pk', 'ea']
+  - Name: Fragrance Free Sensitive Skin 180 Baby Wipes | Brand: WaterWipes | Sizes: ['180pk']
+  - Name: Fragrance Free Sensitive Skin 540 Baby Wipes | Brand: WaterWipes | Sizes: ['540pk', '60pk', '9pk']
+
+--- Group 10/20 ---
+  - Name: Floss Action Electric Brush Replacement Head | Brand: Ｐ＆Ｇジャパン（同） | Sizes: ['5pk']
+  - Name: Floss Action Electric Brush Replacement Head | Brand: Ｐ＆Ｇジャパン（同） | Sizes: ['3pk', 'ea']
+
+--- Group 11/20 ---
+  - Name: Shampoo Coconut Hydration | Brand: Unilever Australia Limited | Sizes: ['350ml']
+  - Name: Shampoo Coconut Hydration | Brand: Unilever Australia Limited | Sizes: ['700ml']
+
+--- Group 12/20 ---
+  - Name: Naturals Active Nourishment Shampoo | Brand: Colgate-Palmolive (Thailand) Ltd | Sizes: ['350ml', 'ea']
+  - Name: Naturals Active Nourishment Shampoo | Brand: Colgate-Palmolive (Thailand) Ltd | Sizes: ['700ml', 'ea']
+
+--- Group 13/20 ---
+  - Name: Moro Mild Taste Olive Oil | Brand: Moro | Sizes: ['500ml']
+  - Name: Moro Mild Taste Olive Oil | Brand: Moro | Sizes: ['2.2l']
+
+--- Group 14/20 ---
+  - Name: Lemonade Soft Drink Bottle | Brand: Coca-Cola Europacific Partners Australia Pty Limited | Sizes: ['1.25l', 'ea']
+  - Name: Lemonade Soft Drink Bottle | Brand: Coca-Cola Europacific Partners Australia Pty Limited | Sizes: ['2l', 'ea']
+  - Name: Lemonade Soft Drink Bottle | Brand: Coca-Cola Europacific Partners Australia Pty Limited | Sizes: ['600ml', 'ea']
+
+--- Group 15/20 ---
+  - Name: Extra Sharp Cheese Block | Brand: Cracker Barrel | Sizes: ['250g', 'ea']
+  - Name: Extra Sharp Cheese Block | Brand: Cracker Barrel | Sizes: ['500g', 'ea']
+
+--- Group 16/20 ---
+  - Name: Dettol Antibacterial Disinfectant Liquid Solution | Brand: Reckitt Benckiser (Australia) Pty Limited | Sizes: ['250ml', 'ea']
+  - Name: Dettol Antibacterial Disinfectant Liquid Solution | Brand: Reckitt Benckiser (Australia) Pty Limited | Sizes: ['750ml']
+  - Name: Dettol Antibacterial Disinfectant Liquid Solution | Brand: Reckitt Benckiser (Australia) Pty Limited | Sizes: ['2l']
+
+--- Group 17/20 ---
+  - Name: Conditioner Purple | Brand: Unilever Australia Limited | Sizes: ['600ml']
+  - Name: Purple Conditioner | Brand: Unilever Australia Limited | Sizes: ['250ml', 'ea']
+
+--- Group 18/20 ---
+  - Name: McAllister Scotch Whisky | Brand: McAllister | Sizes: ['1l']
+  - Name: McAllister Scotch Whisky | Brand: McAllister | Sizes: ['350ml']
+  - Name: McAllister Scotch Whisky | Brand: McAllister | Sizes: ['700ml']
+
+--- Group 19/20 ---
+  - Name: Decor Tellfresh Container | Brand: The Decor Corporation Pty Ltd | Sizes: ['1000ml']
+  - Name: Tellfresh Container 2l | Brand: The Decor Corporation Pty Ltd | Sizes: ['1ea', '2l', 'ea']
+
+--- Group 20/20 ---
+  - Name: Fanta Pineapple Zero Sugar | Brand: Coca-Cola Europacific Partners Australia Pty Limited | Sizes: ['600ml', 'ea']
+  - Name: Fanta Pineapple Zero Sugar  | Brand: Coca-Cola Europacific Partners Australia Pty Limited | Sizes: ['1.25l', 'ea']
+
+--- Level 2: Same brand, similar product, similar size. ---
+
+--- Medium Confidence (0.85-0.95) ---
+  --- Sample 1/5 (Score: 0.95) ---
+    [A] Name: Nice 'n Easy 4 Natural Dark Brown Permanent Hair Colour | Brand: Ｐ＆Ｇジャパン（同） | Sizes: ['1pk', 'ea']
+    [B] Name: Nice 'n Easy 5g Natural Medium Golden Brown Permanent Hair Colour | Brand: Ｐ＆Ｇジャパン（同） | Sizes: ['1pk', '5g']
+  --- Sample 2/5 (Score: 0.95) ---
+    [A] Name: Allerpro Syneo Baby Formula Stage 1 | Brand: Aptamil | Sizes: ['900g']
+    [B] Name: Allerpro Syneo Baby Formula Stage 2 | Brand: Aptamil | Sizes: ['900g']
+  --- Sample 3/5 (Score: 0.95) ---
+    [A] Name: Light Globes Led Gls Bc 10W 1055Lum 2700K | Brand: SPC Operations Pty Ltd | Sizes: ['2pk']
+    [B] Name: Light Globes Led Gls Es 10w 1055lum 4000k | Brand: SPC Operations Pty Ltd | Sizes: ['2pk']
+  --- Sample 4/5 (Score: 0.95) ---
+    [A] Name: Special Chicken Flavour Instant Noodles | Brand: Indomie | Sizes: ['75g']
+    [B] Name: Chicken Curry Flavour Instant Noodles | Brand: Indomie | Sizes: ['80g']
+  --- Sample 5/5 (Score: 0.95) ---
+    [A] Name: Green Curry Simmer Sauce 500g | Brand: ASIA SPECIALITIES | Sizes: ['500g']
+    [B] Name: Red Curry Simmer Sauce 500g | Brand: ASIA SPECIALITIES | Sizes: ['500g']
+
+--- Level 3: Same category, semantic match. ---
+
+--- High Confidence (Score > 0.95) ---
+  --- Sample 1/5 (Score: 1.00) ---
+    [A] Name: Pizzini Pinot Grigio | Brand: Pizzini | Sizes: ['750ml']
+    [B] Name: Tread Softly Pinot Grigio | Brand: Tread Softly | Sizes: ['750ml']
+  --- Sample 2/5 (Score: 1.00) ---
+    [A] Name: Gin 700ml | Brand: Hendrick's | Sizes: ['1ea', '700ml']
+    [B] Name: Bombay Sapphire Gin | Brand: J.C.&#039;S Quality Foods Pty Ltd | Sizes: ['700ml']
+  --- Sample 3/5 (Score: 1.00) ---
+    [A] Name: Pale Ale Can 375ml | Brand: 4 Pines Brewing | Sizes: ['375ml', '6pk']
+    [B] Name: Pale Ale Can 375ml | Brand: Tinnies | Sizes: ['375ml', '4pk']
+  --- Sample 4/5 (Score: 0.96) ---
+    [A] Name: Women Clinical Protection Deodorant 96hr Antiperspirant Sport | Brand: Unilever Australia Limited | Sizes: ['180ml']
+    [B] Name: Women Clinical Protection Deodorant Cream 96hr Antiperspirant Ultimate Sport | Brand: Unilever Australia Limited | Sizes: ['45ml']
+  --- Sample 5/5 (Score: 0.96) ---
+    [A] Name: Sorbent Double Length 3 Ply Toilet Paper | Brand: SORBENT | Sizes: ['4pk']
+    [B] Name: Quilton Triple Length 3 Ply Toilet Paper | Brand: QUILTON | Sizes: ['6pk']
+
+--- Medium Confidence (0.85-0.95) ---
+  --- Sample 1/5 (Score: 0.92) ---
+    [A] Name: Santa Vittoria Sparkling Mineral Water | Brand: Santa Vittoria | Sizes: ['750ml', 'ea']
+    [B] Name: Voss Sparkling Water | Brand: Voss | Sizes: ['800ml', 'ea']
+  --- Sample 2/5 (Score: 0.91) ---
+    [A] Name: Sweet & Sour Stir Fry Cooking Sauce | Brand: Mars Australia Pty Ltd | Sizes: ['515g', 'ea']
+    [B] Name: Lee Kum Kee Sweet & Sour Pork Stir Fry Sauce | Brand: Lee Kum Kee Co. Ltd | Sizes: ['145g', 'ea']
+  --- Sample 3/5 (Score: 0.86) ---
+    [A] Name: Espresso Ristretto Intensity 11 Coffee Capsules 52g | Brand: L'OR | Sizes: ['10pk', '52g', 'ea']
+    [B] Name: L'Or Espresso Ristretto Capsules  | Brand: L'OR | Sizes: ['ea']
+  --- Sample 4/5 (Score: 0.88) ---
+    [A] Name: Hydration Sunscreen Lotion Spf 50+ | Brand: Edgewell Personal Care Australia Pty Ltd | Sizes: ['180ml', 'ea']
+    [B] Name: Le Tan Coconut Sunscreen Lotion SPF 50+ | Brand: Le Tan | Sizes: ['750ml']
+  --- Sample 5/5 (Score: 0.88) ---
+    [A] Name: Traditional Rolled Oats | Brand: Nestle Australia Ltd | Sizes: ['500g', 'ea']
+    [B] Name: Rolled Oats | Brand: Coles Limited | Sizes: ['500g']
+
+--- Low Confidence (0.7-0.85) ---
+  --- Sample 1/5 (Score: 0.76) ---
+    [A] Name: Essentials Olive Oil Spray | Brand: Woolworths Group Ltd - Supermarkets | Sizes: ['400g']
+    [B] Name: La Gina Classic Olive Oil | Brand: Woolworths Group Ltd - Supermarkets | Sizes: ['1l']
+  --- Sample 2/5 (Score: 0.76) ---
+    [A] Name: Community Co Mince Pies | Brand: Metcash Trading Limited Australasia | Sizes: ['ea']
+    [B] Name: House Of Biskota Gluten Free Mince Pies | Brand: House Of Biskota | Sizes: ['400g', 'ea']
+  --- Sample 3/5 (Score: 0.80) ---
+    [A] Name: Peanut Milk Chocolate Snack & Share Party Bag | Brand: Coles Limited | Sizes: ['650g', 'ea']
+    [B] Name: Mars Mixed Variety Chocolate Large Party Share Bag | Brand: MARS | Sizes: ['ea']
+  --- Sample 4/5 (Score: 0.80) ---
+    [A] Name: No Added Sugar Greek Yogurt Strawberry | Brand: Chobani Pty Ltd | Sizes: ['150g']
+    [B] Name: Greek Yogurt Strawberry | Brand: Chobani Pty Ltd | Sizes: ['160g', 'ea']
+  --- Sample 5/5 (Score: 0.80) ---
+    [A] Name: Dole Fruit Mix In Juice | Brand: Dole | Sizes: ['432g']
+    [B] Name: Snacktacular Fruit Cup Peaches In Juice | Brand: Snacktacular | Sizes: ['120g', '4pk', 'pk']
+
+--- Level 4: Linked category, semantic match. ---
+
+--- High Confidence (Score > 0.95) ---
+  --- Sample 1/5 (Score: 1.00) ---
+    [A] Name: Tomato Sauce 500ml | Brand: COLWAY | Sizes: ['500ml']
+    [B] Name: Tomato Sauce | Brand: Beerenberg Pty Ltd | Sizes: ['300ml', 'ea']
+  --- Sample 2/5 (Score: 1.00) ---
+    [A] Name: Vodka 750ml | Brand: Offshore | Sizes: ['1ea', '750ml']
+    [B] Name: & Vodka | Brand: None | Sizes: ['500ml']
+  --- Sample 3/5 (Score: 1.00) ---
+    [A] Name: Full Cream Milk | Brand: Sada | Sizes: ['2l']
+    [B] Name: Norco Full Cream Milk | Brand: Norco Cape Byron | Sizes: ['500ml']
+  --- Sample 4/5 (Score: 1.00) ---
+    [A] Name: Natural Mineral Water | Brand: SPC Operations Pty Ltd | Sizes: ['1.25l']
+    [B] Name: Schweppes Natural Mineral Water | Brand: Asahi Beverages Pty Ltd | Sizes: ['300ml', 'ea']
+  --- Sample 5/5 (Score: 1.00) ---
+    [A] Name: Global Seafoods Salt & Pepper Squid | Brand: Global Seafoods | Sizes: ['500g', 'ea']
+    [B] Name: Blueline Seafood Salt & Pepper Squid | Brand: Blueline Seafood | Sizes: ['360g']
+
+--- Medium Confidence (0.85-0.95) ---
+  --- Sample 1/5 (Score: 0.88) ---
+    [A] Name: Extra Virgin Olive Oil Spray 225g | Brand: THE OLIVE TREE | Sizes: ['225g']
+    [B] Name: Dante Extra Virgin Olive Oil | Brand: Dante | Sizes: ['1l', 'ea']
+  --- Sample 2/5 (Score: 0.88) ---
+    [A] Name: Passionfruit Soft Drink | Brand: SPC Operations Pty Ltd | Sizes: ['1.25l']
+    [B] Name: Bundaberg Passionfruit Sparkling Drink | Brand: Bundaberg Brewed Drinks Pty Ltd | Sizes: ['375ml', 'ea']
+  --- Sample 3/5 (Score: 0.85) ---
+    [A] Name: Womens 5 Cartridges Razor | Brand: SPC Operations Pty Ltd | Sizes: ['4pk']
+    [B] Name: Oscar Orsen Womens Razor With 2 Razor Blade Cartridges | Brand: Woolworths Group Ltd - Supermarkets | Sizes: ['ea']
+  --- Sample 4/5 (Score: 0.86) ---
+    [A] Name: Lithium 3V CR123 Batteries | Brand: Duracell Solutions BV | Sizes: ['2pk']
+    [B] Name: Energizer Lithium 3V Batteries CR2016 | Brand: ENERGIZER SINGAPORE PTE LTD | Sizes: ['ea']
+  --- Sample 5/5 (Score: 0.87) ---
+    [A] Name: Real Natural Tasty Cheese Slices | Brand: Real | Sizes: ['500g', 'ea']
+    [B] Name: Woolworths Extra Tasty Cheese Slices | Brand: Woolworths Group Ltd - Supermarkets | Sizes: ['500g']
+
+--- Low Confidence (0.7-0.85) ---
+  --- Sample 1/5 (Score: 0.79) ---
+    [A] Name: Dry Dog Food Beef & Vegetable | Brand: Mars Australia Pty Ltd | Sizes: ['2.8kg', 'ea']
+    [B] Name: Supercoat Adult Dog Beef Dry Dog Food | Brand: Nestle Australia Ltd | Sizes: ['7.5kg', 'ea']
+  --- Sample 2/5 (Score: 0.77) ---
+    [A] Name: Diet Ginger Beer Multipack 10X375mL | Brand: Bundaberg Brewed Drinks Pty Ltd | Sizes: ['10pk', '375ml', 'pk']
+    [B] Name: Bundaberg Brewed Diet Ginger Beer | Brand: Bundaberg Brewed Drinks Pty Ltd | Sizes: ['375ml', 'ea']
+  --- Sample 3/5 (Score: 0.84) ---
+    [A] Name: The Yoghurt Shop Vanilla Bean Greek Yoghurt | Brand: The Yoghurt Shop | Sizes: ['190g', 'ea']
+    [B] Name: Jalna Greek Blueberry Yoghurt | Brand: JALNA | Sizes: ['170g', 'ea']
+  --- Sample 4/5 (Score: 0.76) ---
+    [A] Name: Conditioner Coconut Hydration | Brand: Unilever Australia Limited | Sizes: ['350ml']
+    [B] Name: Monoi Coconut Conditioner | Brand: Hask | Sizes: ['355ml']
+  --- Sample 5/5 (Score: 0.80) ---
+    [A] Name: Flavoured Sparkling Mineral Water Wild Berry | Brand: Yaru | Sizes: ['1l']
+    [B] Name: Perrier Sparkling Mineral Water | Brand: Perrier | Sizes: ['ea']

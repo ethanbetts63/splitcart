@@ -6,7 +6,7 @@ This session focused on resolving the final inconsistencies from the major brand
 
 We started by addressing an inconsistency in how variations were detected. The logic for product names was more thorough than for brand names.
 
--   **File:** `api/database_updating_classes/variation_manager.py`
+-   **File:** `data_management/database_updating_classes/variation_manager.py`
 -   **Action:** The brand variation logic was updated to mirror the product logic. It now checks for differences in both the raw string names and the normalized keys. This ensures that all brand aliases are captured for the translation table, not just those that represent brand duplicates.
 
 ### 2. Finalizing the `Product.brand` Schema
@@ -20,24 +20,24 @@ The `Product` model still had a deprecated `brand` CharField and a `brand_link` 
 -   **Project-Wide Audit & Fixes:**
     -   **Action:** A systematic search was conducted for all usages of `.brand` and `brand_link`.
     -   **Files Fixed:** Numerous files were updated to use the new `Product.brand` ForeignKey correctly, typically by changing `product.brand` to `product.brand.name`.
-        -   `api/database_updating_classes/variation_manager.py`
-        -   `api/archivers/store_product_lister.py`
-        -   `api/management/commands/get_unique.py`
-        -   `api/management/commands/inspect_cart_run.py`
-        -   `api/utils/analysis_utils/savings_benchmark.py`
-        -   All integration tests (`api/tests/integration/test_data_flow_*.py`)
+        -   `data_management/database_updating_classes/variation_manager.py`
+        -   `data_management/archivers/store_product_lister.py`
+        -   `data_management/management/commands/get_unique.py`
+        -   `data_management/management/commands/inspect_cart_run.py`
+        -   `data_management/utils/analysis_utils/savings_benchmark.py`
+        -   All integration tests (`data_management/tests/integration/test_data_flow_*.py`)
 
 ### 3. Fixing Consequential Bugs
 
 The schema change revealed two deeper bugs in the data update pipeline, which were subsequently fixed.
 
 -   **`ValueError` in `UpdateOrchestrator`:**
-    -   **File:** `api/database_updating_classes/update_orchestrator.py`
+    -   **File:** `data_management/database_updating_classes/update_orchestrator.py`
     -   **Problem:** The orchestrator was trying to create `Product` instances by assigning a raw brand string to the new `brand` ForeignKey.
     -   **Fix:** The code was modified to first retrieve the correct `ProductBrand` object from the `BrandManager`'s cache and use that object during `Product` instantiation.
 
 -   **`AttributeError` in `UnitOfWork`:**
-    -   **File:** `api/database_updating_classes/unit_of_work.py`
+    -   **File:** `data_management/database_updating_classes/unit_of_work.py`
     -   **Problem:** The `VariationManager` was correctly adding `ProductBrand` objects to the `UnitOfWork` for updates, but the `UnitOfWork`'s `commit` method assumed all objects in its update list were `Product`s, causing a crash when it tried to access product-only fields like `barcode`.
     -   **Fix:** The `UnitOfWork` was refactored to maintain separate lists for `products_to_update` and `brands_to_update`. The `commit` method now processes each list separately with the correct fields for each model type.
 
@@ -45,6 +45,6 @@ The schema change revealed two deeper bugs in the data update pipeline, which we
 
 Finally, we analyzed and refactored the `update_db --prefixes` command to align it with our new, non-destructive reconciliation pattern.
 
--   **File:** `api/database_updating_classes/prefix_update_orchestrator.py`
+-   **File:** `data_management/database_updating_classes/prefix_update_orchestrator.py`
 -   **Problem:** The orchestrator was performing its own destructive merge of brand records, which was inconsistent with the new pattern of delegating merges to the `BrandReconciler`.
 -   **Fix:** The orchestrator was refactored to be non-destructive. It now only records the relationship between a GS1-confirmed brand and a scraped brand by adding the latter to the former's variation lists. This allows the `BrandTranslationTableGenerator` and `BrandReconciler` to handle the actual merge automatically.

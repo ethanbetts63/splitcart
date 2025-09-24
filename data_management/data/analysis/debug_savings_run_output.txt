@@ -1,0 +1,1088 @@
+Debug Savings Run - 2025-09-23 16:38:01.761103
+
+
+--- Cart Slot 1 ---
+  Original Product: Uncle Tobys Plus Antioxidants Cereal 435g ['435g'] (Cheapest: $4.99)
+
+  Considered Options:
+    - Uncle Tobys Plus Antioxidants Cereal 435g ['435g'] @ Woolooware for $4.99
+
+  Chosen Option:
+    -> Uncle Tobys Plus Antioxidants Cereal 435g ['435g'] @ Woolooware for $4.99
+
+--- Cart Slot 2 ---
+  Original Product: READY, SET…COOK! Chicken Breast Schnitzel Crunchy Homestyle 4 Pack 600g ['0.6kg', '4pk', '600g'] (Cheapest: $7.99)
+
+  Considered Options:
+    - Olga's Fine Foods Chicken Breast Schnitzel ['500g'] @ Coles Findon for $11.00
+    - Steggles Steggles Chicken Breast Schnitzel Panko & Quinoa ['600g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $9.99
+    - READY, SET…COOK! Chicken Breast Schnitzel Parmigiana 4 Pack 600g ['0.6kg', '4pk', '600g'] @ Woolooware for $7.99
+    - FARMWOOD Chicken Breast Schnitzel Original Crumb 4 Pack 400g ['0.4kg', '400g', '4pk'] @ Woolooware for $4.99
+    - READY, SET…COOK! Chicken Breast Schnitzel Crunchy Homestyle 4 Pack 600g ['0.6kg', '4pk', '600g'] @ Woolooware for $7.99
+
+  Chosen Option:
+    -> FARMWOOD Chicken Breast Schnitzel Original Crumb 4 Pack 400g ['0.4kg', '400g', '4pk'] @ Woolooware for $4.99
+
+--- Cart Slot 3 ---
+  Original Product: BERG Pepperoni Sliced Twin Pack, 100g ['0.1kg', '100g', 'pk'] (Cheapest: $3.39)
+
+  Considered Options:
+    - BERG Pepperoni Sliced Twin Pack, 100g ['0.1kg', '100g', 'pk'] @ Woolooware for $3.39
+
+  Chosen Option:
+    -> BERG Pepperoni Sliced Twin Pack, 100g ['0.1kg', '100g', 'pk'] @ Woolooware for $3.39
+
+--- Cart Slot 4 ---
+  Original Product: NEW SEASON Organic Black Beans 425g ['0.425kg', '425g'] (Cheapest: $1.49)
+
+  Considered Options:
+    - EL TORA Black Beans 420g ['0.42kg', '420g'] @ Woolooware for $0.99
+    - NEW SEASON Organic Red Kidney Beans 425g ['0.425kg', '425g'] @ Woolooware for $1.49
+    - NEW SEASON 4 Bean Mix 420g ['0.42kg', '420g'] @ Woolooware for $0.99
+    - NEW SEASON Red Kidney Beans 420g ['0.42kg', '420g'] @ Woolooware for $0.99
+    - NEW SEASON Organic Black Beans 425g ['0.425kg', '425g'] @ Woolooware for $1.49
+
+  Chosen Option:
+    -> NEW SEASON 4 Bean Mix 420g ['0.42kg', '420g'] @ Woolooware for $0.99
+
+--- Cart Slot 5 ---
+  Original Product: STONEMILL Mixed Herbs 20g ['20g'] (Cheapest: $3.29)
+
+  Considered Options:
+    - Hoyts Mixed Herbs ['25g', 'ea'] @ Coles Findon for $1.95
+    - MasterFoods Herbs And Spices Chimichurri Spice Blend Jar ['25g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $3.50
+    - STONEMILL Italian Herbs 15g ['15g'] @ Woolooware for $2.49
+    - STONEMILL Mixed Herbs 20g ['20g'] @ Woolooware for $3.29
+
+  Chosen Option:
+    -> Hoyts Mixed Herbs ['25g', 'ea'] @ Coles Findon for $1.95
+
+--- Cart Slot 6 ---
+  Original Product: OH SO NATURAL WHOLEFOODS Organic Psyllium Husk 250g ['250g'] (Cheapest: $6.99)
+
+  Considered Options:
+    - OH SO NATURAL WHOLEFOODS Organic Psyllium Husk 250g ['250g'] @ Woolooware for $6.99
+
+  Chosen Option:
+    -> OH SO NATURAL WHOLEFOODS Organic Psyllium Husk 250g ['250g'] @ Woolooware for $6.99
+
+--- Cart Slot 7 ---
+  Original Product: KENNY'S Salted Caramel Frozen Dessert 475ml ['475ml'] (Cheapest: $6.99)
+
+  Considered Options:
+    - Coles Irresistible Salted Caramel 4 Pack ['400ml', '4pk'] @ Coles Findon for $6.50
+    - None Dairy Milk Vanilla Ice Cream ['460ml', 'ea'] @ Chester Hill for $5.25
+    - YOCONUT Dairy Free Frozen Dessert Salted Caramel 475ml ['475ml'] @ Woolooware for $6.99
+    - YOCONUT Dairy Free Frozen Dessert Choc Salted Caramel 475ml ['475ml'] @ Woolooware for $6.99
+    - KENNY'S Salted Caramel Frozen Dessert 475ml ['475ml'] @ Woolooware for $6.99
+
+  Chosen Option:
+    -> None Dairy Milk Vanilla Ice Cream ['460ml', 'ea'] @ Chester Hill for $5.25
+
+--- Cart Slot 8 ---
+  Original Product: Nescafe Vanilla Latte Sachets 26 Pack 481g ['26ea', '26pk', '481g'] (Cheapest: $12.49)
+
+  Considered Options:
+    - Nescafe Caramel Latte Coffee Sachets ['26pk', 'ea'] @ Coles Findon for $12.50
+    - Nescafe Caramel Latte Coffee Sachets ['26pk', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $12.50
+    - ALCAFE Chai Flavoured Latte Sachets 20 Pack 400g ['20ea', '20pk', '400g'] @ Woolooware for $7.79
+    - Nescafe Vanilla Latte Sachets 26 Pack 481g ['26ea', '26pk', '481g'] @ Woolooware for $12.49
+
+  Chosen Option:
+    -> ALCAFE Chai Flavoured Latte Sachets 20 Pack 400g ['20ea', '20pk', '400g'] @ Woolooware for $7.79
+
+--- Cart Slot 9 ---
+  Original Product: VEET Wax Strips 40 Pack ['40ea', '40pk'] (Cheapest: $13.99)
+
+  Considered Options:
+    - VEET Wax Strips 40 Pack ['40ea', '40pk'] @ Woolooware for $13.99
+
+  Chosen Option:
+    -> VEET Wax Strips 40 Pack ['40ea', '40pk'] @ Woolooware for $13.99
+
+--- Cart Slot 10 ---
+  Original Product: Coles Made Easy Pork Honey Soy Sauce ['700g'] (Cheapest: $15.00)
+
+  Considered Options:
+    - Coles Made Easy Pork Honey Soy Sauce ['700g'] @ Coles Findon for $15.00
+
+  Chosen Option:
+    -> Coles Made Easy Pork Honey Soy Sauce ['700g'] @ Coles Findon for $15.00
+
+--- Cart Slot 11 ---
+  Original Product: Chobani Pty Ltd Toffee & Honeycomb Twist Yoghurt ['160g', 'ea'] (Cheapest: $1.80)
+
+  Considered Options:
+    - BROOKLEA Strawberry Yogurt Squishy Pouch 150g ['150g'] @ Woolooware for $1.29
+    - BDD AUSTRALIA PTY LTD Greek Style Strawberry Yoghurt Pouch ['130g', 'ea'] @ Coles Findon for $1.20
+    - BDD AUSTRALIA PTY LTD Greek Yoghurt Pouch Vanilla ['130g', 'ea'] @ Coles Findon for $1.20
+    - BDD AUSTRALIA PTY LTD Greek Style Mango Yoghurt Pouch ['130g', 'ea'] @ Coles Findon for $1.20
+    - Chobani Pty Ltd Toffee & Honeycomb Twist Yoghurt ['160g', 'ea'] @ Coles Findon for $1.80
+
+  Chosen Option:
+    -> BDD AUSTRALIA PTY LTD Greek Style Mango Yoghurt Pouch ['130g', 'ea'] @ Coles Findon for $1.20
+
+--- Cart Slot 12 ---
+  Original Product: Coles Beef Ravioli Pasta ['600g'] (Cheapest: $6.00)
+
+  Considered Options:
+    - Community Co Community Co Fresh Pasta Beef Ravioli ['625g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $7.20
+    - La Tosca La Tosca Beef Ravioli ['500g', '750g', 'ea', 'pk'] @ Chester Hill for $6.25
+    - None Pasta Beef Ravioli ['600g'] @ Coles Findon for $5.00
+    - Patties Foods Pty Limited Fresh Pasta Beef Ravioli ['600g'] @ Coles Findon for $8.00
+    - Coles Beef Ravioli Pasta ['600g'] @ Coles Findon for $6.00
+
+  Chosen Option:
+    -> None Pasta Beef Ravioli ['600g'] @ Coles Findon for $5.00
+
+--- Cart Slot 13 ---
+  Original Product: Lactalis Australia Pty Ltd Kids Greek Blueberry Yoghurt Pouch ['110g', 'ea'] (Cheapest: $2.50)
+
+  Considered Options:
+    - BROOKLEA No Added Sugar Blueberry Yogurt  Pouch 110g ['110g'] @ Woolooware for $1.19
+    - None Kids Greek Natural Raspberry Yoghurt Pouch ['110g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $2.50
+    - Lactalis Australia Pty Ltd Kids Pouch Yoghurt Blueberry ['140g'] @ Chester Hill for $2.50
+    - Lactalis Australia Pty Ltd Kids Pouch Yoghurt Blueberry ['140g'] @ Coles Findon for $2.50
+    - Lactalis Australia Pty Ltd Kids Greek Blueberry Yoghurt Pouch ['110g', 'ea'] @ Coles Findon for $2.50
+
+  Chosen Option:
+    -> BROOKLEA No Added Sugar Blueberry Yogurt  Pouch 110g ['110g'] @ Woolooware for $1.19
+
+--- Cart Slot 14 ---
+  Original Product: None Tasty Cheese Slices ['36pk', '48pk', '750g', 'ea'] (Cheapest: $14.00)
+
+  Considered Options:
+    - WESTACRE DAIRY Tasty Shredded Cheese 700g ['0.7kg', '700g'] @ Woolooware for $8.79
+    - Bega Cheese Slices Tasty ['750g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $14.00
+    - Bega Cheese Slices Tasty ['750g', 'ea'] @ Coles Findon for $14.00
+    - None Light & Tasty Cheese Slices ['48pk', '750g', 'ea'] @ Coles Findon for $14.00
+    - None Tasty Cheese Slices ['36pk', '48pk', '750g', 'ea'] @ Coles Findon for $14.00
+
+  Chosen Option:
+    -> WESTACRE DAIRY Tasty Shredded Cheese 700g ['0.7kg', '700g'] @ Woolooware for $8.79
+
+--- Cart Slot 15 ---
+  Original Product: BDD AUSTRALIA PTY LTD Light Start Milk ['1l', 'ea'] (Cheapest: $3.05)
+
+  Considered Options:
+    - Saputo Dairy Australia Pty Ltd Lactose Free Full Cream Milk ['1l', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $2.70
+    - BDD AUSTRALIA PTY LTD Light Start Milk ['1l', 'ea'] @ Coles Findon for $3.05
+    - Saputo Dairy Australia Pty Ltd Lactose Free Full Cream Milk ['1l', 'ea'] @ Coles Findon for $2.70
+    - Saputo Dairy Australia Pty Ltd Lactose Free 99% Low Fat Milk ['1l', 'ea'] @ Coles Findon for $2.70
+
+  Chosen Option:
+    -> Saputo Dairy Australia Pty Ltd Lactose Free 99% Low Fat Milk ['1l', 'ea'] @ Coles Findon for $2.70
+
+--- Cart Slot 16 ---
+  Original Product: South Cape Camembert ['200g', 'ea'] (Cheapest: $6.80)
+
+  Considered Options:
+    - WESTACRE DAIRY Light Cream Cheese 250g ['0.25kg', '250g'] @ Woolooware for $2.39
+    - Community Co Community Co Tasty Cheese Block ['250g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $6.00
+    - South Cape Camembert ['200g', 'ea'] @ Chester Hill for $6.80
+    - None Camembert ['200g', 'ea'] @ Coles Findon for $5.90
+
+  Chosen Option:
+    -> WESTACRE DAIRY Light Cream Cheese 250g ['0.25kg', '250g'] @ Woolooware for $2.39
+
+--- Cart Slot 17 ---
+  Original Product: BDD AUSTRALIA PTY LTD Feel Good No Added Sugar 99.5% Fat Free Iced Coffee Milk ['2l', 'ea'] (Cheapest: $6.80)
+
+  Considered Options:
+    - FARMDALE Iced Coffee Flavoured Milk 2L ['2l'] @ Woolooware for $4.99
+    - None Oak Iced Coffee Flavoured Milk ['2l', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $6.90
+    - BDD AUSTRALIA PTY LTD Iced Coffee Flavoured Milk ['2l', 'ea'] @ Coles Findon for $6.80
+    - BDD AUSTRALIA PTY LTD Strong Iced Coffee Flavoured Milk ['2l'] @ Coles Findon for $6.80
+    - BDD AUSTRALIA PTY LTD Feel Good No Added Sugar 99.5% Fat Free Iced Coffee Milk ['2l', 'ea'] @ Coles Findon for $6.80
+
+  Chosen Option:
+    -> FARMDALE Iced Coffee Flavoured Milk 2L ['2l'] @ Woolooware for $4.99
+
+--- Cart Slot 18 ---
+  Original Product: None Bread Wholemeal Raisin Toast ['575g'] (Cheapest: $4.50)
+
+  Considered Options:
+    - BAKERS LIFE Raisin Toast 520g ['520g'] @ Woolooware for $2.99
+    - None Tip Top Sunblest Wholemeal Bread ['650g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $3.90
+    - Mighty Soft Raisin Toast ['600g', 'ea'] @ Chester Hill for $4.40
+    - None Raisin Toast Bread ['500g'] @ Coles Findon for $4.50
+    - None Bread Wholemeal Raisin Toast ['575g'] @ Coles Findon for $4.50
+
+  Chosen Option:
+    -> BAKERS LIFE Raisin Toast 520g ['520g'] @ Woolooware for $2.99
+
+--- Cart Slot 19 ---
+  Original Product: Coles Christmas Sticky Date Pies 6 Pack ['360g', '6pk'] (Cheapest: $6.00)
+
+  Considered Options:
+    - Coles Christmas Sticky Date Pies 6 Pack ['360g', '6pk'] @ Coles Findon for $6.00
+
+  Chosen Option:
+    -> Coles Christmas Sticky Date Pies 6 Pack ['360g', '6pk'] @ Coles Findon for $6.00
+
+--- Cart Slot 20 ---
+  Original Product: GENERAL MILLS IBERICA S.A.U Tortilla Nachips Cheese ['350g'] (Cheapest: $3.45)
+
+  Considered Options:
+    - GENERAL MILLS IBERICA S.A.U Tortilla Nachips Original ['350g'] @ Coles Findon for $3.45
+    - GENERAL MILLS IBERICA S.A.U Tortilla Nachips Cheese ['350g'] @ Coles Findon for $3.45
+
+  Chosen Option:
+    -> GENERAL MILLS IBERICA S.A.U Tortilla Nachips Original ['350g'] @ Coles Findon for $3.45
+
+--- Cart Slot 21 ---
+  Original Product: Carmans Nut Bar Slice Granola Protein Rich Almond & Hazelnut ['450g', 'ea'] (Cheapest: $5.95)
+
+  Considered Options:
+    - OH SO NATURAL ORGANIC Coconut Chia Organic Granola 500g ['500g'] @ Woolooware for $5.19
+    - Sunsol High Protein Granola Honey Nut Crunch ['450g'] @ Coles Findon for $4.50
+    - Sunsol Protein Granola Chocolate Almond Crunch ['450g'] @ Coles Findon for $4.50
+    - Carmans Nut Bar Slice Granola Protein Rich Almond & Hazelnut ['450g', 'ea'] @ Coles Findon for $5.95
+
+  Chosen Option:
+    -> Sunsol High Protein Granola Honey Nut Crunch ['450g'] @ Coles Findon for $4.50
+
+--- Cart Slot 22 ---
+  Original Product: None Gluten Free Real Gourmet Stock Powder Canned ['250g', 'ea'] (Cheapest: $2.50)
+
+  Considered Options:
+    - None Gluten Free Real Chicken Stock Powder Canned ['200g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $4.85
+    - None Gluten Free Real Chicken Stock Powder Canned ['200g', 'ea'] @ Coles Findon for $2.50
+    - None Gluten Free Real Gourmet Stock Powder Canned ['250g', 'ea'] @ Coles Findon for $2.50
+    - None Gluten Free Real Gourmet Stock Powder Canned ['250g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $4.85
+
+  Chosen Option:
+    -> None Gluten Free Real Gourmet Stock Powder Canned ['250g', 'ea'] @ Coles Findon for $2.50
+
+--- Cart Slot 23 ---
+  Original Product: MasterFoods Freshly Chopped Chilli ['160g'] (Cheapest: $3.20)
+
+  Considered Options:
+    - MasterFoods Freshly Chopped Chilli ['160g'] @ Coles Findon for $3.20
+
+  Chosen Option:
+    -> MasterFoods Freshly Chopped Chilli ['160g'] @ Coles Findon for $3.20
+
+--- Cart Slot 24 ---
+  Original Product: kan tong Sweet Soy & Garlic Stir Fry Sauce ['515g', 'ea'] (Cheapest: $3.50)
+
+  Considered Options:
+    - ASIA SPECIALITIES Sweet And Sour Stir Fry Sauce  500g ['500g'] @ Woolooware for $1.99
+    - kan tong Honey Soy Garlic Stir Fry Sauce ['500g', '510g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $3.15
+    - kan tong Honey Soy Garlic Stir Fry Sauce ['500g', '510g', 'ea'] @ Coles Findon for $3.50
+    - kan tong Honey Sesame & Garlic Stir Fry Sauce ['520g', 'ea'] @ Coles Findon for $3.50
+    - kan tong Sweet Soy & Garlic Stir Fry Sauce ['515g', 'ea'] @ Coles Findon for $3.50
+
+  Chosen Option:
+    -> ASIA SPECIALITIES Sweet And Sour Stir Fry Sauce  500g ['500g'] @ Woolooware for $1.99
+
+--- Cart Slot 25 ---
+  Original Product: Nando's Peri Peri Garlic Rub ['25g', 'ea'] (Cheapest: $3.00)
+
+  Considered Options:
+    - Nando's Peri Peri Garlic Rub ['25g', 'ea'] @ Coles Findon for $3.00
+
+  Chosen Option:
+    -> Nando's Peri Peri Garlic Rub ['25g', 'ea'] @ Coles Findon for $3.00
+
+--- Cart Slot 26 ---
+  Original Product: The Trustee for Chen Foods Group Unit Trust Saucy Sesame Hand-pulled Style Noodle ['320g'] (Cheapest: $6.00)
+
+  Considered Options:
+    - The Trustee for Chen Foods Group Unit Trust Saucy Soy & Spring Onion Hand Pulled Style Noodle ['320g'] @ Coles Findon for $6.00
+    - The Trustee for Chen Foods Group Unit Trust Noodles Hand-pulled Style ['400g'] @ Coles Findon for $2.85
+    - The Trustee for Chen Foods Group Unit Trust Saucy Sesame Hand-pulled Style Noodle ['320g'] @ Coles Findon for $6.00
+
+  Chosen Option:
+    -> The Trustee for Chen Foods Group Unit Trust Noodles Hand-pulled Style ['400g'] @ Coles Findon for $2.85
+
+--- Cart Slot 27 ---
+  Original Product: Simplot Australia Pty Limited Sliced Mushrooms in Butter Sauce ['220g', 'ea'] (Cheapest: $2.40)
+
+  Considered Options:
+    - Simplot Australia Pty Limited Sliced Mushrooms in Butter Sauce ['220g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $2.40
+    - Simplot Australia Pty Limited Sliced Mushrooms in Butter Sauce ['220g', 'ea'] @ Coles Findon for $2.40
+
+  Chosen Option:
+    -> Simplot Australia Pty Limited Sliced Mushrooms in Butter Sauce ['220g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $2.40
+
+--- Cart Slot 28 ---
+  Original Product: None Strawberry Biscuit Sticks ['45g', '47g', 'ea'] (Cheapest: $1.95)
+
+  Considered Options:
+    - None Glico Pocky Strawberry Biscuit Sticks ['47g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $1.95
+    - None Chocolate Biscuit Sticks ['47g', 'ea'] @ Coles Findon for $2.20
+    - None Cookies & Cream Biscuit Sticks ['40g', 'ea'] @ Coles Findon for $2.20
+    - None Cookies & Cream Biscuit Sticks ['40g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $1.95
+    - None Strawberry Biscuit Sticks ['45g', '47g', 'ea'] @ Coles Findon for $2.20
+
+  Chosen Option:
+    -> None Cookies & Cream Biscuit Sticks ['40g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $1.95
+
+--- Cart Slot 29 ---
+  Original Product: Coles White Medium Grain Rice ['1kg'] (Cheapest: $3.00)
+
+  Considered Options:
+    - IMPERIAL GRAIN Brown Rice 1kg ['1000g', '1kg'] @ Woolooware for $2.49
+    - Ricegrowers Limited Premium Long Grain Rice ['1kg', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $3.00
+    - Coles Long Grain Rice ['1kg'] @ Coles Findon for $1.80
+    - Ricegrowers Limited Premium Long Grain Rice ['1kg', 'ea'] @ Coles Findon for $3.00
+    - Coles White Medium Grain Rice ['1kg'] @ Coles Findon for $3.00
+
+  Chosen Option:
+    -> Coles Long Grain Rice ['1kg'] @ Coles Findon for $1.80
+
+--- Cart Slot 30 ---
+  Original Product: Hoyts Whole Cloves ['15g'] (Cheapest: $2.00)
+
+  Considered Options:
+    - Hoyts Whole Cloves ['15g'] @ Coles Findon for $2.00
+
+  Chosen Option:
+    -> Hoyts Whole Cloves ['15g'] @ Coles Findon for $2.00
+
+--- Cart Slot 31 ---
+  Original Product: Birch & Waite Sauce & Dip Parsley Dill & Tarragon ['250ml', 'ea'] (Cheapest: $4.50)
+
+  Considered Options:
+    - Birch & Waite Sauce & Dip Parsley Dill & Tarragon ['250ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $5.75
+    - Birch & Waite Sauce & Dip Parsley Dill & Tarragon ['250ml', 'ea'] @ Chester Hill for $5.25
+    - Birch & Waite Sauce & Dip Parsley Dill & Tarragon ['250ml', 'ea'] @ Coles Findon for $5.25
+
+  Chosen Option:
+    -> Birch & Waite Sauce & Dip Parsley Dill & Tarragon ['250ml', 'ea'] @ Coles Findon for $5.25
+
+--- Cart Slot 32 ---
+  Original Product: None Vietnamese Style Tangy Dressing ['240ml', 'ea'] (Cheapest: $3.50)
+
+  Considered Options:
+    - None Vietnamese Salad Dressing ['270ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $3.40
+    - None Vietnamese Salad Dressing ['270ml', 'ea'] @ Coles Findon for $3.70
+    - None Vietnamese Style Tangy Dressing ['240ml', 'ea'] @ Coles Findon for $3.50
+    - None Vietnamese Style Tangy Dressing ['240ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $5.00
+
+  Chosen Option:
+    -> None Vietnamese Salad Dressing ['270ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $3.40
+
+--- Cart Slot 33 ---
+  Original Product: Wokka Singapore Style Wok Ready Noodles ['440g', 'ea'] (Cheapest: $3.00)
+
+  Considered Options:
+    - KOKA Instant Noodles Spicy Singapore 5 Pack 85g ['425g', '5pk', '85g'] @ Woolooware for $1.99
+    - Wokka Thin Rice Wok Ready Noodles ['440g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $3.00
+    - San Remo Macaroni Co Pty Ltd Hokkien Noodles ['450g', 'ea'] @ Chester Hill for $2.90
+    - Wokka Thin Rice Wok Ready Noodles ['440g', 'ea'] @ Coles Findon for $3.00
+    - Wokka Singapore Style Wok Ready Noodles ['440g', 'ea'] @ Coles Findon for $3.00
+
+  Chosen Option:
+    -> KOKA Instant Noodles Spicy Singapore 5 Pack 85g ['425g', '5pk', '85g'] @ Woolooware for $1.99
+
+--- Cart Slot 34 ---
+  Original Product: Mama Noodle Cup Shrimp Tom Yum ['70g', 'ea'] (Cheapest: $2.75)
+
+  Considered Options:
+    - Coles Tom Yum With Noodles Soup Serves 2 ['60g'] @ Coles Findon for $1.15
+    - Mama Noodle Cup Shrimp Tom Yum ['70g', 'ea'] @ Coles Findon for $2.75
+    - Nissin Chicken Noodle Cup ['73g'] @ Coles Findon for $2.80
+    - Nissin Seafood Noodle Cup ['72g'] @ Coles Findon for $2.80
+
+  Chosen Option:
+    -> Coles Tom Yum With Noodles Soup Serves 2 ['60g'] @ Coles Findon for $1.15
+
+--- Cart Slot 35 ---
+  Original Product: None Topping Bright Cake ['160g', 'ea'] (Cheapest: $2.30)
+
+  Considered Options:
+    - None Topping Bright Cake ['160g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $2.30
+    - None Topping Bright Cake ['160g', 'ea'] @ Coles Findon for $2.30
+
+  Chosen Option:
+    -> None Topping Bright Cake ['160g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $2.30
+
+--- Cart Slot 36 ---
+  Original Product: S&W Real Whole Egg Mayonnaise ['440g', 'ea'] (Cheapest: $6.30)
+
+  Considered Options:
+    - COLWAY Authentic Mayonnaise Squeeze 475g ['475g'] @ Woolooware for $4.49
+    - Goodman Fielder Group Services Ltd - Consumer Foods Squeeze Whole Egg Mayonnaise ['470g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $6.00
+    - None Woolworths Whole Egg Mayonnaise ['440g'] @ Chester Hill for $3.70
+    - COLWAY Real Mayonnaise 455g ['455g'] @ Woolooware for $3.39
+    - S&W Real Whole Egg Mayonnaise ['440g', 'ea'] @ Coles Findon for $6.30
+
+  Chosen Option:
+    -> COLWAY Real Mayonnaise 455g ['455g'] @ Woolooware for $3.39
+
+--- Cart Slot 37 ---
+  Original Product: Coles Spicy Chilli Tuna ['95g'] (Cheapest: $1.10)
+
+  Considered Options:
+    - PORTVIEW Tuna with Sweet Chilli & Onion 95g ['0.095kg', '95g'] @ Woolooware for $1.09
+    - Coles Tuna Sweet Chilli ['95g'] @ Coles Findon for $1.10
+    - PORTVIEW Lime & Chilli Tuna 95g ['0.095kg', '95g'] @ Woolooware for $1.09
+    - Coles Tuna Lemon & Pepper ['95g'] @ Coles Findon for $1.10
+    - Coles Spicy Chilli Tuna ['95g'] @ Coles Findon for $1.10
+
+  Chosen Option:
+    -> PORTVIEW Lime & Chilli Tuna 95g ['0.095kg', '95g'] @ Woolooware for $1.09
+
+--- Cart Slot 38 ---
+  Original Product: Bulla Dairy Foods Crunch Vanilla Ice Cream 8 Pack ['631ml', '8pk', 'ea'] (Cheapest: $7.00)
+
+  Considered Options:
+    - YOCONUT Dairy Free Frozen Dessert Vanilla 475ml ['475ml'] @ Woolooware for $6.99
+    - Lactalis Australia Pty Ltd Iced Coffee Lactose Free ['500ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $3.95
+    - Lactalis Australia Pty Ltd Iced Coffee Lactose Free ['500ml', 'ea'] @ Chester Hill for $3.95
+    - Bulla Dairy Foods Crunch Frozen Double Chocolate Ice Cream 8 Pack ['631ml', '8pk', 'ea'] @ Coles Findon for $7.00
+    - Bulla Dairy Foods Crunch Vanilla Ice Cream 8 Pack ['631ml', '8pk', 'ea'] @ Coles Findon for $9.00
+
+  Chosen Option:
+    -> Lactalis Australia Pty Ltd Iced Coffee Lactose Free ['500ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $3.95
+
+--- Cart Slot 39 ---
+  Original Product: None Classic Crackers ['250g', 'ea'] (Cheapest: $2.40)
+
+  Considered Options:
+    - None Woolworths Snapz Original Crackers ['250g'] @ Chester Hill for $1.80
+    - Coles Crackers Checkers ['250g'] @ Coles Findon for $1.80
+    - None Classic Crackers ['250g', 'ea'] @ Coles Findon for $2.40
+
+  Chosen Option:
+    -> None Woolworths Snapz Original Crackers ['250g'] @ Chester Hill for $1.80
+
+--- Cart Slot 40 ---
+  Original Product: Arnott&#039;s Biscuits Limited Gold Label Seeded Crackers Rustic Herb ['100g', 'ea'] (Cheapest: $3.00)
+
+  Considered Options:
+    - Arnott&#039;s Biscuits Limited Gold Label Seeded Crackers Rustic Herb ['100g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $4.50
+    - Arnott&#039;s Biscuits Limited Gold Label Seeded Crackers Rustic Herb ['100g', 'ea'] @ Coles Findon for $3.00
+
+  Chosen Option:
+    -> Arnott&#039;s Biscuits Limited Gold Label Seeded Crackers Rustic Herb ['100g', 'ea'] @ Coles Findon for $3.00
+
+--- Cart Slot 41 ---
+  Original Product: None Original Mix ['150g', 'ea'] (Cheapest: $2.25)
+
+  Considered Options:
+    - None Original Mix ['150g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $4.50
+    - None Original Mix ['150g', 'ea'] @ Coles Findon for $4.50
+
+  Chosen Option:
+    -> None Original Mix ['150g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $4.50
+
+--- Cart Slot 42 ---
+  Original Product: X-Treme Candy Sour Straps Strawberry ['160g'] (Cheapest: $2.00)
+
+  Considered Options:
+    - X-Treme Candy Sour Straps Strawberry ['160g'] @ Coles Findon for $2.40
+
+  Chosen Option:
+    -> X-Treme Candy Sour Straps Strawberry ['160g'] @ Coles Findon for $2.40
+
+--- Cart Slot 43 ---
+  Original Product: Arnott&#039;s Biscuits Limited Jatz Minis Crackers Cheese & Garlic ['170g'] (Cheapest: $3.00)
+
+  Considered Options:
+    - Arnott&#039;s Biscuits Limited Jatz Minis Crackers Cheese & Garlic ['170g'] @ Coles Findon for $3.00
+
+  Chosen Option:
+    -> Arnott&#039;s Biscuits Limited Jatz Minis Crackers Cheese & Garlic ['170g'] @ Coles Findon for $3.00
+
+--- Cart Slot 44 ---
+  Original Product: Coles Apple & Blackcurrant Juice ['2l'] (Cheapest: $2.70)
+
+  Considered Options:
+    - WESTCLIFF Apple And Mango Juice 2L ['2l'] @ Woolooware for $2.59
+    - Black & Gold Black & Gold Apple Juice ['2l', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $2.70
+    - Coles Apple Juice ['2l'] @ Coles Findon for $2.70
+    - WESTCLIFF Apple Juice 2L ['2l'] @ Woolooware for $2.59
+    - Coles Apple & Blackcurrant Juice ['2l'] @ Coles Findon for $2.70
+
+  Chosen Option:
+    -> WESTCLIFF Apple And Mango Juice 2L ['2l'] @ Woolooware for $2.59
+
+--- Cart Slot 45 ---
+  Original Product: Cca Cola Zero Sugar Vanilla Soft Drink Bottle ['600ml', 'ea'] (Cheapest: $4.00)
+
+  Considered Options:
+    - Glaceau Coke Coca Cola Soft Drink 600ml ['0.6l', '600ml'] @ Woolooware for $3.99
+    - Cca Cola Zero Sugar Soft Drink Bottle ['600ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $4.00
+    - Coca-Cola Europacific Partners Australia Pty Limited Sports Drink Zero Grape ['600ml', 'ea'] @ Chester Hill for $2.60
+    - Glaceau Coca-Cola Vanilla Soft Drink Bottle ['600ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $4.00
+    - Cca Cola Zero Sugar Vanilla Soft Drink Bottle ['600ml', 'ea'] @ Coles Findon for $4.25
+
+  Chosen Option:
+    -> Coca-Cola Europacific Partners Australia Pty Limited Sports Drink Zero Grape ['600ml', 'ea'] @ Chester Hill for $2.60
+
+--- Cart Slot 46 ---
+  Original Product: Unilever Australia Limited Paddle Pop Banana ['544ml', '8pk', 'ea'] (Cheapest: $7.00)
+
+  Considered Options:
+    - None Paddle Pop Choc Banana 8 Pack 544ml ['544ml', '8pk'] @ Woolooware for $6.99
+    - Unilever Australia Limited Paddle Pop Banana ['544ml', '8pk', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $9.00
+    - Unilever Australia Limited Paddle Pop Banana ['544ml', '8pk', 'ea'] @ Coles Findon for $9.00
+
+  Chosen Option:
+    -> None Paddle Pop Choc Banana 8 Pack 544ml ['544ml', '8pk'] @ Woolooware for $6.99
+
+--- Cart Slot 47 ---
+  Original Product: Cheeky Brothers Shredded Beef Bean & Cheese Burrito ['245g'] (Cheapest: $7.00)
+
+  Considered Options:
+    - Cheeky Brothers Shredded Beef Bean & Cheese Burrito ['245g'] @ Coles Findon for $7.00
+
+  Chosen Option:
+    -> Cheeky Brothers Shredded Beef Bean & Cheese Burrito ['245g'] @ Coles Findon for $7.00
+
+--- Cart Slot 48 ---
+  Original Product: Steggles Frozen Tempura Chicken Breast Nuggets ['400g', 'ea'] (Cheapest: $5.80)
+
+  Considered Options:
+    - Steggles Frozen Crumbed Chicken Breast Nuggets ['400g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $5.80
+    - Coles Frozen Chicken Breast Nuggets ['400g'] @ Coles Findon for $4.40
+    - Steggles Frozen Crumbed Chicken Breast Nuggets ['400g', 'ea'] @ Coles Findon for $5.80
+    - Coles Tempura Chicken Nuggets ['400g'] @ Coles Findon for $4.40
+    - Steggles Frozen Tempura Chicken Breast Nuggets ['400g', 'ea'] @ Coles Findon for $5.80
+
+  Chosen Option:
+    -> Coles Tempura Chicken Nuggets ['400g'] @ Coles Findon for $4.40
+
+--- Cart Slot 49 ---
+  Original Product: Simplot Australia Pty Limited Frozen Deli Whiting Crisp Light Batter 5 Pack ['250g', '5pk', 'ea'] (Cheapest: $11.00)
+
+  Considered Options:
+    - Simplot Australia Pty Limited Frozen Deli Barramundi Crisp Light Batter 5 Pack ['250g', '5pk', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $11.00
+    - Simplot Australia Pty Limited Frozen Deli Barramundi Crisp Light Batter 5 Pack ['250g', '5pk', 'ea'] @ Coles Findon for $11.00
+    - Simplot Australia Pty Limited Deli Hoki Crisp Light Batter ['250g', 'ea'] @ Coles Findon for $11.00
+    - Simplot Australia Pty Limited Deli Hoki Crisp Light Batter ['250g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $11.00
+    - Simplot Australia Pty Limited Frozen Deli Whiting Crisp Light Batter 5 Pack ['250g', '5pk', 'ea'] @ Coles Findon for $11.00
+
+  Chosen Option:
+    -> Simplot Australia Pty Limited Frozen Deli Barramundi Crisp Light Batter 5 Pack ['250g', '5pk', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $11.00
+
+--- Cart Slot 50 ---
+  Original Product: Pasta Italia Italian Sausage & Pecorino Ravioli ['400g'] (Cheapest: $7.00)
+
+  Considered Options:
+    - Pasta Italia Italian Sausage & Pecorino Ravioli ['400g'] @ Coles Findon for $7.00
+
+  Chosen Option:
+    -> Pasta Italia Italian Sausage & Pecorino Ravioli ['400g'] @ Coles Findon for $7.00
+
+--- Cart Slot 51 ---
+  Original Product: Morning Fresh Soft Hands Vanilla & Rose Dishwashing Liquid ['350ml', 'ea'] (Cheapest: $3.00)
+
+  Considered Options:
+    - Morning Fresh Soft Hands Vanilla & Rose Dishwashing Liquid ['350ml', 'ea'] @ Coles Findon for $3.00
+
+  Chosen Option:
+    -> Morning Fresh Soft Hands Vanilla & Rose Dishwashing Liquid ['350ml', 'ea'] @ Coles Findon for $3.00
+
+--- Cart Slot 52 ---
+  Original Product: Smash Blue Stainless Steel Food Flask 500ml ['1ea', '500ml'] (Cheapest: $11.00)
+
+  Considered Options:
+    - Smash Blue Stainless Steel Food Flask 500ml ['1ea', '500ml'] @ Coles Findon for $11.00
+
+  Chosen Option:
+    -> Smash Blue Stainless Steel Food Flask 500ml ['1ea', '500ml'] @ Coles Findon for $11.00
+
+--- Cart Slot 53 ---
+  Original Product: Coles Patterned Bowls ['25pk'] (Cheapest: $5.00)
+
+  Considered Options:
+    - Coles Patterned Bowls ['25pk'] @ Coles Findon for $5.00
+
+  Chosen Option:
+    -> Coles Patterned Bowls ['25pk'] @ Coles Findon for $5.00
+
+--- Cart Slot 54 ---
+  Original Product: Coles Simply Wooden Spoon ['1ea'] (Cheapest: $5.00)
+
+  Considered Options:
+    - Coles Simply Wooden Spoon ['1ea'] @ Coles Findon for $5.00
+
+  Chosen Option:
+    -> Coles Simply Wooden Spoon ['1ea'] @ Coles Findon for $5.00
+
+--- Cart Slot 55 ---
+  Original Product: NEWELL NEW ZEALAND LIMITED Klip It Plus Square Container 5.5l ['1ea', '5.5l', 'ea'] (Cheapest: $6.37)
+
+  Considered Options:
+    - NEWELL NEW ZEALAND LIMITED Klip It Plus Cereal Container 4.2L ['1ea', '4.2l', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $18.80
+    - NEWELL NEW ZEALAND LIMITED Klip It Plus Cereal Container 4.2L ['1ea', '4.2l', 'ea'] @ Coles Findon for $17.40
+    - NEWELL NEW ZEALAND LIMITED Klip It Plus Square Container 5.5l ['1ea', '5.5l', 'ea'] @ Coles Findon for $12.75
+
+  Chosen Option:
+    -> NEWELL NEW ZEALAND LIMITED Klip It Plus Square Container 5.5l ['1ea', '5.5l', 'ea'] @ Coles Findon for $12.75
+
+--- Cart Slot 56 ---
+  Original Product: S.C. Johnson &amp; Son Pty Ltd Sense & Spray Refill Berry Pop ['12g'] (Cheapest: $7.50)
+
+  Considered Options:
+    - S.C. Johnson &amp; Son Pty Ltd Sense & Spray Refill Berry Pop ['12g'] @ Coles Findon for $7.50
+
+  Chosen Option:
+    -> S.C. Johnson &amp; Son Pty Ltd Sense & Spray Refill Berry Pop ['12g'] @ Coles Findon for $7.50
+
+--- Cart Slot 57 ---
+  Original Product: Seiki Steam Iron ['1ea'] (Cheapest: $39.00)
+
+  Considered Options:
+    - Seiki Steam Iron ['1ea'] @ Coles Findon for $39.00
+
+  Chosen Option:
+    -> Seiki Steam Iron ['1ea'] @ Coles Findon for $39.00
+
+--- Cart Slot 58 ---
+  Original Product: Surv Reusable Forks ['10pk'] (Cheapest: $3.00)
+
+  Considered Options:
+    - Surv Reusable Forks ['10pk'] @ Coles Findon for $3.00
+
+  Chosen Option:
+    -> Surv Reusable Forks ['10pk'] @ Coles Findon for $3.00
+
+--- Cart Slot 59 ---
+  Original Product: LIBRA Girl-teen Goodnight Pads With Wings ['10pk', 'ea'] (Cheapest: $3.00)
+
+  Considered Options:
+    - LIBRA Goodnights Ultra Thin Pads ['10pk', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $5.70
+    - LIBRA Goodnights Extra Long With Wings Pads ['10pk'] @ Coles Findon for $3.00
+    - LIBRA Goodnights Ultra Thin Pads ['10pk', 'ea'] @ Coles Findon for $3.00
+    - LIBRA Maternity Extra Long With Wings Pads ['10pk', 'ea'] @ Coles Findon for $3.00
+    - LIBRA Girl-teen Goodnight Pads With Wings ['10pk', 'ea'] @ Coles Findon for $6.00
+
+  Chosen Option:
+    -> LIBRA Maternity Extra Long With Wings Pads ['10pk', 'ea'] @ Coles Findon for $3.00
+
+--- Cart Slot 60 ---
+  Original Product: Haircarebear Gummies Probiotic ['60pk'] (Cheapest: $13.00)
+
+  Considered Options:
+    - Haircarebear Gummies Probiotic ['60pk'] @ Coles Findon for $30.00
+
+  Chosen Option:
+    -> Haircarebear Gummies Probiotic ['60pk'] @ Coles Findon for $30.00
+
+--- Cart Slot 61 ---
+  Original Product: Original Source Body Wash Vanilla & Raspberry Shower Gel ['500ml'] (Cheapest: $5.00)
+
+  Considered Options:
+    - Original Source Body Wash Mint & Tea Tree Shower Gel ['500ml'] @ Coles Findon for $8.00
+    - None Source Body Wash Zingy Lime Shower Gel ['500ml'] @ Coles Findon for $8.00
+    - Original Source Body Wash Vanilla & Raspberry Shower Gel ['500ml'] @ Coles Findon for $8.00
+
+  Chosen Option:
+    -> Original Source Body Wash Vanilla & Raspberry Shower Gel ['500ml'] @ Coles Findon for $8.00
+
+--- Cart Slot 62 ---
+  Original Product: Nicabate Clear Patch Quit Smoking Step 2 14 Mg ['7pk'] (Cheapest: $24.50)
+
+  Considered Options:
+    - Nicabate Clear Patch Quit Smoking Step 2 14 Mg ['7pk'] @ Coles Findon for $24.50
+
+  Chosen Option:
+    -> Nicabate Clear Patch Quit Smoking Step 2 14 Mg ['7pk'] @ Coles Findon for $24.50
+
+--- Cart Slot 63 ---
+  Original Product: Lady Jayne Flexi-glide Brush ['1pk', 'ea'] (Cheapest: $7.70)
+
+  Considered Options:
+    - Lady Jayne Flexi-glide Brush ['1pk', 'ea'] @ Coles Findon for $11.00
+
+  Chosen Option:
+    -> Lady Jayne Flexi-glide Brush ['1pk', 'ea'] @ Coles Findon for $11.00
+
+--- Cart Slot 64 ---
+  Original Product: Advil Ibuprofen Pain Relief Mini Liquid Capsules ['20pk', 'ea'] (Cheapest: $5.60)
+
+  Considered Options:
+    - Nurofen Zavance Fast Pain Relief 200mg Ibuprofen Liquid Capsules ['20pk', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $9.50
+    - Advil Liquid Ibuprofen Pain Relief Capsules ['20pk'] @ Coles Findon for $5.25
+    - Coles Ibuprofen Soft Gel Capsules ['20pk'] @ Coles Findon for $2.60
+    - Advil Ibuprofen Pain Relief Mini Liquid Capsules ['20pk', 'ea'] @ Coles Findon for $7.00
+
+  Chosen Option:
+    -> Coles Ibuprofen Soft Gel Capsules ['20pk'] @ Coles Findon for $2.60
+
+--- Cart Slot 65 ---
+  Original Product: Crampeze Capsules ['60pk'] (Cheapest: $9.50)
+
+  Considered Options:
+    - Crampeze Capsules ['60pk'] @ Coles Findon for $19.00
+
+  Chosen Option:
+    -> Crampeze Capsules ['60pk'] @ Coles Findon for $19.00
+
+--- Cart Slot 66 ---
+  Original Product: None Right Nasal Strips ['30pk'] (Cheapest: $29.75)
+
+  Considered Options:
+    - None Right Nasal Strips ['30pk'] @ Coles Findon for $29.75
+
+  Chosen Option:
+    -> None Right Nasal Strips ['30pk'] @ Coles Findon for $29.75
+
+--- Cart Slot 67 ---
+  Original Product: U by Kotex Maternity Pads No Wings ['10pk', 'ea'] (Cheapest: $5.00)
+
+  Considered Options:
+    - LIBRA Maternity Extra Long With Wings Pads ['10pk', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $5.70
+    - LIBRA Maternity Extra Long With Wings Pads ['10pk', 'ea'] @ Coles Findon for $3.00
+    - LIBRA Goodnights Extra Long With Wings Pads ['10pk'] @ Coles Findon for $3.00
+    - U by Kotex Overnight Ultrathin Pads With Wings ['10pk', 'ea'] @ Coles Findon for $5.00
+    - U by Kotex Maternity Pads No Wings ['10pk', 'ea'] @ Coles Findon for $5.00
+
+  Chosen Option:
+    -> LIBRA Maternity Extra Long With Wings Pads ['10pk', 'ea'] @ Coles Findon for $3.00
+
+--- Cart Slot 68 ---
+  Original Product: None 6 Mens Razor Blade Refills ['4pk'] (Cheapest: $23.80)
+
+  Considered Options:
+    - Ｐ＆Ｇジャパン（同） Venus Extra Smooth Women's Razor Blade ['4pk', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $28.00
+    - None Skin-Loving 5 Blade Razor Refills ['4pk'] @ Coles Findon for $22.00
+    - Ｐ＆Ｇジャパン（同） Venus Extra Smooth Women's Razor Blade ['4pk', 'ea'] @ Coles Findon for $19.60
+    - Ｐ＆Ｇジャパン（同） Venus Smooth Sensitive Razor Blades Refill ['4pk', 'ea'] @ Coles Findon for $14.00
+    - None 6 Mens Razor Blade Refills ['4pk'] @ Coles Findon for $23.80
+
+  Chosen Option:
+    -> Ｐ＆Ｇジャパン（同） Venus Smooth Sensitive Razor Blades Refill ['4pk', 'ea'] @ Coles Findon for $14.00
+
+--- Cart Slot 69 ---
+  Original Product: Nature's Own Complete Sleep + Magnesium ['30pk'] (Cheapest: $11.75)
+
+  Considered Options:
+    - Nature's Own Complete Sleep + Magnesium ['30pk'] @ Coles Findon for $23.50
+
+  Chosen Option:
+    -> Nature's Own Complete Sleep + Magnesium ['30pk'] @ Coles Findon for $23.50
+
+--- Cart Slot 70 ---
+  Original Product: Mennen Speed Stick Cool Fresh Lady Antiperspirant Deodorant ['45g', 'ea'] (Cheapest: $4.50)
+
+  Considered Options:
+    - Mennen Speed Stick Cool Fresh Lady Antiperspirant Deodorant ['45g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $4.50
+    - Pharmacare Laboratories Pty Ltd Original Deodorant Stick ['50g'] @ Coles Findon for $7.00
+    - Rexona Antiperspirant Stick Invisible Dry ['52g'] @ Coles Findon for $4.40
+    - Rexona Men Deodorant Stick Antiperspirant Sport Defence ['52g', '52ml'] @ Coles Findon for $4.40
+
+  Chosen Option:
+    -> Rexona Antiperspirant Stick Invisible Dry ['52g'] @ Coles Findon for $4.40
+
+--- Cart Slot 71 ---
+  Original Product: Garnier Good 6.0 Mochaccino Brown ['1pk', 'ea'] (Cheapest: $26.00)
+
+  Considered Options:
+    - Garnier Good 6.0 Mochaccino Brown ['1pk', 'ea'] @ Coles Findon for $26.00
+
+  Chosen Option:
+    -> Garnier Good 6.0 Mochaccino Brown ['1pk', 'ea'] @ Coles Findon for $26.00
+
+--- Cart Slot 72 ---
+  Original Product: tresemmé Conditioner Smooth & Silky ['350ml'] (Cheapest: $8.50)
+
+  Considered Options:
+    - Colgate-Palmolive (Thailand) Ltd Naturals 2 in 1 Antidandruff Shampoo & Conditioner ['350ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $5.00
+    - None Silky Smooth Conditioner ['400ml', 'ea'] @ Coles Findon for $3.90
+    - tresemmé Shampoo Smooth & Silky ['350ml'] @ Coles Findon for $8.50
+    - Ｐ＆Ｇジャパン（同） Classic Normal Conditioner ['400ml', 'ea'] @ Coles Findon for $5.25
+    - tresemmé Conditioner Smooth & Silky ['350ml'] @ Coles Findon for $8.50
+
+  Chosen Option:
+    -> None Silky Smooth Conditioner ['400ml', 'ea'] @ Coles Findon for $3.90
+
+--- Cart Slot 73 ---
+  Original Product: Ostelin Vitamin D ['250pk'] (Cheapest: $24.50)
+
+  Considered Options:
+    - Ostelin Vitamin D Calcium ['250pk'] @ Coles Findon for $49.00
+    - Ostelin Vitamin D ['250pk'] @ Coles Findon for $49.00
+    - Ostelin Vitamin D Calcium Mini ['250pk'] @ Coles Findon for $32.50
+
+  Chosen Option:
+    -> Ostelin Vitamin D Calcium Mini ['250pk'] @ Coles Findon for $32.50
+
+--- Cart Slot 74 ---
+  Original Product: Colgate-Palmolive (Thailand) Ltd Twister Toothbrush Soft ['5pk'] (Cheapest: $8.00)
+
+  Considered Options:
+    - Ｐ＆Ｇジャパン（同） Cross Action Gum Care Soft Toothbrush ['5pk', 'pk'] @ Coles Findon for $6.00
+    - Colgate-Palmolive (Thailand) Ltd Twister Toothbrush Soft ['5pk'] @ Coles Findon for $8.00
+
+  Chosen Option:
+    -> Ｐ＆Ｇジャパン（同） Cross Action Gum Care Soft Toothbrush ['5pk', 'pk'] @ Coles Findon for $6.00
+
+--- Cart Slot 75 ---
+  Original Product: Fess Little Noses Spray ['15ml'] (Cheapest: $12.20)
+
+  Considered Options:
+    - NYAL Decongested Nasal Spray ['15ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $10.50
+    - NYAL Decongested Nasal Spray ['15ml', 'ea'] @ Coles Findon for $8.40
+    - None First Defense Nasal Spray ['15ml', 'ea'] @ Coles Findon for $15.00
+    - Fess Little Noses Spray ['15ml'] @ Coles Findon for $12.20
+
+  Chosen Option:
+    -> NYAL Decongested Nasal Spray ['15ml', 'ea'] @ Coles Findon for $8.40
+
+--- Cart Slot 76 ---
+  Original Product: Johnson's Hypoallergenic Gentle Tear-free Cleansing Baby Shampoo ['500ml', 'ea'] (Cheapest: $5.50)
+
+  Considered Options:
+    - Johnson's 3-in-1 Hypoallergenic Gentle Tear-Free Conditioning Baby Shampoo & Cleansing Wash ['500ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $12.50
+    - Johnson's 3-in-1 Hypoallergenic Gentle Tear-Free Conditioning Baby Shampoo & Cleansing Wash ['500ml', 'ea'] @ Coles Findon for $12.50
+    - Curash Gentle Baby Shampoo & Conditioner Tear Free ['400ml', 'ea'] @ Coles Findon for $6.30
+    - Cetaphil Baby Wash & Shampoo ['400ml'] @ Coles Findon for $15.80
+    - Johnson's Hypoallergenic Gentle Tear-free Cleansing Baby Shampoo ['500ml', 'ea'] @ Coles Findon for $5.50
+
+  Chosen Option:
+    -> Johnson's Hypoallergenic Gentle Tear-free Cleansing Baby Shampoo ['500ml', 'ea'] @ Coles Findon for $5.50
+
+--- Cart Slot 77 ---
+  Original Product: Mars Australia Pty Ltd Pulled Menu Adult Wet Cat Food with Tuna 7x85g Trays ['7pk', '85g', 'ea', 'pk'] (Cheapest: $9.60)
+
+  Considered Options:
+    - Mars Australia Pty Ltd Classic Collection Adult Wet Cat Food Saucy Morsels with Tuna & Cheese Tray ['85g', 'ea'] @ Coles Findon for $1.60
+    - Mars Australia Pty Ltd Classic Collection Adult Wet Cat Food Saucy Morsels with Tuna & Cheese Tray ['85g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $0.95
+    - Mars Australia Pty Ltd Pulled Menu Gravy Indulgence Tuna Cat Food ['85g', 'ea'] @ Coles Findon for $1.75
+    - WHISKAS Adult 1 + Years Wet Cat Food Tuna Favourites In Jelly 12x85g Pouches ['12pk', '85g', 'ea', 'pk'] @ Coles Findon for $7.50
+    - Mars Australia Pty Ltd Pulled Menu Adult Wet Cat Food with Tuna 7x85g Trays ['7pk', '85g', 'ea', 'pk'] @ Romeo's IGA Food Hall South Eveleigh for $12.00
+
+  Chosen Option:
+    -> Mars Australia Pty Ltd Classic Collection Adult Wet Cat Food Saucy Morsels with Tuna & Cheese Tray ['85g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $0.95
+
+--- Cart Slot 78 ---
+  Original Product: None Pantry Jerky Dog Treat Kangaroo ['100g'] (Cheapest: $7.20)
+
+  Considered Options:
+    - Woofin Good Jerky Bites Kangaroo Dog Treat ['100g'] @ Coles Findon for $8.00
+    - V.I.P. Petfoods (Aust.) Pty. Ltd Kangaroo Crunchy Bites Dog Treat ['100g'] @ Coles Findon for $10.00
+    - None Pantry Jerky Dog Treat Chicken ['100g'] @ Coles Findon for $7.20
+    - None Pantry Jerky Dog Treat Kangaroo ['100g'] @ Coles Findon for $7.20
+
+  Chosen Option:
+    -> None Pantry Jerky Dog Treat Kangaroo ['100g'] @ Coles Findon for $7.20
+
+--- Cart Slot 79 ---
+  Original Product: Mars Australia Pty Ltd Bird Seed Small Parrot Mix ['1.8kg', 'ea'] (Cheapest: $6.00)
+
+  Considered Options:
+    - HUNGRY HUMPHREY Small Parrot and Wild Bird Seeds 2kg ['2000g', '2kg'] @ Woolooware for $4.99
+    - Mars Australia Pty Ltd Bird Seed Canary & Finch Mix ['1.8kg', 'ea'] @ Coles Findon for $6.00
+    - Mars Australia Pty Ltd Bird Seed Cockatiel Mix ['1.8kg', 'ea'] @ Coles Findon for $6.00
+    - Mars Australia Pty Ltd Bird Seed Cockatiel Mix ['1.8kg', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $6.00
+    - Mars Australia Pty Ltd Bird Seed Small Parrot Mix ['1.8kg', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $6.00
+
+  Chosen Option:
+    -> HUNGRY HUMPHREY Small Parrot and Wild Bird Seeds 2kg ['2000g', '2kg'] @ Woolooware for $4.99
+
+--- Cart Slot 80 ---
+  Original Product: Hot Wheels Monster Trucks 1 24 Assortment ['1ea'] (Cheapest: $5.20)
+
+  Considered Options:
+    - Hot Wheels Monster Trucks 1 24 Assortment ['1ea'] @ Coles Findon for $5.20
+
+  Chosen Option:
+    -> Hot Wheels Monster Trucks 1 24 Assortment ['1ea'] @ Coles Findon for $5.20
+
+--- Cart Slot 81 ---
+  Original Product: None Vermicelli Bean Noodles ['100g', 'ea'] (Cheapest: $1.00)
+
+  Considered Options:
+    - None Vermicelli Bean Noodles ['100g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $1.00
+
+  Chosen Option:
+    -> None Vermicelli Bean Noodles ['100g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $1.00
+
+--- Cart Slot 82 ---
+  Original Product: None Navel Oranges ['260g'] (Cheapest: $5.99)
+
+  Considered Options:
+    - None Navel Oranges ['260g'] @ Romeo's IGA Food Hall South Eveleigh for $5.99
+
+  Chosen Option:
+    -> None Navel Oranges ['260g'] @ Romeo's IGA Food Hall South Eveleigh for $5.99
+
+--- Cart Slot 83 ---
+  Original Product: Simplot Australia Pty Limited John West Three Beans Tuna & Beans ['185g', 'ea'] (Cheapest: $4.40)
+
+  Considered Options:
+    - Iconic Food Distribution Pty Ltd Tuna Lite Chilli ['185g'] @ Coles Findon for $4.70
+    - Simplot Australia Pty Limited John West Tuna Beans Capsicum Corn & Chilli ['185g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $4.40
+    - Coles Pacific Yellowfin Tuna Chilli ['185g'] @ Coles Findon for $2.50
+    - Iconic Food Distribution Pty Ltd Chilli Tuna ['185g', 'ea'] @ Coles Findon for $4.70
+    - Simplot Australia Pty Limited John West Three Beans Tuna & Beans ['185g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $4.40
+
+  Chosen Option:
+    -> Coles Pacific Yellowfin Tuna Chilli ['185g'] @ Coles Findon for $2.50
+
+--- Cart Slot 84 ---
+  Original Product: Body Crystal Queen Sugar Free Caramel Dulce De Leche Topping ['355ml', 'ea'] (Cheapest: $4.50)
+
+  Considered Options:
+    - Dr. Oetker Queen Australia Pty Ltd Queen Sugar Free Caramel Dulce De Leche Flavoured Topping ['355ml'] @ Chester Hill for $5.50
+    - Body Crystal Queen Sugar Free Caramel Dulce De Leche Topping ['355ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $4.50
+
+  Chosen Option:
+    -> Body Crystal Queen Sugar Free Caramel Dulce De Leche Topping ['355ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $4.50
+
+--- Cart Slot 85 ---
+  Original Product: San Remo Macaroni Co Pty Ltd Balducci Fusilli No. 56 ['500g', 'ea'] (Cheapest: $1.50)
+
+  Considered Options:
+    - San Remo Macaroni Co Pty Ltd Balducci Maccheroni No. 32 ['500g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $1.50
+    - San Remo Macaroni Co Pty Ltd Balducci Fusilli No. 56 ['500g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $1.50
+    - San Remo Macaroni Co Pty Ltd Balducci Penne Rigati No. 18 ['500g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $1.50
+    - San Remo Macaroni Co Pty Ltd Balducci Spaghetti No. 4 ['500g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $1.50
+
+  Chosen Option:
+    -> San Remo Macaroni Co Pty Ltd Balducci Spaghetti No. 4 ['500g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $1.50
+
+--- Cart Slot 86 ---
+  Original Product: None Nutella & Go with Breadsticks ['48g', 'ea'] (Cheapest: $2.80)
+
+  Considered Options:
+    - None Nutella & Go with Breadsticks ['48g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $2.80
+
+  Chosen Option:
+    -> None Nutella & Go with Breadsticks ['48g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $2.80
+
+--- Cart Slot 87 ---
+  Original Product: BDD AUSTRALIA PTY LTD Dairy Farmers Classic Caramel ['500ml', 'ea'] (Cheapest: $3.20)
+
+  Considered Options:
+    - BDD AUSTRALIA PTY LTD Dairy Farmers Classic Caramel ['500ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $3.20
+
+  Chosen Option:
+    -> BDD AUSTRALIA PTY LTD Dairy Farmers Classic Caramel ['500ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $3.20
+
+--- Cart Slot 88 ---
+  Original Product: Inghams Enterprises Pty Ltd INGHAM'S Chicken Breast Schnitzel ['400g', 'ea'] (Cheapest: $8.50)
+
+  Considered Options:
+    - Coles Frozen Chicken Breast Schnitzel ['400g'] @ Coles Findon for $5.50
+    - Inghams Enterprises Pty Ltd INGHAM'S Chicken Breast Schnitzel ['400g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $8.50
+    - Steggles Steggles Chicken Breast Tenders Crumbed ['400g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $6.50
+
+  Chosen Option:
+    -> Coles Frozen Chicken Breast Schnitzel ['400g'] @ Coles Findon for $5.50
+
+--- Cart Slot 89 ---
+  Original Product: Borg's Borg's Spinach & Ricotta Pastizzis ['625g', 'ea'] (Cheapest: $6.75)
+
+  Considered Options:
+    - Borg's Borg's Spinach & Ricotta Pastizzis ['625g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $6.75
+
+  Chosen Option:
+    -> Borg's Borg's Spinach & Ricotta Pastizzis ['625g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $6.75
+
+--- Cart Slot 90 ---
+  Original Product: Clorox Australia Pty Limited Glad Bag Handle Tie Lavender Large ['ea'] (Cheapest: $3.50)
+
+  Considered Options:
+    - Clorox Australia Pty Limited Glad Bag Handle Tie Lavender Large ['ea'] @ Romeo's IGA Food Hall South Eveleigh for $3.50
+
+  Chosen Option:
+    -> Clorox Australia Pty Limited Glad Bag Handle Tie Lavender Large ['ea'] @ Romeo's IGA Food Hall South Eveleigh for $3.50
+
+--- Cart Slot 91 ---
+  Original Product: Lays Lays Stax Sour Cream & Onion ['42g', 'ea'] (Cheapest: $2.00)
+
+  Considered Options:
+    - Lays Lays Stax Sour Cream & Onion ['42g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $2.00
+
+  Chosen Option:
+    -> Lays Lays Stax Sour Cream & Onion ['42g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $2.00
+
+--- Cart Slot 92 ---
+  Original Product: Grove Juice Grove Juice Mandarin ['1.5l', 'ea'] (Cheapest: $7.95)
+
+  Considered Options:
+    - Grove Juice Grove Juice Mandarin ['1.5l', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $7.95
+
+  Chosen Option:
+    -> Grove Juice Grove Juice Mandarin ['1.5l', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $7.95
+
+--- Cart Slot 93 ---
+  Original Product: Clorox Clorox Liquid Plumer Urgent Clear ['ea'] (Cheapest: $12.00)
+
+  Considered Options:
+    - Clorox Clorox Liquid Plumer Urgent Clear ['ea'] @ Romeo's IGA Food Hall South Eveleigh for $12.00
+
+  Chosen Option:
+    -> Clorox Clorox Liquid Plumer Urgent Clear ['ea'] @ Romeo's IGA Food Hall South Eveleigh for $12.00
+
+--- Cart Slot 94 ---
+  Original Product: Atmata Atmata Organic Rose ['750ml', 'ea'] (Cheapest: $19.99)
+
+  Considered Options:
+    - Atmata Atmata Organic Rose ['750ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $19.99
+
+  Chosen Option:
+    -> Atmata Atmata Organic Rose ['750ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $19.99
+
+--- Cart Slot 95 ---
+  Original Product: None SunRice Premium Thai Jasmine Rice ['1kg', 'ea'] (Cheapest: $5.58)
+
+  Considered Options:
+    - IMPERIAL GRAIN Jasmine Rice 1kg ['1000g', '1kg'] @ Woolooware for $3.19
+    - Coles Rice Jasmine ['1kg'] @ Coles Findon for $3.50
+    - Community Co Community Co Fragrant Thai Jasmine Rice ['1kg', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $3.50
+    - IMPERIAL GRAIN Basmati Rice 1kg ['1000g', '1kg'] @ Woolooware for $3.99
+    - None SunRice Premium Thai Jasmine Rice ['1kg', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $5.58
+
+  Chosen Option:
+    -> IMPERIAL GRAIN Jasmine Rice 1kg ['1000g', '1kg'] @ Woolooware for $3.19
+
+--- Cart Slot 96 ---
+  Original Product: Country Fresh Country Fresh Polskie Ogorki Gherkins ['680g', 'ea'] (Cheapest: $3.25)
+
+  Considered Options:
+    - Country Fresh Country Fresh Polskie Ogorki Gherkins ['680g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $3.25
+
+  Chosen Option:
+    -> Country Fresh Country Fresh Polskie Ogorki Gherkins ['680g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $3.25
+
+--- Cart Slot 97 ---
+  Original Product: None Bonds Zippy Girl/Boy:Wondersuit Pack Size 0 ['ea', 'pk'] (Cheapest: $26.00)
+
+  Considered Options:
+    - None Bonds Zippy Girl/Boy:Wondersuit Pack Size 0 ['ea', 'pk'] @ Romeo's IGA Food Hall South Eveleigh for $26.00
+
+  Chosen Option:
+    -> None Bonds Zippy Girl/Boy:Wondersuit Pack Size 0 ['ea', 'pk'] @ Romeo's IGA Food Hall South Eveleigh for $26.00
+
+--- Cart Slot 98 ---
+  Original Product: Wolf Blass Wolf Blass Bilyara Sparkling Brut Non Vintage ['750ml', 'ea'] (Cheapest: $12.99)
+
+  Considered Options:
+    - None Sparkling Cuvee Brut 750ml ['1ea', '750ml'] @ Chester Hill for $22.00
+    - Yellow Tail Sparkling Cuvee 750ml ['1ea', '750ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $11.00
+    - Jansz Non Vintage Sparkling 750ml ['1ea', '750ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $34.99
+    - Chandon Nv Sparkling Brut 750ml ['1ea', '750ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $36.99
+    - Wolf Blass Wolf Blass Bilyara Sparkling Brut Non Vintage ['750ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $12.99
+
+  Chosen Option:
+    -> Yellow Tail Sparkling Cuvee 750ml ['1ea', '750ml', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $11.00
+
+--- Cart Slot 99 ---
+  Original Product: None Woolworths Chicken Caesar Salad Bowl Caesar Bowl ['180g'] (Cheapest: $5.90)
+
+  Considered Options:
+    - THE FRESH SALAD CO Caesar Salad Bowl 200g ['0.2kg', '200g'] @ Woolooware for $4.99
+    - Coles 4 Leaf Salad Mix ['200g'] @ Coles Findon for $3.00
+    - Community Co Community Co Caesar Salad Bowl ['200g', 'ea'] @ Romeo's IGA Food Hall South Eveleigh for $5.50
+    - Woolworths Group Ltd - Supermarkets Woolworths Caesar Salad Bowl ['200g'] @ Chester Hill for $5.50
+    - None Woolworths Chicken Caesar Salad Bowl Caesar Bowl ['180g'] @ Chester Hill for $5.90
+
+  Chosen Option:
+    -> Coles 4 Leaf Salad Mix ['200g'] @ Coles Findon for $3.00
+
+--- Cart Slot 100 ---
+  Original Product: Woolworths Group Ltd - Supermarkets Woolworths COOK Slow Cooked Italian Style Chicken Casserole ['700g'] (Cheapest: $12.00)
+
+  Considered Options:
+    - Woolworths Group Ltd - Supermarkets Woolworths COOK Slow Cooked Italian Style Chicken Casserole ['700g'] @ Chester Hill for $12.00
+
+  Chosen Option:
+    -> Woolworths Group Ltd - Supermarkets Woolworths COOK Slow Cooked Italian Style Chicken Casserole ['700g'] @ Chester Hill for $12.00

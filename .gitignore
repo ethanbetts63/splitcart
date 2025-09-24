@@ -58,7 +58,7 @@ coverage.xml
 # Gemini session summaries
 gemini_session_summaries.txt/
 
-api/data/
+data_management/data/
 db.sqlite3
 db.sqlite3-shm
 db.sqlite3-wal

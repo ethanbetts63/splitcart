@@ -1,5 +1,5 @@
 from django.db import models
-from api.utils.product_normalizer import ProductNormalizer
+from data_management.utils.product_normalizer import ProductNormalizer
 
 class ProductBrand(models.Model):
     name = models.CharField(

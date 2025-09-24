@@ -6,16 +6,16 @@ This session focused on improving the product substitution system by creating eq
 - **Initial Plan:** We started by building an automatic script (`generate_category_equivalences.py`) but quickly determined it was inaccurate.
 - **New Workflow:** We pivoted to a sophisticated, two-stage, hierarchical approach:
     1.  **Model Refactoring:** The `Category` model in `companies/models/category.py` was refactored to support directed relationships. A new `CategoryEquivalence` model was created in `companies/models/category_equivalence.py`, and the `companies/models/__init__.py` file was updated. This required a new database migration.
-    2.  **Interactive Command:** A new command, `api/management/commands/create_category_links.py`, was built. This tool suggests potential category matches and prompts the user to define the relationship, saving the decisions to a JSON file in `api/data/category_link_inbox/`.
-    3.  **Database Update:** A corresponding update mechanism was created via `api/utils/database_updating_utils/update_category_links.py` and a new `--category-links` flag was added to the `api/management/commands/update_db.py` command.
+    2.  **Interactive Command:** A new command, `data_management/management/commands/create_category_links.py`, was built. This tool suggests potential category matches and prompts the user to define the relationship, saving the decisions to a JSON file in `data_management/data/category_link_inbox/`.
+    3.  **Database Update:** A corresponding update mechanism was created via `data_management/utils/database_updating_utils/update_category_links.py` and a new `--category-links` flag was added to the `data_management/management/commands/update_db.py` command.
 
 ### 2. The "Cycle" Detour & Hierarchy Problems
 
 The new hierarchical approach failed, leading to a deep dive into the integrity of the category data itself.
 
 - **Problem:** The new tools failed to work for Level 1 categories. A separate `analyze` command also failed for "woolworths", suggesting a data issue.
-- **Diagnosis:** We determined the category data contained cycles (e.g., a category was its own parent). We built a diagnostic tool, `api/management/commands/find_category_cycles.py`, which confirmed the loops.
-- **Repair:** To fix this, we built an automatic pruning tool. The logic was encapsulated in `api/database_updating_classes/category_cycle_manager.py` and driven by `api/management/commands/manage_category_cycles.py`. This tool successfully found and removed 50 cycles.
+- **Diagnosis:** We determined the category data contained cycles (e.g., a category was its own parent). We built a diagnostic tool, `data_management/management/commands/find_category_cycles.py`, which confirmed the loops.
+- **Repair:** To fix this, we built an automatic pruning tool. The logic was encapsulated in `data_management/database_updating_classes/category_cycle_manager.py` and driven by `data_management/management/commands/manage_category_cycles.py`. This tool successfully found and removed 50 cycles.
 
 ### 3. Final Diagnosis: The True Root Cause
 
@@ -26,17 +26,17 @@ Even after fixing the cycles, the hierarchy was still not being built correctly.
 
 ### 4. The Definitive Fix
 
-- **Solution:** The `CategoryManager` (`api/database_updating_classes/category_manager.py`) was refactored one last time.
+- **Solution:** The `CategoryManager` (`data_management/database_updating_classes/category_manager.py`) was refactored one last time.
 - **Implementation:** After the `bulk_create` operation, a new step was added to immediately **re-fetch** all the newly created categories from the database. This ensures the cache is populated with "complete" objects that include their database IDs.
-- **Test Updates:** We also refactored the test suite in `api/tests/database_updating_tests/test_category_manager.py` to align with the new company-aware logic, ensuring future changes can be validated correctly.
+- **Test Updates:** We also refactored the test suite in `data_management/tests/database_updating_tests/test_category_manager.py` to align with the new company-aware logic, ensuring future changes can be validated correctly.
 
 ### 5. Final Debugging & Verification Tools
 
 After the definitive fix, the `analyze --report category_tree` command for Woolworths was still getting stuck.
 
 - **Problem:** The `_build_tree_string_from_map` function (used by `category_tree` report) had a flawed `visited` set logic, causing it to re-process categories exponentially, leading to a hang when rendering large, interconnected trees.
-- **Fix:** Modified `_build_tree_string_from_map` in `api/utils/analysis_utils/category_tree.py` to use a single, shared `visited` set, ensuring each category is processed only once.
-- **New Verification Tool:** Created `api/management/commands/show_category_branches.py` as a simpler, more robust way to verify the hierarchy by showing sample branches (`python manage.py show_category_branches --company-name "YourCompany"`).
+- **Fix:** Modified `_build_tree_string_from_map` in `data_management/utils/analysis_utils/category_tree.py` to use a single, shared `visited` set, ensuring each category is processed only once.
+- **New Verification Tool:** Created `data_management/management/commands/show_category_branches.py` as a simpler, more robust way to verify the hierarchy by showing sample branches (`python manage.py show_category_branches --company-name "YourCompany"`).
 
 ### 6. Other Category-Relevant Commands
 

@@ -36,13 +36,13 @@ def get_iga_categories(command, retailer_store_id: str, session: requests.Sessio
     Args:
         command: The command object for writing output.
         retailer_store_id: The unique retailer-specific identifier for the IGA store.
-        session: The requests.Session object to use for the API call.
+        session: The requests.Session object to use for the data_management call.
 
     Returns:
         A list of specific subcategory names to scrape, or an empty list if an error occurs.
     """
     command.stdout.write(f"    Fetching category hierarchy for store ID: {retailer_store_id}...")
-    api_url = f"https://www.igashop.com.au/api/storefront/stores/{retailer_store_id}/categoryHierarchy"
+    api_url = f"https://www.igashop.com.au/data_management/storefront/stores/{retailer_store_id}/categoryHierarchy"
     
     try:
         response = session.get(api_url, timeout=60)

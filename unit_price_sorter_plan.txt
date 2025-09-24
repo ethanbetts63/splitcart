@@ -4,21 +4,21 @@ This document outlines the plan to create a new utility for sorting products by 
 
 ### 1. Create a New, Standalone Utility: `UnitPriceSorter`
 
-**File:** `api/utils/substitution_utils/unit_price_sorter.py`
+**File:** `data_management/utils/substitution_utils/unit_price_sorter.py`
 
 **Class:** `UnitPriceSorter`
 
 **Functionality:**
 - The primary method will be `sort_by_unit_price(self, product_price_pairs: list) -> list`.
 - It will take a list of tuples, where each tuple contains a `Product` object and its corresponding `Price` object: `[(product_A, price_A), (product_B, price_B), ...]`. This is crucial as the `Product` object itself does not contain price information.
-- It will **reuse the existing `SizeComparer`** (from `api/utils/substitution_utils/size_comparer.py`) to parse the size strings from each `Product` object into a canonical numerical value (e.g., grams or milliliters).
+- It will **reuse the existing `SizeComparer`** (from `data_management/utils/substitution_utils/size_comparer.py`) to parse the size strings from each `Product` object into a canonical numerical value (e.g., grams or milliliters).
 - For each `(Product, Price)` pair, it will calculate the unit price (e.g., `Price.price / canonical_size`).
 - It will handle cases where a canonical size cannot be determined (e.g., by excluding such products or assigning a very high unit price).
 - It will return the original list of `(Product, Price)` pairs, sorted in ascending order based on their calculated unit price.
 
 ### 2. Create a Temporary Test Command: `test_unit_price_sorter`
 
-**File:** `api/management/commands/test_unit_price_sorter.py`
+**File:** `data_management/management/commands/test_unit_price_sorter.py`
 
 **Functionality:**
 - The `handle` method of this command will be responsible for setting up a test scenario.

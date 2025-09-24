@@ -1,0 +1,507 @@
+Starting benchmark with 50 runs...
+
+--- Run 1/50 ---
+Baseline: $966.27, Optimized: $872.15, Savings: 9.74%
+  Run Characteristics:
+    - Avg Options per Item: 3.25
+    - Items with Brand Subs: 40 / 100
+    - Avg Price Range per Item: $3.85
+    - Cheapest Store Dist: (Coles Findon: 39, Murray Bridge IGA: 7, Tahmoor: 19, West Ryde: 35)
+    - Avg Ideal Item Price: $8.72
+    - Avg Baseline Item Price: $9.66
+    - Avg Optimized Item Price: $8.72
+--- Run 2/50 ---
+Baseline: $763.41, Optimized: $688.42, Savings: 9.82%
+  Run Characteristics:
+    - Avg Options per Item: 3.45
+    - Items with Brand Subs: 49 / 100
+    - Avg Price Range per Item: $3.62
+    - Cheapest Store Dist: (Coles Findon: 34, IGA Local Grocer Adelaide City East: 19, Knightsbridge (Metro): 32, Warriewood: 15)
+    - Avg Ideal Item Price: $6.88
+    - Avg Baseline Item Price: $7.63
+    - Avg Optimized Item Price: $6.88
+--- Run 3/50 ---
+Baseline: $835.77, Optimized: $798.73, Savings: 4.43%
+  Run Characteristics:
+    - Avg Options per Item: 3.17
+    - Items with Brand Subs: 46 / 100
+    - Avg Price Range per Item: $3.57
+    - Cheapest Store Dist: (Blair Athol IGA: 16, Coles Firle: 61, Eastlakes: 10, Surfers Paradise (Circle on Cavill): 13)
+    - Avg Ideal Item Price: $7.99
+    - Avg Baseline Item Price: $8.36
+    - Avg Optimized Item Price: $7.99
+--- Run 4/50 ---
+Baseline: $999.61, Optimized: $902.97, Savings: 9.67%
+  Run Characteristics:
+    - Avg Options per Item: 3.56
+    - Items with Brand Subs: 54 / 100
+    - Avg Price Range per Item: $2.71
+    - Cheapest Store Dist: (Bonnyrigg: 22, Coles Findon: 30, IGA Local Grocer Bowden: 8, Wollongong: 40)
+    - Avg Ideal Item Price: $9.03
+    - Avg Baseline Item Price: $10.00
+    - Avg Optimized Item Price: $9.03
+--- Run 5/50 ---
+Baseline: $768.50, Optimized: $726.57, Savings: 5.46%
+  Run Characteristics:
+    - Avg Options per Item: 3.09
+    - Items with Brand Subs: 46 / 100
+    - Avg Price Range per Item: $4.41
+    - Cheapest Store Dist: (Coles Firle: 58, Harbourtown (Biggera Waters): 16, Helensvale: 20, IGA Local Grocer Paringa: 6)
+    - Avg Ideal Item Price: $7.27
+    - Avg Baseline Item Price: $7.68
+    - Avg Optimized Item Price: $7.27
+--- Run 6/50 ---
+Baseline: $1090.22, Optimized: $1006.11, Savings: 7.71%
+  Run Characteristics:
+    - Avg Options per Item: 3.28
+    - Items with Brand Subs: 54 / 100
+    - Avg Price Range per Item: $5.22
+    - Cheapest Store Dist: (Bondi Junction: 18, Coles Firle: 43, Romeo's IGA Foodhall Bondi: 10, Top Ryde: 29)
+    - Avg Ideal Item Price: $10.06
+    - Avg Baseline Item Price: $10.90
+    - Avg Optimized Item Price: $10.06
+--- Run 7/50 ---
+Baseline: $800.39, Optimized: $743.63, Savings: 7.09%
+  Run Characteristics:
+    - Avg Options per Item: 3.20
+    - Items with Brand Subs: 49 / 100
+    - Avg Price Range per Item: $3.34
+    - Cheapest Store Dist: (Coles Firle: 50, IGA Local Grocer Paringa: 3, Kings Langley: 20, Mermaid Waters: 27)
+    - Avg Ideal Item Price: $7.44
+    - Avg Baseline Item Price: $8.00
+    - Avg Optimized Item Price: $7.44
+--- Run 8/50 ---
+Baseline: $936.07, Optimized: $838.10, Savings: 10.47%
+  Run Characteristics:
+    - Avg Options per Item: 3.47
+    - Items with Brand Subs: 49 / 100
+    - Avg Price Range per Item: $4.49
+    - Cheapest Store Dist: (Coles Firle: 44, IGA Morphett Vale: 9, Knightsbridge (Metro): 36, Mittagong: 11)
+    - Avg Ideal Item Price: $8.38
+    - Avg Baseline Item Price: $9.36
+    - Avg Optimized Item Price: $8.38
+--- Run 9/50 ---
+Baseline: $827.72, Optimized: $734.12, Savings: 11.31%
+  Run Characteristics:
+    - Avg Options per Item: 3.19
+    - Items with Brand Subs: 43 / 100
+    - Avg Price Range per Item: $2.82
+    - Cheapest Store Dist: (Coles Findon: 38, IGA Local Grocer Somerton Park: 12, Knightsbridge (Metro): 33, Woolooware: 17)
+    - Avg Ideal Item Price: $7.34
+    - Avg Baseline Item Price: $8.28
+    - Avg Optimized Item Price: $7.34
+--- Run 10/50 ---
+Baseline: $861.77, Optimized: $772.84, Savings: 10.32%
+  Run Characteristics:
+    - Avg Options per Item: 3.36
+    - Items with Brand Subs: 44 / 100
+    - Avg Price Range per Item: $4.27
+    - Cheapest Store Dist: (: 15, Canterbury: 25, Coles Firle: 48, Josh's IGA Murray Bridge West : 12)
+    - Avg Ideal Item Price: $7.73
+    - Avg Baseline Item Price: $8.62
+    - Avg Optimized Item Price: $7.73
+--- Run 11/50 ---
+Baseline: $830.77, Optimized: $736.26, Savings: 11.38%
+  Run Characteristics:
+    - Avg Options per Item: 3.31
+    - Items with Brand Subs: 47 / 100
+    - Avg Price Range per Item: $2.35
+    - Cheapest Store Dist: (Coles Findon: 32, IGA Flaxmill Road: 10, Knightsbridge (Metro): 44, Miranda: 14)
+    - Avg Ideal Item Price: $7.36
+    - Avg Baseline Item Price: $8.31
+    - Avg Optimized Item Price: $7.36
+--- Run 12/50 ---
+Baseline: $693.95, Optimized: $603.26, Savings: 13.07%
+  Run Characteristics:
+    - Avg Options per Item: 3.31
+    - Items with Brand Subs: 52 / 100
+    - Avg Price Range per Item: $3.15
+    - Cheapest Store Dist: (Coles Firle: 39, Eastern Creek: 37, IGA Local Grocer Mt Gambier (Swallow Drive): 4, Parkes: 20)
+    - Avg Ideal Item Price: $6.03
+    - Avg Baseline Item Price: $6.94
+    - Avg Optimized Item Price: $6.03
+--- Run 13/50 ---
+Baseline: $813.27, Optimized: $763.84, Savings: 6.08%
+  Run Characteristics:
+    - Avg Options per Item: 3.33
+    - Items with Brand Subs: 43 / 99
+    - Avg Price Range per Item: $2.94
+    - Cheapest Store Dist: (Coles Findon: 43, Kogarah: 16, Westwood IGA: 10, Wollongong: 30)
+    - Avg Ideal Item Price: $7.72
+    - Avg Baseline Item Price: $8.21
+    - Avg Optimized Item Price: $7.72
+--- Run 14/50 ---
+Baseline: $932.98, Optimized: $820.44, Savings: 12.06%
+  Run Characteristics:
+    - Avg Options per Item: 3.05
+    - Items with Brand Subs: 45 / 100
+    - Avg Price Range per Item: $3.15
+    - Cheapest Store Dist: (Blair Athol IGA: 8, Coles Findon: 40, Dalby: 21, Knightsbridge (Metro): 31)
+    - Avg Ideal Item Price: $8.20
+    - Avg Baseline Item Price: $9.33
+    - Avg Optimized Item Price: $8.20
+--- Run 15/50 ---
+Baseline: $1137.47, Optimized: $1047.89, Savings: 7.88%
+  Run Characteristics:
+    - Avg Options per Item: 3.26
+    - Items with Brand Subs: 47 / 100
+    - Avg Price Range per Item: $2.90
+    - Cheapest Store Dist: (Bellingen IGA: 9, Coles Firle: 40, Harbourtown (Biggera Waters): 37, Highfields: 14)
+    - Avg Ideal Item Price: $10.48
+    - Avg Baseline Item Price: $11.37
+    - Avg Optimized Item Price: $10.48
+--- Run 16/50 ---
+Baseline: $770.23, Optimized: $662.16, Savings: 14.03%
+  Run Characteristics:
+    - Avg Options per Item: 3.26
+    - Items with Brand Subs: 48 / 100
+    - Avg Price Range per Item: $2.70
+    - Cheapest Store Dist: (Coles Findon: 33, Dalby: 20, IGA Elizabeth Downs: 32, West Ryde: 15)
+    - Avg Ideal Item Price: $6.62
+    - Avg Baseline Item Price: $7.70
+    - Avg Optimized Item Price: $6.62
+--- Run 17/50 ---
+Baseline: $671.03, Optimized: $612.08, Savings: 8.79%
+  Run Characteristics:
+    - Avg Options per Item: 3.48
+    - Items with Brand Subs: 53 / 100
+    - Avg Price Range per Item: $2.43
+    - Cheapest Store Dist: (Coles Findon: 44, Corrimal: 23, IGA Local Grocer Adelaide City East: 11, Winston Hills: 22)
+    - Avg Ideal Item Price: $6.12
+    - Avg Baseline Item Price: $6.71
+    - Avg Optimized Item Price: $6.12
+--- Run 18/50 ---
+Baseline: $766.11, Optimized: $714.99, Savings: 6.67%
+  Run Characteristics:
+    - Avg Options per Item: 3.46
+    - Items with Brand Subs: 58 / 100
+    - Avg Price Range per Item: $3.72
+    - Cheapest Store Dist: (: 18, Coles Firle: 51, IGA Local Grocer Newtown: 8, Marsfield: 23)
+    - Avg Ideal Item Price: $7.15
+    - Avg Baseline Item Price: $7.66
+    - Avg Optimized Item Price: $7.15
+--- Run 19/50 ---
+Baseline: $909.06, Optimized: $775.60, Savings: 14.68%
+  Run Characteristics:
+    - Avg Options per Item: 3.30
+    - Items with Brand Subs: 45 / 100
+    - Avg Price Range per Item: $3.78
+    - Cheapest Store Dist: (: 13, Coles Findon: 31, IGA Local Grocer Newtown: 4, Wollongong: 52)
+    - Avg Ideal Item Price: $7.76
+    - Avg Baseline Item Price: $9.09
+    - Avg Optimized Item Price: $7.76
+--- Run 20/50 ---
+Baseline: $851.94, Optimized: $803.65, Savings: 5.67%
+  Run Characteristics:
+    - Avg Options per Item: 3.23
+    - Items with Brand Subs: 45 / 100
+    - Avg Price Range per Item: $3.92
+    - Cheapest Store Dist: (Coles Findon: 29, IGA Para Hills: 9, Logan Village: 40, Mermaid Waters: 22)
+    - Avg Ideal Item Price: $8.04
+    - Avg Baseline Item Price: $8.52
+    - Avg Optimized Item Price: $8.04
+--- Run 21/50 ---
+Baseline: $921.58, Optimized: $834.38, Savings: 9.46%
+  Run Characteristics:
+    - Avg Options per Item: 3.15
+    - Items with Brand Subs: 45 / 100
+    - Avg Price Range per Item: $2.92
+    - Cheapest Store Dist: (Carindale: 25, Coles Firle: 45, IGA Local Grocer Mt Gambier (Swallow Drive): 4, Winston Hills: 26)
+    - Avg Ideal Item Price: $8.34
+    - Avg Baseline Item Price: $9.22
+    - Avg Optimized Item Price: $8.34
+--- Run 22/50 ---
+Baseline: $802.52, Optimized: $720.16, Savings: 10.26%
+  Run Characteristics:
+    - Avg Options per Item: 3.70
+    - Items with Brand Subs: 55 / 100
+    - Avg Price Range per Item: $4.12
+    - Cheapest Store Dist: (: 20, Coles Findon: 39, Eastern Creek: 35, IGA Local Grocer Kiama Downs: 6)
+    - Avg Ideal Item Price: $7.20
+    - Avg Baseline Item Price: $8.03
+    - Avg Optimized Item Price: $7.20
+--- Run 23/50 ---
+Baseline: $1007.59, Optimized: $959.59, Savings: 4.76%
+  Run Characteristics:
+    - Avg Options per Item: 3.26
+    - Items with Brand Subs: 53 / 99
+    - Avg Price Range per Item: $3.68
+    - Cheapest Store Dist: (: 11, Coles Firle: 47, IGA Lawson: 12, West Ryde: 29)
+    - Avg Ideal Item Price: $9.69
+    - Avg Baseline Item Price: $10.18
+    - Avg Optimized Item Price: $9.69
+--- Run 24/50 ---
+Baseline: $749.78, Optimized: $668.68, Savings: 10.82%
+  Run Characteristics:
+    - Avg Options per Item: 3.21
+    - Items with Brand Subs: 45 / 100
+    - Avg Price Range per Item: $2.39
+    - Cheapest Store Dist: (Coles Findon: 44, Knightsbridge (Metro): 33, Westwood IGA: 7, Woolooware: 16)
+    - Avg Ideal Item Price: $6.69
+    - Avg Baseline Item Price: $7.50
+    - Avg Optimized Item Price: $6.69
+--- Run 25/50 ---
+Baseline: $805.27, Optimized: $722.52, Savings: 10.28%
+  Run Characteristics:
+    - Avg Options per Item: 3.39
+    - Items with Brand Subs: 46 / 100
+    - Avg Price Range per Item: $2.50
+    - Cheapest Store Dist: (: 21, Canterbury: 36, Coles Findon: 31, IGA Bradbury: 12)
+    - Avg Ideal Item Price: $7.23
+    - Avg Baseline Item Price: $8.05
+    - Avg Optimized Item Price: $7.23
+--- Run 26/50 ---
+Baseline: $748.51, Optimized: $696.23, Savings: 6.98%
+  Run Characteristics:
+    - Avg Options per Item: 3.30
+    - Items with Brand Subs: 40 / 99
+    - Avg Price Range per Item: $2.49
+    - Cheapest Store Dist: (Blair Athol: 16, Coles Findon: 41, IGA Victor Harbor: 14, Redfern Station (Metro): 28)
+    - Avg Ideal Item Price: $7.03
+    - Avg Baseline Item Price: $7.56
+    - Avg Optimized Item Price: $7.03
+--- Run 27/50 ---
+Baseline: $943.75, Optimized: $868.09, Savings: 8.02%
+  Run Characteristics:
+    - Avg Options per Item: 3.34
+    - Items with Brand Subs: 56 / 99
+    - Avg Price Range per Item: $3.06
+    - Cheapest Store Dist: (Brassall: 17, Coles Firle: 39, IGA Local Grocer Bowden: 19, Kings Langley: 24)
+    - Avg Ideal Item Price: $8.77
+    - Avg Baseline Item Price: $9.53
+    - Avg Optimized Item Price: $8.77
+--- Run 28/50 ---
+Baseline: $1001.56, Optimized: $935.81, Savings: 6.56%
+  Run Characteristics:
+    - Avg Options per Item: 3.38
+    - Items with Brand Subs: 49 / 100
+    - Avg Price Range per Item: $3.82
+    - Cheapest Store Dist: (: 9, Coles Firle: 67, Heartland Market Grocer IGA Beaumont Hills: 5, Logan Village: 19)
+    - Avg Ideal Item Price: $9.36
+    - Avg Baseline Item Price: $10.02
+    - Avg Optimized Item Price: $9.36
+--- Run 29/50 ---
+Baseline: $991.45, Optimized: $903.32, Savings: 8.89%
+  Run Characteristics:
+    - Avg Options per Item: 3.28
+    - Items with Brand Subs: 47 / 100
+    - Avg Price Range per Item: $5.50
+    - Cheapest Store Dist: (Albion Park: 17, Coles Firle: 48, IGA Lawson: 15, Wollongong: 20)
+    - Avg Ideal Item Price: $9.03
+    - Avg Baseline Item Price: $9.91
+    - Avg Optimized Item Price: $9.03
+--- Run 30/50 ---
+Baseline: $793.20, Optimized: $763.91, Savings: 3.69%
+  Run Characteristics:
+    - Avg Options per Item: 3.34
+    - Items with Brand Subs: 48 / 100
+    - Avg Price Range per Item: $2.73
+    - Cheapest Store Dist: (Coles Findon: 47, Maryland: 37, Yass: 16)
+    - Avg Ideal Item Price: $7.64
+    - Avg Baseline Item Price: $7.93
+    - Avg Optimized Item Price: $7.64
+--- Run 31/50 ---
+Baseline: $979.11, Optimized: $934.01, Savings: 4.61%
+  Run Characteristics:
+    - Avg Options per Item: 3.32
+    - Items with Brand Subs: 45 / 100
+    - Avg Price Range per Item: $2.54
+    - Cheapest Store Dist: (Ambarvale: 12, Coles Findon: 37, Gables: 39, Josh's IGA Murray Bridge West : 12)
+    - Avg Ideal Item Price: $9.34
+    - Avg Baseline Item Price: $9.79
+    - Avg Optimized Item Price: $9.34
+--- Run 32/50 ---
+Baseline: $770.88, Optimized: $716.93, Savings: 7.00%
+  Run Characteristics:
+    - Avg Options per Item: 3.23
+    - Items with Brand Subs: 45 / 100
+    - Avg Price Range per Item: $2.41
+    - Cheapest Store Dist: (Coles Findon: 42, IGA Millicent : 15, North Ipswich: 16, Redfern Station (Metro): 27)
+    - Avg Ideal Item Price: $7.17
+    - Avg Baseline Item Price: $7.71
+    - Avg Optimized Item Price: $7.17
+--- Run 33/50 ---
+Baseline: $804.67, Optimized: $741.86, Savings: 7.81%
+  Run Characteristics:
+    - Avg Options per Item: 3.54
+    - Items with Brand Subs: 62 / 99
+    - Avg Price Range per Item: $3.52
+    - Cheapest Store Dist: (Coles Findon: 58, Heathcote IGA: 8, Surfers Paradise (Circle on Cavill): 9, Woolooware: 24)
+    - Avg Ideal Item Price: $7.49
+    - Avg Baseline Item Price: $8.13
+    - Avg Optimized Item Price: $7.49
+--- Run 34/50 ---
+Baseline: $763.71, Optimized: $652.84, Savings: 14.52%
+  Run Characteristics:
+    - Avg Options per Item: 3.46
+    - Items with Brand Subs: 55 / 100
+    - Avg Price Range per Item: $4.92
+    - Cheapest Store Dist: (Coles Firle: 52, IGA Clearview: 10, Katoomba: 14, Silverdale: 24)
+    - Avg Ideal Item Price: $6.53
+    - Avg Baseline Item Price: $7.64
+    - Avg Optimized Item Price: $6.53
+--- Run 35/50 ---
+Baseline: $977.13, Optimized: $859.21, Savings: 12.07%
+  Run Characteristics:
+    - Avg Options per Item: 3.35
+    - Items with Brand Subs: 45 / 99
+    - Avg Price Range per Item: $4.64
+    - Cheapest Store Dist: (Coles Findon: 34, Josh's IGA Murray Bridge West : 8, Knightsbridge (Metro): 42, Orange: 15)
+    - Avg Ideal Item Price: $8.68
+    - Avg Baseline Item Price: $9.87
+    - Avg Optimized Item Price: $8.68
+--- Run 36/50 ---
+Baseline: $951.15, Optimized: $873.95, Savings: 8.12%
+  Run Characteristics:
+    - Avg Options per Item: 3.18
+    - Items with Brand Subs: 36 / 100
+    - Avg Price Range per Item: $7.53
+    - Cheapest Store Dist: (Campbelltown: 15, Coles Firle: 52, West Ryde: 33)
+    - Avg Ideal Item Price: $8.74
+    - Avg Baseline Item Price: $9.51
+    - Avg Optimized Item Price: $8.74
+--- Run 37/50 ---
+Baseline: $813.41, Optimized: $781.23, Savings: 3.96%
+  Run Characteristics:
+    - Avg Options per Item: 3.16
+    - Items with Brand Subs: 50 / 100
+    - Avg Price Range per Item: $5.09
+    - Cheapest Store Dist: (Coles Firle: 51, IGA Figtree Drive: 15, Marsfield: 16, Mermaid Waters: 18)
+    - Avg Ideal Item Price: $7.81
+    - Avg Baseline Item Price: $8.13
+    - Avg Optimized Item Price: $7.81
+--- Run 38/50 ---
+Baseline: $668.15, Optimized: $581.56, Savings: 12.96%
+  Run Characteristics:
+    - Avg Options per Item: 3.52
+    - Items with Brand Subs: 58 / 100
+    - Avg Price Range per Item: $2.65
+    - Cheapest Store Dist: (Canterbury: 19, Coles Findon: 38, Gables: 35, IGA Local Grocer Newtown: 8)
+    - Avg Ideal Item Price: $5.82
+    - Avg Baseline Item Price: $6.68
+    - Avg Optimized Item Price: $5.82
+--- Run 39/50 ---
+Baseline: $868.43, Optimized: $763.22, Savings: 12.11%
+  Run Characteristics:
+    - Avg Options per Item: 3.54
+    - Items with Brand Subs: 56 / 98
+    - Avg Price Range per Item: $5.22
+    - Cheapest Store Dist: (Coles Firle: 59, IGA Local Grocer Milsons Point: 4, Redfern Station (Metro): 26, Woolooware: 9)
+    - Avg Ideal Item Price: $7.79
+    - Avg Baseline Item Price: $8.86
+    - Avg Optimized Item Price: $7.79
+--- Run 40/50 ---
+Baseline: $1077.28, Optimized: $992.24, Savings: 7.89%
+  Run Characteristics:
+    - Avg Options per Item: 3.34
+    - Items with Brand Subs: 44 / 99
+    - Avg Price Range per Item: $3.26
+    - Cheapest Store Dist: (Coles Firle: 53, IGA Elizabeth Downs: 14, Rochedale CFC: 22, Warilla: 10)
+    - Avg Ideal Item Price: $10.02
+    - Avg Baseline Item Price: $10.88
+    - Avg Optimized Item Price: $10.02
+--- Run 41/50 ---
+Baseline: $876.58, Optimized: $826.75, Savings: 5.68%
+  Run Characteristics:
+    - Avg Options per Item: 3.18
+    - Items with Brand Subs: 49 / 100
+    - Avg Price Range per Item: $5.01
+    - Cheapest Store Dist: (Carindale: 17, Coles Firle: 47, Granville: 30, Murray Bridge IGA: 6)
+    - Avg Ideal Item Price: $8.27
+    - Avg Baseline Item Price: $8.77
+    - Avg Optimized Item Price: $8.27
+--- Run 42/50 ---
+Baseline: $989.99, Optimized: $917.04, Savings: 7.37%
+  Run Characteristics:
+    - Avg Options per Item: 3.34
+    - Items with Brand Subs: 44 / 100
+    - Avg Price Range per Item: $3.19
+    - Cheapest Store Dist: (Coles Findon: 34, Eastlakes: 14, Josh's IGA Murray Bridge West : 20, Wollongong: 32)
+    - Avg Ideal Item Price: $9.17
+    - Avg Baseline Item Price: $9.90
+    - Avg Optimized Item Price: $9.17
+--- Run 43/50 ---
+Baseline: $941.43, Optimized: $893.42, Savings: 5.10%
+  Run Characteristics:
+    - Avg Options per Item: 2.86
+    - Items with Brand Subs: 32 / 100
+    - Avg Price Range per Item: $3.61
+    - Cheapest Store Dist: (Coles Firle: 61, Edgecliff: 13, IGA Local Grocer North Sydney: 1, Noosaville: 25)
+    - Avg Ideal Item Price: $8.93
+    - Avg Baseline Item Price: $9.41
+    - Avg Optimized Item Price: $8.93
+--- Run 44/50 ---
+Baseline: $945.36, Optimized: $843.16, Savings: 10.81%
+  Run Characteristics:
+    - Avg Options per Item: 3.25
+    - Items with Brand Subs: 43 / 100
+    - Avg Price Range per Item: $4.10
+    - Cheapest Store Dist: (Coles Firle: 43, Granville: 28, IGA Lawson: 12, Woolooware: 17)
+    - Avg Ideal Item Price: $8.43
+    - Avg Baseline Item Price: $9.45
+    - Avg Optimized Item Price: $8.43
+--- Run 45/50 ---
+Baseline: $770.21, Optimized: $724.43, Savings: 5.94%
+  Run Characteristics:
+    - Avg Options per Item: 3.33
+    - Items with Brand Subs: 45 / 99
+    - Avg Price Range per Item: $2.34
+    - Cheapest Store Dist: (Coles Findon: 39, Eastlakes: 8, Gables: 33, IGA Local Grocer Adelaide City East: 19)
+    - Avg Ideal Item Price: $7.32
+    - Avg Baseline Item Price: $7.78
+    - Avg Optimized Item Price: $7.32
+--- Run 46/50 ---
+Baseline: $826.59, Optimized: $711.94, Savings: 13.87%
+  Run Characteristics:
+    - Avg Options per Item: 3.37
+    - Items with Brand Subs: 43 / 100
+    - Avg Price Range per Item: $5.05
+    - Cheapest Store Dist: (Coles Findon: 23, IGA Local Grocer Woodville: 14, Logan Village: 47, Minto: 16)
+    - Avg Ideal Item Price: $7.12
+    - Avg Baseline Item Price: $8.27
+    - Avg Optimized Item Price: $7.12
+--- Run 47/50 ---
+Baseline: $755.92, Optimized: $674.63, Savings: 10.75%
+  Run Characteristics:
+    - Avg Options per Item: 3.18
+    - Items with Brand Subs: 49 / 100
+    - Avg Price Range per Item: $2.17
+    - Cheapest Store Dist: (Carnes Hill: 37, Coles Findon: 41, IGA Wagga on Bourke St: 4, Minto: 18)
+    - Avg Ideal Item Price: $6.75
+    - Avg Baseline Item Price: $7.56
+    - Avg Optimized Item Price: $6.75
+--- Run 48/50 ---
+Baseline: $1018.14, Optimized: $965.30, Savings: 5.19%
+  Run Characteristics:
+    - Avg Options per Item: 3.54
+    - Items with Brand Subs: 48 / 100
+    - Avg Price Range per Item: $7.94
+    - Cheapest Store Dist: (Chester Hill: 8, Coles Firle: 66, IGA Millicent : 17, Warrawong: 9)
+    - Avg Ideal Item Price: $9.65
+    - Avg Baseline Item Price: $10.18
+    - Avg Optimized Item Price: $9.65
+--- Run 49/50 ---
+Baseline: $770.97, Optimized: $679.60, Savings: 11.85%
+  Run Characteristics:
+    - Avg Options per Item: 3.24
+    - Items with Brand Subs: 49 / 100
+    - Avg Price Range per Item: $2.20
+    - Cheapest Store Dist: (Brassall: 20, Coles Findon: 35, IGA Local Grocer Paringa: 6, Maryland: 39)
+    - Avg Ideal Item Price: $6.80
+    - Avg Baseline Item Price: $7.71
+    - Avg Optimized Item Price: $6.80
+--- Run 50/50 ---
+Baseline: $790.14, Optimized: $758.49, Savings: 4.01%
+  Run Characteristics:
+    - Avg Options per Item: 3.03
+    - Items with Brand Subs: 42 / 97
+    - Avg Price Range per Item: $3.54
+    - Cheapest Store Dist: (Albion Park: 17, Coles Firle: 57, Surfers Paradise (Circle on Cavill): 12, Westwood IGA: 11)
+    - Avg Ideal Item Price: $7.82
+    - Avg Baseline Item Price: $8.15
+    - Avg Optimized Item Price: $7.82
+
+--- Benchmark Complete ---
+Individual savings percentages: ['9.74%', '9.82%', '4.43%', '9.67%', '5.46%', '7.71%', '7.09%', '10.47%', '11.31%', '10.32%', '11.38%', '13.07%', '6.08%', '12.06%', '7.88%', '14.03%', '8.79%', '6.67%', '14.68%', '5.67%', '9.46%', '10.26%', '4.76%', '10.82%', '10.28%', '6.98%', '8.02%', '6.56%', '8.89%', '3.69%', '4.61%', '7.00%', '7.81%', '14.52%', '12.07%', '8.12%', '3.96%', '12.96%', '12.11%', '7.89%', '5.68%', '7.37%', '5.10%', '10.81%', '5.94%', '13.87%', '10.75%', '5.19%', '11.85%', '4.01%']
+
+Average Savings: 8.75%

@@ -12,7 +12,7 @@ from scraping.utils.shop_scraping_utils.get_graphql_query import get_graphql_que
 
 class StoreScraperColes(BaseStoreScraper):
     """A class to find Coles stores, wrapping the original, successful script logic."""
-    COLES_API_URL = "https://www.coles.com.au/api/graphql"
+    COLES_API_URL = "https://www.coles.com.au/data_management/graphql"
     SUBSCRIPTION_KEY = "eae83861d1cd4de6bb9cd8a2cd6f041e"
 
     # Use fixed steps for reproducibility during a single run
@@ -34,7 +34,7 @@ class StoreScraperColes(BaseStoreScraper):
         from selenium.webdriver.support.ui import WebDriverWait
         from selenium.webdriver.support import expected_conditions as EC
 
-        self.stdout.write("\n--- Launching Selenium browser to warm up session and make API calls ---")
+        self.stdout.write("\n--- Launching Selenium browser to warm up session and make data_management calls ---")
         chrome_options = Options()
         chrome_options.add_argument("user-agent=SplitCartScraper/1.0 (Contact: admin@splitcart.com)")
         self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
@@ -90,15 +90,15 @@ class StoreScraperColes(BaseStoreScraper):
             data = json.loads(json_response_str)
 
             if "error" in data:
-                raise Exception(f"API Error: {data['error']}")
+                raise Exception(f"data_management Error: {data['error']}")
 
             return data.get("data", {}).get("stores", {}).get("results", [])
         except Exception as e:
-            self.stdout.write(f"API request failed for coords ({latitude:.2f}, {longitude:.2f}): {e}")
+            self.stdout.write(f"data_management request failed for coords ({latitude:.2f}, {longitude:.2f}): {e}")
             raise e # Re-raise to be caught by the main loop
 
     def clean_raw_data(self, raw_data: dict) -> dict:
-        """Cleans the raw store data dictionary from the API."""
+        """Cleans the raw store data dictionary from the data_management."""
         store_details = raw_data.get('store', {})
         cleaner = StoreCleanerColes(store_details, self.company, datetime.now())
         return cleaner.clean()

@@ -7,8 +7,8 @@ This session focused on two main objectives: addressing the low cross-company pr
 *   **Initial Observation:** Aldi products showed a significantly lower substitution rate with other companies (<2%) compared to internal (60%) or inter-company rates (>30%) among other stores. This was unexpected given Aldi's smaller product range.
 *   **Hypothesis:** The primary suspicion was that Level 5 (semantic similarity) substitutions were failing due to categories being siloed by company.
 *   **Investigation Steps:**
-    *   **`lvl5_substitution_generator.py` (api/utils/substitution_utils/lvl5_substitution_generator.py):** Examination confirmed that the generator compares products only within the same `Category` object.
-    *   **`inspect_categories.py` (api/management/commands/inspect_categories.py):** Running this command confirmed that categories are indeed tied to specific `Company` objects (e.g., 'Flavoured Milk' for Aldi is distinct from 'Flavoured Milk' for Coles), preventing cross-company comparisons.
+    *   **`lvl5_substitution_generator.py` (data_management/utils/substitution_utils/lvl5_substitution_generator.py):** Examination confirmed that the generator compares products only within the same `Category` object.
+    *   **`inspect_categories.py` (data_management/management/commands/inspect_categories.py):** Running this command confirmed that categories are indeed tied to specific `Company` objects (e.g., 'Flavoured Milk' for Aldi is distinct from 'Flavoured Milk' for Coles), preventing cross-company comparisons.
     *   **`category.py` (companies/models/category.py):** Reviewed the model definition, confirming the `company` ForeignKey as the source of category silo-ing.
 *   **Proposed Solution:** To enable cross-company comparisons, the idea was to establish "category equivalences" using products that exist in multiple companies. This would involve:
     *   Adding an `equivalent_categories` ManyToManyField to the `Category` model.
@@ -26,16 +26,16 @@ This session focused on two main objectives: addressing the low cross-company pr
 *   **User Request:** Before wiping the database, the user requested a new, separate archiving system to create JSON backups of all model data for potential reconstruction.
 *   **Design:** A new management command `archive` was created, with its core logic separated into utility classes.
 *   **Files Created:**
-    *   `api/utils/archive/__init__.py`
-    *   `api/utils/archive/base_archiver.py`
-    *   `api/utils/archive/model_lister.py`
-    *   `api/utils/archive/database_archiver.py`
-    *   `api/management/commands/archive.py`
+    *   `data_management/utils/archive/__init__.py`
+    *   `data_management/utils/archive/base_archiver.py`
+    *   `data_management/utils/archive/model_lister.py`
+    *   `data_management/utils/archive/database_archiver.py`
+    *   `data_management/management/commands/archive.py`
 *   **Problems Encountered during Archiving:**
     *   **`ModuleNotFoundError: No module named 'django_extensions'`:** The `subprocess.run` call in `DatabaseArchiver` was using the global Python interpreter instead of the virtual environment's.
-        *   **Fix:** Modified `api/utils/archive/database_archiver.py` to explicitly use the virtual environment's Python executable (`venv\Scripts\python.exe`).
+        *   **Fix:** Modified `data_management/utils/archive/database_archiver.py` to explicitly use the virtual environment's Python executable (`venv\Scripts\python.exe`).
     *   **`CommandError: Unable to serialize database: 'charmap' codec can't encode characters...`:** Django's `dumpdata` command was encountering encoding issues with special characters on Windows.
-        *   **Fix:** Modified `api/utils/archive/database_archiver.py` to set the `PYTHONIOENCODING='utf-8'` environment variable for the `subprocess.run` call.
+        *   **Fix:** Modified `data_management/utils/archive/database_archiver.py` to set the `PYTHONIOENCODING='utf-8'` environment variable for the `subprocess.run` call.
     *   **`CommandError: Unable to serialize database: no such column: companies_category.category_id`:** This error persisted for the `companies.category` model, indicating the underlying migration issue was still present in the database schema.
 
 **Current Status:**

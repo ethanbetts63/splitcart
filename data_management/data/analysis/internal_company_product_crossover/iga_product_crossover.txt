@@ -1,0 +1,1666 @@
+Internal Company Product Crossover Report for: Iga
+Generated on: 2025-09-19
+---
+Total unique products for Iga: 25142
+Database fullness: 17 / 1291
+Average product overlap between any two stores: 55.78%
+---
+Average product overlap for Tier 1 Categories:
+  - Liquor: 100.00%
+  - Drinks: 60.65%
+  - Pantry: 59.37%
+  - Pet: 58.50%
+  - Frozen: 57.88%
+  - Baby: 54.21%
+  - Household: 53.20%
+  - Fruit And Vegetable: 52.51%
+  - Dairy, Eggs And Fridge: 51.97%
+  - Health And Beauty: 46.94%
+  - Bakery: 46.57%
+  - Meat, Seafood And Deli: 37.84%
+  - Other: 36.35%
+  - Front Of House: 0.00%
+
+--- Detailed Overlap per Category ---
+Category: Frozen
+  - Redwood Park IGA / IGA Local Grocer South Plympton: 63.54%
+  - Redwood Park IGA / Westwood IGA: 58.33%
+  - Redwood Park IGA / IGA Morphett Vale: 65.65%
+  - Redwood Park IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 57.99%
+  - Redwood Park IGA / IGA Local Grocer Bowden: 57.68%
+  - Redwood Park IGA / IGA Local Grocer Woodville: 64.76%
+  - Redwood Park IGA / IGA Local Grocer Somerton Park: 66.20%
+  - Redwood Park IGA / IGA Local Grocer Franklin Street: 55.13%
+  - Redwood Park IGA / IGA Para Hills: 64.57%
+  - Redwood Park IGA / IGA Elizabeth Downs: 66.09%
+  - Redwood Park IGA / IGA Flaxmill Road: 63.61%
+  - Redwood Park IGA / IGA Local Grocer Adelaide City East: 60.17%
+  - Redwood Park IGA / IGA Clearview: 66.87%
+  - Redwood Park IGA / IGA Local Grocer Glenelg East: 63.53%
+  - Redwood Park IGA / Blair Athol IGA: 66.86%
+  - Redwood Park IGA / IGA Local Grocer Wattle Park: 55.27%
+  - IGA Local Grocer South Plympton / Westwood IGA: 59.61%
+  - IGA Local Grocer South Plympton / IGA Morphett Vale: 59.10%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Mt Gambier (Swallow Drive): 56.82%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Bowden: 50.33%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Woodville: 63.69%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Somerton Park: 63.62%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Franklin Street: 50.56%
+  - IGA Local Grocer South Plympton / IGA Para Hills: 57.58%
+  - IGA Local Grocer South Plympton / IGA Elizabeth Downs: 57.72%
+  - IGA Local Grocer South Plympton / IGA Flaxmill Road: 57.00%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Adelaide City East: 59.59%
+  - IGA Local Grocer South Plympton / IGA Clearview: 62.48%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Glenelg East: 60.82%
+  - IGA Local Grocer South Plympton / Blair Athol IGA: 61.00%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Wattle Park: 60.41%
+  - Westwood IGA / IGA Morphett Vale: 57.82%
+  - Westwood IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 47.64%
+  - Westwood IGA / IGA Local Grocer Bowden: 53.93%
+  - Westwood IGA / IGA Local Grocer Woodville: 57.15%
+  - Westwood IGA / IGA Local Grocer Somerton Park: 59.91%
+  - Westwood IGA / IGA Local Grocer Franklin Street: 54.32%
+  - Westwood IGA / IGA Para Hills: 55.16%
+  - Westwood IGA / IGA Elizabeth Downs: 56.43%
+  - Westwood IGA / IGA Flaxmill Road: 60.82%
+  - Westwood IGA / IGA Local Grocer Adelaide City East: 57.35%
+  - Westwood IGA / IGA Clearview: 57.81%
+  - Westwood IGA / IGA Local Grocer Glenelg East: 56.39%
+  - Westwood IGA / Blair Athol IGA: 61.24%
+  - Westwood IGA / IGA Local Grocer Wattle Park: 51.46%
+  - IGA Morphett Vale / IGA Local Grocer Mt Gambier (Swallow Drive): 51.43%
+  - IGA Morphett Vale / IGA Local Grocer Bowden: 56.10%
+  - IGA Morphett Vale / IGA Local Grocer Woodville: 56.97%
+  - IGA Morphett Vale / IGA Local Grocer Somerton Park: 59.62%
+  - IGA Morphett Vale / IGA Local Grocer Franklin Street: 54.57%
+  - IGA Morphett Vale / IGA Para Hills: 58.70%
+  - IGA Morphett Vale / IGA Elizabeth Downs: 60.60%
+  - IGA Morphett Vale / IGA Flaxmill Road: 64.49%
+  - IGA Morphett Vale / IGA Local Grocer Adelaide City East: 61.88%
+  - IGA Morphett Vale / IGA Clearview: 63.92%
+  - IGA Morphett Vale / IGA Local Grocer Glenelg East: 60.51%
+  - IGA Morphett Vale / Blair Athol IGA: 67.53%
+  - IGA Morphett Vale / IGA Local Grocer Wattle Park: 51.63%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Bowden: 47.53%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Woodville: 51.84%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Somerton Park: 55.58%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Franklin Street: 45.44%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Para Hills: 52.64%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Elizabeth Downs: 50.58%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Flaxmill Road: 52.35%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Adelaide City East: 53.32%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Clearview: 57.71%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Glenelg East: 51.70%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / Blair Athol IGA: 55.55%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Wattle Park: 50.13%
+  - IGA Local Grocer Bowden / IGA Local Grocer Woodville: 53.22%
+  - IGA Local Grocer Bowden / IGA Local Grocer Somerton Park: 55.46%
+  - IGA Local Grocer Bowden / IGA Local Grocer Franklin Street: 52.82%
+  - IGA Local Grocer Bowden / IGA Para Hills: 51.66%
+  - IGA Local Grocer Bowden / IGA Elizabeth Downs: 52.22%
+  - IGA Local Grocer Bowden / IGA Flaxmill Road: 52.83%
+  - IGA Local Grocer Bowden / IGA Local Grocer Adelaide City East: 59.56%
+  - IGA Local Grocer Bowden / IGA Clearview: 54.53%
+  - IGA Local Grocer Bowden / IGA Local Grocer Glenelg East: 55.12%
+  - IGA Local Grocer Bowden / Blair Athol IGA: 58.91%
+  - IGA Local Grocer Bowden / IGA Local Grocer Wattle Park: 49.72%
+  - IGA Local Grocer Woodville / IGA Local Grocer Somerton Park: 60.96%
+  - IGA Local Grocer Woodville / IGA Local Grocer Franklin Street: 53.52%
+  - IGA Local Grocer Woodville / IGA Para Hills: 57.70%
+  - IGA Local Grocer Woodville / IGA Elizabeth Downs: 56.24%
+  - IGA Local Grocer Woodville / IGA Flaxmill Road: 58.06%
+  - IGA Local Grocer Woodville / IGA Local Grocer Adelaide City East: 61.57%
+  - IGA Local Grocer Woodville / IGA Clearview: 60.38%
+  - IGA Local Grocer Woodville / IGA Local Grocer Glenelg East: 60.62%
+  - IGA Local Grocer Woodville / Blair Athol IGA: 59.90%
+  - IGA Local Grocer Woodville / IGA Local Grocer Wattle Park: 53.12%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Franklin Street: 51.81%
+  - IGA Local Grocer Somerton Park / IGA Para Hills: 59.49%
+  - IGA Local Grocer Somerton Park / IGA Elizabeth Downs: 60.71%
+  - IGA Local Grocer Somerton Park / IGA Flaxmill Road: 59.66%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Adelaide City East: 61.60%
+  - IGA Local Grocer Somerton Park / IGA Clearview: 64.35%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Glenelg East: 62.45%
+  - IGA Local Grocer Somerton Park / Blair Athol IGA: 64.03%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Wattle Park: 58.10%
+  - IGA Local Grocer Franklin Street / IGA Para Hills: 50.05%
+  - IGA Local Grocer Franklin Street / IGA Elizabeth Downs: 51.30%
+  - IGA Local Grocer Franklin Street / IGA Flaxmill Road: 51.66%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Adelaide City East: 55.21%
+  - IGA Local Grocer Franklin Street / IGA Clearview: 51.20%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Glenelg East: 49.19%
+  - IGA Local Grocer Franklin Street / Blair Athol IGA: 55.28%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Wattle Park: 50.36%
+  - IGA Para Hills / IGA Elizabeth Downs: 65.65%
+  - IGA Para Hills / IGA Flaxmill Road: 61.19%
+  - IGA Para Hills / IGA Local Grocer Adelaide City East: 58.56%
+  - IGA Para Hills / IGA Clearview: 63.13%
+  - IGA Para Hills / IGA Local Grocer Glenelg East: 57.00%
+  - IGA Para Hills / Blair Athol IGA: 62.76%
+  - IGA Para Hills / IGA Local Grocer Wattle Park: 53.63%
+  - IGA Elizabeth Downs / IGA Flaxmill Road: 68.53%
+  - IGA Elizabeth Downs / IGA Local Grocer Adelaide City East: 55.84%
+  - IGA Elizabeth Downs / IGA Clearview: 64.00%
+  - IGA Elizabeth Downs / IGA Local Grocer Glenelg East: 56.33%
+  - IGA Elizabeth Downs / Blair Athol IGA: 66.42%
+  - IGA Elizabeth Downs / IGA Local Grocer Wattle Park: 51.92%
+  - IGA Flaxmill Road / IGA Local Grocer Adelaide City East: 60.13%
+  - IGA Flaxmill Road / IGA Clearview: 62.60%
+  - IGA Flaxmill Road / IGA Local Grocer Glenelg East: 59.29%
+  - IGA Flaxmill Road / Blair Athol IGA: 68.75%
+  - IGA Flaxmill Road / IGA Local Grocer Wattle Park: 54.15%
+  - IGA Local Grocer Adelaide City East / IGA Clearview: 59.43%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Glenelg East: 60.37%
+  - IGA Local Grocer Adelaide City East / Blair Athol IGA: 63.03%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Wattle Park: 53.11%
+  - IGA Clearview / IGA Local Grocer Glenelg East: 60.21%
+  - IGA Clearview / Blair Athol IGA: 67.35%
+  - IGA Clearview / IGA Local Grocer Wattle Park: 55.21%
+  - IGA Local Grocer Glenelg East / Blair Athol IGA: 61.14%
+  - IGA Local Grocer Glenelg East / IGA Local Grocer Wattle Park: 57.39%
+  - Blair Athol IGA / IGA Local Grocer Wattle Park: 54.16%
+
+Category: Pantry
+  - Redwood Park IGA / IGA Local Grocer South Plympton: 64.99%
+  - Redwood Park IGA / Westwood IGA: 57.86%
+  - Redwood Park IGA / IGA Morphett Vale: 65.39%
+  - Redwood Park IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 58.63%
+  - Redwood Park IGA / IGA Local Grocer Bowden: 60.11%
+  - Redwood Park IGA / IGA Local Grocer Woodville: 67.96%
+  - Redwood Park IGA / IGA Local Grocer Somerton Park: 63.49%
+  - Redwood Park IGA / IGA Local Grocer Franklin Street: 61.59%
+  - Redwood Park IGA / IGA Para Hills: 65.85%
+  - Redwood Park IGA / IGA Elizabeth Downs: 66.69%
+  - Redwood Park IGA / IGA Flaxmill Road: 64.69%
+  - Redwood Park IGA / IGA Local Grocer Adelaide City East: 61.29%
+  - Redwood Park IGA / IGA Clearview: 65.16%
+  - Redwood Park IGA / IGA Local Grocer Glenelg East: 63.82%
+  - Redwood Park IGA / Blair Athol IGA: 70.55%
+  - Redwood Park IGA / IGA Local Grocer Wattle Park: 54.93%
+  - IGA Local Grocer South Plympton / Westwood IGA: 61.29%
+  - IGA Local Grocer South Plympton / IGA Morphett Vale: 61.36%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Mt Gambier (Swallow Drive): 58.93%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Bowden: 57.41%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Woodville: 64.74%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Somerton Park: 63.24%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Franklin Street: 59.64%
+  - IGA Local Grocer South Plympton / IGA Para Hills: 62.82%
+  - IGA Local Grocer South Plympton / IGA Elizabeth Downs: 63.05%
+  - IGA Local Grocer South Plympton / IGA Flaxmill Road: 60.20%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Adelaide City East: 58.35%
+  - IGA Local Grocer South Plympton / IGA Clearview: 61.72%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Glenelg East: 61.64%
+  - IGA Local Grocer South Plympton / Blair Athol IGA: 66.12%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Wattle Park: 55.63%
+  - Westwood IGA / IGA Morphett Vale: 56.23%
+  - Westwood IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 54.68%
+  - Westwood IGA / IGA Local Grocer Bowden: 54.31%
+  - Westwood IGA / IGA Local Grocer Woodville: 60.32%
+  - Westwood IGA / IGA Local Grocer Somerton Park: 60.00%
+  - Westwood IGA / IGA Local Grocer Franklin Street: 57.34%
+  - Westwood IGA / IGA Para Hills: 58.26%
+  - Westwood IGA / IGA Elizabeth Downs: 58.89%
+  - Westwood IGA / IGA Flaxmill Road: 57.32%
+  - Westwood IGA / IGA Local Grocer Adelaide City East: 53.97%
+  - Westwood IGA / IGA Clearview: 56.47%
+  - Westwood IGA / IGA Local Grocer Glenelg East: 55.91%
+  - Westwood IGA / Blair Athol IGA: 60.28%
+  - Westwood IGA / IGA Local Grocer Wattle Park: 52.16%
+  - IGA Morphett Vale / IGA Local Grocer Mt Gambier (Swallow Drive): 51.55%
+  - IGA Morphett Vale / IGA Local Grocer Bowden: 56.23%
+  - IGA Morphett Vale / IGA Local Grocer Woodville: 59.67%
+  - IGA Morphett Vale / IGA Local Grocer Somerton Park: 57.55%
+  - IGA Morphett Vale / IGA Local Grocer Franklin Street: 60.48%
+  - IGA Morphett Vale / IGA Para Hills: 62.36%
+  - IGA Morphett Vale / IGA Elizabeth Downs: 62.09%
+  - IGA Morphett Vale / IGA Flaxmill Road: 62.87%
+  - IGA Morphett Vale / IGA Local Grocer Adelaide City East: 56.27%
+  - IGA Morphett Vale / IGA Clearview: 58.82%
+  - IGA Morphett Vale / IGA Local Grocer Glenelg East: 61.85%
+  - IGA Morphett Vale / Blair Athol IGA: 64.33%
+  - IGA Morphett Vale / IGA Local Grocer Wattle Park: 54.49%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Bowden: 51.26%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Woodville: 59.38%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Somerton Park: 58.26%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Franklin Street: 52.86%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Para Hills: 54.44%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Elizabeth Downs: 55.97%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Flaxmill Road: 54.81%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Adelaide City East: 52.16%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Clearview: 55.19%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Glenelg East: 55.09%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / Blair Athol IGA: 57.91%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Wattle Park: 51.74%
+  - IGA Local Grocer Bowden / IGA Local Grocer Woodville: 58.25%
+  - IGA Local Grocer Bowden / IGA Local Grocer Somerton Park: 56.62%
+  - IGA Local Grocer Bowden / IGA Local Grocer Franklin Street: 57.33%
+  - IGA Local Grocer Bowden / IGA Para Hills: 59.58%
+  - IGA Local Grocer Bowden / IGA Elizabeth Downs: 55.46%
+  - IGA Local Grocer Bowden / IGA Flaxmill Road: 54.98%
+  - IGA Local Grocer Bowden / IGA Local Grocer Adelaide City East: 59.70%
+  - IGA Local Grocer Bowden / IGA Clearview: 56.04%
+  - IGA Local Grocer Bowden / IGA Local Grocer Glenelg East: 58.43%
+  - IGA Local Grocer Bowden / Blair Athol IGA: 58.52%
+  - IGA Local Grocer Bowden / IGA Local Grocer Wattle Park: 56.17%
+  - IGA Local Grocer Woodville / IGA Local Grocer Somerton Park: 63.24%
+  - IGA Local Grocer Woodville / IGA Local Grocer Franklin Street: 59.13%
+  - IGA Local Grocer Woodville / IGA Para Hills: 61.82%
+  - IGA Local Grocer Woodville / IGA Elizabeth Downs: 62.85%
+  - IGA Local Grocer Woodville / IGA Flaxmill Road: 61.15%
+  - IGA Local Grocer Woodville / IGA Local Grocer Adelaide City East: 60.36%
+  - IGA Local Grocer Woodville / IGA Clearview: 61.57%
+  - IGA Local Grocer Woodville / IGA Local Grocer Glenelg East: 62.16%
+  - IGA Local Grocer Woodville / Blair Athol IGA: 64.80%
+  - IGA Local Grocer Woodville / IGA Local Grocer Wattle Park: 55.26%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Franklin Street: 59.20%
+  - IGA Local Grocer Somerton Park / IGA Para Hills: 60.53%
+  - IGA Local Grocer Somerton Park / IGA Elizabeth Downs: 61.40%
+  - IGA Local Grocer Somerton Park / IGA Flaxmill Road: 60.85%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Adelaide City East: 56.00%
+  - IGA Local Grocer Somerton Park / IGA Clearview: 58.46%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Glenelg East: 57.78%
+  - IGA Local Grocer Somerton Park / Blair Athol IGA: 62.03%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Wattle Park: 54.66%
+  - IGA Local Grocer Franklin Street / IGA Para Hills: 61.02%
+  - IGA Local Grocer Franklin Street / IGA Elizabeth Downs: 62.82%
+  - IGA Local Grocer Franklin Street / IGA Flaxmill Road: 61.64%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Adelaide City East: 56.29%
+  - IGA Local Grocer Franklin Street / IGA Clearview: 56.42%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Glenelg East: 59.92%
+  - IGA Local Grocer Franklin Street / Blair Athol IGA: 64.53%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Wattle Park: 54.01%
+  - IGA Para Hills / IGA Elizabeth Downs: 67.67%
+  - IGA Para Hills / IGA Flaxmill Road: 63.81%
+  - IGA Para Hills / IGA Local Grocer Adelaide City East: 58.04%
+  - IGA Para Hills / IGA Clearview: 62.43%
+  - IGA Para Hills / IGA Local Grocer Glenelg East: 61.25%
+  - IGA Para Hills / Blair Athol IGA: 66.27%
+  - IGA Para Hills / IGA Local Grocer Wattle Park: 56.30%
+  - IGA Elizabeth Downs / IGA Flaxmill Road: 68.18%
+  - IGA Elizabeth Downs / IGA Local Grocer Adelaide City East: 54.94%
+  - IGA Elizabeth Downs / IGA Clearview: 61.82%
+  - IGA Elizabeth Downs / IGA Local Grocer Glenelg East: 60.20%
+  - IGA Elizabeth Downs / Blair Athol IGA: 68.53%
+  - IGA Elizabeth Downs / IGA Local Grocer Wattle Park: 50.94%
+  - IGA Flaxmill Road / IGA Local Grocer Adelaide City East: 54.09%
+  - IGA Flaxmill Road / IGA Clearview: 59.21%
+  - IGA Flaxmill Road / IGA Local Grocer Glenelg East: 61.60%
+  - IGA Flaxmill Road / Blair Athol IGA: 68.00%
+  - IGA Flaxmill Road / IGA Local Grocer Wattle Park: 50.70%
+  - IGA Local Grocer Adelaide City East / IGA Clearview: 55.77%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Glenelg East: 57.86%
+  - IGA Local Grocer Adelaide City East / Blair Athol IGA: 59.23%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Wattle Park: 55.57%
+  - IGA Clearview / IGA Local Grocer Glenelg East: 57.01%
+  - IGA Clearview / Blair Athol IGA: 62.94%
+  - IGA Clearview / IGA Local Grocer Wattle Park: 52.27%
+  - IGA Local Grocer Glenelg East / Blair Athol IGA: 63.92%
+  - IGA Local Grocer Glenelg East / IGA Local Grocer Wattle Park: 58.49%
+  - Blair Athol IGA / IGA Local Grocer Wattle Park: 53.35%
+
+Category: Household
+  - Redwood Park IGA / IGA Local Grocer South Plympton: 63.69%
+  - Redwood Park IGA / Westwood IGA: 57.07%
+  - Redwood Park IGA / IGA Morphett Vale: 66.73%
+  - Redwood Park IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 48.67%
+  - Redwood Park IGA / IGA Local Grocer Bowden: 55.43%
+  - Redwood Park IGA / IGA Local Grocer Woodville: 62.70%
+  - Redwood Park IGA / IGA Local Grocer Somerton Park: 60.01%
+  - Redwood Park IGA / IGA Local Grocer Franklin Street: 54.60%
+  - Redwood Park IGA / IGA Para Hills: 58.53%
+  - Redwood Park IGA / IGA Elizabeth Downs: 60.35%
+  - Redwood Park IGA / IGA Flaxmill Road: 56.28%
+  - Redwood Park IGA / IGA Local Grocer Adelaide City East: 58.27%
+  - Redwood Park IGA / IGA Clearview: 64.23%
+  - Redwood Park IGA / IGA Local Grocer Glenelg East: 60.05%
+  - Redwood Park IGA / Blair Athol IGA: 67.40%
+  - Redwood Park IGA / IGA Local Grocer Wattle Park: 56.85%
+  - IGA Local Grocer South Plympton / Westwood IGA: 54.81%
+  - IGA Local Grocer South Plympton / IGA Morphett Vale: 59.43%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Mt Gambier (Swallow Drive): 49.69%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Bowden: 49.47%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Woodville: 61.34%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Somerton Park: 53.78%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Franklin Street: 47.71%
+  - IGA Local Grocer South Plympton / IGA Para Hills: 56.86%
+  - IGA Local Grocer South Plympton / IGA Elizabeth Downs: 57.44%
+  - IGA Local Grocer South Plympton / IGA Flaxmill Road: 50.20%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Adelaide City East: 53.67%
+  - IGA Local Grocer South Plympton / IGA Clearview: 57.81%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Glenelg East: 57.68%
+  - IGA Local Grocer South Plympton / Blair Athol IGA: 61.88%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Wattle Park: 51.41%
+  - Westwood IGA / IGA Morphett Vale: 55.08%
+  - Westwood IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 46.41%
+  - Westwood IGA / IGA Local Grocer Bowden: 48.48%
+  - Westwood IGA / IGA Local Grocer Woodville: 53.20%
+  - Westwood IGA / IGA Local Grocer Somerton Park: 52.57%
+  - Westwood IGA / IGA Local Grocer Franklin Street: 48.71%
+  - Westwood IGA / IGA Para Hills: 49.96%
+  - Westwood IGA / IGA Elizabeth Downs: 56.23%
+  - Westwood IGA / IGA Flaxmill Road: 47.75%
+  - Westwood IGA / IGA Local Grocer Adelaide City East: 49.96%
+  - Westwood IGA / IGA Clearview: 51.58%
+  - Westwood IGA / IGA Local Grocer Glenelg East: 52.62%
+  - Westwood IGA / Blair Athol IGA: 57.43%
+  - Westwood IGA / IGA Local Grocer Wattle Park: 47.40%
+  - IGA Morphett Vale / IGA Local Grocer Mt Gambier (Swallow Drive): 45.24%
+  - IGA Morphett Vale / IGA Local Grocer Bowden: 49.60%
+  - IGA Morphett Vale / IGA Local Grocer Woodville: 56.43%
+  - IGA Morphett Vale / IGA Local Grocer Somerton Park: 53.63%
+  - IGA Morphett Vale / IGA Local Grocer Franklin Street: 50.31%
+  - IGA Morphett Vale / IGA Para Hills: 54.68%
+  - IGA Morphett Vale / IGA Elizabeth Downs: 58.93%
+  - IGA Morphett Vale / IGA Flaxmill Road: 54.39%
+  - IGA Morphett Vale / IGA Local Grocer Adelaide City East: 55.60%
+  - IGA Morphett Vale / IGA Clearview: 60.26%
+  - IGA Morphett Vale / IGA Local Grocer Glenelg East: 59.58%
+  - IGA Morphett Vale / Blair Athol IGA: 62.90%
+  - IGA Morphett Vale / IGA Local Grocer Wattle Park: 51.21%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Bowden: 41.64%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Woodville: 50.77%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Somerton Park: 44.90%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Franklin Street: 42.85%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Para Hills: 43.83%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Elizabeth Downs: 45.40%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Flaxmill Road: 42.02%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Adelaide City East: 47.69%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Clearview: 45.82%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Glenelg East: 45.21%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / Blair Athol IGA: 48.80%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Wattle Park: 39.67%
+  - IGA Local Grocer Bowden / IGA Local Grocer Woodville: 50.49%
+  - IGA Local Grocer Bowden / IGA Local Grocer Somerton Park: 47.89%
+  - IGA Local Grocer Bowden / IGA Local Grocer Franklin Street: 45.80%
+  - IGA Local Grocer Bowden / IGA Para Hills: 49.73%
+  - IGA Local Grocer Bowden / IGA Elizabeth Downs: 49.52%
+  - IGA Local Grocer Bowden / IGA Flaxmill Road: 45.78%
+  - IGA Local Grocer Bowden / IGA Local Grocer Adelaide City East: 50.11%
+  - IGA Local Grocer Bowden / IGA Clearview: 48.39%
+  - IGA Local Grocer Bowden / IGA Local Grocer Glenelg East: 48.05%
+  - IGA Local Grocer Bowden / Blair Athol IGA: 55.32%
+  - IGA Local Grocer Bowden / IGA Local Grocer Wattle Park: 47.72%
+  - IGA Local Grocer Woodville / IGA Local Grocer Somerton Park: 53.15%
+  - IGA Local Grocer Woodville / IGA Local Grocer Franklin Street: 52.61%
+  - IGA Local Grocer Woodville / IGA Para Hills: 54.28%
+  - IGA Local Grocer Woodville / IGA Elizabeth Downs: 56.76%
+  - IGA Local Grocer Woodville / IGA Flaxmill Road: 51.07%
+  - IGA Local Grocer Woodville / IGA Local Grocer Adelaide City East: 52.79%
+  - IGA Local Grocer Woodville / IGA Clearview: 56.53%
+  - IGA Local Grocer Woodville / IGA Local Grocer Glenelg East: 59.53%
+  - IGA Local Grocer Woodville / Blair Athol IGA: 58.20%
+  - IGA Local Grocer Woodville / IGA Local Grocer Wattle Park: 57.38%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Franklin Street: 45.92%
+  - IGA Local Grocer Somerton Park / IGA Para Hills: 49.50%
+  - IGA Local Grocer Somerton Park / IGA Elizabeth Downs: 52.21%
+  - IGA Local Grocer Somerton Park / IGA Flaxmill Road: 48.67%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Adelaide City East: 46.99%
+  - IGA Local Grocer Somerton Park / IGA Clearview: 51.53%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Glenelg East: 52.23%
+  - IGA Local Grocer Somerton Park / Blair Athol IGA: 55.91%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Wattle Park: 47.29%
+  - IGA Local Grocer Franklin Street / IGA Para Hills: 49.52%
+  - IGA Local Grocer Franklin Street / IGA Elizabeth Downs: 54.65%
+  - IGA Local Grocer Franklin Street / IGA Flaxmill Road: 46.41%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Adelaide City East: 49.89%
+  - IGA Local Grocer Franklin Street / IGA Clearview: 47.89%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Glenelg East: 50.62%
+  - IGA Local Grocer Franklin Street / Blair Athol IGA: 53.64%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Wattle Park: 52.73%
+  - IGA Para Hills / IGA Elizabeth Downs: 62.17%
+  - IGA Para Hills / IGA Flaxmill Road: 54.10%
+  - IGA Para Hills / IGA Local Grocer Adelaide City East: 50.61%
+  - IGA Para Hills / IGA Clearview: 57.63%
+  - IGA Para Hills / IGA Local Grocer Glenelg East: 54.19%
+  - IGA Para Hills / Blair Athol IGA: 58.25%
+  - IGA Para Hills / IGA Local Grocer Wattle Park: 52.41%
+  - IGA Elizabeth Downs / IGA Flaxmill Road: 58.11%
+  - IGA Elizabeth Downs / IGA Local Grocer Adelaide City East: 51.52%
+  - IGA Elizabeth Downs / IGA Clearview: 57.36%
+  - IGA Elizabeth Downs / IGA Local Grocer Glenelg East: 56.65%
+  - IGA Elizabeth Downs / Blair Athol IGA: 61.89%
+  - IGA Elizabeth Downs / IGA Local Grocer Wattle Park: 52.39%
+  - IGA Flaxmill Road / IGA Local Grocer Adelaide City East: 47.36%
+  - IGA Flaxmill Road / IGA Clearview: 53.03%
+  - IGA Flaxmill Road / IGA Local Grocer Glenelg East: 52.29%
+  - IGA Flaxmill Road / Blair Athol IGA: 59.47%
+  - IGA Flaxmill Road / IGA Local Grocer Wattle Park: 47.33%
+  - IGA Local Grocer Adelaide City East / IGA Clearview: 51.46%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Glenelg East: 54.53%
+  - IGA Local Grocer Adelaide City East / Blair Athol IGA: 57.29%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Wattle Park: 52.06%
+  - IGA Clearview / IGA Local Grocer Glenelg East: 55.89%
+  - IGA Clearview / Blair Athol IGA: 62.73%
+  - IGA Clearview / IGA Local Grocer Wattle Park: 53.25%
+  - IGA Local Grocer Glenelg East / Blair Athol IGA: 58.62%
+  - IGA Local Grocer Glenelg East / IGA Local Grocer Wattle Park: 56.71%
+  - Blair Athol IGA / IGA Local Grocer Wattle Park: 56.06%
+
+Category: Pet
+  - Redwood Park IGA / IGA Local Grocer South Plympton: 68.43%
+  - Redwood Park IGA / Westwood IGA: 59.65%
+  - Redwood Park IGA / IGA Morphett Vale: 70.42%
+  - Redwood Park IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 54.06%
+  - Redwood Park IGA / IGA Local Grocer Bowden: 59.25%
+  - Redwood Park IGA / IGA Local Grocer Woodville: 66.40%
+  - Redwood Park IGA / IGA Local Grocer Somerton Park: 62.10%
+  - Redwood Park IGA / IGA Local Grocer Franklin Street: 51.49%
+  - Redwood Park IGA / IGA Para Hills: 63.10%
+  - Redwood Park IGA / IGA Elizabeth Downs: 67.06%
+  - Redwood Park IGA / IGA Flaxmill Road: 63.75%
+  - Redwood Park IGA / IGA Local Grocer Adelaide City East: 55.55%
+  - Redwood Park IGA / IGA Clearview: 68.43%
+  - Redwood Park IGA / IGA Local Grocer Glenelg East: 64.44%
+  - Redwood Park IGA / Blair Athol IGA: 70.79%
+  - Redwood Park IGA / IGA Local Grocer Wattle Park: 63.07%
+  - IGA Local Grocer South Plympton / Westwood IGA: 60.44%
+  - IGA Local Grocer South Plympton / IGA Morphett Vale: 62.53%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Mt Gambier (Swallow Drive): 54.88%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Bowden: 60.35%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Woodville: 66.65%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Somerton Park: 64.95%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Franklin Street: 52.05%
+  - IGA Local Grocer South Plympton / IGA Para Hills: 61.79%
+  - IGA Local Grocer South Plympton / IGA Elizabeth Downs: 68.68%
+  - IGA Local Grocer South Plympton / IGA Flaxmill Road: 62.87%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Adelaide City East: 54.12%
+  - IGA Local Grocer South Plympton / IGA Clearview: 65.22%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Glenelg East: 65.29%
+  - IGA Local Grocer South Plympton / Blair Athol IGA: 71.15%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Wattle Park: 64.21%
+  - Westwood IGA / IGA Morphett Vale: 58.89%
+  - Westwood IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 47.08%
+  - Westwood IGA / IGA Local Grocer Bowden: 52.80%
+  - Westwood IGA / IGA Local Grocer Woodville: 58.84%
+  - Westwood IGA / IGA Local Grocer Somerton Park: 56.95%
+  - Westwood IGA / IGA Local Grocer Franklin Street: 46.97%
+  - Westwood IGA / IGA Para Hills: 57.17%
+  - Westwood IGA / IGA Elizabeth Downs: 59.68%
+  - Westwood IGA / IGA Flaxmill Road: 52.62%
+  - Westwood IGA / IGA Local Grocer Adelaide City East: 45.92%
+  - Westwood IGA / IGA Clearview: 61.87%
+  - Westwood IGA / IGA Local Grocer Glenelg East: 54.14%
+  - Westwood IGA / Blair Athol IGA: 62.23%
+  - Westwood IGA / IGA Local Grocer Wattle Park: 53.37%
+  - IGA Morphett Vale / IGA Local Grocer Mt Gambier (Swallow Drive): 53.11%
+  - IGA Morphett Vale / IGA Local Grocer Bowden: 59.17%
+  - IGA Morphett Vale / IGA Local Grocer Woodville: 61.97%
+  - IGA Morphett Vale / IGA Local Grocer Somerton Park: 61.35%
+  - IGA Morphett Vale / IGA Local Grocer Franklin Street: 51.15%
+  - IGA Morphett Vale / IGA Para Hills: 61.32%
+  - IGA Morphett Vale / IGA Elizabeth Downs: 63.52%
+  - IGA Morphett Vale / IGA Flaxmill Road: 69.01%
+  - IGA Morphett Vale / IGA Local Grocer Adelaide City East: 55.48%
+  - IGA Morphett Vale / IGA Clearview: 67.33%
+  - IGA Morphett Vale / IGA Local Grocer Glenelg East: 68.22%
+  - IGA Morphett Vale / Blair Athol IGA: 70.18%
+  - IGA Morphett Vale / IGA Local Grocer Wattle Park: 62.20%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Bowden: 52.92%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Woodville: 54.03%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Somerton Park: 49.87%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Franklin Street: 35.85%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Para Hills: 54.90%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Elizabeth Downs: 58.09%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Flaxmill Road: 50.32%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Adelaide City East: 47.16%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Clearview: 48.72%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Glenelg East: 53.26%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / Blair Athol IGA: 56.78%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Wattle Park: 49.39%
+  - IGA Local Grocer Bowden / IGA Local Grocer Woodville: 59.81%
+  - IGA Local Grocer Bowden / IGA Local Grocer Somerton Park: 56.23%
+  - IGA Local Grocer Bowden / IGA Local Grocer Franklin Street: 46.47%
+  - IGA Local Grocer Bowden / IGA Para Hills: 55.28%
+  - IGA Local Grocer Bowden / IGA Elizabeth Downs: 59.31%
+  - IGA Local Grocer Bowden / IGA Flaxmill Road: 55.65%
+  - IGA Local Grocer Bowden / IGA Local Grocer Adelaide City East: 51.17%
+  - IGA Local Grocer Bowden / IGA Clearview: 56.47%
+  - IGA Local Grocer Bowden / IGA Local Grocer Glenelg East: 51.99%
+  - IGA Local Grocer Bowden / Blair Athol IGA: 62.99%
+  - IGA Local Grocer Bowden / IGA Local Grocer Wattle Park: 53.88%
+  - IGA Local Grocer Woodville / IGA Local Grocer Somerton Park: 62.72%
+  - IGA Local Grocer Woodville / IGA Local Grocer Franklin Street: 48.07%
+  - IGA Local Grocer Woodville / IGA Para Hills: 60.42%
+  - IGA Local Grocer Woodville / IGA Elizabeth Downs: 67.24%
+  - IGA Local Grocer Woodville / IGA Flaxmill Road: 60.49%
+  - IGA Local Grocer Woodville / IGA Local Grocer Adelaide City East: 51.79%
+  - IGA Local Grocer Woodville / IGA Clearview: 64.53%
+  - IGA Local Grocer Woodville / IGA Local Grocer Glenelg East: 62.57%
+  - IGA Local Grocer Woodville / Blair Athol IGA: 66.06%
+  - IGA Local Grocer Woodville / IGA Local Grocer Wattle Park: 58.96%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Franklin Street: 44.63%
+  - IGA Local Grocer Somerton Park / IGA Para Hills: 56.80%
+  - IGA Local Grocer Somerton Park / IGA Elizabeth Downs: 63.54%
+  - IGA Local Grocer Somerton Park / IGA Flaxmill Road: 56.08%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Adelaide City East: 52.75%
+  - IGA Local Grocer Somerton Park / IGA Clearview: 63.30%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Glenelg East: 60.76%
+  - IGA Local Grocer Somerton Park / Blair Athol IGA: 67.28%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Wattle Park: 56.48%
+  - IGA Local Grocer Franklin Street / IGA Para Hills: 49.48%
+  - IGA Local Grocer Franklin Street / IGA Elizabeth Downs: 50.77%
+  - IGA Local Grocer Franklin Street / IGA Flaxmill Road: 50.75%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Adelaide City East: 43.10%
+  - IGA Local Grocer Franklin Street / IGA Clearview: 46.93%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Glenelg East: 46.64%
+  - IGA Local Grocer Franklin Street / Blair Athol IGA: 50.06%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Wattle Park: 48.94%
+  - IGA Para Hills / IGA Elizabeth Downs: 68.89%
+  - IGA Para Hills / IGA Flaxmill Road: 67.59%
+  - IGA Para Hills / IGA Local Grocer Adelaide City East: 52.74%
+  - IGA Para Hills / IGA Clearview: 61.30%
+  - IGA Para Hills / IGA Local Grocer Glenelg East: 54.92%
+  - IGA Para Hills / Blair Athol IGA: 65.46%
+  - IGA Para Hills / IGA Local Grocer Wattle Park: 52.53%
+  - IGA Elizabeth Downs / IGA Flaxmill Road: 66.58%
+  - IGA Elizabeth Downs / IGA Local Grocer Adelaide City East: 54.91%
+  - IGA Elizabeth Downs / IGA Clearview: 68.21%
+  - IGA Elizabeth Downs / IGA Local Grocer Glenelg East: 64.68%
+  - IGA Elizabeth Downs / Blair Athol IGA: 71.83%
+  - IGA Elizabeth Downs / IGA Local Grocer Wattle Park: 58.67%
+  - IGA Flaxmill Road / IGA Local Grocer Adelaide City East: 55.90%
+  - IGA Flaxmill Road / IGA Clearview: 63.14%
+  - IGA Flaxmill Road / IGA Local Grocer Glenelg East: 62.16%
+  - IGA Flaxmill Road / Blair Athol IGA: 63.08%
+  - IGA Flaxmill Road / IGA Local Grocer Wattle Park: 60.86%
+  - IGA Local Grocer Adelaide City East / IGA Clearview: 52.47%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Glenelg East: 48.94%
+  - IGA Local Grocer Adelaide City East / Blair Athol IGA: 58.16%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Wattle Park: 53.20%
+  - IGA Clearview / IGA Local Grocer Glenelg East: 65.56%
+  - IGA Clearview / Blair Athol IGA: 70.05%
+  - IGA Clearview / IGA Local Grocer Wattle Park: 60.29%
+  - IGA Local Grocer Glenelg East / Blair Athol IGA: 63.52%
+  - IGA Local Grocer Glenelg East / IGA Local Grocer Wattle Park: 63.02%
+  - Blair Athol IGA / IGA Local Grocer Wattle Park: 59.44%
+
+Category: Drinks
+  - Redwood Park IGA / IGA Local Grocer South Plympton: 65.04%
+  - Redwood Park IGA / Westwood IGA: 59.61%
+  - Redwood Park IGA / IGA Morphett Vale: 67.12%
+  - Redwood Park IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 58.75%
+  - Redwood Park IGA / IGA Local Grocer Bowden: 56.15%
+  - Redwood Park IGA / IGA Local Grocer Woodville: 67.39%
+  - Redwood Park IGA / IGA Local Grocer Somerton Park: 65.80%
+  - Redwood Park IGA / IGA Local Grocer Franklin Street: 60.91%
+  - Redwood Park IGA / IGA Para Hills: 67.83%
+  - Redwood Park IGA / IGA Elizabeth Downs: 62.80%
+  - Redwood Park IGA / IGA Flaxmill Road: 65.71%
+  - Redwood Park IGA / IGA Local Grocer Adelaide City East: 60.38%
+  - Redwood Park IGA / IGA Clearview: 65.98%
+  - Redwood Park IGA / IGA Local Grocer Glenelg East: 65.14%
+  - Redwood Park IGA / Blair Athol IGA: 70.69%
+  - Redwood Park IGA / IGA Local Grocer Wattle Park: 55.16%
+  - IGA Local Grocer South Plympton / Westwood IGA: 64.73%
+  - IGA Local Grocer South Plympton / IGA Morphett Vale: 64.33%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Mt Gambier (Swallow Drive): 59.07%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Bowden: 57.39%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Woodville: 66.41%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Somerton Park: 68.52%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Franklin Street: 59.64%
+  - IGA Local Grocer South Plympton / IGA Para Hills: 64.55%
+  - IGA Local Grocer South Plympton / IGA Elizabeth Downs: 63.95%
+  - IGA Local Grocer South Plympton / IGA Flaxmill Road: 64.02%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Adelaide City East: 59.07%
+  - IGA Local Grocer South Plympton / IGA Clearview: 63.39%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Glenelg East: 62.57%
+  - IGA Local Grocer South Plympton / Blair Athol IGA: 65.16%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Wattle Park: 56.78%
+  - Westwood IGA / IGA Morphett Vale: 59.46%
+  - Westwood IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 56.88%
+  - Westwood IGA / IGA Local Grocer Bowden: 55.73%
+  - Westwood IGA / IGA Local Grocer Woodville: 61.37%
+  - Westwood IGA / IGA Local Grocer Somerton Park: 61.36%
+  - Westwood IGA / IGA Local Grocer Franklin Street: 56.12%
+  - Westwood IGA / IGA Para Hills: 60.48%
+  - Westwood IGA / IGA Elizabeth Downs: 60.04%
+  - Westwood IGA / IGA Flaxmill Road: 59.73%
+  - Westwood IGA / IGA Local Grocer Adelaide City East: 56.08%
+  - Westwood IGA / IGA Clearview: 60.12%
+  - Westwood IGA / IGA Local Grocer Glenelg East: 54.29%
+  - Westwood IGA / Blair Athol IGA: 59.47%
+  - Westwood IGA / IGA Local Grocer Wattle Park: 53.61%
+  - IGA Morphett Vale / IGA Local Grocer Mt Gambier (Swallow Drive): 54.79%
+  - IGA Morphett Vale / IGA Local Grocer Bowden: 56.82%
+  - IGA Morphett Vale / IGA Local Grocer Woodville: 62.99%
+  - IGA Morphett Vale / IGA Local Grocer Somerton Park: 63.16%
+  - IGA Morphett Vale / IGA Local Grocer Franklin Street: 58.22%
+  - IGA Morphett Vale / IGA Para Hills: 63.17%
+  - IGA Morphett Vale / IGA Elizabeth Downs: 61.33%
+  - IGA Morphett Vale / IGA Flaxmill Road: 65.71%
+  - IGA Morphett Vale / IGA Local Grocer Adelaide City East: 57.91%
+  - IGA Morphett Vale / IGA Clearview: 62.41%
+  - IGA Morphett Vale / IGA Local Grocer Glenelg East: 60.71%
+  - IGA Morphett Vale / Blair Athol IGA: 67.62%
+  - IGA Morphett Vale / IGA Local Grocer Wattle Park: 56.74%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Bowden: 52.60%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Woodville: 57.16%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Somerton Park: 61.58%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Franklin Street: 52.91%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Para Hills: 59.47%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Elizabeth Downs: 57.45%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Flaxmill Road: 61.50%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Adelaide City East: 51.86%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Clearview: 55.93%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Glenelg East: 54.02%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / Blair Athol IGA: 60.11%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Wattle Park: 50.01%
+  - IGA Local Grocer Bowden / IGA Local Grocer Woodville: 56.82%
+  - IGA Local Grocer Bowden / IGA Local Grocer Somerton Park: 57.63%
+  - IGA Local Grocer Bowden / IGA Local Grocer Franklin Street: 59.84%
+  - IGA Local Grocer Bowden / IGA Para Hills: 58.64%
+  - IGA Local Grocer Bowden / IGA Elizabeth Downs: 57.97%
+  - IGA Local Grocer Bowden / IGA Flaxmill Road: 56.00%
+  - IGA Local Grocer Bowden / IGA Local Grocer Adelaide City East: 59.31%
+  - IGA Local Grocer Bowden / IGA Clearview: 58.98%
+  - IGA Local Grocer Bowden / IGA Local Grocer Glenelg East: 56.34%
+  - IGA Local Grocer Bowden / Blair Athol IGA: 56.56%
+  - IGA Local Grocer Bowden / IGA Local Grocer Wattle Park: 56.37%
+  - IGA Local Grocer Woodville / IGA Local Grocer Somerton Park: 65.26%
+  - IGA Local Grocer Woodville / IGA Local Grocer Franklin Street: 61.12%
+  - IGA Local Grocer Woodville / IGA Para Hills: 66.33%
+  - IGA Local Grocer Woodville / IGA Elizabeth Downs: 62.84%
+  - IGA Local Grocer Woodville / IGA Flaxmill Road: 62.01%
+  - IGA Local Grocer Woodville / IGA Local Grocer Adelaide City East: 63.23%
+  - IGA Local Grocer Woodville / IGA Clearview: 62.47%
+  - IGA Local Grocer Woodville / IGA Local Grocer Glenelg East: 64.48%
+  - IGA Local Grocer Woodville / Blair Athol IGA: 66.26%
+  - IGA Local Grocer Woodville / IGA Local Grocer Wattle Park: 56.38%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Franklin Street: 59.96%
+  - IGA Local Grocer Somerton Park / IGA Para Hills: 65.72%
+  - IGA Local Grocer Somerton Park / IGA Elizabeth Downs: 64.14%
+  - IGA Local Grocer Somerton Park / IGA Flaxmill Road: 65.44%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Adelaide City East: 60.58%
+  - IGA Local Grocer Somerton Park / IGA Clearview: 64.15%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Glenelg East: 61.19%
+  - IGA Local Grocer Somerton Park / Blair Athol IGA: 64.25%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Wattle Park: 57.08%
+  - IGA Local Grocer Franklin Street / IGA Para Hills: 64.72%
+  - IGA Local Grocer Franklin Street / IGA Elizabeth Downs: 58.09%
+  - IGA Local Grocer Franklin Street / IGA Flaxmill Road: 58.51%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Adelaide City East: 59.43%
+  - IGA Local Grocer Franklin Street / IGA Clearview: 59.59%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Glenelg East: 59.43%
+  - IGA Local Grocer Franklin Street / Blair Athol IGA: 60.60%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Wattle Park: 55.62%
+  - IGA Para Hills / IGA Elizabeth Downs: 67.08%
+  - IGA Para Hills / IGA Flaxmill Road: 68.07%
+  - IGA Para Hills / IGA Local Grocer Adelaide City East: 60.64%
+  - IGA Para Hills / IGA Clearview: 66.99%
+  - IGA Para Hills / IGA Local Grocer Glenelg East: 62.62%
+  - IGA Para Hills / Blair Athol IGA: 66.87%
+  - IGA Para Hills / IGA Local Grocer Wattle Park: 58.67%
+  - IGA Elizabeth Downs / IGA Flaxmill Road: 66.18%
+  - IGA Elizabeth Downs / IGA Local Grocer Adelaide City East: 57.68%
+  - IGA Elizabeth Downs / IGA Clearview: 64.05%
+  - IGA Elizabeth Downs / IGA Local Grocer Glenelg East: 58.59%
+  - IGA Elizabeth Downs / Blair Athol IGA: 65.26%
+  - IGA Elizabeth Downs / IGA Local Grocer Wattle Park: 54.43%
+  - IGA Flaxmill Road / IGA Local Grocer Adelaide City East: 59.29%
+  - IGA Flaxmill Road / IGA Clearview: 63.23%
+  - IGA Flaxmill Road / IGA Local Grocer Glenelg East: 60.37%
+  - IGA Flaxmill Road / Blair Athol IGA: 70.25%
+  - IGA Flaxmill Road / IGA Local Grocer Wattle Park: 51.23%
+  - IGA Local Grocer Adelaide City East / IGA Clearview: 58.84%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Glenelg East: 58.92%
+  - IGA Local Grocer Adelaide City East / Blair Athol IGA: 63.00%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Wattle Park: 56.51%
+  - IGA Clearview / IGA Local Grocer Glenelg East: 59.28%
+  - IGA Clearview / Blair Athol IGA: 64.31%
+  - IGA Clearview / IGA Local Grocer Wattle Park: 55.51%
+  - IGA Local Grocer Glenelg East / Blair Athol IGA: 62.52%
+  - IGA Local Grocer Glenelg East / IGA Local Grocer Wattle Park: 55.29%
+  - Blair Athol IGA / IGA Local Grocer Wattle Park: 54.93%
+
+Category: Bakery
+  - Redwood Park IGA / IGA Local Grocer South Plympton: 59.38%
+  - Redwood Park IGA / Westwood IGA: 44.08%
+  - Redwood Park IGA / IGA Morphett Vale: 49.19%
+  - Redwood Park IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 47.39%
+  - Redwood Park IGA / IGA Local Grocer Bowden: 49.38%
+  - Redwood Park IGA / IGA Local Grocer Woodville: 57.00%
+  - Redwood Park IGA / IGA Local Grocer Somerton Park: 57.32%
+  - Redwood Park IGA / IGA Local Grocer Franklin Street: 49.58%
+  - Redwood Park IGA / IGA Para Hills: 56.58%
+  - Redwood Park IGA / IGA Elizabeth Downs: 48.62%
+  - Redwood Park IGA / IGA Flaxmill Road: 51.21%
+  - Redwood Park IGA / IGA Local Grocer Adelaide City East: 55.45%
+  - Redwood Park IGA / IGA Clearview: 54.23%
+  - Redwood Park IGA / IGA Local Grocer Glenelg East: 49.06%
+  - Redwood Park IGA / Blair Athol IGA: 57.85%
+  - Redwood Park IGA / IGA Local Grocer Wattle Park: 47.65%
+  - IGA Local Grocer South Plympton / Westwood IGA: 45.11%
+  - IGA Local Grocer South Plympton / IGA Morphett Vale: 44.74%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Mt Gambier (Swallow Drive): 44.37%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Bowden: 44.34%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Woodville: 48.90%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Somerton Park: 53.03%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Franklin Street: 41.14%
+  - IGA Local Grocer South Plympton / IGA Para Hills: 52.14%
+  - IGA Local Grocer South Plympton / IGA Elizabeth Downs: 45.86%
+  - IGA Local Grocer South Plympton / IGA Flaxmill Road: 44.90%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Adelaide City East: 48.30%
+  - IGA Local Grocer South Plympton / IGA Clearview: 52.32%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Glenelg East: 53.49%
+  - IGA Local Grocer South Plympton / Blair Athol IGA: 56.00%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Wattle Park: 51.99%
+  - Westwood IGA / IGA Morphett Vale: 46.07%
+  - Westwood IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 36.97%
+  - Westwood IGA / IGA Local Grocer Bowden: 44.77%
+  - Westwood IGA / IGA Local Grocer Woodville: 49.08%
+  - Westwood IGA / IGA Local Grocer Somerton Park: 45.11%
+  - Westwood IGA / IGA Local Grocer Franklin Street: 41.96%
+  - Westwood IGA / IGA Para Hills: 45.28%
+  - Westwood IGA / IGA Elizabeth Downs: 48.36%
+  - Westwood IGA / IGA Flaxmill Road: 39.00%
+  - Westwood IGA / IGA Local Grocer Adelaide City East: 42.38%
+  - Westwood IGA / IGA Clearview: 49.00%
+  - Westwood IGA / IGA Local Grocer Glenelg East: 41.61%
+  - Westwood IGA / Blair Athol IGA: 48.40%
+  - Westwood IGA / IGA Local Grocer Wattle Park: 34.18%
+  - IGA Morphett Vale / IGA Local Grocer Mt Gambier (Swallow Drive): 34.96%
+  - IGA Morphett Vale / IGA Local Grocer Bowden: 38.84%
+  - IGA Morphett Vale / IGA Local Grocer Woodville: 48.76%
+  - IGA Morphett Vale / IGA Local Grocer Somerton Park: 44.78%
+  - IGA Morphett Vale / IGA Local Grocer Franklin Street: 38.98%
+  - IGA Morphett Vale / IGA Para Hills: 55.94%
+  - IGA Morphett Vale / IGA Elizabeth Downs: 45.82%
+  - IGA Morphett Vale / IGA Flaxmill Road: 54.24%
+  - IGA Morphett Vale / IGA Local Grocer Adelaide City East: 46.14%
+  - IGA Morphett Vale / IGA Clearview: 47.33%
+  - IGA Morphett Vale / IGA Local Grocer Glenelg East: 47.31%
+  - IGA Morphett Vale / Blair Athol IGA: 53.89%
+  - IGA Morphett Vale / IGA Local Grocer Wattle Park: 39.20%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Bowden: 33.40%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Woodville: 39.84%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Somerton Park: 37.56%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Franklin Street: 38.45%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Para Hills: 40.96%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Elizabeth Downs: 42.28%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Flaxmill Road: 38.12%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Adelaide City East: 37.65%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Clearview: 39.50%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Glenelg East: 36.05%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / Blair Athol IGA: 48.23%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Wattle Park: 32.92%
+  - IGA Local Grocer Bowden / IGA Local Grocer Woodville: 41.54%
+  - IGA Local Grocer Bowden / IGA Local Grocer Somerton Park: 50.43%
+  - IGA Local Grocer Bowden / IGA Local Grocer Franklin Street: 48.77%
+  - IGA Local Grocer Bowden / IGA Para Hills: 41.14%
+  - IGA Local Grocer Bowden / IGA Elizabeth Downs: 40.64%
+  - IGA Local Grocer Bowden / IGA Flaxmill Road: 39.80%
+  - IGA Local Grocer Bowden / IGA Local Grocer Adelaide City East: 50.98%
+  - IGA Local Grocer Bowden / IGA Clearview: 43.57%
+  - IGA Local Grocer Bowden / IGA Local Grocer Glenelg East: 37.07%
+  - IGA Local Grocer Bowden / Blair Athol IGA: 46.37%
+  - IGA Local Grocer Bowden / IGA Local Grocer Wattle Park: 39.20%
+  - IGA Local Grocer Woodville / IGA Local Grocer Somerton Park: 56.54%
+  - IGA Local Grocer Woodville / IGA Local Grocer Franklin Street: 47.51%
+  - IGA Local Grocer Woodville / IGA Para Hills: 51.92%
+  - IGA Local Grocer Woodville / IGA Elizabeth Downs: 50.18%
+  - IGA Local Grocer Woodville / IGA Flaxmill Road: 44.54%
+  - IGA Local Grocer Woodville / IGA Local Grocer Adelaide City East: 51.33%
+  - IGA Local Grocer Woodville / IGA Clearview: 52.52%
+  - IGA Local Grocer Woodville / IGA Local Grocer Glenelg East: 41.93%
+  - IGA Local Grocer Woodville / Blair Athol IGA: 54.19%
+  - IGA Local Grocer Woodville / IGA Local Grocer Wattle Park: 41.71%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Franklin Street: 46.68%
+  - IGA Local Grocer Somerton Park / IGA Para Hills: 54.44%
+  - IGA Local Grocer Somerton Park / IGA Elizabeth Downs: 47.58%
+  - IGA Local Grocer Somerton Park / IGA Flaxmill Road: 43.34%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Adelaide City East: 48.57%
+  - IGA Local Grocer Somerton Park / IGA Clearview: 48.75%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Glenelg East: 47.63%
+  - IGA Local Grocer Somerton Park / Blair Athol IGA: 50.83%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Wattle Park: 45.14%
+  - IGA Local Grocer Franklin Street / IGA Para Hills: 47.18%
+  - IGA Local Grocer Franklin Street / IGA Elizabeth Downs: 44.34%
+  - IGA Local Grocer Franklin Street / IGA Flaxmill Road: 41.32%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Adelaide City East: 48.62%
+  - IGA Local Grocer Franklin Street / IGA Clearview: 44.54%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Glenelg East: 45.05%
+  - IGA Local Grocer Franklin Street / Blair Athol IGA: 57.20%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Wattle Park: 36.74%
+  - IGA Para Hills / IGA Elizabeth Downs: 53.03%
+  - IGA Para Hills / IGA Flaxmill Road: 48.82%
+  - IGA Para Hills / IGA Local Grocer Adelaide City East: 51.35%
+  - IGA Para Hills / IGA Clearview: 51.69%
+  - IGA Para Hills / IGA Local Grocer Glenelg East: 48.00%
+  - IGA Para Hills / Blair Athol IGA: 58.44%
+  - IGA Para Hills / IGA Local Grocer Wattle Park: 49.80%
+  - IGA Elizabeth Downs / IGA Flaxmill Road: 49.90%
+  - IGA Elizabeth Downs / IGA Local Grocer Adelaide City East: 42.16%
+  - IGA Elizabeth Downs / IGA Clearview: 49.04%
+  - IGA Elizabeth Downs / IGA Local Grocer Glenelg East: 43.77%
+  - IGA Elizabeth Downs / Blair Athol IGA: 53.22%
+  - IGA Elizabeth Downs / IGA Local Grocer Wattle Park: 40.56%
+  - IGA Flaxmill Road / IGA Local Grocer Adelaide City East: 42.08%
+  - IGA Flaxmill Road / IGA Clearview: 48.19%
+  - IGA Flaxmill Road / IGA Local Grocer Glenelg East: 45.33%
+  - IGA Flaxmill Road / Blair Athol IGA: 55.87%
+  - IGA Flaxmill Road / IGA Local Grocer Wattle Park: 39.24%
+  - IGA Local Grocer Adelaide City East / IGA Clearview: 46.66%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Glenelg East: 37.33%
+  - IGA Local Grocer Adelaide City East / Blair Athol IGA: 47.87%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Wattle Park: 40.61%
+  - IGA Clearview / IGA Local Grocer Glenelg East: 46.20%
+  - IGA Clearview / Blair Athol IGA: 54.46%
+  - IGA Clearview / IGA Local Grocer Wattle Park: 44.39%
+  - IGA Local Grocer Glenelg East / Blair Athol IGA: 51.91%
+  - IGA Local Grocer Glenelg East / IGA Local Grocer Wattle Park: 45.55%
+  - Blair Athol IGA / IGA Local Grocer Wattle Park: 44.71%
+
+Category: Health And Beauty
+  - Redwood Park IGA / IGA Local Grocer South Plympton: 58.05%
+  - Redwood Park IGA / Westwood IGA: 50.43%
+  - Redwood Park IGA / IGA Morphett Vale: 60.29%
+  - Redwood Park IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 41.16%
+  - Redwood Park IGA / IGA Local Grocer Bowden: 49.15%
+  - Redwood Park IGA / IGA Local Grocer Woodville: 58.31%
+  - Redwood Park IGA / IGA Local Grocer Somerton Park: 53.58%
+  - Redwood Park IGA / IGA Local Grocer Franklin Street: 53.41%
+  - Redwood Park IGA / IGA Para Hills: 52.59%
+  - Redwood Park IGA / IGA Elizabeth Downs: 57.89%
+  - Redwood Park IGA / IGA Flaxmill Road: 49.43%
+  - Redwood Park IGA / IGA Local Grocer Adelaide City East: 46.17%
+  - Redwood Park IGA / IGA Clearview: 58.51%
+  - Redwood Park IGA / IGA Local Grocer Glenelg East: 52.71%
+  - Redwood Park IGA / Blair Athol IGA: 60.87%
+  - Redwood Park IGA / IGA Local Grocer Wattle Park: 54.71%
+  - IGA Local Grocer South Plympton / Westwood IGA: 52.55%
+  - IGA Local Grocer South Plympton / IGA Morphett Vale: 51.89%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Mt Gambier (Swallow Drive): 44.37%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Bowden: 47.55%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Woodville: 53.82%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Somerton Park: 52.10%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Franklin Street: 45.21%
+  - IGA Local Grocer South Plympton / IGA Para Hills: 47.84%
+  - IGA Local Grocer South Plympton / IGA Elizabeth Downs: 48.79%
+  - IGA Local Grocer South Plympton / IGA Flaxmill Road: 45.59%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Adelaide City East: 45.04%
+  - IGA Local Grocer South Plympton / IGA Clearview: 50.32%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Glenelg East: 48.14%
+  - IGA Local Grocer South Plympton / Blair Athol IGA: 54.36%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Wattle Park: 49.15%
+  - Westwood IGA / IGA Morphett Vale: 44.96%
+  - Westwood IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 43.30%
+  - Westwood IGA / IGA Local Grocer Bowden: 44.24%
+  - Westwood IGA / IGA Local Grocer Woodville: 44.69%
+  - Westwood IGA / IGA Local Grocer Somerton Park: 42.53%
+  - Westwood IGA / IGA Local Grocer Franklin Street: 43.84%
+  - Westwood IGA / IGA Para Hills: 43.64%
+  - Westwood IGA / IGA Elizabeth Downs: 46.08%
+  - Westwood IGA / IGA Flaxmill Road: 39.66%
+  - Westwood IGA / IGA Local Grocer Adelaide City East: 40.63%
+  - Westwood IGA / IGA Clearview: 44.46%
+  - Westwood IGA / IGA Local Grocer Glenelg East: 41.43%
+  - Westwood IGA / Blair Athol IGA: 49.65%
+  - Westwood IGA / IGA Local Grocer Wattle Park: 43.76%
+  - IGA Morphett Vale / IGA Local Grocer Mt Gambier (Swallow Drive): 37.59%
+  - IGA Morphett Vale / IGA Local Grocer Bowden: 45.06%
+  - IGA Morphett Vale / IGA Local Grocer Woodville: 50.00%
+  - IGA Morphett Vale / IGA Local Grocer Somerton Park: 48.95%
+  - IGA Morphett Vale / IGA Local Grocer Franklin Street: 46.92%
+  - IGA Morphett Vale / IGA Para Hills: 44.45%
+  - IGA Morphett Vale / IGA Elizabeth Downs: 52.54%
+  - IGA Morphett Vale / IGA Flaxmill Road: 50.34%
+  - IGA Morphett Vale / IGA Local Grocer Adelaide City East: 45.67%
+  - IGA Morphett Vale / IGA Clearview: 53.94%
+  - IGA Morphett Vale / IGA Local Grocer Glenelg East: 48.51%
+  - IGA Morphett Vale / Blair Athol IGA: 60.52%
+  - IGA Morphett Vale / IGA Local Grocer Wattle Park: 50.43%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Bowden: 38.52%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Woodville: 40.61%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Somerton Park: 43.21%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Franklin Street: 40.38%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Para Hills: 35.29%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Elizabeth Downs: 37.53%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Flaxmill Road: 34.16%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Adelaide City East: 38.06%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Clearview: 34.82%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Glenelg East: 33.95%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / Blair Athol IGA: 44.45%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Wattle Park: 36.29%
+  - IGA Local Grocer Bowden / IGA Local Grocer Woodville: 48.67%
+  - IGA Local Grocer Bowden / IGA Local Grocer Somerton Park: 44.67%
+  - IGA Local Grocer Bowden / IGA Local Grocer Franklin Street: 46.26%
+  - IGA Local Grocer Bowden / IGA Para Hills: 40.65%
+  - IGA Local Grocer Bowden / IGA Elizabeth Downs: 44.22%
+  - IGA Local Grocer Bowden / IGA Flaxmill Road: 37.55%
+  - IGA Local Grocer Bowden / IGA Local Grocer Adelaide City East: 45.53%
+  - IGA Local Grocer Bowden / IGA Clearview: 39.06%
+  - IGA Local Grocer Bowden / IGA Local Grocer Glenelg East: 46.03%
+  - IGA Local Grocer Bowden / Blair Athol IGA: 46.99%
+  - IGA Local Grocer Bowden / IGA Local Grocer Wattle Park: 46.99%
+  - IGA Local Grocer Woodville / IGA Local Grocer Somerton Park: 51.86%
+  - IGA Local Grocer Woodville / IGA Local Grocer Franklin Street: 52.90%
+  - IGA Local Grocer Woodville / IGA Para Hills: 47.91%
+  - IGA Local Grocer Woodville / IGA Elizabeth Downs: 48.82%
+  - IGA Local Grocer Woodville / IGA Flaxmill Road: 43.12%
+  - IGA Local Grocer Woodville / IGA Local Grocer Adelaide City East: 46.94%
+  - IGA Local Grocer Woodville / IGA Clearview: 47.70%
+  - IGA Local Grocer Woodville / IGA Local Grocer Glenelg East: 52.72%
+  - IGA Local Grocer Woodville / Blair Athol IGA: 52.49%
+  - IGA Local Grocer Woodville / IGA Local Grocer Wattle Park: 50.19%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Franklin Street: 44.70%
+  - IGA Local Grocer Somerton Park / IGA Para Hills: 41.38%
+  - IGA Local Grocer Somerton Park / IGA Elizabeth Downs: 40.92%
+  - IGA Local Grocer Somerton Park / IGA Flaxmill Road: 39.30%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Adelaide City East: 43.75%
+  - IGA Local Grocer Somerton Park / IGA Clearview: 44.41%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Glenelg East: 48.31%
+  - IGA Local Grocer Somerton Park / Blair Athol IGA: 49.65%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Wattle Park: 46.36%
+  - IGA Local Grocer Franklin Street / IGA Para Hills: 48.94%
+  - IGA Local Grocer Franklin Street / IGA Elizabeth Downs: 54.17%
+  - IGA Local Grocer Franklin Street / IGA Flaxmill Road: 41.44%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Adelaide City East: 44.11%
+  - IGA Local Grocer Franklin Street / IGA Clearview: 48.08%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Glenelg East: 51.00%
+  - IGA Local Grocer Franklin Street / Blair Athol IGA: 50.09%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Wattle Park: 49.31%
+  - IGA Para Hills / IGA Elizabeth Downs: 51.85%
+  - IGA Para Hills / IGA Flaxmill Road: 45.06%
+  - IGA Para Hills / IGA Local Grocer Adelaide City East: 37.78%
+  - IGA Para Hills / IGA Clearview: 49.89%
+  - IGA Para Hills / IGA Local Grocer Glenelg East: 45.88%
+  - IGA Para Hills / Blair Athol IGA: 51.11%
+  - IGA Para Hills / IGA Local Grocer Wattle Park: 44.49%
+  - IGA Elizabeth Downs / IGA Flaxmill Road: 49.82%
+  - IGA Elizabeth Downs / IGA Local Grocer Adelaide City East: 42.49%
+  - IGA Elizabeth Downs / IGA Clearview: 52.53%
+  - IGA Elizabeth Downs / IGA Local Grocer Glenelg East: 48.58%
+  - IGA Elizabeth Downs / Blair Athol IGA: 57.79%
+  - IGA Elizabeth Downs / IGA Local Grocer Wattle Park: 49.75%
+  - IGA Flaxmill Road / IGA Local Grocer Adelaide City East: 37.11%
+  - IGA Flaxmill Road / IGA Clearview: 47.43%
+  - IGA Flaxmill Road / IGA Local Grocer Glenelg East: 40.47%
+  - IGA Flaxmill Road / Blair Athol IGA: 53.73%
+  - IGA Flaxmill Road / IGA Local Grocer Wattle Park: 39.92%
+  - IGA Local Grocer Adelaide City East / IGA Clearview: 39.59%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Glenelg East: 46.47%
+  - IGA Local Grocer Adelaide City East / Blair Athol IGA: 47.61%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Wattle Park: 42.34%
+  - IGA Clearview / IGA Local Grocer Glenelg East: 45.28%
+  - IGA Clearview / Blair Athol IGA: 55.25%
+  - IGA Clearview / IGA Local Grocer Wattle Park: 45.34%
+  - IGA Local Grocer Glenelg East / Blair Athol IGA: 50.13%
+  - IGA Local Grocer Glenelg East / IGA Local Grocer Wattle Park: 48.52%
+  - Blair Athol IGA / IGA Local Grocer Wattle Park: 51.87%
+
+Category: Baby
+  - Redwood Park IGA / IGA Local Grocer South Plympton: 59.76%
+  - Redwood Park IGA / Westwood IGA: 60.38%
+  - Redwood Park IGA / IGA Morphett Vale: 67.45%
+  - Redwood Park IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 50.65%
+  - Redwood Park IGA / IGA Local Grocer Bowden: 50.02%
+  - Redwood Park IGA / IGA Local Grocer Woodville: 57.89%
+  - Redwood Park IGA / IGA Local Grocer Somerton Park: 57.09%
+  - Redwood Park IGA / IGA Local Grocer Franklin Street: 54.73%
+  - Redwood Park IGA / IGA Para Hills: 59.17%
+  - Redwood Park IGA / IGA Elizabeth Downs: 62.98%
+  - Redwood Park IGA / IGA Flaxmill Road: 60.23%
+  - Redwood Park IGA / IGA Local Grocer Adelaide City East: 47.64%
+  - Redwood Park IGA / IGA Clearview: 61.30%
+  - Redwood Park IGA / IGA Local Grocer Glenelg East: 55.61%
+  - Redwood Park IGA / Blair Athol IGA: 70.79%
+  - Redwood Park IGA / IGA Local Grocer Wattle Park: 53.46%
+  - IGA Local Grocer South Plympton / Westwood IGA: 53.98%
+  - IGA Local Grocer South Plympton / IGA Morphett Vale: 57.55%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Mt Gambier (Swallow Drive): 52.66%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Bowden: 45.17%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Woodville: 52.92%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Somerton Park: 52.37%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Franklin Street: 48.78%
+  - IGA Local Grocer South Plympton / IGA Para Hills: 60.98%
+  - IGA Local Grocer South Plympton / IGA Elizabeth Downs: 59.88%
+  - IGA Local Grocer South Plympton / IGA Flaxmill Road: 53.41%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Adelaide City East: 45.96%
+  - IGA Local Grocer South Plympton / IGA Clearview: 58.97%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Glenelg East: 53.10%
+  - IGA Local Grocer South Plympton / Blair Athol IGA: 62.43%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Wattle Park: 43.26%
+  - Westwood IGA / IGA Morphett Vale: 59.09%
+  - Westwood IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 52.11%
+  - Westwood IGA / IGA Local Grocer Bowden: 52.71%
+  - Westwood IGA / IGA Local Grocer Woodville: 55.33%
+  - Westwood IGA / IGA Local Grocer Somerton Park: 54.43%
+  - Westwood IGA / IGA Local Grocer Franklin Street: 64.84%
+  - Westwood IGA / IGA Para Hills: 60.70%
+  - Westwood IGA / IGA Elizabeth Downs: 68.49%
+  - Westwood IGA / IGA Flaxmill Road: 54.60%
+  - Westwood IGA / IGA Local Grocer Adelaide City East: 48.27%
+  - Westwood IGA / IGA Clearview: 64.31%
+  - Westwood IGA / IGA Local Grocer Glenelg East: 55.76%
+  - Westwood IGA / Blair Athol IGA: 63.73%
+  - Westwood IGA / IGA Local Grocer Wattle Park: 57.42%
+  - IGA Morphett Vale / IGA Local Grocer Mt Gambier (Swallow Drive): 51.92%
+  - IGA Morphett Vale / IGA Local Grocer Bowden: 49.01%
+  - IGA Morphett Vale / IGA Local Grocer Woodville: 51.15%
+  - IGA Morphett Vale / IGA Local Grocer Somerton Park: 55.85%
+  - IGA Morphett Vale / IGA Local Grocer Franklin Street: 53.39%
+  - IGA Morphett Vale / IGA Para Hills: 61.56%
+  - IGA Morphett Vale / IGA Elizabeth Downs: 61.82%
+  - IGA Morphett Vale / IGA Flaxmill Road: 59.61%
+  - IGA Morphett Vale / IGA Local Grocer Adelaide City East: 45.40%
+  - IGA Morphett Vale / IGA Clearview: 56.07%
+  - IGA Morphett Vale / IGA Local Grocer Glenelg East: 57.93%
+  - IGA Morphett Vale / Blair Athol IGA: 70.38%
+  - IGA Morphett Vale / IGA Local Grocer Wattle Park: 54.07%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Bowden: 46.24%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Woodville: 54.96%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Somerton Park: 53.02%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Franklin Street: 51.75%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Para Hills: 52.59%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Elizabeth Downs: 51.46%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Flaxmill Road: 48.93%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Adelaide City East: 49.26%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Clearview: 47.49%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Glenelg East: 56.74%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / Blair Athol IGA: 56.87%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Wattle Park: 55.04%
+  - IGA Local Grocer Bowden / IGA Local Grocer Woodville: 52.36%
+  - IGA Local Grocer Bowden / IGA Local Grocer Somerton Park: 39.35%
+  - IGA Local Grocer Bowden / IGA Local Grocer Franklin Street: 51.73%
+  - IGA Local Grocer Bowden / IGA Para Hills: 51.26%
+  - IGA Local Grocer Bowden / IGA Elizabeth Downs: 49.76%
+  - IGA Local Grocer Bowden / IGA Flaxmill Road: 51.74%
+  - IGA Local Grocer Bowden / IGA Local Grocer Adelaide City East: 43.10%
+  - IGA Local Grocer Bowden / IGA Clearview: 46.12%
+  - IGA Local Grocer Bowden / IGA Local Grocer Glenelg East: 47.29%
+  - IGA Local Grocer Bowden / Blair Athol IGA: 54.85%
+  - IGA Local Grocer Bowden / IGA Local Grocer Wattle Park: 48.29%
+  - IGA Local Grocer Woodville / IGA Local Grocer Somerton Park: 50.59%
+  - IGA Local Grocer Woodville / IGA Local Grocer Franklin Street: 52.74%
+  - IGA Local Grocer Woodville / IGA Para Hills: 53.23%
+  - IGA Local Grocer Woodville / IGA Elizabeth Downs: 52.68%
+  - IGA Local Grocer Woodville / IGA Flaxmill Road: 54.23%
+  - IGA Local Grocer Woodville / IGA Local Grocer Adelaide City East: 42.94%
+  - IGA Local Grocer Woodville / IGA Clearview: 50.83%
+  - IGA Local Grocer Woodville / IGA Local Grocer Glenelg East: 51.85%
+  - IGA Local Grocer Woodville / Blair Athol IGA: 56.12%
+  - IGA Local Grocer Woodville / IGA Local Grocer Wattle Park: 46.89%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Franklin Street: 52.74%
+  - IGA Local Grocer Somerton Park / IGA Para Hills: 53.78%
+  - IGA Local Grocer Somerton Park / IGA Elizabeth Downs: 55.82%
+  - IGA Local Grocer Somerton Park / IGA Flaxmill Road: 49.32%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Adelaide City East: 45.37%
+  - IGA Local Grocer Somerton Park / IGA Clearview: 54.61%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Glenelg East: 54.96%
+  - IGA Local Grocer Somerton Park / Blair Athol IGA: 58.69%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Wattle Park: 53.22%
+  - IGA Local Grocer Franklin Street / IGA Para Hills: 57.72%
+  - IGA Local Grocer Franklin Street / IGA Elizabeth Downs: 61.86%
+  - IGA Local Grocer Franklin Street / IGA Flaxmill Road: 50.98%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Adelaide City East: 49.23%
+  - IGA Local Grocer Franklin Street / IGA Clearview: 53.84%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Glenelg East: 49.12%
+  - IGA Local Grocer Franklin Street / Blair Athol IGA: 61.77%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Wattle Park: 53.82%
+  - IGA Para Hills / IGA Elizabeth Downs: 70.94%
+  - IGA Para Hills / IGA Flaxmill Road: 56.79%
+  - IGA Para Hills / IGA Local Grocer Adelaide City East: 49.92%
+  - IGA Para Hills / IGA Clearview: 63.18%
+  - IGA Para Hills / IGA Local Grocer Glenelg East: 55.55%
+  - IGA Para Hills / Blair Athol IGA: 64.90%
+  - IGA Para Hills / IGA Local Grocer Wattle Park: 49.91%
+  - IGA Elizabeth Downs / IGA Flaxmill Road: 58.25%
+  - IGA Elizabeth Downs / IGA Local Grocer Adelaide City East: 42.04%
+  - IGA Elizabeth Downs / IGA Clearview: 65.32%
+  - IGA Elizabeth Downs / IGA Local Grocer Glenelg East: 53.79%
+  - IGA Elizabeth Downs / Blair Athol IGA: 67.70%
+  - IGA Elizabeth Downs / IGA Local Grocer Wattle Park: 46.64%
+  - IGA Flaxmill Road / IGA Local Grocer Adelaide City East: 36.62%
+  - IGA Flaxmill Road / IGA Clearview: 54.84%
+  - IGA Flaxmill Road / IGA Local Grocer Glenelg East: 50.29%
+  - IGA Flaxmill Road / Blair Athol IGA: 62.59%
+  - IGA Flaxmill Road / IGA Local Grocer Wattle Park: 45.31%
+  - IGA Local Grocer Adelaide City East / IGA Clearview: 48.42%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Glenelg East: 47.93%
+  - IGA Local Grocer Adelaide City East / Blair Athol IGA: 54.61%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Wattle Park: 44.54%
+  - IGA Clearview / IGA Local Grocer Glenelg East: 49.08%
+  - IGA Clearview / Blair Athol IGA: 61.51%
+  - IGA Clearview / IGA Local Grocer Wattle Park: 46.29%
+  - IGA Local Grocer Glenelg East / Blair Athol IGA: 55.20%
+  - IGA Local Grocer Glenelg East / IGA Local Grocer Wattle Park: 52.91%
+  - Blair Athol IGA / IGA Local Grocer Wattle Park: 57.57%
+
+Category: Meat, Seafood And Deli
+  - Redwood Park IGA / IGA Local Grocer South Plympton: 32.82%
+  - Redwood Park IGA / Westwood IGA: 37.19%
+  - Redwood Park IGA / IGA Morphett Vale: 49.42%
+  - Redwood Park IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 30.74%
+  - Redwood Park IGA / IGA Local Grocer Bowden: 35.88%
+  - Redwood Park IGA / IGA Local Grocer Woodville: 48.06%
+  - Redwood Park IGA / IGA Local Grocer Somerton Park: 49.54%
+  - Redwood Park IGA / IGA Local Grocer Franklin Street: 41.53%
+  - Redwood Park IGA / IGA Para Hills: 50.17%
+  - Redwood Park IGA / IGA Elizabeth Downs: 46.08%
+  - Redwood Park IGA / IGA Flaxmill Road: 37.50%
+  - Redwood Park IGA / IGA Local Grocer Adelaide City East: 46.82%
+  - Redwood Park IGA / IGA Clearview: 43.42%
+  - Redwood Park IGA / IGA Local Grocer Glenelg East: 43.87%
+  - Redwood Park IGA / Blair Athol IGA: 44.69%
+  - Redwood Park IGA / IGA Local Grocer Wattle Park: 26.89%
+  - IGA Local Grocer South Plympton / Westwood IGA: 40.61%
+  - IGA Local Grocer South Plympton / IGA Morphett Vale: 23.12%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Mt Gambier (Swallow Drive): 22.74%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Bowden: 30.27%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Woodville: 37.97%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Somerton Park: 41.44%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Franklin Street: 25.47%
+  - IGA Local Grocer South Plympton / IGA Para Hills: 34.05%
+  - IGA Local Grocer South Plympton / IGA Elizabeth Downs: 40.13%
+  - IGA Local Grocer South Plympton / IGA Flaxmill Road: 27.60%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Adelaide City East: 50.03%
+  - IGA Local Grocer South Plympton / IGA Clearview: 43.55%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Glenelg East: 38.69%
+  - IGA Local Grocer South Plympton / Blair Athol IGA: 25.85%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Wattle Park: 40.94%
+  - Westwood IGA / IGA Morphett Vale: 38.48%
+  - Westwood IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 22.32%
+  - Westwood IGA / IGA Local Grocer Bowden: 34.08%
+  - Westwood IGA / IGA Local Grocer Woodville: 36.96%
+  - Westwood IGA / IGA Local Grocer Somerton Park: 41.28%
+  - Westwood IGA / IGA Local Grocer Franklin Street: 32.53%
+  - Westwood IGA / IGA Para Hills: 40.70%
+  - Westwood IGA / IGA Elizabeth Downs: 42.11%
+  - Westwood IGA / IGA Flaxmill Road: 37.26%
+  - Westwood IGA / IGA Local Grocer Adelaide City East: 49.58%
+  - Westwood IGA / IGA Clearview: 54.27%
+  - Westwood IGA / IGA Local Grocer Glenelg East: 39.45%
+  - Westwood IGA / Blair Athol IGA: 33.44%
+  - Westwood IGA / IGA Local Grocer Wattle Park: 28.74%
+  - IGA Morphett Vale / IGA Local Grocer Mt Gambier (Swallow Drive): 27.54%
+  - IGA Morphett Vale / IGA Local Grocer Bowden: 38.35%
+  - IGA Morphett Vale / IGA Local Grocer Woodville: 43.04%
+  - IGA Morphett Vale / IGA Local Grocer Somerton Park: 43.28%
+  - IGA Morphett Vale / IGA Local Grocer Franklin Street: 39.74%
+  - IGA Morphett Vale / IGA Para Hills: 49.06%
+  - IGA Morphett Vale / IGA Elizabeth Downs: 41.91%
+  - IGA Morphett Vale / IGA Flaxmill Road: 41.13%
+  - IGA Morphett Vale / IGA Local Grocer Adelaide City East: 48.33%
+  - IGA Morphett Vale / IGA Clearview: 47.12%
+  - IGA Morphett Vale / IGA Local Grocer Glenelg East: 38.40%
+  - IGA Morphett Vale / Blair Athol IGA: 41.52%
+  - IGA Morphett Vale / IGA Local Grocer Wattle Park: 22.77%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Bowden: 19.44%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Woodville: 26.19%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Somerton Park: 19.15%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Franklin Street: 23.91%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Para Hills: 20.05%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Elizabeth Downs: 20.00%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Flaxmill Road: 18.66%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Adelaide City East: 26.68%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Clearview: 22.49%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Glenelg East: 21.85%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / Blair Athol IGA: 26.68%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Wattle Park: 23.67%
+  - IGA Local Grocer Bowden / IGA Local Grocer Woodville: 44.33%
+  - IGA Local Grocer Bowden / IGA Local Grocer Somerton Park: 48.39%
+  - IGA Local Grocer Bowden / IGA Local Grocer Franklin Street: 38.24%
+  - IGA Local Grocer Bowden / IGA Para Hills: 40.98%
+  - IGA Local Grocer Bowden / IGA Elizabeth Downs: 37.49%
+  - IGA Local Grocer Bowden / IGA Flaxmill Road: 28.44%
+  - IGA Local Grocer Bowden / IGA Local Grocer Adelaide City East: 48.89%
+  - IGA Local Grocer Bowden / IGA Clearview: 39.88%
+  - IGA Local Grocer Bowden / IGA Local Grocer Glenelg East: 35.11%
+  - IGA Local Grocer Bowden / Blair Athol IGA: 29.47%
+  - IGA Local Grocer Bowden / IGA Local Grocer Wattle Park: 31.39%
+  - IGA Local Grocer Woodville / IGA Local Grocer Somerton Park: 52.70%
+  - IGA Local Grocer Woodville / IGA Local Grocer Franklin Street: 40.78%
+  - IGA Local Grocer Woodville / IGA Para Hills: 50.91%
+  - IGA Local Grocer Woodville / IGA Elizabeth Downs: 45.21%
+  - IGA Local Grocer Woodville / IGA Flaxmill Road: 34.79%
+  - IGA Local Grocer Woodville / IGA Local Grocer Adelaide City East: 52.52%
+  - IGA Local Grocer Woodville / IGA Clearview: 45.30%
+  - IGA Local Grocer Woodville / IGA Local Grocer Glenelg East: 47.37%
+  - IGA Local Grocer Woodville / Blair Athol IGA: 34.14%
+  - IGA Local Grocer Woodville / IGA Local Grocer Wattle Park: 35.96%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Franklin Street: 36.09%
+  - IGA Local Grocer Somerton Park / IGA Para Hills: 47.34%
+  - IGA Local Grocer Somerton Park / IGA Elizabeth Downs: 46.83%
+  - IGA Local Grocer Somerton Park / IGA Flaxmill Road: 29.41%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Adelaide City East: 53.84%
+  - IGA Local Grocer Somerton Park / IGA Clearview: 50.63%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Glenelg East: 44.90%
+  - IGA Local Grocer Somerton Park / Blair Athol IGA: 28.88%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Wattle Park: 35.51%
+  - IGA Local Grocer Franklin Street / IGA Para Hills: 43.84%
+  - IGA Local Grocer Franklin Street / IGA Elizabeth Downs: 36.94%
+  - IGA Local Grocer Franklin Street / IGA Flaxmill Road: 47.47%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Adelaide City East: 41.56%
+  - IGA Local Grocer Franklin Street / IGA Clearview: 33.46%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Glenelg East: 41.00%
+  - IGA Local Grocer Franklin Street / Blair Athol IGA: 40.65%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Wattle Park: 24.39%
+  - IGA Para Hills / IGA Elizabeth Downs: 53.11%
+  - IGA Para Hills / IGA Flaxmill Road: 37.61%
+  - IGA Para Hills / IGA Local Grocer Adelaide City East: 46.23%
+  - IGA Para Hills / IGA Clearview: 45.67%
+  - IGA Para Hills / IGA Local Grocer Glenelg East: 45.28%
+  - IGA Para Hills / Blair Athol IGA: 34.85%
+  - IGA Para Hills / IGA Local Grocer Wattle Park: 28.92%
+  - IGA Elizabeth Downs / IGA Flaxmill Road: 27.64%
+  - IGA Elizabeth Downs / IGA Local Grocer Adelaide City East: 46.49%
+  - IGA Elizabeth Downs / IGA Clearview: 44.74%
+  - IGA Elizabeth Downs / IGA Local Grocer Glenelg East: 41.48%
+  - IGA Elizabeth Downs / Blair Athol IGA: 25.55%
+  - IGA Elizabeth Downs / IGA Local Grocer Wattle Park: 26.36%
+  - IGA Flaxmill Road / IGA Local Grocer Adelaide City East: 48.34%
+  - IGA Flaxmill Road / IGA Clearview: 39.37%
+  - IGA Flaxmill Road / IGA Local Grocer Glenelg East: 41.84%
+  - IGA Flaxmill Road / Blair Athol IGA: 49.29%
+  - IGA Flaxmill Road / IGA Local Grocer Wattle Park: 22.34%
+  - IGA Local Grocer Adelaide City East / IGA Clearview: 49.30%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Glenelg East: 49.35%
+  - IGA Local Grocer Adelaide City East / Blair Athol IGA: 38.06%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Wattle Park: 38.62%
+  - IGA Clearview / IGA Local Grocer Glenelg East: 44.14%
+  - IGA Clearview / Blair Athol IGA: 36.77%
+  - IGA Clearview / IGA Local Grocer Wattle Park: 33.96%
+  - IGA Local Grocer Glenelg East / Blair Athol IGA: 34.51%
+  - IGA Local Grocer Glenelg East / IGA Local Grocer Wattle Park: 40.04%
+  - Blair Athol IGA / IGA Local Grocer Wattle Park: 21.76%
+
+Category: Dairy, Eggs And Fridge
+  - Redwood Park IGA / IGA Local Grocer South Plympton: 59.58%
+  - Redwood Park IGA / Westwood IGA: 53.64%
+  - Redwood Park IGA / IGA Morphett Vale: 57.11%
+  - Redwood Park IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 53.17%
+  - Redwood Park IGA / IGA Local Grocer Bowden: 50.02%
+  - Redwood Park IGA / IGA Local Grocer Woodville: 62.62%
+  - Redwood Park IGA / IGA Local Grocer Somerton Park: 57.36%
+  - Redwood Park IGA / IGA Local Grocer Franklin Street: 51.10%
+  - Redwood Park IGA / IGA Para Hills: 61.08%
+  - Redwood Park IGA / IGA Elizabeth Downs: 55.96%
+  - Redwood Park IGA / IGA Flaxmill Road: 58.20%
+  - Redwood Park IGA / IGA Local Grocer Adelaide City East: 48.58%
+  - Redwood Park IGA / IGA Clearview: 57.99%
+  - Redwood Park IGA / IGA Local Grocer Glenelg East: 54.21%
+  - Redwood Park IGA / Blair Athol IGA: 66.29%
+  - Redwood Park IGA / IGA Local Grocer Wattle Park: 42.97%
+  - IGA Local Grocer South Plympton / Westwood IGA: 54.42%
+  - IGA Local Grocer South Plympton / IGA Morphett Vale: 54.11%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Mt Gambier (Swallow Drive): 50.48%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Bowden: 49.44%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Woodville: 54.61%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Somerton Park: 54.28%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Franklin Street: 47.81%
+  - IGA Local Grocer South Plympton / IGA Para Hills: 52.91%
+  - IGA Local Grocer South Plympton / IGA Elizabeth Downs: 55.02%
+  - IGA Local Grocer South Plympton / IGA Flaxmill Road: 51.61%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Adelaide City East: 48.49%
+  - IGA Local Grocer South Plympton / IGA Clearview: 53.58%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Glenelg East: 48.79%
+  - IGA Local Grocer South Plympton / Blair Athol IGA: 55.92%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Wattle Park: 48.04%
+  - Westwood IGA / IGA Morphett Vale: 52.50%
+  - Westwood IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 45.45%
+  - Westwood IGA / IGA Local Grocer Bowden: 51.18%
+  - Westwood IGA / IGA Local Grocer Woodville: 56.79%
+  - Westwood IGA / IGA Local Grocer Somerton Park: 55.54%
+  - Westwood IGA / IGA Local Grocer Franklin Street: 47.68%
+  - Westwood IGA / IGA Para Hills: 54.62%
+  - Westwood IGA / IGA Elizabeth Downs: 56.00%
+  - Westwood IGA / IGA Flaxmill Road: 51.00%
+  - Westwood IGA / IGA Local Grocer Adelaide City East: 48.01%
+  - Westwood IGA / IGA Clearview: 54.87%
+  - Westwood IGA / IGA Local Grocer Glenelg East: 46.79%
+  - Westwood IGA / Blair Athol IGA: 51.55%
+  - Westwood IGA / IGA Local Grocer Wattle Park: 44.59%
+  - IGA Morphett Vale / IGA Local Grocer Mt Gambier (Swallow Drive): 43.14%
+  - IGA Morphett Vale / IGA Local Grocer Bowden: 50.96%
+  - IGA Morphett Vale / IGA Local Grocer Woodville: 54.24%
+  - IGA Morphett Vale / IGA Local Grocer Somerton Park: 53.73%
+  - IGA Morphett Vale / IGA Local Grocer Franklin Street: 46.83%
+  - IGA Morphett Vale / IGA Para Hills: 56.51%
+  - IGA Morphett Vale / IGA Elizabeth Downs: 54.52%
+  - IGA Morphett Vale / IGA Flaxmill Road: 53.41%
+  - IGA Morphett Vale / IGA Local Grocer Adelaide City East: 49.81%
+  - IGA Morphett Vale / IGA Clearview: 57.60%
+  - IGA Morphett Vale / IGA Local Grocer Glenelg East: 54.22%
+  - IGA Morphett Vale / Blair Athol IGA: 52.71%
+  - IGA Morphett Vale / IGA Local Grocer Wattle Park: 47.26%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Bowden: 42.56%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Woodville: 50.09%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Somerton Park: 48.76%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Franklin Street: 47.11%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Para Hills: 49.29%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Elizabeth Downs: 50.05%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Flaxmill Road: 46.22%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Adelaide City East: 42.92%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Clearview: 45.95%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Glenelg East: 41.53%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / Blair Athol IGA: 52.07%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Wattle Park: 39.22%
+  - IGA Local Grocer Bowden / IGA Local Grocer Woodville: 54.73%
+  - IGA Local Grocer Bowden / IGA Local Grocer Somerton Park: 51.49%
+  - IGA Local Grocer Bowden / IGA Local Grocer Franklin Street: 52.08%
+  - IGA Local Grocer Bowden / IGA Para Hills: 53.86%
+  - IGA Local Grocer Bowden / IGA Elizabeth Downs: 55.18%
+  - IGA Local Grocer Bowden / IGA Flaxmill Road: 46.27%
+  - IGA Local Grocer Bowden / IGA Local Grocer Adelaide City East: 55.30%
+  - IGA Local Grocer Bowden / IGA Clearview: 49.10%
+  - IGA Local Grocer Bowden / IGA Local Grocer Glenelg East: 51.91%
+  - IGA Local Grocer Bowden / Blair Athol IGA: 47.58%
+  - IGA Local Grocer Bowden / IGA Local Grocer Wattle Park: 53.02%
+  - IGA Local Grocer Woodville / IGA Local Grocer Somerton Park: 58.65%
+  - IGA Local Grocer Woodville / IGA Local Grocer Franklin Street: 57.33%
+  - IGA Local Grocer Woodville / IGA Para Hills: 61.43%
+  - IGA Local Grocer Woodville / IGA Elizabeth Downs: 55.68%
+  - IGA Local Grocer Woodville / IGA Flaxmill Road: 51.45%
+  - IGA Local Grocer Woodville / IGA Local Grocer Adelaide City East: 57.41%
+  - IGA Local Grocer Woodville / IGA Clearview: 54.96%
+  - IGA Local Grocer Woodville / IGA Local Grocer Glenelg East: 59.78%
+  - IGA Local Grocer Woodville / Blair Athol IGA: 53.21%
+  - IGA Local Grocer Woodville / IGA Local Grocer Wattle Park: 48.72%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Franklin Street: 48.85%
+  - IGA Local Grocer Somerton Park / IGA Para Hills: 57.37%
+  - IGA Local Grocer Somerton Park / IGA Elizabeth Downs: 57.58%
+  - IGA Local Grocer Somerton Park / IGA Flaxmill Road: 51.34%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Adelaide City East: 49.84%
+  - IGA Local Grocer Somerton Park / IGA Clearview: 55.87%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Glenelg East: 50.39%
+  - IGA Local Grocer Somerton Park / Blair Athol IGA: 53.53%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Wattle Park: 45.73%
+  - IGA Local Grocer Franklin Street / IGA Para Hills: 54.24%
+  - IGA Local Grocer Franklin Street / IGA Elizabeth Downs: 48.21%
+  - IGA Local Grocer Franklin Street / IGA Flaxmill Road: 46.75%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Adelaide City East: 52.26%
+  - IGA Local Grocer Franklin Street / IGA Clearview: 50.50%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Glenelg East: 49.71%
+  - IGA Local Grocer Franklin Street / Blair Athol IGA: 51.27%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Wattle Park: 44.67%
+  - IGA Para Hills / IGA Elizabeth Downs: 63.95%
+  - IGA Para Hills / IGA Flaxmill Road: 54.61%
+  - IGA Para Hills / IGA Local Grocer Adelaide City East: 52.82%
+  - IGA Para Hills / IGA Clearview: 61.98%
+  - IGA Para Hills / IGA Local Grocer Glenelg East: 57.85%
+  - IGA Para Hills / Blair Athol IGA: 57.10%
+  - IGA Para Hills / IGA Local Grocer Wattle Park: 51.20%
+  - IGA Elizabeth Downs / IGA Flaxmill Road: 56.51%
+  - IGA Elizabeth Downs / IGA Local Grocer Adelaide City East: 51.18%
+  - IGA Elizabeth Downs / IGA Clearview: 57.08%
+  - IGA Elizabeth Downs / IGA Local Grocer Glenelg East: 49.30%
+  - IGA Elizabeth Downs / Blair Athol IGA: 53.34%
+  - IGA Elizabeth Downs / IGA Local Grocer Wattle Park: 48.35%
+  - IGA Flaxmill Road / IGA Local Grocer Adelaide City East: 46.52%
+  - IGA Flaxmill Road / IGA Clearview: 52.90%
+  - IGA Flaxmill Road / IGA Local Grocer Glenelg East: 48.28%
+  - IGA Flaxmill Road / Blair Athol IGA: 57.47%
+  - IGA Flaxmill Road / IGA Local Grocer Wattle Park: 38.25%
+  - IGA Local Grocer Adelaide City East / IGA Clearview: 50.49%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Glenelg East: 51.38%
+  - IGA Local Grocer Adelaide City East / Blair Athol IGA: 47.68%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Wattle Park: 50.58%
+  - IGA Clearview / IGA Local Grocer Glenelg East: 53.74%
+  - IGA Clearview / Blair Athol IGA: 54.73%
+  - IGA Clearview / IGA Local Grocer Wattle Park: 46.81%
+  - IGA Local Grocer Glenelg East / Blair Athol IGA: 49.33%
+  - IGA Local Grocer Glenelg East / IGA Local Grocer Wattle Park: 47.80%
+  - Blair Athol IGA / IGA Local Grocer Wattle Park: 42.63%
+
+Category: Fruit And Vegetable
+  - Redwood Park IGA / IGA Local Grocer South Plympton: 65.91%
+  - Redwood Park IGA / Westwood IGA: 50.73%
+  - Redwood Park IGA / IGA Morphett Vale: 60.06%
+  - Redwood Park IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 50.13%
+  - Redwood Park IGA / IGA Local Grocer Bowden: 64.19%
+  - Redwood Park IGA / IGA Local Grocer Woodville: 66.49%
+  - Redwood Park IGA / IGA Local Grocer Somerton Park: 65.96%
+  - Redwood Park IGA / IGA Local Grocer Franklin Street: 63.05%
+  - Redwood Park IGA / IGA Para Hills: 65.26%
+  - Redwood Park IGA / IGA Elizabeth Downs: 61.04%
+  - Redwood Park IGA / IGA Flaxmill Road: 60.65%
+  - Redwood Park IGA / IGA Local Grocer Adelaide City East: 61.64%
+  - Redwood Park IGA / IGA Clearview: 75.18%
+  - Redwood Park IGA / IGA Local Grocer Glenelg East: 66.66%
+  - Redwood Park IGA / Blair Athol IGA: 28.50%
+  - Redwood Park IGA / IGA Local Grocer Wattle Park: 39.35%
+  - IGA Local Grocer South Plympton / Westwood IGA: 50.59%
+  - IGA Local Grocer South Plympton / IGA Morphett Vale: 52.44%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Mt Gambier (Swallow Drive): 52.99%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Bowden: 58.64%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Woodville: 64.14%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Somerton Park: 64.65%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Franklin Street: 61.29%
+  - IGA Local Grocer South Plympton / IGA Para Hills: 56.75%
+  - IGA Local Grocer South Plympton / IGA Elizabeth Downs: 57.72%
+  - IGA Local Grocer South Plympton / IGA Flaxmill Road: 63.53%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Adelaide City East: 60.08%
+  - IGA Local Grocer South Plympton / IGA Clearview: 67.11%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Glenelg East: 69.38%
+  - IGA Local Grocer South Plympton / Blair Athol IGA: 26.84%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Wattle Park: 39.95%
+  - Westwood IGA / IGA Morphett Vale: 45.87%
+  - Westwood IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 39.20%
+  - Westwood IGA / IGA Local Grocer Bowden: 50.01%
+  - Westwood IGA / IGA Local Grocer Woodville: 54.52%
+  - Westwood IGA / IGA Local Grocer Somerton Park: 52.03%
+  - Westwood IGA / IGA Local Grocer Franklin Street: 50.00%
+  - Westwood IGA / IGA Para Hills: 48.80%
+  - Westwood IGA / IGA Elizabeth Downs: 46.40%
+  - Westwood IGA / IGA Flaxmill Road: 48.28%
+  - Westwood IGA / IGA Local Grocer Adelaide City East: 54.70%
+  - Westwood IGA / IGA Clearview: 54.40%
+  - Westwood IGA / IGA Local Grocer Glenelg East: 48.31%
+  - Westwood IGA / Blair Athol IGA: 20.13%
+  - Westwood IGA / IGA Local Grocer Wattle Park: 38.99%
+  - IGA Morphett Vale / IGA Local Grocer Mt Gambier (Swallow Drive): 47.22%
+  - IGA Morphett Vale / IGA Local Grocer Bowden: 53.15%
+  - IGA Morphett Vale / IGA Local Grocer Woodville: 60.36%
+  - IGA Morphett Vale / IGA Local Grocer Somerton Park: 54.23%
+  - IGA Morphett Vale / IGA Local Grocer Franklin Street: 53.92%
+  - IGA Morphett Vale / IGA Para Hills: 52.75%
+  - IGA Morphett Vale / IGA Elizabeth Downs: 51.27%
+  - IGA Morphett Vale / IGA Flaxmill Road: 55.84%
+  - IGA Morphett Vale / IGA Local Grocer Adelaide City East: 56.21%
+  - IGA Morphett Vale / IGA Clearview: 60.85%
+  - IGA Morphett Vale / IGA Local Grocer Glenelg East: 56.52%
+  - IGA Morphett Vale / Blair Athol IGA: 15.90%
+  - IGA Morphett Vale / IGA Local Grocer Wattle Park: 37.97%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Bowden: 53.87%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Woodville: 53.32%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Somerton Park: 49.83%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Franklin Street: 46.82%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Para Hills: 51.85%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Elizabeth Downs: 46.16%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Flaxmill Road: 54.14%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Adelaide City East: 53.28%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Clearview: 55.91%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Glenelg East: 50.19%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / Blair Athol IGA: 5.11%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Wattle Park: 32.68%
+  - IGA Local Grocer Bowden / IGA Local Grocer Woodville: 64.04%
+  - IGA Local Grocer Bowden / IGA Local Grocer Somerton Park: 61.25%
+  - IGA Local Grocer Bowden / IGA Local Grocer Franklin Street: 62.89%
+  - IGA Local Grocer Bowden / IGA Para Hills: 55.54%
+  - IGA Local Grocer Bowden / IGA Elizabeth Downs: 57.65%
+  - IGA Local Grocer Bowden / IGA Flaxmill Road: 60.26%
+  - IGA Local Grocer Bowden / IGA Local Grocer Adelaide City East: 64.91%
+  - IGA Local Grocer Bowden / IGA Clearview: 64.79%
+  - IGA Local Grocer Bowden / IGA Local Grocer Glenelg East: 61.87%
+  - IGA Local Grocer Bowden / Blair Athol IGA: 33.37%
+  - IGA Local Grocer Bowden / IGA Local Grocer Wattle Park: 41.80%
+  - IGA Local Grocer Woodville / IGA Local Grocer Somerton Park: 66.41%
+  - IGA Local Grocer Woodville / IGA Local Grocer Franklin Street: 64.04%
+  - IGA Local Grocer Woodville / IGA Para Hills: 58.70%
+  - IGA Local Grocer Woodville / IGA Elizabeth Downs: 62.29%
+  - IGA Local Grocer Woodville / IGA Flaxmill Road: 64.45%
+  - IGA Local Grocer Woodville / IGA Local Grocer Adelaide City East: 66.40%
+  - IGA Local Grocer Woodville / IGA Clearview: 69.01%
+  - IGA Local Grocer Woodville / IGA Local Grocer Glenelg East: 65.12%
+  - IGA Local Grocer Woodville / Blair Athol IGA: 25.66%
+  - IGA Local Grocer Woodville / IGA Local Grocer Wattle Park: 41.52%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Franklin Street: 64.62%
+  - IGA Local Grocer Somerton Park / IGA Para Hills: 65.20%
+  - IGA Local Grocer Somerton Park / IGA Elizabeth Downs: 62.05%
+  - IGA Local Grocer Somerton Park / IGA Flaxmill Road: 62.78%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Adelaide City East: 67.07%
+  - IGA Local Grocer Somerton Park / IGA Clearview: 66.00%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Glenelg East: 60.56%
+  - IGA Local Grocer Somerton Park / Blair Athol IGA: 27.68%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Wattle Park: 41.29%
+  - IGA Local Grocer Franklin Street / IGA Para Hills: 59.25%
+  - IGA Local Grocer Franklin Street / IGA Elizabeth Downs: 56.11%
+  - IGA Local Grocer Franklin Street / IGA Flaxmill Road: 61.94%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Adelaide City East: 67.38%
+  - IGA Local Grocer Franklin Street / IGA Clearview: 67.28%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Glenelg East: 55.94%
+  - IGA Local Grocer Franklin Street / Blair Athol IGA: 31.31%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Wattle Park: 43.23%
+  - IGA Para Hills / IGA Elizabeth Downs: 59.41%
+  - IGA Para Hills / IGA Flaxmill Road: 57.88%
+  - IGA Para Hills / IGA Local Grocer Adelaide City East: 61.88%
+  - IGA Para Hills / IGA Clearview: 59.21%
+  - IGA Para Hills / IGA Local Grocer Glenelg East: 54.28%
+  - IGA Para Hills / Blair Athol IGA: 36.79%
+  - IGA Para Hills / IGA Local Grocer Wattle Park: 34.12%
+  - IGA Elizabeth Downs / IGA Flaxmill Road: 51.27%
+  - IGA Elizabeth Downs / IGA Local Grocer Adelaide City East: 58.62%
+  - IGA Elizabeth Downs / IGA Clearview: 62.56%
+  - IGA Elizabeth Downs / IGA Local Grocer Glenelg East: 57.87%
+  - IGA Elizabeth Downs / Blair Athol IGA: 20.37%
+  - IGA Elizabeth Downs / IGA Local Grocer Wattle Park: 30.09%
+  - IGA Flaxmill Road / IGA Local Grocer Adelaide City East: 64.70%
+  - IGA Flaxmill Road / IGA Clearview: 66.02%
+  - IGA Flaxmill Road / IGA Local Grocer Glenelg East: 55.40%
+  - IGA Flaxmill Road / Blair Athol IGA: 23.78%
+  - IGA Flaxmill Road / IGA Local Grocer Wattle Park: 36.60%
+  - IGA Local Grocer Adelaide City East / IGA Clearview: 69.95%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Glenelg East: 63.36%
+  - IGA Local Grocer Adelaide City East / Blair Athol IGA: 32.02%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Wattle Park: 46.22%
+  - IGA Clearview / IGA Local Grocer Glenelg East: 68.29%
+  - IGA Clearview / Blair Athol IGA: 21.83%
+  - IGA Clearview / IGA Local Grocer Wattle Park: 46.85%
+  - IGA Local Grocer Glenelg East / Blair Athol IGA: 20.83%
+  - IGA Local Grocer Glenelg East / IGA Local Grocer Wattle Park: 40.74%
+  - Blair Athol IGA / IGA Local Grocer Wattle Park: 16.20%
+
+Category: Other
+  - IGA Local Grocer South Plympton / Westwood IGA: 25.00%
+  - IGA Local Grocer South Plympton / IGA Morphett Vale: 29.17%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Mt Gambier (Swallow Drive): 58.33%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Bowden: 29.17%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Woodville: 53.33%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Somerton Park: 0.00%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Franklin Street: 66.67%
+  - IGA Local Grocer South Plympton / IGA Para Hills: 0.00%
+  - IGA Local Grocer South Plympton / IGA Elizabeth Downs: 0.00%
+  - IGA Local Grocer South Plympton / IGA Flaxmill Road: 0.00%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Adelaide City East: 45.83%
+  - IGA Local Grocer South Plympton / IGA Clearview: 53.33%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Glenelg East: 0.00%
+  - IGA Local Grocer South Plympton / Blair Athol IGA: 66.67%
+  - IGA Local Grocer South Plympton / IGA Local Grocer Wattle Park: 41.67%
+  - Westwood IGA / IGA Morphett Vale: 62.50%
+  - Westwood IGA / IGA Local Grocer Mt Gambier (Swallow Drive): 62.50%
+  - Westwood IGA / IGA Local Grocer Bowden: 62.50%
+  - Westwood IGA / IGA Local Grocer Woodville: 73.33%
+  - Westwood IGA / IGA Local Grocer Somerton Park: 58.33%
+  - Westwood IGA / IGA Local Grocer Franklin Street: 25.00%
+  - Westwood IGA / IGA Para Hills: 0.00%
+  - Westwood IGA / IGA Elizabeth Downs: 33.33%
+  - Westwood IGA / IGA Flaxmill Road: 0.00%
+  - Westwood IGA / IGA Local Grocer Adelaide City East: 87.50%
+  - Westwood IGA / IGA Clearview: 73.33%
+  - Westwood IGA / IGA Local Grocer Glenelg East: 0.00%
+  - Westwood IGA / Blair Athol IGA: 50.00%
+  - Westwood IGA / IGA Local Grocer Wattle Park: 33.33%
+  - IGA Morphett Vale / IGA Local Grocer Mt Gambier (Swallow Drive): 50.00%
+  - IGA Morphett Vale / IGA Local Grocer Bowden: 25.00%
+  - IGA Morphett Vale / IGA Local Grocer Woodville: 67.50%
+  - IGA Morphett Vale / IGA Local Grocer Somerton Park: 0.00%
+  - IGA Morphett Vale / IGA Local Grocer Franklin Street: 58.33%
+  - IGA Morphett Vale / IGA Para Hills: 0.00%
+  - IGA Morphett Vale / IGA Elizabeth Downs: 37.50%
+  - IGA Morphett Vale / IGA Flaxmill Road: 62.50%
+  - IGA Morphett Vale / IGA Local Grocer Adelaide City East: 75.00%
+  - IGA Morphett Vale / IGA Clearview: 45.00%
+  - IGA Morphett Vale / IGA Local Grocer Glenelg East: 62.50%
+  - IGA Morphett Vale / Blair Athol IGA: 58.33%
+  - IGA Morphett Vale / IGA Local Grocer Wattle Park: 37.50%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Bowden: 75.00%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Woodville: 67.50%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Somerton Park: 62.50%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Franklin Street: 58.33%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Para Hills: 0.00%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Elizabeth Downs: 37.50%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Flaxmill Road: 0.00%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Adelaide City East: 75.00%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Clearview: 90.00%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Glenelg East: 0.00%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / Blair Athol IGA: 87.50%
+  - IGA Local Grocer Mt Gambier (Swallow Drive) / IGA Local Grocer Wattle Park: 37.50%
+  - IGA Local Grocer Bowden / IGA Local Grocer Woodville: 67.50%
+  - IGA Local Grocer Bowden / IGA Local Grocer Somerton Park: 62.50%
+  - IGA Local Grocer Bowden / IGA Local Grocer Franklin Street: 29.17%
+  - IGA Local Grocer Bowden / IGA Para Hills: 0.00%
+  - IGA Local Grocer Bowden / IGA Elizabeth Downs: 37.50%
+  - IGA Local Grocer Bowden / IGA Flaxmill Road: 0.00%
+  - IGA Local Grocer Bowden / IGA Local Grocer Adelaide City East: 75.00%
+  - IGA Local Grocer Bowden / IGA Clearview: 90.00%
+  - IGA Local Grocer Bowden / IGA Local Grocer Glenelg East: 0.00%
+  - IGA Local Grocer Bowden / Blair Athol IGA: 58.33%
+  - IGA Local Grocer Bowden / IGA Local Grocer Wattle Park: 37.50%
+  - IGA Local Grocer Woodville / IGA Local Grocer Somerton Park: 0.00%
+  - IGA Local Grocer Woodville / IGA Local Grocer Franklin Street: 53.33%
+  - IGA Local Grocer Woodville / IGA Para Hills: 0.00%
+  - IGA Local Grocer Woodville / IGA Elizabeth Downs: 35.00%
+  - IGA Local Grocer Woodville / IGA Flaxmill Road: 0.00%
+  - IGA Local Grocer Woodville / IGA Local Grocer Adelaide City East: 81.25%
+  - IGA Local Grocer Woodville / IGA Clearview: 80.00%
+  - IGA Local Grocer Woodville / IGA Local Grocer Glenelg East: 0.00%
+  - IGA Local Grocer Woodville / Blair Athol IGA: 80.00%
+  - IGA Local Grocer Woodville / IGA Local Grocer Wattle Park: 70.00%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Franklin Street: 0.00%
+  - IGA Local Grocer Somerton Park / IGA Para Hills: 0.00%
+  - IGA Local Grocer Somerton Park / IGA Elizabeth Downs: 0.00%
+  - IGA Local Grocer Somerton Park / IGA Flaxmill Road: 0.00%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Adelaide City East: 56.25%
+  - IGA Local Grocer Somerton Park / IGA Clearview: 60.00%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Glenelg East: 0.00%
+  - IGA Local Grocer Somerton Park / Blair Athol IGA: 0.00%
+  - IGA Local Grocer Somerton Park / IGA Local Grocer Wattle Park: 0.00%
+  - IGA Local Grocer Franklin Street / IGA Para Hills: 0.00%
+  - IGA Local Grocer Franklin Street / IGA Elizabeth Downs: 0.00%
+  - IGA Local Grocer Franklin Street / IGA Flaxmill Road: 66.67%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Adelaide City East: 68.75%
+  - IGA Local Grocer Franklin Street / IGA Clearview: 53.33%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Glenelg East: 66.67%
+  - IGA Local Grocer Franklin Street / Blair Athol IGA: 66.67%
+  - IGA Local Grocer Franklin Street / IGA Local Grocer Wattle Park: 41.67%
+  - IGA Para Hills / IGA Elizabeth Downs: 75.00%
+  - IGA Para Hills / IGA Flaxmill Road: 0.00%
+  - IGA Para Hills / IGA Local Grocer Adelaide City East: 0.00%
+  - IGA Para Hills / IGA Clearview: 0.00%
+  - IGA Para Hills / IGA Local Grocer Glenelg East: 0.00%
+  - IGA Para Hills / Blair Athol IGA: 0.00%
+  - IGA Para Hills / IGA Local Grocer Wattle Park: 0.00%
+  - IGA Elizabeth Downs / IGA Flaxmill Road: 0.00%
+  - IGA Elizabeth Downs / IGA Local Grocer Adelaide City East: 31.25%
+  - IGA Elizabeth Downs / IGA Clearview: 35.00%
+  - IGA Elizabeth Downs / IGA Local Grocer Glenelg East: 0.00%
+  - IGA Elizabeth Downs / Blair Athol IGA: 41.67%
+  - IGA Elizabeth Downs / IGA Local Grocer Wattle Park: 0.00%
+  - IGA Flaxmill Road / IGA Local Grocer Adelaide City East: 56.25%
+  - IGA Flaxmill Road / IGA Clearview: 0.00%
+  - IGA Flaxmill Road / IGA Local Grocer Glenelg East: 100.00%
+  - IGA Flaxmill Road / Blair Athol IGA: 0.00%
+  - IGA Flaxmill Road / IGA Local Grocer Wattle Park: 0.00%
+  - IGA Local Grocer Adelaide City East / IGA Clearview: 81.25%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Glenelg East: 56.25%
+  - IGA Local Grocer Adelaide City East / Blair Athol IGA: 68.75%
+  - IGA Local Grocer Adelaide City East / IGA Local Grocer Wattle Park: 62.50%
+  - IGA Clearview / IGA Local Grocer Glenelg East: 0.00%
+  - IGA Clearview / Blair Athol IGA: 80.00%
+  - IGA Clearview / IGA Local Grocer Wattle Park: 35.00%
+  - IGA Local Grocer Glenelg East / Blair Athol IGA: 0.00%
+  - IGA Local Grocer Glenelg East / IGA Local Grocer Wattle Park: 0.00%
+  - Blair Athol IGA / IGA Local Grocer Wattle Park: 41.67%
+
+Category: Liquor
+  - IGA Para Hills / IGA Local Grocer Glenelg East: 100.00%

@@ -17,7 +17,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "companies.apps.CompaniesConfig",
     "products.apps.ProductsConfig",
-    "api.apps.ApiConfig",
+    "data_management.apps.DataManagementConfig",
     "scraping.apps.ScrapingConfig",
     "rest_framework",
     "django_extensions",

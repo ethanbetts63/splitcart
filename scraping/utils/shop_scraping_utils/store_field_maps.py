@@ -1,6 +1,6 @@
 """
 This file contains the field mapping dictionaries for store data.
-It translates the raw field names from each store's API into a standardized
+It translates the raw field names from each store's data_management into a standardized
 internal schema.
 """
 
@@ -36,7 +36,7 @@ internal schema.
 # }
 # ----------------------------------------------------
 
-# For the API at https://www.woolworths.com.au/apis/ui/StoreLocator/Stores
+# For the data_management at https://www.woolworths.com.au/apis/ui/StoreLocator/Stores
 WOOLWORTHS_STORE_MAP_API1 = {
     "store_id": "StoreNo",
     "store_name": "Name",
@@ -54,7 +54,7 @@ WOOLWORTHS_STORE_MAP_API1 = {
     "is_trading": "IsOpen",
 }
 
-# For the API at https://www.woolworths.com.au/api/v3/ui/fulfilment/stores
+# For the data_management at https://www.woolworths.com.au/data_management/v3/ui/fulfilment/stores
 WOOLWORTHS_STORE_MAP_API2 = {
     "store_id": "FulfilmentStoreId",
     "retailer_store_id": "FulfilmentStoreId",

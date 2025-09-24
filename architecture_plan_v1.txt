@@ -14,7 +14,7 @@ The system is divided into three distinct databases, each with a specific purpos
 
 **2. `db_products` (The Catalog)**
 *   **Contains:** All pristine product, price, store, and category data populated by the scraping engine.
-*   **Purpose:** To serve as the master catalog of all product information. This is a clean, standalone data asset intended for commercialization (e.g., via a dedicated API or data dumps).
+*   **Purpose:** To serve as the master catalog of all product information. This is a clean, standalone data asset intended for commercialization (e.g., via a dedicated data_management or data dumps).
 
 **3. `db_behavior` (The Trend Data)**
 *   **Contains:** All user-generated data, made anonymous by using the `anonymous_user_id` as the key instead of a direct user ID. This includes shopping lists, item preferences, and substitution choices.
@@ -66,14 +66,14 @@ This approach dramatically simplifies the architecture. It requires only **one d
 #### 1. The Frontend (Browser)
 
 *   **The Shopping List:** The user's shopping list is stored directly in the browser using `sessionStorage`. This data is automatically cleared when the user's session ends.
-*   **API Requests:** The frontend makes two main types of requests to the backend:
-    1.  **Search Request:** `GET /api/products/search?q=<term>` to find products.
-    2.  **Optimization Request:** `POST /api/optimize` to calculate the best shopping split. This request sends a self-contained package of data including the list of product IDs from `sessionStorage` and the user's location preferences.
+*   **data_management Requests:** The frontend makes two main types of requests to the backend:
+    1.  **Search Request:** `GET /data_management/products/search?q=<term>` to find products.
+    2.  **Optimization Request:** `POST /data_management/optimize` to calculate the best shopping split. This request sends a self-contained package of data including the list of product IDs from `sessionStorage` and the user's location preferences.
 
 #### 2. The Backend (Server)
 
 *   **The Database:** The backend only ever communicates with the single, read-only `products_db` to get product and price information.
-*   **Stateless API:** The backend API does not know who the user is or save any information about them. It simply responds to requests:
+*   **Stateless data_management:** The backend data_management does not know who the user is or save any information about them. It simply responds to requests:
     *   For a search, it queries the `products_db` and returns results.
     *   For an optimization, it uses the data provided in the request to query the `products_db` for prices, run the optimization logic, and return the final result. The server immediately forgets the request.
 

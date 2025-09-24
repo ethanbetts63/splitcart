@@ -1,6 +1,6 @@
 # Project Overview
 
-This project is a Django-based application called "splitcart". It is designed as a web scraper and data aggregation tool for comparing prices of products from different Australian grocery stores, including Coles, Woolworths, IGA, Spudshed, and Aldi. The project is structured into three main Django apps: `companies`, `products`, and `api`.
+This project is a Django-based application called "splitcart". It is designed as a web scraper and data aggregation tool for comparing prices of products from different Australian grocery stores, including Coles, Woolworths, IGA, Spudshed, and Aldi. The project is structured into three main Django apps: `companies`, `products`, and `data_management`.
 
 **Key Technologies:**
 
@@ -12,7 +12,7 @@ This project is a Django-based application called "splitcart". It is designed as
 
 1.  **Data Scraping & Normalization:**
     *   The `scrape` management command initiates the scraping process, with options for specific stores (e.g., `python manage.py scrape --coles`).
-    *   Each product is individually cleaned, normalized (generating a `normalized_name_brand_size` string), and saved as a JSON line (`.jsonl`) file in the `api/data/product_inbox/` directory. This approach isolates errors and improves resilience.
+    *   Each product is individually cleaned, normalized (generating a `normalized_name_brand_size` string), and saved as a JSON line (`.jsonl`) file in the `data_management/data/product_inbox/` directory. This approach isolates errors and improves resilience.
 
 2.  **Database Update (Refactored OOP System):**
     *   The `update_db` management command (specifically the `--products` flag) now utilizes a refactored, object-oriented system to process files from the `product_inbox` and update the database.

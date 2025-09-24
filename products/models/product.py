@@ -1,4 +1,4 @@
-from api.utils.product_normalizer import ProductNormalizer
+from data_management.utils.product_normalizer import ProductNormalizer
 from django.db import models
 from django.db.models import Q
 

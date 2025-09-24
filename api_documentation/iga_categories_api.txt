@@ -1,5 +1,5 @@
 Request URL
-https://www.igashop.com.au/api/storefront/stores/32600/categoryHierarchy
+https://www.igashop.com.au/data_management/storefront/stores/32600/categoryHierarchy
 Request Method
 GET
 Status Code
@@ -43,7 +43,7 @@ noopen
 x-frame-options
 deny
 x-matched-path
-/api/storefront/[...storefront]
+/data_management/storefront/[...storefront]
 x-vercel-cache
 STALE
 x-vercel-id
@@ -55,7 +55,7 @@ www.igashop.com.au
 :method
 GET
 :path
-/api/storefront/stores/32600/categoryHierarchy
+/data_management/storefront/stores/32600/categoryHierarchy
 :scheme
 https
 accept

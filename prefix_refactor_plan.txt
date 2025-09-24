@@ -18,20 +18,20 @@ The current system for managing brand names and barcode prefixes is fragmented, 
 
 Here is a breakdown of the relevant files and their roles in the current, flawed system.
 
-### File: `api/management/commands/infer_and_reconcile_brands.py`
+### File: `data_management/management/commands/infer_and_reconcile_brands.py`
 
 - **Purpose:** This is the most critical and complex part of the system. It both infers plausible brand prefixes from product barcodes and then uses those inferences to find and fix incorrect brand assignments.
 - **Inference Logic:** It implements the "network size" algorithm. For a given brand, it finds the longest common prefix (LCP) across all its product barcodes. It then intelligently shortens this prefix one digit at a time until the number of possible barcodes within that prefix's "address space" is greater than the number of products the brand actually has. This result is stored in the `longest_inferred_prefix` field.
 - **Reconciliation Logic:** After inferring prefixes, it finds products in the database whose barcode matches an inferred prefix but whose brand name does not match the prefix's canonical brand. It then automatically corrects these products by merging the incorrect brand into the canonical one.
 - **Problem:** This command contains the essential logic for maintaining data quality, but it is completely disconnected from the main `update_db` pipeline and must be run manually.
 
-### File: `api/management/commands/update_db.py` (via `prefix_update_orchestrator.py`)
+### File: `data_management/management/commands/update_db.py` (via `prefix_update_orchestrator.py`)
 
 - **Purpose:** This process handles the data coming from the GS1 barcode scraper.
 - **Logic:** It reads files of confirmed prefix data from an inbox, creates the official brand entry (e.g., "Nestle Australia Ltd"), and populates the `confirmed_official_prefix` field in the `BrandPrefix` model.
 - **Problem:** This is a separate, manual step that is not integrated with the inference logic.
 
-### File: `api/management/commands/reconcile_brands.py`
+### File: `data_management/management/commands/reconcile_brands.py`
 
 - **Purpose:** This command is a reporting tool that generates `brand_reconciliation_report.txt`.
 - **Logic:** It reads all products and all brand prefixes (both confirmed and inferred). It then checks for discrepancies where a product's barcode suggests one brand but it is assigned another. It only reports these findings and does not modify any data.
@@ -42,12 +42,12 @@ Here is a breakdown of the relevant files and their roles in the current, flawed
 - **Purpose:** The Django model that stores brand prefix information.
 - **Problem:** It contains the `shortest_inferred_prefix` field, which we have confirmed is unused and can be removed.
 
-### File: `api/scrapers/gs1_company_scraper.py`
+### File: `data_management/scrapers/gs1_company_scraper.py`
 
 - **Purpose:** Scrapes the GS1 registry to get official company names and prefixes for barcodes.
 - **Assessment:** This component is well-designed. It correctly prioritizes scraping brands that have a high number of products in the database but lack a confirmed prefix, making efficient use of the daily scrape limit.
 
-### File: `api/database_updating_classes/brand_translation_table_generator.py`
+### File: `data_management/database_updating_classes/brand_translation_table_generator.py`
 
 - **Purpose:** Generates a Python file (`brand_translation_table.py`) that maps brand name variations to a canonical name.
 - **Assessment:** This works as intended. It correctly identifies the canonical name (using the GS1 name if available) and maps other found variations to it.

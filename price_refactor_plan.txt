@@ -118,25 +118,25 @@ Migrating the existing data in the `products_price` table requires a careful, pe
     - Generated the new schema migration (`0003_remove_price_is_on_special_and_more`).
     - Applied the migration to update the database schema.
 - **Data Creation Logic:**
-    - Refactored the `api.database_updating_classes.unit_of_work.UnitOfWork` class to correctly create `PriceRecord` and `Price` instances.
+    - Refactored the `data_management.database_updating_classes.unit_of_work.UnitOfWork` class to correctly create `PriceRecord` and `Price` instances.
 
 - **Code Refactoring:**
-    - Updated `api/database_updating_classes/group_orchestrator.py` to use the new `PriceRecord` relationship, specifically updating `_get_active_prices_for_store` to access product IDs via `price.price_record.product_id`.
-    - Updated `api/analysers/category_price_correlation.py` to use the new `PriceRecord` relationship.
-    - Updated `api/database_updating_classes/product_reconciler.py` to correctly handle price merging by creating new `PriceRecord` entries for canonical products and re-assigning `Price` objects.
-    - Updated `api/database_updating_classes/product_resolver.py` to use `price.price_record.product` when populating the `store_product_id_cache`.
-    - Updated `api/utils/analysis_utils/savings_benchmark.py` to use the new `PriceRecord` relationship.
-    - Updated `api/management/commands/debug_savings_run.py` to use the new `PriceRecord` relationship.
-    - Updated `api/management/commands/test_unit_price_sorter.py` to use `price.price_record.product` when creating product-price pairs.
-    - Updated `api/utils/substitution_utils/unit_price_sorter.py` to use the new `PriceRecord` relationship.
-    - Updated `api/utils/analysis_utils/pricing_analysis/get_product_prices_by_store.py` to use `price.price_record.product.id`.
-    - Updated `api/utils/analysis_utils/store_grouping_utils/data_fetching.py` to use the new `PriceRecord` relationship.
+    - Updated `data_management/database_updating_classes/group_orchestrator.py` to use the new `PriceRecord` relationship, specifically updating `_get_active_prices_for_store` to access product IDs via `price.price_record.product_id`.
+    - Updated `data_management/analysers/category_price_correlation.py` to use the new `PriceRecord` relationship.
+    - Updated `data_management/database_updating_classes/product_reconciler.py` to correctly handle price merging by creating new `PriceRecord` entries for canonical products and re-assigning `Price` objects.
+    - Updated `data_management/database_updating_classes/product_resolver.py` to use `price.price_record.product` when populating the `store_product_id_cache`.
+    - Updated `data_management/utils/analysis_utils/savings_benchmark.py` to use the new `PriceRecord` relationship.
+    - Updated `data_management/management/commands/debug_savings_run.py` to use the new `PriceRecord` relationship.
+    - Updated `data_management/management/commands/test_unit_price_sorter.py` to use `price.price_record.product` when creating product-price pairs.
+    - Updated `data_management/utils/substitution_utils/unit_price_sorter.py` to use the new `PriceRecord` relationship.
+    - Updated `data_management/utils/analysis_utils/pricing_analysis/get_product_prices_by_store.py` to use `price.price_record.product.id`.
+    - Updated `data_management/utils/analysis_utils/store_grouping_utils/data_fetching.py` to use the new `PriceRecord` relationship.
     - Updated `products/tests/test_helpers/model_factories.py` to introduce `PriceRecordFactory` and refactor `PriceFactory` to use it.
     - Updated `products/tests/model_tests/test_price.py` to align with the refactored `Price` model and `PriceFactory` changes.
 
 ## 8. Implementation Details for `UnitOfWork`
 
-The refactor will be highly concentrated in the `api.database_updating_classes.unit_of_work.UnitOfWork` class. The `UpdateOrchestrator` will not require changes as it only calls `unit_of_work.add_price`.
+The refactor will be highly concentrated in the `data_management.database_updating_classes.unit_of_work.UnitOfWork` class. The `UpdateOrchestrator` will not require changes as it only calls `unit_of_work.add_price`.
 
 ### Changes to `UnitOfWork.add_price` method
 

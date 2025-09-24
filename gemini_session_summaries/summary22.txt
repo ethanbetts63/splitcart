@@ -11,8 +11,8 @@ We started by observing that the savings benchmark was reporting a lower-than-ex
 - **Insight:** The user correctly pointed out that the semantic comparison should be done on the `normalized_name` of a product, not its raw `name`.
 - **Change:** The Level 5 and Level 6 substitution generators were modified to use `product.normalized_name` when building the corpus for the AI model.
 - **Files Modified:**
-    - `api/utils/substitution_utils/lvl5_substitution_generator.py`
-    - `api/utils/substitution_utils/lvl6_substitution_generator.py`
+    - `data_management/utils/substitution_utils/lvl5_substitution_generator.py`
+    - `data_management/utils/substitution_utils/lvl6_substitution_generator.py`
 
 ## 3. Designing the "Intelligent Savings Benchmark"
 
@@ -32,7 +32,7 @@ The key design decisions were:
 ## 4. Implementing the New Savings Benchmark
 
 - **Change:** The logic in `savings_benchmark.py` was completely overhauled to implement the new plan.
-- **File Modified:** `api/utils/analysis_utils/savings_benchmark.py`
+- **File Modified:** `data_management/utils/analysis_utils/savings_benchmark.py`
     - A new `get_substitution_group` function was created to handle the intelligent graph traversal.
     - The `generate_random_cart` function was rewritten to execute the full portfolio selection algorithm.
     - A bug was fixed in `run_savings_benchmark` to handle the correct number of return values from the modified solver function.
@@ -41,7 +41,7 @@ The key design decisions were:
 
 - **Goal:** To see inside the new complex process, the user requested a detailed report for a single run.
 - **Change:** A new management command was created to produce this report.
-- **File Created:** `api/management/commands/debug_savings_run.py`
+- **File Created:** `data_management/management/commands/debug_savings_run.py`
 - **Functionality:** This command runs one simulation and outputs a text file (`debug_savings_run_output.txt`) detailing the original product, the full list of considered substitutes in the portfolio, and the final chosen option for each slot in the cart.
 - The command was iteratively improved to include the original product's price and size for better context.
 
@@ -50,6 +50,6 @@ The key design decisions were:
 - **Observation:** We noticed that a product's `sizes` list in the database contained duplicates in different units (e.g., `['0.095kg', '95g']`).
 - **Investigation:** We confirmed that the `ProductNormalizer` was de-duplicating based on strings, not on the canonical numerical value.
 - **Change 1 (The Fix):** The `_get_standardized_sizes` method in the normalizer was rewritten. It now uses the `SizeComparer` utility to parse all size strings into their canonical form (e.g., converting kg to g) and de-duplicates them based on their actual value.
-    - **File Modified:** `api/utils/product_normalizer.py`
+    - **File Modified:** `data_management/utils/product_normalizer.py`
 - **Change 2 (Applying the Fix):** We discovered the `Product` model was still saving the old, "raw" size list. We updated it to save the new, fully standardized and de-duplicated list.
     - **File Modified:** `products/models/product.py`

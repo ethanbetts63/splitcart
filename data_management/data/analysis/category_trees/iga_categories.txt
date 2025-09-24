@@ -1,0 +1,507 @@
+(venv) PS C:\Users\ethan\coding\splitcart> python manage.py analyze --report category_tree --company-name "iga"
+Generating category tree for 'iga'...
+Category Tree for Iga:
+└── Grocery
+    ├── Baby
+    │   ├── Baby Accessories
+    │   │   ├── Baby Health And Safety
+    │   │   ├── Bath And Skincare
+    │   │   ├── Bottles And Baby Feeding
+    │   │   ├── Other Baby Accessories
+    │   │   └── Teething
+    │   ├── Baby Clothes
+    │   ├── Baby Food
+    │   │   ├── 12+ Months
+    │   │   ├── 4+ Months
+    │   │   ├── 6+ Months
+    │   │   └── 8+ Months
+    │   ├── Baby Formula
+    │   │   ├── 12+ Months
+    │   │   ├── 6-12 Months
+    │   │   ├── Birth To 6 Months
+    │   │   └── Specialty
+    │   ├── Baby Toiletries
+    │   └── Nappies And Wipes
+    │       ├── Baby Wipes And Changing
+    │       ├── Nappies 12-18 Months (9-12Kgs)
+    │       ├── Nappies 18 Months (10+Kgs)
+    │       ├── Nappies 3-6 Months (5-7Kgs)
+    │       ├── Nappies 6-12 Months (7-10Kgs)
+    │       ├── Nappy Pants, Swimming & Nightime Nappies
+    │       └── Newborn Nappies 3-5Kgs
+    ├── Bakery
+    │   ├── Fresh, And In-Store Bakery
+    │   │   ├── Bread
+    │   │   ├── Cupcakes And Muffins
+    │   │   ├── Donuts And Cookies
+    │   │   ├── Pastries, Cakes And Desserts
+    │   │   └── Rolls
+    │   └── Packaged Bread And Bakery
+    │       ├── Cake, Pastries & Desserts
+    │       ├── Cookies And Donuts
+    │       ├── Crumpets And Pancakes
+    │       ├── Packaged Bread
+    │       ├── Pizza Bases
+    │       ├── Rolls And Bagels
+    │       └── Wrap And Flatbread
+    ├── Dairy, Eggs And Fridge
+    │   ├── Cheese
+    │   │   ├── Brie And Soft Cheese
+    │   │   ├── Cheese Blocks
+    │   │   ├── Feta And Goat'S Cheese
+    │   │   ├── Grated Cheese
+    │   │   ├── Ricotta, Cream And Cottage Cheese
+    │   │   ├── Sliced Cheese
+    │   │   ├── Snacking Cheese
+    │   │   └── Specialty Cheese
+    │   ├── Chilled And Fresh
+    │   │   ├── Chilled Bread
+    │   │   ├── Fresh Pasta And Pasta Sauces
+    │   │   ├── Ready To Eat Meals
+    │   │   └── Smallgoods
+    │   ├── Cream, Custards And Desserts
+    │   ├── Eggs, Butter And Margarine
+    │   │   ├── Eggs
+    │   │   └── Spreads
+    │   ├── Milk And Cream
+    │   │   ├── Cream And Cooking Creams
+    │   │   ├── Flavoured Milk
+    │   │   ├── Full Cream
+    │   │   ├── Skim And Low Fat Milk
+    │   │   └── Soy And Specialty Milk
+    │   ├── Vegetarian And Vegan
+    │   └── Yoghurt
+    │       ├── Baby And Children'S Yoghurt
+    │       ├── Flavoured Yoghurt
+    │       ├── Greek Yoghurt
+    │       ├── Natural Yoghurt
+    │       └── Non-Dairy Yoghurt
+    ├── Drinks
+    │   ├── Coffee
+    │   │   ├── Coffee Beans
+    │   │   ├── Coffee Capsules And Accessories
+    │   │   ├── Iced Coffee
+    │   │   ├── Instant Coffee
+    │   │   ├── Roast And Ground Coffee
+    │   │   └── Specialty Coffee
+    │   ├── Cordials, Juices And Iced Teas
+    │   │   ├── Cordials
+    │   │   ├── Iced Teas
+    │   │   └── Juices
+    │   ├── Flavoured Milk Drinks
+    │   │   ├── Drinks And Powders
+    │   │   └── Ready To Drinks
+    │   ├── Hot Drinks
+    │   ├── Lifestyle Beverages
+    │   ├── Long Life Milk
+    │   │   ├── Almond Milk
+    │   │   ├── Coconut Milk
+    │   │   ├── Condensed And Evaporated Milk
+    │   │   ├── Cream
+    │   │   ├── Dairy Free Cream
+    │   │   ├── Full Cream Milk
+    │   │   ├── Lactose Free Milk
+    │   │   ├── Oat And Rice Milk
+    │   │   ├── Powdered Milk
+    │   │   ├── Skim And Fat Free Milk
+    │   │   └── Soy Milk
+    │   ├── Non-Alcoholic
+    │   ├── Soft Drinks
+    │   │   ├── Flavoured Soft Drinks
+    │   │   └── Mixers
+    │   ├── Sports And Energy Drinks
+    │   │   ├── Energy Drinks
+    │   │   ├── Sport Drink Powders
+    │   │   └── Sports Drinks
+    │   ├── Tea
+    │   │   ├── Loose Leaf Tea
+    │   │   └── Tea Bags
+    │   └── Water
+    │       ├── Coconut Water
+    │       ├── Flavoured Water
+    │       ├── Sparkling Water
+    │       └── Still Water
+    ├── Front Of House
+    │   └── Tobacco
+    ├── Frozen
+    │   ├── Chips And Wedges
+    │   │   ├── Chips
+    │   │   ├── Hashbrowns
+    │   │   └── Wedges
+    │   ├── Frozen Desserts
+    │   │   ├── Cakes And Cheesecakes
+    │   │   └── Pies, Pastries And Puddings
+    │   ├── Frozen Fish And Seafood
+    │   │   ├── Fish Fillets
+    │   │   ├── Fish Fingers And Fish Cakes
+    │   │   └── Frozen Seafood
+    │   ├── Frozen Fruit
+    │   │   ├── Berries
+    │   │   └── Tropical
+    │   ├── Frozen Meals
+    │   ├── Frozen Meat
+    │   │   ├── Beef
+    │   │   ├── Burgers
+    │   │   ├── Chicken, Duck And Turkey
+    │   │   └── Pork
+    │   ├── Frozen Pies And Party Food
+    │   │   ├── Finger Food
+    │   │   ├── Pastries And Quiches
+    │   │   ├── Pastry Sheets
+    │   │   └── Pies And Sausage Rolls
+    │   ├── Frozen Pizza
+    │   ├── Frozen Vegetables
+    │   │   ├── Beans, Peas And Corn
+    │   │   ├── Mixed Vegetables
+    │   │   ├── Other Vegetables
+    │   │   └── Steam Bags
+    │   ├── Frozen Vegetarian And Vegan Food
+    │   ├── Ice
+    │   └── Ice Cream
+    │       ├── Frozen Yoghurt
+    │       ├── Gelato And Sorbet
+    │       ├── Ice Cream Tubs
+    │       ├── Multipacks
+    │       └── Premium Ice Cream
+    ├── Fruit And Vegetable
+    │   ├── Fruit
+    │   │   ├── Apples, Pears And Bananas
+    │   │   ├── Berries, Cherries And Grapes
+    │   │   ├── Citrus Fruit
+    │   │   ├── Organic Fruit
+    │   │   ├── Peaches, Nectarines, Melons & Mangoes
+    │   │   └── Pineapples, Kiwi Fruit And Tropical Fruit
+    │   ├── Salads
+    │   │   ├── Herbs
+    │   │   ├── Prepared Salads
+    │   │   └── Salad Bags
+    │   └── Vegetables
+    │       ├── Broccoli, Cauliflower And Cabbage
+    │       ├── Carrots And Other Root Vegetables
+    │       ├── Cucumber, Zuchinni And Eggplant
+    │       ├── Garlic, Chillies And Fresh Herbs
+    │       ├── Onions, Potatoes And Pumpkin
+    │       ├── Organic Vegetables
+    │       ├── Peas, Beans, Corn And Asparagus
+    │       ├── Spinach, Lettuce, Greens And Kale
+    │       └── Tomatoes, Avocados, Capsicum And Mushrooms
+    ├── Health And Beauty
+    │   ├── Bath And Soap
+    │   │   ├── Bar Soap
+    │   │   ├── Bath And Shower Accessories
+    │   │   ├── Body Wash And Shower Gel
+    │   │   ├── Bubble Baths And Bath Salts
+    │   │   └── Handwash And Hand Sanitisers
+    │   ├── Cosmetics
+    │   │   ├── Accessories
+    │   │   ├── Eyes
+    │   │   ├── Face
+    │   │   ├── Lips
+    │   │   └── Nails
+    │   ├── Dental Care
+    │   │   ├── Dental Floss And Tape
+    │   │   ├── Denture Care
+    │   │   ├── Mouthwash
+    │   │   ├── Tooth Brushes
+    │   │   └── Tooth Paste
+    │   ├── Female Deodorants And Bodysprays
+    │   │   ├── Roll-On Deodorants
+    │   │   └── Spray-On Deodorants & Bodysprays
+    │   ├── First Aid And Medicinal
+    │   │   ├── Antacid And Indigestion
+    │   │   ├── Antiseptic And Anti-Fungal
+    │   │   ├── Band-Aids And Bandages
+    │   │   ├── Childrens Medicine
+    │   │   ├── Cold, Flu And Allergies
+    │   │   ├── Cotton Wool And Cotton Buds
+    │   │   ├── Eye Care
+    │   │   ├── Medicinal Oil And Ointments
+    │   │   ├── Pain Relief
+    │   │   ├── Skincare
+    │   │   └── Smoking Cessation
+    │   ├── Hair Care
+    │   │   ├── Hair Accessories
+    │   │   ├── Hair Colour
+    │   │   ├── Hair Styling
+    │   │   ├── Hair Treatments
+    │   │   └── Shampoo And Conditioner
+    │   ├── Men'S Grooming
+    │   │   ├── Men'S Aftershave
+    │   │   ├── Men'S Blades And Razors
+    │   │   ├── Men'S Body Sprays
+    │   │   ├── Men'S Deodorants
+    │   │   ├── Men'S Haircare
+    │   │   ├── Men'S Shave Gels And Foams
+    │   │   ├── Men'S Shower Gels
+    │   │   └── Men'S Skincare
+    │   ├── Personal Care And Hygiene
+    │   │   ├── Bladder Control
+    │   │   ├── Contraception And Sexual Health
+    │   │   ├── Feminine Hygiene
+    │   │   ├── Nailcare
+    │   │   ├── Pregnancy Tests
+    │   │   └── Women'S Hair Removal
+    │   ├── Skin Care
+    │   │   ├── Body Moisturiser
+    │   │   ├── Cleansers And Skin Care Wipes
+    │   │   ├── Face Moisturiser
+    │   │   ├── Hand Moisturiser
+    │   │   ├── Lip Care
+    │   │   ├── Self Tanning
+    │   │   └── Sun Protection
+    │   ├── Sports And Diet Nutrition
+    │   │   ├── Diet Snacks And Slimming Aids
+    │   │   ├── Protein And Sport Performance Powders
+    │   │   ├── Protein Bars
+    │   │   └── Supplements And Superfoods
+    │   └── Vitamins
+    │       ├── Arthritis And Joints
+    │       ├── Bone And Muscle Health
+    │       ├── Children'S Health
+    │       ├── Detox And Digestion
+    │       ├── Fatigue And Stress
+    │       ├── Fish Oil
+    │       ├── Individual Vitamins A-Z
+    │       ├── Men'S Health
+    │       ├── Multi-Vitamins
+    │       └── Women'S Health
+    ├── Household
+    │   ├── Bathroom
+    │   │   ├── Toilet Cleaners
+    │   │   ├── Toilet Paper
+    │   │   └── Wipes And Tissues
+    │   ├── Car Care
+    │   ├── Cleaning Products
+    │   │   ├── Air Fresheners
+    │   │   ├── Bathroom Cleaners
+    │   │   ├── Bleach And Disinfectants
+    │   │   ├── Drain Cleaners And Solvents
+    │   │   ├── Fabric, Metal And Furniture Care
+    │   │   ├── Floor And Carpet Cleaners
+    │   │   ├── Garbage Bags
+    │   │   ├── Glass Cleaners
+    │   │   ├── Gloves
+    │   │   ├── Kitchen Cleaners
+    │   │   ├── Mops, Buckets And Brooms
+    │   │   ├── Mould Killer And Moisture Management
+    │   │   ├── Multipurpose Cleaners
+    │   │   └── Sponges, Clothes And Wipes
+    │   ├── Electrical
+    │   │   ├── Batteries
+    │   │   ├── Extension Cords And Adaptors
+    │   │   └── Lighting And Torches
+    │   ├── Garden And Lawn Care
+    │   ├── Homewares
+    │   │   ├── Clothing And Apparel
+    │   │   ├── Cutlery And Servingware
+    │   │   ├── Home Improvement And Repair
+    │   │   ├── Miscellaneous Homewares
+    │   │   ├── Mugs, Cups, Plates And Bowls
+    │   │   ├── Shoe Care
+    │   │   ├── Stationery
+    │   │   └── Toys And Games
+    │   ├── Kitchen
+    │   │   ├── Bin Bags
+    │   │   ├── Cling Wrap, Foil And Baking Paper
+    │   │   ├── Dishwashing
+    │   │   ├── Food Storage
+    │   │   ├── Oven Trays And Tins
+    │   │   ├── Paper Towels
+    │   │   ├── Sandwich And Freezer Bags
+    │   │   ├── Utensils
+    │   │   └── Water Filtration
+    │   ├── Laundry
+    │   │   ├── Fabric Softeners
+    │   │   ├── Ironing And Laundry Accessories
+    │   │   ├── Laundry Liquid
+    │   │   ├── Laundry Powder
+    │   │   ├── Pegs, Baskets And Hangers
+    │   │   └── Stain Removal And Pre-Wash
+    │   ├── Pest Control
+    │   │   ├── Crawling Insects
+    │   │   ├── Flying Insects
+    │   │   ├── Garden Pests
+    │   │   ├── Insect Repellants
+    │   │   ├── Mosquitos
+    │   │   └── Rodents
+    │   └── Picnic And Party
+    │       ├── Bbq Needs
+    │       ├── Candles
+    │       ├── Cups And Glasses
+    │       ├── Decorations
+    │       ├── Disposable Cutlery
+    │       └── Disposable Plates And Bowls
+    ├── Liquor
+    │   ├── Beer
+    │   │   ├── Australian Beer
+    │   │   ├── Craft Beer
+    │   │   ├── Ginger Beer
+    │   │   ├── International Beer
+    │   │   └── Low Carb Beer
+    │   ├── Champagne & Sparkling
+    │   ├── Cider
+    │   │   ├── Apple Cider
+    │   │   ├── Fruit Flavoured Cider
+    │   │   └── Pear Cider
+    │   ├── Premix Drinks
+    │   ├── Red Wine
+    │   │   ├── Cabernet Sauvignon
+    │   │   ├── Grenache
+    │   │   ├── Merlot
+    │   │   ├── Pinot Noir
+    │   │   ├── Red Blends
+    │   │   ├── Rosé
+    │   │   ├── Sangiovese
+    │   │   ├── Shiraz
+    │   │   ├── Shiraz Blends
+    │   │   └── Sweet Reds
+    │   ├── Spirits
+    │   │   ├── Bourbon
+    │   │   ├── Brandy & Cognac
+    │   │   ├── Gin
+    │   │   ├── Liqueurs
+    │   │   ├── Other Spirits
+    │   │   │   ├── Bitters
+    │   │   │   └── Ouzo
+    │   │   ├── Rum
+    │   │   ├── Tequila
+    │   │   ├── Vodka
+    │   │   └── Whisky
+    │   └── White Wine
+    │       ├── Cask Whites
+    │       ├── Chardonnay
+    │       ├── Moscato
+    │       ├── Pinot Gris And Grigio
+    │       ├── Riesling
+    │       ├── Sauvignon Blanc
+    │       ├── Semillon Sauvignon Blanc
+    │       ├── Verdelho
+    │       ├── White Blends
+    │       └── White Varietals
+    ├── Meat, Seafood And Deli
+    │   ├── Deli
+    │   │   ├── Ham, Bacon, Salami And Sliced Meats
+    │   │   ├── Sausages And Frankfurts
+    │   │   └── Smoked Salmon And Seafood
+    │   ├── Deli Specialties
+    │   │   ├── Antipasto
+    │   │   ├── Antipasto Cheese
+    │   │   ├── Dips And Pate
+    │   │   └── Prepared Foods And Salads
+    │   ├── Meat
+    │   │   ├── Beef, Pork And Lamb
+    │   │   ├── Chicken And Other Poultry
+    │   │   ├── Organic And Meat
+    │   │   └── Sausages And Burgers
+    │   └── Seafood
+    │       ├── Fish
+    │       ├── Prepacked Seafood
+    │       ├── Shellfish
+    │       └── Squid And Octopus
+    ├── Other
+    │   └── Essentials
+    ├── Pantry
+    │   ├── Baking
+    │   │   ├── Breadcrumbs And Stuffing
+    │   │   ├── Cake And Bread Mixes
+    │   │   ├── Cake Decorating
+    │   │   ├── Cooking Chocolate And Cocoa
+    │   │   ├── Dried Fruit
+    │   │   ├── Flavouring, Essence And Food Colouring
+    │   │   ├── Flour
+    │   │   ├── Nuts, Seeds And Coconuts
+    │   │   ├── Pancakes And Dessert Mixes
+    │   │   ├── Sugars And Sweeteners
+    │   │   └── Yeast And Baking Ingredients
+    │   ├── Breakfast Foods
+    │   │   ├── Breakfast Cereals
+    │   │   ├── Breakfast Snacks And Drinks
+    │   │   └── Muesli And Oats
+    │   ├── Canned Food And Instant Meals
+    │   │   ├── Baked Beans And Spaghetti
+    │   │   ├── Canned Beans And Legumes
+    │   │   ├── Canned Fruit
+    │   │   ├── Canned Meat And Meals
+    │   │   ├── Canned Salmon And Seafood
+    │   │   ├── Canned Tomatoes
+    │   │   ├── Canned Tuna
+    │   │   ├── Canned Vegetables
+    │   │   └── Instant Noodles, Meals And Side Dishes
+    │   ├── Condiments And Dressings
+    │   │   ├── Chutney And Relish
+    │   │   ├── Herbs And Spices
+    │   │   ├── Mayonnaise And Salad Dressings
+    │   │   ├── Mustard
+    │   │   ├── Oils And Vinegar
+    │   │   ├── Other Sauces
+    │   │   ├── Pickled Vegetables
+    │   │   ├── Salt And Pepper
+    │   │   ├── Sweet Chilli And Hot Sauce
+    │   │   └── Tomato And Bbq Sauce
+    │   ├── Confectionary
+    │   │   ├── Boxed Chocolates
+    │   │   ├── Chocolate Bars
+    │   │   ├── Chocolate Blocks
+    │   │   ├── Chocolate Multipacks
+    │   │   ├── Chocolate Share Packs
+    │   │   ├── Gums, Mints And Medicated
+    │   │   └── Sweets And Lollies
+    │   ├── Cooking Sauces
+    │   │   ├── Gravy And Stocks
+    │   │   ├── Marinades And Seasoning
+    │   │   ├── Pizza And Pasta Sauces
+    │   │   ├── Recipe Bases And Cooking Sauces
+    │   │   └── Soy And Asian Sauces
+    │   ├── Desserts And Toppings
+    │   │   ├── Ice Blocks
+    │   │   ├── Ice Cream Cones, Syrups And Toppings
+    │   │   ├── Jelly
+    │   │   └── Puddings
+    │   ├── International Foods
+    │   │   ├── Asian And Thai
+    │   │   ├── Indian
+    │   │   ├── Mexican
+    │   │   ├── Middle Eastern
+    │   │   └── Uk
+    │   ├── Jam, Honey And Spreads
+    │   │   ├── Chocolate Spreads
+    │   │   ├── Honey And Syrups
+    │   │   ├── Jams And Marmalades
+    │   │   ├── Peanut Butter
+    │   │   └── Savoury Spreads
+    │   ├── Rice, Pasta And Grains
+    │   │   ├── Beans And Legumes
+    │   │   ├── Dried Pasta
+    │   │   ├── Microwave Rice
+    │   │   ├── Pasta Meals
+    │   │   ├── Quinoa, Cous Cous And Other Grains
+    │   │   └── Rice
+    │   ├── Snacks
+    │   │   ├── Biscuits And Cookies
+    │   │   ├── Cereal Bars & Nutritional Snacks
+    │   │   ├── Corn Chips And Salsa
+    │   │   ├── Crisps And Crackers
+    │   │   ├── Nuts And Jerky
+    │   │   ├── Popcorn
+    │   │   ├── Potato Chips
+    │   │   └── Rice And Corn Snacks
+    │   └── Soups
+    │       ├── Canned Soup
+    │       ├── Packet And Instant Soup
+    │       └── Soup Pouches
+    └── Pet
+        ├── Birds, Fish And Small Pets
+        │   └── Small Animal Food
+        ├── Cat And Kitten
+        │   ├── Cat Accessories, Treats And Healthcare
+        │   ├── Cat Litter
+        │   ├── Chilled Cat Food
+        │   ├── Dry Cat Food
+        │   ├── Kitten Food
+        │   └── Trays And Can Cat Food
+        └── Dog And Puppy
+            ├── Chilled Dog Food
+            ├── Dog Treats, Accessories And Healthcare
+            ├── Dry Dog Food
+            ├── Puppy Food
+            └── Trays And Can Dog Food

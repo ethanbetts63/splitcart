@@ -1,0 +1,312 @@
+--- Overall Substitution Statistics ---
+- Total Products in DB: 69034
+- Total Substitution Links: 211416
+- Products with at least one substitute: 52661 (76.28%)
+
+--- Substitutions by Level (Overall) ---
+- Same brand, same product, different size. - 3192 (1.51%)
+- Same brand, similar product, similar size. - 3485 (1.65%)
+- Same category, semantic match. - 132568 (62.70%)
+- Linked category, semantic match. - 72171 (34.14%)
+
+--- Detailed Analysis for Aldi ---
+
+--- Internal Substitutions (Aldi <-> Aldi) ---
+  Total: 7709
+  - Same brand, same product, different size. - 47 (0.61%)
+  - Same brand, similar product, similar size. - 257 (3.33%)
+  - Same category, semantic match. - 6834 (88.65%)
+  - Linked category, semantic match. - 571 (7.41%)
+
+--- Cross-Company Substitutions (Aldi <-> Other) ---
+  Total: 14292
+  - Same brand, same product, different size. - 6 (0.04%)
+  - Same brand, similar product, similar size. - 49 (0.34%)
+  - Same category, semantic match. - 143 (1.00%)
+  - Linked category, semantic match. - 14094 (98.61%)
+
+--- Detailed Analysis for Coles ---
+
+--- Internal Substitutions (Coles <-> Coles) ---
+  Total: 65640
+  - Same brand, same product, different size. - 2048 (3.12%)
+  - Same brand, similar product, similar size. - 1095 (1.67%)
+  - Same category, semantic match. - 54020 (82.30%)
+  - Linked category, semantic match. - 8477 (12.91%)
+
+--- Cross-Company Substitutions (Coles <-> Other) ---
+  Total: 65237
+  - Same brand, same product, different size. - 147 (0.23%)
+  - Same brand, similar product, similar size. - 442 (0.68%)
+  - Same category, semantic match. - 25513 (39.11%)
+  - Linked category, semantic match. - 39135 (59.99%)
+
+--- Detailed Analysis for Iga ---
+
+--- Internal Substitutions (Iga <-> Iga) ---
+  Total: 77071
+  - Same brand, same product, different size. - 1397 (1.81%)
+  - Same brand, similar product, similar size. - 1292 (1.68%)
+  - Same category, semantic match. - 62960 (81.69%)
+  - Linked category, semantic match. - 11422 (14.82%)
+
+--- Cross-Company Substitutions (Iga <-> Other) ---
+  Total: 67315
+  - Same brand, same product, different size. - 485 (0.72%)
+  - Same brand, similar product, similar size. - 522 (0.78%)
+  - Same category, semantic match. - 24679 (36.66%)
+  - Linked category, semantic match. - 41629 (61.84%)
+
+--- Detailed Analysis for Woolworths ---
+
+--- Internal Substitutions (Woolworths <-> Woolworths) ---
+  Total: 49779
+  - Same brand, same product, different size. - 1379 (2.77%)
+  - Same brand, similar product, similar size. - 1437 (2.89%)
+  - Same category, semantic match. - 40850 (82.06%)
+  - Linked category, semantic match. - 6113 (12.28%)
+
+--- Cross-Company Substitutions (Woolworths <-> Other) ---
+  Total: 73067
+  - Same brand, same product, different size. - 496 (0.68%)
+  - Same brand, similar product, similar size. - 628 (0.86%)
+  - Same category, semantic match. - 34261 (46.89%)
+  - Linked category, semantic match. - 37682 (51.57%)
+
+--- Top 20 Substitution Hubs (Grouped) ---
+  1. "Strawberry Yoghurt" (BDD AUSTRALIA PTY LTD) - 21232 links in group
+  2. "Adult Dry Dog Food With Chicken" (Coles) - 1028 links in group
+  3. "Smooth Shampoo" (Monday) - 767 links in group
+  4. "3 Ply White Toilet Paper" (QUILTON) - 556 links in group
+  5. "Sauvignon Blanc 750ml" (Tussock Jumper) - 485 links in group
+  6. "Strawberry Sugar Free Chewing Gum" (None) - 423 links in group
+  7. "Women Antiperspirant Aerosol Advanced Invisible Dry Pure Deodorant" (Rexona) - 397 links in group
+  8. "Pale Ale Can 375ml" (Coopers) - 282 links in group
+  9. "Energizer Lithium Ultimate AA Batteries" (ENERGIZER SINGAPORE PTE LTD) - 274 links in group
+  10. "Uniquely Natural Laundry Liquid" (Uniquely Natural) - 270 links in group
+  11. "For Women Multivitamin" (Centrum) - 244 links in group
+  12. "Moisturising Lotion" (Cetaphil) - 237 links in group
+  13. "Venus Smooth Women's Razor Blade" (Ｐ＆Ｇジャパン（同）) - 231 links in group
+  14. "Ultimate Dishwasher Tablets Lemon" (Reckitt Benckiser (Australia) Pty Limited) - 221 links in group
+  15. "Ultrathin Pads Regular With Wings" (U by Kotex) - 205 links in group
+  16. "Ultra Dry Nappy Pants Boys Size 6 (15kg+)" (Huggies) - 204 links in group
+  17. "Advanced Whitening Toothpaste" (Colgate-Palmolive (Thailand) Ltd) - 200 links in group
+  18. "SPF 50+ Ultra Rollon Sunscreen" (Cancer Council) - 200 links in group
+  19. "Scotch Whisky 700ml" (John Samson) - 189 links in group
+  20. "Olives Stuffed" (None) - 182 links in group
+
+--- Level 1: Same brand, same product, different size. ---
+
+--- Group 1/20 ---
+  - Name: Amply's Ginger Beer Cans | Brand: Amplys | Sizes: ['330ml', '4pk', 'pk']
+  - Name: Amply's Ginger Beer Cans | Brand: Amplys | Sizes: ['24pk', '330ml', 'pk']
+
+--- Group 2/20 ---
+  - Name: Tampons Super | Brand: U by Kotex | Sizes: ['32pk', 'ea']
+  - Name: Tampons Super | Brand: U by Kotex | Sizes: ['16pk', 'ea']
+
+--- Group 3/20 ---
+  - Name: Southern Comfort Bourbon | Brand: Southern Comfort | Sizes: ['1l']
+  - Name: Southern Comfort Bourbon | Brand: Southern Comfort | Sizes: ['700ml']
+
+--- Group 4/20 ---
+  - Name: Ultimates Indulge Lamb Mince In Gravy Tray | Brand: Deep Cove | Sizes: ['100g', 'ea']
+  - Name: Ultimates Indulge Lamb In Gravy | Brand: Deep Cove | Sizes: ['400g', 'ea']
+
+--- Group 5/20 ---
+  - Name: Woolworths Red Juice Blend Apple Beetroot & Blackberry | Brand: Woolworths Group Ltd - Supermarkets | Sizes: ['500ml']
+  - Name: Woolworths Red Juice Blend Apple Beetroot & Blackberry | Brand: Woolworths Group Ltd - Supermarkets | Sizes: ['1l']
+
+--- Group 6/20 ---
+  - Name: Icelandic Glacial Spring Water | Brand: Icelandic Glacial | Sizes: ['500ml', 'ea']
+  - Name: Icelandic Glacial Spring Water | Brand: Icelandic Glacial | Sizes: ['1l', 'ea']
+
+--- Group 7/20 ---
+  - Name: Amazing Oils Magnesium Daily Bath Flakes | Brand: Amazing Oils | Sizes: ['800g']
+  - Name: Amazing Oils Magnesium Daily Bath Flakes | Brand: Amazing Oils | Sizes: ['2kg']
+
+--- Group 8/20 ---
+  - Name: Big M Chocolate Original Flavoured Milk | Brand: BDD AUSTRALIA PTY LTD | Sizes: ['2l', 'ea']
+  - Name: Big M Chocolate Original Flavoured Milk | Brand: BDD AUSTRALIA PTY LTD | Sizes: ['300ml', 'ea']
+  - Name: Big M Chocolate Original Flavoured Milk | Brand: BDD AUSTRALIA PTY LTD | Sizes: ['600ml', 'ea']
+
+--- Group 9/20 ---
+  - Name: Iced Coffee Flavoured Milk | Brand: BDD AUSTRALIA PTY LTD | Sizes: ['750ml', 'ea']
+  - Name: Iced Coffee Milk Bottle | Brand: BDD AUSTRALIA PTY LTD | Sizes: ['500ml', 'ea']
+  - Name: Iced Coffee Flavoured Milk | Brand: BDD AUSTRALIA PTY LTD | Sizes: ['300ml', 'ea']
+  - Name: Iced Coffee Flavoured Milk | Brand: BDD AUSTRALIA PTY LTD | Sizes: ['300ml', 'ea']
+  - Name: Iced Coffee Flavoured Milk | Brand: BDD AUSTRALIA PTY LTD | Sizes: ['2l', 'ea']
+  - Name: Iced Coffee Flavoured Milk | Brand: BDD AUSTRALIA PTY LTD | Sizes: ['600ml', 'ea']
+  - Name: Feelgood No Added Sugar 99.5% Fat Free Coffee | Brand: BDD AUSTRALIA PTY LTD | Sizes: ['600ml', 'ea']
+
+--- Group 10/20 ---
+  - Name: Ice Break Iced Coffee Bold Espresso | Brand: Lactalis Australia Pty Ltd | Sizes: ['500ml', 'ea']
+  - Name: Ice Break Iced Coffee Bold Espresso | Brand: Lactalis Australia Pty Ltd | Sizes: ['750ml', 'ea']
+
+--- Group 11/20 ---
+  - Name: Hommus Dip | Brand: Coles | Sizes: ['1kg']
+  - Name: Hommus Dip | Brand: Coles | Sizes: ['200g']
+
+--- Group 12/20 ---
+  - Name: Multi Colour Balloons | Brand: Coles | Sizes: ['50pk']
+  - Name: Multi Colour Balloons | Brand: Coles | Sizes: ['20pk']
+
+--- Group 13/20 ---
+  - Name: Chardonnay 375ml | Brand: Pepperjack | Sizes: ['1ea', '375ml']
+  - Name: Chardonnay 750ml | Brand: Pepperjack | Sizes: ['1ea', '750ml', 'ea']
+
+--- Group 14/20 ---
+  - Name: Kombucha Ginger & Lemon | Brand: Remedy Kombucha Pty Ltd | Sizes: ['750ml', 'ea']
+  - Name: Kombucha Ginger & Lemon | Brand: Remedy Kombucha Pty Ltd | Sizes: ['330ml', 'ea']
+  - Name: Kombucha Ginger Lemon 250ml | Brand: Remedy Kombucha Pty Ltd | Sizes: ['250ml', '4pk']
+  - Name: Kombucha Ginger | Brand: Remedy Kombucha Pty Ltd | Sizes: ['1.25l', 'ea']
+
+--- Group 15/20 ---
+  - Name: Little Swisse Fussy Eater Greens Gummies | Brand: Little Swisse | Sizes: ['40pk']
+  - Name: Little Swisse Fussy Eater Greens Gummies | Brand: Little Swisse | Sizes: ['80pk']
+  - Name: Little Swisse Fussy Eater Greens Gummies | Brand: Little Swisse | Sizes: ['40pk']
+
+--- Group 16/20 ---
+  - Name: CC's Corn Chips Classic Meat Pie | Brand: CC's | Sizes: ['175g', 'ea']
+  - Name: CC's Corn Chips Classic Meat Pie | Brand: CC's | Sizes: ['90g', 'ea']
+
+--- Group 17/20 ---
+  - Name: Foster's Light Ice Bottles | Brand: Foster's | Sizes: ['24pk', '330ml', 'pk']
+  - Name: Foster's Light Ice Bottles | Brand: Foster's | Sizes: ['330ml', '6pk', 'pk']
+
+--- Group 18/20 ---
+  - Name: Sundried Tomatoes Strips | Brand: Riviana Foods Pty Ltd | Sizes: ['220g', 'ea']
+  - Name: Always Fresh Sundried Tomatoes Strips | Brand: Riviana Foods Pty Ltd | Sizes: ['670g', 'ea']
+
+--- Group 19/20 ---
+  - Name: Natural Bircher Muesli | Brand: Carmans Nut Bar Slice | Sizes: ['500g', 'ea']
+  - Name: Natural Bircher Muesli | Brand: Carmans Nut Bar Slice | Sizes: ['875g', 'ea']
+
+--- Group 20/20 ---
+  - Name: Pineapple Pieces in Natural Juice Canned | Brand: HJ Heinz Company Australia Limited | Sizes: ['440g', 'ea']
+  - Name: Australian Pineapple Pieces In Juice | Brand: HJ Heinz Company Australia Limited | Sizes: ['225g', 'ea']
+
+--- Level 2: Same brand, similar product, similar size. ---
+
+--- Medium Confidence (0.85-0.95) ---
+  --- Sample 1/5 (Score: 0.95) ---
+    [A] Name: Yellowfin Tuna Chunks with Pepper And Lemon Flavour 95g | Brand: OCEAN RISE | Sizes: ['0.095kg', '95g']
+    [B] Name: Smoke Flavour Yellowfin Tuna Chunks 95g | Brand: OCEAN RISE | Sizes: ['0.095kg', '95g']
+  --- Sample 2/5 (Score: 0.95) ---
+    [A] Name: Ridiculously Delicious Peanut Butter Crunchy | Brand: Ridiculously Delicious | Sizes: ['375g', 'ea']
+    [B] Name: Ridiculously Delicious Peanut Butter Smooth | Brand: Ridiculously Delicious | Sizes: ['375g', 'ea']
+  --- Sample 3/5 (Score: 0.95) ---
+    [A] Name: Chunkers Adult Chilled Fresh Dog Food Meatballs Chicken | Brand: V.I.P. Petfoods (Aust.) Pty. Ltd | Sizes: ['1kg', 'ea']
+    [B] Name: Chunkers Adult Chilled Fresh Dog Food Meatballs Lamb | Brand: V.I.P. Petfoods (Aust.) Pty. Ltd | Sizes: ['1kg', 'ea']
+  --- Sample 4/5 (Score: 0.95) ---
+    [A] Name: Penfolds RWT Shiraz 2020 Bottle | Brand: Southcorp Wines Pty Ltd | Sizes: ['750ml']
+    [B] Name: Penfolds Bin 28 Shiraz 2020 Bottle | Brand: Southcorp Wines Pty Ltd | Sizes: ['750ml']
+  --- Sample 5/5 (Score: 0.95) ---
+    [A] Name: Chilli Flavoured Deli Style Potato Chips 175g | Brand: BLACKSTONE GOURMET SNACK CO. | Sizes: ['175g']
+    [B] Name: Sea Salt Flavoured Deli Style Potato Chips 175g | Brand: BLACKSTONE GOURMET SNACK CO. | Sizes: ['175g']
+
+--- Level 3: Same category, semantic match. ---
+
+--- High Confidence (Score > 0.95) ---
+  --- Sample 1/5 (Score: 1.00) ---
+    [A] Name: Elvive Extraordinary Oils Conditioner | Brand: L OREAL SA | Sizes: ['300ml', 'ea']
+    [B] Name: Elvive Extraordinary Oils Conditioner | Brand: None | Sizes: ['700ml', 'ea']
+  --- Sample 2/5 (Score: 1.00) ---
+    [A] Name: Chardonnay 750ml | Brand: Fat Bastard | Sizes: ['1ea', '750ml', 'ea']
+    [B] Name: Chardonnay 750ml | Brand: None | Sizes: ['1ea', '750ml', 'ea']
+  --- Sample 3/5 (Score: 1.00) ---
+    [A] Name: Extra Virgin Olive Oil | Brand: None | Sizes: ['750ml']
+    [B] Name: Extra Virgin Olive Oil | Brand: Red Island | Sizes: ['3l', 'ea']
+  --- Sample 4/5 (Score: 1.00) ---
+    [A] Name: Hazy Pale Can 375mL | Brand: Tinnies | Sizes: ['375ml', '6pk']
+    [B] Name: Hazy Pale Can 375ml | Brand: Big Shed | Sizes: ['24pk', '375ml']
+  --- Sample 5/5 (Score: 1.00) ---
+    [A] Name: Carrots 1kg | Brand: None | Sizes: ['1kg']
+    [B] Name: Carrots 1kg | Brand: None | Sizes: ['1kg']
+
+--- Medium Confidence (0.85-0.95) ---
+  --- Sample 1/5 (Score: 0.89) ---
+    [A] Name: Cocobella Coconut Yoghurt Strawberry | Brand: Cocobella | Sizes: ['150g', 'ea']
+    [B] Name: Coyo Organic Strawberry Yoghurt | Brand: Coyo | Sizes: ['300g', 'ea']
+  --- Sample 2/5 (Score: 0.86) ---
+    [A] Name: Old El Paso Taco Family Kit | Brand: None | Sizes: ['495g', 'ea']
+    [B] Name: Old El Paso Taco Shells Family Pack | Brand: None | Sizes: ['234g', 'ea', 'pk']
+  --- Sample 3/5 (Score: 0.87) ---
+    [A] Name: Tales Of Italy Alluring Napoli Ground Coffee | Brand: Lavazza | Sizes: ['250g']
+    [B] Name: Tales Of Italy Eternal Roma Ground Coffee | Brand: Lavazza | Sizes: ['250g']
+  --- Sample 4/5 (Score: 0.93) ---
+    [A] Name: Free Range Eggs 12 Pack | Brand: Kangaroo Island | Sizes: ['12pk', '700g', 'ea']
+    [B] Name: Surfcoast Free Range Eggs XLarge | Brand: Surfcoast | Sizes: ['700g', 'ea']
+  --- Sample 5/5 (Score: 0.88) ---
+    [A] Name: Gummies Extra Strength Magnesium | Brand: Haircarebear | Sizes: ['60pk']
+    [B] Name: High Strength Kids Gummies Magnesium | Brand: Pharmacare Laboratories Pty Ltd | Sizes: ['50pk']
+
+--- Low Confidence (0.7-0.85) ---
+  --- Sample 1/5 (Score: 0.82) ---
+    [A] Name: Microwave Rice Brown Rice & Quinoa 250g | Brand: IMPERIAL GRAIN | Sizes: ['250g']
+    [B] Name: Microwave Rice Japanese Style 250g | Brand: IMPERIAL GRAIN | Sizes: ['250g']
+  --- Sample 2/5 (Score: 0.77) ---
+    [A] Name: Crunchy Peanut Butter | Brand: None | Sizes: ['300g']
+    [B] Name: Bega Peanut Butter Smooth | Brand: None | Sizes: ['200g']
+  --- Sample 3/5 (Score: 0.82) ---
+    [A] Name: Oscar Orsen Hair Elastic Large Flat Brown | Brand: Oscar Orsen | Sizes: ['10pk']
+    [B] Name: Oscar Orsen Hair Hair Nets Light Brown | Brand: Oscar Orsen | Sizes: ['4pk']
+  --- Sample 4/5 (Score: 0.78) ---
+    [A] Name: Bone Broth From Free Range Chicken | Brand: Campbell Australasia Pty Ltd | Sizes: ['500ml', 'ea']
+    [B] Name: Undivided Food Co. Good Bones Organic Chicken Bone Broth | Brand: Undivided Food Co. | Sizes: ['500g', '500ml', 'ea']
+  --- Sample 5/5 (Score: 0.76) ---
+    [A] Name: Barambah Organics Greek Yoghurt | Brand: Barambah Organics | Sizes: ['500g', 'ea']
+    [B] Name: Community Co Greek Style Yoghurt | Brand: Community Co | Sizes: ['2kg', 'ea']
+
+--- Level 4: Linked category, semantic match. ---
+
+--- High Confidence (Score > 0.95) ---
+  --- Sample 1/5 (Score: 1.00) ---
+    [A] Name: Chives Chopped | Brand: MasterFoods | Sizes: ['7g']
+    [B] Name: McCormick Chives Chopped | Brand: McCormick | Sizes: ['7g', 'ea']
+  --- Sample 2/5 (Score: 0.99) ---
+    [A] Name: Southern Blue Whiting Skin On Fillets 1kg | Brand: OCEAN ROYALE | Sizes: ['1kg']
+    [B] Name: Skin On Southern Blue Whiting Fillets | Brand: Coles | Sizes: ['1kg']
+  --- Sample 3/5 (Score: 0.99) ---
+    [A] Name: Cauliflower Half | Brand: Bare Bakers | Sizes: ['1ea']
+    [B] Name: Half Cauliflower | Brand: None | Sizes: ['300g']
+  --- Sample 4/5 (Score: 0.97) ---
+    [A] Name: Pure Smooth Shaving Gel For Men | Brand: Ｐ＆Ｇジャパン（同） | Sizes: ['195g']
+    [B] Name: Gillette PURE Shaving Gel for Men | Brand: None | Sizes: ['170g', 'ea']
+  --- Sample 5/5 (Score: 0.97) ---
+    [A] Name: Soup Chicken Noodle | Brand: Coles Kitchen | Sizes: ['550g']
+    [B] Name: Chicken Noodle Soup | Brand: None | Sizes: ['62g', 'ea']
+
+--- Medium Confidence (0.85-0.95) ---
+  --- Sample 1/5 (Score: 0.90) ---
+    [A] Name: Barambah Organics All Natural Yoghurt | Brand: Barambah Organics | Sizes: ['1kg', 'ea']
+    [B] Name: Barambah Organics Bush Honey Pot Set Yoghurt | Brand: Barambah Organics | Sizes: ['1kg']
+  --- Sample 2/5 (Score: 0.86) ---
+    [A] Name: Massel 7's Chicken Cubes Gluten Free | Brand: Massel | Sizes: ['ea']
+    [B] Name: Massel 7's Cubes Gluten Free Vegetable | Brand: Massel | Sizes: ['35g']
+  --- Sample 3/5 (Score: 0.86) ---
+    [A] Name: Premium Pasta Egg Fettucine | Brand: None | Sizes: ['375g', 'ea']
+    [B] Name: Egg Pasta Fettuccine | Brand: Guzzi's | Sizes: ['500g']
+  --- Sample 4/5 (Score: 0.86) ---
+    [A] Name: Pinot Noir 750ml | Brand: Libertas | Sizes: ['1ea', '750ml']
+    [B] Name: Mud House Pinot Noir | Brand: Mud House | Sizes: ['750ml', 'ea']
+  --- Sample 5/5 (Score: 0.86) ---
+    [A] Name: Zero Sugar 250ml | Brand: Cca Cola | Sizes: ['15pk', '250ml', 'pk']
+    [B] Name: Coca Cola Cola Zero Sugar | Brand: Cca Cola | Sizes: ['600ml', 'ea']
+
+--- Low Confidence (0.7-0.85) ---
+  --- Sample 1/5 (Score: 0.75) ---
+    [A] Name: Skye Scotch Whisky 700ml | Brand: Talisker | Sizes: ['1ea', '700ml', 'ea']
+    [B] Name: McAllister Scotch Whisky | Brand: McAllister | Sizes: ['350ml']
+  --- Sample 2/5 (Score: 0.79) ---
+    [A] Name: Twinings English Breakfast Tea  Bags Tea Bags | Brand: None | Sizes: ['50pk']
+    [B] Name: Twinings Strawberry, Raspberry & Loganberry Tea Bags | Brand: None | Sizes: ['10pk']
+  --- Sample 3/5 (Score: 0.80) ---
+    [A] Name: Salted Caramel Chocolate | Brand: Pico | Sizes: ['80g', 'ea']
+    [B] Name: Nestlé Scorched Almonds Chocolate Salted Caramel | Brand: None | Sizes: ['225g', 'ea']
+  --- Sample 4/5 (Score: 0.75) ---
+    [A] Name: Lindt Lindor Window Gift Box Limited Edition Assorted | Brand: Lindt &amp; Sprungli (Australia) Pty Ltd | Sizes: ['430g', 'ea']
+    [B] Name: Lindt Festive Collection Gift Box | Brand: Lindt &amp; Sprungli (Australia) Pty Ltd | Sizes: ['383g']
+  --- Sample 5/5 (Score: 0.76) ---
+    [A] Name: Tasty Cheese Block | Brand: Bega | Sizes: ['250g', 'ea']
+    [B] Name: Extra Sharp Cheese Block | Brand: Cracker Barrel | Sizes: ['250g', 'ea']

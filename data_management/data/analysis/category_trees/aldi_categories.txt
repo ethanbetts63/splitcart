@@ -1,0 +1,168 @@
+(venv) PS C:\Users\ethan\coding\splitcart> python manage.py analyze --report category_tree --company-name "aldi"
+Generating category tree for 'aldi'...
+Category Tree for Aldi:
+├── Baby
+│   ├── Baby Food
+│   └── Baby Nappies & Wipes
+├── Bakery
+│   ├── Muffins, Cakes & Other
+│   ├── Sliced Breads
+│   └── Speciality Breads & Rolls
+├── Bonus Entry Products
+│   └── Masterfoods
+│       └── Meal Bases & Sauces
+├── Chips, Chocolates & Snacks
+│   ├── Biscuits & Cookies
+│   │   ├── Chocolate Biscuits
+│   │   └── Cream & Plain Biscuits
+│   ├── Chocolates
+│   │   ├── Chocolate Bars
+│   │   └── Chocolate Bites
+│   └── Crackers & Rice Cakes
+│       ├── Crackers & Crispbreads
+│       ├── Flavoured Snacks
+│       ├── Multipack Crackers
+│       └── Rice & Corn Snacks
+├── Cleaning & Household
+│   ├── Air Fresheners & Fragrances
+│   ├── Bathroom
+│   ├── Cleaning
+│   ├── Home Essentials
+│   ├── Kitchen
+│   ├── Laundry
+│   ├── Pest Control
+│   └── Toilet Paper, Tissues & Paper Towels
+├── Dairy, Eggs & Fridge
+│   ├── Butter & Margarine
+│   ├── Cheese
+│   ├── Cream & Custard
+│   │   └── Custards
+│   ├── Creams & Custards
+│   ├── Desserts
+│   ├── Eggs
+│   ├── Long Life Milk
+│   ├── Lunch Box
+│   ├── Meal Kits
+│   ├── Milk
+│   │   └── Full Cream Milk
+│   ├── Ready To Eat Meals
+│   └── Yogurt
+├── Deli & Chilled Meats
+│   ├── Antipasto
+│   ├── Deli Meats
+│   ├── Dips & Spreads
+│   ├── Lunch Box
+│   └── Vegetarian & Vegan
+├── Dietary & World Foods
+│   ├── Free From
+│   │   └── Dairy & Lactose Free
+│   ├── Halal
+│   │   └── Pantry
+│   │       ├── Baking
+│   │       │   └── Pancake & Dessert Mixes
+│   │       ├── Biscuit & Cookies
+│   │       ├── Breakfast
+│   │       │   └── Breakfast Cereal
+│   │       ├── Canned Food
+│   │       ├── Cereals & Muesli
+│   │       ├── Chips, Corn Chips & Other
+│   │       ├── Condiments & Dressings
+│   │       ├── Confectionery
+│   │       ├── Crackers & Crisp Breads
+│   │       ├── Dried Fruits, Nuts & Jerky
+│   │       ├── Health Foods
+│   │       ├── Herbs & Spices
+│   │       ├── Jams & Spreads
+│   │       ├── Jams, Honey & Spreads
+│   │       │   └── Nut Spreads
+│   │       ├── Lunch Box
+│   │       ├── Meal Kits
+│   │       ├── Oils & Vinegars
+│   │       ├── Pasta, Rice & Grains
+│   │       ├── Pickled Vegetables & Condiments
+│   │       │   └── Pickles, Chutney & Relish
+│   │       ├── Sauces
+│   │       ├── Soups & Noodles
+│   │       ├── Stocks & Gravy
+│   │       └── Tea, Coffee & Hot Chocolate
+│   ├── Sports Nutrition
+│   │   └── Protein Drinks & Shakes
+│   └── Vegan & Vegetarian
+│       └── Falafels, Soy & Tofu
+├── Drinks
+│   ├── Flavoured Milk
+│   │   ├── Drinks & Powders
+│   │   └── Kids Milk
+│   ├── Iced Tea & Kombucha
+│   ├── Juices & Cordials
+│   ├── Soft Drinks
+│   ├── Sports & Energy
+│   ├── Tea, Coffee & Hot Chocolate
+│   └── Water
+├── Freezer
+│   ├── Chips & Wedges
+│   ├── Frozen Desserts
+│   ├── Frozen Fruit & Vegetables
+│   ├── Frozen Meat & Seafood
+│   ├── Frozen Party Food & Snacks
+│   ├── Frozen Pizzas
+│   ├── Frozen Ready Meals
+│   ├── Ice Cream Snacks
+│   └── Ice Cream Tubs
+├── Front Of Store
+│   ├── Flowers
+│   └── Shopping Bags & Token
+├── Frozen
+│   └── Ice Cream
+│       └── Ice Cream Sticks
+├── Fruits & Vegetables
+│   ├── Fresh Fruits
+│   ├── Fresh Herbs
+│   ├── Fresh Vegetables
+│   ├── Prepared Vegetables
+│   └── Salads
+├── Grocery
+│   └── Fruit And Vegetable
+│       └── Vegetables
+│           ├── Broccoli, Cauliflower And Cabbage
+│           ├── Onions, Potatoes And Pumpkin
+│           └── Spinach, Lettuce, Greens And Kale
+├── Health & Beauty
+│   ├── Cosmetics
+│   ├── Dental Care
+│   ├── First Aid & Medicinal
+│   ├── Hair Care
+│   ├── Hair Removal
+│   ├── Period & Incontinence Care
+│   ├── Personal Care & Hygiene
+│   ├── Shower & Bath Care
+│   ├── Sun & Skin Care
+│   └── Vitamins, Sports & Nutrition
+├── Limited Time Only
+├── Liquor
+│   ├── Beer
+│   ├── Cider
+│   ├── Premixed
+│   ├── Red Wine
+│   ├── Rose
+│   ├── Sparkling & Champagne
+│   ├── Spirits
+│   └── White Wine
+├── Meat & Seafood
+│   ├── Beef
+│   ├── Lamb
+│   ├── Pork
+│   ├── Poultry
+│   ├── Sausage
+│   └── Seafood
+├── Pets
+│   ├── Birds
+│   ├── Cat & Kitten
+│   ├── Dogs & Puppy
+│   ├── Fish
+│   └── Small Pets
+└── Snacks & Confectionery
+    ├── Biscuit & Cookies
+    ├── Chips, Corn Chips & Other
+    ├── Confectionery
+    └── Dried Fruits, Nuts & Jerky

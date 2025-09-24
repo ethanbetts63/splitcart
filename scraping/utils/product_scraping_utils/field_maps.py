@@ -1,6 +1,6 @@
 """
 This file contains the field mapping dictionaries for each store.
-It translates the raw field names from each store's API into a standardized
+It translates the raw field names from each store's data_management into a standardized
 internal schema. This allows the data cleaners to be more declarative and
 easier to maintain.
 

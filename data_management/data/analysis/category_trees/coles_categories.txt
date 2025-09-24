@@ -1,0 +1,1992 @@
+(venv) PS C:\Users\ethan\coding\splitcart> python manage.py analyze --report category_tree --company-name "coles"
+Generating category tree for 'coles'...
+Category Tree for Coles:
+├── Big Pack Value
+│   ├── Bulk Baby
+│   │   ├── Bulk Accessories
+│   │   └── Bulk Nappies
+│   ├── Bulk Clothing
+│   │   └── Bulk Socks
+│   └── Bulk Household
+│       ├── Bulk Cleaning
+│       ├── Bulk Kitchen
+│       └── Bulk Stationery
+├── Bonus Entry Products
+│   ├── Activia
+│   │   └── Frozen Dessert
+│   ├── Carmans
+│   │   ├── Healthy Food & Snacks
+│   │   └── Nutritional Snacks
+│   ├── Colgate
+│   │   └── Trial & Travel
+│   ├── Cucina Matese
+│   │   ├── Canned Veg & Flour
+│   │   └── Pasta & Rice
+│   ├── Dare
+│   │   └── Flavoured Milk
+│   │       ├── Drinks & Powders
+│   │       └── Kids Milk
+│   ├── Dettol
+│   │   ├── First Aid
+│   │   └── Soaps & Body Wash
+│   ├── Fanta
+│   │   └── Soft Drinks
+│   │       ├── Kombucha & Other Drinks
+│   │       ├── Mixers
+│   │       ├── Soft Drink Bottles
+│   │       └── Soft Drink Cans
+│   ├── Harvest Snaps
+│   │   └── Snacks
+│   │       ├── Muesli Bars & Fruit Snacks
+│   │       ├── Nuts & Trail Mix
+│   │       ├── Popcorn
+│   │       └── Pretzels & Other Snacks
+│   ├── Masterfoods
+│   │   ├── Herbs & Spices
+│   │   │   ├── Dried Herbs & Spices
+│   │   │   ├── Dried Spices
+│   │   │   ├── Jars & Pastes
+│   │   │   ├── Packet Seasonings
+│   │   │   └── Salt & Pepper
+│   │   └── Meal Bases & Sauces
+│   ├── Moccona
+│   │   └── Coffee Capsules & Instant
+│   ├── Pantene
+│   │   └── Hair Care
+│   │       ├── Colouring
+│   │       ├── Dandruff
+│   │       ├── Gel, Mousse & Styling
+│   │       ├── Hair Brushes, Combs & Accessories
+│   │       ├── Kids Hair Care
+│   │       ├── Lice Treatment
+│   │       ├── Mens Hair Care
+│   │       ├── Shampoo & Conditioner
+│   │       └── Treatments
+│   ├── Primo
+│   │   ├── Cheese Snacks
+│   │   └── Deli Seafood
+│   │       ├── Fish
+│   │       ├── Marinara Mix
+│   │       ├── Prepackaged Seafood
+│   │       └── Scallops & Mussels
+│   ├── Sprite
+│   │   └── Beverages
+│   │       ├── Soft Drink & Energy Drinks
+│   │       └── Water & Juices
+│   └── Yopro
+│       └── Yoghurt
+│           ├── Dairy Free
+│           ├── Multipacks
+│           ├── Pouch
+│           ├── Single Serve
+│           └── Yoghurt Tubs
+├── Chips, Chocolates & Snacks
+│   ├── Biscuits & Cookies
+│   │   ├── Chocolate Biscuits
+│   │   ├── Cream & Plain Biscuits
+│   │   └── Multipack Biscuits
+│   ├── Chips
+│   │   ├── Chips Multi Pack
+│   │   ├── Chips Sharing
+│   │   ├── Chips Single Pack
+│   │   └── Corn Chips & Salsa
+│   ├── Chocolates
+│   │   ├── Boxed Chocolate & Gifts
+│   │   ├── Chocolate Bars
+│   │   ├── Chocolate Bites
+│   │   ├── Chocolate Blocks
+│   │   ├── Chocolate Multipacks
+│   │   └── Seasonal Chocolates
+│   ├── Crackers & Rice Cakes
+│   │   ├── Crackers & Crispbreads
+│   │   ├── Flavoured Snacks
+│   │   ├── Multipack Crackers
+│   │   └── Rice & Corn Snacks
+│   ├── Gum, Mints & Lozenges
+│   │   ├── Gum
+│   │   ├── Medicated Lozenges
+│   │   └── Mints
+│   ├── Lollies & Licorice
+│   │   ├── Licorice
+│   │   └── Lollies
+│   └── Snacks
+│       ├── Muesli Bars & Fruit Snacks
+│       ├── Nuts & Trail Mix
+│       ├── Popcorn
+│       └── Pretzels & Other Snacks
+├── Dairy, Eggs & Fridge
+│   ├── Butter & Margarine
+│   │   ├── Blends
+│   │   ├── Butter
+│   │   └── Margarine
+│   ├── Cheese
+│   │   ├── Block Cheese
+│   │   ├── Blue Cheese
+│   │   ├── Brie & Soft Cheese
+│   │   ├── Cheddar & Tasty Cheese
+│   │   ├── Cheese Snacks
+│   │   ├── Cream Cheese & Spreads
+│   │   ├── Feta Cheese
+│   │   ├── Firm Cheese
+│   │   ├── Gourmet Cheese
+│   │   │   ├── Cheddar
+│   │   │   ├── Deli Blue Cheese
+│   │   │   ├── Fetta, Haloumi & Other
+│   │   │   ├── Fruit & Flavoured Cheese
+│   │   │   ├── Goats Cheese
+│   │   │   └── Hard Cheese
+│   │   ├── Grated Cheese
+│   │   ├── Pates & Platters
+│   │   ├── Sliced Cheese
+│   │   └── Specialty & Entertaining Cheese
+│   ├── Chilled Juice
+│   │   ├── Fresh Juice
+│   │   ├── Juice Drinks
+│   │   ├── Kombucha & Coconut Water
+│   │   ├── On The Go
+│   │   └── Reconstituted Juice
+│   ├── Cream & Custard
+│   │   ├── Cream
+│   │   ├── Custards
+│   │   └── Sour Cream
+│   ├── Dairy Desserts
+│   │   └── Chilled Dairy Desserts
+│   ├── Dairy World Foods
+│   │   ├── Asian Foods
+│   │   └── Indian Foods
+│   ├── Dips & Pate
+│   │   ├── Dips
+│   │   └── Pate
+│   ├── Eggs
+│   │   ├── Barn Eggs
+│   │   ├── Free Range Eggs
+│   │   └── Specialty Eggs
+│   ├── Fresh Pasta & Sauces
+│   │   ├── Fresh Pasta & Noodles
+│   │   └── Pasta Sauces
+│   ├── Garlic Bread & Pastry Sheets
+│   │   ├── Chilled Garlic & Specialty Breads
+│   │   └── Chilled Pastry & Dough
+│   ├── Long Life-Milk
+│   │   ├── Almond & Other Nut Milk
+│   │   └── [CYCLE DETECTED: Long Life-Milk]
+│   │   ├── Long-Life Flavoured Milk
+│   │   ├── Oat Milk
+│   │   ├── Powdered Long Life Milk
+│   │   └── Soy Milk
+│   ├── Milk
+│   │   ├── Flavoured Milk
+│   │   │   ├── Drinks & Powders
+│   │   │   └── Kids Milk
+│   │   ├── Full Cream Milk
+│   │   ├── Probiotic Milk
+│   │   ├── Skim & Low Fat Milk
+│   │   ├── Soy & Almond Milk
+│   │   └── Specialty Milk
+│   ├── Packaged Deli Meats
+│   │   ├── Packaged Bacon
+│   │   ├── Packaged Deli Meat
+│   │   ├── Packaged Frankfurts
+│   │   └── Packaged Salami & Kabana
+│   ├── Ready To Eat Meals
+│   │   ├── Grab & Go Snacks
+│   │   ├── Hot Snacks & Sides
+│   │   ├── Italian Meals & Pasta
+│   │   ├── Other Ready Meals
+│   │   ├── Pies & Pastries
+│   │   ├── Pizzas
+│   │   ├── Sandwiches
+│   │   ├── Soups & Stews
+│   │   └── Thai Meals
+│   ├── Vegetarian & Vegan
+│   │   ├── Falafels
+│   │   ├── Soy
+│   │   ├── Tofu
+│   │   ├── Vegan Cheese
+│   │   └── Veggie Burgers & Sausages
+│   └── Yoghurt
+│       ├── Dairy Free
+│       ├── Multipacks
+│       ├── Pouch
+│       ├── Single Serve
+│       └── Yoghurt Tubs
+├── Deli
+│   ├── Deli Meats
+│   │   ├── Beef & Lamb
+│   │   ├── Chicken & Turkey
+│   │   ├── Deli Bacon
+│   │   ├── Ham
+│   │   │   ├── Ham Portions
+│   │   │   └── Ham Shoulder & Steaks
+│   │   ├── Kabana, Pancetta & Mortadella
+│   │   ├── Other Sliced Meats
+│   │   ├── Salami
+│   │   └── Sausages, Frankfurts & Kransky
+│   ├── Deli Packaged Meat
+│   │   ├── Frankfurts & Kransky Packaged
+│   │   ├── Meat Packaged
+│   │   ├── Packaged Bacon
+│   │   ├── Packaged Ham
+│   │   └── Salami & Kabana Packaged
+│   ├── Deli Poultry
+│   │   ├── Breast & Thigh Fillets
+│   │   └── Kebabs, Nibbles & Crumbed
+│   ├── Deli Seafood
+│   │   ├── Fish
+│   │   ├── Marinara Mix
+│   │   ├── Prepackaged Seafood
+│   │   └── Scallops & Mussels
+│   ├── Entertaining
+│   │   ├── Antipasto
+│   │   ├── Crackers, Dips & Pate
+│   │   ├── Olives
+│   │   └── Prepacked Olives & Antipasto
+│   ├── Gourmet Cheese
+│   │   ├── Cheddar
+│   │   ├── Deli Blue Cheese
+│   │   ├── Fetta, Haloumi & Other
+│   │   ├── Fruit & Flavoured Cheese
+│   │   ├── Goats Cheese
+│   │   └── Hard Cheese
+│   ├── Pre-Made Platters
+│   │   └── Deli Platter
+│   └── Ready To Eat
+│       ├── Chilled Quiches & Pies
+│       └── Hot Food
+├── Deliver More Range
+│   ├── Health, Sports & Dietary Foods
+│   │   └── Healthy Cooking & Ingredients
+│   └── Specialty Brands
+│       └── Snacks & Confectionery
+├── Dietary & World Foods
+│   ├── Free From
+│   │   ├── Dairy & Lactose Free
+│   │   ├── Egg Free
+│   │   ├── Fat Free
+│   │   ├── Fodmap Friendly
+│   │   ├── Gluten Free
+│   │   ├── Nut Free
+│   │   ├── Peanut Free
+│   │   ├── Soy Free
+│   │   └── Sugar Free
+│   ├── Halal
+│   │   ├── Cheese, Yoghurt & Dairy
+│   │   ├── Drinks
+│   │   │   ├── Coffee Drinks
+│   │   │   │   ├── Beans Coffee
+│   │   │   │   ├── Coffee Capsules
+│   │   │   │   └── Coffee Instant
+│   │   │   ├── Cold Drinks
+│   │   │   │   ├── Cold Soft Drinks
+│   │   │   │   ├── Cold Water
+│   │   │   │   └── Other Cold Drinks
+│   │   │   ├── Cordials
+│   │   │   │   └── All Cordials
+│   │   │   ├── Energy Drinks
+│   │   │   │   ├── Bottles
+│   │   │   │   ├── Multipack Cans
+│   │   │   │   └── Single Cans
+│   │   │   ├── Flavoured Milk
+│   │   │   │   ├── Drinks & Powders
+│   │   │   │   └── Kids Milk
+│   │   │   ├── Iced Tea
+│   │   │   │   └── Single & Multi Serve
+│   │   │   ├── Juice
+│   │   │   │   ├── Canned Juices
+│   │   │   │   ├── Chilled Juice
+│   │   │   │   │   ├── Fresh Juice
+│   │   │   │   │   ├── Juice Drinks
+│   │   │   │   │   ├── Kombucha & Coconut Water
+│   │   │   │   │   ├── On The Go
+│   │   │   │   │   └── Reconstituted Juice
+│   │   │   │   ├── Glass Juice Bottles
+│   │   │   │   ├── Multi Pack Juice
+│   │   │   │   ├── Packs & Pouches
+│   │   │   │   └── Plastic Juice Bottles
+│   │   │   ├── Long Life-Milk
+│   │   │   │   ├── Almond & Other Nut Milk
+│   │   │   │   └── [CYCLE DETECTED: Long Life-Milk]
+│   │   │   │   ├── Long-Life Flavoured Milk
+│   │   │   │   ├── Oat Milk
+│   │   │   │   ├── Powdered Long Life Milk
+│   │   │   │   └── Soy Milk
+│   │   │   ├── Non Alcoholic
+│   │   │   │   ├── Beer
+│   │   │   │   │   ├── Craft Beer
+│   │   │   │   │   ├── Full-Strength
+│   │   │   │   │   ├── Imported
+│   │   │   │   │   ├── Low & No Alcohol
+│   │   │   │   │   └── Mid-Strength
+│   │   │   │   ├── Non-Alcoholic Drinks
+│   │   │   │   └── Wine
+│   │   │   ├── Soft Drinks
+│   │   │   │   ├── Kombucha & Other Drinks
+│   │   │   │   ├── Mixers
+│   │   │   │   ├── Soft Drink Bottles
+│   │   │   │   └── Soft Drink Cans
+│   │   │   ├── Sports Drinks
+│   │   │   │   ├── All Iced Tea
+│   │   │   │   ├── Sport Drink Powders
+│   │   │   │   └── Sports Drink
+│   │   │   ├── Tea Drinks
+│   │   │   │   ├── Tea Black
+│   │   │   │   └── Tea Herbal
+│   │   │   └── Water
+│   │   │       ├── Flavoured Water
+│   │   │       ├── Mineral Water
+│   │   │       ├── Sparkling Water
+│   │   │       └── Still Water
+│   │   ├── Frozen
+│   │   │   ├── Frozen Baby & Toddler Meals
+│   │   │   │   └── All Baby & Toddler Meals
+│   │   │   ├── Frozen Chicken, Beef & Pork
+│   │   │   │   ├── Beef & Pork
+│   │   │   │   ├── Burgers
+│   │   │   │   ├── Chicken Pieces & Nuggets
+│   │   │   │   ├── Chicken Wing & Nibbles
+│   │   │   │   └── Frozen Meat Free
+│   │   │   ├── Frozen Chips & Wedges
+│   │   │   │   ├── Chips
+│   │   │   │   │   ├── Chips Multi Pack
+│   │   │   │   │   ├── Chips Sharing
+│   │   │   │   │   ├── Chips Single Pack
+│   │   │   │   │   └── Corn Chips & Salsa
+│   │   │   │   ├── Oven Roasted
+│   │   │   │   └── Wedges
+│   │   │   ├── Frozen Desserts
+│   │   │   │   ├── Assorted Desserts
+│   │   │   │   ├── Cakes & Cheesecakes
+│   │   │   │   ├── Dessert Pies
+│   │   │   │   └── Pastries & Puddings
+│   │   │   ├── Frozen Fish & Seafood
+│   │   │   │   ├── Fish Fillets
+│   │   │   │   ├── Fish Fingers & Cakes
+│   │   │   │   └── Seafood Frozen
+│   │   │   ├── Frozen Fruit
+│   │   │   │   ├── Berries
+│   │   │   │   └── Tropical
+│   │   │   ├── Frozen Gluten Free
+│   │   │   │   └── All Gluten Free
+│   │   │   ├── Frozen Meals
+│   │   │   │   └── Convenience Meals
+│   │   │   ├── Frozen Pastry & Party Food
+│   │   │   │   ├── Asian Party Food
+│   │   │   │   ├── Party Food
+│   │   │   │   ├── Pastries
+│   │   │   │   └── Pies & Quiches
+│   │   │   ├── Frozen Pizza & Bases
+│   │   │   │   └── Pizza Snacks
+│   │   │   ├── Frozen Vegan & Vegetarian
+│   │   │   │   └── All Plant Based
+│   │   │   ├── Frozen Vegetables
+│   │   │   │   ├── Beans
+│   │   │   │   ├── Corn
+│   │   │   │   ├── Mixed Vegetables
+│   │   │   │   ├── Other Vegetables
+│   │   │   │   ├── Peas
+│   │   │   │   ├── Steaming
+│   │   │   │   └── Stir Fry
+│   │   │   ├── Frozen World Food
+│   │   │   │   └── Frozen Asian Foods
+│   │   │   ├── Ice
+│   │   │   │   └── Ice Bags
+│   │   │   └── Ice Cream
+│   │   │       ├── Frozen Yoghurt
+│   │   │       ├── Ice Cream Desserts
+│   │   │       ├── Ice Cream Sticks
+│   │   │       ├── Ice Cream Tubs
+│   │   │       └── Premium Ice Cream
+│   │   ├── Halal Bbq
+│   │   ├── Halal Beef
+│   │   ├── Halal Chicken
+│   │   ├── Halal Lamb
+│   │   ├── Meat & Seafood
+│   │   │   ├── Bbq, Sausages & Burgers
+│   │   │   │   ├── Burgers & Rissoles
+│   │   │   │   ├── Kebabs
+│   │   │   │   ├── Meatballs
+│   │   │   │   ├── Sausage Mince
+│   │   │   │   └── Sausages
+│   │   │   ├── Beef & Veal
+│   │   │   │   ├── Beef & Veal Mince
+│   │   │   │   ├── Beef Bones & Offal
+│   │   │   │   ├── Beef Roasts
+│   │   │   │   ├── Beef Steaks
+│   │   │   │   ├── Crumbed Beef
+│   │   │   │   ├── Graze Beef
+│   │   │   │   ├── Slow Cook & Casserole Beef
+│   │   │   │   ├── Stir Fry & Diced Beef
+│   │   │   │   └── Veal
+│   │   │   ├── Coles Made Easy Range
+│   │   │   │   ├── Easy Meals
+│   │   │   │   ├── Grill
+│   │   │   │   ├── Pastry
+│   │   │   │   └── Slow Cook
+│   │   │   ├── Game
+│   │   │   │   ├── Kangaroo
+│   │   │   │   └── Other Game
+│   │   │   └── [CYCLE DETECTED: Halal]
+│   │   │   ├── Ham
+│   │   │   │   ├── Ham Portions
+│   │   │   │   └── Ham Shoulder & Steaks
+│   │   │   ├── Lamb
+│   │   │   │   ├── Diced Lamb
+│   │   │   │   ├── Graze Grass-Fed Lamb
+│   │   │   │   ├── Lamb Chops
+│   │   │   │   ├── Lamb Cutlets
+│   │   │   │   ├── Lamb Offal
+│   │   │   │   ├── Lamb Roasts
+│   │   │   │   ├── Lamb Shanks
+│   │   │   │   └── Lamb Steak
+│   │   │   ├── Mince
+│   │   │   │   ├── Chicken & Turkey Mince
+│   │   │   │   └── Kangaroo & Wallaby Mince
+│   │   │   ├── Organic Meat
+│   │   │   │   └── Organic Beef
+│   │   │   ├── Pork
+│   │   │   │   ├── Free Range Pork
+│   │   │   │   ├── Pork Chops
+│   │   │   │   ├── Pork Marinade
+│   │   │   │   ├── Pork Mince
+│   │   │   │   ├── Pork Ribs
+│   │   │   │   ├── Pork Roasts
+│   │   │   │   └── Pork Steaks
+│   │   │   ├── Poultry
+│   │   │   │   ├── Breast Fillets
+│   │   │   │   ├── Chicken Offal
+│   │   │   │   ├── Chicken Wings
+│   │   │   │   ├── Crumbed Chicken
+│   │   │   │   ├── Diced, Stir-Fry & Tenders
+│   │   │   │   ├── Drumsticks & Maryland
+│   │   │   │   ├── Duck
+│   │   │   │   ├── Free Range Chicken
+│   │   │   │   ├── Kebabs & Bites
+│   │   │   │   ├── Marinated & Roast Chicken
+│   │   │   │   ├── Poultry Deli
+│   │   │   │   ├── Thigh Fillets
+│   │   │   │   ├── Turkey
+│   │   │   │   └── Whole Chicken
+│   │   │   └── Seafood
+│   │   │       ├── Deli Crab & Lobster
+│   │   │       ├── Deli Fish
+│   │   │       ├── Deli Marinara Mix And Other Seafood
+│   │   │       ├── Deli Oysters
+│   │   │       ├── Deli Prawns
+│   │   │       ├── Prepacked Seafood
+│   │   │       └── Smoked And Cured Fish
+│   │   ├── Other Halal
+│   │   └── Pantry
+│   │       ├── Baking
+│   │       │   ├── Cake & Bread Mixes
+│   │       │   ├── Cake Decorating
+│   │       │   ├── Cooking Chocolate & Cocoa
+│   │       │   ├── Dried Fruits & Fillings
+│   │       │   ├── Essence & Food Colouring
+│   │       │   ├── Flour
+│   │       │   ├── Nuts For Baking
+│   │       │   ├── Pancake & Dessert Mixes
+│   │       │   ├── Sugar & Sweeteners
+│   │       │   └── Yeast & Baking Agents
+│   │       ├── Breakfast
+│   │       │   ├── Breakfast Cereal
+│   │       │   ├── Breakfast Muesli
+│   │       │   ├── Breakfast Oats
+│   │       │   └── On The Go
+│   │       ├── Canned Food, Soups & Noodles
+│   │       │   ├── Baked Beans & Spaghetti
+│   │       │   ├── Canned Fruit
+│   │       │   ├── Canned Meat
+│   │       │   ├── Canned Vegetables
+│   │       │   ├── Condensed & Evaporated Milk
+│   │       │   ├── Fish & Seafood
+│   │       │   ├── Instant Meals & Sides
+│   │       │   ├── Noodles
+│   │       │   └── Soups
+│   │       ├── Coffee
+│   │       │   ├── Capsules
+│   │       │   ├── Coffee Accessories
+│   │       │   ├── Coffee Beans
+│   │       │   ├── Coffee Mixes
+│   │       │   ├── Ground Coffee
+│   │       │   └── Instant Coffee
+│   │       ├── Desserts
+│   │       │   ├── Custard, Cream & Yoghurt Desserts
+│   │       │   ├── Icecream Cones, Syrups & Toppings
+│   │       │   ├── Jelly
+│   │       │   └── Puddings
+│   │       ├── Health Foods
+│   │       │   ├── Healthy Cooking
+│   │       │   └── Healthy Snacks
+│   │       ├── Health Foods Sports Nutrition & Diet
+│   │       │   ├── Collagen
+│   │       │   ├── Energy Gels/Tablets
+│   │       │   ├── Nutrition Powders
+│   │       │   ├── Protein Bars & Balls
+│   │       │   └── Rtd Protein Shakes
+│   │       ├── Herbs & Spices
+│   │       │   ├── Dried Herbs & Spices
+│   │       │   ├── Dried Spices
+│   │       │   ├── Jars & Pastes
+│   │       │   ├── Packet Seasonings
+│   │       │   └── Salt & Pepper
+│   │       ├── International Foods
+│   │       │   ├── Asian
+│   │       │   ├── European
+│   │       │   ├── Indian
+│   │       │   ├── Kosher
+│   │       │   ├── Mediterranean
+│   │       │   ├── Mexican
+│   │       │   ├── Middle Eastern
+│   │       │   ├── New Zealand
+│   │       │   ├── Uk
+│   │       │   └── Usa
+│   │       ├── Jams, Honey & Spreads
+│   │       │   ├── Chocolate Spreads
+│   │       │   ├── Honey
+│   │       │   ├── Jams
+│   │       │   ├── Nut Spreads
+│   │       │   └── Savoury Spreads
+│   │       ├── Local Foods
+│   │       │   ├── Cereal & Health Foods
+│   │       │   └── Local Snacks & Drinks
+│   │       ├── Oils & Vinegars
+│   │       │   ├── Oil
+│   │       │   └── Vinegar
+│   │       ├── Pasta, Rice, Legumes & Grains
+│   │       │   ├── Beans & Legumes
+│   │       │   ├── Pasta
+│   │       │   ├── Pasta Meals
+│   │       │   ├── Polenta & Other Grains
+│   │       │   └── Rice
+│   │       ├── Pickled Vegetables & Condiments
+│   │       │   ├── Mustard
+│   │       │   ├── Pickles, Chutney & Relish
+│   │       │   ├── Salad Dressings
+│   │       │   ├── Syrups & Toppings
+│   │       │   └── Tomato & Bbq Sauces
+│   │       ├── Sauces
+│   │       │   ├── Marinades
+│   │       │   ├── Pizza & Pasta
+│   │       │   ├── Recipe & Meal Bases
+│   │       │   ├── Soy & Asian
+│   │       │   ├── Sweet Chilli & Hot
+│   │       │   └── Tomato & Bbq
+│   │       ├── Stocks & Gravy
+│   │       │   ├── Dry Stock
+│   │       │   ├── Gravy
+│   │       │   └── Liquid Stock
+│   │       └── Tea
+│   │           ├── Black
+│   │           ├── Bubble Tea
+│   │           ├── Chai
+│   │           ├── Green
+│   │           ├── Herbal
+│   │           ├── Loose Leaf
+│   │           ├── Organic
+│   │           │   ├── Baby
+│   │           │   │   ├── Baby & Toddler Food
+│   │           │   │   │   ├── Baby & Toddler Snacks
+│   │           │   │   │   ├── Baby Cereals
+│   │           │   │   │   ├── Baby Food Jars
+│   │           │   │   │   ├── Baby Food Pouches
+│   │           │   │   │   ├── Baby Pasta
+│   │           │   │   │   └── Baby Rusks
+│   │           │   │   ├── Baby Accessories
+│   │           │   │   │   ├── Baby Grooming & Oral Care
+│   │           │   │   │   ├── Baby Health & Safety
+│   │           │   │   │   ├── Bathroom Accessories
+│   │           │   │   │   └── Nappy Change Accessories
+│   │           │   │   ├── Baby Feeding
+│   │           │   │   │   └── Nursing Care
+│   │           │   │   ├── Baby Formula
+│   │           │   │   │   ├── A2 Formula
+│   │           │   │   │   ├── Cow Formula
+│   │           │   │   │   ├── Goat Formula
+│   │           │   │   │   ├── Organic Formula
+│   │           │   │   │   └── Specialty Formula
+│   │           │   │   ├── Baby Meal Time
+│   │           │   │   │   └── Baby Plates & Bowls
+│   │           │   │   ├── Baby Wipes
+│   │           │   │   │   ├── Extra Large Pack
+│   │           │   │   │   ├── Large Pack
+│   │           │   │   │   ├── Medium Pack
+│   │           │   │   │   ├── Refill Pack
+│   │           │   │   │   ├── Small Pack
+│   │           │   │   │   └── Travel Pack
+│   │           │   │   ├── Bath & Skincare
+│   │           │   │   │   ├── Baby Bath
+│   │           │   │   │   ├── Baby Cotton Buds
+│   │           │   │   │   ├── Baby Hair & Body Wash
+│   │           │   │   │   ├── Baby Hair Care
+│   │           │   │   │   ├── Baby Medicinal
+│   │           │   │   │   ├── Baby Moisturiser
+│   │           │   │   │   ├── Baby Oil
+│   │           │   │   │   ├── Baby Powder
+│   │           │   │   │   └── Nappy Rash Treatment
+│   │           │   │   ├── Bottles & Feeding
+│   │           │   │   │   ├── Baby Bottles
+│   │           │   │   │   ├── Baby Cups
+│   │           │   │   │   ├── Baby Teats
+│   │           │   │   │   ├── Bottle Accessories
+│   │           │   │   │   ├── Bottle Cleaning
+│   │           │   │   │   └── Bottle Feeding
+│   │           │   │   ├── Dummies & Teething
+│   │           │   │   │   └── Soothers & Teethers
+│   │           │   │   ├── Nappies & Nappy Pants
+│   │           │   │   │   ├── Bed Mats
+│   │           │   │   │   ├── Eco Friendly Nappies
+│   │           │   │   │   ├── Nappies
+│   │           │   │   │   ├── Nappy Pants
+│   │           │   │   │   ├── Night Pants
+│   │           │   │   │   └── Swimmers
+│   │           │   │   └── Postpartum Care
+│   │           │   │       └── Postpartum Underwear
+│   │           │   ├── Drinks
+│   │           │   │   ├── Coffee Drinks
+│   │           │   │   │   ├── Beans Coffee
+│   │           │   │   │   ├── Coffee Capsules
+│   │           │   │   │   └── Coffee Instant
+│   │           │   │   ├── Cold Drinks
+│   │           │   │   │   ├── Cold Soft Drinks
+│   │           │   │   │   ├── Cold Water
+│   │           │   │   │   └── Other Cold Drinks
+│   │           │   │   ├── Cordials
+│   │           │   │   │   └── All Cordials
+│   │           │   │   ├── Energy Drinks
+│   │           │   │   │   ├── Bottles
+│   │           │   │   │   ├── Multipack Cans
+│   │           │   │   │   └── Single Cans
+│   │           │   │   ├── Flavoured Milk
+│   │           │   │   │   ├── Drinks & Powders
+│   │           │   │   │   └── Kids Milk
+│   │           │   │   ├── Iced Tea
+│   │           │   │   │   └── Single & Multi Serve
+│   │           │   │   ├── Juice
+│   │           │   │   │   ├── Canned Juices
+│   │           │   │   │   ├── Chilled Juice
+│   │           │   │   │   │   ├── Fresh Juice
+│   │           │   │   │   │   ├── Juice Drinks
+│   │           │   │   │   │   ├── Kombucha & Coconut Water
+│   │           │   │   │   │   ├── On The Go
+│   │           │   │   │   │   └── Reconstituted Juice
+│   │           │   │   │   ├── Glass Juice Bottles
+│   │           │   │   │   ├── Multi Pack Juice
+│   │           │   │   │   ├── Packs & Pouches
+│   │           │   │   │   └── Plastic Juice Bottles
+│   │           │   │   ├── Long Life-Milk
+│   │           │   │   │   ├── Almond & Other Nut Milk
+│   │           │   │   │   └── [CYCLE DETECTED: Long Life-Milk]
+│   │           │   │   │   ├── Long-Life Flavoured Milk
+│   │           │   │   │   ├── Oat Milk
+│   │           │   │   │   ├── Powdered Long Life Milk
+│   │           │   │   │   └── Soy Milk
+│   │           │   │   ├── Non Alcoholic
+│   │           │   │   │   ├── Beer
+│   │           │   │   │   │   ├── Craft Beer
+│   │           │   │   │   │   ├── Full-Strength
+│   │           │   │   │   │   ├── Imported
+│   │           │   │   │   │   ├── Low & No Alcohol
+│   │           │   │   │   │   └── Mid-Strength
+│   │           │   │   │   ├── Non-Alcoholic Drinks
+│   │           │   │   │   └── Wine
+│   │           │   │   ├── Soft Drinks
+│   │           │   │   │   ├── Kombucha & Other Drinks
+│   │           │   │   │   ├── Mixers
+│   │           │   │   │   ├── Soft Drink Bottles
+│   │           │   │   │   └── Soft Drink Cans
+│   │           │   │   ├── Sports Drinks
+│   │           │   │   │   ├── All Iced Tea
+│   │           │   │   │   ├── Sport Drink Powders
+│   │           │   │   │   └── Sports Drink
+│   │           │   │   ├── Tea Drinks
+│   │           │   │   │   ├── Tea Black
+│   │           │   │   │   └── Tea Herbal
+│   │           │   │   └── Water
+│   │           │   │       ├── Flavoured Water
+│   │           │   │       ├── Mineral Water
+│   │           │   │       ├── Sparkling Water
+│   │           │   │       └── Still Water
+│   │           │   ├── Frozen
+│   │           │   │   ├── Frozen Baby & Toddler Meals
+│   │           │   │   │   └── All Baby & Toddler Meals
+│   │           │   │   ├── Frozen Chicken, Beef & Pork
+│   │           │   │   │   ├── Beef & Pork
+│   │           │   │   │   ├── Burgers
+│   │           │   │   │   ├── Chicken Pieces & Nuggets
+│   │           │   │   │   ├── Chicken Wing & Nibbles
+│   │           │   │   │   └── Frozen Meat Free
+│   │           │   │   ├── Frozen Chips & Wedges
+│   │           │   │   │   ├── Chips
+│   │           │   │   │   │   ├── Chips Multi Pack
+│   │           │   │   │   │   ├── Chips Sharing
+│   │           │   │   │   │   ├── Chips Single Pack
+│   │           │   │   │   │   └── Corn Chips & Salsa
+│   │           │   │   │   ├── Oven Roasted
+│   │           │   │   │   └── Wedges
+│   │           │   │   ├── Frozen Desserts
+│   │           │   │   │   ├── Assorted Desserts
+│   │           │   │   │   ├── Cakes & Cheesecakes
+│   │           │   │   │   ├── Dessert Pies
+│   │           │   │   │   └── Pastries & Puddings
+│   │           │   │   ├── Frozen Fish & Seafood
+│   │           │   │   │   ├── Fish Fillets
+│   │           │   │   │   ├── Fish Fingers & Cakes
+│   │           │   │   │   └── Seafood Frozen
+│   │           │   │   ├── Frozen Fruit
+│   │           │   │   │   ├── Berries
+│   │           │   │   │   └── Tropical
+│   │           │   │   ├── Frozen Gluten Free
+│   │           │   │   │   └── All Gluten Free
+│   │           │   │   ├── Frozen Meals
+│   │           │   │   │   └── Convenience Meals
+│   │           │   │   ├── Frozen Pastry & Party Food
+│   │           │   │   │   ├── Asian Party Food
+│   │           │   │   │   ├── Party Food
+│   │           │   │   │   ├── Pastries
+│   │           │   │   │   └── Pies & Quiches
+│   │           │   │   ├── Frozen Pizza & Bases
+│   │           │   │   │   └── Pizza Snacks
+│   │           │   │   ├── Frozen Vegan & Vegetarian
+│   │           │   │   │   └── All Plant Based
+│   │           │   │   ├── Frozen Vegetables
+│   │           │   │   │   ├── Beans
+│   │           │   │   │   ├── Corn
+│   │           │   │   │   ├── Mixed Vegetables
+│   │           │   │   │   ├── Other Vegetables
+│   │           │   │   │   ├── Peas
+│   │           │   │   │   ├── Steaming
+│   │           │   │   │   └── Stir Fry
+│   │           │   │   ├── Frozen World Food
+│   │           │   │   │   └── Frozen Asian Foods
+│   │           │   │   ├── Ice
+│   │           │   │   │   └── Ice Bags
+│   │           │   │   └── Ice Cream
+│   │           │   │       ├── Frozen Yoghurt
+│   │           │   │       ├── Ice Cream Desserts
+│   │           │   │       ├── Ice Cream Sticks
+│   │           │   │       ├── Ice Cream Tubs
+│   │           │   │       └── Premium Ice Cream
+│   │           │   ├── Fruit & Veg
+│   │           │   ├── Liquor
+│   │           │   ├── Meat, Dairy & Eggs
+│   │           │   ├── Nuts & Seeds
+│   │           │   ├── Pantry Essentials
+│   │           │   └── Snacking
+│   │           │       ├── Desserts & Chocolate
+│   │           │       └── Snack Foods
+│   │           └── White
+│   ├── Health Foods & Diet
+│   │   ├── Chia Seeds And Quinoa
+│   │   ├── Collagen
+│   │   ├── Gut Health
+│   │   ├── Healthy Snacks
+│   │   ├── Low Gi
+│   │   ├── Super Foods & Functional Foods
+│   │   └── Weight Management
+│   ├── Organic
+│   │   ├── Baby
+│   │   │   ├── Baby & Toddler Food
+│   │   │   │   ├── Baby & Toddler Snacks
+│   │   │   │   ├── Baby Cereals
+│   │   │   │   ├── Baby Food Jars
+│   │   │   │   ├── Baby Food Pouches
+│   │   │   │   ├── Baby Pasta
+│   │   │   │   └── Baby Rusks
+│   │   │   ├── Baby Accessories
+│   │   │   │   ├── Baby Grooming & Oral Care
+│   │   │   │   ├── Baby Health & Safety
+│   │   │   │   ├── Bathroom Accessories
+│   │   │   │   └── Nappy Change Accessories
+│   │   │   ├── Baby Feeding
+│   │   │   │   └── Nursing Care
+│   │   │   ├── Baby Formula
+│   │   │   │   ├── A2 Formula
+│   │   │   │   ├── Cow Formula
+│   │   │   │   ├── Goat Formula
+│   │   │   │   ├── Organic Formula
+│   │   │   │   └── Specialty Formula
+│   │   │   ├── Baby Meal Time
+│   │   │   │   └── Baby Plates & Bowls
+│   │   │   ├── Baby Wipes
+│   │   │   │   ├── Extra Large Pack
+│   │   │   │   ├── Large Pack
+│   │   │   │   ├── Medium Pack
+│   │   │   │   ├── Refill Pack
+│   │   │   │   ├── Small Pack
+│   │   │   │   └── Travel Pack
+│   │   │   ├── Bath & Skincare
+│   │   │   │   ├── Baby Bath
+│   │   │   │   ├── Baby Cotton Buds
+│   │   │   │   ├── Baby Hair & Body Wash
+│   │   │   │   ├── Baby Hair Care
+│   │   │   │   ├── Baby Medicinal
+│   │   │   │   ├── Baby Moisturiser
+│   │   │   │   ├── Baby Oil
+│   │   │   │   ├── Baby Powder
+│   │   │   │   └── Nappy Rash Treatment
+│   │   │   ├── Bottles & Feeding
+│   │   │   │   ├── Baby Bottles
+│   │   │   │   ├── Baby Cups
+│   │   │   │   ├── Baby Teats
+│   │   │   │   ├── Bottle Accessories
+│   │   │   │   ├── Bottle Cleaning
+│   │   │   │   └── Bottle Feeding
+│   │   │   ├── Dummies & Teething
+│   │   │   │   └── Soothers & Teethers
+│   │   │   ├── Nappies & Nappy Pants
+│   │   │   │   ├── Bed Mats
+│   │   │   │   ├── Eco Friendly Nappies
+│   │   │   │   ├── Nappies
+│   │   │   │   ├── Nappy Pants
+│   │   │   │   ├── Night Pants
+│   │   │   │   └── Swimmers
+│   │   │   └── Postpartum Care
+│   │   │       └── Postpartum Underwear
+│   │   ├── Drinks
+│   │   │   ├── Coffee Drinks
+│   │   │   │   ├── Beans Coffee
+│   │   │   │   ├── Coffee Capsules
+│   │   │   │   └── Coffee Instant
+│   │   │   ├── Cold Drinks
+│   │   │   │   ├── Cold Soft Drinks
+│   │   │   │   ├── Cold Water
+│   │   │   │   └── Other Cold Drinks
+│   │   │   ├── Cordials
+│   │   │   │   └── All Cordials
+│   │   │   ├── Energy Drinks
+│   │   │   │   ├── Bottles
+│   │   │   │   ├── Multipack Cans
+│   │   │   │   └── Single Cans
+│   │   │   ├── Flavoured Milk
+│   │   │   │   ├── Drinks & Powders
+│   │   │   │   └── Kids Milk
+│   │   │   ├── Iced Tea
+│   │   │   │   └── Single & Multi Serve
+│   │   │   ├── Juice
+│   │   │   │   ├── Canned Juices
+│   │   │   │   ├── Chilled Juice
+│   │   │   │   │   ├── Fresh Juice
+│   │   │   │   │   ├── Juice Drinks
+│   │   │   │   │   ├── Kombucha & Coconut Water
+│   │   │   │   │   ├── On The Go
+│   │   │   │   │   └── Reconstituted Juice
+│   │   │   │   ├── Glass Juice Bottles
+│   │   │   │   ├── Multi Pack Juice
+│   │   │   │   ├── Packs & Pouches
+│   │   │   │   └── Plastic Juice Bottles
+│   │   │   ├── Long Life-Milk
+│   │   │   │   ├── Almond & Other Nut Milk
+│   │   │   │   └── [CYCLE DETECTED: Long Life-Milk]
+│   │   │   │   ├── Long-Life Flavoured Milk
+│   │   │   │   ├── Oat Milk
+│   │   │   │   ├── Powdered Long Life Milk
+│   │   │   │   └── Soy Milk
+│   │   │   ├── Non Alcoholic
+│   │   │   │   ├── Beer
+│   │   │   │   │   ├── Craft Beer
+│   │   │   │   │   ├── Full-Strength
+│   │   │   │   │   ├── Imported
+│   │   │   │   │   ├── Low & No Alcohol
+│   │   │   │   │   └── Mid-Strength
+│   │   │   │   ├── Non-Alcoholic Drinks
+│   │   │   │   └── Wine
+│   │   │   ├── Soft Drinks
+│   │   │   │   ├── Kombucha & Other Drinks
+│   │   │   │   ├── Mixers
+│   │   │   │   ├── Soft Drink Bottles
+│   │   │   │   └── Soft Drink Cans
+│   │   │   ├── Sports Drinks
+│   │   │   │   ├── All Iced Tea
+│   │   │   │   ├── Sport Drink Powders
+│   │   │   │   └── Sports Drink
+│   │   │   ├── Tea Drinks
+│   │   │   │   ├── Tea Black
+│   │   │   │   └── Tea Herbal
+│   │   │   └── Water
+│   │   │       ├── Flavoured Water
+│   │   │       ├── Mineral Water
+│   │   │       ├── Sparkling Water
+│   │   │       └── Still Water
+│   │   ├── Frozen
+│   │   │   ├── Frozen Baby & Toddler Meals
+│   │   │   │   └── All Baby & Toddler Meals
+│   │   │   ├── Frozen Chicken, Beef & Pork
+│   │   │   │   ├── Beef & Pork
+│   │   │   │   ├── Burgers
+│   │   │   │   ├── Chicken Pieces & Nuggets
+│   │   │   │   ├── Chicken Wing & Nibbles
+│   │   │   │   └── Frozen Meat Free
+│   │   │   ├── Frozen Chips & Wedges
+│   │   │   │   ├── Chips
+│   │   │   │   │   ├── Chips Multi Pack
+│   │   │   │   │   ├── Chips Sharing
+│   │   │   │   │   ├── Chips Single Pack
+│   │   │   │   │   └── Corn Chips & Salsa
+│   │   │   │   ├── Oven Roasted
+│   │   │   │   └── Wedges
+│   │   │   ├── Frozen Desserts
+│   │   │   │   ├── Assorted Desserts
+│   │   │   │   ├── Cakes & Cheesecakes
+│   │   │   │   ├── Dessert Pies
+│   │   │   │   └── Pastries & Puddings
+│   │   │   ├── Frozen Fish & Seafood
+│   │   │   │   ├── Fish Fillets
+│   │   │   │   ├── Fish Fingers & Cakes
+│   │   │   │   └── Seafood Frozen
+│   │   │   ├── Frozen Fruit
+│   │   │   │   ├── Berries
+│   │   │   │   └── Tropical
+│   │   │   ├── Frozen Gluten Free
+│   │   │   │   └── All Gluten Free
+│   │   │   ├── Frozen Meals
+│   │   │   │   └── Convenience Meals
+│   │   │   ├── Frozen Pastry & Party Food
+│   │   │   │   ├── Asian Party Food
+│   │   │   │   ├── Party Food
+│   │   │   │   ├── Pastries
+│   │   │   │   └── Pies & Quiches
+│   │   │   ├── Frozen Pizza & Bases
+│   │   │   │   └── Pizza Snacks
+│   │   │   ├── Frozen Vegan & Vegetarian
+│   │   │   │   └── All Plant Based
+│   │   │   ├── Frozen Vegetables
+│   │   │   │   ├── Beans
+│   │   │   │   ├── Corn
+│   │   │   │   ├── Mixed Vegetables
+│   │   │   │   ├── Other Vegetables
+│   │   │   │   ├── Peas
+│   │   │   │   ├── Steaming
+│   │   │   │   └── Stir Fry
+│   │   │   ├── Frozen World Food
+│   │   │   │   └── Frozen Asian Foods
+│   │   │   ├── Ice
+│   │   │   │   └── Ice Bags
+│   │   │   └── Ice Cream
+│   │   │       ├── Frozen Yoghurt
+│   │   │       ├── Ice Cream Desserts
+│   │   │       ├── Ice Cream Sticks
+│   │   │       ├── Ice Cream Tubs
+│   │   │       └── Premium Ice Cream
+│   │   ├── Fruit & Veg
+│   │   ├── Liquor
+│   │   ├── Meat, Dairy & Eggs
+│   │   ├── Nuts & Seeds
+│   │   ├── Pantry Essentials
+│   │   └── Snacking
+│   │       ├── Desserts & Chocolate
+│   │       └── Snack Foods
+│   ├── Sports Nutrition
+│   │   ├── Energy, Sports Drinks & Supplements
+│   │   ├── Protein Bars & Snacks
+│   │   ├── Protein Drinks & Shakes
+│   │   └── Protein Powders
+│   ├── Vegan & Vegetarian
+│   │   ├── Bakery
+│   │   │   ├── Bakery New
+│   │   │   │   ├── New Bakery Packaged
+│   │   │   │   └── New Instore Bread And Cake
+│   │   │   ├── Chilled Cakes & Desserts
+│   │   │   │   ├── 2 Pack & Individual Serve Desserts
+│   │   │   │   ├── Birthday & Celebration Cakes
+│   │   │   │   ├── Cheesecakes
+│   │   │   │   └── Tarts & Pies
+│   │   │   ├── Christmas Bakery
+│   │   │   │   ├── Fruit Mince Pies
+│   │   │   │   └── Puddings
+│   │   │   ├── Instore Bakery Breads And Rolls
+│   │   │   │   ├── Artisan Style Breads By Laurent
+│   │   │   │   ├── Baguettes
+│   │   │   │   ├── Bread Loaves
+│   │   │   │   ├── Bread Rolls
+│   │   │   │   └── Healthier Breads
+│   │   │   ├── Instore Bakery Savoury Treats
+│   │   │   │   ├── Cheese And Bacon, Cheese Rolls
+│   │   │   │   └── Cheese Rolls, Tear & Share & Pizza Rolls
+│   │   │   ├── Instore Bakery Sweet Treats
+│   │   │   │   ├── Cookies
+│   │   │   │   ├── Donuts
+│   │   │   │   ├── Pastries & Danishes
+│   │   │   │   └── Scones
+│   │   │   ├── Packaged Bread Rolls And Buns
+│   │   │   │   ├── Brioche
+│   │   │   │   ├── Burger Buns And Hot Dog Rolls
+│   │   │   │   ├── Foccacia
+│   │   │   │   └── Thins
+│   │   │   ├── Packaged Breads
+│   │   │   │   ├── Digestive Health & Speciality Bread
+│   │   │   │   ├── Gluten Free Packaged Bread
+│   │   │   │   ├── Multigrain & Seeded Bread
+│   │   │   │   ├── Rye Bread
+│   │   │   │   ├── White Bread
+│   │   │   │   └── Wholemeal Bread
+│   │   │   ├── Packaged Breakfast Snacks
+│   │   │   │   ├── Bagels
+│   │   │   │   ├── Croissants & Pastries
+│   │   │   │   ├── Crumpet
+│   │   │   │   ├── English Muffins
+│   │   │   │   ├── Fruit Bread
+│   │   │   │   ├── Other Breakfast Snacks
+│   │   │   │   ├── Pikelets, Pancakes And Crepes
+│   │   │   │   └── Waffles
+│   │   │   ├── Packaged Cakes & Sweet Treats
+│   │   │   │   ├── Cookies & Biscuits
+│   │   │   │   ├── Cupcakes
+│   │   │   │   ├── Lamingtons
+│   │   │   │   ├── Loaf Cakes
+│   │   │   │   ├── Muffins & Muffin Bars
+│   │   │   │   ├── Slices & Bites
+│   │   │   │   ├── Sponge & Mud Cakes
+│   │   │   │   ├── Sponge Rolls & Cake Bars
+│   │   │   │   └── Tea Cakes
+│   │   │   └── Packaged Flat Bread, Wraps And Pizza Bases
+│   │   │       ├── Other Flat Breads
+│   │   │       ├── Pizza Bases
+│   │   │       ├── Turkish And Ciabatta
+│   │   │       ├── White Wraps
+│   │   │       ├── Wholegrain & Seeded Wraps
+│   │   │       └── Wholemeal Wraps
+│   │   ├── Cheese & Dairy
+│   │   ├── Drinks
+│   │   │   ├── Coffee Drinks
+│   │   │   │   ├── Beans Coffee
+│   │   │   │   ├── Coffee Capsules
+│   │   │   │   └── Coffee Instant
+│   │   │   ├── Cold Drinks
+│   │   │   │   ├── Cold Soft Drinks
+│   │   │   │   ├── Cold Water
+│   │   │   │   └── Other Cold Drinks
+│   │   │   ├── Cordials
+│   │   │   │   └── All Cordials
+│   │   │   ├── Energy Drinks
+│   │   │   │   ├── Bottles
+│   │   │   │   ├── Multipack Cans
+│   │   │   │   └── Single Cans
+│   │   │   ├── Flavoured Milk
+│   │   │   │   ├── Drinks & Powders
+│   │   │   │   └── Kids Milk
+│   │   │   ├── Iced Tea
+│   │   │   │   └── Single & Multi Serve
+│   │   │   ├── Juice
+│   │   │   │   ├── Canned Juices
+│   │   │   │   ├── Chilled Juice
+│   │   │   │   │   ├── Fresh Juice
+│   │   │   │   │   ├── Juice Drinks
+│   │   │   │   │   ├── Kombucha & Coconut Water
+│   │   │   │   │   ├── On The Go
+│   │   │   │   │   └── Reconstituted Juice
+│   │   │   │   ├── Glass Juice Bottles
+│   │   │   │   ├── Multi Pack Juice
+│   │   │   │   ├── Packs & Pouches
+│   │   │   │   └── Plastic Juice Bottles
+│   │   │   ├── Long Life-Milk
+│   │   │   │   ├── Almond & Other Nut Milk
+│   │   │   │   └── [CYCLE DETECTED: Long Life-Milk]
+│   │   │   │   ├── Long-Life Flavoured Milk
+│   │   │   │   ├── Oat Milk
+│   │   │   │   ├── Powdered Long Life Milk
+│   │   │   │   └── Soy Milk
+│   │   │   ├── Non Alcoholic
+│   │   │   │   ├── Beer
+│   │   │   │   │   ├── Craft Beer
+│   │   │   │   │   ├── Full-Strength
+│   │   │   │   │   ├── Imported
+│   │   │   │   │   ├── Low & No Alcohol
+│   │   │   │   │   └── Mid-Strength
+│   │   │   │   ├── Non-Alcoholic Drinks
+│   │   │   │   └── Wine
+│   │   │   ├── Soft Drinks
+│   │   │   │   ├── Kombucha & Other Drinks
+│   │   │   │   ├── Mixers
+│   │   │   │   ├── Soft Drink Bottles
+│   │   │   │   └── Soft Drink Cans
+│   │   │   ├── Sports Drinks
+│   │   │   │   ├── All Iced Tea
+│   │   │   │   ├── Sport Drink Powders
+│   │   │   │   └── Sports Drink
+│   │   │   ├── Tea Drinks
+│   │   │   │   ├── Tea Black
+│   │   │   │   └── Tea Herbal
+│   │   │   └── Water
+│   │   │       ├── Flavoured Water
+│   │   │       ├── Mineral Water
+│   │   │       ├── Sparkling Water
+│   │   │       └── Still Water
+│   │   ├── Falafels, Soy & Tofu
+│   │   ├── Frozen
+│   │   │   ├── Frozen Baby & Toddler Meals
+│   │   │   │   └── All Baby & Toddler Meals
+│   │   │   ├── Frozen Chicken, Beef & Pork
+│   │   │   │   ├── Beef & Pork
+│   │   │   │   ├── Burgers
+│   │   │   │   ├── Chicken Pieces & Nuggets
+│   │   │   │   ├── Chicken Wing & Nibbles
+│   │   │   │   └── Frozen Meat Free
+│   │   │   ├── Frozen Chips & Wedges
+│   │   │   │   ├── Chips
+│   │   │   │   │   ├── Chips Multi Pack
+│   │   │   │   │   ├── Chips Sharing
+│   │   │   │   │   ├── Chips Single Pack
+│   │   │   │   │   └── Corn Chips & Salsa
+│   │   │   │   ├── Oven Roasted
+│   │   │   │   └── Wedges
+│   │   │   ├── Frozen Desserts
+│   │   │   │   ├── Assorted Desserts
+│   │   │   │   ├── Cakes & Cheesecakes
+│   │   │   │   ├── Dessert Pies
+│   │   │   │   └── Pastries & Puddings
+│   │   │   ├── Frozen Fish & Seafood
+│   │   │   │   ├── Fish Fillets
+│   │   │   │   ├── Fish Fingers & Cakes
+│   │   │   │   └── Seafood Frozen
+│   │   │   ├── Frozen Fruit
+│   │   │   │   ├── Berries
+│   │   │   │   └── Tropical
+│   │   │   ├── Frozen Gluten Free
+│   │   │   │   └── All Gluten Free
+│   │   │   ├── Frozen Meals
+│   │   │   │   └── Convenience Meals
+│   │   │   ├── Frozen Pastry & Party Food
+│   │   │   │   ├── Asian Party Food
+│   │   │   │   ├── Party Food
+│   │   │   │   ├── Pastries
+│   │   │   │   └── Pies & Quiches
+│   │   │   ├── Frozen Pizza & Bases
+│   │   │   │   └── Pizza Snacks
+│   │   │   ├── Frozen Vegan & Vegetarian
+│   │   │   │   └── All Plant Based
+│   │   │   ├── Frozen Vegetables
+│   │   │   │   ├── Beans
+│   │   │   │   ├── Corn
+│   │   │   │   ├── Mixed Vegetables
+│   │   │   │   ├── Other Vegetables
+│   │   │   │   ├── Peas
+│   │   │   │   ├── Steaming
+│   │   │   │   └── Stir Fry
+│   │   │   ├── Frozen World Food
+│   │   │   │   └── Frozen Asian Foods
+│   │   │   ├── Ice
+│   │   │   │   └── Ice Bags
+│   │   │   └── Ice Cream
+│   │   │       ├── Frozen Yoghurt
+│   │   │       ├── Ice Cream Desserts
+│   │   │       ├── Ice Cream Sticks
+│   │   │       ├── Ice Cream Tubs
+│   │   │       └── Premium Ice Cream
+│   │   ├── Health & Beauty
+│   │   │   ├── Continence Care
+│   │   │   │   ├── Continence Pads
+│   │   │   │   ├── Female Washable Underwear
+│   │   │   │   ├── Liners
+│   │   │   │   ├── Male Pads
+│   │   │   │   ├── Male Washable Underwear
+│   │   │   │   ├── Mens Pouches & Shields
+│   │   │   │   └── Pants
+│   │   │   ├── Cosmetics
+│   │   │   │   ├── Blush
+│   │   │   │   ├── Brows
+│   │   │   │   ├── Brushes And Tools
+│   │   │   │   ├── Concealer & Foundation
+│   │   │   │   ├── Eye Liner, Eye Shadow & Mascara
+│   │   │   │   ├── Lashes
+│   │   │   │   ├── Lips
+│   │   │   │   └── Nails
+│   │   │   ├── Dental Care
+│   │   │   │   ├── Dental Floss & Tape
+│   │   │   │   ├── Dental Whitening
+│   │   │   │   ├── Denture Care
+│   │   │   │   ├── Kids Dental
+│   │   │   │   ├── Mouthwash
+│   │   │   │   ├── Toothbrushes
+│   │   │   │   └── Toothpaste
+│   │   │   ├── Deodorants
+│   │   │   │   ├── Body Mist And Spray
+│   │   │   │   ├── Mens Deodorant
+│   │   │   │   ├── Roll On Deodorant
+│   │   │   │   ├── Unisex Deodorant
+│   │   │   │   ├── Whole Body Deodorant
+│   │   │   │   └── Womens Deodorant
+│   │   │   ├── First Aid & Medicinal
+│   │   │   │   ├── Antacid & Indigestion
+│   │   │   │   ├── Antiseptic
+│   │   │   │   ├── Bandages & Strapping
+│   │   │   │   ├── Cold, Flu And Allergy
+│   │   │   │   ├── Cotton Wool & Cotton Buds
+│   │   │   │   ├── Eye & Ear Care
+│   │   │   │   ├── Masks & Tests
+│   │   │   │   ├── Medicinal Oils & Ointments
+│   │   │   │   ├── Other First Aid & Medicinal
+│   │   │   │   ├── Pain Relief
+│   │   │   │   └── Quit Smoking
+│   │   │   ├── Hair Care
+│   │   │   │   ├── Colouring
+│   │   │   │   ├── Dandruff
+│   │   │   │   ├── Gel, Mousse & Styling
+│   │   │   │   ├── Hair Brushes, Combs & Accessories
+│   │   │   │   ├── Kids Hair Care
+│   │   │   │   ├── Lice Treatment
+│   │   │   │   ├── Mens Hair Care
+│   │   │   │   ├── Shampoo & Conditioner
+│   │   │   │   └── Treatments
+│   │   │   ├── Period Care
+│   │   │   │   ├── Accessories
+│   │   │   │   ├── Liners
+│   │   │   │   ├── Pads
+│   │   │   │   ├── Reusables
+│   │   │   │   └── Tampons
+│   │   │   ├── Personal Care
+│   │   │   │   ├── Footcare
+│   │   │   │   ├── Pregnancy Tests
+│   │   │   │   └── Sexual Health
+│   │   │   ├── Shaving & Hair Removal
+│   │   │   │   ├── After Shave Care
+│   │   │   │   ├── Razors & Blades
+│   │   │   │   ├── Shave Gel & Foam
+│   │   │   │   └── Wax, Cream & Bleach
+│   │   │   ├── Shower & Bath Care
+│   │   │   │   ├── Bath Accessories
+│   │   │   │   ├── Body Wash
+│   │   │   │   ├── Bubble Bath & Salts
+│   │   │   │   ├── Hand Santiser
+│   │   │   │   └── Soap & Hand Wash
+│   │   │   ├── Skin Care
+│   │   │   │   ├── Body Moisturiser
+│   │   │   │   ├── Cleansers & Skincare Wipes
+│   │   │   │   ├── Face Masks & Patches
+│   │   │   │   ├── Face Moisturiser
+│   │   │   │   ├── Hand Moisturiser
+│   │   │   │   ├── Lip Care
+│   │   │   │   ├── Mens Skin
+│   │   │   │   ├── Self-Tanning
+│   │   │   │   └── Serums
+│   │   │   ├── Sun Protection
+│   │   │   │   ├── After Sun
+│   │   │   │   └── Sun Care
+│   │   │   ├── Travel Packs And Minis
+│   │   │   │   └── Travel Packs And Accessories
+│   │   │   └── Vitamins & Supplements
+│   │   │       ├── Chewables
+│   │   │       ├── Effervescents
+│   │   │       ├── Gummies
+│   │   │       ├── Liquids
+│   │   │       ├── Mens Health
+│   │   │       ├── Multivitamins
+│   │   │       ├── Powders
+│   │   │       ├── Tablets & Capsules
+│   │   │       └── Womens Health
+│   │   ├── Liquor
+│   │   ├── Pantry
+│   │   │   ├── Baking
+│   │   │   │   ├── Cake & Bread Mixes
+│   │   │   │   ├── Cake Decorating
+│   │   │   │   ├── Cooking Chocolate & Cocoa
+│   │   │   │   ├── Dried Fruits & Fillings
+│   │   │   │   ├── Essence & Food Colouring
+│   │   │   │   ├── Flour
+│   │   │   │   ├── Nuts For Baking
+│   │   │   │   ├── Pancake & Dessert Mixes
+│   │   │   │   ├── Sugar & Sweeteners
+│   │   │   │   └── Yeast & Baking Agents
+│   │   │   ├── Breakfast
+│   │   │   │   ├── Breakfast Cereal
+│   │   │   │   ├── Breakfast Muesli
+│   │   │   │   ├── Breakfast Oats
+│   │   │   │   └── On The Go
+│   │   │   ├── Canned Food, Soups & Noodles
+│   │   │   │   ├── Baked Beans & Spaghetti
+│   │   │   │   ├── Canned Fruit
+│   │   │   │   ├── Canned Meat
+│   │   │   │   ├── Canned Vegetables
+│   │   │   │   ├── Condensed & Evaporated Milk
+│   │   │   │   ├── Fish & Seafood
+│   │   │   │   ├── Instant Meals & Sides
+│   │   │   │   ├── Noodles
+│   │   │   │   └── Soups
+│   │   │   ├── Coffee
+│   │   │   │   ├── Capsules
+│   │   │   │   ├── Coffee Accessories
+│   │   │   │   ├── Coffee Beans
+│   │   │   │   ├── Coffee Mixes
+│   │   │   │   ├── Ground Coffee
+│   │   │   │   └── Instant Coffee
+│   │   │   ├── Desserts
+│   │   │   │   ├── Custard, Cream & Yoghurt Desserts
+│   │   │   │   ├── Icecream Cones, Syrups & Toppings
+│   │   │   │   ├── Jelly
+│   │   │   │   └── Puddings
+│   │   │   ├── Health Foods
+│   │   │   │   ├── Healthy Cooking
+│   │   │   │   └── Healthy Snacks
+│   │   │   ├── Health Foods Sports Nutrition & Diet
+│   │   │   │   ├── Collagen
+│   │   │   │   ├── Energy Gels/Tablets
+│   │   │   │   ├── Nutrition Powders
+│   │   │   │   ├── Protein Bars & Balls
+│   │   │   │   └── Rtd Protein Shakes
+│   │   │   ├── Herbs & Spices
+│   │   │   │   ├── Dried Herbs & Spices
+│   │   │   │   ├── Dried Spices
+│   │   │   │   ├── Jars & Pastes
+│   │   │   │   ├── Packet Seasonings
+│   │   │   │   └── Salt & Pepper
+│   │   │   ├── International Foods
+│   │   │   │   ├── Asian
+│   │   │   │   ├── European
+│   │   │   │   ├── Indian
+│   │   │   │   ├── Kosher
+│   │   │   │   ├── Mediterranean
+│   │   │   │   ├── Mexican
+│   │   │   │   ├── Middle Eastern
+│   │   │   │   ├── New Zealand
+│   │   │   │   ├── Uk
+│   │   │   │   └── Usa
+│   │   │   ├── Jams, Honey & Spreads
+│   │   │   │   ├── Chocolate Spreads
+│   │   │   │   ├── Honey
+│   │   │   │   ├── Jams
+│   │   │   │   ├── Nut Spreads
+│   │   │   │   └── Savoury Spreads
+│   │   │   ├── Local Foods
+│   │   │   │   ├── Cereal & Health Foods
+│   │   │   │   └── Local Snacks & Drinks
+│   │   │   ├── Oils & Vinegars
+│   │   │   │   ├── Oil
+│   │   │   │   └── Vinegar
+│   │   │   ├── Pasta, Rice, Legumes & Grains
+│   │   │   │   ├── Beans & Legumes
+│   │   │   │   ├── Pasta
+│   │   │   │   ├── Pasta Meals
+│   │   │   │   ├── Polenta & Other Grains
+│   │   │   │   └── Rice
+│   │   │   ├── Pickled Vegetables & Condiments
+│   │   │   │   ├── Mustard
+│   │   │   │   ├── Pickles, Chutney & Relish
+│   │   │   │   ├── Salad Dressings
+│   │   │   │   ├── Syrups & Toppings
+│   │   │   │   └── Tomato & Bbq Sauces
+│   │   │   ├── Sauces
+│   │   │   │   ├── Marinades
+│   │   │   │   ├── Pizza & Pasta
+│   │   │   │   ├── Recipe & Meal Bases
+│   │   │   │   ├── Soy & Asian
+│   │   │   │   ├── Sweet Chilli & Hot
+│   │   │   │   └── Tomato & Bbq
+│   │   │   ├── Stocks & Gravy
+│   │   │   │   ├── Dry Stock
+│   │   │   │   ├── Gravy
+│   │   │   │   └── Liquid Stock
+│   │   │   └── Tea
+│   │   │       ├── Black
+│   │   │       ├── Bubble Tea
+│   │   │       ├── Chai
+│   │   │       ├── Green
+│   │   │       ├── Herbal
+│   │   │       ├── Loose Leaf
+│   │   │       ├── Organic
+│   │   │       │   ├── Baby
+│   │   │       │   │   ├── Baby & Toddler Food
+│   │   │       │   │   │   ├── Baby & Toddler Snacks
+│   │   │       │   │   │   ├── Baby Cereals
+│   │   │       │   │   │   ├── Baby Food Jars
+│   │   │       │   │   │   ├── Baby Food Pouches
+│   │   │       │   │   │   ├── Baby Pasta
+│   │   │       │   │   │   └── Baby Rusks
+│   │   │       │   │   ├── Baby Accessories
+│   │   │       │   │   │   ├── Baby Grooming & Oral Care
+│   │   │       │   │   │   ├── Baby Health & Safety
+│   │   │       │   │   │   ├── Bathroom Accessories
+│   │   │       │   │   │   └── Nappy Change Accessories
+│   │   │       │   │   ├── Baby Feeding
+│   │   │       │   │   │   └── Nursing Care
+│   │   │       │   │   ├── Baby Formula
+│   │   │       │   │   │   ├── A2 Formula
+│   │   │       │   │   │   ├── Cow Formula
+│   │   │       │   │   │   ├── Goat Formula
+│   │   │       │   │   │   ├── Organic Formula
+│   │   │       │   │   │   └── Specialty Formula
+│   │   │       │   │   ├── Baby Meal Time
+│   │   │       │   │   │   └── Baby Plates & Bowls
+│   │   │       │   │   ├── Baby Wipes
+│   │   │       │   │   │   ├── Extra Large Pack
+│   │   │       │   │   │   ├── Large Pack
+│   │   │       │   │   │   ├── Medium Pack
+│   │   │       │   │   │   ├── Refill Pack
+│   │   │       │   │   │   ├── Small Pack
+│   │   │       │   │   │   └── Travel Pack
+│   │   │       │   │   ├── Bath & Skincare
+│   │   │       │   │   │   ├── Baby Bath
+│   │   │       │   │   │   ├── Baby Cotton Buds
+│   │   │       │   │   │   ├── Baby Hair & Body Wash
+│   │   │       │   │   │   ├── Baby Hair Care
+│   │   │       │   │   │   ├── Baby Medicinal
+│   │   │       │   │   │   ├── Baby Moisturiser
+│   │   │       │   │   │   ├── Baby Oil
+│   │   │       │   │   │   ├── Baby Powder
+│   │   │       │   │   │   └── Nappy Rash Treatment
+│   │   │       │   │   ├── Bottles & Feeding
+│   │   │       │   │   │   ├── Baby Bottles
+│   │   │       │   │   │   ├── Baby Cups
+│   │   │       │   │   │   ├── Baby Teats
+│   │   │       │   │   │   ├── Bottle Accessories
+│   │   │       │   │   │   ├── Bottle Cleaning
+│   │   │       │   │   │   └── Bottle Feeding
+│   │   │       │   │   ├── Dummies & Teething
+│   │   │       │   │   │   └── Soothers & Teethers
+│   │   │       │   │   ├── Nappies & Nappy Pants
+│   │   │       │   │   │   ├── Bed Mats
+│   │   │       │   │   │   ├── Eco Friendly Nappies
+│   │   │       │   │   │   ├── Nappies
+│   │   │       │   │   │   ├── Nappy Pants
+│   │   │       │   │   │   ├── Night Pants
+│   │   │       │   │   │   └── Swimmers
+│   │   │       │   │   └── Postpartum Care
+│   │   │       │   │       └── Postpartum Underwear
+│   │   │       │   ├── Drinks
+│   │   │       │   │   ├── Coffee Drinks
+│   │   │       │   │   │   ├── Beans Coffee
+│   │   │       │   │   │   ├── Coffee Capsules
+│   │   │       │   │   │   └── Coffee Instant
+│   │   │       │   │   ├── Cold Drinks
+│   │   │       │   │   │   ├── Cold Soft Drinks
+│   │   │       │   │   │   ├── Cold Water
+│   │   │       │   │   │   └── Other Cold Drinks
+│   │   │       │   │   ├── Cordials
+│   │   │       │   │   │   └── All Cordials
+│   │   │       │   │   ├── Energy Drinks
+│   │   │       │   │   │   ├── Bottles
+│   │   │       │   │   │   ├── Multipack Cans
+│   │   │       │   │   │   └── Single Cans
+│   │   │       │   │   ├── Flavoured Milk
+│   │   │       │   │   │   ├── Drinks & Powders
+│   │   │       │   │   │   └── Kids Milk
+│   │   │       │   │   ├── Iced Tea
+│   │   │       │   │   │   └── Single & Multi Serve
+│   │   │       │   │   ├── Juice
+│   │   │       │   │   │   ├── Canned Juices
+│   │   │       │   │   │   ├── Chilled Juice
+│   │   │       │   │   │   │   ├── Fresh Juice
+│   │   │       │   │   │   │   ├── Juice Drinks
+│   │   │       │   │   │   │   ├── Kombucha & Coconut Water
+│   │   │       │   │   │   │   ├── On The Go
+│   │   │       │   │   │   │   └── Reconstituted Juice
+│   │   │       │   │   │   ├── Glass Juice Bottles
+│   │   │       │   │   │   ├── Multi Pack Juice
+│   │   │       │   │   │   ├── Packs & Pouches
+│   │   │       │   │   │   └── Plastic Juice Bottles
+│   │   │       │   │   ├── Long Life-Milk
+│   │   │       │   │   │   ├── Almond & Other Nut Milk
+│   │   │       │   │   │   └── [CYCLE DETECTED: Long Life-Milk]
+│   │   │       │   │   │   ├── Long-Life Flavoured Milk
+│   │   │       │   │   │   ├── Oat Milk
+│   │   │       │   │   │   ├── Powdered Long Life Milk
+│   │   │       │   │   │   └── Soy Milk
+│   │   │       │   │   ├── Non Alcoholic
+│   │   │       │   │   │   ├── Beer
+│   │   │       │   │   │   │   ├── Craft Beer
+│   │   │       │   │   │   │   ├── Full-Strength
+│   │   │       │   │   │   │   ├── Imported
+│   │   │       │   │   │   │   ├── Low & No Alcohol
+│   │   │       │   │   │   │   └── Mid-Strength
+│   │   │       │   │   │   ├── Non-Alcoholic Drinks
+│   │   │       │   │   │   └── Wine
+│   │   │       │   │   ├── Soft Drinks
+│   │   │       │   │   │   ├── Kombucha & Other Drinks
+│   │   │       │   │   │   ├── Mixers
+│   │   │       │   │   │   ├── Soft Drink Bottles
+│   │   │       │   │   │   └── Soft Drink Cans
+│   │   │       │   │   ├── Sports Drinks
+│   │   │       │   │   │   ├── All Iced Tea
+│   │   │       │   │   │   ├── Sport Drink Powders
+│   │   │       │   │   │   └── Sports Drink
+│   │   │       │   │   ├── Tea Drinks
+│   │   │       │   │   │   ├── Tea Black
+│   │   │       │   │   │   └── Tea Herbal
+│   │   │       │   │   └── Water
+│   │   │       │   │       ├── Flavoured Water
+│   │   │       │   │       ├── Mineral Water
+│   │   │       │   │       ├── Sparkling Water
+│   │   │       │   │       └── Still Water
+│   │   │       │   ├── Frozen
+│   │   │       │   │   ├── Frozen Baby & Toddler Meals
+│   │   │       │   │   │   └── All Baby & Toddler Meals
+│   │   │       │   │   ├── Frozen Chicken, Beef & Pork
+│   │   │       │   │   │   ├── Beef & Pork
+│   │   │       │   │   │   ├── Burgers
+│   │   │       │   │   │   ├── Chicken Pieces & Nuggets
+│   │   │       │   │   │   ├── Chicken Wing & Nibbles
+│   │   │       │   │   │   └── Frozen Meat Free
+│   │   │       │   │   ├── Frozen Chips & Wedges
+│   │   │       │   │   │   ├── Chips
+│   │   │       │   │   │   │   ├── Chips Multi Pack
+│   │   │       │   │   │   │   ├── Chips Sharing
+│   │   │       │   │   │   │   ├── Chips Single Pack
+│   │   │       │   │   │   │   └── Corn Chips & Salsa
+│   │   │       │   │   │   ├── Oven Roasted
+│   │   │       │   │   │   └── Wedges
+│   │   │       │   │   ├── Frozen Desserts
+│   │   │       │   │   │   ├── Assorted Desserts
+│   │   │       │   │   │   ├── Cakes & Cheesecakes
+│   │   │       │   │   │   ├── Dessert Pies
+│   │   │       │   │   │   └── Pastries & Puddings
+│   │   │       │   │   ├── Frozen Fish & Seafood
+│   │   │       │   │   │   ├── Fish Fillets
+│   │   │       │   │   │   ├── Fish Fingers & Cakes
+│   │   │       │   │   │   └── Seafood Frozen
+│   │   │       │   │   ├── Frozen Fruit
+│   │   │       │   │   │   ├── Berries
+│   │   │       │   │   │   └── Tropical
+│   │   │       │   │   ├── Frozen Gluten Free
+│   │   │       │   │   │   └── All Gluten Free
+│   │   │       │   │   ├── Frozen Meals
+│   │   │       │   │   │   └── Convenience Meals
+│   │   │       │   │   ├── Frozen Pastry & Party Food
+│   │   │       │   │   │   ├── Asian Party Food
+│   │   │       │   │   │   ├── Party Food
+│   │   │       │   │   │   ├── Pastries
+│   │   │       │   │   │   └── Pies & Quiches
+│   │   │       │   │   ├── Frozen Pizza & Bases
+│   │   │       │   │   │   └── Pizza Snacks
+│   │   │       │   │   ├── Frozen Vegan & Vegetarian
+│   │   │       │   │   │   └── All Plant Based
+│   │   │       │   │   ├── Frozen Vegetables
+│   │   │       │   │   │   ├── Beans
+│   │   │       │   │   │   ├── Corn
+│   │   │       │   │   │   ├── Mixed Vegetables
+│   │   │       │   │   │   ├── Other Vegetables
+│   │   │       │   │   │   ├── Peas
+│   │   │       │   │   │   ├── Steaming
+│   │   │       │   │   │   └── Stir Fry
+│   │   │       │   │   ├── Frozen World Food
+│   │   │       │   │   │   └── Frozen Asian Foods
+│   │   │       │   │   ├── Ice
+│   │   │       │   │   │   └── Ice Bags
+│   │   │       │   │   └── Ice Cream
+│   │   │       │   │       ├── Frozen Yoghurt
+│   │   │       │   │       ├── Ice Cream Desserts
+│   │   │       │   │       ├── Ice Cream Sticks
+│   │   │       │   │       ├── Ice Cream Tubs
+│   │   │       │   │       └── Premium Ice Cream
+│   │   │       │   ├── Fruit & Veg
+│   │   │       │   ├── Liquor
+│   │   │       │   ├── Meat, Dairy & Eggs
+│   │   │       │   ├── Nuts & Seeds
+│   │   │       │   ├── Pantry Essentials
+│   │   │       │   └── Snacking
+│   │   │       │       ├── Desserts & Chocolate
+│   │   │       │       └── Snack Foods
+│   │   │       └── White
+│   │   ├── Snacking
+│   │   │   ├── Desserts & Chocolate
+│   │   │   └── Snack Foods
+│   │   └── Veggie Chicken & Meat
+│   └── World Foods
+│       ├── British
+│       ├── Chinese
+│       ├── European
+│       ├── Greek
+│       ├── Indian
+│       ├── Indonesia
+│       ├── Italian
+│       ├── Japanese
+│       ├── Korean
+│       ├── Malaysian
+│       ├── Mexican
+│       ├── Middle Eastern
+│       ├── New Zealand
+│       ├── Philippines
+│       ├── South African
+│       ├── Thai
+│       ├── Usa
+│       └── Vietnamese
+├── Down Down
+│   ├── Beverages
+│   │   ├── Soft Drink & Energy Drinks
+│   │   └── Water & Juices
+│   ├── Dairy, Chilled & Frozen
+│   │   ├── Cheese & Desserts
+│   │   ├── Spreads & Dips
+│   │   └── Yoghurt
+│   │       ├── Dairy Free
+│   │       ├── Multipacks
+│   │       ├── Pouch
+│   │       ├── Single Serve
+│   │       └── Yoghurt Tubs
+│   ├── Pantry Items
+│   │   ├── Canned & Pickled Foods
+│   │   ├── Healthier Foods
+│   │   ├── Pasta & Rice
+│   │   ├── Sauces & Dressings
+│   │   └── Soup & Noodles
+│   ├── Personal & Baby Care
+│   │   └── Medicinal Care
+│   └── Snacking
+│       ├── Desserts & Chocolate
+│       └── Snack Foods
+├── Fruit & Vegetables
+│   ├── Best Of Winter
+│   │   ├── Fruit
+│   │   │   ├── Apples
+│   │   │   ├── Avocados
+│   │   │   ├── Bananas
+│   │   │   ├── Berries & Cherries
+│   │   │   ├── Coconuts
+│   │   │   ├── Cut Fruit
+│   │   │   ├── Grapefruit
+│   │   │   ├── Grapes
+│   │   │   ├── Kiwi Fruit
+│   │   │   ├── Lemons & Limes
+│   │   │   ├── Mandarins
+│   │   │   ├── Melons
+│   │   │   ├── Oranges
+│   │   │   ├── Organic Fruit
+│   │   │   ├── Passionfruit
+│   │   │   ├── Pears
+│   │   │   ├── Pineapples
+│   │   │   ├── Plums & Apricots
+│   │   │   └── Tropical & Exotic Fruit
+│   │   └── Vegetables
+│   │       ├── Asian Greens
+│   │       ├── Asparagus, Fennel & Artichokes
+│   │       ├── Beetroot
+│   │       ├── Broccoli & Cauliflower
+│   │       ├── Cabbage, Kale & Brussel Sprouts
+│   │       ├── Capsicum
+│   │       ├── Carrots & Parsnips
+│   │       ├── Corn
+│   │       ├── Cucumber
+│   │       ├── Eggplant
+│   │       ├── Garlic & Ginger
+│   │       ├── Lettuce
+│   │       ├── Mashed & Cut Vegetables
+│   │       ├── Mushrooms
+│   │       ├── Onion & Leeks
+│   │       ├── Organic Vegetables
+│   │       ├── Peas & Beans
+│   │       ├── Potatoes
+│   │       ├── Pumpkin
+│   │       ├── Spinach & Silverbeet
+│   │       ├── Tomatoes
+│   │       ├── Turnips & Root Vegetables
+│   │       └── Zucchini & Squash
+│   ├── Fruit
+│   │   ├── Apples
+│   │   ├── Avocados
+│   │   ├── Bananas
+│   │   ├── Berries & Cherries
+│   │   ├── Coconuts
+│   │   ├── Cut Fruit
+│   │   ├── Grapefruit
+│   │   ├── Grapes
+│   │   ├── Kiwi Fruit
+│   │   ├── Lemons & Limes
+│   │   ├── Mandarins
+│   │   ├── Melons
+│   │   ├── Oranges
+│   │   ├── Organic Fruit
+│   │   ├── Passionfruit
+│   │   ├── Pears
+│   │   ├── Pineapples
+│   │   ├── Plums & Apricots
+│   │   └── Tropical & Exotic Fruit
+│   ├── Nuts & Dried Fruit
+│   │   ├── Almonds
+│   │   ├── Cashews
+│   │   ├── Mixed Fruit & Nuts
+│   │   ├── Nuts
+│   │   ├── Other Nuts
+│   │   ├── Peanuts
+│   │   └── Pistachio
+│   ├── Organic Fruits & Vegetables
+│   │   └── Organic Vegetables
+│   ├── Packaged Salad
+│   │   ├── Lettuce & Mixed Leaf
+│   │   ├── Salad Bowls
+│   │   ├── Salads Dressed
+│   │   ├── Sauces & Salad Dressing
+│   │   └── Slaws & Salad Kits
+│   ├── Prepared Vegetable
+│   │   ├── Carb Clever Veggies
+│   │   ├── Ready To Steam & Roast
+│   │   ├── Stir-Fry Veggie & Sauce
+│   │   ├── Trimmed & Cut Veggies
+│   │   └── Veggie Powder
+│   ├── Salad & Herbs
+│   │   └── Herbs & Chillies
+│   ├── Scoop & Weigh
+│   │   ├── Dry Fruits
+│   │   ├── Macadamia, Hazelnuts & Pecans
+│   │   ├── Mixed Scoop & Weigh
+│   │   ├── Other Scoop & Weigh
+│   │   └── Walnuts, Pistachio & Peanut
+│   └── Vegetables
+│       ├── Asian Greens
+│       ├── Asparagus, Fennel & Artichokes
+│       ├── Beetroot
+│       ├── Broccoli & Cauliflower
+│       ├── Cabbage, Kale & Brussel Sprouts
+│       ├── Capsicum
+│       ├── Carrots & Parsnips
+│       ├── Corn
+│       ├── Cucumber
+│       ├── Eggplant
+│       ├── Garlic & Ginger
+│       ├── Lettuce
+│       ├── Mashed & Cut Vegetables
+│       ├── Mushrooms
+│       ├── Onion & Leeks
+│       ├── Organic Vegetables
+│       ├── Peas & Beans
+│       ├── Potatoes
+│       ├── Pumpkin
+│       ├── Spinach & Silverbeet
+│       ├── Tomatoes
+│       ├── Turnips & Root Vegetables
+│       └── Zucchini & Squash
+├── Grocery
+│   └── Household
+│       ├── Air Fresheners & Home Fragrance
+│       │   └── All Airfreshners
+│       ├── Bathroom
+│       │   ├── Toilet Cleaners
+│       │   └── Toilet Paper
+│       ├── Charity Donations
+│       │   └── Donations
+│       ├── Cleaning Goods
+│       │   ├── Bathroom Cleaners
+│       │   ├── Bleach
+│       │   ├── Cleaning Gloves
+│       │   ├── Drain & Solvents
+│       │   ├── Fabric, Metal & Furniture
+│       │   ├── Floor & Carpet Cleaners
+│       │   ├── Kitchen Cleaners
+│       │   ├── Mops, Buckets & Brooms
+│       │   ├── Mould Killers & Disinfectants
+│       │   ├── Multipurpose Cleaners
+│       │   ├── Paper Towels, Sponges And Brushes
+│       │   ├── Sponges, Cloths & Wipes
+│       │   ├── Toilet Cleaning
+│       │   └── Windows & Glass
+│       ├── Cleaning Products
+│       │   └── Mops, Buckets And Brooms
+│       ├── Clothing & Accessories
+│       │   ├── Babywear
+│       │   ├── Children'S Socks
+│       │   ├── Men'S Socks
+│       │   ├── Men'S Underwear
+│       │   ├── Seasonal Accessories
+│       │   ├── Shoe Care And Footwear
+│       │   ├── Women'S Hosiery
+│       │   ├── Women'S Socks
+│       │   └── Women'S Underwear
+│       ├── Craft, Toys & Games
+│       │   ├── Baby Toys
+│       │   ├── Games & Hobbies
+│       │   └── Toys
+│       ├── Dishwashing
+│       │   ├── All Paper Towels
+│       │   ├── Dishwasher Additives
+│       │   ├── Dishwasher Tablets, Powder & Gel
+│       │   ├── Dishwashing Liquid
+│       │   └── Sponges & Scourers
+│       ├── Diy & Car
+│       │   ├── Adhesives, Glues & Tapes
+│       │   ├── Car Care
+│       │   ├── Car Oil & Coolants
+│       │   ├── Home Maintenance
+│       │   ├── Hooks & Fasteners
+│       │   ├── Security
+│       │   └── Tools & Accessories
+│       ├── Electrical
+│       │   ├── Batteries
+│       │   ├── Extension Cords & Adapters
+│       │   ├── Lighting
+│       │   ├── Lighting And Torches
+│       │   ├── Phone Accessories & Earphones
+│       │   └── Torches
+│       ├── Food Storage
+│       │   ├── Containers & Tubs
+│       │   ├── Freezer Bags & Sandwich
+│       │   └── Plastic Wrap & Bags
+│       ├── Garden
+│       │   ├── Gloves & Tools
+│       │   ├── Lawncare & Plant Food
+│       │   ├── Potting Mix & Fertilizer
+│       │   ├── Seeds & Plants
+│       │   └── Watering
+│       ├── Gifting
+│       │   └── Gifts
+│       ├── Homewares
+│       │   ├── Appliances
+│       │   ├── Bathroom Accessories
+│       │   ├── Cutlery & Servingware
+│       │   ├── Glassware
+│       │   ├── Home Improvement And Repair
+│       │   ├── Home Storage
+│       │   ├── Knives
+│       │   ├── Miscellaneous Homewares
+│       │   ├── Mugs & Cups
+│       │   ├── Plates & Bowls
+│       │   ├── Seasonal Decorations & Accessories
+│       │   ├── Sewing
+│       │   ├── Stationery
+│       │   ├── Tea Towels & Aprons
+│       │   ├── Textiles & Accessories
+│       │   └── Water Filtration
+│       ├── Kitchen
+│       │   ├── Baking Tins & Trays
+│       │   ├── Foil, Baking Paper & Oven Bags
+│       │   ├── Food Tubs & Containers
+│       │   ├── Kitchen Tidy & Garbage Bags
+│       │   ├── Oven Trays And Tins
+│       │   ├── Plastic Wraps & Bags
+│       │   ├── Pots & Saucepans
+│       │   └── Utensils & Gadgets
+│       ├── Laundry
+│       │   ├── Fabric Softener
+│       │   ├── Ironing Aids
+│       │   ├── Laundry Accessories
+│       │   ├── Laundry Liquid
+│       │   ├── Laundry Powder
+│       │   └── Stain Removal & Pre-Wash
+│       ├── Mobile & Tech Accessories
+│       │   └── Phones
+│       ├── Outdoors
+│       │   ├── Automotive
+│       │   ├── Bbq
+│       │   ├── Camping & Fishing
+│       │   ├── Matches & Lighters
+│       │   ├── Pool
+│       │   └── Sports
+│       ├── Party Supplies
+│       │   ├── Candles
+│       │   ├── Cups & Glasses
+│       │   ├── Decorations
+│       │   ├── Disposable Plates & Bowls
+│       │   ├── Gift Wrap & Bags
+│       │   ├── Paper & Plastic Cutlery
+│       │   └── Serviettes & Tablecloths
+│       ├── Pest Control
+│       │   ├── Crawling Insects
+│       │   ├── Flying Insects
+│       │   ├── Garden Pests
+│       │   ├── Mosquitos
+│       │   └── Rodents
+│       ├── Reusable Shopping Bags
+│       │   └── Chiller Bags & Bags
+│       ├── Stationery & Media
+│       │   ├── Magazines
+│       │   ├── Media
+│       │   ├── Stationery
+│       │   └── Toys & Game
+│       └── Toilet Paper, Tissues & Paper Towels
+│           ├── Facial Tissues
+│           ├── Flushable Wipes
+│           ├── Paper Towel
+│           └── Toilet Tissues
+├── Liquorland
+│   ├── Beer
+│   │   ├── Craft Beer
+│   │   ├── Full-Strength
+│   │   ├── Imported
+│   │   ├── Low & No Alcohol
+│   │   └── Mid-Strength
+│   ├── Cask & Fortified Wine
+│   │   ├── Cask Red Wine
+│   │   ├── Cask White Wine
+│   │   └── Muscat, Port & Sherry
+│   ├── Champagne & Sparkling
+│   │   ├── Champagne
+│   │   └── Sparkling
+│   ├── Cider
+│   │   ├── Apple Cider
+│   │   └── Other Flavoured Cider Varieties
+│   ├── Low Carb & Low Sugar
+│   │   ├── Beer
+│   │   │   ├── Craft Beer
+│   │   │   ├── Full-Strength
+│   │   │   ├── Imported
+│   │   │   ├── Low & No Alcohol
+│   │   │   └── Mid-Strength
+│   │   └── Premixed Drinks
+│   │       ├── Bourbon Premix
+│   │       ├── Gin Premix
+│   │       ├── Vodka Premix
+│   │       └── Whisky Premix
+│   ├── Low-Mid Strength
+│   │   ├── Beer
+│   │   │   ├── Craft Beer
+│   │   │   ├── Full-Strength
+│   │   │   ├── Imported
+│   │   │   ├── Low & No Alcohol
+│   │   │   └── Mid-Strength
+│   │   └── Wine
+│   ├── Non Alcoholic
+│   │   ├── Beer
+│   │   │   ├── Craft Beer
+│   │   │   ├── Full-Strength
+│   │   │   ├── Imported
+│   │   │   ├── Low & No Alcohol
+│   │   │   └── Mid-Strength
+│   │   ├── Non-Alcoholic Drinks
+│   │   └── Wine
+│   ├── Premixed Drinks
+│   │   ├── Bourbon Premix
+│   │   ├── Gin Premix
+│   │   ├── Vodka Premix
+│   │   └── Whisky Premix
+│   ├── Red Wine
+│   │   ├── Cabernet Sauvignon & Blends
+│   │   ├── Cask Red Wine
+│   │   ├── Grenache
+│   │   ├── Merlot
+│   │   ├── Other Red Wine Varieties
+│   │   ├── Pinot Noir
+│   │   ├── Red Blends
+│   │   ├── Shiraz & Blends
+│   │   └── Tempranillo
+│   ├── Rose
+│   │   └── All Rose
+│   ├── Spirits
+│   │   ├── Aperitif, Vermouth And Digestives
+│   │   ├── Bourbon
+│   │   ├── Brandy & Cognac
+│   │   ├── Gin
+│   │   ├── Liqueurs
+│   │   ├── Other Spirits Varieties
+│   │   ├── Rum
+│   │   ├── Tequila
+│   │   ├── Vodka
+│   │   └── Whisky
+│   └── White Wine
+│       ├── Chardonnay
+│       ├── Moscato & Sweet White Wine
+│       ├── Other White Wine Varieties
+│       ├── Pinot Gris & Grigio
+│       ├── Riesling
+│       ├── Sauvignon Blanc
+│       ├── Semillon & Blends
+│       └── Semillon Sauvignon Blanc
+└── Pet
+    ├── Birds
+    │   ├── Bird Food
+    │   └── Bird Treats
+    ├── Cat & Kitten
+    │   ├── Cat Accessories, Grooming & Toys
+    │   ├── Cat Flea & Worming
+    │   ├── Cat Litter
+    │   ├── Cat Treats & Milk
+    │   ├── Chilled Cat Food
+    │   ├── Dry Cat Food
+    │   ├── Kitten Food, Treats & Milk
+    │   └── Trays & Cans Cat Food
+    ├── Dog & Puppy
+    │   ├── Chilled Dog Food
+    │   ├── Dog Accessories, Grooming & Toys
+    │   ├── Dog Flea & Worming
+    │   ├── Dog Treats & Milk
+    │   ├── Dry Dog Food
+    │   ├── Puppy Food, Treats & Milk
+    │   └── Trays & Cans Dog Food
+    ├── Fish Food & Accessories
+    │   └── Fish Food
+    └── Small Pets
+        └── Small Pets Food

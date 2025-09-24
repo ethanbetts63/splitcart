@@ -1,0 +1,107 @@
+Starting benchmark with 10 runs...
+
+--- Run 1/10 ---
+Baseline: $780.90, Optimized: $772.85, Savings: 1.03%
+  Run Characteristics:
+    - Avg Options per Item: 2.36
+    - Items with Brand Subs: 12 / 96
+    - Avg Price Range per Item: $1.72
+    - Cheapest Store Dist: (Chatswood East: 49, Coles Firle: 38, IGA Local Grocer South Plympton: 9)
+    - Avg Ideal Item Price: $8.05
+    - Avg Baseline Item Price: $8.13
+    - Avg Optimized Item Price: $8.05
+--- Run 2/10 ---
+Baseline: $767.62, Optimized: $748.69, Savings: 2.47%
+  Run Characteristics:
+    - Avg Options per Item: 2.61
+    - Items with Brand Subs: 11 / 98
+    - Avg Price Range per Item: $1.23
+    - Cheapest Store Dist: (Carindale: 7, Chatswood East: 48, Coles Firle: 36, IGA Local Grocer Somerton Park: 7)
+    - Avg Ideal Item Price: $7.64
+    - Avg Baseline Item Price: $7.83
+    - Avg Optimized Item Price: $7.64
+--- Run 3/10 ---
+Baseline: $1055.94, Optimized: $1041.16, Savings: 1.40%
+  Run Characteristics:
+    - Avg Options per Item: 2.68
+    - Items with Brand Subs: 19 / 98
+    - Avg Price Range per Item: $2.22
+    - Cheapest Store Dist: (Carindale: 7, Chester Hill: 34, Coles Firle: 34, Redwood Park IGA: 23)
+    - Avg Ideal Item Price: $10.62
+    - Avg Baseline Item Price: $10.77
+    - Avg Optimized Item Price: $10.62
+--- Run 4/10 ---
+Baseline: $748.05, Optimized: $729.13, Savings: 2.53%
+  Run Characteristics:
+    - Avg Options per Item: 2.78
+    - Items with Brand Subs: 11 / 87
+    - Avg Price Range per Item: $3.32
+    - Cheapest Store Dist: (Chatswood East: 36, Coles Firle: 35, IGA Local Grocer Bowden: 13, Southport: 3)
+    - Avg Ideal Item Price: $8.38
+    - Avg Baseline Item Price: $8.60
+    - Avg Optimized Item Price: $8.38
+--- Run 5/10 ---
+Baseline: $827.02, Optimized: $810.34, Savings: 2.02%
+  Run Characteristics:
+    - Avg Options per Item: 3.03
+    - Items with Brand Subs: 17 / 94
+    - Avg Price Range per Item: $2.91
+    - Cheapest Store Dist: (Carindale: 6, Coles Firle: 29, IGA Para Hills: 11, Punchbowl: 48)
+    - Avg Ideal Item Price: $8.62
+    - Avg Baseline Item Price: $8.80
+    - Avg Optimized Item Price: $8.62
+--- Run 6/10 ---
+Baseline: $697.77, Optimized: $674.01, Savings: 3.41%
+  Run Characteristics:
+    - Avg Options per Item: 3.01
+    - Items with Brand Subs: 16 / 100
+    - Avg Price Range per Item: $1.95
+    - Cheapest Store Dist: (Coles Firle: 38, IGA Local Grocer Bowden: 13, North Turramurra Metro: 44, Yamanto: 5)
+    - Avg Ideal Item Price: $6.74
+    - Avg Baseline Item Price: $6.98
+    - Avg Optimized Item Price: $6.74
+--- Run 7/10 ---
+Baseline: $1132.41, Optimized: $1083.96, Savings: 4.28%
+  Run Characteristics:
+    - Avg Options per Item: 2.84
+    - Items with Brand Subs: 23 / 95
+    - Avg Price Range per Item: $3.32
+    - Cheapest Store Dist: (Carindale: 8, Chatswood East: 49, Coles Firle: 31, IGA Local Grocer South Plympton: 7)
+    - Avg Ideal Item Price: $11.41
+    - Avg Baseline Item Price: $11.92
+    - Avg Optimized Item Price: $11.41
+--- Run 8/10 ---
+Baseline: $1060.84, Optimized: $1028.42, Savings: 3.06%
+  Run Characteristics:
+    - Avg Options per Item: 3.11
+    - Items with Brand Subs: 11 / 99
+    - Avg Price Range per Item: $1.74
+    - Cheapest Store Dist: (Booval: 8, Coles Firle: 48, Eastern Creek: 34, IGA Local Grocer Somerton Park: 9)
+    - Avg Ideal Item Price: $10.39
+    - Avg Baseline Item Price: $10.72
+    - Avg Optimized Item Price: $10.39
+--- Run 9/10 ---
+Baseline: $1060.97, Optimized: $1029.84, Savings: 2.93%
+  Run Characteristics:
+    - Avg Options per Item: 2.60
+    - Items with Brand Subs: 11 / 100
+    - Avg Price Range per Item: $1.34
+    - Cheapest Store Dist: (: 5, Chester Hill: 43, Coles Firle: 46, IGA Local Grocer Mt Gambier (Swallow Drive): 6)
+    - Avg Ideal Item Price: $10.30
+    - Avg Baseline Item Price: $10.61
+    - Avg Optimized Item Price: $10.30
+--- Run 10/10 ---
+Baseline: $770.17, Optimized: $759.69, Savings: 1.36%
+  Run Characteristics:
+    - Avg Options per Item: 2.91
+    - Items with Brand Subs: 14 / 100
+    - Avg Price Range per Item: $1.22
+    - Cheapest Store Dist: (Coles Firle: 42, Highfields: 11, IGA Para Hills: 10, North Turramurra Metro: 37)
+    - Avg Ideal Item Price: $7.60
+    - Avg Baseline Item Price: $7.70
+    - Avg Optimized Item Price: $7.60
+
+--- Benchmark Complete ---
+Individual savings percentages: ['1.03%', '2.47%', '1.40%', '2.53%', '2.02%', '3.41%', '4.28%', '3.06%', '2.93%', '1.36%']
+
+Average Savings: 2.45%

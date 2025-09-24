@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from api.utils.product_normalizer import ProductNormalizer
-from api.utils.price_normalizer import PriceNormalizer
+from data_management.utils.product_normalizer import ProductNormalizer
+from data_management.utils.price_normalizer import PriceNormalizer
 from .wrap_cleaned_products import wrap_cleaned_products
 from products.models import ProductBrand
 

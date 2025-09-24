@@ -1,6 +1,6 @@
 import datetime
 from django.db import models
-from api.utils.price_normalizer import PriceNormalizer
+from data_management.utils.price_normalizer import PriceNormalizer
 
 class Price(models.Model):
     """
