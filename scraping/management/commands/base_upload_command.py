@@ -1,15 +1,32 @@
 import os
 import gzip
 import requests
+from abc import ABC, abstractmethod
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-class Command(BaseCommand):
-    help = 'Compresses and uploads .jsonl files from the product_outbox to the server.'
+class BaseUploadCommand(BaseCommand, ABC):
+    """
+    An abstract base command for compressing and uploading .jsonl files.
+    """
+    @property
+    @abstractmethod
+    def outbox_path_name(self) -> str:
+        pass
+
+    @property
+    @abstractmethod
+    def archive_path_name(self) -> str:
+        pass
+
+    @property
+    @abstractmethod
+    def upload_url_path(self) -> str:
+        pass
 
     def handle(self, *args, **options):
-        outbox_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'product_outbox')
-        archive_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'temp_jsonl_product_storage')
+        outbox_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', self.outbox_path_name)
+        archive_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', self.archive_path_name)
         os.makedirs(outbox_path, exist_ok=True)
         os.makedirs(archive_path, exist_ok=True)
 
@@ -20,13 +37,13 @@ class Command(BaseCommand):
             self.stderr.write(self.style.ERROR("API_SERVER_URL and API_SECRET_KEY must be configured in settings."))
             return
 
-        upload_url = server_url.rstrip('/') + '/api/upload/'
+        upload_url = f"{server_url.rstrip('/')}/{self.upload_url_path.lstrip('/')}"
         headers = {'X-API-KEY': api_key}
 
         files_to_upload = [f for f in os.listdir(outbox_path) if f.endswith('.jsonl')]
 
         if not files_to_upload:
-            self.stdout.write(self.style.SUCCESS("No files to upload."))
+            self.stdout.write(self.style.SUCCESS(f"No files to upload in {self.outbox_path_name}."))
             return
 
         for file_name in files_to_upload:
