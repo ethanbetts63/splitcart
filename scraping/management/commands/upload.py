@@ -13,13 +13,20 @@ class Command(BaseCommand):
         # Add arguments for other data types here in the future
 
     def handle(self, *args, **options):
-        if options['products']:
+        product = options['products']
+        gs1 = options['gs1']
+
+        # If no specific upload is requested, run all
+        if not product and not gs1:
+            product = True
+            gs1 = True
+
+        if product:
             self.stdout.write(self.style.SUCCESS("Uploading product data..."))
             uploader = ProductUploader(self)
             uploader.run()
-        elif options['gs1']:
+        
+        if gs1:
             self.stdout.write(self.style.SUCCESS("Uploading GS1 data..."))
             uploader = Gs1Uploader(self)
             uploader.run()
-        else:
-            self.stdout.write(self.style.WARNING("Please specify which data to upload, e.g., --products or --gs1"))
