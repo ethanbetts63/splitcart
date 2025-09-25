@@ -34,7 +34,7 @@ class BaseFileUploadView(APIView, ABC):
         uploaded_file = request.FILES['file']
         file_name = uploaded_file.name
 
-        if not file_name.endswith('.jsonl.gz'):
+        if not file_name.endswith(('.jsonl.gz', '.json.gz')):
             return Response({"error": "Invalid file format. Expected .jsonl.gz"}, status=status.HTTP_400_BAD_REQUEST)
 
         # 3. Decompress and save the file
@@ -42,7 +42,7 @@ class BaseFileUploadView(APIView, ABC):
             inbox_path = self.get_inbox_path()
             os.makedirs(inbox_path, exist_ok=True)
             
-            decompressed_file_name = file_name[:-3]  # Remove .gz extension
+            decompressed_file_name = file_name.replace(".gz", "")
             decompressed_file_path = os.path.join(inbox_path, decompressed_file_name)
 
             with gzip.open(uploaded_file, 'rb') as f_in:
