@@ -7,7 +7,7 @@ class StoreUploader:
     def __init__(self, command):
         self.command = command
         self.outbox_path_name = 'store_outbox'
-        self.archive_path_name = 'temp_jsonl_store_storage'
+        self.archive_path_name = 'temp_json_store_storage'
         self.upload_url_path = '/api/upload/stores/'
 
     def run(self):
@@ -26,7 +26,7 @@ class StoreUploader:
         upload_url = f"{server_url.rstrip('/')}/{self.upload_url_path.lstrip('/')}"
         headers = {'X-API-KEY': api_key}
 
-        files_to_upload = [f for f in os.listdir(outbox_path) if f.endswith('.jsonl')]
+        files_to_upload = [f for f in os.listdir(outbox_path) if f.endswith('.json')]
 
         if not files_to_upload:
             self.command.stdout.write(self.command.style.SUCCESS(f"No files to upload in {self.outbox_path_name}."))

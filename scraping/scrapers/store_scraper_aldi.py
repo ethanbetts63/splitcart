@@ -16,7 +16,7 @@ class StoreScraperAldi(BaseStoreScraper):
         self.session.headers.update({
             "user-agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)",
         })
-        self.api_url = "https://data_management.aldi.com.au/v2/service-points"
+        self.api_url = "https://api.aldi.com.au/v2/service-points"
         self.lat_min = -44.0
         self.lat_max = -10.0
         self.lon_min = 112.0
