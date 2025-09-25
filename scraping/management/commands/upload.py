@@ -1,8 +1,11 @@
 from django.core.management.base import BaseCommand
 from scraping.utils.command_utils.product_uploader import ProductUploader
 from scraping.utils.command_utils.gs1_uploader import Gs1Uploader
+from scraping.utils.command_utils.store_uploader import StoreUploader
 
 from scraping.utils.command_utils.gs1_uploader import Gs1Uploader
+
+from scraping.utils.command_utils.store_uploader import StoreUploader
 
 class Command(BaseCommand):
     help = 'Uploads scraped data to the server.'
@@ -10,16 +13,18 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--products', action='store_true', help='Upload product data.')
         parser.add_argument('--gs1', action='store_true', help='Upload GS1 data.')
-        # Add arguments for other data types here in the future
+        parser.add_argument('--stores', action='store_true', help='Upload store data.')
 
     def handle(self, *args, **options):
         product = options['products']
         gs1 = options['gs1']
+        stores = options['stores']
 
         # If no specific upload is requested, run all
-        if not product and not gs1:
+        if not product and not gs1 and not stores:
             product = True
             gs1 = True
+            stores = True
 
         if product:
             self.stdout.write(self.style.SUCCESS("Uploading product data..."))
@@ -29,4 +34,9 @@ class Command(BaseCommand):
         if gs1:
             self.stdout.write(self.style.SUCCESS("Uploading GS1 data..."))
             uploader = Gs1Uploader(self)
+            uploader.run()
+
+        if stores:
+            self.stdout.write(self.style.SUCCESS("Uploading store data..."))
+            uploader = StoreUploader(self)
             uploader.run()
