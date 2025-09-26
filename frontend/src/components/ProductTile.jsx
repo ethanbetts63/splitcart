@@ -7,8 +7,10 @@ const ProductTile = ({ product }) => {
       <Card.Img variant="top" src={product.image_url || 'https://via.placeholder.com/150'} />
       <Card.Body>
         <Card.Title>{product.name}</Card.Title>
-        <Card.Text>
-          $10.00
+        <Card.Text as="div">
+          {product.prices && product.prices.map(price => (
+            <div key={price.store}>{price.store}: ${price.price}</div>
+          ))}
         </Card.Text>
       </Card.Body>
     </Card>
