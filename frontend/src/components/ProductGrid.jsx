@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import ProductTile from './ProductTile';
 
-const ProductGrid = () => {
+const ProductGrid = ({ searchTerm }) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     console.log('Fetching products...');
-    fetch('/api/products/')
+    const url = searchTerm ? `/api/products/?search=${searchTerm}` : '/api/products/';
+    fetch(url)
       .then(response => {
         console.log('Response:', response);
         return response.json();
@@ -21,7 +22,7 @@ const ProductGrid = () => {
       .catch(error => {
         console.error('Error fetching products:', error);
       });
-  }, []);
+  }, [searchTerm]);
 
   return (
     <Container>

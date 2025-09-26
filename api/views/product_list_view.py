@@ -1,11 +1,9 @@
-from rest_framework import generics
+from rest_framework import generics, filters
 from products.models import Product
 from ..serializers import ProductSerializer
 
 class ProductListView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-
-    def get(self, request, *args, **kwargs):
-        print("API endpoint /api/products/ was hit.")
-        return super().get(request, *args, **kwargs)
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'description']
