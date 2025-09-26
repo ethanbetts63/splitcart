@@ -17,6 +17,6 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'image_url', 'prices')
 
     def get_prices(self, obj):
-        # Get active prices for the product
-        active_prices = Price.objects.filter(price_record__product=obj, is_active=True)
+        # Get active prices for the product, ordered by price
+        active_prices = Price.objects.filter(price_record__product=obj, is_active=True).order_by('price_record__price')
         return PriceSerializer(active_prices, many=True).data
