@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
+import ShoppingListComponent from './ShoppingListComponent';
 
 const Header = () => {
   return (
@@ -12,6 +13,7 @@ const Header = () => {
             <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#link">Link</Nav.Link>
           </Nav>
+          <ShoppingListComponent />
         </Navbar.Collapse>
       </Container>
     </Navbar>
