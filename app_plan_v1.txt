@@ -1,0 +1,43 @@
+# Frontend Application Plan v1
+
+This document outlines the initial plan for the SplitCart frontend application. The primary goal is to create a basic but functional interface to serve as a testing ground for the backend APIs. The user interface will be kept simple for now, with a focus on speed and functionality over aesthetics.
+
+## Main Page Layout and Components
+
+The main page will be inspired by the simplicity of the Google homepage, featuring a prominent search bar and a grid of product tiles below it.
+
+1.  **`SearchHeader.jsx` Component:**
+    *   This component will be the main feature at the top of the page.
+    *   It will contain the `SplitCart` logo and a large, centered search bar.
+    *   Initially, the search bar will be a visual placeholder with no functionality. We will wire it up to a search API endpoint in a later phase.
+
+2.  **`ProductGrid.jsx` Component:**
+    *   This component will be displayed below the `SearchHeader`.
+    *   It will be responsible for fetching product data from the backend and displaying it as a grid of product tiles.
+    *   For now, it will fetch a generic list of products. In the future, this component will be updated to fetch and display products with the largest discounts.
+
+3.  **`ProductTile.jsx` Component:**
+    *   This will be a reusable component that represents a single product in the grid.
+    *   It will display essential product information, such as the product image, name, and current price.
+
+## Backend API Endpoint
+
+To support the `ProductGrid.jsx` component, we will need to create a new API endpoint in our Django `api` app.
+
+1.  **`/api/products/` Endpoint:**
+    *   We will create a new view in the `api` app to serve a list of products from the database.
+    *   This endpoint will be built using Django REST Framework to provide a clean, paginated JSON response.
+    *   Initially, it will return a simple list of all products. Later, we can add filtering and ordering capabilities (e.g., to sort by discount).
+
+## Data Flow and Implementation Details
+
+1.  **Component Mounting:** When the `ProductGrid.jsx` component first loads on the page, it will use a `useEffect` hook in React to trigger a data fetch.
+2.  **API Call:** Inside the `useEffect` hook, the component will use the `fetch` API or a library like `axios` to make a GET request to our new `/api/products/` endpoint.
+3.  **State Management:** The list of products returned from the API will be stored in the `ProductGrid.jsx` component's state using the `useState` hook.
+4.  **Rendering:** The component will then map over the array of products in its state. For each product object, it will render a `ProductTile.jsx` component, passing the product's data as props.
+
+## Future Enhancements
+
+*   Implement the search functionality for the `SearchHeader` component.
+*   Enhance the `/api/products/` endpoint to allow sorting by discount amount.
+*   Update the `ProductGrid.jsx` component to fetch and display the products with the biggest discounts by default.
