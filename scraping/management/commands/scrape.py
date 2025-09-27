@@ -1,10 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from companies.models.store import Store
-from scraping.scrapers.product_scraper_woolworths import ProductScraperWoolworths
-from scraping.scrapers.product_scraper_coles import ColesScraper as ProductScraperColes
-from scraping.scrapers.product_scraper_aldi import ProductScraperAldi
-from scraping.scrapers.product_scraper_iga import IgaScraper as ProductScraperIga
 from scraping.utils.product_scraping_utils.get_woolworths_categories import get_woolworths_categories
 from scraping.utils.product_scraping_utils.get_coles_categories import get_coles_categories
 from scraping.scrapers.gs1_company_scraper import Gs1CompanyScraper
@@ -89,6 +85,12 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('Scraping worker stopped.'))
 
     def _scrape_single_store(self, store_pk):
+        # Import scraper classes locally to prevent ModuleNotFoundError on startup
+        from scraping.scrapers.product_scraper_woolworths import ProductScraperWoolworths
+        from scraping.scrapers.product_scraper_coles import ColesScraper as ProductScraperColes
+        from scraping.scrapers.product_scraper_aldi import ProductScraperAldi
+        from scraping.scrapers.product_scraper_iga import IgaScraper as ProductScraperIga
+
         try:
             store = Store.objects.select_related('company').get(pk=store_pk)
             company_name = store.company.name
