@@ -1,0 +1,21 @@
+This file is for brainstorming next steps for the website.
+
+## Location-Based Filtering and Homepage Sections (Simplified Approach)
+
+### User Experience Flow:
+-   **Forced Location Input on First Visit:** The very first thing a user does upon landing on the page is to provide their location preferences. This will be done via a dedicated "Location Setup" page or a prominent modal.
+    -   Users will input one or more postcodes for areas they frequent (e.g., home, work).
+    -   For each postcode, they will specify a travel range (e.g., 5km, 10km).
+-   **Location Storage:** This location information will be stored persistently (e.g., in browser local storage, or a user profile if authenticated).
+-   **Homepage Display:** Once the location is set, the user is redirected to the homepage. The homepage will *always* display products and sections (e.g., "Price Diffs") filtered *only* by stores within the user's specified locations and travel ranges.
+
+### Implications for Homepage Sections:
+-   **No Initial Broad Display:** The concept of an initial "country-wide" display is removed. The homepage will always be personalized to the user's location.
+-   **Dynamic Calculation with Caching for Homepage Sections:**
+    -   When a user lands on the homepage, the API endpoint for homepage sections (`/api/homepage_sections/`) will receive the user's stored location.
+    -   The backend will dynamically calculate the sections based on stores within that specific location.
+    -   The results for that location will then be cached. Subsequent users with the same location will receive cached results, ensuring fast load times after the initial calculation for a given location.
+
+### Considerations:
+-   **"Enough Goods in Only a Few Stores":** This remains a critical consideration. If location filtering results in very few or no products for a section, the UI must handle this gracefully (e.g., "No price differences found in your area," or suggesting to broaden the search radius).
+-   **Backend Location-Awareness:** API endpoints will need to accept location parameters and filter products based on stores near the user's specified locations.
