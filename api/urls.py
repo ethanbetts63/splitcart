@@ -3,14 +3,14 @@ from .views.product_file_upload_view import ProductFileUploadView
 from .views.gs1_file_upload_view import Gs1FileUploadView
 from .views.store_file_upload_view import StoreFileUploadView
 from .views.product_list_view import ProductListView
-from .views.product_translation_view import ProductTranslationView
-from .views.brand_translation_view import BrandTranslationView
+from .views.product_translation_file_view import ProductTranslationFileView
+from .views.brand_translation_file_view import BrandTranslationFileView
 
 urlpatterns = [
     path('upload/products/', ProductFileUploadView.as_view(), name='product-file-upload'),
     path('upload/gs1/', Gs1FileUploadView.as_view(), name='gs1-file-upload'),
     path('upload/stores/', StoreFileUploadView.as_view(), name='store-file-upload'),
     path('products/', ProductListView.as_view(), name='product-list'),
-    path('translations/products/', ProductTranslationView.as_view(), name='product-translation-table'),
-    path('translations/brands/', BrandTranslationView.as_view(), name='brand-translation-table'),
+    path('files/product_translations/', ProductTranslationFileView.as_view(), name='product-translation-file'),
+    path('files/brand_translations/', BrandTranslationFileView.as_view(), name='brand-translation-file'),
 ]
