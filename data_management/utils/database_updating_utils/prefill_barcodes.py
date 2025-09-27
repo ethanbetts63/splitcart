@@ -1,49 +1,73 @@
-from products.models import Product
-from scraping.data.product_translation_table import PRODUCT_NAME_TRANSLATIONS
+import requests
+import json
+from django.conf import settings
 
-def prefill_barcodes_from_db(product_list: list, command=None) -> list:
+try:
+    from scraping.data.product_translation_table import PRODUCT_NAME_TRANSLATIONS
+except ImportError:
+    PRODUCT_NAME_TRANSLATIONS = {}
+
+def prefill_barcodes_from_api(product_list: list, command=None) -> list:
     """
-    Iterates through a list of product dictionaries and fills in missing barcodes
-    by looking for matching products in the database.
-
-    Args:
-        product_list (list): A list of product dictionaries (from a .jsonl file).
-        command: Optional Django command object for logging.
-
-    Returns:
-        list: The same list, with barcode fields populated where matches were found.
+    Enriches a list of product dictionaries with barcodes by calling a dedicated API endpoint.
     """
     if command:
-        command.stdout.write(f"  - Prefilling barcodes from DB for {len(product_list)} products...")
+        command.stdout.write(f"  - Prefilling barcodes via API for {len(product_list)} products...")
 
-    prefilled_count = 0
-    for i, product_data in enumerate(product_list):
-        # Only process products that are missing a barcode
+    # Step 1: Identify products that need a barcode lookup.
+    names_to_lookup = set()
+    products_to_update = []
+    for product_data in product_list:
         if not product_data.get('barcode'):
-            # The normalized string is already generated in the JSONL file.
             incoming_normalized_string = product_data.get('normalized_name_brand_size')
             if not incoming_normalized_string:
                 continue
+            
+            # Find the canonical name using the translation table.
+            canonical_name = PRODUCT_NAME_TRANSLATIONS.get(incoming_normalized_string, incoming_normalized_string)
+            names_to_lookup.add(canonical_name)
+            products_to_update.append(product_data)
 
-            # Look up the incoming string in the translation table to find the canonical string.
-            # If it's not in the table, it is its own canonical string.
-            canonical_normalized_string = PRODUCT_NAME_TRANSLATIONS.get(incoming_normalized_string, incoming_normalized_string)
+    if not names_to_lookup:
+        if command:
+            command.stdout.write("  - No products required barcode prefilling.")
+        return product_list
 
-            # Query the database for a match using the canonical normalized string
-            matching_product = Product.objects.filter(
-                normalized_name_brand_size=canonical_normalized_string
-            ).first()
+    # Step 2: Call the API to get barcodes for the collected names.
+    server_url = settings.API_SERVER_URL
+    api_key = settings.API_SECRET_KEY
+    if not server_url or not api_key:
+        if command:
+            command.stdout.write(command.style.ERROR("API_SERVER_URL or API_SECRET_KEY not configured. Skipping barcode prefill."))
+        return product_list
 
-            if matching_product:
-                # If the match has a real barcode, use it.
-                if matching_product.barcode:
-                    product_data['barcode'] = matching_product.barcode
-                    prefilled_count += 1
-                # If the match is known to have no Coles barcode, mark the current product as such to prevent re-scraping.
-                elif matching_product.has_no_coles_barcode:
-                    product_data['barcode'] = None
-    
+    url = f"{server_url.rstrip('/')}/api/products/barcodes/"
+    headers = {
+        'Content-Type': 'application/json',
+        'X-API-KEY': api_key,
+    }
+    payload = {"names": list(names_to_lookup)}
+
+    try:
+        response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=30)
+        response.raise_for_status()
+        barcode_map = response.json()
+    except requests.exceptions.RequestException as e:
+        if command:
+            command.stdout.write(command.style.ERROR(f"  - API call for barcodes failed: {e}"))
+        return product_list # Return original list on failure
+
+    # Step 3: Update the product list with the barcodes received from the API.
+    prefilled_count = 0
+    for product_data in products_to_update:
+        incoming_normalized_string = product_data.get('normalized_name_brand_size')
+        canonical_name = PRODUCT_NAME_TRANSLATIONS.get(incoming_normalized_string, incoming_normalized_string)
+        
+        if canonical_name in barcode_map:
+            product_data['barcode'] = barcode_map[canonical_name]
+            prefilled_count += 1
+
     if command:
-        command.stdout.write(command.style.SUCCESS(f"  - Prefilled {prefilled_count} barcodes from the database."))
+        command.stdout.write(command.style.SUCCESS(f"  - Prefilled {prefilled_count} barcodes from API."))
 
     return product_list
