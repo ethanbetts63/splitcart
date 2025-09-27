@@ -31,12 +31,11 @@ class Command(BaseCommand):
 
         for entry in data:
             postcode_str = entry.get('postcode')
-            locality = entry.get('locality')
             state = entry.get('state')
             latitude = entry.get('lat')
             longitude = entry.get('long')
 
-            if not all([postcode_str, locality, state, latitude, longitude]):
+            if not all([postcode_str, state, latitude, longitude]):
                 self.stdout.write(self.style.WARNING(f"Skipping entry due to missing data: {entry}"))
                 skipped_count += 1
                 continue
@@ -44,7 +43,6 @@ class Command(BaseCommand):
             try:
                 postcode_obj, created = Postcode.objects.update_or_create(
                     postcode=postcode_str,
-                    locality=locality,
                     state=state,
                     defaults={
                         'latitude': latitude,
@@ -56,7 +54,7 @@ class Command(BaseCommand):
                 else:
                     updated_count += 1
             except Exception as e:
-                self.stdout.write(self.style.ERROR(f"Error importing postcode {postcode_str} {locality}, {state}: {e}"))
+                self.stdout.write(self.style.ERROR(f"Error importing postcode {postcode_str}, {state}: {e}"))
                 skipped_count += 1
 
         self.stdout.write(self.style.SUCCESS("\n--- Postcode Import Summary ---"))
