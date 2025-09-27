@@ -1,5 +1,5 @@
 from products.models import Product
-from data_management.data.product_translation_table import PRODUCT_NAME_TRANSLATIONS
+from scraping.data.product_translation_table import PRODUCT_NAME_TRANSLATIONS
 
 def prefill_barcodes_from_db(product_list: list, command=None) -> list:
     """

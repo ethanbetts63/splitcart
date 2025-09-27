@@ -6,9 +6,11 @@ from scraping.scrapers.product_scraper_coles import ColesScraper as ProductScrap
 from scraping.scrapers.product_scraper_aldi import ProductScraperAldi
 from scraping.scrapers.product_scraper_iga import IgaScraper as ProductScraperIga
 from scraping.utils.product_scraping_utils.get_woolworths_categories import get_woolworths_categories
-from scraping.utils.product_scraping_utils.get_coles_categories import get_coles_categories
+from scraping.utils.product_scraping_utils.get_ coles_categories import get_coles_categories
 from scraping.scrapers.gs1_company_scraper import Gs1CompanyScraper
 from scraping.utils.product_scraping_utils.scrape_scheduler import ScrapeScheduler
+from scraping.utils.python_file_downloader import fetch_python_file
+from django.conf import settings
 import os
 import time
 
@@ -25,6 +27,13 @@ class Command(BaseCommand):
         parser.add_argument('--iga', action='store_true', help='Limit the scraper to IGA stores.')
 
     def handle(self, *args, **options):
+        self.stdout.write(self.style.SUCCESS('Updating translation tables...'))
+        product_table_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'product_translation_table.py')
+        brand_table_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'brand_translation_table.py')
+        fetch_python_file('product_translations', product_table_path, self)
+        fetch_python_file('brand_translations', brand_table_path, self)
+        self.stdout.write(self.style.SUCCESS('Translation tables are up to date.'))
+
         stop_file = os.path.join('scraping', 'stop.txt')
         if os.path.exists(stop_file):
             os.remove(stop_file)
