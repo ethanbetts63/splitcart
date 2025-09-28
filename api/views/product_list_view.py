@@ -11,7 +11,7 @@ class ProductListView(generics.ListAPIView):
     search_fields = ['name', 'description']
 
     def get_queryset(self):
-        queryset = Product.objects.all().order_by('name')
+        queryset = Product.objects.filter(price_records__price_entries__isnull=False).order_by('name')
         postcode_param = self.request.query_params.get('postcode')
         radius_param = self.request.query_params.get('radius')
 
