@@ -22,6 +22,11 @@ class StoreCleanerIga(BaseStoreCleaner):
             for standard_field in self.field_map.keys()
         }
 
+        # Clean postcode
+        raw_postcode = cleaned_data.get('postcode')
+        if raw_postcode:
+            cleaned_data['postcode'] = self._clean_postcode(str(raw_postcode))
+
         # Set default values for fields not in the map
         cleaned_data['is_active'] = True
         

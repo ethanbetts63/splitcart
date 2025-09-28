@@ -43,6 +43,11 @@ class StoreCleanerWoolworths(BaseStoreCleaner):
 
         # --- Handle special cases and transformations --- 
 
+        # Clean postcode
+        raw_postcode = cleaned_data.get('postcode')
+        if raw_postcode:
+            cleaned_data['postcode'] = self._clean_postcode(str(raw_postcode))
+
         cleaned_data['is_active'] = True
 
         if self.api_format == 1:

@@ -62,6 +62,21 @@ class BaseStoreCleaner(ABC):
     def _transform_store(self) -> dict:
         """
         Abstract method to be implemented by subclasses.
-        Transforms a single raw store data dictionary into the standardized schema.
-        """
         raise NotImplementedError
+
+    def _clean_postcode(self, postcode: str) -> str | None:
+        """
+        Cleans a postcode string: adds leading zero for 3-digit postcodes,
+        discards non-4-digit postcodes.
+        """
+        if not isinstance(postcode, str):
+            return None
+
+        cleaned_postcode = postcode.strip()
+
+        if len(cleaned_postcode) == 3 and cleaned_postcode.isdigit():
+            return '0' + cleaned_postcode
+        elif len(cleaned_postcode) == 4 and cleaned_postcode.isdigit():
+            return cleaned_postcode
+        else:
+            return None
