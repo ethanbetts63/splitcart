@@ -11,7 +11,7 @@ class ProductListView(generics.ListAPIView):
     search_fields = ['name', 'description']
 
     def get_queryset(self):
-        queryset = Product.objects.filter(price_records__price_entries__isnull=False).order_by('name')
+        queryset = Product.objects.all().order_by('name')
         postcode_param = self.request.query_params.get('postcode')
         radius_param = self.request.query_params.get('radius')
 
@@ -30,9 +30,13 @@ class ProductListView(generics.ListAPIView):
                     print(f"DEBUG: Nearby Stores ({len(nearby_stores)}): {[s.store_name for s in nearby_stores]}")
                     print(f"DEBUG: Nearby Store IDs: {nearby_store_ids}")
                     
-                    # Filter products that have prices in these nearby stores
-                    initial_queryset_count = queryset.count()
-                    print(f"DEBUG: Queryset count before filter: {initial_queryset_count}, after filter: {queryset.count()}")
+                    # Get unique product IDs that have prices in these nearby stores
+                    product_ids_in_nearby_stores = Product.objects.filter(
+                        price_records__price_entries__store__id__in=nearby_store_ids
+                    ).values_list('id', flat=True).distinct()
+                    
+                    # Filter the main queryset by these unique product IDs
+                    queryset = queryset.filter(id__in=product_ids_in_nearby_stores)
                     self.nearby_store_ids = nearby_store_ids # Store for serializer context
                 else:
                     print(f"DEBUG: Postcode {postcode_param} not found.")

@@ -16,9 +16,31 @@ const ProductTile = ({ product }) => {
       <Card.Body>
         <Card.Title>{product.name}</Card.Title>
         <Card.Text as="div">
-          {product.prices && product.prices.map(price => (
-            <div key={price.store}>{price.store}: ${price.price}</div>
-          ))}
+          {product.prices && product.prices.map(priceData => {
+            const getCompanyColor = (companyName) => {
+              switch (companyName.toLowerCase()) {
+                case 'coles': return 'red';
+                case 'woolworths': return 'green';
+                case 'aldi': return 'blue';
+                case 'iga': return 'orange';
+                default: return 'black';
+              }
+            };
+            const companyColor = getCompanyColor(priceData.company);
+            const companyNameStyle = {
+              color: companyColor,
+              fontWeight: 'bold', // Make company name bold
+            };
+            const priceValueStyle = {
+              color: priceData.is_lowest ? 'green' : 'black', // Price is green only if lowest, else black
+              fontWeight: priceData.is_lowest ? 'bold' : 'normal',
+            };
+            return (
+              <div key={priceData.company}>
+                <span style={companyNameStyle}>{priceData.company}</span>: <span style={priceValueStyle}>${priceData.price_display}</span>
+              </div>
+            );
+          })}
         </Card.Text>
         <div className="d-flex justify-content-between align-items-center mt-3">
           <InputGroup style={{ width: '120px' }}>
