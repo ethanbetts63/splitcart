@@ -52,6 +52,9 @@ def get_nearby_stores(ref_postcode_obj: Postcode, radius_km: float) -> list[Stor
     all_stores = Store.objects.all()
 
     for store in all_stores:
+        if store.latitude is None or store.longitude is None:
+            continue # Skip stores with missing coordinates
+
         distance = haversine_distance(
             ref_postcode_obj.latitude, ref_postcode_obj.longitude,
             store.latitude, store.longitude
