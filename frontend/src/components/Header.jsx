@@ -2,7 +2,7 @@ import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import ShoppingListComponent from './ShoppingListComponent';
 
-const Header = () => {
+const Header = ({ onShowLocationModal }) => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
@@ -12,6 +12,9 @@ const Header = () => {
           <Nav className="me-auto">
             <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#link">Link</Nav.Link>
+          </Nav>
+          <Nav>
+            <Nav.Link onClick={onShowLocationModal}>Change Location</Nav.Link>
           </Nav>
           <ShoppingListComponent />
         </Navbar.Collapse>

@@ -29,7 +29,7 @@ function App() {
 
   return (
     <div className="d-flex flex-column vh-100">
-      <Header />
+      <Header onShowLocationModal={() => setShowLocationModal(true)} />
       <main className="flex-grow-1">
         <SearchHeader setSearchTerm={setSearchTerm} />
         <ProductGrid searchTerm={searchTerm} userLocation={userLocation} />
