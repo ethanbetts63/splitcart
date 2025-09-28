@@ -42,9 +42,6 @@ const SubstitutionPage = () => {
           params.append('postcode', userLocation.postcode);
           params.append('radius', userLocation.radius);
         }
-        // Pass nearby_store_ids to the substitute API
-        // This requires a change in the backend to accept nearby_store_ids as a query param
-        // For now, we will just pass postcode and radius
         
         const response = await fetch(`/api/products/${currentShoppingListItem.product.id}/substitutes/?${params.toString()}`);
         if (!response.ok) {
@@ -52,6 +49,25 @@ const SubstitutionPage = () => {
         }
         const data = await response.json();
         setSubstitutes(data);
+
+        // If no substitutes found, automatically select original and advance
+        if (data.length === 0) {
+          setSubstitutionChoices(prevChoices => {
+            const existingChoiceIndex = prevChoices.findIndex(choice => choice.originalProductId === currentShoppingListItem.product.id);
+            if (existingChoiceIndex !== -1) {
+              const updatedChoices = [...prevChoices];
+              updatedChoices[existingChoiceIndex] = {
+                ...updatedChoices[existingChoiceIndex],
+                selectedIds: [currentShoppingListItem.product.id]
+              };
+              return updatedChoices;
+            } else {
+              return [...prevChoices, { originalProductId: currentShoppingListItem.product.id, selectedIds: [currentShoppingListItem.product.id] }];
+            }
+          });
+          setCurrentProductIndex(prev => prev + 1);
+        }
+
       } catch (e) {
         setError(e.message);
       } finally {
