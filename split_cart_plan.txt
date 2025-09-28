@@ -1,0 +1,53 @@
+# Split My Cart / Product Substitution Workflow Plan
+
+## Feature Goal:
+
+To allow users to review products in their shopping list one by one, offering them a selection of substitute products, and saving their choices for further processing.
+
+## Workflow Steps:
+
+1.  **Initiate Substitution:**
+    *   A "Split My Cart" button will be added to the frontend (e.g., in the `ShoppingListComponent` or a dedicated cart summary view).
+    *   Clicking this button will navigate the user to a new dedicated substitution page/view.
+
+2.  **Substitution Page (`/split-cart/`):**
+    *   A new React page/view will be created to manage the entire substitution process.
+    *   This page will iterate through each product currently in the user's shopping list.
+
+3.  **Product-by-Product Review:**
+    *   For each product from the user's shopping list, the page will display:
+        *   **Original Product Tile:** The original product (from the shopping list) prominently on the left side of the screen. This will be a `ProductTile` component.
+        *   **Substitute Product Tiles:** Up to 5 substitute product tiles displayed to the right of the original product. These will also be `ProductTile` components.
+        *   **Selection Mechanism:** Each product tile (original and substitutes) will include a checkbox or similar UI element, allowing the user to select it.
+
+4.  **User Selection & Navigation:**
+    *   The user can select any combination of the original product and its offered substitutes.
+    *   A "Next Product" or "Confirm Selection" button will save the user's choices for the current product and move to the next product in the shopping list.
+
+5.  **Save User Response:**
+    *   For each product reviewed, the user's selection will be saved as a list of product primary keys (PKs). This list will include the PKs of the original product (if selected) and all chosen substitute product PKs.
+    *   This list of PKs will be stored temporarily in the frontend's state (e.g., within the `SubstitutionPage` component's state or a dedicated context) as part of the overall substitution result.
+
+6.  **Final Output:**
+    *   Once all products in the original shopping list have been reviewed, the final output will be a comprehensive list of lists of product PKs. Each inner list represents the user's chosen alternatives for one original shopping list item.
+
+## Backend Integration (API for Substitutes):
+
+*   **New API Endpoint:** A new API endpoint will be needed to fetch substitutes for a given product.
+    *   **Endpoint:** e.g., `/api/products/<product_id>/substitutes/`
+    *   **Input:** `product_id` (from the original shopping list item).
+    *   **Output:** A list of up to 5 substitute product objects (including their prices, images, etc.).
+    *   **Logic:** Query the `Product` model's `substitutes` ManyToMany field. Order by a relevant metric (e.g., score, price) and limit to 5. This leverages the existing substitute system.
+
+## Frontend Components:
+
+*   **`SplitCartButton.jsx`:** A button component to initiate the substitution workflow.
+*   **`SubstitutionPage.jsx`:** The main page component that orchestrates the product-by-product review process.
+*   **`SubstitutionItem.jsx`:** A component responsible for displaying one original product and its associated substitute options, along with the selection mechanism.
+*   **`SelectableProductTile.jsx`:** A modified version of the existing `ProductTile` component that includes a checkbox or similar UI element for selection.
+
+## Data Flow:
+
+*   The `ShoppingListContext` will provide the initial list of products to the `SubstitutionPage`.
+*   The `SubstitutionPage` will manage its own internal state for the current product being reviewed and the overall substitution results.
+*   API calls to `/api/products/<product_id>/substitutes/` will be made from the `SubstitutionPage` or `SubstitutionItem` component.
