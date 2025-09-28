@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
+import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import SearchHeader from './components/SearchHeader';
 import ProductGrid from './components/ProductGrid';
 import LocationSetupModal from './components/LocationSetupModal';
+import SubstitutionPage from './pages/SubstitutionPage'; // Import the new page
 import './App.css';
 
 function App() {
@@ -31,8 +33,15 @@ function App() {
     <div className="d-flex flex-column vh-100">
       <Header onShowLocationModal={() => setShowLocationModal(true)} />
       <main className="flex-grow-1">
-        <SearchHeader setSearchTerm={setSearchTerm} />
-        <ProductGrid searchTerm={searchTerm} userLocation={userLocation} />
+        <Routes>
+          <Route path="/" element={
+            <>
+              <SearchHeader setSearchTerm={setSearchTerm} />
+              <ProductGrid searchTerm={searchTerm} userLocation={userLocation} />
+            </>
+          } />
+          <Route path="/split-cart" element={<SubstitutionPage />} />
+        </Routes>
       </main>
       <Footer />
       <LocationSetupModal

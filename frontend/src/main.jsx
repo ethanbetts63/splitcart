@@ -5,11 +5,14 @@ import './index.css'
 import App from './App.jsx'
 
 import { ShoppingListProvider } from './context/ShoppingListContext';
+import { BrowserRouter } from 'react-router-dom';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ShoppingListProvider>
-      <App />
-    </ShoppingListProvider>
+    <BrowserRouter>
+      <ShoppingListProvider>
+        <App />
+      </ShoppingListProvider>
+    </BrowserRouter>
   </StrictMode>,
 )
