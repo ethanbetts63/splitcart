@@ -2,12 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import ProductTile from './ProductTile';
 
-const ProductGrid = ({ searchTerm }) => {
+const ProductGrid = ({ searchTerm, userLocation }) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     console.log('Fetching products...');
-    const url = searchTerm ? `/api/products/?search=${searchTerm}` : '/api/products/';
+    let url = '/api/products/';
+    const params = new URLSearchParams();
+
+    if (searchTerm) {
+      params.append('search', searchTerm);
+    }
+    if (userLocation && userLocation.postcode && userLocation.radius) {
+      params.append('postcode', userLocation.postcode);
+      params.append('radius', userLocation.radius);
+    }
+
+    if (params.toString()) {
+      url += `?${params.toString()}`;
+    }
+
     fetch(url)
       .then(response => {
         console.log('Response:', response);
@@ -22,7 +36,7 @@ const ProductGrid = ({ searchTerm }) => {
       .catch(error => {
         console.error('Error fetching products:', error);
       });
-  }, [searchTerm]);
+  }, [searchTerm, userLocation]);
 
   return (
     <Container>
