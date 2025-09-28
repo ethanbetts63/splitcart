@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Button, Spinner, Alert } from 'react-bootstrap';
+import { Container, Button, Spinner, Alert, Row, Col } from 'react-bootstrap';
 import { useShoppingList } from '../context/ShoppingListContext';
+import ProductTile from '../components/ProductTile'; // Reusing ProductTile for now
+import LocationSetupModal from '../components/LocationSetupModal'; // To get userLocation
 
 const SubstitutionPage = () => {
   const { items } = useShoppingList();
@@ -8,6 +10,16 @@ const SubstitutionPage = () => {
   const [substitutionChoices, setSubstitutionChoices] = useState([]); // Stores { originalProductId, selectedSubstituteIds }
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [substitutes, setSubstitutes] = useState([]);
+  const [userLocation, setUserLocation] = useState(null); // { postcode: 'XXXX', radius: Y }
+
+  // Load user location from localStorage
+  useEffect(() => {
+    const savedLocation = localStorage.getItem('userLocation');
+    if (savedLocation) {
+      setUserLocation(JSON.parse(savedLocation));
+    }
+  }, []);
 
   useEffect(() => {
     // Initialize substitutionChoices with original product IDs
@@ -17,6 +29,38 @@ const SubstitutionPage = () => {
   }, [items, substitutionChoices]);
 
   const currentShoppingListItem = items[currentProductIndex];
+
+  useEffect(() => {
+    if (!currentShoppingListItem || !userLocation) return;
+
+    const fetchSubstitutes = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const params = new URLSearchParams();
+        if (userLocation && userLocation.postcode && userLocation.radius) {
+          params.append('postcode', userLocation.postcode);
+          params.append('radius', userLocation.radius);
+        }
+        // Pass nearby_store_ids to the substitute API
+        // This requires a change in the backend to accept nearby_store_ids as a query param
+        // For now, we will just pass postcode and radius
+        
+        const response = await fetch(`/api/products/${currentShoppingListItem.product.id}/substitutes/?${params.toString()}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setSubstitutes(data);
+      } catch (e) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSubstitutes();
+  }, [currentShoppingListItem, userLocation]); // Re-fetch when current product or user location changes
 
   if (items.length === 0) {
     return (
@@ -46,9 +90,26 @@ const SubstitutionPage = () => {
       {loading && <Spinner animation="border" role="status"><span className="visually-hidden">Loading...</span></Spinner>}
       {error && <Alert variant="danger">Error: {error}</Alert>}
 
-      {/* TODO: Display original product and substitutes */}
-      <p>Original Product: {currentShoppingListItem.product.name}</p>
-      <p>Substitutes will appear here.</p>
+      <Row className="mt-4">
+        <Col md={4}>
+          <h4>Original Product</h4>
+          <ProductTile product={currentShoppingListItem.product} />
+        </Col>
+        <Col md={8}>
+          <h4>Substitutes</h4>
+          <Row>
+            {substitutes.length > 0 ? (
+              substitutes.map(sub => (
+                <Col key={sub.id} sm={6} md={4} lg={3} className="mb-4">
+                  <ProductTile product={sub} />
+                </Col>
+              ))
+            ) : (
+              <p>No substitutes found for this product.</p>
+            )}
+          </Row>
+        </Col>
+      </Row>
 
       <Button
         variant="primary"

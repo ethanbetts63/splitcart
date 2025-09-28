@@ -2,6 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from products.models import Product
+from companies.models import Postcode
+from data_management.utils.geospatial_utils import get_nearby_stores
 from ..serializers import ProductSerializer
 
 class ProductSubstituteListView(APIView):
@@ -11,14 +13,33 @@ class ProductSubstituteListView(APIView):
         except Product.DoesNotExist:
             return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Get up to 5 substitutes for the product
-        # The 'substitutes' field is a ManyToMany relationship
-        substitutes = product.substitutes.all()[:5] # Limit to 5 as per plan
+        substitutes_queryset = product.substitutes.all() # Get all substitutes first
 
-        # Pass nearby_store_ids from the request query params to the serializer context
-        nearby_store_ids = request.query_params.getlist('nearby_store_ids')
-        if nearby_store_ids:
-            nearby_store_ids = [int(id) for id in nearby_store_ids]
+        postcode_param = request.query_params.get('postcode')
+        radius_param = request.query_params.get('radius')
+        
+        nearby_store_ids = None
+        if postcode_param and radius_param:
+            try:
+                radius = float(radius_param)
+                ref_postcode = Postcode.objects.filter(postcode=postcode_param).first()
+
+                if ref_postcode:
+                    nearby_stores = get_nearby_stores(ref_postcode, radius)
+                    nearby_store_ids = [store.id for store in nearby_stores]
+                    
+                    # Filter substitutes to only include those with prices in nearby stores
+                    substitutes_queryset = substitutes_queryset.filter(
+                        price_records__price_entries__store__id__in=nearby_store_ids
+                    ).distinct()
+                else:
+                    # If postcode not found, return empty queryset
+                    substitutes_queryset = Product.objects.none()
+            except (ValueError, TypeError):
+                pass # Invalid radius, ignore filtering
+
+        # Limit to 5 substitutes after filtering
+        substitutes = substitutes_queryset[:5]
 
         serializer = ProductSerializer(substitutes, many=True, context={'nearby_store_ids': nearby_store_ids})
         return Response(serializer.data, status=status.HTTP_200_OK)
