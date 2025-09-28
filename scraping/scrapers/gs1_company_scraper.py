@@ -89,8 +89,7 @@ class Gs1CompanyScraper:
                 self.command.stderr.write(self.command.style.ERROR(f"Scrape failed for {target_brand.name}."))
 
             if i < len(target_brands) - 1:
-                self.command.stdout.write("Waiting 5 seconds before next scrape...")
-                time.sleep(5)
+                pass
         
         self.command.stdout.write(self.command.style.SUCCESS(f'--- GS1 Scraper Run Complete. {successful_scrapes} new records saved to inbox. ---\n'))
 

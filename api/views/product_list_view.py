@@ -32,8 +32,8 @@ class ProductListView(generics.ListAPIView):
                     
                     # Filter products that have prices in these nearby stores
                     initial_queryset_count = queryset.count()
-                    queryset = queryset.filter(price_records__price_entries__store__id__in=nearby_store_ids).distinct()
                     print(f"DEBUG: Queryset count before filter: {initial_queryset_count}, after filter: {queryset.count()}")
+                    self.nearby_store_ids = nearby_store_ids # Store for serializer context
                 else:
                     print(f"DEBUG: Postcode {postcode_param} not found.")
                     queryset = Product.objects.none()
@@ -42,3 +42,8 @@ class ProductListView(generics.ListAPIView):
                 pass # Invalid radius, ignore filtering
 
         return queryset
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['nearby_store_ids'] = getattr(self, 'nearby_store_ids', None)
+        return context

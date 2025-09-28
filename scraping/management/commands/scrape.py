@@ -79,8 +79,6 @@ class Command(BaseCommand):
 
             self._scrape_single_store(store_to_scrape.pk)
             
-            self.stdout.write(self.style.SUCCESS(f"Completed scrape. Waiting 5 seconds before next run..."))
-            time.sleep(5)
 
         self.stdout.write(self.style.SUCCESS('Scraping worker stopped.'))
 
