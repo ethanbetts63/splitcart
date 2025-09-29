@@ -28,10 +28,21 @@ export const ShoppingListProvider = ({ children }) => {
     setItems(prevItems => prevItems.filter(item => item.product.id !== productId));
   };
 
+  const updateItemQuantity = (productId, newQuantity) => {
+    setItems(prevItems =>
+      prevItems.map(item =>
+        item.product.id === productId
+          ? { ...item, quantity: newQuantity }:
+          item
+      )
+    );
+  };
+
   const value = {
     items,
     addItem,
     removeItem,
+    updateItemQuantity,
   };
 
   return (

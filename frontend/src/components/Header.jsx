@@ -19,13 +19,13 @@ const Header = ({ onShowLocationModal }) => {
         className="p-0 m-3"
         style={{ position: 'absolute', top: 0, left: 0, zIndex: 1050 }}
       >
-        <img src={splitCartSymbol} alt="Menu" style={{ width: '60px', height: '60px' }} />
+        <img src={splitCartSymbol} alt="Menu" style={{ width: '80px', height: '80px' }} />
       </Button>
 
       {items.length > 0 && (
-        <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 1050, padding: '1rem' }}>
-          <Button style={{ backgroundColor: '#FB641F', color: 'white', marginRight: '1rem' }}>Trolley</Button>
-          <Button style={{ backgroundColor: '#1CC3B9', color: 'white' }}>Split My Cart!</Button>
+        <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 1050, padding: '1.5rem' }}>
+          <Button style={{ backgroundColor: '#FB641F', color: 'white', marginRight: '1rem' }} size="lg">Trolley</Button>
+          <Button style={{ backgroundColor: '#1CC3B9', color: 'white' }} size="lg">Split My Cart!</Button>
         </div>
       )}
 
