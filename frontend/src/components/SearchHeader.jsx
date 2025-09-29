@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Form, FormControl, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom'; // Import Link
 import splitCartTitle from '../assets/splitcart_title_v2.png';
 
 const SearchHeader = ({ setSearchTerm }) => {
@@ -12,7 +13,9 @@ const SearchHeader = ({ setSearchTerm }) => {
 
   return (
     <div className="text-center my-5 pt-5">
-      <img src={splitCartTitle} alt="SplitCart" style={{ maxWidth: '375px', marginBottom: '2rem' }} />
+      <Link to="/"> {/* Wrap the image with Link */}
+        <img src={splitCartTitle} alt="SplitCart" style={{ maxWidth: '375px', marginBottom: '2rem' }} />
+      </Link>
       <Container style={{ maxWidth: '750px' }}>
         <Form className="d-flex" onSubmit={handleSubmit}>
           <FormControl

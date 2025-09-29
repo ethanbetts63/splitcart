@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import SearchHeader from './components/SearchHeader';
+import ProductGrid from './components/ProductGrid';
 import HorizontalProductScroller from './components/HorizontalProductScroller';
 import LocationSetupModal from './components/LocationSetupModal';
 import SubstitutionPage from './pages/SubstitutionPage'; // Import the new page
@@ -38,11 +39,17 @@ function App() {
             <>
               <SearchHeader setSearchTerm={setSearchTerm} />
               <Container fluid>
-                <HorizontalProductScroller title="Bargain Finds!" />
-                <HorizontalProductScroller title="Popular with SplitCart users" />
-                <HorizontalProductScroller title="Milk" />
-                <HorizontalProductScroller title="Bread" />
-                <HorizontalProductScroller title="Eggs" />
+                {searchTerm ? (
+                  <ProductGrid searchTerm={searchTerm} userLocation={userLocation} />
+                ) : (
+                  <>
+                    <HorizontalProductScroller title="Bargain Finds!" />
+                    <HorizontalProductScroller title="Popular with SplitCart users" />
+                    <HorizontalProductScroller title="Milk" />
+                    <HorizontalProductScroller title="Bread" />
+                    <HorizontalProductScroller title="Eggs" />
+                  </>
+                )}
               </Container>
             </>
           } />
