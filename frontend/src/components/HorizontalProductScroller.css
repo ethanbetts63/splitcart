@@ -1,5 +1,5 @@
 .horizontal-scroller-container {
-  margin-bottom: 2rem;
+  margin-bottom: 0rem;
 }
 
 .scroller-header {
@@ -12,7 +12,7 @@
 .scroller-content {
   display: flex;
   overflow-x: auto;
-  padding-bottom: 1rem; /* For scrollbar visibility */
+  padding-bottom: 0rem; /* For scrollbar visibility */
 }
 
 /* Hide scrollbar */
