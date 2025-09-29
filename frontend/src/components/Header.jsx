@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Offcanvas, Nav } from 'react-bootstrap';
+import { Button, Offcanvas, Nav, Dropdown, Badge } from 'react-bootstrap';
 import ShoppingListComponent from './ShoppingListComponent';
+import SplitCartButton from './SplitCartButton';
 import splitCartSymbol from '../assets/SplitCart_symbol_v2.png';
 import { useShoppingList } from '../context/ShoppingListContext';
 
@@ -23,9 +24,20 @@ const Header = ({ onShowLocationModal }) => {
       </Button>
 
       {items.length > 0 && (
-        <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 1050, padding: '1.5rem' }}>
-          <Button style={{ backgroundColor: '#FB641F', color: 'white', marginRight: '1rem' }} size="lg">Trolley</Button>
-          <Button style={{ backgroundColor: '#1CC3B9', color: 'white' }} size="lg">Split My Cart!</Button>
+        <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 1050, padding: '1.5rem', display: 'flex', alignItems: 'center' }}>
+          <Dropdown>
+            <Dropdown.Toggle style={{ backgroundColor: '#FB641F', color: 'white', marginRight: '1rem' }} size="lg">
+              Trolley <Badge bg="light" text="dark">{items.length}</Badge>
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {items.map(item => (
+                <Dropdown.Item key={item.product.id}>
+                  {item.product.name} (x{item.quantity})
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+          <SplitCartButton />
         </div>
       )}
 
