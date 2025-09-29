@@ -133,14 +133,18 @@ const SubstitutionPage = () => {
   return (
     <Container fluid className="mt-4">
       <h2>Split My Cart: Product Substitution</h2>
+      <p className="text-muted mb-4">
+        Please select all items you are willing to consider as substitutes for the original product. 
+        The more options you select, the greater the flexibility the algorithm has to optimize your total cart cost. 
+        It is okay to choose subsitutes more expensive than the original product, the algorithm will only select them if it helps reduce the overall cost.
+      </p>
       <p>Reviewing product {currentProductIndex + 1} of {items.length}</p>
 
       {loading && <Spinner animation="border" role="status"><span className="visually-hidden">Loading...</span></Spinner>}
       {error && <Alert variant="danger">Error: {error}</Alert>}
 
       <SubstitutesSection 
-        originalProduct={currentShoppingListItem.product}
-        substitutes={substitutes}
+        products={[{ ...currentShoppingListItem.product, is_original: true }, ...substitutes]}
         selectedOptions={selectedOptions}
         onSelectOption={handleSelectOption}
       />

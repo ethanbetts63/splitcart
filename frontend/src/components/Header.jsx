@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Offcanvas, Nav, Dropdown, Badge } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
 import ShoppingListComponent from './ShoppingListComponent';
 import SplitCartButton from './SplitCartButton';
 import splitCartSymbol from '../assets/SplitCart_symbol_v2.png';
@@ -8,6 +9,7 @@ import { useShoppingList } from '../context/ShoppingListContext';
 const Header = ({ onShowLocationModal }) => {
   const [showMenu, setShowMenu] = useState(false);
   const { items } = useShoppingList();
+  const location = useLocation();
 
   const handleClose = () => setShowMenu(false);
   const handleShow = () => setShowMenu(true);
@@ -37,7 +39,7 @@ const Header = ({ onShowLocationModal }) => {
               ))}
             </Dropdown.Menu>
           </Dropdown>
-          <SplitCartButton />
+          {location.pathname !== '/split-cart' && <SplitCartButton />}
         </div>
       )}
 
