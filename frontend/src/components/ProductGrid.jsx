@@ -1,52 +1,83 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import React from 'react';
+import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import ProductTile from './ProductTile';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 const ProductGrid = ({ searchTerm, userLocation }) => {
-  const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    console.log('Fetching products...');
-    let url = '/api/products/';
+  const fetchProducts = async ({ pageParam = '/api/products/' }) => {
+    let url = pageParam;
     const params = new URLSearchParams();
 
-    if (searchTerm) {
-      params.append('search', searchTerm);
-    }
-    if (userLocation && userLocation.postcode && userLocation.radius) {
-      params.append('postcode', userLocation.postcode);
-      params.append('radius', userLocation.radius);
+    // Only append search and location params if it's the initial fetch (pageParam is the base URL)
+    // or if they are not already part of the pageParam (which would be a 'next' URL)
+    if (pageParam === '/api/products/') {
+      if (searchTerm) {
+        params.append('search', searchTerm);
+      }
+      if (userLocation && userLocation.postcode && userLocation.radius) {
+        params.append('postcode', userLocation.postcode);
+        params.append('radius', userLocation.radius);
+      }
     }
 
-    if (params.toString()) {
+    if (params.toString() && pageParam === '/api/products/') {
       url += `?${params.toString()}`;
     }
 
-    fetch(url)
-      .then(response => {
-        console.log('Response:', response);
-        return response.json();
-      })
-      .then(data => {
-        console.log('Data:', data);
-        if (data && data.results) {
-          setProducts(data.results);
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching products:', error);
-      });
-  }, [searchTerm, userLocation]);
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  };
+
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    error,
+  } = useInfiniteQuery({
+    queryKey: ['products', searchTerm, userLocation],
+    queryFn: fetchProducts,
+    getNextPageParam: (lastPage) => lastPage.next,
+    initialPageParam: '/api/products/',
+  });
+
+  if (isLoading) {
+    return <Container className="text-center my-5"><Spinner animation="border" /></Container>;
+  }
+
+  if (isError) {
+    return <Container className="text-center my-5 text-danger">Error: {error.message}</Container>;
+  }
+
+  const allProducts = data?.pages.flatMap(page => page.results) || [];
+  const totalResults = data?.pages[0]?.count || 0;
 
   return (
     <Container fluid>
+      {searchTerm && <h5 className="mb-3">Found {totalResults} results for "{searchTerm}"</h5>}
       <Row>
-        {products && products.map((product) => (
-          <Col key={product.id} sm={6} md={4} lg={3} className="mb-4">
-            <ProductTile product={product} />
-          </Col>
-        ))}
+        {allProducts.length > 0 ? (
+          allProducts.map((product) => (
+            <Col key={product.id} sm={6} md={4} lg={3} className="mb-4">
+              <ProductTile product={product} />
+            </Col>
+          ))
+        ) : (
+          <Col className="text-center my-5">No products found.</Col>
+        )}
       </Row>
+      {hasNextPage && (        <div className="text-center my-4">
+          <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+            {isFetchingNextPage ? <Spinner animation="border" size="sm" /> : 'Load More'}
+          </Button>
+        </div>
+      )}
     </Container>
   );
 };
