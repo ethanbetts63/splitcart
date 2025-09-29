@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import SearchHeader from './components/SearchHeader';
 import ProductGrid from './components/ProductGrid';
+import HorizontalProductScroller from './components/HorizontalProductScroller';
 import LocationSetupModal from './components/LocationSetupModal';
 import SubstitutionPage from './pages/SubstitutionPage'; // Import the new page
 import './App.css';
@@ -37,7 +38,10 @@ function App() {
           <Route path="/" element={
             <>
               <SearchHeader setSearchTerm={setSearchTerm} />
-              <ProductGrid searchTerm={searchTerm} userLocation={userLocation} />
+              <Container fluid>
+                <HorizontalProductScroller title="Bargain Finds!" />
+                <ProductGrid searchTerm={searchTerm} userLocation={userLocation} />
+              </Container>
             </>
           } />
           <Route path="/split-cart" element={<SubstitutionPage />} />
