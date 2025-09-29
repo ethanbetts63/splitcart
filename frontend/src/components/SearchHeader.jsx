@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Form, FormControl, Button } from 'react-bootstrap';
+import splitCartTitle from '../assets/SplitCart_title.png';
 
 const SearchHeader = ({ setSearchTerm }) => {
   const [inputValue, setInputValue] = useState('');
@@ -10,8 +11,8 @@ const SearchHeader = ({ setSearchTerm }) => {
   };
 
   return (
-    <div className="text-center my-5">
-      <h1>SplitCart</h1>
+    <div className="text-center my-5 pt-5">
+      <img src={splitCartTitle} alt="SplitCart" style={{ maxWidth: '300px', marginBottom: '2rem' }} />
       <Container style={{ maxWidth: '600px' }}>
         <Form className="d-flex" onSubmit={handleSubmit}>
           <FormControl
