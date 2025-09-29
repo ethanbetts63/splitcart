@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Button, Spinner, Alert, Row, Col } from 'react-bootstrap';
 import { useShoppingList } from '../context/ShoppingListContext';
-import ProductTile from '../components/ProductTile'; // Reusing ProductTile for now
+import SelectableProductTile from '../components/SelectableProductTile'; // Use SelectableProductTile
 import LocationSetupModal from '../components/LocationSetupModal'; // To get userLocation
 
 const SubstitutionPage = () => {
@@ -12,6 +12,7 @@ const SubstitutionPage = () => {
   const [error, setError] = useState(null);
   const [substitutes, setSubstitutes] = useState([]);
   const [userLocation, setUserLocation] = useState(null); // { postcode: 'XXXX', radius: Y }
+  const [selectedOptions, setSelectedOptions] = useState([]); // State for current product's selections
 
   // Load user location from localStorage
   useEffect(() => {
@@ -49,6 +50,7 @@ const SubstitutionPage = () => {
         }
         const data = await response.json();
         setSubstitutes(data);
+        setSelectedOptions([currentShoppingListItem.product.id]); // Select original by default
 
         // If no substitutes found, automatically select original and advance
         if (data.length === 0) {
@@ -77,6 +79,34 @@ const SubstitutionPage = () => {
 
     fetchSubstitutes();
   }, [currentShoppingListItem, userLocation]); // Re-fetch when current product or user location changes
+
+  const handleSelectOption = (productId) => {
+    setSelectedOptions(prevSelected => {
+      if (prevSelected.includes(productId)) {
+        return prevSelected.filter(id => id !== productId);
+      } else {
+        return [...prevSelected, productId];
+      }
+    });
+  };
+
+  const handleNextProduct = () => {
+    // Save current selections
+    setSubstitutionChoices(prevChoices => {
+      const existingChoiceIndex = prevChoices.findIndex(choice => choice.originalProductId === currentShoppingListItem.product.id);
+      if (existingChoiceIndex !== -1) {
+        const updatedChoices = [...prevChoices];
+        updatedChoices[existingChoiceIndex] = {
+          ...updatedChoices[existingChoiceIndex],
+          selectedIds: selectedOptions
+        };
+        return updatedChoices;
+      } else {
+        return [...prevChoices, { originalProductId: currentShoppingListItem.product.id, selectedIds: selectedOptions }];
+      }
+    });
+    setCurrentProductIndex(prev => prev + 1);
+  };
 
   if (items.length === 0) {
     return (
@@ -109,7 +139,11 @@ const SubstitutionPage = () => {
       <Row className="mt-4">
         <Col md={4}>
           <h4>Original Product</h4>
-          <ProductTile product={currentShoppingListItem.product} />
+          <SelectableProductTile
+            product={currentShoppingListItem.product}
+            isSelected={selectedOptions.includes(currentShoppingListItem.product.id)}
+            onSelect={handleSelectOption}
+          />
         </Col>
         <Col md={8}>
           <h4>Substitutes</h4>
@@ -117,7 +151,11 @@ const SubstitutionPage = () => {
             {substitutes.length > 0 ? (
               substitutes.map(sub => (
                 <Col key={sub.id} sm={6} md={4} lg={3} className="mb-4">
-                  <ProductTile product={sub} />
+                  <SelectableProductTile
+                    product={sub}
+                    isSelected={selectedOptions.includes(sub.id)}
+                    onSelect={handleSelectOption}
+                  />
                 </Col>
               ))
             ) : (
@@ -129,7 +167,7 @@ const SubstitutionPage = () => {
 
       <Button
         variant="primary"
-        onClick={() => setCurrentProductIndex(prev => prev + 1)}
+        onClick={handleNextProduct}
         className="mt-3"
       >
         Next Product
