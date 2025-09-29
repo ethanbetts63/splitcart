@@ -33,7 +33,7 @@ function App() {
   return (
     <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
       <Header onShowLocationModal={() => setShowLocationModal(true)} />
-      <main className="flex-grow-1 main-content">
+      <main className="flex-grow-1">
         <Routes>
           <Route path="/" element={
             <>

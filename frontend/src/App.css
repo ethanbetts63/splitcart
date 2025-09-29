@@ -1,5 +1,9 @@
-.main-content {
-  overflow-y: auto;
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  /* padding: 2rem; Removed */
+  text-align: center;
+  background-color: white;
 }
 
 .logo {
