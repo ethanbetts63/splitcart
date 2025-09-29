@@ -1,3 +1,5 @@
+import React from 'react';
+import { Card } from 'react-bootstrap';
 import ProductCardContent from './ProductCardContent';
 
 const SelectableProductTile = ({ product, isSelected, onSelect }) => {

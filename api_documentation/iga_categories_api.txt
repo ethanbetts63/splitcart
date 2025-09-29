@@ -1,5 +1,5 @@
 Request URL
-https://www.igashop.com.au/data_management/storefront/stores/32600/categoryHierarchy
+https://www.igashop.com.au/api/storefront/stores/32600/categoryHierarchy
 Request Method
 GET
 Status Code

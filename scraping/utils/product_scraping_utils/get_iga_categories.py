@@ -42,7 +42,7 @@ def get_iga_categories(command, retailer_store_id: str, session: requests.Sessio
         A list of specific subcategory names to scrape, or an empty list if an error occurs.
     """
     command.stdout.write(f"    Fetching category hierarchy for store ID: {retailer_store_id}...")
-    api_url = f"https://www.igashop.com.au/data_management/storefront/stores/{retailer_store_id}/categoryHierarchy"
+    api_url = f"https://www.igashop.com.au/api/storefront/stores/{retailer_store_id}/categoryHierarchy"
     
     try:
         response = session.get(api_url, timeout=60)

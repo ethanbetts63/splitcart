@@ -11,11 +11,14 @@ class PriceSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     prices = serializers.SerializerMethodField()
-    brand_name = serializers.CharField(source='brand.name', read_only=True)
+    brand_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
         fields = ('id', 'name', 'brand_name', 'size', 'image_url', 'prices')
+
+    def get_brand_name(self, obj):
+        return obj.brand.name if obj.brand else None
 
     def get_prices(self, obj):
         nearby_store_ids = self.context.get('nearby_store_ids')

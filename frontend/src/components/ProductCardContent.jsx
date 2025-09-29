@@ -2,6 +2,8 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 
 const ProductCardContent = ({ product }) => {
+  console.log("ProductCardContent received product:", product); // Debug log
+
   const getCompanyColor = (companyName) => {
     switch (companyName.toLowerCase()) {
       case 'coles': return 'red';
@@ -11,6 +13,11 @@ const ProductCardContent = ({ product }) => {
       default: return 'black';
     }
   };
+
+  if (!product) {
+    console.log("ProductCardContent received null or undefined product."); // Debug log
+    return null; // Don't render if no product
+  }
 
   return (
     <>

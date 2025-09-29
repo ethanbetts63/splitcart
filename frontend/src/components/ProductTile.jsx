@@ -1,3 +1,6 @@
+import React, { useState } from 'react';
+import { Card, Button, Form, InputGroup } from 'react-bootstrap';
+import { useShoppingList } from '../context/ShoppingListContext';
 import ProductCardContent from './ProductCardContent';
 
 const ProductTile = ({ product }) => {

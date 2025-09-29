@@ -63,7 +63,7 @@ class IgaScraper(BaseProductScraper):
         previous_page_skus = set()
 
         while True:
-            api_url = f"https://www.igashop.com.au/data_management/storefront/stores/{self.retailer_store_id}/categories/{requests.utils.quote(category_identifier)}/search"
+            api_url = f"https://www.igashop.com.au/api/storefront/stores/{self.retailer_store_id}/categories/{requests.utils.quote(category_identifier)}/search"
             params = {'take': take, 'skip': skip, 'sessionId': session_id}
 
             try:
