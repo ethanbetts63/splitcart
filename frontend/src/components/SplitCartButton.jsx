@@ -10,7 +10,7 @@ const SplitCartButton = () => {
   };
 
   return (
-    <Button variant="info" onClick={handleClick} className="ms-2">
+    <Button style={{ backgroundColor: '#1CC3B9', color: 'white' }} onClick={handleClick} size="lg">
       Split My Cart!
     </Button>
   );

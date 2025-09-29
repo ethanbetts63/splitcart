@@ -14,36 +14,43 @@ class ProductReconciler:
             return
 
         variation_strings = list(PRODUCT_NAME_TRANSLATIONS.keys())
-        potential_duplicates = Product.objects.filter(normalized_name_brand_size__in=variation_strings)
+        batch_size = 500  # Keep well below SQLite's default limit of 999
+        
+        total_processed = 0
 
-        if not potential_duplicates:
-            self.command.stdout.write("No products found matching any variation strings.")
-            return
+        for i in range(0, len(variation_strings), batch_size):
+            batch = variation_strings[i:i + batch_size]
+            potential_duplicates = Product.objects.filter(normalized_name_brand_size__in=batch)
 
-        self.command.stdout.write(f"Found {len(potential_duplicates)} potential duplicate products to process.")
-
-        for duplicate_product in potential_duplicates:
-            # Find the canonical string from the table
-            canonical_string = PRODUCT_NAME_TRANSLATIONS.get(duplicate_product.normalized_name_brand_size)
-            if not canonical_string:
+            if not potential_duplicates.exists():
                 continue
 
-            try:
-                # Use .get() which is safe because normalized_name_brand_size is unique
-                canonical_product = Product.objects.get(normalized_name_brand_size=canonical_string)
-                
-                if canonical_product.id == duplicate_product.id:
+            self.command.stdout.write(f"Processing batch of {len(potential_duplicates)} potential duplicates...")
+            total_processed += len(potential_duplicates)
+
+            for duplicate_product in potential_duplicates:
+                # Find the canonical string from the table
+                canonical_string = PRODUCT_NAME_TRANSLATIONS.get(duplicate_product.normalized_name_brand_size)
+                if not canonical_string:
                     continue
 
-                self._merge_products(canonical_product, duplicate_product)
+                try:
+                    # Use .get() which is safe because normalized_name_brand_size is unique
+                    canonical_product = Product.objects.get(normalized_name_brand_size=canonical_string)
+                    
+                    if canonical_product.id == duplicate_product.id:
+                        continue
 
-            except Product.DoesNotExist:
-                self.command.stderr.write(self.command.style.ERROR(f"Could not find canonical product for {canonical_string}. Skipping."))
-                continue
-            except Exception as e:
-                self.command.stderr.write(self.command.style.ERROR(f"An unexpected error occurred for {duplicate_product.normalized_name_brand_size}: {e}"))
-                continue
+                    self._merge_products(canonical_product, duplicate_product)
 
+                except Product.DoesNotExist:
+                    self.command.stderr.write(self.command.style.ERROR(f"Could not find canonical product for {canonical_string}. Skipping."))
+                    continue
+                except Exception as e:
+                    self.command.stderr.write(self.command.style.ERROR(f"An unexpected error occurred for {duplicate_product.normalized_name_brand_size}: {e}"))
+                    continue
+        
+        self.command.stdout.write(f"Processed a total of {total_processed} potential duplicate products.")
         self.command.stdout.write(self.command.style.SUCCESS("Product Reconciler run finished."))
 
     def _merge_products(self, canonical, duplicate):
