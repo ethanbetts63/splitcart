@@ -8,6 +8,7 @@ export const useShoppingList = () => {
 
 export const ShoppingListProvider = ({ children }) => {
   const [items, setItems] = useState([]);
+  const [substitutionChoices, setSubstitutionChoices] = useState([]); // New state for substitution choices
 
   const addItem = (product, quantity) => {
     setItems(prevItems => {
@@ -26,6 +27,8 @@ export const ShoppingListProvider = ({ children }) => {
 
   const removeItem = (productId) => {
     setItems(prevItems => prevItems.filter(item => item.product.id !== productId));
+    // Also remove any substitution choices related to this product
+    setSubstitutionChoices(prevChoices => prevChoices.filter(choice => choice.originalProductId !== productId));
   };
 
   const updateItemQuantity = (productId, newQuantity) => {
@@ -38,11 +41,27 @@ export const ShoppingListProvider = ({ children }) => {
     );
   };
 
+  // New function to update substitution choices
+  const updateSubstitutionChoices = (originalProductId, selectedIds) => {
+    setSubstitutionChoices(prevChoices => {
+      const existingChoiceIndex = prevChoices.findIndex(choice => choice.originalProductId === originalProductId);
+      if (existingChoiceIndex !== -1) {
+        const updatedChoices = [...prevChoices];
+        updatedChoices[existingChoiceIndex] = { originalProductId, selectedIds };
+        return updatedChoices;
+      } else {
+        return [...prevChoices, { originalProductId, selectedIds }];
+      }
+    });
+  };
+
   const value = {
     items,
     addItem,
     removeItem,
     updateItemQuantity,
+    substitutionChoices, // Expose substitutionChoices
+    updateSubstitutionChoices, // Expose updateSubstitutionChoices
   };
 
   return (

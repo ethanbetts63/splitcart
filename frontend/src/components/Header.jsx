@@ -8,7 +8,7 @@ import { useShoppingList } from '../context/ShoppingListContext';
 
 const Header = ({ onShowLocationModal }) => {
   const [showMenu, setShowMenu] = useState(false);
-  const { items } = useShoppingList();
+  const { items, substitutionChoices } = useShoppingList();
   const location = useLocation();
 
   const handleClose = () => setShowMenu(false);
@@ -32,11 +32,27 @@ const Header = ({ onShowLocationModal }) => {
               Trolley <Badge bg="light" text="dark">{items.length}</Badge>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              {items.map(item => (
-                <Dropdown.Item key={item.product.id}>
-                  {item.product.name} (x{item.quantity})
-                </Dropdown.Item>
-              ))}
+              {items.map(item => {
+                const choice = substitutionChoices.find(c => c.originalProductId === item.product.id);
+                const selectedProductIds = choice ? choice.selectedIds : [item.product.id];
+                
+                // Find the actual product objects for the selected IDs
+                const selectedProducts = selectedProductIds.map(id => 
+                  items.find(i => i.product.id === id)?.product || 
+                  // Fallback: if not in items (e.g., a substitute not yet added to main list),
+                  // we might need to fetch it or rely on a more comprehensive product list.
+                  // For now, we'll just use a placeholder or the original product if not found.
+                  (id === item.product.id ? item.product : { name: `Product ID: ${id}` }) 
+                );
+
+                return (
+                  <Dropdown.Item key={item.product.id}>
+                    {selectedProducts.map((p, index) => (
+                      <div key={p.id || index}>{p.name} (x{item.quantity})</div>
+                    ))}
+                  </Dropdown.Item>
+                );
+              })}
             </Dropdown.Menu>
           </Dropdown>
           {location.pathname !== '/split-cart' && <SplitCartButton />}

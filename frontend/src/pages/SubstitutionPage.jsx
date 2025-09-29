@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Button, Spinner, Alert, Row, Col } from 'react-bootstrap';
 import { useShoppingList } from '../context/ShoppingListContext';
-import SelectableProductTile from '../components/SelectableProductTile'; // Use SelectableProductTile
 import SubstitutesSection from '../components/SubstitutesSection';
 import LocationSetupModal from '../components/LocationSetupModal'; // To get userLocation
 
 const SubstitutionPage = () => {
-  const { items } = useShoppingList();
+  const { items, updateSubstitutionChoices } = useShoppingList();
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
-  const [substitutionChoices, setSubstitutionChoices] = useState([]); // Stores { originalProductId, selectedSubstituteIds }
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [substitutes, setSubstitutes] = useState([]);
@@ -22,13 +20,6 @@ const SubstitutionPage = () => {
       setUserLocation(JSON.parse(savedLocation));
     }
   }, []);
-
-  useEffect(() => {
-    // Initialize substitutionChoices with original product IDs
-    if (items.length > 0 && substitutionChoices.length === 0) {
-      setSubstitutionChoices(items.map(item => ({ originalProductId: item.product.id, selectedIds: [item.product.id] })));
-    }
-  }, [items, substitutionChoices]);
 
   const currentShoppingListItem = items[currentProductIndex];
 
@@ -56,19 +47,7 @@ const SubstitutionPage = () => {
 
         // If no substitutes found, automatically select original and advance
         if (data.length === 0) {
-          setSubstitutionChoices(prevChoices => {
-            const existingChoiceIndex = prevChoices.findIndex(choice => choice.originalProductId === currentShoppingListItem.product.id);
-            if (existingChoiceIndex !== -1) {
-              const updatedChoices = [...prevChoices];
-              updatedChoices[existingChoiceIndex] = {
-                ...updatedChoices[existingChoiceIndex],
-                selectedIds: [currentShoppingListItem.product.id]
-              };
-              return updatedChoices;
-            } else {
-              return [...prevChoices, { originalProductId: currentShoppingListItem.product.id, selectedIds: [currentShoppingListItem.product.id] }];
-            }
-          });
+          updateSubstitutionChoices(currentShoppingListItem.product.id, [currentShoppingListItem.product.id]);
           setCurrentProductIndex(prev => prev + 1);
         }
 
@@ -80,7 +59,7 @@ const SubstitutionPage = () => {
     };
 
     fetchSubstitutes();
-  }, [currentShoppingListItem, userLocation]); // Re-fetch when current product or user location changes
+  }, [currentShoppingListItem, userLocation, updateSubstitutionChoices]); // Re-fetch when current product or user location changes
 
   const handleSelectOption = (productId) => {
     setSelectedOptions(prevSelected => {
@@ -94,19 +73,7 @@ const SubstitutionPage = () => {
 
   const handleNextProduct = () => {
     // Save current selections
-    setSubstitutionChoices(prevChoices => {
-      const existingChoiceIndex = prevChoices.findIndex(choice => choice.originalProductId === currentShoppingListItem.product.id);
-      if (existingChoiceIndex !== -1) {
-        const updatedChoices = [...prevChoices];
-        updatedChoices[existingChoiceIndex] = {
-          ...updatedChoices[existingChoiceIndex],
-          selectedIds: selectedOptions
-        };
-        return updatedChoices;
-      } else {
-        return [...prevChoices, { originalProductId: currentShoppingListItem.product.id, selectedIds: selectedOptions }];
-      }
-    });
+    updateSubstitutionChoices(currentShoppingListItem.product.id, selectedOptions);
     setCurrentProductIndex(prev => prev + 1);
   };
 
@@ -135,13 +102,10 @@ const SubstitutionPage = () => {
       <h2>Split My Cart: Product Substitution</h2>
       <p className="text-muted mb-4">
         Please select all items you are willing to consider as substitutes for the original product. 
-        The more options you select, the greater the flexibility the algorithm has to optimize your total cart cost. 
-        It is okay to choose subsitutes more expensive than the original product, the algorithm will only select them if it helps reduce the overall cost.
+        The more options you provide, the greater the flexibility the algorithm has to optimize your total cart cost. 
+        The system aims for the lowest overall cart price, which might involve selecting a seemingly more expensive 
+        individual substitute if it leads to greater savings across your entire shopping list.
       </p>
-      <p>Reviewing product {currentProductIndex + 1} of {items.length}</p>
-
-      {loading && <Spinner animation="border" role="status"><span className="visually-hidden">Loading...</span></Spinner>}
-      {error && <Alert variant="danger">Error: {error}</Alert>}
 
       <SubstitutesSection 
         products={[{ ...currentShoppingListItem.product, is_original: true }, ...substitutes]}
@@ -159,5 +123,3 @@ const SubstitutionPage = () => {
     </Container>
   );
 };
-
-export default SubstitutionPage;
