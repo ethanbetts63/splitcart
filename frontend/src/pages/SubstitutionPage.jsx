@@ -110,7 +110,7 @@ const SubstitutionPage = () => {
 
   if (items.length === 0) {
     return (
-      <Container className="mt-4">
+      <Container fluid className="mt-4">
         <Alert variant="info">Your shopping list is empty. Add some products to start splitting your cart!</Alert>
         <Button variant="primary" onClick={() => window.history.back()}>Go Back to Shopping</Button>
       </Container>
@@ -119,7 +119,7 @@ const SubstitutionPage = () => {
 
   if (!currentShoppingListItem) {
     return (
-      <Container className="mt-4">
+      <Container fluid className="mt-4">
         <h2>Substitution Complete!</h2>
         <p>You have reviewed all products in your cart.</p>
         {/* TODO: Display summary or navigate to next step */}
@@ -129,7 +129,7 @@ const SubstitutionPage = () => {
   }
 
   return (
-    <Container className="mt-4">
+    <Container fluid className="mt-4">
       <h2>Split My Cart: Product Substitution</h2>
       <p>Reviewing product {currentProductIndex + 1} of {items.length}</p>
 

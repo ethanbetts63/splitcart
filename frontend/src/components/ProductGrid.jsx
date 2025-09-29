@@ -39,7 +39,7 @@ const ProductGrid = ({ searchTerm, userLocation }) => {
   }, [searchTerm, userLocation]);
 
   return (
-    <Container>
+    <Container fluid>
       <Row>
         {products && products.map((product) => (
           <Col key={product.id} sm={6} md={4} lg={3} className="mb-4">

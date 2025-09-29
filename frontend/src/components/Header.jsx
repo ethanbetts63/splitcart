@@ -6,11 +6,10 @@ const Header = ({ onShowLocationModal }) => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
-        <Navbar.Brand href="#home">SplitCart</Navbar.Brand>
+        <Navbar.Brand href="/">SplitCart</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/">Home</Nav.Link>
           </Nav>
           <Nav>
             <Nav.Link onClick={onShowLocationModal}>Change Location</Nav.Link>
