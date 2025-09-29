@@ -7,6 +7,17 @@ const ProductGrid = ({ searchTerm, userLocation }) => {
 
   const fetchProducts = async ({ pageParam = '/api/products/' }) => {
     let url = pageParam;
+    // If the URL is a full URL (e.g., from lastPage.next), strip the domain
+    if (url.startsWith('http')) {
+      try {
+        const urlObj = new URL(url);
+        url = urlObj.pathname + urlObj.search;
+      } catch (e) {
+        console.error("Invalid URL in pageParam:", url, e);
+        // Fallback to original url if parsing fails
+      }
+    }
+
     const params = new URLSearchParams();
 
     // Only append search and location params if it's the initial fetch (pageParam is the base URL)
