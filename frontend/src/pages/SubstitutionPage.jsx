@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Button, Spinner, Alert, Row, Col } from 'react-bootstrap';
 import { useShoppingList } from '../context/ShoppingListContext';
 import SelectableProductTile from '../components/SelectableProductTile'; // Use SelectableProductTile
+import SubstitutesSection from '../components/SubstitutesSection';
 import LocationSetupModal from '../components/LocationSetupModal'; // To get userLocation
 
 const SubstitutionPage = () => {
@@ -49,6 +50,7 @@ const SubstitutionPage = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
+        console.log('API Response Data:', data); // DEBUGGING
         setSubstitutes(data);
         setSelectedOptions([currentShoppingListItem.product.id]); // Select original by default
 
@@ -136,34 +138,12 @@ const SubstitutionPage = () => {
       {loading && <Spinner animation="border" role="status"><span className="visually-hidden">Loading...</span></Spinner>}
       {error && <Alert variant="danger">Error: {error}</Alert>}
 
-      <Row className="mt-4">
-        <Col md={4}>
-          <h4>Original Product</h4>
-          <SelectableProductTile
-            product={currentShoppingListItem.product}
-            isSelected={selectedOptions.includes(currentShoppingListItem.product.id)}
-            onSelect={handleSelectOption}
-          />
-        </Col>
-        <Col md={8}>
-          <h4>Substitutes</h4>
-          <Row>
-            {substitutes.length > 0 ? (
-              substitutes.map(sub => (
-                <Col key={sub.id} sm={6} md={4} lg={3} className="mb-4 p-2">
-                  <SelectableProductTile
-                    product={sub}
-                    isSelected={selectedOptions.includes(sub.id)}
-                    onSelect={handleSelectOption}
-                  />
-                </Col>
-              ))
-            ) : (
-              <p>No substitutes found for this product.</p>
-            )}
-          </Row>
-        </Col>
-      </Row>
+      <SubstitutesSection 
+        originalProduct={currentShoppingListItem.product}
+        substitutes={substitutes}
+        selectedOptions={selectedOptions}
+        onSelectOption={handleSelectOption}
+      />
 
       <Button
         variant="primary"
