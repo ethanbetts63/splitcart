@@ -150,7 +150,7 @@ const SubstitutionPage = () => {
           <Row>
             {substitutes.length > 0 ? (
               substitutes.map(sub => (
-                <Col key={sub.id} sm={6} md={4} lg={3} className="mb-4">
+                <Col key={sub.id} sm={6} md={4} lg={3} className="mb-4 p-2">
                   <SelectableProductTile
                     product={sub}
                     isSelected={selectedOptions.includes(sub.id)}
