@@ -23,7 +23,7 @@ const SearchHeader = ({ setSearchTerm }) => {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
-          <Button variant="outline-success" type="submit">Search</Button>
+          <Button style={{ backgroundColor: '#1CC3B9', color: 'white' }} type="submit">Search</Button>
         </Form>
       </Container>
     </div>
