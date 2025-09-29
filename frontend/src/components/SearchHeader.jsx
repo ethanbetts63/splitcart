@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Form, FormControl, Button } from 'react-bootstrap';
-import splitCartTitle from '../assets/SplitCart_title.png';
+import splitCartTitle from '../assets/splitcart_title_v2.png';
 
 const SearchHeader = ({ setSearchTerm }) => {
   const [inputValue, setInputValue] = useState('');
@@ -12,8 +12,8 @@ const SearchHeader = ({ setSearchTerm }) => {
 
   return (
     <div className="text-center my-5 pt-5">
-      <img src={splitCartTitle} alt="SplitCart" style={{ maxWidth: '300px', marginBottom: '2rem' }} />
-      <Container style={{ maxWidth: '600px' }}>
+      <img src={splitCartTitle} alt="SplitCart" style={{ maxWidth: '375px', marginBottom: '2rem' }} />
+      <Container style={{ maxWidth: '750px' }}>
         <Form className="d-flex" onSubmit={handleSubmit}>
           <FormControl
             type="search"
@@ -22,8 +22,9 @@ const SearchHeader = ({ setSearchTerm }) => {
             aria-label="Search"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
+            size="lg"
           />
-          <Button style={{ backgroundColor: '#1CC3B9', color: 'white' }} type="submit">Search</Button>
+          <Button style={{ backgroundColor: '#1CC3B9', color: 'white' }} type="submit" size="lg">Search</Button>
         </Form>
       </Container>
     </div>

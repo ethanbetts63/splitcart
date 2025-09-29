@@ -24,9 +24,14 @@ export const ShoppingListProvider = ({ children }) => {
     });
   };
 
+  const removeItem = (productId) => {
+    setItems(prevItems => prevItems.filter(item => item.product.id !== productId));
+  };
+
   const value = {
     items,
     addItem,
+    removeItem,
   };
 
   return (

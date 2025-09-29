@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Offcanvas, Nav } from 'react-bootstrap';
 import ShoppingListComponent from './ShoppingListComponent';
-import splitCartSymbol from '../assets/SplitCart_symbol.png';
+import splitCartSymbol from '../assets/SplitCart_symbol_v2.png';
 import { useShoppingList } from '../context/ShoppingListContext';
 
 const Header = ({ onShowLocationModal }) => {
