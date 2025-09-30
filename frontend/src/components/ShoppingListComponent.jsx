@@ -13,12 +13,19 @@ const ShoppingListComponent = () => {
           <ListGroup.Item>Your list is empty</ListGroup.Item>
         ) : (
           items.map(slot => (
-            <ListGroup.Item key={slot[0].product.id} className="d-flex justify-content-between align-items-center">
-              {slot[0].product.name} (x{slot[0].quantity})
+            <ListGroup.Item key={slot[0].product.id}>
+              <div>
+                <strong>{slot[0].product.name} (x{slot[0].quantity})</strong>
+              </div>
               {slot.length > 1 && (
-                <Badge bg="info" pill>
-                  {slot.length - 1} substitutes
-                </Badge>
+                <div className="ps-2">
+                  <small className="text-muted">Substitutes:</small>
+                  {slot.slice(1).map(subItem => (
+                    <div key={subItem.product.id} className="ps-3">
+                      <small>{subItem.product.name}</small>
+                    </div>
+                  ))}
+                </div>
               )}
             </ListGroup.Item>
           ))

@@ -23,35 +23,24 @@ const Header = ({ onShowLocationModal }) => {
         style={{ position: 'absolute', top: 0, left: 0, zIndex: 1050 }}
       >
         <img src={splitCartSymbol} alt="Menu" style={{ width: '80px', height: '80px' }} />
+        {items.length > 0 && (
+          <Badge
+            bg="danger"
+            pill
+            style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              fontSize: '0.8em',
+            }}
+          >
+            {items.length}
+          </Badge>
+        )}
       </Button>
 
       {items.length > 0 && (
         <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 1050, padding: '1.5rem', display: 'flex', alignItems: 'center' }}>
-          <Dropdown>
-            <Dropdown.Toggle style={{ backgroundColor: '#FB641F', color: 'white', marginRight: '1rem' }} size="lg">
-              Trolley <Badge bg="light" text="dark">{items.length}</Badge>
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              {items.map(slot => {
-                const primaryItem = slot[0];
-                return (
-                  <Dropdown.Item key={primaryItem.product.id}>
-                    <strong>{primaryItem.product.name} (x{primaryItem.quantity})</strong>
-                    {slot.length > 1 && (
-                      <div className="ps-2">
-                        <small className="text-muted">Subs:</small>
-                        {slot.slice(1).map(subItem => (
-                          <div key={subItem.product.id} className="ps-3">
-                            <small>{subItem.product.name}</small>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </Dropdown.Item>
-                );
-              })}
-            </Dropdown.Menu>
-          </Dropdown>
           {location.pathname !== '/split-cart' && <SplitCartButton />}
         </div>
       )}
