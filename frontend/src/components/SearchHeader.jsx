@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Form, FormControl, Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import splitCartTitle from '../assets/splitcart_title_v2.png';
 
-const SearchHeader = ({ setSearchTerm }) => {
-  const [inputValue, setInputValue] = useState('');
-  const navigate = useNavigate(); // Get the navigate function
+const SearchHeader = ({ searchTerm, setSearchTerm }) => {
+  const [inputValue, setInputValue] = useState(searchTerm);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setInputValue(searchTerm);
+  }, [searchTerm]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,13 +18,12 @@ const SearchHeader = ({ setSearchTerm }) => {
 
   const handleHomeClick = () => {
     setSearchTerm('');
-    setInputValue('');
     navigate('/');
   };
 
   return (
     <div className="text-center my-5 pt-5">
-      <div onClick={handleHomeClick} style={{ cursor: 'pointer' }}> {/* Use onClick */}
+      <div onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
         <img src={splitCartTitle} alt="SplitCart" style={{ maxWidth: '375px', marginBottom: '2rem' }} />
       </div>
       <Container style={{ maxWidth: '750px' }}>
