@@ -6,13 +6,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0rem;
 }
 
 .scroller-content {
   display: flex;
   overflow-x: auto;
-  padding-bottom: 0rem; /* For scrollbar visibility */
+  padding-bottom: 2rem; /* For scrollbar visibility */
 }
 
 /* Hide scrollbar */
