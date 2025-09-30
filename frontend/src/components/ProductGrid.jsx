@@ -1,27 +1,24 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import ProductTile from './ProductTile';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 
 const ProductGrid = ({ searchTerm, nearbyStoreIds }) => {
+  const queryClient = useQueryClient();
+  const queryKey = ['products', searchTerm, nearbyStoreIds];
 
   const fetchProducts = async ({ pageParam = '/api/products/' }) => {
     let url = pageParam;
-    // If the URL is a full URL (e.g., from lastPage.next), strip the domain
     if (url.startsWith('http')) {
       try {
         const urlObj = new URL(url);
         url = urlObj.pathname + urlObj.search;
       } catch (e) {
         console.error("Invalid URL in pageParam:", url, e);
-        // Fallback to original url if parsing fails
       }
     }
 
     const params = new URLSearchParams();
-
-    // Only append search and store_ids params if it's the initial fetch (pageParam is the base URL)
-    // or if they are not already part of the pageParam (which would be a 'next' URL)
     if (pageParam === '/api/products/') {
       if (searchTerm) {
         params.append('search', searchTerm);
@@ -51,11 +48,33 @@ const ProductGrid = ({ searchTerm, nearbyStoreIds }) => {
     isError,
     error,
   } = useInfiniteQuery({
-    queryKey: ['products', searchTerm, nearbyStoreIds],
+    queryKey: queryKey,
     queryFn: fetchProducts,
     getNextPageParam: (lastPage) => lastPage.next,
     initialPageParam: '/api/products/',
   });
+
+  const prefetchInitiated = useRef(false);
+
+  useEffect(() => {
+    prefetchInitiated.current = false;
+  }, [data]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (hasNextPage && !isFetchingNextPage && !prefetchInitiated.current) {
+        prefetchInitiated.current = true;
+        queryClient.fetchInfiniteQuery({
+          queryKey: queryKey,
+          queryFn: fetchProducts,
+          getNextPageParam: (lastPage) => lastPage.next,
+        });
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [queryClient, queryKey, fetchProducts, hasNextPage, isFetchingNextPage, data]);
 
   if (isLoading) {
     return <Container className="text-center my-5"><Spinner animation="border" /></Container>;
@@ -82,7 +101,9 @@ const ProductGrid = ({ searchTerm, nearbyStoreIds }) => {
           <Col className="text-center my-5">No products found.</Col>
         )}
       </Row>
-      {hasNextPage && (        <div className="text-center my-4">
+
+      {hasNextPage && (
+        <div className="text-center my-4">
           <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
             {isFetchingNextPage ? <Spinner animation="border" size="sm" /> : 'Load More'}
           </Button>
