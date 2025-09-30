@@ -120,12 +120,6 @@ export const SubstitutionPage = () => {
         individual substitute if it leads to greater savings across your entire shopping list.
       </p>
 
-      <SubstitutesSection 
-        products={[{ ...currentShoppingListSlot[0].product, is_original: true }, ...substitutes]}
-        selectedOptions={selectedOptions}
-        onSelectOption={handleSelectOption}
-      />
-
       <Button
         variant="primary"
         onClick={handleNextProduct}
@@ -133,6 +127,12 @@ export const SubstitutionPage = () => {
       >
         Next Product
       </Button>
+
+      <SubstitutesSection 
+        products={[{ ...currentShoppingListSlot[0].product, is_original: true }, ...substitutes]}
+        selectedOptions={selectedOptions}
+        onSelectOption={handleSelectOption}
+      />
     </Container>
   );
 };

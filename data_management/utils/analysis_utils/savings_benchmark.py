@@ -1,5 +1,4 @@
 import random
-import pulp
 import statistics
 from collections import deque
 
@@ -13,6 +12,8 @@ from data_management.config import (
 from django.db.models import Count, Q
 from companies.models import Company, Store
 from products.models import Product, Price, ProductSubstitution
+from data_management.utils.substitution_utils.size_comparer import SizeComparer
+from data_management.utils.cart_optimization import calculate_optimized_cost, calculate_baseline_cost
 
 def get_substitution_group(anchor_product, depth_limit=SUBSTITUTION_SEARCH_DEPTH):
     """
@@ -60,9 +61,6 @@ def get_substitution_group(anchor_product, depth_limit=SUBSTITUTION_SEARCH_DEPTH
 
     # Fetch all unique Product objects
     return Product.objects.filter(id__in=group_ids)
-
-
-from data_management.utils.substitution_utils.size_comparer import SizeComparer
 
 def generate_random_cart(stores, num_products):
     """Generates a random shopping cart using the intelligent portfolio selection algorithm."""
@@ -211,96 +209,6 @@ def generate_random_cart(stores, num_products):
     
     return all_slots, anchor_products
 
-
-def calculate_optimized_cost(slots, max_stores):
-    """Calculates the optimized cost using the PuLP solver."""
-    prob = pulp.LpProblem("GroceryOptimization", pulp.LpMinimize)
-    all_store_ids = {option['store_id'] for slot in slots for option in slot}
-    all_store_names = {option['store_name'] for slot in slots for option in slot}
-
-    choice_vars = pulp.LpVariable.dicts("Choice", ((i, j) for i, slot in enumerate(slots) for j, option in enumerate(slot)), cat="Binary")
-    store_usage = pulp.LpVariable.dicts("UseStore", all_store_ids, cat="Binary")
-
-    total_cost = pulp.lpSum(option['price'] * choice_vars[(i, j)] for i, slot in enumerate(slots) for j, option in enumerate(slot))
-    prob += total_cost, "Total Cost"
-
-    for i, slot in enumerate(slots):
-        prob += pulp.lpSum(choice_vars[(i, j)] for j, option in enumerate(slot)) == 1, f"Fulfill_Slot_{i}"
-
-    for i, slot in enumerate(slots):
-        for j, option in enumerate(slot):
-            prob += choice_vars[(i, j)] <= store_usage[option['store_id']], f"Link_Choice_{i}_{j}_to_Store"
-
-    prob += pulp.lpSum(store_usage[store_id] for store_id in all_store_ids) <= max_stores, "Max_Stores_Limit"
-
-    prob.solve(pulp.PULP_CBC_CMD(msg=0))
-
-    if pulp.LpStatus[prob.status] == "Optimal":
-        final_cost = pulp.value(prob.objective)
-
-        shopping_plan = {name: [] for name in all_store_names}
-
-        for i, slot in enumerate(slots):
-            for j, option in enumerate(slot):
-                if choice_vars[(i, j)].varValue == 1:
-                    store_name = option['store_name']
-                    product_name = option['product_name']
-                    brand = option['brand']
-                    price = option['price']
-                    
-                    plan_item = {
-                        "product": f"{brand} {product_name}",
-                        "price": price
-                    }
-                    shopping_plan[store_name].append(plan_item)
-                    break
-
-        return final_cost, shopping_plan, choice_vars
-    else:
-        return None, None, None
-
-def calculate_baseline_cost_for_main_store(main_store_id, slots, all_stores):
-    """Helper function to calculate the baseline cost for one potential main store."""
-    main_shop_cost = 0
-    forced_trips_cost = 0
-
-    for slot in slots:
-        options_at_main_store = [opt for opt in slot if opt['store_id'] == main_store_id]
-        
-        if options_at_main_store:
-            main_shop_cost += min(opt['price'] for opt in options_at_main_store)
-        else:
-            forced_trips_cost += min(opt['price'] for opt in slot)
-            
-    return main_shop_cost + forced_trips_cost
-
-def calculate_baseline_cost(slots, stores):
-    """Calculates the baseline cost using the 'Best Single Shop + Forced Trips' method."""
-    if not slots:
-        return 0
-
-    slots_filled_by_store = {store.id: 0 for store in stores}
-    for store in stores:
-        for slot in slots:
-            if any(opt['store_id'] == store.id for opt in slot):
-                slots_filled_by_store[store.id] += 1
-
-    max_slots_filled = 0
-    best_main_stores = []
-    if slots_filled_by_store:
-        max_slots_filled = max(slots_filled_by_store.values())
-        best_main_stores = [store_id for store_id, count in slots_filled_by_store.items() if count == max_slots_filled]
-
-    if not best_main_stores:
-        return 0
-
-    min_baseline_cost = float('inf')
-    for store_id in best_main_stores:
-        current_baseline = calculate_baseline_cost_for_main_store(store_id, slots, stores)
-        if current_baseline < min_baseline_cost:
-            min_baseline_cost = current_baseline
-            
-    return min_baseline_cost
 
 def run_savings_benchmark(file_path):
     """Main function to run the benchmark and write results to a file."""
