@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
-import { Button, Offcanvas, Nav, Dropdown, Badge } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
+import { Button, Offcanvas, Nav, Badge } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ShoppingListComponent from './ShoppingListComponent';
 import SplitCartButton from './SplitCartButton';
 import splitCartSymbol from '../assets/SplitCart_symbol_v2.png';
+import splitCartTitle from '../assets/splitcart_title_v2.png';
 import { useShoppingList } from '../context/ShoppingListContext';
 
 const Header = ({ onShowLocationModal }) => {
   const [showMenu, setShowMenu] = useState(false);
-  const { items } = useShoppingList(); // Removed substitutionChoices
+  const { items } = useShoppingList();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleClose = () => setShowMenu(false);
   const handleShow = () => setShowMenu(true);
+
+  const handleHomeClick = () => {
+    handleClose();
+    navigate('/');
+  };
 
   return (
     <>
@@ -20,7 +27,7 @@ const Header = ({ onShowLocationModal }) => {
         variant="link"
         onClick={handleShow}
         className="p-0 m-3"
-        style={{ position: 'absolute', top: 0, left: 0, zIndex: 1050 }}
+        style={{ position: 'absolute', top: 0, left: 0, zIndex: 1030 }}
       >
         <img src={splitCartSymbol} alt="Menu" style={{ width: '80px', height: '80px' }} />
         {items.length > 0 && (
@@ -47,7 +54,9 @@ const Header = ({ onShowLocationModal }) => {
 
       <Offcanvas show={showMenu} onHide={handleClose} placement="start">
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Menu</Offcanvas.Title>
+          <div onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
+            <img src={splitCartTitle} alt="SplitCart" style={{ maxWidth: '200px' }} />
+          </div>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Nav className="flex-column">
