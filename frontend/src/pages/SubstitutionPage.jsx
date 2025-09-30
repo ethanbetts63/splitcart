@@ -26,11 +26,16 @@ export const SubstitutionPage = () => {
   useEffect(() => {
     if (!currentShoppingListSlot || !userLocation) return;
 
+    const primaryItem = currentShoppingListSlot[0];
+
+    // Initialize local state with the product IDs already present in the context for this slot.
+    const existingIds = currentShoppingListSlot.map(item => item.product.id);
+    setSelectedOptions(existingIds);
+
     const fetchSubstitutes = async () => {
       setLoading(true);
       setError(null);
       try {
-        const primaryItem = currentShoppingListSlot[0];
         const params = new URLSearchParams();
         if (userLocation && userLocation.postcode && userLocation.radius) {
           params.append('postcode', userLocation.postcode);
@@ -43,11 +48,9 @@ export const SubstitutionPage = () => {
         }
         const data = await response.json();
         setSubstitutes(data);
-        // Default selection includes only the original product's ID
-        setSelectedOptions([primaryItem.product.id]);
 
-        // If no substitutes are found, we can auto-confirm the original and move on.
-        if (data.length === 0) {
+        // Auto-advance if no substitutes are found and the slot only contains the primary item.
+        if (data.length === 0 && currentShoppingListSlot.length === 1) {
           updateSubstitutionChoices(primaryItem.product.id, [primaryItem.product]);
           setCurrentProductIndex(prev => prev + 1);
         }
