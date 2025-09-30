@@ -17,21 +17,30 @@ function App() {
   const [userLocation, setUserLocation] = useState(null);
   const [nearbyStoreIds, setNearbyStoreIds] = useState([]);
 
-  const scrollerTitles = [
-    "Bargain Finds!",
-    "Popular with SplitCart users",
-    "Milk",
-    "Bread",
-    "Eggs"
-  ];
+  const [scrollers, setScrollers] = useState([]);
 
   useEffect(() => {
-    const savedLocation = localStorage.getItem('userLocation');
-    if (savedLocation) {
-      setUserLocation(JSON.parse(savedLocation));
-    } else {
-      setShowLocationModal(true);
-    }
+    const commonSearches = [
+      "Full Cream Milk", "Free Range Eggs", "Sourdough Bread", "Butter", "Cheese",
+      "Chicken Breast", "Beef Mince", "Sausages", "Apples", "Bananas", "Broccoli",
+      "Carrots", "Onions", "Potatoes", "Tomatoes", "Pasta", "Rice", "Cereal",
+      "Coffee", "Tea", "Yoghurt", "Ice Cream", "Chocolate", "Biscuits", "Chips",
+      "Soft Drink", "Juice", "Beer", "Wine", "Toilet Paper"
+    ];
+
+    const getRandomItems = (arr, n) => {
+      const shuffled = [...arr].sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, n);
+    };
+
+    const randomSearchTerms = getRandomItems(commonSearches, 3);
+
+    const scrollerConfig = [
+        { title: "Bargain Finds!", searchTerm: "" },
+        { title: "Popular with SplitCart users", searchTerm: "" },
+        ...randomSearchTerms.map(term => ({ title: term, searchTerm: term }))
+    ];
+    setScrollers(scrollerConfig);
   }, []);
 
   useEffect(() => {
@@ -71,7 +80,7 @@ function App() {
                 {searchTerm ? (
                   <ProductGrid searchTerm={searchTerm} nearbyStoreIds={nearbyStoreIds} />
                 ) : (
-                  <ScrollerManager titles={scrollerTitles} />
+                  <ScrollerManager scrollers={scrollers} />
                 )}
               </Container>
             </>

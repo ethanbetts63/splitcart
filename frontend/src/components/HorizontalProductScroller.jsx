@@ -1,36 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import ProductTile from './ProductTile';
 import './HorizontalProductScroller.css';
 
-const HorizontalProductScroller = ({ title, onLoadComplete }) => {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    let isMounted = true;
-    fetch('/api/products/')
-      .then(response => response.json())
-      .then(data => {
-        if (isMounted && data && data.results) {
-          setProducts(data.results.slice(0, 20));
-        }
-      })
-      .catch(error => {
-        console.error(`Error fetching products for scroller '${title}':`, error);
-      })
-      .finally(() => {
-        if (isMounted && onLoadComplete) {
-          onLoadComplete();
-        }
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [title, onLoadComplete]);
-
-  if (products.length === 0) {
-    return null; // Don't render anything until products are loaded
+const HorizontalProductScroller = ({ title, products }) => {
+  if (!products || products.length === 0) {
+    return null; // Don't render anything if there are no products
   }
 
   return (
