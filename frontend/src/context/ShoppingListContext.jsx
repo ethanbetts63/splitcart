@@ -53,6 +53,13 @@ export const ShoppingListProvider = ({ children }) => {
       if (slotIndex > -1) {
         const originalItem = newItems[slotIndex][0];
         
+        // If for some reason selectedProducts is empty, it would create an empty slot.
+        // To prevent this, we ensure the slot contains at least the original item.
+        if (!selectedProducts || selectedProducts.length === 0) {
+            newItems[slotIndex] = [originalItem];
+            return newItems;
+        }
+
         // The new slot contains the original item, plus all selected products as substitutes.
         // We map them to the { product, quantity } structure.
         const newSlot = selectedProducts.map(p => ({

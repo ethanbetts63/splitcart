@@ -11,7 +11,7 @@ const SearchSourcer = ({ title, searchTerm, onLoadComplete }) => {
     setIsLoading(true);
     
     const url = searchTerm 
-      ? `/api/products/search/?q=${encodeURIComponent(searchTerm)}`
+      ? `/api/products/?search=${encodeURIComponent(searchTerm)}`
       : '/api/products/';
 
     fetch(url)
