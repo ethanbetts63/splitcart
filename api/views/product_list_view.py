@@ -6,7 +6,7 @@ from ..serializers import ProductSerializer
 class ProductListView(generics.ListAPIView):
     serializer_class = ProductSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['name', 'description']
+    search_fields = ['name', 'description', 'brand__name', 'size']
 
     def get_queryset(self):
         queryset = Product.objects.all().order_by('name')
