@@ -7,6 +7,7 @@ from .views.product_translation_file_view import ProductTranslationFileView
 from .views.brand_translation_file_view import BrandTranslationFileView
 from .views.product_barcode_view import ProductBarcodeView
 from .views.cart_optimization_view import CartOptimizationView
+from .views.store_list_view import StoreListView
 
 from .views.product_substitute_list_view import ProductSubstituteListView
 
@@ -20,4 +21,5 @@ urlpatterns = [
     path('files/brand_translations/', BrandTranslationFileView.as_view(), name='brand-translation-file'),
     path('products/barcodes/', ProductBarcodeView.as_view(), name='product-barcodes'),
     path('cart/optimize/', CartOptimizationView.as_view(), name='cart-optimization'),
+    path('stores/nearby/', StoreListView.as_view(), name='store-list'),
 ]

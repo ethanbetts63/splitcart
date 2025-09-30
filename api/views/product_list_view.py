@@ -1,8 +1,6 @@
 
 from rest_framework import generics, filters
 from products.models import Product
-from companies.models import Postcode
-from data_management.utils.geospatial_utils import get_nearby_stores
 from ..serializers import ProductSerializer
 
 class ProductListView(generics.ListAPIView):
@@ -12,31 +10,18 @@ class ProductListView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Product.objects.all().order_by('name')
-        postcode_param = self.request.query_params.get('postcode')
-        radius_param = self.request.query_params.get('radius')
+        store_ids_param = self.request.query_params.get('store_ids')
 
-        if postcode_param and radius_param:
+        if store_ids_param:
             try:
-                radius = float(radius_param)
-                # Assuming a single postcode for now, can be extended to multiple
-                ref_postcode = Postcode.objects.filter(postcode=postcode_param).first()
-
-                if ref_postcode:
-                    nearby_stores = get_nearby_stores(ref_postcode, radius)
-                    nearby_store_ids = [store.id for store in nearby_stores]
-                    
-                    # Get unique product IDs that have prices in these nearby stores
-                    product_ids_in_nearby_stores = Product.objects.filter(
-                        price_records__price_entries__store__id__in=nearby_store_ids
-                    ).values_list('id', flat=True).distinct()
-                    
-                    # Filter the main queryset by these unique product IDs
-                    queryset = queryset.filter(id__in=product_ids_in_nearby_stores)
-                    self.nearby_store_ids = nearby_store_ids # Store for serializer context
-                else:
-                    queryset = Product.objects.none()
+                store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
+                # Filter products that have prices in any of the specified stores
+                queryset = queryset.filter(
+                    price_records__price_entries__store__id__in=store_ids
+                ).distinct()
+                self.nearby_store_ids = store_ids # Store for serializer context
             except (ValueError, TypeError) as e:
-                pass # Invalid radius, ignore filtering
+                pass # Invalid store_ids, ignore filtering
 
         return queryset
 
