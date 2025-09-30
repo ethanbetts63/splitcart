@@ -101,7 +101,7 @@ class ColesScraper(BaseProductScraper):
                     numeric_store_id = self.store_id.split(':')[-1] if self.store_id and ':' in self.store_id else self.store_id
                     actual_store_id = full_data.get("props", {}).get("pageProps", {}).get("initStoreId")
                     if str(actual_store_id) != str(numeric_store_id):
-                        break
+                        raise ValueError(f"Store ID mismatch. Expected {numeric_store_id}, but website reports {actual_store_id}. Halting scrape for this store.")
                 
                 search_results = full_data.get("props", {}).get("pageProps", {}).get("searchResults", {})
                 raw_product_list = search_results.get("results", [])
