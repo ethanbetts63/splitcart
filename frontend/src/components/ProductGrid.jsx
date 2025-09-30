@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import ProductTile from './ProductTile';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
@@ -7,7 +7,18 @@ const ProductGrid = ({ searchTerm, nearbyStoreIds }) => {
   const queryClient = useQueryClient();
   const queryKey = ['products', searchTerm, nearbyStoreIds];
 
+  const getNextPageParam = (lastPage) => lastPage.next;
+
   const fetchProducts = async ({ pageParam = '/api/products/' }) => {
+    // Check the cache first for a pre-fetched page
+    const pageQueryKey = ['products-page', pageParam];
+    const cachedPage = queryClient.getQueryData(pageQueryKey);
+    if (cachedPage) {
+      // If we find it, remove it from the single-page cache to save memory
+      queryClient.removeQueries({ queryKey: pageQueryKey });
+      return cachedPage;
+    }
+
     let url = pageParam;
     if (url.startsWith('http')) {
       try {
@@ -50,31 +61,24 @@ const ProductGrid = ({ searchTerm, nearbyStoreIds }) => {
   } = useInfiniteQuery({
     queryKey: queryKey,
     queryFn: fetchProducts,
-    getNextPageParam: (lastPage) => lastPage.next,
+    getNextPageParam: getNextPageParam,
     initialPageParam: '/api/products/',
   });
 
-  const prefetchInitiated = useRef(false);
-
+  // Pre-fetch the next page as soon as the current one is loaded
   useEffect(() => {
-    prefetchInitiated.current = false;
-  }, [data]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (hasNextPage && !isFetchingNextPage && !prefetchInitiated.current) {
-        prefetchInitiated.current = true;
-        queryClient.fetchInfiniteQuery({
-          queryKey: queryKey,
-          queryFn: fetchProducts,
-          getNextPageParam: (lastPage) => lastPage.next,
+    if (hasNextPage && !isFetchingNextPage) {
+      const lastPage = data.pages[data.pages.length - 1];
+      const nextPageParam = getNextPageParam(lastPage);
+      if (nextPageParam) {
+        const pageQueryKey = ['products-page', nextPageParam];
+        queryClient.prefetchQuery({
+          queryKey: pageQueryKey,
+          queryFn: () => fetchProducts({ pageParam: nextPageParam }),
         });
       }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [queryClient, queryKey, fetchProducts, hasNextPage, isFetchingNextPage, data]);
+    }
+  }, [data, hasNextPage, isFetchingNextPage, queryClient, fetchProducts]);
 
   if (isLoading) {
     return <Container className="text-center my-5"><Spinner animation="border" /></Container>;
