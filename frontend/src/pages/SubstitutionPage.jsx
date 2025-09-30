@@ -4,7 +4,7 @@ import { useShoppingList } from '../context/ShoppingListContext';
 import SubstitutesSection from '../components/SubstitutesSection';
 import LocationSetupModal from '../components/LocationSetupModal'; // To get userLocation
 
-const SubstitutionPage = () => {
+export const SubstitutionPage = () => {
   const { items, updateSubstitutionChoices } = useShoppingList();
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -123,3 +123,5 @@ const SubstitutionPage = () => {
     </Container>
   );
 };
+
+export default SubstitutionPage;
