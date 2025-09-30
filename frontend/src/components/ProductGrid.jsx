@@ -3,7 +3,7 @@ import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import ProductTile from './ProductTile';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-const ProductGrid = ({ searchTerm, userLocation }) => {
+const ProductGrid = ({ searchTerm, nearbyStoreIds }) => {
 
   const fetchProducts = async ({ pageParam = '/api/products/' }) => {
     let url = pageParam;
@@ -20,15 +20,14 @@ const ProductGrid = ({ searchTerm, userLocation }) => {
 
     const params = new URLSearchParams();
 
-    // Only append search and location params if it's the initial fetch (pageParam is the base URL)
+    // Only append search and store_ids params if it's the initial fetch (pageParam is the base URL)
     // or if they are not already part of the pageParam (which would be a 'next' URL)
     if (pageParam === '/api/products/') {
       if (searchTerm) {
         params.append('search', searchTerm);
       }
-      if (userLocation && userLocation.postcode && userLocation.radius) {
-        params.append('postcode', userLocation.postcode);
-        params.append('radius', userLocation.radius);
+      if (nearbyStoreIds && nearbyStoreIds.length > 0) {
+        params.append('store_ids', nearbyStoreIds.join(','));
       }
     }
 
@@ -52,7 +51,7 @@ const ProductGrid = ({ searchTerm, userLocation }) => {
     isError,
     error,
   } = useInfiniteQuery({
-    queryKey: ['products', searchTerm, userLocation],
+    queryKey: ['products', searchTerm, nearbyStoreIds],
     queryFn: fetchProducts,
     getNextPageParam: (lastPage) => lastPage.next,
     initialPageParam: '/api/products/',

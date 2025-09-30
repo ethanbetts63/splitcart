@@ -3,9 +3,11 @@ import { Container, Button, Spinner, Alert, Row, Col } from 'react-bootstrap';
 import { useShoppingList } from '../context/ShoppingListContext';
 import SubstitutesSection from '../components/SubstitutesSection';
 import LocationSetupModal from '../components/LocationSetupModal'; // To get userLocation
+import { useNavigate } from 'react-router-dom';
 
-export const SubstitutionPage = () => {
+export const SubstitutionPage = ({ nearbyStoreIds }) => {
   const { items, updateSubstitutionChoices } = useShoppingList();
+  const navigate = useNavigate();
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -24,7 +26,7 @@ export const SubstitutionPage = () => {
   const currentShoppingListSlot = items[currentProductIndex];
 
   useEffect(() => {
-    if (!currentShoppingListSlot || !userLocation) return;
+    if (!currentShoppingListSlot || !userLocation || nearbyStoreIds.length === 0) return;
 
     const primaryItem = currentShoppingListSlot[0];
 
@@ -37,9 +39,9 @@ export const SubstitutionPage = () => {
       setError(null);
       try {
         const params = new URLSearchParams();
-        if (userLocation && userLocation.postcode && userLocation.radius) {
-          params.append('postcode', userLocation.postcode);
-          params.append('radius', userLocation.radius);
+        // Pass store_ids to the substitutes API
+        if (nearbyStoreIds && nearbyStoreIds.length > 0) {
+          params.append('store_ids', nearbyStoreIds.join(','));
         }
         
         const response = await fetch(`/api/products/${primaryItem.product.id}/substitutes/?${params.toString()}`);
@@ -63,7 +65,7 @@ export const SubstitutionPage = () => {
     };
 
     fetchSubstitutes();
-  }, [currentShoppingListSlot, userLocation, updateSubstitutionChoices]); // Re-fetch when current slot or user location changes
+  }, [currentShoppingListSlot, userLocation, nearbyStoreIds, updateSubstitutionChoices]); // Re-fetch when current slot, user location, or nearbyStoreIds changes
 
   const handleSelectOption = (productId) => {
     setSelectedOptions(prevSelected => {
@@ -90,6 +92,16 @@ export const SubstitutionPage = () => {
     setCurrentProductIndex(prev => prev + 1);
   };
 
+  const handleViewFinalCart = () => {
+    // The cart data needs to be in the format expected by build_price_slots
+    // which is a list of lists of product IDs (or objects with product_id and quantity)
+    const formattedCart = items.map(slot => 
+      slot.map(item => ({ product_id: item.product.id, quantity: item.quantity || 1 }))
+    );
+
+    navigate('/final-cart', { state: { cart: formattedCart, store_ids: nearbyStoreIds } });
+  };
+
   if (items.length === 0) {
     return (
       <Container fluid className="mt-4">
@@ -104,8 +116,7 @@ export const SubstitutionPage = () => {
       <Container fluid className="mt-4">
         <h2>Substitution Complete!</h2>
         <p>You have reviewed all products in your cart.</p>
-        {/* TODO: Display summary or navigate to next step */}
-        <Button variant="primary">View Final Cart</Button>
+        <Button variant="primary" onClick={handleViewFinalCart}>View Final Cart</Button>
       </Container>
     );
   }
