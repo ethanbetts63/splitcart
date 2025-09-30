@@ -1,28 +1,22 @@
 from products.models import Product, Price
 
 def build_price_slots(cart, stores):
-    """
-    Builds the detailed 'slots' data structure required by the optimization engine.
-
-    Args:
-        cart (list): The user's shopping cart, a list of lists of product IDs.
-        stores (QuerySet): A QuerySet of Store objects to consider for pricing.
-
-    Returns:
-        list: A list of lists, where each inner list contains price options for a product.
-    """
+    print("Inside build_price_slots")
     all_slots = []
-    # Extract all unique product IDs from the cart for efficient querying
     product_ids = list(set(item['product_id'] for slot in cart for item in slot))
+    print(f"Product IDs: {product_ids}")
 
-    # Fetch all relevant products and prices in fewer queries
+    print("Fetching products with in_bulk")
     products = Product.objects.in_bulk(product_ids)
+    print("Finished fetching products")
+
+    print("Fetching prices")
     prices = Price.objects.filter(
         price_record__product_id__in=product_ids,
         store__in=stores
     ).select_related('store', 'price_record', 'price_record__product__brand')
+    print("Finished fetching prices")
 
-    # Group prices by product ID for efficient lookup
     prices_by_product = {}
     for price in prices:
         prod_id = price.price_record.product_id
@@ -30,22 +24,24 @@ def build_price_slots(cart, stores):
             prices_by_product[prod_id] = []
         prices_by_product[prod_id].append(price)
 
-    for slot in cart:
+    print("Looping through cart slots")
+    for i, slot in enumerate(cart):
+        print(f"Processing slot {i}")
         current_slot = []
-        for item in slot:
+        for j, item in enumerate(slot):
+            print(f"  Processing item {j}")
             product_id = item['product_id']
             product_obj = products.get(product_id)
             if not product_obj:
+                print(f"    Product with ID {product_id} not found in in_bulk result")
                 continue
 
-            # Get pre-fetched prices for this product
             product_prices = prices_by_product.get(product_id, [])
-
-            for price_obj in product_prices:
+            for k, price_obj in enumerate(product_prices):
+                print(f"      Processing price {k}")
                 if not price_obj.price_record:
                     continue
                 
-                # Account for quantity
                 quantity = item.get('quantity', 1)
                 total_price = float(price_obj.price_record.price) * quantity
 
@@ -63,4 +59,5 @@ def build_price_slots(cart, stores):
         if current_slot:
             all_slots.append(current_slot)
             
+    print("Finished build_price_slots")
     return all_slots

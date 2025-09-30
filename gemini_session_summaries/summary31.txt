@@ -11,6 +11,7 @@ This session focused on implementing the cart splitting and optimization feature
 
 2.  **`api/urls.py` (Modified):**
     *   Added a new URL path `stores/nearby/` that points to the `StoreListView`.
+    *   Renamed the URL path for `CartOptimizationView` from `cart/optimize/` to `cart/split/` to better reflect its purpose.
 
 3.  **`api/views/product_list_view.py` (Modified):**
     *   Updated the `ProductListView` to accept a comma-separated list of `store_ids` as a query parameter instead of `postcode` and `radius`.
@@ -36,11 +37,12 @@ This session focused on implementing the cart splitting and optimization feature
     *   Modified the `handleViewFinalCart` function (triggered by the "View Final Cart" button) to navigate to the `/final-cart` page.
     *   The `cart` data (formatted as a list of lists of product IDs and quantities) and the `nearbyStoreIds` are now passed as state to the `FinalCartPage` during navigation.
 
-4.  **`frontend/src/pages/FinalCartPage.jsx` (New File):**
+4.  **`frontend/src/pages/FinalCartPage.jsx` (New File & Modified):**
     *   Created a new React component `FinalCartPage`.
     *   This page receives the `cart` data and `store_ids` from the navigation state.
-    *   It makes a POST request to the `/api/cart/optimize/` endpoint with this data.
+    *   It makes a POST request to the `/api/cart/split/` endpoint with this data.
     *   It then displays the optimized shopping plan, including total cost, baseline cost, savings, and a breakdown of items per store.
+    *   The API endpoint in this file was updated from `/api/cart/optimize/` to `/api/cart/split/` to match the backend URL change.
 
 5.  **`frontend/package.json` (Modified):**
     *   Added `axios` as a dependency and installed it using `npm install axios` to resolve the import error in `FinalCartPage.jsx`.

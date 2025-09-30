@@ -20,6 +20,6 @@ urlpatterns = [
     path('files/product_translations/', ProductTranslationFileView.as_view(), name='product-translation-file'),
     path('files/brand_translations/', BrandTranslationFileView.as_view(), name='brand-translation-file'),
     path('products/barcodes/', ProductBarcodeView.as_view(), name='product-barcodes'),
-    path('cart/optimize/', CartOptimizationView.as_view(), name='cart-optimization'),
+    path('cart/split/', CartOptimizationView.as_view(), name='cart-optimization'),
     path('stores/nearby/', StoreListView.as_view(), name='store-list'),
 ]
