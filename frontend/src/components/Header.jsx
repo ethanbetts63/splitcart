@@ -8,7 +8,7 @@ import { useShoppingList } from '../context/ShoppingListContext';
 
 const Header = ({ onShowLocationModal }) => {
   const [showMenu, setShowMenu] = useState(false);
-  const { items, substitutionChoices } = useShoppingList();
+  const { items } = useShoppingList(); // Removed substitutionChoices
   const location = useLocation();
 
   const handleClose = () => setShowMenu(false);
@@ -32,24 +32,21 @@ const Header = ({ onShowLocationModal }) => {
               Trolley <Badge bg="light" text="dark">{items.length}</Badge>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              {items.map(item => {
-                const choice = substitutionChoices.find(c => c.originalProductId === item.product.id);
-                const selectedProductIds = choice ? choice.selectedIds : [item.product.id];
-                
-                // Find the actual product objects for the selected IDs
-                const selectedProducts = selectedProductIds.map(id => 
-                  items.find(i => i.product.id === id)?.product || 
-                  // Fallback: if not in items (e.g., a substitute not yet added to main list),
-                  // we might need to fetch it or rely on a more comprehensive product list.
-                  // For now, we'll just use a placeholder or the original product if not found.
-                  (id === item.product.id ? item.product : { name: `Product ID: ${id}` }) 
-                );
-
+              {items.map(slot => {
+                const primaryItem = slot[0];
                 return (
-                  <Dropdown.Item key={item.product.id}>
-                    {selectedProducts.map((p, index) => (
-                      <div key={p.id || index}>{p.name} (x{item.quantity})</div>
-                    ))}
+                  <Dropdown.Item key={primaryItem.product.id}>
+                    <strong>{primaryItem.product.name} (x{primaryItem.quantity})</strong>
+                    {slot.length > 1 && (
+                      <div className="ps-2">
+                        <small className="text-muted">Subs:</small>
+                        {slot.slice(1).map(subItem => (
+                          <div key={subItem.product.id} className="ps-3">
+                            <small>{subItem.product.name}</small>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </Dropdown.Item>
                 );
               })}

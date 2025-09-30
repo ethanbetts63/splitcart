@@ -5,7 +5,12 @@ import ProductCardContent from './ProductCardContent';
 
 const ProductTile = ({ product }) => {
   const { items, addItem, removeItem, updateItemQuantity } = useShoppingList();
-  const existingItem = items.find(item => item.product.id === product.id);
+  
+  // Find the slot (the inner array) that contains the product.
+  const existingItemSlot = items.find(slot => slot[0].product.id === product.id);
+  // The actual item is the first element of the slot.
+  const existingItem = existingItemSlot ? existingItemSlot[0] : null;
+
   const [quantity, setQuantity] = useState(existingItem ? existingItem.quantity : 1);
 
   useEffect(() => {

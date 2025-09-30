@@ -109,7 +109,7 @@ export const SubstitutionPage = () => {
 
   return (
     <Container fluid className="mt-4">
-      <h2>Split My Cart: Product Substitution</h2>
+      <h2>Product Substitution</h2>
       <p className="text-muted mb-4">
         Please select all items you are willing to consider as substitutes for the original product. 
         The more options you provide, the greater the flexibility the algorithm has to optimize your total cart cost. 
