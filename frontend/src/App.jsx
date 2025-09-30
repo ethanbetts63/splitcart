@@ -61,12 +61,12 @@ function App() {
 
   return (
     <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
-      <Header onShowLocationModal={() => setShowLocationModal(true)} />
+      <Header onShowLocationModal={() => setShowLocationModal(true)} setSearchTerm={setSearchTerm} />
       <main className="flex-grow-1">
         <Routes>
           <Route path="/" element={
             <>
-              <SearchHeader setSearchTerm={setSearchTerm} />
+              <SearchHeader searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
               <Container fluid>
                 {searchTerm ? (
                   <ProductGrid searchTerm={searchTerm} nearbyStoreIds={nearbyStoreIds} />

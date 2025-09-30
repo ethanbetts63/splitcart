@@ -7,7 +7,7 @@ import splitCartSymbol from '../assets/SplitCart_symbol_v2.png';
 import splitCartTitle from '../assets/splitcart_title_v2.png';
 import { useShoppingList } from '../context/ShoppingListContext';
 
-const Header = ({ onShowLocationModal }) => {
+const Header = ({ onShowLocationModal, setSearchTerm }) => {
   const [showMenu, setShowMenu] = useState(false);
   const { items } = useShoppingList();
   const location = useLocation();
@@ -18,6 +18,9 @@ const Header = ({ onShowLocationModal }) => {
 
   const handleHomeClick = () => {
     handleClose();
+    if (setSearchTerm) {
+      setSearchTerm('');
+    }
     navigate('/');
   };
 
