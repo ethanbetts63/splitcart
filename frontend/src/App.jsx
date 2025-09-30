@@ -36,7 +36,7 @@ function App() {
     const randomSearchTerms = getRandomItems(commonSearches, 3);
 
     const scrollerConfig = [
-        { title: "Bargain Finds!", searchTerm: "" },
+        { title: "Bargain Finds!", sourceUrl: "/api/products/bargains/" },
         { title: "Popular with SplitCart users", searchTerm: "" },
         ...randomSearchTerms.map(term => ({ title: term, searchTerm: term }))
     ];
@@ -80,7 +80,7 @@ function App() {
                 {searchTerm ? (
                   <ProductGrid searchTerm={searchTerm} nearbyStoreIds={nearbyStoreIds} />
                 ) : (
-                  <ScrollerManager scrollers={scrollers} />
+                  <ScrollerManager scrollers={scrollers} nearbyStoreIds={nearbyStoreIds} />
                 )}
               </Container>
             </>

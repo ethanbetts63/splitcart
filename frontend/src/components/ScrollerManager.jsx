@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SearchSourcer from './SearchSourcer';
 
-const ScrollerManager = ({ scrollers }) => {
+const ScrollerManager = ({ scrollers, nearbyStoreIds }) => {
   const [loadedCount, setLoadedCount] = useState(0);
 
   const handleLoadComplete = () => {
@@ -12,34 +12,37 @@ const ScrollerManager = ({ scrollers }) => {
     return null;
   }
 
-  // Render one more scroller than has been loaded.
-  const scrollersToRender = scrollers.slice(0, loadedCount + 1);
+  const renderScroller = (scroller, onLoad) => {
+    return (
+      <SearchSourcer
+        key={scroller.title}
+        title={scroller.title}
+        searchTerm={scroller.searchTerm}
+        sourceUrl={scroller.sourceUrl}
+        nearbyStoreIds={nearbyStoreIds}
+        onLoadComplete={onLoad}
+      />
+    );
+  };
 
   // Once all are loaded, render them without the callback to avoid unnecessary re-renders.
   if (loadedCount >= scrollers.length) {
     return (
       <>
-        {scrollers.map((scroller) => (
-          <SearchSourcer
-            key={scroller.title}
-            title={scroller.title}
-            searchTerm={scroller.searchTerm}
-          />
-        ))}
+        {scrollers.map((scroller) => renderScroller(scroller, undefined))}
       </>
     );
   }
 
+  // Render one more scroller than has been loaded.
+  const scrollersToRender = scrollers.slice(0, loadedCount + 1);
+
   return (
     <>
-      {scrollersToRender.map((scroller, index) => (
-        <SearchSourcer
-          key={scroller.title}
-          title={scroller.title}
-          searchTerm={scroller.searchTerm}
-          onLoadComplete={index === loadedCount ? handleLoadComplete : undefined}
-        />
-      ))}
+      {scrollersToRender.map((scroller, index) => {
+        const onLoad = index === loadedCount ? handleLoadComplete : undefined;
+        return renderScroller(scroller, onLoad);
+      })}
     </>
   );
 };

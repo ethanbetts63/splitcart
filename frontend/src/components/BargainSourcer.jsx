@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import HorizontalProductScroller from './HorizontalProductScroller';
 
-const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, onLoadComplete }) => {
+const BargainSourcer = ({ title, nearbyStoreIds, onLoadComplete }) => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -9,20 +9,16 @@ const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, onLoadCom
   useEffect(() => {
     let isMounted = true;
     setIsLoading(true);
-    
-    let url = '';
-    if (sourceUrl) {
-      url = sourceUrl;
-      if (nearbyStoreIds && nearbyStoreIds.length > 0) {
-        const params = new URLSearchParams();
-        params.append('store_ids', nearbyStoreIds.join(','));
-        url = `${url}?${params.toString()}`;
-      }
-    } else if (searchTerm) {
-      url = `/api/products/?search=${encodeURIComponent(searchTerm)}`;
-    } else {
-      url = '/api/products/';
+
+    if (!nearbyStoreIds || nearbyStoreIds.length === 0) {
+      setIsLoading(false);
+      // Don't fetch if there are no nearby stores selected
+      return;
     }
+
+    const params = new URLSearchParams();
+    params.append('store_ids', nearbyStoreIds.join(','));
+    const url = `/api/products/bargains/?${params.toString()}`;
 
     fetch(url)
       .then(response => {
@@ -33,7 +29,8 @@ const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, onLoadCom
       })
       .then(data => {
         if (isMounted) {
-          setProducts(data.results ? data.results.slice(0, 20) : []);
+          // The API returns a list of products directly
+          setProducts(data || []);
           setError(null);
         }
       })
@@ -56,10 +53,9 @@ const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, onLoadCom
     return () => {
       isMounted = false;
     };
-  }, [title, searchTerm, sourceUrl, nearbyStoreIds, onLoadComplete]);
+  }, [title, nearbyStoreIds, onLoadComplete]);
 
   if (isLoading) {
-    // Optional: render a loading state placeholder
     return (
       <div className="horizontal-scroller-container">
         <div className="scroller-header">
@@ -72,22 +68,12 @@ const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, onLoadCom
     );
   }
 
-  if (error) {
-    // Optional: render an error state
-    return (
-        <div className="horizontal-scroller-container">
-          <div className="scroller-header">
-            <h2>{title}</h2>
-          </div>
-          <div className="scroller-content" style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <p>Error loading products.</p>
-        </div>
-      </div>
-    );
+  // Don't show an error, just show nothing if it fails.
+  if (error || products.length === 0) {
+    return null;
   }
 
-  // Render the dumb scroller with the fetched products
   return <HorizontalProductScroller title={title} products={products} />;
 };
 
-export default SearchSourcer;
+export default BargainSourcer;
