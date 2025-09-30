@@ -43,7 +43,7 @@ noopen
 x-frame-options
 deny
 x-matched-path
-/data_management/storefront/[...storefront]
+/api/storefront/[...storefront]
 x-vercel-cache
 STALE
 x-vercel-id
@@ -55,7 +55,7 @@ www.igashop.com.au
 :method
 GET
 :path
-/data_management/storefront/stores/32600/categoryHierarchy
+/api/storefront/stores/32600/categoryHierarchy
 :scheme
 https
 accept

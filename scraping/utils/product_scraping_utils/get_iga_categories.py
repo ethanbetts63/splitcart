@@ -36,7 +36,7 @@ def get_iga_categories(command, retailer_store_id: str, session: requests.Sessio
     Args:
         command: The command object for writing output.
         retailer_store_id: The unique retailer-specific identifier for the IGA store.
-        session: The requests.Session object to use for the data_management call.
+        session: The requests.Session object to use for the api call.
 
     Returns:
         A list of specific subcategory names to scrape, or an empty list if an error occurs.

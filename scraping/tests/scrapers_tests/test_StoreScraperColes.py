@@ -20,8 +20,8 @@ class TestStoreScraperColes(unittest.TestCase):
         self.scraper.driver = self.mock_driver
 
     def test_fetch_data_for_item_success(self):
-        """Test a successful data_management call via the mocked Selenium driver."""
-        # Configure the mock driver to return a successful data_management response
+        """Test a successful api call via the mocked Selenium driver."""
+        # Configure the mock driver to return a successful api response
         mock_api_response = {
             "data": {
                 "stores": {
@@ -43,7 +43,7 @@ class TestStoreScraperColes(unittest.TestCase):
         self.mock_driver.execute_async_script.assert_called_once()
 
     def test_fetch_data_for_item_api_error(self):
-        """Test the handling of an data_management error returned within the JSON response."""
+        """Test the handling of an api error returned within the JSON response."""
         # Configure the mock driver to return a response containing an error
         mock_api_response = {"error": "Something went wrong"}
         self.mock_driver.execute_async_script.return_value = json.dumps(mock_api_response)
@@ -52,7 +52,7 @@ class TestStoreScraperColes(unittest.TestCase):
         with self.assertRaises(Exception) as cm:
             self.scraper.fetch_data_for_item((-37.81, 144.96))
         
-        self.assertIn("data_management Error: Something went wrong", str(cm.exception))
+        self.assertIn("api Error: Something went wrong", str(cm.exception))
 
 if __name__ == '__main__':
     unittest.main()

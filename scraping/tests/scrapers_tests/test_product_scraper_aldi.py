@@ -34,7 +34,7 @@ class ProductScraperAldiTests(TestCase):
 
     @patch('requests.Session.get')
     def test_fetch_data_for_item_paginates_correctly(self, mock_get):
-        """Test that fetch_data_for_item handles data_management pagination."""
+        """Test that fetch_data_for_item handles api pagination."""
         # Arrange
         # Simulate two pages of results, then an empty page to stop the loop
         mock_response_page1 = MagicMock()

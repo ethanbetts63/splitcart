@@ -1,5 +1,5 @@
 Request URL
-https://www.coles.com.au/data_management/graphql
+https://www.coles.com.au/api/graphql
 Request Method
 POST
 Status Code
@@ -45,7 +45,7 @@ www.coles.com.au
 :method
 POST
 :path
-/data_management/graphql
+/api/graphql
 :scheme
 https
 accept

@@ -14,7 +14,7 @@ The system is divided into three distinct databases, each with a specific purpos
 
 **2. `db_products` (The Catalog)**
 *   **Contains:** All pristine product, price, store, and category data populated by the scraping engine.
-*   **Purpose:** To serve as the master catalog of all product information. This is a clean, standalone data asset intended for commercialization (e.g., via a dedicated data_management or data dumps).
+*   **Purpose:** To serve as the master catalog of all product information. This is a clean, standalone data asset intended for commercialization (e.g., via a dedicated pai or data dumps).
 
 **3. `db_behavior` (The Trend Data)**
 *   **Contains:** All user-generated data, made anonymous by using the `anonymous_user_id` as the key instead of a direct user ID. This includes shopping lists, item preferences, and substitution choices.
@@ -66,7 +66,7 @@ This approach dramatically simplifies the architecture. It requires only **one d
 #### 1. The Frontend (Browser)
 
 *   **The Shopping List:** The user's shopping list is stored directly in the browser using `sessionStorage`. This data is automatically cleared when the user's session ends.
-*   **data_management Requests:** The frontend makes two main types of requests to the backend:
+*   **api Requests:** The frontend makes two main types of requests to the backend:
     1.  **Search Request:** `GET /data_management/products/search?q=<term>` to find products.
     2.  **Optimization Request:** `POST /data_management/optimize` to calculate the best shopping split. This request sends a self-contained package of data including the list of product IDs from `sessionStorage` and the user's location preferences.
 

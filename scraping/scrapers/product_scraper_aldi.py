@@ -48,7 +48,7 @@ class ProductScraperAldi(BaseProductScraper):
         offset = 0
 
         while True:
-            api_url = "https://data_management.aldi.com.au/v3/product-search"
+            api_url = "https://api.aldi.com.au/v3/product-search"
             params = {
                 "currency": "AUD", "serviceType": "walk-in", "categoryKey": category_key,
                 "limit": limit, "offset": offset, "sort": "relevance", "testVariant": "A",

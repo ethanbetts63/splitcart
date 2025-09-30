@@ -5,7 +5,7 @@ from .store_field_maps import WOOLWORTHS_STORE_MAP_API1, WOOLWORTHS_STORE_MAP_AP
 class StoreCleanerWoolworths(BaseStoreCleaner):
     """
     Concrete cleaner class for Woolworths store data.
-    Handles two different data_management formats.
+    Handles two different api formats.
     """
     def __init__(self, raw_store_data: dict, company: str, timestamp: datetime):
         super().__init__(raw_store_data, company, timestamp)
@@ -13,7 +13,7 @@ class StoreCleanerWoolworths(BaseStoreCleaner):
 
     @property
     def field_map(self):
-        """Returns the correct field map based on the detected data_management format."""
+        """Returns the correct field map based on the detected api format."""
         if self.api_format == 1:
             return WOOLWORTHS_STORE_MAP_API1
         elif self.api_format == 2:
@@ -21,7 +21,7 @@ class StoreCleanerWoolworths(BaseStoreCleaner):
         return {}
 
     def _determine_api_format(self) -> int:
-        """Detects which data_management format the raw data is in."""
+        """Detects which api format the raw data is in."""
         if 'StoreNo' in self.raw_store_data:
             return 1
         if 'FulfilmentStoreId' in self.raw_store_data:
@@ -51,11 +51,11 @@ class StoreCleanerWoolworths(BaseStoreCleaner):
         cleaned_data['is_active'] = True
 
         if self.api_format == 1:
-            # Handle the 'N/A' store name case for data_management 1
+            # Handle the 'N/A' store name case for api 1
             if cleaned_data.get('store_name') == 'N/A' and cleaned_data.get('suburb'):
                 cleaned_data['store_name'] = cleaned_data['suburb']
 
-        # You could add more specific transformations for data_management 2 here if needed
+        # You could add more specific transformations for api 2 here if needed
         # For example, parsing state from AddressText, etc.
 
         return cleaned_data

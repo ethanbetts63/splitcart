@@ -12,7 +12,7 @@ class TestStoreCleanerWoolworths(TestCase):
         self.timestamp = datetime.now()
 
     def test_cleaner_with_api1_format(self):
-        """Test that the cleaner correctly processes data from the StoreLocator data_management."""
+        """Test that the cleaner correctly processes data from the StoreLocator api."""
         raw_data_api1 = {
             "StoreNo": 1234,
             "Name": "Woolworths Town Hall",
@@ -47,7 +47,7 @@ class TestStoreCleanerWoolworths(TestCase):
         self.assertTrue(store_data['is_trading'])
 
     def test_cleaner_with_api2_format(self):
-        """Test that the cleaner correctly processes data from the fulfilment/stores data_management."""
+        """Test that the cleaner correctly processes data from the fulfilment/stores api."""
         raw_data_api2 = {
             "FulfilmentStoreId": "5678",
             "Description": "Woolworths Metro Central",
@@ -71,7 +71,7 @@ class TestStoreCleanerWoolworths(TestCase):
         self.assertEqual(store_data['store_name'], "Woolworths Metro Central")
         self.assertEqual(store_data['address_line_1'], "456 Pitt St")
         self.assertEqual(store_data['shopping_modes'], ["Pickup", "DriveUp"])
-        self.assertIsNone(store_data.get('division')) # Division is not present in data_management 2
+        self.assertIsNone(store_data.get('division')) # Division is not present in api 2
         self.assertTrue(store_data['is_active'])
 
     def test_cleaner_with_unknown_format(self):

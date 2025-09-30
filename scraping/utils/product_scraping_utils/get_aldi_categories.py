@@ -35,13 +35,13 @@ def get_aldi_categories(command, store_id: str, session: requests.Session) -> li
     Args:
         command: The command object for writing output.
         store_id: The unique identifier for the ALDI store (e.g., 'G452').
-        session: The requests.Session object to use for the data_management call.
+        session: The requests.Session object to use for the api call.
 
     Returns:
         A list of (urlSlugText, key) tuples to scrape, or an empty list if an error occurs.
     """
     command.stdout.write(f"    Fetching category hierarchy for store ID: {store_id}...")
-    api_url = f"https://data_management.aldi.com.au/v2/product-category-tree?serviceType=walk-in&servicePoint={store_id}"
+    api_url = f"https://api.aldi.com.au/v2/product-category-tree?serviceType=walk-in&servicePoint={store_id}"
     
     try:
         response = session.get(api_url, timeout=60)

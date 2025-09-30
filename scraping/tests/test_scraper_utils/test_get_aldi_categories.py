@@ -70,11 +70,11 @@ class GetAldiCategoriesTest(TestCase):
         categories = get_aldi_categories(mock_command, 'store123', session)
 
         self.assertEqual(sorted(categories), sorted([('subcat-a', 'keyA'), ('subcat-b', 'keyB'), ('cat-2', 'keyC')]))
-        mock_get.assert_called_once_with('https://data_management.aldi.com.au/v2/product-category-tree?serviceType=walk-in&servicePoint=store123', timeout=60)
+        mock_get.assert_called_once_with('https://api.aldi.com.au/v2/product-category-tree?serviceType=walk-in&servicePoint=store123', timeout=60)
 
     @patch('requests.Session.get')
     def test_get_aldi_categories_empty_data(self, mock_get):
-        """Test handling of empty 'data' in data_management response."""
+        """Test handling of empty 'data' in api response."""
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {'data': []}

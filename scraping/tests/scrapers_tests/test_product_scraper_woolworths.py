@@ -1,10 +1,9 @@
 from django.test import TestCase
 from unittest.mock import Mock, patch, MagicMock
-
 from scraping.scrapers.product_scraper_woolworths import ProductScraperWoolworths
 
 def create_mock_woolworths_bundle(products_list):
-    """A minimal representation of a Bundle from Woolworths' product data_management."""
+    """A minimal representation of a Bundle from Woolworths' product api."""
     return {"Products": products_list}
 
 class ProductScraperWoolworthsTests(TestCase):

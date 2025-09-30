@@ -3,11 +3,11 @@ import requests
 
 def get_store_specific_categories(session):
     """
-    Fetches and parses store-specific categories from the Coles GraphQL data_management.
+    Fetches and parses store-specific categories from the Coles GraphQL api.
     """
-    api_url = "https://www.coles.com.au/data_management/graphql"
+    api_url = "https://www.coles.com.au/api/graphql"
     
-    # This GraphQL query is based on the structure of the data_management response.
+    # This GraphQL query is based on the structure of the api response.
     graphql_query = {
         "operationName": "menuItems",
         "variables": {},
@@ -53,7 +53,7 @@ def get_store_specific_categories(session):
         return list(all_slugs)
 
     except requests.exceptions.RequestException as e:
-        print(f"ERROR: Could not fetch categories from Coles data_management: {e}")
+        print(f"ERROR: Could not fetch categories from Coles api: {e}")
         return []
     except Exception as e:
         print(f"ERROR: An unexpected error occurred while parsing categories: {e}")

@@ -2,7 +2,7 @@ import requests
 
 def get_woolworths_categories(command):
     """
-    Fetches the category hierarchy from Woolworths' data_management and extracts a flattened list of categories.
+    Fetches the category hierarchy from Woolworths' api and extracts a flattened list of categories.
     """
     api_url = "https://www.woolworths.com.au/apis/ui/PiesCategoriesWithSpecials"
     headers = {

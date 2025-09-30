@@ -11,7 +11,7 @@ class TestStoreScraperAldi(unittest.TestCase):
 
     @patch('requests.Session.get')
     def test_fetch_data_for_item_success(self, mock_get):
-        """Test a successful data_management call that returns store data."""
+        """Test a successful api call that returns store data."""
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_stores_data = {"data": [{"id": "ALDI-1", "name": "ALDI Test Store"}]}
@@ -25,7 +25,7 @@ class TestStoreScraperAldi(unittest.TestCase):
 
     @patch('requests.Session.get')
     def test_fetch_data_for_item_http_error(self, mock_get):
-        """Test an data_management call that results in an HTTP error."""
+        """Test an api call that results in an HTTP error."""
         mock_response = MagicMock()
         mock_response.raise_for_status.side_effect = Exception("HTTP Error")
         mock_get.return_value = mock_response
