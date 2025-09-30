@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from products.models import Product, Price, Bargain
 from companies.models import Store
 from django.db import transaction
-from decimal import Decimal # Import Decimal
+from decimal import Decimal, InvalidOperation # Import InvalidOperation
 
 class Command(BaseCommand):
     help = 'Finds products that are significantly cheaper in one store compared to others and populates the Bargain model.'
@@ -22,14 +22,17 @@ class Command(BaseCommand):
             self.stdout.write(f"Processing page {page_number}/{paginator.num_pages}...")
             page = paginator.page(page_number)
 
-            # Prefetch for the products on the current page
-            products_on_page = page.object_list
-            products_with_prices = Product.objects.filter(
-                id__in=[p.id for p in products_on_page]
-            ).prefetch_related('price_records__price_entries__store')
+            try:
+                # Prefetch for the products on the current page and evaluate the queryset
+                products_on_page = list(Product.objects.filter(
+                    id__in=[p.id for p in page.object_list]
+                ).prefetch_related('price_records__price_entries__store'))
+            except InvalidOperation as e:
+                self.stdout.write(self.style.WARNING(f"Skipping page {page_number} due to invalid decimal data in a price record. Error: {e}"))
+                continue # Skip this page
 
             with transaction.atomic():  # Atomic transaction for each chunk
-                for product in products_with_prices:
+                for product in products_on_page:
                     price_entries = []
                     for record in product.price_records.all():
                         price_entries.extend(list(record.price_entries.all()))
@@ -46,15 +49,15 @@ class Command(BaseCommand):
                     min_price = min_price_entry.price_record.price
                     max_price = max_price_entry.price_record.price
 
-                    if min_price > 0 and max_price > (min_price * Decimal('1.5')): # Use Decimal('1.5')
-                        percentage_difference = ((max_price - min_price) / min_price) * Decimal('100') # Use Decimal('100')
+                    if min_price > 0 and max_price > (min_price * Decimal('1.5')):
+                        percentage_difference = ((max_price - min_price) / min_price) * Decimal('100')
 
                         Bargain.objects.create(
                             product=product,
                             store=min_price_entry.store,
                             cheapest_price=min_price_entry,
                             most_expensive_price=max_price_entry,
-                            percentage_difference=float(percentage_difference) # Convert back to float for the model field
+                            percentage_difference=float(percentage_difference)
                         )
                         bargain_count += 1
 
