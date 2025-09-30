@@ -26,7 +26,7 @@ export const SubstitutionPage = ({ nearbyStoreIds }) => {
   const currentShoppingListSlot = items[currentProductIndex];
 
   useEffect(() => {
-    if (!currentShoppingListSlot || !userLocation || nearbyStoreIds.length === 0) return;
+    if (!currentShoppingListSlot || nearbyStoreIds.length === 0) return;
 
     const primaryItem = currentShoppingListSlot[0];
 
@@ -65,7 +65,7 @@ export const SubstitutionPage = ({ nearbyStoreIds }) => {
     };
 
     fetchSubstitutes();
-  }, [currentShoppingListSlot, userLocation, nearbyStoreIds, updateSubstitutionChoices]); // Re-fetch when current slot, user location, or nearbyStoreIds changes
+  }, [currentShoppingListSlot, nearbyStoreIds, updateSubstitutionChoices]); // Re-fetch when current slot, or nearbyStoreIds changes
 
   const handleSelectOption = (productId) => {
     setSelectedOptions(prevSelected => {
