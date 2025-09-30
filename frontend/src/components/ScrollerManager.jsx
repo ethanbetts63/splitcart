@@ -20,6 +20,7 @@ const ScrollerManager = ({ scrollers, nearbyStoreIds }) => {
         searchTerm={scroller.searchTerm}
         sourceUrl={scroller.sourceUrl}
         nearbyStoreIds={nearbyStoreIds}
+        seeMoreLink={scroller.seeMoreLink} // Pass the seeMoreLink
         onLoadComplete={onLoad}
       />
     );

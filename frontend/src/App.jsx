@@ -5,9 +5,11 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import SearchHeader from './components/SearchHeader';
 import ProductGrid from './components/ProductGrid';
+import GridSourcer from './components/GridSourcer'; // Import GridSourcer
 import ScrollerManager from './components/ScrollerManager';
 import LocationSetupModal from './components/LocationSetupModal';
 import SubstitutionPage from './pages/SubstitutionPage';
+import ProductListPage from './pages/ProductListPage'; // Import ProductListPage
 import FinalCartPage from './pages/FinalCartPage';
 import './App.css';
 
@@ -36,9 +38,9 @@ function App() {
     const randomSearchTerms = getRandomItems(commonSearches, 3);
 
     const scrollerConfig = [
-        { title: "Bargain Finds!", sourceUrl: "/api/products/bargains/" },
-        { title: "Popular with SplitCart users", searchTerm: "" },
-        ...randomSearchTerms.map(term => ({ title: term, searchTerm: term }))
+        { title: "Bargain Finds!", sourceUrl: "/api/products/bargains/", seeMoreLink: "/products?source=bargains" },
+        { title: "Popular with SplitCart users", searchTerm: "", seeMoreLink: "/products?source=all" },
+        ...randomSearchTerms.map(term => ({ title: term, searchTerm: term, seeMoreLink: `/products?search=${encodeURIComponent(term)}` }))
     ];
     setScrollers(scrollerConfig);
   }, []);
@@ -78,13 +80,14 @@ function App() {
               <SearchHeader searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
               <Container fluid>
                 {searchTerm ? (
-                  <ProductGrid searchTerm={searchTerm} nearbyStoreIds={nearbyStoreIds} />
+                  <GridSourcer searchTerm={searchTerm} nearbyStoreIds={nearbyStoreIds} />
                 ) : (
                   <ScrollerManager scrollers={scrollers} nearbyStoreIds={nearbyStoreIds} />
                 )}
               </Container>
             </>
           } />
+          <Route path="/products" element={<ProductListPage nearbyStoreIds={nearbyStoreIds} />} />
           <Route path="/split-cart" element={<SubstitutionPage nearbyStoreIds={nearbyStoreIds} />} />
           <Route path="/final-cart" element={<FinalCartPage />} />
         </Routes>

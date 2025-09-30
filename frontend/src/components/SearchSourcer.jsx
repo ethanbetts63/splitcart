@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import HorizontalProductScroller from './HorizontalProductScroller';
 
-const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, onLoadComplete }) => {
+const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLink, onLoadComplete }) => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -33,7 +33,9 @@ const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, onLoadCom
       })
       .then(data => {
         if (isMounted) {
-          setProducts(data.results ? data.results.slice(0, 20) : []);
+          // Handle both paginated and direct list responses
+          const productList = Array.isArray(data) ? data : (data.results || []);
+          setProducts(productList.slice(0, 20));
           setError(null);
         }
       })
@@ -56,7 +58,7 @@ const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, onLoadCom
     return () => {
       isMounted = false;
     };
-  }, [title, searchTerm, sourceUrl, nearbyStoreIds, onLoadComplete]);
+  }, [title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLink, onLoadComplete]);
 
   if (isLoading) {
     // Optional: render a loading state placeholder
@@ -87,7 +89,7 @@ const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, onLoadCom
   }
 
   // Render the dumb scroller with the fetched products
-  return <HorizontalProductScroller title={title} products={products} />;
+  return <HorizontalProductScroller title={title} products={products} seeMoreLink={seeMoreLink} />;
 };
 
 export default SearchSourcer;

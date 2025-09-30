@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import ProductTile from './ProductTile';
 import './HorizontalProductScroller.css';
 
-const HorizontalProductScroller = ({ title, products }) => {
+const HorizontalProductScroller = ({ title, products, seeMoreLink = "#" }) => {
   if (!products || products.length === 0) {
     return null; // Don't render anything if there are no products
   }
@@ -12,7 +12,7 @@ const HorizontalProductScroller = ({ title, products }) => {
     <div className="horizontal-scroller-container">
       <div className="scroller-header">
         <h2>{title}</h2>
-        <Link to="#" className="see-more-link">See More</Link>
+        <Link to={seeMoreLink} className="see-more-link">See More</Link>
       </div>
       <div className="scroller-content">
         {products.map(product => (
