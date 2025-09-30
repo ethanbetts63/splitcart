@@ -5,17 +5,25 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import SearchHeader from './components/SearchHeader';
 import ProductGrid from './components/ProductGrid';
-import HorizontalProductScroller from './components/HorizontalProductScroller';
+import ScrollerManager from './components/ScrollerManager';
 import LocationSetupModal from './components/LocationSetupModal';
-import SubstitutionPage from './pages/SubstitutionPage'; // Import the new page
-import FinalCartPage from './pages/FinalCartPage'; // Import the new page
+import SubstitutionPage from './pages/SubstitutionPage';
+import FinalCartPage from './pages/FinalCartPage';
 import './App.css';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showLocationModal, setShowLocationModal] = useState(false);
-  const [userLocation, setUserLocation] = useState(null); // { postcode: 'XXXX', radius: Y }
+  const [userLocation, setUserLocation] = useState(null);
   const [nearbyStoreIds, setNearbyStoreIds] = useState([]);
+
+  const scrollerTitles = [
+    "Bargain Finds!",
+    "Popular with SplitCart users",
+    "Milk",
+    "Bread",
+    "Eggs"
+  ];
 
   useEffect(() => {
     const savedLocation = localStorage.getItem('userLocation');
@@ -63,13 +71,7 @@ function App() {
                 {searchTerm ? (
                   <ProductGrid searchTerm={searchTerm} nearbyStoreIds={nearbyStoreIds} />
                 ) : (
-                  <>
-                    <HorizontalProductScroller title="Bargain Finds!" />
-                    <HorizontalProductScroller title="Popular with SplitCart users" />
-                    <HorizontalProductScroller title="Milk" />
-                    <HorizontalProductScroller title="Bread" />
-                    <HorizontalProductScroller title="Eggs" />
-                  </>
+                  <ScrollerManager titles={scrollerTitles} />
                 )}
               </Container>
             </>

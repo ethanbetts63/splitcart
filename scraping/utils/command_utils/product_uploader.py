@@ -8,6 +8,7 @@ class ProductUploader:
         self.command = command
         self.outbox_path_name = 'product_outbox'
         self.archive_path_name = 'temp_jsonl_product_storage'
+        # something wrong here. 
         self.upload_url_path = '/api/upload/products/'
 
     def run(self):
