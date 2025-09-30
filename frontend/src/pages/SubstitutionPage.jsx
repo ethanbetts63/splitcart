@@ -21,33 +21,34 @@ export const SubstitutionPage = () => {
     }
   }, []);
 
-  const currentShoppingListItem = items[currentProductIndex];
+  const currentShoppingListSlot = items[currentProductIndex];
 
   useEffect(() => {
-    if (!currentShoppingListItem || !userLocation) return;
+    if (!currentShoppingListSlot || !userLocation) return;
 
     const fetchSubstitutes = async () => {
       setLoading(true);
       setError(null);
       try {
+        const primaryItem = currentShoppingListSlot[0];
         const params = new URLSearchParams();
         if (userLocation && userLocation.postcode && userLocation.radius) {
           params.append('postcode', userLocation.postcode);
           params.append('radius', userLocation.radius);
         }
         
-        const response = await fetch(`/api/products/${currentShoppingListItem.product.id}/substitutes/?${params.toString()}`);
+        const response = await fetch(`/api/products/${primaryItem.product.id}/substitutes/?${params.toString()}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log('API Response Data:', data); // DEBUGGING
         setSubstitutes(data);
-        setSelectedOptions([currentShoppingListItem.product.id]); // Select original by default
+        // Default selection includes only the original product's ID
+        setSelectedOptions([primaryItem.product.id]);
 
-        // If no substitutes found, automatically select original and advance
+        // If no substitutes are found, we can auto-confirm the original and move on.
         if (data.length === 0) {
-          updateSubstitutionChoices(currentShoppingListItem.product.id, [currentShoppingListItem.product.id]);
+          updateSubstitutionChoices(primaryItem.product.id, [primaryItem.product]);
           setCurrentProductIndex(prev => prev + 1);
         }
 
@@ -59,10 +60,13 @@ export const SubstitutionPage = () => {
     };
 
     fetchSubstitutes();
-  }, [currentShoppingListItem, userLocation, updateSubstitutionChoices]); // Re-fetch when current product or user location changes
+  }, [currentShoppingListSlot, userLocation, updateSubstitutionChoices]); // Re-fetch when current slot or user location changes
 
   const handleSelectOption = (productId) => {
     setSelectedOptions(prevSelected => {
+      // Prevent deselecting the original product
+      if (productId === currentShoppingListSlot[0].product.id) return prevSelected;
+      
       if (prevSelected.includes(productId)) {
         return prevSelected.filter(id => id !== productId);
       } else {
@@ -72,8 +76,14 @@ export const SubstitutionPage = () => {
   };
 
   const handleNextProduct = () => {
-    // Save current selections
-    updateSubstitutionChoices(currentShoppingListItem.product.id, selectedOptions);
+    const primaryItem = currentShoppingListSlot[0];
+    // All possible choices for this slot: the original product plus the fetched substitutes.
+    const allAvailableProducts = [primaryItem.product, ...substitutes];
+    // Filter this list to get the full objects of what the user selected.
+    const selectedProducts = allAvailableProducts.filter(p => selectedOptions.includes(p.id));
+    
+    // Save the full product objects to the context.
+    updateSubstitutionChoices(primaryItem.product.id, selectedProducts);
     setCurrentProductIndex(prev => prev + 1);
   };
 
@@ -86,7 +96,7 @@ export const SubstitutionPage = () => {
     );
   }
 
-  if (!currentShoppingListItem) {
+  if (!currentShoppingListSlot) {
     return (
       <Container fluid className="mt-4">
         <h2>Substitution Complete!</h2>
@@ -108,7 +118,7 @@ export const SubstitutionPage = () => {
       </p>
 
       <SubstitutesSection 
-        products={[{ ...currentShoppingListItem.product, is_original: true }, ...substitutes]}
+        products={[{ ...currentShoppingListSlot[0].product, is_original: true }, ...substitutes]}
         selectedOptions={selectedOptions}
         onSelectOption={handleSelectOption}
       />

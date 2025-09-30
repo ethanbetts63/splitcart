@@ -14,7 +14,6 @@ from django.db.models import Count, Q
 from companies.models import Company, Store
 from products.models import Product, Price, ProductSubstitution
 
-
 def get_substitution_group(anchor_product, depth_limit=SUBSTITUTION_SEARCH_DEPTH):
     """
     Performs an intelligent graph traversal to find a high-quality group of substitutes.
