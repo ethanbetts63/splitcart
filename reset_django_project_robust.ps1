@@ -57,7 +57,6 @@ git add .
 git commit -m "reset django project robust.ps1"
 git push
 
-python manage.py upload
 python manage.py update --archive
 python manage.py cluster_stores
 python manage.py update --products
