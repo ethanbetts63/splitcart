@@ -42,6 +42,8 @@ const SubstitutionPage = () => {
     });
   };
 
+  const isLastProduct = currentProductIndex === items.length - 1;
+
   const handleNextProduct = () => {
     if (!currentItem) return;
 
@@ -52,38 +54,37 @@ const SubstitutionPage = () => {
     setCurrentProductIndex(prev => prev + 1);
   };
 
-  const handleViewFinalCart = () => {
+  const handleFinishAndSplit = () => {
+    if (!currentItem) return;
+
+    // First, save the choices for the current (last) item
+    const allAvailableProducts = [currentItem.product, ...(currentSubstitutes || [])];
+    const selectedProducts = allAvailableProducts.filter(p => selectedOptions.includes(p.id));
+    updateSubstitutionChoices(currentItem.product.id, selectedProducts);
+
+    // Now, navigate immediately. We need to ensure the state update from
+    // updateSubstitutionChoices is available, so we manually build the final cart data here.
+    const finalSelections = { ...selections, [currentItem.product.id]: selectedProducts };
+
     const formattedCart = items.map(item => {
       const originalProductId = item.product.id;
-      const selectedProducts = selections[originalProductId];
-
-      // If user made a choice for this item, use that selection
-      if (selectedProducts && selectedProducts.length > 0) {
-        return selectedProducts.map(p => ({ product_id: p.id, quantity: item.quantity }));
+      const prods = finalSelections[originalProductId];
+      if (prods && prods.length > 0) {
+        return prods.map(p => ({ product_id: p.id, quantity: item.quantity }));
       }
-
-      // Otherwise, just use the original item
       return [{ product_id: originalProductId, quantity: item.quantity || 1 }];
     });
 
     navigate('/final-cart', { state: { cart: formattedCart, store_ids: nearbyStoreIds } });
   };
 
-  if (items.length === 0) {
-    return (
-      <Container fluid className="mt-4">
-        <Alert variant="info">Your shopping list is empty. Add some products to start splitting your cart!</Alert>
-        <Button variant="primary" onClick={() => navigate('/')}>Go Back to Shopping</Button>
-      </Container>
-    );
-  }
-
-  if (!currentItem) {
+  // This page is now effectively removed from the primary user flow.
+  if (!currentItem && items.length > 0) {
     return (
       <Container fluid className="mt-4">
         <h2>Substitution Complete!</h2>
         <p>You have reviewed all products in your cart.</p>
-        <Button variant="primary" onClick={handleViewFinalCart}>View Final Cart</Button>
+        <Button variant="primary" onClick={() => navigate('/final-cart', { state: { cart: [], store_ids: nearbyStoreIds } })}>View Final Cart</Button>
       </Container>
     );
   }
@@ -108,10 +109,10 @@ const SubstitutionPage = () => {
 
       <Button
         variant="primary"
-        onClick={handleNextProduct}
+        onClick={isLastProduct ? handleFinishAndSplit : handleNextProduct}
         className="mt-3"
       >
-        Next Product
+        {isLastProduct ? 'Split My Cart' : 'Next Product'}
       </Button>
     </Container>
   );
