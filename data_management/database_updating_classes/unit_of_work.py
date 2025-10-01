@@ -13,6 +13,7 @@ class UnitOfWork:
         self.products_to_update = []
         self.brands_to_update = []
         self.groups_to_update = []
+        self.groups_to_update = []
         self.groups_to_clear_candidates = []
         self.new_price_records_created = 0
         self.category_manager = CategoryManager(command)
@@ -90,6 +91,9 @@ class UnitOfWork:
         elif isinstance(instance, ProductBrand):
             if instance not in self.brands_to_update:
                 self.brands_to_update.append(instance)
+        elif isinstance(instance, StoreGroup):
+            if instance not in self.groups_to_update:
+                self.groups_to_update.append(instance)
         elif isinstance(instance, StoreGroup):
             if instance not in self.groups_to_update:
                 self.groups_to_update.append(instance)

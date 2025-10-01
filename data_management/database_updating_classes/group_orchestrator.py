@@ -89,7 +89,8 @@ class GroupOrchestrator:
 
             if other_members_exist:
                 print(f"  Group {group} has other members. Marking as 'Divergence Detected'.")
-                self.uow.update_group_status(group, 'DIVERGENCE_DETECTED')
+                group.status = 'DIVERGENCE_DETECTED'
+                self.uow.add_for_update(group)
                 
                 # Even in a divergence, the failed candidates are considered rogue and must be outcast.
                 for rogue in candidates:
@@ -155,7 +156,8 @@ class GroupOrchestrator:
 
     def _promote_new_ambassador(self, group, new_ambassador_store):
         """Updates the group to set a new ambassador."""
-        self.uow.update_group_ambassador(group, new_ambassador_store)
+        group.ambassador = new_ambassador_store
+        self.uow.add_for_update(group)
 
     def _outcast_rogue(self, rogue_store):
         """Removes a store from its group and attempts to re-home it."""
@@ -205,7 +207,7 @@ class GroupOrchestrator:
             self.uow.add_membership_to_delete(membership)
         
         group.is_active = False
-        self.uow.add_group_for_update(group)
+        self.uow.add_for_update(group)
 
     def _infer_prices_for_group(self, group, new_ambassador, candidates):
         """
