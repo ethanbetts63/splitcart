@@ -3,7 +3,7 @@ import { ListGroup, Badge } from 'react-bootstrap';
 import { useShoppingList } from '../context/ShoppingListContext';
 
 const ShoppingListComponent = () => {
-  const { items } = useShoppingList();
+  const { items, selections } = useShoppingList();
 
   return (
     <>
@@ -12,23 +12,28 @@ const ShoppingListComponent = () => {
         {items.length === 0 ? (
           <ListGroup.Item>Your list is empty</ListGroup.Item>
         ) : (
-          items.map(slot => (
-            <ListGroup.Item key={slot[0].product.id}>
-              <div>
-                <strong>{slot[0].product.name} (x{slot[0].quantity})</strong>
-              </div>
-              {slot.length > 1 && (
-                <div className="ps-2">
-                  <small className="text-muted">Substitutes:</small>
-                  {slot.slice(1).map(subItem => (
-                    <div key={subItem.product.id} className="ps-3">
-                      <small>{subItem.product.name}</small>
-                    </div>
-                  ))}
+          items.map(item => {
+            const itemSelections = selections[item.product.id] || [];
+            const substitutes = itemSelections.filter(p => p.id !== item.product.id);
+
+            return (
+              <ListGroup.Item key={item.product.id}>
+                <div>
+                  <strong>{item.product.name} (x{item.quantity})</strong>
                 </div>
-              )}
-            </ListGroup.Item>
-          ))
+                {substitutes.length > 0 && (
+                  <div className="ps-2">
+                    <small className="text-muted">Substitutes:</small>
+                    {substitutes.map(sub => (
+                      <div key={sub.id} className="ps-3">
+                        <small>{sub.name}</small>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </ListGroup.Item>
+            );
+          })
         )}
       </ListGroup>
     </>

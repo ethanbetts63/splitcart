@@ -51,7 +51,7 @@ const Header = ({ onShowLocationModal, setSearchTerm }) => {
 
       {items.length > 0 && (
         <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 1050, padding: '1.5rem', display: 'flex', alignItems: 'center' }}>
-          {location.pathname !== '/split-cart' && <SplitCartButton />}
+          {location.pathname !== '/split-cart' && location.pathname !== '/final-cart' && <SplitCartButton />}
         </div>
       )}
 
