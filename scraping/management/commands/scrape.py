@@ -130,8 +130,6 @@ class Command(BaseCommand):
 
             if scraper:
                 scraper.run()
-                store.last_scraped = timezone.now()
-                store.save()
 
         except Store.DoesNotExist:
             self.stdout.write(self.style.ERROR(f"Store with PK {store_pk} not found."))

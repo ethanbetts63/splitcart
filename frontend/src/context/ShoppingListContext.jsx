@@ -12,6 +12,13 @@ export const ShoppingListProvider = ({ children }) => {
   const [userLocation, setUserLocation] = useState(null);
   const [nearbyStoreIds, setNearbyStoreIds] = useState([]);
 
+  useEffect(() => {
+    const savedLocation = localStorage.getItem('userLocation');
+    if (savedLocation) {
+      setUserLocation(JSON.parse(savedLocation));
+    }
+  }, []);
+
   const fetchSubstitutes = useCallback(async (product, storeIds) => {
     if (!product || !storeIds || storeIds.length === 0) {
       return;

@@ -2,6 +2,7 @@ import os
 import json
 from products.models import Product
 from companies.models import Company, Store
+from django.core.cache import cache
 from data_management.database_updating_classes.product_resolver import ProductResolver
 from data_management.database_updating_classes.unit_of_work import UnitOfWork
 from data_management.database_updating_classes.variation_manager import VariationManager
@@ -83,6 +84,7 @@ class UpdateOrchestrator:
                     store_obj.last_scraped = scraped_date_value
                     store_obj.save()
                     self.command.stdout.write(self.command.style.SUCCESS(f"  - Updated last_scraped for Store PK {store_obj.pk} ({store_obj.store_name}) to {scraped_date_value}."))
+                    cache.delete(f"scraping_lock_{store_obj.pk}") # Clear the lock
                 else:
                     self.command.stderr.write(self.command.style.ERROR(f"  - Warning: No 'scraped_date' found in metadata for file {os.path.basename(file_path)}. last_scraped not updated."))
 
