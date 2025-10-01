@@ -57,6 +57,7 @@ git add .
 git commit -m "reset django project robust.ps1"
 git push
 
+python manage.py upload
 python manage.py update --archive
 python manage.py update --products
 python manage.py update --prefixes
@@ -69,3 +70,6 @@ python manage.py analyze --report savings
 python manage.py debug_savings_run
 python manage.py test_unit_price_sorter
 python manage.py archive
+
+
+# generate store groups? 
