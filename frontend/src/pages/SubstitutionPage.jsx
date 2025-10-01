@@ -155,6 +155,3 @@ export const SubstitutionPage = () => {
       />
     </Container>
   );
-};
-
-export default SubstitutionPage;

@@ -15,8 +15,6 @@ import FinalCartPage from './pages/FinalCartPage';
 import { useShoppingList } from './context/ShoppingListContext';
 import './App.css';
 
-import { useShoppingList } from './context/ShoppingListContext';
-
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showLocationModal, setShowLocationModal] = useState(false);
