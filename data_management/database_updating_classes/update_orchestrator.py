@@ -265,15 +265,10 @@ class UpdateOrchestrator:
         return product_cache
 
     def _cleanup_processed_files(self):
-        self.command.stdout.write("--- Moving processed inbox files to temp storage ---")
-        temp_storage_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'temp_product_storage')
+        self.command.stdout.write("--- Deleting processed inbox files ---")
         
-        os.makedirs(temp_storage_path, exist_ok=True)
-
         for file_path in self.processed_files:
             try:
-                file_name = os.path.basename(file_path)
-                destination_path = os.path.join(temp_storage_path, file_name)
-                os.rename(file_path, destination_path)
+                os.remove(file_path)
             except OSError as e:
-                self.command.stderr.write(self.command.style.ERROR(f'Could not move file {file_path}: {e}'))
+                self.command.stderr.write(self.command.style.ERROR(f'Could not delete file {file_path}: {e}'))
