@@ -90,6 +90,9 @@ class UnitOfWork:
         elif isinstance(instance, ProductBrand):
             if instance not in self.brands_to_update:
                 self.brands_to_update.append(instance)
+        elif isinstance(instance, StoreGroup):
+            if instance not in self.groups_to_update:
+                self.groups_to_update.append(instance)
 
     def add_group_to_clear_candidates(self, group):
         if group not in self.groups_to_clear_candidates:
@@ -159,7 +162,13 @@ class UnitOfWork:
                     ProductBrand.objects.bulk_update(self.brands_to_update, brand_update_fields, batch_size=500)
                     self.command.stdout.write(f"  - Updated {len(self.brands_to_update)} brands with new variation info.")
 
-                # Stage 6: Clear candidates from groups that have been processed
+                # Stage 6: Update existing groups
+                if self.groups_to_update:
+                    group_update_fields = ['ambassador', 'status', 'is_active']
+                    StoreGroup.objects.bulk_update(self.groups_to_update, group_update_fields, batch_size=500)
+                    self.command.stdout.write(f"  - Updated {len(self.groups_to_update)} store groups.")
+
+                # Stage 7: Clear candidates from groups that have been processed
                 if self.groups_to_clear_candidates:
                     for group in self.groups_to_clear_candidates:
                         group.candidates.clear()
