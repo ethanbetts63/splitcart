@@ -5,6 +5,10 @@ import SkeletonProductCard from './SkeletonProductCard'; // Import skeleton
 import './HorizontalProductScroller.css';
 
 const HorizontalProductScroller = ({ title, products, seeMoreLink = "#", isLoading }) => {
+  if (!isLoading && (!products || products.length === 0)) {
+    return null; // Don't render anything if not loading and no products
+  }
+
   return (
     <div className="horizontal-scroller-container">
       <div className="scroller-header">
@@ -18,16 +22,12 @@ const HorizontalProductScroller = ({ title, products, seeMoreLink = "#", isLoadi
               <SkeletonProductCard />
             </div>
           ))
-        ) : products && products.length > 0 ? (
+        ) : (
           products.map(product => (
             <div key={product.id} className="scroller-item">
               <ProductTile product={product} />
             </div>
           ))
-        ) : (
-          <div className="scroller-empty-message">
-            <p>No products found for this category.</p>
-          </div>
         )}
       </div>
     </div>
