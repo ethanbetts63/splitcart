@@ -18,10 +18,30 @@ const SubstitutionPage = () => {
   useEffect(() => {
     if (currentItem && currentSubstitutes && currentSubstitutes.length === 0) {
       // No substitutes, so we "choose" the original product and move on.
-      updateSubstitutionChoices(currentItem.product.id, [currentItem.product]);
-      setCurrentProductIndex(prev => prev + 1);
+      const allAvailableProducts = [currentItem.product]; // Only original product for auto-advance
+      const selectedProducts = allAvailableProducts; // Auto-select original
+      updateSubstitutionChoices(currentItem.product.id, selectedProducts);
+
+      // Check if this was the last item
+      if (currentProductIndex === items.length - 1) {
+        // If it was the last item, immediately navigate to final cart
+        // We need to manually build the finalSelections here as the state update might not be immediate
+        const finalSelections = { ...selections, [currentItem.product.id]: selectedProducts };
+        const formattedCart = items.map(item => {
+          const originalProductId = item.product.id;
+          const prods = finalSelections[originalProductId];
+          if (prods && prods.length > 0) {
+            return prods.map(p => ({ product_id: p.id, quantity: item.quantity }));
+          }
+          return [{ product_id: originalProductId, quantity: item.quantity || 1 }];
+        });
+        navigate('/final-cart', { state: { cart: formattedCart, store_ids: nearbyStoreIds } });
+      } else {
+        // Not the last item, just advance to the next
+        setCurrentProductIndex(prev => prev + 1);
+      }
     }
-  }, [currentItem, currentSubstitutes, updateSubstitutionChoices]);
+  }, [currentItem, currentSubstitutes, updateSubstitutionChoices, currentProductIndex, items.length, selections, nearbyStoreIds, navigate]);
 
   // Effect to initialize selected options when the product changes
   useEffect(() => {
@@ -77,17 +97,6 @@ const SubstitutionPage = () => {
 
     navigate('/final-cart', { state: { cart: formattedCart, store_ids: nearbyStoreIds } });
   };
-
-  // This page is now effectively removed from the primary user flow.
-  if (!currentItem && items.length > 0) {
-    return (
-      <Container fluid className="mt-4">
-        <h2>Substitution Complete!</h2>
-        <p>You have reviewed all products in your cart.</p>
-        <Button variant="primary" onClick={() => navigate('/final-cart', { state: { cart: [], store_ids: nearbyStoreIds } })}>View Final Cart</Button>
-      </Container>
-    );
-  }
 
   // Show loading spinner if substitutes for the current item are not yet fetched
   if (currentSubstitutes === undefined) {
