@@ -73,6 +73,19 @@ class UpdateOrchestrator:
             if unit_of_work.commit(consolidated_data, product_cache, resolver, store_obj):
                 self.processed_files.append(file_path)
 
+                # Get the scraped_date from the metadata of the first product in the consolidated data
+                # Assuming all products in a single .jsonl file share the same scrape date
+                first_product_data = next(iter(consolidated_data.values()))
+                scraped_date_value = first_product_data['metadata'].get('scraped_date')
+
+                if scraped_date_value:
+                    # Assign directly, assuming it's a format Django's DateTimeField can handle
+                    store_obj.last_scraped = scraped_date_value
+                    store_obj.save()
+                    self.command.stdout.write(self.command.style.SUCCESS(f"  - Updated last_scraped for Store PK {store_obj.pk} ({store_obj.store_name}) to {scraped_date_value}."))
+                else:
+                    self.command.stderr.write(self.command.style.ERROR(f"  - Warning: No 'scraped_date' found in metadata for file {os.path.basename(file_path)}. last_scraped not updated."))
+
         # After processing all files, run post-processing if a UoW was created
         if unit_of_work:
             # Run the group orchestrator to infer prices

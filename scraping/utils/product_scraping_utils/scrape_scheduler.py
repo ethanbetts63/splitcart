@@ -1,6 +1,7 @@
 import random
 from companies.models import Store, StoreGroup
 from django.db.models import Count, Q
+from django.core.cache import cache
 
 class ScrapeScheduler:
     """
@@ -62,6 +63,12 @@ class ScrapeScheduler:
         highest-priority store to scrape. It contains all logic for selecting
         a candidate, from group selection to filtering.
         """
+        # Define a cache timeout for store locks (e.g., 4 hours)
+        CACHE_TIMEOUT = 4 * 3600
+
+        def _is_store_locked(store_pk):
+            return cache.get(f"scraping_lock_{store_pk}")
+
         target_group = self._get_group()
         
         # Determine the base queryset based on the group selection
@@ -87,9 +94,17 @@ class ScrapeScheduler:
         eligible_stores = stores_qs.exclude(id__in=excluded_ids)
 
         # Prioritize the first store that has never been scraped from the eligible list
-        unscraped_store = eligible_stores.filter(last_scraped__isnull=True).first()
-        if unscraped_store:
-            return unscraped_store
+        unscraped_stores = eligible_stores.filter(last_scraped__isnull=True).order_by('pk') # Order by PK for consistent selection
+        for store in unscraped_stores:
+            if not _is_store_locked(store.pk):
+                cache.set(f"scraping_lock_{store.pk}", True, timeout=CACHE_TIMEOUT)
+                return store
 
         # If all eligible stores have been scraped at least once, find the oldest
-        return eligible_stores.order_by('last_scraped').first()
+        oldest_scraped_stores = eligible_stores.order_by('last_scraped', 'pk') # Add PK for consistent tie-breaking
+        for store in oldest_scraped_stores:
+            if not _is_store_locked(store.pk):
+                cache.set(f"scraping_lock_{store.pk}", True, timeout=CACHE_TIMEOUT)
+                return store
+        
+        return None # No eligible, unlocked store found

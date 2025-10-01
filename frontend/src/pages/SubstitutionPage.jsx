@@ -5,7 +5,7 @@ import SubstitutesSection from '../components/SubstitutesSection';
 import LocationSetupModal from '../components/LocationSetupModal'; // To get userLocation
 import { useNavigate } from 'react-router-dom';
 
-export const SubstitutionPage = () => {
+const SubstitutionPage = () => {
   const { items, substitutes, updateSubstitutionChoices, nearbyStoreIds } = useShoppingList();
   const navigate = useNavigate();
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
@@ -111,47 +111,4 @@ export const SubstitutionPage = () => {
   );
 };
 
-  if (items.length === 0) {
-    return (
-      <Container fluid className="mt-4">
-        <Alert variant="info">Your shopping list is empty. Add some products to start splitting your cart!</Alert>
-        <Button variant="primary" onClick={() => window.history.back()}>Go Back to Shopping</Button>
-      </Container>
-    );
-  }
-
-  if (!currentShoppingListSlot) {
-    return (
-      <Container fluid className="mt-4">
-        <h2>Substitution Complete!</h2>
-        <p>You have reviewed all products in your cart.</p>
-        <Button variant="primary" onClick={handleViewFinalCart}>View Final Cart</Button>
-      </Container>
-    );
-  }
-
-  return (
-    <Container fluid className="mt-4">
-      <h2>Product Substitution</h2>
-      <p className="text-muted mb-4">
-        Please select all items you are willing to consider as substitutes for the original product. 
-        The more options you provide, the greater the flexibility the algorithm has to optimize your total cart cost. 
-        The system aims for the lowest overall cart price, which might involve selecting a seemingly more expensive 
-        individual substitute if it leads to greater savings across your entire shopping list.
-      </p>
-
-      <Button
-        variant="primary"
-        onClick={handleNextProduct}
-        className="mt-3"
-      >
-        Next Product
-      </Button>
-
-      <SubstitutesSection 
-        products={[{ ...currentShoppingListSlot[0].product, is_original: true }, ...substitutes]}
-        selectedOptions={selectedOptions}
-        onSelectOption={handleSelectOption}
-      />
-    </Container>
-  );
+export default SubstitutionPage;
