@@ -8,6 +8,7 @@ import ProductGrid from './components/ProductGrid';
 import GridSourcer from './components/GridSourcer'; // Import GridSourcer
 import ScrollerManager from './components/ScrollerManager';
 import LocationSetupModal from './components/LocationSetupModal';
+import Layout from './components/Layout'; // Import Layout component
 import SubstitutionPage from './pages/SubstitutionPage';
 import ProductListPage from './pages/ProductListPage'; // Import ProductListPage
 import FinalCartPage from './pages/FinalCartPage';
@@ -76,18 +77,19 @@ function App() {
       <main className="flex-grow-1">
         <Routes>
           <Route path="/" element={
-            <>
-              <SearchHeader searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-              <Container fluid>
-                {searchTerm ? (
-                  <GridSourcer searchTerm={searchTerm} nearbyStoreIds={nearbyStoreIds} />
-                ) : (
-                  <ScrollerManager scrollers={scrollers} nearbyStoreIds={nearbyStoreIds} />
-                )}
-              </Container>
-            </>
+            <Layout searchTerm={searchTerm} setSearchTerm={setSearchTerm}>
+              {searchTerm ? (
+                <GridSourcer searchTerm={searchTerm} nearbyStoreIds={nearbyStoreIds} />
+              ) : (
+                <ScrollerManager scrollers={scrollers} nearbyStoreIds={nearbyStoreIds} />
+              )}
+            </Layout>
           } />
-          <Route path="/products" element={<ProductListPage nearbyStoreIds={nearbyStoreIds} />} />
+          <Route path="/products" element={
+            <Layout searchTerm={searchTerm} setSearchTerm={setSearchTerm}>
+              <ProductListPage nearbyStoreIds={nearbyStoreIds} />
+            </Layout>
+          } />
           <Route path="/split-cart" element={<SubstitutionPage nearbyStoreIds={nearbyStoreIds} />} />
           <Route path="/final-cart" element={<FinalCartPage />} />
         </Routes>

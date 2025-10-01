@@ -14,10 +14,12 @@ const SearchHeader = ({ searchTerm, setSearchTerm }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSearchTerm(inputValue);
+    navigate(`/products?search=${encodeURIComponent(inputValue)}`);
   };
 
   const handleHomeClick = () => {
     setSearchTerm('');
+    setInputValue('');
     navigate('/');
   };
 

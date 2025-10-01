@@ -31,5 +31,3 @@ const ProductGrid = ({ products, onLoadMore, hasMorePages, isLoadingMore, title 
 };
 
 export default ProductGrid;
-
-export default ProductGrid;
