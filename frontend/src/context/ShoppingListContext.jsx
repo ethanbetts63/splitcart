@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useCallback, useEffect } from 'react';
+import React, { createContext, useState, useContext, useCallback, useEffect, useRef } from 'react';
 
 const ShoppingListContext = createContext();
 
@@ -12,6 +12,7 @@ export const ShoppingListProvider = ({ children }) => {
   const [userLocation, setUserLocation] = useState(null);
   const [nearbyStoreIds, setNearbyStoreIds] = useState([]);
   const [selections, setSelections] = useState({}); // { originalProductId: [product, product, ...] }
+  const prevStoreIdsRef = useRef();
 
   useEffect(() => {
     const savedLocation = localStorage.getItem('userLocation');
@@ -60,10 +61,16 @@ export const ShoppingListProvider = ({ children }) => {
     fetchStoreIds();
   }, [userLocation]);
 
+  // Effect to re-fetch substitutes when location changes
   useEffect(() => {
-    if (nearbyStoreIds.length > 0) {
+    const hasStoreIdsChanged = JSON.stringify(prevStoreIdsRef.current) !== JSON.stringify(nearbyStoreIds);
+
+    if (hasStoreIdsChanged && nearbyStoreIds.length > 0 && items.length > 0) {
       items.forEach(item => fetchSubstitutes(item.product, nearbyStoreIds));
     }
+
+    // Update the ref for the next render
+    prevStoreIdsRef.current = nearbyStoreIds;
   }, [nearbyStoreIds, items, fetchSubstitutes]);
 
   const addItem = useCallback((product, quantity) => {
