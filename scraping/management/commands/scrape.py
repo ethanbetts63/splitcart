@@ -1,14 +1,13 @@
 from django.core.management.base import BaseCommand
-from django.utils import timezone
 from companies.models.store import Store
 from scraping.utils.product_scraping_utils.get_woolworths_categories import get_woolworths_categories
 from scraping.utils.product_scraping_utils.get_coles_categories import get_coles_categories
 from scraping.scrapers.gs1_company_scraper import Gs1CompanyScraper
-from scraping.utils.product_scraping_utils.scrape_scheduler import ScrapeScheduler
-from scraping.utils.python_file_downloader import fetch_python_file
-from django.conf import settings
-import os
+import requests
 import time
+import os
+from django.conf import settings
+from scraping.utils.python_file_downloader import fetch_python_file
 
 class Command(BaseCommand):
     help = 'Runs the scrapers as a persistent worker, continuously selecting one store at a time based on the ScrapeScheduler.'
@@ -57,9 +56,6 @@ class Command(BaseCommand):
         if options['aldi']: companies_to_scrape.append('Aldi')
         if options['iga']: companies_to_scrape.append('Iga')
 
-        # If no specific companies are flagged, the scheduler will run on all companies
-        scheduler = ScrapeScheduler(companies=companies_to_scrape if companies_to_scrape else None)
-        
         scope_message = f" for {', '.join(companies_to_scrape)}" if companies_to_scrape else " for all companies"
         self.stdout.write(self.style.SUCCESS(f"Starting scraper in persistent worker mode{scope_message}..."))
         self.stdout.write(self.style.SUCCESS("Create a 'stop.txt' file in the 'scraping' directory to gracefully stop the worker."))
@@ -69,15 +65,27 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.WARNING("Stop signal detected. Shutting down worker."))
                 break
 
-            self.stdout.write(self.style.HTTP_INFO("\nRequesting next candidate from scheduler..."))
-            store_to_scrape = scheduler.get_next_candidate()
+            self.stdout.write(self.style.HTTP_INFO("\nRequesting next candidate from scheduler API..."))
+            try:
+                # Construct the API URL with query parameters for company filtering
+                api_url = "http://127.0.0.1:8000/api/scheduler/next-candidate/"
+                params = {'company': companies_to_scrape}
+                response = requests.get(api_url, params=params, timeout=30)
+                response.raise_for_status() # Raise an exception for bad status codes
 
-            if not store_to_scrape:
-                self.stdout.write(self.style.WARNING("Scheduler returned no store. Waiting 30 seconds..."))
-                time.sleep(30)
+                if response.status_code == 204:
+                    self.stdout.write(self.style.WARNING("Scheduler returned no store. Waiting 30 seconds..."))
+                    time.sleep(30)
+                    continue
+                
+                store_to_scrape = response.json()
+
+            except requests.exceptions.RequestException as e:
+                self.stdout.write(self.style.ERROR(f"Failed to get next store from API: {e}. Retrying in 60 seconds..."))
+                time.sleep(60)
                 continue
 
-            self._scrape_single_store(store_to_scrape.pk)
+            self._scrape_single_store(store_to_scrape['pk'])
             
 
         self.stdout.write(self.style.SUCCESS('Scraping worker stopped.'))

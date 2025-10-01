@@ -54,20 +54,20 @@ const FinalCartPage = () => {
                         <p className="text-green-600"><strong>Savings:</strong> ${optimizationResult.savings.toFixed(2)}</p>
                     </div>
                     <div>
-                        {Object.entries(optimizationResult.shopping_plan).map(([storeName, items]) => (
-                            <div key={storeName} className="mb-4 p-4 border rounded">
-                                <h2 className="text-xl font-semibold">{storeName}</h2>
-                                <ul>
-                                    {items.map((item, index) => (
-                                        <li key={index} className="flex justify-between">
-                                            <span>{item.product}</span>
-                                            <span>${item.price.toFixed(2)}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ))}
-                    </div>
+                                                {Object.entries(optimizationResult.shopping_plan).map(([storeName, items]) => (
+                                                    items.length > 0 && (
+                                                        <div key={storeName} className="mb-4 p-4 border rounded">
+                                                            <h2 className="text-xl font-semibold">{storeName}</h2>
+                                                            <ul>
+                                                                {items.map((item, index) => (
+                                                                                                                <li key={index} className="flex justify-between">
+                                                                                                                    <span>{item.product}</span>
+                                                                                                                    <span>${item.price.toFixed(2)}</span>
+                                                                                                                </li>                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                    )
+                                                ))}                    </div>
                 </div>
             )}
         </div>

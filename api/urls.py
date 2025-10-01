@@ -9,10 +9,12 @@ from .views.brand_translation_file_view import BrandTranslationFileView
 from .views.product_barcode_view import ProductBarcodeView
 from .views.cart_optimization_view import CartOptimizationView
 from .views.store_list_view import StoreListView
+from .views.scheduler_view import SchedulerView
 
 from .views.product_substitute_list_view import ProductSubstituteListView
 
 urlpatterns = [
+    path('scheduler/next-candidate/', SchedulerView.as_view(), name='scheduler-next-candidate'),
     path('upload/products/', ProductFileUploadView.as_view(), name='product-file-upload'),
     path('upload/gs1/', Gs1FileUploadView.as_view(), name='gs1-file-upload'),
     path('upload/stores/', StoreFileUploadView.as_view(), name='store-file-upload'),
