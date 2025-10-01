@@ -53,12 +53,13 @@ const SubstitutionPage = () => {
   };
 
   const handleViewFinalCart = () => {
-    const formattedCart = items.map(item => ({
-      product_id: item.product.id,
-      quantity: item.quantity || 1,
-      // Note: The backend will need to handle the logic for chosen substitutes.
-      // This simplified format just sends the primary items.
-    }));
+    // The backend expects a list of lists (slots)
+    const formattedCart = items.map(item => [
+      {
+        product_id: item.product.id,
+        quantity: item.quantity || 1,
+      }
+    ]);
 
     navigate('/final-cart', { state: { cart: formattedCart, store_ids: nearbyStoreIds } });
   };
