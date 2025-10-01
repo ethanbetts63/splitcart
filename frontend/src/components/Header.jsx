@@ -32,7 +32,7 @@ const Header = ({ onShowLocationModal, setSearchTerm }) => {
         className="p-0 m-3"
         style={{ position: 'absolute', top: 0, left: 0, zIndex: 1030 }}
       >
-        <img src={splitCartSymbol} alt="Menu" style={{ width: '80px', height: '80px' }} />
+        <img src={splitCartSymbol} alt="Menu" style={{ width: '120px', height: '100px' }} />
         {items.length > 0 && (
           <Badge
             bg="danger"
