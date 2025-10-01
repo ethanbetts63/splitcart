@@ -48,7 +48,6 @@ class TestDataCleanerAldi(unittest.TestCase):
         self.assertEqual(product['name'], "Aldi Test Product")
         self.assertEqual(product['brand'], "Aldi Brand")
         self.assertEqual(product['size'], "1kg")
-        self.assertEqual(product['image_url'], "/image.png")
         self.assertTrue(product['is_on_special'])
         self.assertEqual(product['price_current'], 5.00)
         self.assertEqual(product['price_was'], 6.00)

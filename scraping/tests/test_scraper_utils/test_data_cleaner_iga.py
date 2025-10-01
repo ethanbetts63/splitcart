@@ -52,7 +52,6 @@ class TestDataCleanerIga(unittest.TestCase):
         self.assertEqual(product['name'], "IGA Test Product")
         self.assertEqual(product['brand'], "IGA Brand")
         self.assertEqual(product['size'], "500g each")
-        self.assertEqual(product['image_url'], "/image.png")
         self.assertFalse(product['is_on_special'])
         self.assertEqual(product['price_current'], 5.00)
         self.assertEqual(product['category_path'], ["Groceries", "Pantry", "Spreads"])

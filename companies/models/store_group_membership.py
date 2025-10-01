@@ -12,4 +12,4 @@ class StoreGroupMembership(models.Model):
         unique_together = ('store', 'group')
 
     def __str__(self):
-        return f'{self.store.store_name} in {self.group.name}'
+        return f'{self.store.store_name} in {self.group}'

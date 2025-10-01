@@ -43,12 +43,12 @@ class GroupOrchestrator:
         """
         ambassador = group.ambassador
         if not ambassador:
-            print(f"Warning: Group {group.name} has no Ambassador. Promoting first candidate.")
+            print(f"Warning: Group {group} has no Ambassador. Promoting first candidate.")
             self._promote_new_ambassador(group, candidates[0])
             # In a real run, we might want to re-run the check for the rest of the candidates
             return
 
-        print(f"--- Health Check for Group: {group.name} ---")
+        print(f"--- Health Check for Group: {group} ---")
         print(f"Current Ambassador: {ambassador.store_name}")
 
         confirmed_matches = []
@@ -88,7 +88,7 @@ class GroupOrchestrator:
             ).exists()
 
             if other_members_exist:
-                print(f"  Group {group.name} has other members. Marking as 'Divergence Detected'.")
+                print(f"  Group {group} has other members. Marking as 'Divergence Detected'.")
                 self.uow.update_group_status(group, 'DIVERGENCE_DETECTED')
                 
                 # Even in a divergence, the failed candidates are considered rogue and must be outcast.
@@ -96,7 +96,7 @@ class GroupOrchestrator:
                     print(f"  Outcasting failed candidate: {rogue.store_name}")
                     self._outcast_rogue(rogue)
             else:
-                print(f"  Group {group.name} has no other members left to test. Dissolving group.")
+                print(f"  Group {group} has no other members left to test. Dissolving group.")
                 self._dissolve_group(group)
 
     def _get_active_prices_for_store(self, store):
@@ -188,11 +188,11 @@ class GroupOrchestrator:
             if not ambassador:
                 continue # Skip groups without an ambassador
 
-            print(f"    Checking against Group: {group.name} (Ambassador: {ambassador.store_name})...")
+            print(f"    Checking against Group: {group} (Ambassador: {ambassador.store_name})...")
             
             # Directly use the _is_match (True Overlap) for simplicity
             if self._is_match(rogue_store, ambassador):
-                print(f"      Match found! Re-homing {rogue_store.store_name} to Group: {group.name}.")
+                print(f"      Match found! Re-homing {rogue_store.store_name} to Group: {group}.")
                 self.uow.add_membership_to_create(rogue_store, group)
                 return # Found a home, exit
 
@@ -200,7 +200,7 @@ class GroupOrchestrator:
 
     def _dissolve_group(self, group):
         """Deactivates a group and removes all its members."""
-        print(f"  Dissolving group {group.name} due to major schism.")
+        print(f"  Dissolving group {group} due to major schism.")
         for membership in group.memberships.all():
             self.uow.add_membership_to_delete(membership)
         
@@ -211,7 +211,7 @@ class GroupOrchestrator:
         """
         Infers prices for all non-scraped members of a group based on the new ambassador's data.
         """
-        print(f"  Inferring prices for group {group.name} from ambassador {new_ambassador.store_name}.")
+        print(f"  Inferring prices for group {group} from ambassador {new_ambassador.store_name}.")
 
         # Get the active prices for the ambassador store
         ambassador_prices = Price.objects.filter(store=new_ambassador, is_active=True).select_related('price_record', 'price_record__product')

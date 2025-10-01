@@ -145,7 +145,7 @@ class UnitOfWork:
                 # Stage 4: Update existing products
                 if self.products_to_update:
                     update_fields = [
-                        'barcode', 'url', 'image_url', 'description', 
+                        'barcode', 'url', 'image_url_pairs', 'description', 
                         'country_of_origin', 'ingredients', 'has_no_coles_barcode', 
                         'name_variations', 'normalized_name_brand_size_variations', 'sizes'
                     ]
