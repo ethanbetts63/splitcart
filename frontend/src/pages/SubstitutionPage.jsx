@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Button, Spinner, Alert, Row, Col } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useShoppingList } from '../context/ShoppingListContext';
@@ -12,13 +12,12 @@ const SubstitutionPage = () => {
   const navigate = useNavigate();
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false); // Prevent double submission
 
   const currentItem = itemsToReview[currentProductIndex]; // Use itemsToReview
   const currentSubstitutes = currentItem ? substitutes[currentItem.product.id] : undefined;
   const isLastProduct = currentProductIndex === itemsToReview.length - 1; // Use itemsToReview.length
 
-  const handleNextProduct = useCallback(() => {
+  const handleNextProduct = () => {
     if (!currentItem) return;
 
     const allAvailableProducts = [currentItem.product, ...(currentSubstitutes || [])];
@@ -26,11 +25,10 @@ const SubstitutionPage = () => {
     
     updateSubstitutionChoices(currentItem.product.id, selectedProducts);
     setCurrentProductIndex(prev => prev + 1);
-  }, [currentItem, currentSubstitutes, selectedOptions, updateSubstitutionChoices]);
+  };
 
-  const handleFinishAndSplit = useCallback(() => {
-    if (isSubmitting || !currentItem) return;
-    setIsSubmitting(true);
+  const handleFinishAndSplit = () => {
+    if (!currentItem) return;
 
     const allAvailableProducts = [currentItem.product, ...(currentSubstitutes || [])];
     const selectedProducts = allAvailableProducts.filter(p => selectedOptions.includes(p.id));
@@ -48,18 +46,18 @@ const SubstitutionPage = () => {
     });
 
     navigate('/final-cart', { state: { cart: formattedCart, store_ids: nearbyStoreIds } });
-  }, [isSubmitting, currentItem, currentSubstitutes, selectedOptions, selections, items, nearbyStoreIds, navigate, updateSubstitutionChoices]);
+  };
 
   // Effect to auto-advance if no substitutes are available for the current item
   useEffect(() => {
-    if (currentItem && currentSubstitutes && currentSubstitutes.length === 0 && !isSubmitting) {
+    if (currentItem && currentSubstitutes && currentSubstitutes.length === 0) {
       if (isLastProduct) {
         handleFinishAndSplit();
       } else {
         handleNextProduct();
       }
     }
-  }, [currentItem, currentSubstitutes, isLastProduct, handleNextProduct, handleFinishAndSplit, isSubmitting]);
+  }, [currentItem, currentSubstitutes, isLastProduct, handleNextProduct, handleFinishAndSplit]);
 
   // Effect to initialize selected options when the product changes
   useEffect(() => {
@@ -100,9 +98,8 @@ const SubstitutionPage = () => {
         variant="primary"
         onClick={isLastProduct ? handleFinishAndSplit : handleNextProduct}
         className="mt-3"
-        disabled={isSubmitting}
       >
-        {isLastProduct ? (isSubmitting ? 'Splitting...' : 'Split My Cart') : 'Next Product'}
+        {isLastProduct ? 'Split My Cart' : 'Next Product'}
       </Button>
     </Container>
   );
