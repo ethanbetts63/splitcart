@@ -12,13 +12,15 @@ import Layout from './components/Layout'; // Import Layout component
 import SubstitutionPage from './pages/SubstitutionPage';
 import ProductListPage from './pages/ProductListPage'; // Import ProductListPage
 import FinalCartPage from './pages/FinalCartPage';
+import { useShoppingList } from './context/ShoppingListContext';
 import './App.css';
+
+import { useShoppingList } from './context/ShoppingListContext';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showLocationModal, setShowLocationModal] = useState(false);
-  const [userLocation, setUserLocation] = useState(null);
-  const [nearbyStoreIds, setNearbyStoreIds] = useState([]);
+  const { setUserLocation, nearbyStoreIds } = useShoppingList();
 
   const [scrollers, setScrollers] = useState([]);
 
@@ -45,25 +47,6 @@ function App() {
     ];
     setScrollers(scrollerConfig);
   }, []);
-
-  useEffect(() => {
-    const fetchStoreIds = async () => {
-      if (userLocation && userLocation.postcode && userLocation.radius) {
-        try {
-          const response = await fetch(`/api/stores/nearby/?postcode=${userLocation.postcode}&radius=${userLocation.radius}`);
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
-          setNearbyStoreIds(data);
-        } catch (error) {
-          console.error("Error fetching nearby store IDs:", error);
-          setNearbyStoreIds([]);
-        }
-      }
-    };
-    fetchStoreIds();
-  }, [userLocation]);
 
   const handleSaveLocation = (location) => {
     setUserLocation(location);

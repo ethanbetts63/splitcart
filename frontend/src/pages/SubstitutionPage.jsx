@@ -5,102 +5,111 @@ import SubstitutesSection from '../components/SubstitutesSection';
 import LocationSetupModal from '../components/LocationSetupModal'; // To get userLocation
 import { useNavigate } from 'react-router-dom';
 
-export const SubstitutionPage = ({ nearbyStoreIds }) => {
-  const { items, updateSubstitutionChoices } = useShoppingList();
+export const SubstitutionPage = () => {
+  const { items, substitutes, updateSubstitutionChoices, nearbyStoreIds } = useShoppingList();
   const navigate = useNavigate();
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [substitutes, setSubstitutes] = useState([]);
-  const [userLocation, setUserLocation] = useState(null); // { postcode: 'XXXX', radius: Y }
-  const [selectedOptions, setSelectedOptions] = useState([]); // State for current product's selections
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
-  // Load user location from localStorage
+  const currentItem = items[currentProductIndex];
+  const currentSubstitutes = currentItem ? substitutes[currentItem.product.id] : undefined;
+
+  // Effect to auto-advance if no substitutes are available for the current item
   useEffect(() => {
-    const savedLocation = localStorage.getItem('userLocation');
-    if (savedLocation) {
-      setUserLocation(JSON.parse(savedLocation));
+    if (currentItem && currentSubstitutes && currentSubstitutes.length === 0) {
+      // No substitutes, so we "choose" the original product and move on.
+      updateSubstitutionChoices(currentItem.product.id, [currentItem.product]);
+      setCurrentProductIndex(prev => prev + 1);
     }
-  }, []);
+  }, [currentItem, currentSubstitutes, updateSubstitutionChoices]);
 
-  const currentShoppingListSlot = items[currentProductIndex];
-
+  // Effect to initialize selected options when the product changes
   useEffect(() => {
-    if (!currentShoppingListSlot || nearbyStoreIds.length === 0) return;
+    if (currentItem) {
+      // For now, we just pre-select the original item.
+      // The logic for persisting choices across sessions would go here.
+      setSelectedOptions([currentItem.product.id]);
+    }
+  }, [currentItem]);
 
-    const primaryItem = currentShoppingListSlot[0];
-
-    // Initialize local state with the product IDs already present in the context for this slot.
-    const existingIds = currentShoppingListSlot.map(item => item.product.id);
-    setSelectedOptions(existingIds);
-
-    const fetchSubstitutes = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const params = new URLSearchParams();
-        // Pass store_ids to the substitutes API
-        if (nearbyStoreIds && nearbyStoreIds.length > 0) {
-          params.append('store_ids', nearbyStoreIds.join(','));
-        }
-        
-        const response = await fetch(`/api/products/${primaryItem.product.id}/substitutes/?${params.toString()}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setSubstitutes(data);
-
-        // Auto-advance if no substitutes are found and the slot only contains the primary item.
-        if (data.length === 0 && currentShoppingListSlot.length === 1) {
-          updateSubstitutionChoices(primaryItem.product.id, [primaryItem.product]);
-          setCurrentProductIndex(prev => prev + 1);
-        }
-
-      } catch (e) {
-        setError(e.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSubstitutes();
-  }, [currentShoppingListSlot, nearbyStoreIds, updateSubstitutionChoices]); // Re-fetch when current slot, or nearbyStoreIds changes
 
   const handleSelectOption = (productId) => {
     setSelectedOptions(prevSelected => {
-      // Prevent deselecting the original product
-      if (productId === currentShoppingListSlot[0].product.id) return prevSelected;
-      
-      if (prevSelected.includes(productId)) {
-        return prevSelected.filter(id => id !== productId);
-      } else {
-        return [...prevSelected, productId];
-      }
+      if (productId === currentItem.product.id) return prevSelected; // Prevent deselecting original
+      return prevSelected.includes(productId)
+        ? prevSelected.filter(id => id !== productId)
+        : [...prevSelected, productId];
     });
   };
 
   const handleNextProduct = () => {
-    const primaryItem = currentShoppingListSlot[0];
-    // All possible choices for this slot: the original product plus the fetched substitutes.
-    const allAvailableProducts = [primaryItem.product, ...substitutes];
-    // Filter this list to get the full objects of what the user selected.
+    if (!currentItem) return;
+
+    const allAvailableProducts = [currentItem.product, ...(currentSubstitutes || [])];
     const selectedProducts = allAvailableProducts.filter(p => selectedOptions.includes(p.id));
     
-    // Save the full product objects to the context.
-    updateSubstitutionChoices(primaryItem.product.id, selectedProducts);
+    updateSubstitutionChoices(currentItem.product.id, selectedProducts);
     setCurrentProductIndex(prev => prev + 1);
   };
 
   const handleViewFinalCart = () => {
-    // The cart data needs to be in the format expected by build_price_slots
-    // which is a list of lists of product IDs (or objects with product_id and quantity)
-    const formattedCart = items.map(slot => 
-      slot.map(item => ({ product_id: item.product.id, quantity: item.quantity || 1 }))
-    );
+    const formattedCart = items.map(item => ({
+      product_id: item.product.id,
+      quantity: item.quantity || 1,
+      // Note: The backend will need to handle the logic for chosen substitutes.
+      // This simplified format just sends the primary items.
+    }));
 
     navigate('/final-cart', { state: { cart: formattedCart, store_ids: nearbyStoreIds } });
   };
+
+  if (items.length === 0) {
+    return (
+      <Container fluid className="mt-4">
+        <Alert variant="info">Your shopping list is empty. Add some products to start splitting your cart!</Alert>
+        <Button variant="primary" onClick={() => navigate('/')}>Go Back to Shopping</Button>
+      </Container>
+    );
+  }
+
+  if (!currentItem) {
+    return (
+      <Container fluid className="mt-4">
+        <h2>Substitution Complete!</h2>
+        <p>You have reviewed all products in your cart.</p>
+        <Button variant="primary" onClick={handleViewFinalCart}>View Final Cart</Button>
+      </Container>
+    );
+  }
+
+  // Show loading spinner if substitutes for the current item are not yet fetched
+  if (currentSubstitutes === undefined) {
+    return <Container className="text-center my-5"><Spinner animation="border" /></Container>;
+  }
+
+  return (
+    <Container fluid className="mt-4">
+      <h2>Product Substitution</h2>
+      <p className="text-muted mb-4">
+        Reviewing substitutes for: <strong>{currentItem.product.name}</strong>
+      </p>
+
+      <SubstitutesSection 
+        products={[{ ...currentItem.product, is_original: true }, ...(currentSubstitutes || [])]}
+        selectedOptions={selectedOptions}
+        onSelectOption={handleSelectOption}
+      />
+
+      <Button
+        variant="primary"
+        onClick={handleNextProduct}
+        className="mt-3"
+      >
+        Next Product
+      </Button>
+    </Container>
+  );
+};
 
   if (items.length === 0) {
     return (

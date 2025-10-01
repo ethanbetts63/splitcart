@@ -3,13 +3,10 @@ import { Card, Button, Form, InputGroup } from 'react-bootstrap';
 import { useShoppingList } from '../context/ShoppingListContext';
 import ProductCardContent from './ProductCardContent';
 
-const ProductTile = ({ product }) => {
+const ProductTile = ({ product, nearbyStoreIds }) => {
   const { items, addItem, removeItem, updateItemQuantity } = useShoppingList();
   
-  // Find the slot (the inner array) that contains the product.
-  const existingItemSlot = items.find(slot => slot[0].product.id === product.id);
-  // The actual item is the first element of the slot.
-  const existingItem = existingItemSlot ? existingItemSlot[0] : null;
+  const existingItem = items.find(item => item.product.id === product.id);
 
   const [quantity, setQuantity] = useState(existingItem ? existingItem.quantity : 1);
 
@@ -26,7 +23,7 @@ const ProductTile = ({ product }) => {
   };
 
   const handleAdd = () => {
-    addItem(product, quantity);
+    addItem(product, quantity, nearbyStoreIds);
   };
 
   const handleRemove = () => {

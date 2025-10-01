@@ -118,6 +118,7 @@ const GridSourcer = ({ searchTerm, sourceUrl, nearbyStoreIds }) => {
       hasMorePages={hasMorePages} 
       isLoadingMore={isLoadingMore}
       title={titleText}
+      nearbyStoreIds={nearbyStoreIds} // Pass down nearbyStoreIds
     />
   );
 };

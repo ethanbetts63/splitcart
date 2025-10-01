@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import ProductTile from './ProductTile';
 
-const ProductGrid = ({ products, onLoadMore, hasMorePages, isLoadingMore, title }) => {
+const ProductGrid = ({ products, onLoadMore, hasMorePages, isLoadingMore, title, nearbyStoreIds }) => {
 
   return (
     <Container fluid>
@@ -11,7 +11,7 @@ const ProductGrid = ({ products, onLoadMore, hasMorePages, isLoadingMore, title 
         {products.length > 0 ? (
           products.map((product) => (
             <Col key={product.id} sm={6} md={4} lg={3} className="mb-4">
-              <ProductTile product={product} />
+              <ProductTile product={product} nearbyStoreIds={nearbyStoreIds} />
             </Col>
           ))
         ) : (

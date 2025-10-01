@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useCallback, useEffect } from 'react';
 
 const ShoppingListContext = createContext();
 
@@ -7,86 +7,99 @@ export const useShoppingList = () => {
 };
 
 export const ShoppingListProvider = ({ children }) => {
-  const [items, setItems] = useState([]); // Will be a list of lists: [[item1], [item2, subA, subB]]
+  const [items, setItems] = useState([]);
+  const [substitutes, setSubstitutes] = useState({});
+  const [userLocation, setUserLocation] = useState(null);
+  const [nearbyStoreIds, setNearbyStoreIds] = useState([]);
 
-  const addItem = (product, quantity) => {
+  const fetchSubstitutes = useCallback(async (product, storeIds) => {
+    if (!product || !storeIds || storeIds.length === 0) {
+      return;
+    }
+    try {
+      const url = `/api/products/${product.id}/substitutes/?store_ids=${storeIds.join(',')}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const subs = await response.json();
+      setSubstitutes(prevSubs => ({ ...prevSubs, [product.id]: subs }));
+    } catch (error) {
+      console.error(`Error fetching substitutes for product ${product.id}:`, error);
+      setSubstitutes(prevSubs => ({ ...prevSubs, [product.id]: [] }));
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchStoreIds = async () => {
+      if (userLocation && userLocation.postcode && userLocation.radius) {
+        try {
+          const response = await fetch(`/api/stores/nearby/?postcode=${userLocation.postcode}&radius=${userLocation.radius}`);
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          const data = await response.json();
+          setNearbyStoreIds(data);
+        } catch (error) {
+          console.error("Error fetching nearby store IDs:", error);
+          setNearbyStoreIds([]);
+        }
+      }
+    };
+    fetchStoreIds();
+  }, [userLocation]);
+
+  useEffect(() => {
+    if (nearbyStoreIds.length > 0) {
+      items.forEach(item => fetchSubstitutes(item.product, nearbyStoreIds));
+    }
+  }, [nearbyStoreIds, items, fetchSubstitutes]);
+
+  const addItem = useCallback((product, quantity) => {
     setItems(prevItems => {
-      const slotIndex = prevItems.findIndex(slot => slot[0].product.id === product.id);
-
-      if (slotIndex > -1) {
-        // If the product already exists as a primary item, update its quantity
-        const newItems = [...prevItems];
-        const newSlot = [...newItems[slotIndex]];
-        newSlot[0] = { ...newSlot[0], quantity: newSlot[0].quantity + quantity };
-        newItems[slotIndex] = newSlot;
-        return newItems;
+      const existingItem = prevItems.find(item => item.product.id === product.id);
+      if (existingItem) {
+        return prevItems.map(item =>
+          item.product.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
+        );
       } else {
-        // If it's a new item, add a new slot (an array containing the new item)
-        return [...prevItems, [{ product, quantity }]];
+        return [...prevItems, { product, quantity }];
       }
     });
-  };
+    if (nearbyStoreIds.length > 0) {
+      fetchSubstitutes(product, nearbyStoreIds);
+    }
+  }, [nearbyStoreIds, fetchSubstitutes]);
 
   const removeItem = (productId) => {
-    // Removes an entire slot based on the primary product's ID
-    setItems(prevItems => prevItems.filter(slot => slot[0].product.id !== productId));
+    setItems(prevItems => prevItems.filter(item => item.product.id !== productId));
+    setSubstitutes(prevSubs => {
+      const newSubs = { ...prevSubs };
+      delete newSubs[productId];
+      return newSubs;
+    });
   };
 
   const updateItemQuantity = (productId, newQuantity) => {
     setItems(prevItems =>
-      prevItems.map(slot => {
-        if (slot[0].product.id === productId) {
-          const newSlot = [...slot];
-          newSlot[0] = { ...newSlot[0], quantity: newQuantity };
-          return newSlot;
-        }
-        return slot;
-      })
+      prevItems.map(item =>
+        item.product.id === productId ? { ...item, quantity: newQuantity } : item
+      )
     );
   };
 
   const updateSubstitutionChoices = (originalProductId, selectedProducts) => {
-    setItems(prevItems => {
-      const newItems = [...prevItems];
-      const slotIndex = newItems.findIndex(slot => slot[0].product.id === originalProductId);
-  
-      if (slotIndex > -1) {
-        const originalItem = newItems[slotIndex][0];
-        
-        // If for some reason selectedProducts is empty, it would create an empty slot.
-        // To prevent this, we ensure the slot contains at least the original item.
-        if (!selectedProducts || selectedProducts.length === 0) {
-            newItems[slotIndex] = [originalItem];
-            return newItems;
-        }
-
-        // The new slot contains the original item, plus all selected products as substitutes.
-        // We map them to the { product, quantity } structure.
-        const newSlot = selectedProducts.map(p => ({
-          product: p,
-          // Preserve quantity for the original item, set to 1 for substitutes
-          quantity: p.id === originalProductId ? originalItem.quantity : 1
-        }));
-
-        // Ensure the original item is always first in the slot.
-        newSlot.sort((a, b) => {
-            if (a.product.id === originalProductId) return -1;
-            if (b.product.id === originalProductId) return 1;
-            return 0;
-        });
-
-        newItems[slotIndex] = newSlot;
-      }
-      return newItems;
-    });
+    // This function might be used to update the visual state or persist choices.
+    // For now, we can simply log it. The core logic is now driven by the main `substitutes` state.
+    console.log("Updating choices for", originalProductId, "with", selectedProducts);
   };
 
   const value = {
     items,
+    substitutes,
     addItem,
     removeItem,
     updateItemQuantity,
-    updateSubstitutionChoices,
+    updateSubstitutionChoices, // Re-add the function to the context value
+    userLocation,
+    setUserLocation,
+    nearbyStoreIds,
   };
 
   return (
