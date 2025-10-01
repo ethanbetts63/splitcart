@@ -59,8 +59,8 @@ class ProductUploader:
 
                 # 3. Archive the original file
                 archive_file_path = os.path.join(archive_path, file_name)
-                os.rename(file_path, archive_file_path)
-                self.command.stdout.write(self.command.style.SUCCESS(f"Archived {file_name}"))
+                os.replace(file_path, archive_file_path) # Use os.replace to overwrite if file exists
+                self.command.stdout.write(self.command.style.SUCCESS(f"Successfully uploaded and archived (overwrote) {file_name}"))
 
             except requests.exceptions.RequestException as e:
                 self.command.stderr.write(self.command.style.ERROR(f"Failed to upload {file_name}: {e}"))
