@@ -63,6 +63,20 @@ class DataCleanerAldi(BaseDataCleaner):
         if slug and sku:
             cleaned_product['url'] = f"https://www.aldi.com.au/product/{slug}-{sku}"
 
+        # Construct full IMAGE URL from assets[0].url
+        raw_image_url = cleaned_product.get('image_url', '') # This should now be the full URL from assets[0].url
+        if raw_image_url:
+            # Replace {width} with 500
+            processed_url = raw_image_url.replace('{width}', '500')
+            
+            # Chop off the /{slug} part if it exists
+            if processed_url.endswith('/{slug}'):
+                processed_url = processed_url[:-len('/{slug}')]
+            
+            cleaned_product['image_url'] = processed_url
+        else:
+            cleaned_product['image_url'] = None
+
         # Standardize unit price
         unit_price_info = self._get_standardized_unit_price_info(cleaned_product)
         cleaned_product.update(unit_price_info)
