@@ -56,18 +56,20 @@ def create_geographic_clusters():
 
         # --- Save results to the database ---
 
-        # 1. Create StoreGroup objects for each cluster found
+        # 1. Create StoreGroup objects for each cluster found and store them in a dictionary
+        group_map = {}
         for label in unique_labels:
-            group_name = f"{company.name.lower()}-cluster-{label}"
-            StoreGroup.objects.create(name=group_name, company=company)
-            print(f"  Created group: {group_name}")
+            group = StoreGroup.objects.create(company=company)
+            group_map[label] = group
+            print(f"  Created group: {group}")
 
         # 2. Create StoreGroupMembership for each store in a cluster
         for i, store in enumerate(stores):
             label = labels[i]
             if label != -1:
-                group = StoreGroup.objects.get(name=f"{company.name.lower()}-cluster-{label}")
-                StoreGroupMembership.objects.create(store=store, group=group)
+                group = group_map.get(label) # Get the group from the map
+                if group:
+                    StoreGroupMembership.objects.create(store=store, group=group)
 
         # 3. Report results
         num_outliers = np.sum(labels == -1)
