@@ -187,9 +187,23 @@ class UpdateOrchestrator:
                 if not existing_product.url and product_details.get('url'):
                     existing_product.url = product_details.get('url')
                     updated = True
-                if not existing_product.image_url and product_details.get('image_url_main'):
-                    existing_product.image_url = product_details.get('image_url_main')
-                    updated = True
+
+                # Update image_url_pairs
+                new_image_url = product_details.get('image_url')
+                if new_image_url:
+                    found_existing_image_pair = False
+                    if existing_product.image_url_pairs:
+                        for pair in existing_product.image_url_pairs:
+                            if pair[0] == company_name:
+                                found_existing_image_pair = True
+                                break
+                    
+                    if not found_existing_image_pair:
+                        if not existing_product.image_url_pairs:
+                            existing_product.image_url_pairs = []
+                        existing_product.image_url_pairs.append([company_name, new_image_url])
+                        updated = True
+
                 new_description = product_details.get('description_long') or product_details.get('description_short')
                 if new_description:
                     if not existing_product.description or len(new_description) < len(existing_product.description):
@@ -240,6 +254,11 @@ class UpdateOrchestrator:
             else:
                 normalized_brand_key = product_details.get('normalized_brand')
                 brand_obj = brand_manager.brand_cache.get(normalized_brand_key)
+                image_url = product_details.get('image_url')
+                initial_image_pairs = []
+                if image_url:
+                    initial_image_pairs = [[company_name, image_url]]
+
                 new_product = Product(
                     name=product_details.get('name', ''),
                     normalized_name=product_details.get('normalized_name'),
@@ -251,7 +270,7 @@ class UpdateOrchestrator:
                     size=product_details.get('size'),
                     sizes=product_details.get('sizes', []),
                     url=product_details.get('url'),
-                    image_url=product_details.get('image_url_main'),
+                    image_url_pairs=initial_image_pairs,
                     description=(product_details.get('description_long') or product_details.get('description_short')),
                     country_of_origin=product_details.get('country_of_origin'),
                     ingredients=product_details.get('ingredients')

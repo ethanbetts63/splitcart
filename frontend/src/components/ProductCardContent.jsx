@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
+import placeholderImage from '../assets/SplitCart_symbol_v2.png';
 
 const ProductCardContent = ({ product }) => {
   console.log("ProductCardContent received product:", product); // Debug log
@@ -19,9 +20,18 @@ const ProductCardContent = ({ product }) => {
     return null; // Don't render if no product
   }
 
+  const handleImageError = (e) => {
+    e.target.onerror = null; // Prevent infinite loop if placeholder also fails
+    e.target.src = placeholderImage;
+  };
+
   return (
     <>
-      <Card.Img variant="top" src={product.image_url || 'https://via.placeholder.com/150'} />
+      <Card.Img 
+        variant="top" 
+        src={product.image_url || placeholderImage} 
+        onError={handleImageError}
+      />
       <Card.Body>
         <Card.Title>{product.name}</Card.Title>
         {product.brand_name && <Card.Subtitle className="mb-2 text-muted">{product.brand_name}</Card.Subtitle>}

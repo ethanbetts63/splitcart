@@ -60,9 +60,12 @@ class DataCleanerColes(BaseDataCleaner):
         cleaned_product['category_path'] = self._clean_category_path(category_path)
 
 
-        # Image URL needs the domain prepended
-        if cleaned_product.get('image_url'):
-            cleaned_product['image_url'] = f"https://www.coles.com.au/{cleaned_product['image_url']}"
+        # Construct the direct image URL using the SKU
+        product_sku = cleaned_product.get('sku')
+        if product_sku:
+            cleaned_product['image_url'] = f"https://productimages.coles.com.au/productimages/2/{product_sku}.jpg"
+        else:
+            cleaned_product['image_url'] = None
 
         # Construct full URL
         product_id = cleaned_product.get('sku')

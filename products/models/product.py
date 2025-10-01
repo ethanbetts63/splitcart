@@ -15,7 +15,7 @@ class Product(models.Model):
     name_variations = models.JSONField(
         default=list,
         blank=True,
-        help_text="A list of (name, store) tuples for discovered name variations."
+        help_text="A list of normalized name strings for discovered variations."
     )
     brand = models.ForeignKey(
         'ProductBrand',
@@ -76,7 +76,11 @@ class Product(models.Model):
         default=False,
         help_text="Set to True if Coles has been scraped and no barcode was found."
     )
-    image_url = models.URLField(max_length=1024, blank=True, null=True)
+    image_url_pairs = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="List of [company_name, image_url] tuples for this product."
+    )
     url = models.URLField(max_length=1024, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     country_of_origin = models.CharField(max_length=100, blank=True, null=True)

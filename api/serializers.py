@@ -41,10 +41,26 @@ class PriceSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     prices = serializers.SerializerMethodField()
     brand_name = serializers.SerializerMethodField()
+    image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
         fields = ('id', 'name', 'brand_name', 'size', 'image_url', 'prices')
+
+    def get_image_url(self, obj):
+        """
+        Deterministically select one image URL from the available pairs.
+        """
+        if not obj.image_url_pairs:
+            return None
+
+        # Get a list of non-empty URLs
+        urls = [url for url in obj.image_url_pairs.values() if url]
+        if not urls:
+            return None
+
+        # Deterministic selection using product ID
+        return urls[obj.id % len(urls)]
 
     def get_brand_name(self, obj):
         return obj.brand.name if obj.brand else None
