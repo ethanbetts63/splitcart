@@ -30,9 +30,7 @@ class CartOptimizationView(APIView):
                 )
 
             # Step 2: Build the detailed price slots for the optimizer
-            print("Calling build_price_slots")
             price_slots = build_price_slots(cart, stores)
-            print("Finished build_price_slots")
             if not price_slots:
                 return Response(
                     {'error': 'Could not find prices for the items in your cart at the specified stores.'},
@@ -40,12 +38,8 @@ class CartOptimizationView(APIView):
                 )
 
             # Step 3: Run the optimization and baseline calculation
-            print("Calling calculate_optimized_cost")
             optimized_cost, shopping_plan, _ = calculate_optimized_cost(price_slots, max_stores)
-            print("Finished calculate_optimized_cost")
-            print("Calling calculate_baseline_cost")
             baseline_cost = calculate_baseline_cost(price_slots, stores)
-            print("Finished calculate_baseline_cost")
 
             if optimized_cost is None:
                 return Response(

@@ -1,53 +1,67 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Button, Spinner, Alert, Row, Col } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useShoppingList } from '../context/ShoppingListContext';
 import SubstitutesSection from '../components/SubstitutesSection';
 import LocationSetupModal from '../components/LocationSetupModal'; // To get userLocation
-import { useNavigate } from 'react-router-dom';
 
 const SubstitutionPage = () => {
   const { items, substitutes, selections, updateSubstitutionChoices, nearbyStoreIds } = useShoppingList();
+  const { state } = useLocation();
+  const { itemsToReview } = state || { itemsToReview: [] }; // Get itemsToReview from route state
   const navigate = useNavigate();
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
-  const currentItem = items[currentProductIndex];
+  const currentItem = itemsToReview[currentProductIndex]; // Use itemsToReview
   const currentSubstitutes = currentItem ? substitutes[currentItem.product.id] : undefined;
+  const isLastProduct = currentProductIndex === itemsToReview.length - 1; // Use itemsToReview.length
+
+  const handleNextProduct = useCallback(() => {
+    if (!currentItem) return;
+
+    const allAvailableProducts = [currentItem.product, ...(currentSubstitutes || [])];
+    const selectedProducts = allAvailableProducts.filter(p => selectedOptions.includes(p.id));
+    
+    updateSubstitutionChoices(currentItem.product.id, selectedProducts);
+    setCurrentProductIndex(prev => prev + 1);
+  }, [currentItem, currentSubstitutes, selectedOptions, updateSubstitutionChoices]);
+
+  const handleFinishAndSplit = useCallback(() => {
+    if (!currentItem) return;
+
+    const allAvailableProducts = [currentItem.product, ...(currentSubstitutes || [])];
+    const selectedProducts = allAvailableProducts.filter(p => selectedOptions.includes(p.id));
+    
+    const finalSelections = { ...selections, [currentItem.product.id]: selectedProducts };
+
+    // Build formattedCart using the FULL items list from context, applying finalSelections
+    const formattedCart = items.map(originalCartItem => {
+      const originalProductId = originalCartItem.product.id;
+      const prods = finalSelections[originalProductId];
+      if (prods && prods.length > 0) {
+        return prods.map(p => ({ product_id: p.id, quantity: originalCartItem.quantity }));
+      }
+      return [{ product_id: originalProductId, quantity: originalCartItem.quantity || 1 }];
+    });
+
+    navigate('/final-cart', { state: { cart: formattedCart, store_ids: nearbyStoreIds } });
+  }, [currentItem, currentSubstitutes, selectedOptions, selections, items, nearbyStoreIds, navigate, updateSubstitutionChoices]);
 
   // Effect to auto-advance if no substitutes are available for the current item
   useEffect(() => {
     if (currentItem && currentSubstitutes && currentSubstitutes.length === 0) {
-      // No substitutes, so we "choose" the original product and move on.
-      const allAvailableProducts = [currentItem.product]; // Only original product for auto-advance
-      const selectedProducts = allAvailableProducts; // Auto-select original
-      updateSubstitutionChoices(currentItem.product.id, selectedProducts);
-
-      // Check if this was the last item
-      if (currentProductIndex === items.length - 1) {
-        // If it was the last item, immediately navigate to final cart
-        // We need to manually build the finalSelections here as the state update might not be immediate
-        const finalSelections = { ...selections, [currentItem.product.id]: selectedProducts };
-        const formattedCart = items.map(item => {
-          const originalProductId = item.product.id;
-          const prods = finalSelections[originalProductId];
-          if (prods && prods.length > 0) {
-            return prods.map(p => ({ product_id: p.id, quantity: item.quantity }));
-          }
-          return [{ product_id: originalProductId, quantity: item.quantity || 1 }];
-        });
-        navigate('/final-cart', { state: { cart: formattedCart, store_ids: nearbyStoreIds } });
+      if (isLastProduct) {
+        handleFinishAndSplit();
       } else {
-        // Not the last item, just advance to the next
-        setCurrentProductIndex(prev => prev + 1);
+        handleNextProduct();
       }
     }
-  }, [currentItem, currentSubstitutes, updateSubstitutionChoices, currentProductIndex, items.length, selections, nearbyStoreIds, navigate]);
+  }, [currentItem, currentSubstitutes, isLastProduct, handleNextProduct, handleFinishAndSplit]);
 
   // Effect to initialize selected options when the product changes
   useEffect(() => {
     if (currentItem) {
-      // For now, we just pre-select the original item.
-      // The logic for persisting choices across sessions would go here.
       setSelectedOptions([currentItem.product.id]);
     }
   }, [currentItem]);
@@ -60,42 +74,6 @@ const SubstitutionPage = () => {
         ? prevSelected.filter(id => id !== productId)
         : [...prevSelected, productId];
     });
-  };
-
-  const isLastProduct = currentProductIndex === items.length - 1;
-
-  const handleNextProduct = () => {
-    if (!currentItem) return;
-
-    const allAvailableProducts = [currentItem.product, ...(currentSubstitutes || [])];
-    const selectedProducts = allAvailableProducts.filter(p => selectedOptions.includes(p.id));
-    
-    updateSubstitutionChoices(currentItem.product.id, selectedProducts);
-    setCurrentProductIndex(prev => prev + 1);
-  };
-
-  const handleFinishAndSplit = () => {
-    if (!currentItem) return;
-
-    // First, save the choices for the current (last) item
-    const allAvailableProducts = [currentItem.product, ...(currentSubstitutes || [])];
-    const selectedProducts = allAvailableProducts.filter(p => selectedOptions.includes(p.id));
-    updateSubstitutionChoices(currentItem.product.id, selectedProducts);
-
-    // Now, navigate immediately. We need to ensure the state update from
-    // updateSubstitutionChoices is available, so we manually build the final cart data here.
-    const finalSelections = { ...selections, [currentItem.product.id]: selectedProducts };
-
-    const formattedCart = items.map(item => {
-      const originalProductId = item.product.id;
-      const prods = finalSelections[originalProductId];
-      if (prods && prods.length > 0) {
-        return prods.map(p => ({ product_id: p.id, quantity: item.quantity }));
-      }
-      return [{ product_id: originalProductId, quantity: item.quantity || 1 }];
-    });
-
-    navigate('/final-cart', { state: { cart: formattedCart, store_ids: nearbyStoreIds } });
   };
 
   // Show loading spinner if substitutes for the current item are not yet fetched
