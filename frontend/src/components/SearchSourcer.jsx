@@ -7,6 +7,12 @@ const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLi
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // For scrollers that require store IDs, wait until they are available.
+    if (sourceUrl === '/api/products/bargains/' && nearbyStoreIds.length === 0) {
+      setIsLoading(true);
+      return; // Wait for store IDs to be loaded.
+    }
+
     let isMounted = true;
     setIsLoading(true);
     
