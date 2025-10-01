@@ -60,36 +60,15 @@ const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLi
     };
   }, [title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLink, onLoadComplete]);
 
-  if (isLoading) {
-    // Optional: render a loading state placeholder
-    return (
-      <div className="horizontal-scroller-container">
-        <div className="scroller-header">
-          <h2>{title}</h2>
-        </div>
-        <div className="scroller-content" style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <p>Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    // Optional: render an error state
-    return (
-        <div className="horizontal-scroller-container">
-          <div className="scroller-header">
-            <h2>{title}</h2>
-          </div>
-          <div className="scroller-content" style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <p>Error loading products.</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Render the dumb scroller with the fetched products
-  return <HorizontalProductScroller title={title} products={products} seeMoreLink={seeMoreLink} />;
+  // The HorizontalProductScroller now handles the loading and empty states internally.
+  return (
+    <HorizontalProductScroller
+      title={title}
+      products={products}
+      seeMoreLink={seeMoreLink}
+      isLoading={isLoading}
+    />
+  );
 };
 
 export default SearchSourcer;

@@ -1,0 +1,77 @@
+  This session focused on a series of frontend and backend improvements to the SplitCart application, primarily
+  addressing user experience, performance, and data consistency.
+
+  1. Frontend Layout and Routing Refinement:
+
+   * Shared Layout for Homepage and Product List: Implemented a new Layout.jsx component to provide a persistent
+     SearchHeader across the homepage (/) and the product list page (/products). This ensures visual consistency and
+     allows for shareable URLs for product searches.
+   * `App.jsx` Refactoring: Modified App.jsx to utilize the new Layout component, wrapping the relevant routes.
+   * `SearchHeader.jsx` Update: Updated the handleSubmit function in SearchHeader to navigate to the /products page
+     with the search query as a URL parameter, enabling shareable search result links. The handleHomeClick function
+     was also updated to clear the search term and navigate to the root.
+
+  2. Product Substitution Workflow Enhancements:
+
+   * Pre-fetching Substitutes:
+       * Refactored ShoppingListContext.jsx to introduce a substitutes state, storing pre-fetched substitute data
+         for products.
+       * The addItem function now triggers an asynchronous fetch for substitutes when a new product is added to the
+         cart.
+       * Centralized userLocation and nearbyStoreIds management within ShoppingListContext, including loading from
+         localStorage on app startup and re-fetching substitutes when location changes.
+       * Simplified the items state in ShoppingListContext to a flat list of { product, quantity } objects.
+   * `ProductTile.jsx` Integration: Updated ProductTile to pass nearbyStoreIds to the addItem function in
+     ShoppingListContext, enabling location-aware substitute fetching.
+   * `GridSourcer.jsx` and `ProductGrid.jsx` Updates: Modified these components to correctly pass nearbyStoreIds
+     down to ProductTile.
+   * Streamlined Substitution Page (`SubstitutionPage.jsx`):
+       * Refactored SubstitutionPage to use the pre-fetched substitutes data from ShoppingListContext.
+       * Removed local state for substitutes, loading, and errors.
+       * Implemented logic to automatically advance past products with no substitutes.
+       * Removed Intermediate "Substitution Complete!" Page: The page now directly navigates to the final cart page
+         when the last product is processed (either manually or auto-advanced).
+       * Fixed Double API Call (Attempt 1 & Revert): An attempt was made to prevent double API calls on the
+         substitution page using an isSubmitting state, but this was reverted at the user's request for further
+         discussion.
+
+  3. Final Cart Page (FinalCartPage.jsx) Improvements:
+
+   * Corrected Cart Payload: Fixed the handleViewFinalCart function in SubstitutionPage.jsx to correctly format the
+     cart data as a list of lists for the backend, resolving a TypeError (string indices must be integers, not
+     'str').
+   * Filtered Store Display: Modified FinalCartPage.jsx to only display stores that have products assigned to them
+     in the optimized shopping plan, providing a cleaner view.
+   * Product Name Display Fix: Corrected the display of product names in FinalCartPage.jsx to use item.product
+     instead of item.product_name.
+   * Brand Display Logic (Backend): Updated calculate_optimized_cost.py to conditionally include the brand in the
+     product name string only if it's not None, preventing "None" from being displayed.
+   * Price Formatting: Added a space before the price display in FinalCartPage.jsx for better readability.
+   * Removed "Split My Cart" Button: Hid the SplitCartButton on the /final-cart page in Header.jsx.
+   * Fixed Double API Call (Attempt 2): Implemented a useRef flag (splitCalledRef) in FinalCartPage.jsx to prevent
+     the /api/cart/split/ endpoint from being called more than once, addressing a double-submission issue.
+
+  4. Image Display Implementation:
+
+   * Backend (`api/serializers.py`):
+       * Modified ProductSerializer to include image_url as a SerializerMethodField.
+       * Implemented get_image_url to deterministically select one image URL from the image_url_pairs field
+         (assuming it's a list of [company_name, image_url] tuples).
+   * Frontend (`ProductCardContent.jsx`):
+       * Added an onError handler to the <img> tag to display a placeholder image (SplitCart_symbol_v2.png) if the
+         product image fails to load.
+
+  5. Trolley Icon Styling Fix:
+
+   * `Header.jsx` Update: Added object-fit: 'contain' to the splitCartSymbol image style to prevent it from being
+     squeezed horizontally.
+
+  6. Ongoing Issues and Discussions:
+
+   * Image URL Data: Identified that the lack of product images is likely due to empty or invalid image_url_pairs
+     data in the database, not a code bug.
+   * Horizontal Scroller Double API Call: Discussed the cause of multiple API calls for horizontal scrollers
+     (GridSourcer) due to StrictMode and asynchronous nearbyStoreIds updates. A solution is planned for the next
+     steps.
+   * Substitution Page Incorrect Navigation: Discussed the issue where the user is sent to the substitution page
+     even when no items have substitutes, indicating a flaw in the SplitCartButton's decision-making logic.
