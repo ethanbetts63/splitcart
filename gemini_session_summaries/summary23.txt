@@ -51,4 +51,4 @@ This session focused on a significant refactoring of the project's data generati
 
 *   **Goal:** Clarify the purpose of the automatic category linker.
 *   **Function Renamed:** `update_category_links_from_inbox` in `data_management/utils/database_updating_utils/update_category_links.py` was renamed to `run_automatic_category_linker`.
-*   **Call Updated:** The call in `data_management/management/commands/update_db.py` was confirmed to already reflect this new name.
+*   **Call Updated:** The call in `data_management/management/commands/update.py` was confirmed to already reflect this new name.

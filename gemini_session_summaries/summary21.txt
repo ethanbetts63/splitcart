@@ -7,7 +7,7 @@ This session focused on improving the product substitution system by creating eq
 - **New Workflow:** We pivoted to a sophisticated, two-stage, hierarchical approach:
     1.  **Model Refactoring:** The `Category` model in `companies/models/category.py` was refactored to support directed relationships. A new `CategoryEquivalence` model was created in `companies/models/category_equivalence.py`, and the `companies/models/__init__.py` file was updated. This required a new database migration.
     2.  **Interactive Command:** A new command, `data_management/management/commands/create_category_links.py`, was built. This tool suggests potential category matches and prompts the user to define the relationship, saving the decisions to a JSON file in `data_management/data/category_link_inbox/`.
-    3.  **Database Update:** A corresponding update mechanism was created via `data_management/utils/database_updating_utils/update_category_links.py` and a new `--category-links` flag was added to the `data_management/management/commands/update_db.py` command.
+    3.  **Database Update:** A corresponding update mechanism was created via `data_management/utils/database_updating_utils/update_category_links.py` and a new `--category-links` flag was added to the `data_management/management/commands/update.py` command.
 
 ### 2. The "Cycle" Detour & Hierarchy Problems
 

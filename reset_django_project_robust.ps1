@@ -59,6 +59,7 @@ git push
 
 python manage.py upload
 python manage.py update --archive
+python manage.py cluster_stores
 python manage.py update --products
 python manage.py update --prefixes
 python manage.py update --category-links

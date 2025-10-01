@@ -25,7 +25,7 @@ Here is a breakdown of the relevant files and their roles in the current, flawed
 - **Reconciliation Logic:** After inferring prefixes, it finds products in the database whose barcode matches an inferred prefix but whose brand name does not match the prefix's canonical brand. It then automatically corrects these products by merging the incorrect brand into the canonical one.
 - **Problem:** This command contains the essential logic for maintaining data quality, but it is completely disconnected from the main `update_db` pipeline and must be run manually.
 
-### File: `data_management/management/commands/update_db.py` (via `prefix_update_orchestrator.py`)
+### File: `data_management/management/commands/update.py` (via `prefix_update_orchestrator.py`)
 
 - **Purpose:** This process handles the data coming from the GS1 barcode scraper.
 - **Logic:** It reads files of confirmed prefix data from an inbox, creates the official brand entry (e.g., "Nestle Australia Ltd"), and populates the `confirmed_official_prefix` field in the `BrandPrefix` model.
