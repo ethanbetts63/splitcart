@@ -26,19 +26,15 @@ def build_price_slots(cart, stores):
 
     print("Looping through cart slots")
     for i, slot in enumerate(cart):
-        print(f"Processing slot {i}")
         current_slot = []
         for j, item in enumerate(slot):
-            print(f"  Processing item {j}")
             product_id = item['product_id']
             product_obj = products.get(product_id)
             if not product_obj:
-                print(f"    Product with ID {product_id} not found in in_bulk result")
                 continue
 
             product_prices = prices_by_product.get(product_id, [])
             for k, price_obj in enumerate(product_prices):
-                print(f"      Processing price {k}")
                 if not price_obj.price_record:
                     continue
                 

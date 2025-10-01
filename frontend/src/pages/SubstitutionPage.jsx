@@ -12,6 +12,7 @@ const SubstitutionPage = () => {
   const navigate = useNavigate();
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false); // Prevent double submission
 
   const currentItem = itemsToReview[currentProductIndex]; // Use itemsToReview
   const currentSubstitutes = currentItem ? substitutes[currentItem.product.id] : undefined;
@@ -28,7 +29,8 @@ const SubstitutionPage = () => {
   }, [currentItem, currentSubstitutes, selectedOptions, updateSubstitutionChoices]);
 
   const handleFinishAndSplit = useCallback(() => {
-    if (!currentItem) return;
+    if (isSubmitting || !currentItem) return;
+    setIsSubmitting(true);
 
     const allAvailableProducts = [currentItem.product, ...(currentSubstitutes || [])];
     const selectedProducts = allAvailableProducts.filter(p => selectedOptions.includes(p.id));
@@ -46,18 +48,18 @@ const SubstitutionPage = () => {
     });
 
     navigate('/final-cart', { state: { cart: formattedCart, store_ids: nearbyStoreIds } });
-  }, [currentItem, currentSubstitutes, selectedOptions, selections, items, nearbyStoreIds, navigate, updateSubstitutionChoices]);
+  }, [isSubmitting, currentItem, currentSubstitutes, selectedOptions, selections, items, nearbyStoreIds, navigate, updateSubstitutionChoices]);
 
   // Effect to auto-advance if no substitutes are available for the current item
   useEffect(() => {
-    if (currentItem && currentSubstitutes && currentSubstitutes.length === 0) {
+    if (currentItem && currentSubstitutes && currentSubstitutes.length === 0 && !isSubmitting) {
       if (isLastProduct) {
         handleFinishAndSplit();
       } else {
         handleNextProduct();
       }
     }
-  }, [currentItem, currentSubstitutes, isLastProduct, handleNextProduct, handleFinishAndSplit]);
+  }, [currentItem, currentSubstitutes, isLastProduct, handleNextProduct, handleFinishAndSplit, isSubmitting]);
 
   // Effect to initialize selected options when the product changes
   useEffect(() => {
@@ -98,8 +100,9 @@ const SubstitutionPage = () => {
         variant="primary"
         onClick={isLastProduct ? handleFinishAndSplit : handleNextProduct}
         className="mt-3"
+        disabled={isSubmitting}
       >
-        {isLastProduct ? 'Split My Cart' : 'Next Product'}
+        {isLastProduct ? (isSubmitting ? 'Splitting...' : 'Split My Cart') : 'Next Product'}
       </Button>
     </Container>
   );
