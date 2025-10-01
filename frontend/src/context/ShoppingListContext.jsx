@@ -11,6 +11,14 @@ export const ShoppingListProvider = ({ children }) => {
   const [substitutes, setSubstitutes] = useState({});
   const [userLocation, setUserLocation] = useState(null);
   const [nearbyStoreIds, setNearbyStoreIds] = useState([]);
+  const [selections, setSelections] = useState({}); // { originalProductId: [product, product, ...] }
+
+  useEffect(() => {
+    const savedLocation = localStorage.getItem('userLocation');
+    if (savedLocation) {
+      setUserLocation(JSON.parse(savedLocation));
+    }
+  }, []);
 
   useEffect(() => {
     const savedLocation = localStorage.getItem('userLocation');
@@ -92,18 +100,17 @@ export const ShoppingListProvider = ({ children }) => {
   };
 
   const updateSubstitutionChoices = (originalProductId, selectedProducts) => {
-    // This function might be used to update the visual state or persist choices.
-    // For now, we can simply log it. The core logic is now driven by the main `substitutes` state.
-    console.log("Updating choices for", originalProductId, "with", selectedProducts);
+    setSelections(prev => ({ ...prev, [originalProductId]: selectedProducts }));
   };
 
   const value = {
     items,
     substitutes,
+    selections, // Export selections
     addItem,
     removeItem,
     updateItemQuantity,
-    updateSubstitutionChoices, // Re-add the function to the context value
+    updateSubstitutionChoices, // Export the real function
     userLocation,
     setUserLocation,
     nearbyStoreIds,

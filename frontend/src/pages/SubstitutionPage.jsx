@@ -6,7 +6,7 @@ import LocationSetupModal from '../components/LocationSetupModal'; // To get use
 import { useNavigate } from 'react-router-dom';
 
 const SubstitutionPage = () => {
-  const { items, substitutes, updateSubstitutionChoices, nearbyStoreIds } = useShoppingList();
+  const { items, substitutes, selections, updateSubstitutionChoices, nearbyStoreIds } = useShoppingList();
   const navigate = useNavigate();
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -53,13 +53,18 @@ const SubstitutionPage = () => {
   };
 
   const handleViewFinalCart = () => {
-    // The backend expects a list of lists (slots)
-    const formattedCart = items.map(item => [
-      {
-        product_id: item.product.id,
-        quantity: item.quantity || 1,
+    const formattedCart = items.map(item => {
+      const originalProductId = item.product.id;
+      const selectedProducts = selections[originalProductId];
+
+      // If user made a choice for this item, use that selection
+      if (selectedProducts && selectedProducts.length > 0) {
+        return selectedProducts.map(p => ({ product_id: p.id, quantity: item.quantity }));
       }
-    ]);
+
+      // Otherwise, just use the original item
+      return [{ product_id: originalProductId, quantity: item.quantity || 1 }];
+    });
 
     navigate('/final-cart', { state: { cart: formattedCart, store_ids: nearbyStoreIds } });
   };

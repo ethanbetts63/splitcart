@@ -62,7 +62,7 @@ const FinalCartPage = () => {
                                                                 {items.map((item, index) => (
                                                                                                                 <li key={index} className="flex justify-between">
                                                                                                                     <span>{item.product}</span>
-                                                                                                                    <span>${item.price.toFixed(2)}</span>
+                                                                                                                    <span> ${item.price.toFixed(2)}</span>
                                                                                                                 </li>                                                                ))}
                                                             </ul>
                                                         </div>
