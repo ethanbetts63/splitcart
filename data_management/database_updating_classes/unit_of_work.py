@@ -12,6 +12,7 @@ class UnitOfWork:
         self.prices_to_create = []
         self.products_to_update = []
         self.brands_to_update = []
+        self.groups_to_update = []
         self.groups_to_clear_candidates = []
         self.new_price_records_created = 0
         self.category_manager = CategoryManager(command)

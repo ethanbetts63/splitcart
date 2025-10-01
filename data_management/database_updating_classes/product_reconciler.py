@@ -62,7 +62,7 @@ class ProductReconciler:
         
         # --- Enrich Fields ---
         updated = False
-        fields_to_check = ['url', 'image_url', 'country_of_origin', 'ingredients']
+        fields_to_check = ['url', 'image_url_pairs', 'country_of_origin', 'ingredients']
         for field_name in fields_to_check:
             if not getattr(canonical, field_name) and getattr(duplicate, field_name):
                 setattr(canonical, field_name, getattr(duplicate, field_name))

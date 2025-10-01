@@ -54,8 +54,9 @@ class ProductSerializer(serializers.ModelSerializer):
         if not obj.image_url_pairs:
             return None
 
-        # Get a list of non-empty URLs
-        urls = [url for url in obj.image_url_pairs.values() if url]
+        # Get a list of non-empty URLs from the pairs
+        # Each pair is [company_name, image_url]
+        urls = [pair[1] for pair in obj.image_url_pairs if pair and len(pair) == 2 and pair[1]]
         if not urls:
             return None
 

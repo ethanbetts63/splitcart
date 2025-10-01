@@ -80,7 +80,6 @@ class ProductModelTest(TestCase):
             brand=None,
             size="",
             barcode=None,
-            image_url=None,
             url=None,
             description=None,
             country_of_origin=None,
@@ -90,7 +89,7 @@ class ProductModelTest(TestCase):
         self.assertIsNone(product.brand)
         self.assertEqual(product.sizes, [])
         self.assertIsNone(product.barcode)
-        self.assertIsNone(product.image_url)
+        self.assertEqual(product.image_url_pairs, [])
         self.assertIsNone(product.url)
         self.assertIsNone(product.description)
         self.assertIsNone(product.country_of_origin)

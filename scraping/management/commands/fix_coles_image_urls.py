@@ -3,7 +3,7 @@ import json
 from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
-    help = 'Fixes the image_url for Coles products in the specified JSONL files.'
+    help = 'Fixes the image_url field to image_url_pairs for Coles products in specified JSONL files.'
 
     def handle(self, *args, **options):
         storage_path = r'C:\Users\ethan\coding\splitcart\scraping\data\temp_jsonl_product_storage'
@@ -32,7 +32,11 @@ class Command(BaseCommand):
                             sku = product_data.get('sku')
                             if sku:
                                 new_image_url = f"https://productimages.coles.com.au/productimages/2/{sku}.jpg"
-                                product_data['image_url'] = new_image_url
+                                # Create image_url_pairs
+                                product_data['image_url_pairs'] = [['Coles', new_image_url]]
+                                # Remove old image_url if it exists
+                                if 'image_url' in product_data:
+                                    del product_data['image_url']
                         
                         updated_lines.append(json.dumps(data))
 
