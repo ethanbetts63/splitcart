@@ -1,6 +1,7 @@
 from django.db import transaction
 from datetime import datetime
 from products.models import Product, Price, ProductBrand, PriceRecord
+from companies.models import StoreGroup
 from .category_manager import CategoryManager
 from data_management.utils.price_normalizer import PriceNormalizer
 
@@ -12,7 +13,6 @@ class UnitOfWork:
         self.prices_to_create = []
         self.products_to_update = []
         self.brands_to_update = []
-        self.groups_to_update = []
         self.groups_to_update = []
         self.groups_to_clear_candidates = []
         self.new_price_records_created = 0
@@ -91,9 +91,6 @@ class UnitOfWork:
         elif isinstance(instance, ProductBrand):
             if instance not in self.brands_to_update:
                 self.brands_to_update.append(instance)
-        elif isinstance(instance, StoreGroup):
-            if instance not in self.groups_to_update:
-                self.groups_to_update.append(instance)
         elif isinstance(instance, StoreGroup):
             if instance not in self.groups_to_update:
                 self.groups_to_update.append(instance)
