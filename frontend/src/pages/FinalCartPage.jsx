@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -10,13 +10,18 @@ const FinalCartPage = () => {
     const [optimizationResult, setOptimizationResult] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const splitCalledRef = useRef(false); // Flag to prevent double API calls
 
     useEffect(() => {
         if (!cart || !store_ids) {
-            // Redirect back if state is not present
-            navigate('/'); // Or to the shopping list page
+            navigate('/');
             return;
         }
+
+        if (splitCalledRef.current) {
+            return; // Don't call API if it has already been called
+        }
+        splitCalledRef.current = true; // Set flag to true immediately
 
         const fetchOptimizedCart = async () => {
             try {
