@@ -61,30 +61,34 @@ class ProductReconciler:
         self.command.stdout.write(f"  - Merging '{duplicate.name}' into '{canonical.name}'")
         
         # --- Enrich Fields ---
-        updated = False
+        update_fields = {}
+
+        # Handle simple fields that can be overwritten if blank
         fields_to_check = ['url', 'image_url_pairs', 'country_of_origin', 'ingredients']
         for field_name in fields_to_check:
             if not getattr(canonical, field_name) and getattr(duplicate, field_name):
-                setattr(canonical, field_name, getattr(duplicate, field_name))
-                updated = True
+                update_fields[field_name] = getattr(duplicate, field_name)
 
         # Handle description (prefer shorter)
         if duplicate.description:
             if not canonical.description or len(duplicate.description) < len(canonical.description):
-                canonical.description = duplicate.description
-                updated = True
+                update_fields['description'] = duplicate.description
 
-        # Handle name variations
+        # Handle name variations by merging
         if duplicate.name_variations:
-            if not canonical.name_variations:
-                canonical.name_variations = []
+            merged_variations = canonical.name_variations or []
+            added_new_variation = False
             for variation in duplicate.name_variations:
-                if variation not in canonical.name_variations:
-                    canonical.name_variations.append(variation)
-                    updated = True
+                if variation not in merged_variations:
+                    merged_variations.append(variation)
+                    added_new_variation = True
+            
+            if added_new_variation:
+                update_fields['name_variations'] = merged_variations
         
-        if updated:
-            canonical.save()
+        # Perform a single, direct database update if any fields have changed
+        if update_fields:
+            Product.objects.filter(pk=canonical.pk).update(**update_fields)
 
         # --- De-duplicate and Move Prices ---
         # Get all prices associated with the duplicate product
