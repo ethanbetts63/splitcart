@@ -32,12 +32,6 @@ class CategoryCycleManager:
         # Iterate over a copy of the parents list to allow safe removal during the loop
         for parent in list(current_node.parents.all()):
             if parent in path_nodes:
-                self.command.stdout.write(
-                    f"  - Path: ... -> '{current_node.name}' -> '{parent.name}' (which is already in the path)"
-                )
-                self.command.stdout.write(
-                    self.command.style.WARNING(f"  - Pruning Link: Removing parent '{parent.name}' from child '{current_node.name}'.")
-                )
                 current_node.parents.remove(parent)
                 self.cycles_repaired += 1
                 # Do not return; continue checking other parents for more complex cycles
