@@ -36,11 +36,12 @@ def calculate_optimized_cost(slots, max_stores):
                     brand = option['brand']
                     price = option['price']
 
-                    # Conditionally include brand if it's not None
-                    full_product_name = f"{brand} {product_name}" if brand else product_name
-                    
+                    sizes = option['sizes']
+
                     plan_item = {
-                        "product": full_product_name,
+                        "product_name": product_name,
+                        "brand": brand,
+                        "sizes": sizes,
                         "price": price
                     }
                     shopping_plan[store_name].append(plan_item)
