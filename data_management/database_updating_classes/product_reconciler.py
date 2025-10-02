@@ -140,8 +140,5 @@ class ProductReconciler:
                 price.delete()
                 deleted_count += 1
 
-        self.command.stdout.write(f"    - Moved {moved_count} prices and deleted {deleted_count} duplicate prices.")
-
         # --- Delete Duplicate Product ---
         duplicate.delete()
-        self.command.stdout.write(f"    - Deleted duplicate product.")

@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.core.paginator import Paginator
-from products.models import Product, Price, Bargain
-from companies.models import Store
+from products.models import Product, Bargain
 from django.db import transaction
 from decimal import Decimal, InvalidOperation # Import InvalidOperation
 

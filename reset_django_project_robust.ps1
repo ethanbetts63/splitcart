@@ -64,6 +64,7 @@ python manage.py update --prefixes
 python manage.py update --category-links
 python manage.py update --products
 python manage.py generate_subs
+python manage.py find_bargains
 python manage.py analyze --report company_heatmap
 python manage.py analyze --report subs
 python manage.py analyze --report savings
