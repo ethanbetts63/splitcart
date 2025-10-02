@@ -1,7 +1,7 @@
 import React from 'react';
 import SearchSourcer from './SearchSourcer';
 
-const ScrollerManager = ({ scrollers, nearbyStoreIds }) => {
+const ScrollerManager = ({ scrollers, nearbyStoreIds, isLocationLoaded }) => {
   if (!scrollers || scrollers.length === 0) {
     return null;
   }
@@ -17,6 +17,7 @@ const ScrollerManager = ({ scrollers, nearbyStoreIds }) => {
           sourceUrl={scroller.sourceUrl}
           nearbyStoreIds={nearbyStoreIds}
           seeMoreLink={scroller.seeMoreLink}
+          isLocationLoaded={isLocationLoaded}
         />
       ))}
     </>

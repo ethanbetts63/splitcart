@@ -18,7 +18,7 @@ import './App.css';
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showLocationModal, setShowLocationModal] = useState(false);
-  const { setUserLocation, nearbyStoreIds } = useShoppingList();
+  const { setUserLocation, nearbyStoreIds, isLocationLoaded } = useShoppingList();
 
   const [scrollers, setScrollers] = useState([]);
 
@@ -62,7 +62,7 @@ function App() {
               {searchTerm ? (
                 <GridSourcer searchTerm={searchTerm} nearbyStoreIds={nearbyStoreIds} />
               ) : (
-                <ScrollerManager scrollers={scrollers} nearbyStoreIds={nearbyStoreIds} />
+                <ScrollerManager scrollers={scrollers} nearbyStoreIds={nearbyStoreIds} isLocationLoaded={isLocationLoaded} />
               )}
             </Layout>
           } />

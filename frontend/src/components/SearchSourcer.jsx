@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import HorizontalProductScroller from './HorizontalProductScroller';
 
-const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLink, onLoadComplete }) => {
+const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLink, isLocationLoaded }) => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // For scrollers that require store IDs, wait until they are available.
-    if (sourceUrl === '/api/products/bargains/' && nearbyStoreIds.length === 0) {
+    // Wait until the initial location and nearby stores have been loaded.
+    if (!isLocationLoaded) {
       setIsLoading(true);
-      return; // Wait for store IDs to be loaded.
+      return;
     }
 
     let isMounted = true;
@@ -19,6 +19,7 @@ const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLi
     let url = '';
     if (sourceUrl) {
       url = sourceUrl;
+      // Only add store_ids if they are available. Some sourceUrls might not need them.
       if (nearbyStoreIds && nearbyStoreIds.length > 0) {
         const params = new URLSearchParams();
         params.append('store_ids', nearbyStoreIds.join(','));
@@ -55,16 +56,13 @@ const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLi
       .finally(() => {
         if (isMounted) {
           setIsLoading(false);
-          if (onLoadComplete) {
-            onLoadComplete();
-          }
         }
       });
 
     return () => {
       isMounted = false;
     };
-  }, [title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLink, onLoadComplete]);
+  }, [title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLink, isLocationLoaded]);
 
   // The HorizontalProductScroller now handles the loading and empty states internally.
   return (

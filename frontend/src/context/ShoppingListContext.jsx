@@ -11,20 +11,18 @@ export const ShoppingListProvider = ({ children }) => {
   const [substitutes, setSubstitutes] = useState({});
   const [userLocation, setUserLocation] = useState(null);
   const [nearbyStoreIds, setNearbyStoreIds] = useState([]);
+  const [isLocationLoaded, setIsLocationLoaded] = useState(false); // New state
   const [selections, setSelections] = useState({}); // { originalProductId: [product, product, ...] }
   const prevStoreIdsRef = useRef();
 
+  // Load user location from localStorage on initial mount
   useEffect(() => {
     const savedLocation = localStorage.getItem('userLocation');
     if (savedLocation) {
       setUserLocation(JSON.parse(savedLocation));
-    }
-  }, []);
-
-  useEffect(() => {
-    const savedLocation = localStorage.getItem('userLocation');
-    if (savedLocation) {
-      setUserLocation(JSON.parse(savedLocation));
+    } else {
+      // If no location is saved, we aren't waiting for a store fetch, so location is "loaded"
+      setIsLocationLoaded(true);
     }
   }, []);
 
@@ -44,6 +42,7 @@ export const ShoppingListProvider = ({ children }) => {
     }
   }, []);
 
+  // Fetch nearby store IDs when userLocation changes
   useEffect(() => {
     const fetchStoreIds = async () => {
       if (userLocation && userLocation.postcode && userLocation.radius) {
@@ -55,6 +54,9 @@ export const ShoppingListProvider = ({ children }) => {
         } catch (error) {
           console.error("Error fetching nearby store IDs:", error);
           setNearbyStoreIds([]);
+        } finally {
+          // Signal that the location loading process is complete
+          setIsLocationLoaded(true);
         }
       }
     };
@@ -121,6 +123,7 @@ export const ShoppingListProvider = ({ children }) => {
     userLocation,
     setUserLocation,
     nearbyStoreIds,
+    isLocationLoaded, // Export new state
   };
 
   return (
