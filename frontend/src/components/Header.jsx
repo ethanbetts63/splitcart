@@ -3,8 +3,8 @@ import { Button, Offcanvas, Nav, Badge } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ShoppingListComponent from './ShoppingListComponent';
 import SplitCartButton from './SplitCartButton';
-import splitCartSymbol from '../assets/SplitCart_symbol_v2.png';
-import splitCartTitle from '../assets/splitcart_title_v2.png';
+import splitCartSymbol from '../assets/SplitCart_symbol_v2.webp';
+import splitCartTitle from '../assets/splitcart_title_v2.webp';
 import { useShoppingList } from '../context/ShoppingListContext';
 
 const Header = ({ onShowLocationModal, setSearchTerm }) => {

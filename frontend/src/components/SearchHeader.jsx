@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Form, FormControl, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import splitCartTitle from '../assets/splitcart_title_v2.png';
+import splitCartTitle from '../assets/splitcart_title_v2.webp';
 
 const SearchHeader = ({ searchTerm, setSearchTerm }) => {
   const [inputValue, setInputValue] = useState(searchTerm);
