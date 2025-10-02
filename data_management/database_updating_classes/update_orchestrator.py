@@ -189,20 +189,25 @@ class UpdateOrchestrator:
                     updated = True
 
                 # Update image_url_pairs
-                new_image_url = product_details.get('image_url')
-                if new_image_url:
-                    found_existing_image_pair = False
-                    if existing_product.image_url_pairs:
-                        for pair in existing_product.image_url_pairs:
-                            if pair[0] == company_name:
-                                found_existing_image_pair = True
-                                break
+                incoming_image_pairs = product_details.get('image_url_pairs', [])
+                if incoming_image_pairs:
+                    # Create a dictionary of existing image URLs by company for quick lookup
+                    existing_pairs_dict = {pair[0]: pair[1] for pair in existing_product.image_url_pairs} if existing_product.image_url_pairs else {}
                     
-                    if not found_existing_image_pair:
-                        if not existing_product.image_url_pairs:
-                            existing_product.image_url_pairs = []
-                        existing_product.image_url_pairs.append([company_name, new_image_url])
-                        updated = True
+                    for company, url in incoming_image_pairs:
+                        # If the company is not in our dict, it's a new image pair
+                        if company not in existing_pairs_dict:
+                            if not existing_product.image_url_pairs:
+                                existing_product.image_url_pairs = []
+                            existing_product.image_url_pairs.append([company, url])
+                            updated = True
+                            
+                        elif existing_pairs_dict[company] != url:
+                            for pair in existing_product.image_url_pairs:
+                                if pair[0] == company:
+                                    pair[1] = url
+                                    updated = True
+                                    break
 
                 new_description = product_details.get('description_long') or product_details.get('description_short')
                 if new_description:
@@ -254,10 +259,6 @@ class UpdateOrchestrator:
             else:
                 normalized_brand_key = product_details.get('normalized_brand')
                 brand_obj = brand_manager.brand_cache.get(normalized_brand_key)
-                image_url = product_details.get('image_url')
-                initial_image_pairs = []
-                if image_url:
-                    initial_image_pairs = [[company_name, image_url]]
 
                 new_product = Product(
                     name=product_details.get('name', ''),
@@ -270,7 +271,7 @@ class UpdateOrchestrator:
                     size=product_details.get('size'),
                     sizes=product_details.get('sizes', []),
                     url=product_details.get('url'),
-                    image_url_pairs=initial_image_pairs,
+                    image_url_pairs=product_details.get('image_url_pairs', []),
                     description=(product_details.get('description_long') or product_details.get('description_short')),
                     country_of_origin=product_details.get('country_of_origin'),
                     ingredients=product_details.get('ingredients')
