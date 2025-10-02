@@ -12,7 +12,7 @@ class CartOptimizationView(APIView):
     def post(self, request, *args, **kwargs):
         cart = request.data.get('cart')
         store_ids = request.data.get('store_ids')
-        max_stores = request.data.get('max_stores', 3)
+        max_stores_options = request.data.get('max_stores_options', [2, 3, 4])
 
         if not cart or not store_ids:
             return Response(
@@ -37,24 +37,32 @@ class CartOptimizationView(APIView):
                     status=status.HTTP_404_NOT_FOUND
                 )
 
-            # Step 3: Run the optimization and baseline calculation
-            optimized_cost, shopping_plan, _ = calculate_optimized_cost(price_slots, max_stores)
+            # Step 3: Run optimization for each option and calculate baseline
+            optimization_results = []
             baseline_cost = calculate_baseline_cost(price_slots, stores)
 
-            if optimized_cost is None:
+            for max_stores in max_stores_options:
+                optimized_cost, shopping_plan, _ = calculate_optimized_cost(price_slots, max_stores)
+
+                if optimized_cost is not None:
+                    savings = baseline_cost - optimized_cost if baseline_cost > 0 else 0
+                    optimization_results.append({
+                        'max_stores': max_stores,
+                        'optimized_cost': optimized_cost,
+                        'savings': savings,
+                        'shopping_plan': shopping_plan,
+                    })
+
+            if not optimization_results:
                 return Response(
-                    {'error': 'Could not find an optimal shopping plan. Try increasing the number of stores or adding substitutes.'},
+                    {'error': 'Could not find an optimal shopping plan for any of the provided store options.'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
             # Step 4: Format and return the response
-            savings = baseline_cost - optimized_cost if baseline_cost > 0 else 0
-
             response_data = {
-                'optimized_cost': optimized_cost,
                 'baseline_cost': baseline_cost,
-                'savings': savings,
-                'shopping_plan': shopping_plan,
+                'optimization_results': optimization_results,
             }
 
             return Response(response_data, status=status.HTTP_200_OK)
