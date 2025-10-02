@@ -7,7 +7,7 @@ const FinalCartPage = () => {
     const navigate = useNavigate();
     const { cart, store_ids } = location.state || {};
 
-    const [optimizationResult, setOptimizationResult] = useState(null);
+    const [optimizationData, setOptimizationData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const splitCalledRef = useRef(false); // Flag to prevent double API calls
@@ -28,8 +28,9 @@ const FinalCartPage = () => {
                 const response = await axios.post('/api/cart/split/', {
                     cart: cart,
                     store_ids: store_ids,
+                    max_stores_options: [2, 3, 4]
                 });
-                setOptimizationResult(response.data);
+                setOptimizationData(response.data);
             } catch (err) {
                 setError(err.response ? err.response.data.error : 'An unexpected error occurred.');
             } finally {
@@ -51,28 +52,37 @@ const FinalCartPage = () => {
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-4">Optimized Shopping Cart</h1>
-            {optimizationResult && (
+            {optimizationData && (
                 <div>
                     <div className="mb-4">
-                        <p><strong>Total Cost:</strong> ${optimizationResult.optimized_cost.toFixed(2)}</p>
-                        <p><strong>Baseline Cost:</strong> ${optimizationResult.baseline_cost.toFixed(2)}</p>
-                        <p className="text-green-600"><strong>Savings:</strong> ${optimizationResult.savings.toFixed(2)}</p>
+                        <p><strong>Baseline Cost (Single Store):</strong> ${optimizationData.baseline_cost.toFixed(2)}</p>
                     </div>
-                    <div>
-                                                {Object.entries(optimizationResult.shopping_plan).map(([storeName, items]) => (
-                                                    items.length > 0 && (
-                                                        <div key={storeName} className="mb-4 p-4 border rounded">
-                                                            <h2 className="text-xl font-semibold">{storeName}</h2>
-                                                            <ul>
-                                                                {items.map((item, index) => (
-                                                                                                                <li key={index} className="flex justify-between">
-                                                                                                                    <span>{item.product}</span>
-                                                                                                                    <span> ${item.price.toFixed(2)}</span>
-                                                                                                                </li>                                                                ))}
-                                                            </ul>
-                                                        </div>
-                                                    )
-                                                ))}                    </div>
+                    {optimizationData.optimization_results.map((result, index) => (
+                        <div key={index} className="mb-8 p-4 border rounded-lg shadow-md">
+                            <h2 className="text-2xl font-bold mb-3">Option {index + 1}: {result.max_stores} Stores</h2>
+                            <div className="grid grid-cols-2 gap-4 mb-4">
+                                <p><strong>Optimized Cost:</strong> ${result.optimized_cost.toFixed(2)}</p>
+                                <p className="text-green-600"><strong>Savings:</strong> ${result.savings.toFixed(2)}</p>
+                            </div>
+                            <div>
+                                {Object.entries(result.shopping_plan).map(([storeName, items]) => (
+                                    items.length > 0 && (
+                                        <div key={storeName} className="mb-4 p-4 border rounded">
+                                            <h3 className="text-xl font-semibold">{storeName}</h3>
+                                            <ul>
+                                                {items.map((item, itemIndex) => (
+                                                    <li key={itemIndex} className="flex justify-between">
+                                                        <span>{item.product}</span>
+                                                        <span>${item.price.toFixed(2)}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )
+                                ))}
+                            </div>
+                        </div>
+                    ))}
                 </div>
             )}
         </div>
