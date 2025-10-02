@@ -31,7 +31,7 @@ class Command(BaseCommand):
                         if metadata.get('company', '').lower() == 'coles':
                             sku = product_data.get('sku')
                             if sku:
-                                new_image_url = f"https://productimages.coles.com.au/productimages/2/{sku}.jpg"
+                                new_image_url = f"https://productimages.coles.com.au/productimages/{str(sku)[0]}/{sku}.jpg"
                                 # Create image_url_pairs
                                 product_data['image_url_pairs'] = [['Coles', new_image_url]]
                                 # Remove old image_url if it exists

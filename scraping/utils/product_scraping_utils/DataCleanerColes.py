@@ -63,7 +63,8 @@ class DataCleanerColes(BaseDataCleaner):
         # Construct the direct image URL using the SKU
         product_sku = cleaned_product.get('sku')
         if product_sku:
-            new_image_url = f"https://productimages.coles.com.au/productimages/2/{product_sku}.jpg"
+            first_digit = str(product_sku)[0]
+            new_image_url = f"https://productimages.coles.com.au/productimages/{first_digit}/{product_sku}.jpg"
             # Assign to image_url_pairs
             cleaned_product['image_url_pairs'] = [[self.company, new_image_url]]
         else:
