@@ -1,0 +1,6 @@
+C:\Users\ethan\coding\splitcart\api\scrapers\product_scraper_coles.py
+C:\Users\ethan\coding\splitcart\api\scrapers\store_scraper_coles.py
+C:\Users\ethan\coding\splitcart\api\scrapers\barcode_scraper_coles.py
+
+okay so all three of these work. what i want to focus on is the warm up method. its common to all of them. effectively triggering the captcha on the site is the point. Then once that happens i solve it. Then our script detects that ive solved it. And then it closes the browser. but we have 3 slightly different versions now. i want to consolidate them into one util that they can all use. I think the product scraper is probably the primary one to copy from. but they are all incredibly similar. 
+
