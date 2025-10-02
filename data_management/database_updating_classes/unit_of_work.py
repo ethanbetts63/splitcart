@@ -11,8 +11,8 @@ class UnitOfWork:
         self.resolver = resolver
         self.new_products_to_process = []
         self.prices_to_create = []
-        self.products_to_update = []
-        self.brands_to_update = []
+        self.products_to_update = set()
+        self.brands_to_update = set()
         self.groups_to_update = []
         self.groups_to_clear_candidates = []
         self.new_price_records_created = 0
@@ -86,11 +86,9 @@ class UnitOfWork:
 
     def add_for_update(self, instance):
         if isinstance(instance, Product):
-            if instance not in self.products_to_update:
-                self.products_to_update.append(instance)
+            self.products_to_update.add(instance)
         elif isinstance(instance, ProductBrand):
-            if instance not in self.brands_to_update:
-                self.brands_to_update.append(instance)
+            self.brands_to_update.add(instance)
         elif isinstance(instance, StoreGroup):
             if instance not in self.groups_to_update:
                 self.groups_to_update.append(instance)
@@ -154,13 +152,13 @@ class UnitOfWork:
                         'country_of_origin', 'ingredients', 'has_no_coles_barcode', 
                         'name_variations', 'normalized_name_brand_size_variations', 'sizes'
                     ]
-                    Product.objects.bulk_update(self.products_to_update, update_fields, batch_size=500)
+                    Product.objects.bulk_update(list(self.products_to_update), update_fields, batch_size=500)
                     self.command.stdout.write(f"  - Updated {len(self.products_to_update)} products with new information.")
 
                 # Stage 5: Update existing brands
                 if self.brands_to_update:
                     brand_update_fields = ['name_variations', 'normalized_name_variations']
-                    ProductBrand.objects.bulk_update(self.brands_to_update, brand_update_fields, batch_size=500)
+                    ProductBrand.objects.bulk_update(list(self.brands_to_update), brand_update_fields, batch_size=500)
                     self.command.stdout.write(f"  - Updated {len(self.brands_to_update)} brands with new variation info.")
 
                 # Stage 6: Update existing groups
