@@ -61,7 +61,7 @@ class CartOptimizationViewTest(TestCase):
         # Check the result for max_stores = 2
         result_2_stores = next(r for r in results if r['max_stores'] == 2)
         self.assertIsNotNone(result_2_stores)
-        self.assertEqual(result_2_stores['optimized_cost'], 10 + 20 + 31) # P1@S1, P2@S2, P3@S3 (forced trip)
+        self.assertEqual(result_2_stores['optimized_cost'], 10 + 20 + 30) # P1@S1, P2@S2, P3@S1
 
         # Check the result for max_stores = 3
         result_3_stores = next(r for r in results if r['max_stores'] == 3)
