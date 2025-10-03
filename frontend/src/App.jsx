@@ -16,6 +16,7 @@ import MapPage from './pages/MapPage';
 import { useShoppingList } from './context/ShoppingListContext';
 import { Offcanvas } from 'react-bootstrap';
 import StoreMap from './components/StoreMap';
+import mapIcon from './assets/map.png';
 import './App.css';
 
 function App() {
@@ -94,9 +95,12 @@ function App() {
 
       <Offcanvas show={showStoreMap} onHide={() => setShowStoreMap(false)} placement="end" style={{ width: '80vw' }}>
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Select Stores</Offcanvas.Title>
+          <Offcanvas.Title>
+            <img src={mapIcon} alt="Map" style={{ width: '40px', height: '30px' }} className="me-2" />
+            Select Stores
+          </Offcanvas.Title>
         </Offcanvas.Header>
-        <Offcanvas.Body>
+        <Offcanvas.Body className="pt-0">
           <StoreMap onSelectionChange={setSelectedStoreIds} />
         </Offcanvas.Body>
       </Offcanvas>

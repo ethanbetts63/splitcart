@@ -126,7 +126,7 @@ const StoreMap = ({ onSelectionChange }) => {
                 Check and uncheck specific stores below the map. 
                 The more stores you select, the more saving potential you allow.
             </p>
-            <Form.Group controlId="radiusSlider" className="mb-3">
+            <Form.Group controlId="radiusSlider" className="mb-2">
                 <Form.Label>Search Radius: {radius} km</Form.Label>
                 <Form.Control 
                     type="range" 
