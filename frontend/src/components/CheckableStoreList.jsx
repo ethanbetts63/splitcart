@@ -2,7 +2,7 @@
 import React from 'react';
 import { ListGroup, Form } from 'react-bootstrap';
 
-const StoreList = ({ stores }) => {
+const CheckableStoreList = ({ stores, selectedStoreIds, onStoreSelect }) => {
     return (
         <ListGroup>
             {stores.map(store => (
@@ -11,7 +11,8 @@ const StoreList = ({ stores }) => {
                         type="checkbox"
                         id={`store-checkbox-${store.id}`}
                         label={`${store.store_name} (${store.company_name})`}
-                        defaultChecked
+                        checked={selectedStoreIds.has(store.id)}
+                        onChange={() => onStoreSelect(store.id)}
                     />
                 </ListGroup.Item>
             ))}
@@ -19,4 +20,4 @@ const StoreList = ({ stores }) => {
     );
 };
 
-export default StoreList;
+export default CheckableStoreList;

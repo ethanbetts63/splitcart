@@ -10,7 +10,7 @@ import aldiLogo from '../assets/ALDI_logo.svg';
 import colesLogo from '../assets/coles_logo.webp';
 import igaLogo from '../assets/iga_logo.webp';
 import woolworthsLogo from '../assets/woolworths_logo.webp';
-import StoreList from './StoreList';
+import CheckableStoreList from './CheckableStoreList';
 
 const companyLogos = {
     'Aldi': aldiLogo,
@@ -105,7 +105,7 @@ const StoreMap = ({ onSelectionChange }) => {
         return null;
     };
 
-    const handleMarkerClick = (storeId) => {
+    const handleStoreSelect = (storeId) => {
         const newSelectedIds = new Set(selectedStoreIds);
         if (newSelectedIds.has(storeId)) {
             newSelectedIds.delete(storeId);
@@ -134,7 +134,7 @@ const StoreMap = ({ onSelectionChange }) => {
             {loading && <div>Loading map...</div>}
             {error && <div>Error: {error}</div>}
 
-            <MapContainer center={[-25.36, 134.21]} zoom={4} style={{ height: 'calc(100vh - 150px)', width: '100%' }}>
+            <MapContainer center={[-25.36, 134.21]} zoom={4} style={{ height: '400px', width: '100%' }}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -147,7 +147,7 @@ const StoreMap = ({ onSelectionChange }) => {
                         position={[store.latitude, store.longitude]}
                         icon={getStoreIcon(store.company_name, selectedStoreIds.has(store.id))}
                         eventHandlers={{
-                            click: () => handleMarkerClick(store.id),
+                            click: () => handleStoreSelect(store.id),
                         }}
                     >
                         <Popup>
@@ -159,7 +159,24 @@ const StoreMap = ({ onSelectionChange }) => {
             </MapContainer>
 
             <div className="mt-4">
-                <StoreList stores={stores} />
+                <Row>
+                    <Col md={6}>
+                        <h5>Nearby Stores</h5>
+                        <CheckableStoreList 
+                            stores={stores} 
+                            selectedStoreIds={selectedStoreIds} 
+                            onStoreSelect={handleStoreSelect} 
+                        />
+                    </Col>
+                    <Col md={6}>
+                        <h5>Selected Stores</h5>
+                        <CheckableStoreList 
+                            stores={stores.filter(store => selectedStoreIds.has(store.id))} 
+                            selectedStoreIds={selectedStoreIds} 
+                            onStoreSelect={handleStoreSelect} 
+                        />
+                    </Col>
+                </Row>
             </div>
         </div>
     );
