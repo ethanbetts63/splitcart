@@ -14,7 +14,7 @@ import woolworthsLogo from '../assets/woolworths_logo.webp';
 const companyLogos = {
     'Aldi': aldiLogo,
     'Coles': colesLogo,
-    'IGA': igaLogo,
+    'Iga': igaLogo,
     'Woolworths': woolworthsLogo,
 };
 
