@@ -1,6 +1,15 @@
 from rest_framework import serializers
 from products.models import Product, Price
 from products.models.substitution import ProductSubstitution
+from companies.models import Store
+
+class StoreSerializer(serializers.ModelSerializer):
+    company_name = serializers.CharField(source='company.name')
+
+    class Meta:
+        model = Store
+        fields = ('id', 'store_name', 'latitude', 'longitude', 'company_name')
+
 
 class ProductSubstitutionSerializer(serializers.ModelSerializer):
     level_description = serializers.SerializerMethodField()

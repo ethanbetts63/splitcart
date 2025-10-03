@@ -67,3 +67,4 @@ processed_data/
 woolworths1_ids.txt
 woolworths2_ids.txt
 /scraping/data/
+node_modules/

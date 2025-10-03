@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from companies.models import Postcode
 from data_management.utils.geospatial_utils import get_nearby_stores
+from ..serializers import StoreSerializer
 
 class StoreListView(APIView):
     """
@@ -24,8 +25,8 @@ class StoreListView(APIView):
 
             if ref_postcode:
                 nearby_stores = get_nearby_stores(ref_postcode, radius)
-                nearby_store_ids = [store.id for store in nearby_stores]
-                return Response(nearby_store_ids, status=status.HTTP_200_OK)
+                serializer = StoreSerializer(nearby_stores, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response(
                     {'error': 'Invalid postcode.'},

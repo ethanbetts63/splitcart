@@ -12,6 +12,7 @@ import Layout from './components/Layout'; // Import Layout component
 import SubstitutionPage from './pages/SubstitutionPage';
 import ProductListPage from './pages/ProductListPage'; // Import ProductListPage
 import FinalCartPage from './pages/FinalCartPage';
+import StoreSelectionPage from './pages/StoreSelectionPage';
 import { useShoppingList } from './context/ShoppingListContext';
 import './App.css';
 
@@ -73,6 +74,7 @@ function App() {
           } />
           <Route path="/split-cart" element={<SubstitutionPage nearbyStoreIds={nearbyStoreIds} />} />
           <Route path="/final-cart" element={<FinalCartPage />} />
+          <Route path="/store-selection" element={<StoreSelectionPage />} />
         </Routes>
       </main>
 
