@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import axios from 'axios';
@@ -65,26 +65,44 @@ const StoreMap = ({ onSelectionChange }) => {
     const [stores, setStores] = useState([]);
     const [selectedStoreIds, setSelectedStoreIds] = useState(new Set());
     const [radius, setRadius] = useState(5);
-    const [loading, setLoading] = useState(true);
+    const [userLocation, setUserLocation] = useState(null);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchStores = async () => {
-            setLoading(true);
-            try {
-                const response = await axios.get('/api/stores/nearby/', {
-                    params: { postcode: 5000, radius: radius }
-                });
-                setStores(response.data);
-            } catch (err) {
-                setError('Could not fetch store data.');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchStores();
-    }, [radius]);
+    const MapClickHandler = () => {
+        useMapEvents({
+            click: async (e) => {
+                const { lat, lng } = e.latlng;
+                setUserLocation({ lat, lng });
+                setLoading(true);
+                try {
+                    // Reverse geocode to get postcode
+                    const geoResponse = await axios.get('https://nominatim.openstreetmap.org/reverse', {
+                        params: {
+                            lat: lat,
+                            lon: lng,
+                            format: 'json',
+                        }
+                    });
+                    const postcode = geoResponse.data.address.postcode;
+                    if (postcode) {
+                        // Fetch stores with the new postcode
+                        const response = await axios.get('/api/stores/nearby/', {
+                            params: { postcode: postcode, radius: radius }
+                        });
+                        setStores(response.data);
+                    } else {
+                        setError('Could not determine postcode for the selected location.');
+                    }
+                } catch (err) {
+                    setError('Could not fetch store data.');
+                } finally {
+                    setLoading(false);
+                }
+            },
+        });
+        return null;
+    };
 
     const handleMarkerClick = (storeId) => {
         const newSelectedIds = new Set(selectedStoreIds);
@@ -113,13 +131,15 @@ const StoreMap = ({ onSelectionChange }) => {
             </Form.Group>
 
             {loading && <div>Loading map...</div>}
-            {error && <div>Error loading map: {error}</div>}
+            {error && <div>Error: {error}</div>}
 
-            <MapContainer center={[-34.9285, 138.6007]} zoom={13} style={{ height: 'calc(100vh - 150px)', width: '100%' }}>
+            <MapContainer center={[-25.36, 134.21]} zoom={4} style={{ height: 'calc(100vh - 150px)', width: '100%' }}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
+                <MapClickHandler />
+                {userLocation && <Marker position={userLocation} />} 
                 {stores.map(store => (
                     <Marker 
                         key={store.id} 
