@@ -6,6 +6,43 @@ import L from 'leaflet';
 import axios from 'axios';
 import { Form } from 'react-bootstrap';
 
+import aldiLogo from '../assets/ALDI_logo.svg';
+import colesLogo from '../assets/coles_logo.webp';
+import igaLogo from '../assets/iga_logo.webp';
+import woolworthsLogo from '../assets/woolworths_logo.webp';
+
+const companyLogos = {
+    'Aldi': aldiLogo,
+    'Coles': colesLogo,
+    'IGA': igaLogo,
+    'Woolworths': woolworthsLogo,
+};
+
+const getStoreIcon = (companyName, isSelected) => {
+    const logoUrl = companyLogos[companyName];
+    const className = `leaflet-marker-icon ${isSelected ? 'marker-selected' : ''}`;
+
+    if (logoUrl) {
+        return new L.Icon({
+            iconUrl: logoUrl,
+            iconSize: [40, 40],
+            className: className,
+        });
+    }
+
+    // Fallback to default icon
+    return new L.Icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+        iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+        shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41],
+        className: className,
+    });
+};
+
 const selectedMarkerStyle = `
   .marker-selected img {
     border: 3px solid #dc3545; /* Bootstrap's danger color */
