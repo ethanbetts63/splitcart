@@ -49,7 +49,9 @@ def get_nearby_stores(ref_postcode_obj: Postcode, radius_km: float) -> list[Stor
     Finds all Store objects within a given radius of a reference Postcode.
     """
     nearby_stores = []
-    all_stores = Store.objects.all()
+    # Exclude specific divisions
+    excluded_division_ids = [2, 3, 5, 7]
+    all_stores = Store.objects.exclude(division_id__in=excluded_division_ids)
 
     for store in all_stores:
         if store.latitude is None or store.longitude is None:
