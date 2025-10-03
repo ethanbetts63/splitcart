@@ -7,7 +7,7 @@ import splitCartSymbol from '../assets/SplitCart_symbol_v2.webp';
 import splitCartTitle from '../assets/splitcart_title_v2.webp';
 import { useShoppingList } from '../context/ShoppingListContext';
 
-const Header = ({ onShowLocationModal, setSearchTerm }) => {
+const Header = ({ onShowLocationModal, onShowStoreMap, setSearchTerm }) => {
   const [showMenu, setShowMenu] = useState(false);
   const { items } = useShoppingList();
   const location = useLocation();
@@ -50,7 +50,7 @@ const Header = ({ onShowLocationModal, setSearchTerm }) => {
       </Button>
 
       <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 1050, padding: '1.5rem', display: 'flex', alignItems: 'center' }}>
-        <Button variant="secondary" onClick={() => navigate('/map')} className="me-2">
+        <Button variant="secondary" onClick={onShowStoreMap} className="me-2">
           Map
         </Button>
         {items.length > 0 && location.pathname !== '/split-cart' && location.pathname !== '/final-cart' && <SplitCartButton />}

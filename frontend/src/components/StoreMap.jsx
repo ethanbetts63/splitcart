@@ -3,54 +3,105 @@ import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import axios from 'axios';
+import { Form } from 'react-bootstrap';
 
-// Leaflet's default icon doesn't work well with React, so we need to fix it.
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-    iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+// Leaflet's default icon setup
+const defaultIcon = new L.Icon({
     iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+    iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
     shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
 });
 
-const StoreMap = () => {
+const selectedIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
+const StoreMap = ({ onSelectionChange }) => {
     const [stores, setStores] = useState([]);
+    const [selectedStoreIds, setSelectedStoreIds] = useState(new Set());
+    const [radius, setRadius] = useState(5);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // TODO: Fetch stores from the API based on user's location
     useEffect(() => {
-        // For now, we'll use some dummy data
-        const dummyStores = [
-            { id: 1, store_name: 'Dummy Store 1', latitude: -34.9285, longitude: 138.6007, company_name: 'Dummy Company' },
-            { id: 2, store_name: 'Dummy Store 2', latitude: -34.93, longitude: 138.61, company_name: 'Dummy Company' },
-        ];
-        setStores(dummyStores);
-        setLoading(false);
-    }, []);
+        const fetchStores = async () => {
+            setLoading(true);
+            try {
+                const response = await axios.get('/api/stores/nearby/', {
+                    params: { postcode: 5000, radius: radius }
+                });
+                setStores(response.data);
+            } catch (err) {
+                setError('Could not fetch store data.');
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    if (loading) {
-        return <div>Loading map...</div>;
-    }
+        fetchStores();
+    }, [radius]);
 
-    if (error) {
-        return <div>Error loading map: {error}</div>;
-    }
+    const handleMarkerClick = (storeId) => {
+        const newSelectedIds = new Set(selectedStoreIds);
+        if (newSelectedIds.has(storeId)) {
+            newSelectedIds.delete(storeId);
+        } else {
+            newSelectedIds.add(storeId);
+        }
+        setSelectedStoreIds(newSelectedIds);
+        if (onSelectionChange) {
+            onSelectionChange(Array.from(newSelectedIds));
+        }
+    };
 
     return (
-        <MapContainer center={[-34.9285, 138.6007]} zoom={13} style={{ height: '500px', width: '100%' }}>
-            <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            {stores.map(store => (
-                <Marker key={store.id} position={[store.latitude, store.longitude]}>
-                    <Popup>
-                        <b>{store.store_name}</b><br />
-                        {store.company_name}
-                    </Popup>
-                </Marker>
-            ))}
-        </MapContainer>
+        <div>
+            <Form.Group controlId="radiusSlider" className="mb-3">
+                <Form.Label>Search Radius: {radius} km</Form.Label>
+                <Form.Control 
+                    type="range" 
+                    min="1" 
+                    max="100" 
+                    value={radius} 
+                    onChange={(e) => setRadius(e.target.value)} 
+                />
+            </Form.Group>
+
+            {loading && <div>Loading map...</div>}
+            {error && <div>Error loading map: {error}</div>}
+
+            <MapContainer center={[-34.9285, 138.6007]} zoom={13} style={{ height: 'calc(100vh - 150px)', width: '100%' }}>
+                <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                />
+                {stores.map(store => (
+                    <Marker 
+                        key={store.id} 
+                        position={[store.latitude, store.longitude]}
+                        icon={selectedStoreIds.has(store.id) ? selectedIcon : defaultIcon}
+                        eventHandlers={{
+                            click: () => handleMarkerClick(store.id),
+                        }}
+                    >
+                        <Popup>
+                            <b>{store.store_name}</b><br />
+                            {store.company_name}
+                        </Popup>
+                    </Marker>
+                ))}
+            </MapContainer>
+        </div>
     );
 };
 

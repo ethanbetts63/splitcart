@@ -14,12 +14,15 @@ import ProductListPage from './pages/ProductListPage'; // Import ProductListPage
 import FinalCartPage from './pages/FinalCartPage';
 import MapPage from './pages/MapPage';
 import { useShoppingList } from './context/ShoppingListContext';
+import { Offcanvas } from 'react-bootstrap';
+import StoreMap from './components/StoreMap';
 import './App.css';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showLocationModal, setShowLocationModal] = useState(false);
-  const { setUserLocation, nearbyStoreIds, isLocationLoaded } = useShoppingList();
+  const [showStoreMap, setShowStoreMap] = useState(false);
+  const { setUserLocation, nearbyStoreIds, isLocationLoaded, setSelectedStoreIds } = useShoppingList();
 
   const [scrollers, setScrollers] = useState([]);
 
@@ -55,7 +58,11 @@ function App() {
 
   return (
     <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
-      <Header onShowLocationModal={() => setShowLocationModal(true)} setSearchTerm={setSearchTerm} />
+      <Header 
+        onShowLocationModal={() => setShowLocationModal(true)} 
+        onShowStoreMap={() => setShowStoreMap(true)} 
+        setSearchTerm={setSearchTerm} 
+      />
       <main className="flex-grow-1">
         <Routes>
           <Route path="/" element={
@@ -74,7 +81,6 @@ function App() {
           } />
           <Route path="/split-cart" element={<SubstitutionPage nearbyStoreIds={nearbyStoreIds} />} />
           <Route path="/final-cart" element={<FinalCartPage />} />
-          <Route path="/map" element={<MapPage />} />
         </Routes>
       </main>
 
@@ -85,6 +91,15 @@ function App() {
         onHide={() => setShowLocationModal(false)}
         onSave={handleSaveLocation}
       />
+
+      <Offcanvas show={showStoreMap} onHide={() => setShowStoreMap(false)} placement="end" style={{ width: '80vw' }}>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Select Stores</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <StoreMap onSelectionChange={setSelectedStoreIds} />
+        </Offcanvas.Body>
+      </Offcanvas>
     </div>
   );
 }
