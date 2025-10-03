@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaf
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import axios from 'axios';
-import { Form } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
 
 import aldiLogo from '../assets/ALDI_logo.svg';
 import colesLogo from '../assets/coles_logo.webp';
@@ -92,6 +92,7 @@ const StoreMap = ({ onSelectionChange }) => {
                             params: { postcode: postcode, radius: radius }
                         });
                         setStores(response.data);
+                        setSelectedStoreIds(new Set(response.data.map(store => store.id)));
                     } else {
                         setError('Could not determine postcode for the selected location.');
                     }
@@ -159,24 +160,12 @@ const StoreMap = ({ onSelectionChange }) => {
             </MapContainer>
 
             <div className="mt-4">
-                <Row>
-                    <Col md={6}>
-                        <h5>Nearby Stores</h5>
-                        <CheckableStoreList 
-                            stores={stores} 
-                            selectedStoreIds={selectedStoreIds} 
-                            onStoreSelect={handleStoreSelect} 
-                        />
-                    </Col>
-                    <Col md={6}>
-                        <h5>Selected Stores</h5>
-                        <CheckableStoreList 
-                            stores={stores.filter(store => selectedStoreIds.has(store.id))} 
-                            selectedStoreIds={selectedStoreIds} 
-                            onStoreSelect={handleStoreSelect} 
-                        />
-                    </Col>
-                </Row>
+                <h5>Stores in Area</h5>
+                <CheckableStoreList 
+                    stores={stores} 
+                    selectedStoreIds={selectedStoreIds} 
+                    onStoreSelect={handleStoreSelect} 
+                />
             </div>
         </div>
     );
