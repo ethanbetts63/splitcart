@@ -121,6 +121,11 @@ const StoreMap = ({ onSelectionChange }) => {
 
     return (
         <div>
+            <p className="text-muted">
+                Double-click on the map to set your location. 
+                Check and uncheck specific stores below the map. 
+                The more stores you select, the more saving potential you allow.
+            </p>
             <Form.Group controlId="radiusSlider" className="mb-3">
                 <Form.Label>Search Radius: {radius} km</Form.Label>
                 <Form.Control 
@@ -160,8 +165,8 @@ const StoreMap = ({ onSelectionChange }) => {
             </MapContainer>
 
             <div className="mt-4">
-                <h5>Selected Stores</h5>
-                <p className="text-muted">The stores selected below will be used for the price comparison. Uncheck any stores you wish to exclude.</p>
+                <h5 className="mb-1">Selected Stores</h5>
+                <p className="text-muted mb-3">The stores selected below will be used for the price comparison. Uncheck any stores you wish to exclude.</p>
                 <CheckableStoreList 
                     stores={stores} 
                     selectedStoreIds={selectedStoreIds} 

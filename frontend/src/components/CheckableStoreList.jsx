@@ -18,12 +18,12 @@ const CheckableStoreList = ({ stores, selectedStoreIds, onStoreSelect }) => {
     return (
         <ListGroup>
             {stores.map(store => (
-                <ListGroup.Item key={store.id} className="d-flex align-items-center">
+                <ListGroup.Item key={store.id} className="d-flex align-items-center" onClick={() => onStoreSelect(store.id)} style={{ cursor: 'pointer' }}>
                     <Form.Check 
                         type="checkbox"
                         id={`store-checkbox-${store.id}`}
                         checked={selectedStoreIds.has(store.id)}
-                        onChange={() => onStoreSelect(store.id)}
+                        onChange={() => {}} // The onClick on the ListGroup.Item handles the logic
                         className="me-3"
                     />
                     <Image src={companyLogos[store.company_name]} alt={`${store.company_name} logo`} height="20" className="me-2" />
