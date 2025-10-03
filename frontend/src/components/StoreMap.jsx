@@ -160,7 +160,8 @@ const StoreMap = ({ onSelectionChange }) => {
             </MapContainer>
 
             <div className="mt-4">
-                <h5>Stores in Area</h5>
+                <h5>Selected Stores</h5>
+                <p className="text-muted">The stores selected below will be used for the price comparison. Uncheck any stores you wish to exclude.</p>
                 <CheckableStoreList 
                     stores={stores} 
                     selectedStoreIds={selectedStoreIds} 
