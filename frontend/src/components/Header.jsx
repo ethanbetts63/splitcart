@@ -49,11 +49,12 @@ const Header = ({ onShowLocationModal, setSearchTerm }) => {
         )}
       </Button>
 
-      {items.length > 0 && (
-        <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 1050, padding: '1.5rem', display: 'flex', alignItems: 'center' }}>
-          {location.pathname !== '/split-cart' && location.pathname !== '/final-cart' && <SplitCartButton />}
-        </div>
-      )}
+      <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 1050, padding: '1.5rem', display: 'flex', alignItems: 'center' }}>
+        <Button variant="secondary" onClick={() => navigate('/map')} className="me-2">
+          Map
+        </Button>
+        {items.length > 0 && location.pathname !== '/split-cart' && location.pathname !== '/final-cart' && <SplitCartButton />}
+      </div>
 
       <Offcanvas show={showMenu} onHide={handleClose} placement="start">
         <Offcanvas.Header closeButton>
