@@ -10,6 +10,7 @@ import aldiLogo from '../assets/ALDI_logo.svg';
 import colesLogo from '../assets/coles_logo.webp';
 import igaLogo from '../assets/iga_logo.webp';
 import woolworthsLogo from '../assets/woolworths_logo.webp';
+import StoreList from './StoreList';
 
 const companyLogos = {
     'Aldi': aldiLogo,
@@ -156,6 +157,10 @@ const StoreMap = ({ onSelectionChange }) => {
                     </Marker>
                 ))}
             </MapContainer>
+
+            <div className="mt-4">
+                <StoreList stores={stores} />
+            </div>
         </div>
     );
 };
