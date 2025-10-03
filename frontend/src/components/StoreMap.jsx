@@ -71,7 +71,7 @@ const StoreMap = ({ onSelectionChange }) => {
 
     const MapClickHandler = () => {
         useMapEvents({
-            click: async (e) => {
+            dblclick: async (e) => {
                 const { lat, lng } = e.latlng;
                 setUserLocation({ lat, lng });
                 setLoading(true);
