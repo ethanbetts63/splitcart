@@ -6,27 +6,25 @@ import L from 'leaflet';
 import axios from 'axios';
 import { Form } from 'react-bootstrap';
 
-// Leaflet's default icon setup
-const defaultIcon = new L.Icon({
-    iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-    iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
-    shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-});
-
-const selectedIcon = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-});
+const selectedMarkerStyle = `
+  .marker-selected img {
+    border: 3px solid #dc3545; /* Bootstrap's danger color */
+    border-radius: 50%;
+    box-shadow: 0 0 10px #dc3545;
+  }
+`;
 
 const StoreMap = ({ onSelectionChange }) => {
+    // Inject the style into the document head
+    useEffect(() => {
+        const styleElement = document.createElement('style');
+        styleElement.innerHTML = selectedMarkerStyle;
+        document.head.appendChild(styleElement);
+        return () => {
+            document.head.removeChild(styleElement);
+        };
+    }, []);
+
     const [stores, setStores] = useState([]);
     const [selectedStoreIds, setSelectedStoreIds] = useState(new Set());
     const [radius, setRadius] = useState(5);
@@ -89,7 +87,7 @@ const StoreMap = ({ onSelectionChange }) => {
                     <Marker 
                         key={store.id} 
                         position={[store.latitude, store.longitude]}
-                        icon={selectedStoreIds.has(store.id) ? selectedIcon : defaultIcon}
+                        icon={getStoreIcon(store.company_name, selectedStoreIds.has(store.id))}
                         eventHandlers={{
                             click: () => handleMarkerClick(store.id),
                         }}
