@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Placeholder } from 'react-bootstrap';
-import placeholderImage from '../assets/SplitCart_symbol_v2.png';
+import placeholderImage from '../assets/trolley_v3.webp';
 
 const SkeletonProductCard = () => {
   return (

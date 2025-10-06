@@ -58,7 +58,7 @@
        * Implemented get_image_url to deterministically select one image URL from the image_url_pairs field
          (assuming it's a list of [company_name, image_url] tuples).
    * Frontend (`ProductCardContent.jsx`):
-       * Added an onError handler to the <img> tag to display a placeholder image (SplitCart_symbol_v2.png) if the
+       * Added an onError handler to the <img> tag to display a placeholder image (trolley_v3.webp) if the
          product image fails to load.
 
   5. Trolley Icon Styling Fix:

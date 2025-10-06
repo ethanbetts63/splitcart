@@ -3,8 +3,8 @@ import { Button, Offcanvas, Nav, Badge } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ShoppingListComponent from './ShoppingListComponent';
 import SplitCartButton from './SplitCartButton';
-import splitCartSymbol from '../assets/SplitCart_symbol_v2.webp';
-import splitCartTitle from '../assets/splitcart_title_v2.webp';
+import splitCartSymbol from '../assets/trolley_v3.webp';
+import splitCartTitle from '../assets/splitcart_v3.png';
 import mapIcon from '../assets/map.png';
 import { useShoppingList } from '../context/ShoppingListContext';
 
