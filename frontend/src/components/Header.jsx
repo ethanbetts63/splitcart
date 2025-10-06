@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ShoppingListComponent from './ShoppingListComponent';
-import splitCartSymbol from '../assets/trolley_v3.png';
+import TrolleyButton from './TrolleyButton';
 import mapIcon from '../assets/edit_location_large.svg';
-import { useShoppingList } from '../context/ShoppingListContext';
 
 const Header = ({ onShowLocationModal, onShowStoreMap, setSearchTerm }) => {
   const [showMenu, setShowMenu] = useState(false);
-  const { items } = useShoppingList();
   const navigate = useNavigate();
 
   const handleClose = () => setShowMenu(false);
@@ -23,29 +21,7 @@ const Header = ({ onShowLocationModal, onShowStoreMap, setSearchTerm }) => {
 
   return (
     <>
-      <button
-        onClick={handleShow}
-        className="white-hover-glow"
-        style={{ position: 'absolute', top: 0, left: 0, zIndex: 1030, margin: '1.5rem' }}
-      >
-        <img src={splitCartSymbol} alt="Menu" style={{ width: '100px', height: '100px' }} />
-        {items.length > 0 && (
-          <span
-            style={{
-              position: 'absolute',
-              top: '10px',
-              right: '10px',
-              fontSize: '0.8em',
-              backgroundColor: 'red',
-              color: 'white',
-              borderRadius: '50%',
-              padding: '0.2em 0.6em'
-            }}
-          >
-            {items.length}
-          </span>
-        )}
-      </button>
+      <TrolleyButton onClick={handleShow} />
 
       <div style={{ position: 'absolute', top: 15, right: 0, zIndex: 1030, padding: '1.5rem', display: 'flex', alignItems: 'center' }}>
         <button onClick={onShowStoreMap} style={{ background: 'none', border: 'none', padding: 0, marginRight: '0.5rem' }}>

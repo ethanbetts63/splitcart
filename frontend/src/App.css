@@ -69,15 +69,4 @@
   left: 0; /* Slide in */
 }
 
-.white-hover-glow {
-  background: transparent;
-  border: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border-radius: 50%;
-}
 
-.white-hover-glow:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 30px 10px rgba(255, 255, 255, 0.5);
-}
