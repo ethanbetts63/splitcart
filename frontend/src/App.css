@@ -34,12 +34,6 @@
   }
 }
 
-.card {
-  background-color: var(--bg-light);
-  color: var(--text);
-  border: 1px solid var(--border);
-  padding: 2em;
-}
 
 .read-the-docs {
   color: var(--text-muted);

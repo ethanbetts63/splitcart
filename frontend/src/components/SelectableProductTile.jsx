@@ -6,7 +6,8 @@ const SelectableProductTile = ({ product, isSelected, onSelect }) => {
     cursor: 'pointer',
     border: isSelected ? '3px solid var(--success)' : '1px solid var(--border)',
     boxShadow: isSelected ? '0 0 10px var(--success)' : 'none',
-    borderRadius: '8px'
+    borderRadius: '8px',
+    backgroundColor: '#FFFFFF'
   };
 
   return (

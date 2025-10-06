@@ -30,7 +30,7 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
   };
 
   return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: '8px', width: '18rem' }}>
+        <div style={{ border: '1px solid var(--border)', borderRadius: '8px', width: '18rem', backgroundColor: '#FFFFFF' }}>
       <ProductCardContent product={product} />
       <div style={{ padding: '1rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
