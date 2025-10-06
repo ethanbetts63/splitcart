@@ -35,12 +35,22 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
     width: '18rem',
     backgroundColor: '#FFFFFF',
     boxShadow: existingItem ? '0 0 10px var(--primary)' : 'none',
-    transition: 'border 0.2s, boxShadow 0.2s'
+    transition: 'border 0.2s, boxShadow 0.2s',
+    height: '32rem', // Fixed height
+    display: 'flex',
+    flexDirection: 'column'
+  };
+
+  const contentWrapperStyle = {
+    flex: 1, // Make content grow
+    overflow: 'hidden' // Hide overflow
   };
 
   return (
         <div style={tileStyle}>
-      <ProductCardContent product={product} />
+      <div style={contentWrapperStyle}>
+        <ProductCardContent product={product} />
+      </div>
       <div style={{ padding: '1rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>

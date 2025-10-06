@@ -35,8 +35,8 @@ const ProductCardContent = ({ product }) => {
         style={{ width: '100%', objectFit: 'cover' }}
       />
       <div style={{ padding: '1rem' }}>
-        <h4>{product.name}</h4>
-        {product.brand_name && <h5 style={{ color: 'var(--text-muted)' }}>{product.brand_name}</h5>}
+        <h4 style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{product.name}</h4>
+        {product.brand_name && <h5 style={{ color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{product.brand_name}</h5>}
         {product.size && <p style={{ color: 'var(--text-muted)' }}>Size: {product.size}</p>}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.05rem' }}>
           {product.prices && product.prices.map(priceData => {
