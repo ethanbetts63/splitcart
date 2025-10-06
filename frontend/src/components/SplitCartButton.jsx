@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useShoppingList } from '../context/ShoppingListContext';
+import './SplitCartButton.css';
 
 const SplitCartButton = () => {
   const navigate = useNavigate();
@@ -25,7 +26,10 @@ const SplitCartButton = () => {
   };
 
   return (
-    <button style={{ backgroundColor: 'var(--success)', color: 'var(--text)', padding: '0.75rem 1.5rem', fontSize: '1.25rem', border: '2px solid transparent', boxShadow: '0 0 10px hsl(147, 50%, 50%)' }} onClick={handleClick}>
+    <button 
+      className="split-cart-button"
+      onClick={handleClick}
+    >
       Split My Cart!
     </button>
   );
