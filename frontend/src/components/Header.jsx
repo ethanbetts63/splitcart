@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ShoppingListComponent from './ShoppingListComponent';
 import SplitCartButton from './SplitCartButton';
-import splitCartSymbol from '../assets/trolley_v3_recolored.png';
+import splitCartSymbol from '../assets/trolley_v3.png';
 import mapIcon from '../assets/edit_location_large.svg';
 import { useShoppingList } from '../context/ShoppingListContext';
 
@@ -27,9 +27,9 @@ const Header = ({ onShowLocationModal, onShowStoreMap, setSearchTerm }) => {
     <>
       <button
         onClick={handleShow}
-        style={{ position: 'absolute', top: -50, left: -30, zIndex: 1030, background: 'none', border: 'none', padding: 0, margin: '1.5rem' }}
+        style={{ position: 'absolute', top: 0, left: 0, zIndex: 1030, background: 'none', border: 'none', padding: 0, margin: '1.5rem' }}
       >
-        <img src={splitCartSymbol} alt="Menu" style={{ width: '180px', height: '180px' }} />
+        <img src={splitCartSymbol} alt="Menu" style={{ width: '100px', height: '100px' }} />
         {items.length > 0 && (
           <span
             style={{
@@ -48,7 +48,7 @@ const Header = ({ onShowLocationModal, onShowStoreMap, setSearchTerm }) => {
         )}
       </button>
 
-      <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 1030, padding: '1.5rem', display: 'flex', alignItems: 'center' }}>
+      <div style={{ position: 'absolute', top: 15, right: 0, zIndex: 1030, padding: '1.5rem', display: 'flex', alignItems: 'center' }}>
         <button onClick={onShowStoreMap} style={{ background: 'none', border: 'none', padding: 0, marginRight: '0.5rem' }}>
           <img src={mapIcon} alt="Map" style={{ width: '90px', height: '70px' }} />
         </button>

@@ -1,5 +1,5 @@
 import React from 'react';
-import placeholderImage from '../assets/trolley_v3.webp';
+import placeholderImage from '../assets/trolley_v3.png';
 
 const SkeletonProductCard = () => {
   return (
