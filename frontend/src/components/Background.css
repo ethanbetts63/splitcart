@@ -8,7 +8,7 @@
   background-color: var(--bg);
   background-image: 
     radial-gradient(circle at var(--pos1, 0% 0%), var(--lighting-1) 0%, transparent 60%),
-    radial-gradient(circle at var(--pos2, 100% 0%), var(--lighting-2) 0%, transparent 50%),
-    radial-gradient(circle at var(--pos3, 0% 100%), var(--lighting-3) 0%, transparent 50%),
-    radial-gradient(circle at var(--pos4, 100% 100%), var(--lighting-4) 0%, transparent 50%);
+    radial-gradient(circle at var(--pos2, 100% 0%), var(--lighting-2) 0%, transparent 60%),
+    radial-gradient(circle at var(--pos3, 0% 100%), var(--lighting-3) 0%, transparent 60%),
+    radial-gradient(circle at var(--pos4, 100% 100%), var(--lighting-4) 0%, transparent 60%);
 }

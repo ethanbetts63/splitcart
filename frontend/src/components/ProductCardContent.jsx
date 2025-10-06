@@ -1,18 +1,21 @@
 import React from 'react';
 import placeholderImage from '../assets/trolley_v3.png';
 
+// Logos
+import aldiLogo from '../assets/ALDI_logo.svg';
+import colesLogo from '../assets/coles_logo.webp';
+import igaLogo from '../assets/iga_logo.webp';
+import woolworthsLogo from '../assets/woolworths_logo.webp';
+
+const companyLogos = {
+    'Aldi': aldiLogo,
+    'Coles': colesLogo,
+    'Iga': igaLogo,
+    'Woolworths': woolworthsLogo,
+};
+
 const ProductCardContent = ({ product }) => {
   console.log("ProductCardContent received product:", product); // Debug log
-
-  const getCompanyColor = (companyName) => {
-    switch (companyName.toLowerCase()) {
-      case 'coles': return 'red';
-      case 'woolworths': return 'green';
-      case 'aldi': return 'blue';
-      case 'iga': return 'orange';
-      default: return 'var(--text)';
-    }
-  };
 
   if (!product) {
     console.log("ProductCardContent received null or undefined product."); // Debug log
@@ -37,18 +40,14 @@ const ProductCardContent = ({ product }) => {
         {product.size && <p style={{ color: 'var(--text-muted)' }}>Size: {product.size}</p>}
         <div>
           {product.prices && product.prices.map(priceData => {
-            const companyColor = getCompanyColor(priceData.company);
-            const companyNameStyle = {
-              color: companyColor,
-              fontWeight: 'bold',
-            };
             const priceValueStyle = {
               color: priceData.is_lowest ? 'var(--success)' : 'var(--text)',
               fontWeight: priceData.is_lowest ? 'bold' : 'normal',
             };
             return (
-              <div key={priceData.company}>
-                <span style={companyNameStyle}>{priceData.company}</span>: <span style={priceValueStyle}>${priceData.price_display}</span>
+              <div key={priceData.company} style={{ display: 'flex', alignItems: 'center', marginBottom: '0.25rem' }}>
+                <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} height="20" style={{ marginRight: '0.5rem' }} />
+                <span style={priceValueStyle}>${priceData.price_display}</span>
               </div>
             );
           })}
