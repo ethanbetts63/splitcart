@@ -15,10 +15,10 @@
   --success: hsl(147 19% 36%);
   --info: hsl(217 22% 41%);
 
-  --lighting-1: hsl(220, 40%, 85%);
-  --lighting-2: hsl(230, 40%, 84%);
-  --lighting-3: hsl(240, 40%, 83%);
-  --lighting-4: hsl(250, 40%, 82%);
+  --lighting-1: hsl(220, 50%, 75%);
+  --lighting-2: hsl(230, 50%, 74%);
+  --lighting-3: hsl(240, 50%, 73%);
+  --lighting-4: hsl(250, 50%, 72%);
 }
 
 
