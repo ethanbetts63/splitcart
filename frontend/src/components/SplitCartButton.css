@@ -1,16 +1,15 @@
 .split-cart-button {
-  background-color: var(--bg-light);
-  color: var(--text);
+  background-color: var(--primary);
+  color: var(--bg-light);
   padding: 0.75rem 1.5rem;
   font-size: 1.25rem;
-  border: 2px solid;
+  border: 2px solid var(--primary);
   font-family: 'Vollkorn';
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .split-cart-button:hover {
-  background-color: var(--primary);
-  color: var(--bg-light);
-  border-color: var(--primary);
+  background-color: hsl(206, 65%, 65%);
+  border-color: hsl(206, 65%, 65%);
 }

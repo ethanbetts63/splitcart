@@ -36,7 +36,7 @@ const SearchHeader = ({ searchTerm, setSearchTerm }) => {
             aria-label="Search"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            style={{ flex: 1, padding: '0.75rem', marginRight: '0.5rem' }}
+            style={{ flex: 1, padding: '0.75rem', marginRight: '0.5rem', borderRadius: '15px', marginTop: '1px' }}
           />
           <button style={{ backgroundColor: 'var(--primary)', color: 'white' }} type="submit">Search</button>
         </form>
