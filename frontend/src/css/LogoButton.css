@@ -13,5 +13,5 @@
 }
 
 .logo-button-text:hover {
-  text-shadow: 0 0 25px rgba(255, 255, 255, 1);
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.8) 0%,rgba(255,255,255,0) 70%);
 }

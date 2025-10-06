@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ProductTile from './ProductTile';
 import SkeletonProductCard from './SkeletonProductCard'; // Import skeleton
-import './HorizontalProductScroller.css';
+import '../css/HorizontalProductScroller.css';
 
 const HorizontalProductScroller = ({ title, products, seeMoreLink = "#", isLoading }) => {
   if (!isLoading && (!products || products.length === 0)) {

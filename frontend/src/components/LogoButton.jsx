@@ -1,5 +1,5 @@
 import React from 'react';
-import './LogoButton.css';
+import '../css/LogoButton.css';
 
 const LogoButton = ({ onClick, fontSize }) => {
   const style = {

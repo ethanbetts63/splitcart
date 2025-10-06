@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
-import './variables.css'
-import './index.css'
+import './css/variables.css'
+import './css/index.css'
 import App from './App.jsx'
 
 import { ShoppingListProvider } from './context/ShoppingListContext';

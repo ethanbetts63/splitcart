@@ -14,7 +14,7 @@ import SplitCartButton from './components/SplitCartButton';
 import { useShoppingList } from './context/ShoppingListContext';
 
 import StoreMap from './components/StoreMap';
-import './App.css';
+import './css/App.css';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');

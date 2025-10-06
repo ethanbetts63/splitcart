@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useShoppingList } from '../context/ShoppingListContext';
-import './SplitCartButton.css';
+import '../css/SplitCartButton.css';
 
 const SplitCartButton = () => {
   const navigate = useNavigate();
