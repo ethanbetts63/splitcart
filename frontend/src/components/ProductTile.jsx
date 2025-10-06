@@ -30,10 +30,10 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
   };
 
   const tileStyle = {
-    borderRadius: '8px',
+    borderRadius: '15px',
     width: '18rem',
     backgroundColor: '#FFFFFF',
-    boxShadow: existingItem ? '0 0 10px var(--primary)' : 'none',
+    boxShadow: existingItem ? '0 0 10px var(--success)' : 'none',
     transition: 'boxShadow 0.2s',
     height: '32rem', // Fixed height
     display: 'flex',
