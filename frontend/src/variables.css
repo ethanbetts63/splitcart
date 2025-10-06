@@ -1,17 +1,67 @@
-/* :root {
-  --primary-color: #4497d7;
-  --primary-color-rgb: 68, 151, 215;
-  --primary-color-hsl: 206, 65%, 55%;
-} */
-
-
 :root {
-        --color-primary: hsl(181, 50%, 90%);
-        --color-secondary: hsl(181, 50%, 10%);
-        --color-tertiary: hsl(241, 80%, 20%);
-        --color-accent: hsl(121, 80%, 20%);
-    }
-
+  /* hsl (fallback color) */
+  --bg-dark: hsl(214 25% 1%);
+  --bg: hsl(212 16% 4%);
+  --bg-light: hsl(212 9% 9%);
+  --text: hsl(212 47% 95%);
+  --text-muted: hsl(212 7% 70%);
+  --highlight: hsl(212 5% 39%);
+  --border: hsl(212 6% 28%);
+  --border-muted: hsl(212 9% 18%);
+  --primary: hsl(211 77% 72%);
+  --secondary: hsl(33 60% 63%);
+  --danger: hsl(9 26% 64%);
+  --warning: hsl(52 19% 57%);
+  --success: hsl(146 17% 59%);
+  --info: hsl(217 28% 65%);
+  /* oklch */
+  --bg-dark: oklch(0.1 0.005 251);
+  --bg: oklch(0.15 0.005 251);
+  --bg-light: oklch(0.2 0.005 251);
+  --text: oklch(0.96 0.01 251);
+  --text-muted: oklch(0.76 0.01 251);
+  --highlight: oklch(0.5 0.01 251);
+  --border: oklch(0.4 0.01 251);
+  --border-muted: oklch(0.3 0.01 251);
+  --primary: oklch(0.76 0.1 251);
+  --secondary: oklch(0.76 0.1 71);
+  --danger: oklch(0.7 0.05 30);
+  --warning: oklch(0.7 0.05 100);
+  --success: oklch(0.7 0.05 160);
+  --info: oklch(0.7 0.05 260);
+}
+body.light {
+  /* hsl (fallback color) */
+  --bg-dark: hsl(212 11% 90%);
+  --bg: hsl(212 22% 95%);
+  --bg-light: hsl(212 100% 100%);
+  --text: hsl(212 30% 5%);
+  --text-muted: hsl(212 6% 28%);
+  --highlight: hsl(212 100% 100%);
+  --border: hsl(212 4% 51%);
+  --border-muted: hsl(212 6% 62%);
+  --primary: hsl(209 71% 28%);
+  --secondary: hsl(38 100% 17%);
+  --danger: hsl(9 21% 41%);
+  --warning: hsl(52 23% 34%);
+  --success: hsl(147 19% 36%);
+  --info: hsl(217 22% 41%);
+  /* oklch */
+  --bg-dark: oklch(0.92 0.005 251);
+  --bg: oklch(0.96 0.005 251);
+  --bg-light: oklch(1 0.005 251);
+  --text: oklch(0.15 0.01 251);
+  --text-muted: oklch(0.4 0.01 251);
+  --highlight: oklch(1 0.01 251);
+  --border: oklch(0.6 0.01 251);
+  --border-muted: oklch(0.7 0.01 251);
+  --primary: oklch(0.4 0.1 251);
+  --secondary: oklch(0.4 0.1 71);
+  --danger: oklch(0.5 0.05 30);
+  --warning: oklch(0.5 0.05 100);
+  --success: oklch(0.5 0.05 160);
+  --info: oklch(0.5 0.05 260);
+}
 
 @font-face {
   font-family: 'Vollkorn';
