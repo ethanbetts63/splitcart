@@ -25,7 +25,7 @@ const SplitCartButton = () => {
   };
 
   return (
-    <button style={{ backgroundColor: 'var(--primary)', color: 'white', padding: '0.75rem 1.5rem', fontSize: '1.25rem' }} onClick={handleClick}>
+    <button style={{ backgroundColor: 'var(--success)', color: 'var(--text)', padding: '0.75rem 1.5rem', fontSize: '1.25rem', border: '2px solid transparent', boxShadow: '0 0 10px hsl(147, 50%, 50%)' }} onClick={handleClick}>
       Split My Cart!
     </button>
   );

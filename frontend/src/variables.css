@@ -12,8 +12,8 @@
   --secondary: hsl(38 100% 17%);
   --danger: hsl(8, 93%, 50%);
   --warning: hsl(52 23% 34%);
-  --success: hsl(147 19% 36%);
-  --info: hsl(217 22% 41%);
+  --success: hsl(125, 80%, 20%);
+  --info: sl(125, 80%, 80%);
 
   --lighting-1: hsl(0, 0%, 100%);
   --lighting-2: hsl(0, 0%, 100%);
