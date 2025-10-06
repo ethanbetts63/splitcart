@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ShoppingListComponent from './ShoppingListComponent';
-import SplitCartButton from './SplitCartButton';
 import splitCartSymbol from '../assets/trolley_v3.png';
 import mapIcon from '../assets/edit_location_large.svg';
 import { useShoppingList } from '../context/ShoppingListContext';
@@ -9,7 +8,6 @@ import { useShoppingList } from '../context/ShoppingListContext';
 const Header = ({ onShowLocationModal, onShowStoreMap, setSearchTerm }) => {
   const [showMenu, setShowMenu] = useState(false);
   const { items } = useShoppingList();
-  const location = useLocation();
   const navigate = useNavigate();
 
   const handleClose = () => setShowMenu(false);
@@ -52,7 +50,6 @@ const Header = ({ onShowLocationModal, onShowStoreMap, setSearchTerm }) => {
         <button onClick={onShowStoreMap} style={{ background: 'none', border: 'none', padding: 0, marginRight: '0.5rem' }}>
           <img src={mapIcon} alt="Map" style={{ width: '90px', height: '70px' }} />
         </button>
-        {items.length > 0 && location.pathname !== '/split-cart' && location.pathname !== '/final-cart' && <SplitCartButton />}
       </div>
 
             <div className={`off-canvas-menu-left ${showMenu ? 'visible' : ''}`}>

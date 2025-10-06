@@ -10,7 +10,7 @@ const HorizontalProductScroller = ({ title, products, seeMoreLink = "#", isLoadi
   }
 
   return (
-    <div className="horizontal-scroller-container">
+    <div className="horizontal-scroller-container" style={{ marginBottom: '1rem' }}>
       <div className="scroller-header">
         <h2 style={{ fontFamily: 'Vollkorn', color: 'var(--text)' }}>{title}</h2>
         {seeMoreLink && <Link to={seeMoreLink} className="see-more-link">See More</Link>}

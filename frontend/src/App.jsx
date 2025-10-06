@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import GridSourcer from './components/GridSourcer'; // Import GridSourcer
@@ -10,6 +10,7 @@ import SubstitutionPage from './pages/SubstitutionPage';
 import ProductListPage from './pages/ProductListPage'; // Import ProductListPage
 import FinalCartPage from './pages/FinalCartPage';
 import Background from './components/Background';
+import SplitCartButton from './components/SplitCartButton';
 import { useShoppingList } from './context/ShoppingListContext';
 
 import StoreMap from './components/StoreMap';
@@ -19,7 +20,8 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [showStoreMap, setShowStoreMap] = useState(false);
-  const { setUserLocation, nearbyStoreIds, isLocationLoaded, setSelectedStoreIds } = useShoppingList();
+  const { items, setUserLocation, nearbyStoreIds, isLocationLoaded, setSelectedStoreIds } = useShoppingList();
+  const location = useLocation();
 
   const [scrollers, setScrollers] = useState([]);
 
@@ -100,7 +102,15 @@ function App() {
               <div style={{ padding: '1rem', flex: 1, overflowY: 'auto' }}>
                 <StoreMap onSelectionChange={setSelectedStoreIds} />
               </div>
-            </div>    </div>
+            </div>
+
+      {/* Floating Split Cart Button */}
+      {items.length > 0 && location.pathname !== '/split-cart' && location.pathname !== '/final-cart' && (
+        <div style={{ position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 1050 }}>
+          <SplitCartButton />
+        </div>
+      )}
+    </div>
   );
 }
 
