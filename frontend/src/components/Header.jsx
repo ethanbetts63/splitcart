@@ -5,7 +5,7 @@ import ShoppingListComponent from './ShoppingListComponent';
 import SplitCartButton from './SplitCartButton';
 import splitCartSymbol from '../assets/trolley_v3.webp';
 import splitCartTitle from '../assets/splitcart_v3.png';
-import mapIcon from '../assets/map.png';
+import mapIcon from '../assets/edit_location_large.svg';
 import { useShoppingList } from '../context/ShoppingListContext';
 
 const Header = ({ onShowLocationModal, onShowStoreMap, setSearchTerm }) => {
@@ -31,9 +31,9 @@ const Header = ({ onShowLocationModal, onShowStoreMap, setSearchTerm }) => {
         variant="link"
         onClick={handleShow}
         className="p-0 m-3"
-        style={{ position: 'absolute', top: 0, left: 0, zIndex: 1030 }}
+        style={{ position: 'absolute', top: -50, left: -30, zIndex: 1030 }}
       >
-        <img src={splitCartSymbol} alt="Menu" style={{ width: '120px', height: '100px' }} />
+        <img src={splitCartSymbol} alt="Menu" style={{ width: '180px', height: '180px' }} />
         {items.length > 0 && (
           <Badge
             bg="danger"
@@ -60,7 +60,7 @@ const Header = ({ onShowLocationModal, onShowStoreMap, setSearchTerm }) => {
       <Offcanvas show={showMenu} onHide={handleClose} placement="start">
         <Offcanvas.Header closeButton>
           <div onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
-            <img src={splitCartTitle} alt="SplitCart" style={{ maxWidth: '200px' }} />
+            <img src={splitCartTitle} alt="SplitCart" style={{ maxWidth: '500px' }} />
           </div>
         </Offcanvas.Header>
         <Offcanvas.Body>
