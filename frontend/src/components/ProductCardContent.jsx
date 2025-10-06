@@ -38,15 +38,15 @@ const ProductCardContent = ({ product }) => {
         <h4>{product.name}</h4>
         {product.brand_name && <h5 style={{ color: 'var(--text-muted)' }}>{product.brand_name}</h5>}
         {product.size && <p style={{ color: 'var(--text-muted)' }}>Size: {product.size}</p>}
-        <div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.05rem' }}>
           {product.prices && product.prices.map(priceData => {
             const priceValueStyle = {
               color: priceData.is_lowest ? 'var(--success)' : 'var(--text)',
               fontWeight: priceData.is_lowest ? 'bold' : 'normal',
             };
             return (
-              <div key={priceData.company} style={{ display: 'flex', alignItems: 'center', marginBottom: '0.25rem' }}>
-                <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} height="20" style={{ marginRight: '0.5rem' }} />
+              <div key={priceData.company} style={{ display: 'flex', alignItems: 'center' }}>
+                <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} height="20" style={{ marginRight: '0.25rem' }} />
                 <span style={priceValueStyle}>${priceData.price_display}</span>
               </div>
             );

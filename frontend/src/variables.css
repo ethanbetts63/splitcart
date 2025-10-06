@@ -10,12 +10,12 @@
   --border-muted: hsl(212 6% 62%);
   --primary: hsl(206, 65%, 55%);
   --secondary: hsl(38 100% 17%);
-  --danger: hsl(8, 93%, 45%);
+  --danger: hsl(8, 93%, 50%);
   --warning: hsl(52 23% 34%);
   --success: hsl(147 19% 36%);
   --info: hsl(217 22% 41%);
 
-  --lighting-1: hsl(167, 60%, 50%);
+  --lighting-1: hsl(0, 0%, 100%);
   --lighting-2: hsl(0, 0%, 100%);
   --lighting-3: hsl(0, 0%, 100%);
   --lighting-4: hsl(0, 0%, 100%); 
