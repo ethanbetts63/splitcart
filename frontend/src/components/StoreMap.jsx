@@ -120,7 +120,7 @@ const StoreMap = ({ onSelectionChange }) => {
 
     return (
         <div>
-            <p style={{ color: 'var(--text-muted)' }}>
+            <p style={{ color: 'var(--text-muted)', marginTop: '0' }}>
                 Double-click on the map to set your location. 
                 Check and uncheck specific stores below the map. 
                 The more stores you select, the more saving potential you allow.

@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import SearchHeader from './components/SearchHeader';
-import ProductGrid from './components/ProductGrid';
 import GridSourcer from './components/GridSourcer'; // Import GridSourcer
 import ScrollerManager from './components/ScrollerManager';
 import LocationSetupModal from './components/LocationSetupModal';
@@ -11,7 +9,6 @@ import Layout from './components/Layout'; // Import Layout component
 import SubstitutionPage from './pages/SubstitutionPage';
 import ProductListPage from './pages/ProductListPage'; // Import ProductListPage
 import FinalCartPage from './pages/FinalCartPage';
-import MapPage from './pages/MapPage';
 import Background from './components/Background';
 import { useShoppingList } from './context/ShoppingListContext';
 
@@ -93,14 +90,14 @@ function App() {
         onSave={handleSaveLocation}
       />
 
-            <div className={`off-canvas-menu ${showStoreMap ? 'visible' : ''}`}>
+            <div className={`off-canvas-menu ${showStoreMap ? 'visible' : ''}`} style={{ display: 'flex', flexDirection: 'column' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem' }}>
-                <h1 style={{ fontFamily: 'Vollkorn', fontStyle: 'italic', fontSize: '60px', color: 'var(--primary)', textAlign: 'center' }}>
+                <h1 style={{ fontFamily: 'Vollkorn', fontStyle: 'italic', fontSize: '60px', color: 'var(--primary)', textAlign: 'center', flex: 1, marginBottom: '0' }}>
                   select stores
                 </h1>
                 <button onClick={() => setShowStoreMap(false)} style={{ background: 'none', border: 'none', fontSize: '1.5rem' }}>&times;</button>
               </div>
-              <div style={{ padding: '1rem' }}>
+              <div style={{ padding: '1rem', flex: 1, overflowY: 'auto' }}>
                 <StoreMap onSelectionChange={setSelectedStoreIds} />
               </div>
             </div>    </div>
