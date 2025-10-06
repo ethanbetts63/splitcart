@@ -55,11 +55,11 @@ const Header = ({ onShowLocationModal, onShowStoreMap, setSearchTerm }) => {
         {items.length > 0 && location.pathname !== '/split-cart' && location.pathname !== '/final-cart' && <SplitCartButton />}
       </div>
 
-      <div style={{ display: showMenu ? 'block' : 'none', position: 'fixed', top: 0, left: 0, width: '300px', height: '100%', backgroundColor: 'var(--bg-light)', zIndex: 1040 }}>
+            <div className={`off-canvas-menu-left ${showMenu ? 'visible' : ''}`}>
         <div style={{ padding: '1rem' }}>
           <button onClick={handleClose} style={{ float: 'right', background: 'none', border: 'none', fontSize: '1.5rem' }}>&times;</button>
           <div onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
-            <h1 style={{ fontFamily: 'Vollkorn', fontStyle: 'italic', fontSize: '80px', color: 'var(--logo-color)', margin: 0 }}>
+            <h1 style={{ fontFamily: 'Vollkorn', fontStyle: 'italic', fontSize: '60px', color: 'var(--primary)', margin: 0 }}>
               splitcart
             </h1>
           </div>
