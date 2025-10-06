@@ -93,9 +93,7 @@ function App() {
 
             <div className={`off-canvas-menu ${showStoreMap ? 'visible' : ''}`}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem' }}>
-                <h1 style={{ fontFamily: 'Vollkorn', fontStyle: 'italic', fontSize: '70px', color: 'var(--primary)', marginBottom: '2rem' }}>
-                  select stores
-                </h1>
+                <h3 style={{ textAlign: 'center', flex: 1 }}>Select Stores</h3>
                 <button onClick={() => setShowStoreMap(false)} style={{ background: 'none', border: 'none', fontSize: '1.5rem' }}>&times;</button>
               </div>
               <div style={{ padding: '1rem' }}>

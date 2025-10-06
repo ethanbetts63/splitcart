@@ -59,7 +59,7 @@ const Header = ({ onShowLocationModal, onShowStoreMap, setSearchTerm }) => {
         <div style={{ padding: '1rem' }}>
           <button onClick={handleClose} style={{ float: 'right', background: 'none', border: 'none', fontSize: '1.5rem' }}>&times;</button>
           <div onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
-            <h1 style={{ fontFamily: 'Vollkorn', fontStyle: 'italic', fontSize: '60px', color: 'var(--primary)', margin: 0 }}>
+                        <h1 style={{ fontFamily: 'Vollkorn', fontStyle: 'italic', fontSize: '60px', color: 'var(--primary)', textAlign: 'center' }}>
               splitcart
             </h1>
           </div>

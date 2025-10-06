@@ -24,7 +24,7 @@ const SearchHeader = ({ searchTerm, setSearchTerm }) => {
   return (
     <div style={{ textAlign: 'center', margin: '3rem 0' }}>
       <div onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
-        <h1 style={{ fontFamily: 'Vollkorn', fontStyle: 'italic', fontSize: '100px', color: 'var(--primary)', marginBottom: '2rem' }}>
+                <h1 style={{ fontFamily: 'Vollkorn', fontStyle: 'italic', fontSize: '100px', color: 'var(--primary)', marginBottom: '2rem', margin: '0 auto' }}>
           splitcart
         </h1>
       </div>
