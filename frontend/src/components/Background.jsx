@@ -8,7 +8,7 @@ const Background = () => {
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = docHeight > 0 ? scrollY / docHeight : 0;
 
-      const angle = scrollPercent * 90;
+      const angle = scrollPercent * 60;
 
       const centerX = 50;
       const centerY = 50;
