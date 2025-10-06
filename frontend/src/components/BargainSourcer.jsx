@@ -55,25 +55,7 @@ const BargainSourcer = ({ title, nearbyStoreIds, onLoadComplete }) => {
     };
   }, [title, nearbyStoreIds, onLoadComplete]);
 
-  if (isLoading) {
-    return (
-      <div className="horizontal-scroller-container">
-        <div className="scroller-header">
-          <h2>{title}</h2>
-        </div>
-        <div className="scroller-content" style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <p>Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Don't show an error, just show nothing if it fails.
-  if (error || products.length === 0) {
-    return null;
-  }
-
-  return <HorizontalProductScroller title={title} products={products} />;
+  return <HorizontalProductScroller title={title} products={products} isLoading={isLoading} />;
 };
 
 export default BargainSourcer;

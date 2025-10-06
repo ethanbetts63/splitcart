@@ -37,7 +37,7 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
     transition: 'boxShadow 0.2s',
     height: '32rem', // Fixed height
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column', 
   };
 
   const contentWrapperStyle = {
