@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useShoppingList } from '../context/ShoppingListContext';
 
@@ -26,9 +25,9 @@ const SplitCartButton = () => {
   };
 
   return (
-    <Button style={{ backgroundColor: '#1CC3B9', color: 'white' }} onClick={handleClick} size="lg">
+    <button style={{ backgroundColor: 'var(--primary)', color: 'white', padding: '0.75rem 1.5rem', fontSize: '1.25rem' }} onClick={handleClick}>
       Split My Cart!
-    </Button>
+    </button>
   );
 };
 

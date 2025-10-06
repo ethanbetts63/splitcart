@@ -1,32 +1,31 @@
 import React from 'react';
-import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import ProductTile from './ProductTile';
 
 const ProductGrid = ({ products, onLoadMore, hasMorePages, isLoadingMore, title, nearbyStoreIds }) => {
 
   return (
-    <Container fluid>
-      {title && <h5 className="mb-3">{title}</h5>}
-      <Row>
+    <div>
+      {title && <h5>{title}</h5>}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(18rem, 1fr))', gap: '1rem' }}>
         {products.length > 0 ? (
           products.map((product) => (
-            <Col key={product.id} sm={6} md={4} lg={3} className="mb-4">
+            <div key={product.id}>
               <ProductTile product={product} nearbyStoreIds={nearbyStoreIds} />
-            </Col>
+            </div>
           ))
         ) : (
-          <Col className="text-center my-5">No products found.</Col>
+          <div style={{ textAlign: 'center', gridColumn: '1 / -1' }}>No products found.</div>
         )}
-      </Row>
+      </div>
 
       {hasMorePages && (
-        <div className="text-center my-4">
-          <Button onClick={onLoadMore} disabled={isLoadingMore}>
-            {isLoadingMore ? <Spinner animation="border" size="sm" /> : 'Load More'}
-          </Button>
+        <div style={{ textAlign: 'center', margin: '2rem 0' }}>
+          <button onClick={onLoadMore} disabled={isLoadingMore}>
+            {isLoadingMore ? 'Loading...' : 'Load More'}
+          </button>
         </div>
       )}
-    </Container>
+    </div>
   );
 };
 

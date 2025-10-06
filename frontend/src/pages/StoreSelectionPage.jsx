@@ -1,15 +1,14 @@
 
 import React from 'react';
 import StoreMap from '../components/StoreMap';
-import { Container } from 'react-bootstrap';
 
 const StoreSelectionPage = () => {
     return (
-        <Container className="py-4">
-            <h1 className="mb-4">Select Your Stores</h1>
-            <p className="mb-4">Use the map below to select the stores you want to include in your price comparison.</p>
+        <div style={{ padding: '2rem' }}>
+            <h1 style={{ marginBottom: '1.5rem' }}>Select Your Stores</h1>
+            <p style={{ marginBottom: '1.5rem' }}>Use the map below to select the stores you want to include in your price comparison.</p>
             <StoreMap />
-        </Container>
+        </div>
     );
 };
 

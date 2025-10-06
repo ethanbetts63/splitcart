@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Button, Spinner, Alert, Row, Col } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useShoppingList } from '../context/ShoppingListContext';
 import SubstitutesSection from '../components/SubstitutesSection';
@@ -78,13 +77,13 @@ const SubstitutionPage = () => {
 
   // Show loading spinner if substitutes for the current item are not yet fetched
   if (currentSubstitutes === undefined) {
-    return <Container className="text-center my-5"><Spinner animation="border" /></Container>;
+    return <div style={{ textAlign: 'center', margin: '2rem 0' }}>Loading...</div>;
   }
 
   return (
-    <Container fluid className="mt-4">
+    <div style={{ marginTop: '2rem' }}>
       <h2>Product Substitution</h2>
-      <p className="text-muted mb-4">
+      <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
         Reviewing substitutes for: <strong>{currentItem.product.name}</strong>
       </p>
 
@@ -94,15 +93,12 @@ const SubstitutionPage = () => {
         onSelectOption={handleSelectOption}
       />
 
-      <Button
-        variant="primary"
+      <button
         onClick={isLastProduct ? handleFinishAndSplit : handleNextProduct}
-        className="mt-3"
+        style={{ marginTop: '1.5rem', backgroundColor: 'var(--primary)', color: 'white' }}
       >
         {isLastProduct ? 'Split My Cart' : 'Next Product'}
-      </Button>
-    </Container>
+      </button>
+    </div>
   );
-};
-
-export default SubstitutionPage;
+};export default SubstitutionPage;

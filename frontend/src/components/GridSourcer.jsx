@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import ProductGrid from './ProductGrid';
-import { Container, Spinner } from 'react-bootstrap';
 
 // Helper to convert absolute URL from API to a relative path
 const getRelativePath = (url) => {
@@ -97,11 +96,11 @@ const GridSourcer = ({ searchTerm, sourceUrl, nearbyStoreIds }) => {
   }, [nextPageUrl, isLoadingMore, fetchProducts]);
 
   if (isLoading) {
-    return <Container className="text-center my-5"><Spinner animation="border" /></Container>;
+    return <div style={{ textAlign: 'center', margin: '2rem 0' }}>Loading...</div>;
   }
 
   if (isError) {
-    return <Container className="text-center my-5 text-danger">Error: {error}</Container>;
+    return <div style={{ textAlign: 'center', margin: '2rem 0', color: 'red' }}>Error: {error}</div>;
   }
 
   let titleText = "";

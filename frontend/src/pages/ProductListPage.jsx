@@ -1,6 +1,5 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
 import GridSourcer from '../components/GridSourcer';
 
 const ProductListPage = ({ nearbyStoreIds }) => {
@@ -23,13 +22,13 @@ const ProductListPage = ({ nearbyStoreIds }) => {
   }
 
   return (
-    <Container fluid className="mt-4">
+    <div style={{ marginTop: '2rem' }}>
       <GridSourcer 
         searchTerm={searchTerm}
         sourceUrl={sourceUrl}
         nearbyStoreIds={nearbyStoreIds}
       />
-    </Container>
+    </div>
   );
 };
 

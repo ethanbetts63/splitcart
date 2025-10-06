@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { ListGroup, Form, Image } from 'react-bootstrap';
 
 import aldiLogo from '../assets/ALDI_logo.svg';
 import colesLogo from '../assets/coles_logo.webp';
@@ -16,21 +15,21 @@ const companyLogos = {
 
 const CheckableStoreList = ({ stores, selectedStoreIds, onStoreSelect }) => {
     return (
-        <ListGroup>
+        <div>
             {stores.map(store => (
-                <ListGroup.Item key={store.id} className="d-flex align-items-center" onClick={() => onStoreSelect(store.id)} style={{ cursor: 'pointer' }}>
-                    <Form.Check 
+                <div key={store.id} onClick={() => onStoreSelect(store.id)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                    <input 
                         type="checkbox"
                         id={`store-checkbox-${store.id}`}
                         checked={selectedStoreIds.has(store.id)}
-                        onChange={() => {}} // The onClick on the ListGroup.Item handles the logic
-                        className="me-3"
+                        onChange={() => {}} // The onClick on the div handles the logic
+                        style={{ marginRight: '1rem' }}
                     />
-                    <Image src={companyLogos[store.company_name]} alt={`${store.company_name} logo`} height="20" className="me-2" />
+                    <img src={companyLogos[store.company_name]} alt={`${store.company_name} logo`} height="20" style={{ marginRight: '0.5rem' }} />
                     <span>{store.store_name}</span>
-                </ListGroup.Item>
+                </div>
             ))}
-        </ListGroup>
+        </div>
     );
 };
 

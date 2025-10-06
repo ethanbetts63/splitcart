@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Form, InputGroup } from 'react-bootstrap';
 
 const LocationSetupModal = ({ show, onHide, onSave }) => {
   const [postcode, setPostcode] = useState('');
@@ -12,43 +11,51 @@ const LocationSetupModal = ({ show, onHide, onSave }) => {
     }
   };
 
+  if (!show) {
+    return null;
+  }
+
   return (
-    <Modal show={show} onHide={onHide} backdrop="static" keyboard={false}>
-      <Modal.Header>
-        <Modal.Title>Set Your Location Preferences</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <p>To provide you with the most relevant product information, please tell us your preferred location and travel range.</p>
-        <Form>
-          <Form.Group className="mb-3">
-            <Form.Label>Postcode</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="e.g., 3000"
-              value={postcode}
-              onChange={(e) => setPostcode(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Travel Radius (km)</Form.Label>
-            <InputGroup>
-              <Button variant="outline-secondary" onClick={() => setRadius(Math.max(1, radius - 1))}>-</Button>
-              <Form.Control
-                type="number"
-                value={radius}
-                onChange={(e) => setRadius(parseInt(e.target.value) || 1)}
-                min="1"
-                className="text-center"
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1050 }}>
+      <div style={{ background: 'var(--bg-light)', padding: '2rem', borderRadius: '8px', minWidth: '300px' }}>
+        <div>
+          <h3>Set Your Location Preferences</h3>
+        </div>
+        <div>
+          <p>To provide you with the most relevant product information, please tell us your preferred location and travel range.</p>
+          <form>
+            <div style={{ marginBottom: '1rem' }}>
+              <label>Postcode</label>
+              <input
+                type="text"
+                placeholder="e.g., 3000"
+                value={postcode}
+                onChange={(e) => setPostcode(e.target.value)}
+                style={{ width: '100%', padding: '0.5rem' }}
               />
-              <Button variant="outline-secondary" onClick={() => setRadius(radius + 1)}>+</Button>
-            </InputGroup>
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="primary" onClick={handleSave}>Save Location</Button>
-      </Modal.Footer>
-    </Modal>
+            </div>
+            <div style={{ marginBottom: '1rem' }}>
+              <label>Travel Radius (km)</label>
+              <div style={{ display: 'flex' }}>
+                <button type="button" onClick={() => setRadius(Math.max(1, radius - 1))}>-</button>
+                <input
+                  type="number"
+                  value={radius}
+                  onChange={(e) => setRadius(parseInt(e.target.value) || 1)}
+                  min="1"
+                  style={{ textAlign: 'center', width: '50px' }}
+                />
+                <button type="button" onClick={() => setRadius(radius + 1)}>+</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div>
+          <button onClick={handleSave}>Save Location</button>
+          <button onClick={onHide} style={{ marginLeft: '1rem' }}>Close</button>
+        </div>
+      </div>
+    </div>
   );
 };
 

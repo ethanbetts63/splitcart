@@ -1,45 +1,38 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
 import SelectableProductTile from './SelectableProductTile';
 
 const SubstitutesSection = ({ products, selectedOptions, onSelectOption }) => {
   return (
-    <Row className="mt-4">
-      <Col>
-        <Row>
-          {products.length > 0 ? (
-            products.map(product => (
-              <Col key={product.id} sm={6} md={4} lg={3} className="mb-4 p-2">
-                <div className="position-relative h-100">
-                  <SelectableProductTile
-                    product={product}
-                    isSelected={selectedOptions.includes(product.id)}
-                    onSelect={onSelectOption}
-                  />
-                  {product.is_original ? (
-                    <div 
-                      className="position-absolute top-0 start-0 bg-primary text-white p-1"
-                      style={{ fontSize: '0.75rem', borderTopLeftRadius: '0.25rem' }}
-                    >
-                      Original Product
-                    </div>
-                  ) : product.level_description && (
-                    <div 
-                      className="position-absolute top-0 start-0 bg-info text-white p-1"
-                      style={{ fontSize: '0.75rem', borderTopLeftRadius: '0.25rem' }}
-                    >
-                      {product.level_description}
-                    </div>
-                  )}
+    <div style={{ marginTop: '2rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(18rem, 1fr))', gap: '1rem' }}>
+        {products.length > 0 ? (
+          products.map(product => (
+            <div key={product.id} style={{ position: 'relative', height: '100%' }}>
+              <SelectableProductTile
+                product={product}
+                isSelected={selectedOptions.includes(product.id)}
+                onSelect={onSelectOption}
+              />
+              {product.is_original ? (
+                <div 
+                  style={{ position: 'absolute', top: 0, left: 0, backgroundColor: 'var(--primary)', color: 'white', padding: '0.25rem 0.5rem', fontSize: '0.75rem', borderTopLeftRadius: '0.25rem' }}
+                >
+                  Original Product
                 </div>
-              </Col>
-            ))
-          ) : (
-            <p>No substitutes found for this product.</p>
-          )}
-        </Row>
-      </Col>
-    </Row>
+              ) : product.level_description && (
+                <div 
+                  style={{ position: 'absolute', top: 0, left: 0, backgroundColor: 'var(--info)', color: 'white', padding: '0.25rem 0.5rem', fontSize: '0.75rem', borderTopLeftRadius: '0.25rem' }}
+                >
+                  {product.level_description}
+                </div>
+              )}
+            </div>
+          ))
+        ) : (
+          <p>No substitutes found for this product.</p>
+        )}
+      </div>
+    </div>
   );
 };
 

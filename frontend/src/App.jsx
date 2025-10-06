@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Container } from 'react-bootstrap';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -14,7 +13,7 @@ import ProductListPage from './pages/ProductListPage'; // Import ProductListPage
 import FinalCartPage from './pages/FinalCartPage';
 import MapPage from './pages/MapPage';
 import { useShoppingList } from './context/ShoppingListContext';
-import { Offcanvas } from 'react-bootstrap';
+
 import StoreMap from './components/StoreMap';
 import './App.css';
 
@@ -57,13 +56,13 @@ function App() {
   };
 
   return (
-    <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+        <div style={{ minHeight: '100vh' }}>
       <Header 
         onShowLocationModal={() => setShowLocationModal(true)} 
         onShowStoreMap={() => setShowStoreMap(true)} 
         setSearchTerm={setSearchTerm} 
       />
-      <main className="flex-grow-1">
+            <main>
         <Routes>
           <Route path="/" element={
             <Layout searchTerm={searchTerm} setSearchTerm={setSearchTerm}>
@@ -92,14 +91,14 @@ function App() {
         onSave={handleSaveLocation}
       />
 
-      <Offcanvas show={showStoreMap} onHide={() => setShowStoreMap(false)} placement="end" style={{ width: '80vw' }}>
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Select Stores</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body className="pt-0">
+      <div className={showStoreMap ? 'visible' : 'hidden'}>
+        <div>
+          <div>Select Stores</div>
+        </div>
+                <div>
           <StoreMap onSelectionChange={setSelectedStoreIds} />
-        </Offcanvas.Body>
-      </Offcanvas>
+        </div>
+      </div>
     </div>
   );
 }

@@ -4,7 +4,6 @@ import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaf
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import axios from 'axios';
-import { Form, Row, Col } from 'react-bootstrap';
 
 import aldiLogo from '../assets/ALDI_logo.svg';
 import colesLogo from '../assets/coles_logo.webp';
@@ -46,9 +45,9 @@ const getStoreIcon = (companyName, isSelected) => {
 
 const selectedMarkerStyle = `
   .marker-selected img {
-    border: 3px solid #dc3545; /* Bootstrap's danger color */
+    border: 3px solid var(--danger); /* Bootstrap's danger color */
     border-radius: 50%;
-    box-shadow: 0 0 10px #dc3545;
+    box-shadow: 0 0 10px var(--danger);
   }
 `;
 
@@ -121,21 +120,22 @@ const StoreMap = ({ onSelectionChange }) => {
 
     return (
         <div>
-            <p className="text-muted">
+            <p style={{ color: 'var(--text-muted)' }}>
                 Double-click on the map to set your location. 
                 Check and uncheck specific stores below the map. 
                 The more stores you select, the more saving potential you allow.
             </p>
-            <Form.Group controlId="radiusSlider" className="mb-2">
-                <Form.Label>Search Radius: {radius} km</Form.Label>
-                <Form.Control 
+            <div style={{ marginBottom: '1rem' }}>
+                <label>Search Radius: {radius} km</label>
+                <input 
                     type="range" 
                     min="1" 
                     max="100" 
                     value={radius} 
                     onChange={(e) => setRadius(e.target.value)} 
+                    style={{ width: '100%' }}
                 />
-            </Form.Group>
+            </div>
 
             {loading && <div>Loading map...</div>}
             {error && <div>Error: {error}</div>}
@@ -164,9 +164,9 @@ const StoreMap = ({ onSelectionChange }) => {
                 ))}
             </MapContainer>
 
-            <div className="mt-4">
-                <h5 className="mb-1">Selected Stores</h5>
-                <p className="text-muted mb-3">The stores selected below will be used for the price comparison. Uncheck any stores you wish to exclude.</p>
+            <div style={{ marginTop: '2rem' }}>
+                <h5 style={{ marginBottom: '0.5rem' }}>Selected Stores</h5>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>The stores selected below will be used for the price comparison. Uncheck any stores you wish to exclude.</p>
                 <CheckableStoreList 
                     stores={stores} 
                     selectedStoreIds={selectedStoreIds} 

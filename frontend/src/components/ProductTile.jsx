@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Form, InputGroup } from 'react-bootstrap';
 import { useShoppingList } from '../context/ShoppingListContext';
 import ProductCardContent from './ProductCardContent';
 
@@ -31,23 +30,23 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
   };
 
   return (
-    <Card style={{ width: '18rem' }}>
+    <div style={{ border: '1px solid var(--border)', borderRadius: '8px', width: '18rem' }}>
       <ProductCardContent product={product} />
-      <Card.Body>
-        <div className="d-flex justify-content-between align-items-center mt-3">
-          <InputGroup style={{ width: '120px' }}>
-            <Button variant="outline-secondary" onClick={() => handleQuantityChange(quantity - 1)}>-</Button>
-            <Form.Control value={quantity} readOnly className="text-center" />
-            <Button variant="outline-secondary" onClick={() => handleQuantityChange(quantity + 1)}>+</Button>
-          </InputGroup>
+      <div style={{ padding: '1rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <button onClick={() => handleQuantityChange(quantity - 1)}>-</button>
+            <input value={quantity} readOnly style={{ width: '40px', textAlign: 'center' }} />
+            <button onClick={() => handleQuantityChange(quantity + 1)}>+</button>
+          </div>
           {existingItem ? (
-            <Button variant="danger" onClick={handleRemove} className="ms-2">Remove</Button>
+            <button onClick={handleRemove} style={{ marginLeft: '0.5rem', backgroundColor: 'var(--danger)', color: 'white' }}>Remove</button>
           ) : (
-            <Button variant="primary" onClick={handleAdd}>Add</Button>
+            <button onClick={handleAdd} style={{ backgroundColor: 'var(--primary)', color: 'white' }}>Add</button>
           )}
         </div>
-      </Card.Body>
-    </Card>
+      </div>
+    </div>
   );
 };
 

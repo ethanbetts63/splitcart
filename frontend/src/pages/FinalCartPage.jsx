@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
 import OptimizationResultTile from '../components/OptimizationResultTile';
 
 const FinalCartPage = () => {
@@ -45,39 +44,39 @@ const FinalCartPage = () => {
 
     if (loading) {
         return (
-            <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-                <Spinner animation="border" variant="primary" />
-            </Container>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <div>Loading...</div>
+            </div>
         );
     }
 
     if (error) {
         return (
-            <Container className="mt-5">
-                <Alert variant="danger">Error: {error}</Alert>
-            </Container>
+            <div style={{ marginTop: '2rem' }}>
+                <div style={{ color: 'red', border: '1px solid red', padding: '1rem' }}>Error: {error}</div>
+            </div>
         );
     }
 
     return (
-        <div className="bg-light">
-            <header className="bg-white text-dark p-4 text-center border-bottom">
+        <div style={{ background: 'var(--bg-light)' }}>
+            <header style={{ background: 'var(--bg)', color: 'var(--text)', padding: '1rem', textAlign: 'center', borderBottom: '1px solid var(--border)' }}>
                 <h1>Optimized Shopping Cart</h1>
             </header>
-            <Container className="py-4">
+            <div style={{ padding: '2rem' }}>
                 {optimizationData && (
-                    <Row>
+                    <div>
                         {optimizationData.optimization_results.map((result, index) => (
-                            <Col key={index} md={12} className="mb-4">
+                            <div key={index} style={{ marginBottom: '1.5rem' }}>
                                 <OptimizationResultTile 
                                     result={result} 
                                     baselineCost={optimizationData.baseline_cost} 
                                 />
-                            </Col>
+                            </div>
                         ))}
-                    </Row>
+                    </div>
                 )}
-            </Container>
+            </div>
         </div>
     );
 };

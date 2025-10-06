@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Form, FormControl, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 const SearchHeader = ({ searchTerm, setSearchTerm }) => {
@@ -23,26 +22,25 @@ const SearchHeader = ({ searchTerm, setSearchTerm }) => {
   };
 
   return (
-    <div className="text-center my-5 pt-5">
+    <div style={{ textAlign: 'center', margin: '3rem 0' }}>
       <div onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
         <h1 style={{ fontFamily: 'Vollkorn', fontStyle: 'italic', fontSize: '100px', color: 'var(--logo-color)', marginBottom: '2rem' }}>
           splitcart
         </h1>
       </div>
-      <Container style={{ maxWidth: '750px' }}>
-        <Form className="d-flex" onSubmit={handleSubmit}>
-          <FormControl
+      <div style={{ maxWidth: '750px', margin: '0 auto' }}>
+        <form style={{ display: 'flex' }} onSubmit={handleSubmit}>
+          <input
             type="search"
             placeholder="Search for products..."
-            className="me-2"
             aria-label="Search"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            size="lg"
+            style={{ flex: 1, padding: '0.75rem', marginRight: '0.5rem' }}
           />
-          <Button style={{ backgroundColor: '#1CC3B9', color: 'white' }} type="submit" size="lg">Search</Button>
-        </Form>
-      </Container>
+          <button style={{ backgroundColor: 'var(--primary)', color: 'white' }} type="submit">Search</button>
+        </form>
+      </div>
     </div>
   );
 };

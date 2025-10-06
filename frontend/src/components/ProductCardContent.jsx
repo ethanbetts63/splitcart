@@ -1,5 +1,4 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
 import placeholderImage from '../assets/trolley_v3.webp';
 
 const ProductCardContent = ({ product }) => {
@@ -11,7 +10,7 @@ const ProductCardContent = ({ product }) => {
       case 'woolworths': return 'green';
       case 'aldi': return 'blue';
       case 'iga': return 'orange';
-      default: return 'black';
+      default: return 'var(--text)';
     }
   };
 
@@ -27,16 +26,16 @@ const ProductCardContent = ({ product }) => {
 
   return (
     <>
-      <Card.Img 
-        variant="top" 
+      <img 
         src={product.image_url || placeholderImage} 
         onError={handleImageError}
+        style={{ width: '100%', objectFit: 'cover' }}
       />
-      <Card.Body>
-        <Card.Title>{product.name}</Card.Title>
-        {product.brand_name && <Card.Subtitle className="mb-2 text-muted">{product.brand_name}</Card.Subtitle>}
-        {product.size && <Card.Text className="text-muted">Size: {product.size}</Card.Text>}
-        <Card.Text as="div">
+      <div style={{ padding: '1rem' }}>
+        <h4>{product.name}</h4>
+        {product.brand_name && <h5 style={{ color: 'var(--text-muted)' }}>{product.brand_name}</h5>}
+        {product.size && <p style={{ color: 'var(--text-muted)' }}>Size: {product.size}</p>}
+        <div>
           {product.prices && product.prices.map(priceData => {
             const companyColor = getCompanyColor(priceData.company);
             const companyNameStyle = {
@@ -44,7 +43,7 @@ const ProductCardContent = ({ product }) => {
               fontWeight: 'bold',
             };
             const priceValueStyle = {
-              color: priceData.is_lowest ? 'green' : 'black',
+              color: priceData.is_lowest ? 'var(--success)' : 'var(--text)',
               fontWeight: priceData.is_lowest ? 'bold' : 'normal',
             };
             return (
@@ -53,8 +52,8 @@ const ProductCardContent = ({ product }) => {
               </div>
             );
           })}
-        </Card.Text>
-      </Card.Body>
+        </div>
+      </div>
     </>
   );
 };
