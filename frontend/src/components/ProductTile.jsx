@@ -51,8 +51,8 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
       <div style={contentWrapperStyle}>
         <ProductCardContent product={product} />
       </div>
-      <div style={{ padding: '1rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
+      <div style={{ padding: '0.5rem 1rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <button onClick={() => handleQuantityChange(quantity - 1)}>-</button>
             <input value={quantity} readOnly style={{ width: '40px', textAlign: 'center' }} />

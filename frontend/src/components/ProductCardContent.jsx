@@ -34,11 +34,11 @@ const ProductCardContent = ({ product }) => {
         onError={handleImageError}
         style={{ width: '100%', objectFit: 'cover' }}
       />
-      <div style={{ padding: '1rem' }}>
-        <h4 style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{product.name}</h4>
-        {product.brand_name && <h5 style={{ color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{product.brand_name}</h5>}
-        {product.size && <p style={{ color: 'var(--text-muted)' }}>Size: {product.size}</p>}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.05rem' }}>
+      <div style={{ padding: '0.5rem 1rem' }}>
+        <h4 style={{ margin: '0.25rem 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', textOverflow: 'ellipsis' }}>{product.name}</h4>
+        {product.brand_name && <h5 style={{ color: 'var(--text-muted)', margin: '0.25rem 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', textOverflow: 'ellipsis' }}>{product.brand_name}</h5>}
+        {product.size && <p style={{ color: 'var(--text-muted)', margin: '0.25rem 0' }}>Size: {product.size}</p>}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.05rem', marginTop: '0.5rem' }}>
           {product.prices && product.prices.map(priceData => {
             const priceValueStyle = {
               color: priceData.is_lowest ? 'var(--success)' : 'var(--text)',
