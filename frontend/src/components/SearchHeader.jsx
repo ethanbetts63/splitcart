@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import searchIcon from '../assets/search.svg';
 
 const SearchHeader = ({ searchTerm, setSearchTerm }) => {
   const [inputValue, setInputValue] = useState(searchTerm);
@@ -29,16 +30,35 @@ const SearchHeader = ({ searchTerm, setSearchTerm }) => {
         </h1>
       </div>
       <div style={{ maxWidth: '750px', margin: '0 auto' }}>
-        <form style={{ display: 'flex' }} onSubmit={handleSubmit}>
+        <form style={{ display: 'flex', position: 'relative' }} onSubmit={handleSubmit}>
           <input
             type="search"
             placeholder="Search for products..."
             aria-label="Search"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            style={{ flex: 1, padding: '0.75rem', marginRight: '0.5rem', borderRadius: '15px', marginTop: '1px' }}
+            style={{ 
+              flex: 1, 
+              padding: '0.75rem 2.5rem 0.75rem 0.75rem', 
+              marginRight: '0.5rem', 
+              borderRadius: '15px', 
+              marginTop: '5px', 
+              border: 'none' 
+            }}
           />
-          <button style={{ backgroundColor: 'var(--primary)', color: 'white' }} type="submit">Search</button>
+          <img 
+            src={searchIcon} 
+            alt="Search" 
+            style={{ 
+              position: 'absolute', 
+              right: '1rem', 
+              top: '50%', 
+              transform: 'translateY(-50%)', 
+              height: '24px',
+              cursor: 'pointer'
+            }} 
+            onClick={handleSubmit} 
+          />
         </form>
       </div>
     </div>
