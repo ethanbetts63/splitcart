@@ -1,0 +1,17 @@
+.logo-button-container {
+  cursor: pointer;
+  display: inline-block; /* To make it fit the text content */
+}
+
+.logo-button-text {
+  font-family: 'Vollkorn', serif;
+  font-style: italic;
+  color: var(--primary);
+  margin: 0; /* Reset margin */
+  transition: text-shadow 0.3s ease;
+  text-align: center; /* Ensure text is centered if container is wider */
+}
+
+.logo-button-text:hover {
+  text-shadow: 0 0 25px rgba(255, 255, 255, 1);
+}

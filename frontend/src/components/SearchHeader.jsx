@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import searchIcon from '../assets/search.svg';
+import LogoButton from './LogoButton';
 
 const SearchHeader = ({ searchTerm, setSearchTerm }) => {
   const [inputValue, setInputValue] = useState(searchTerm);
@@ -24,10 +25,8 @@ const SearchHeader = ({ searchTerm, setSearchTerm }) => {
 
   return (
     <div style={{ textAlign: 'center', margin: '3rem 0' }}>
-      <div onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
-                <h1 style={{ fontFamily: 'Vollkorn', fontStyle: 'italic', fontSize: '100px', color: 'var(--primary)', marginBottom: '2rem', margin: '0 auto' }}>
-          splitcart
-        </h1>
+      <div style={{ marginBottom: '2rem' }}>
+        <LogoButton onClick={handleHomeClick} fontSize="100px" />
       </div>
       <div style={{ maxWidth: '750px', margin: '0 auto' }}>
         <form style={{ display: 'flex', position: 'relative' }} onSubmit={handleSubmit}>

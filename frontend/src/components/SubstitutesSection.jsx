@@ -1,4 +1,3 @@
-import React from 'react';
 import SelectableProductTile from './SelectableProductTile';
 
 const SubstitutesSection = ({ products, selectedOptions, onSelectOption }) => {
