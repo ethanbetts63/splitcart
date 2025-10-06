@@ -12,6 +12,7 @@ import SubstitutionPage from './pages/SubstitutionPage';
 import ProductListPage from './pages/ProductListPage'; // Import ProductListPage
 import FinalCartPage from './pages/FinalCartPage';
 import MapPage from './pages/MapPage';
+import Background from './components/Background';
 import { useShoppingList } from './context/ShoppingListContext';
 
 import StoreMap from './components/StoreMap';
@@ -57,6 +58,7 @@ function App() {
 
   return (
         <div style={{ minHeight: '100vh' }}>
+      <Background />
       <Header 
         onShowLocationModal={() => setShowLocationModal(true)} 
         onShowStoreMap={() => setShowStoreMap(true)} 

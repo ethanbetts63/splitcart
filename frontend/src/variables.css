@@ -14,6 +14,11 @@
   --warning: hsl(52 23% 34%);
   --success: hsl(147 19% 36%);
   --info: hsl(217 22% 41%);
+
+  --lighting-1: hsl(220, 25%, 95%);
+  --lighting-2: hsl(230, 25%, 94%);
+  --lighting-3: hsl(240, 25%, 93%);
+  --lighting-4: hsl(250, 25%, 92%);
 }
 
 
