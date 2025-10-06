@@ -25,7 +25,8 @@ const Header = ({ onShowLocationModal, onShowStoreMap, setSearchTerm }) => {
     <>
       <button
         onClick={handleShow}
-        style={{ position: 'absolute', top: 0, left: 0, zIndex: 1030, background: 'none', border: 'none', padding: 0, margin: '1.5rem' }}
+        className="white-hover-glow"
+        style={{ position: 'absolute', top: 0, left: 0, zIndex: 1030, margin: '1.5rem' }}
       >
         <img src={splitCartSymbol} alt="Menu" style={{ width: '100px', height: '100px' }} />
         {items.length > 0 && (
