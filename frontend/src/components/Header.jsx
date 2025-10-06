@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import ShoppingListComponent from './ShoppingListComponent';
 import SplitCartButton from './SplitCartButton';
 import splitCartSymbol from '../assets/trolley_v3.webp';
-import splitCartTitle from '../assets/splitcart_v3.png';
+import splitCartTitle from '../assets/splitcart_v5.png';
 import mapIcon from '../assets/edit_location_large.svg';
 import { useShoppingList } from '../context/ShoppingListContext';
 
@@ -60,7 +60,7 @@ const Header = ({ onShowLocationModal, onShowStoreMap, setSearchTerm }) => {
       <Offcanvas show={showMenu} onHide={handleClose} placement="start">
         <Offcanvas.Header closeButton>
           <div onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
-            <img src={splitCartTitle} alt="SplitCart" style={{ maxWidth: '500px' }} />
+            <img src={splitCartTitle} alt="SplitCart" style={{ maxWidth: '250px' }} />
           </div>
         </Offcanvas.Header>
         <Offcanvas.Body>
