@@ -27,6 +27,15 @@ const ProductCardContent = ({ product }) => {
     e.target.src = placeholderImage;
   };
 
+  const prices = product.prices || [];
+  const priceContainerStyle = {
+    display: 'grid',
+    gridTemplateColumns: prices.length === 1 ? '1fr' : 'repeat(2, 1fr)',
+    gap: '0.05rem',
+    marginTop: '0.5rem',
+    justifyItems: prices.length === 1 ? 'center' : 'start',
+  };
+
   return (
     <>
       <img 
@@ -38,8 +47,8 @@ const ProductCardContent = ({ product }) => {
         <h4 style={{ fontFamily: 'Vollkorn', color: 'var(--text)', margin: '0.25rem 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', textOverflow: 'ellipsis' }}>{product.name}</h4>
         {product.brand_name && <h5 style={{ fontFamily: 'Vollkorn', color: 'var(--text)', margin: '0.25rem 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', textOverflow: 'ellipsis' }}>{product.brand_name}</h5>}
         {product.size && <p style={{ fontFamily: 'Vollkorn', color: 'var(--text)', margin: '0.25rem 0' }}>Size: {product.size}</p>}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.05rem', marginTop: '0.5rem' }}>
-          {product.prices && product.prices.map(priceData => {
+        <div style={priceContainerStyle}>
+          {prices.map(priceData => {
             const priceValueStyle = {
               color: priceData.is_lowest ? 'var(--success)' : 'var(--text)',
               fontWeight: priceData.is_lowest ? 'bold' : 'normal',
