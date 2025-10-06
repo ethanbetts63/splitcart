@@ -19,7 +19,7 @@ const CheckableStoreList = ({ stores, selectedStoreIds, onStoreSelect }) => {
             {stores.map(store => {
                 const isSelected = selectedStoreIds.has(store.id);
                 const style = {
-                    border: `1px solid ${isSelected ? 'var(--primary)' : 'var(--border)'}`,
+                    border: `2px solid ${isSelected ? 'var(--primary)' : 'var(--border)'}`,
                     borderRadius: '8px',
                     backgroundColor: 'var(--bg-light)',
                     padding: '1rem',
@@ -27,7 +27,7 @@ const CheckableStoreList = ({ stores, selectedStoreIds, onStoreSelect }) => {
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
-                    boxShadow: isSelected ? '0 0 5px var(--primary)' : 'none',
+                    boxShadow: isSelected ? '0 0 10px var(--primary)' : 'none',
                     transition: 'border 0.2s, boxShadow 0.2s'
                 };
 
