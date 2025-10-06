@@ -1,7 +1,7 @@
 :root {
   /* hsl (fallback color) */
   --bg-dark: hsl(212 11% 90%);
-  --bg: hsl(212 22% 95%);
+  --bg: hsl(200, 97%, 76%);
   --bg-light: hsl(212 100% 100%);
   --text: hsl(212 30% 5%);
   --text-muted: hsl(212 6% 28%);
