@@ -3,8 +3,7 @@ import { Button, Offcanvas, Nav, Badge } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ShoppingListComponent from './ShoppingListComponent';
 import SplitCartButton from './SplitCartButton';
-import splitCartSymbol from '../assets/trolley_v3.webp';
-import splitCartTitle from '../assets/splitcart_v5.png';
+import splitCartSymbol from '../assets/trolley_v3_recolored.png';
 import mapIcon from '../assets/edit_location_large.svg';
 import { useShoppingList } from '../context/ShoppingListContext';
 
@@ -60,7 +59,9 @@ const Header = ({ onShowLocationModal, onShowStoreMap, setSearchTerm }) => {
       <Offcanvas show={showMenu} onHide={handleClose} placement="start">
         <Offcanvas.Header closeButton>
           <div onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
-            <img src={splitCartTitle} alt="SplitCart" style={{ maxWidth: '250px' }} />
+            <h1 style={{ fontFamily: 'Vollkorn', fontStyle: 'italic', fontSize: '80px', color: 'var(--logo-color)', margin: 0 }}>
+              splitcart
+            </h1>
           </div>
         </Offcanvas.Header>
         <Offcanvas.Body>

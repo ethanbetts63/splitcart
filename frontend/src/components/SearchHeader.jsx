@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Form, FormControl, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import splitCartTitle from '../assets/splitcart_v5.png';
 
 const SearchHeader = ({ searchTerm, setSearchTerm }) => {
   const [inputValue, setInputValue] = useState(searchTerm);
@@ -26,7 +25,9 @@ const SearchHeader = ({ searchTerm, setSearchTerm }) => {
   return (
     <div className="text-center my-5 pt-5">
       <div onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
-        <img src={splitCartTitle} alt="SplitCart" style={{ maxWidth: '375px', marginBottom: '2rem' }} />
+        <h1 style={{ fontFamily: 'Vollkorn', fontStyle: 'italic', fontSize: '100px', color: 'var(--logo-color)', marginBottom: '2rem' }}>
+          splitcart
+        </h1>
       </div>
       <Container style={{ maxWidth: '750px' }}>
         <Form className="d-flex" onSubmit={handleSubmit}>
