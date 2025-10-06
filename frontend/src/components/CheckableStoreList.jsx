@@ -16,19 +16,43 @@ const companyLogos = {
 const CheckableStoreList = ({ stores, selectedStoreIds, onStoreSelect }) => {
     return (
         <div>
-            {stores.map(store => (
-                <div key={store.id} onClick={() => onStoreSelect(store.id)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-                    <input 
-                        type="checkbox"
-                        id={`store-checkbox-${store.id}`}
-                        checked={selectedStoreIds.has(store.id)}
-                        onChange={() => {}} // The onClick on the div handles the logic
-                        style={{ marginRight: '1rem' }}
-                    />
-                    <img src={companyLogos[store.company_name]} alt={`${store.company_name} logo`} height="20" style={{ marginRight: '0.5rem' }} />
-                    <span>{store.store_name}</span>
-                </div>
-            ))}
+            {stores.map(store => {
+                const isSelected = selectedStoreIds.has(store.id);
+                const style = {
+                    border: `1px solid ${isSelected ? 'var(--primary)' : 'var(--border)'}`,
+                    borderRadius: '8px',
+                    backgroundColor: 'var(--bg-light)',
+                    padding: '1rem',
+                    marginBottom: '0.5rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    boxShadow: isSelected ? '0 0 5px var(--primary)' : 'none',
+                    transition: 'border 0.2s, boxShadow 0.2s'
+                };
+
+                return (
+                    <div key={store.id} onClick={() => onStoreSelect(store.id)} style={style}>
+                        <div style={{
+                            width: '20px',
+                            height: '20px',
+                            border: `1px solid ${isSelected ? 'var(--primary)' : 'var(--border)'}`,
+                            borderRadius: '4px',
+                            marginRight: '1rem',
+                            backgroundColor: isSelected ? 'var(--primary)' : 'transparent',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: 'white',
+                            flexShrink: 0
+                        }}>
+                            {isSelected && '✔'}
+                        </div>
+                        <img src={companyLogos[store.company_name]} alt={`${store.company_name} logo`} height="20" style={{ marginRight: '0.5rem' }} />
+                        <span style={{ fontFamily: 'Vollkorn', color: 'var(--text)' }}>{store.store_name}</span>
+                    </div>
+                );
+            })}
         </div>
     );
 };

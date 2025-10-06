@@ -29,8 +29,17 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
     removeItem(product.id);
   };
 
+  const tileStyle = {
+    border: `1px solid ${existingItem ? 'var(--primary)' : 'var(--border)'}`,
+    borderRadius: '8px',
+    width: '18rem',
+    backgroundColor: '#FFFFFF',
+    boxShadow: existingItem ? '0 0 5px var(--primary)' : 'none',
+    transition: 'border 0.2s, boxShadow 0.2s'
+  };
+
   return (
-        <div style={{ border: '1px solid var(--border)', borderRadius: '8px', width: '18rem', backgroundColor: '#FFFFFF' }}>
+        <div style={tileStyle}>
       <ProductCardContent product={product} />
       <div style={{ padding: '1rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>

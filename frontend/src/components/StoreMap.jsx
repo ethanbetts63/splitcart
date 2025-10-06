@@ -165,8 +165,8 @@ const StoreMap = ({ onSelectionChange }) => {
             </MapContainer>
 
             <div style={{ marginTop: '2rem' }}>
-                <h5 style={{ marginBottom: '0.5rem' }}>Selected Stores</h5>
-                <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>The stores selected below will be used for the price comparison. Uncheck any stores you wish to exclude.</p>
+                <h5 style={{ marginBottom: '0.5rem', fontFamily: 'Vollkorn', fontStyle: 'italic', color: 'var(--primary)', fontSize: '1.5rem' }}>Selected Stores</h5>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '1rem', fontFamily: 'Vollkorn' }}>The stores selected below will be used for the price comparison. Uncheck any stores you wish to exclude.</p>
                 <CheckableStoreList 
                     stores={stores} 
                     selectedStoreIds={selectedStoreIds} 
