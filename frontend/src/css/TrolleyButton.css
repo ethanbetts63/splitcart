@@ -16,6 +16,10 @@
   background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 80%);
 }
 
+.trolley-button:focus {
+  outline: none;
+}
+
 .item-count {
   position: absolute;
   top: 10px;

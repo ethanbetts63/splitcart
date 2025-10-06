@@ -12,6 +12,10 @@
   background: radial-gradient(ellipse at center, rgba(255,255,255,0.8) 0%,rgba(255,255,255,0) 70%);
 }
 
+.map-button:focus {
+  outline: none;
+}
+
 .map-button img {
   width: 110px;
   height: 90px;
