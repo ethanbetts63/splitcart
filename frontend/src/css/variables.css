@@ -1,7 +1,31 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+@font-face {
+  font-family: 'Vollkorn';
+  src: url('../assets/Vollkorn/Vollkorn-VariableFont_wght.ttf') format('truetype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Vollkorn';
+  src: url('../assets/Vollkorn/Vollkorn-Italic-VariableFont_wght.ttf') format('truetype');
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Baskervville';
+  src: url('../assets/Baskervville/Baskervville-VariableFont_wght.ttf') format('truetype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Baskervville';
+  src: url('../assets/Baskervville/Baskervville-Italic-VariableFont_wght.ttf') format('truetype');
+  font-style: italic;
+}
 
 :root {
-  --ff: "Montserrat", sans-serif;
+  --ff-primary: "Vollkorn", serif;
+  --ff-secondary: "Baskervville", serif;
+
   --colorp: hsl(209, 39%, 29%);
   --colorp2: #fff;
   --colora: #ffe537;
@@ -9,14 +33,14 @@
   --colorbody: hsl(25,86%,97%);
   --colors: #333;
   --button-bg: hsl(68,60%,74%);
-  --h1: bold 54px/60px var(--ff);
-  --h2: bold 36px/48px var(--ff);
-  --h3: bold 24px/36px var(--ff);
-  --links: 18px/18px var(--ff);
-  --p: 18px/30px var(--ff);
-  --p1: 24px/30px var(--ff);
-  --p2: 36px/48px var(--ff);
-  --subtext: 12px/20px var(--ff);
+  --h1: bold 54px/60px var(--ff-primary);
+  --h2: bold 36px/48px var(--ff-primary);
+  --h3: bold 24px/36px var(--ff-primary);
+  --links: 18px/18px var(--ff-secondary);
+  --p: 18px/30px var(--ff-secondary);
+  --p1: 24px/30px var(--ff-secondary);
+  --p2: 36px/48px var(--ff-secondary);
+  --subtext: 12px/20px var(--ff-secondary);
   --transition: 0.3s ease-in-out;
 
   /* Old variables, can be removed later */

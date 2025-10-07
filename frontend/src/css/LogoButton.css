@@ -4,7 +4,7 @@
 }
 
 .logo-button-text {
-  font-family: var(--ff);
+  font-family: var(--ff-primary);
   font-style: normal;
   color: var(--colorp);
   margin: 0; /* Reset margin */
