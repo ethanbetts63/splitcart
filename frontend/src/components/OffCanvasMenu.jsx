@@ -28,8 +28,9 @@ const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSele
   return (
     <div className={`off-canvas-menu-right ${isOpen ? 'visible' : ''}`}>
       <div className="off-canvas-header">
+        <button onClick={onClose} className="close-button" style={{ justifySelf: 'start' }}>&times;</button>
         <LogoButton onClick={onNavigateHome} fontSize="60px" />
-        <button onClick={onClose} className="close-button">&times;</button>
+        <div></div>
       </div>
       <div className="off-canvas-body">
         {body}

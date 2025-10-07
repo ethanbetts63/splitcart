@@ -19,7 +19,7 @@ const Navbar = ({ searchTerm, setSearchTerm, onShowTrolley, onShowMap }) => {
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <LogoButton onClick={handleHomeClick} fontSize="30px" />
+        <LogoButton onClick={handleHomeClick} fontSize="50px" />
       </div>
       <div className="navbar-center">
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />

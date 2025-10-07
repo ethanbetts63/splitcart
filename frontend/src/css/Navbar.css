@@ -17,8 +17,11 @@
   align-items: center;
 }
 
+.navbar-left {
+  padding-left: 5rem;
+}
+
 .navbar-center {
   flex-grow: 1;
   justify-content: center;
 }
-
