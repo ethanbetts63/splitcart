@@ -6,7 +6,7 @@
 .logo-button-text {
   font-family: 'Vollkorn', serif;
   font-style: italic;
-  color: black;
+  color: var(--text);
   margin: 0; /* Reset margin */
   transition: text-shadow 0.3s ease;
   text-align: center; /* Ensure text is centered if container is wider */
@@ -14,4 +14,9 @@
 
 .logo-button-text:hover {
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.logo-domain {
+  font-weight: 300;
+  font-style: normal;
 }
