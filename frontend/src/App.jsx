@@ -10,6 +10,7 @@ import SubstitutionPage from './pages/SubstitutionPage';
 import ProductListPage from './pages/ProductListPage';
 import FinalCartPage from './pages/FinalCartPage';
 import Background from './components/Background';
+import InstructionsTile from './components/InstructionsTile';
 import SplitCartButton from './components/SplitCartButton';
 import Backdrop from './components/Backdrop';
 import { useShoppingList } from './context/ShoppingListContext';
@@ -93,10 +94,13 @@ function App() {
         <img src={backgroundImage} className="scrolling-background-image" alt="background" />
         <main>
           {!searchTerm && (
-            <div className="hero-section">
-              <h2 className="subtitle">Smart Shopping, Simple Savings</h2>
-              <p className="subtext">Split your cart across two or more stores and harness the power of AI to find the mathematically lowest possible overall cost for your shop.</p>
-            </div>
+            <>
+              <div className="hero-section">
+                <h2 className="subtitle">Smart Shopping, Simple Savings</h2>
+                <p className="subtext">Split your cart across 2 or more stores and harness the power of AI to find the mathematically lowest possible overall cost for your shop.</p>
+              </div>
+              <InstructionsTile />
+            </>
           )}
           <Routes>
           <Route path="/" element={

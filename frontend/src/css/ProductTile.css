@@ -72,3 +72,34 @@
 .remove-btn {
   background: var(--danger);
 }
+
+.price-container {
+  display: grid;
+  gap: 0.05rem;
+  margin-top: 0.5rem;
+}
+
+.price-container.single-price {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+.price-container.multiple-prices {
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: start;
+}
+
+.price-item {
+  display: flex;
+  align-items: center;
+}
+
+.price-logo {
+  height: 25px;
+  margin-right: 0.25rem;
+}
+
+.price-text {
+  font-size: 1.2rem; /* Making the price text larger */
+  color: var(--colorp2);
+}
