@@ -23,3 +23,7 @@
 .scroller-item {
   margin-right: 1rem;
 }
+
+.see-more-link {
+  color: var(--colorp);
+}

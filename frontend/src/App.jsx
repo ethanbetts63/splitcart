@@ -96,8 +96,8 @@ function App() {
           {!searchTerm && (
             <>
               <div className="hero-section">
-                <h2 className="subtitle">Smart Shopping, Simple Savings</h2>
-                <p className="subtext">Have you </p>
+                <h2 className="subtitle">Shop with information, not imagination.</h2>
+                <p className="subtext">The math behind your grocery run — done by AI, not guesswork.</p>
               </div>
               <InstructionsTile />
             </>
