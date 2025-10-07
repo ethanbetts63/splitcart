@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 0.5rem 1rem;
   background-color: var(--bg-light);
   border-bottom: 1px solid var(--border);
 }
@@ -19,11 +19,3 @@
   justify-content: center;
 }
 
-.navbar-logo {
-  height: 50px;
-  margin-right: 10px;
-}
-
-.navbar-left {
-  cursor: pointer;
-}

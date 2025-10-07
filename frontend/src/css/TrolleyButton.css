@@ -4,11 +4,6 @@
   transition: all 0.3s ease;
   cursor: pointer;
   border-radius: 50%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1030;
-  margin: 1.5rem;
   padding: 0; /* Reset padding */
 }
 

@@ -11,7 +11,7 @@ const TrolleyButton = ({ onClick }) => {
       onClick={onClick}
       className="trolley-button"
     >
-      <img src={splitCartSymbol} alt="Menu" style={{ width: '100px', height: '100px' }} />
+      <img src={splitCartSymbol} alt="Menu" style={{ width: '50px', height: '50px' }} />
       {items.length > 0 && (
         <span className="item-count">
           {items.length}

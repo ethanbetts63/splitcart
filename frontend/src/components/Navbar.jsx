@@ -5,7 +5,6 @@ import LogoButton from './LogoButton';
 import SearchBar from './SearchBar';
 import MapButton from './MapButton';
 import TrolleyButton from './TrolleyButton';
-import logo from '../assets/trolley_v3.png';
 
 const Navbar = ({ searchTerm, setSearchTerm, onShowTrolley, onShowMap }) => {
   const navigate = useNavigate();
@@ -19,8 +18,7 @@ const Navbar = ({ searchTerm, setSearchTerm, onShowTrolley, onShowMap }) => {
 
   return (
     <nav className="navbar">
-      <div className="navbar-left" onClick={handleHomeClick}>
-        <img src={logo} alt="SplitCart Logo" className="navbar-logo" />
+      <div className="navbar-left">
         <LogoButton onClick={handleHomeClick} fontSize="30px" />
       </div>
       <div className="navbar-center">
