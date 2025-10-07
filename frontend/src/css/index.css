@@ -1,12 +1,12 @@
 @import './variables.css';
 
 :root {
-  font-family: 'Vollkorn', serif;
+  font-family: var(--ff);
   line-height: 1.5;
   font-weight: 400;
 
-  color: var(--text);
-  background-color: var(--bg);
+  color: var(--colorp);
+  background-color: var(--colorbody);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -25,6 +25,7 @@ a:hover {
 
 body {
   margin: 0;
+  background-color: var(--colorbody);
 }
 
 h1 {

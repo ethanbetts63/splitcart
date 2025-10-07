@@ -6,7 +6,7 @@
 .logo-button-text {
   font-family: var(--ff);
   font-style: normal;
-  color: var(--text);
+  color: var(--colorp);
   margin: 0; /* Reset margin */
   transition: text-shadow 0.3s ease;
   text-align: center; /* Ensure text is centered if container is wider */

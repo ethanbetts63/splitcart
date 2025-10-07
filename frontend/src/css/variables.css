@@ -2,12 +2,13 @@
 
 :root {
   --ff: "Montserrat", sans-serif;
-  --colorp: #f9f9f9;
+  --colorp: hsl(209, 39%, 29%);
   --colorp2: #fff;
   --colora: #ffe537;
   --colora2: #537fe7;
-  --colorbody: #1e1e1e;
+  --colorbody: hsl(25,86%,97%);
   --colors: #333;
+  --button-bg: hsl(68,60%,74%);
   --h1: bold 54px/60px var(--ff);
   --h2: bold 36px/48px var(--ff);
   --h3: bold 24px/36px var(--ff);
