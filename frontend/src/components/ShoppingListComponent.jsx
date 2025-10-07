@@ -5,6 +5,11 @@ import trolleyIcon from '../assets/trolley_v3.png';
 const ShoppingListComponent = () => {
   const { items, selections } = useShoppingList();
 
+  const handleImageError = (e) => {
+    e.target.onerror = null; // Prevent infinite loop if placeholder also fails
+    e.target.src = trolleyIcon;
+  };
+
   return (
     <div style={{ backgroundColor: 'var(--bg-dark)', padding: '1rem', borderRadius: '8px' }}>
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
@@ -35,20 +40,23 @@ const ShoppingListComponent = () => {
             const substitutes = itemSelections.filter(p => p.id !== item.product.id);
 
             return (
-              <div key={item.product.id} style={{ backgroundColor: 'var(--bg-light)', padding: '1rem', marginBottom: '0.5rem', borderRadius: '8px' }}>
+              <div key={item.product.id} style={{ display: 'flex', alignItems: 'center', backgroundColor: 'var(--bg-light)', padding: '1rem', marginBottom: '0.5rem', borderRadius: '8px' }}>
+                <img src={item.product.image_url || trolleyIcon} onError={handleImageError} alt={item.product.name} style={{ width: '50px', height: '50px', marginRight: '1rem', borderRadius: '4px' }} />
                 <div>
-                  <strong>{item.product.name} (x{item.quantity})</strong>
-                </div>
-                {substitutes.length > 0 && (
-                  <div style={{ paddingLeft: '1rem' }}>
-                    <small style={{ color: 'var(--text-muted)' }}>Substitutes:</small>
-                    {substitutes.map(sub => (
-                      <div key={sub.id} style={{ paddingLeft: '1.5rem' }}>
-                        <small>{sub.name}</small>
-                      </div>
-                    ))}
+                  <div>
+                    <strong>{item.product.name} (x{item.quantity})</strong>
                   </div>
-                )}
+                  {substitutes.length > 0 && (
+                    <div style={{ paddingLeft: '1rem' }}>
+                      <small style={{ color: 'var(--text-muted)' }}>Substitutes:</small>
+                      {substitutes.map(sub => (
+                        <div key={sub.id} style={{ paddingLeft: '1.5rem' }}>
+                          <small>{sub.name}</small>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             );
           })
