@@ -67,5 +67,5 @@
   right: 0;
   width: 60%;
   z-index: -1;
-  mask-image: radial-gradient(150% 100% at right, black 50%, transparent 90%);
+  mask-image: radial-gradient(ellipse at center, black 50%, transparent 90%);
 }

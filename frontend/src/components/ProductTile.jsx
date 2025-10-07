@@ -74,8 +74,8 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
         <div style={priceContainerStyle}>
           {prices.map(priceData => (
             <div key={priceData.company} style={{ display: 'flex', alignItems: 'center' }}>
-              <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} style={{ height: '20px', marginRight: '0.25rem' }} />
-              <span style={{ color: priceData.is_lowest ? 'var(--success)' : 'var(--text)' }}>
+              <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} style={{ height: '25px', marginRight: '0.25rem' }} />
+              <span style={{ color: priceData.is_lowest ? 'var(--colorp2)' : 'var(--colorp2)' }}>
                 ${priceData.price_display}
               </span>
             </div>
