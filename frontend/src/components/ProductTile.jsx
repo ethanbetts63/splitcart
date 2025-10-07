@@ -33,7 +33,6 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
     borderRadius: '15px',
     width: '18rem',
     backgroundColor: '#FFFFFF',
-    boxShadow: existingItem ? '0 0 10px var(--success)' : 'none',
     transition: 'boxShadow 0.2s',
     height: '32rem', // Fixed height
     display: 'flex',
