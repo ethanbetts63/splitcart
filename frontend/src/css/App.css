@@ -7,6 +7,7 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
+  position: relative;
 }
 
 .logo {
@@ -41,5 +42,29 @@
   color: var(--text-muted);
 }
 
+.hero-section {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
 
+.subtitle {
+  color: var(--colorp);
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
 
+.subtext {
+  color: var(--colorp);
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.scrolling-background-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80%;
+  z-index: -1;
+}
