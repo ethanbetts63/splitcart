@@ -42,7 +42,7 @@ function App() {
     const randomSearchTerms = getRandomItems(commonSearches, 3);
     const scrollerConfig = [
         { title: "Bargain Finds!", sourceUrl: "/api/products/bargains/", seeMoreLink: "/products?source=bargains" },
-        { title: "Popular with SplitCart users", searchTerm: "", seeMoreLink: "/products?source=all" },
+
         ...randomSearchTerms.map(term => ({ title: term, searchTerm: term, seeMoreLink: `/products?search=${encodeURIComponent(term)}` }))
     ];
     setScrollers(scrollerConfig);
@@ -125,7 +125,7 @@ function App() {
       />
 
       {items.length > 0 && location.pathname !== '/split-cart' && location.pathname !== '/final-cart' && (
-        <div style={{ position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 1050 }}>
+        <div style={{ position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 1040 }}>
           <SplitCartButton />
         </div>
       )}

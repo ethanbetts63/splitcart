@@ -13,16 +13,7 @@ const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSele
     body = <ShoppingListComponent />;
   } else if (content === 'map') {
     title = 'Select Stores';
-    body = (
-      <>
-        <p style={{ color: 'var(--text-muted)', marginTop: '0' }}>
-          Double-click on the map to set your location.
-          Check and uncheck specific stores below the map.
-          The more stores you select, the more saving potential you allow.
-        </p>
-        <StoreMap onSelectionChange={onStoreSelectionChange} />
-      </>
-    );
+    body = <StoreMap onSelectionChange={onStoreSelectionChange} />;
   }
 
   return (
@@ -35,9 +26,7 @@ const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSele
       <div className="off-canvas-body">
         {body}
       </div>
-      <div className="off-canvas-footer">
-        <a onClick={onLocationChange} style={{ cursor: 'pointer' }}>Change Location</a>
-      </div>
+
     </div>
   );
 };
