@@ -97,7 +97,7 @@ function App() {
             <>
               <div className="hero-section">
                 <h2 className="subtitle">Smart Shopping, Simple Savings</h2>
-                <p className="subtext">Split your cart across 2 or more stores and harness the power of AI to find the mathematically lowest possible overall cost for your shop.</p>
+                <p className="subtext">Split your cart across two or more stores and harness the power of AI to find the mathematically lowest possible overall cost for your shop.</p>
               </div>
               <InstructionsTile />
             </>
