@@ -1,0 +1,51 @@
+.product-card {
+  margin-top: 20px;
+  width: 18rem;
+  min-height: 32rem;
+  display: flex;
+  flex-direction: column;
+  background: var(--colors);
+  border-radius: 8px;
+  overflow: hidden;
+  height: 100%; /* To make all cards the same height in a grid */
+}
+
+.product-card-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Allows the content to fill the card */
+}
+
+.product-card img {
+  border-radius: 0px;
+  max-width: 100%;
+  height: 200px; /* Fixed height for images */
+  object-fit: cover;
+}
+
+.product-card h3 {
+  font: var(--h3);
+  margin: 0 0 10px 0;
+}
+
+.product-card p {
+  font: var(--p);
+  margin: 0 0 10px 0;
+  flex-grow: 1; /* Pushes the button to the bottom */
+}
+
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  font: var(--p);
+  color: var(--colorp);
+  background: linear-gradient(var(--colorbody), var(--colorbody)) padding-box,
+    linear-gradient(45deg, var(--colora) 0%, var(--colora2) 100%) border-box;
+  border: solid 2px transparent;
+  border-radius: 8px;
+  padding: 12px 24px;
+  transition: 0.2s ease-in-out;
+  text-align: center;
+  margin-top: 8px;
+}

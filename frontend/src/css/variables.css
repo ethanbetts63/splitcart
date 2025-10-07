@@ -1,38 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+
 :root {
-  /* hsl (fallback color) */
-  --bg-dark: hsl(212 11% 90%);
-  --bg: hsl(200, 97%, 76%);
-  --bg-light: hsl(212 100% 100%);
-  --text: hsl(212 30% 5%);
-  --text-muted: hsl(212 6% 28%);
+  --ff: "Montserrat", sans-serif;
+  --colorp: #f9f9f9;
+  --colorp2: #fff;
+  --colora: #ffe537;
+  --colora2: #537fe7;
+  --colorbody: #1e1e1e;
+  --colors: #333;
+  --h1: bold 54px/60px var(--ff);
+  --h2: bold 36px/48px var(--ff);
+  --h3: bold 24px/36px var(--ff);
+  --links: 18px/18px var(--ff);
+  --p: 18px/30px var(--ff);
+  --p1: 24px/30px var(--ff);
+  --p2: 36px/48px var(--ff);
+  --subtext: 12px/20px var(--ff);
+  --transition: 0.3s ease-in-out;
+
+  /* Old variables, can be removed later */
+  --bg-dark: hsl(0 0% 0%);
+  --bg: hsl(0, 0%, 5%);
+  --bg-light: hsl(0 0% 10%);
+  --text: hsl(0 0% 95%);
+  --text-muted: hsl(0 0% 70%);
   --highlight: hsl(212 100% 100%);
   --border: hsl(212 4% 51%);
   --border-muted: hsl(212 6% 62%);
-  --primary: hsl(206, 65%, 55%);
-  --secondary: hsl(38 100% 17%);
+  --primary: #537fe7; /* Using new colora2 */
+  --secondary: #ffe537; /* Using new colora */
   --danger: hsl(8, 93%, 50%);
   --warning: hsl(52 23% 34%);
   --success: hsl(125, 74%, 45%);
-  --info: sl(125, 80%, 80%);
+  --info: hsl(125, 80%, 80%);
   --glow: hsl(182, 100%, 75%);
-
-  --lighting-1: hsl(0, 0%, 100%);
-  --lighting-2: hsl(0, 0%, 100%);
-  --lighting-3: hsl(0, 0%, 100%);
-  --lighting-4: hsl(0, 0%, 100%); 
-}
-
-
-@font-face {
-  font-family: 'Vollkorn';
-  src: url('./assets/Vollkorn/Vollkorn-Italic-VariableFont_wght.ttf') format('truetype');
-  font-style: italic;
-  font-weight: 400 900;
-}
-
-@font-face {
-  font-family: 'Vollkorn';
-  src: url('./assets/Vollkorn/Vollkorn-VariableFont_wght.ttf') format('truetype');
-  font-style: normal;
-  font-weight: 400 900;
 }
