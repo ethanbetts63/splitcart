@@ -11,6 +11,7 @@ import ProductListPage from './pages/ProductListPage';
 import FinalCartPage from './pages/FinalCartPage';
 import Background from './components/Background';
 import SplitCartButton from './components/SplitCartButton';
+import Backdrop from './components/Backdrop';
 import { useShoppingList } from './context/ShoppingListContext';
 import './css/App.css';
 
@@ -111,6 +112,8 @@ function App() {
         onHide={() => setShowLocationModal(false)}
         onSave={handleSaveLocation}
       />
+
+      <Backdrop show={isOffCanvasOpen} onClick={handleCloseOffCanvas} />
 
       <OffCanvasMenu 
         isOpen={isOffCanvasOpen}
