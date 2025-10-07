@@ -1,5 +1,5 @@
 import React from 'react';
-import mapIcon from '../assets/edit_location_large.svg';
+import mapIcon from '../assets/edit_location_v2.svg';
 import '../css/MapButton.css';
 
 const MapButton = ({ onClick }) => {
