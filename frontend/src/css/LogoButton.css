@@ -4,8 +4,8 @@
 }
 
 .logo-button-text {
-  font-family: 'Vollkorn', serif;
-  font-style: italic;
+  font-family: var(--ff);
+  font-style: normal;
   color: var(--text);
   margin: 0; /* Reset margin */
   transition: text-shadow 0.3s ease;
@@ -18,5 +18,5 @@
 
 .logo-domain {
   font-weight: 300;
-  font-style: normal;
+  font-style: italic;
 }

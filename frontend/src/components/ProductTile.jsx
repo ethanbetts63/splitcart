@@ -25,6 +25,14 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
     setQuantity(existingItem ? existingItem.quantity : 1);
   }, [existingItem]);
 
+  const handleQuantityChange = (newQuantity) => {
+    const validatedQuantity = Math.max(1, newQuantity);
+    setQuantity(validatedQuantity);
+    if (existingItem) {
+      updateItemQuantity(product.id, validatedQuantity);
+    }
+  };
+
   const handleImageError = (e) => {
     e.target.onerror = null;
     e.target.src = placeholderImage;
@@ -75,9 +83,16 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
         </div>
 
         {existingItem ? (
-          <button onClick={handleRemove} className="btn">Remove</button>
+          <div className="in-cart-controls">
+            <div className="quantity-control">
+              <button onClick={() => handleQuantityChange(quantity - 1)} className="btn quantity-btn">-</button>
+              <span className="quantity-display">{quantity}</span>
+              <button onClick={() => handleQuantityChange(quantity + 1)} className="btn quantity-btn">+</button>
+            </div>
+            <button onClick={handleRemove} className="btn remove-btn">Remove</button>
+          </div>
         ) : (
-          <button onClick={handleAdd} className="btn">Add to Cart</button>
+          <button onClick={handleAdd} className="btn">Add</button>
         )}
       </div>
     </div>
