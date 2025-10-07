@@ -22,7 +22,7 @@ const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLi
       // Only add store_ids if they are available. Some sourceUrls might not need them.
       if (nearbyStoreIds && nearbyStoreIds.length > 0) {
         const params = new URLSearchParams();
-        params.append('store_ids', nearbyStoreIds.join(','));
+        params.append('store_ids', nearbyStoreIds.map(store => store.id).join(','));
         url = `${url}?${params.toString()}`;
       }
     } else if (searchTerm) {
