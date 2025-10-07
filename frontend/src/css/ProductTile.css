@@ -49,3 +49,27 @@
   text-align: center;
   margin-top: 8px;
 }
+
+.product-card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-btn {
+  padding: 8px 12px;
+}
+
+.quantity-display {
+  padding: 0 10px;
+  font-size: 1.2rem;
+}
+
+.remove-btn {
+  background: var(--danger);
+}

@@ -82,18 +82,18 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
           ))}
         </div>
 
-        {existingItem ? (
-          <div className="in-cart-controls">
-            <div className="quantity-control">
-              <button onClick={() => handleQuantityChange(quantity - 1)} className="btn quantity-btn">-</button>
-              <span className="quantity-display">{quantity}</span>
-              <button onClick={() => handleQuantityChange(quantity + 1)} className="btn quantity-btn">+</button>
-            </div>
-            <button onClick={handleRemove} className="btn remove-btn">Remove</button>
+        <div className="product-card-actions">
+          <div className="quantity-control">
+            <button onClick={() => handleQuantityChange(quantity - 1)} className="btn quantity-btn">-</button>
+            <span className="quantity-display">{quantity}</span>
+            <button onClick={() => handleQuantityChange(quantity + 1)} className="btn quantity-btn">+</button>
           </div>
-        ) : (
-          <button onClick={handleAdd} className="btn">Add</button>
-        )}
+          {existingItem ? (
+            <button onClick={handleRemove} className="btn remove-btn">Remove</button>
+          ) : (
+            <button onClick={handleAdd} className="btn">Add</button>
+          )}
+        </div>
       </div>
     </div>
   );
