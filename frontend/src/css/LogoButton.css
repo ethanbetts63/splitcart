@@ -6,12 +6,12 @@
 .logo-button-text {
   font-family: 'Vollkorn', serif;
   font-style: italic;
-  color: var(--primary);
+  color: black;
   margin: 0; /* Reset margin */
   transition: text-shadow 0.3s ease;
   text-align: center; /* Ensure text is centered if container is wider */
 }
 
 .logo-button-text:hover {
-  background: radial-gradient(ellipse at center, rgba(255,255,255,0.8) 0%,rgba(255,255,255,0) 70%);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }

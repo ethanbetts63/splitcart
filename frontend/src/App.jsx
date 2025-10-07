@@ -87,8 +87,9 @@ function App() {
         onShowTrolley={handleShowTrolley} 
         onShowMap={handleShowMap} 
       />
-      <main>
-        <Routes>
+      <div className="content-container">
+        <main>
+          <Routes>
           <Route path="/" element={
             searchTerm ? (
               <GridSourcer searchTerm={searchTerm} nearbyStoreIds={nearbyStoreIds} />
@@ -100,7 +101,8 @@ function App() {
           <Route path="/split-cart" element={<SubstitutionPage nearbyStoreIds={nearbyStoreIds} />} />
           <Route path="/final-cart" element={<FinalCartPage />} />
         </Routes>
-      </main>
+        </main>
+      </div>
 
       <Footer />
 
