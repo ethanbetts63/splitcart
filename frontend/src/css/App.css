@@ -63,7 +63,7 @@
 
 .scrolling-background-image {
   position: absolute;
-  top: 0;
+  top: 3rem;
   right: 0;
   width: 60%;
   z-index: -1;
