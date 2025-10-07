@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import Header from './components/Header';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import OffCanvasMenu from './components/OffCanvasMenu';
 import Footer from './components/Footer';
-import GridSourcer from './components/GridSourcer'; // Import GridSourcer
+import GridSourcer from './components/GridSourcer';
 import ScrollerManager from './components/ScrollerManager';
 import LocationSetupModal from './components/LocationSetupModal';
-import Layout from './components/Layout'; // Import Layout component
 import SubstitutionPage from './pages/SubstitutionPage';
-import ProductListPage from './pages/ProductListPage'; // Import ProductListPage
+import ProductListPage from './pages/ProductListPage';
 import FinalCartPage from './pages/FinalCartPage';
 import Background from './components/Background';
 import SplitCartButton from './components/SplitCartButton';
 import { useShoppingList } from './context/ShoppingListContext';
-
-import StoreMap from './components/StoreMap';
 import './css/App.css';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showLocationModal, setShowLocationModal] = useState(false);
-  const [showStoreMap, setShowStoreMap] = useState(false);
+  const [isOffCanvasOpen, setIsOffCanvasOpen] = useState(false);
+  const [offCanvasContent, setOffCanvasContent] = useState(null);
+
   const { items, setUserLocation, nearbyStoreIds, isLocationLoaded, setSelectedStoreIds } = useShoppingList();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [scrollers, setScrollers] = useState([]);
 
@@ -33,14 +34,11 @@ function App() {
       "Coffee", "Tea", "Yoghurt", "Ice Cream", "Chocolate", "Biscuits", "Chips",
       "Soft Drink", "Juice", "Beer", "Wine", "Toilet Paper"
     ];
-
     const getRandomItems = (arr, n) => {
       const shuffled = [...arr].sort(() => 0.5 - Math.random());
       return shuffled.slice(0, n);
     };
-
     const randomSearchTerms = getRandomItems(commonSearches, 3);
-
     const scrollerConfig = [
         { title: "Bargain Finds!", sourceUrl: "/api/products/bargains/", seeMoreLink: "/products?source=bargains" },
         { title: "Popular with SplitCart users", searchTerm: "", seeMoreLink: "/products?source=all" },
@@ -55,30 +53,50 @@ function App() {
     setShowLocationModal(false);
   };
 
+  const handleShowTrolley = () => {
+    setOffCanvasContent('trolley');
+    setIsOffCanvasOpen(true);
+  };
+
+  const handleShowMap = () => {
+    setOffCanvasContent('map');
+    setIsOffCanvasOpen(true);
+  };
+
+  const handleCloseOffCanvas = () => {
+    setIsOffCanvasOpen(false);
+  };
+
+  const handleNavigateHome = () => {
+    handleCloseOffCanvas();
+    setSearchTerm('');
+    navigate('/');
+  };
+
+  const handleLocationChange = () => {
+    handleCloseOffCanvas();
+    setShowLocationModal(true);
+  };
+
   return (
-        <div style={{ minHeight: '100vh' }}>
+    <div style={{ minHeight: '100vh' }}>
       <Background />
-      <Header 
-        onShowLocationModal={() => setShowLocationModal(true)} 
-        onShowStoreMap={() => setShowStoreMap(true)} 
+      <Navbar 
+        searchTerm={searchTerm} 
         setSearchTerm={setSearchTerm} 
+        onShowTrolley={handleShowTrolley} 
+        onShowMap={handleShowMap} 
       />
-            <main>
+      <main>
         <Routes>
           <Route path="/" element={
-            <Layout searchTerm={searchTerm} setSearchTerm={setSearchTerm}>
-              {searchTerm ? (
-                <GridSourcer searchTerm={searchTerm} nearbyStoreIds={nearbyStoreIds} />
-              ) : (
-                <ScrollerManager scrollers={scrollers} nearbyStoreIds={nearbyStoreIds} isLocationLoaded={isLocationLoaded} />
-              )}
-            </Layout>
+            searchTerm ? (
+              <GridSourcer searchTerm={searchTerm} nearbyStoreIds={nearbyStoreIds} />
+            ) : (
+              <ScrollerManager scrollers={scrollers} nearbyStoreIds={nearbyStoreIds} isLocationLoaded={isLocationLoaded} />
+            )
           } />
-          <Route path="/products" element={
-            <Layout searchTerm={searchTerm} setSearchTerm={setSearchTerm}>
-              <ProductListPage nearbyStoreIds={nearbyStoreIds} />
-            </Layout>
-          } />
+          <Route path="/products" element={<ProductListPage nearbyStoreIds={nearbyStoreIds} />} />
           <Route path="/split-cart" element={<SubstitutionPage nearbyStoreIds={nearbyStoreIds} />} />
           <Route path="/final-cart" element={<FinalCartPage />} />
         </Routes>
@@ -92,19 +110,15 @@ function App() {
         onSave={handleSaveLocation}
       />
 
-            <div className={`off-canvas-menu ${showStoreMap ? 'visible' : ''}`} style={{ display: 'flex', flexDirection: 'column' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem' }}>
-                <h1 style={{ fontFamily: 'Vollkorn', fontStyle: 'italic', fontSize: '60px', color: 'var(--primary)', textAlign: 'center', flex: 1, marginBottom: '0' }}>
-                  select stores
-                </h1>
-                <button onClick={() => setShowStoreMap(false)} style={{ background: 'none', border: 'none', fontSize: '1.5rem' }}>&times;</button>
-              </div>
-              <div style={{ padding: '1rem', flex: 1, overflowY: 'auto' }}>
-                <StoreMap onSelectionChange={setSelectedStoreIds} />
-              </div>
-            </div>
+      <OffCanvasMenu 
+        isOpen={isOffCanvasOpen}
+        onClose={handleCloseOffCanvas}
+        content={offCanvasContent}
+        onLocationChange={handleLocationChange}
+        onStoreSelectionChange={setSelectedStoreIds}
+        onNavigateHome={handleNavigateHome}
+      />
 
-      {/* Floating Split Cart Button */}
       {items.length > 0 && location.pathname !== '/split-cart' && location.pathname !== '/final-cart' && (
         <div style={{ position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 1050 }}>
           <SplitCartButton />
