@@ -32,7 +32,7 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
   const tileStyle = {
     borderRadius: '15px',
     width: '18rem',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'var(--bg-light)',
     transition: 'boxShadow 0.2s',
     height: '32rem', // Fixed height
     display: 'flex',
