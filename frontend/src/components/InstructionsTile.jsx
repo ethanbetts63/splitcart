@@ -8,7 +8,7 @@ const InstructionsTile = () => {
         <span className="instruction-number">1.</span>
         <div className="instruction-text">
           <span className="instruction-title">Pick your items:</span>
-          <span className="instruction-subtext">Browse or search for products and add them to your cart.</span>
+          <span className="instruction-subtext">Browse or search for products. Add them to your cart. When you're done click "Next!" in the bottom right.</span>
         </div>
       </div>
       <div className="instruction-item">
