@@ -34,22 +34,22 @@ const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSele
           maskImage: 'radial-gradient(ellipse at center, black 50%, transparent 70%)'
         }} />
       )}
-      {content === 'map' && (
-        <img src={mapIcon} alt="background" style={{
-          display: 'block',
-          marginTop: '10px', 
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          marginBottom: '-45px',
-          width: '100px',
-          height: 'auto',
-          objectFit: 'contain',
-          opacity: 1,
-        }} />
-      )}
       <div className="off-canvas-header">
       </div>
       <div className="off-canvas-body">
+        {content === 'map' && (
+          <img src={mapIcon} alt="background" style={{
+            display: 'block',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            marginBottom: '0.5rem',
+            marginTop: '-1rem',
+            width: '100px',
+            height: 'auto',
+            objectFit: 'contain',
+            opacity: 1,
+          }} />
+        )}
         {body}
       </div>
 

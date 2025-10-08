@@ -141,7 +141,7 @@ const StoreMap = ({ onSelectionChange }) => {
             {loading && <div>Loading map...</div>}
             {error && <div>Error: {error}</div>}
 
-            <div style={{ position: 'relative', border: '1px solid black', borderRadius: '8px', overflow: 'hidden' }}>
+            <div style={{ position: 'relative', border: '0.3px solid black', borderRadius: '8px', overflow: 'hidden' }}>
               <MapContainer center={[-25.36, 134.21]} zoom={3.9} minZoom={3.9} style={{ height: '400px', width: '100%' }}>
                   <TileLayer
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -166,13 +166,13 @@ const StoreMap = ({ onSelectionChange }) => {
                   ))}
               </MapContainer>
               <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
-                <div style={{ backgroundColor: 'white', color: 'black', padding: '0.2rem 0.4rem', borderRadius: '8px', fontSize: '0.8rem', border: '1px solid var(--colorp2)' }}>
+                <div style={{ backgroundColor: 'white', color: 'black', padding: '0.2rem 0.4rem', borderRadius: '8px', fontSize: '0.8rem', border: '0.3px solid var(--colorp2)' }}>
                   click and drag to move
                 </div>
-                <div style={{ backgroundColor: 'white', color: 'black', padding: '0.2rem 0.4rem', borderRadius: '8px', fontSize: '0.8rem', border: '1px solid var(--colorp2)' }}>
+                <div style={{ backgroundColor: 'white', color: 'black', padding: '0.2rem 0.4rem', borderRadius: '8px', fontSize: '0.8rem', border: '0.3px solid var(--colorp2)' }}>
                   scroll or +/- to zoom
                 </div>
-                <div style={{ backgroundColor: 'white', color: 'black', padding: '0.2rem 0.4rem', borderRadius: '8px', fontSize: '0.8rem', border: '1px solid var(--colorp2)' }}>
+                <div style={{ backgroundColor: 'white', color: 'black', padding: '0.2rem 0.4rem', borderRadius: '8px', fontSize: '0.8rem', border: '0.3px solid var(--colorp2)' }}>
                   double click to select area
                 </div>
               </div>
