@@ -13,7 +13,7 @@ const companyLogos = {
     'Woolworths': woolworthsLogo,
 };
 
-const PriceDisplay = ({ prices }) => {
+const PriceDisplay = ({ prices, showBackground = true }) => {
   const pricesToShow = prices || [];
 
   const getFontSize = (numPrices) => {
@@ -23,7 +23,7 @@ const PriceDisplay = ({ prices }) => {
   };
 
   const containerStyle = {
-    backgroundColor: 'white',
+    backgroundColor: showBackground ? 'white' : 'transparent',
     padding: '0.5rem',
     borderRadius: '8px',
     display: 'grid',
@@ -46,7 +46,7 @@ const PriceDisplay = ({ prices }) => {
     <div style={containerStyle}>
       {pricesToShow.map(priceData => (
         <div key={priceData.company} style={priceItemStyle}>
-          <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} style={{ height: '20px', marginRight: '0.25rem' }} />
+          <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} style={{ width: '20px', height: '20px', objectFit: 'contain', marginRight: '0.25rem' }} />
           <span style={{ color: priceData.is_lowest ? 'var(--success)' : 'var(--text)', fontSize: fontSize }}>
             ${priceData.price_display}
           </span>

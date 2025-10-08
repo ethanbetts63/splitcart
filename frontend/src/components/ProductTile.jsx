@@ -3,6 +3,7 @@ import { useShoppingList } from '../context/ShoppingListContext';
 import '../css/ProductTile.css';
 import placeholderImage from '../assets/trolley_v3.png';
 import QuantityAdjuster from './QuantityAdjuster';
+import PriceDisplay from './PriceDisplay';
 
 // Logos - moved from ProductCardContent
 import aldiLogo from '../assets/ALDI_logo.svg';
@@ -88,17 +89,7 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
           {product.brand_name && `${product.brand_name} `}
         </p>
         
-        {/* Prices */}
-        <div style={priceContainerStyle}>
-          {prices.map(priceData => (
-            <div key={priceData.company} style={{ display: 'flex', alignItems: 'center' }}>
-              <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} style={{ height: '25px', marginRight: '0.25rem' }} />
-              <span style={{ color: priceData.is_lowest ? 'var(--colorp2)' : 'var(--colorp2)' }}>
-                ${priceData.price_display}
-              </span>
-            </div>
-          ))}
-        </div>
+        <PriceDisplay prices={prices} />
 
         <div className="product-card-actions">
           <QuantityAdjuster 
