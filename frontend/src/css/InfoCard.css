@@ -1,0 +1,22 @@
+.info-card {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 250px;
+  padding: 1rem;
+  background-color: var(--background-color-offset);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  text-align: left;
+}
+
+.info-card h5 {
+    margin-top: 0;
+    color: var(--colorp)
+}
+
+.info-card p {
+    color: var(--colorp)
+
+}

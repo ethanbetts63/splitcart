@@ -11,11 +11,13 @@ import ProductListPage from './pages/ProductListPage';
 import FinalCartPage from './pages/FinalCartPage';
 
 import InstructionsTile from './components/InstructionsTile';
+import BottomInfoCard from './components/BottomInfoCard';
 import SplitCartButton from './components/SplitCartButton';
 import Backdrop from './components/Backdrop';
 import { useShoppingList } from './context/ShoppingListContext';
 import './css/App.css';
 import backgroundImage from './assets/background_main_page.png';
+import bottomImage from './assets/bottom_image.png';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -92,6 +94,7 @@ function App() {
       />
       <div className="content-container">
         <img src={backgroundImage} className="scrolling-background-image" alt="background" />
+        <img src={bottomImage} className="bottom-left-image" alt="bottom background" />
         <main>
           {!searchTerm && (
             <>
@@ -115,6 +118,7 @@ function App() {
           <Route path="/final-cart" element={<FinalCartPage />} />
         </Routes>
         </main>
+        {!searchTerm && location.pathname === '/' && <BottomInfoCard />}
       </div>
 
       <Footer />
