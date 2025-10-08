@@ -63,11 +63,13 @@ const ShoppingListComponent = () => {
                   <div>
                     <small className="text-muted">Price: $X.XX - $Y.YY</small>
                   </div>
-                  <QuantityAdjuster 
-                    quantity={item.quantity} 
-                    onQuantityChange={(newQuantity) => updateItemQuantity(item.product.id, newQuantity)} 
-                  />
-                  <Button variant="danger" size="sm" onClick={() => removeItem(item.product.id)} style={{ marginLeft: '0.5rem', padding: '0.1rem 0.5rem', fontSize: '1rem' }}>Remove</Button>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <QuantityAdjuster 
+                      quantity={item.quantity} 
+                      onQuantityChange={(newQuantity) => updateItemQuantity(item.product.id, newQuantity)} 
+                    />
+                    <Button variant="danger" size="sm" onClick={() => removeItem(item.product.id)} style={{ padding: '0.1rem 0.5rem', fontSize: '1rem' }}>Remove</Button>
+                  </div>
                 </div>
 
                 {substitutes.length > 0 && (
