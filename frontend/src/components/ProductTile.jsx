@@ -92,16 +92,22 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
         
         <PriceDisplay prices={prices} variant="product-tile" />
 
-        <div className="product-card-actions">
-          <QuantityAdjuster 
-            quantity={quantity} 
-            onQuantityChange={handleQuantityChange} 
-          />
-          {existingItem ? (
-            <button onClick={handleRemove} className="btn remove-btn">Remove</button>
-          ) : (
-            <button onClick={handleAdd} className="btn">Add</button>
-          )}
+        <div className="actions-container">
+          <div className="action-item" />
+          <div className="action-item">
+            <QuantityAdjuster 
+              className="action-element"
+              quantity={quantity} 
+              onQuantityChange={handleQuantityChange} 
+            />
+          </div>
+          <div className="action-item">
+            {existingItem ? (
+              <button onClick={handleRemove} className="btn remove-btn action-element">Remove</button>
+            ) : (
+              <button onClick={handleAdd} className="btn action-element">Add</button>
+            )}
+          </div>
         </div>
       </div>
     </div>

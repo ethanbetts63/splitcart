@@ -58,6 +58,26 @@
   align-items: center;
 }
 
+.actions-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.action-item {
+  flex-basis: 33.33%;
+  display: flex;
+  justify-content: center;
+}
+
+.action-element {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
 .quantity-control {
   display: flex;
   align-items: center;
