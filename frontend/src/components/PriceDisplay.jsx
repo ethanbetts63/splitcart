@@ -24,7 +24,7 @@ const PriceDisplay = ({ prices, showBackground = true, variant = 'trolley' }) =>
     }
     // trolley styles (original)
     if (numPrices === 1) return '1.5rem';
-    if (numPrices === 2) return '1.2rem';
+    if (numPrices === 2) return '1.1rem';
     return '1rem';
   };
 
@@ -32,7 +32,7 @@ const PriceDisplay = ({ prices, showBackground = true, variant = 'trolley' }) =>
     backgroundColor: showBackground ? 'white' : 'transparent',
     borderRadius: '8px',
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
   };
 
   const variantStyles = {
@@ -55,6 +55,8 @@ const PriceDisplay = ({ prices, showBackground = true, variant = 'trolley' }) =>
   if (pricesToShow.length === 1) {
     containerStyle.gridTemplateColumns = '1fr';
     containerStyle.justifyItems = 'center';
+  } else if (pricesToShow.length >= 2) {
+    containerStyle.gridTemplateColumns = 'repeat(2, 1fr)';
   }
 
   const priceItemStyle = {
@@ -79,7 +81,7 @@ const PriceDisplay = ({ prices, showBackground = true, variant = 'trolley' }) =>
       {pricesToShow.map(priceData => (
         <div key={priceData.company} style={priceItemStyle}>
           <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} style={imageStyle} />
-          <span style={{ color: priceData.is_lowest ? 'var(--success)' : 'var(--text)', fontSize: fontSize, fontFamily: 'Arial, sans-serif' }}>
+          <span style={{ color: priceData.is_lowest ? 'var(--success)' : 'var(--text)', fontSize: fontSize, fontFamily: 'Arial, sans-serif', whiteSpace: 'nowrap' }}>
             ${priceData.price_display}
           </span>
         </div>
