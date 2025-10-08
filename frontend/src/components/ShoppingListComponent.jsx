@@ -57,7 +57,7 @@ const ShoppingListComponent = () => {
 
             return (
               <div key={item.product.id} style={{ position: 'relative', backgroundColor: 'var(--colorbody)', padding: '0.5rem', marginBottom: '0.5rem', borderRadius: '8px', display: 'flex', flexDirection: 'column' }}>
-                <span onClick={() => removeItem(item.product.id)} style={{ position: 'absolute', top: '0.2rem', right: '0.5rem', cursor: 'pointer', color: 'var(--danger)', fontSize: '1.2rem', lineHeight: 1, padding: '0.2rem' }}>&times;</span>
+                <span onClick={() => removeItem(item.product.id)} style={{ position: 'absolute', top: '0.2rem', right: '0.5rem', cursor: 'pointer', color: 'var(--danger)', fontSize: '1.5rem', lineHeight: 1, padding: '0.5rem' }}>&times;</span>
                 {/* First Row */}
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <img src={item.product.image_url || trolleyIcon} onError={handleImageError} alt={item.product.name} style={{ width: '50px', height: '50px', marginRight: '1rem', borderRadius: '4px' }} />

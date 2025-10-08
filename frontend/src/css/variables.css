@@ -44,4 +44,5 @@
   --p2: 36px/48px var(--ff-secondary);
   --subtext: 12px/20px var(--ff-secondary);
   --transition: 0.3s ease-in-out;
+  --danger: hsl(0, 75%, 48%);
 }
