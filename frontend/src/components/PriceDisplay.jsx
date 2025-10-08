@@ -64,12 +64,21 @@ const PriceDisplay = ({ prices, showBackground = true, variant = 'trolley' }) =>
 
   const fontSize = getFontSize(pricesToShow.length);
 
+  const imageSize = variant === 'product-tile' ? '25px' : '20px';
+
+  const imageStyle = {
+    width: imageSize,
+    height: imageSize,
+    objectFit: 'contain',
+    marginRight: '0.25rem',
+  };
+
   return (
     <div style={containerStyle}>
       {pricesToShow.map(priceData => (
         <div key={priceData.company} style={priceItemStyle}>
-          <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} style={{ width: '20px', height: '20px', objectFit: 'contain', marginRight: '0.25rem' }} />
-          <span style={{ color: priceData.is_lowest ? 'var(--success)' : 'var(--text)', fontSize: fontSize }}>
+          <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} style={imageStyle} />
+          <span style={{ color: priceData.is_lowest ? 'var(--success)' : 'var(--text)', fontSize: fontSize, fontFamily: 'Arial, sans-serif' }}>
             ${priceData.price_display}
           </span>
         </div>

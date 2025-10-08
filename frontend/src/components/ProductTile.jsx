@@ -77,7 +77,8 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
             borderRadius: '8px',
             fontSize: '0.8rem',
             border: '1px solid var(--colorp2)',
-            zIndex: 1
+            zIndex: 1,
+            fontFamily: 'Arial, sans-serif'
           }}>
             {product.size}
           </span>
