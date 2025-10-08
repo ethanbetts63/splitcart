@@ -41,30 +41,42 @@ const ShoppingListComponent = () => {
             const substitutes = itemSelections.filter(p => p.id !== item.product.id);
 
             return (
-              <div key={item.product.id} style={{ display: 'flex', alignItems: 'center', backgroundColor: 'var(--colorp3)', padding: '0.3rem', marginBottom: '0.5rem', borderRadius: '8px' }}>
-                <img src={item.product.image_url || trolleyIcon} onError={handleImageError} alt={item.product.name} style={{ width: '50px', height: '50px', marginRight: '1rem', borderRadius: '4px' }} />
-                <div style={{ flexGrow: 1 }}>
-                  <div>
-                    <strong>{item.product.name}</strong>
-                  </div>
-                  {substitutes.length > 0 && (
-                    <div style={{ paddingLeft: '1rem' }}>
-                      <small style={{ color: 'var(--text-muted)' }}>Substitutes:</small>
-                      {substitutes.map(sub => (
-                        <div key={sub.id} style={{ paddingLeft: '1.5rem' }}>
-                          <small>{sub.name}</small>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+              <div key={item.product.id} style={{ backgroundColor: 'var(--colorp3)', padding: '0.5rem', marginBottom: '0.5rem', borderRadius: '8px', display: 'flex', flexDirection: 'column' }}>
+                {/* First Row */}
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <QuantityAdjuster 
-                    quantity={item.quantity} 
-                    onQuantityChange={(newQuantity) => updateItemQuantity(item.product.id, newQuantity)} 
-                  />
-                  <button onClick={() => removeItem(item.product.id)} style={{ background: 'none', border: 'none', color: 'var(--danger)', fontSize: '1.5rem', cursor: 'pointer', marginLeft: '1rem' }}>&times;</button>
+                  <img src={item.product.image_url || trolleyIcon} onError={handleImageError} alt={item.product.name} style={{ width: '50px', height: '50px', marginRight: '1rem', borderRadius: '4px' }} />
+                  <div style={{ flexGrow: 1 }}>
+                    <strong>{item.product.name}</strong>
+                    <div>
+                      <small className="text-muted">{item.product.brand} - {item.product.size}</small>
+                    </div>
+                  </div>
                 </div>
+
+                {/* Second Row */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.5rem' }}>
+                  <div>
+                    <small className="text-muted">Price: $X.XX - $Y.YY</small>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <QuantityAdjuster 
+                      quantity={item.quantity} 
+                      onQuantityChange={(newQuantity) => updateItemQuantity(item.product.id, newQuantity)} 
+                    />
+                    <button onClick={() => removeItem(item.product.id)} style={{ background: 'none', border: 'none', color: 'var(--danger)', fontSize: '1.5rem', cursor: 'pointer', marginLeft: '1rem' }}>&times;</button>
+                  </div>
+                </div>
+
+                {substitutes.length > 0 && (
+                  <div style={{ paddingLeft: '1rem', marginTop: '0.5rem' }}>
+                    <small style={{ color: 'var(--text-muted)' }}>Substitutes:</small>
+                    {substitutes.map(sub => (
+                      <div key={sub.id} style={{ paddingLeft: '1.5rem' }}>
+                        <small>{sub.name}</small>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             );
           })
