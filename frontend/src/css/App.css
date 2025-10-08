@@ -78,3 +78,7 @@
     z-index: -1;
     mask-image: radial-gradient(ellipse at center, black 50%, transparent 95%);
 }
+
+.content-container.search-active {
+  padding-top: 0.5rem;
+}

@@ -92,7 +92,7 @@ function App() {
         onShowTrolley={handleShowTrolley} 
         onShowMap={handleShowMap} 
       />
-      <div className="content-container">
+      <div className={`content-container ${searchTerm ? 'search-active' : ''}`}>
         {!searchTerm && location.pathname === '/' && (
           <>
             <img src={backgroundImage} className="scrolling-background-image" alt="background" />
