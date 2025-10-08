@@ -12,7 +12,7 @@
 }
 
 .product-card-content {
-  padding: 20px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   flex-grow: 1; /* Allows the content to fill the card */
