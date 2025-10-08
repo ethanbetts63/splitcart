@@ -33,7 +33,6 @@ const PriceDisplay = ({ prices, showBackground = true, variant = 'trolley' }) =>
     borderRadius: '8px',
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
-    gap: '0.25rem',
   };
 
   const variantStyles = {
@@ -42,10 +41,12 @@ const PriceDisplay = ({ prices, showBackground = true, variant = 'trolley' }) =>
       marginTop: '0.5rem',
       flex: 1,
       marginRight: '0.5rem',
+      gap: '0.25rem',
     },
     'product-tile': {
-      padding: '0.25rem',
+      padding: '0.1rem',
       marginTop: '0.25rem',
+      gap: '0.1rem',
     },
   };
 
