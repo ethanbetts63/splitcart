@@ -23,5 +23,9 @@
   background-color: var(--danger);
   color: white;
   border-radius: 50%;
-  padding: 0.2em 0.6em;
+  width: 1.5em;
+  height: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
