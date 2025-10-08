@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../css/OffCanvasMenu.css';
 import ShoppingListComponent from './ShoppingListComponent';
 import StoreMap from './StoreMap';
@@ -6,6 +6,22 @@ import cashTrolley from '../assets/cash_trolley.png'; // Import the image
 import mapIcon from '../assets/edit_location.svg';
 
 const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSelectionChange, onNavigateHome }) => {
+  useEffect(() => {
+    if (isOpen) {
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    } else {
+      document.body.style.overflow = 'unset';
+      document.body.style.paddingRight = '0';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+      document.body.style.paddingRight = '0';
+    };
+  }, [isOpen]);
+
   let title = '';
   let body = null;
 
@@ -34,8 +50,7 @@ const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSele
           maskImage: 'radial-gradient(ellipse at center, black 50%, transparent 70%)'
         }} />
       )}
-      <div className="off-canvas-header">
-      </div>
+
       <div className="off-canvas-body">
         {content === 'map' && (
           <img src={mapIcon} alt="background" style={{
