@@ -5,7 +5,7 @@ const ProductGrid = ({ products, onLoadMore, hasMorePages, isLoadingMore, title,
 
   return (
     <div>
-      {title && <h5>{title}</h5>}
+      {title && <h5 style={{ fontSize: '1.2rem', marginTop: '0.1rem', marginBottom: '1rem' }}>{title}</h5>}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(18rem, 1fr))', gap: '1rem' }}>
         {products.length > 0 ? (
           products.map((product) => (
