@@ -20,14 +20,15 @@ const CheckableStoreList = ({ stores, selectedStoreIds, onStoreSelect }) => {
                 const isSelected = selectedStoreIds.has(store.id);
                 const style = {
                     borderRadius: '8px',
-                    backgroundColor: 'var(--bg-light)',
+                    backgroundColor: 'var(--colorbody)',
                     padding: '1rem',
                     marginBottom: '0.5rem',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     boxShadow: isSelected ? '0 0 10px var(--primary)' : 'none',
-                    transition: 'boxShadow 0.2s'
+                    transition: 'boxShadow 0.2s',
+                    border: '1px solid black'
                 };
 
                 return (
@@ -37,13 +38,14 @@ const CheckableStoreList = ({ stores, selectedStoreIds, onStoreSelect }) => {
                             height: '20px',
                             borderRadius: '4px',
                             marginRight: '1rem',
-                            backgroundColor: isSelected ? 'var(--primary)' : 'var(--border-muted)', // Changed to use a background color for unselected
+                            backgroundColor: 'white',
+                            border: '1px solid var(--colorp)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            color: 'white',
+                            color: 'var(--colorp)',
                             flexShrink: 0,
-                            transition: 'background-color 0.2s'
+                            transition: 'all 0.2s'
                         }}>
                             {isSelected && '✔'}
                         </div>

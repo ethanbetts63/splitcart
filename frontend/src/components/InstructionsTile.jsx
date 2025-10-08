@@ -15,7 +15,7 @@ const InstructionsTile = () => {
         <span className="instruction-number">2.</span>
         <div className="instruction-text">
           <span className="instruction-title">Pick substitutes:</span>
-          <span className="instruction-subtext">By leaning a little on your immense human intelligence we can give the AI a lot more to work with. We'll gather all the best options so all you have to do is click a couple boxes! </span>
+          <span className="instruction-subtext"> We'll gather all the best options so you just have to click a couple boxes!</span>
         </div>
       </div>
       <div className="instruction-item">

@@ -18,19 +18,21 @@ const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSele
 
   return (
     <div className={`off-canvas-menu-right ${isOpen ? 'visible' : ''}`}>
-      <img src={cashTrolley} alt="background" style={{
-        position: 'absolute',
-        top: '50%',
-        marginTop: '85px',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '80%',
-        height: 'auto',
-        objectFit: 'contain',
-        zIndex: -1,
-        opacity: 1,
-        maskImage: 'radial-gradient(ellipse at center, black 50%, transparent 70%)'
-      }} />
+      {content === 'trolley' && (
+        <img src={cashTrolley} alt="background" style={{
+          position: 'absolute',
+          top: '50%',
+          marginTop: '85px',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '80%',
+          height: 'auto',
+          objectFit: 'contain',
+          zIndex: -1,
+          opacity: 1,
+          maskImage: 'radial-gradient(ellipse at center, black 50%, transparent 70%)'
+        }} />
+      )}
       <div className="off-canvas-header">
       </div>
       <div className="off-canvas-body">
