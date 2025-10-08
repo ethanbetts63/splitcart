@@ -46,7 +46,7 @@
   background: var(--colorp);
   border: solid 2px transparent;
   border-radius: 8px;
-  padding: 1px 1px;
+  padding: 1px 15px;
   transition: 0.2s ease-in-out;
   text-align: center;
   margin-top: 8px;
@@ -67,7 +67,6 @@
 }
 
 .action-item {
-  flex-basis: 30%;
   display: flex;
   justify-content: center;
 }
