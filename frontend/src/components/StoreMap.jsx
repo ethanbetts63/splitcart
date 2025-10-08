@@ -140,7 +140,7 @@ const StoreMap = ({ onSelectionChange }) => {
             {loading && <div>Loading map...</div>}
             {error && <div>Error: {error}</div>}
 
-            <MapContainer center={[-25.36, 134.21]} zoom={4} style={{ height: '400px', width: '100%' }}>
+            <MapContainer center={[-25.36, 134.21]} zoom={3.9} minZoom={3.9} style={{ height: '400px', width: '100%' }}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

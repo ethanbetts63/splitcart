@@ -28,7 +28,7 @@ const CheckableStoreList = ({ stores, selectedStoreIds, onStoreSelect }) => {
                     alignItems: 'center',
                     boxShadow: isSelected ? '0 0 10px var(--primary)' : 'none',
                     transition: 'boxShadow 0.2s',
-                    border: '1px solid black'
+                    border: '0.3px solid black'
                 };
 
                 return (
