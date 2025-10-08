@@ -11,7 +11,7 @@ const ShoppingListComponent = () => {
   };
 
   return (
-    <div style={{ backgroundColor: 'var(--bg-dark)', padding: '1rem', borderRadius: '8px' }}>
+    <>
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
         <div style={{ position: 'relative', display: 'inline-block' }}>
           <img src={trolleyIcon} alt="Trolley" style={{ width: '60px', height: '60px' }} />
@@ -33,14 +33,14 @@ const ShoppingListComponent = () => {
       </div>
       <div>
         {items.length === 0 ? (
-          <div style={{ backgroundColor: 'var(--bg-light)', padding: '1rem', borderRadius: '8px' }}>Your list is empty</div>
+          <div style={{ backgroundColor: 'var(--colorp3)', padding: '1rem', borderRadius: '8px' }}>Your list is empty</div>
         ) : (
           items.map(item => {
             const itemSelections = selections[item.product.id] || [];
             const substitutes = itemSelections.filter(p => p.id !== item.product.id);
 
             return (
-              <div key={item.product.id} style={{ display: 'flex', alignItems: 'center', backgroundColor: 'var(--bg-light)', padding: '1rem', marginBottom: '0.5rem', borderRadius: '8px' }}>
+              <div key={item.product.id} style={{ display: 'flex', alignItems: 'center', backgroundColor: 'var(--info)', padding: '1rem', marginBottom: '0.5rem', borderRadius: '8px' }}>
                 <img src={item.product.image_url || trolleyIcon} onError={handleImageError} alt={item.product.name} style={{ width: '50px', height: '50px', marginRight: '1rem', borderRadius: '4px' }} />
                 <div>
                   <div>
@@ -62,7 +62,7 @@ const ShoppingListComponent = () => {
           })
         )}
       </div>
-    </div>
+    </>
   );
 };
 
