@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import '../css/StoreMap.css';
 import L from 'leaflet';
 import axios from 'axios';
 
@@ -125,7 +126,7 @@ const StoreMap = ({ onSelectionChange }) => {
                 Check and uncheck specific stores below the map. 
                 The more stores you select, the more saving potential you allow.
             </p>
-            <div style={{ marginBottom: '1rem' }}>
+            <div style={{ backgroundColor: 'white', color: 'black', padding: '1rem', borderRadius: '8px', border: '0.3px solid var(--colorp2)', marginBottom: '1rem' }}>
                 <label>Search Radius: {radius} km</label>
                 <input 
                     type="range" 
@@ -133,7 +134,7 @@ const StoreMap = ({ onSelectionChange }) => {
                     max="100" 
                     value={radius} 
                     onChange={(e) => setRadius(e.target.value)} 
-                    style={{ width: '100%' }}
+                    className="radius-slider"
                 />
             </div>
 

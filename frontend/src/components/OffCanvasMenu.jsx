@@ -36,17 +36,15 @@ const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSele
       )}
       {content === 'map' && (
         <img src={mapIcon} alt="background" style={{
-          position: 'absolute',
-          top: '50%',
-          marginTop: '85px',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '80%',
+          display: 'block',
+          marginTop: '10px', 
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          marginBottom: '-45px',
+          width: '100px',
           height: 'auto',
           objectFit: 'contain',
-          zIndex: -1,
           opacity: 1,
-          maskImage: 'radial-gradient(ellipse at center, black 50%, transparent 70%)'
         }} />
       )}
       <div className="off-canvas-header">

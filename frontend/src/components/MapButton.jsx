@@ -1,4 +1,3 @@
-import React from 'react';
 import mapIcon from '../assets/edit_location.svg';
 import '../css/MapButton.css';
 
