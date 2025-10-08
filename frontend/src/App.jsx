@@ -9,7 +9,7 @@ import LocationSetupModal from './components/LocationSetupModal';
 import SubstitutionPage from './pages/SubstitutionPage';
 import ProductListPage from './pages/ProductListPage';
 import FinalCartPage from './pages/FinalCartPage';
-import Background from './components/Background';
+
 import InstructionsTile from './components/InstructionsTile';
 import SplitCartButton from './components/SplitCartButton';
 import Backdrop from './components/Backdrop';
@@ -83,7 +83,7 @@ function App() {
 
   return (
     <div style={{ minHeight: '100vh' }}>
-      <Background />
+
       <Navbar 
         searchTerm={searchTerm} 
         setSearchTerm={setSearchTerm} 
@@ -96,7 +96,7 @@ function App() {
           {!searchTerm && (
             <>
               <div className="hero-section">
-                <h2 className="subtitle">Shop with information, not imagination.</h2>
+                <h2 className="subtitle">Supermarkets have algorithms. Now so do you.</h2>
                 <p className="subtext">The math behind your grocery run — done by AI, not guesswork.</p>
               </div>
               <InstructionsTile />

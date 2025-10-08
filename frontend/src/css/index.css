@@ -24,7 +24,8 @@ a:hover {
 
 body {
   margin: 0;
-  background-color: var(--colorbody);
+  background: linear-gradient(to bottom, var(--colorbody) 0%, var(--color-fade-end) 100%);
+  background-attachment: fixed;
 }
 
 h1 {

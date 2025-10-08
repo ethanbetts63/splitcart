@@ -60,4 +60,5 @@
   --success: hsl(125, 74%, 45%);
   --info: hsl(125, 80%, 80%);
   --glow: hsl(182, 100%, 75%);
+  --color-fade-end: hsl(68,42%,89%);
 }
