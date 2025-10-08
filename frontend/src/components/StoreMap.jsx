@@ -178,12 +178,13 @@ const StoreMap = ({ onSelectionChange }) => {
               </div>
             </div>
 
-            <div style={{ marginTop: '1rem' }}>
-                <h5 style={{ marginBottom: '0.5rem', fontFamily: 'Vollkorn', fontStyle: 'italic', color: 'var(--primary)', fontSize: '1.5rem' }}>Selected Stores</h5>
-                <p style={{ color: 'var(--text-muted)', marginBottom: '1rem', fontFamily: 'Vollkorn' }}>The stores selected below will be used for the price comparison. Uncheck any stores you wish to exclude.</p>
-                <div style={{ backgroundColor: 'var(--colorp3)', padding: '0.5rem', borderRadius: '8px', fontSize: '1.3rem', marginBottom: '1rem' }}>
-                    Double click anywhere in the map to select stores
-                </div>
+            <div style={{ marginTop: '-1rem' }}>
+                <h5 style={{ marginBottom: '0.5rem', fontFamily: 'Vollkorn', fontStyle: 'italic', color: 'var(--primary)', fontSize: '1.5rem' }}>Selected Stores ↓</h5>
+                {stores.length === 0 && (
+                    <div style={{ backgroundColor: 'var(--colorp3)', padding: '0.5rem', borderRadius: '8px', fontSize: '1.3rem', marginBottom: '1rem' }}>
+                        Double click anywhere in the map to select stores
+                    </div>
+                )}
                 <CheckableStoreList 
                     stores={stores} 
                     selectedStoreIds={selectedStoreIds} 
