@@ -58,7 +58,7 @@ const ShoppingListComponent = () => {
             const substitutes = itemSelections.filter(p => p.id !== item.product.id);
 
             return (
-              <div key={item.product.id} style={{ position: 'relative', backgroundColor: 'var(--colorbody)', padding: '0.5rem', marginBottom: '0.5rem', borderRadius: '8px', display: 'flex', flexDirection: 'column' }}>
+              <div key={item.product.id} style={{ position: 'relative', backgroundColor: 'var(--colorbody)', padding: '0.5rem', marginBottom: '0.5rem', borderRadius: '8px', display: 'flex', flexDirection: 'column', border: '0.1px solid black' }}>
                 <span onClick={() => removeItem(item.product.id)} style={{ position: 'absolute', top: '0.2rem', right: '0.5rem', cursor: 'pointer', color: 'var(--danger)', fontSize: '1.5rem', lineHeight: 1, padding: '0.5rem' }}>&times;</span>
                 {/* First Row */}
                 <div style={{ display: 'flex', alignItems: 'center' }}>

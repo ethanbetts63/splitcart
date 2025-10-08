@@ -1,5 +1,5 @@
 .product-card {
-  margin-top: 20px;
+  margin-top: 5px;
   width: 18rem;
   min-height: 32rem;
   display: flex;
@@ -8,6 +8,7 @@
   border-radius: 8px;
   overflow: hidden;
   height: 100%; /* To make all cards the same height in a grid */
+  border: 0.1px solid black;
 }
 
 .product-card-content {
