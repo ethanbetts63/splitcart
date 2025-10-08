@@ -12,7 +12,7 @@ import FinalCartPage from './pages/FinalCartPage';
 
 import InstructionsTile from './components/InstructionsTile';
 import BottomInfoCard from './components/BottomInfoCard';
-import SplitCartButton from './components/SplitCartButton';
+import NextButton from './components/NextButton';
 import Backdrop from './components/Backdrop';
 import { useShoppingList } from './context/ShoppingListContext';
 import './css/App.css';
@@ -146,7 +146,7 @@ function App() {
 
       {items.length > 0 && location.pathname !== '/split-cart' && location.pathname !== '/final-cart' && (
         <div style={{ position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 1040 }}>
-          <SplitCartButton />
+          <NextButton />
         </div>
       )}
     </div>

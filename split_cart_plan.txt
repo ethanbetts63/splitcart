@@ -41,7 +41,7 @@ To allow users to review products in their shopping list one by one, offering th
 
 ## Frontend Components:
 
-*   **`SplitCartButton.jsx`:** A button component to initiate the substitution workflow.
+*   **`NextButton.jsx`:** A button component to initiate the substitution workflow.
 *   **`SubstitutionPage.jsx`:** The main page component that orchestrates the product-by-product review process.
 *   **`SubstitutionItem.jsx`:** A component responsible for displaying one original product and its associated substitute options, along with the selection mechanism.
 *   **`SelectableProductTile.jsx`:** A modified version of the existing `ProductTile` component that includes a checkbox or similar UI element for selection.

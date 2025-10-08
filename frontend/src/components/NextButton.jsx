@@ -26,7 +26,7 @@ const Next = () => {
 
   return (
     <button 
-      className="split-cart-button"
+      className="dashing-fill"
       onClick={handleClick}
     >
       Next!
@@ -34,4 +34,4 @@ const Next = () => {
   );
 };
 
-export default SplitCartButton;
+export default Next;

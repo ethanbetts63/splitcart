@@ -1,15 +1,28 @@
-.split-cart-button {
-  background-color: var(--colorp);
-  color: white;
-  padding: 0.75rem 1.5rem;
-  font-size: 1.25rem;
-  border: 1px solid black;
-  font-family: var(--ff-primary);
-  transition: all 0.3s ease;
-  cursor: pointer;
+.dashing-fill{
+  color: var(--colorbody);
+  background: linear-gradient(
+    270deg,
+    var(--colora),
+    var(--colora2),
+    var(--colora),
+    var(--colora2)
+  );
+  background-size: 300% 300%;
+  animation: bg 10s ease-in-out infinite;
+} 
+
+@keyframes bg {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-.split-cart-button:hover {
-  background-color: hsl(206, 65%, 65%);
-  border-color: black;
+.dashing-fill:hover {
+  animation: bg 2s ease-in-out infinite;
 }
