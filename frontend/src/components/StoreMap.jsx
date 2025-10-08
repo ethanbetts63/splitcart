@@ -140,33 +140,49 @@ const StoreMap = ({ onSelectionChange }) => {
             {loading && <div>Loading map...</div>}
             {error && <div>Error: {error}</div>}
 
-            <MapContainer center={[-25.36, 134.21]} zoom={3.9} minZoom={3.9} style={{ height: '400px', width: '100%' }}>
-                <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                />
-                <MapClickHandler />
-                {userLocation && <Marker position={userLocation} />} 
-                {stores.map(store => (
-                    <Marker 
-                        key={store.id} 
-                        position={[store.latitude, store.longitude]}
-                        icon={getStoreIcon(store.company_name, selectedStoreIds.has(store.id))}
-                        eventHandlers={{
-                            click: () => handleStoreSelect(store.id),
-                        }}
-                    >
-                        <Popup>
-                            <b>{store.store_name}</b><br />
-                            {store.company_name}
-                        </Popup>
-                    </Marker>
-                ))}
-            </MapContainer>
+            <div style={{ position: 'relative' }}>
+              <MapContainer center={[-25.36, 134.21]} zoom={3.9} minZoom={3.9} style={{ height: '400px', width: '100%' }}>
+                  <TileLayer
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                  <MapClickHandler />
+                  {userLocation && <Marker position={userLocation} />} 
+                  {stores.map(store => (
+                      <Marker 
+                          key={store.id} 
+                          position={[store.latitude, store.longitude]}
+                          icon={getStoreIcon(store.company_name, selectedStoreIds.has(store.id))}
+                          eventHandlers={{
+                              click: () => handleStoreSelect(store.id),
+                          }}
+                      >
+                          <Popup>
+                              <b>{store.store_name}</b><br />
+                              {store.company_name}
+                          </Popup>
+                      </Marker>
+                  ))}
+              </MapContainer>
+              <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
+                <div style={{ backgroundColor: 'white', color: 'black', padding: '0.2rem 0.4rem', borderRadius: '8px', fontSize: '0.8rem', border: '1px solid var(--colorp2)' }}>
+                  click and drag to move
+                </div>
+                <div style={{ backgroundColor: 'white', color: 'black', padding: '0.2rem 0.4rem', borderRadius: '8px', fontSize: '0.8rem', border: '1px solid var(--colorp2)' }}>
+                  scroll or +/- to zoom
+                </div>
+                <div style={{ backgroundColor: 'white', color: 'black', padding: '0.2rem 0.4rem', borderRadius: '8px', fontSize: '0.8rem', border: '1px solid var(--colorp2)' }}>
+                  double click to select area
+                </div>
+              </div>
+            </div>
 
             <div style={{ marginTop: '2rem' }}>
                 <h5 style={{ marginBottom: '0.5rem', fontFamily: 'Vollkorn', fontStyle: 'italic', color: 'var(--primary)', fontSize: '1.5rem' }}>Selected Stores</h5>
                 <p style={{ color: 'var(--text-muted)', marginBottom: '1rem', fontFamily: 'Vollkorn' }}>The stores selected below will be used for the price comparison. Uncheck any stores you wish to exclude.</p>
+                <div style={{ backgroundColor: 'var(--colorp3)', padding: '0.5rem', borderRadius: '8px', fontSize: '1.3rem', marginBottom: '1rem' }}>
+                    Double click anywhere in the map to select stores
+                </div>
                 <CheckableStoreList 
                     stores={stores} 
                     selectedStoreIds={selectedStoreIds} 
