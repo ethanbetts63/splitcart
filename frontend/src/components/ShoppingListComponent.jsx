@@ -1,9 +1,10 @@
 import React from 'react';
 import { useShoppingList } from '../context/ShoppingListContext';
 import trolleyIcon from '../assets/trolley_v3.png';
+import QuantityAdjuster from './QuantityAdjuster';
 
 const ShoppingListComponent = () => {
-  const { items, selections } = useShoppingList();
+  const { items, selections, updateItemQuantity, removeItem } = useShoppingList();
 
   const handleImageError = (e) => {
     e.target.onerror = null; // Prevent infinite loop if placeholder also fails
@@ -33,18 +34,18 @@ const ShoppingListComponent = () => {
       </div>
       <div>
         {items.length === 0 ? (
-          <div style={{ backgroundColor: 'var(--colorp3)', padding: '1rem', borderRadius: '8px' }}>Your list is empty</div>
+          <div style={{ backgroundColor: 'var(--colorp3)', padding: '0.5rem', borderRadius: '8px' }}>Your list is empty</div>
         ) : (
           items.map(item => {
             const itemSelections = selections[item.product.id] || [];
             const substitutes = itemSelections.filter(p => p.id !== item.product.id);
 
             return (
-              <div key={item.product.id} style={{ display: 'flex', alignItems: 'center', backgroundColor: 'var(--info)', padding: '1rem', marginBottom: '0.5rem', borderRadius: '8px' }}>
+              <div key={item.product.id} style={{ display: 'flex', alignItems: 'center', backgroundColor: 'var(--colorp3)', padding: '0.3rem', marginBottom: '0.5rem', borderRadius: '8px' }}>
                 <img src={item.product.image_url || trolleyIcon} onError={handleImageError} alt={item.product.name} style={{ width: '50px', height: '50px', marginRight: '1rem', borderRadius: '4px' }} />
-                <div>
+                <div style={{ flexGrow: 1 }}>
                   <div>
-                    <strong>{item.product.name} (x{item.quantity})</strong>
+                    <strong>{item.product.name}</strong>
                   </div>
                   {substitutes.length > 0 && (
                     <div style={{ paddingLeft: '1rem' }}>
@@ -56,6 +57,13 @@ const ShoppingListComponent = () => {
                       ))}
                     </div>
                   )}
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <QuantityAdjuster 
+                    quantity={item.quantity} 
+                    onQuantityChange={(newQuantity) => updateItemQuantity(item.product.id, newQuantity)} 
+                  />
+                  <button onClick={() => removeItem(item.product.id)} style={{ background: 'none', border: 'none', color: 'var(--danger)', fontSize: '1.5rem', cursor: 'pointer', marginLeft: '1rem' }}>&times;</button>
                 </div>
               </div>
             );

@@ -12,10 +12,6 @@
   text-align: center; /* Ensure text is centered if container is wider */
 }
 
-.logo-button-text:hover {
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
 .logo-domain {
   font-weight: 300;
   font-style: italic;

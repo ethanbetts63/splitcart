@@ -1,0 +1,22 @@
+.quantity-adjuster {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 0 0.1rem;
+  border-radius: 8px;
+}
+
+.quantity-btn {
+  padding: 0.1rem 0.5rem;
+  background-color: var(--colorp2);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.quantity-display {
+  padding:  0.2rem;
+  font-size: 1.6rem;
+  color: var(--colorp);
+}
