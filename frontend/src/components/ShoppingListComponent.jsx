@@ -3,6 +3,8 @@ import { useShoppingList } from '../context/ShoppingListContext';
 import trolleyIcon from '../assets/trolley_v3.png';
 import QuantityAdjuster from './QuantityAdjuster';
 
+import PriceDisplay from './PriceDisplay';
+
 import { Button } from 'react-bootstrap';
 
 // Logos
@@ -74,16 +76,7 @@ const ShoppingListComponent = () => {
 
                 {/* Second Row */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.5rem' }}>
-                  <div>
-                    {(item.product.prices || []).map(priceData => (
-                      <div key={priceData.company} style={{ display: 'flex', alignItems: 'center' }}>
-                        <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} style={{ height: '20px', marginRight: '0.25rem' }} />
-                        <span style={{ color: priceData.is_lowest ? 'var(--success)' : 'var(--text)' }}>
-                          ${priceData.price_display}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                  <PriceDisplay prices={item.product.prices} />
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <QuantityAdjuster 
                       quantity={item.quantity} 
