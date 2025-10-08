@@ -1,5 +1,7 @@
-.dashing-fill{
-  color: var(--colorbody);
+.dashing-fill {
+  position: relative;
+  padding: 0; /* Remove padding from the button */
+  border: none;
   background: linear-gradient(
     270deg,
     var(--colora),
@@ -9,7 +11,18 @@
   );
   background-size: 300% 300%;
   animation: bg 10s ease-in-out infinite;
-} 
+  border-radius: 8px; /* Add border-radius to the container */
+}
+
+.dashing-fill-text {
+  display: block;
+  background-color: var(--colorp);
+  color: white; /* Text color on the top layer */
+  padding: 0.8rem 1.5rem;
+  font-size: 1.3rem;
+  margin: 5px; /* This creates the border effect */
+  border-radius: 6px; /* Slightly smaller border-radius */
+}
 
 @keyframes bg {
   0% {

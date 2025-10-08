@@ -145,7 +145,7 @@ function App() {
       />
 
       {items.length > 0 && location.pathname !== '/split-cart' && location.pathname !== '/final-cart' && (
-        <div style={{ position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 1040 }}>
+        <div style={{ position: 'fixed', bottom: '3rem', right: '3rem', zIndex: 1040 }}>
           <NextButton />
         </div>
       )}

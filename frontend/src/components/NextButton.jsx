@@ -29,7 +29,7 @@ const Next = () => {
       className="dashing-fill"
       onClick={handleClick}
     >
-      Next!
+      <span className="dashing-fill-text">Next!</span>
     </button>
   );
 };
