@@ -4,7 +4,7 @@
   min-height: 32rem;
   display: flex;
   flex-direction: column;
-  background: var(--colorbody);
+  background: var(--product-tile-bg);
   border-radius: 8px;
   overflow: hidden;
   height: 100%; /* To make all cards the same height in a grid */
