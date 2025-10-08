@@ -139,7 +139,7 @@ const StoreMap = ({ onSelectionChange }) => {
             </div>
 
             {loading && <div>Loading map...</div>}
-            {error && <div>Error: {error}</div>}
+
 
             <div style={{ position: 'relative', border: '0.3px solid black', borderRadius: '8px', overflow: 'hidden' }}>
               <MapContainer center={[-25.36, 134.21]} zoom={3.9} minZoom={3.9} style={{ height: '400px', width: '100%' }}>
@@ -178,7 +178,7 @@ const StoreMap = ({ onSelectionChange }) => {
               </div>
             </div>
 
-            <div style={{ marginTop: '2rem' }}>
+            <div style={{ marginTop: '1rem' }}>
                 <h5 style={{ marginBottom: '0.5rem', fontFamily: 'Vollkorn', fontStyle: 'italic', color: 'var(--primary)', fontSize: '1.5rem' }}>Selected Stores</h5>
                 <p style={{ color: 'var(--text-muted)', marginBottom: '1rem', fontFamily: 'Vollkorn' }}>The stores selected below will be used for the price comparison. Uncheck any stores you wish to exclude.</p>
                 <div style={{ backgroundColor: 'var(--colorp3)', padding: '0.5rem', borderRadius: '8px', fontSize: '1.3rem', marginBottom: '1rem' }}>
