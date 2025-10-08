@@ -9,7 +9,7 @@ const LogoButton = ({ onClick, fontSize }) => {
   return (
     <div onClick={onClick} className="logo-button-container">
       <h1 className="logo-button-text" style={style}>
-        SplitCart<span className="logo-domain">.com.au</span>
+        SplitCart
       </h1>
     </div>
   );

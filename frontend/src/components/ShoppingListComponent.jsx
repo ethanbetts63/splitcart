@@ -5,6 +5,19 @@ import QuantityAdjuster from './QuantityAdjuster';
 
 import { Button } from 'react-bootstrap';
 
+// Logos
+import aldiLogo from '../assets/ALDI_logo.svg';
+import colesLogo from '../assets/coles_logo.webp';
+import igaLogo from '../assets/iga_logo.webp';
+import woolworthsLogo from '../assets/woolworths_logo.webp';
+
+const companyLogos = {
+    'Aldi': aldiLogo,
+    'Coles': colesLogo,
+    'Iga': igaLogo,
+    'Woolworths': woolworthsLogo,
+};
+
 const ShoppingListComponent = () => {
   const { items, selections, updateItemQuantity, removeItem } = useShoppingList();
 
@@ -43,7 +56,8 @@ const ShoppingListComponent = () => {
             const substitutes = itemSelections.filter(p => p.id !== item.product.id);
 
             return (
-              <div key={item.product.id} style={{ backgroundColor: 'var(--colorbody)', padding: '0.5rem', marginBottom: '0.5rem', borderRadius: '8px', display: 'flex', flexDirection: 'column' }}>
+              <div key={item.product.id} style={{ position: 'relative', backgroundColor: 'var(--colorbody)', padding: '0.5rem', marginBottom: '0.5rem', borderRadius: '8px', display: 'flex', flexDirection: 'column' }}>
+                <span onClick={() => removeItem(item.product.id)} style={{ position: 'absolute', top: '0.2rem', right: '0.5rem', cursor: 'pointer', color: 'var(--danger)', fontSize: '1.2rem', lineHeight: 1 }}>&times;</span>
                 {/* First Row */}
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <img src={item.product.image_url || trolleyIcon} onError={handleImageError} alt={item.product.name} style={{ width: '50px', height: '50px', marginRight: '1rem', borderRadius: '4px' }} />
@@ -51,7 +65,7 @@ const ShoppingListComponent = () => {
                     <strong>{item.product.name}</strong>
                     <div>
                       <small className="text-muted">{item.product.brand}</small>
-                      <span style={{ backgroundColor: 'var(--colorp2)', color: 'white', padding: '0.2rem 0.4rem', borderRadius: '8px', fontSize: '0.8rem', marginLeft: '0.5rem' }}>
+                      <span style={{ backgroundColor: 'white', color: 'black', padding: '0.2rem 0.4rem', borderRadius: '8px', fontSize: '0.8rem', marginLeft: '0.5rem', border: '1px solid var(--colorp2)' }}>
                         {item.product.size}
                       </span>
                     </div>
@@ -61,14 +75,20 @@ const ShoppingListComponent = () => {
                 {/* Second Row */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.5rem' }}>
                   <div>
-                    <small className="text-muted">Price: $X.XX - $Y.YY</small>
+                    {(item.product.prices || []).map(priceData => (
+                      <div key={priceData.company} style={{ display: 'flex', alignItems: 'center' }}>
+                        <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} style={{ height: '20px', marginRight: '0.25rem' }} />
+                        <span style={{ color: priceData.is_lowest ? 'var(--success)' : 'var(--text)' }}>
+                          ${priceData.price_display}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <QuantityAdjuster 
                       quantity={item.quantity} 
                       onQuantityChange={(newQuantity) => updateItemQuantity(item.product.id, newQuantity)} 
                     />
-                    <Button variant="danger" size="sm" onClick={() => removeItem(item.product.id)} style={{ padding: '0.1rem 0.5rem', fontSize: '1rem' }}>Remove</Button>
                   </div>
                 </div>
 
