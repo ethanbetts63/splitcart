@@ -141,7 +141,7 @@ const StoreMap = ({ onSelectionChange }) => {
             {loading && <div>Loading map...</div>}
             {error && <div>Error: {error}</div>}
 
-            <div style={{ position: 'relative', border: '0.3px solid black' }}>
+            <div style={{ position: 'relative', border: '1px solid black', borderRadius: '8px', overflow: 'hidden' }}>
               <MapContainer center={[-25.36, 134.21]} zoom={3.9} minZoom={3.9} style={{ height: '400px', width: '100%' }}>
                   <TileLayer
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
