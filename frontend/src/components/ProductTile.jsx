@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useShoppingList } from '../context/ShoppingListContext';
 import '../css/ProductTile.css';
 import placeholderImage from '../assets/trolley_v3.png';
+import QuantityAdjuster from './QuantityAdjuster';
 
 // Logos - moved from ProductCardContent
 import aldiLogo from '../assets/ALDI_logo.svg';
@@ -83,11 +84,10 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
         </div>
 
         <div className="product-card-actions">
-          <div className="quantity-control">
-            <button onClick={() => handleQuantityChange(quantity - 1)} className="btn quantity-btn">-</button>
-            <span className="quantity-display">{quantity}</span>
-            <button onClick={() => handleQuantityChange(quantity + 1)} className="btn quantity-btn">+</button>
-          </div>
+          <QuantityAdjuster 
+            quantity={quantity} 
+            onQuantityChange={handleQuantityChange} 
+          />
           {existingItem ? (
             <button onClick={handleRemove} className="btn remove-btn">Remove</button>
           ) : (
