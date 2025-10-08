@@ -89,7 +89,7 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
           {product.brand_name && `${product.brand_name} `}
         </p>
         
-        <PriceDisplay prices={prices} />
+        <PriceDisplay prices={prices} variant="product-tile" />
 
         <div className="product-card-actions">
           <QuantityAdjuster 

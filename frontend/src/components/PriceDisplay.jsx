@@ -13,26 +13,43 @@ const companyLogos = {
     'Woolworths': woolworthsLogo,
 };
 
-const PriceDisplay = ({ prices, showBackground = true }) => {
+const PriceDisplay = ({ prices, showBackground = true, variant = 'trolley' }) => {
   const pricesToShow = prices || [];
 
   const getFontSize = (numPrices) => {
+    if (variant === 'product-tile') {
+      if (numPrices === 1) return '1.2rem';
+      if (numPrices === 2) return '1rem';
+      return '0.9rem';
+    }
+    // trolley styles (original)
     if (numPrices === 1) return '1.5rem';
     if (numPrices === 2) return '1.2rem';
     return '1rem';
   };
 
-  const containerStyle = {
+  const baseContainerStyle = {
     backgroundColor: showBackground ? 'white' : 'transparent',
-    padding: '0.5rem',
     borderRadius: '8px',
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
-    gap: '0.5rem',
-    marginTop: '0.5rem',
-    flex: 1,
-    marginRight: '0.5rem',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
+    gap: '0.25rem',
   };
+
+  const variantStyles = {
+    trolley: {
+      padding: '0.5rem',
+      marginTop: '0.5rem',
+      flex: 1,
+      marginRight: '0.5rem',
+    },
+    'product-tile': {
+      padding: '0.25rem',
+      marginTop: '0.25rem',
+    },
+  };
+
+  const containerStyle = { ...baseContainerStyle, ...variantStyles[variant] };
 
   const priceItemStyle = {
     display: 'flex',

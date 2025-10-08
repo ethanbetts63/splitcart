@@ -76,7 +76,7 @@ const ShoppingListComponent = () => {
 
                 {/* Second Row */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.5rem' }}>
-                  <PriceDisplay prices={item.product.prices} />
+                  <PriceDisplay prices={item.product.prices} variant="trolley" />
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <QuantityAdjuster 
                       quantity={item.quantity} 
