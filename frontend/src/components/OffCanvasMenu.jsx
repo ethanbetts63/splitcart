@@ -58,7 +58,7 @@ const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSele
             marginLeft: 'auto',
             marginRight: 'auto',
             marginBottom: '0.5rem',
-            marginTop: '-1rem',
+            marginTop: '-0rem',
             width: '50px',
             height: 'auto',
             objectFit: 'contain',
