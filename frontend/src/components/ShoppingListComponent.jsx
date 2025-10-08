@@ -51,7 +51,7 @@ const ShoppingListComponent = () => {
       </div>
       <div>
         {items.length === 0 ? (
-          <div style={{ backgroundColor: 'var(--colorp3)', padding: '0.5rem', borderRadius: '8px' }}>Your list is empty</div>
+          <div style={{ backgroundColor: 'var(--colorp3)', padding: '0.5rem', borderRadius: '8px', fontSize: '1.3rem' }}>Your list is empty.</div>
         ) : (
           items.map(item => {
             const itemSelections = selections[item.product.id] || [];
