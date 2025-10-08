@@ -51,6 +51,11 @@ const PriceDisplay = ({ prices, showBackground = true, variant = 'trolley' }) =>
 
   const containerStyle = { ...baseContainerStyle, ...variantStyles[variant] };
 
+  if (pricesToShow.length === 1) {
+    containerStyle.gridTemplateColumns = '1fr';
+    containerStyle.justifyItems = 'center';
+  }
+
   const priceItemStyle = {
     display: 'flex',
     alignItems: 'center',
