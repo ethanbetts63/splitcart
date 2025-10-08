@@ -42,7 +42,7 @@
   display: inline-block;
   text-decoration: none;
   font: var(--p);
-  color: ehite;
+  color: white;
   background: var(--colorp);
   border: solid 2px transparent;
   border-radius: 8px;
@@ -62,7 +62,7 @@
 
 .actions-container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-evenly;
   align-items: center;
 }
 
