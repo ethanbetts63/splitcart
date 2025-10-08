@@ -3,6 +3,8 @@ import { useShoppingList } from '../context/ShoppingListContext';
 import trolleyIcon from '../assets/trolley_v3.png';
 import QuantityAdjuster from './QuantityAdjuster';
 
+import { Button } from 'react-bootstrap';
+
 const ShoppingListComponent = () => {
   const { items, selections, updateItemQuantity, removeItem } = useShoppingList();
 
@@ -41,14 +43,17 @@ const ShoppingListComponent = () => {
             const substitutes = itemSelections.filter(p => p.id !== item.product.id);
 
             return (
-              <div key={item.product.id} style={{ backgroundColor: 'var(--colorp3)', padding: '0.5rem', marginBottom: '0.5rem', borderRadius: '8px', display: 'flex', flexDirection: 'column' }}>
+              <div key={item.product.id} style={{ backgroundColor: 'var(--colorbody)', padding: '0.5rem', marginBottom: '0.5rem', borderRadius: '8px', display: 'flex', flexDirection: 'column' }}>
                 {/* First Row */}
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <img src={item.product.image_url || trolleyIcon} onError={handleImageError} alt={item.product.name} style={{ width: '50px', height: '50px', marginRight: '1rem', borderRadius: '4px' }} />
                   <div style={{ flexGrow: 1 }}>
                     <strong>{item.product.name}</strong>
                     <div>
-                      <small className="text-muted">{item.product.brand} - {item.product.size}</small>
+                      <small className="text-muted">{item.product.brand}</small>
+                      <span style={{ backgroundColor: 'var(--colorp2)', color: 'white', padding: '0.2rem 0.4rem', borderRadius: '8px', fontSize: '0.8rem', marginLeft: '0.5rem' }}>
+                        {item.product.size}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -58,12 +63,12 @@ const ShoppingListComponent = () => {
                   <div>
                     <small className="text-muted">Price: $X.XX - $Y.YY</small>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <div className="d-flex align-items-center">
                     <QuantityAdjuster 
                       quantity={item.quantity} 
                       onQuantityChange={(newQuantity) => updateItemQuantity(item.product.id, newQuantity)} 
                     />
-                    <button onClick={() => removeItem(item.product.id)} style={{ background: 'none', border: 'none', color: 'var(--danger)', fontSize: '1.5rem', cursor: 'pointer', marginLeft: '1rem' }}>&times;</button>
+                    <Button variant="danger" size="sm" onClick={() => removeItem(item.product.id)} style={{ marginLeft: '0.5rem', padding: '0.1rem 0.5rem', fontSize: '1rem' }}>Remove</Button>
                   </div>
                 </div>
 
