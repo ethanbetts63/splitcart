@@ -93,8 +93,12 @@ function App() {
         onShowMap={handleShowMap} 
       />
       <div className="content-container">
-        <img src={backgroundImage} className="scrolling-background-image" alt="background" />
-        <img src={bottomImage} className="bottom-left-image" alt="bottom background" />
+        {!searchTerm && location.pathname === '/' && (
+          <>
+            <img src={backgroundImage} className="scrolling-background-image" alt="background" />
+            <img src={bottomImage} className="bottom-left-image" alt="bottom background" />
+          </>
+        )}
         <main>
           {!searchTerm && (
             <>
