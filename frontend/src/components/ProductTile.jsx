@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useShoppingList } from '../context/ShoppingListContext';
 import '../css/ProductTile.css';
-import placeholderImage from '../assets/shopping_cart.svg';
+import logoSymbol from '../assets/splicart_symbol_v6.png';
 import QuantityAdjuster from './QuantityAdjuster';
 import PriceDisplay from './PriceDisplay';
 
@@ -37,7 +37,7 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
 
   const handleImageError = (e) => {
     e.target.onerror = null;
-    e.target.src = placeholderImage;
+    e.target.src = logoSymbol;
   };
 
   const handleAdd = () => {
@@ -62,7 +62,7 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
     <div className="product-card">
       <div style={{ position: 'relative' }}>
         <img
-          src={product.image_url || placeholderImage}
+          src={product.image_url || logoSymbol}
           onError={handleImageError}
           alt={product.name}
         />

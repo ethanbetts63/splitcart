@@ -32,9 +32,10 @@ function App() {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const search = params.get('search');
+    const source = params.get('source');
     if (search) {
       setSearchTerm(search);
-    } else {
+    } else if (source !== 'bargains') {
       setSearchTerm('');
     }
   }, [location.search]);
@@ -109,7 +110,7 @@ function App() {
           </>
         )}
         <main>
-          {!searchTerm && (
+          {!searchTerm && location.pathname === '/' && !location.search.includes('source=bargains') && (
             <>
               <div className="hero-section">
                 <h2 className="subtitle">Supermarkets have algorithms. Now so do you.</h2>
