@@ -124,7 +124,7 @@ const StoreMap = ({ onSelectionChange }) => {
     return (
         <div>
             <p style={{ color: 'var(--text-muted)', marginTop: '0' }}>
-                Double-click on the map to set your location. 
+                Click on the map to set your location. 
                 Check and uncheck specific stores below the map. 
                 The more stores you select, the more saving potential you allow.
             </p>
@@ -176,7 +176,7 @@ const StoreMap = ({ onSelectionChange }) => {
                   scroll or +/- to zoom
                 </div>
                 <div style={{ backgroundColor: 'white', color: 'black', padding: '0.2rem 0.4rem', borderRadius: '8px', fontSize: '0.8rem', border: '0.3px solid var(--colorp2)' }}>
-                  double click to select area
+                  click to select area
                 </div>
               </div>
               {hasSearched && stores.length === 0 && (
@@ -201,7 +201,7 @@ const StoreMap = ({ onSelectionChange }) => {
                 <h5 style={{ marginBottom: '0.5rem', fontFamily: 'Vollkorn', fontStyle: 'italic', color: 'var(--primary)', fontSize: '1.5rem' }}>Selected Stores ↓</h5>
                 {stores.length === 0 && (
                     <div style={{ backgroundColor: 'var(--colorp3)', padding: '0.5rem', borderRadius: '8px', fontSize: '1.3rem', marginBottom: '1rem' }}>
-                        Double click anywhere in the map to select stores
+                        Click anywhere in the map to select stores
                     </div>
                 )}
                 <CheckableStoreList 
