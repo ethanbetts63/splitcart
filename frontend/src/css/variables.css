@@ -32,8 +32,8 @@
   --colorp4: hsl(68,42%,89%);
   --colora: #ffe537;
   --colora2: #537fe7;
-  --colorbody: hsl(25,86%,97%);
-  --product-tile-bg: hsl(25,86%,97%);
+  --colorbody: white;
+  --product-tile-bg: white;
   --colors: #333;
   --button-bg: hsl(68,60%,74%);
   --h1: bold 54px/60px var(--ff-primary);

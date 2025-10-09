@@ -4,10 +4,10 @@
   border: none;
   background: linear-gradient(
     270deg,
-    var(--colora),
-    var(--colora2),
-    var(--colora),
-    var(--colora2)
+    var(--colorp),
+    white,
+    var(--colorp),
+    white
   );
   background-size: 300% 300%;
   animation: bg 10s ease-in-out infinite;
