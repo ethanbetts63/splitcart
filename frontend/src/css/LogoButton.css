@@ -1,6 +1,13 @@
 .logo-button-container {
   cursor: pointer;
   display: inline-block; /* To make it fit the text content */
+  position: relative;
+}
+
+.logo-symbol {
+  display: none; /* Hidden by default */
+  width: 50px; /* Or whatever size is appropriate */
+  height: auto;
 }
 
 .logo-button-text {
@@ -19,7 +26,10 @@
 
 @media (max-width: 768px) {
   .logo-button-text {
-    font-size: 40px;
+    display: none;
+  }
+  .logo-symbol {
+    display: block;
   }
   .logo-rest-of-word,
   .logo-domain {

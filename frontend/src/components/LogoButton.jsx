@@ -1,5 +1,6 @@
 import React from 'react';
 import '../css/LogoButton.css';
+import logoSymbol from '../assets/splicart_symbol_v6.png';
 
 const LogoButton = ({ onClick, fontSize }) => {
   const style = {
@@ -8,8 +9,9 @@ const LogoButton = ({ onClick, fontSize }) => {
 
   return (
     <div onClick={onClick} className="logo-button-container">
+      <img src={logoSymbol} alt="SplitCart logo" className="logo-symbol" />
       <h1 className="logo-button-text" style={style}>
-        S<span className="logo-rest-of-word">plitCart</span><span className="logo-domain">.com.au</span>
+        <span className="logo-s">S</span><span className="logo-rest-of-word">plitCart</span><span className="logo-domain">.com.au</span>
       </h1>
     </div>
   );
