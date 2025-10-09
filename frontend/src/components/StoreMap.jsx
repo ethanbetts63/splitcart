@@ -69,6 +69,7 @@ const StoreMap = ({ onSelectionChange }) => {
     const [userLocation, setUserLocation] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [hasSearched, setHasSearched] = useState(false);
 
     const MapClickHandler = () => {
         useMapEvents({
@@ -100,6 +101,7 @@ const StoreMap = ({ onSelectionChange }) => {
                     setError('Could not fetch store data.');
                 } finally {
                     setLoading(false);
+                    setHasSearched(true);
                 }
             },
         });
@@ -141,6 +143,7 @@ const StoreMap = ({ onSelectionChange }) => {
             {loading && <div>Loading map...</div>}
 
 
+
             <div style={{ position: 'relative', border: '0.3px solid black', borderRadius: '8px', overflow: 'hidden' }}>
               <MapContainer center={[-25.36, 134.21]} zoom={3.9} minZoom={3.9} style={{ height: '400px', width: '100%' }}>
                   <TileLayer
@@ -176,6 +179,22 @@ const StoreMap = ({ onSelectionChange }) => {
                   double click to select area
                 </div>
               </div>
+              {hasSearched && stores.length === 0 && (
+                <div style={{
+                  position: 'absolute',
+                  bottom: '10px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  backgroundColor: 'var(--danger)',
+                  color: 'white',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '8px',
+                  textAlign: 'center',
+                  zIndex: 1000,
+                }}>
+                    No stores found in this area. Please try a different location.
+                </div>
+              )}
             </div>
 
             <div style={{ marginTop: '-1rem' }}>
