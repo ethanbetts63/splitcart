@@ -1,13 +1,14 @@
 .logo-button-container {
   cursor: pointer;
-  display: inline-block; /* To make it fit the text content */
-  position: relative;
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Vertically center items */
 }
 
 .logo-symbol {
-  display: none; /* Hidden by default */
+  display: block; /* Always visible */
   width: 50px; /* Or whatever size is appropriate */
   height: auto;
+  margin-right: 10px; /* Space between symbol and text */
 }
 
 .logo-button-text {
@@ -17,22 +18,15 @@
   margin: 0; /* Reset margin */
   transition: text-shadow 0.3s ease;
   text-align: center; /* Ensure text is centered if container is wider */
+  font-size: 50px; /* Adjust font size as needed */
 }
 
 .logo-domain {
-  font-weight: 300;
-  font-style: italic;
+  display: none; /* Hide the .com.au part */
 }
 
 @media (max-width: 768px) {
-  .logo-button-text {
-    display: none;
-  }
-  .logo-symbol {
-    display: block;
-  }
-  .logo-rest-of-word,
-  .logo-domain {
+  .logo-rest-of-word {
     display: none;
   }
 }
