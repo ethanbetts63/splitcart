@@ -1,6 +1,6 @@
 import React from 'react';
 import '../css/ProductTile.css'; // Reuse the same CSS
-import placeholderImage from '../assets/trolley_v3.png';
+import placeholderImage from '../assets/shopping_cart.svg';
 
 // Logos
 import aldiLogo from '../assets/ALDI_logo.svg';

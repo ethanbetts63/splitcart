@@ -1,5 +1,5 @@
 import React from 'react';
-import placeholderImage from '../assets/trolley_v3.png';
+import logoSymbol from '../assets/splicart_symbol_v6.png';
 
 const SkeletonProductCard = () => {
 
@@ -26,7 +26,7 @@ const SkeletonProductCard = () => {
       <style>{mediaQueryStyles}</style>
       <div className="skeleton-card" style={cardStyle}>
         <img
-          src={placeholderImage}
+          src={logoSymbol}
           style={{
             opacity: 0.3,
             objectFit: 'contain',

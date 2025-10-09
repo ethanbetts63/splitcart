@@ -1,6 +1,6 @@
 import React from 'react';
 import { useShoppingList } from '../context/ShoppingListContext';
-import trolleyIcon from '../assets/trolley_v3.png';
+import trolleyIcon from '../assets/shopping_cart.svg';
 import QuantityAdjuster from './QuantityAdjuster';
 
 import PriceDisplay from './PriceDisplay';

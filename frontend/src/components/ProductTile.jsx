@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useShoppingList } from '../context/ShoppingListContext';
 import '../css/ProductTile.css';
-import placeholderImage from '../assets/trolley_v3.png';
+import placeholderImage from '../assets/shopping_cart.svg';
 import QuantityAdjuster from './QuantityAdjuster';
 import PriceDisplay from './PriceDisplay';
 

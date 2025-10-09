@@ -1,6 +1,5 @@
-import React from 'react';
 import { useShoppingList } from '../context/ShoppingListContext';
-import splitCartSymbol from '../assets/trolley_v3.png';
+import splitCartSymbol from '../assets/shopping_cart.svg';
 import '../css/TrolleyButton.css';
 
 const TrolleyButton = ({ onClick }) => {
