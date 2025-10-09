@@ -29,6 +29,16 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const search = params.get('search');
+    if (search) {
+      setSearchTerm(search);
+    } else {
+      setSearchTerm('');
+    }
+  }, [location.search]);
+
   const [scrollers, setScrollers] = useState([]);
 
   useEffect(() => {

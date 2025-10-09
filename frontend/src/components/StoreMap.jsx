@@ -5,7 +5,6 @@ import 'leaflet/dist/leaflet.css';
 import '../css/StoreMap.css';
 import L from 'leaflet';
 import axios from 'axios';
-
 import aldiLogo from '../assets/ALDI_logo.svg';
 import colesLogo from '../assets/coles_logo.webp';
 import igaLogo from '../assets/iga_logo.webp';
@@ -148,10 +147,6 @@ const StoreMap = ({ onSelectionChange }) => {
                     className="radius-slider"
                 />
             </div>
-
-
-
-
 
             <div style={{ position: 'relative', border: '0.3px solid black', borderRadius: '8px', overflow: 'hidden' }}>
               <MapContainer center={[-25.36, 134.21]} zoom={3.9} minZoom={3.9} style={{ height: '400px', width: '100%' }}>
