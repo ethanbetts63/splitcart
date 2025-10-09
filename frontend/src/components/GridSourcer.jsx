@@ -32,7 +32,7 @@ const GridSourcer = ({ searchTerm, sourceUrl, nearbyStoreIds }) => {
       if (sourceUrl) {
         url = sourceUrl;
         if (nearbyStoreIds && nearbyStoreIds.length > 0) {
-          params.append('store_ids', nearbyStoreIds.join(','));
+          params.append('store_ids', nearbyStoreIds.map(store => store.id).join(','));
         }
       } else {
         url = '/api/products/';
