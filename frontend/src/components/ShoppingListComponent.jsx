@@ -80,7 +80,10 @@ const ShoppingListComponent = () => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <QuantityAdjuster 
                       quantity={item.quantity} 
-                      onQuantityChange={(newQuantity) => updateItemQuantity(item.product.id, newQuantity)} 
+                      onQuantityChange={(newQuantity) => {
+                        const validatedQuantity = Math.max(1, newQuantity);
+                        updateItemQuantity(item.product.id, validatedQuantity);
+                      }} 
                     />
                   </div>
                 </div>
