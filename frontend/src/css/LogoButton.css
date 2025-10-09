@@ -6,9 +6,10 @@
 
 .logo-symbol {
   display: block; /* Always visible */
-  width: 50px; /* Or whatever size is appropriate */
+  width: 60px; /* Or whatever size is appropriate */
   height: auto;
   margin-right: 10px; /* Space between symbol and text */
+  margin-bottom: 10px;
 }
 
 .logo-button-text {
