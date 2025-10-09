@@ -3,6 +3,7 @@ import './css/variables.css'
 import './css/index.css'
 import App from './App.jsx'
 
+import { ProductCacheProvider } from './context/ProductCacheContext';
 import { ShoppingListProvider } from './context/ShoppingListContext';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -13,9 +14,11 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <ShoppingListProvider>
-          <App />
-        </ShoppingListProvider>
+        <ProductCacheProvider>
+          <ShoppingListProvider>
+            <App />
+          </ShoppingListProvider>
+        </ProductCacheProvider>
       </QueryClientProvider>
     </BrowserRouter>
 )
