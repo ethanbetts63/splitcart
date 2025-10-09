@@ -22,28 +22,80 @@
   font-style: italic;
 }
 
+
+
 :root {
+
   --ff-primary: "Vollkorn", serif;
+
   --ff-secondary: "Baskervville", serif;
 
+
+
   --colorp: hsl(209, 39%, 29%);
+
   --colorp2: hsl(209, 35%, 35%);
+
   --colorp3: hsl(92, 38%, 75%);
+
   --colorp4: hsl(68,42%,89%);
+
   --colora: #ffe537;
+
   --colora2: #537fe7;
+
   --colorbody: white;
+
   --product-tile-bg: white;
+
   --colors: #333;
+
   --button-bg: hsl(68,60%,74%);
+
   --h1: bold 54px/60px var(--ff-primary);
+
   --h2: bold 36px/48px var(--ff-primary);
+
   --h3: bold 24px/36px var(--ff-primary);
+
   --links: 18px/18px var(--ff-secondary);
+
   --p: 18px/30px var(--ff-secondary);
+
   --p1: 24px/30px var(--ff-secondary);
+
   --p2: 36px/48px var(--ff-secondary);
+
   --subtext: 12px/20px var(--ff-secondary);
+
   --transition: 0.3s ease-in-out;
+
   --danger: hsl(0, 75%, 48%);
+
+}
+
+
+
+@media (max-width: 768px) {
+
+  :root {
+
+    --h1: bold 40.5px/45px var(--ff-primary);
+
+    --h2: bold 27px/36px var(--ff-primary);
+
+    --h3: bold 18px/27px var(--ff-primary);
+
+    --links: 13.5px/13.5px var(--ff-secondary);
+
+    --p: 13.5px/22.5px var(--ff-secondary);
+
+    --p1: 18px/22.5px var(--ff-secondary);
+
+    --p2: 27px/36px var(--ff-secondary);
+
+    --subtext: 9px/15px var(--ff-secondary);
+
+  }
+
 }
