@@ -7,6 +7,7 @@ const ProductGrid = ({ products, onLoadMore, hasMorePages, isLoadingMore, title,
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(18rem, 1fr))',
     gap: '1rem',
+    justifyItems: 'center'
   };
 
   const mediaQueryStyles = `
