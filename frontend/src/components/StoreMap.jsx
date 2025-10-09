@@ -73,7 +73,7 @@ const StoreMap = ({ onSelectionChange }) => {
 
     const MapClickHandler = () => {
         useMapEvents({
-            dblclick: async (e) => {
+            click: async (e) => {
                 const { lat, lng } = e.latlng;
                 setUserLocation({ lat, lng });
                 setLoading(true);
@@ -192,7 +192,7 @@ const StoreMap = ({ onSelectionChange }) => {
                   textAlign: 'center',
                   zIndex: 1000,
                 }}>
-                    No stores found in this area. Please try a different location.
+                    No store data in this area
                 </div>
               )}
             </div>
