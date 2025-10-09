@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../css/StoreMap.css';
@@ -71,38 +71,45 @@ const StoreMap = ({ onSelectionChange }) => {
     const [error, setError] = useState(null);
     const [hasSearched, setHasSearched] = useState(false);
 
+    const fetchStores = useCallback(async () => {
+        if (userLocation) {
+            setLoading(true);
+            try {
+                const geoResponse = await axios.get('https://nominatim.openstreetmap.org/reverse', {
+                    params: {
+                        lat: userLocation.lat,
+                        lon: userLocation.lng,
+                        format: 'json',
+                    }
+                });
+                const postcode = geoResponse.data.address.postcode;
+                if (postcode) {
+                    const response = await axios.get('/api/stores/nearby/', {
+                        params: { postcode: postcode, radius: radius }
+                    });
+                    setStores(response.data);
+                    setSelectedStoreIds(new Set(response.data.map(store => store.id)));
+                } else {
+                    setError('Could not determine postcode for the selected location.');
+                }
+            } catch (err) {
+                setError('Could not fetch store data.');
+            } finally {
+                setLoading(false);
+                setHasSearched(true);
+            }
+        }
+    }, [userLocation, radius]);
+
+    useEffect(() => {
+        fetchStores();
+    }, [fetchStores]);
+
     const MapClickHandler = () => {
         useMapEvents({
             click: async (e) => {
                 const { lat, lng } = e.latlng;
                 setUserLocation({ lat, lng });
-                setLoading(true);
-                try {
-                    // Reverse geocode to get postcode
-                    const geoResponse = await axios.get('https://nominatim.openstreetmap.org/reverse', {
-                        params: {
-                            lat: lat,
-                            lon: lng,
-                            format: 'json',
-                        }
-                    });
-                    const postcode = geoResponse.data.address.postcode;
-                    if (postcode) {
-                        // Fetch stores with the new postcode
-                        const response = await axios.get('/api/stores/nearby/', {
-                            params: { postcode: postcode, radius: radius }
-                        });
-                        setStores(response.data);
-                        setSelectedStoreIds(new Set(response.data.map(store => store.id)));
-                    } else {
-                        setError('Could not determine postcode for the selected location.');
-                    }
-                } catch (err) {
-                    setError('Could not fetch store data.');
-                } finally {
-                    setLoading(false);
-                    setHasSearched(true);
-                }
             },
         });
         return null;
