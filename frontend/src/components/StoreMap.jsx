@@ -147,7 +147,7 @@ const StoreMap = ({ onSelectionChange }) => {
                 />
             </div>
 
-            {loading && <div>Loading map...</div>}
+
 
 
 
