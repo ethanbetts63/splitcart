@@ -109,6 +109,8 @@ const StoreMap = ({ onSelectionChange }) => {
         useMapEvents({
             click: async (e) => {
                 const { lat, lng } = e.latlng;
+                setStores([]); // Clear stores immediately
+                setHasSearched(false); // Reset searched state
                 setUserLocation({ lat, lng });
             },
         });
