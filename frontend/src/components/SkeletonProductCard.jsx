@@ -3,7 +3,7 @@ import placeholderImage from '../assets/trolley_v3.png';
 
 const SkeletonProductCard = () => {
   return (
-        <div style={{ border: '1px solid var(--border)', borderRadius: '8px', width: '18rem', minWidth: '18rem', marginRight: '1rem', backgroundColor: '#FFFFFF' }}>
+        <div style={{ border: '1px solid black', borderRadius: '8px', width: '18rem', minWidth: '18rem', marginRight: '1rem', backgroundColor: '#FFFFFF' }}>
       <img
         src={placeholderImage}
         style={{

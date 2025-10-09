@@ -1,7 +1,7 @@
 .product-card {
   margin-top: 5px;
   width: 18rem;
-  min-height: 32rem;
+  min-height: 30rem;
   display: flex;
   flex-direction: column;
   background: white;
