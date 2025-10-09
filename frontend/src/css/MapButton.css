@@ -17,3 +17,10 @@
   height: 70px;
   display: block;
 }
+
+@media (max-width: 768px) {
+  .map-button img {
+    width: 60px;
+    height: 50px;
+  }
+}

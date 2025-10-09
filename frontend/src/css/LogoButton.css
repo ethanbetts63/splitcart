@@ -16,3 +16,13 @@
   font-weight: 300;
   font-style: italic;
 }
+
+@media (max-width: 768px) {
+  .logo-button-text {
+    font-size: 40px;
+  }
+  .logo-rest-of-word,
+  .logo-domain {
+    display: none;
+  }
+}

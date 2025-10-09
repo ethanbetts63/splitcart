@@ -25,3 +25,9 @@
   flex-grow: 1;
   justify-content: center;
 }
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.25rem 0.5rem;
+  }
+}

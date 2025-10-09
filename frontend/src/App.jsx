@@ -105,7 +105,6 @@ function App() {
       <div className={`content-container ${searchTerm ? 'search-active' : ''}`}>
         {!searchTerm && location.pathname === '/' && (
           <>
-            <img src={backgroundImage} className="scrolling-background-image" alt="background" />
             <img src={bottomImage} className="bottom-left-image" alt="bottom background" />
           </>
         )}
@@ -116,6 +115,7 @@ function App() {
                 <h2 className="subtitle">Supermarkets have algorithms. Now so do you.</h2>
                 <p className="subtext">The math behind your grocery run — done by AI, not guesswork.</p>
               </div>
+              <img src={backgroundImage} className="scrolling-background-image" alt="background" />
               <InstructionsTile />
             </>
           )}
