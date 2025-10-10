@@ -35,6 +35,7 @@ const SelectableProductTile = ({ product, isSelected, onSelect, onQuantityChange
     flexDirection: 'column',
     justifyContent: 'space-between',
     height: '100%',
+    background: isApproved ? 'linear-gradient(to bottom, #d4edda, white)' : 'white',
   };
 
   return (
