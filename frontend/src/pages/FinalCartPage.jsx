@@ -73,6 +73,7 @@ const FinalCartPage = () => {
                                 <OptimizationResultTile 
                                     result={result} 
                                     baselineCost={optimizationData.baseline_cost} 
+                                    cart={original_items}
                                 />
                             </div>
                         ))}
@@ -85,6 +86,7 @@ const FinalCartPage = () => {
                                         <OptimizationResultTile 
                                             result={result} 
                                             baselineCost={optimizationData.no_subs_results.baseline_cost} 
+                                            cart={original_items}
                                         />
                                     </div>
                                 ))}
