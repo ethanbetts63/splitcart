@@ -22,7 +22,7 @@ const SubstitutesSection = ({ products, selectedOptions, onSelectOption, onQuant
           <p>No substitutes found for this product.</p>
         )}
         <div style={{ width: '18rem', margin: 'auto' }}>
-          <img src={subImage} alt="Substitution suggestion" style={{ width: '100%', borderRadius: '8px' }} />
+          <img src={subImage} alt="Substitution suggestion" style={{ width: '100%', borderRadius: '8px', maskImage: 'radial-gradient(ellipse at center, black 50%, transparent 75%)' }} />
         </div>
       </div>
     </div>
