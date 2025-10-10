@@ -13,31 +13,25 @@ from django.db.models import Count, Q
 from companies.models import Company, Store
 from products.models import Product, Price, ProductSubstitution
 from data_management.utils.substitution_utils.size_comparer import SizeComparer
-from data_management.utils.cart_optimization import calculate_optimized_cost, calculate_baseline_cost
+from data_management.utils.cart_optimization import calculate_optimized_cost, calculate_baseline_cost, build_price_slots
 
 def get_substitution_group(anchor_product, depth_limit=SUBSTITUTION_SEARCH_DEPTH):
     """
     Performs an intelligent graph traversal to find a high-quality group of substitutes.
-    - Traverses only size-agnostic links (LVL1, 4, 5, 6).
-    - Obeys a depth limit to prevent semantic drift.
-    - Includes terminal size-constrained links (LVL2, 3) connected to any visited product.
     """
     transitive_levels = ['LVL1', 'LVL3', 'LVL4']
     terminal_levels = ['LVL2']
 
-    # Use a queue for Breadth-First Search (BFS)
-    queue = deque([(anchor_product.id, 0)])  # (product_id, depth)
+    queue = deque([(anchor_product.id, 0)])
     visited_ids = {anchor_product.id}
     group_ids = {anchor_product.id}
 
-    # --- Step 1: Traverse the graph for the main group --- #
     while queue:
         current_id, current_depth = queue.popleft()
 
         if current_depth >= depth_limit:
             continue
 
-        # Find neighbors through transitive links
         next_sub_relations = ProductSubstitution.objects.filter(
             (Q(product_a_id=current_id) | Q(product_b_id=current_id)) &
             Q(level__in=transitive_levels)
@@ -50,7 +44,6 @@ def get_substitution_group(anchor_product, depth_limit=SUBSTITUTION_SEARCH_DEPTH
                 group_ids.add(neighbor_id)
                 queue.append((neighbor_id, current_depth + 1))
 
-    # --- Step 2: Add terminal substitutes for all products found in the main group --- #
     terminal_relations = ProductSubstitution.objects.filter(
         (Q(product_a_id__in=group_ids) | Q(product_b_id__in=group_ids)) &
         Q(level__in=terminal_levels)
@@ -59,12 +52,10 @@ def get_substitution_group(anchor_product, depth_limit=SUBSTITUTION_SEARCH_DEPTH
         group_ids.add(rel.product_a_id)
         group_ids.add(rel.product_b_id)
 
-    # Fetch all unique Product objects
     return Product.objects.filter(id__in=group_ids)
 
 def generate_random_cart(stores, num_products):
     """Generates a random shopping cart using the intelligent portfolio selection algorithm."""
-    # Get a pool of potential products that exist in the selected stores
     product_ids_in_stores = Price.objects.filter(store__in=stores).values_list('price_record__product_id', flat=True).distinct()
     
     if len(product_ids_in_stores) < num_products:
@@ -73,7 +64,6 @@ def generate_random_cart(stores, num_products):
     random_product_ids = random.sample(list(product_ids_in_stores), num_products)
     anchor_products = Product.objects.filter(id__in=random_product_ids)
 
-    # Pre-fetch all prices for all anchor products in the selected stores to avoid N+1 queries
     all_anchor_prices = Price.objects.filter(
         price_record__product__in=anchor_products,
         store__in=stores
@@ -90,21 +80,16 @@ def generate_random_cart(stores, num_products):
     size_comparer = SizeComparer()
 
     for anchor_product in anchor_products:
-        # --- Step 0: Intelligent Graph Traversal ---
         full_sub_group = get_substitution_group(anchor_product)
 
-        # --- New Step: Filter by Size Similarity ---
         size_compatible_group = []
         for sub in full_sub_group:
-            # The anchor product is always considered compatible with itself
             if sub.id == anchor_product.id:
                 size_compatible_group.append(sub)
                 continue
-            # Use a 30% tolerance for finding substitutes
             if size_comparer.are_sizes_compatible(anchor_product, sub, tolerance=SUBSTITUTION_SIZE_TOLERANCE):
                 size_compatible_group.append(sub)
 
-        # --- Step 1: Conditional Culling by Price ---
         anchor_prices = prices_by_product.get(anchor_product.id, [])
         if not anchor_prices:
             continue
@@ -131,7 +116,6 @@ def generate_random_cart(stores, num_products):
         if not candidate_subs:
             continue
 
-        # --- Tiered Portfolio Selection ---
         final_options = []
         portfolio_cap = SUBSTITUTION_PORTFOLIO_CAP
 
@@ -146,7 +130,6 @@ def generate_random_cart(stores, num_products):
         def get_relation(prod_a, prod_b):
             return sub_relations_map.get(tuple(sorted((prod_a.id, prod_b.id))))
 
-        # --- Step 2: Tier 1 Selection - The "Clones" ---
         clones = []
         for sub, price_obj in candidate_subs:
             relation = get_relation(anchor_product, sub)
@@ -156,10 +139,8 @@ def generate_random_cart(stores, num_products):
         final_options.extend(clones)
         candidate_subs = [c for c in candidate_subs if c not in clones]
 
-        # --- Step 3: Tier 2 Selection - The "Ambassadors" ---
         if len(final_options) < portfolio_cap:
             ambassadors = {}
-            # Find the store of the anchor product to correctly identify "other" stores
             anchor_store_id = anchor_prices[0].store.id
             other_stores = [s for s in stores if s.id != anchor_store_id]
             for store in other_stores:
@@ -176,7 +157,6 @@ def generate_random_cart(stores, num_products):
             
             candidate_subs = [c for c in candidate_subs if c not in ambassadors.values()]
 
-        # --- Step 4: Tier 3 Selection - The "Best of the Rest" ---
         if len(final_options) < portfolio_cap:
             candidate_subs.sort(key=lambda x: get_relation(anchor_product, x[0]).score if get_relation(anchor_product, x[0]) else 0, reverse=True)
             needed = portfolio_cap - len(final_options)
@@ -184,9 +164,7 @@ def generate_random_cart(stores, num_products):
                 if (sub, price_obj) not in final_options:
                     final_options.append((sub, price_obj))
 
-        # Format the final selected options for the solver
         current_slot = []
-        # Ensure the anchor product itself is always an option, if priced
         anchor_price_obj = anchor_prices[0]
         final_options_products = [opt[0] for opt in final_options]
         if anchor_product not in final_options_products:
@@ -209,22 +187,21 @@ def generate_random_cart(stores, num_products):
     
     return all_slots, anchor_products
 
-
 def run_savings_benchmark(file_path):
     """Main function to run the benchmark and write results to a file."""
     report_lines = []
     
-    NUM_RUNS = 50
-    PRODUCTS_PER_RUN = 100
+    NUM_RUNS = 10
+    PRODUCTS_PER_RUN = 20
 
-    report_lines.append(f"Starting benchmark with {NUM_RUNS} runs...\n")
+    report_lines.append(f"Starting benchmark with {NUM_RUNS} runs of {PRODUCTS_PER_RUN} products each...\n")
     
-    all_savings = []
+    all_savings_with_subs = []
+    all_savings_no_subs = []
 
     for i in range(NUM_RUNS):
         report_lines.append(f"--- Run {i + 1}/{NUM_RUNS} ---")
         
-        # Select one viable store from each company for the run.
         selected_stores = []
         all_companies = Company.objects.all()
 
@@ -247,87 +224,49 @@ def run_savings_benchmark(file_path):
 
         MAX_STORES_FOR_SOLVER = len(selected_stores)
 
-        slots, anchor_products = generate_random_cart(selected_stores, PRODUCTS_PER_RUN)
-        if not slots or not anchor_products:
+        slots_with_subs, anchor_products = generate_random_cart(selected_stores, PRODUCTS_PER_RUN)
+        if not slots_with_subs or not anchor_products:
             report_lines.append("Could not generate a valid cart for this run. Skipping.")
             continue
 
-        # --- Run Analysis --- #
-        num_slots = len(slots)
-        total_options = sum(len(slot) for slot in slots)
-        avg_options_per_slot = total_options / num_slots if num_slots > 0 else 0
+        # --- Calculation with subs ---
+        baseline_cost_with_subs = calculate_baseline_cost(slots_with_subs, selected_stores)
+        optimized_cost_with_subs, _, _ = calculate_optimized_cost(slots_with_subs, MAX_STORES_FOR_SOLVER)
         
-        slots_with_brand_subs = 0
-        total_price_range = 0
-        
-        for slot in slots:
-            if not slot:
-                continue
-            
-            brands = {option['brand'] for option in slot}
-            if len(brands) > 1:
-                slots_with_brand_subs += 1
-            
-            prices = [option['price'] for option in slot]
-            if len(prices) > 1:
-                total_price_range += max(prices) - min(prices)
-            
-        avg_price_range = total_price_range / num_slots if num_slots > 0 else 0
-
-        cheapest_store_wins = {}
-        for slot in slots:
-            if not slot:
-                continue
-            cheapest_option = min(slot, key=lambda x: x['price'])
-            winner_store = cheapest_option['store_name']
-            cheapest_store_wins[winner_store] = cheapest_store_wins.get(winner_store, 0) + 1
-        
-        distribution_str = ", ".join(sorted([f"{store}: {count}" for store, count in cheapest_store_wins.items()]))
-
-        avg_ideal_item_price = 0
-        if num_slots > 0:
-            ideal_cost = 0
-            for slot in slots:
-                if slot:
-                    ideal_cost += min(option['price'] for option in slot)
-            avg_ideal_item_price = ideal_cost / num_slots
-        # --- End Analysis --- #
-
-        optimized_cost, _, _ = calculate_optimized_cost(slots, MAX_STORES_FOR_SOLVER)
-        if optimized_cost is None:
-            report_lines.append("Solver could not find an optimal solution. Skipping run.")
-            continue
-
-        baseline_cost = calculate_baseline_cost(slots, selected_stores)
-
-        if baseline_cost > 0 and baseline_cost > optimized_cost:
-            savings = ((baseline_cost - optimized_cost) / baseline_cost) * 100
-            all_savings.append(savings)
-            report_lines.append(f"Baseline: ${baseline_cost:.2f}, Optimized: ${optimized_cost:.2f}, Savings: {savings:.2f}%")
+        if baseline_cost_with_subs > 0 and optimized_cost_with_subs is not None:
+            savings_with_subs = ((baseline_cost_with_subs - optimized_cost_with_subs) / baseline_cost_with_subs) * 100
+            all_savings_with_subs.append(savings_with_subs)
+            report_lines.append(f"With Subs -> Baseline: ${baseline_cost_with_subs:.2f}, Optimized: ${optimized_cost_with_subs:.2f}, Savings: {savings_with_subs:.2f}%")
         else:
-            all_savings.append(0)
-            report_lines.append(f"Baseline: ${baseline_cost:.2f}, Optimized: ${optimized_cost:.2f}, Savings: 0.00%")
+            all_savings_with_subs.append(0)
+            report_lines.append(f"With Subs -> Baseline: ${baseline_cost_with_subs:.2f}, Optimized: ${optimized_cost_with_subs if optimized_cost_with_subs is not None else 'N/A'}, Savings: 0.00%")
 
-        # Final metrics calculations
-        avg_baseline_item_price = baseline_cost / num_slots if num_slots > 0 else 0
-        avg_optimized_item_price = optimized_cost / num_slots if num_slots > 0 else 0
+        # --- Calculation without subs ---
+        simple_cart = [[{'product_id': p.id, 'quantity': 1}] for p in anchor_products]
+        slots_no_subs = build_price_slots(simple_cart, selected_stores)
 
-        report_lines.append("  Run Characteristics:")
-        report_lines.append(f"    - Avg Options per Item: {avg_options_per_slot:.2f}")
-        report_lines.append(f"    - Items with Brand Subs: {slots_with_brand_subs} / {num_slots}")
-        report_lines.append(f"    - Avg Price Range per Item: ${avg_price_range:.2f}")
-        report_lines.append(f"    - Cheapest Store Dist: ({distribution_str})")
-        report_lines.append(f"    - Avg Ideal Item Price: ${avg_ideal_item_price:.2f}")
-        report_lines.append(f"    - Avg Baseline Item Price: ${avg_baseline_item_price:.2f}")
-        report_lines.append(f"    - Avg Optimized Item Price: ${avg_optimized_item_price:.2f}")
+        if slots_no_subs:
+            baseline_cost_no_subs = calculate_baseline_cost(slots_no_subs, selected_stores)
+            optimized_cost_no_subs, _, _ = calculate_optimized_cost(slots_no_subs, MAX_STORES_FOR_SOLVER)
+
+            if baseline_cost_no_subs > 0 and optimized_cost_no_subs is not None:
+                savings_no_subs = ((baseline_cost_no_subs - optimized_cost_no_subs) / baseline_cost_no_subs) * 100
+                all_savings_no_subs.append(savings_no_subs)
+                report_lines.append(f"No Subs   -> Baseline: ${baseline_cost_no_subs:.2f}, Optimized: ${optimized_cost_no_subs:.2f}, Savings: {savings_no_subs:.2f}%")
+            else:
+                all_savings_no_subs.append(0)
+                report_lines.append(f"No Subs   -> Baseline: ${baseline_cost_no_subs:.2f}, Optimized: ${optimized_cost_no_subs if optimized_cost_no_subs is not None else 'N/A'}, Savings: 0.00%")
+        else:
+            all_savings_no_subs.append(0)
+            report_lines.append("No Subs   -> Could not find prices for original items.")
 
     report_lines.append("\n--- Benchmark Complete ---")
-    report_lines.append(f"Individual savings percentages: {[f'{s:.2f}%' for s in all_savings]}")
-    if all_savings:
-        average_savings = statistics.mean(all_savings)
-        report_lines.append(f"\nAverage Savings: {average_savings:.2f}%")
-    else:
-        report_lines.append("\nNo valid runs were completed.")
+    if all_savings_with_subs:
+        average_savings_with_subs = statistics.mean(all_savings_with_subs)
+        report_lines.append(f"Average Savings with Substitutes: {average_savings_with_subs:.2f}%")
+    if all_savings_no_subs:
+        average_savings_no_subs = statistics.mean(all_savings_no_subs)
+        report_lines.append(f"Average Savings on Original Items Only: {average_savings_no_subs:.2f}%")
 
     with open(file_path, 'w') as f:
         f.write("\n".join(report_lines))
