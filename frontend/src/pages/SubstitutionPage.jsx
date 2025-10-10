@@ -4,6 +4,8 @@ import { useShoppingList } from '../context/ShoppingListContext';
 import SubstitutesSection from '../components/SubstitutesSection';
 import LocationSetupModal from '../components/LocationSetupModal'; // To get userLocation
 
+import NextButton from '../components/NextButton';
+
 const SubstitutionPage = () => {
   const { items, substitutes, selections, updateSubstitutionChoices, nearbyStoreIds } = useShoppingList();
   const { state } = useLocation();
@@ -115,12 +117,12 @@ const SubstitutionPage = () => {
         productQuantities={productQuantities}
       />
 
-      <button
-        onClick={isLastProduct ? handleFinishAndSplit : handleNextProduct}
-        style={{ marginTop: '1.5rem', backgroundColor: 'var(--primary)', color: 'white' }}
-      >
-        {isLastProduct ? 'Split My Cart' : 'Next Product'}
-      </button>
+      <div style={{ position: 'fixed', bottom: '3rem', right: '3rem', zIndex: 1040 }}>
+        <NextButton 
+          onClick={isLastProduct ? handleFinishAndSplit : handleNextProduct}
+          text={isLastProduct ? 'Split My Cart' : 'Next Product'}
+        />
+      </div>
     </div>
   );
 };

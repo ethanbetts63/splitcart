@@ -34,7 +34,7 @@ const SubstituteProductTile = ({ product, isSelected, onSelect, onQuantityChange
     flexDirection: 'column',
     justifyContent: 'space-between',
     height: '100%',
-    background: isSelected ? 'linear-gradient(to bottom, #d4edda, white)' : 'white',
+    background: isSelected ? 'var(--sub-selected-green)' : 'white',
   };
 
   return (
@@ -86,6 +86,7 @@ const SubstituteProductTile = ({ product, isSelected, onSelect, onQuantityChange
           <button 
             onClick={() => onSelect(product.id)} 
             className={`btn ${isSelected ? 'red-btn' : 'green-btn'}`}
+            style={{ marginBottom: '0.5rem' }}
           >
             {isSelected ? 'Remove' : 'Approve'}
           </button>

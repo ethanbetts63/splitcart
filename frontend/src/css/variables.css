@@ -71,6 +71,7 @@
   --transition: 0.3s ease-in-out;
 
   --danger: hsl(0, 75%, 48%);
+  --sub-selected-green: hsl(134, 41%, 88%);
 
 }
 

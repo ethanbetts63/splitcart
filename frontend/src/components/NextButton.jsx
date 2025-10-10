@@ -2,11 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import { useShoppingList } from '../context/ShoppingListContext';
 import '../css/NextButton.css';
 
-const Next = () => {
+const NextButton = ({ onClick, text = 'Next!' }) => {
   const navigate = useNavigate();
-  const { items, substitutes, selections, nearbyStoreIds } = useShoppingList();
+  const { items, substitutes, nearbyStoreIds } = useShoppingList();
 
-  const handleClick = () => {
+  const internalHandleClick = () => {
     const itemsWithSubstitutes = items.filter(item => {
       const productSubs = substitutes[item.product.id];
       return productSubs && productSubs.length > 0;
@@ -24,14 +24,16 @@ const Next = () => {
     }
   };
 
+  const finalOnClick = onClick || internalHandleClick;
+
   return (
     <button 
       className="dashing-fill"
-      onClick={handleClick}
+      onClick={finalOnClick}
     >
-      <span className="dashing-fill-text">Next!</span>
+      <span className="dashing-fill-text">{text}</span>
     </button>
   );
 };
 
-export default Next;
+export default NextButton;
