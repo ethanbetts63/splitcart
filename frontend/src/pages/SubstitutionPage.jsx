@@ -55,7 +55,8 @@ const SubstitutionPage = () => {
       return [{ product_id: originalProductId, quantity: originalCartItem.quantity || 1 }];
     });
 
-    navigate('/final-cart', { state: { cart: formattedCart.flat(), store_ids: nearbyStoreIds } });
+    const storeIds = nearbyStoreIds.map(store => store.id);
+    navigate('/final-cart', { state: { cart: formattedCart.flat(), store_ids: storeIds } });
   };
 
   // Effect to auto-advance if no substitutes are available for the current item
