@@ -4,7 +4,7 @@ import subImage from '../assets/sub_image.png';
 const SubstitutesSection = ({ products, selectedOptions, onSelectOption, onQuantityChange, productQuantities = {} }) => {
   return (
     <div style={{ marginTop: '2rem' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(18rem, 1fr))', gap: '1rem', justifyItems: 'center' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem' }}>
         {products.length > 0 ? (
           products.map(product => (
             <div key={product.id} style={{ position: 'relative', height: '100%' }}>
@@ -21,7 +21,7 @@ const SubstitutesSection = ({ products, selectedOptions, onSelectOption, onQuant
         ) : (
           <p>No substitutes found for this product.</p>
         )}
-        <div style={{ width: '18rem', margin: 'auto' }}>
+        <div style={{ width: '18rem' }}>
           <img src={subImage} alt="Substitution suggestion" style={{ width: '100%', borderRadius: '8px', maskImage: 'radial-gradient(ellipse at center, black 50%, transparent 75%)' }} />
         </div>
       </div>

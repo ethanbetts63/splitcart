@@ -104,9 +104,9 @@ const SubstitutionPage = () => {
   }
 
   return (
-    <div style={{ marginTop: '1rem' }}>
+    <div style={{ marginTop: '-2.5rem' }}>
       <h2>Product Substitution</h2>
-      <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
+      <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', marginTop: '-1rem' }}>
         Reviewing substitutes for: <strong>{currentItem.product.name}</strong>
       </p>
 
