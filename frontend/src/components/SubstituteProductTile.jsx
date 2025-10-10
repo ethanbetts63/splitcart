@@ -46,6 +46,23 @@ const SubstituteProductTile = ({ product, isSelected, onSelect, onQuantityChange
             onError={handleImageError}
             alt={product.name}
           />
+          {product.size && (
+            <span style={{
+              position: 'absolute',
+              top: '15px',
+              right: '15px',
+              backgroundColor: 'white',
+              color: 'black',
+              padding: '0.2rem 0.4rem',
+              borderRadius: '8px',
+              fontSize: '0.8rem',
+              border: '1px solid var(--colorp2)',
+              zIndex: 1,
+              fontFamily: 'Arial, sans-serif'
+            }}>
+              {product.size}
+            </span>
+          )}
           {(is_original || product.level_description) && (
             <span style={{
               position: 'absolute',
@@ -68,7 +85,6 @@ const SubstituteProductTile = ({ product, isSelected, onSelect, onQuantityChange
           <h3>{product.name}</h3>
           <p>
             {product.brand_name && `${product.brand_name} `}
-            {product.size && `(${product.size})`}
           </p>
           
           <PriceDisplay prices={prices} variant="product-tile" />
