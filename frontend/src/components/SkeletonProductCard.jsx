@@ -4,7 +4,7 @@ import logoSymbol from '../assets/splicart_symbol_v6.png';
 const SkeletonProductCard = () => {
 
   const cardStyle = {
-    border: '1px solid black',
+    border: '0.1px solid black',
     borderRadius: '8px',
     width: '18rem',
     minWidth: '18rem',

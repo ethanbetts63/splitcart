@@ -28,7 +28,7 @@ const SubstituteProductTile = ({ product, isSelected, onSelect, onQuantityChange
   const prices = product.prices || [];
 
   const cardStyle = {
-    border: isSelected ? '3px solid var(--success)' : '1px solid var(--border-color)',
+    border: '0.1px solid black',
     boxShadow: isSelected ? '0 0 10px var(--success)' : 'none',
     display: 'flex',
     flexDirection: 'column',

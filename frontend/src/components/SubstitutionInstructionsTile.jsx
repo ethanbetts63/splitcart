@@ -5,7 +5,7 @@ const SubstitutionInstructionsTile = () => {
   return (
     <div className="product-card">
       <div className="product-card-content" style={{ justifyContent: 'center' }}>
-        <h3 style={{ textAlign: 'center', marginBottom: '1rem' }}>How Substitution Works</h3>
+        <h3 style={{ textAlign: 'center', marginBottom: '1rem' }}>Instructions</h3>
         <ul style={{ paddingLeft: '1.5rem', margin: 0 }}>
           <li style={{ marginBottom: '0.5rem' }}>Review the original product and the available substitutes.</li>
           <li style={{ marginBottom: '0.5rem' }}>Click 'Approve' to add a substitute to your potential shopping list.</li>
