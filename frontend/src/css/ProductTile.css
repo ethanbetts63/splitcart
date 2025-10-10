@@ -316,6 +316,14 @@
 
   }
 
+.approve-btn {
+  background: var(--primary);
+}
+
+.approved-btn {
+  background: var(--success);
+}
+
 
 
   

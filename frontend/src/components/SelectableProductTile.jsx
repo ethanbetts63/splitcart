@@ -1,21 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/ProductTile.css'; // Reuse the same CSS
 import placeholderImage from '../assets/shopping_cart.svg';
+import QuantityAdjuster from './QuantityAdjuster';
+import PriceDisplay from './PriceDisplay';
 
-// Logos
-import aldiLogo from '../assets/ALDI_logo.svg';
-import colesLogo from '../assets/coles_logo.webp';
-import igaLogo from '../assets/iga_logo.webp';
-import woolworthsLogo from '../assets/woolworths_logo.webp';
+const SelectableProductTile = ({ product, isSelected, onSelect, onQuantityChange, initialQuantity = 1 }) => {
+  const [quantity, setQuantity] = useState(initialQuantity);
 
-const companyLogos = {
-    'Aldi': aldiLogo,
-    'Coles': colesLogo,
-    'Iga': igaLogo,
-    'Woolworths': woolworthsLogo,
-};
+  useEffect(() => {
+    setQuantity(initialQuantity);
+  }, [initialQuantity]);
 
-const SelectableProductTile = ({ product, isSelected, onSelect }) => {
+  const handleQuantityChange = (newQuantity) => {
+    const validatedQuantity = Math.max(1, newQuantity);
+    setQuantity(validatedQuantity);
+    if (onQuantityChange) {
+      onQuantityChange(product.id, validatedQuantity);
+    }
+  };
+
   const handleImageError = (e) => {
     e.target.onerror = null;
     e.target.src = placeholderImage;
@@ -23,43 +26,48 @@ const SelectableProductTile = ({ product, isSelected, onSelect }) => {
 
   const prices = product.prices || [];
 
-  const priceContainerStyle = {
-    display: 'grid',
-    gridTemplateColumns: prices.length === 1 ? '1fr' : 'repeat(2, 1fr)',
-    gap: '0.05rem',
-    marginTop: '0.5rem',
-    justifyItems: prices.length === 1 ? 'center' : 'start',
-  };
-
   const cardStyle = {
-    border: isSelected ? '3px solid var(--success)' : 'none',
+    border: isSelected ? '3px solid var(--success)' : '1px solid var(--border-color)',
     boxShadow: isSelected ? '0 0 10px var(--success)' : 'none',
-    cursor: 'pointer',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '100%',
   };
 
   return (
-    <div className="product-card" style={cardStyle} onClick={() => onSelect(product.id)}>
-      <img
-        src={product.image_url || placeholderImage}
-        onError={handleImageError}
-        alt={product.name}
-      />
-      <div className="product-card-content">
-        <h3>{product.name}</h3>
-        <p>
-          {product.brand_name && `${product.brand_name} `}
-          {product.size && `(${product.size})`}
-        </p>
-        
-        <div style={priceContainerStyle}>
-          {prices.map(priceData => (
-            <div key={priceData.company} style={{ display: 'flex', alignItems: 'center' }}>
-              <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} style={{ height: '20px', marginRight: '0.25rem' }} />
-              <span style={{ color: priceData.is_lowest ? 'var(--success)' : 'var(--text)' }}>
-                ${priceData.price_display}
-              </span>
-            </div>
-          ))}
+    <div className="product-card" style={cardStyle}>
+      <div>
+        <img
+          src={product.image_url || placeholderImage}
+          onError={handleImageError}
+          alt={product.name}
+        />
+        <div className="product-card-content">
+          <h3>{product.name}</h3>
+          <p>
+            {product.brand_name && `${product.brand_name} `}
+            {product.size && `(${product.size})`}
+          </p>
+          
+          <PriceDisplay prices={prices} variant="product-tile" />
+        </div>
+      </div>
+
+      <div className="actions-container" style={{ marginTop: '0.5rem' }}>
+        <div className="action-item">
+          <QuantityAdjuster 
+            quantity={quantity} 
+            onQuantityChange={handleQuantityChange} 
+          />
+        </div>
+        <div className="action-item">
+          <button 
+            onClick={() => onSelect(product.id)} 
+            className={`btn ${isSelected ? 'approved-btn' : 'approve-btn'}`}
+          >
+            {isSelected ? 'Approved' : 'Approve'}
+          </button>
         </div>
       </div>
     </div>

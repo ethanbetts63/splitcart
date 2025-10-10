@@ -1,6 +1,6 @@
 import SelectableProductTile from './SelectableProductTile';
 
-const SubstitutesSection = ({ products, selectedOptions, onSelectOption }) => {
+const SubstitutesSection = ({ products, selectedOptions, onSelectOption, onQuantityChange, productQuantities }) => {
   return (
     <div style={{ marginTop: '2rem' }}>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(18rem, 1fr))', gap: '1rem' }}>
@@ -11,6 +11,8 @@ const SubstitutesSection = ({ products, selectedOptions, onSelectOption }) => {
                 product={product}
                 isSelected={selectedOptions.includes(product.id)}
                 onSelect={onSelectOption}
+                onQuantityChange={onQuantityChange}
+                initialQuantity={productQuantities[product.id] || 1}
               />
               {product.is_original ? (
                 <div 
