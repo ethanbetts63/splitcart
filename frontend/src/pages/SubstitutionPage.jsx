@@ -7,7 +7,7 @@ import LocationSetupModal from '../components/LocationSetupModal'; // To get use
 import NextButton from '../components/NextButton';
 
 const SubstitutionPage = () => {
-  const { items, substitutes, selections, updateSubstitutionChoices, nearbyStoreIds } = useShoppingList();
+  const { items, substitutes, selections, updateSubstitutionChoices, nearbyStoreIds, removeItem } = useShoppingList();
   const { state } = useLocation();
   const { itemsToReview } = state || { itemsToReview: [] }; // Get itemsToReview from route state
   const navigate = useNavigate();
@@ -24,12 +24,16 @@ const SubstitutionPage = () => {
 
     const allAvailableProducts = [currentItem.product, ...(currentSubstitutes || [])];
     const selectedProducts = allAvailableProducts.filter(p => selectedOptions.includes(p.id));
-    const selectedProductsWithQuantities = selectedProducts.map(p => ({
-        ...p,
-        quantity: productQuantities[p.id] || 1
-    }));
-    
-    updateSubstitutionChoices(currentItem.product.id, selectedProductsWithQuantities);
+
+    if (selectedProducts.length === 0) {
+      removeItem(currentItem.product.id);
+    } else {
+      const selectedProductsWithQuantities = selectedProducts.map(p => ({
+          ...p,
+          quantity: productQuantities[p.id] || 1
+      }));
+      updateSubstitutionChoices(currentItem.product.id, selectedProductsWithQuantities);
+    }
     setCurrentProductIndex(prev => prev + 1);
   };
 
@@ -38,25 +42,34 @@ const SubstitutionPage = () => {
 
     const allAvailableProducts = [currentItem.product, ...(currentSubstitutes || [])];
     const selectedProducts = allAvailableProducts.filter(p => selectedOptions.includes(p.id));
-    const selectedProductsWithQuantities = selectedProducts.map(p => ({
-        ...p,
-        quantity: productQuantities[p.id] || 1
-    }));
-    
-    const finalSelections = { ...selections, [currentItem.product.id]: selectedProductsWithQuantities };
 
-    // Build formattedCart using the FULL items list from context, applying finalSelections
-    const formattedCart = items.map(originalCartItem => {
-      const originalProductId = originalCartItem.product.id;
-      const prods = finalSelections[originalProductId];
-      if (prods && prods.length > 0) {
-        return prods.map(p => ({ product_id: p.id, quantity: p.quantity }));
-      }
-      return [{ product_id: originalProductId, quantity: originalCartItem.quantity || 1 }];
-    });
+    if (selectedProducts.length === 0) {
+      removeItem(currentItem.product.id);
+      // After removing, we need to construct the cart without this item.
+      // The `selections` object will not have an entry for this item if it was just removed.
+    } else {
+      const selectedProductsWithQuantities = selectedProducts.map(p => ({
+          ...p,
+          quantity: productQuantities[p.id] || 1
+      }));
+      const finalSelections = { ...selections, [currentItem.product.id]: selectedProductsWithQuantities };
 
-    const storeIds = nearbyStoreIds.map(store => store.id);
-    navigate('/final-cart', { state: { cart: formattedCart, store_ids: storeIds } });
+      // Build formattedCart using the FULL items list from context, applying finalSelections
+      const formattedCart = items.map(originalCartItem => {
+        if (originalCartItem.product.id === currentItem.product.id && selectedProducts.length === 0) {
+          return []; // Don't include this item in the cart
+        }
+        const originalProductId = originalCartItem.product.id;
+        const prods = finalSelections[originalProductId];
+        if (prods && prods.length > 0) {
+          return prods.map(p => ({ product_id: p.id, quantity: p.quantity }));
+        }
+        return [{ product_id: originalProductId, quantity: originalCartItem.quantity || 1 }];
+      });
+
+      const storeIds = nearbyStoreIds.map(store => store.id);
+      navigate('/final-cart', { state: { cart: formattedCart, store_ids: storeIds } });
+    }
   };
 
   // Effect to auto-advance if no substitutes are available for the current item
@@ -98,16 +111,39 @@ const SubstitutionPage = () => {
     setProductQuantities(prev => ({ ...prev, [productId]: newQuantity }));
   };
 
-  // Show loading spinner if substitutes for the current item are not yet fetched
-  if (currentSubstitutes === undefined) {
-    return <div style={{ textAlign: 'center', margin: '2rem 0' }}>Loading...</div>;
-  }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentProductIndex]);
 
-  const handleApproveAll = () => {
-    if (currentSubstitutes) {
-      const allSubstituteIds = currentSubstitutes.map(sub => sub.id);
-      const allIds = [currentItem.product.id, ...allSubstituteIds];
-      setSelectedOptions([...new Set(allIds)]);
+  const handleGoBack = () => {
+    setCurrentProductIndex(prev => Math.max(0, prev - 1));
+  };
+
+  const handleApproveAllAndNext = () => {
+    if (!currentItem) return;
+
+    const allAvailableProducts = [currentItem.product, ...(currentSubstitutes || [])];
+    const selectedProducts = allAvailableProducts; // Approve all
+    const selectedProductsWithQuantities = selectedProducts.map(p => ({
+        ...p,
+        quantity: productQuantities[p.id] || 1
+    }));
+
+    if (isLastProduct) {
+        const finalSelections = { ...selections, [currentItem.product.id]: selectedProductsWithQuantities };
+        const formattedCart = items.map(originalCartItem => {
+            const originalProductId = originalCartItem.product.id;
+            const prods = finalSelections[originalProductId];
+            if (prods && prods.length > 0) {
+                return prods.map(p => ({ product_id: p.id, quantity: p.quantity }));
+            }
+            return [{ product_id: originalProductId, quantity: originalCartItem.quantity || 1 }];
+        });
+        const storeIds = nearbyStoreIds.map(store => store.id);
+        navigate('/final-cart', { state: { cart: formattedCart, store_ids: storeIds } });
+    } else {
+        updateSubstitutionChoices(currentItem.product.id, selectedProductsWithQuantities);
+        setCurrentProductIndex(prev => prev + 1);
     }
   };
 
@@ -118,7 +154,10 @@ const SubstitutionPage = () => {
 
   return (
     <div style={{ position: 'relative', marginTop: '1rem' }}>
-      <button onClick={handleApproveAll} style={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }} className="btn green-btn">Approve All</button>
+      {currentProductIndex > 0 && (
+        <button onClick={handleGoBack} style={{ position: 'absolute', top: 0, left: 0, zIndex: 1 }} className="btn">Back</button>
+      )}
+      <button onClick={handleApproveAllAndNext} style={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }} className="btn green-btn">Approve All</button>
       <h2>Product Substitution</h2>
       <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', marginTop: '-1rem' }}>
         Reviewing substitutes for: <strong>{currentItem.product.name}</strong>
