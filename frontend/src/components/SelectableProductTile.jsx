@@ -26,16 +26,14 @@ const SelectableProductTile = ({ product, isSelected, onSelect, onQuantityChange
 
   const prices = product.prices || [];
 
-  const isApproved = isSelected || is_original;
-
   const cardStyle = {
-    border: isApproved ? '3px solid var(--success)' : '1px solid var(--border-color)',
-    boxShadow: isApproved ? '0 0 10px var(--success)' : 'none',
+    border: isSelected ? '3px solid var(--success)' : '1px solid var(--border-color)',
+    boxShadow: isSelected ? '0 0 10px var(--success)' : 'none',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
     height: '100%',
-    background: isApproved ? 'linear-gradient(to bottom, #d4edda, white)' : 'white',
+    background: isSelected ? 'linear-gradient(to bottom, #d4edda, white)' : 'white',
   };
 
   return (
@@ -86,10 +84,9 @@ const SelectableProductTile = ({ product, isSelected, onSelect, onQuantityChange
         <div className="action-item">
           <button 
             onClick={() => onSelect(product.id)} 
-            className={`btn ${isApproved ? 'approved-btn' : 'approve-btn'}`}
-            disabled={is_original}
+            className={`btn ${isSelected ? 'red-btn' : 'green-btn'}`}
           >
-            {isApproved ? 'Approved' : 'Approve'}
+            {isSelected ? 'Remove' : 'Approve'}
           </button>
         </div>
       </div>

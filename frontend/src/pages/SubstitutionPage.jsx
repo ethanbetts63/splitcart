@@ -11,6 +11,7 @@ const SubstitutionPage = () => {
   const navigate = useNavigate();
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [productQuantities, setProductQuantities] = useState({});
 
   const currentItem = itemsToReview[currentProductIndex]; // Use itemsToReview
   const currentSubstitutes = currentItem ? substitutes[currentItem.product.id] : undefined;
@@ -21,8 +22,12 @@ const SubstitutionPage = () => {
 
     const allAvailableProducts = [currentItem.product, ...(currentSubstitutes || [])];
     const selectedProducts = allAvailableProducts.filter(p => selectedOptions.includes(p.id));
+    const selectedProductsWithQuantities = selectedProducts.map(p => ({
+        ...p,
+        quantity: productQuantities[p.id] || 1
+    }));
     
-    updateSubstitutionChoices(currentItem.product.id, selectedProducts);
+    updateSubstitutionChoices(currentItem.product.id, selectedProductsWithQuantities);
     setCurrentProductIndex(prev => prev + 1);
   };
 
@@ -31,20 +36,24 @@ const SubstitutionPage = () => {
 
     const allAvailableProducts = [currentItem.product, ...(currentSubstitutes || [])];
     const selectedProducts = allAvailableProducts.filter(p => selectedOptions.includes(p.id));
+    const selectedProductsWithQuantities = selectedProducts.map(p => ({
+        ...p,
+        quantity: productQuantities[p.id] || 1
+    }));
     
-    const finalSelections = { ...selections, [currentItem.product.id]: selectedProducts };
+    const finalSelections = { ...selections, [currentItem.product.id]: selectedProductsWithQuantities };
 
     // Build formattedCart using the FULL items list from context, applying finalSelections
     const formattedCart = items.map(originalCartItem => {
       const originalProductId = originalCartItem.product.id;
       const prods = finalSelections[originalProductId];
       if (prods && prods.length > 0) {
-        return prods.map(p => ({ product_id: p.id, quantity: originalCartItem.quantity }));
+        return prods.map(p => ({ product_id: p.id, quantity: p.quantity }));
       }
       return [{ product_id: originalProductId, quantity: originalCartItem.quantity || 1 }];
     });
 
-    navigate('/final-cart', { state: { cart: formattedCart, store_ids: nearbyStoreIds } });
+    navigate('/final-cart', { state: { cart: formattedCart.flat(), store_ids: nearbyStoreIds } });
   };
 
   // Effect to auto-advance if no substitutes are available for the current item
@@ -58,21 +67,32 @@ const SubstitutionPage = () => {
     }
   }, [currentItem, currentSubstitutes, isLastProduct, handleNextProduct, handleFinishAndSplit]);
 
-  // Effect to initialize selected options when the product changes
+  // Effect to initialize selected options and quantities when the product changes
   useEffect(() => {
     if (currentItem) {
+      const initialQuantities = {};
+      initialQuantities[currentItem.product.id] = currentItem.quantity;
+      if (currentSubstitutes) {
+          currentSubstitutes.forEach(sub => {
+              initialQuantities[sub.id] = 1; // Default quantity for substitutes
+          });
+      }
+      setProductQuantities(initialQuantities);
       setSelectedOptions([currentItem.product.id]);
     }
-  }, [currentItem]);
+  }, [currentItem, currentSubstitutes]);
 
 
   const handleSelectOption = (productId) => {
     setSelectedOptions(prevSelected => {
-      if (productId === currentItem.product.id) return prevSelected; // Prevent deselecting original
       return prevSelected.includes(productId)
         ? prevSelected.filter(id => id !== productId)
         : [...prevSelected, productId];
     });
+  };
+
+  const handleQuantityChange = (productId, newQuantity) => {
+    setProductQuantities(prev => ({ ...prev, [productId]: newQuantity }));
   };
 
   // Show loading spinner if substitutes for the current item are not yet fetched
@@ -91,6 +111,8 @@ const SubstitutionPage = () => {
         products={[{ ...currentItem.product, is_original: true }, ...(currentSubstitutes || [])]}
         selectedOptions={selectedOptions}
         onSelectOption={handleSelectOption}
+        onQuantityChange={handleQuantityChange}
+        productQuantities={productQuantities}
       />
 
       <button
@@ -101,4 +123,6 @@ const SubstitutionPage = () => {
       </button>
     </div>
   );
-};export default SubstitutionPage;
+};
+
+export default SubstitutionPage;
