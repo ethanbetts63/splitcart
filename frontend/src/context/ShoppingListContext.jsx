@@ -31,7 +31,8 @@ export const ShoppingListProvider = ({ children }) => {
       return;
     }
     try {
-      const url = `/api/products/${product.id}/substitutes/?store_ids=${storeIds.join(',')}`;
+      const ids = storeIds.map(store => store.id).join(',');
+      const url = `/api/products/${product.id}/substitutes/?store_ids=${ids}`;
       const response = await fetch(url);
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const subs = await response.json();
