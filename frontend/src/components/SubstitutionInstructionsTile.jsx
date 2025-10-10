@@ -7,9 +7,9 @@ const SubstitutionInstructionsTile = () => {
       <div className="product-card-content" style={{ justifyContent: 'center' }}>
         <h3 style={{ textAlign: 'center', marginBottom: '1rem' }}>Why Substitution?</h3>
         <p>More options = more ways to save.</p>
-        <p>Each item locks the AI to stores that stock that exact product.</p>
-        <p>Adding substitutes — similar brands or sizes — expands its search space, letting it test far more combinations to find the lowest total price.</p>
-        <p>Even a few substitutes can unlock major savings but the more the better. </p>
+        <p>Approving subs expands the AI's search space, letting it test far more combinations to find the lowest total price.</p>
+        <p>Even a few subs can unlock major savings but the more the better. </p>
+        <p>Don’t worry about price — just choose substitutes you’d accept. Adjust quantity if it takes more than one to replace the original.</p>
       </div>
     </div>
   );

@@ -118,7 +118,7 @@ const SubstitutionPage = () => {
 
   return (
     <div style={{ position: 'relative', marginTop: '1rem' }}>
-      <button onClick={handleApproveAll} style={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }} className="btn">Approve All</button>
+      <button onClick={handleApproveAll} style={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }} className="btn green-btn">Approve All</button>
       <h2>Product Substitution</h2>
       <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', marginTop: '-1rem' }}>
         Reviewing substitutes for: <strong>{currentItem.product.name}</strong>
