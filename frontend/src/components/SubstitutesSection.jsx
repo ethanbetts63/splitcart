@@ -13,6 +13,7 @@ const SubstitutesSection = ({ products, selectedOptions, onSelectOption, onQuant
                 onSelect={onSelectOption}
                 onQuantityChange={onQuantityChange}
                 initialQuantity={productQuantities[product.id] || 1}
+                is_original={product.is_original}
               />
               {product.is_original ? (
                 <div 

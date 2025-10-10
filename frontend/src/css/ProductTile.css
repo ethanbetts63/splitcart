@@ -317,7 +317,7 @@
   }
 
 .approve-btn {
-  background: var(--primary);
+  background: var(--danger);
 }
 
 .approved-btn {
