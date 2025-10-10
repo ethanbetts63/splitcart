@@ -1,10 +1,12 @@
 import SubstituteProductTile from './SubstituteProductTile';
+import SubstitutionInstructionsTile from './SubstitutionInstructionsTile';
 import subImage from '../assets/sub_image.png';
 
 const SubstitutesSection = ({ products, selectedOptions, onSelectOption, onQuantityChange, productQuantities = {} }) => {
   return (
     <div style={{ marginTop: '2rem' }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem' }}>
+        <SubstitutionInstructionsTile />
         {products.length > 0 ? (
           products.map(product => (
             <div key={product.id} style={{ position: 'relative', height: '100%' }}>
