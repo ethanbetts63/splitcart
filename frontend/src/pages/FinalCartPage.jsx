@@ -6,7 +6,7 @@ import OptimizationResultTile from '../components/OptimizationResultTile';
 const FinalCartPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { cart, store_ids } = location.state || {};
+    const { cart, store_ids, original_items } = location.state || {};
 
     const [optimizationData, setOptimizationData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -29,6 +29,7 @@ const FinalCartPage = () => {
                 const response = await axios.post('/api/cart/split/', {
                     cart: cart,
                     store_ids: store_ids,
+                    original_items: original_items,
                     max_stores_options: [2, 3, 4]
                 });
                 setOptimizationData(response.data);
@@ -40,7 +41,7 @@ const FinalCartPage = () => {
         };
 
         fetchOptimizedCart();
-    }, [cart, store_ids, navigate]);
+    }, [cart, store_ids, original_items, navigate]);
 
     if (loading) {
         return (

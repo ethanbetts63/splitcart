@@ -66,7 +66,7 @@ const SubstitutionPage = () => {
       });
 
       const storeIds = nearbyStoreIds.map(store => store.id);
-      navigate('/final-cart', { state: { cart: formattedCart, store_ids: storeIds } });
+      navigate('/final-cart', { state: { cart: formattedCart, store_ids: storeIds, original_items: items } });
     }
   };
 
@@ -120,7 +120,7 @@ const SubstitutionPage = () => {
   const handleSkipSubstitution = () => {
     const formattedCart = items.map(item => ([{ product_id: item.product.id, quantity: item.quantity || 1 }]));
     const storeIds = nearbyStoreIds.map(store => store.id);
-    navigate('/final-cart', { state: { cart: formattedCart, store_ids: storeIds } });
+    navigate('/final-cart', { state: { cart: formattedCart, store_ids: storeIds, original_items: items } });
   };
 
   const handleApproveAllAndNext = () => {
@@ -144,7 +144,7 @@ const SubstitutionPage = () => {
             return [{ product_id: originalProductId, quantity: originalCartItem.quantity || 1 }];
         });
         const storeIds = nearbyStoreIds.map(store => store.id);
-        navigate('/final-cart', { state: { cart: formattedCart, store_ids: storeIds } });
+        navigate('/final-cart', { state: { cart: formattedCart, store_ids: storeIds, original_items: items } });
     } else {
         updateSubstitutionChoices(currentItem.product.id, selectedProductsWithQuantities);
         setCurrentProductIndex(prev => prev + 1);
