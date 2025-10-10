@@ -62,7 +62,7 @@ class Command(BaseCommand):
             return
 
         # 5. Calculate baseline and savings
-        baseline_cost = calculate_baseline_cost(slots, selected_stores)
+        baseline_cost = calculate_baseline_cost(slots)
         savings = 0
         if baseline_cost > 0 and baseline_cost > optimized_cost:
             savings = ((baseline_cost - optimized_cost) / baseline_cost) * 100

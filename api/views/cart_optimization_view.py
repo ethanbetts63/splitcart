@@ -16,7 +16,7 @@ class CartOptimizationView(APIView):
             return None, None
 
         optimization_results = []
-        baseline_cost = calculate_baseline_cost(price_slots, stores)
+        baseline_cost = calculate_baseline_cost(price_slots)
 
         for max_stores in max_stores_options:
             optimized_cost, shopping_plan, _ = calculate_optimized_cost(price_slots, max_stores)
