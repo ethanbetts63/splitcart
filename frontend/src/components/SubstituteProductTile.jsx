@@ -49,7 +49,7 @@ const SubstituteProductTile = ({ product, isSelected, onSelect, onQuantityChange
           {product.size && (
             <span style={{
               position: 'absolute',
-              top: '15px',
+              top: '48px',
               right: '15px',
               backgroundColor: 'white',
               color: 'black',
