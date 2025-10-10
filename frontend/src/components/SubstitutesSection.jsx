@@ -1,4 +1,5 @@
 import SubstituteProductTile from './SubstituteProductTile';
+import subImage from '../assets/sub_image.png';
 
 const SubstitutesSection = ({ products, selectedOptions, onSelectOption, onQuantityChange, productQuantities = {} }) => {
   return (
@@ -20,6 +21,9 @@ const SubstitutesSection = ({ products, selectedOptions, onSelectOption, onQuant
         ) : (
           <p>No substitutes found for this product.</p>
         )}
+        <div style={{ width: '18rem', margin: 'auto' }}>
+          <img src={subImage} alt="Substitution suggestion" style={{ width: '100%', borderRadius: '8px' }} />
+        </div>
       </div>
     </div>
   );
