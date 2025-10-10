@@ -230,7 +230,7 @@ def run_savings_benchmark(file_path):
             continue
 
         # --- Calculation with subs ---
-        baseline_cost_with_subs = calculate_baseline_cost(slots_with_subs, selected_stores)
+        baseline_cost_with_subs = calculate_baseline_cost(slots_with_subs)
         optimized_cost_with_subs, _, _ = calculate_optimized_cost(slots_with_subs, MAX_STORES_FOR_SOLVER)
         
         if baseline_cost_with_subs > 0 and optimized_cost_with_subs is not None:
@@ -246,7 +246,7 @@ def run_savings_benchmark(file_path):
         slots_no_subs = build_price_slots(simple_cart, selected_stores)
 
         if slots_no_subs:
-            baseline_cost_no_subs = calculate_baseline_cost(slots_no_subs, selected_stores)
+            baseline_cost_no_subs = calculate_baseline_cost(slots_no_subs)
             optimized_cost_no_subs, _, _ = calculate_optimized_cost(slots_no_subs, MAX_STORES_FOR_SOLVER)
 
             if baseline_cost_no_subs > 0 and optimized_cost_no_subs is not None:
