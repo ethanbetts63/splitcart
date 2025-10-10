@@ -103,8 +103,22 @@ const SubstitutionPage = () => {
     return <div style={{ textAlign: 'center', margin: '2rem 0' }}>Loading...</div>;
   }
 
+  const handleApproveAll = () => {
+    if (currentSubstitutes) {
+      const allSubstituteIds = currentSubstitutes.map(sub => sub.id);
+      const allIds = [currentItem.product.id, ...allSubstituteIds];
+      setSelectedOptions([...new Set(allIds)]);
+    }
+  };
+
+  // Show loading spinner if substitutes for the current item are not yet fetched
+  if (currentSubstitutes === undefined) {
+    return <div style={{ textAlign: 'center', margin: '2rem 0' }}>Loading...</div>;
+  }
+
   return (
-    <div style={{ marginTop: '-2.5rem' }}>
+    <div style={{ position: 'relative', marginTop: '1rem' }}>
+      <button onClick={handleApproveAll} style={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }} className="btn">Approve All</button>
       <h2>Product Substitution</h2>
       <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', marginTop: '-1rem' }}>
         Reviewing substitutes for: <strong>{currentItem.product.name}</strong>
