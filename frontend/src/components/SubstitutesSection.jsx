@@ -1,6 +1,6 @@
 import SelectableProductTile from './SelectableProductTile';
 
-const SubstitutesSection = ({ products, selectedOptions, onSelectOption, onQuantityChange, productQuantities }) => {
+const SubstitutesSection = ({ products, selectedOptions, onSelectOption, onQuantityChange, productQuantities = {} }) => {
   return (
     <div style={{ marginTop: '2rem' }}>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(18rem, 1fr))', gap: '1rem' }}>
