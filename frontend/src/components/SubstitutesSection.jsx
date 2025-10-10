@@ -4,7 +4,7 @@ import subImage from '../assets/sub_image.png';
 const SubstitutesSection = ({ products, selectedOptions, onSelectOption, onQuantityChange, productQuantities = {} }) => {
   return (
     <div style={{ marginTop: '2rem' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(18rem, 1fr))', gap: '1rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(18rem, 1fr))', gap: '1rem', justifyItems: 'center' }}>
         {products.length > 0 ? (
           products.map(product => (
             <div key={product.id} style={{ position: 'relative', height: '100%' }}>

@@ -56,7 +56,7 @@ const SubstitutionPage = () => {
     });
 
     const storeIds = nearbyStoreIds.map(store => store.id);
-    navigate('/final-cart', { state: { cart: formattedCart.flat(), store_ids: storeIds } });
+    navigate('/final-cart', { state: { cart: formattedCart, store_ids: storeIds } });
   };
 
   // Effect to auto-advance if no substitutes are available for the current item
@@ -104,7 +104,7 @@ const SubstitutionPage = () => {
   }
 
   return (
-    <div style={{ marginTop: '2rem' }}>
+    <div style={{ marginTop: '1rem' }}>
       <h2>Product Substitution</h2>
       <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
         Reviewing substitutes for: <strong>{currentItem.product.name}</strong>
