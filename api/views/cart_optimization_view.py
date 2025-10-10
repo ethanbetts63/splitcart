@@ -32,6 +32,10 @@ class CartOptimizationView(APIView):
         return baseline_cost, optimization_results
 
     def post(self, request, *args, **kwargs):
+        print("--- CartOptimizationView INPUT ---")
+        print(request.data)
+        print("---------------------------------")
+
         cart = request.data.get('cart')
         store_ids = request.data.get('store_ids')
         original_items = request.data.get('original_items')
@@ -74,6 +78,9 @@ class CartOptimizationView(APIView):
                         'optimization_results': no_subs_results,
                     }
 
+            print("--- CartOptimizationView OUTPUT ---")
+            print(response_data)
+            print("----------------------------------")
             return Response(response_data, status=status.HTTP_200_OK)
 
         except Exception as e:

@@ -2,6 +2,8 @@
 import React from 'react';
 
 const OptimizationResultTile = ({ result, baselineCost }) => {
+    const savingsPercentage = baselineCost > 0 ? (result.savings / baselineCost) * 100 : 0;
+
     return (
         <details style={{ border: '1px solid var(--border)', borderRadius: '8px', marginBottom: '1rem' }}>
             <summary style={{ padding: '1rem', cursor: 'pointer' }}>
@@ -11,7 +13,7 @@ const OptimizationResultTile = ({ result, baselineCost }) => {
                     </div>
                     <div style={{ textAlign: 'right' }}>
                         <p>Optimized Cost: <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}>${result.optimized_cost.toFixed(2)}</span></p>
-                        <p>Savings: <span style={{ fontWeight: 'bold', color: 'var(--success)' }}>${result.savings.toFixed(2)}</span></p>
+                        <p>Savings: <span style={{ fontWeight: 'bold', color: 'var(--success)' }}>${result.savings.toFixed(2)} ({savingsPercentage.toFixed(0)}%)</span></p>
                     </div>
                 </div>
             </summary>

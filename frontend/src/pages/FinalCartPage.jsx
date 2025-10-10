@@ -67,6 +67,7 @@ const FinalCartPage = () => {
             <div style={{ padding: '2rem' }}>
                 {optimizationData && (
                     <div>
+                        <h4 style={{ marginBottom: '1rem' }}>Savings with Substitutes:</h4>
                         {optimizationData.optimization_results.map((result, index) => (
                             <div key={index} style={{ marginBottom: '1.5rem' }}>
                                 <OptimizationResultTile 
@@ -75,6 +76,20 @@ const FinalCartPage = () => {
                                 />
                             </div>
                         ))}
+
+                        {optimizationData.no_subs_results && (
+                            <div style={{ marginTop: '3rem' }}>
+                                <h4 style={{ marginBottom: '1rem' }}>Savings on Original Items Only:</h4>
+                                {optimizationData.no_subs_results.optimization_results.map((result, index) => (
+                                    <div key={index} style={{ marginBottom: '1.5rem' }}>
+                                        <OptimizationResultTile 
+                                            result={result} 
+                                            baselineCost={optimizationData.no_subs_results.baseline_cost} 
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
