@@ -15,19 +15,7 @@ const SubstitutesSection = ({ products, selectedOptions, onSelectOption, onQuant
                 initialQuantity={productQuantities[product.id] || 1}
                 is_original={product.is_original}
               />
-              {product.is_original ? (
-                <div 
-                  style={{ position: 'absolute', top: 0, left: 0, backgroundColor: 'var(--primary)', color: 'white', padding: '0.25rem 0.5rem', fontSize: '0.75rem', borderTopLeftRadius: '0.25rem' }}
-                >
-                  Original Product
-                </div>
-              ) : product.level_description && (
-                <div 
-                  style={{ position: 'absolute', top: 0, left: 0, backgroundColor: 'var(--info)', color: 'white', padding: '0.25rem 0.5rem', fontSize: '0.75rem', borderTopLeftRadius: '0.25rem' }}
-                >
-                  {product.level_description}
-                </div>
-              )}
+
             </div>
           ))
         ) : (

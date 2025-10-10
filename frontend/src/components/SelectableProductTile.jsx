@@ -4,7 +4,7 @@ import placeholderImage from '../assets/shopping_cart.svg';
 import QuantityAdjuster from './QuantityAdjuster';
 import PriceDisplay from './PriceDisplay';
 
-const SelectableProductTile = ({ product, isSelected, onSelect, onQuantityChange, initialQuantity = 1 }) => {
+const SelectableProductTile = ({ product, isSelected, onSelect, onQuantityChange, initialQuantity = 1, is_original }) => {
   const [quantity, setQuantity] = useState(initialQuantity);
 
   useEffect(() => {
@@ -26,9 +26,11 @@ const SelectableProductTile = ({ product, isSelected, onSelect, onQuantityChange
 
   const prices = product.prices || [];
 
+  const isApproved = isSelected || is_original;
+
   const cardStyle = {
-    border: isSelected ? '3px solid var(--success)' : '1px solid var(--border-color)',
-    boxShadow: isSelected ? '0 0 10px var(--success)' : 'none',
+    border: isApproved ? '3px solid var(--success)' : '1px solid var(--border-color)',
+    boxShadow: isApproved ? '0 0 10px var(--success)' : 'none',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -38,11 +40,30 @@ const SelectableProductTile = ({ product, isSelected, onSelect, onQuantityChange
   return (
     <div className="product-card" style={cardStyle}>
       <div>
-        <img
-          src={product.image_url || placeholderImage}
-          onError={handleImageError}
-          alt={product.name}
-        />
+        <div style={{ position: 'relative' }}>
+          <img
+            src={product.image_url || placeholderImage}
+            onError={handleImageError}
+            alt={product.name}
+          />
+          {(is_original || product.level_description) && (
+            <span style={{
+              position: 'absolute',
+              top: '15px',
+              right: '15px',
+              backgroundColor: 'white',
+              color: 'black',
+              padding: '0.2rem 0.4rem',
+              borderRadius: '8px',
+              fontSize: '0.8rem',
+              border: '1px solid var(--colorp2)',
+              zIndex: 1,
+              fontFamily: 'Arial, sans-serif'
+            }}>
+              {is_original ? 'Original Product' : product.level_description}
+            </span>
+          )}
+        </div>
         <div className="product-card-content">
           <h3>{product.name}</h3>
           <p>
@@ -64,9 +85,10 @@ const SelectableProductTile = ({ product, isSelected, onSelect, onQuantityChange
         <div className="action-item">
           <button 
             onClick={() => onSelect(product.id)} 
-            className={`btn ${isSelected ? 'approved-btn' : 'approve-btn'}`}
+            className={`btn ${isApproved ? 'approved-btn' : 'approve-btn'}`}
+            disabled={is_original}
           >
-            {isSelected ? 'Approved' : 'Approve'}
+            {isApproved ? 'Approved' : 'Approve'}
           </button>
         </div>
       </div>

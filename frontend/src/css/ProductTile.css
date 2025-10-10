@@ -317,11 +317,11 @@
   }
 
 .approve-btn {
-  background: var(--danger);
+  background: red;
 }
 
 .approved-btn {
-  background: var(--success);
+  background: green;
 }
 
 
