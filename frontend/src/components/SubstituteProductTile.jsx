@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import '../css/SelectableProductTile.css';
+import '../css/ProductTile.css';
+import '../css/SubstituteProductTile.css';
 import placeholderImage from '../assets/shopping_cart.svg';
 import QuantityAdjuster from './QuantityAdjuster';
 import PriceDisplay from './PriceDisplay';
 
-const SelectableProductTile = ({ product, isSelected, onSelect, onQuantityChange, initialQuantity = 1, is_original }) => {
+const SubstituteProductTile = ({ product, isSelected, onSelect, onQuantityChange, initialQuantity = 1, is_original }) => {
   const [quantity, setQuantity] = useState(initialQuantity);
 
   useEffect(() => {
@@ -94,4 +95,4 @@ const SelectableProductTile = ({ product, isSelected, onSelect, onQuantityChange
   );
 };
 
-export default SelectableProductTile;
+export default SubstituteProductTile;

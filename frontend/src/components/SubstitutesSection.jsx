@@ -1,4 +1,4 @@
-import SelectableProductTile from './SelectableProductTile';
+import SubstituteProductTile from './SubstituteProductTile';
 
 const SubstitutesSection = ({ products, selectedOptions, onSelectOption, onQuantityChange, productQuantities = {} }) => {
   return (
@@ -7,7 +7,7 @@ const SubstitutesSection = ({ products, selectedOptions, onSelectOption, onQuant
         {products.length > 0 ? (
           products.map(product => (
             <div key={product.id} style={{ position: 'relative', height: '100%' }}>
-              <SelectableProductTile
+              <SubstituteProductTile
                 product={product}
                 isSelected={selectedOptions.includes(product.id)}
                 onSelect={onSelectOption}
@@ -15,7 +15,6 @@ const SubstitutesSection = ({ products, selectedOptions, onSelectOption, onQuant
                 initialQuantity={productQuantities[product.id] || 1}
                 is_original={product.is_original}
               />
-
             </div>
           ))
         ) : (

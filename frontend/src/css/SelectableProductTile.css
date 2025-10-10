@@ -93,9 +93,13 @@
 }
 
 .remove-btn {
-  background: var(--danger);
+  background: red;
 }
 
+.green-btn {
+  background: green;
+}
 
-
-  
+.red-btn {
+  background: red;
+}
