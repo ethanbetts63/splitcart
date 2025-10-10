@@ -1,0 +1,10 @@
+.remove-btn {
+  background: var(--danger);
+}
+
+.action-element {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}

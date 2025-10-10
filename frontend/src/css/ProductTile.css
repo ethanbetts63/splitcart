@@ -71,30 +71,7 @@
   justify-content: center;
 }
 
-.action-element {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
 
-.quantity-control {
-  display: flex;
-  align-items: center;
-}
-
-.quantity-btn {
-  padding: 8px 12px;
-}
-
-.quantity-display {
-  padding: 0 10px;
-  font-size: 1.2rem;
-}
-
-.remove-btn {
-  background: var(--danger);
-}
 
 
 
