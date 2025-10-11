@@ -7,11 +7,11 @@ const OptimizationResultTile = ({ result, baselineCost, cart }) => {
 
     return (
         <div style={{ border: '1px solid var(--border)', borderRadius: '8px', marginBottom: '1rem' }}>
-            <div style={{ padding: '1rem', paddingTop: 0 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem', padding: '1rem', paddingTop: 0 }}>
                 {Object.entries(result.shopping_plan).map(([storeName, items]) => (
                     items.length > 0 && (
-                        <div key={storeName} style={{ marginBottom: '1.5rem' }}>
-                            <h6 style={{ fontWeight: 'bold' }}>{storeName}</h6>
+                        <div key={storeName} style={{ background: 'var(--bg-light)', padding: '1rem', borderRadius: '8px' }}>
+                            <h6 style={{ fontWeight: 'bold', marginTop: 0 }}>{storeName}</h6>
                             <div>
                                 {items.map((item, itemIndex) => {
                                     const cartItem = cart.find(ci => ci.product && ci.product.name === item.product_name);

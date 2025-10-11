@@ -93,8 +93,8 @@ const FinalCartPage = () => {
                 <div style={{ background: 'var(--colorp3)', padding: '1rem', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
                         {canShowSubstitutes && canShowNoSubstitutes && (
-                            <button onClick={handleToggle} style={{ background: 'var(--primary)', color: 'white', border: 'none', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer' }}>
-                                {showSubstitutes ? 'Show No Subs' : 'Show With Subs'}
+                            <button onClick={handleToggle} style={{ background: 'red', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', font: 'var(--p)' }}>
+                                {showSubstitutes ? 'Disable Subs' : 'Enable Subs'}
                             </button>
                         )}
                     </div>
