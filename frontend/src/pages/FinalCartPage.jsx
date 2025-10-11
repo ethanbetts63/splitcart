@@ -84,6 +84,8 @@ const FinalCartPage = () => {
 
     const resultsToShow = showSubstitutes ? subsResults : noSubsResults?.optimization_results;
     const baselineToShow = showSubstitutes ? optimizationData?.baseline_cost : noSubsResults?.baseline_cost;
+    const singleStoreResult = showSubstitutes ? optimizationData?.best_single_store : noSubsResults?.best_single_store;
+
 
     const canShowSubstitutes = subsResults && subsResults.length > 0;
     const canShowNoSubstitutes = noSubsResults && noSubsResults.optimization_results && noSubsResults.optimization_results.length > 0;
@@ -101,7 +103,7 @@ const FinalCartPage = () => {
                                         baselineCost={baselineToShow}
                                         activeTab={activeTab}
                                         onTabClick={handleTabClick}
-                                        singleStoreResult={showSubstitutes ? optimizationData?.best_single_store : noSubsResults?.best_single_store}
+                                        singleStoreResult={singleStoreResult}
                                     />
                                 </div>
                                 <h2 style={{ margin: 0, color: 'var(--colorp)', whiteSpace: 'nowrap', fontSize: '42px' }}>Optimized Cart</h2>
