@@ -46,9 +46,11 @@
 .tab-savings {
     font-size: 0.9rem;
     color: var(--success);
+    font-family: var(--font-numeric);
 }
 
 .tab-cost {
     font-size: 1rem;
     font-weight: bold;
+    font-family: var(--font-numeric);
 }

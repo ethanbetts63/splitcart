@@ -81,7 +81,7 @@ const PriceDisplay = ({ prices, showBackground = true, variant = 'trolley' }) =>
       {pricesToShow.map(priceData => (
         <div key={priceData.company} style={priceItemStyle}>
           <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} style={imageStyle} />
-          <span style={{ color: priceData.is_lowest ? 'var(--success)' : 'var(--text)', fontSize: fontSize, fontFamily: 'Arial, sans-serif', whiteSpace: 'nowrap' }}>
+          <span style={{ color: priceData.is_lowest ? 'var(--success)' : 'var(--text)', fontSize: fontSize, fontFamily: 'var(--font-numeric)', whiteSpace: 'nowrap' }}>
             ${priceData.price_display}
           </span>
         </div>

@@ -57,7 +57,7 @@ const SelectableProductTile = ({ product, isSelected, onSelect, onQuantityChange
               fontSize: '0.8rem',
               border: '1px solid var(--colorp2)',
               zIndex: 1,
-              fontFamily: 'Arial, sans-serif'
+              fontFamily: 'var(--font-numeric)'
             }}>
               {is_original ? 'Original Product' : product.level_description}
             </span>

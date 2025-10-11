@@ -25,10 +25,10 @@ const DisplayOnlyProductTile = ({ item }) => {
 
       <div className="row-2">
         <div>
-            <span>${item.price.toFixed(2)}</span>
+            <span style={{ fontFamily: 'var(--font-numeric)' }}>${item.price.toFixed(2)}</span>
         </div>
         <div>
-            <span>Qty: {item.quantity}</span>
+            <span style={{ fontFamily: 'var(--font-numeric)' }}>Qty: {item.quantity}</span>
         </div>
       </div>
     </div>

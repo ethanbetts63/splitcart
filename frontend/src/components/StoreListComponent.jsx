@@ -32,8 +32,8 @@ const StoreListComponent = ({ storeName, storeData, cart }) => {
         <div style={style}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                 {logo && <img src={logo} alt={`${company_name} logo`} style={{ height: '30px', width: 'auto', maxWidth: '80px' }} />}
-                <h6 style={{ fontWeight: 'bold', margin: 0, textAlign: 'center', flex: 1 }}>{storeName}</h6>
-                <p style={{ fontWeight: 'bold', margin: 0, fontSize: '1.1rem' }}>${totalSpend.toFixed(2)}</p>
+                <h6 style={{ fontWeight: 'bold', margin: 0, textAlign: 'center', flex: 1, fontSize: '1.2rem' }}>{storeName}</h6>
+                <p style={{ fontWeight: 'bold', margin: 0, fontSize: '1.1rem', fontFamily: 'var(--font-numeric)' }}>${totalSpend.toFixed(2)} ({items.length} items)</p>
             </div>
             <div>
                 {items.map((item, itemIndex) => {
