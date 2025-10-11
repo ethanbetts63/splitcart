@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useShoppingList } from '../context/ShoppingListContext';
 import '../css/ProductTile.css';
 import '../css/PrimaryProductTile.css';
-import logoSymbol from '../assets/splicart_symbol_v6.png';
+import logoSymbol from '../assets/splitcart_symbol_v6.png';
 import QuantityAdjuster from './QuantityAdjuster';
 import PriceDisplay from './PriceDisplay';
 

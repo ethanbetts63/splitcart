@@ -1,0 +1,11 @@
+In this session, we conducted a major UI/UX overhaul of the `FinalCartPage` to improve clarity and usability when displaying optimized shopping cart results.
+
+First, we replaced the original, cluttered layout of stacked collapsible tiles with a clean, tabbed interface. This involved creating a reusable `Tabs` component where each tab represents a different store combination (e.g., "2 Stores") and prominently displays the total cost and savings percentage. A corresponding `TabPanel` component was created to show the detailed shopping list for the selected tab.
+
+Next, we addressed the presentation of results for carts with and without product substitutes. The initial design was replaced with a toggle mechanism. After some iteration, this evolved from a centered toggle switch into a red "Disable Subs" / "Enable Subs" button positioned in the top-right corner of the results container for better clarity and user control.
+
+We then refactored the layout of the store lists within each tab. To create a more organized and visually appealing presentation, we moved from a simple vertical list to a responsive, two-column grid layout. This ensures that on larger screens, store lists are tiled side-by-side.
+
+To improve code modularity and styling, the logic for displaying a single store's shopping list was extracted into its own `StoreListComponent`. This component was styled with a distinct background, border, and shadow to make each store's list stand out as a card.
+
+Finally, we implemented a header within the `StoreListComponent` to display the company logo, the full store name, and the total spend at that store. This presented a significant challenge, as the necessary company information was not available on the frontend. After a discussion, we opted to modify the backend cart optimization API to include the `company_name` in its response. The frontend was then updated to use this new data, allowing the `StoreListComponent` to map the company name to the correct, locally-stored logo file, mirroring the design pattern used elsewhere in the application.

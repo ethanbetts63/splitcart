@@ -1,5 +1,5 @@
 import React from 'react';
-import logoSymbol from '../assets/splicart_symbol_v6.png';
+import logoSymbol from '../assets/splitcart_symbol_v6.png';
 
 const SkeletonProductCard = () => {
 

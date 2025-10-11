@@ -1,6 +1,6 @@
 import React from 'react';
 import '../css/LogoButton.css';
-import logoSymbol from '../assets/splicart_symbol_v6.png';
+import logoSymbol from '../assets/splitcart_symbol_v6.png';
 
 const LogoButton = ({ onClick, fontSize }) => {
   const style = {
