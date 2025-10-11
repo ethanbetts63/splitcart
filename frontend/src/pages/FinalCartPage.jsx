@@ -36,7 +36,6 @@ const FinalCartPage = () => {
                     max_stores_options: [2, 3, 4]
                 });
                 setOptimizationData(response.data);
-                console.log('API Response:', response.data);
                 // Default to no-subs view if subs view is empty
                 if (!response.data.optimization_results || response.data.optimization_results.length === 0) {
                     setShowSubstitutes(false);

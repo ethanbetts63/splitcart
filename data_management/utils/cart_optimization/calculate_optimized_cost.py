@@ -21,21 +21,19 @@ def calculate_optimized_cost(slots, max_stores):
 
     prob += pulp.lpSum(store_usage[store_id] for store_id in all_store_ids) <= max_stores, "Max_Stores_Limit"
 
+    store_to_company = {option['store_name']: option['company_name'] for slot in slots for option in slot}
+
     prob.solve(pulp.PULP_CBC_CMD(msg=0))
 
     if pulp.LpStatus[prob.status] == "Optimal":
         final_cost = pulp.value(prob.objective)
 
-        shopping_plan = {name: {'items': [], 'company_name': ''} for name in all_store_names}
+        shopping_plan = {name: {'items': [], 'company_name': store_to_company.get(name, '')} for name in all_store_names}
 
         for i, slot in enumerate(slots):
             for j, option in enumerate(slot):
                 if choice_vars[(i, j)].varValue == 1:
                     store_name = option['store_name']
-
-                    # Populate company info if not already present
-                    if not shopping_plan[store_name]['company_name']:
-                        shopping_plan[store_name]['company_name'] = option['company_name']
 
                     product_name = option['product_name']
                     brand = option['brand']
