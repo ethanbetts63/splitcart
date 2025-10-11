@@ -90,21 +90,23 @@ const FinalCartPage = () => {
                 <div style={{ background: 'var(--colorp3)', padding: '1rem', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
                     {resultsToShow && baselineToShow ? (
                         <>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                                <Tabs
-                                    results={resultsToShow}
-                                    baselineCost={baselineToShow}
-                                    activeTab={activeTab}
-                                    onTabClick={handleTabClick}
-                                />
-                                <h2 style={{ margin: 0, color: 'var(--colorp)' }}>Optimized Cart</h2>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-                                {canShowSubstitutes && canShowNoSubstitutes && (
-                                    <button onClick={handleToggle} style={{ background: 'red', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '20px', cursor: 'pointer', font: 'var(--font-numeric)', flexShrink: 0 }}>
-                                        {showSubstitutes ? 'Disable Subs' : 'Enable Subs'}
-                                    </button>
-                                )}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                                <div style={{ flex: 1 }}>
+                                    <Tabs
+                                        results={resultsToShow}
+                                        baselineCost={baselineToShow}
+                                        activeTab={activeTab}
+                                        onTabClick={handleTabClick}
+                                    />
+                                </div>
+                                <h2 style={{ margin: 0, color: 'var(--colorp)', whiteSpace: 'nowrap', fontSize: '42px' }}>Optimized Cart</h2>
+                                <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+                                    {canShowSubstitutes && canShowNoSubstitutes && (
+                                        <button onClick={handleToggle} style={{ background: 'red', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '20px', cursor: 'pointer', font: 'var(--font-numeric)', flexShrink: 0 }}>
+                                            {showSubstitutes ? 'Disable Subs' : 'Enable Subs'}
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                             <div>
                                 {resultsToShow.map((result, index) => (
