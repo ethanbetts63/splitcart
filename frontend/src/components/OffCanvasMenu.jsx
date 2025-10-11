@@ -2,10 +2,14 @@ import React, { useEffect } from 'react';
 import '../css/OffCanvasMenu.css';
 import ShoppingListComponent from './ShoppingListComponent';
 import StoreMap from './StoreMap';
-import cashTrolley from '../assets/cash_trolley.png'; // Import the image
+import cashTrolley from '../assets/cash_trolley.png';
 import mapIcon from '../assets/edit_location.svg';
+import NextButton from './NextButton';
+import { useShoppingList } from '../context/ShoppingListContext';
 
 const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSelectionChange, onNavigateHome }) => {
+  const { items } = useShoppingList();
+
   useEffect(() => {
     if (isOpen) {
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -35,6 +39,15 @@ const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSele
 
   return (
     <div className={`off-canvas-menu-right ${isOpen ? 'visible' : ''}`}>
+      <div className="off-canvas-header" style={{ position: 'relative' }}>
+        <h2 style={{ margin: 0 }}>{title}</h2>
+        {content === 'trolley' && (
+          <div style={{ position: 'absolute', top: '50%', right: '1rem', transform: 'translateY(-50%)' }}>
+            <NextButton />
+          </div>
+        )}
+      </div>
+
       {content === 'trolley' && (
         <img src={cashTrolley} alt="background" style={{
           position: 'absolute',
