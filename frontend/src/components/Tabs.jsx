@@ -14,9 +14,10 @@ const Tabs = ({ results, baselineCost, activeTab, onTabClick }) => {
                         className={`tab-item ${isActive ? 'active' : ''}`}
                         onClick={() => onTabClick(index)}
                     >
-                        <span className="tab-title">{result.max_stores} Stores</span>
-                        <span className="tab-savings">(Save {savingsPercentage}%)</span>
-                        <span className="tab-cost">${result.optimized_cost.toFixed(2)}</span>
+                        <span className="tab-store-info">{result.max_stores} Stores</span>
+                        <span className="tab-price-info">
+                            ${result.optimized_cost.toFixed(2)} (-{savingsPercentage}%)
+                        </span>
                     </button>
                 );
             })}

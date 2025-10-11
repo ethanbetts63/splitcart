@@ -85,28 +85,27 @@ const FinalCartPage = () => {
     const canShowNoSubstitutes = noSubsResults && noSubsResults.optimization_results && noSubsResults.optimization_results.length > 0;
 
     return (
-        <div style={{ background: 'var(--bg-light)', minHeight: '100vh'}}>
-            <header style={{ background: 'var(--bg)', color: 'var(--text)', padding: '0 1rem 0.5rem', textAlign: 'center', borderBottom: '1px solid var(--border)' }}>
-                <h1 style={{ marginBlock: 0 }}>Optimized Shopping Cart</h1>
-            </header>
-            <div style={{ padding: '0rem' }}>
+        <div style={{ background: 'var(--bg-light)', minHeight: '100vh', paddingTop: '2rem'}}>
+            <div style={{ padding: '0 2rem' }}>
                 <div style={{ background: 'var(--colorp3)', padding: '1rem', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-                        {canShowSubstitutes && canShowNoSubstitutes && (
-                            <button onClick={handleToggle} style={{ background: 'red', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', font: 'var(--p)' }}>
-                                {showSubstitutes ? 'Disable Subs' : 'Enable Subs'}
-                            </button>
-                        )}
-                    </div>
-
                     {resultsToShow && baselineToShow ? (
                         <>
-                            <Tabs
-                                results={resultsToShow}
-                                baselineCost={baselineToShow}
-                                activeTab={activeTab}
-                                onTabClick={handleTabClick}
-                            />
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                                <Tabs
+                                    results={resultsToShow}
+                                    baselineCost={baselineToShow}
+                                    activeTab={activeTab}
+                                    onTabClick={handleTabClick}
+                                />
+                                <h2 style={{ margin: 0, color: 'var(--colorp)' }}>Optimized Cart</h2>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+                                {canShowSubstitutes && canShowNoSubstitutes && (
+                                    <button onClick={handleToggle} style={{ background: 'red', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '20px', cursor: 'pointer', font: 'var(--font-numeric)', flexShrink: 0 }}>
+                                        {showSubstitutes ? 'Disable Subs' : 'Enable Subs'}
+                                    </button>
+                                )}
+                            </div>
                             <div>
                                 {resultsToShow.map((result, index) => (
                                     <TabPanel
