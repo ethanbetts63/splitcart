@@ -60,10 +60,6 @@ def calculate_best_single_store(slots, original_cart):
 
     # Identify missing products
     missing_product_ids = original_product_ids - {item['product_id'] for item in best_store['items']}
-    
-    # We need the full product details for the missing items, not just the IDs.
-    # This requires access to the original `products` list or another query.
-    # For now, we will return the plan and handle missing items on the frontend if possible.
 
     shopping_plan = {
         best_store['store_name']: {
@@ -71,12 +67,12 @@ def calculate_best_single_store(slots, original_cart):
             'company_name': best_store['company_name']
         }
     }
-
+    
     return {
         'max_stores': 1,
         'optimized_cost': best_store['total_cost'],
         'savings': 0,  # Savings calculation is complex here, maybe compare to baseline?
         'shopping_plan': shopping_plan,
         'items_found_count': best_store['items_found_count'],
-        'total_items_in_cart': len(original_product_ids),
+        'total_items_in_cart': len(original_cart),
     }
