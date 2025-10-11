@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Tabs from '../components/Tabs';
 import TabPanel from '../components/TabPanel';
-import SubstitutesToggle from '../components/SubstitutesToggle';
 
 const FinalCartPage = () => {
     const location = useLocation();
@@ -86,15 +85,19 @@ const FinalCartPage = () => {
     const canShowNoSubstitutes = noSubsResults && noSubsResults.optimization_results && noSubsResults.optimization_results.length > 0;
 
     return (
-        <div style={{ background: 'var(--bg-light)', minHeight: '100vh' }}>
-            <header style={{ background: 'var(--bg)', color: 'var(--text)', padding: '1rem', textAlign: 'center', borderBottom: '1px solid var(--border)' }}>
-                <h1>Optimized Shopping Cart</h1>
+        <div style={{ background: 'var(--bg-light)', minHeight: '100vh'}}>
+            <header style={{ background: 'var(--bg)', color: 'var(--text)', padding: '0 1rem 0.5rem', textAlign: 'center', borderBottom: '1px solid var(--border)' }}>
+                <h1 style={{ marginBlock: 0 }}>Optimized Shopping Cart</h1>
             </header>
-            <div style={{ padding: '2rem' }}>
-                <div style={{ background: 'var(--colorp3)', padding: '2rem', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-                    {canShowSubstitutes && canShowNoSubstitutes && (
-                        <SubstitutesToggle showSubstitutes={showSubstitutes} onToggle={handleToggle} />
-                    )}
+            <div style={{ padding: '0rem' }}>
+                <div style={{ background: 'var(--colorp3)', padding: '1rem', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+                        {canShowSubstitutes && canShowNoSubstitutes && (
+                            <button onClick={handleToggle} style={{ background: 'var(--primary)', color: 'white', border: 'none', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer' }}>
+                                {showSubstitutes ? 'Show No Subs' : 'Show With Subs'}
+                            </button>
+                        )}
+                    </div>
 
                     {resultsToShow && baselineToShow ? (
                         <>
@@ -117,7 +120,7 @@ const FinalCartPage = () => {
                             </div>
                         </>
                     ) : (
-                        <div style={{ textAlign: 'center', marginTop: '3rem', padding: '2rem 0' }}>
+                        <div style={{ textAlign: 'center', marginTop: '1rem', padding: '1rem 0' }}>
                             <h4>
                                 {showSubstitutes && !canShowSubstitutes
                                     ? "No optimization results available with substitutes."
