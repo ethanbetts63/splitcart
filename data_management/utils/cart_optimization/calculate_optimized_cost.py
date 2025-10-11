@@ -26,12 +26,17 @@ def calculate_optimized_cost(slots, max_stores):
     if pulp.LpStatus[prob.status] == "Optimal":
         final_cost = pulp.value(prob.objective)
 
-        shopping_plan = {name: [] for name in all_store_names}
+        shopping_plan = {name: {'items': [], 'company_name': ''} for name in all_store_names}
 
         for i, slot in enumerate(slots):
             for j, option in enumerate(slot):
                 if choice_vars[(i, j)].varValue == 1:
                     store_name = option['store_name']
+
+                    # Populate company info if not already present
+                    if not shopping_plan[store_name]['company_name']:
+                        shopping_plan[store_name]['company_name'] = option['company_name']
+
                     product_name = option['product_name']
                     brand = option['brand']
                     price = option['price']
@@ -44,7 +49,7 @@ def calculate_optimized_cost(slots, max_stores):
                         "sizes": sizes,
                         "price": price
                     }
-                    shopping_plan[store_name].append(plan_item)
+                    shopping_plan[store_name]['items'].append(plan_item)
                     break
 
         return final_cost, shopping_plan, choice_vars

@@ -1,7 +1,7 @@
 import React from 'react';
 import DisplayOnlyProductTile from './DisplayOnlyProductTile';
 
-const StoreListComponent = ({ storeName, items, cart }) => {
+const StoreListComponent = ({ storeName, storeData, cart }) => {
     const style = {
         background: '#fff',
         padding: '1rem',
@@ -10,9 +10,17 @@ const StoreListComponent = ({ storeName, items, cart }) => {
         boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
     };
 
+    const { items, logo_url, company_name } = storeData;
+
+    const totalSpend = items.reduce((total, item) => total + item.price, 0);
+
     return (
         <div style={style}>
-            <h6 style={{ fontWeight: 'bold', marginTop: 0 }}>{storeName}</h6>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <img src={logo_url} alt={`${company_name} logo`} style={{ height: '30px', width: 'auto', maxWidth: '80px' }} />
+                <h6 style={{ fontWeight: 'bold', margin: 0, textAlign: 'center' }}>{storeName}</h6>
+                <p style={{ fontWeight: 'bold', margin: 0, fontSize: '1.1rem' }}>${totalSpend.toFixed(2)}</p>
+            </div>
             <div>
                 {items.map((item, itemIndex) => {
                     const cartItem = cart.find(ci => ci.product && ci.product.name === item.product_name);
