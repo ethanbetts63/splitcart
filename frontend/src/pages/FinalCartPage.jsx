@@ -91,39 +91,41 @@ const FinalCartPage = () => {
                 <h1>Optimized Shopping Cart</h1>
             </header>
             <div style={{ padding: '2rem' }}>
-                {canShowSubstitutes && canShowNoSubstitutes && (
-                    <SubstitutesToggle showSubstitutes={showSubstitutes} onToggle={handleToggle} />
-                )}
+                <div style={{ background: 'var(--colorp3)', padding: '2rem', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+                    {canShowSubstitutes && canShowNoSubstitutes && (
+                        <SubstitutesToggle showSubstitutes={showSubstitutes} onToggle={handleToggle} />
+                    )}
 
-                {resultsToShow && baselineToShow ? (
-                    <>
-                        <Tabs
-                            results={resultsToShow}
-                            baselineCost={baselineToShow}
-                            activeTab={activeTab}
-                            onTabClick={handleTabClick}
-                        />
-                        <div>
-                            {resultsToShow.map((result, index) => (
-                                <TabPanel
-                                    key={index}
-                                    result={result}
-                                    baselineCost={baselineToShow}
-                                    cart={original_items}
-                                    isActive={activeTab === index}
-                                />
-                            ))}
+                    {resultsToShow && baselineToShow ? (
+                        <>
+                            <Tabs
+                                results={resultsToShow}
+                                baselineCost={baselineToShow}
+                                activeTab={activeTab}
+                                onTabClick={handleTabClick}
+                            />
+                            <div>
+                                {resultsToShow.map((result, index) => (
+                                    <TabPanel
+                                        key={index}
+                                        result={result}
+                                        baselineCost={baselineToShow}
+                                        cart={original_items}
+                                        isActive={activeTab === index}
+                                    />
+                                ))}
+                            </div>
+                        </>
+                    ) : (
+                        <div style={{ textAlign: 'center', marginTop: '3rem', padding: '2rem 0' }}>
+                            <h4>
+                                {showSubstitutes && !canShowSubstitutes
+                                    ? "No optimization results available with substitutes."
+                                    : "No optimization results available for the original items."}
+                            </h4>
                         </div>
-                    </>
-                ) : (
-                    <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-                        <h4>
-                            {showSubstitutes && !canShowSubstitutes
-                                ? "No optimization results available with substitutes."
-                                : "No optimization results available for the original items."}
-                        </h4>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
         </div>
     );
