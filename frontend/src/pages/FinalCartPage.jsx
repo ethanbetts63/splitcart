@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import OptimizationResultTile from '../components/OptimizationResultTile';
+import Tabs from '../components/Tabs';
+import TabPanel from '../components/TabPanel';
+import SubstitutesToggle from '../components/SubstitutesToggle';
 
 const FinalCartPage = () => {
     const location = useLocation();
@@ -11,7 +13,9 @@ const FinalCartPage = () => {
     const [optimizationData, setOptimizationData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const splitCalledRef = useRef(false); // Flag to prevent double API calls
+    const [showSubstitutes, setShowSubstitutes] = useState(true);
+    const [activeTab, setActiveTab] = useState(0);
+    const splitCalledRef = useRef(false);
 
     useEffect(() => {
         if (!cart || !store_ids) {
@@ -20,9 +24,9 @@ const FinalCartPage = () => {
         }
 
         if (splitCalledRef.current) {
-            return; // Don't call API if it has already been called
+            return;
         }
-        splitCalledRef.current = true; // Set flag to true immediately
+        splitCalledRef.current = true;
 
         const fetchOptimizedCart = async () => {
             try {
@@ -33,6 +37,10 @@ const FinalCartPage = () => {
                     max_stores_options: [2, 3, 4]
                 });
                 setOptimizationData(response.data);
+                // Default to no-subs view if subs view is empty
+                if (!response.data.optimization_results || response.data.optimization_results.length === 0) {
+                    setShowSubstitutes(false);
+                }
             } catch (err) {
                 setError(err.response ? err.response.data.error : 'An unexpected error occurred.');
             } finally {
@@ -42,6 +50,15 @@ const FinalCartPage = () => {
 
         fetchOptimizedCart();
     }, [cart, store_ids, original_items, navigate]);
+
+    const handleToggle = () => {
+        setShowSubstitutes(!showSubstitutes);
+        setActiveTab(0); // Reset tab on toggle
+    };
+
+    const handleTabClick = (index) => {
+        setActiveTab(index);
+    };
 
     if (loading) {
         return (
@@ -53,45 +70,58 @@ const FinalCartPage = () => {
 
     if (error) {
         return (
-            <div style={{ marginTop: '2rem' }}>
+            <div style={{ marginTop: '2rem', padding: '0 2rem' }}>
                 <div style={{ color: 'red', border: '1px solid red', padding: '1rem' }}>Error: {error}</div>
             </div>
         );
     }
 
+    const subsResults = optimizationData?.optimization_results;
+    const noSubsResults = optimizationData?.no_subs_results;
+
+    const resultsToShow = showSubstitutes ? subsResults : noSubsResults?.optimization_results;
+    const baselineToShow = showSubstitutes ? optimizationData?.baseline_cost : noSubsResults?.baseline_cost;
+
+    const canShowSubstitutes = subsResults && subsResults.length > 0;
+    const canShowNoSubstitutes = noSubsResults && noSubsResults.optimization_results && noSubsResults.optimization_results.length > 0;
+
     return (
-        <div style={{ background: 'var(--bg-light)' }}>
+        <div style={{ background: 'var(--bg-light)', minHeight: '100vh' }}>
             <header style={{ background: 'var(--bg)', color: 'var(--text)', padding: '1rem', textAlign: 'center', borderBottom: '1px solid var(--border)' }}>
                 <h1>Optimized Shopping Cart</h1>
             </header>
             <div style={{ padding: '2rem' }}>
-                {optimizationData && (
-                    <div>
-                        <h4 style={{ marginBottom: '1rem' }}>Savings with Substitutes:</h4>
-                        {optimizationData.optimization_results.map((result, index) => (
-                            <div key={index} style={{ marginBottom: '1.5rem' }}>
-                                <OptimizationResultTile 
-                                    result={result} 
-                                    baselineCost={optimizationData.baseline_cost} 
-                                    cart={original_items}
-                                />
-                            </div>
-                        ))}
+                {canShowSubstitutes && canShowNoSubstitutes && (
+                    <SubstitutesToggle showSubstitutes={showSubstitutes} onToggle={handleToggle} />
+                )}
 
-                        {optimizationData.no_subs_results && (
-                            <div style={{ marginTop: '3rem' }}>
-                                <h4 style={{ marginBottom: '1rem' }}>Savings on Original Items Only:</h4>
-                                {optimizationData.no_subs_results.optimization_results.map((result, index) => (
-                                    <div key={index} style={{ marginBottom: '1.5rem' }}>
-                                        <OptimizationResultTile 
-                                            result={result} 
-                                            baselineCost={optimizationData.no_subs_results.baseline_cost} 
-                                            cart={original_items}
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                {resultsToShow && baselineToShow ? (
+                    <>
+                        <Tabs
+                            results={resultsToShow}
+                            baselineCost={baselineToShow}
+                            activeTab={activeTab}
+                            onTabClick={handleTabClick}
+                        />
+                        <div>
+                            {resultsToShow.map((result, index) => (
+                                <TabPanel
+                                    key={index}
+                                    result={result}
+                                    baselineCost={baselineToShow}
+                                    cart={original_items}
+                                    isActive={activeTab === index}
+                                />
+                            ))}
+                        </div>
+                    </>
+                ) : (
+                    <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+                        <h4>
+                            {showSubstitutes && !canShowSubstitutes
+                                ? "No optimization results available with substitutes."
+                                : "No optimization results available for the original items."}
+                        </h4>
                     </div>
                 )}
             </div>
