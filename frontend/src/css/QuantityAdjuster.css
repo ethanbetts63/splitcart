@@ -1,15 +1,23 @@
 .quantity-adjuster-btn {
-  background: var(--colorp2);
+  background: var(--colorp);
   color: white;
   border: 1px solid transparent;
   cursor: pointer;
   border-radius: 4px;
   padding: 0.4rem 0.8rem;
-  transition: border-color 0.25s;
+  transition: background-color 0.25s, border-color 0.25s;
 }
 
 .quantity-adjuster-btn:hover {
   border-color: var(--highlight);
+}
+
+.quantity-adjuster-btn:focus {
+  outline: none;
+}
+
+.quantity-adjuster-btn:active {
+  background-color: var(--colorp2);
 }
 
 .quantity-adjuster-number {
