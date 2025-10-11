@@ -32,6 +32,10 @@
     filter: brightness(1.15);
 }
 
+.tab-item:focus {
+    outline: none;
+}
+
 .tab-item.active {
     background-color: var(--colorp);
     font-weight: 600;

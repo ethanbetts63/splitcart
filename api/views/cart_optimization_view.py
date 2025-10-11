@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from companies.models import Store
-from data_management.utils.cart_optimization import calculate_optimized_cost, calculate_baseline_cost, build_price_slots
+from data_management.utils.cart_optimization import calculate_optimized_cost, calculate_baseline_cost, build_price_slots, calculate_best_single_store
 
 class CartOptimizationView(APIView):
     """
@@ -10,13 +10,16 @@ class CartOptimizationView(APIView):
     Accepts a list of product slots and a list of store IDs.
     """
 
-    def _calculate_optimization(self, cart, stores, max_stores_options):
+    def _calculate_optimization(self, cart, stores, max_stores_options, original_cart):
         price_slots = build_price_slots(cart, stores)
         if not price_slots:
-            return None, None
+            return None, None, None
 
         optimization_results = []
         baseline_cost = calculate_baseline_cost(price_slots)
+
+        # Calculate best single store option
+        best_single_store_result = calculate_best_single_store(price_slots, original_cart)
 
         for max_stores in max_stores_options:
             optimized_cost, shopping_plan, _ = calculate_optimized_cost(price_slots, max_stores)
@@ -29,7 +32,7 @@ class CartOptimizationView(APIView):
                     'shopping_plan': shopping_plan,
                 })
         
-        return baseline_cost, optimization_results
+        return baseline_cost, optimization_results, best_single_store_result
 
     def post(self, request, *args, **kwargs):
 
@@ -53,7 +56,7 @@ class CartOptimizationView(APIView):
                 )
 
             # Main calculation with substitutes
-            baseline_cost, optimization_results = self._calculate_optimization(cart, stores, max_stores_options)
+            baseline_cost, optimization_results, best_single_store = self._calculate_optimization(cart, stores, max_stores_options, cart)
             if baseline_cost is None:
                 return Response(
                     {'error': 'Could not find prices for the items in your cart at the specified stores.'},
@@ -63,16 +66,18 @@ class CartOptimizationView(APIView):
             response_data = {
                 'baseline_cost': baseline_cost,
                 'optimization_results': optimization_results,
+                'best_single_store': best_single_store,
             }
 
             # "No subs" calculation
             if original_items:
                 simple_cart = [[{'product_id': item['product']['id'], 'quantity': item['quantity']}] for item in original_items]
-                no_subs_baseline, no_subs_results = self._calculate_optimization(simple_cart, stores, max_stores_options)
+                no_subs_baseline, no_subs_results, no_subs_single_store = self._calculate_optimization(simple_cart, stores, max_stores_options, simple_cart)
                 if no_subs_baseline is not None:
                     response_data['no_subs_results'] = {
                         'baseline_cost': no_subs_baseline,
                         'optimization_results': no_subs_results,
+                        'best_single_store': no_subs_single_store,
                     }
             return Response(response_data, status=status.HTTP_200_OK)
 

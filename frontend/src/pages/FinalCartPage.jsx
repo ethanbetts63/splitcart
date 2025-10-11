@@ -36,6 +36,10 @@ const FinalCartPage = () => {
                     max_stores_options: [2, 3, 4]
                 });
                 setOptimizationData(response.data);
+                if (response.data.best_single_store) {
+                    setActiveTab('single');
+                }
+
                 // Default to no-subs view if subs view is empty
                 if (!response.data.optimization_results || response.data.optimization_results.length === 0) {
                     setShowSubstitutes(false);
@@ -97,6 +101,7 @@ const FinalCartPage = () => {
                                         baselineCost={baselineToShow}
                                         activeTab={activeTab}
                                         onTabClick={handleTabClick}
+                                        singleStoreResult={showSubstitutes ? optimizationData?.best_single_store : noSubsResults?.best_single_store}
                                     />
                                 </div>
                                 <h2 style={{ margin: 0, color: 'var(--colorp)', whiteSpace: 'nowrap', fontSize: '42px' }}>Optimized Cart</h2>
@@ -118,6 +123,21 @@ const FinalCartPage = () => {
                                         isActive={activeTab === index}
                                     />
                                 ))}
+
+                                {singleStoreResult && activeTab === 'single' && (
+                                    <div>
+                                        <div style={{ padding: '1rem', background: 'var(--bg-light)', borderRadius: '8px', marginBottom: '1rem', textAlign: 'center' }}>
+                                            <h5 style={{margin: 0}}>{singleStoreResult.items_found_count} out of {singleStoreResult.total_items_in_cart} items found at this store.</h5>
+                                        </div>
+                                        <TabPanel
+                                            key="single"
+                                            result={singleStoreResult}
+                                            baselineCost={baselineToShow}
+                                            cart={original_items}
+                                            isActive={true}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </>
                     ) : (
