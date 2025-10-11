@@ -1,0 +1,54 @@
+.tabs-container {
+    display: flex;
+    border-bottom: 2px solid var(--border-light);
+    margin-bottom: 1.5rem;
+    overflow-x: auto; /* Allows horizontal scrolling on small screens */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.tabs-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
+
+.tab-item {
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem; /* Space between lines */
+    transition: all 0.2s ease-in-out;
+    flex-shrink: 0; /* Prevent tabs from shrinking */
+}
+
+.tab-item:hover {
+    color: var(--text);
+    background-color: var(--bg);
+}
+
+.tab-item.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+.tab-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.tab-savings {
+    font-size: 0.9rem;
+    color: var(--success);
+}
+
+.tab-cost {
+    font-size: 1rem;
+    font-weight: bold;
+}
