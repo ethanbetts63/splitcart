@@ -2,6 +2,7 @@ from rest_framework import serializers
 from products.models import Product, Price
 from products.models.substitution import ProductSubstitution
 from companies.models import Store
+from companies.models.postcode import Postcode
 
 class StoreSerializer(serializers.ModelSerializer):
     company_name = serializers.CharField(source='company.name')
@@ -135,3 +136,8 @@ class ProductSerializer(serializers.ModelSerializer):
         formatted_prices.sort(key=lambda x: (float(x['price_display'].split(' ')[0]), x['company']))
 
         return formatted_prices
+
+class PostcodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Postcode
+        fields = ('postcode', 'latitude', 'longitude', 'state')

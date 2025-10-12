@@ -10,6 +10,7 @@ from .views.product_barcode_view import ProductBarcodeView
 from .views.cart_optimization_view import CartOptimizationView
 from .views.store_list_view import StoreListView
 from .views.scheduler_view import SchedulerView
+from .views.postcode_search_view import PostcodeSearchView
 
 from .views.product_substitute_list_view import ProductSubstituteListView
 
@@ -26,4 +27,5 @@ urlpatterns = [
     path('products/barcodes/', ProductBarcodeView.as_view(), name='product-barcodes'),
     path('cart/split/', CartOptimizationView.as_view(), name='cart-optimization'),
     path('stores/nearby/', StoreListView.as_view(), name='store-list'),
+    path('postcodes/search/', PostcodeSearchView.as_view(), name='postcode-search'),
 ]
