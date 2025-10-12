@@ -28,8 +28,8 @@
 }
 
 .product-card h3 {
-  font: var(--h3);
-  margin: 0 0 10px 0;
+  margin: 0 0 5px 0;
+  line-height: 1.2;
 }
 
 .product-card p {
