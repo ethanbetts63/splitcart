@@ -7,7 +7,7 @@ import AddToCartButton from './AddToCartButton';
 import './../css/SmallProductTile.css';
 
 const SmallProductTile = ({ item, showSubstitutes = false }) => {
-  const { selections } = useShoppingList();
+  const { selections, removeItem } = useShoppingList();
 
   const handleImageError = (e) => {
     e.target.onerror = null; // Prevent infinite loop if placeholder also fails
@@ -19,6 +19,8 @@ const SmallProductTile = ({ item, showSubstitutes = false }) => {
 
   return (
     <div className="small-product-tile">
+      <button onClick={() => removeItem(item.product.id)} className="remove-btn">&times;</button>
+      
       <div className="row-1">
         <img src={item.product.image_url || trolleyIcon} onError={handleImageError} alt={item.product.name} className="product-image" />
         <div className="product-details">

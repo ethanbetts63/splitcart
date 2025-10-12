@@ -1,0 +1,13 @@
+This session focused on significant UI/UX enhancements for the product display and shopping cart functionality.
+
+The session began with adding a "Next" button to the shopping trolley pull-out menu and iterating on its styling.
+
+A major feature implemented was the replication of the Woolworths "Add to Cart" button, which transforms into a quantity adjuster upon being clicked. This involved creating a new, reusable `AddToCartButton` component and its corresponding CSS. This new component was then integrated into the main `ProductTile`, replacing the previous, simpler "Add" button. Several stylistic adjustments were made to this new component based on user feedback, including text changes, width adjustments, and fixing border alignment issues.
+
+The new `AddToCartButton` was also added to the `SmallProductTile` component, which is used to display items in the shopping list. To fit the smaller layout of the trolley, the button was made scalable by introducing a `size` prop and smaller CSS variants.
+
+The session also included several smaller UI tweaks. The line spacing for the product title and the gap between the title and the brand name in the `ProductTile` were reduced to improve readability. A remove button ("X") was also re-instated in the `SmallProductTile` for easier item removal from the shopping list.
+
+A significant portion of the session was dedicated to implementing and debugging a new feature where clicking on a product's price from a specific company updates the main product image to that company's image. This involved refactoring the `ProductTile` to manage the selected price state and updating the `PriceDisplay` component to handle clicks. When the feature did not work as expected, an investigation into the backend code was conducted. It was discovered that the API was not providing image URLs for each individual price. The `ProductSerializer` was then modified to include the company-specific `image_url` in the `prices` array, which resolved the issue.
+
+Overall, this session resulted in a more interactive, user-friendly, and visually appealing product interaction experience.
