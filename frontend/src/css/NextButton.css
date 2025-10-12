@@ -4,9 +4,9 @@
   border: none;
   background: linear-gradient(
     270deg,
-    var(--colorp),
+    var(--colorp3),
     white,
-    var(--colorp),
+    var(--colorp3),
     white
   );
   background-size: 300% 300%;
@@ -16,12 +16,13 @@
 
 .dashing-fill-text {
   display: block;
-  background-color: var(--colorp);
-  color: white; /* Text color on the top layer */
+  background-color: var(--colorp3);
+  color: var(--colorp); /* Text color on the top layer */
   padding: 0.8rem 1.5rem;
   font-size: 1.3rem;
   margin: 5px; /* This creates the border effect */
   border-radius: 6px; /* Slightly smaller border-radius */
+  border: 1px solid black;
 }
 
 @keyframes bg {
