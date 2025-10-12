@@ -13,7 +13,7 @@ const companyLogos = {
     'Woolworths': woolworthsLogo,
 };
 
-const PriceDisplay = ({ prices, showBackground = true, variant = 'trolley' }) => {
+const PriceDisplay = ({ prices, showBackground = true, variant = 'trolley', onPriceSelect, selectedPrice }) => {
   const pricesToShow = prices || [];
 
   const getFontSize = (numPrices) => {
@@ -78,14 +78,26 @@ const PriceDisplay = ({ prices, showBackground = true, variant = 'trolley' }) =>
 
   return (
     <div style={containerStyle}>
-      {pricesToShow.map(priceData => (
-        <div key={priceData.company} style={priceItemStyle}>
-          <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} style={imageStyle} />
-          <span style={{ color: priceData.is_lowest ? 'var(--success)' : 'var(--text)', fontSize: fontSize, fontFamily: 'var(--font-numeric)', whiteSpace: 'nowrap' }}>
-            ${priceData.price_display}
-          </span>
-        </div>
-      ))}
+      {pricesToShow.map(priceData => {
+        const isSelected = selectedPrice && selectedPrice.company === priceData.company;
+        const itemStyle = {
+          ...priceItemStyle,
+          cursor: onPriceSelect ? 'pointer' : 'default',
+          border: isSelected ? '2px solid var(--colorp)' : '2px solid transparent',
+          borderRadius: '8px',
+          padding: '0.2rem',
+          backgroundColor: isSelected ? 'var(--colorp4)' : 'transparent',
+        };
+
+        return (
+          <div key={priceData.company} style={itemStyle} onClick={() => onPriceSelect && onPriceSelect(priceData)}>
+            <img src={companyLogos[priceData.company]} alt={`${priceData.company} logo`} style={imageStyle} />
+            <span style={{ color: priceData.is_lowest ? 'var(--success)' : 'var(--text)', fontSize: fontSize, fontFamily: 'var(--font-numeric)', whiteSpace: 'nowrap' }}>
+              ${priceData.price_display}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 };
