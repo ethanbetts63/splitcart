@@ -2,11 +2,11 @@
 import React from 'react';
 import { useShoppingList } from '../context/ShoppingListContext';
 import trolleyIcon from '../assets/shopping_cart.svg';
-import QuantityAdjuster from './QuantityAdjuster';
 import PriceDisplay from './PriceDisplay';
+import AddToCartButton from './AddToCartButton';
 import './../css/SmallProductTile.css';
 
-const SmallProductTile = ({ item, onRemove, onQuantityChange, showSubstitutes = false }) => {
+const SmallProductTile = ({ item, showSubstitutes = false }) => {
   const { selections } = useShoppingList();
 
   const handleImageError = (e) => {
@@ -19,8 +19,6 @@ const SmallProductTile = ({ item, onRemove, onQuantityChange, showSubstitutes = 
 
   return (
     <div className="small-product-tile">
-      <button onClick={() => onRemove(item.product.id)} className="remove-btn">&times;</button>
-      
       <div className="row-1">
         <img src={item.product.image_url || trolleyIcon} onError={handleImageError} alt={item.product.name} className="product-image" />
         <div className="product-details">
@@ -34,15 +32,7 @@ const SmallProductTile = ({ item, onRemove, onQuantityChange, showSubstitutes = 
 
       <div className="row-2">
         <PriceDisplay prices={item.product.prices} variant="trolley" />
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <QuantityAdjuster 
-            quantity={item.quantity} 
-            onQuantityChange={(newQuantity) => {
-              const validatedQuantity = Math.max(1, newQuantity);
-              onQuantityChange(item.product.id, validatedQuantity);
-            }} 
-          />
-        </div>
+        <AddToCartButton product={item.product} nearbyStoreIds={[]} />
       </div>
 
       {showSubstitutes && substitutes.length > 0 && (

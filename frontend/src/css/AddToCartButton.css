@@ -2,7 +2,7 @@
     background-color: var(--colorp3);
     color: var(--colorp);
     height: 3rem;
-    width: 9rem;
+    width: 10rem;
     border: 1px solid var(--colorp);
     border-radius: 8px;
     cursor: pointer;
@@ -59,6 +59,7 @@
     border-right: none;
     font-size: 1rem;
     -moz-appearance: textfield;
+    box-sizing: border-box;
 }
 
 .quantity-input::-webkit-outer-spin-button,
