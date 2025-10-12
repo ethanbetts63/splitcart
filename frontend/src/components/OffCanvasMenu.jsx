@@ -28,7 +28,6 @@ const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSele
       if (response.ok) {
         const data = await response.json();
         onLocationChange({ latitude: data.latitude, longitude: data.longitude, radius });
-        onClose();
       } else {
         setError("Postcode not found.");
       }

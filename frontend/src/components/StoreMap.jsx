@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../css/StoreMap.css';
 import L from 'leaflet';
@@ -10,6 +10,7 @@ import colesLogo from '../assets/coles_logo.webp';
 import igaLogo from '../assets/iga_logo.webp';
 import woolworthsLogo from '../assets/woolworths_logo.webp';
 import CheckableStoreList from './CheckableStoreList';
+import { useShoppingList } from '../context/ShoppingListContext';
 
 const companyLogos = {
     'Aldi': aldiLogo,
@@ -51,8 +52,17 @@ const selectedMarkerStyle = `
   }
 `;
 
+const MapUpdater = ({ center }) => {
+    const map = useMap();
+    useEffect(() => {
+        if (center) {
+            map.setView(center, 13);
+        }
+    }, [center, map]);
+    return null;
+}
+
 const StoreMap = ({ onSelectionChange }) => {
-    // Inject the style into the document head
     useEffect(() => {
         const styleElement = document.createElement('style');
         styleElement.innerHTML = selectedMarkerStyle;
@@ -62,22 +72,22 @@ const StoreMap = ({ onSelectionChange }) => {
         };
     }, []);
 
+    const { userLocation, setUserLocation } = useShoppingList();
     const [stores, setStores] = useState([]);
     const [selectedStoreIds, setSelectedStoreIds] = useState(new Set());
-    const [radius, setRadius] = useState(5);
-    const [userLocation, setUserLocation] = useState(null);
+    const [radius, setRadius] = useState(userLocation?.radius || 5);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [hasSearched, setHasSearched] = useState(false);
 
     const fetchStores = useCallback(async () => {
-        if (userLocation) {
+        if (userLocation && userLocation.latitude && userLocation.longitude) {
             setLoading(true);
             try {
                 const geoResponse = await axios.get('https://nominatim.openstreetmap.org/reverse', {
                     params: {
-                        lat: userLocation.lat,
-                        lon: userLocation.lng,
+                        lat: userLocation.latitude,
+                        lon: userLocation.longitude,
                         format: 'json',
                     }
                 });
@@ -108,9 +118,9 @@ const StoreMap = ({ onSelectionChange }) => {
         useMapEvents({
             click: async (e) => {
                 const { lat, lng } = e.latlng;
-                setStores([]); // Clear stores immediately
-                setHasSearched(false); // Reset searched state
-                setUserLocation({ lat, lng });
+                setStores([]);
+                setHasSearched(false);
+                setUserLocation({ latitude: lat, longitude: lng, radius });
             },
         });
         return null;
@@ -129,6 +139,9 @@ const StoreMap = ({ onSelectionChange }) => {
         }
     };
 
+    const mapCenter = userLocation ? [userLocation.latitude, userLocation.longitude] : [-25.36, 134.21];
+    const mapZoom = userLocation ? 13 : 3.9;
+
     return (
         <div>
             <p style={{ color: 'var(--text-muted)', marginTop: '0' }}>
@@ -136,26 +149,16 @@ const StoreMap = ({ onSelectionChange }) => {
                 Check and uncheck specific stores below the map. 
                 The more stores you select, the more saving potential you allow.
             </p>
-            <div style={{ backgroundColor: 'white', color: 'black', padding: '1rem', borderRadius: '8px', border: '0.3px solid var(--colorp2)', marginBottom: '1rem' }}>
-                <label>Search Radius: {radius} km</label>
-                <input 
-                    type="range" 
-                    min="1" 
-                    max="100" 
-                    value={radius} 
-                    onChange={(e) => setRadius(e.target.value)} 
-                    className="radius-slider"
-                />
-            </div>
 
             <div style={{ position: 'relative', border: '0.3px solid black', borderRadius: '8px', overflow: 'hidden' }}>
-              <MapContainer center={[-25.36, 134.21]} zoom={3.9} minZoom={3.9} style={{ height: '400px', width: '100%' }}>
+              <MapContainer center={mapCenter} zoom={mapZoom} style={{ height: '400px', width: '100%' }}>
                   <TileLayer
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   />
                   <MapClickHandler />
-                  {userLocation && <Marker position={userLocation} />} 
+                  <MapUpdater center={mapCenter} />
+                  {userLocation && <Marker position={mapCenter} />} 
                   {stores.map(store => (
                       <Marker 
                           key={store.id} 
