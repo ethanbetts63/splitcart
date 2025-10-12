@@ -1,8 +1,7 @@
-import React from 'react';
 import { useShoppingList } from '../context/ShoppingListContext';
 import '../css/AddToCartButton.css';
 
-const AddToCartButton = ({ product, nearbyStoreIds }) => {
+const AddToCartButton = ({ product, nearbyStoreIds, size }) => {
   const { items, addItem, updateItemQuantity, removeItem } = useShoppingList();
   const existingItem = items.find(item => item.product.id === product.id);
 
@@ -25,10 +24,11 @@ const AddToCartButton = ({ product, nearbyStoreIds }) => {
     }
   };
 
+  const sizeClass = size ? ` ${size}` : '';
 
   if (existingItem) {
     return (
-      <div className="cart-trolley-controls">
+      <div className={`cart-trolley-controls${sizeClass}`}>
         <button onClick={() => handleQuantityChange(existingItem.quantity - 1)} className="quantity-btn decrement-btn">-</button>
         <input
           type="number"
@@ -43,7 +43,7 @@ const AddToCartButton = ({ product, nearbyStoreIds }) => {
   }
 
   return (
-    <button onClick={handleAdd} className="add-to-cart-btn">
+    <button onClick={handleAdd} className={`add-to-cart-btn${sizeClass}`}>
       Add to Cart
     </button>
   );

@@ -67,3 +67,26 @@
   -webkit-appearance: none;
   margin: 0;
 }
+
+/* Small version */
+.add-to-cart-btn.small {
+    height: 2.25rem;
+    width: 7.5rem;
+    font-size: 0.9rem;
+}
+
+.cart-trolley-controls.small {
+    height: 2.25rem;
+}
+
+.cart-trolley-controls.small .quantity-btn {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1.2rem;
+}
+
+.cart-trolley-controls.small .quantity-input {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.9rem;
+}

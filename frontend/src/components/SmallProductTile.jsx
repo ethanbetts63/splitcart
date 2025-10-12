@@ -32,7 +32,7 @@ const SmallProductTile = ({ item, showSubstitutes = false }) => {
 
       <div className="row-2">
         <PriceDisplay prices={item.product.prices} variant="trolley" />
-        <AddToCartButton product={item.product} nearbyStoreIds={[]} />
+        <AddToCartButton product={item.product} nearbyStoreIds={[]} size="small" />
       </div>
 
       {showSubstitutes && substitutes.length > 0 && (
