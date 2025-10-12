@@ -5,7 +5,6 @@ import OffCanvasMenu from './components/OffCanvasMenu';
 import Footer from './components/Footer';
 import GridSourcer from './components/GridSourcer';
 import ScrollerManager from './components/ScrollerManager';
-import LocationSetupModal from './components/LocationSetupModal';
 import SubstitutionPage from './pages/SubstitutionPage';
 import ProductListPage from './pages/ProductListPage';
 import FinalCartPage from './pages/FinalCartPage';
@@ -21,7 +20,6 @@ import bottomImage from './assets/bottom_image.png';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [showLocationModal, setShowLocationModal] = useState(false);
   const [isOffCanvasOpen, setIsOffCanvasOpen] = useState(false);
   const [offCanvasContent, setOffCanvasContent] = useState(null);
 
@@ -66,7 +64,6 @@ function App() {
   const handleSaveLocation = (location) => {
     setUserLocation(location);
     localStorage.setItem('userLocation', JSON.stringify(location));
-    setShowLocationModal(false);
   };
 
   const handleShowTrolley = () => {
@@ -87,11 +84,6 @@ function App() {
     handleCloseOffCanvas();
     setSearchTerm('');
     navigate('/');
-  };
-
-  const handleLocationChange = () => {
-    handleCloseOffCanvas();
-    setShowLocationModal(true);
   };
 
   return (
@@ -138,19 +130,13 @@ function App() {
 
       <Footer />
 
-      <LocationSetupModal
-        show={showLocationModal}
-        onHide={() => setShowLocationModal(false)}
-        onSave={handleSaveLocation}
-      />
-
       <Backdrop show={isOffCanvasOpen} onClick={handleCloseOffCanvas} />
 
       <OffCanvasMenu 
         isOpen={isOffCanvasOpen}
         onClose={handleCloseOffCanvas}
         content={offCanvasContent}
-        onLocationChange={handleLocationChange}
+        onLocationChange={handleSaveLocation}
         onStoreSelectionChange={setSelectedStoreIds}
         onNavigateHome={handleNavigateHome}
       />
