@@ -111,6 +111,8 @@ class ProductSerializer(serializers.ModelSerializer):
             if overall_min_price is None or current_price < overall_min_price:
                 overall_min_price = current_price
         
+        image_urls_by_company = dict(obj.image_url_pairs)
+
         # Format the output for the frontend
         formatted_prices = []
         for company, data in company_prices.items():
@@ -120,10 +122,13 @@ class ProductSerializer(serializers.ModelSerializer):
             
             is_lowest = (data['min_price'] == overall_min_price) if overall_min_price is not None else False
 
+            image_url = image_urls_by_company.get(company)
+
             formatted_prices.append({
                 'company': company,
                 'price_display': price_range,
-                'is_lowest': is_lowest
+                'is_lowest': is_lowest,
+                'image_url': image_url
             })
         
         # Sort by lowest price first, then company name
