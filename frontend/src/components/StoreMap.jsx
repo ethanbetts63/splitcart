@@ -52,13 +52,13 @@ const selectedMarkerStyle = `
   }
 `;
 
-const MapUpdater = ({ center }) => {
+const MapUpdater = ({ center, zoom }) => {
     const map = useMap();
     useEffect(() => {
         if (center) {
-            map.setView(center, 13);
+            map.setView(center, zoom);
         }
-    }, [center, map]);
+    }, [center, zoom, map]);
     return null;
 }
 
@@ -75,10 +75,19 @@ const StoreMap = ({ onSelectionChange }) => {
     const { userLocation, setUserLocation } = useShoppingList();
     const [stores, setStores] = useState([]);
     const [selectedStoreIds, setSelectedStoreIds] = useState(new Set());
-    const [radius, setRadius] = useState(userLocation?.radius || 5);
+    const [radius, setRadius] = useState(userLocation?.radius || 10);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [hasSearched, setHasSearched] = useState(false);
+
+    const getZoomLevel = (radius) => {
+        if (radius <= 2) return 14;
+        if (radius <= 5) return 13;
+        if (radius <= 10) return 12;
+        if (radius <= 20) return 11;
+        if (radius <= 50) return 10;
+        return 9;
+    };
 
     const fetchStores = useCallback(async () => {
         if (userLocation && userLocation.latitude && userLocation.longitude) {
@@ -140,7 +149,7 @@ const StoreMap = ({ onSelectionChange }) => {
     };
 
     const mapCenter = userLocation ? [userLocation.latitude, userLocation.longitude] : [-25.36, 134.21];
-    const mapZoom = userLocation ? 13 : 3.9;
+    const mapZoom = userLocation ? getZoomLevel(radius) : 3.9;
 
     return (
         <div>
@@ -150,6 +159,18 @@ const StoreMap = ({ onSelectionChange }) => {
                 The more stores you select, the more saving potential you allow.
             </p>
 
+            <div style={{ backgroundColor: 'white', color: 'black', padding: '1rem', borderRadius: '8px', border: '0.3px solid var(--colorp2)', marginBottom: '1rem' }}>
+                <label>Search Radius: {radius} km</label>
+                <input 
+                    type="range" 
+                    min="1" 
+                    max="100" 
+                    value={radius} 
+                    onChange={(e) => setRadius(e.target.value)} 
+                    className="radius-slider"
+                />
+            </div>
+
             <div style={{ position: 'relative', border: '0.3px solid black', borderRadius: '8px', overflow: 'hidden' }}>
               <MapContainer center={mapCenter} zoom={mapZoom} style={{ height: '400px', width: '100%' }}>
                   <TileLayer
@@ -157,7 +178,7 @@ const StoreMap = ({ onSelectionChange }) => {
                       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   />
                   <MapClickHandler />
-                  <MapUpdater center={mapCenter} />
+                  <MapUpdater center={mapCenter} zoom={mapZoom} />
                   {userLocation && <Marker position={mapCenter} />} 
                   {stores.map(store => (
                       <Marker 
