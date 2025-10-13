@@ -125,9 +125,7 @@ const MapUpdater = ({ center, zoom }) => {
 
 
 
-import { Slider } from '@/components/ui/slider';
-
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import StoreMapControls from './StoreMapControls';
 
 const StoreMap = ({ onSelectionChange, radius, setRadius }) => {
 
