@@ -6,12 +6,12 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { SettingsDialog } from "@/components/settings-dialog";
 
 export function Header() {
   return (
     <header className="flex items-center justify-between p-4 border-b">
-      <SidebarTrigger />
+      <div /> {/* Spacer */}
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
@@ -60,7 +60,7 @@ export function Header() {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-      <div /> {/* This is a spacer to keep the navigation centered */}
+      <SettingsDialog />
     </header>
   );
 }
