@@ -125,6 +125,8 @@ const MapUpdater = ({ center, zoom }) => {
 
 
 
+import { Slider } from '@/components/ui/slider';
+
 const StoreMap = ({ onSelectionChange, radius, setRadius }) => {
 
     useEffect(() => {
@@ -319,17 +321,17 @@ const StoreMap = ({ onSelectionChange, radius, setRadius }) => {
 
                 <label>Search Radius: {radius} km</label>
 
-                <input 
+                <Slider
 
-                    type="range" 
+                    defaultValue={[radius]}
 
-                    min="1" 
+                    min={1}
 
-                    max="100" 
+                    max={100}
 
-                    value={radius} 
+                    step={1}
 
-                    onChange={(e) => setRadius(parseInt(e.target.value, 10))} 
+                    onValueChange={(value) => setRadius(value[0])}
 
                     className="radius-slider"
 

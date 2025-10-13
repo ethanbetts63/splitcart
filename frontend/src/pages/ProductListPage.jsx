@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import GridSourcer from '../components/GridSourcer';
 
 const ProductListPage = ({ nearbyStoreIds }) => {
-  console.log('ProductListPage.jsx rendered');
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
