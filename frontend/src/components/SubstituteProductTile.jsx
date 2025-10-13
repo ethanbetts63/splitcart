@@ -4,6 +4,13 @@ import '../css/SubstituteProductTile.css';
 import placeholderImage from '../assets/shopping_cart.svg';
 import QuantityAdjuster from './QuantityAdjuster';
 import PriceDisplay from './PriceDisplay';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const SubstituteProductTile = ({ product, isSelected, onSelect, onQuantityChange, initialQuantity = 1, is_original }) => {
   const [quantity, setQuantity] = useState(initialQuantity);
@@ -38,7 +45,7 @@ const SubstituteProductTile = ({ product, isSelected, onSelect, onQuantityChange
   };
 
   return (
-    <div className="product-card" style={cardStyle}>
+    <Card className="product-card" style={cardStyle}>
       <div>
         <div style={{ position: 'relative' }}>
           <img
@@ -81,17 +88,18 @@ const SubstituteProductTile = ({ product, isSelected, onSelect, onQuantityChange
             </span>
           )}
         </div>
-        <div className="product-card-content">
-          <h3>{product.name}</h3>
+        <CardHeader>
+          <CardTitle>{product.name}</CardTitle>
           <p>
             {product.brand_name && `${product.brand_name} `}
           </p>
-          
+        </CardHeader>
+        <CardContent>
           <PriceDisplay prices={prices} variant="product-tile" />
-        </div>
+        </CardContent>
       </div>
 
-      <div className="actions-container" style={{ marginTop: '0.5rem' }}>
+      <CardFooter className="actions-container" style={{ marginTop: '0.5rem' }}>
         <div className="action-item">
           <QuantityAdjuster 
             quantity={quantity} 
@@ -107,8 +115,8 @@ const SubstituteProductTile = ({ product, isSelected, onSelect, onQuantityChange
             {isSelected ? 'Remove' : 'Approve'}
           </button>
         </div>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 };
 

@@ -4,6 +4,15 @@ import '../css/PrimaryProductTile.css';
 import logoSymbol from '../assets/splitcart_symbol_v6.png';
 import PriceDisplay from './PriceDisplay';
 import AddToCartButton from './AddToCartButton';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
 
 // Logos - moved from ProductCardContent
 import aldiLogo from '../assets/ALDI_logo.svg';
@@ -40,8 +49,7 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
   const imageUrl = selectedPrice?.image_url || product.image_url || logoSymbol;
 
   return (
-    <div className="product-card">
-      <div style={{ position: 'relative' }}>
+    <Card className="product-card">
         <img
           src={imageUrl} // Use the state-driven image URL
           onError={handleImageError}
@@ -64,25 +72,26 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
             {product.size}
           </span>
         )}
-      </div>
-      <div className="product-card-content">
-        <h3>{product.name}</h3>
-        <p>
+      <CardHeader>
+        <CardTitle>{product.name}</CardTitle>
+        <CardDescription>
           {product.brand_name && `${product.brand_name} `}
-        </p>
-        
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
         <PriceDisplay 
           prices={prices} 
           variant="product-tile"
           onPriceSelect={handlePriceSelect}
           selectedPrice={selectedPrice}
         />
-
+      </CardContent>
+      <CardFooter>
         <div className="actions-container">
           <AddToCartButton product={product} nearbyStoreIds={nearbyStoreIds} />
         </div>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 };
 

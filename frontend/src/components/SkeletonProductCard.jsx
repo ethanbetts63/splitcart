@@ -1,5 +1,10 @@
 import React from 'react';
 import logoSymbol from '../assets/splitcart_symbol_v6.png';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+} from "@/components/ui/card";
 
 const SkeletonProductCard = () => {
 
@@ -24,7 +29,7 @@ const SkeletonProductCard = () => {
   return (
     <div>
       <style>{mediaQueryStyles}</style>
-      <div className="skeleton-card" style={cardStyle}>
+      <Card className="skeleton-card" style={cardStyle}>
         <img
           src={logoSymbol}
           style={{
@@ -34,13 +39,13 @@ const SkeletonProductCard = () => {
             width: '100%'
           }}
         />
-        <div style={{ padding: '1rem' }}>
+        <CardContent style={{ padding: '1rem' }}>
           <div style={{ height: '1.5rem', backgroundColor: 'var(--highlight)', marginBottom: '0.5rem', width: '80%' }}></div>
           <div style={{ height: '1.25rem', backgroundColor: 'var(--highlight)', marginBottom: '0.5rem', width: '50%' }}></div>
           <div style={{ height: '1rem', backgroundColor: 'var(--highlight)', marginBottom: '1rem', width: '40%' }}></div>
           <div style={{ height: '2.5rem', backgroundColor: 'var(--primary)', width: '60%' }}></div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
