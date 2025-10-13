@@ -11,6 +11,23 @@
   --sidebar-accent-foreground: hsl(240 5.9% 10%);
   --sidebar-border: hsl(220 13% 91%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --background: 226.2 57% 21%;
+  --foreground: 213.8 100% 96.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 226.2 57% 21%;
+  --popover: 214.3 94.6% 92.7%;
+  --popover-foreground: 226.2 57% 21%;
+  --primary: 221.2 83.2% 53.3%;
+  --primary-foreground: 213.8 100% 96.9%;
+  --secondary: 213.1 93.9% 67.8%;
+  --secondary-foreground: 226.2 57% 21%;
+  --muted: 211.7 96.4% 78.4%;
+  --muted-foreground: 224.3 76.3% 48%;
+  --accent: 213.3 96.9% 87.3%;
+  --accent-foreground: 226.2 57% 21%;
+  --border: 213.3 96.9% 87.3%;
+  --input: 214.3 94.6% 92.7%;
+  --ring: 221.2 83.2% 53.3%;
 }
 
 .dark {
