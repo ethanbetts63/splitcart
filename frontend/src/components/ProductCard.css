@@ -1,0 +1,7 @@
+.product-card-image-container {
+  @apply aspect-square bg-gray-200 flex items-center justify-center;
+}
+
+.product-card-footer {
+  @apply flex justify-between;
+}
