@@ -12,9 +12,22 @@ function App() {
 
         <section className="mt-8">
           <h2 className="text-xl font-semibold">Featured Products</h2>
-          <div className="mt-4 flex justify-center">
-            <ProductCarousel />
-          </div>
+          <ProductCarousel />
+        </section>
+
+        <section className="mt-8">
+          <h2 className="text-xl font-semibold">New Arrivals</h2>
+          <ProductCarousel />
+        </section>
+
+        <section className="mt-8">
+          <h2 className="text-xl font-semibold">On Sale</h2>
+          <ProductCarousel />
+        </section>
+
+        <section className="mt-8">
+          <h2 className="text-xl font-semibold">Popular</h2>
+          <ProductCarousel />
         </section>
       </main>
     </div>
