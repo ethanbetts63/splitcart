@@ -60,7 +60,7 @@ const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSele
     body = <ShoppingListComponent />;
   } else if (content === 'map') {
     title = 'Select Stores';
-    body = <StoreMap onSelectionChange={onStoreSelectionChange} />;
+    body = <StoreMap onSelectionChange={onStoreSelectionChange} radius={radius} setRadius={setRadius} />;
   }
 
   return (
@@ -107,21 +107,6 @@ const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSele
                 <button type="button" onClick={handlePostcodeSearch} style={{ marginLeft: '0.5rem' }}>Search</button>
               </div>
               {error && <p style={{ color: 'red' }}>{error}</p>}
-            </div>
-            <div style={{ marginBottom: '1rem' }}>
-              <label>Search Radius (km)</label>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <button type="button" onClick={() => setRadius(Math.max(1, radius - 1))}>-</button>
-                <input
-                  type="range"
-                  min="1"
-                  max="50"
-                  value={radius}
-                  onChange={(e) => setRadius(parseInt(e.target.value, 10))}
-                  style={{ flexGrow: 1, margin: '0 0.5rem' }}
-                />
-                <span>{radius} km</span>
-              </div>
             </div>
           </div>
         )}
