@@ -10,9 +10,9 @@
 }
 
 .company-toggle-group [data-state=on] {
-    border: 2px solid black !important;
+    border: 2px solid black;
 }
 
 .company-toggle-group [data-state=off] {
-    border: 2px solid transparent !important;
+    border: none;
 }
