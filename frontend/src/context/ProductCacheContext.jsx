@@ -11,9 +11,11 @@ export const ProductCacheProvider = ({ children }) => {
 
   const fetchAndCacheProducts = useCallback(async (url) => {
     if (cache[url]) {
+      console.log('Cache hit for:', url);
       return cache[url];
     }
 
+    console.log('Cache miss for:', url, 'Fetching from network...');
     try {
       const response = await fetch(url);
       if (!response.ok) {

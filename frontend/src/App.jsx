@@ -27,6 +27,8 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  console.log('App.jsx rendered', { searchTerm, pathname: location.pathname });
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const search = params.get('search');

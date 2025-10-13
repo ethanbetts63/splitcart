@@ -3,12 +3,14 @@ import HorizontalProductScroller from './HorizontalProductScroller';
 import { useProductCache } from '../context/ProductCacheContext';
 
 const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLink, isLocationLoaded }) => {
+  console.log('SearchSourcer props:', { title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLink, isLocationLoaded });
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const { fetchAndCacheProducts } = useProductCache();
 
   useEffect(() => {
+    console.log('SearchSourcer useEffect triggered for:', title);
     let isMounted = true;
     setIsLoading(true);
 
@@ -27,9 +29,12 @@ const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLi
         url = '/api/products/';
       }
 
+      console.log('Fetching products for scroller:', url);
+
       try {
         const data = await fetchAndCacheProducts(url);
         if (isMounted) {
+          console.log('Received data for scroller:', title, data);
           const productList = Array.isArray(data) ? data : (data.results || []);
           setProducts(productList.slice(0, 20));
           setError(null);
@@ -47,16 +52,12 @@ const SearchSourcer = ({ title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLi
       }
     };
 
-    if (isLocationLoaded) {
-      getProducts();
-    } else {
-      setIsLoading(true);
-    }
+    getProducts();
 
     return () => {
       isMounted = false;
     };
-  }, [title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLink, isLocationLoaded, fetchAndCacheProducts]);
+  }, [title, searchTerm, sourceUrl, nearbyStoreIds, seeMoreLink, fetchAndCacheProducts]);
 
   // The HorizontalProductScroller now handles the loading and empty states internally.
   return (
