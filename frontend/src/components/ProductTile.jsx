@@ -77,19 +77,19 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
         <CardDescription>
           {product.brand_name && `${product.brand_name} `}
         </CardDescription>
+        <div className="card-action">
+          <PriceDisplay 
+            prices={prices} 
+            variant="product-tile"
+            onPriceSelect={handlePriceSelect}
+            selectedPrice={selectedPrice}
+          />
+        </div>
       </CardHeader>
       <CardContent>
-        <PriceDisplay 
-          prices={prices} 
-          variant="product-tile"
-          onPriceSelect={handlePriceSelect}
-          selectedPrice={selectedPrice}
-        />
       </CardContent>
       <CardFooter>
-        <div className="actions-container">
-          <AddToCartButton product={product} nearbyStoreIds={nearbyStoreIds} />
-        </div>
+        <AddToCartButton product={product} nearbyStoreIds={nearbyStoreIds} />
       </CardFooter>
     </Card>
   );

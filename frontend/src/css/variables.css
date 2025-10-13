@@ -32,25 +32,28 @@
 
 
 
-  --colorp: hsl(209, 39%, 29%);
-
+  /* --colorp: hsl(209, 39%, 29%);
   --colorp2: hsl(209, 35%, 43%);
-
   --colorp3: hsl(92, 38%, 75%);
-
   --colorp4: hsl(68,42%,89%);
-
   --colora: #ffe537;
-
   --colora2: #537fe7;
-
   --colorbody: white;
-
   --product-tile-bg: white;
-
   --colors: #333;
+  --button-bg: hsl(68,60%,74%); */
 
-  --button-bg: hsl(68,60%,74%);
+  --color1: hsl(213.8, 100%, 96.9%);
+  --color2: hsl(214.3, 94.6%, 92.7%);
+  --color3: hsl(213.3, 96.9%, 87.3%);
+  --color4: hsl(211.7, 96.4%, 78.4%);
+  --color5: hsl(213.1, 93.9%, 67.8%);
+  --color6: hsl(217.2, 91.2%, 59.8%);
+  --color7: hsl(221.2, 83.2%, 53.3%);
+  --color8: hsl(224.3, 76.3%, 48%);
+  --color9: hsl(225.9, 70.7%, 40.2%);
+  --color10: hsl(224.4, 64.3%, 32.9%);
+  --color11: hsl(226.2, 57%, 21%);
 
   --h1: bold 54px/60px var(--ff-primary);
 

@@ -56,3 +56,7 @@
   display: flex;
   justify-content: center;
 }
+
+.card-action {
+  margin-top: 1rem;
+}
