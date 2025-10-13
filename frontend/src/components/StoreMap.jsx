@@ -356,6 +356,8 @@ const StoreMap = ({ onSelectionChange, radius, setRadius }) => {
 
                     style={{ marginTop: '1rem' }}
 
+                    className="company-toggle-group"
+
                 >
 
                     {Object.entries(companyLogos).map(([company, logo]) => (

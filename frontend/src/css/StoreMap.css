@@ -8,3 +8,11 @@
   background-color: #d3d3d3;
   height: 6px;
 }
+
+.company-toggle-group [data-state=on] {
+    border: 2px solid black !important;
+}
+
+.company-toggle-group [data-state=off] {
+    border: 2px solid transparent !important;
+}
