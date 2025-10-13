@@ -7,6 +7,9 @@ import mapIcon from '../assets/edit_location.svg';
 import NextButton from './NextButton';
 import { useShoppingList } from '../context/ShoppingListContext';
 
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
 const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSelectionChange, onNavigateHome }) => {
   const { items } = useShoppingList();
   const [postcode, setPostcode] = useState('');
@@ -96,7 +99,7 @@ const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSele
             <div style={{ marginBottom: '1rem' }}>
               <label>Postcode</label>
               <div style={{ display: 'flex' }}>
-                <input
+                <Input
                   type="text"
                   placeholder="4-digit postcode"
                   value={postcode}
@@ -104,7 +107,7 @@ const OffCanvasMenu = ({ isOpen, onClose, content, onLocationChange, onStoreSele
                   maxLength="4"
                   style={{ width: '100%', padding: '0.5rem' }}
                 />
-                <button type="button" onClick={handlePostcodeSearch} style={{ marginLeft: '0.5rem' }}>Search</button>
+                <Button type="button" onClick={handlePostcodeSearch} style={{ marginLeft: '0.5rem' }}>Search</Button>
               </div>
               {error && <p style={{ color: 'red' }}>{error}</p>}
             </div>
