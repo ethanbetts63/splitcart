@@ -1,4 +1,3 @@
-
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -7,10 +6,12 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export function Header() {
   return (
-    <header className="flex justify-center p-4 border-b">
+    <header className="flex items-center justify-between p-4 border-b">
+      <SidebarTrigger />
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
@@ -59,6 +60,7 @@ export function Header() {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
+      <div /> {/* This is a spacer to keep the navigation centered */}
     </header>
   );
 }
