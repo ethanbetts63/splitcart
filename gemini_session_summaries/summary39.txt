@@ -35,3 +35,7 @@ Integrate `shadcn/ui` and Tailwind CSS into the frontend, and then debug a subse
 -   The user has confirmed that the search functionality works, which means `GridSourcer` is working correctly. The issue is with the horizontal scrollers on the main page.
 -   The user is seeing skeleton cards in the horizontal scrollers, which suggests that the data is not being loaded.
 -   My next step is to investigate `ScrollerManager.jsx` and `SearchSourcer.jsx` to understand why the API calls for the scrollers are not being made.
+-   I found that the `SearchSourcer` component had a dependency on `isLocationLoaded`, which was preventing the product data from being fetched. I removed this dependency to fix the issue.
+-   The user then requested to replace the range slider in the map section with the `shadcn/ui` slider component.
+-   I added the `Slider` component and updated the `StoreMap.jsx` file to use it.
+-   The user also requested to make the slider dot bigger. I inspected the `slider.jsx` component and updated the `StoreMap.css` file to increase the size of the slider thumb.

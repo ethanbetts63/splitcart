@@ -335,6 +335,8 @@ const StoreMap = ({ onSelectionChange, radius, setRadius }) => {
 
                     className="radius-slider"
 
+                    style={{ marginTop: '1rem' }}
+
                 />
 
             </div>

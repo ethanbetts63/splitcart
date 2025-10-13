@@ -14,7 +14,6 @@ const getRelativePath = (url) => {
 };
 
 const GridSourcer = ({ searchTerm, sourceUrl, nearbyStoreIds }) => {
-  console.log('GridSourcer props:', { searchTerm, sourceUrl, nearbyStoreIds });
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -50,15 +49,12 @@ const GridSourcer = ({ searchTerm, sourceUrl, nearbyStoreIds }) => {
 
     if (!url) return;
 
-    console.log('Fetching products from:', url);
-
     try {
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`Failed to fetch: ${response.statusText}`);
       }
       const data = await response.json();
-      console.log('Received data:', data);
       
       const productList = data.results || [];
       const nextUrl = getRelativePath(data.next); // Convert to relative path
@@ -73,7 +69,6 @@ const GridSourcer = ({ searchTerm, sourceUrl, nearbyStoreIds }) => {
       setNextPageUrl(nextUrl);
 
     } catch (e) {
-      console.error('Fetch error:', e);
       setIsError(true);
       setError(e.message);
     }
@@ -81,7 +76,6 @@ const GridSourcer = ({ searchTerm, sourceUrl, nearbyStoreIds }) => {
 
   // Initial fetch effect
   useEffect(() => {
-    console.log('GridSourcer useEffect triggered');
     setIsLoading(true);
     setProducts([]);
     setNextPageUrl(null);
