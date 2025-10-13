@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useShoppingList } from '../context/ShoppingListContext';
-trolleyIcon from '../assets/shopping_cart.svg';
+import trolleyIcon from '../assets/shopping_cart.svg';
 import PriceDisplay from './PriceDisplay';
 import AddToCartButton from './AddToCartButton';
 import './../css/SmallProductTile.css';

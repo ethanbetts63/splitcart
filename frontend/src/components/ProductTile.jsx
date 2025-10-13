@@ -49,26 +49,14 @@ const ProductTile = ({ product, nearbyStoreIds }) => {
   const imageUrl = selectedPrice?.image_url || product.image_url || logoSymbol;
 
   return (
-    <Card className="product-card">
+    <Card className="mt-1 w-72 min-h-[30rem] flex flex-col bg-white rounded-lg overflow-hidden h-full border border-black">
         <img
           src={imageUrl} // Use the state-driven image URL
           onError={handleImageError}
           alt={product.name}
         />
         {product.size && (
-          <span style={{
-            position: 'absolute',
-            top: '15px',
-            right: '15px',
-            backgroundColor: 'white',
-            color: 'black',
-            padding: '0.2rem 0.4rem',
-            borderRadius: '8px',
-            fontSize: '0.8rem',
-            border: '1px solid var(--colorp2)',
-            zIndex: 1,
-            fontFamily: 'var(--font-numeric)'
-          }}>
+          <span className="absolute top-4 right-4 bg-white text-black px-2 py-1 rounded-lg text-sm border border-primary z-10 font-numeric">
             {product.size}
           </span>
         )}

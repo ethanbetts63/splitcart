@@ -1,45 +1,3 @@
-.product-card {
-  margin-top: 5px;
-  width: 18rem;
-  min-height: 30rem;
-  display: flex;
-  flex-direction: column;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  height: 100%; /* To make all cards the same height in a grid */
-  border: 0.1px solid black;
-}
-
-.product-card-content {
-  padding: 10px;
-}
-
-.product-card img {
-  border-radius: 8px;
-  width: calc(100% - 20px);
-  height: 200px; /* Fixed height for images */
-  object-fit: contain;
-  margin: 10px;
-  background-color: white;
-}
-
-.btn {
-  display: inline-block;
-  text-decoration: none;
-  font: var(--p);
-  color: white;
-  background: var(--colorp);
-  border: solid 2px transparent;
-  border-radius: 8px;
-  padding: 1px 15px;
-  transition: 0.2s ease-in-out;
-  text-align: center;
-  margin-top: 8px;
-  margin-left: 1px;
-  margin-right: 1px;
-}
-
 .product-card-actions {
   display: flex;
   justify-content: space-between;
@@ -55,8 +13,4 @@
 .action-item {
   display: flex;
   justify-content: center;
-}
-
-.card-action {
-  margin-top: 1rem;
 }
