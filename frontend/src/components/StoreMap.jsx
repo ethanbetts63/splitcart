@@ -320,57 +320,19 @@ const StoreMap = ({ onSelectionChange, radius, setRadius }) => {
 
             </p>
 
-            <div style={{ backgroundColor: 'white', color: 'black', padding: '1rem', borderRadius: '8px', border: '0.3px solid var(--colorp2)', marginBottom: '1rem' }}>
+                        <StoreMapControls
 
-                <label>Search Radius: {radius} km</label>
+                            radius={radius}
 
-                <Slider
+                            setRadius={setRadius}
 
-                    defaultValue={[radius]}
+                            selectedCompanies={selectedCompanies}
 
-                    min={1}
+                            setSelectedCompanies={setSelectedCompanies}
 
-                    max={100}
+                            companyLogos={companyLogos}
 
-                    step={1}
-
-                    onValueChange={(value) => setRadius(value[0])}
-
-                    className="radius-slider"
-
-                    style={{ marginTop: '1rem' }}
-
-                />
-
-                <ToggleGroup
-
-                    type="multiple"
-
-                    variant="outline"
-
-                    value={selectedCompanies}
-
-                    onValueChange={setSelectedCompanies}
-
-                    style={{ marginTop: '1rem' }}
-
-                    className="company-toggle-group"
-
-                >
-
-                    {Object.entries(companyLogos).map(([company, logo]) => (
-
-                        <ToggleGroupItem key={company} value={company}>
-
-                            <img src={logo} alt={company} style={{ height: '24px', width: 'auto' }} />
-
-                        </ToggleGroupItem>
-
-                    ))}
-
-                </ToggleGroup>
-
-            </div>
+                        />
 
 
 
