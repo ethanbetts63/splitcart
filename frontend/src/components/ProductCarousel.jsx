@@ -1,26 +1,21 @@
 import React from 'react';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
 import { ProductCard } from "./ProductCard";
+import '../css/ProductCarousel.css';
 
 export function ProductCarousel() {
+  const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay()]);
+
   return (
-    <Carousel
-      opts={{
-        align: "start",
-      }}
-      className="w-full"
-    >
-      <CarouselContent className="-ml-1 py-4">
+    <div className="embla" ref={emblaRef}>
+      <div className="embla__container">
         {Array.from({ length: 10 }).map((_, index) => (
-          <CarouselItem key={index} className="pl-1 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5">
+          <div className="embla__slide" key={index}>
             <ProductCard />
-          </CarouselItem>
+          </div>
         ))}
-      </CarouselContent>
-    </Carousel>
+      </div>
+    </div>
   );
 }

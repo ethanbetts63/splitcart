@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import './ProductCard.css';
+import '../css/ProductCard.css';
 
 export function ProductCard() {
   return (

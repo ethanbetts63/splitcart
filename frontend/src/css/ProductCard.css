@@ -1,3 +1,5 @@
+@import "./globals.css";
+
 .product-card-image-container {
   @apply aspect-square bg-gray-200 flex items-center justify-center;
 }
