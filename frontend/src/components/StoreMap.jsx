@@ -127,6 +127,8 @@ const MapUpdater = ({ center, zoom }) => {
 
 import { Slider } from '@/components/ui/slider';
 
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+
 const StoreMap = ({ onSelectionChange, radius, setRadius }) => {
 
     useEffect(() => {
@@ -158,6 +160,7 @@ const StoreMap = ({ onSelectionChange, radius, setRadius }) => {
     const [error, setError] = useState(null);
 
     const [hasSearched, setHasSearched] = useState(false);
+    const [selectedCompanies, setSelectedCompanies] = useState(Object.keys(companyLogos));
 
 
 
@@ -303,6 +306,8 @@ const StoreMap = ({ onSelectionChange, radius, setRadius }) => {
 
 
 
+    const filteredStores = stores.filter(store => selectedCompanies.includes(store.company_name));
+
     return (
 
         <div>
@@ -339,6 +344,32 @@ const StoreMap = ({ onSelectionChange, radius, setRadius }) => {
 
                 />
 
+                <ToggleGroup
+
+                    type="multiple"
+
+                    variant="outline"
+
+                    value={selectedCompanies}
+
+                    onValueChange={setSelectedCompanies}
+
+                    style={{ marginTop: '1rem' }}
+
+                >
+
+                    {Object.entries(companyLogos).map(([company, logo]) => (
+
+                        <ToggleGroupItem key={company} value={company}>
+
+                            <img src={logo} alt={company} style={{ height: '24px', width: 'auto' }} />
+
+                        </ToggleGroupItem>
+
+                    ))}
+
+                </ToggleGroup>
+
             </div>
 
 
@@ -361,7 +392,7 @@ const StoreMap = ({ onSelectionChange, radius, setRadius }) => {
 
                   {userLocation && <Marker position={mapCenter} />} 
 
-                  {stores.map(store => (
+                  {filteredStores.map(store => (
 
                       <Marker 
 
@@ -415,7 +446,7 @@ const StoreMap = ({ onSelectionChange, radius, setRadius }) => {
 
               </div>
 
-              {hasSearched && stores.length === 0 && (
+              {hasSearched && filteredStores.length === 0 && (
 
                 <div style={{
 
@@ -455,7 +486,7 @@ const StoreMap = ({ onSelectionChange, radius, setRadius }) => {
 
                 <h5 style={{ marginBottom: '0.5rem', fontFamily: 'Vollkorn', fontStyle: 'italic', color: 'var(--primary)', fontSize: '1.5rem' }}>Selected Stores ↓</h5>
 
-                {stores.length === 0 && (
+                {filteredStores.length === 0 && (
 
                     <div style={{ backgroundColor: 'var(--colorp3)', padding: '0.5rem', borderRadius: '8px', fontSize: '1.3rem', marginBottom: '1rem' }}>
 
@@ -467,7 +498,7 @@ const StoreMap = ({ onSelectionChange, radius, setRadius }) => {
 
                 <CheckableStoreList 
 
-                    stores={stores} 
+                    stores={filteredStores} 
 
                     selectedStoreIds={selectedStoreIds} 
 
