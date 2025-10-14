@@ -1,10 +1,21 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
+import GridSourcer from '../components/GridSourcer';
 
 const SearchResultsPage = () => {
+  const [searchParams] = useSearchParams();
+  const searchTerm = searchParams.get('q');
+
+  // For now, we are only handling search term.
+  // The logic for 'sourceUrl' can be added here later if needed.
+  const sourceUrl = null;
+
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold">Search Results</h1>
-      <p>Search results will be displayed here.</p>
+      <GridSourcer 
+        searchTerm={searchTerm}
+        sourceUrl={sourceUrl}
+      />
     </div>
   );
 };
