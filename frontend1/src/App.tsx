@@ -9,13 +9,14 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { ProductCarousel } from "./components/ProductCarousel";
+import { SettingsDialog } from "@/components/settings-dialog";
 import './App.css';
 
 function App() {
   return (
     <div>
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center">
+        <div className="container flex h-14 items-center justify-between">
           <div className="mr-4 hidden md:flex">
             <a href="/" className="mr-6 flex items-center space-x-2">
               <span className="hidden font-bold sm:inline-block">SplitCart</span>
@@ -64,6 +65,9 @@ function App() {
                 </NavigationMenuList>
               </NavigationMenu>
             </nav>
+          </div>
+          <div className="flex items-center gap-4">
+            <SettingsDialog />
           </div>
         </div>
       </header>
