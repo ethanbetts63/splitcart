@@ -30,7 +30,7 @@ const EditLocationPage = () => {
   
   // State for data and loading
   const [mapCenter, setMapCenter] = useState<MapCenter>({ latitude: -34.9285, longitude: 138.6007, radius: 5 }); // Default center
-  const [stores, setStores] = useState<Store[]>([]);
+  const [stores, setStores] = useState<Store[] | null>(null); // Initialize to null to track initial state
   const [selectedStoreIds, setSelectedStoreIds] = useState(new Set<number>());
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,7 +44,6 @@ const EditLocationPage = () => {
     
     setIsLoading(true);
     setError(null);
-    setStores([]); // Clear previous results
 
     const params = new URLSearchParams();
     params.append('postcode', postcode);
@@ -61,6 +60,7 @@ const EditLocationPage = () => {
       }
       const data: Store[] = await response.json();
       setStores(data || []);
+      setSelectedStoreIds(new Set((data || []).map(store => store.id))); // Select all stores by default
 
       // Center map on the first result if available, bundling radius with it
       if (data && data.length > 0) {
@@ -73,7 +73,7 @@ const EditLocationPage = () => {
 
     } catch (err: any) {
       setError(err.message);
-      setStores([]);
+      setStores([]); // Set to empty array on error
     } finally {
       setIsLoading(false);
     }
@@ -98,23 +98,34 @@ const EditLocationPage = () => {
     }
   };
 
+  const renderStoreList = () => {
+    if (stores === null) {
+      return <p className="text-sm text-muted-foreground text-center">Please search for a postcode to see nearby stores.</p>;
+    }
+    if (isLoading) {
+      return <p className="text-sm text-muted-foreground text-center">Loading stores...</p>;
+    }
+    if (stores.length === 0) {
+        return <p className="text-sm text-muted-foreground text-center">No stores found for this search.</p>;
+    }
+    return (
+        <StoreList 
+            stores={stores}
+            selectedStoreIds={selectedStoreIds}
+            onStoreSelect={handleStoreSelect}
+        />
+    );
+  }
+
   return (
     <div className="flex h-full w-full">
       {/* Left Column for Store List */}
       <div className="w-2/5 border-r flex flex-col">
         <div className="p-4 border-b">
-            <h3 className="text-lg font-semibold">Nearby Stores ({stores.length})</h3>
+            <h3 className="text-lg font-semibold">Selected Stores ({selectedStoreIds.size})</h3>
         </div>
         <div className="flex-grow overflow-y-auto p-4">
-            {isLoading ? (
-              <p>Loading stores...</p>
-            ) : (
-              <StoreList 
-                stores={stores}
-                selectedStoreIds={selectedStoreIds}
-                onStoreSelect={handleStoreSelect}
-              />
-            )}
+            {renderStoreList()}
         </div>
       </div>
 
@@ -124,7 +135,7 @@ const EditLocationPage = () => {
         <div className="h-1/2">
             <StoreMap 
               center={mapCenter}
-              stores={stores}
+              stores={stores || []} // Pass empty array if stores is null
               selectedStoreIds={selectedStoreIds}
               onStoreSelect={handleStoreSelect}
             />
