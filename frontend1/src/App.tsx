@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // Import useEffect
 import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
 import { MapPin, ShoppingCart } from "lucide-react"; // Import icons
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SettingsDialog } from "@/components/settings-dialog";
+import { useStoreSelection } from "@/context/StoreContext"; // Import the store selection hook
 import HomePage from "./pages/HomePage";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import './App.css';
@@ -23,10 +24,19 @@ const App = () => {
 const Layout = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const { selectedStoreIds } = useStoreSelection(); // Get selected stores from context
 
   // State for controlling the settings dialog
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogPage, setDialogPage] = useState('Trolley');
+
+  // On initial load, check if any stores are selected. If not, force the user to select them.
+  useEffect(() => {
+    if (selectedStoreIds.size === 0) {
+      setDialogPage('Edit Location');
+      setDialogOpen(true);
+    }
+  }, []); // Empty dependency array ensures this runs only once on mount
 
   const handleSearchSubmit = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && searchTerm.trim() !== '') {
@@ -35,7 +45,12 @@ const Layout = () => {
   };
 
   const openDialog = (page: string) => {
-    setDialogPage(page);
+    // If user clicks trolley with no stores selected, still redirect to location page
+    if (page === 'Trolley' && selectedStoreIds.size === 0) {
+      setDialogPage('Edit Location');
+    } else {
+      setDialogPage(page);
+    }
     setDialogOpen(true);
   };
 

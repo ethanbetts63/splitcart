@@ -7,7 +7,7 @@ const HomePage = () => {
   const storeIdsArray = Array.from(selectedStoreIds);
 
   return (
-    <main className="container mx-auto p-4">
+    <main className="p-4">
       <section className="mt-8">
         <h2 className="text-xl font-semibold">Bargains</h2>
         <ProductCarousel 
