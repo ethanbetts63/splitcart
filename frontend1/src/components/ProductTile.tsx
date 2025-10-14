@@ -11,8 +11,23 @@ import {
 import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
-import '../css/ProductTile.css'; // Import the new CSS file
-import { Product } from '@/types'; // Import shared type
+
+// --- Type Definitions to match the API Serializer ---
+type CompanyPriceInfo = {
+  company: string;
+  price_display: string;
+  is_lowest: boolean;
+  image_url?: string;
+};
+
+type Product = {
+  id: number;
+  name: string;
+  brand_name?: string;
+  size?: string;
+  image_url?: string;
+  prices: CompanyPriceInfo[];
+};
 
 interface ProductTileProps {
   product: Product;
@@ -24,26 +39,27 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
     e.currentTarget.src = fallbackImage;
   };
 
+  // The API now provides a deterministic image_url for the product.
   const imageUrl = product.image_url || fallbackImage;
 
   return (
-    <Card className="product-tile-card">
-      <div className="product-tile-image-container">
+    <Card className="w-full flex flex-col h-full overflow-hidden gap-3">
+      <div className="aspect-square w-full overflow-hidden">
         <img
           src={imageUrl}
           onError={handleImageError}
           alt={product.name}
-          className="product-tile-image"
+          className="h-full w-full object-cover transition-transform hover:scale-105"
         />
       </div>
-      <CardHeader className="product-tile-header">
-        <CardTitle className="product-tile-title">{product.name}</CardTitle>
-        {product.brand_name && <CardDescription className="product-tile-description">{product.brand_name}</CardDescription>}
+      <CardHeader className="p-0 pb-0">
+        <CardTitle className="h-12 line-clamp-2 text-base">{product.name}</CardTitle>
+        {product.brand_name && <CardDescription>{product.brand_name}</CardDescription>}
       </CardHeader>
-      <CardContent className="product-tile-content">
+      <CardContent className="flex-grow p-">
         <PriceDisplay prices={product.prices} />
       </CardContent>
-      <CardFooter className="product-tile-footer">
+      <CardFooter className="flex justify-center p-4 pt-0">
         <AddToCartButton product={product} />
       </CardFooter>
     </Card>

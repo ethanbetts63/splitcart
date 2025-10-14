@@ -1,7 +1,6 @@
 import React from 'react';
 import { Checkbox } from "@/components/ui/checkbox";
-import { Card } from "@/components/ui/card";
-import { Store } from '@/types'; // Import shared type
+import { Card, CardContent } from "@/components/ui/card";
 
 // Import logos
 import aldiLogo from '@/assets/ALDI_logo.svg';
@@ -15,6 +14,13 @@ const companyLogos: { [key: string]: string } = {
     'Coles': colesLogo,
     'Iga': igaLogo,
     'Woolworths': woolworthsLogo,
+};
+
+// Define the type for a single store
+type Store = {
+  id: number;
+  store_name: string;
+  company_name: string;
 };
 
 interface StoreListProps {
@@ -34,16 +40,17 @@ const StoreList: React.FC<StoreListProps> = ({ stores, selectedStoreIds, onStore
           <Card 
             key={store.id} 
             onClick={() => onStoreSelect(store.id)}
-            // Overriding default card padding and applying flex layout directly
-            className="p-2 flex flex-row items-center gap-3 cursor-pointer hover:bg-accent transition-colors"
+            className="cursor-pointer hover:bg-accent transition-colors"
           >
-            <Checkbox
-              checked={isSelected}
-              onCheckedChange={() => onStoreSelect(store.id)}
-              aria-label={`Select ${store.store_name}`}
-            />
-            {logo && <img src={logo} alt={store.company_name} className="h-5 w-auto" />}
-            <span className="font-medium text-sm truncate">{store.store_name}</span>
+            <CardContent className="p-1.5 flex items-center gap-2">
+              <Checkbox
+                checked={isSelected}
+                onCheckedChange={() => onStoreSelect(store.id)}
+                aria-label={`Select ${store.store_name}`}
+              />
+              {logo && <img src={logo} alt={store.company_name} className="h-4 w-auto" />}
+              <span className="font-medium text-sm truncate">{store.store_name}</span>
+            </CardContent>
           </Card>
         );
       })}

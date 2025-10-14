@@ -33,7 +33,7 @@ export type MapCenter = {
 
 // --- Context-Specific Types ---
 
-export interface CartItem {
+export type CartItem = {
   product: Product;
   quantity: number;
-}
+};

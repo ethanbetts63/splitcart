@@ -5,28 +5,33 @@ import CompanyFilter from '@/components/CompanyFilter';
 import StoreList from '@/components/StoreList';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useStoreSelection } from '@/context/StoreContext';
-import { Store, MapCenter } from '@/types'; // Import shared types
+
+// Define the type for a single store
+type Store = {
+  id: number;
+  store_name: string;
+  company_name: string;
+  latitude: number;
+  longitude: number;
+};
+
+// The map center state now also includes the radius used for the search
+type MapCenter = {
+  latitude: number;
+  longitude: number;
+  radius: number;
+} | null;
 
 const EditLocationPage = () => {
-  // --- All state now comes from the global context ---
-  const {
-    selectedStoreIds,
-    handleStoreSelect,
-    setSelectedStoreIds,
-    stores,
-    setStores,
-    postcode,
-    setPostcode,
-    radius,
-    setRadius,
-    selectedCompanies,
-    setSelectedCompanies,
-    mapCenter,
-    setMapCenter,
-  } = useStoreSelection();
-
-  // --- Loading and error state can remain local to this page ---
+  // State for user inputs
+  const [postcode, setPostcode] = useState('5000'); // Default to a valid postcode for demo
+  const [radius, setRadius] = useState(5);
+  const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
+  
+  // State for data and loading
+  const [mapCenter, setMapCenter] = useState<MapCenter>({ latitude: -34.9285, longitude: 138.6007, radius: 5 }); // Default center
+  const [stores, setStores] = useState<Store[] | null>(null); // Initialize to null to track initial state
+  const [selectedStoreIds, setSelectedStoreIds] = useState(new Set<number>());
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -55,8 +60,9 @@ const EditLocationPage = () => {
       }
       const data: Store[] = await response.json();
       setStores(data || []);
-      setSelectedStoreIds(new Set((data || []).map(store => store.id)));
+      setSelectedStoreIds(new Set((data || []).map(store => store.id))); // Select all stores by default
 
+      // Center map on the first result if available, bundling radius with it
       if (data && data.length > 0) {
         setMapCenter({ 
           latitude: data[0].latitude, 
@@ -67,11 +73,24 @@ const EditLocationPage = () => {
 
     } catch (err: any) {
       setError(err.message);
-      setStores([]);
+      setStores([]); // Set to empty array on error
     } finally {
       setIsLoading(false);
     }
-  }, [postcode, radius, selectedCompanies, setStores, setSelectedStoreIds, setMapCenter]);
+  }, [postcode, radius, selectedCompanies]);
+
+  // --- Component Event Handlers ---
+  const handleStoreSelect = (storeId: number) => {
+    setSelectedStoreIds(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(storeId)) {
+        newSet.delete(storeId);
+      } else {
+        newSet.add(storeId);
+      }
+      return newSet;
+    });
+  };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -101,11 +120,10 @@ const EditLocationPage = () => {
   return (
     <div className="flex h-full w-full">
       {/* Left Column for Controls */}
-      <div className="w-2/5 border-r p-4 flex flex-col gap-4">
+      <div className="w-3/7 border-r p-4 flex flex-col gap-4">
         <h3 className="text-lg font-semibold">Controls</h3>
         <div className="grid gap-2">
             <label className="text-sm font-medium">Postcode</label>
-            <div className="flex gap-2">
             <Input
                 type="text"
                 placeholder="4-digit postcode"
@@ -114,7 +132,6 @@ const EditLocationPage = () => {
                 onKeyDown={handleKeyDown}
                 maxLength={4}
             />
-            </div>
             {error && <p className="text-sm text-red-500">{error}</p>}
         </div>
         <RadiusSlider defaultValue={radius} onValueChange={setRadius} />
@@ -128,7 +145,7 @@ const EditLocationPage = () => {
         <div className="h-1/2">
             <StoreMap 
               center={mapCenter}
-              stores={stores || []} 
+              stores={stores || []} // Pass empty array if stores is null
               selectedStoreIds={selectedStoreIds}
               onStoreSelect={handleStoreSelect}
             />
