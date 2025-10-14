@@ -61,7 +61,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl }) => {
       
       const productList = data.results || [];
       const nextUrl = data.next; 
-      const count = data.count !== undefined ? data.count : products.length + productList.length;
+      const count = data.count;
 
       if (isInitialLoad) {
         setProducts(productList);
@@ -75,7 +75,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl }) => {
       setIsError(true);
       setError(e.message);
     }
-  }, [products.length]);
+  }, []);
 
   // Effect for the initial data fetch
   useEffect(() => {

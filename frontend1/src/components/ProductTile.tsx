@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import AddToCartButton from './AddToCartButton';
+import fallbackImage from '@/assets/splitcart_symbol_v6.png';
 
 // Define the types for our product data based on the old component
 type Price = {
@@ -43,11 +44,10 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
   }, [product.prices]);
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    // You would have a fallback image imported here
-    // e.currentTarget.src = fallbackImage;
+    e.currentTarget.src = fallbackImage;
   };
 
-  const imageUrl = selectedPrice?.image_url || product.image_url || 'https://via.placeholder.com/150';
+  const imageUrl = selectedPrice?.image_url || product.image_url || fallbackImage;
 
   return (
     <Card className="w-full flex flex-col h-full overflow-hidden">
@@ -70,8 +70,7 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
         </p>
       </CardContent>
       <CardFooter>
-        {/* AddToCartButton would go here */}
-        <Button className="w-full">Add to Cart</Button>
+        <AddToCartButton product={product} />
       </CardFooter>
     </Card>
   );
