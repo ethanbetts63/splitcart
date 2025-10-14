@@ -27,7 +27,8 @@
 
 /* Header, Content, Footer */
 .product-tile-header {
-    padding: 0 0.75rem; /* Reduced padding */
+    padding: 0 0.1rem; /* Reduced padding */
+    gap: 0.1rem; /* Reduced gap between title and description */
 }
 
 .product-tile-title {
