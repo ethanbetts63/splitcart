@@ -18,13 +18,15 @@ type Store = {
   longitude: number;
 };
 
-type Location = {
+// The center prop now includes the radius at the time of search
+type MapCenter = {
   latitude: number;
   longitude: number;
-};
+  radius: number;
+} | null;
 
 interface StoreMapProps {
-  center: Location | null;
+  center: MapCenter;
   stores: Store[];
   selectedStoreIds: Set<number>;
   onStoreSelect: (storeId: number) => void;
@@ -61,14 +63,25 @@ const markerHtmlStyles = `
   }
 `;
 
+// --- Helper Functions ---
+const getZoomLevelForRadius = (radiusKm: number): number => {
+  if (radiusKm <= 1) return 15;
+  if (radiusKm <= 2) return 14;
+  if (radiusKm <= 5) return 13;
+  if (radiusKm <= 10) return 12;
+  if (radiusKm <= 25) return 11;
+  return 10;
+};
+
 // --- Helper component to control map view ---
-const MapViewController: React.FC<{ center: Location | null }> = ({ center }) => {
+const MapViewController: React.FC<{ center: MapCenter }> = ({ center }) => {
   const map = useMap();
   useEffect(() => {
     if (center) {
-      map.setView([center.latitude, center.longitude], 13);
+      const zoom = getZoomLevelForRadius(center.radius);
+      map.setView([center.latitude, center.longitude], zoom);
     }
-  }, [center, map]);
+  }, [center, map]); // Only runs when the center object changes
   return null;
 };
 
@@ -77,10 +90,12 @@ const StoreMap: React.FC<StoreMapProps> = ({ center, stores, selectedStoreIds, o
         ? [center.latitude, center.longitude] 
         : [-34.9285, 138.6007]; // Default center
 
+    const displayZoom = center ? getZoomLevelForRadius(center.radius) : 13;
+
     return (
         <div style={{ height: '100%', width: '100%' }}>
             <style>{markerHtmlStyles}</style>
-            <MapContainer center={displayCenter} zoom={13} style={{ height: '100%', width: '100%' }}>
+            <MapContainer center={displayCenter} zoom={displayZoom} style={{ height: '100%', width: '100%' }}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

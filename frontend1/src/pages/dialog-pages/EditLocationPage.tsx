@@ -15,9 +15,11 @@ type Store = {
   longitude: number;
 };
 
-type Location = {
+// The map center state now also includes the radius used for the search
+type MapCenter = {
   latitude: number;
   longitude: number;
+  radius: number;
 } | null;
 
 const EditLocationPage = () => {
@@ -27,7 +29,7 @@ const EditLocationPage = () => {
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
   
   // State for data and loading
-  const [mapCenter, setMapCenter] = useState<Location>({ latitude: -34.9285, longitude: 138.6007 }); // Default center
+  const [mapCenter, setMapCenter] = useState<MapCenter>({ latitude: -34.9285, longitude: 138.6007, radius: 5 }); // Default center
   const [stores, setStores] = useState<Store[]>([]);
   const [selectedStoreIds, setSelectedStoreIds] = useState(new Set<number>());
   const [isLoading, setIsLoading] = useState(false);
@@ -60,9 +62,13 @@ const EditLocationPage = () => {
       const data: Store[] = await response.json();
       setStores(data || []);
 
-      // Center map on the first result if available
+      // Center map on the first result if available, bundling radius with it
       if (data && data.length > 0) {
-        setMapCenter({ latitude: data[0].latitude, longitude: data[0].longitude });
+        setMapCenter({ 
+          latitude: data[0].latitude, 
+          longitude: data[0].longitude, 
+          radius: radius 
+        });
       }
 
     } catch (err: any) {
