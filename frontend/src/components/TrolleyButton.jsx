@@ -1,0 +1,23 @@
+import { useShoppingList } from '../context/ShoppingListContext';
+import splitCartSymbol from '../assets/shopping_cart.svg';
+import '../css/TrolleyButton.css';
+
+const TrolleyButton = ({ onClick }) => {
+  const { items } = useShoppingList();
+
+  return (
+    <button
+      onClick={onClick}
+      className="trolley-button"
+    >
+      <img src={splitCartSymbol} alt="Menu" className="trolley-button-img" />
+      {items.length > 0 && (
+        <span className="item-count">
+          {items.length}
+        </span>
+      )}
+    </button>
+  );
+};
+
+export default TrolleyButton;

@@ -1,128 +1,88 @@
-import React from "react";
+import React, { useState } from "react";
+import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { ProductCarousel } from "./components/ProductCarousel";
+import { Input } from "@/components/ui/input";
 import { SettingsDialog } from "@/components/settings-dialog";
+import HomePage from "./pages/HomePage";
+import SearchResultsPage from "./pages/SearchResultsPage";
 import './App.css';
 
-function App() {
+const App = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="search" element={<SearchResultsPage />} />
+        {/* Add other routes here as needed */}
+      </Route>
+    </Routes>
+  );
+};
+
+const Layout = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearchSubmit = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && searchTerm.trim() !== '') {
+      navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
+    }
+  };
+
   return (
     <div>
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center justify-between">
-          <div className="mr-4 hidden md:flex">
-            <a href="/" className="mr-6 flex items-center space-x-2">
-              <span className="hidden font-bold sm:inline-block">SplitCart</span>
+        <div className="container flex h-14 items-center justify-between gap-4">
+          <div className="flex items-center gap-6">
+            <a href="/" className="flex items-center space-x-2">
+              <span className="font-bold">SplitCart</span>
             </a>
-            <nav className="flex items-center space-x-6 text-sm font-medium">
+            <nav className="hidden md:flex">
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                        <li className="row-span-3">
-                          <NavigationMenuLink asChild>
-                            <a
-                              className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                              href="/"
-                            >
-                              <div className="mb-2 mt-4 text-lg font-medium">
-                                SplitCart
-                              </div>
-                              <p className="text-sm leading-tight text-muted-foreground">
-                                Compare grocery prices and save money.
-                              </p>
-                            </a>
-                          </NavigationMenuLink>
-                        </li>
-                        <ListItem href="/bargains" title="Bargains">
-                          Find the best deals across all stores.
-                        </ListItem>
-                        <ListItem href="/products" title="Products">
-                          Browse and search for products.
-                        </ListItem>
-                        <ListItem href="/stores" title="Stores">
-                          See which stores are supported.
-                        </ListItem>
-                      </ul>
-                    </NavigationMenuContent>
+                    <NavigationMenuLink href="/bargains" className={navigationMenuTriggerStyle()}>Bargains</NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                      <a
-                        href="/about"
-                        className="font-medium flex items-center text-sm transition-colors hover:text-accent-foreground focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50 px-4 py-2"
-                      >
-                        About
-                      </a>
-                    </NavigationMenuLink>
+                    <NavigationMenuLink href="/products" className={navigationMenuTriggerStyle()}>Products</NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink href="/stores" className={navigationMenuTriggerStyle()}>Stores</NavigationMenuLink>
                   </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
             </nav>
           </div>
-          <div className="flex items-center gap-4">
+
+          <div className="flex flex-1 items-center justify-center">
+            <div className="w-full max-w-sm">
+              <Input
+                type="search"
+                placeholder="Search products, stores, and more..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={handleSearchSubmit}
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-end">
             <SettingsDialog />
           </div>
         </div>
       </header>
-      <main className="container mx-auto p-4">
-        <section className="mt-8">
-          <h2 className="text-xl font-semibold">Featured Products</h2>
-          <ProductCarousel />
-        </section>
-
-        <section className="mt-8">
-          <h2 className="text-xl font-semibold">New Arrivals</h2>
-          <ProductCarousel />
-        </section>
-
-        <section className="mt-8">
-          <h2 className="text-xl font-semibold">On Sale</h2>
-          <ProductCarousel />
-        </section>
-
-        <section className="mt-8">
-          <h2 className="text-xl font-semibold">Popular</h2>
-          <ProductCarousel />
-        </section>
+      <main>
+        <Outlet />
       </main>
     </div>
   );
-}
-
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  );
-});
-ListItem.displayName = "ListItem";
+};
 
 export default App;
