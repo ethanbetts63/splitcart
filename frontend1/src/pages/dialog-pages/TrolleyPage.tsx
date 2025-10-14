@@ -1,4 +1,3 @@
-import React from 'react';
 import { useShoppingList } from '@/context/ShoppingListContext';
 import TrolleyItemTile from '@/components/TrolleyItemTile';
 

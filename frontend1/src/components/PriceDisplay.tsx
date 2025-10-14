@@ -1,19 +1,11 @@
 import React from 'react';
+import { CompanyPriceInfo } from '@/types'; // Import shared type
 
 // --- Asset Imports ---
 import aldiLogo from '@/assets/ALDI_logo.svg';
 import colesLogo from '@/assets/coles_logo.webp';
 import igaLogo from '@/assets/iga_logo.webp';
 import woolworthsLogo from '@/assets/woolworths_logo.webp';
-
-// --- Type Definitions ---
-// This type matches the actual data coming from the ProductSerializer
-type CompanyPriceInfo = {
-  company: string;
-  price_display: string;
-  is_lowest: boolean;
-  image_url?: string;
-};
 
 interface PriceDisplayProps {
   prices: CompanyPriceInfo[];

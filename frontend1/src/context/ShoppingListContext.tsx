@@ -1,28 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { Product, CartItem } from '@/types'; // Import shared types
 
 // --- Type Definitions ---
-type Price = {
-  id: number;
-  price: string;
-  store_id: number;
-  is_lowest: boolean;
-  image_url?: string;
-};
-
-type Product = {
-  id: number;
-  name: string;
-  brand_name?: string;
-  size?: string;
-  image_url?: string;
-  prices: Price[];
-};
-
-export interface CartItem {
-  product: Product;
-  quantity: number;
-}
-
 interface ShoppingListContextType {
   items: CartItem[];
   addItem: (product: Product, quantity: number) => void;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
+import { Store } from '@/types'; // Import shared type
 
 // Import logos
 import aldiLogo from '@/assets/ALDI_logo.svg';
@@ -14,13 +15,6 @@ const companyLogos: { [key: string]: string } = {
     'Coles': colesLogo,
     'Iga': igaLogo,
     'Woolworths': woolworthsLogo,
-};
-
-// Define the type for a single store
-type Store = {
-  id: number;
-  store_name: string;
-  company_name: string;
 };
 
 interface StoreListProps {

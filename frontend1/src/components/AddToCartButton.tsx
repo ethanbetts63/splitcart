@@ -2,13 +2,7 @@ import React from 'react';
 import { useShoppingList } from '@/context/ShoppingListContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
-// Define the types for props
-type Product = {
-  id: number;
-  name: string;
-  // Add other product properties as needed for the context
-};
+import { Product } from '@/types'; // Import shared type
 
 interface AddToCartButtonProps {
   product: Product;

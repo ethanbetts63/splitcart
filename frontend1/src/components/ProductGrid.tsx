@@ -1,25 +1,7 @@
 import React from 'react';
 import ProductTile from './ProductTile';
 import { Button } from '@/components/ui/button';
-
-// Define the types for our product data again for this component
-// In a real app, these would be in a shared types file
-type Price = {
-  id: number;
-  price: string;
-  store_id: number;
-  is_lowest: boolean;
-  image_url?: string;
-};
-
-type Product = {
-  id: number;
-  name: string;
-  brand_name?: string;
-  size?: string;
-  image_url?: string;
-  prices: Price[];
-};
+import { Product } from '@/types'; // Import shared type
 
 interface ProductGridProps {
   products: Product[];

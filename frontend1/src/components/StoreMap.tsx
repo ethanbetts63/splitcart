@@ -2,28 +2,13 @@ import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { Store, MapCenter } from '@/types'; // Import shared types
 
 // --- Asset Imports ---
 import aldiLogo from '@/assets/ALDI_logo.svg';
 import colesLogo from '@/assets/coles_logo.webp';
 import igaLogo from '@/assets/iga_logo.webp';
 import woolworthsLogo from '@/assets/woolworths_logo.webp';
-
-// --- Type Definitions ---
-type Store = {
-  id: number;
-  store_name: string;
-  company_name: string;
-  latitude: number;
-  longitude: number;
-};
-
-// The center prop now includes the radius at the time of search
-type MapCenter = {
-  latitude: number;
-  longitude: number;
-  radius: number;
-} | null;
 
 interface StoreMapProps {
   center: MapCenter;
@@ -65,12 +50,12 @@ const markerHtmlStyles = `
 
 // --- Helper Functions ---
 const getZoomLevelForRadius = (radiusKm: number): number => {
-  if (radiusKm <= 1) return 14; // Was 15
-  if (radiusKm <= 2) return 13; // Was 14
-  if (radiusKm <= 5) return 12; // Was 13
-  if (radiusKm <= 10) return 11; // Was 12
-  if (radiusKm <= 25) return 10; // Was 11
-  return 9; // Was 10
+  if (radiusKm <= 1) return 14;
+  if (radiusKm <= 2) return 13;
+  if (radiusKm <= 5) return 12;
+  if (radiusKm <= 10) return 11;
+  if (radiusKm <= 25) return 10;
+  return 9;
 };
 
 // --- Helper component to control map view ---

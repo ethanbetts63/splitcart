@@ -6,15 +6,7 @@ import StoreList from '@/components/StoreList';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useStoreSelection } from '@/context/StoreContext';
-
-// Type for a single store - can be moved to a shared types file
-type Store = {
-  id: number;
-  store_name: string;
-  company_name: string;
-  latitude: number;
-  longitude: number;
-};
+import { Store, MapCenter } from '@/types'; // Import shared types
 
 const EditLocationPage = () => {
   // --- All state now comes from the global context ---

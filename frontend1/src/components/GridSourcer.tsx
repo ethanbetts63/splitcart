@@ -1,25 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import ProductGrid from './ProductGrid';
+import { Product } from '@/types'; // Import shared type
 
-// Define the types for our product data again
-type Price = {
-  id: number;
-  price: string;
-  store_id: number;
-  is_lowest: boolean;
-  image_url?: string;
-};
-
-type Product = {
-  id: number;
-  name: string;
-  brand_name?: string;
-  size?: string;
-  image_url?: string;
-  prices: Price[];
-};
-
-// Type for the API response
+// Type for the API response, using the shared Product type
 type ApiResponse = {
   count: number;
   next: string | null;
