@@ -56,11 +56,14 @@ function App() {
                     </NavigationMenuContent>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <a href="/about">
-                      <NavigationMenuLink className="font-medium">
+                    <NavigationMenuLink asChild>
+                      <a
+                        href="/about"
+                        className="font-medium flex items-center text-sm transition-colors hover:text-accent-foreground focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50 px-4 py-2"
+                      >
                         About
-                      </NavigationMenuLink>
-                    </a>
+                      </a>
+                    </NavigationMenuLink>
                   </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
