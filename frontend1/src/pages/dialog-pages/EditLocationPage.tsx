@@ -5,9 +5,9 @@ import CompanyFilter from '@/components/CompanyFilter';
 import StoreList from '@/components/StoreList';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useStoreSelection } from '@/context/StoreContext'; // Import the context hook
+import { useStoreSelection } from '@/context/StoreContext';
 
-// Define the type for a single store
+// Type for a single store - can be moved to a shared types file
 type Store = {
   id: number;
   store_name: string;
@@ -16,25 +16,25 @@ type Store = {
   longitude: number;
 };
 
-// The map center state now also includes the radius used for the search
-type MapCenter = {
-  latitude: number;
-  longitude: number;
-  radius: number;
-} | null;
-
 const EditLocationPage = () => {
-  // --- Use global state for store selection ---
-  const { selectedStoreIds, handleStoreSelect, setSelectedStoreIds } = useStoreSelection();
+  // --- All state now comes from the global context ---
+  const {
+    selectedStoreIds,
+    handleStoreSelect,
+    setSelectedStoreIds,
+    stores,
+    setStores,
+    postcode,
+    setPostcode,
+    radius,
+    setRadius,
+    selectedCompanies,
+    setSelectedCompanies,
+    mapCenter,
+    setMapCenter,
+  } = useStoreSelection();
 
-  // State for user inputs
-  const [postcode, setPostcode] = useState('5000'); // Default to a valid postcode for demo
-  const [radius, setRadius] = useState(5);
-  const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
-  
-  // State for data and loading
-  const [mapCenter, setMapCenter] = useState<MapCenter>({ latitude: -34.9285, longitude: 138.6007, radius: 5 }); // Default center
-  const [stores, setStores] = useState<Store[] | null>(null); // Initialize to null to track initial state
+  // --- Loading and error state can remain local to this page ---
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -63,10 +63,8 @@ const EditLocationPage = () => {
       }
       const data: Store[] = await response.json();
       setStores(data || []);
-      // Use the context function to select all stores by default
-      setSelectedStoreIds(new Set((data || []).map(store => store.id))); 
+      setSelectedStoreIds(new Set((data || []).map(store => store.id)));
 
-      // Center map on the first result if available, bundling radius with it
       if (data && data.length > 0) {
         setMapCenter({ 
           latitude: data[0].latitude, 
@@ -77,13 +75,12 @@ const EditLocationPage = () => {
 
     } catch (err: any) {
       setError(err.message);
-      setStores([]); // Set to empty array on error
+      setStores([]);
     } finally {
       setIsLoading(false);
     }
-  }, [postcode, radius, selectedCompanies, setSelectedStoreIds]);
+  }, [postcode, radius, selectedCompanies, setStores, setSelectedStoreIds, setMapCenter]);
 
-  // Local handler for Enter key is still needed
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       handleSearch();
@@ -125,7 +122,6 @@ const EditLocationPage = () => {
                 onKeyDown={handleKeyDown}
                 maxLength={4}
             />
-            <Button onClick={handleSearch} disabled={isLoading}>{isLoading ? '...' : 'Search'}</Button>
             </div>
             {error && <p className="text-sm text-red-500">{error}</p>}
         </div>
@@ -140,7 +136,7 @@ const EditLocationPage = () => {
         <div className="h-1/2">
             <StoreMap 
               center={mapCenter}
-              stores={stores || []} // Pass empty array if stores is null
+              stores={stores || []} 
               selectedStoreIds={selectedStoreIds}
               onStoreSelect={handleStoreSelect}
             />
