@@ -1,5 +1,5 @@
-import React from "react"
-import { cn } from "@/lib/utils"
+import React from "react";
+import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -7,35 +7,9 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
-import './App.css'
-
-const components: { title: string; href: string; description: string }[] = [
-  {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
-    description:
-      "For sighted users to preview content available behind a link.",
-  },
-  {
-    title: "Progress",
-    href: "/docs/primitives/progress",
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  },
-  {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-]
+} from "@/components/ui/navigation-menu";
+import { ProductCarousel } from "./components/ProductCarousel";
+import './App.css';
 
 function App() {
   return (
@@ -44,13 +18,13 @@ function App() {
         <div className="container flex h-14 items-center">
           <div className="mr-4 hidden md:flex">
             <a href="/" className="mr-6 flex items-center space-x-2">
-              <span className="hidden font-bold sm:inline-block">MyApp</span>
+              <span className="hidden font-bold sm:inline-block">SplitCart</span>
             </a>
             <nav className="flex items-center space-x-6 text-sm font-medium">
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
+                    <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                         <li className="row-span-3">
@@ -60,47 +34,30 @@ function App() {
                               href="/"
                             >
                               <div className="mb-2 mt-4 text-lg font-medium">
-                                shadcn/ui
+                                SplitCart
                               </div>
                               <p className="text-sm leading-tight text-muted-foreground">
-                                Beautifully designed components built with Radix UI and
-                                Tailwind CSS.
+                                Compare grocery prices and save money.
                               </p>
                             </a>
                           </NavigationMenuLink>
                         </li>
-                        <ListItem href="/docs" title="Introduction">
-                          Re-usable components built using Radix UI and Tailwind CSS.
+                        <ListItem href="/bargains" title="Bargains">
+                          Find the best deals across all stores.
                         </ListItem>
-                        <ListItem href="/docs/installation" title="Installation">
-                          How to install dependencies and structure your app.
+                        <ListItem href="/products" title="Products">
+                          Browse and search for products.
                         </ListItem>
-                        <ListItem href="/docs/primitives/typography" title="Typography">
-                          Styles for headings, paragraphs, lists...etc
+                        <ListItem href="/stores" title="Stores">
+                          See which stores are supported.
                         </ListItem>
                       </ul>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger>Components</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                        {components.map((component) => (
-                          <ListItem
-                            key={component.title}
-                            title={component.title}
-                            href={component.href}
-                          >
-                            {component.description}
-                          </ListItem>
-                        ))}
-                      </ul>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <a href="/docs">
+                    <a href="/about">
                       <NavigationMenuLink className="font-medium">
-                        Documentation
+                        About
                       </NavigationMenuLink>
                     </a>
                   </NavigationMenuItem>
@@ -110,12 +67,29 @@ function App() {
           </div>
         </div>
       </header>
-      <main className="container mx-auto p-8">
-        <h1 className="text-3xl font-bold mb-4">Page Title</h1>
-        <p>This is the main content of your page.</p>
+      <main className="container mx-auto p-4">
+        <section className="mt-8">
+          <h2 className="text-xl font-semibold">Featured Products</h2>
+          <ProductCarousel />
+        </section>
+
+        <section className="mt-8">
+          <h2 className="text-xl font-semibold">New Arrivals</h2>
+          <ProductCarousel />
+        </section>
+
+        <section className="mt-8">
+          <h2 className="text-xl font-semibold">On Sale</h2>
+          <ProductCarousel />
+        </section>
+
+        <section className="mt-8">
+          <h2 className="text-xl font-semibold">Popular</h2>
+          <ProductCarousel />
+        </section>
       </main>
     </div>
-  )
+  );
 }
 
 const ListItem = React.forwardRef<
@@ -140,8 +114,8 @@ const ListItem = React.forwardRef<
         </a>
       </NavigationMenuLink>
     </li>
-  )
-})
-ListItem.displayName = "ListItem"
+  );
+});
+ListItem.displayName = "ListItem";
 
-export default App
+export default App;
