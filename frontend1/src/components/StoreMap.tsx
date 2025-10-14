@@ -65,12 +65,12 @@ const markerHtmlStyles = `
 
 // --- Helper Functions ---
 const getZoomLevelForRadius = (radiusKm: number): number => {
-  if (radiusKm <= 1) return 15;
-  if (radiusKm <= 2) return 14;
-  if (radiusKm <= 5) return 13;
-  if (radiusKm <= 10) return 12;
-  if (radiusKm <= 25) return 11;
-  return 10;
+  if (radiusKm <= 1) return 14; // Was 15
+  if (radiusKm <= 2) return 13; // Was 14
+  if (radiusKm <= 5) return 12; // Was 13
+  if (radiusKm <= 10) return 11; // Was 12
+  if (radiusKm <= 25) return 10; // Was 11
+  return 9; // Was 10
 };
 
 // --- Helper component to control map view ---
