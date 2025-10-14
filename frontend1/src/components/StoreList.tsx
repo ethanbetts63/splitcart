@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox } from "@/components/ui/checkbox";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 // Import logos
 import aldiLogo from '@/assets/ALDI_logo.svg';
@@ -40,15 +40,17 @@ const StoreList: React.FC<StoreListProps> = ({ stores, selectedStoreIds, onStore
           <Card 
             key={store.id} 
             onClick={() => onStoreSelect(store.id)}
-            className="p-2 flex items-center gap-3 cursor-pointer hover:bg-accent transition-colors"
+            className="cursor-pointer hover:bg-accent transition-colors"
           >
-            <Checkbox
-              checked={isSelected}
-              onCheckedChange={() => onStoreSelect(store.id)}
-              aria-label={`Select ${store.store_name}`}
-            />
-            {logo && <img src={logo} alt={store.company_name} className="h-5 w-auto" />}
-            <span className="font-medium text-sm truncate">{store.store_name}</span>
+            <CardContent className="p-2 flex items-center gap-3">
+              <Checkbox
+                checked={isSelected}
+                onCheckedChange={() => onStoreSelect(store.id)}
+                aria-label={`Select ${store.store_name}`}
+              />
+              {logo && <img src={logo} alt={store.company_name} className="h-5 w-auto" />}
+              <span className="font-medium text-sm truncate">{store.store_name}</span>
+            </CardContent>
           </Card>
         );
       })}
