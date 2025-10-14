@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { Store, MapCenter } from '@/types'; // Import shared types
+import type { Store, MapCenter } from '@/types'; // Import shared types
 
 // --- Asset Imports ---
 import aldiLogo from '@/assets/ALDI_logo.svg';

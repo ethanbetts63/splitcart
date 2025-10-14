@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Product, CartItem } from '@/types'; // Import shared types
+import type { Product } from '@/types/Product';
+import type { CartItem } from '@/types/CartItem';
 
 // --- Type Definitions ---
 interface ShoppingListContextType {
