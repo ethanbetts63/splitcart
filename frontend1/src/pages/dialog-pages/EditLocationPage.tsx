@@ -120,7 +120,7 @@ const EditLocationPage = () => {
   return (
     <div className="flex h-full w-full">
       {/* Left Column for Controls */}
-      <div className="w-1/3 border-r p-4 flex flex-col gap-4">
+      <div className="w-2/5 border-r p-4 flex flex-col gap-4">
         <h3 className="text-lg font-semibold">Controls</h3>
         <div className="grid gap-2">
             <label className="text-sm font-medium">Postcode</label>
