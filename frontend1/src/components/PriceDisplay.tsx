@@ -1,5 +1,5 @@
 import React from 'react';
-import { CompanyPriceInfo } from '@/types'; // Import shared type
+import type { CompanyPriceInfo } from '@/types/Product'; // Import shared type
 
 // --- Asset Imports ---
 import aldiLogo from '@/assets/ALDI_logo.svg';

@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
-import { Product } from '@/types'; // Import shared type
+import type { Product } from '@/types/Product'; // Import shared type
 
 interface TrolleyItemTileProps {
   product: Product;

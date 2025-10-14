@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import ProductGrid from './ProductGrid';
-import { Product } from '@/types'; // Import shared type
+import type { Product } from '@/types/Product'; // Import shared type
 
 // Type for the API response, using the shared Product type
 type ApiResponse = {
