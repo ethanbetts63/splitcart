@@ -5,6 +5,7 @@ import CompanyFilter from '@/components/CompanyFilter';
 import StoreList from '@/components/StoreList';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useStoreSelection } from '@/context/StoreContext'; // Import the context hook
 
 // Define the type for a single store
 type Store = {
@@ -23,6 +24,9 @@ type MapCenter = {
 } | null;
 
 const EditLocationPage = () => {
+  // --- Use global state for store selection ---
+  const { selectedStoreIds, handleStoreSelect, setSelectedStoreIds } = useStoreSelection();
+
   // State for user inputs
   const [postcode, setPostcode] = useState('5000'); // Default to a valid postcode for demo
   const [radius, setRadius] = useState(5);
@@ -31,7 +35,6 @@ const EditLocationPage = () => {
   // State for data and loading
   const [mapCenter, setMapCenter] = useState<MapCenter>({ latitude: -34.9285, longitude: 138.6007, radius: 5 }); // Default center
   const [stores, setStores] = useState<Store[] | null>(null); // Initialize to null to track initial state
-  const [selectedStoreIds, setSelectedStoreIds] = useState(new Set<number>());
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -60,7 +63,8 @@ const EditLocationPage = () => {
       }
       const data: Store[] = await response.json();
       setStores(data || []);
-      setSelectedStoreIds(new Set((data || []).map(store => store.id))); // Select all stores by default
+      // Use the context function to select all stores by default
+      setSelectedStoreIds(new Set((data || []).map(store => store.id))); 
 
       // Center map on the first result if available, bundling radius with it
       if (data && data.length > 0) {
@@ -77,21 +81,9 @@ const EditLocationPage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [postcode, radius, selectedCompanies]);
+  }, [postcode, radius, selectedCompanies, setSelectedStoreIds]);
 
-  // --- Component Event Handlers ---
-  const handleStoreSelect = (storeId: number) => {
-    setSelectedStoreIds(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(storeId)) {
-        newSet.delete(storeId);
-      } else {
-        newSet.add(storeId);
-      }
-      return newSet;
-    });
-  };
-
+  // Local handler for Enter key is still needed
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       handleSearch();
@@ -124,6 +116,7 @@ const EditLocationPage = () => {
         <h3 className="text-lg font-semibold">Controls</h3>
         <div className="grid gap-2">
             <label className="text-sm font-medium">Postcode</label>
+            <div className="flex gap-2">
             <Input
                 type="text"
                 placeholder="4-digit postcode"
@@ -132,6 +125,8 @@ const EditLocationPage = () => {
                 onKeyDown={handleKeyDown}
                 maxLength={4}
             />
+            <Button onClick={handleSearch} disabled={isLoading}>{isLoading ? '...' : 'Search'}</Button>
+            </div>
             {error && <p className="text-sm text-red-500">{error}</p>}
         </div>
         <RadiusSlider defaultValue={radius} onValueChange={setRadius} />

@@ -25,9 +25,10 @@ type ApiResponse = {
 
 interface ProductCarouselProps {
   sourceUrl: string;
+  storeIds?: number[]; // Make storeIds an optional prop
 }
 
-export const ProductCarousel: React.FC<ProductCarouselProps> = ({ sourceUrl }) => {
+export const ProductCarousel: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +38,18 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({ sourceUrl }) =
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(sourceUrl);
+        // Separate URL and existing params
+        const [baseUrl, queryString] = sourceUrl.split('?');
+        const params = new URLSearchParams(queryString || '');
+
+        // Add store_ids if they are provided
+        if (storeIds && storeIds.length > 0) {
+          params.append('store_ids', storeIds.join(','));
+        }
+
+        const finalUrl = `${baseUrl}?${params.toString()}`;
+
+        const response = await fetch(finalUrl);
         if (!response.ok) {
           throw new Error('Failed to fetch products');
         }
@@ -51,7 +63,7 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({ sourceUrl }) =
     };
 
     fetchProducts();
-  }, [sourceUrl]);
+  }, [sourceUrl, storeIds]); // Add storeIds to dependency array
 
   if (isLoading) {
     return <div className="text-center p-4">Loading...</div>;
