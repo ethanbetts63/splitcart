@@ -9,15 +9,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import AddToCartButton from './AddToCartButton';
+import PriceDisplay from './PriceDisplay'; // Import the new component
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
 
-// Define the types for our product data based on the old component
+// Define the types for our product data
 type Price = {
   id: number;
   price: string;
   store_id: number;
   is_lowest: boolean;
   image_url?: string;
+  company_name: string; // Ensure this is available for the PriceDisplay
 };
 
 type Product = {
@@ -64,10 +66,7 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
         {product.brand_name && <CardDescription>{product.brand_name}</CardDescription>}
       </CardHeader>
       <CardContent className="flex-grow">
-        {/* PriceDisplay would go here */}
-        <p className="text-lg font-semibold">
-          {selectedPrice ? `$${selectedPrice.price}` : 'Price not available'}
-        </p>
+        <PriceDisplay prices={product.prices} />
       </CardContent>
       <CardFooter className="flex justify-center">
         <AddToCartButton product={product} />
