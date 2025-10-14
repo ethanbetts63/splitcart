@@ -119,17 +119,27 @@ const EditLocationPage = () => {
 
   return (
     <div className="flex h-full w-full">
-      {/* Left Column for Store List */}
-      <div className="w-2/5 border-r flex flex-col">
-        <div className="p-4 border-b">
-            <h3 className="text-lg font-semibold">Selected Stores ({selectedStoreIds.size})</h3>
+      {/* Left Column for Controls */}
+      <div className="w-1/3 border-r p-4 flex flex-col gap-4">
+        <h3 className="text-lg font-semibold">Controls</h3>
+        <div className="grid gap-2">
+            <label className="text-sm font-medium">Postcode</label>
+            <Input
+                type="text"
+                placeholder="4-digit postcode"
+                value={postcode}
+                onChange={(e) => setPostcode(e.target.value)}
+                onKeyDown={handleKeyDown}
+                maxLength={4}
+            />
+            {error && <p className="text-sm text-red-500">{error}</p>}
         </div>
-        <div className="flex-grow overflow-y-auto p-4">
-            {renderStoreList()}
-        </div>
+        <RadiusSlider defaultValue={radius} onValueChange={setRadius} />
+        <CompanyFilter onSelectionChange={setSelectedCompanies} />
+        <Button onClick={handleSearch} disabled={isLoading} className="w-full">{isLoading ? 'Searching...' : 'Search'}</Button>
       </div>
 
-      {/* Right Column for Map and Controls */}
+      {/* Right Column for Map and Store List */}
       <div className="flex-grow flex flex-col">
         {/* Top 1/2 for Map */}
         <div className="h-1/2">
@@ -140,26 +150,14 @@ const EditLocationPage = () => {
               onStoreSelect={handleStoreSelect}
             />
         </div>
-        {/* Bottom 1/2 for Controls */}
-        <div className="h-1/2 border-t p-4 grid gap-4 overflow-y-auto">
-
-            <div className="grid gap-2">
-                <label className="text-sm font-medium">Postcode</label>
-                <div className="flex gap-2">
-                <Input
-                    type="text"
-                    placeholder="4-digit postcode"
-                    value={postcode}
-                    onChange={(e) => setPostcode(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    maxLength={4}
-                />
-                <Button onClick={handleSearch} disabled={isLoading}>{isLoading ? '...' : 'Search'}</Button>
-                </div>
-                {error && <p className="text-sm text-red-500">{error}</p>}
+        {/* Bottom 1/2 for Store List */}
+        <div className="h-1/2 border-t flex flex-col">
+            <div className="p-4 border-b">
+                <h3 className="text-lg font-semibold">Selected Stores ({selectedStoreIds.size})</h3>
             </div>
-            <RadiusSlider defaultValue={radius} onValueChange={setRadius} />
-            <CompanyFilter onSelectionChange={setSelectedCompanies} />
+            <div className="flex-grow overflow-y-auto p-4">
+                {renderStoreList()}
+            </div>
         </div>
       </div>
     </div>
