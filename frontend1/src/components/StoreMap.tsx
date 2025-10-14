@@ -3,7 +3,13 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-// Define the types for props
+// --- Asset Imports ---
+import aldiLogo from '@/assets/ALDI_logo.svg';
+import colesLogo from '@/assets/coles_logo.webp';
+import igaLogo from '@/assets/iga_logo.webp';
+import woolworthsLogo from '@/assets/woolworths_logo.webp';
+
+// --- Type Definitions ---
 type Store = {
   id: number;
   store_name: string;
@@ -24,31 +30,43 @@ interface StoreMapProps {
   onStoreSelect: (storeId: number) => void;
 }
 
-// --- Icon Definitions ---
-// Fix for default icon issue
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-    iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
-    iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-    shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
-});
+// --- Icon & Style Definitions ---
+const companyLogos: { [key: string]: string } = {
+    'Aldi': aldiLogo,
+    'Coles': colesLogo,
+    'Iga': igaLogo,
+    'Woolworths': woolworthsLogo,
+};
 
-// Custom icon for selected markers
-const selectedIcon = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-});
+const markerHtmlStyles = `
+  .map-logo-icon {
+    background: transparent;
+    border: none;
+  }
+  .map-logo-icon img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    transition: all 0.2s ease-in-out;
+  }
+  .desaturated img {
+    filter: grayscale(100%);
+    opacity: 0.6;
+  }
+  .map-logo-icon.selected img {
+    border-color: #3b82f6; /* blue-500 */
+    transform: scale(1.2);
+  }
+`;
 
 // --- Helper component to control map view ---
 const MapViewController: React.FC<{ center: Location | null }> = ({ center }) => {
   const map = useMap();
   useEffect(() => {
     if (center) {
-      map.setView([center.latitude, center.longitude], 13); // Zoom to level 13 on new center
+      map.setView([center.latitude, center.longitude], 13);
     }
   }, [center, map]);
   return null;
@@ -61,28 +79,41 @@ const StoreMap: React.FC<StoreMapProps> = ({ center, stores, selectedStoreIds, o
 
     return (
         <div style={{ height: '100%', width: '100%' }}>
+            <style>{markerHtmlStyles}</style>
             <MapContainer center={displayCenter} zoom={13} style={{ height: '100%', width: '100%' }}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
                 <MapViewController center={center} />
-                {stores.map(store => (
-                    <Marker 
-                        key={store.id} 
-                        position={[store.latitude, store.longitude]}
-                        icon={selectedStoreIds.has(store.id) ? selectedIcon : new L.Icon.Default()}
-                        eventHandlers={{
-                            click: () => {
-                                onStoreSelect(store.id);
-                            },
-                        }}
-                    >
-                        <Popup>
-                            {store.store_name}
-                        </Popup>
-                    </Marker>
-                ))}
+                {stores.map(store => {
+                    const isSelected = selectedStoreIds.has(store.id);
+                    const iconUrl = companyLogos[store.company_name] || 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png'; // Fallback icon
+                    
+                    const icon = L.divIcon({
+                        html: `<img src="${iconUrl}" alt="${store.company_name} logo">`,
+                        className: `map-logo-icon ${isSelected ? 'selected' : 'desaturated'}`,
+                        iconSize: [35, 35],
+                        iconAnchor: [17, 35],
+                    });
+
+                    return (
+                        <Marker 
+                            key={store.id} 
+                            position={[store.latitude, store.longitude]}
+                            icon={icon}
+                            eventHandlers={{
+                                click: () => {
+                                    onStoreSelect(store.id);
+                                },
+                            }}
+                        >
+                            <Popup>
+                                {store.store_name}
+                            </Popup>
+                        </Marker>
+                    );
+                })}
             </MapContainer>
         </div>
     );
