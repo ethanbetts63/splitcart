@@ -40,21 +40,22 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({ product }) => {
   if (existingItem) {
     return (
       <div className="flex items-center gap-2">
-        <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleQuantityChange(existingItem.quantity - 1)}>-</Button>
+        <Button size="icon" className="h-8 w-8" onClick={() => handleQuantityChange(existingItem.quantity - 1)}>-</Button>
         <Input
           type="number"
-          className="h-8 w-14 text-center"
+          readOnly
+          className="h-8 w-12 text-center no-spinner"
           value={existingItem.quantity}
           onChange={handleInputChange}
           min="1"
         />
-        <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => handleQuantityChange(existingItem.quantity + 1)}>+</Button>
+        <Button size="icon" className="h-8 w-8" onClick={() => handleQuantityChange(existingItem.quantity + 1)}>+</Button>
       </div>
     );
   }
 
   return (
-    <Button onClick={handleAdd} className="w-full">Add to Cart</Button>
+    <Button onClick={handleAdd}>Add to Cart</Button>
   );
 };
 

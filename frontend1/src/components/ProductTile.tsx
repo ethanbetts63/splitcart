@@ -69,7 +69,7 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
           {selectedPrice ? `$${selectedPrice.price}` : 'Price not available'}
         </p>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex justify-center">
         <AddToCartButton product={product} />
       </CardFooter>
     </Card>
