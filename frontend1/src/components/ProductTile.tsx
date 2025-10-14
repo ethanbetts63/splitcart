@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { cn } from '@/lib/utils';
 import {
   Card,
@@ -9,17 +9,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import AddToCartButton from './AddToCartButton';
-import PriceDisplay from './PriceDisplay'; // Import the new component
+import PriceDisplay from './PriceDisplay';
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
 
-// Define the types for our product data
-type Price = {
-  id: number;
-  price: string;
-  store_id: number;
+// --- Type Definitions to match the API Serializer ---
+type CompanyPriceInfo = {
+  company: string;
+  price_display: string;
   is_lowest: boolean;
   image_url?: string;
-  company_name: string; // Ensure this is available for the PriceDisplay
 };
 
 type Product = {
@@ -28,7 +26,7 @@ type Product = {
   brand_name?: string;
   size?: string;
   image_url?: string;
-  prices: Price[];
+  prices: CompanyPriceInfo[];
 };
 
 interface ProductTileProps {
@@ -36,20 +34,13 @@ interface ProductTileProps {
 }
 
 const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
-  const [selectedPrice, setSelectedPrice] = useState<Price | null>(null);
-
-  useEffect(() => {
-    const prices = product.prices || [];
-    const cheapestPrice = prices.find(p => p.is_lowest) || 
-                          (prices.length > 0 ? prices.reduce((min, p) => parseFloat(p.price) < parseFloat(min.price) ? p : min, prices[0]) : null);
-    setSelectedPrice(cheapestPrice);
-  }, [product.prices]);
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = fallbackImage;
   };
 
-  const imageUrl = selectedPrice?.image_url || product.image_url || fallbackImage;
+  // The API now provides a deterministic image_url for the product.
+  const imageUrl = product.image_url || fallbackImage;
 
   return (
     <Card className="w-full flex flex-col h-full overflow-hidden">
