@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import AddToCartButton from './AddToCartButton';
 
 // Define the types for our product data based on the old component
 type Price = {
