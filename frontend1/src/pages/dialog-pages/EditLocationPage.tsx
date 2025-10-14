@@ -137,7 +137,12 @@ const EditLocationPage = () => {
 
       {/* Right Column for the Map */}
       <div className="flex-grow">
-        <StoreMap />
+        <StoreMap 
+          center={location}
+          stores={stores}
+          selectedStoreIds={selectedStoreIds}
+          onStoreSelect={handleStoreSelect}
+        />
       </div>
     </div>
   );
