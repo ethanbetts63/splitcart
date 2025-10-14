@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import StoreMap from '@/components/StoreMap';
 import RadiusSlider from '@/components/RadiusSlider';
 import CompanyFilter from '@/components/CompanyFilter';
@@ -6,7 +6,7 @@ import StoreList from '@/components/StoreList';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-// Define the type for a single store based on the old component
+// Define the type for a single store
 type Store = {
   id: number;
   store_name: string;
@@ -22,66 +22,56 @@ type Location = {
 
 const EditLocationPage = () => {
   // State for user inputs
-  const [postcode, setPostcode] = useState('');
+  const [postcode, setPostcode] = useState('5000'); // Default to a valid postcode for demo
   const [radius, setRadius] = useState(5);
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
   
   // State for data and loading
-  const [location, setLocation] = useState<Location>(null);
+  const [mapCenter, setMapCenter] = useState<Location>({ latitude: -34.9285, longitude: 138.6007 }); // Default center
   const [stores, setStores] = useState<Store[]>([]);
   const [selectedStoreIds, setSelectedStoreIds] = useState(new Set<number>());
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // --- API Fetching Logic ---
-  const handlePostcodeSearch = async () => {
+  const handleSearch = useCallback(async () => {
     if (!postcode || !/^\d{4}$/.test(postcode)) {
       setError("Please enter a valid 4-digit postcode.");
       return;
     }
-    setError(null);
+    
     setIsLoading(true);
+    setError(null);
+    setStores([]); // Clear previous results
+
+    const params = new URLSearchParams();
+    params.append('postcode', postcode);
+    params.append('radius', radius.toString());
+    if (selectedCompanies.length > 0) {
+      params.append('companies', selectedCompanies.join(','));
+    }
+
     try {
-      const response = await fetch(`/api/postcodes/search/?postcode=${postcode}`);
-      if (!response.ok) throw new Error('Postcode not found.');
-      const data = await response.json();
-      setLocation({ latitude: data.latitude, longitude: data.longitude });
+      const response = await fetch(`/api/stores/nearby/?${params.toString()}`);
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.error || 'Failed to fetch stores.');
+      }
+      const data: Store[] = await response.json();
+      setStores(data || []);
+
+      // Center map on the first result if available
+      if (data && data.length > 0) {
+        setMapCenter({ latitude: data[0].latitude, longitude: data[0].longitude });
+      }
+
     } catch (err: any) {
       setError(err.message);
-      setLocation(null);
+      setStores([]);
+    } finally {
+      setIsLoading(false);
     }
-    // Loading state for the store fetch will be handled by the useEffect
-  };
-
-  useEffect(() => {
-    if (!location) return;
-
-    const fetchStores = async () => {
-      setIsLoading(true);
-      setError(null);
-      const params = new URLSearchParams();
-      params.append('latitude', location.latitude.toString());
-      params.append('longitude', location.longitude.toString());
-      params.append('radius', radius.toString());
-      if (selectedCompanies.length > 0) {
-        params.append('companies', selectedCompanies.join(','));
-      }
-
-      try {
-        const response = await fetch(`/api/stores/nearby/?${params.toString()}`);
-        if (!response.ok) throw new Error('Failed to fetch stores.');
-        const data = await response.json();
-        setStores(data || []);
-      } catch (err: any) {
-        setError(err.message);
-        setStores([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchStores();
-  }, [location, radius, selectedCompanies]);
+  }, [postcode, radius, selectedCompanies]);
 
   // --- Component Event Handlers ---
   const handleStoreSelect = (storeId: number) => {
@@ -112,7 +102,7 @@ const EditLocationPage = () => {
                 onChange={(e) => setPostcode(e.target.value)}
                 maxLength={4}
               />
-              <Button onClick={handlePostcodeSearch} disabled={isLoading}>{isLoading ? '...' : 'Search'}</Button>
+              <Button onClick={handleSearch} disabled={isLoading}>{isLoading ? '...' : 'Search'}</Button>
             </div>
             {error && <p className="text-sm text-red-500">{error}</p>}
           </div>
@@ -120,9 +110,9 @@ const EditLocationPage = () => {
           <CompanyFilter onSelectionChange={setSelectedCompanies} />
         </div>
         <div className="flex flex-col min-h-0 flex-grow">
-          <h3 className="text-lg font-semibold mb-2">Nearby Stores</h3>
+          <h3 className="text-lg font-semibold mb-2">Nearby Stores ({stores.length})</h3>
           <div className="flex-grow overflow-y-auto pr-2">
-            {isLoading && stores.length === 0 ? (
+            {isLoading ? (
               <p>Loading stores...</p>
             ) : (
               <StoreList 
@@ -138,7 +128,7 @@ const EditLocationPage = () => {
       {/* Right Column for the Map */}
       <div className="flex-grow">
         <StoreMap 
-          center={location}
+          center={mapCenter}
           stores={stores}
           selectedStoreIds={selectedStoreIds}
           onStoreSelect={handleStoreSelect}
