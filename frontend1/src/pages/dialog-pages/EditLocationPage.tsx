@@ -108,8 +108,8 @@ const EditLocationPage = () => {
 
       {/* Right Column for Map and Controls */}
       <div className="flex-grow flex flex-col">
-        {/* Top 2/3 for Map */}
-        <div className="h-2/3">
+        {/* Top 1/2 for Map */}
+        <div className="h-1/2">
             <StoreMap 
               center={mapCenter}
               stores={stores}
@@ -117,9 +117,9 @@ const EditLocationPage = () => {
               onStoreSelect={handleStoreSelect}
             />
         </div>
-        {/* Bottom 1/3 for Controls */}
-        <div className="h-1/3 border-t p-4 grid gap-4 overflow-y-auto">
-            <h3 className="text-lg font-semibold">Controls</h3>
+        {/* Bottom 1/2 for Controls */}
+        <div className="h-1/2 border-t p-4 grid gap-4 overflow-y-auto">
+
             <div className="grid gap-2">
                 <label className="text-sm font-medium">Postcode</label>
                 <div className="flex gap-2">
