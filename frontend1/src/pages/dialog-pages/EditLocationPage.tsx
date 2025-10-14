@@ -86,6 +86,12 @@ const EditLocationPage = () => {
     });
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <div className="flex h-full w-full">
       {/* Left Column for Store List */}
@@ -128,6 +134,7 @@ const EditLocationPage = () => {
                     placeholder="4-digit postcode"
                     value={postcode}
                     onChange={(e) => setPostcode(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     maxLength={4}
                 />
                 <Button onClick={handleSearch} disabled={isLoading}>{isLoading ? '...' : 'Search'}</Button>
