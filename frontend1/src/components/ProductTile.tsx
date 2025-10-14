@@ -11,6 +11,7 @@ import {
 import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
+import '../css/ProductTile.css'; // Import the new CSS file
 
 // --- Type Definitions to match the API Serializer ---
 type CompanyPriceInfo = {
@@ -39,27 +40,26 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
     e.currentTarget.src = fallbackImage;
   };
 
-  // The API now provides a deterministic image_url for the product.
   const imageUrl = product.image_url || fallbackImage;
 
   return (
-    <Card className="w-full flex flex-col h-full overflow-hidden">
-      <div className="aspect-square w-full overflow-hidden">
+    <Card className="product-tile-card">
+      <div className="product-tile-image-container">
         <img
           src={imageUrl}
           onError={handleImageError}
           alt={product.name}
-          className="h-full w-full object-cover transition-transform hover:scale-105"
+          className="product-tile-image"
         />
       </div>
-      <CardHeader>
-        <CardTitle className="h-12 line-clamp-2 text-base">{product.name}</CardTitle>
-        {product.brand_name && <CardDescription>{product.brand_name}</CardDescription>}
+      <CardHeader className="product-tile-header">
+        <CardTitle className="product-tile-title">{product.name}</CardTitle>
+        {product.brand_name && <CardDescription className="product-tile-description">{product.brand_name}</CardDescription>}
       </CardHeader>
-      <CardContent className="flex-grow">
+      <CardContent className="product-tile-content">
         <PriceDisplay prices={product.prices} />
       </CardContent>
-      <CardFooter className="flex justify-center">
+      <CardFooter className="product-tile-footer">
         <AddToCartButton product={product} />
       </CardFooter>
     </Card>
