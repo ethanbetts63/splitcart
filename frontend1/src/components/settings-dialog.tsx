@@ -2,36 +2,17 @@
 
 import * as React from "react"
 import {
-  Bell,
-  Check,
-  Globe,
   Home,
-  Keyboard,
-  Link,
-  Lock,
-  Menu,
-  MessageCircle,
-  Paintbrush,
-  Settings,
-  Video,
-  MapPin, // Added for Edit Location
+  MapPin,
+  ShoppingCart,
 } from "lucide-react"
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import {
   Sidebar,
@@ -43,7 +24,8 @@ import {
   SidebarMenuItem,
   SidebarProvider,
 } from "@/components/ui/sidebar"
-import EditLocationPage from "@/pages/dialog-pages/EditLocationPage"; // Import the new page
+import EditLocationPage from "@/pages/dialog-pages/EditLocationPage";
+import TrolleyPage from "@/pages/dialog-pages/TrolleyPage";
 
 // Define a type for our navigation items
 type NavItem = {
@@ -53,58 +35,19 @@ type NavItem = {
 
 const data = {
   nav: [
-    { name: "Edit Location", icon: MapPin }, // Added new page
-    { name: "Notifications", icon: Bell },
-    { name: "Navigation", icon: Menu },
+    { name: "Trolley", icon: ShoppingCart },
+    { name: "Edit Location", icon: MapPin },
     { name: "Home", icon: Home },
-    { name: "Appearance", icon: Paintbrush },
-    { name: "Messages & media", icon: MessageCircle },
-    { name: "Language & region", icon: Globe },
-    { name: "Accessibility", icon: Keyboard },
-    { name: "Mark as read", icon: Check },
-    { name: "Audio & video", icon: Video },
-    { name: "Connected accounts", icon: Link },
-    { name: "Privacy & visibility", icon: Lock },
-    { name: "Advanced", icon: Settings },
   ],
 }
-
-// Content for the default page
-const MessagesMediaPage = () => (
-  <>
-    <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-      <div className="flex items-center gap-2 px-4">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem className="hidden md:block">
-              <BreadcrumbLink href="#">Settings</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden md:block" />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Messages & media</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
-    </header>
-    <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-0">
-      {Array.from({ length: 10 }).map((_, i) => (
-        <div
-          key={i}
-          className="bg-muted/50 aspect-video max-w-3xl rounded-xl"
-        />
-      ))}
-    </div>
-  </>
-);
 
 // A component to render the correct page content based on the active page
 const PageContent = ({ activePage }: { activePage: string }) => {
   switch (activePage) {
+    case 'Trolley':
+      return <TrolleyPage />;
     case 'Edit Location':
       return <EditLocationPage />;
-    case 'Messages & media':
-      return <MessagesMediaPage />;
     default:
       return (
         <div className="p-4">
@@ -115,9 +58,21 @@ const PageContent = ({ activePage }: { activePage: string }) => {
   }
 };
 
-export function SettingsDialog() {
-  const [open, setOpen] = React.useState(false) // Default to closed
-  const [activePage, setActivePage] = React.useState('Edit Location'); // Default to our new page
+interface SettingsDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  defaultPage?: string;
+}
+
+export function SettingsDialog({ open, onOpenChange, defaultPage = 'Trolley' }: SettingsDialogProps) {
+  const [activePage, setActivePage] = React.useState(defaultPage);
+
+  // When the dialog opens, ensure it shows the correct page
+  React.useEffect(() => {
+    if (open) {
+      setActivePage(defaultPage);
+    }
+  }, [open, defaultPage]);
 
   const handleNavClick = (e: React.MouseEvent, pageName: string) => {
     e.preventDefault();
@@ -125,10 +80,7 @@ export function SettingsDialog() {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button size="sm">Settings</Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="overflow-hidden p-0 md:max-h-[500px] md:max-w-[700px] lg:max-w-[800px]">
         <DialogTitle className="sr-only">Settings</DialogTitle>
         <DialogDescription className="sr-only">
