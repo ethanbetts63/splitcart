@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Skeleton } from "@/components/ui/skeleton";
+import SkeletonProductTile from "./SkeletonProductTile";
 import ProductTile from "./ProductTile";
 import '../css/ProductCarousel.css';
 
@@ -70,7 +72,27 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({ sourceUrl, sto
   }, [sourceUrl, storeIds]); // Add storeIds to dependency array
 
   if (isLoading) {
-    return <div className="text-center p-4">Loading...</div>;
+    return (
+      <div>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold">{title}</h2>
+          {searchQuery && (
+            <Link to={`/search?q=${encodeURIComponent(searchQuery)}`} className="text-sm text-blue-500 hover:underline">
+              See more
+            </Link>
+          )}
+        </div>
+        <div className="custom-carousel">
+          <div className="custom-carousel__container">
+            {[...Array(5)].map((_, i) => (
+              <div className="custom-carousel__slide" key={i}>
+                <SkeletonProductTile />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
