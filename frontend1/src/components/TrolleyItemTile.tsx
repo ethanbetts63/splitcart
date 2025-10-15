@@ -5,11 +5,15 @@ import PriceDisplay from './PriceDisplay';
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
 import type { Product } from '@/types/Product'; // Import shared type
 
+import { Button } from '@/components/ui/button';
+
 interface TrolleyItemTileProps {
   product: Product;
+  onApprove?: (product: Product) => void;
+  isApproved?: boolean;
 }
 
-const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product }) => {
+const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, isApproved }) => {
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = fallbackImage;
@@ -37,7 +41,13 @@ const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product }) => {
 
       {/* Right Section: Quantity Controls */}
       <div className="flex-shrink-0">
-        <AddToCartButton product={product} />
+        {onApprove ? (
+          <Button onClick={() => onApprove(product)} variant={isApproved ? 'destructive' : 'outline'}>
+            {isApproved ? 'Remove' : 'Approve'}
+          </Button>
+        ) : (
+          <AddToCartButton product={product} />
+        )}
       </div>
     </Card>
   );
