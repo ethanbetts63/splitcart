@@ -9,26 +9,36 @@ const HomePage = () => {
   return (
     <main className="p-4">
       <section className="mt-8">
-        <h2 className="text-xl font-semibold">Bargains</h2>
         <ProductCarousel 
+          title="Bargains"
+          searchQuery="bargains"
           sourceUrl="/api/products/bargains/?limit=20" 
           storeIds={storeIdsArray} 
         />
       </section>
 
       <section className="mt-8">
-        <h2 className="text-xl font-semibold">Milk</h2>
-        <ProductCarousel sourceUrl="/api/products/?search=milk&limit=20" />
+        <ProductCarousel 
+          title="Milk"
+          searchQuery="milk"
+          sourceUrl="/api/products/?search=milk&limit=20" 
+        />
       </section>
 
       <section className="mt-8">
-        <h2 className="text-xl font-semibold">Eggs</h2>
-        <ProductCarousel sourceUrl="/api/products/?search=eggs&limit=20" />
+        <ProductCarousel 
+          title="Eggs"
+          searchQuery="eggs"
+          sourceUrl="/api/products/?search=eggs&limit=20" 
+        />
       </section>
 
       <section className="mt-8">
-        <h2 className="text-xl font-semibold">Bread</h2>
-        <ProductCarousel sourceUrl="/api/products/?search=bread&limit=20" />
+        <ProductCarousel 
+          title="Bread"
+          searchQuery="bread"
+          sourceUrl="/api/products/?search=bread&limit=20" 
+        />
       </section>
     </main>
   );

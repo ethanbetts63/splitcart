@@ -96,5 +96,6 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({ sourceUrl, sto
         ))}
       </div>
     </div>
+    </div>
   );
 }
