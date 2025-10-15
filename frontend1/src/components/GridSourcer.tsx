@@ -2,10 +2,21 @@ import React, { useState, useEffect, useCallback } from 'react';
 import ProductGrid from './ProductGrid';
 import type { Product } from '@/types/Product'; // Import shared type
 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+
 // Type for the API response, using the shared Product type
 type ApiResponse = {
   count: number;
   next: string | null;
+  previous: string | null;
   results: Product[];
 };
 
@@ -19,18 +30,39 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [nextPageUrl, setNextPageUrl] = useState<string | null>(null);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [totalResults, setTotalResults] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
-  const fetchProducts = useCallback(async (urlToFetch: string, isInitialLoad: boolean) => {
+  const fetchProducts = useCallback(async (page: number) => {
+    setIsLoading(true);
     setIsError(false);
     setError(null);
 
+    let url = '';
+    const params = new URLSearchParams();
+
+    if (sourceUrl) {
+      url = sourceUrl;
+    } else if (searchTerm) {
+      url = '/api/products/';
+      params.append('search', searchTerm);
+    } else {
+      setIsLoading(false);
+      setProducts([]);
+      setTotalResults(0);
+      return;
+    }
+
+    params.append('page', page.toString());
+
+    if (params.toString()) {
+      url += `?${params.toString()}`;
+    }
+
     try {
-      const response = await fetch(urlToFetch);
+      const response = await fetch(url);
       if (!response.ok) {
-        // Try to parse error response, but fall back to status text
         let errorMessage = `Failed to fetch: ${response.statusText}`;
         try {
             const errData = await response.json();
@@ -43,71 +75,28 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl }) => {
       const data: ApiResponse = await response.json();
       
       const productList = data.results || [];
-      const nextUrl = data.next; 
       const count = data.count;
 
-      if (isInitialLoad) {
-        setProducts(productList);
-        setTotalResults(count);
-      } else {
-        setProducts(prev => [...prev, ...productList]);
-      }
-      setNextPageUrl(nextUrl);
+      setProducts(productList);
+      setTotalResults(count);
+      setTotalPages(Math.ceil(count / 20)); // Assuming 20 results per page
 
     } catch (e: any) {
       setIsError(true);
       setError(e.message);
+    } finally {
+      setIsLoading(false);
     }
-  }, []);
+  }, [searchTerm, sourceUrl]);
 
-  // Effect for the initial data fetch
+  // Effect for fetching data when page or search term changes
   useEffect(() => {
-    let url = '';
-    const params = new URLSearchParams();
+    fetchProducts(currentPage);
+  }, [currentPage, fetchProducts]);
 
-    if (sourceUrl) {
-      url = sourceUrl;
-    } else if (searchTerm) {
-      url = '/api/products/';
-      params.append('search', searchTerm);
-    } else {
-      // Don't fetch if there's no search term or source URL
-      setIsLoading(false);
-      setProducts([]);
-      setTotalResults(0);
-      return;
-    }
-
-    if (params.toString()) {
-      url += `?${params.toString()}`;
-    }
-
-    setIsLoading(true);
-    setProducts([]);
-    setNextPageUrl(null);
-    setTotalResults(0);
-    
-    fetchProducts(url, true).finally(() => {
-      setIsLoading(false);
-    });
-  }, [searchTerm, sourceUrl, fetchProducts]);
-
-  const onLoadMore = useCallback(() => {
-    if (nextPageUrl && !isLoadingMore) {
-      setIsLoadingMore(true);
-      fetchProducts(nextPageUrl, false).finally(() => {
-        setIsLoadingMore(false);
-      });
-    }
-  }, [nextPageUrl, isLoadingMore, fetchProducts]);
-
-  if (isLoading) {
-    return <div className="text-center p-8">Loading...</div>;
-  }
-
-  if (isError) {
-    return <div className="text-center p-8 text-red-500">Error: {error}</div>;
-  }
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   let titleText = "";
   if (searchTerm) {
@@ -119,14 +108,87 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl }) => {
     titleText = "Please enter a search to begin.";
   }
 
+  if (isLoading) {
+    return <div className="text-center p-8">Loading...</div>;
+  }
+
+  if (isError) {
+    return <div className="text-center p-8 text-red-500">Error: {error}</div>;
+  }
+
   return (
-    <ProductGrid 
-      products={products} 
-      onLoadMore={onLoadMore} 
-      hasMorePages={!!nextPageUrl} 
-      isLoadingMore={isLoadingMore}
-      title={titleText}
-    />
+    <div>
+      <h2 className="text-2xl font-bold mb-4">{titleText}</h2>
+      <ProductGrid 
+        products={products} 
+      />
+      <div className="flex justify-center mt-8">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious 
+                href="#" 
+                onClick={() => handlePageChange(currentPage - 1)} 
+                className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+              />
+            </PaginationItem>
+            {
+              (() => {
+                const paginationItems = [];
+                const siblings = 1;
+                const boundaries = 1;
+
+                if (totalPages <= 5) {
+                  for (let i = 1; i <= totalPages; i++) {
+                    paginationItems.push(i);
+                  }
+                } else {
+                  paginationItems.push(1);
+                  if (currentPage > siblings + boundaries + 1) {
+                    paginationItems.push('ellipsis-start');
+                  }
+
+                  const startPage = Math.max(2, currentPage - siblings);
+                  const endPage = Math.min(totalPages - 1, currentPage + siblings);
+
+                  for (let i = startPage; i <= endPage; i++) {
+                    paginationItems.push(i);
+                  }
+
+                  if (currentPage < totalPages - siblings - boundaries - 1) {
+                    paginationItems.push('ellipsis-end');
+                  }
+                  paginationItems.push(totalPages);
+                }
+
+                return paginationItems.map((item, i) => (
+                  <PaginationItem key={i}>
+                    {typeof item === 'number' ? (
+                      <PaginationLink
+                        href="#"
+                        onClick={() => handlePageChange(item)}
+                        isActive={currentPage === item}
+                      >
+                        {item}
+                      </PaginationLink>
+                    ) : (
+                      <PaginationEllipsis />
+                    )}
+                  </PaginationItem>
+                ));
+              })()
+            }
+            <PaginationItem>
+              <PaginationNext 
+                href="#" 
+                onClick={() => handlePageChange(currentPage + 1)} 
+                className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
+    </div>
   );
 };
 

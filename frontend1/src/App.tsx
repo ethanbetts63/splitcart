@@ -7,6 +7,8 @@ import { SettingsDialog } from "@/components/settings-dialog";
 import { useStoreSelection } from "@/context/StoreContext"; // Import the store selection hook
 import HomePage from "./pages/HomePage";
 import SearchResultsPage from "./pages/SearchResultsPage";
+import SubstitutionPage from "./pages/SubstitutionPage";
+import FinalCartPage from "./pages/FinalCartPage";
 import './App.css';
 
 const App = () => {
@@ -15,6 +17,8 @@ const App = () => {
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="search" element={<SearchResultsPage />} />
+        <Route path="substitutions" element={<SubstitutionPage />} />
+        <Route path="final-cart" element={<FinalCartPage />} />
         {/* Add other routes here as needed */}
       </Route>
     </Routes>
