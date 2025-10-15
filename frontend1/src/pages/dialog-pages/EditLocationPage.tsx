@@ -22,16 +22,19 @@ type MapCenter = {
   radius: number;
 } | null;
 
+import { useStoreSelection } from '@/context/StoreContext';
+
 const EditLocationPage = () => {
-  // State for user inputs
-  const [postcode, setPostcode] = useState('5000'); // Default to a valid postcode for demo
-  const [radius, setRadius] = useState(5);
-  const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
-  
-  // State for data and loading
-  const [mapCenter, setMapCenter] = useState<MapCenter>({ latitude: -34.9285, longitude: 138.6007, radius: 5 }); // Default center
-  const [stores, setStores] = useState<Store[] | null>(null); // Initialize to null to track initial state
-  const [selectedStoreIds, setSelectedStoreIds] = useState(new Set<number>());
+  const {
+    postcode, setPostcode,
+    radius, setRadius,
+    selectedCompanies, setSelectedCompanies,
+    mapCenter, setMapCenter,
+    stores, setStores,
+    selectedStoreIds, setSelectedStoreIds, handleStoreSelect
+  } = useStoreSelection();
+
+  // State for loading and error, which is local to this page
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -77,20 +80,9 @@ const EditLocationPage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [postcode, radius, selectedCompanies]);
+  }, [postcode, radius, selectedCompanies, setStores, setSelectedStoreIds, setMapCenter]);
 
-  // --- Component Event Handlers ---
-  const handleStoreSelect = (storeId: number) => {
-    setSelectedStoreIds(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(storeId)) {
-        newSet.delete(storeId);
-      } else {
-        newSet.add(storeId);
-      }
-      return newSet;
-    });
-  };
+
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {

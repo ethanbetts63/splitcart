@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 // --- Type Definitions ---
 // These types are now managed globally by this context
@@ -41,14 +41,65 @@ const StoreContext = createContext<StoreContextType | undefined>(undefined);
 // --- Provider Component ---
 export const StoreProvider = ({ children }: { children: ReactNode }) => {
   // Original selection state
-  const [selectedStoreIds, setSelectedStoreIds] = useState(new Set<number>());
+  const [selectedStoreIds, setSelectedStoreIds] = useState(() => {
+    const saved = sessionStorage.getItem('selectedStoreIds');
+    if (saved) {
+      return new Set(JSON.parse(saved));
+    }
+    return new Set<number>();
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem('selectedStoreIds', JSON.stringify(Array.from(selectedStoreIds)));
+  }, [selectedStoreIds]);
 
   // New state for persisting search session
-  const [stores, setStores] = useState<Store[] | null>(null);
-  const [postcode, setPostcode] = useState('5000');
-  const [radius, setRadius] = useState(5);
-  const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
-  const [mapCenter, setMapCenter] = useState<MapCenter>({ latitude: -34.9285, longitude: 138.6007, radius: 5 });
+  const [stores, setStores] = useState<Store[] | null>(() => {
+    const saved = sessionStorage.getItem('stores');
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  useEffect(() => {
+    if (stores) {
+      sessionStorage.setItem('stores', JSON.stringify(stores));
+    }
+  }, [stores]);
+  const [postcode, setPostcode] = useState(() => {
+    return sessionStorage.getItem('postcode') || '5000';
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem('postcode', postcode);
+  }, [postcode]);
+  const [radius, setRadius] = useState(() => {
+    const saved = sessionStorage.getItem('radius');
+    return saved ? JSON.parse(saved) : 5;
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem('radius', JSON.stringify(radius));
+  }, [radius]);
+  const [selectedCompanies, setSelectedCompanies] = useState<string[]>(() => {
+    const saved = sessionStorage.getItem('selectedCompanies');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem('selectedCompanies', JSON.stringify(selectedCompanies));
+  }, [selectedCompanies]);
+  const [mapCenter, setMapCenter] = useState<MapCenter>(() => {
+    const saved = sessionStorage.getItem('mapCenter');
+    if (saved) {
+      return JSON.parse(saved);
+    }
+    return { latitude: -34.9285, longitude: 138.6007, radius: 5 };
+  });
+
+  useEffect(() => {
+    if (mapCenter) {
+      sessionStorage.setItem('mapCenter', JSON.stringify(mapCenter));
+    }
+  }, [mapCenter]);
 
   const handleStoreSelect = (storeId: number) => {
     setSelectedStoreIds(prev => {

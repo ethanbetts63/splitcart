@@ -23,12 +23,16 @@ type ApiResponse = {
   results: Product[];
 };
 
+import { Link } from 'react-router-dom';
+
 interface ProductCarouselProps {
   sourceUrl: string;
   storeIds?: number[]; // Make storeIds an optional prop
+  title: string;
+  searchQuery?: string;
 }
 
-export const ProductCarousel: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds }) => {
+export const ProductCarousel: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -74,7 +78,16 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({ sourceUrl, sto
   }
 
   return (
-    <div className="custom-carousel">
+    <div>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold">{title}</h2>
+        {searchQuery && (
+          <Link to={`/search?q=${encodeURIComponent(searchQuery)}`} className="text-sm text-blue-500 hover:underline">
+            See more
+          </Link>
+        )}
+      </div>
+      <div className="custom-carousel">
       <div className="custom-carousel__container">
         {products.map((product) => (
           <div className="custom-carousel__slide" key={product.id}>
