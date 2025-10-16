@@ -6,6 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 
+import fallbackImage from '@/assets/splitcart_symbol_v6.png';
+
 import {
   Table,
   TableBody,
@@ -26,6 +28,7 @@ interface ShoppingPlan {
       size: string;
       quantity: number;
       price: number;
+      image_url: string | null;
     }[];
     total_cost?: number; // Make optional as it's not in best_single_store plan
   };
@@ -61,12 +64,16 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
     <div className="mt-4 space-y-8">
         {Object.entries(plan).filter(([, store_plan]) => store_plan.items && store_plan.items.length > 0).map(([storeName, store_plan]) => {
             const storeTotal = store_plan.items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+            const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                e.currentTarget.src = fallbackImage;
+            };
             return (
                 <Table key={storeName}>
                     <TableCaption>Shopping List for {storeName}</TableCaption>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Product</TableHead>
+                            <TableHead className="w-[100px]">&nbsp;</TableHead>
+                            <TableHead className="text-center">Product</TableHead>
                             <TableHead className="text-center">Quantity</TableHead>
                             <TableHead className="text-right">Unit Price</TableHead>
                             <TableHead className="text-right">Total Price</TableHead>
@@ -75,6 +82,14 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
                     <TableBody>
                         {store_plan.items.map((item, index) => (
                             <TableRow key={index}>
+                                <TableCell>
+                                    <img 
+                                        src={item.image_url || fallbackImage} 
+                                        alt={item.product_name} 
+                                        className="w-16 h-16 object-cover rounded-md"
+                                        onError={handleImageError}
+                                    />
+                                </TableCell>
                                 <TableCell className="font-medium text-center">
                                     <div>{item.product_name}</div>
                                     {((item.brand && item.brand !== 'N/A') || item.size) ? (
@@ -93,7 +108,7 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
                     </TableBody>
                     <TableFooter>
                         <TableRow>
-                            <TableCell colSpan={3}>Total for {storeName}</TableCell>
+                            <TableCell colSpan={4}>Total for {storeName}</TableCell>
                             <TableCell className="text-right">${storeTotal.toFixed(2)}</TableCell>
                         </TableRow>
                     </TableFooter>

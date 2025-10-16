@@ -69,7 +69,8 @@ def calculate_best_single_store(slots, original_cart):
             "brand": item['brand'],
             "size": item['size'],
             "price": item['unit_price'],
-            "quantity": item['quantity']
+            "quantity": item['quantity'],
+            "image_url": item['image_url']
         }
         for item in best_store['items']
     ]

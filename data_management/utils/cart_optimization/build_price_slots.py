@@ -59,6 +59,11 @@ def build_price_slots(cart, stores):
                 unit_price = float(price_obj.price_record.price)
                 total_price = unit_price * quantity
 
+                # Find the correct image_url from the product's image_url_pairs
+                image_urls_by_company = dict(product_obj.image_url_pairs)
+                company_name = price_obj.store.company.name
+                image_url = image_urls_by_company.get(company_name)
+
                 current_slot.append({
                     "product_id": product_id,
                     "product_name": product_obj.name,
@@ -66,10 +71,11 @@ def build_price_slots(cart, stores):
                     "size": product_obj.size,
                     "store_id": price_obj.store.id,
                     "store_name": price_obj.store.store_name,
-                    "company_name": price_obj.store.company.name,
+                    "company_name": company_name,
                     "price": total_price,
                     "unit_price": unit_price,
-                    "quantity": quantity
+                    "quantity": quantity,
+                    "image_url": image_url
                 })
         
         # Step 8: If, after checking all products in a slot, no price options were found, the slot is currently dropped.
