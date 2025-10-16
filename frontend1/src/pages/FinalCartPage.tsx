@@ -220,7 +220,7 @@ const loadingMessages = [
   "The cart never knew what split it.",
   "Split it and quit it.",
   "To Split or not to Split that is the question.",
-  "“The definition of insanity is buying everything from one store.”\n— Albert Einstein (definitely said this)",
+  "\“The definition of insanity is buying everything from one store.\”\n— Albert Einstein (definitely said this)",
   "Teaching the cart to divide and conquer…",
   "Calculating the most peaceful way to start a price war.",
   "Performing complex cart surgery. Please hold.",
@@ -231,11 +231,14 @@ const loadingMessages = [
   "No carts were harmed in the making of these savings.",
   "Negotiating peace between rival supermarkets.",
   "Optimizing. Strategizing. Slightly judging your shopping list.",
-  "“In the beginning, there was one cart. Then came optimization.”\n— Genesis of Savings, 3:14",
-  "“Give a man a cart, and he’ll shop for a day. Teach a man to split a cart, and he’ll save for a lifetime.”\n— Confucius (probably)",
-  "“I came, I saw, I split.”\n— Julius Caesar",
+  "\“In the beginning, there was one cart. Then came optimization.\”\n— Genesis of Savings, 3:14",
+  "\“Give a man a cart, and he’ll shop for a day. Teach a man to split a cart, and he’ll save for a lifetime.\”\n— Confucius (probably)",
+  "\“I came, I saw, I split.\”\n— Julius Caesar",
   "Running a background check on your biscuits.",
   "Balancing taste, price, and your deep emotional attachment to Nutella.",
+  "Literally comparing apples to oranges.",
+  "Consulting the shopping cart spirits.",
+  "Calculating the optimal number of stores to annoy.",
 ];
 
 const FinalCartPage = () => {
@@ -248,11 +251,24 @@ const FinalCartPage = () => {
   const [viewWithSubstitutes, setViewWithSubstitutes] = useState(true);
   const [loadingMessage, setLoadingMessage] = useState("");
 
-  useEffect(() => {
-    // Select a random message on initial load
+  const selectRandomMessage = () => {
     const randomIndex = Math.floor(Math.random() * loadingMessages.length);
     setLoadingMessage(loadingMessages[randomIndex]);
+  };
+
+  useEffect(() => {
+    selectRandomMessage(); // Select a random message on initial load
   }, []); // Empty dependency array to run only once
+
+  useEffect(() => {
+    if (isLoading) {
+      const interval = setInterval(() => {
+        selectRandomMessage();
+      }, 7000); // 7 seconds
+
+      return () => clearInterval(interval); // Cleanup on unmount or when isLoading changes
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     const optimizeCart = async () => {
