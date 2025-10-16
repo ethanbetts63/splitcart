@@ -48,6 +48,7 @@ def calculate_best_single_store(slots, original_cart):
             'store_id': store_id,
             'store_name': store_data['store_name'],
             'company_name': store_data['company_name'],
+            'store_address': store_data['store_address'],
             'items': items_in_store,
             'items_found_count': slots_fulfilled_count,
             'total_cost': total_cost
