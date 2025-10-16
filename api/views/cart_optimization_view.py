@@ -24,13 +24,18 @@ class CartOptimizationView(APIView):
         for max_stores in max_stores_options:
             optimized_cost, shopping_plan, _ = calculate_optimized_cost(price_slots, max_stores)
             if optimized_cost is not None:
-                savings = baseline_cost - optimized_cost if baseline_cost > 0 else 0
-                optimization_results.append({
-                    'max_stores': max_stores,
-                    'optimized_cost': optimized_cost,
-                    'savings': savings,
-                    'shopping_plan': shopping_plan,
-                })
+                # Count stores that have items
+                actual_stores_used = sum(1 for store_plan in shopping_plan.values() if store_plan['items'])
+
+                # Only add the result if the number of stores used is what we asked for
+                if actual_stores_used == max_stores:
+                    savings = baseline_cost - optimized_cost if baseline_cost > 0 else 0
+                    optimization_results.append({
+                        'max_stores': max_stores,
+                        'optimized_cost': optimized_cost,
+                        'savings': savings,
+                        'shopping_plan': shopping_plan,
+                    })
         
         return baseline_cost, optimization_results, best_single_store_result
 
