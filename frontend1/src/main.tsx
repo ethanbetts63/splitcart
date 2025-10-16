@@ -1,7 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { ShoppingListProvider } from './context/ShoppingListContext'
 import { ShoppingListProvider } from './context/ShoppingListContext';
 import { SubstitutionProvider } from './context/SubstitutionContext';
 import { StoreProvider } from './context/StoreContext'
