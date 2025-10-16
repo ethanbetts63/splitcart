@@ -7,7 +7,7 @@ const HomePage = () => {
   const storeIdsArray = Array.from(selectedStoreIds);
 
   return (
-    <main className="p-4">
+    <div className="p-16">
       <section className="mt-8">
         <ProductCarousel 
           title="Bargains"
@@ -43,7 +43,7 @@ const HomePage = () => {
           storeIds={storeIdsArray} 
         />
       </section>
-    </main>
+    </div>
   );
 };
 

@@ -35,9 +35,7 @@ const Layout = () => {
   // State for controlling the settings dialog
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogPage, setDialogPage] = useState('Trolley');
-
   const showNextButton = location.pathname === '/' || location.pathname === '/search';
-
   // On initial load, check if any stores are selected. If not, force the user to select them.
   useEffect(() => {
     if (selectedStoreIds.size === 0) {
@@ -45,7 +43,6 @@ const Layout = () => {
       setDialogOpen(true);
     }
   }, []); // Empty dependency array ensures this runs only once on mount
-
   const handleSearchSubmit = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && searchTerm.trim() !== '') {
       navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
@@ -55,67 +52,121 @@ const Layout = () => {
   const openDialog = (page: string) => {
     // If user clicks trolley with no stores selected, still redirect to location page
     if (page === 'Trolley' && selectedStoreIds.size === 0) {
-      setDialogPage('Edit Location');
-    } else {
+      setDialogPage('Edit Location');}
+    else {
       setDialogPage(page);
     }
     setDialogOpen(true);
   };
-
   return (
     <div>
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+
+        <div className="flex h-20 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+
           {/* Left side */}
+
           <div className="flex items-center gap-6">
+
             <a href="/" className="flex items-center space-x-2">
-              <span className="font-bold text-lg">SplitCart</span>
+
+              <span className="font-bold text-2xl">SplitCart</span>
+
             </a>
+
           </div>
+
+
 
           {/* Center Search Bar */}
+
           <div className="flex flex-1 items-center justify-center">
+
             <div className="w-full max-w-sm">
+
               <Input
+
                 type="search"
+
                 placeholder="Search products, stores, and more..."
+
                 value={searchTerm}
+
                 onChange={(e) => setSearchTerm(e.target.value)}
+
                 onKeyDown={handleSearchSubmit}
+
+                className="h-12 text-base"
+
               />
+
             </div>
+
           </div>
+
+
 
           {/* Right side Icon Buttons */}
-          <div className="flex items-center justify-end gap-4">
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="icon" onClick={() => openDialog('Trolley')}>
-                <ShoppingCart className="h-6 w-6" />
-                <span className="sr-only">Open Trolley</span>
-              </Button>
-              <Button variant="ghost" size="icon" onClick={() => openDialog('Edit Location')}>
-                <MapPin className="h-6 w-6" />
-                <span className="sr-only">Edit Location</span>
-              </Button>
-            </div>
-            {showNextButton && <NextButton />}
+
+          <div className="flex items-center justify-end gap-2">
+
+                        <div className="flex items-center gap-1">
+
+                          <Button variant="ghost" size="icon" className="h-14 w-14" onClick={() => openDialog('Trolley')}>
+
+                            <ShoppingCart className="h-8 w-8 text-red-500" />
+
+                            <span className="sr-only">Open Trolley</span>
+
+                          </Button>
+
+                          <Button variant="ghost" size="icon" className="h-14 w-14" onClick={() => openDialog('Edit Location')}>
+
+                            <MapPin className="h-8 w-8 text-red-500" />
+
+                            <span className="sr-only">Edit Location</span>
+
+                          </Button>
+
+                        </div>
+
+            {showNextButton && <NextButton className="h-12 px-4" />}
+
           </div>
+
         </div>
+
       </header>
 
+
+
       {/* The main page content will be rendered here */}
+
       <main>
+
         <Outlet />
+
       </main>
 
+
+
       {/* The Settings Dialog is now controlled by the Layout state */}
+
       <SettingsDialog 
+
         open={dialogOpen} 
+
         onOpenChange={setDialogOpen} 
+
         defaultPage={dialogPage} 
+
       />
+
     </div>
+
   );
+
 };
+
 
 export default App;
