@@ -42,10 +42,10 @@ const data = {
 }
 
 // A component to render the correct page content based on the active page
-const PageContent = ({ activePage }: { activePage: string }) => {
+const PageContent = ({ activePage, onOpenChange }: { activePage: string, onOpenChange: (open: boolean) => void }) => {
   switch (activePage) {
     case 'Trolley':
-      return <TrolleyPage />;
+      return <TrolleyPage onOpenChange={onOpenChange} />;
     case 'Edit Location':
       return <EditLocationPage />;
     default:
@@ -111,7 +111,7 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'Trolley' }: 
             </SidebarContent>
           </Sidebar>
           <main className="flex h-[480px] flex-1 flex-col overflow-hidden">
-            <PageContent activePage={activePage} />
+            <PageContent activePage={activePage} onOpenChange={onOpenChange} />
           </main>
         </SidebarProvider>
       </DialogContent>
