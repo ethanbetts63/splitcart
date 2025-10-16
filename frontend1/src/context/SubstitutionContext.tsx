@@ -27,7 +27,15 @@ export const SubstitutionProvider = ({ children }: { children: ReactNode }) => {
       const url = `/api/products/${product.id}/substitutes/?store_ids=${ids}`;
       const response = await fetch(url);
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const subs = await response.json();
+      let subs = await response.json();
+
+      // Add dummy substitution level for demonstration
+      const levels = ['LVL1', 'LVL2', 'LVL3', 'LVL4'];
+      subs = subs.map((sub: Product, index: number) => ({
+        ...sub,
+        substitution_level: levels[index % levels.length],
+      }));
+
       setSubstitutes(prev => ({ ...prev, [product.id]: subs }));
     } catch (error) {
       console.error(`Error fetching substitutes for product ${product.id}:`, error);

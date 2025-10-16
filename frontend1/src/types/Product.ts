@@ -8,13 +8,14 @@ type CompanyPriceInfo = {
   image_url?: string;
 };
 
-type Product = {
+export type Product = {
   id: number;
   name: string;
   brand_name?: string;
   size?: string;
   image_url?: string;
   prices: CompanyPriceInfo[];
+  substitution_level?: string;
 };
 
 export { type CompanyPriceInfo, type Product };

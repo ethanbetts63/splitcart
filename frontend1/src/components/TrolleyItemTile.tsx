@@ -24,7 +24,10 @@ const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, i
   const imageUrl = product.image_url || fallbackImage;
 
   return (
-    <Card className="p-2 flex flex-row items-center gap-4">
+    <Card className="p-2 flex flex-row items-center gap-4 relative">
+      {product.substitution_level && (
+        <Badge variant="secondary" className="absolute top-2 left-2 z-10 bg-blue-500 text-white dark:bg-blue-600">{product.substitution_level}</Badge>
+      )}
       {/* Image */}
       <div className="w-16 h-16 flex-shrink-0">
         <img

@@ -5,6 +5,9 @@ import ProductTile from '@/components/ProductTile';
 import TrolleyItemTile from '@/components/TrolleyItemTile';
 import { Button } from '@/components/ui/button';
 
+import { Badge } from '@/components/ui/badge';
+import { BadgeCheckIcon } from 'lucide-react';
+
 const SubstitutionPage = () => {
   const {
     itemsToReview,
@@ -61,7 +64,11 @@ const SubstitutionPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <h2 className="text-xl font-semibold mb-4">Original Product</h2>
-          <div className="w-[240px] mx-auto">
+          <div className="w-[240px] mx-auto relative">
+            <Badge variant="secondary" className="absolute top-2 left-2 z-10 bg-green-500 text-white dark:bg-green-600">
+              <BadgeCheckIcon className="w-4 h-4 mr-1" />
+              Original Product
+            </Badge>
             <ProductTile product={currentItem} />
           </div>
         </div>
