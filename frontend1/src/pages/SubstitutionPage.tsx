@@ -65,7 +65,15 @@ const SubstitutionPage = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Product Substitution</h1>
+      <div className="grid grid-cols-3 items-center mb-4">
+        <div className="justify-self-start">
+          <Button onClick={handleBack} disabled={currentItemIndex === 0}>Back</Button>
+        </div>
+        <h1 className="text-2xl font-bold justify-self-center">Product Substitution</h1>
+        <div className="justify-self-end">
+          <Button onClick={handleNext} disabled={currentItemIndex === itemsToReview.length - 1}>Next</Button>
+        </div>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <h2 className="text-xl font-semibold mb-4">Original Product</h2>
@@ -79,7 +87,7 @@ const SubstitutionPage = () => {
         </div>
         <div>
           <h2 className="text-xl font-semibold mb-4">Substitutes</h2>
-          <div className="space-y-4">
+          <div className="h-[480px] overflow-y-auto border rounded-md p-4 space-y-4">
             {currentSubstitutes.map(sub => {
               const selection = (selections[currentItem.id] || []).find(s => s.product.id === sub.id);
               return (
@@ -96,10 +104,7 @@ const SubstitutionPage = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-between mt-8">
-        <Button onClick={handleBack} disabled={currentItemIndex === 0}>Back</Button>
-        <Button onClick={handleNext} disabled={currentItemIndex === itemsToReview.length - 1}>Next</Button>
-      </div>
+
     </div>
   );
 };
