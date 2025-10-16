@@ -32,7 +32,7 @@ const TrolleyPage: React.FC<TrolleyPageProps> = ({ onOpenChange }) => {
         {items.length > 0 ? (
           <div className="flex flex-col gap-4">
             {items.map(item => (
-              <TrolleyItemTile key={item.product.id} product={item.product} />
+              <TrolleyItemTile key={item.product.id} product={item.product} context="trolley" />
             ))}
           </div>
         ) : (

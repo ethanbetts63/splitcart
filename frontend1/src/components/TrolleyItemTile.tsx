@@ -13,13 +13,14 @@ interface TrolleyItemTileProps {
   isApproved?: boolean;
   quantity?: number;
   onQuantityChange?: (product: Product, quantity: number) => void;
+  context?: 'trolley' | 'substitution';
 }
 
 import { Badge } from "@/components/ui/badge";
 
 import { Input } from '@/components/ui/input';
 
-const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, isApproved, quantity, onQuantityChange }) => {
+const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, isApproved, quantity, onQuantityChange, context }) => {
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = fallbackImage;
@@ -65,7 +66,9 @@ const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, i
 
       {/* Middle Section: Info & Price */}
       <div className="flex-grow grid gap-1 justify-items-center">
-        <p className="font-semibold line-clamp-1">{product.name}</p>
+        <div className="flex justify-center">
+          <p className={`font-semibold text-center ${context === 'substitution' ? 'line-clamp-1' : ''}`}>{product.name}</p>
+        </div>
         {product.size && <Badge variant="default">{product.size}</Badge>}
         <PriceDisplay prices={product.prices} />
       </div>

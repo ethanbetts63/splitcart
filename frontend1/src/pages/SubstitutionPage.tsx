@@ -98,6 +98,7 @@ const SubstitutionPage = () => {
                   isApproved={!!selection}
                   quantity={selection ? selection.quantity : 1}
                   onQuantityChange={handleQuantityChange}
+                  context="substitution"
                 />
               )
             })}
