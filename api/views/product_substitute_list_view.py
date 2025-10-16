@@ -20,29 +20,19 @@ class ProductSubstituteListView(APIView):
             Q(product_a=product) | Q(product_b=product)
         ).order_by('level', '-score')
 
-        postcode_param = request.query_params.get('postcode')
-        radius_param = request.query_params.get('radius')
-        
+        store_ids_param = request.query_params.get('store_ids')
         nearby_store_ids = None
-        if postcode_param and radius_param:
+        if store_ids_param:
             try:
-                radius = float(radius_param)
-                ref_postcode = Postcode.objects.filter(postcode=postcode_param).first()
-
-                if ref_postcode:
-                    nearby_stores = get_nearby_stores(ref_postcode, radius)
-                    nearby_store_ids = [store.id for store in nearby_stores]
-                    
-                    # Filter substitutions where the *other* product has prices in nearby stores
-                    substitutions_queryset = substitutions_queryset.filter(
-                        Q(product_a=product, product_b__price_records__price_entries__store__id__in=nearby_store_ids) |
-                        Q(product_b=product, product_a__price_records__price_entries__store__id__in=nearby_store_ids)
-                    ).distinct()
-                else:
-                    # If postcode not found, return empty queryset
-                    substitutions_queryset = ProductSubstitution.objects.none()
+                nearby_store_ids = [int(sid) for sid in store_ids_param.split(',')]
+                
+                # Filter substitutions where the *other* product has prices in the provided stores
+                substitutions_queryset = substitutions_queryset.filter(
+                    Q(product_a=product, product_b__price_records__price_entries__store__id__in=nearby_store_ids) |
+                    Q(product_b=product, product_a__price_records__price_entries__store__id__in=nearby_store_ids)
+                ).distinct()
             except (ValueError, TypeError):
-                pass # Invalid radius, ignore filtering
+                pass # Invalid store_ids, ignore filtering
 
         # Limit to 5 substitutes after filtering
         substitutions = substitutions_queryset[:5]
