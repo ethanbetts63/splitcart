@@ -214,6 +214,30 @@ const ResultsDisplay = ({ data }: { data: OptimizationDataSet }) => {
     );
 }
 
+const loadingMessages = [
+  "Making the cart go Split",
+  "Splitting the cart senseless.",
+  "The cart never knew what split it.",
+  "Split it and quit it.",
+  "To Split or not to Split that is the question.",
+  "“The definition of insanity is buying everything from one store.”\n— Albert Einstein (definitely said this)",
+  "Teaching the cart to divide and conquer…",
+  "Calculating the most peaceful way to start a price war.",
+  "Performing complex cart surgery. Please hold.",
+  "Splitting hairs. And carts.",
+  "Applying advanced algorithms to banana prices.",
+  "Sawing the cart in half.",
+  "Split happens...",
+  "No carts were harmed in the making of these savings.",
+  "Negotiating peace between rival supermarkets.",
+  "Optimizing. Strategizing. Slightly judging your shopping list.",
+  "“In the beginning, there was one cart. Then came optimization.”\n— Genesis of Savings, 3:14",
+  "“Give a man a cart, and he’ll shop for a day. Teach a man to split a cart, and he’ll save for a lifetime.”\n— Confucius (probably)",
+  "“I came, I saw, I split.”\n— Julius Caesar",
+  "Running a background check on your biscuits.",
+  "Balancing taste, price, and your deep emotional attachment to Nutella.",
+];
+
 const FinalCartPage = () => {
   const { items: originalItems } = useShoppingList();
   const { selectedStoreIds } = useStoreSelection();
@@ -222,6 +246,13 @@ const FinalCartPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewWithSubstitutes, setViewWithSubstitutes] = useState(true);
+  const [loadingMessage, setLoadingMessage] = useState("");
+
+  useEffect(() => {
+    // Select a random message on initial load
+    const randomIndex = Math.floor(Math.random() * loadingMessages.length);
+    setLoadingMessage(loadingMessages[randomIndex]);
+  }, []); // Empty dependency array to run only once
 
   useEffect(() => {
     const optimizeCart = async () => {
@@ -280,7 +311,7 @@ const FinalCartPage = () => {
   if (isLoading) {
     return (
       <div className="container mx-auto p-4 flex flex-col items-center justify-center text-center" style={{ minHeight: 'calc(100vh - 10rem)' }}>
-        <h1 className="text-2xl font-bold mb-4">Optimizing your cart!</h1>
+        <h1 className="text-2xl font-bold mb-4" style={{ whiteSpace: 'pre-line' }}>{loadingMessage}</h1>
         <Spinner />
       </div>
     );
