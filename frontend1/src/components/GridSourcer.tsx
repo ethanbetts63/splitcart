@@ -12,6 +12,8 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
+import { useStoreSelection } from '@/context/StoreContext';
+
 // Type for the API response, using the shared Product type
 type ApiResponse = {
   count: number;
@@ -33,6 +35,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl }) => {
   const [totalResults, setTotalResults] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const { selectedStoreIds } = useStoreSelection(); // Get selected stores
 
   const fetchProducts = useCallback(async (page: number) => {
     setIsLoading(true);
@@ -52,6 +55,11 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl }) => {
       setProducts([]);
       setTotalResults(0);
       return;
+    }
+
+    // Add store_ids if they are provided
+    if (selectedStoreIds && selectedStoreIds.size > 0) {
+      params.append('store_ids', Array.from(selectedStoreIds).join(','));
     }
 
     params.append('page', page.toString());
@@ -87,7 +95,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [searchTerm, sourceUrl]);
+  }, [searchTerm, sourceUrl, selectedStoreIds]);
 
   // Effect for fetching data when page or search term changes
   useEffect(() => {

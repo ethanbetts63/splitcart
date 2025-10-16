@@ -22,6 +22,7 @@ const HomePage = () => {
           title="Milk"
           searchQuery="milk"
           sourceUrl="/api/products/?search=milk&limit=20" 
+          storeIds={storeIdsArray} 
         />
       </section>
 
@@ -30,6 +31,7 @@ const HomePage = () => {
           title="Eggs"
           searchQuery="eggs"
           sourceUrl="/api/products/?search=eggs&limit=20" 
+          storeIds={storeIdsArray} 
         />
       </section>
 
@@ -38,6 +40,7 @@ const HomePage = () => {
           title="Bread"
           searchQuery="bread"
           sourceUrl="/api/products/?search=bread&limit=20" 
+          storeIds={storeIdsArray} 
         />
       </section>
     </main>

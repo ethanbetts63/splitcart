@@ -150,11 +150,13 @@ const FinalCartPage = () => {
       }
 
       const cart = originalItems.map(item => {
+        const original_item_option = { product_id: item.product.id, quantity: item.quantity };
         const subs = selections[item.product.id];
         if (subs && subs.length > 0) {
-          return subs.map(sub => ({ product_id: sub.product.id, quantity: sub.quantity }));
+            const sub_options = subs.map(sub => ({ product_id: sub.product.id, quantity: sub.quantity }));
+            return [original_item_option, ...sub_options];
         }
-        return [{ product_id: item.product.id, quantity: item.quantity }];
+        return [original_item_option];
       });
 
       const original_items_payload = originalItems.map(item => ({

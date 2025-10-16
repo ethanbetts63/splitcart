@@ -5,6 +5,7 @@ def calculate_best_single_store(slots, original_cart):
     2. Tie-break with the lowest total cost for the found products.
     """
     if not slots:
+        print("No price slots provided.")
         return None
 
     # Create a set of all unique product IDs in the original cart
@@ -52,6 +53,7 @@ def calculate_best_single_store(slots, original_cart):
         })
 
     if not store_results:
+        print("No stores found with any items from the cart.")
         return None
 
     # Sort to find the best store
