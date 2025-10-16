@@ -35,6 +35,8 @@ const SubstitutionPage = () => {
   const handleBack = () => {
     if (currentItemIndex > 0) {
       setCurrentItemIndex(currentItemIndex - 1);
+    } else {
+      navigate('/');
     }
   };
 
@@ -62,6 +64,10 @@ const SubstitutionPage = () => {
     updateSelectionQuantity(currentItem.id, product.id, quantity);
   };
 
+  const handleSkipAll = () => {
+    navigate('/final-cart');
+  };
+
   if (!currentItem) {
     return <div>Loading...</div>; // Or a more sophisticated loading state
   }
@@ -71,8 +77,13 @@ const SubstitutionPage = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-3 items-center mb-4">
-        <div className="justify-self-start">
-          <Button onClick={handleBack} disabled={currentItemIndex === 0} className="bg-red-500 text-white">Back</Button>
+        <div className="justify-self-start flex items-center gap-2">
+          <Button onClick={handleBack} className="bg-red-500 text-white">
+            {currentItemIndex === 0 ? 'Home' : 'Back'}
+          </Button>
+          <Button onClick={handleSkipAll} className="bg-black text-white">
+            Skip Substitution
+          </Button>
         </div>
         <h1 className="text-2xl font-bold justify-self-center">Product Substitution</h1>
         <div className="justify-self-end flex items-center gap-2">
