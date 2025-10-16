@@ -35,7 +35,16 @@ def calculate_optimized_cost(slots, max_stores):
         prob += pulp.lpSum(var_list) <= 1, f"Unique_Product_{pid}"
 
     store_to_company = {option['store_name']: option['company_name'] for slot in slots for option in slot}
-    store_to_address = {option['store_name']: option['store_address'] for slot in slots for option in slot}
+    try:
+        store_to_address = {option['store_name']: option['store_address'] for slot in slots for option in slot}
+    except KeyError as e:
+        print(f"KeyError: {e} not found in option:")
+        for slot in slots:
+            for option in slot:
+                if 'store_address' not in option:
+                    print(option)
+                    break
+        raise
 
     prob.solve(pulp.PULP_CBC_CMD(msg=0))
 

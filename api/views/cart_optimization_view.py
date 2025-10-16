@@ -31,7 +31,6 @@ class CartOptimizationView(APIView):
                 )
 
             # 1. Calculate a single baseline cost based ONLY on original items
-            print("Original items:", original_items)
             simple_cart = [[{'product_id': item['product']['id'], 'quantity': item['quantity']}] for item in original_items]
             simple_price_slots = build_price_slots(simple_cart, stores)
             if not simple_price_slots:
@@ -42,7 +41,6 @@ class CartOptimizationView(APIView):
             baseline_cost = calculate_baseline_cost(simple_price_slots)
 
             # 2. "With Substitutes" calculation
-            print("Full cart with substitutes:", cart)
             subs_price_slots = build_price_slots(cart, stores)
             subs_optimization_results = []
             if subs_price_slots:
