@@ -58,7 +58,8 @@ def calculate_optimized_cost(slots, max_stores):
                         "product_name": product_name,
                         "brand": brand,
                         "sizes": sizes,
-                        "price": price
+                        "price": option['unit_price'],
+                        "quantity": option['quantity']
                     }
                     shopping_plan[store_name]['items'].append(plan_item)
                     break

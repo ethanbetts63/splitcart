@@ -63,9 +63,20 @@ def calculate_best_single_store(slots, original_cart):
     # Identify missing products
     missing_product_ids = original_product_ids - {item['product_id'] for item in best_store['items']}
 
+    shopping_plan_items = [
+        {
+            "product_name": item['product_name'],
+            "brand": item['brand'],
+            "sizes": item['sizes'],
+            "price": item['unit_price'],
+            "quantity": item['quantity']
+        }
+        for item in best_store['items']
+    ]
+
     shopping_plan = {
         best_store['store_name']: {
-            'items': best_store['items'],
+            'items': shopping_plan_items,
             'company_name': best_store['company_name']
         }
     }

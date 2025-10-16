@@ -52,7 +52,7 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
                 <ul className="list-disc pl-5 mt-1">
                     {store_plan.items.map((item, index) => (
                         <li key={index} className="text-sm">
-                            {item.product_name} (x{item.quantity}) - {typeof item.price === 'number' ? `$${item.price.toFixed(2)}` : 'N/A'}
+                            {item.product_name} (x{item.quantity}) - ${item.price.toFixed(2)} each (Total: ${(item.price * item.quantity).toFixed(2)})
                         </li>
                     ))}
                 </ul>
@@ -80,7 +80,7 @@ const ResultsDisplay = ({ data }: { data: OptimizationDataSet }) => {
 
     return (
         <div className="mt-4">
-            <p>Baseline Cost (most common price): ${data.baseline_cost.toFixed(2)}</p>
+            <p>Baseline Cost: ${data.baseline_cost.toFixed(2)}</p>
             
             <Tabs defaultValue={defaultTab} className="w-full mt-4">
                 <TabsList className="grid w-full grid-cols-4">

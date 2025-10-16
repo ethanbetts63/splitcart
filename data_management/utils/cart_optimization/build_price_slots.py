@@ -56,7 +56,8 @@ def build_price_slots(cart, stores):
                     continue
                 
                 quantity = item.get('quantity', 1)
-                total_price = float(price_obj.price_record.price) * quantity
+                unit_price = float(price_obj.price_record.price)
+                total_price = unit_price * quantity
 
                 current_slot.append({
                     "product_id": product_id,
@@ -67,6 +68,7 @@ def build_price_slots(cart, stores):
                     "store_name": price_obj.store.store_name,
                     "company_name": price_obj.store.company.name,
                     "price": total_price,
+                    "unit_price": unit_price,
                     "quantity": quantity
                 })
         
