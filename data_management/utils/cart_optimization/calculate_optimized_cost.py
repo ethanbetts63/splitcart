@@ -37,14 +37,16 @@ def calculate_optimized_cost(slots, max_stores):
     store_to_company = {option['store_name']: option['company_name'] for slot in slots for option in slot}
     try:
         store_to_address = {option['store_name']: option['store_address'] for slot in slots for option in slot}
-    except KeyError as e:
-        print(f"KeyError: {e} not found in option:")
+    except KeyError:
+        problematic_option = None
         for slot in slots:
             for option in slot:
                 if 'store_address' not in option:
-                    print(option)
+                    problematic_option = option
                     break
-        raise
+            if problematic_option:
+                break
+        raise Exception(f"KeyError: 'store_address' missing in option: {problematic_option}")
 
     prob.solve(pulp.PULP_CBC_CMD(msg=0))
 
