@@ -27,7 +27,7 @@ def calculate_best_single_store(slots, original_cart):
     for store_id, store_data in options_by_store.items():
         # For each store, find the cheapest option for each product slot
         items_in_store = []
-        found_product_ids = set()
+        slots_fulfilled_count = 0
 
         for slot in slots:
             cheapest_option_in_slot = None
@@ -38,7 +38,7 @@ def calculate_best_single_store(slots, original_cart):
             
             if cheapest_option_in_slot:
                 items_in_store.append(cheapest_option_in_slot)
-                found_product_ids.add(cheapest_option_in_slot['product_id'])
+                slots_fulfilled_count += 1
 
         total_cost = sum(item['price'] for item in items_in_store)
         
@@ -47,7 +47,7 @@ def calculate_best_single_store(slots, original_cart):
             'store_name': store_data['store_name'],
             'company_name': store_data['company_name'],
             'items': items_in_store,
-            'items_found_count': len(found_product_ids),
+            'items_found_count': slots_fulfilled_count,
             'total_cost': total_cost
         })
 
