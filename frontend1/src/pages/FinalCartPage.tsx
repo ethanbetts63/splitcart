@@ -117,11 +117,14 @@ const FinalCartPage = () => {
 
             <Tabs defaultValue={defaultTab} className="w-full mt-4">
                 <TabsList className="grid w-full grid-cols-4">
-                    {data.optimization_results.map(result => (
-                        <TabsTrigger key={result.max_stores} value={`tab-${result.max_stores}`}>
-                            Split up to {result.max_stores} Stores
-                        </TabsTrigger>
-                    ))}
+                    {data.optimization_results.map(result => {
+                        const tabName = result.max_stores === 1 ? 'Best Single Store' : `${result.max_stores} Stores`;
+                        return (
+                            <TabsTrigger key={result.max_stores} value={`tab-${result.max_stores}`}>
+                                {tabName}
+                            </TabsTrigger>
+                        )
+                    })}
                 </TabsList>
 
                 {data.optimization_results.map(result => (
