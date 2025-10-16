@@ -206,7 +206,7 @@ const FinalCartPage = () => {
         <h1 className="text-2xl font-bold">Cart Optimization Results</h1>
         {optimizationData.no_subs_results && (
             <div className="flex items-center space-x-2">
-                <Switch id="substitutes-switch" checked={viewWithSubstitutes} onCheckedChange={setViewWithSubstitutes} />
+                <Switch id="substitutes-switch" checked={viewWithSubstitutes} onCheckedChange={setViewWithSubstitutes} className={viewWithSubstitutes ? 'data-[state=checked]:bg-green-500' : ''} />
                 <Label htmlFor="substitutes-switch">Include Substitutes</Label>
             </div>
         )}
