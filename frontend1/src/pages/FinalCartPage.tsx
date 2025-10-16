@@ -61,12 +61,22 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
     </div>
 );
 
+import { Badge } from "@/components/ui/badge";
+import { BadgeCheckIcon } from "lucide-react";
+
 const ResultsDisplay = ({ data }: { data: OptimizationDataSet }) => {
     if (!data || (!data.best_single_store && (!data.optimization_results || data.optimization_results.length === 0))) {
         return <p className="mt-4">No optimization results available for this selection.</p>;
     }
     
     const defaultTab = data.best_single_store ? "tab-1" : (data.optimization_results.length > 0 ? `tab-${data.optimization_results[0].max_stores}`: "");
+
+    const highestSavingResult = data.optimization_results.reduce((max, current) => {
+        if (!max || current.savings > max.savings) {
+            return current;
+        }
+        return max;
+    }, null as OptimizationResult | null);
 
     return (
         <div className="mt-4">
@@ -75,13 +85,30 @@ const ResultsDisplay = ({ data }: { data: OptimizationDataSet }) => {
             <Tabs defaultValue={defaultTab} className="w-full mt-4">
                 <TabsList className="grid w-full grid-cols-4">
                     {data.best_single_store && (
-                        <TabsTrigger value="tab-1">Best Single Store</TabsTrigger>
-                    )}
-                    {data.optimization_results.map(result => (
-                        <TabsTrigger key={result.max_stores} value={`tab-${result.max_stores}`}>
-                            {`${result.max_stores} Stores`}
+                        <TabsTrigger value="tab-1" className="flex items-center gap-2">
+                            <span>Best Single Store</span>
+                            <Badge className="bg-blue-500 text-white dark:bg-blue-600">
+                                {data.best_single_store.items_found_count}/{data.best_single_store.total_items_in_cart}
+                            </Badge>
                         </TabsTrigger>
-                    ))}
+                    )}
+                    {data.optimization_results.map(result => {
+                        const percentage = data.baseline_cost > 0 ? Math.round((result.savings / data.baseline_cost) * 100) : 0;
+                        const isHighestSaving = highestSavingResult && result.max_stores === highestSavingResult.max_stores;
+                        return (
+                            <TabsTrigger key={result.max_stores} value={`tab-${result.max_stores}`} className="flex items-center gap-2">
+                                <span>{`${result.max_stores} Stores`}</span>
+                                {isHighestSaving ? (
+                                    <Badge variant="secondary" className="bg-green-500 text-white dark:bg-green-600">
+                                        <BadgeCheckIcon className="w-4 h-4 mr-1" />
+                                        {percentage}%
+                                    </Badge>
+                                ) : (
+                                    <Badge variant="secondary">{percentage}%</Badge>
+                                )}
+                            </TabsTrigger>
+                        )
+                    })}
                 </TabsList>
 
                 {data.best_single_store && (
