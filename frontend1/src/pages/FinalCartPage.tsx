@@ -8,6 +8,11 @@ import { Label } from "@/components/ui/label"
 
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
 
+import aldiLogo from '@/assets/ALDI_logo.svg';
+import colesLogo from '@/assets/coles_logo.webp';
+import igaLogo from '@/assets/iga_logo.webp';
+import woolworthsLogo from '@/assets/woolworths_logo.webp';
+
 import {
   Table,
   TableBody,
@@ -18,6 +23,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+
+// Logo Mapping
+const companyLogos: { [key: string]: string } = {
+    'Aldi': aldiLogo,
+    'Coles': colesLogo,
+    'Iga': igaLogo,
+    'Woolworths': woolworthsLogo,
+};
 
 // Define types for the API response
 interface ShoppingPlan {
@@ -30,6 +43,7 @@ interface ShoppingPlan {
       price: number;
       image_url: string | null;
     }[];
+    company_name: string;
     total_cost?: number; // Make optional as it's not in best_single_store plan
   };
 }
@@ -67,52 +81,60 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
             const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                 e.currentTarget.src = fallbackImage;
             };
+            const logo = companyLogos[store_plan.company_name];
+
             return (
-                <Table key={storeName}>
-                    <TableCaption>Shopping List for {storeName}</TableCaption>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead className="w-[100px]">&nbsp;</TableHead>
-                            <TableHead className="text-center">Product</TableHead>
-                            <TableHead className="text-center">Quantity</TableHead>
-                            <TableHead className="text-right">Unit Price</TableHead>
-                            <TableHead className="text-right">Total Price</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {store_plan.items.map((item, index) => (
-                            <TableRow key={index}>
-                                <TableCell>
-                                    <img 
-                                        src={item.image_url || fallbackImage} 
-                                        alt={item.product_name} 
-                                        className="w-16 h-16 object-cover rounded-md"
-                                        onError={handleImageError}
-                                    />
-                                </TableCell>
-                                <TableCell className="font-medium text-center">
-                                    <div>{item.product_name}</div>
-                                    {((item.brand && item.brand !== 'N/A') || item.size) ? (
-                                        <div className="text-sm text-muted-foreground flex justify-center items-center mt-1">
-                                            {item.brand && item.brand !== 'N/A' && <span>{item.brand}</span>}
-                                            {item.brand && item.brand !== 'N/A' && item.size && <span className="mx-1">•</span>}
-                                            {item.size && <Badge variant="outline">{item.size}</Badge>}
-                                        </div>
-                                    ) : null}
-                                </TableCell>
-                                <TableCell className="text-center">{item.quantity}</TableCell>
-                                <TableCell className="text-right">${item.price.toFixed(2)}</TableCell>
-                                <TableCell className="text-right">${(item.price * item.quantity).toFixed(2)}</TableCell>
+                <div key={storeName} className="border rounded-lg p-4 bg-muted/20">
+                    <div className="flex items-center gap-4 mb-4">
+                        {logo && <img src={logo} alt={store_plan.company_name} className="h-10 w-auto" />}
+                        <h2 className="text-2xl font-bold">{storeName}</h2>
+                    </div>
+                    <Table>
+                        <TableCaption>Shopping List for {storeName}</TableCaption>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="w-[100px]">&nbsp;</TableHead>
+                                <TableHead className="text-center">Product</TableHead>
+                                <TableHead className="text-center">Quantity</TableHead>
+                                <TableHead className="text-right">Unit Price</TableHead>
+                                <TableHead className="text-right">Total Price</TableHead>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                    <TableFooter>
-                        <TableRow>
-                            <TableCell colSpan={4}>Total for {storeName}</TableCell>
-                            <TableCell className="text-right">${storeTotal.toFixed(2)}</TableCell>
-                        </TableRow>
-                    </TableFooter>
-                </Table>
+                        </TableHeader>
+                        <TableBody>
+                            {store_plan.items.map((item, index) => (
+                                <TableRow key={index}>
+                                    <TableCell>
+                                        <img 
+                                            src={item.image_url || fallbackImage} 
+                                            alt={item.product_name} 
+                                            className="w-16 h-16 object-cover rounded-md"
+                                            onError={handleImageError}
+                                        />
+                                    </TableCell>
+                                    <TableCell className="font-medium text-center">
+                                        <div>{item.product_name}</div>
+                                        {((item.brand && item.brand !== 'N/A') || item.size) ? (
+                                            <div className="text-sm text-muted-foreground flex justify-center items-center mt-1">
+                                                {item.brand && item.brand !== 'N/A' && <span>{item.brand}</span>}
+                                                {item.brand && item.brand !== 'N/A' && item.size && <span className="mx-1">•</span>}
+                                                {item.size && <Badge variant="outline">{item.size}</Badge>}
+                                            </div>
+                                        ) : null}
+                                    </TableCell>
+                                    <TableCell className="text-center">{item.quantity}</TableCell>
+                                    <TableCell className="text-right">${item.price.toFixed(2)}</TableCell>
+                                    <TableCell className="text-right">${(item.price * item.quantity).toFixed(2)}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                        <TableFooter>
+                            <TableRow>
+                                <TableCell colSpan={4}>Total for {storeName}</TableCell>
+                                <TableCell className="text-right">${storeTotal.toFixed(2)}</TableCell>
+                            </TableRow>
+                        </TableFooter>
+                    </Table>
+                </div>
             )
         })}
     </div>
