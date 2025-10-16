@@ -132,7 +132,7 @@ const FinalCartPage = () => {
                         <div className="p-4 border rounded-md">
                             <h3 className="font-bold">Total Cost: ${result.optimized_cost.toFixed(2)} (Savings: ${result.savings.toFixed(2)})</h3>
                             <div className="mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {Object.entries(result.shopping_plan).map(([storeName, plan]) => (
+                                {Object.entries(result.shopping_plan).filter(([, plan]) => plan.items && plan.items.length > 0).map(([storeName, plan]) => (
                                     <div key={storeName} className="border p-2 rounded-md bg-muted/20">
                                         <h4 className="font-semibold">{storeName} {typeof plan.total_cost === 'number' && `(${plan.total_cost.toFixed(2)})`}</h4>
                                         <ul className="list-disc pl-5 mt-1">
