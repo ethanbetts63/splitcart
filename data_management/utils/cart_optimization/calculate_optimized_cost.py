@@ -21,6 +21,19 @@ def calculate_optimized_cost(slots, max_stores):
 
     prob += pulp.lpSum(store_usage[store_id] for store_id in all_store_ids) <= max_stores, "Max_Stores_Limit"
 
+    # Group choices by product ID to enforce uniqueness
+    choices_by_product = {}
+    for i, slot in enumerate(slots):
+        for j, option in enumerate(slot):
+            pid = option['product_id']
+            if pid not in choices_by_product:
+                choices_by_product[pid] = []
+            choices_by_product[pid].append(choice_vars[(i, j)])
+
+    # Add constraint to ensure each product is used at most once across all slots
+    for pid, var_list in choices_by_product.items():
+        prob += pulp.lpSum(var_list) <= 1, f"Unique_Product_{pid}"
+
     store_to_company = {option['store_name']: option['company_name'] for slot in slots for option in slot}
 
     prob.solve(pulp.PULP_CBC_CMD(msg=0))
