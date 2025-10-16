@@ -140,10 +140,10 @@ const FinalCartPage = () => {
             <div>
               {Object.entries(result.shopping_plan).map(([storeName, plan]) => (
                 <div key={storeName} className="mt-2">
-                  <h4 className="font-semibold">{storeName} (${plan.total_cost.toFixed(2)})</h4>
+                  <h4 className="font-semibold">{storeName} {typeof plan.total_cost === 'number' && `(${plan.total_cost.toFixed(2)})`}</h4>
                   <ul>
                     {plan.items.map((item, index) => (
-                      <li key={index}>{item.product_name} (x{item.quantity}) - ${item.price.toFixed(2)}</li>
+                      <li key={index}>{item.product_name} (x{item.quantity}) - {typeof item.price === 'number' ? `$${item.price.toFixed(2)}` : 'Price not available'}</li>
                     ))}
                   </ul>
                 </div>
