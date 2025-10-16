@@ -5,6 +5,7 @@ import { useSubstitutions } from '@/context/SubstitutionContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
+import { Spinner } from "@/components/ui/spinner"
 
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
 
@@ -276,7 +277,14 @@ const FinalCartPage = () => {
     optimizeCart();
   }, [originalItems, selectedStoreIds, selections]);
 
-  if (isLoading) return <div className="container mx-auto p-4">Loading optimization results...</div>;
+  if (isLoading) {
+    return (
+      <div className="container mx-auto p-4 flex flex-col items-center justify-center text-center" style={{ minHeight: 'calc(100vh - 10rem)' }}>
+        <h1 className="text-2xl font-bold mb-4">Optimizing your cart!</h1>
+        <Spinner />
+      </div>
+    );
+  }
   if (error) return <div className="container mx-auto p-4">Error: {error}</div>;
   if (!optimizationData) return <div className="container mx-auto p-4">No optimization data available. Add items to your cart and select stores.</div>;
 
