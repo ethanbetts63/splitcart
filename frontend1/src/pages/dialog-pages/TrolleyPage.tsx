@@ -11,12 +11,17 @@ interface TrolleyPageProps {
 
 const TrolleyPage: React.FC<TrolleyPageProps> = ({ onOpenChange }) => {
   const { items, cartTotal } = useShoppingList();
-  const { setItemsToReview } = useSubstitutions();
+  const { setItemsToReview, substitutes } = useSubstitutions();
   const navigate = useNavigate();
 
   const handleNext = () => {
-    setItemsToReview(items.map(item => item.product));
-    navigate('/substitutions');
+    const itemsWithSubstitutes = items.filter(item => substitutes[item.product.id] && substitutes[item.product.id].length > 0);
+    if (itemsWithSubstitutes.length > 0) {
+      setItemsToReview(itemsWithSubstitutes.map(item => item.product));
+      navigate('/substitutions');
+    } else {
+      navigate('/final-cart');
+    }
     onOpenChange(false);
   };
 

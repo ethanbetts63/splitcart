@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSubstitutions } from '@/context/SubstitutionContext';
-import { useStoreSelection } from '@/context/StoreContext';
 import ProductTile from '@/components/ProductTile';
 import TrolleyItemTile from '@/components/TrolleyItemTile';
 import { Button } from '@/components/ui/button';
@@ -16,22 +15,14 @@ const SubstitutionPage = () => {
     itemsToReview,
     substitutes,
     selections,
-    fetchSubstitutes,
     updateSelections,
     updateSelectionQuantity,
     currentItemIndex,
     setCurrentItemIndex,
   } = useSubstitutions();
-  const { selectedStoreIds } = useStoreSelection();
 
   const currentItem = itemsToReview[currentItemIndex];
   const currentSubstitutes = substitutes[currentItem?.id] || [];
-
-  useEffect(() => {
-    if (currentItem) {
-      fetchSubstitutes(currentItem, Array.from(selectedStoreIds));
-    }
-  }, [currentItem, selectedStoreIds, fetchSubstitutes]);
 
   const handleNext = () => {
     if (currentItemIndex < itemsToReview.length - 1) {
