@@ -12,6 +12,8 @@ import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
 
+import { Badge } from "@/components/ui/badge";
+
 // --- Type Definitions to match the API Serializer ---
 type CompanyPriceInfo = {
   company: string;
@@ -43,13 +45,16 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
   const imageUrl = product.image_url || fallbackImage;
 
   return (
-    <Card className="w-full flex flex-col h-full overflow-hidden gap-3">
+    <Card className="w-full flex flex-col h-full overflow-hidden gap-3 relative">
+      {product.size && (
+        <Badge className="absolute top-2 right-2">{product.size}</Badge>
+      )}
       <div className="aspect-square w-full overflow-hidden">
         <img
           src={imageUrl}
           onError={handleImageError}
           alt={product.name}
-          className="h-full w-full object-cover transition-transform hover:scale-105"
+          className="h-full w-full object-cover transition-transform"
         />
       </div>
       <CardHeader className="p-0 pb-0">
