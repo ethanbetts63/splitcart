@@ -61,7 +61,7 @@ const SubstitutionPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <h2 className="text-xl font-semibold mb-4">Original Product</h2>
-          <div className="w-[280px] mx-auto">
+          <div className="w-[240px] mx-auto">
             <ProductTile product={currentItem} />
           </div>
         </div>
