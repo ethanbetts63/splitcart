@@ -75,10 +75,15 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
                     <TableBody>
                         {store_plan.items.map((item, index) => (
                             <TableRow key={index}>
-                                <TableCell className="font-medium">
-                                    {item.product_name}
-                                    {item.brand && item.brand !== 'N/A' && ` (${item.brand})`}
-                                    {item.size && <Badge className="ml-2">{item.size}</Badge>}
+                                <TableCell className="font-medium text-center">
+                                    <div>{item.product_name}</div>
+                                    {((item.brand && item.brand !== 'N/A') || item.size) ? (
+                                        <div className="text-sm text-muted-foreground flex justify-center items-center mt-1">
+                                            {item.brand && item.brand !== 'N/A' && <span>{item.brand}</span>}
+                                            {item.brand && item.brand !== 'N/A' && item.size && <span className="mx-1">•</span>}
+                                            {item.size && <Badge variant="outline">{item.size}</Badge>}
+                                        </div>
+                                    ) : null}
                                 </TableCell>
                                 <TableCell className="text-center">{item.quantity}</TableCell>
                                 <TableCell className="text-right">${item.price.toFixed(2)}</TableCell>
