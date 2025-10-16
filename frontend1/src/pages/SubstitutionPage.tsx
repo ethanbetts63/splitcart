@@ -80,14 +80,14 @@ const SubstitutionPage = () => {
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-3 items-center mb-4">
         <div className="justify-self-start">
-          <Button onClick={handleBack} disabled={currentItemIndex === 0}>Back</Button>
+          <Button onClick={handleBack} disabled={currentItemIndex === 0} className="bg-red-500 text-white">Back</Button>
         </div>
         <h1 className="text-2xl font-bold justify-self-center">Product Substitution</h1>
         <div className="justify-self-end flex items-center gap-2">
-          <Button onClick={handleApproveAll} disabled={currentSubstitutes.length === 0} variant="outline">
+          <Button onClick={handleApproveAll} disabled={currentSubstitutes.length === 0} variant="outline" className="bg-green-500 text-white">
             Approve All
           </Button>
-          <Button onClick={handleNext}>
+          <Button onClick={handleNext} className="bg-blue-500 text-white">
             {isLastItem ? 'Split my Cart!' : 'Next'}
           </Button>
         </div>
