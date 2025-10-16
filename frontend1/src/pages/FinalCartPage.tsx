@@ -6,11 +6,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+
 // Define types for the API response
 interface ShoppingPlan {
   [storeName: string]: {
     items: {
       product_name: string;
+      brand: string | null;
+      size: string;
       quantity: number;
       price: number;
     }[];
@@ -45,19 +58,43 @@ interface ApiResponse extends OptimizationDataSet {
 }
 
 const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
-    <div className="mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {Object.entries(plan).filter(([, store_plan]) => store_plan.items && store_plan.items.length > 0).map(([storeName, store_plan]) => (
-            <div key={storeName} className="border p-2 rounded-md bg-muted/20">
-                <h4 className="font-semibold">{storeName} {typeof store_plan.total_cost === 'number' && `(${store_plan.total_cost.toFixed(2)})`}</h4>
-                <ul className="list-disc pl-5 mt-1">
-                    {store_plan.items.map((item, index) => (
-                        <li key={index} className="text-sm">
-                            {item.product_name} (x{item.quantity}) - ${item.price.toFixed(2)} each (Total: ${(item.price * item.quantity).toFixed(2)})
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        ))}
+    <div className="mt-4 space-y-8">
+        {Object.entries(plan).filter(([, store_plan]) => store_plan.items && store_plan.items.length > 0).map(([storeName, store_plan]) => {
+            const storeTotal = store_plan.items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+            return (
+                <Table key={storeName}>
+                    <TableCaption>Shopping List for {storeName}</TableCaption>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Product</TableHead>
+                            <TableHead className="text-center">Quantity</TableHead>
+                            <TableHead className="text-right">Unit Price</TableHead>
+                            <TableHead className="text-right">Total Price</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {store_plan.items.map((item, index) => (
+                            <TableRow key={index}>
+                                <TableCell className="font-medium">
+                                    {item.product_name}
+                                    {item.brand && item.brand !== 'N/A' && ` (${item.brand})`}
+                                    {item.size && <Badge className="ml-2">{item.size}</Badge>}
+                                </TableCell>
+                                <TableCell className="text-center">{item.quantity}</TableCell>
+                                <TableCell className="text-right">${item.price.toFixed(2)}</TableCell>
+                                <TableCell className="text-right">${(item.price * item.quantity).toFixed(2)}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <TableCell colSpan={3}>Total for {storeName}</TableCell>
+                            <TableCell className="text-right">${storeTotal.toFixed(2)}</TableCell>
+                        </TableRow>
+                    </TableFooter>
+                </Table>
+            )
+        })}
     </div>
 );
 

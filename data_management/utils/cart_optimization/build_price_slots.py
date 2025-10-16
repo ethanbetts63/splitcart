@@ -63,7 +63,7 @@ def build_price_slots(cart, stores):
                     "product_id": product_id,
                     "product_name": product_obj.name,
                     "brand": product_obj.brand.name if product_obj.brand else None,
-                    "sizes": product_obj.sizes,
+                    "size": product_obj.size,
                     "store_id": price_obj.store.id,
                     "store_name": price_obj.store.store_name,
                     "company_name": price_obj.store.company.name,

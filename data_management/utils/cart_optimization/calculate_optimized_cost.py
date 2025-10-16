@@ -52,12 +52,10 @@ def calculate_optimized_cost(slots, max_stores):
                     brand = option['brand']
                     price = option['price']
 
-                    sizes = option['sizes']
-
                     plan_item = {
                         "product_name": product_name,
                         "brand": brand,
-                        "sizes": sizes,
+                        "size": option['size'],
                         "price": option['unit_price'],
                         "quantity": option['quantity']
                     }
