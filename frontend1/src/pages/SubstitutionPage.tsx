@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSubstitutions } from '@/context/SubstitutionContext';
 import { useStoreSelection } from '@/context/StoreContext';
 import ProductTile from '@/components/ProductTile';
@@ -9,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { BadgeCheckIcon } from 'lucide-react';
 
 const SubstitutionPage = () => {
+  const navigate = useNavigate();
   const {
     itemsToReview,
     substitutes,
@@ -33,6 +35,8 @@ const SubstitutionPage = () => {
   const handleNext = () => {
     if (currentItemIndex < itemsToReview.length - 1) {
       setCurrentItemIndex(currentItemIndex + 1);
+    } else {
+      navigate('/final-cart');
     }
   };
 
@@ -63,6 +67,8 @@ const SubstitutionPage = () => {
     return <div>Loading...</div>; // Or a more sophisticated loading state
   }
 
+  const isLastItem = currentItemIndex === itemsToReview.length - 1;
+
   return (
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-3 items-center mb-4">
@@ -71,7 +77,9 @@ const SubstitutionPage = () => {
         </div>
         <h1 className="text-2xl font-bold justify-self-center">Product Substitution</h1>
         <div className="justify-self-end">
-          <Button onClick={handleNext} disabled={currentItemIndex === itemsToReview.length - 1}>Next</Button>
+          <Button onClick={handleNext}>
+            {isLastItem ? 'Split my Cart!' : 'Next'}
+          </Button>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

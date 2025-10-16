@@ -1,0 +1,22 @@
+This session was focused on building out the product substitution and final cart optimization features.
+
+First, we created the `SubstitutionPage`, which allows users to select substitutes for products in their cart. This involved:
+-   Creating a `SubstitutionContext` to manage the state of the substitution process.
+-   Building a two-column layout to display the original product and a list of substitutes.
+-   Using and adapting existing components like `ProductTile` and `TrolleyItemTile`.
+-   Adding badges to indicate the original product and the substitution level of the substitutes.
+-   Implementing the logic for navigating between products and finishing the substitution process.
+
+Next, we created the `FinalCartPage`, which displays the results of the cart optimization. This involved:
+-   Adding the `Tabs` component from `shadcn`.
+-   Making a `POST` request to the `/api/cart/split/` endpoint with the user's selections.
+-   Displaying the different optimization results (e.g., split between 2 stores, 3 stores, best single store) in a tabbed interface.
+-   Debugging several issues related to the data structures being sent to and received from the API.
+
+We also made several improvements to the user experience, such as:
+-   Adding a "Next" button to the trolley dialog to initiate the substitution process.
+-   Making the "Next" button close the dialog.
+-   Changing the "Next" button on the substitution page to "Split My Cart" on the final product.
+-   Adjusting the layout and styling of the product tiles and badges based on user feedback.
+
+Throughout the session, we also fixed several bugs, including context provider issues, duplicate imports, and errors related to undefined values.
