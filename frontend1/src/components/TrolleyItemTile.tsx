@@ -51,9 +51,7 @@ const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, i
 
   return (
     <Card className="p-2 flex flex-row items-center gap-0 relative">
-      {product.level_description && (
-        <Badge variant="secondary" className="absolute top-2 right-2 z-10 bg-blue-500 text-white dark:bg-blue-600">{getShortDescription(product.level_description)}</Badge>
-      )}
+
       {/* Image */}
       <div className="w-28 h-28 flex-shrink-0">
         <img

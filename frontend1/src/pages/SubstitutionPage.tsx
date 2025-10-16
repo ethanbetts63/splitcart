@@ -59,6 +59,13 @@ const SubstitutionPage = () => {
     updateSelections(currentItem.id, newSelections);
   };
 
+  const handleApproveAll = () => {
+    if (currentItem && currentSubstitutes.length > 0) {
+      updateSelections(currentItem.id, currentSubstitutes);
+    }
+    handleNext();
+  };
+
   const handleQuantityChange = (product: Product, quantity: number) => {
     updateSelectionQuantity(currentItem.id, product.id, quantity);
   };
@@ -76,7 +83,10 @@ const SubstitutionPage = () => {
           <Button onClick={handleBack} disabled={currentItemIndex === 0}>Back</Button>
         </div>
         <h1 className="text-2xl font-bold justify-self-center">Product Substitution</h1>
-        <div className="justify-self-end">
+        <div className="justify-self-end flex items-center gap-2">
+          <Button onClick={handleApproveAll} disabled={currentSubstitutes.length === 0} variant="outline">
+            Approve All
+          </Button>
           <Button onClick={handleNext}>
             {isLastItem ? 'Split my Cart!' : 'Next'}
           </Button>

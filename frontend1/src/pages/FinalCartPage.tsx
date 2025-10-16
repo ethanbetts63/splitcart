@@ -14,7 +14,7 @@ interface ShoppingPlan {
       quantity: number;
       price: number;
     }[];
-    total_cost: number;
+    total_cost?: number; // Make optional as it's not in best_single_store plan
   };
 }
 
@@ -26,9 +26,12 @@ interface OptimizationResult {
 }
 
 interface BestSingleStore {
-    store_name: string;
-    total_cost: number;
-    items: any[];
+    max_stores: 1;
+    optimized_cost: number;
+    savings: number;
+    shopping_plan: ShoppingPlan;
+    items_found_count: number;
+    total_items_in_cart: number;
 }
 
 interface OptimizationDataSet {
@@ -41,49 +44,61 @@ interface ApiResponse extends OptimizationDataSet {
   no_subs_results?: OptimizationDataSet;
 }
 
+const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
+    <div className="mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {Object.entries(plan).filter(([, store_plan]) => store_plan.items && store_plan.items.length > 0).map(([storeName, store_plan]) => (
+            <div key={storeName} className="border p-2 rounded-md bg-muted/20">
+                <h4 className="font-semibold">{storeName} {typeof store_plan.total_cost === 'number' && `(${store_plan.total_cost.toFixed(2)})`}</h4>
+                <ul className="list-disc pl-5 mt-1">
+                    {store_plan.items.map((item, index) => (
+                        <li key={index} className="text-sm">
+                            {item.product_name} (x{item.quantity}) - {typeof item.price === 'number' ? `$${item.price.toFixed(2)}` : 'N/A'}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        ))}
+    </div>
+);
+
 const ResultsDisplay = ({ data }: { data: OptimizationDataSet }) => {
-    if (!data || !data.optimization_results || data.optimization_results.length === 0) {
+    if (!data || (!data.best_single_store && (!data.optimization_results || data.optimization_results.length === 0))) {
         return <p className="mt-4">No optimization results available for this selection.</p>;
     }
-    const defaultTab = `tab-${data.optimization_results[0].max_stores}`;
+    
+    const defaultTab = data.best_single_store ? "tab-1" : (data.optimization_results.length > 0 ? `tab-${data.optimization_results[0].max_stores}`: "");
 
     return (
         <div className="mt-4">
             <p>Baseline Cost (most common price): ${data.baseline_cost.toFixed(2)}</p>
-            {data.best_single_store && typeof data.best_single_store.total_cost === 'number' && (
-                <p>Best single store ({data.best_single_store.store_name}) cost: ${data.best_single_store.total_cost.toFixed(2)}</p>
-            )}
-
+            
             <Tabs defaultValue={defaultTab} className="w-full mt-4">
                 <TabsList className="grid w-full grid-cols-4">
-                    {data.optimization_results.map(result => {
-                        const tabName = result.max_stores === 1 ? 'Best Single Store' : `${result.max_stores} Stores`;
-                        return (
-                            <TabsTrigger key={result.max_stores} value={`tab-${result.max_stores}`}>
-                                {tabName}
-                            </TabsTrigger>
-                        )
-                    })}
+                    {data.best_single_store && (
+                        <TabsTrigger value="tab-1">Best Single Store</TabsTrigger>
+                    )}
+                    {data.optimization_results.map(result => (
+                        <TabsTrigger key={result.max_stores} value={`tab-${result.max_stores}`}>
+                            {`${result.max_stores} Stores`}
+                        </TabsTrigger>
+                    ))}
                 </TabsList>
+
+                {data.best_single_store && (
+                    <TabsContent value="tab-1">
+                        <div className="p-4 border rounded-md">
+                            <h3 className="font-bold">Total Cost: ${data.best_single_store.optimized_cost.toFixed(2)} (Savings: ${(data.baseline_cost - data.best_single_store.optimized_cost).toFixed(2)})</h3>
+                            <p className="text-sm text-muted-foreground">Found {data.best_single_store.items_found_count} of {data.best_single_store.total_items_in_cart} items.</p>
+                            <PlanDetails plan={data.best_single_store.shopping_plan} />
+                        </div>
+                    </TabsContent>
+                )}
 
                 {data.optimization_results.map(result => (
                     <TabsContent key={result.max_stores} value={`tab-${result.max_stores}`}>
                         <div className="p-4 border rounded-md">
                             <h3 className="font-bold">Total Cost: ${result.optimized_cost.toFixed(2)} (Savings: ${result.savings.toFixed(2)})</h3>
-                            <div className="mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {Object.entries(result.shopping_plan).filter(([, plan]) => plan.items && plan.items.length > 0).map(([storeName, plan]) => (
-                                    <div key={storeName} className="border p-2 rounded-md bg-muted/20">
-                                        <h4 className="font-semibold">{storeName} {typeof plan.total_cost === 'number' && `(${plan.total_cost.toFixed(2)})`}</h4>
-                                        <ul className="list-disc pl-5 mt-1">
-                                            {plan.items.map((item, index) => (
-                                                <li key={index} className="text-sm">
-                                                    {item.product_name} (x{item.quantity}) - {typeof item.price === 'number' ? `$${item.price.toFixed(2)}` : 'N/A'}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                ))}
-                            </div>
+                            <PlanDetails plan={result.shopping_plan} />
                         </div>
                     </TabsContent>
                 ))}
@@ -125,7 +140,7 @@ const FinalCartPage = () => {
         cart: cart,
         store_ids: Array.from(selectedStoreIds),
         original_items: original_items_payload,
-        max_stores_options: [1, 2, 3, 4],
+        max_stores_options: [2, 3, 4], // Starts from 2 as 1 is handled by best_single_store
       };
 
       try {
