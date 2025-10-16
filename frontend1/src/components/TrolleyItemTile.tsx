@@ -21,12 +21,21 @@ const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, i
     e.currentTarget.src = fallbackImage;
   };
 
+  const getShortDescription = (description?: string) => {
+    if (!description) return '';
+    if (description.includes('different size')) return 'Different Size';
+    if (description.includes('similar product')) return 'Similar Product';
+    if (description.includes('Same category')) return 'Similar Category';
+    if (description.includes('Linked category')) return 'Related Category';
+    return description;
+  };
+
   const imageUrl = product.image_url || fallbackImage;
 
   return (
     <Card className="p-2 flex flex-row items-center gap-4 relative">
-      {product.substitution_level && (
-        <Badge variant="secondary" className="absolute top-2 left-2 z-10 bg-blue-500 text-white dark:bg-blue-600">{product.substitution_level}</Badge>
+      {product.level_description && (
+        <Badge variant="secondary" className="absolute top-2 right-2 z-10 bg-blue-500 text-white dark:bg-blue-600">{getShortDescription(product.level_description)}</Badge>
       )}
       {/* Image */}
       <div className="w-16 h-16 flex-shrink-0">

@@ -15,7 +15,8 @@ export type Product = {
   size?: string;
   image_url?: string;
   prices: CompanyPriceInfo[];
-  substitution_level?: string;
+  level?: string;
+  level_description?: string;
 };
 
 export { type CompanyPriceInfo, type Product };
