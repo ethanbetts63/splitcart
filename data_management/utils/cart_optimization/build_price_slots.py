@@ -60,9 +60,10 @@ def build_price_slots(cart, stores):
                 total_price = unit_price * quantity
 
                 # Find the correct image_url from the product's image_url_pairs
-                image_urls_by_company = dict(product_obj.image_url_pairs)
                 company_name = price_obj.store.company.name
-                image_url = image_urls_by_company.get(company_name)
+                image_urls_by_company = {k.lower(): v for k, v in product_obj.image_url_pairs}
+                company_name_lower = company_name.lower()
+                image_url = image_urls_by_company.get(company_name_lower)
 
                 current_slot.append({
                     "product_id": product_id,
