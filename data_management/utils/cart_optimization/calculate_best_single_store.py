@@ -20,6 +20,7 @@ def calculate_best_single_store(slots, original_cart):
                 options_by_store[store_id] = {
                     'store_name': option['store_name'],
                     'company_name': option['company_name'],
+                    'store_address': option['store_address'],
                     'options': []
                 }
             options_by_store[store_id]['options'].append(option)
@@ -78,7 +79,8 @@ def calculate_best_single_store(slots, original_cart):
     shopping_plan = {
         best_store['store_name']: {
             'items': shopping_plan_items,
-            'company_name': best_store['company_name']
+            'company_name': best_store['company_name'],
+            'store_address': best_store['store_address']
         }
     }
     

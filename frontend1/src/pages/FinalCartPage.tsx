@@ -44,6 +44,7 @@ interface ShoppingPlan {
       image_url: string | null;
     }[];
     company_name: string;
+    store_address: string;
     total_cost?: number; // Make optional as it's not in best_single_store plan
   };
 }
@@ -85,12 +86,12 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
 
             return (
                 <div key={storeName} className="border rounded-lg p-4 bg-muted/20">
-                    <div className="flex items-center justify-center gap-4 mb-4">
+                    <div className="flex items-center justify-center gap-4 mb-2">
                         {logo && <img src={logo} alt={store_plan.company_name} className="h-10 w-auto" />}
                         <h2 className="text-2xl font-bold">{storeName}</h2>
                     </div>
+                    <p className="text-center text-sm text-muted-foreground mb-4">{store_plan.store_address}</p>
                     <Table>
-                        <TableCaption>Shopping List for {storeName}</TableCaption>
                         <TableHeader>
                             <TableRow>
                                 <TableHead className="w-[100px]">&nbsp;</TableHead>

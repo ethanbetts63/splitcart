@@ -35,13 +35,14 @@ def calculate_optimized_cost(slots, max_stores):
         prob += pulp.lpSum(var_list) <= 1, f"Unique_Product_{pid}"
 
     store_to_company = {option['store_name']: option['company_name'] for slot in slots for option in slot}
+    store_to_address = {option['store_name']: option['store_address'] for slot in slots for option in slot}
 
     prob.solve(pulp.PULP_CBC_CMD(msg=0))
 
     if pulp.LpStatus[prob.status] == "Optimal":
         final_cost = pulp.value(prob.objective)
 
-        shopping_plan = {name: {'items': [], 'company_name': store_to_company.get(name, '')} for name in all_store_names}
+        shopping_plan = {name: {'items': [], 'company_name': store_to_company.get(name, ''), 'store_address': store_to_address.get(name, '')} for name in all_store_names}
 
         for i, slot in enumerate(slots):
             for j, option in enumerate(slot):

@@ -65,6 +65,15 @@ def build_price_slots(cart, stores):
                 company_name_lower = company_name.lower()
                 image_url = image_urls_by_company.get(company_name_lower)
 
+                # Construct the store address
+                address_parts = [
+                    price_obj.store.address_line_1,
+                    price_obj.store.suburb,
+                    price_obj.store.state,
+                    price_obj.store.postcode
+                ]
+                store_address = ", ".join(part for part in address_parts if part)
+
                 current_slot.append({
                     "product_id": product_id,
                     "product_name": product_obj.name,
@@ -73,10 +82,12 @@ def build_price_slots(cart, stores):
                     "store_id": price_obj.store.id,
                     "store_name": price_obj.store.store_name,
                     "company_name": company_name,
+                    "store_address": store_address,
                     "price": total_price,
                     "unit_price": unit_price,
                     "quantity": quantity,
-                    "image_url": image_url
+                    "image_url": image_url,
+                    "company_logo_url": price_obj.store.company.logo.url if price_obj.store.company.logo else None
                 })
         
         # Step 8: If, after checking all products in a slot, no price options were found, the slot is currently dropped.
