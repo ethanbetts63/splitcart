@@ -5,6 +5,7 @@ import { useStoreSelection } from '@/context/StoreContext';
 import ProductTile from '@/components/ProductTile';
 import TrolleyItemTile from '@/components/TrolleyItemTile';
 import { Button } from '@/components/ui/button';
+import type { Product } from '@/types/Product';
 
 import { Badge } from '@/components/ui/badge';
 import { BadgeCheckIcon } from 'lucide-react';
