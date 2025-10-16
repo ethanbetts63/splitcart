@@ -13,6 +13,8 @@ interface TrolleyItemTileProps {
   isApproved?: boolean;
 }
 
+import { Badge } from "@/components/ui/badge";
+
 const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, isApproved }) => {
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
@@ -34,8 +36,9 @@ const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, i
       </div>
 
       {/* Middle Section: Info & Price */}
-      <div className="flex-grow grid gap-1">
+      <div className="flex-grow grid gap-1 justify-items-center">
         <p className="font-semibold line-clamp-1">{product.name}</p>
+        {product.size && <Badge variant="default">{product.size}</Badge>}
         <PriceDisplay prices={product.prices} />
       </div>
 
