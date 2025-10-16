@@ -62,7 +62,7 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
 );
 
 import { Badge } from "@/components/ui/badge";
-import { BadgeCheckIcon } from "lucide-react";
+
 
 const ResultsDisplay = ({ data }: { data: OptimizationDataSet }) => {
     if (!data || (!data.best_single_store && (!data.optimization_results || data.optimization_results.length === 0))) {
@@ -100,11 +100,10 @@ const ResultsDisplay = ({ data }: { data: OptimizationDataSet }) => {
                                 <span>{`${result.max_stores} Stores`}</span>
                                 {isHighestSaving ? (
                                     <Badge variant="secondary" className="bg-green-500 text-white dark:bg-green-600">
-                                        <BadgeCheckIcon className="w-4 h-4 mr-1" />
                                         {percentage}%
                                     </Badge>
                                 ) : (
-                                    <Badge variant="secondary">{percentage}%</Badge>
+                                    <Badge>{percentage}%</Badge>
                                 )}
                             </TabsTrigger>
                         )
