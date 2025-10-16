@@ -15,6 +15,7 @@ const SubstitutionPage = () => {
     selections,
     fetchSubstitutes,
     updateSelections,
+    updateSelectionQuantity,
     currentItemIndex,
     setCurrentItemIndex,
   } = useSubstitutions();
@@ -43,15 +44,19 @@ const SubstitutionPage = () => {
 
   const handleApprove = (product: Product) => {
     const currentSelections = selections[currentItem.id] || [];
-    const isAlreadySelected = currentSelections.some(p => p.id === product.id);
+    const isAlreadySelected = currentSelections.some(s => s.product.id === product.id);
 
     let newSelections;
     if (isAlreadySelected) {
-      newSelections = currentSelections.filter(p => p.id !== product.id);
+      newSelections = currentSelections.filter(s => s.product.id !== product.id).map(s => s.product);
     } else {
-      newSelections = [...currentSelections, product];
+      newSelections = [...currentSelections.map(s => s.product), product];
     }
     updateSelections(currentItem.id, newSelections);
+  };
+
+  const handleQuantityChange = (product: Product, quantity: number) => {
+    updateSelectionQuantity(currentItem.id, product.id, quantity);
   };
 
   if (!currentItem) {
@@ -75,14 +80,19 @@ const SubstitutionPage = () => {
         <div>
           <h2 className="text-xl font-semibold mb-4">Substitutes</h2>
           <div className="space-y-4">
-            {currentSubstitutes.map(sub => (
-              <TrolleyItemTile 
-                key={sub.id} 
-                product={sub} 
-                onApprove={handleApprove} 
-                isApproved={(selections[currentItem.id] || []).some(p => p.id === sub.id)}
-              />
-            ))}
+            {currentSubstitutes.map(sub => {
+              const selection = (selections[currentItem.id] || []).find(s => s.product.id === sub.id);
+              return (
+                <TrolleyItemTile 
+                  key={sub.id} 
+                  product={sub} 
+                  onApprove={handleApprove} 
+                  isApproved={!!selection}
+                  quantity={selection ? selection.quantity : 1}
+                  onQuantityChange={handleQuantityChange}
+                />
+              )
+            })}
           </div>
         </div>
       </div>

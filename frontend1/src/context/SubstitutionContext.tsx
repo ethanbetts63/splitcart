@@ -5,9 +5,10 @@ interface SubstitutionContextType {
   itemsToReview: Product[];
   setItemsToReview: (items: Product[]) => void;
   substitutes: Record<number, Product[]>;
-  selections: Record<number, Product[]>;
+  selections: Record<number, { product: Product, quantity: number }[]>;
   fetchSubstitutes: (product: Product, storeIds: number[]) => void;
   updateSelections: (originalProductId: number, selectedProducts: Product[]) => void;
+  updateSelectionQuantity: (originalProductId: number, productId: number, quantity: number) => void;
   currentItemIndex: number;
   setCurrentItemIndex: (index: number) => void;
 }
@@ -17,7 +18,7 @@ const SubstitutionContext = createContext<SubstitutionContextType | undefined>(u
 export const SubstitutionProvider = ({ children }: { children: ReactNode }) => {
   const [itemsToReview, setItemsToReview] = useState<Product[]>([]);
   const [substitutes, setSubstitutes] = useState<Record<number, Product[]>>({});
-  const [selections, setSelections] = useState<Record<number, Product[]>>({});
+  const [selections, setSelections] = useState<Record<number, { product: Product, quantity: number }[]>>({});
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
 
   const fetchSubstitutes = useCallback(async (product: Product, storeIds: number[]) => {
@@ -36,7 +37,20 @@ export const SubstitutionProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const updateSelections = (originalProductId: number, selectedProducts: Product[]) => {
-    setSelections(prev => ({ ...prev, [originalProductId]: selectedProducts }));
+    const newSelections = selectedProducts.map(p => ({ product: p, quantity: 1 }));
+    setSelections(prev => ({ ...prev, [originalProductId]: newSelections }));
+  };
+
+  const updateSelectionQuantity = (originalProductId: number, productId: number, quantity: number) => {
+    setSelections(prev => {
+      const newSelections = { ...prev };
+      const originalSelections = newSelections[originalProductId] || [];
+      const updatedSelections = originalSelections.map(s => 
+        s.product.id === productId ? { ...s, quantity } : s
+      );
+      newSelections[originalProductId] = updatedSelections;
+      return newSelections;
+    });
   };
 
   const value = {
@@ -46,6 +60,7 @@ export const SubstitutionProvider = ({ children }: { children: ReactNode }) => {
     selections,
     fetchSubstitutes,
     updateSelections,
+    updateSelectionQuantity,
     currentItemIndex,
     setCurrentItemIndex,
   };

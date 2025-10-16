@@ -11,11 +11,15 @@ interface TrolleyItemTileProps {
   product: Product;
   onApprove?: (product: Product) => void;
   isApproved?: boolean;
+  quantity?: number;
+  onQuantityChange?: (product: Product, quantity: number) => void;
 }
 
 import { Badge } from "@/components/ui/badge";
 
-const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, isApproved }) => {
+import { Input } from '@/components/ui/input';
+
+const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, isApproved, quantity, onQuantityChange }) => {
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = fallbackImage;
@@ -28,6 +32,16 @@ const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, i
     if (description.includes('Same category')) return 'Similar Category';
     if (description.includes('Linked category')) return 'Related Category';
     return description;
+  };
+
+  const handleQuantityChange = (newQuantity: number) => {
+    if (onQuantityChange) {
+      if (newQuantity <= 0) {
+        onApprove(product); // This will toggle the approval off
+      } else {
+        onQuantityChange(product, newQuantity);
+      }
+    }
   };
 
   const imageUrl = product.image_url || fallbackImage;
@@ -57,9 +71,23 @@ const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, i
       {/* Right Section: Quantity Controls */}
       <div className="flex-shrink-0">
         {onApprove ? (
-          <Button onClick={() => onApprove(product)} variant={isApproved ? 'destructive' : 'outline'}>
-            {isApproved ? 'Remove' : 'Approve'}
-          </Button>
+          isApproved ? (
+            <div className="flex items-center gap-2">
+              <Button size="icon" className="h-8 w-8" onClick={() => handleQuantityChange(quantity - 1)}>-</Button>
+              <Input
+                type="number"
+                readOnly
+                className="h-8 w-12 text-center no-spinner"
+                value={quantity}
+                min="0"
+              />
+              <Button size="icon" className="h-8 w-8" onClick={() => handleQuantityChange(quantity + 1)}>+</Button>
+            </div>
+          ) : (
+            <Button onClick={() => onApprove(product)} className="bg-green-500 hover:bg-green-600">
+              Approve
+            </Button>
+          )
         ) : (
           <AddToCartButton product={product} />
         )}
