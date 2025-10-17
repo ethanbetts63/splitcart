@@ -11,7 +11,8 @@ from data_management.utils.analysis_utils.category_tree import generate_category
 from data_management.utils.analysis_utils.substitution_analysis import generate_substitution_analysis_report
 from data_management.utils.analysis_utils.savings_benchmark import run_savings_benchmark
 from data_management.utils.analysis_utils.substitution_overlap import calculate_strict_substitution_overlap_matrix, generate_substitution_heatmap_image
-from companies.models import Company, Category, Store
+from data_management.utils.analysis_utils.category_analysis import generate_category_product_count_report
+from companies.models import Company, Category
 
 class Command(BaseCommand):
     help = 'Generates various reports and visualizations from product data.'
@@ -22,7 +23,7 @@ class Command(BaseCommand):
             type=str,
             required=True,
             help='Specifies which type of analysis or report to generate.',
-            choices=['store_product_counts', 'company_heatmap', 'store_heatmap', 'pricing_heatmap', 'category_heatmap', 'category_tree', 'subs', 'savings', 'sub_heatmap', 'internal_crossover']
+            choices=['store_product_counts', 'company_heatmap', 'store_heatmap', 'pricing_heatmap', 'category_heatmap', 'category_tree', 'subs', 'savings', 'sub_heatmap', 'internal_crossover', 'category_product_counts']
         )
         parser.add_argument(
             '--company-name',
@@ -143,6 +144,23 @@ class Command(BaseCommand):
                     'The --company-name argument is required for the internal_crossover report.'))
                 return
             generate_internal_company_product_crossover_report(company_name, self)
+
+        elif report_type == 'category_product_counts':
+            self.stdout.write(self.style.SUCCESS("--- Starting Category Product Count Analysis ---"))
+            report_content = generate_category_product_count_report()
+            
+            output_dir = os.path.join('data_management', 'data', 'analysis', 'category_reports')
+            os.makedirs(output_dir, exist_ok=True)
+            
+            file_name = f"{datetime.date.today()}-category_product_counts.txt"
+            file_path = os.path.join(output_dir, file_name)
+
+            try:
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    f.write(report_content)
+                self.stdout.write(self.style.SUCCESS(f"\nSuccessfully wrote analysis report to: {file_path}"))
+            except IOError as e:
+                self.stderr.write(self.style.ERROR(f"Error writing to file: {e}"))
 
         else:
             self.stdout.write(self.style.WARNING(
