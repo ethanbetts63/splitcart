@@ -15,6 +15,7 @@ const loadingMessages = [
   "Splitting hairs. And carts...",
   "Applying advanced algorithms to banana prices...",
   "Sawing the cart in half...",
+  "Determining the depth of the cookie jar...",
   "Split happens...",
   "Pondering the philosophical implications of a cheaper onion...",
   "Prioritising chocolate savings over world peace...",

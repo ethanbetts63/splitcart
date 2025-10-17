@@ -1,4 +1,5 @@
 import React from "react";
+import { FaqAccordion } from "../components/FaqAccordion";
 import { ProductCarousel } from "../components/ProductCarousel";
 import { useStoreSelection } from "@/context/StoreContext";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -37,6 +38,18 @@ const HomePage = () => {
               sourceUrl="/api/products/bargains/?limit=20" 
               storeIds={storeIdsArray} 
             />
+          </section>
+
+          <section className="mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div>
+                <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-4">Frequently Asked Questions</h2>
+                <FaqAccordion />
+              </div>
+              <div>
+                <AspectRatio ratio={16 / 9} className="bg-muted" />
+              </div>
+            </div>
           </section>
 
           <section className="mt-8">
