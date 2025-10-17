@@ -24,7 +24,7 @@ const HomePage = () => {
               They’ve been optimizing for profit. Now it’s your turn.
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              SplitCart compares prices across major Australian supermarkets to find you the best deals. Simply create your shopping list, and we'll split your cart across 2 or more stores for maximum savings. Search above or browse below and add products to your cart to get started!
+              Every store has a deal — but finding them all takes forever. SplitCart automates that process by comparing prices across supermarkets and splitting your cart for the cheapest overall shop. One list, multiple stores, maximum savings. Search or browse and add products to your cart to get started! Click "Next" in the top right when you're ready!
             </p>
           </div>
         </div>
@@ -44,7 +44,7 @@ const HomePage = () => {
           <section>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-4">Frequently Asked Questions</h2>
+                <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-4">The Hard Hitting Questions</h2>
                 <FaqAccordion />
               </div>
               <div>

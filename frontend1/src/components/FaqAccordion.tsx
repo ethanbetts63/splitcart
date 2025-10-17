@@ -13,10 +13,10 @@ export function FaqAccordion() {
       className="w-full"
     >
       <AccordionItem value="item-1">
-        <AccordionTrigger>How much should I expect to save?</AccordionTrigger>
+        <AccordionTrigger>Will I really save 15%?</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-4 text-balance">
           <p>
-            Savings can vary greatly depending on the items in your cart and the stores you've selected. Our optimization aims to find the maximum possible savings, and we often see users save between 15-30% on their grocery bill.
+            Hopefully! Our optimization aims to find the maximum possible savings. But it's restricted by the stores you choose, the items in you select and the substitutes you approve. Some shopping lists have more potential for savings than others, so individual results will vary but we find that 15% is a fairly consistant average.
           </p>
         </AccordionContent>
       </AccordionItem>
@@ -24,7 +24,7 @@ export function FaqAccordion() {
         <AccordionTrigger>What’s a “substitute” and why does it matter?</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-4 text-balance">
           <p>
-            A substitute is a similar product that you're willing to buy if your original choice isn't available or is more expensive. For example, a different brand of the same type of milk. Including substitutes gives our algorithm more options to find you the best possible price, potentially increasing your savings.
+            A substitute is a product you would be willing to have "instead of" the original product you choose. For example, a different brand of the same type of milk. Including substitutes gives our algorithm a lot more options to play with and is major factor in the savings you should expect. We know it's a annoying to do but it's also the reason we can save you more than any other comparison site.
           </p>
         </AccordionContent>
       </AccordionItem>
@@ -32,7 +32,7 @@ export function FaqAccordion() {
         <AccordionTrigger>Is it always cheaper than buying from one store?</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-4 text-balance">
           <p>
-            Splitting your cart is often cheaper, but not always. Our results will always show you the "Best Single Store" option alongside the split-cart options, so you can clearly see if splitting your cart provides a real benefit for your specific shopping list.
+            Splitting your cart is almost always cheaper, almost. Our results will always show you the "Best Single Store" option alongside the split-cart options, so you can clearly see if splitting your cart provides a real benefit for your specific shopping list.
           </p>
         </AccordionContent>
       </AccordionItem>
@@ -40,7 +40,7 @@ export function FaqAccordion() {
         <AccordionTrigger>Which stores can I compare?</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-4 text-balance">
           <p>
-            Currently, SplitCart supports major Australian supermarkets including Coles, Woolworths, and Aldi. We are always working to add more stores to our comparison list.
+            Right now, SplitCart supports Coles, Woolworths, Aldi, and IGA. We’d love to bring the smaller guys on board too, but their price data is harder to track down — which hurts, because they’re often the real discount heroes.
           </p>
         </AccordionContent>
       </AccordionItem>
@@ -48,7 +48,7 @@ export function FaqAccordion() {
         <AccordionTrigger>How accurate are the prices?</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-4 text-balance">
           <p>
-            We strive to provide the most accurate and up-to-date pricing information by regularly scraping data directly from store websites. However, prices can change rapidly, so there may occasionally be small discrepancies. The final price will always be what you see at the checkout in-store.
+            The short answer is: pretty accurate! But not perfect. We pull prices directly from stores websites as often as we can but we can only be as accurate as the stores themselves.
           </p>
         </AccordionContent>
       </AccordionItem>
@@ -56,7 +56,7 @@ export function FaqAccordion() {
         <AccordionTrigger>Can I choose which stores I want to include or exclude?</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-4 text-balance">
           <p>
-            Yes! On the store selection page, you can choose exactly which local stores you're willing to shop at. The cart optimization will only consider the stores you have selected.
+            Yes! There's a little location button in the top right. Click it to open the store selection menu where you can choose which stores to include in your comparison. The more the better!
           </p>
         </AccordionContent>
       </AccordionItem>
