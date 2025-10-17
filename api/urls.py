@@ -11,6 +11,7 @@ from .views.cart_optimization_view import CartOptimizationView
 from .views.store_list_view import StoreListView
 from .views.scheduler_view import SchedulerView
 from .views.postcode_search_view import PostcodeSearchView
+from .views.category_product_list_view import CategoryProductListView
 
 from .views.product_substitute_list_view import ProductSubstituteListView
 
@@ -21,6 +22,7 @@ urlpatterns = [
     path('upload/stores/', StoreFileUploadView.as_view(), name='store-file-upload'),
     path('products/', ProductListView.as_view(), name='product-list'),
     path('products/bargains/', BargainListView.as_view(), name='bargain-product-list'),
+    path('products/by-category/', CategoryProductListView.as_view(), name='product-list-by-category'),
     path('products/<int:product_id>/substitutes/', ProductSubstituteListView.as_view(), name='product-substitute-list'),
     path('files/product_translations/', ProductTranslationFileView.as_view(), name='product-translation-file'),
     path('files/brand_translations/', BrandTranslationFileView.as_view(), name='brand-translation-file'),
