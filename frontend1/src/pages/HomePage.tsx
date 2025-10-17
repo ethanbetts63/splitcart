@@ -4,6 +4,7 @@ import { ProductCarousel } from "../components/ProductCarousel";
 import { useStoreSelection } from "@/context/StoreContext";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import confusedShopper from "../assets/confused_shopper.png";
+import kingKongImage from "../assets/king_kong.png";
 
 const HomePage = () => {
   const { selectedStoreIds } = useStoreSelection();
@@ -47,7 +48,9 @@ const HomePage = () => {
                 <FaqAccordion />
               </div>
               <div>
-                <AspectRatio ratio={16 / 9} className="bg-gray-200 rounded-lg" />
+                <AspectRatio ratio={16 / 9}>
+                  <img src={kingKongImage} alt="King Kong swatting at discount planes" className="rounded-md object-contain w-full h-full" />
+                </AspectRatio>
               </div>
             </div>
           </section>
