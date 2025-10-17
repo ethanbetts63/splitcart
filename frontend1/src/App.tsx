@@ -85,7 +85,7 @@ const Layout = () => {
             <div className="flex items-center gap-1">
               <div className="relative">
                 <Button variant="ghost" size="icon" className="h-14 w-14" onClick={() => openDialog('Trolley')}>
-                  <ShoppingCart className="size-9" />
+                  <ShoppingCart className="size-10" />
                   <span className="sr-only">Open Trolley</span>
                 </Button>
                 {cartTotal > 0 && (
@@ -99,7 +99,7 @@ const Layout = () => {
               </div>
               <div className="relative">
                 <Button variant="ghost" size="icon" className="h-14 w-14" onClick={() => openDialog('Edit Location')}>
-                  <MapPin className="size-9" />
+                  <MapPin className="size-10" />
                   <span className="sr-only">Edit Location</span>
                 </Button>
                 {selectedStoreIds.size > 0 && (
