@@ -45,7 +45,7 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
   const imageUrl = product.image_url || fallbackImage;
 
   return (
-    <Card className="w-full flex flex-col h-full overflow-hidden gap-1">
+    <Card className="w-full flex flex-col h-full overflow-hidden gap-3 pt-0">
       <div className="aspect-square w-full overflow-hidden relative">
         <img
           src={imageUrl}
