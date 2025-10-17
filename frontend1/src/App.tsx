@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SettingsDialog } from "@/components/settings-dialog";
 import { useStoreSelection } from "@/context/StoreContext";
+import { useShoppingList } from "@/context/ShoppingListContext";
+import { Badge } from "@/components/ui/badge";
 import NextButton from "@/components/NextButton";
 import HomePage from "./pages/HomePage";
 import SearchResultsPage from "./pages/SearchResultsPage";
@@ -30,6 +32,7 @@ const Layout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { selectedStoreIds } = useStoreSelection();
+  const { cartTotal } = useShoppingList();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogPage, setDialogPage] = useState('Trolley');
@@ -80,14 +83,33 @@ const Layout = () => {
           </div>
           <div className="flex items-center justify-end gap-2">
             <div className="flex items-center gap-1">
-              <Button variant="ghost" size="icon" className="h-14 w-14" onClick={() => openDialog('Trolley')}>
-                <ShoppingCart className="h-10 w-10" />
-                <span className="sr-only">Open Trolley</span>
-              </Button>
-              <Button variant="ghost" size="icon" className="h-14 w-14" onClick={() => openDialog('Edit Location')}>
-                <MapPin className="h-10 w-10" />
-                <span className="sr-only">Edit Location</span>
-              </Button>
+              <div className="relative">
+                <Button variant="ghost" size="icon" className="h-14 w-14" onClick={() => openDialog('Trolley')}>
+                  <ShoppingCart className="size-9" />
+                  <span className="sr-only">Open Trolley</span>
+                </Button>
+                {cartTotal > 0 && (
+                  <Badge
+                    variant="destructive"
+                    className="absolute -right-1 -top-1 h-5 min-w-5 justify-center rounded-full px-1 font-mono tabular-nums"
+                  >
+                    {cartTotal}
+                  </Badge>
+                )}
+              </div>
+              <div className="relative">
+                <Button variant="ghost" size="icon" className="h-14 w-14" onClick={() => openDialog('Edit Location')}>
+                  <MapPin className="size-9" />
+                  <span className="sr-only">Edit Location</span>
+                </Button>
+                {selectedStoreIds.size > 0 && (
+                  <Badge
+                    className="absolute -right-1 -top-1 h-5 min-w-5 justify-center rounded-full bg-blue-500 px-1 font-mono tabular-nums text-white"
+                  >
+                    {selectedStoreIds.size}
+                  </Badge>
+                )}
+              </div>
             </div>
             {showNextButton && <NextButton className="h-12 px-4" />}
           </div>
