@@ -12,6 +12,7 @@ import HomePage from "./pages/HomePage";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import SubstitutionPage from "./pages/SubstitutionPage";
 import FinalCartPage from "./pages/FinalCartPage";
+import CategoryBar from "./components/CategoryBar";
 import './App.css';
 
 const App = () => {
@@ -115,6 +116,7 @@ const Layout = () => {
           </div>
         </div>
       </header>
+      <CategoryBar />
       <main>
         <Outlet />
       </main>

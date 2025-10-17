@@ -8,6 +8,13 @@ type Category = {
   slug: string;
 };
 
+type PaginatedCategoriesResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Category[];
+};
+
 const CategoryBar: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -20,8 +27,8 @@ const CategoryBar: React.FC = () => {
         if (!response.ok) {
           throw new Error('Failed to fetch popular categories');
         }
-        const data: Category[] = await response.json();
-        setCategories(data);
+        const data: PaginatedCategoriesResponse = await response.json();
+        setCategories(data.results);
       } catch (error) {
         console.error(error);
         // In case of an error, we just won't show the bar.

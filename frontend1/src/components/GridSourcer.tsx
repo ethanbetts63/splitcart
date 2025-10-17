@@ -25,9 +25,10 @@ type ApiResponse = {
 interface GridSourcerProps {
   searchTerm: string | null;
   sourceUrl: string | null;
+  categorySlug: string | null;
 }
 
-const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl }) => {
+const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, categorySlug }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -50,6 +51,9 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl }) => {
     } else if (searchTerm) {
       url = '/api/products/';
       params.append('search', searchTerm);
+    } else if (categorySlug) {
+      url = '/api/products/by-category/';
+      params.append('category_slug', categorySlug);
     } else {
       setIsLoading(false);
       setProducts([]);
@@ -95,7 +99,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [searchTerm, sourceUrl, selectedStoreIds]);
+  }, [searchTerm, sourceUrl, categorySlug, selectedStoreIds]);
 
   // Effect for fetching data when page or search term changes
   useEffect(() => {
@@ -109,6 +113,9 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl }) => {
   let titleText = "";
   if (searchTerm) {
     titleText = `Found ${totalResults} results for "${searchTerm}"`;
+  } else if (categorySlug) {
+    const formattedSlug = categorySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    titleText = `Showing ${totalResults} products in "${formattedSlug}"`;
   } else if (sourceUrl) {
     // Basic title for sourceUrl, can be improved
     titleText = `Showing ${totalResults} products`;

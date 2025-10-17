@@ -5,8 +5,8 @@ import GridSourcer from '../components/GridSourcer';
 const SearchResultsPage = () => {
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get('q');
+  const categorySlug = searchParams.get('category_slug');
 
-  // For now, we are only handling search term.
   // The logic for 'sourceUrl' can be added here later if needed.
   const sourceUrl = null;
 
@@ -15,6 +15,7 @@ const SearchResultsPage = () => {
       <GridSourcer 
         searchTerm={searchTerm}
         sourceUrl={sourceUrl}
+        categorySlug={categorySlug}
       />
     </div>
   );
