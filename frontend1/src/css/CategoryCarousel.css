@@ -1,11 +1,11 @@
 @import "../index.css";
 
 .category-carousel {
-  @apply overflow-x-auto pb-4;
+  @apply overflow-x-auto pb-0;
 }
 
 .category-carousel__container {
-  @apply flex items-center gap-4 py-3 px-4;
+  @apply flex items-center gap-4 py-1 px-2;
 }
 
 .category-carousel__slide {
