@@ -47,7 +47,7 @@ const CategoryBar: React.FC = () => {
           {categories.map((category) => (
             <div className="category-carousel__slide" key={category.slug}>
               <Link to={`/search?category_slug=${category.slug}`}>
-                <Badge variant="secondary" className="text-sm px-2 whitespace-nowrap">
+                <Badge variant="secondary" className="text-sm px-2 whitespace-nowrap hover:bg-transparent hover:text-foreground hover:border-foreground">
                   {category.name}
                 </Badge>
               </Link>

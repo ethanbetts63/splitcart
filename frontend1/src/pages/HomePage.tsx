@@ -22,7 +22,7 @@ const HomePage = () => {
               They’ve been optimizing for profit. Now it’s your turn.
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              SplitCart compares prices across major Australian supermarkets to find you the best deals. Simply create your shopping list, and we'll show you how to split your cart for maximum savings. Search above or browse below and add products to your cart to get started!
+              SplitCart compares prices across major Australian supermarkets to find you the best deals. Simply create your shopping list, and we'll split your cart across 2 or more stores for maximum savings. Search above or browse below and add products to your cart to get started!
             </p>
           </div>
         </div>
