@@ -64,7 +64,7 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
       <CardContent className="flex-grow p-0">
         <PriceDisplay prices={product.prices} />
       </CardContent>
-      <CardFooter className="flex justify-center p-4 pt-0">
+      <CardFooter className="flex justify-center p-0 pt-0">
         <AddToCartButton product={product} />
       </CardFooter>
     </Card>
