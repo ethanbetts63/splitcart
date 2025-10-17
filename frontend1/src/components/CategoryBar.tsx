@@ -41,8 +41,8 @@ const CategoryBar: React.FC = () => {
 
   return (
     <div className="sticky top-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-40 border-b">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center gap-4 overflow-x-auto py-3 scrollbar-hide">
+      <div className="w-full">
+        <div className="flex items-center gap-4 overflow-x-auto py-3 scrollbar-hide px-4">
           {categories.map((category) => (
             <Link to={`/search?category_slug=${category.slug}`} key={category.slug}>
               <Badge variant="outline" className="text-lg py-1 px-4 whitespace-nowrap">
