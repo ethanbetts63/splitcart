@@ -1,6 +1,6 @@
 from collections import defaultdict
 from django.db.models import Count
-from companies.models import Category
+from companies.models import Category, PopularCategory
 
 def generate_category_product_count_report(sort_alphabetically=False, strict_filter=False):
     """
@@ -22,19 +22,11 @@ def generate_category_product_count_report(sort_alphabetically=False, strict_fil
 
     # Apply strict filter if requested
     if strict_filter:
-        # Reset all categories to not be popular
-        Category.objects.all().update(is_popular=False)
-
+        popular_category_names = set(PopularCategory.objects.values_list('name', flat=True))
         category_groups = {
             name: data for name, data in category_groups.items()
-            if data['product_count'] >= 100 and len(data['companies']) >= 3
+            if name in popular_category_names
         }
-
-        # Get the names of the categories that passed the filter
-        popular_category_names = category_groups.keys()
-
-        # Update the categories to be popular
-        Category.objects.filter(name__in=popular_category_names).update(is_popular=True)
 
     # Sort the aggregated data based on the argument
     if sort_alphabetically:
