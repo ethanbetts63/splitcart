@@ -36,7 +36,7 @@ const PriceDisplay: React.FC<PriceDisplayProps> = ({ prices }) => {
 
   return (
     <div className="grid gap-2">
-      <p className="text-lg font-semibold">{priceRange}</p>
+      <p className="text-lg font-semibold text-center">{priceRange}</p>
       <div className="flex items-center justify-center gap-2">
         {prices.map((priceInfo) => {
           const logo = companyLogos[priceInfo.company];

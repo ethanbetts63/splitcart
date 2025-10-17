@@ -57,11 +57,11 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
           className="h-full w-full object-cover transition-transform"
         />
       </div>
-      <CardHeader className="p-0 pb-0">
+      <CardHeader className="p-0 pb-0 text-center">
         <CardTitle className="h-12 line-clamp-2 text-base">{product.name}</CardTitle>
         {product.brand_name && <CardDescription>{product.brand_name}</CardDescription>}
       </CardHeader>
-      <CardContent className="flex-grow p-">
+      <CardContent className="flex-grow p-0">
         <PriceDisplay prices={product.prices} />
       </CardContent>
       <CardFooter className="flex justify-center p-4 pt-0">
