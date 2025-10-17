@@ -22,10 +22,19 @@ def generate_category_product_count_report(sort_alphabetically=False, strict_fil
 
     # Apply strict filter if requested
     if strict_filter:
+        # Reset all categories to not be popular
+        Category.objects.all().update(is_popular=False)
+
         category_groups = {
             name: data for name, data in category_groups.items()
             if data['product_count'] >= 100 and len(data['companies']) >= 3
         }
+
+        # Get the names of the categories that passed the filter
+        popular_category_names = category_groups.keys()
+
+        # Update the categories to be popular
+        Category.objects.filter(name__in=popular_category_names).update(is_popular=True)
 
     # Sort the aggregated data based on the argument
     if sort_alphabetically:

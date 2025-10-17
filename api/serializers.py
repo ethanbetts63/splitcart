@@ -1,8 +1,13 @@
 from rest_framework import serializers
 from products.models import Product, Price
 from products.models.substitution import ProductSubstitution
-from companies.models import Store
+from companies.models import Store, Category
 from companies.models.postcode import Postcode
+
+class PopularCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('name', 'slug')
 
 class StoreSerializer(serializers.ModelSerializer):
     company_name = serializers.CharField(source='company.name')

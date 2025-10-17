@@ -12,6 +12,7 @@ from .views.store_list_view import StoreListView
 from .views.scheduler_view import SchedulerView
 from .views.postcode_search_view import PostcodeSearchView
 from .views.category_product_list_view import CategoryProductListView
+from .views.popular_category_list_view import PopularCategoryListView
 
 from .views.product_substitute_list_view import ProductSubstituteListView
 
@@ -23,6 +24,7 @@ urlpatterns = [
     path('products/', ProductListView.as_view(), name='product-list'),
     path('products/bargains/', BargainListView.as_view(), name='bargain-product-list'),
     path('products/by-category/', CategoryProductListView.as_view(), name='product-list-by-category'),
+    path('categories/popular/', PopularCategoryListView.as_view(), name='popular-category-list'),
     path('products/<int:product_id>/substitutes/', ProductSubstituteListView.as_view(), name='product-substitute-list'),
     path('files/product_translations/', ProductTranslationFileView.as_view(), name='product-translation-file'),
     path('files/brand_translations/', BrandTranslationFileView.as_view(), name='brand-translation-file'),
