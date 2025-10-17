@@ -2,7 +2,7 @@ from collections import defaultdict
 from django.db.models import Count
 from companies.models import Category
 
-def generate_category_product_count_report():
+def generate_category_product_count_report(sort_alphabetically=False, strict_filter=False):
     """
     Analyzes categories to count products and list associated companies.
     Returns the report as a string.
@@ -20,13 +20,28 @@ def generate_category_product_count_report():
         group['product_count'] += category.product_count
         group['companies'].add(category.company.name)
 
-    # Sort the aggregated data by product count in descending order
-    sorted_groups = sorted(category_groups.items(), key=lambda item: item[1]['product_count'], reverse=True)
+    # Apply strict filter if requested
+    if strict_filter:
+        category_groups = {
+            name: data for name, data in category_groups.items()
+            if data['product_count'] >= 100 and len(data['companies']) >= 3
+        }
+
+    # Sort the aggregated data based on the argument
+    if sort_alphabetically:
+        sorted_groups = sorted(category_groups.items(), key=lambda item: item[0])
+    else:
+        sorted_groups = sorted(category_groups.items(), key=lambda item: item[1]['product_count'], reverse=True)
 
     # Format the report
     for name, data in sorted_groups:
         count = data['product_count']
         companies = ", ".join(sorted(list(data['companies'])))
         report_lines.append(f"- {name} ({count} products): [{companies}]")
+
+    # Add CSV-style list of names at the end
+    report_lines.append("\n--- CSV-style Category Names ---")
+    csv_names = ",".join([f"'{name}'" for name, data in sorted_groups])
+    report_lines.append(csv_names)
 
     return "\n".join(report_lines)

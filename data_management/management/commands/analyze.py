@@ -40,12 +40,24 @@ class Command(BaseCommand):
             type=str,
             help='The state to generate the report for (optional, for store-level reports).'
         )
+        parser.add_argument(
+            '--alphabetical',
+            action='store_true',
+            help='Sort the report alphabetically by category name.'
+        )
+        parser.add_argument(
+            '--strict',
+            action='store_true',
+            help='Filter for categories with at least 10 products in at least 3 companies.'
+        )
 
     def handle(self, *args, **options):
         report_type = options['report']
         company_name = options['company_name']
         category_name = options['category']
         state = options['state']
+        alphabetical = options['alphabetical']
+        strict = options['strict']
 
         if report_type == 'store_product_counts':
             if not company_name:
@@ -147,7 +159,10 @@ class Command(BaseCommand):
 
         elif report_type == 'category_product_counts':
             self.stdout.write(self.style.SUCCESS("--- Starting Category Product Count Analysis ---"))
-            report_content = generate_category_product_count_report()
+            report_content = generate_category_product_count_report(
+                sort_alphabetically=alphabetical, 
+                strict_filter=strict
+            )
             
             output_dir = os.path.join('data_management', 'data', 'analysis', 'category_reports')
             os.makedirs(output_dir, exist_ok=True)
