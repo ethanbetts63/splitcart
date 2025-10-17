@@ -36,7 +36,7 @@ const Layout = () => {
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogPage, setDialogPage] = useState('Trolley');
-  const showNextButton = location.pathname === '/' || location.pathname === '/search';
+  const showNextButton = (location.pathname === '/' || location.pathname === '/search') && cartTotal > 0;
 
   useEffect(() => {
     if (selectedStoreIds.size === 0) {
