@@ -1,0 +1,24 @@
+@import "../index.css";
+
+.category-carousel {
+  @apply overflow-x-auto pb-4;
+}
+
+.category-carousel__container {
+  @apply flex items-center gap-4 py-3 px-4;
+}
+
+.category-carousel__slide {
+  @apply flex-shrink-0;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.category-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.category-carousel {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

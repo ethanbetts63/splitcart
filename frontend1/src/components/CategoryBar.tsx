@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
+import '../css/CategoryCarousel.css';
 
 // --- Type Definitions ---
 type Category = {
@@ -41,14 +42,16 @@ const CategoryBar: React.FC = () => {
 
   return (
     <div className="sticky top-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-40 border-b">
-      <div className="w-full">
-        <div className="flex items-center gap-4 overflow-x-auto py-3 scrollbar-hide px-4">
+      <div className="category-carousel">
+        <div className="category-carousel__container">
           {categories.map((category) => (
-            <Link to={`/search?category_slug=${category.slug}`} key={category.slug}>
-              <Badge variant="outline" className="text-lg py-1 px-4 whitespace-nowrap">
-                {category.name}
-              </Badge>
-            </Link>
+            <div className="category-carousel__slide" key={category.slug}>
+              <Link to={`/search?category_slug=${category.slug}`}>
+                <Badge variant="secondary" className="text-sm px-2 whitespace-nowrap">
+                  {category.name}
+                </Badge>
+              </Link>
+            </div>
           ))}
         </div>
       </div>
