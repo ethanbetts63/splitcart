@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Outlet, useNavigate, useLocation } from "react-router-dom";
-import { MapPin, ShoppingCart } from "lucide-react";
+import { MapPin, ShoppingCart, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SettingsDialog } from "@/components/settings-dialog";
@@ -46,9 +46,15 @@ const Layout = () => {
     }
   }, []);
 
-  const handleSearchSubmit = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && searchTerm.trim() !== '') {
+  const handleSearch = () => {
+    if (searchTerm.trim() !== '') {
       navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
+    }
+  };
+
+  const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch();
     }
   };
 
@@ -71,15 +77,25 @@ const Layout = () => {
             </a>
           </div>
           <div className="flex flex-1 items-center justify-center">
-            <div className="w-full max-w-sm">
+            <div className="relative w-full max-w-md">
               <Input
                 type="search"
                 placeholder="Search products, stores, and more..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={handleSearchSubmit}
-                className="h-12 text-base"
+                onKeyDown={handleSearchKeyDown}
+                className="h-12 text-base pr-12 rounded-full"
               />
+              <Button
+                type="submit"
+                size="icon"
+                variant="secondary"
+                className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full"
+                onClick={handleSearch}
+              >
+                <Search className="h-5 w-5" />
+                <span className="sr-only">Search</span>
+              </Button>
             </div>
           </div>
           <div className="flex items-center justify-end gap-2">

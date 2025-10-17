@@ -1,4 +1,5 @@
 from rest_framework import generics
+from django.db.models import Count
 from products.models import Product
 from ..serializers import ProductSerializer
 from companies.models import Category
@@ -32,7 +33,12 @@ class CategoryProductListView(generics.ListAPIView):
                 # Store ids for the serializer context to fetch correct prices
                 self.nearby_store_ids = store_ids
             
-            return queryset.order_by('name')
+            # Annotate with the number of stores and order accordingly
+            queryset = queryset.annotate(
+                num_stores=Count('price_records__price_entries__store', distinct=True)
+            ).order_by('-num_stores', 'name')
+
+            return queryset
 
         except (ValueError, TypeError):
             return Product.objects.none()
