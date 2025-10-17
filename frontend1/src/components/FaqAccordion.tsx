@@ -53,10 +53,10 @@ export function FaqAccordion() {
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-6">
-        <AccordionTrigger>Can I choose which stores I want to include or exclude?</AccordionTrigger>
+        <AccordionTrigger>How can it be free?</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-4 text-balance">
           <p>
-            Yes! There's a little location button in the top right. Click it to open the store selection menu where you can choose which stores to include in your comparison. The more the better!
+            Great question!
           </p>
         </AccordionContent>
       </AccordionItem>

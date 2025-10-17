@@ -83,6 +83,34 @@ const HomePage = () => {
           </section>
         </div>
       </div>
+
+      <div className="container mx-auto px-4 py-16">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+            Is ply count or per kilogram value more important for buying toilet paper?
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-lg text-gray-700">
+          <div className="flex flex-col gap-4">
+            <p>
+              To many people this is a ridiculous thought. But if you're like me then you'll understand. You're probably the sort of person that has thought about the weight of chicken bones in a whole chicken. Or maybe even the real dollar value of a reward point. If you're like me then SplitCart is built for you. I know that to be a fact because I built SplitCart for me.
+            </p>
+            <p>
+              The idea is simple. If we had 2 stores to shop at and a list of products, there's no way all the products could be cheaper at just 1 store. So why shop at just 1 store? Becuase, we didn't know what's cheapest where and figuring it out would've been a major hassle.
+            </p>
+          </div>
+          <div className="flex flex-col gap-4">
+            <p>
+              Now we know, and I've taken care of as much hassle as possible. SplitCart is nothing short of a obsession for me and it's a pleasure to have you onboard for the ride. If you have questions, suggestions or anything else I'd love to hear from you.
+            </p>
+            <div>
+              <p>Happy shopping,</p>
+              <p>Ethan Betts.</p>
+              <p>ethanbetts63@gmail.com</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
