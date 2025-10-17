@@ -36,10 +36,6 @@ class Category(models.Model):
         blank=True,
         help_text="Links to categories in other companies with a defined relationship type."
     )
-    is_popular = models.BooleanField(
-        default=False,
-        help_text="Flag to indicate if this category is considered popular."
-    )
 
     class Meta:
         verbose_name_plural = "Categories"

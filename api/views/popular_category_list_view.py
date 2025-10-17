@@ -1,7 +1,8 @@
 from rest_framework import generics
-from companies.models import Category
+from companies.models import PopularCategory
 from ..serializers import PopularCategorySerializer
 
 class PopularCategoryListView(generics.ListAPIView):
     serializer_class = PopularCategorySerializer
-    queryset = Category.objects.filter(is_popular=True).order_by('name')
+    queryset = PopularCategory.objects.all().order_by('name')
+    pagination_class = None
