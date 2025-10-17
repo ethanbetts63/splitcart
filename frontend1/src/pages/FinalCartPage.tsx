@@ -219,6 +219,7 @@ const loadingMessages = [
   "Splitting the cart senseless.",
   "The cart never knew what split it.",
   "Split it and quit it.",
+  "Hacking capitalism responsibly.",
   "To Split or not to Split that is the question.",
   "\“The definition of insanity is buying everything from one store.\”\n— Albert Einstein (definitely said this)",
   "Teaching the cart to divide and conquer…",
