@@ -10,7 +10,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 pt-8 pb-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
             <AspectRatio ratio={16 / 9}>
@@ -28,7 +28,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className="p-16">
+      <div className="px-8 pb-8 pt-4">
         <div className="bg-muted p-8 rounded-lg">
           <section>
             <ProductCarousel 
