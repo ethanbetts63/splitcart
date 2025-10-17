@@ -45,17 +45,17 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
   const imageUrl = product.image_url || fallbackImage;
 
   return (
-    <Card className="w-full flex flex-col h-full overflow-hidden gap-3 relative">
-      {product.size && (
-        <Badge className="absolute top-2 right-2">{product.size}</Badge>
-      )}
-      <div className="aspect-square w-full overflow-hidden">
+    <Card className="w-full flex flex-col h-full overflow-hidden gap-1">
+      <div className="aspect-square w-full overflow-hidden relative">
         <img
           src={imageUrl}
           onError={handleImageError}
           alt={product.name}
           className="h-full w-full object-cover transition-transform"
         />
+        {product.size && (
+          <Badge className="absolute top-2 right-2">{product.size}</Badge>
+        )}
       </div>
       <CardHeader className="p-0 pb-0 text-center">
         <CardTitle className="h-12 line-clamp-2 text-base">{product.name}</CardTitle>
