@@ -29,53 +29,53 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className="px-8 pb-8 pt-4">
-        <div className="bg-muted p-8 rounded-lg">
-          <section>
-            <ProductCarousel 
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col gap-8">
+          <section className="bg-muted p-8 rounded-lg">
+            <ProductCarousel
               title="Bargains"
               searchQuery="bargains"
-              sourceUrl="/api/products/bargains/?limit=20" 
-              storeIds={storeIdsArray} 
+              sourceUrl="/api/products/bargains/?limit=20"
+              storeIds={storeIdsArray}
             />
           </section>
 
-          <section className="mt-8">
+          <section>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
                 <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-4">Frequently Asked Questions</h2>
                 <FaqAccordion />
               </div>
               <div>
-                <AspectRatio ratio={16 / 9} className="bg-muted" />
+                <AspectRatio ratio={16 / 9} className="bg-gray-200 rounded-lg" />
               </div>
             </div>
           </section>
 
-          <section className="mt-8">
-            <ProductCarousel 
+          <section className="bg-muted p-8 rounded-lg">
+            <ProductCarousel
               title="Milk"
               searchQuery="milk"
-              sourceUrl="/api/products/?search=milk&limit=20" 
-              storeIds={storeIdsArray} 
+              sourceUrl="/api/products/?search=milk&limit=20"
+              storeIds={storeIdsArray}
             />
           </section>
 
-          <section className="mt-8">
-            <ProductCarousel 
+          <section className="bg-muted p-8 rounded-lg">
+            <ProductCarousel
               title="Eggs"
               searchQuery="eggs"
-              sourceUrl="/api/products/?search=eggs&limit=20" 
-              storeIds={storeIdsArray} 
+              sourceUrl="/api/products/?search=eggs&limit=20"
+              storeIds={storeIdsArray}
             />
           </section>
 
-          <section className="mt-8">
-            <ProductCarousel 
+          <section className="bg-muted p-8 rounded-lg">
+            <ProductCarousel
               title="Bread"
               searchQuery="bread"
-              sourceUrl="/api/products/?search=bread&limit=20" 
-              storeIds={storeIdsArray} 
+              sourceUrl="/api/products/?search=bread&limit=20"
+              storeIds={storeIdsArray}
             />
           </section>
         </div>
