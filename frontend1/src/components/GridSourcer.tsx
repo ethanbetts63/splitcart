@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/pagination";
 
 import { useStoreSelection } from '@/context/StoreContext';
+import LoadingSpinner from './LoadingSpinner';
 
 // Type for the API response, using the shared Product type
 type ApiResponse = {
@@ -124,7 +125,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, catego
   }
 
   if (isLoading) {
-    return <div className="text-center p-8">Loading...</div>;
+    return <LoadingSpinner fullScreen={false} />;
   }
 
   if (isError) {

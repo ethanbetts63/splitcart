@@ -29,7 +29,11 @@ const loadingMessages = [
   "Calculating the optimal number of stores to annoy.",
 ];
 
-const LoadingSpinner = () => {
+interface LoadingSpinnerProps {
+  fullScreen?: boolean;
+}
+
+const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ fullScreen = true }) => {
   const [loadingMessage, setLoadingMessage] = useState("");
 
   const selectRandomMessage = () => {
@@ -46,10 +50,19 @@ const LoadingSpinner = () => {
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);
 
+  if (fullScreen) {
+    return (
+      <div className="container mx-auto p-4 flex flex-col items-center justify-center text-center" style={{ minHeight: 'calc(100vh - 10rem)' }}>
+        <h1 className="text-2xl font-bold mb-4" style={{ whiteSpace: 'pre-line' }}>{loadingMessage}</h1>
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
-    <div className="container mx-auto p-4 flex flex-col items-center justify-center text-center" style={{ minHeight: 'calc(100vh - 10rem)' }}>
-      <h1 className="text-2xl font-bold mb-4" style={{ whiteSpace: 'pre-line' }}>{loadingMessage}</h1>
-      <Spinner />
+    <div className="flex flex-col items-center justify-center text-center p-8">
+        <h1 className="text-xl font-bold mb-4" style={{ whiteSpace: 'pre-line' }}>{loadingMessage}</h1>
+        <Spinner />
     </div>
   );
 };
