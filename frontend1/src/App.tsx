@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Outlet, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, Outlet, useNavigate, useLocation, Link } from "react-router-dom";
 import { MapPin, ShoppingCart, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -131,7 +131,9 @@ const Layout = () => {
                 )}
               </div>
             </div>
-            <Button variant="outline" onClick={() => navigate('/login')}>Login</Button>
+            <Link to="/login">
+              <Button variant="outline">Login</Button>
+            </Link>
             {showNextButton && <NextButton className="h-12 px-4" />}
           </div>
         </div>
