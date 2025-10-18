@@ -89,15 +89,15 @@ const HomePage = () => {
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 max-w-2xl mx-auto">
             What percentage of a whole chicken is bone weight?
           </h2>
-          <p className="text-lg text-gray-600 mt-4">Short answer: 25-35%. Most common answer: Who cares?</p>
+          <p className="text-lg text-gray-600 mt-4">Short answer: <span className="font-bold">25-35%</span>. Most common answer: <span className="font-bold">Who cares?</span></p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-lg text-gray-700">
           <div className="flex flex-col gap-4">
             <p>
-              I care. And if you're like me then you care too. If you're like me, you've considered the dollar value of a rewards point. Or debated ply vs kilogram weight of toilet paper. 
+              I care. And if you're like me then you care too. If you're like me, you've considered the dollar value of a rewards point. Or debated ply count vs kilogram weight of toilet paper. 
             </p>
-            <p>
-              If you're like me then SplitCart was built for you. I know this to be a fact because i built SplitCart for me.
+            <p className="font-bold">
+              If you're like me then SplitCart was built for you. I know this to be a fact because I built SplitCart for me.
             </p>
             <p>
               The idea is simple. Why not buy each item in my shopping list from the store where it's cheapest? Becuase you don't know the price of every item in every store. Becuase you'd never go to ten stores for one shopping run. Becuase it would be a hassle.
@@ -115,8 +115,9 @@ const HomePage = () => {
             </p>
             <div>
               <p>Happy shopping,</p>
-              <p>Ethan Betts.</p>
-              <p>ethanbetts63@gmail.com</p>
+              <p className="font-bold">Ethan Betts.</p>
+              <p className="italic text-sm text-gray-600">Founder and Developer</p>
+              <a href="mailto:ethanbetts63@gmail.com" className="text-blue-600 hover:underline">ethanbetts63@gmail.com</a>
             </div>
           </div>
         </div>

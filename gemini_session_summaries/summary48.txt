@@ -1,0 +1,9 @@
+In this session, I undertook a series of frontend enhancements focused on creating reusable components and improving the layout and content of the home page.
+
+First, I refactored the loading indicator from the `FinalCartPage.tsx` into a new, reusable `LoadingSpinner.tsx` component. To make it more versatile, I added a `fullScreen` boolean prop, allowing it to be used either as a full-page overlay or as a more compact, inline element. This new compact version was then implemented in the `GridSourcer.tsx` component to provide a richer loading experience for search results, replacing the basic "Loading..." text.
+
+Next, I built out a new Frequently Asked Questions (FAQ) section on the home page. This was initially created as a hardcoded component, `FaqAccordion.tsx`, using ShadCN's accordion component for the visuals. I placed this in a two-column grid on the home page, accompanied by a new hero image (`king_kong.png`), and adjusted the image's styling to ensure it was displayed correctly.
+
+I then addressed a layout issue where the new FAQ section shared a background with the product carousels. I refactored the home page's structure to give each carousel its own distinct background, visually separating it from the FAQ section.
+
+Finally, I added a new section at the bottom of the home page to feature a personal message from you, the creator. This section was styled with a two-column layout and a prominent, centered title. I iterated on this section based on your feedback, adjusting the padding for better spacing on large screens, modifying the title to wrap onto two lines for a more compact look, and bolding key parts of the subtitle to add emphasis.
