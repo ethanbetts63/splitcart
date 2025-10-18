@@ -12,6 +12,7 @@ import HomePage from "./pages/HomePage";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import SubstitutionPage from "./pages/SubstitutionPage";
 import FinalCartPage from "./pages/FinalCartPage";
+import LoginPage from "./app/login/page";
 import CategoryBar from "./components/CategoryBar";
 import Footer from './components/Footer';
 import './App.css';
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="substitutions" element={<SubstitutionPage />} />
         <Route path="final-cart" element={<FinalCartPage />} />
       </Route>
+      <Route path="/login" element={<LoginPage />} />
     </Routes>
   );
 };
@@ -129,6 +131,7 @@ const Layout = () => {
                 )}
               </div>
             </div>
+            <Button variant="outline" onClick={() => navigate('/login')}>Login</Button>
             {showNextButton && <NextButton className="h-12 px-4" />}
           </div>
         </div>
