@@ -10,7 +10,7 @@ class Command(BaseCommand):
         faq_file_path = settings.BASE_DIR / 'data_management' / 'data' / 'FAQ.jsonl'
         self.stdout.write(f"Importing FAQs from {faq_file_path}...")
 
-        with open(faq_file_path, 'r') as f:
+        with open(faq_file_path, 'r', encoding='utf-8') as f:
             for line in f:
                 try:
                     data = json.loads(line)
