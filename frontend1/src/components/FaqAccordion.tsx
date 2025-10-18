@@ -24,7 +24,7 @@ export function FaqAccordion() {
         <AccordionTrigger>What’s a “substitute” and why does it matter?</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-4 text-balance">
           <p>
-            A substitute is a product you would be willing to have "instead of" the original product you choose. For example, a different brand of the same type of milk. Including substitutes gives our algorithm a lot more options to play with and is major factor in the savings you should expect. We know it's a annoying to do but it's also the reason we can save you more than any other comparison site.
+            A substitute is a product you would be willing to have "instead of" the original product you choose. For example, a different brand of the same type of milk. Including substitutes gives our algorithm a lot more options to play with and is a major factor in the savings you should expect. We know it's an annoying to do but it's also the reason we can save you more than any other comparison site.
           </p>
         </AccordionContent>
       </AccordionItem>
