@@ -13,6 +13,7 @@ import SearchResultsPage from "./pages/SearchResultsPage";
 import SubstitutionPage from "./pages/SubstitutionPage";
 import FinalCartPage from "./pages/FinalCartPage";
 import CategoryBar from "./components/CategoryBar";
+import Footer from './components/Footer';
 import './App.css';
 
 const App = () => {
@@ -68,7 +69,7 @@ const Layout = () => {
   };
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="flex h-20 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6">
@@ -133,9 +134,10 @@ const Layout = () => {
         </div>
       </header>
       <CategoryBar />
-      <main>
+      <main className="flex-grow">
         <Outlet />
       </main>
+      <Footer />
       <SettingsDialog 
         open={dialogOpen} 
         onOpenChange={setDialogOpen} 

@@ -5,14 +5,16 @@ from ..serializers import FaqSerializer
 
 class FaqListView(ListAPIView):
     serializer_class = FaqSerializer
-
-    def get_queryset(self):
-        page = self.request.query_params.get('page', None)
-        if page:
-            return FAQ.objects.filter(pages__contains=page)
-        return FAQ.objects.none()
+    queryset = FAQ.objects.all()
 
     def list(self, request, *args, **kwargs):
+        page = request.query_params.get('page', None)
         queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
+
+        if page:
+            filtered_queryset = [faq for faq in queryset if page in faq.pages]
+        else:
+            filtered_queryset = []
+
+        serializer = self.get_serializer(filtered_queryset, many=True)
         return Response(serializer.data)
