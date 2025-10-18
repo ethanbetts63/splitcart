@@ -12,7 +12,8 @@ import HomePage from "./pages/HomePage";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import SubstitutionPage from "./pages/SubstitutionPage";
 import FinalCartPage from "./pages/FinalCartPage";
-import LoginPage from "./app/login/page";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 import CategoryBar from "./components/CategoryBar";
 import Footer from './components/Footer';
 import './App.css';
@@ -25,8 +26,9 @@ const App = () => {
         <Route path="search" element={<SearchResultsPage />} />
         <Route path="substitutions" element={<SubstitutionPage />} />
         <Route path="final-cart" element={<FinalCartPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
       </Route>
-      <Route path="/login" element={<LoginPage />} />
     </Routes>
   );
 };
