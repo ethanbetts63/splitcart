@@ -89,7 +89,7 @@ const HomePage = () => {
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 max-w-2xl mx-auto">
             What percentage of a whole chicken is bone weight?
           </h2>
-          <p className="text-lg mt-4">Short answer: <span className="font-bold">25-35%</span>. Most common answer: <span className="font-bold">Who cares?</span></p>
+          <p className="text-lg mt-4">Short answer: <span className="font-bold">25-32%</span>. Most common answer: <span className="font-bold">Who cares?</span></p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-lg text-gray-700">
           <div className="flex flex-col gap-4">

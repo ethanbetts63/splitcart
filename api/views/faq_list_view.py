@@ -9,7 +9,7 @@ class FaqListView(ListAPIView):
     def get_queryset(self):
         page = self.request.query_params.get('page', None)
         if page:
-            return FAQ.objects.filter(page=page)
+            return FAQ.objects.filter(pages__contains=page)
         return FAQ.objects.none()
 
     def list(self, request, *args, **kwargs):

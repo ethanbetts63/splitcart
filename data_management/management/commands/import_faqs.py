@@ -16,8 +16,10 @@ class Command(BaseCommand):
                     data = json.loads(line)
                     faq, created = FAQ.objects.update_or_create(
                         question=data['question'],
-                        page=data['page'],
-                        defaults={'answer': data['answer']}
+                        defaults={
+                            'answer': data['answer'],
+                            'pages': data['pages']
+                        }
                     )
                     if created:
                         self.stdout.write(self.style.SUCCESS(f"Created FAQ: {faq.question}"))

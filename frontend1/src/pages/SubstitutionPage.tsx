@@ -8,6 +8,7 @@ import type { Product } from '@/types/Product';
 
 import { Badge } from '@/components/ui/badge';
 import { BadgeCheckIcon } from 'lucide-react';
+import { FaqAccordion } from '@/components/FaqAccordion';
 
 const SubstitutionPage = () => {
   const navigate = useNavigate();
@@ -124,6 +125,13 @@ const SubstitutionPage = () => {
               )
             })}
           </div>
+        </div>
+      </div>
+
+      <div className="mt-16">
+        <div className="mx-auto max-w-3xl">
+          <h2 className="text-2xl font-bold text-center mb-4">Substitution FAQs</h2>
+          <FaqAccordion page="substitutes" />
         </div>
       </div>
 
