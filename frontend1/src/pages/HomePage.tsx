@@ -45,7 +45,7 @@ const HomePage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
                 <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-4">The Hard Hitting Questions</h2>
-                <FaqAccordion />
+                <FaqAccordion page="home" />
               </div>
               <div>
                 <AspectRatio ratio={16 / 9}>
@@ -100,7 +100,7 @@ const HomePage = () => {
               If you're like me then SplitCart was built for you. I know this to be a fact because I built SplitCart for me.
             </p>
             <p>
-              The idea is simple. Why not buy each item in my shopping list from the store where it's cheapest? Becuase you don't know the price of every item in every store. Becuase you'd never go to ten stores for one shopping run. Becuase it would be a hassle.
+              The idea is simple. Why not buy each item in my shopping list from the store where it's cheapest? Becuase you don't know the price of every item in every store. Becuase you'd never go to ten stores on one shopping run. Becuase it would be a hassle.
             </p>
           </div>
           <div className="flex flex-col gap-4">
@@ -108,13 +108,13 @@ const HomePage = () => {
               I've collected the prices. I've mathematically calculated the best two, three, or four store combination, and I've removed as much hassle as humanly possible.
             </p>
             <p>
-              So, <span className="font-bold bg-yellow-200 px-0.5 py-1 rounded">welcome aboard fellow shopper!</span> I hope SplitCart can be as useful to you as it is to me.
+              So, <span className="font-bold bg-yellow-200 px-0.5 py-1 rounded">welcome aboard fellow bargain hunter!</span> I hope SplitCart can be as useful to you as it is to me.
             </p>
             <p>
               If you have questions, suggestions or anything else I'd love to hear from you.
             </p>
             <div>
-              <p>Happy shopping,</p>
+              <p>Happy hunting,</p>
               <p className="font-bold">Ethan Betts, <a href="mailto:ethanbetts63@gmail.com" className="text-blue-600 hover:underline">ethanbetts63@gmail.com</a></p>
               <p className="italic text-sm text-gray-600">Founder and Developer</p>
               
