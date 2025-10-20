@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useShoppingList } from '@/context/ShoppingListContext';
 import { useStoreSelection } from '@/context/StoreContext';
 import { useSubstitutions } from '@/context/SubstitutionContext';
+import { useAuth } from '@/context/AuthContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
@@ -9,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Download, Mail } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner"
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { useToast } from "@/components/ui/use-toast"
 
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
 
@@ -20,13 +23,13 @@ import woolworthsLogo from '@/assets/woolworths_logo.webp';
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Badge } from "@/components/ui/badge";
 
 // Logo Mapping
 const companyLogos: { [key: string]: string } = {
@@ -49,7 +52,7 @@ interface ShoppingPlan {
     }[];
     company_name: string;
     store_address: string;
-    total_cost?: number; // Make optional as it's not in best_single_store plan
+    total_cost?: number;
   };
 }
 
@@ -91,8 +94,7 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
             return (
                 <div key={storeName} className="border rounded-lg p-4 bg-muted/20">
                     <div className="flex items-center justify-center gap-4 mb-2">
-                        {logo && <img src={logo} alt={store_plan.company_name} className="h-10 w-auto" />}
-                        <h2 className="text-2xl font-bold">{storeName}</h2>
+                        {logo && <img src={logo} alt={store_plan.company_name} className="h-10 w-auto" />}                        <h2 className="text-2xl font-bold">{storeName}</h2>
                     </div>
                     <p className="text-center text-sm text-muted-foreground mb-4">{store_plan.store_address}</p>
                     <Table>
@@ -145,12 +147,11 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
     </div>
 );
 
-import { Badge } from "@/components/ui/badge";
 
-
-const ResultsDisplay = ({ data, handleDownload, exportAction }: { 
+const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: { 
     data: OptimizationDataSet;
     handleDownload: (plan: ShoppingPlan, planName: string) => Promise<void>;
+    handleEmail: (plan: ShoppingPlan, planName: string) => Promise<void>;
     exportAction: {type: 'email' | 'download', plan: string} | null;
 }) => {
     if (!data || (!data.best_single_store && (!data.optimization_results || data.optimization_results.length === 0))) {
@@ -208,17 +209,26 @@ const ResultsDisplay = ({ data, handleDownload, exportAction }: {
                                     <p className="text-sm text-muted-foreground mt-1">Found {data.best_single_store.items_found_count} of {data.best_single_store.total_items_in_cart} items.</p>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <Button variant="outline" size="sm">
-                                        <Mail className="mr-2 h-4 w-4" />
+                                    <Button 
+                                        variant="outline" 
+                                        size="sm"
+                                        onClick={() => handleEmail(data.best_single_store.shopping_plan, 'best-single-store')}
+                                        disabled={exportAction?.type === 'email' && exportAction?.plan === 'best-single-store'}
+                                    >
+                                        {exportAction?.type === 'email' && exportAction?.plan === 'best-single-store' ? (
+                                            <Spinner className="mr-2 h-4 w-4 animate-spin" />
+                                        ) : (
+                                            <Mail className="mr-2 h-4 w-4" />
+                                        )}
                                         <span>Email</span>
                                     </Button>
                                     <Button 
                                         variant="outline" 
                                         size="sm"
                                         onClick={() => handleDownload(data.best_single_store.shopping_plan, 'best-single-store')}
-                                        disabled={exportAction?.type === 'download' && exportAction?.plan === 'tab-1'}
+                                        disabled={exportAction?.type === 'download' && exportAction?.plan === 'best-single-store'}
                                     >
-                                        {exportAction?.type === 'download' && exportAction?.plan === 'tab-1' ? (
+                                        {exportAction?.type === 'download' && exportAction?.plan === 'best-single-store' ? (
                                             <Spinner className="mr-2 h-4 w-4 animate-spin" />
                                         ) : (
                                             <Download className="mr-2 h-4 w-4" />
@@ -235,19 +245,32 @@ const ResultsDisplay = ({ data, handleDownload, exportAction }: {
                 {data.optimization_results.map(result => (
                     <TabsContent key={result.max_stores} value={`tab-${result.max_stores}`}>
                         <div className="p-4 border rounded-md">
-                            <div className="flex justify-between items-start mb-4">
+                            <div className="flex justify-between items-center mb-4">
+                                <div>
+                                    <h3 className="font-bold text-lg">Total Cost: ${result.optimized_cost.toFixed(2)}</h3>
+                                    <p className="text-sm text-green-600 font-semibold">Savings: ${result.savings.toFixed(2)}</p>
+                                </div>
                                 <div className="flex items-center gap-2">
-                                    <Button variant="outline" size="sm">
-                                        <Mail className="mr-2 h-4 w-4" />
+                                    <Button 
+                                        variant="outline" 
+                                        size="sm"
+                                        onClick={() => handleEmail(result.shopping_plan, `stores-${result.max_stores}`)}
+                                        disabled={exportAction?.type === 'email' && exportAction?.plan === `stores-${result.max_stores}`}
+                                    >
+                                        {exportAction?.type === 'email' && exportAction?.plan === `stores-${result.max_stores}` ? (
+                                            <Spinner className="mr-2 h-4 w-4 animate-spin" />
+                                        ) : (
+                                            <Mail className="mr-2 h-4 w-4" />
+                                        )}
                                         <span>Email</span>
                                     </Button>
                                     <Button 
                                         variant="outline" 
                                         size="sm"
                                         onClick={() => handleDownload(result.shopping_plan, `stores-${result.max_stores}`)}
-                                        disabled={exportAction?.type === 'download' && exportAction?.plan === `tab-${result.max_stores}`}
+                                        disabled={exportAction?.type === 'download' && exportAction?.plan === `stores-${result.max_stores}`}
                                     >
-                                        {exportAction?.type === 'download' && exportAction?.plan === `tab-${result.max_stores}` ? (
+                                        {exportAction?.type === 'download' && exportAction?.plan === `stores-${result.max_stores}` ? (
                                             <Spinner className="mr-2 h-4 w-4 animate-spin" />
                                         ) : (
                                             <Download className="mr-2 h-4 w-4" />
@@ -269,11 +292,62 @@ const FinalCartPage = () => {
   const { items: originalItems } = useShoppingList();
   const { selectedStoreIds } = useStoreSelection();
   const { selections } = useSubstitutions();
+  const { isAuthenticated, token } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   const [optimizationData, setOptimizationData] = useState<ApiResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewWithSubstitutes, setViewWithSubstitutes] = useState(true);
   const [exportAction, setExportAction] = useState<{type: 'email' | 'download', plan: string} | null>(null);
+
+  const handleEmail = async (plan: ShoppingPlan, planName: string) => {
+    if (!isAuthenticated) {
+        toast({
+            title: "Authentication Required",
+            description: "Please log in to email your shopping list.",
+            variant: "destructive",
+        });
+        navigate("/login");
+        return;
+    }
+
+    setExportAction({type: 'email', plan: planName});
+    setError(null);
+
+    try {
+        const response = await fetch('/api/cart/email-list/', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            },
+            body: JSON.stringify({ shopping_plan: plan }),
+        });
+
+        const resData = await response.json();
+
+        if (!response.ok) {
+            throw new Error(resData.error || `Server returned an unexpected error (${response.status}).`);
+        }
+        
+        toast({
+            title: "Email Sent!",
+            description: "Your shopping list has been sent to your email.",
+        });
+
+    } catch (err: any) {
+        setError(err.message);
+        toast({
+            title: "Error Sending Email",
+            description: err.message,
+            variant: "destructive",
+        });
+    } finally {
+        setExportAction(null);
+    }
+  };
 
   const handleDownload = async (plan: ShoppingPlan, planName: string) => {
     setExportAction({type: 'download', plan: planName});
@@ -310,6 +384,11 @@ const FinalCartPage = () => {
 
     } catch (err: any) {
         setError(err.message);
+        toast({
+            title: "Error Downloading PDF",
+            description: err.message,
+            variant: "destructive",
+        });
     } finally {
         setExportAction(null);
     }
@@ -341,7 +420,7 @@ const FinalCartPage = () => {
         cart: cart,
         store_ids: Array.from(selectedStoreIds),
         original_items: original_items_payload,
-        max_stores_options: [2, 3, 4], // Starts from 2 as 1 is handled by best_single_store
+        max_stores_options: [2, 3, 4],
       };
 
       try {
@@ -372,7 +451,7 @@ const FinalCartPage = () => {
   if (isLoading) {
     return <LoadingSpinner />;
   }
-  if (error) return <div className="container mx-auto p-4">Error: {error}</div>;
+  if (error && !exportAction) return <div className="container mx-auto p-4">Error: {error}</div>;
   if (!optimizationData) return <div className="container mx-auto p-4">No optimization data available. Add items to your cart and select stores.</div>;
 
   const resultsToShow = viewWithSubstitutes ? optimizationData : optimizationData.no_subs_results;
@@ -389,7 +468,7 @@ const FinalCartPage = () => {
         )}
       </div>
       
-      {resultsToShow ? <ResultsDisplay data={resultsToShow} handleDownload={handleDownload} exportAction={exportAction} /> : <p>No results to display for this option.</p>}
+      {resultsToShow ? <ResultsDisplay data={resultsToShow} handleDownload={handleDownload} handleEmail={handleEmail} exportAction={exportAction} /> : <p>No results to display for this option.</p>}
 
     </div>
   );

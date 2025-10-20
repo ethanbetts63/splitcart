@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from django.template.loader import render_to_string
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -57,11 +58,14 @@ class EmailShoppingListView(APIView):
 
         try:
             subject = "Your SplitCart Shopping List"
-            body = "Here is your shopping list, as requested. See the attached PDF."
+            text_body = "Here is your shopping list, as requested. See the attached PDF."
+            html_body = render_to_string('email/shopping_list_email.html')
+
             from_email = settings.DEFAULT_FROM_EMAIL
             to_email = request.user.email
 
-            email = EmailMultiAlternatives(subject, body, from_email, [to_email])
+            email = EmailMultiAlternatives(subject, text_body, from_email, [to_email])
+            email.attach_alternative(html_body, "text/html")
             email.attach('shopping-list.pdf', pdf_data, 'application/pdf')
             email.send()
 
@@ -76,3 +80,4 @@ class EmailShoppingListView(APIView):
                 {"error": "An error occurred while sending the email."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
