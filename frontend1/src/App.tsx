@@ -17,6 +17,7 @@ import SignupPage from "./pages/SignupPage";
 import { useAuth } from "@/context/AuthContext";
 import CategoryBar from "./components/CategoryBar";
 import Footer from './components/Footer';
+import splitcartLogo from "./assets/splitcart_symbol_v6_black.png";
 import './App.css';
 
 const App = () => {
@@ -80,6 +81,7 @@ const Layout = () => {
         <div className="flex h-20 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6">
             <a href="/" className="flex items-center space-x-2">
+              <img src={splitcartLogo} alt="SplitCart Logo" className="h-8 w-8" />
               <span className="font-bold text-2xl">SplitCart</span>
             </a>
           </div>
