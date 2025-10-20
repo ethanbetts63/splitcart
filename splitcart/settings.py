@@ -150,9 +150,15 @@ ACCOUNT_USERNAME_REQUIRED = False
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
-
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+DEFAULT_FROM_EMAIL = 'ethan.betts.dev@gmail.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'ethan.betts.dev@gmail.com'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 
 # Custom Serializer for Registration
