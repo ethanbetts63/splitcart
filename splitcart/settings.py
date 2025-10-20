@@ -27,12 +27,21 @@ INSTALLED_APPS = [
     "data_management.apps.DataManagementConfig",
     "scraping.apps.ScrapingConfig",
     "api.apps.ApiConfig",
+    "users.apps.UsersConfig",
     "rest_framework",
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    'django.contrib.sites',
     "django_extensions",
     "debug_toolbar",
+    'corsheaders',
 ]
 
+SITE_ID = 1
+
+
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -105,7 +114,16 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+AUTH_USER_MODEL = 'users.User'
+
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
