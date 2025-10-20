@@ -5,6 +5,8 @@ import { useSubstitutions } from '@/context/SubstitutionContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Download, Mail } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner"
 import LoadingSpinner from '@/components/LoadingSpinner';
 
@@ -195,8 +197,23 @@ const ResultsDisplay = ({ data }: { data: OptimizationDataSet }) => {
                 {data.best_single_store && (
                     <TabsContent value="tab-1">
                         <div className="p-4 border rounded-md">
-                            <h3 className="font-bold">Total Cost: ${data.best_single_store.optimized_cost.toFixed(2)} (Savings: ${(data.baseline_cost - data.best_single_store.optimized_cost).toFixed(2)})</h3>
-                            <p className="text-sm text-muted-foreground">Found {data.best_single_store.items_found_count} of {data.best_single_store.total_items_in_cart} items.</p>
+                            <div className="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 className="font-bold text-lg">Total Cost: ${data.best_single_store.optimized_cost.toFixed(2)}</h3>
+                                    <p className="text-sm text-green-600 font-semibold">Savings: ${(data.baseline_cost - data.best_single_store.optimized_cost).toFixed(2)}</p>
+                                    <p className="text-sm text-muted-foreground mt-1">Found {data.best_single_store.items_found_count} of {data.best_single_store.total_items_in_cart} items.</p>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <Button variant="outline" size="sm">
+                                        <Mail className="mr-2 h-4 w-4" />
+                                        <span>Email</span>
+                                    </Button>
+                                    <Button variant="outline" size="sm">
+                                        <Download className="mr-2 h-4 w-4" />
+                                        <span>Download</span>
+                                    </Button>
+                                </div>
+                            </div>
                             <PlanDetails plan={data.best_single_store.shopping_plan} />
                         </div>
                     </TabsContent>
@@ -205,7 +222,22 @@ const ResultsDisplay = ({ data }: { data: OptimizationDataSet }) => {
                 {data.optimization_results.map(result => (
                     <TabsContent key={result.max_stores} value={`tab-${result.max_stores}`}>
                         <div className="p-4 border rounded-md">
-                            <h3 className="font-bold">Total Cost: ${result.optimized_cost.toFixed(2)} (Savings: ${result.savings.toFixed(2)})</h3>
+                            <div className="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 className="font-bold text-lg">Total Cost: ${result.optimized_cost.toFixed(2)}</h3>
+                                    <p className="text-sm text-green-600 font-semibold">Savings: ${result.savings.toFixed(2)}</p>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <Button variant="outline" size="sm">
+                                        <Mail className="mr-2 h-4 w-4" />
+                                        <span>Email</span>
+                                    </Button>
+                                    <Button variant="outline" size="sm">
+                                        <Download className="mr-2 h-4 w-4" />
+                                        <span>Download</span>
+                                    </Button>
+                                </div>
+                            </div>
                             <PlanDetails plan={result.shopping_plan} />
                         </div>
                     </TabsContent>
