@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { useAuth } from '@/context/AuthContext';
 
 interface FaqItem {
   question: string;
@@ -19,13 +20,19 @@ export function FaqAccordion({ page }: FaqAccordionProps) {
   const [faqs, setFaqs] = useState<FaqItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { token } = useAuth();
 
   useEffect(() => {
     const fetchFaqs = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(`/api/faqs/?page=${page}`);
+        const headers: HeadersInit = {};
+        if (token) {
+          headers['Authorization'] = `Token ${token}`;
+        }
+
+        const response = await fetch(`http://127.0.0.1:8000/api/faqs/?page=${page}`, { headers });
         if (!response.ok) {
           throw new Error('Failed to fetch FAQs');
         }
@@ -39,7 +46,7 @@ export function FaqAccordion({ page }: FaqAccordionProps) {
     };
 
     fetchFaqs();
-  }, [page]);
+  }, [page, token]);
 
   if (isLoading) {
     return <div>Loading FAQs...</div>; // Or a skeleton loader
