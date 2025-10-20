@@ -4,6 +4,7 @@ import { useShoppingList } from '@/context/ShoppingListContext';
 import { useStoreSelection } from '@/context/StoreContext';
 import { useSubstitutions } from '@/context/SubstitutionContext';
 import { useAuth } from '@/context/AuthContext';
+import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
@@ -11,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { Download, Mail } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner"
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { useToast } from "@/components/ui/use-toast"
 
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
 
@@ -148,7 +148,7 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
 );
 
 
-const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: { 
+const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: {
     data: OptimizationDataSet;
     handleDownload: (plan: ShoppingPlan, planName: string) => Promise<void>;
     handleEmail: (plan: ShoppingPlan, planName: string) => Promise<void>;
@@ -294,7 +294,6 @@ const FinalCartPage = () => {
   const { selections } = useSubstitutions();
   const { isAuthenticated, token } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   const [optimizationData, setOptimizationData] = useState<ApiResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -304,10 +303,8 @@ const FinalCartPage = () => {
 
   const handleEmail = async (plan: ShoppingPlan, planName: string) => {
     if (!isAuthenticated) {
-        toast({
-            title: "Authentication Required",
+        toast.error("Authentication Required", {
             description: "Please log in to email your shopping list.",
-            variant: "destructive",
         });
         navigate("/login");
         return;
@@ -332,17 +329,14 @@ const FinalCartPage = () => {
             throw new Error(resData.error || `Server returned an unexpected error (${response.status}).`);
         }
         
-        toast({
-            title: "Email Sent!",
+        toast.success("Email Sent!", {
             description: "Your shopping list has been sent to your email.",
         });
 
     } catch (err: any) {
         setError(err.message);
-        toast({
-            title: "Error Sending Email",
+        toast.error("Error Sending Email", {
             description: err.message,
-            variant: "destructive",
         });
     } finally {
         setExportAction(null);
@@ -384,10 +378,8 @@ const FinalCartPage = () => {
 
     } catch (err: any) {
         setError(err.message);
-        toast({
-            title: "Error Downloading PDF",
+        toast.error("Error Downloading PDF", {
             description: err.message,
-            variant: "destructive",
         });
     } finally {
         setExportAction(null);
