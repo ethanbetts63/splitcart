@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { useAuth } from "@/context/AuthContext"
 import { toast } from "sonner"
+import { Spinner } from "@/components/ui/spinner"
 
 export function LoginForm({
   className,
@@ -20,11 +21,13 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
   const { login } = useAuth()
   const navigate = useNavigate()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setIsLoading(true)
 
     try {
       const response = await fetch("http://127.0.0.1:8000/api/auth/login/", {
@@ -57,6 +60,8 @@ export function LoginForm({
       toast.error("Login Error", {
         description: "An error occurred during login. Please check your network connection and try again.",
       })
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -104,7 +109,9 @@ export function LoginForm({
                 />
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? <Spinner /> : "Login"}
+                </Button>
               </Field>
 
               <FieldDescription className="text-center">
