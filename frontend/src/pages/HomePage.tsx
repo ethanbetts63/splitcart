@@ -94,7 +94,7 @@ const HomePage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-lg ">
           <div className="flex flex-col gap-4">
             <p>
-              <span className="font-bold">I care. </span>And if you're like me then you care too. If you're like me, you've considered the dollar value of a rewards point. Or weighed the merits of ply count versus weight value of toilet paper.
+              <span className="font-bold">I care. </span>And if you're like me then you care too. If you're like me, you've considered the dollar value of a rewards point. Or weighed the merits of ply count versus the per kilo price of toilet paper.
             </p>
             <p className="font-bold">
               If you're like me then SplitCart was built for you. I know this to be a fact because I built SplitCart for me.
