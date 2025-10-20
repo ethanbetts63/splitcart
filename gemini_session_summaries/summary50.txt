@@ -1,0 +1,33 @@
+Session Summary: User Email Verification and Template Troubleshooting
+
+Date: 20/10/2025
+
+## Goal
+
+The primary goal of the session was to implement a complete email verification system for new user registrations in the `splitcart` application, including sending a professionally formatted HTML email.
+
+## Key Accomplishments
+
+1.  **`django-allauth` Configuration:** Successfully configured the `django-allauth` library to handle email verification. This included setting `ACCOUNT_EMAIL_VERIFICATION = 'mandatory'` and configuring the SMTP settings in `settings.py` to send emails via a Gmail account using an App Password.
+
+2.  **Frontend Registration Flow:** Modified the React frontend `SignupForm` component. Instead of automatically logging in and redirecting upon registration, the form now displays a success message prompting the user to check their email to complete activation.
+
+3.  **Utility Management Commands:**
+    *   Created a `delete_users` command to quickly remove all non-superuser accounts, simplifying testing.
+    *   Created a `send_email` command to send a test email using a local HTML file as the body, allowing for rapid visual testing of email templates.
+
+4.  **Architectural Discussion:** Discussed the possibility of using two separate user models for unauthenticated and authenticated users. Concluded that the standard approach of a single `User` model with a verification flag is more robust, less complex, and better integrated with the Django ecosystem.
+
+## Persistent Issue: Email Formatting
+
+A significant portion of the session was dedicated to troubleshooting an issue where the account verification email is sent as plain text instead of the intended HTML format. The following steps were taken to resolve this, but the issue persists:
+
+1.  **Custom Templates:** Created custom HTML (`email_confirmation_message.html`) and plain-text (`email_confirmation_message.txt`) templates to override the `django-allauth` defaults.
+
+2.  **Explicitly Enabled HTML:** Added `ACCOUNT_EMAIL_HTML_EMAIL = True` to `settings.py` to ensure `allauth` was configured to attempt sending HTML emails.
+
+3.  **Template Directory Refactoring:** To rule out template discovery issues, the project's template loading strategy was refactored. We created a single, project-level `/templates` directory, moved the override templates into it, and updated `settings.py` to use this directory. This aligns the project with a more standard and robust configuration.
+
+## Current Status
+
+The email verification system is functional, but the emails are still being delivered as plain text. The root cause of the HTML template being ignored has not yet been identified, despite trying all common solutions. Further investigation is required.
