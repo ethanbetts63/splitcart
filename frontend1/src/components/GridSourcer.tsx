@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import ProductGrid from './ProductGrid';
 import type { Product } from '@/types/Product'; // Import shared type
+import { useAuth } from '@/context/AuthContext';
 
 import {
   Pagination,
@@ -38,6 +39,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, catego
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const { selectedStoreIds } = useStoreSelection(); // Get selected stores
+  const { token } = useAuth();
 
   const fetchProducts = useCallback(async (page: number) => {
     setIsLoading(true);
@@ -74,7 +76,12 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, catego
     }
 
     try {
-      const response = await fetch(url);
+      const headers: HeadersInit = {};
+      if (token) {
+        headers['Authorization'] = `Token ${token}`;
+      }
+
+      const response = await fetch(`http://127.0.0.1:8000${url}`, { headers });
       if (!response.ok) {
         let errorMessage = `Failed to fetch: ${response.statusText}`;
         try {
@@ -100,7 +107,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, catego
     } finally {
       setIsLoading(false);
     }
-  }, [searchTerm, sourceUrl, categorySlug, selectedStoreIds]);
+  }, [searchTerm, sourceUrl, categorySlug, selectedStoreIds, token]);
 
   // Effect for fetching data when page or search term changes
   useEffect(() => {

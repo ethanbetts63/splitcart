@@ -1,8 +1,10 @@
 from rest_framework import generics
+from rest_framework.permissions import AllowAny
 from products.models import Product, Bargain
 from ..serializers import ProductSerializer
 
 class BargainListView(generics.ListAPIView):
+    permission_classes = [AllowAny]
     serializer_class = ProductSerializer
 
     def get_queryset(self):

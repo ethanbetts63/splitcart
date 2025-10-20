@@ -3,6 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import SkeletonProductTile from "./SkeletonProductTile";
 import ProductTile from "./ProductTile";
 import '../css/ProductCarousel.css';
+import { useAuth } from '@/context/AuthContext';
 
 // --- Type Definitions ---
 type CompanyPriceInfo = {
@@ -38,6 +39,7 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({ sourceUrl, sto
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { token } = useAuth();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -53,9 +55,14 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({ sourceUrl, sto
           params.append('store_ids', storeIds.join(','));
         }
 
-        const finalUrl = `${baseUrl}?${params.toString()}`;
+        const finalUrl = `http://127.0.0.1:8000${baseUrl}?${params.toString()}`;
 
-        const response = await fetch(finalUrl);
+        const headers: HeadersInit = {};
+        if (token) {
+          headers['Authorization'] = `Token ${token}`;
+        }
+
+        const response = await fetch(finalUrl, { headers });
         if (!response.ok) {
           throw new Error('Failed to fetch products');
         }
@@ -69,7 +76,7 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({ sourceUrl, sto
     };
 
     fetchProducts();
-  }, [sourceUrl, storeIds]); // Add storeIds to dependency array
+  }, [sourceUrl, storeIds, token]); // Add storeIds and token to dependency array
 
   if (isLoading) {
     return (
