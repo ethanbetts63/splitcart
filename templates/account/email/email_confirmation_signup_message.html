@@ -1,6 +1,4 @@
 {% load static %}
-{% load sites %}
-{% get_current_site as current_site %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +74,7 @@
                 <table role="presentation" class="email-container" border="0" cellpadding="0" cellspacing="0" align="center">
                     <tr>
                         <td class="email-header">
-                            <img src="http://{{ current_site.domain }}{% static 'images/splitcart_logo.png' %}" alt="Logo" class="email-logo">
+                            <img src="http://{{ site_domain }}{% static 'images/splitcart_logo.png' %}" alt="Logo" class="email-logo">
                             <span class="email-header-title">SplitCart</span>
                         </td>
                     </tr>

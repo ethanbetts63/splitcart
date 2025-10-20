@@ -10,6 +10,13 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         Overrides the default send_mail method to ensure multipart (HTML and text)
         emails are sent correctly.
         """
+        # Add site domain to context from request to avoid using the 'sites' framework in templates.
+        if request:
+            context['site_domain'] = request.get_host()
+        else:
+            # A fallback domain is needed if the request is not available.
+            context['site_domain'] = 'localhost:8000'  # A sensible default for local dev
+
         # The context already contains the user and activate_url.
         # We render the subject, text body, and HTML body.
         subject = render_to_string(f'{template_prefix}_subject.txt', context, request=request).strip()
