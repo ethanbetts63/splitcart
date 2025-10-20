@@ -22,14 +22,16 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const [errors, setErrors] = useState<Record<string, string[]>>({})
   const { login } = useAuth()
   const navigate = useNavigate()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setErrors({})
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match!")
+      setErrors({ password2: ["Passwords do not match!"] })
       return
     }
 
@@ -53,15 +55,16 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       if (response.ok) {
         const data = await response.json()
         console.log("Registration successful", data)
-        // dj-rest-auth registration often returns a token, so we can log the user in directly
         login(data.key)
         navigate("/")
       } else {
         const errorData = await response.json()
+        setErrors(errorData)
         console.error("Registration failed:", errorData)
       }
     } catch (error) {
       console.error("An error occurred during registration:", error)
+      setErrors({ non_field_errors: ["An unexpected error occurred."] })
     }
   }
 
@@ -76,6 +79,13 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       <CardContent>
         <form onSubmit={handleSubmit}>
           <FieldGroup>
+            {errors.non_field_errors && (
+              <div className="rounded-md border border-red-500 bg-red-50 p-4 text-sm text-red-700">
+                {errors.non_field_errors.map((error, index) => (
+                  <p key={index}>{error}</p>
+                ))}
+              </div>
+            )}
             <Field>
               <FieldLabel htmlFor="name">Full Name</FieldLabel>
               <Input
@@ -86,6 +96,11 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />
+              {errors.full_name && (
+                <FieldDescription className="text-red-500">
+                  {errors.full_name[0]}
+                </FieldDescription>
+              )}
             </Field>
             <Field>
               <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -97,10 +112,16 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <FieldDescription>
-                We&apos;ll use this to contact you. We will not share your email
-                with anyone else.
-              </FieldDescription>
+              {errors.email ? (
+                <FieldDescription className="text-red-500">
+                  {errors.email[0]}
+                </FieldDescription>
+              ) : (
+                <FieldDescription>
+                  We&apos;ll use this to contact you. We will not share your
+                  email with anyone else.
+                </FieldDescription>
+              )}
             </Field>
             <Field>
               <FieldLabel htmlFor="password">Password</FieldLabel>
@@ -111,9 +132,15 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <FieldDescription>
-                Must be at least 8 characters long.
-              </FieldDescription>
+              {errors.password1 ? (
+                <FieldDescription className="text-red-500">
+                  {errors.password1.join(" ")}
+                </FieldDescription>
+              ) : (
+                <FieldDescription>
+                  Must be at least 8 characters long.
+                </FieldDescription>
+              )}
             </Field>
             <Field>
               <FieldLabel htmlFor="confirm-password">
@@ -126,7 +153,11 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
-              <FieldDescription>Please confirm your password.</FieldDescription>
+              {errors.password2 && (
+                <FieldDescription className="text-red-500">
+                  {errors.password2.join(" ")}
+                </FieldDescription>
+              )}
             </Field>
             <FieldGroup>
               <Field>
