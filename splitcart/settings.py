@@ -138,8 +138,10 @@ CORS_ALLOWED_ORIGINS = [
 
 
 
-# Email Authentication Settings
+# Custom Account Adapter
+ACCOUNT_ADAPTER = 'users.adapter.CustomAccountAdapter'
 
+# Email Authentication Settings
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 ACCOUNT_EMAIL_REQUIRED = True
