@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils"
+import priceDestroyerImage from "../../assets/price_destroyer.png"
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -57,11 +58,11 @@ export function LoginForm({
               </FieldDescription>
             </FieldGroup>
           </form>
-          <div className="bg-muted relative hidden md:block">
+          <div className="relative hidden md:block">
             <img
-              src="/placeholder.svg"
+              src={priceDestroyerImage}
               alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              className="absolute inset-0 h-full w-full object-contain dark:brightness-[0.2] dark:grayscale"
             />
           </div>
         </CardContent>
