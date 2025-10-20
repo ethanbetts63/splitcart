@@ -17,7 +17,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -31,7 +31,7 @@ export function LoginForm({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       })
 
       if (response.ok) {
@@ -60,15 +60,15 @@ export function LoginForm({
                 </p>
               </div>
               <Field>
-                <FieldLabel htmlFor="username">Username</FieldLabel>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
-                  id="username"
-                  type="text"
-                  placeholder="your-username"
+                  id="email"
+                  type="email"
+                  placeholder="m@example.com"
                   required
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  autoComplete="username"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
                 />
               </Field>
               <Field>

@@ -126,5 +126,31 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOWED_ORIGINS = [
+
     "http://localhost:5173",
+
 ]
+
+
+
+# Email Authentication Settings
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+ACCOUNT_EMAIL_REQUIRED = True
+
+ACCOUNT_UNIQUE_EMAIL = True
+
+ACCOUNT_USERNAME_REQUIRED = False
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+
+
+
+# Custom Serializer for Registration
+
+REST_AUTH = {
+
+    'REGISTER_SERIALIZER': 'users.serializers.CustomRegisterSerializer',
+
+}

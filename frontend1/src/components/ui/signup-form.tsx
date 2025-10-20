@@ -42,7 +42,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            username: fullName, // dj-rest-auth uses 'username'
+            full_name: fullName,
             email,
             password,
             password2: confirmPassword,
