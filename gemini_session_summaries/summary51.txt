@@ -1,0 +1,37 @@
+Session Summary: Epic Debugging of Email Verification
+
+Date: 20/10/2025
+
+## Goal
+
+The primary goal for the session was to implement a working, professionally-styled email verification system for new user registrations.
+
+## Key Accomplishments
+
+*   **Email Backend Configured:** Successfully set up `django-allauth` and the SMTP settings to send emails via Gmail.
+*   **Frontend Flow Improved:** The frontend registration form was modified to show a "Please verify your email" message instead of auto-logging in.
+*   **Professional Email Template:** A new, professional black-and-white HTML email template was created and configured to be served with a logo.
+*   **Custom Email Adapter:** To gain more control over the email sending process, a custom `AccountAdapter` was implemented to manually handle rendering and sending multipart emails.
+*   **Utility Commands:** Created `delete_users` and `send_email` management commands to aid in testing.
+
+## The Central Issue: `TemplateSyntaxError: 'sites' is not a registered tag library`
+
+The vast majority of the session was spent on an extremely persistent and unusual `TemplateSyntaxError`. Despite the `django.contrib.sites` app being necessary for `django-allauth` to function, the template engine refused to load its tags. 
+
+An exhaustive debugging process was undertaken to resolve this:
+
+1.  **Server Restart:** Confirmed multiple times that the server was restarted after configuration changes.
+
+2.  **`INSTALLED_APPS` Order:** Identified and corrected the load order in `settings.py`, moving `django.contrib.sites` to before the `allauth` apps.
+
+3.  **Template Duplication:** Resolved a secondary `TemplateDoesNotExist` error by creating `_signup` specific versions of the email templates, as required by `allauth`.
+
+4.  **Hard Environment Reset:** When the error still persisted, we performed a full "hard reset" of the Python environment:
+    *   All `__pycache__` directories were deleted to remove stale, cached code.
+    *   All packages in `requirements.txt` were forcibly reinstalled to fix any potential corruption in the virtual environment. This was initially blocked by a file lock, which was resolved by closing all editors and terminals.
+
+5.  **Settings File Verification:** Finally, we inspected `manage.py` to confirm it was loading the correct `splitcart.settings` file, which it was.
+
+### Current Status
+
+Despite all of the above, the `TemplateSyntaxError` remains. The project is in a state that contradicts standard Django behavior. The configuration appears correct, and the environment is now clean, yet the `sites` app is not being loaded by the template engine. The root cause remains unknown and is indicative of a highly unusual and deep-seated environmental or project configuration issue.
