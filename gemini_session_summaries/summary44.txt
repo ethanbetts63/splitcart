@@ -6,15 +6,15 @@ This session focused on refining the SplitCart frontend. I fixed a store_address
 
   The SplitCart frontend is a React/TypeScript application using react-router-dom, shadcn/ui, and Tailwind CSS. Key files include:
 
-   * Main Layout: frontend1/src/App.tsx (navigation, routing, global state)
-   * Home Page: frontend1/src/pages/HomePage.tsx (product carousels)
-   * Substitution Page: frontend1/src/pages/SubstitutionPage.tsx (substitute selection, navigation)
-   * Final Cart Page: frontend1/src/pages/FinalCartPage.tsx (optimized plan, dynamic loading)
-   * Trolley Dialog: frontend1/src/pages/dialog-pages/TrolleyPage.tsx (cart display, substitution initiation)
-   * Product Tile: frontend1/src/components/ProductTile.tsx (product display, text centering)
-   * Price Display: frontend1/src/components/PriceDisplay.tsx (price display, text centering)
-   * Next Button Component: frontend1/src/components/NextButton.tsx (reusable navigation logic)
-   * Contexts: frontend1/src/context/ShoppingListContext.tsx, frontend1/src/context/StoreContext.tsx,
-     frontend1/src/context/SubstitutionContext.tsx
-   * Utilities: frontend1/src/lib/utils.ts (cn helper)
-   * Global Styles: frontend1/src/App.css (header width adjustment)
+   * Main Layout: frontend/src/App.tsx (navigation, routing, global state)
+   * Home Page: frontend/src/pages/HomePage.tsx (product carousels)
+   * Substitution Page: frontend/src/pages/SubstitutionPage.tsx (substitute selection, navigation)
+   * Final Cart Page: frontend/src/pages/FinalCartPage.tsx (optimized plan, dynamic loading)
+   * Trolley Dialog: frontend/src/pages/dialog-pages/TrolleyPage.tsx (cart display, substitution initiation)
+   * Product Tile: frontend/src/components/ProductTile.tsx (product display, text centering)
+   * Price Display: frontend/src/components/PriceDisplay.tsx (price display, text centering)
+   * Next Button Component: frontend/src/components/NextButton.tsx (reusable navigation logic)
+   * Contexts: frontend/src/context/ShoppingListContext.tsx, frontend/src/context/StoreContext.tsx,
+     frontend/src/context/SubstitutionContext.tsx
+   * Utilities: frontend/src/lib/utils.ts (cn helper)
+   * Global Styles: frontend/src/App.css (header width adjustment)
