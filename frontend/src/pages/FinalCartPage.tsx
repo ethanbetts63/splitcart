@@ -305,8 +305,11 @@ const FinalCartPage = () => {
     if (!isAuthenticated) {
         toast.error("Authentication Required", {
             description: "Please log in to email your shopping list.",
+            action: {
+                label: "Login",
+                onClick: () => navigate("/login"),
+            },
         });
-        navigate("/login");
         return;
     }
 
