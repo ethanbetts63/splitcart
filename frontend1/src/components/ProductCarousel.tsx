@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Skeleton } from "@/components/ui/skeleton";
 import SkeletonProductTile from "./SkeletonProductTile";
 import ProductTile from "./ProductTile";
 import '../css/ProductCarousel.css';
