@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { useAuth } from "@/context/AuthContext"
+import { toast } from "sonner"
 
 export function LoginForm({
   className,
@@ -40,10 +41,22 @@ export function LoginForm({
         console.log("Login successful, token saved:", data.key)
         navigate("/")
       } else {
-        console.error("Login failed")
+        const errorData = await response.json()
+        if (errorData.non_field_errors && errorData.non_field_errors.includes("E-mail is not verified.")) {
+          toast.error("Login Failed", {
+            description: "Your email address has not been verified. Please check your inbox for a verification email.",
+          })
+        } else {
+          toast.error("Login Failed", {
+            description: errorData.non_field_errors ? errorData.non_field_errors[0] : "An unexpected error occurred. Please try again.",
+          })
+        }
       }
     } catch (error) {
       console.error("An error occurred during login:", error)
+      toast.error("Login Error", {
+        description: "An error occurred during login. Please check your network connection and try again.",
+      })
     }
   }
 
@@ -54,9 +67,9 @@ export function LoginForm({
           <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">Welcome back</h1>
+                <h1 className="text-2xl font-bold">Welcome back! :)</h1>
                 <p className="text-muted-foreground text-balance">
-                  Login to your Acme Inc account
+                  Login to start hunting bargains!
                 </p>
               </div>
               <Field>
