@@ -44,7 +44,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
           body: JSON.stringify({
             full_name: fullName,
             email,
-            password,
+            password1: password,
             password2: confirmPassword,
           }),
         }
