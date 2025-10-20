@@ -1,4 +1,5 @@
 from django.contrib.auth.models import BaseUserManager
+from allauth.account.models import EmailAddress
 
 class UserManager(BaseUserManager):
     """
@@ -28,4 +29,14 @@ class UserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        return self.create_user(email, password, **extra_fields)
+        user = self.create_user(email, password, **extra_fields)
+
+        # Mark the superuser's email as verified
+        try:
+            email_address = EmailAddress.objects.get(user=user, email=user.email)
+            email_address.verified = True
+            email_address.save()
+        except EmailAddress.DoesNotExist:
+            EmailAddress.objects.create(user=user, email=user.email, primary=True, verified=True)
+
+        return user
