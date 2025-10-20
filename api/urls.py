@@ -8,6 +8,7 @@ from .views.product_translation_file_view import ProductTranslationFileView
 from .views.brand_translation_file_view import BrandTranslationFileView
 from .views.product_barcode_view import ProductBarcodeView
 from .views.cart_optimization_view import CartOptimizationView
+from .views.cart_export_view import DownloadShoppingListView, EmailShoppingListView
 from .views.store_list_view import StoreListView
 from .views.scheduler_view import SchedulerView
 from .views.postcode_search_view import PostcodeSearchView
@@ -32,6 +33,8 @@ urlpatterns = [
     path('files/brand_translations/', BrandTranslationFileView.as_view(), name='brand-translation-file'),
     path('products/barcodes/', ProductBarcodeView.as_view(), name='product-barcodes'),
     path('cart/split/', CartOptimizationView.as_view(), name='cart-optimization'),
+    path('cart/download-list/', DownloadShoppingListView.as_view(), name='download-shopping-list'),
+    path('cart/email-list/', EmailShoppingListView.as_view(), name='email-shopping-list'),
     path('stores/nearby/', StoreListView.as_view(), name='store-list'),
     path('postcodes/search/', PostcodeSearchView.as_view(), name='postcode-search'),
 ]

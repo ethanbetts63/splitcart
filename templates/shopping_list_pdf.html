@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping List</title>
+    <style>
+        @page {
+            size: a4 portrait;
+            margin: 1.5cm;
+        }
+        body {
+            font-family: sans-serif;
+            color: #333;
+        }
+        .store-section {
+            margin-bottom: 25px;
+            page-break-inside: avoid;
+        }
+        h1 {
+            font-size: 22px;
+            color: #111;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        h2 {
+            font-size: 18px;
+            color: #333;
+            border-bottom: 2px solid #f2f2f2;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+        }
+        p {
+            font-size: 12px;
+            color: #666;
+            margin-top: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            font-size: 10px;
+        }
+        th {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+        tbody tr:nth-child(odd) {
+            background-color: #fdfdfd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Shopping Plan</h1>
+
+    {% for store_name, store_plan in shopping_plan.items %}
+        <div class="store-section">
+            <h2>{{ store_name }}</h2>
+            {% if store_plan.store_address %}
+                <p>{{ store_plan.store_address }}</p>
+            {% endif %}
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 40%;">Product</th>
+                        <th style="width: 15%;">Brand</th>
+                        <th style="width: 15%;">Size</th>
+                        <th style="width: 10%;">Qty</th>
+                        <th style="width: 10%;">Unit Price</th>
+                        <th style="width: 10%;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in store_plan.items %}
+                        <tr>
+                            <td>{{ item.product_name }}</td>
+                            <td>{{ item.brand|default:"N/A" }}</td>
+                            <td>{{ item.size|default:"N/A" }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>${{ "%.2f"|format(item.price) }}</td>
+                            <td>${{ "%.2f"|format(item.price * item.quantity) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
+
+</body>
+</html>
