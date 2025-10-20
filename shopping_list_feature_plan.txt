@@ -1,0 +1,48 @@
+# Shopping List PDF & Email Feature: To-Do List
+
+## High-Level Plan
+
+The goal is to allow users to either download a PDF of their chosen shopping plan or have it emailed to them. We will create a single, reusable PDF generation system on the backend that is used by two separate API endpoints (one for download, one for email). On the frontend, buttons will be placed within each result tab to allow users to export the specific plan they are viewing.
+
+---
+
+## Backend Tasks
+
+1.  **Add New Dependency:**
+    *   Install the `WeasyPrint` library to handle HTML to PDF conversion. This will need to be added to `requirements.txt`.
+
+2.  **Create PDF Generation Utility:**
+    *   Create a new HTML template (e.g., `shopping_list_pdf.html`) to style the shopping list for the PDF output.
+    *   Develop a helper function (e.g., `generate_shopping_list_pdf`) that takes shopping plan data, renders the HTML template with that data, and uses `WeasyPrint` to convert the rendered HTML into PDF byte data.
+
+3.  **Develop API Endpoint for PDF Download:**
+    *   Create a new view and URL route (e.g., `/api/cart/download-list/`).
+    *   The view will accept a POST request containing the JSON for a single shopping plan.
+    *   It will call the PDF generation utility to get the PDF data.
+    *   It will return an `HttpResponse` with the `Content-Type` as `application/pdf` and a `Content-Disposition` header to trigger a browser download.
+
+4.  **Develop API Endpoint for Emailing PDF:**
+    *   Create a new view and URL route (e.g., `/api/cart/email-list/`).
+    *   This view will require user authentication.
+    *   It will accept a POST request with the shopping plan JSON.
+    *   It will call the same PDF generation utility.
+    *   It will then create a new email message, attach the generated PDF, and send it to the logged-in user's email address.
+    *   It will return a JSON response indicating success or failure.
+
+---
+
+## Frontend Tasks
+
+1.  **Update UI on `FinalCartPage.tsx`:**
+    *   Inside the `TabsContent` component for each optimization result, add two new buttons: "Download List" and "Email List".
+    *   Style these buttons appropriately.
+
+2.  **Implement Download Functionality:**
+    *   Create a new function that is called when the "Download List" button is clicked.
+    *   This function will make a POST request to the `/api/cart/download-list/` endpoint, sending the specific `shopping_plan` for that tab.
+    *   It must handle the response as a binary blob, create a temporary URL for it, and programmatically trigger a download in the browser.
+
+3.  **Implement Email Functionality:**
+    *   Create a new function that is called when the "Email List" button is clicked.
+    *   This function will make a POST request to the `/api/cart/email-list/` endpoint, sending the specific `shopping_plan`.
+    *   It should handle the response to show the user a success (e.g., "Email sent!") or error message. This may involve adding a new state variable for holding notification messages.

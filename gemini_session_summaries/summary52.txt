@@ -1,0 +1,24 @@
+**Session Summary: The Case of the Phantom Template Error**
+
+**Date:** 20/10/2025
+
+**Goal:** Resolve a persistent `TemplateSyntaxError` that was preventing user registration emails from being sent, and improve the email's design.
+
+**Key Accomplishments:**
+
+*   Successfully diagnosed and resolved a complex and misleading template error.
+*   Refactored the email sending logic to embed the company logo directly into the email, making it more robust and removing the need for external hosting.
+*   Cleaned up and simplified the email templates.
+*   Refined the email's visual design by adjusting the logo size and button colors per the user's request.
+
+**Session Narrative:**
+
+The session began by tackling a stubborn `TemplateSyntaxError` related to the `django.contrib.sites` framework. Initial investigation pointed to an issue in a custom account adapter where the request context was not being passed to the template engine. However, fixing the adapter did not solve the problem, leading to a deep and confusing debugging process.
+
+The breakthrough came when we discovered that the registration process was using a specific `_signup` version of the email template, which had been overlooked. All previous fixes and workarounds had been mistakenly applied to the wrong file. This discovery was the key to understanding why the error seemed so persistent and illogical.
+
+After correcting the appropriate template, we briefly went down a path of deleting what appeared to be redundant template files, but this caused a new `TemplateDoesNotExist` error. We learned that the `dj-rest-auth` library explicitly requires these specific `_signup` templates, so they were restored.
+
+With the root cause finally understood, we pivoted to a more robust final solution. At the user's request, we modified the account adapter to embed the logo image directly into the email using a Content-ID (`cid`). This approach is superior as it ensures the image always loads for the user and removes all dependencies on the `sites` framework or domain name workarounds for image display.
+
+The session concluded with several successful styling adjustments to the email template, including changing the logo size and button color, resulting in a fully functional and visually correct user registration email. We also briefly discussed the causes of email "clipping" in clients like Gmail.
