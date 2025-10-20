@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "rest_framework",
     'rest_framework.authtoken',
     'dj_rest_auth',
+    'dj_rest_auth.registration',
     'django.contrib.sites',
     "django_extensions",
     "debug_toolbar",
