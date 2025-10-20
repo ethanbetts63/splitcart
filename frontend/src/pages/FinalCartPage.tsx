@@ -148,7 +148,11 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
 import { Badge } from "@/components/ui/badge";
 
 
-const ResultsDisplay = ({ data }: { data: OptimizationDataSet }) => {
+const ResultsDisplay = ({ data, handleDownload, exportAction }: { 
+    data: OptimizationDataSet;
+    handleDownload: (plan: ShoppingPlan, planName: string) => Promise<void>;
+    exportAction: {type: 'email' | 'download', plan: string} | null;
+}) => {
     if (!data || (!data.best_single_store && (!data.optimization_results || data.optimization_results.length === 0))) {
         return <p className="mt-4">No optimization results available for this selection.</p>;
     }
@@ -208,8 +212,17 @@ const ResultsDisplay = ({ data }: { data: OptimizationDataSet }) => {
                                         <Mail className="mr-2 h-4 w-4" />
                                         <span>Email</span>
                                     </Button>
-                                    <Button variant="outline" size="sm">
-                                        <Download className="mr-2 h-4 w-4" />
+                                    <Button 
+                                        variant="outline" 
+                                        size="sm"
+                                        onClick={() => handleDownload(data.best_single_store.shopping_plan, 'best-single-store')}
+                                        disabled={exportAction?.type === 'download' && exportAction?.plan === 'tab-1'}
+                                    >
+                                        {exportAction?.type === 'download' && exportAction?.plan === 'tab-1' ? (
+                                            <Spinner className="mr-2 h-4 w-4 animate-spin" />
+                                        ) : (
+                                            <Download className="mr-2 h-4 w-4" />
+                                        )}
                                         <span>Download</span>
                                     </Button>
                                 </div>
@@ -223,17 +236,22 @@ const ResultsDisplay = ({ data }: { data: OptimizationDataSet }) => {
                     <TabsContent key={result.max_stores} value={`tab-${result.max_stores}`}>
                         <div className="p-4 border rounded-md">
                             <div className="flex justify-between items-start mb-4">
-                                <div>
-                                    <h3 className="font-bold text-lg">Total Cost: ${result.optimized_cost.toFixed(2)}</h3>
-                                    <p className="text-sm text-green-600 font-semibold">Savings: ${result.savings.toFixed(2)}</p>
-                                </div>
                                 <div className="flex items-center gap-2">
                                     <Button variant="outline" size="sm">
                                         <Mail className="mr-2 h-4 w-4" />
                                         <span>Email</span>
                                     </Button>
-                                    <Button variant="outline" size="sm">
-                                        <Download className="mr-2 h-4 w-4" />
+                                    <Button 
+                                        variant="outline" 
+                                        size="sm"
+                                        onClick={() => handleDownload(result.shopping_plan, `stores-${result.max_stores}`)}
+                                        disabled={exportAction?.type === 'download' && exportAction?.plan === `tab-${result.max_stores}`}
+                                    >
+                                        {exportAction?.type === 'download' && exportAction?.plan === `tab-${result.max_stores}` ? (
+                                            <Spinner className="mr-2 h-4 w-4 animate-spin" />
+                                        ) : (
+                                            <Download className="mr-2 h-4 w-4" />
+                                        )}
                                         <span>Download</span>
                                     </Button>
                                 </div>
@@ -255,6 +273,40 @@ const FinalCartPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewWithSubstitutes, setViewWithSubstitutes] = useState(true);
+  const [exportAction, setExportAction] = useState<{type: 'email' | 'download', plan: string} | null>(null);
+
+  const handleDownload = async (plan: ShoppingPlan, planName: string) => {
+    setExportAction({type: 'download', plan: planName});
+    setError(null);
+
+    try {
+        const response = await fetch('/api/cart/download-list/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ shopping_plan: plan }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to generate PDF.');
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `splitcart-plan-${planName}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+
+    } catch (err: any) {
+        setError(err.message);
+    } finally {
+        setExportAction(null);
+    }
+  };
 
   useEffect(() => {
     const optimizeCart = async () => {
@@ -330,7 +382,7 @@ const FinalCartPage = () => {
         )}
       </div>
       
-      {resultsToShow ? <ResultsDisplay data={resultsToShow} /> : <p>No results to display for this option.</p>}
+      {resultsToShow ? <ResultsDisplay data={resultsToShow} handleDownload={handleDownload} exportAction={exportAction} /> : <p>No results to display for this option.</p>}
 
     </div>
   );
