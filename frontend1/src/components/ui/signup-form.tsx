@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { useAuth } from "@/context/AuthContext"
+import { Spinner } from "@/components/ui/spinner"
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [fullName, setFullName] = useState("")
@@ -23,15 +24,18 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [errors, setErrors] = useState<Record<string, string[]>>({})
+  const [isLoading, setIsLoading] = useState(false)
   const { login } = useAuth()
   const navigate = useNavigate()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setErrors({})
+    setIsLoading(true)
 
     if (password !== confirmPassword) {
       setErrors({ password2: ["Passwords do not match!"] })
+      setIsLoading(false)
       return
     }
 
@@ -65,6 +69,8 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     } catch (error) {
       console.error("An error occurred during registration:", error)
       setErrors({ non_field_errors: ["An unexpected error occurred."] })
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -73,7 +79,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       <CardHeader>
         <CardTitle>Create an account</CardTitle>
         <CardDescription>
-          Enter your information below to create your account
+          Enter your information below to create your account. We take 
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -161,7 +167,9 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
             </Field>
             <FieldGroup>
               <Field>
-                <Button type="submit">Create Account</Button>
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? <Spinner /> : "Create Account"}
+                </Button>
                 <FieldDescription className="px-6 text-center">
                   Already have an account?{" "}
                   <Link to="/login" className="underline">
