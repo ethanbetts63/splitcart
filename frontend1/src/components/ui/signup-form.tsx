@@ -25,6 +25,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [errors, setErrors] = useState<Record<string, string[]>>({})
   const [isLoading, setIsLoading] = useState(false)
+  const [registrationComplete, setRegistrationComplete] = useState(false)
   const { login } = useAuth()
   const navigate = useNavigate()
 
@@ -57,10 +58,8 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       )
 
       if (response.ok) {
-        const data = await response.json()
-        console.log("Registration successful", data)
-        login(data.key)
-        navigate("/")
+        // On successful registration, show a confirmation message
+        setRegistrationComplete(true)
       } else {
         const errorData = await response.json()
         setErrors(errorData)
@@ -72,6 +71,25 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  if (registrationComplete) {
+    return (
+      <Card {...props}>
+        <CardHeader>
+          <CardTitle>Registration Successful</CardTitle>
+          <CardDescription>
+            Please check your email to complete the registration process.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p>
+            We have sent a confirmation link to your email address. Please click
+            the link to activate your account.
+          </p>
+        </CardContent>
+      </Card>
+    )
   }
 
   return (
