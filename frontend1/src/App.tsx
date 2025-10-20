@@ -14,6 +14,7 @@ import SubstitutionPage from "./pages/SubstitutionPage";
 import FinalCartPage from "./pages/FinalCartPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import { useAuth } from "@/context/AuthContext";
 import CategoryBar from "./components/CategoryBar";
 import Footer from './components/Footer';
 import './App.css';
@@ -39,6 +40,7 @@ const Layout = () => {
   const location = useLocation();
   const { selectedStoreIds } = useStoreSelection();
   const { cartTotal } = useShoppingList();
+  const { isAuthenticated, logout } = useAuth();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogPage, setDialogPage] = useState('Trolley');
@@ -133,9 +135,13 @@ const Layout = () => {
                 )}
               </div>
             </div>
-            <Link to="/login">
-              <Button variant="outline">Login</Button>
-            </Link>
+            {isAuthenticated ? (
+              <Button variant="outline" onClick={logout}>Logout</Button>
+            ) : (
+              <Link to="/login">
+                <Button variant="outline">Login</Button>
+              </Link>
+            )}
             {showNextButton && <NextButton className="h-12 px-4" />}
           </div>
         </div>

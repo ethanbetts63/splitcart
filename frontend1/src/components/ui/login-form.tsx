@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils"
 import priceDestroyerImage from "../../assets/price_destroyer.png"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
+import { useAuth } from "@/context/AuthContext"
 
 export function LoginForm({
   className,
@@ -18,6 +19,8 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const { login } = useAuth()
+  const navigate = useNavigate()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -33,8 +36,9 @@ export function LoginForm({
 
       if (response.ok) {
         const data = await response.json()
-        localStorage.setItem("token", data.key)
+        login(data.key)
         console.log("Login successful, token saved:", data.key)
+        navigate("/")
       } else {
         console.error("Login failed")
       }
@@ -110,7 +114,7 @@ export function LoginForm({
       <FieldDescription className="px-6 text-center">
         By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
         and <a href="#">Privacy Policy</a>.
-      </FieldDescription>
+      </Description>
     </div>
   )
 }
