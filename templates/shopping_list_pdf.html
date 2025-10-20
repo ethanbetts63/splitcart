@@ -56,6 +56,7 @@
 <body>
     <h1>Your Shopping Plan</h1>
 
+    {% load cart_extras %}
     {% for store_name, store_plan in shopping_plan.items %}
         <div class="store-section">
             <h2>{{ store_name }}</h2>
@@ -80,8 +81,8 @@
                             <td>{{ item.brand|default:"N/A" }}</td>
                             <td>{{ item.size|default:"N/A" }}</td>
                             <td>{{ item.quantity }}</td>
-                            <td>${{ "%.2f"|format(item.price) }}</td>
-                            <td>${{ "%.2f"|format(item.price * item.quantity) }}</td>
+                            <td>${{ item.price|floatformat:2 }}</td>
+                            <td>${{ item.price|multiply:item.quantity|floatformat:2 }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

@@ -287,8 +287,15 @@ const FinalCartPage = () => {
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to generate PDF.');
+            const contentType = response.headers.get("content-type");
+            let errorMessage = 'Failed to generate PDF.';
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+                const errorData = await response.json();
+                errorMessage = errorData.error || errorMessage;
+            } else {
+                errorMessage = `Server returned an unexpected error (${response.status}).`;
+            }
+            throw new Error(errorMessage);
         }
 
         const blob = await response.blob();
