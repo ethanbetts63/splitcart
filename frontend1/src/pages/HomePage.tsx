@@ -91,10 +91,10 @@ const HomePage = () => {
           </h2>
           <p className="text-lg mt-4">Short answer: <span className="font-bold">25-32%</span>. Most common answer: <span className="font-bold">Who cares?</span></p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-lg text-gray-700">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-lg ">
           <div className="flex flex-col gap-4">
             <p>
-              <span className="font-bold">I care. </span>And if you're like me then you care too. If you're like me, you've considered the dollar value of a rewards point. Or debated ply count vs kilogram weight of toilet paper. 
+              <span className="font-bold">I care. </span>And if you're like me then you care too. If you're like me, you've considered the dollar value of a rewards point. Or weighed the merits of ply count versus weight value of toilet paper.
             </p>
             <p className="font-bold">
               If you're like me then SplitCart was built for you. I know this to be a fact because I built SplitCart for me.
@@ -105,7 +105,7 @@ const HomePage = () => {
           </div>
           <div className="flex flex-col gap-4">
             <p>
-              I've collected the prices. I've mathematically calculated the best two, three, or four store combination, and I've removed as much hassle as humanly possible.
+              I've collected the prices. I've mathematically calculated the best two, three, or four store combinations, and I've removed as much hassle as humanly possible.
             </p>
             <p>
               So, <span className="font-bold bg-yellow-200 px-0.5 py-1 rounded">welcome aboard fellow bargain hunter!</span> I hope SplitCart can be as useful to you as it is to me.
