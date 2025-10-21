@@ -9,6 +9,9 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ResultsDisplay from '@/components/ResultsDisplay';
+import { FaqAccordion } from '@/components/FaqAccordion';
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import futureTodayImage from "@/assets/future_today.png";
 import type { ApiResponse, ExportData } from '@/types';
 
 const FinalCartPage = () => {
@@ -187,6 +190,20 @@ toast.success("Email Sent!", {
       </div>
 
       {resultsToShow ? <ResultsDisplay data={resultsToShow} handleDownload={handleDownload} handleEmail={handleEmail} exportAction={exportAction} /> : <p>No results to display for this option.</p>}
+
+      <div className="mt-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-4">Cart FAQs</h2>
+            <FaqAccordion page="final_cart" />
+          </div>
+          <div>
+            <AspectRatio ratio={16 / 9}>
+              <img src={futureTodayImage} alt="The future is today" className="rounded-md object-contain w-full h-full" />
+            </AspectRatio>
+          </div>
+        </div>
+      </div>
 
     </div>
   );
