@@ -9,6 +9,8 @@ import type { Product } from '@/types/Product';
 import { Badge } from '@/components/ui/badge';
 import { BadgeCheckIcon } from 'lucide-react';
 import { FaqAccordion } from '@/components/FaqAccordion';
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import kingKongImage from "../assets/king_kong.png";
 
 const SubstitutionPage = () => {
   const navigate = useNavigate();
@@ -127,28 +129,23 @@ const SubstitutionPage = () => {
           </div>
         </div>
       </div>
-
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import kingKongImage from "../assets/king_kong.png";
-
-// ... (rest of the imports)
-
-// ... (rest of the component)
-
-      <div className="mt-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-4">Substitution FAQs</h2>
-            <FaqAccordion page="substitutes" />
-          </div>
-          <div>
-            <AspectRatio ratio={16 / 9}>
-              <img src={kingKongImage} alt="King Kong swatting at discount planes" className="rounded-md object-contain w-full h-full" />
-            </AspectRatio>
-          </div>
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col gap-8">
+          <section>
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-4 text-center">Why substitution?</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div>
+                <FaqAccordion page="substitutes" />
+              </div>
+              <div>
+                <AspectRatio ratio={16 / 9}>
+                  <img src={kingKongImage} alt="King Kong swatting at discount planes" className="rounded-md object-contain w-full h-full" />
+                </AspectRatio>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
-
     </div>
   );
 };

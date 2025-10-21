@@ -192,9 +192,9 @@ toast.success("Email Sent!", {
       {resultsToShow ? <ResultsDisplay data={resultsToShow} handleDownload={handleDownload} handleEmail={handleEmail} exportAction={exportAction} /> : <p>No results to display for this option.</p>}
 
       <div className="mt-16">
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-4 text-center">Cart FAQs</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-4">Cart FAQs</h2>
             <FaqAccordion page="final_cart" />
           </div>
           <div>
