@@ -11,17 +11,17 @@ from ..utils import generate_shopping_list_pdf
 class DownloadShoppingListView(APIView):
     """
     An API view to generate and download a shopping list as a PDF.
-    Accepts a POST request with a 'shopping_plan' in the body.
+    Accepts a POST request with shopping plan data in the body.
     """
     def post(self, request, *args, **kwargs):
-        shopping_plan = request.data.get('shopping_plan')
-        if not shopping_plan:
+        export_data = request.data
+        if not export_data or 'shopping_plan' not in export_data:
             return Response(
                 {"error": "Shopping plan data is required."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        pdf_data = generate_shopping_list_pdf(shopping_plan)
+        pdf_data = generate_shopping_list_pdf(export_data)
 
         if pdf_data:
             response = HttpResponse(pdf_data, content_type='application/pdf')
@@ -36,19 +36,19 @@ class DownloadShoppingListView(APIView):
 class EmailShoppingListView(APIView):
     """
     An API view to generate and email a shopping list as a PDF attachment.
-    Accepts a POST request with a 'shopping_plan' in the body.
+    Accepts a POST request with shopping plan data in the body.
     """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        shopping_plan = request.data.get('shopping_plan')
-        if not shopping_plan:
+        export_data = request.data
+        if not export_data or 'shopping_plan' not in export_data:
             return Response(
                 {"error": "Shopping plan data is required."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        pdf_data = generate_shopping_list_pdf(shopping_plan)
+        pdf_data = generate_shopping_list_pdf(export_data)
 
         if not pdf_data:
             return Response(
@@ -80,4 +80,5 @@ class EmailShoppingListView(APIView):
                 {"error": "An error occurred while sending the email."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
 

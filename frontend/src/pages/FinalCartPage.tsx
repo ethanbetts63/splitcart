@@ -82,6 +82,13 @@ interface ApiResponse extends OptimizationDataSet {
   no_subs_results?: OptimizationDataSet;
 }
 
+interface ExportData {
+    shopping_plan: ShoppingPlan;
+    baseline_cost: number;
+    optimized_cost: number;
+    savings: number;
+}
+
 const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
     <div className="mt-4 space-y-8">
         {Object.entries(plan).filter(([, store_plan]) => store_plan.items && store_plan.items.length > 0).map(([storeName, store_plan]) => {
@@ -150,8 +157,8 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
 
 const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: {
     data: OptimizationDataSet;
-    handleDownload: (plan: ShoppingPlan, planName: string) => Promise<void>;
-    handleEmail: (plan: ShoppingPlan, planName: string) => Promise<void>;
+    handleDownload: (exportData: ExportData, planName: string) => Promise<void>;
+    handleEmail: (exportData: ExportData, planName: string) => Promise<void>;
     exportAction: {type: 'email' | 'download', plan: string} | null;
 }) => {
     if (!data || (!data.best_single_store && (!data.optimization_results || data.optimization_results.length === 0))) {
@@ -212,7 +219,7 @@ const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: {
                                     <Button 
                                         variant="outline" 
                                         size="sm"
-                                        onClick={() => handleEmail(data.best_single_store.shopping_plan, 'best-single-store')}
+                                        onClick={() => handleEmail({ shopping_plan: data.best_single_store.shopping_plan, baseline_cost: data.baseline_cost, optimized_cost: data.best_single_store.optimized_cost, savings: data.best_single_store.savings }, 'best-single-store')}
                                         disabled={exportAction?.type === 'email' && exportAction?.plan === 'best-single-store'}
                                     >
                                         {exportAction?.type === 'email' && exportAction?.plan === 'best-single-store' ? (
@@ -225,7 +232,7 @@ const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: {
                                     <Button 
                                         variant="outline" 
                                         size="sm"
-                                        onClick={() => handleDownload(data.best_single_store.shopping_plan, 'best-single-store')}
+                                        onClick={() => handleDownload({ shopping_plan: data.best_single_store.shopping_plan, baseline_cost: data.baseline_cost, optimized_cost: data.best_single_store.optimized_cost, savings: data.best_single_store.savings }, 'best-single-store')}
                                         disabled={exportAction?.type === 'download' && exportAction?.plan === 'best-single-store'}
                                     >
                                         {exportAction?.type === 'download' && exportAction?.plan === 'best-single-store' ? (
@@ -254,7 +261,7 @@ const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: {
                                     <Button 
                                         variant="outline" 
                                         size="sm"
-                                        onClick={() => handleEmail(result.shopping_plan, `stores-${result.max_stores}`)}
+                                        onClick={() => handleEmail({ shopping_plan: result.shopping_plan, baseline_cost: data.baseline_cost, optimized_cost: result.optimized_cost, savings: result.savings }, `stores-${result.max_stores}`)}
                                         disabled={exportAction?.type === 'email' && exportAction?.plan === `stores-${result.max_stores}`}
                                     >
                                         {exportAction?.type === 'email' && exportAction?.plan === `stores-${result.max_stores}` ? (
@@ -267,7 +274,7 @@ const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: {
                                     <Button 
                                         variant="outline" 
                                         size="sm"
-                                        onClick={() => handleDownload(result.shopping_plan, `stores-${result.max_stores}`)}
+                                        onClick={() => handleDownload({ shopping_plan: result.shopping_plan, baseline_cost: data.baseline_cost, optimized_cost: result.optimized_cost, savings: result.savings }, `stores-${result.max_stores}`)}
                                         disabled={exportAction?.type === 'download' && exportAction?.plan === `stores-${result.max_stores}`}
                                     >
                                         {exportAction?.type === 'download' && exportAction?.plan === `stores-${result.max_stores}` ? (
@@ -301,7 +308,7 @@ const FinalCartPage = () => {
   const [viewWithSubstitutes, setViewWithSubstitutes] = useState(true);
   const [exportAction, setExportAction] = useState<{type: 'email' | 'download', plan: string} | null>(null);
 
-  const handleEmail = async (plan: ShoppingPlan, planName: string) => {
+  const handleEmail = async (exportData: ExportData, planName: string) => {
     if (!isAuthenticated) {
         toast.error("Authentication Required", {
             description: "Please log in to email your shopping list.",
@@ -323,7 +330,7 @@ const FinalCartPage = () => {
                 'Content-Type': 'application/json',
                 'Authorization': `Token ${token}`
             },
-            body: JSON.stringify({ shopping_plan: plan }),
+            body: JSON.stringify(exportData),
         });
 
         const resData = await response.json();
@@ -332,7 +339,145 @@ const FinalCartPage = () => {
             throw new Error(resData.error || `Server returned an unexpected error (${response.status}).`);
         }
         
-        toast.success("Email Sent!", {
+toast.success("Email Sent!", {
+            description: "Your shopping list has been sent to your email.",
+        });
+
+    } catch (err: any) {
+        setError(err.message);
+        toast.error("Error Sending Email", {
+            description: err.message,
+        });
+    } finally {
+        setExportAction(null);
+    }
+  };
+
+  const handleDownload = async (exportData: ExportData, planName: string) => {
+    setExportAction({type: 'download', plan: planName});
+    setError(null);
+
+    try {
+        const response = await fetch('/api/cart/download-list/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(exportData),
+        });
+
+        if (!response.ok) {
+            const contentType = response.headers.get("content-type");
+            let errorMessage = 'Failed to generate PDF.';
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+                const errorData = await response.json();
+                errorMessage = errorData.error || errorMessage;
+            } else {
+                errorMessage = `Server returned an unexpected error (${response.status}).`;
+            }
+            throw new Error(errorMessage);
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `splitcart-plan-${planName}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+
+    } catch (err: any) {
+        setError(err.message);
+        toast.error("Error Downloading PDF", {
+            description: err.message,
+        });
+    } finally {
+        setExportAction(null);
+    }
+  };
+
+  useEffect(() => {
+    const optimizeCart = async () => {
+      if (originalItems.length === 0 || selectedStoreIds.size === 0) {
+        setIsLoading(false);
+        return;
+      }
+
+      const cart = originalItems.map(item => {
+        const original_item_option = { product_id: item.product.id, quantity: item.quantity };
+        const subs = selections[item.product.id];
+        if (subs && subs.length > 0) {
+            const sub_options = subs.map(sub => ({ product_id: sub.product.id, quantity: sub.quantity }));
+            return [original_item_option, ...sub_options];
+        }
+        return [original_item_option];
+      });
+
+      const original_items_payload = originalItems.map(item => ({
+        product: { id: item.product.id },
+        quantity: item.quantity,
+      }));
+
+      const payload = {
+        cart: cart,
+        store_ids: Array.from(selectedStoreIds),
+        original_items: original_items_payload,
+        max_stores_options: [2, 3, 4],
+      };
+
+      try {
+        setIsLoading(true);
+        const response = await fetch('/api/cart/split/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to optimize cart');
+        }
+
+        const data: ApiResponse = await response.json();
+        setOptimizationData(data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    optimizeCart();
+  }, [originalItems, selectedStoreIds, selections]);
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+  if (error && !exportAction) return <div className="container mx-auto p-4">Error: {error}</div>;
+  if (!optimizationData) return <div className="container mx-auto p-4">No optimization data available. Add items to your cart and select stores.</div>;
+
+  const resultsToShow = viewWithSubstitutes ? optimizationData : optimizationData.no_subs_results;
+
+  return (
+    <div className="container mx-auto p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Cart Optimization Results</h1>
+        {optimizationData.no_subs_results && (
+            <div className="flex items-center space-x-2">
+                <Switch id="substitutes-switch" checked={viewWithSubstitutes} onCheckedChange={setViewWithSubstitutes} className={viewWithSubstitutes ? 'data-[state=checked]:bg-green-500' : ''} />
+                <Label htmlFor="substitutes-switch">Include Substitutes</Label>
+            </div>
+        )}
+      </div>
+      
+      {resultsToShow ? <ResultsDisplay data={resultsToShow} handleDownload={handleDownload} handleEmail={handleEmail} exportAction={exportAction} /> : <p>No results to display for this option.</p>}
+
+    </div>
+  );
+};
+
+export default FinalCartPage;
+st.success("Email Sent!", {
             description: "Your shopping list has been sent to your email.",
         });
 

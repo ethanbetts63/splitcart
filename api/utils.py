@@ -17,17 +17,18 @@ def get_image_base64(url):
     except (requests.exceptions.RequestException, KeyError):
         return None
 
-def generate_shopping_list_pdf(shopping_plan):
+def generate_shopping_list_pdf(export_data):
     """
     Generates a PDF for the given shopping plan using an HTML template.
     """
+    shopping_plan = export_data.get('shopping_plan', {})
     # Process images before rendering the template
     for store, plan in shopping_plan.items():
         for item in plan.get('items', []):
             item['image_base64'] = get_image_base64(item.get('image_url'))
 
     template = get_template('shopping_list_pdf.html')
-    context = {'shopping_plan': shopping_plan}
+    context = {'export_data': export_data}
     html = template.render(context)
 
     result = BytesIO()

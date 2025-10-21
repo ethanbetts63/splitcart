@@ -11,6 +11,24 @@
             font-family: sans-serif;
             color: #333;
         }
+        .summary-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+        }
+        .summary-section h1 {
+            margin-bottom: 15px;
+        }
+        .summary-section p {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        .summary-section .savings {
+            color: #28a745; /* Green color for savings */
+            font-weight: bold;
+        }
         .store-section {
             margin-bottom: 25px;
             page-break-inside: avoid;
@@ -51,49 +69,76 @@
         tbody tr:nth-child(odd) {
             background-color: #fdfdfd;
         }
+        tfoot {
+            font-weight: bold;
+            background-color: #f8f8f8;
+        }
     </style>
 </head>
 <body>
+    {% load cart_extras %}
+
     <h1>Your Shopping Plan</h1>
 
-    {% load cart_extras %}
-    {% for store_name, store_plan in shopping_plan.items %}
-        <div class="store-section">
-            <h2>{{ store_name }}</h2>
-            {% if store_plan.store_address %}
-                <p>{{ store_plan.store_address }}</p>
-            {% endif %}
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 10%;">Image</th>
-                        <th style="width: 35%;">Product</th>
-                        <th style="width: 15%;">Brand</th>
-                        <th style="width: 10%;">Size</th>
-                        <th style="width: 10%;">Qty</th>
-                        <th style="width: 10%;">Unit Price</th>
-                        <th style="width: 10%;">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in store_plan.items %}
+    <div class="summary-section">
+        <p>Baseline Cost: ${{ export_data.baseline_cost|floatformat:2 }}</p>
+        <p>Optimized Cost: ${{ export_data.optimized_cost|floatformat:2 }}</p>
+        <p class="savings">Total Savings: ${{ export_data.savings|floatformat:2 }}</p>
+    </div>
+
+    {% for store_name, store_plan in export_data.shopping_plan.items %}
+        {% if store_plan.items %}
+            <div class="store-section">
+                <h2>{{ store_name }}</h2>
+                {% if store_plan.store_address %}
+                    <p>{{ store_plan.store_address }}</p>
+                {% endif %}
+                <table>
+                    <thead>
                         <tr>
-                            <td>
-                                {% if item.image_base64 %}
-                                    <img src="{{ item.image_base64 }}" style="width: 50px; height: 50px; object-fit: cover;" />
-                                {% endif %}
-                            </td>
-                            <td>{{ item.product_name }}</td>
-                            <td>{{ item.brand|default:"N/A" }}</td>
-                            <td>{{ item.size|default:"N/A" }}</td>
-                            <td>{{ item.quantity }}</td>
-                            <td>${{ item.price|floatformat:2 }}</td>
-                            <td>${{ item.price|multiply:item.quantity|floatformat:2 }}</td>
+                            <th style="width: 10%;">Image</th>
+                            <th style="width: 35%;">Product</th>
+                            <th style="width: 15%;">Brand</th>
+                            <th style="width: 10%;">Size</th>
+                            <th style="width: 10%;">Qty</th>
+                            <th style="width: 10%;">Unit Price</th>
+                            <th style="width: 10%;">Total</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        {% for item in store_plan.items %}
+                            <tr>
+                                <td>
+                                    {% if item.image_base64 %}
+                                        <img src="{{ item.image_base64 }}" style="width: 50px; height: 50px; object-fit: cover;" />
+                                    {% endif %}
+                                </td>
+                                <td>{{ item.product_name }}</td>
+                                <td>{{ item.brand|default:"N/A" }}</td>
+                                <td>{{ item.size|default:"N/A" }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>${{ item.price|floatformat:2 }}</td>
+                                <td>${{ item.price|multiply:item.quantity|floatformat:2 }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6" style="text-align: right;">Store Subtotal:</td>
+                            <td>
+                                {% with 0 as total %}
+                                    {% for item in store_plan.items %}
+                                        {% with total|add:(item.price|multiply:item.quantity) as total %}
+                                        {% endwith %}
+                                    {% endfor %}
+                                    ${{ total|floatformat:2 }}
+                                {% endwith %}
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        {% endif %}
     {% endfor %}
 
 </body>
