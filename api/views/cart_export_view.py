@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from ..utils import generate_shopping_list_pdf
+from ..utils.get_shopping_list_pdf import generate_shopping_list_pdf
 
 class DownloadShoppingListView(APIView):
     """

@@ -1,6 +1,7 @@
 from io import BytesIO
 from django.template.loader import get_template
 from xhtml2pdf import pisa
+from .get_image_base64 import get_image_base64
 
 
 def generate_shopping_list_pdf(export_data):
