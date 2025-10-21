@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Download, Mail } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
 import PlanDetails from '@/components/PlanDetails';
-import { OptimizationDataSet, ExportData, OptimizationResult } from '@/types';
+import * as types from '@/types';
 
 const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: { 
-    data: OptimizationDataSet;
-    handleDownload: (exportData: ExportData, planName: string) => Promise<void>;
-    handleEmail: (exportData: ExportData, planName: string) => Promise<void>;
+    data: types.OptimizationDataSet;
+    handleDownload: (exportData: types.ExportData, planName: string) => Promise<void>;
+    handleEmail: (exportData: types.ExportData, planName: string) => Promise<void>;
     exportAction: {type: 'email' | 'download', plan: string} | null;
 }) => {
     if (!data || (!data.best_single_store && (!data.optimization_results || data.optimization_results.length === 0))) {
@@ -24,7 +24,7 @@ const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: {
             return current;
         }
         return max;
-    }, null as OptimizationResult | null);
+    }, null as types.OptimizationResult | null);
 
     return (
         <div className="mt-4">

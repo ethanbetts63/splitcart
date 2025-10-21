@@ -9,7 +9,7 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ResultsDisplay from '@/components/ResultsDisplay';
-import { ApiResponse, ExportData } from '@/types';
+import type { ApiResponse, ExportData } from '@/types';
 
 const FinalCartPage = () => {
   const { items: originalItems } = useShoppingList();
