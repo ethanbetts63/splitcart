@@ -9,7 +9,7 @@ def calculate_optimized_cost(slots, max_stores):
     choice_vars = pulp.LpVariable.dicts("Choice", ((i, j) for i, slot in enumerate(slots) for j, option in enumerate(slot)), cat="Binary")
     store_usage = pulp.LpVariable.dicts("UseStore", all_store_ids, cat="Binary")
 
-    total_cost = pulp.lpSum(option['price'] * choice_vars[(i, j)] for i, slot in enumerate(slots) for j, option in enumerate(slot))
+    total_cost = pulp.lpSum(option['price'] * option['quantity'] * choice_vars[(i, j)] for i, slot in enumerate(slots) for j, option in enumerate(slot))
     prob += total_cost, "Total Cost"
 
     for i, slot in enumerate(slots):
