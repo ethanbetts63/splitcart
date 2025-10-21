@@ -9,7 +9,7 @@ import type { Product } from '@/types/Product';
 import { Badge } from '@/components/ui/badge';
 import { BadgeCheckIcon } from 'lucide-react';
 import { FaqAccordion } from '@/components/FaqAccordion';
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { FaqImageSection } from "../components/FaqImageSection";
 import kingKongImage from "../assets/king_kong.png";
 
 const SubstitutionPage = () => {
@@ -132,17 +132,12 @@ const SubstitutionPage = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
           <section>
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-4 text-center">Why substitution?</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <div>
-                <FaqAccordion page="substitutes" />
-              </div>
-              <div>
-                <AspectRatio ratio={16 / 9}>
-                  <img src={kingKongImage} alt="King Kong swatting at discount planes" className="rounded-md object-contain w-full h-full" />
-                </AspectRatio>
-              </div>
-            </div>
+            <FaqImageSection
+              title="Why substitution?"
+              page="substitutes"
+              imageSrc={kingKongImage}
+              imageAlt="King Kong swatting at discount planes"
+            />
           </section>
         </div>
       </div>

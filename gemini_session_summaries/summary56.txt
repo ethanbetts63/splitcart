@@ -1,0 +1,9 @@
+The user wanted to change the layout of the FAQ section on both the `SubstitutionPage.tsx` and `FinalCartPage.tsx` so that the title spans across both columns of the grid.
+
+I modified `SubstitutionPage.tsx` by moving the `h2` title "The Hard Hitting Questions" out of the two-column grid and placed it above, centering it with `text-center`. I then applied the same change to `FinalCartPage.tsx` for the title "Cart FAQs", also moving it above the grid and centering it.
+
+Next, the user requested to change the title of the FAQ section on the `SubstitutionPage.tsx` from "The Hard Hitting Questions" to "Why substitution?". I performed this replacement.
+
+Then, the user asked to investigate how the baseline cost is calculated and add it as a FAQ for the final page. I analyzed the `calculate_baseline_cost.py` file and summarized its logic. I then added a new FAQ entry for "How is baseline cost calculated?" with the summarized answer and `pages: ["final_cart"]` to the `FAQ.jsonl` file.
+
+Finally, the user reported that the new FAQ was not appearing on the final cart page. I verified that the `FaqAccordion` component on `FinalCartPage.tsx` was correctly configured to fetch FAQs for `page="final_cart"`. I then identified a potential cause: the `FAQ.jsonl` data might not have been loaded into the database. I looked for a management command to load FAQs and found `import_faqs.py`.
