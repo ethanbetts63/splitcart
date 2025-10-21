@@ -128,10 +128,24 @@ const SubstitutionPage = () => {
         </div>
       </div>
 
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import kingKongImage from "../assets/king_kong.png";
+
+// ... (rest of the imports)
+
+// ... (rest of the component)
+
       <div className="mt-16">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="text-2xl font-bold text-center mb-4">Substitution FAQs</h2>
-          <FaqAccordion page="substitutes" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-4">Substitution FAQs</h2>
+            <FaqAccordion page="substitutes" />
+          </div>
+          <div>
+            <AspectRatio ratio={16 / 9}>
+              <img src={kingKongImage} alt="King Kong swatting at discount planes" className="rounded-md object-contain w-full h-full" />
+            </AspectRatio>
+          </div>
         </div>
       </div>
 

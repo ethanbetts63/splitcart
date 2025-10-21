@@ -186,7 +186,29 @@ toast.success("Email Sent!", {
         )}
       </div>
       
+import { FaqAccordion } from '@/components/FaqAccordion';
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import kingKongImage from "../assets/king_kong.png";
+
+// ... (rest of the imports)
+
+// ... (rest of the component)
+
       {resultsToShow ? <ResultsDisplay data={resultsToShow} handleDownload={handleDownload} handleEmail={handleEmail} exportAction={exportAction} /> : <p>No results to display for this option.</p>}
+
+      <div className="mt-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-4">Cart FAQs</h2>
+            <FaqAccordion page="final_cart" />
+          </div>
+          <div>
+            <AspectRatio ratio={16 / 9}>
+              <img src={kingKongImage} alt="King Kong swatting at discount planes" className="rounded-md object-contain w-full h-full" />
+            </AspectRatio>
+          </div>
+        </div>
+      </div>
 
     </div>
   );

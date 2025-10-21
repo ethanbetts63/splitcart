@@ -14,6 +14,7 @@ import SubstitutionPage from "./pages/SubstitutionPage";
 import FinalCartPage from "./pages/FinalCartPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import ContactPage from "./pages/ContactPage";
 import { useAuth } from "@/context/AuthContext";
 import CategoryBar from "./components/CategoryBar";
 import Footer from './components/Footer';
