@@ -172,14 +172,25 @@ def generate_random_cart(stores, num_products):
 
         for product, price_obj in final_options:
             if not price_obj.price_record: continue
+            address_parts = [
+                price_obj.store.address_line_1,
+                price_obj.store.suburb,
+                price_obj.store.state,
+                price_obj.store.postcode
+            ]
+            store_address = ", ".join(part for part in address_parts if part)
+
             current_slot.append({
                 "product_id": product.id,
                 "product_name": product.name,
                 "brand": product.brand.name if product.brand else None,
-                "sizes": product.sizes,
+                "size": product.size,
                 "store_id": price_obj.store.id,
                 "store_name": price_obj.store.store_name,
+                "company_name": price_obj.store.company.name,
+                "store_address": store_address,
                 "price": float(price_obj.price_record.price),
+                "quantity": 1,
             })
 
         if current_slot:

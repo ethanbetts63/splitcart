@@ -60,15 +60,11 @@ def calculate_optimized_cost(slots, max_stores):
                 if choice_vars[(i, j)].varValue == 1:
                     store_name = option['store_name']
 
-                    product_name = option['product_name']
-                    brand = option['brand']
-                    price = option['price']
-
                     plan_item = {
-                        "product_name": product_name,
-                        "brand": brand,
+                        "product_name": option['product_name'],
+                        "brand": option['brand'],
                         "size": option['size'],
-                        "price": option['unit_price'],
+                        "price": option['price'],
                         "quantity": option['quantity'],
                         "image_url": option['image_url']
                     }
