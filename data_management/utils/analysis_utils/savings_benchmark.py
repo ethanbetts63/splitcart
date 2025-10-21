@@ -180,6 +180,10 @@ def generate_random_cart(stores, num_products):
             ]
             store_address = ", ".join(part for part in address_parts if part)
 
+            company_name = price_obj.store.company.name
+            image_urls_by_company = {k.lower(): v for k, v in product.image_url_pairs}
+            image_url = image_urls_by_company.get(company_name.lower())
+
             current_slot.append({
                 "product_id": product.id,
                 "product_name": product.name,
@@ -187,10 +191,11 @@ def generate_random_cart(stores, num_products):
                 "size": product.size,
                 "store_id": price_obj.store.id,
                 "store_name": price_obj.store.store_name,
-                "company_name": price_obj.store.company.name,
+                "company_name": company_name,
                 "store_address": store_address,
                 "price": float(price_obj.price_record.price),
                 "quantity": 1,
+                "image_url": image_url,
             })
 
         if current_slot:
