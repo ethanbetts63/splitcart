@@ -15,7 +15,6 @@ from .views.postcode_search_view import PostcodeSearchView
 from .views.category_product_list_view import CategoryProductListView
 from .views.popular_category_list_view import PopularCategoryListView
 from .views.faq_list_view import FaqListView
-
 from .views.product_substitute_list_view import ProductSubstituteListView
 
 urlpatterns = [
