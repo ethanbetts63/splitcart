@@ -5,6 +5,7 @@ import {
   Home,
   MapPin,
   ShoppingCart,
+  X, // Import the X icon
 } from "lucide-react"
 
 import {
@@ -30,10 +31,12 @@ import TrolleyPage from "@/pages/dialog-pages/TrolleyPage";
 type NavItem = {
   name: string;
   icon: React.ElementType;
+  isCloseButton?: boolean; // Add a flag for the close button
 };
 
 const data = {
   nav: [
+    { name: "Close", icon: X, isCloseButton: true }, // Add the close button to the nav
     { name: "Trolley", icon: ShoppingCart },
     { name: "Edit Location", icon: MapPin },
     { name: "Home", icon: Home },
@@ -80,7 +83,10 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'Trolley' }: 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="overflow-hidden p-0 md:max-h-[500px] md:max-w-[700px] lg:max-w-[800px]">
+      <DialogContent 
+        showCloseButton={false} // Disable the default close button
+        className="overflow-hidden p-0 md:max-h-[500px] md:max-w-[700px] lg:max-w-[800px]"
+      >
         <DialogTitle className="sr-only">Settings</DialogTitle>
         <DialogDescription className="sr-only">
           Customize your settings here.
@@ -95,10 +101,18 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'Trolley' }: 
                       <SidebarMenuItem key={item.name}>
                         <SidebarMenuButton
                           asChild
-                          isActive={item.name === activePage}
-                          tooltip={item.name} // Add tooltip for accessibility
+                          isActive={!item.isCloseButton && item.name === activePage}
+                          tooltip={item.name}
+                          className={item.isCloseButton ? "text-red-500 hover:bg-red-100 hover:text-red-600" : ""}
                         >
-                          <a href="#" onClick={(e) => handleNavClick(e, item.name)}>
+                          <a href="#" onClick={(e) => {
+                            if (item.isCloseButton) {
+                              e.preventDefault();
+                              onOpenChange(false);
+                            } else {
+                              handleNavClick(e, item.name)
+                            }
+                          }}>
                             <item.icon />
                           </a>
                         </SidebarMenuButton>
