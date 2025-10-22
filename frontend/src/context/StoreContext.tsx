@@ -70,7 +70,7 @@ const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
 // --- Provider Component ---
 export const StoreProvider = ({ children }: { children: ReactNode }) => {
-  const { token, isAuthenticated, anonymousId } = useAuth();
+  const { token, anonymousId } = useAuth();
 
   // Original selection state
   const [selectedStoreIds, setSelectedStoreIds] = useState<Set<number>>(() => {
