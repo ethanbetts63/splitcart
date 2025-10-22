@@ -26,6 +26,7 @@ from .views.cart_views import (
     CartSubstitutionCreateView,
     CartSubstitutionRetrieveUpdateDestroyView
 )
+from .views.anonymous_user_view import AnonymousUserCreateView
 
 urlpatterns = [
     path('scheduler/next-candidate/', SchedulerView.as_view(), name='scheduler-next-candidate'),
@@ -62,4 +63,7 @@ urlpatterns = [
     # CartSubstitution URLs (nested under cart item)
     path('carts/<uuid:cart_pk>/items/<uuid:cart_item_pk>/substitutions/', CartSubstitutionCreateView.as_view(), name='cart-substitution-create'),
     path('carts/<uuid:cart_pk>/items/<uuid:cart_item_pk>/substitutions/<uuid:pk>/', CartSubstitutionRetrieveUpdateDestroyView.as_view(), name='cart-substitution-retrieve-update-destroy'),
+
+    # Anonymous User URLs
+    path('anonymous-user/', AnonymousUserCreateView.as_view(), name='anonymous-user-create'),
 ]

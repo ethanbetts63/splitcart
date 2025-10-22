@@ -62,7 +62,7 @@ interface StoreContextType {
   saveStoreList: (name: string, storeIds: number[]) => Promise<void>;
   createNewStoreList: (storeIds: number[]) => Promise<void>;
   deleteStoreList: (storeListId: string) => Promise<void>;
-  fetchUserStoreLists: () => Promise<void>;
+  fetchActiveStoreList: () => Promise<void>;
 }
 
 // --- Context Creation ---
@@ -167,28 +167,51 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
     return headers;
   }, [token, anonymousId]);
 
-  const fetchUserStoreLists = useCallback(async () => {
+  const fetchActiveStoreList = useCallback(async () => {
     setStoreListLoading(true);
     setStoreListError(null);
     try {
-      const response = await fetch('/api/store-lists/', {
+      let url = '';
+      if (isAuthenticated) {
+        url = '/api/store-lists/'; // Fetch all for authenticated user
+      } else if (anonymousId) {
+        // Fetch the default store list for the anonymous user
+        // This assumes the backend has an endpoint to get the default anonymous list
+        // For now, we'll assume /api/store-lists/?anonymous_id=<anonymousId> returns the default
+        url = `/api/store-lists/?anonymous_id=${anonymousId}`;
+      } else {
+        // No user, no anonymousId - nothing to fetch
+        setStoreListLoading(false);
+        return;
+      }
+
+      const response = await fetch(url, {
         headers: getAuthHeaders(),
       });
       if (!response.ok) {
         throw new Error('Failed to fetch store lists.');
       }
       const data: SelectedStoreListType[] = await response.json();
-      if (Array.isArray(data)) {
+      if (Array.isArray(data) && data.length > 0) {
+        // For authenticated users, set all lists. For anonymous, it should be just one.
         setUserStoreLists(data);
+        // Automatically load the "last used" or default list
+        const activeList = data.sort((a, b) => new Date(b.last_used_at).getTime() - new Date(a.last_used_at).getTime())[0];
+        setCurrentStoreListId(activeList.id);
+        setCurrentStoreListName(activeList.name);
+        setSelectedStoreIds(new Set(activeList.stores));
       } else {
-        setUserStoreLists([]); // Set to empty array if response is not an array
+        setUserStoreLists([]);
+        setCurrentStoreListId(null);
+        setCurrentStoreListName('Current Selection');
+        setSelectedStoreIds(new Set());
       }
     } catch (err: any) {
       setStoreListError(err.message);
     } finally {
       setStoreListLoading(false);
     }
-  }, [getAuthHeaders]);
+  }, [isAuthenticated, anonymousId, getAuthHeaders, setSelectedStoreIds, setCurrentStoreListId, setCurrentStoreListName]);
 
   const loadStoreList = useCallback(async (storeListId: string) => {
     setStoreListLoading(true);
@@ -316,7 +339,7 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
       saveStoreList,
       createNewStoreList,
       deleteStoreList,
-      fetchUserStoreLists
+      fetchActiveStoreList
     }}>
       {children}
     </StoreContext.Provider>

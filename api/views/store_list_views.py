@@ -7,15 +7,25 @@ from api.serializers import SelectedStoreListSerializer
 
 class SelectedStoreListListCreateView(generics.ListCreateAPIView):
     serializer_class = SelectedStoreListSerializer
-    permission_classes = [permissions.IsAuthenticated] # Changed to IsAuthenticated
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        # Only return store lists for the authenticated user
         return SelectedStoreList.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        # Automatically associate the store list with the authenticated user
-        serializer.save(user=self.request.user)
+        user = self.request.user
+
+        # Generate a unique name
+        base_name = "List"
+        counter = 1
+        existing_names = SelectedStoreList.objects.filter(user=user).values_list('name', flat=True)
+
+        new_name = f"{base_name} {counter}"
+        while new_name in existing_names:
+            counter += 1
+            new_name = f"{base_name} {counter}"
+
+        serializer.save(user=user, name=new_name)
 
 class SelectedStoreListRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SelectedStoreListSerializer
