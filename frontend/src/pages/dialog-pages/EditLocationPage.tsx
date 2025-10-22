@@ -35,7 +35,7 @@ type MapCenter = {
 import { useStoreSelection } from '@/context/StoreContext';
 
 const EditLocationPage = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, token } = useAuth();
   const {
     postcode, setPostcode,
     radius, setRadius,
