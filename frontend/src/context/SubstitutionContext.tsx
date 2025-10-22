@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
+import { createContext, useContext, useState, type ReactNode, useCallback } from 'react';
 import type { Product } from '@/types/Product';
 
 interface SubstitutionContextType {

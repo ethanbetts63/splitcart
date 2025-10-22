@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 import { useAuth } from './AuthContext';
 
 // --- Type Definitions ---
@@ -73,10 +73,13 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
   const { token, isAuthenticated, anonymousId } = useAuth();
 
   // Original selection state
-  const [selectedStoreIds, setSelectedStoreIds] = useState(() => {
+  const [selectedStoreIds, setSelectedStoreIds] = useState<Set<number>>(() => {
     const saved = sessionStorage.getItem('selectedStoreIds');
     if (saved) {
-      return new Set(JSON.parse(saved));
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) {
+        return new Set(parsed.filter(item => typeof item === 'number')); // Ensure items are numbers
+      }
     }
     return new Set<number>();
   });
