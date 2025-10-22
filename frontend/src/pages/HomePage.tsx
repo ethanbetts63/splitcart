@@ -1,5 +1,3 @@
-import React from "react";
-import { FaqAccordion } from "../components/FaqAccordion";
 import { ProductCarousel } from "../components/ProductCarousel";
 import { FaqImageSection } from "../components/FaqImageSection";
 import { useStoreSelection } from "@/context/StoreContext";
