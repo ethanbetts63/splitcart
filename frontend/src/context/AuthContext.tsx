@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from '
 interface AuthContextType {
   isAuthenticated: boolean;
   token: string | null;
+  anonymousId: string | null;
   login: (token: string) => void;
   logout: () => void;
 }
@@ -12,12 +13,37 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState<string | null>(null);
+  const [anonymousId, setAnonymousId] = useState<string | null>(null);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
+    const storedAnonymousId = document.cookie.split('; ').find(row => row.startsWith('anonymousId='))?.split('=')[1];
+
     if (storedToken) {
       setIsAuthenticated(true);
       setToken(storedToken);
+      // If user is authenticated, clear anonymousId
+      if (storedAnonymousId) {
+        document.cookie = 'anonymousId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        setAnonymousId(null);
+      }
+    } else if (storedAnonymousId) {
+      setAnonymousId(storedAnonymousId);
+    } else {
+      // Create a new anonymous user
+      const createAnonymousUser = async () => {
+        try {
+          const response = await fetch('/api/anonymous-user/', { method: 'POST' });
+          if (response.ok) {
+            const data = await response.json();
+            document.cookie = `anonymousId=${data.anonymous_id}; path=/; max-age=31536000;`; // 1 year expiry
+            setAnonymousId(data.anonymous_id);
+          }
+        } catch (error) {
+          console.error('Failed to create anonymous user:', error);
+        }
+      };
+      createAnonymousUser();
     }
   }, []);
 
@@ -25,16 +51,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('token', newToken);
     setIsAuthenticated(true);
     setToken(newToken);
+    // Clear anonymousId on login
+    document.cookie = 'anonymousId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    setAnonymousId(null);
   };
 
   const logout = () => {
     localStorage.removeItem('token');
     setIsAuthenticated(false);
     setToken(null);
+    // Clear anonymousId on logout
+    document.cookie = 'anonymousId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    setAnonymousId(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, token, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, token, anonymousId, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
