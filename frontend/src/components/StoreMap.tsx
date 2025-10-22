@@ -2,13 +2,8 @@ import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import type { Store, MapCenter } from '@/types'; // Import shared types
-
-// --- Asset Imports ---
-import aldiLogo from '@/assets/ALDI_logo.svg';
-import colesLogo from '@/assets/coles_logo.webp';
-import igaLogo from '@/assets/iga_logo.webp';
-import woolworthsLogo from '@/assets/woolworths_logo.webp';
+import type { Store, MapCenter } from '@/types';
+import { useCompanyLogo } from '@/hooks/useCompanyLogo';
 
 interface StoreMapProps {
   center: MapCenter;
@@ -17,14 +12,7 @@ interface StoreMapProps {
   onStoreSelect: (storeId: number) => void;
 }
 
-// --- Icon & Style Definitions ---
-const companyLogos: { [key: string]: string } = {
-    'Aldi': aldiLogo,
-    'Coles': colesLogo,
-    'Iga': igaLogo,
-    'Woolworths': woolworthsLogo,
-};
-
+// --- Style Definitions ---
 const markerHtmlStyles = `
   .map-logo-icon {
     background: transparent;
@@ -58,7 +46,8 @@ const getZoomLevelForRadius = (radiusKm: number): number => {
   return 9;
 };
 
-// --- Helper component to control map view ---
+// --- Child Components ---
+
 const MapViewController: React.FC<{ center: MapCenter }> = ({ center }) => {
   const map = useMap();
   useEffect(() => {
@@ -66,9 +55,41 @@ const MapViewController: React.FC<{ center: MapCenter }> = ({ center }) => {
       const zoom = getZoomLevelForRadius(center.radius);
       map.setView([center.latitude, center.longitude], zoom);
     }
-  }, [center, map]); // Only runs when the center object changes
+  }, [center, map]);
   return null;
 };
+
+const StoreMarker: React.FC<{ store: Store; isSelected: boolean; onStoreSelect: (id: number) => void; }> = ({ store, isSelected, onStoreSelect }) => {
+  const { objectUrl, isLoading } = useCompanyLogo(store.company_name);
+
+  if (isLoading || !objectUrl) {
+    // Don't render a marker if the logo is still loading or failed
+    // Or render a default placeholder marker
+    return null; 
+  }
+
+  const icon = L.divIcon({
+    html: `<img src="${objectUrl}" alt="${store.company_name} logo">`,
+    className: `map-logo-icon ${isSelected ? 'selected' : 'desaturated'}`,
+    iconSize: [35, 35],
+    iconAnchor: [17, 35],
+  });
+
+  return (
+    <Marker 
+      key={store.id} 
+      position={[store.latitude, store.longitude]}
+      icon={icon}
+      eventHandlers={{
+        click: () => onStoreSelect(store.id),
+      }}
+    >
+      <Popup>{store.store_name}</Popup>
+    </Marker>
+  );
+};
+
+// --- Main Map Component ---
 
 const StoreMap: React.FC<StoreMapProps> = ({ center, stores, selectedStoreIds, onStoreSelect }) => {
     const displayCenter: [number, number] = center 
@@ -86,34 +107,14 @@ const StoreMap: React.FC<StoreMapProps> = ({ center, stores, selectedStoreIds, o
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
                 <MapViewController center={center} />
-                {stores.map(store => {
-                    const isSelected = selectedStoreIds.has(store.id);
-                    const iconUrl = companyLogos[store.company_name] || 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png'; // Fallback icon
-                    
-                    const icon = L.divIcon({
-                        html: `<img src="${iconUrl}" alt="${store.company_name} logo">`,
-                        className: `map-logo-icon ${isSelected ? 'selected' : 'desaturated'}`,
-                        iconSize: [35, 35],
-                        iconAnchor: [17, 35],
-                    });
-
-                    return (
-                        <Marker 
-                            key={store.id} 
-                            position={[store.latitude, store.longitude]}
-                            icon={icon}
-                            eventHandlers={{
-                                click: () => {
-                                    onStoreSelect(store.id);
-                                },
-                            }}
-                        >
-                            <Popup>
-                                {store.store_name}
-                            </Popup>
-                        </Marker>
-                    );
-                })}
+                {stores.map(store => (
+                    <StoreMarker 
+                        key={store.id}
+                        store={store}
+                        isSelected={selectedStoreIds.has(store.id)}
+                        onStoreSelect={onStoreSelect}
+                    />
+                ))}
             </MapContainer>
         </div>
     );
