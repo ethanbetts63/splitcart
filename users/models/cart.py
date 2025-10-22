@@ -1,7 +1,6 @@
 import uuid
 from django.db import models
 from django.conf import settings
-from products.models import Product
 from users.models.selected_store_list import SelectedStoreList
 
 class Cart(models.Model):

@@ -7,8 +7,9 @@ I. Core Feature Overview
 
 II. Backend Implementation (Django)
 
-1.  Database Model Changes:
-    *   **New `SelectedStoreList` Model:**
+1.  Database Model Changes: (Implemented in `users/models/` directory)
+    *   **`User` Model:** (Moved to `users/models/user.py`)
+    *   **`SelectedStoreList` Model:** (Created in `users/models/selected_store_list.py`)
         *   `id` (Primary Key)
         *   `user` (ForeignKey to `User` model, `null=True` for anonymous lists, `on_delete=models.CASCADE`)
         *   `anonymous_id` (CharField, `null=True`, stores UUID for anonymous users)
@@ -17,7 +18,7 @@ II. Backend Implementation (Django)
         *   `is_default` (BooleanField, default=False, to mark a user's default store list)
         *   `created_at` (DateTimeField, auto_now_add=True)
         *   `updated_at` (DateTimeField, auto_now=True)
-    *   **`Cart` Model (Modification):**
+    *   **`Cart` Model:** (Created in `users/models/cart.py`)
         *   `id` (Primary Key)
         *   `user` (ForeignKey to `User` model, `null=True` for anonymous carts)
         *   `anonymous_id` (CharField, `null=True`, stores UUID for anonymous users)
@@ -25,13 +26,13 @@ II. Backend Implementation (Django)
         *   `selected_store_list` (ForeignKey to `SelectedStoreList` model, `on_delete=models.SET_NULL`, `null=True`, `blank=True`)
         *   `created_at` (DateTimeField, auto_now_add=True)
         *   `updated_at` (DateTimeField, auto_now=True)
-    *   `CartItem` Model:
+    *   **`CartItem` Model:** (Created in `users/models/cart_item.py`)
         *   `id` (Primary Key)
         *   `cart` (ForeignKey to `Cart` model, related_name='items')
         *   `product` (ForeignKey to `Product` model)
         *   `quantity` (IntegerField, default=1)
         *   `is_deprecated` (BooleanField, default=False, to mark items that are no longer available or have issues)
-    *   `CartSubstitution` Model:
+    *   **`CartSubstitution` Model:** (Created in `users/models/cart_substitution.py`)
         *   `id` (Primary Key)
         *   `cart_item` (ForeignKey to `CartItem` model, related_name='substitutions')
         *   `substituted_product` (ForeignKey to `Product` model, the actual substitute chosen)

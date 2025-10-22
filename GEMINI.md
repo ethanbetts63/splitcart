@@ -8,6 +8,20 @@ This project is a Django-based application called "splitcart". It is designed as
 *   **Database:** SQLite (as per `settings.py`)
 *   **Data Scraping:** The project uses custom scrapers to fetch data from stores' websites.
 
+**Frontend Architecture:**
+
+The frontend is built using React (JavaScript/TypeScript) and leverages the following technologies and patterns:
+
+*   **Framework:** React (JavaScript/TypeScript) for building interactive user interfaces.
+*   **Styling:** Tailwind CSS for utility-first styling, complemented by Shadcn/ui for pre-built, customizable UI components.
+*   **Routing:** React Router DOM for declarative routing within the single-page application.
+*   **State Management:** React Context API is extensively used for managing global application state, including:
+    *   `ShoppingListContext`: Manages the user's current shopping list items.
+    *   `StoreContext`: Handles the selection and management of grocery stores.
+    *   `SubstitutionContext`: Manages product substitution selections.
+    *   `AuthContext`: Manages user authentication status and tokens.
+*   **UI Components:** A mix of custom-built React components (e.g., `FaqImageSection`, `ProductCarousel`, `ProductTile`, `TrolleyItemTile`) and components provided by Shadcn/ui (e.g., `Button`, `Input`, `Card`, `Accordion`, `AspectRatio`, `Switch`, `Label`, `Badge`) are used to construct the user interface.
+
 **Architecture:**
 
 1.  **Data Scraping & Normalization:**
