@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import StoreMap from '@/components/StoreMap';
 import RadiusSlider from '@/components/RadiusSlider';
 import CompanyFilter from '@/components/CompanyFilter';
