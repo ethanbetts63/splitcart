@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import SkeletonProductTile from "./SkeletonProductTile";
 import ProductTile from "./ProductTile";
 import '../css/ProductCarousel.css';
@@ -34,7 +34,7 @@ interface ProductCarouselProps {
   searchQuery?: string;
 }
 
-export const ProductCarousel: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery }) => {
+const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -126,4 +126,6 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({ sourceUrl, sto
     </div>
     </div>
   );
-}
+};
+
+export const ProductCarousel = memo(ProductCarouselComponent);
