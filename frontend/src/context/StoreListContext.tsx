@@ -1,5 +1,12 @@
 import React, { createContext, useContext, useState, type ReactNode, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
+import {
+  fetchActiveStoreListAPI,
+  loadStoreListAPI,
+  saveStoreListAPI,
+  createNewStoreListAPI,
+  deleteStoreListAPI,
+} from '@/services/storeListApi';
 
 // --- Type Definitions ---
 export type SelectedStoreListType = {
@@ -37,7 +44,7 @@ const StoreListContext = createContext<StoreListContextType | undefined>(undefin
 
 // --- Provider Component ---
 export const StoreListProvider = ({ children }: { children: ReactNode }) => {
-  const { token, isAuthenticated, anonymousId } = useAuth();
+  const { token, anonymousId } = useAuth();
 
   const [selectedStoreIds, setSelectedStoreIds] = useState<Set<number>>(() => {
     const saved = sessionStorage.getItem('selectedStoreIds');
@@ -72,39 +79,11 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const getAuthHeaders = useCallback(() => {
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json',
-    };
-    if (token) {
-      headers['Authorization'] = `Token ${token}`;
-    } else if (anonymousId) {
-      headers['X-Anonymous-ID'] = anonymousId;
-    }
-    return headers;
-  }, [token, anonymousId]);
-
   const fetchActiveStoreList = useCallback(async () => {
     setStoreListLoading(true);
     setStoreListError(null);
     try {
-      let url = '';
-      if (isAuthenticated) {
-        url = '/api/store-lists/';
-      } else if (anonymousId) {
-        url = `/api/store-lists/?anonymous_id=${anonymousId}`;
-      } else {
-        setStoreListLoading(false);
-        return;
-      }
-
-      const response = await fetch(url, {
-        headers: getAuthHeaders(),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to fetch store lists.');
-      }
-      const data: SelectedStoreListType[] = await response.json();
+      const data = await fetchActiveStoreListAPI(token, anonymousId);
       if (Array.isArray(data) && data.length > 0) {
         setUserStoreLists(data);
         const activeList = data.sort((a, b) => new Date(b.last_used_at).getTime() - new Date(a.last_used_at).getTime())[0];
@@ -122,19 +101,13 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setStoreListLoading(false);
     }
-  }, [isAuthenticated, anonymousId, getAuthHeaders, setSelectedStoreIds, setCurrentStoreListId, setCurrentStoreListName]);
+  }, [token, anonymousId, setSelectedStoreIds, setCurrentStoreListId, setCurrentStoreListName]);
 
   const loadStoreList = useCallback(async (storeListId: string) => {
     setStoreListLoading(true);
     setStoreListError(null);
     try {
-      const response = await fetch(`/api/store-lists/${storeListId}/`, {
-        headers: getAuthHeaders(),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to load store list.');
-      }
-      const data: SelectedStoreListType = await response.json();
+      const data = await loadStoreListAPI(storeListId, token, anonymousId);
       setCurrentStoreListId(data.id);
       setCurrentStoreListName(data.name);
       setSelectedStoreIds(new Set(data.stores));
@@ -143,23 +116,13 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setStoreListLoading(false);
     }
-  }, [getAuthHeaders, setSelectedStoreIds]);
+  }, [token, anonymousId, setSelectedStoreIds]);
 
   const saveStoreList = useCallback(async (name: string, storeIds: number[]) => {
     setStoreListLoading(true);
     setStoreListError(null);
     try {
-      const method = currentStoreListId ? 'PUT' : 'POST';
-      const url = currentStoreListId ? `/api/store-lists/${currentStoreListId}/` : '/api/store-lists/';
-      const response = await fetch(url, {
-        method,
-        headers: getAuthHeaders(),
-        body: JSON.stringify({ name, stores: storeIds }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to save store list.');
-      }
-      const data: SelectedStoreListType = await response.json();
+      const data = await saveStoreListAPI(currentStoreListId, name, storeIds, token, anonymousId);
       setCurrentStoreListId(data.id);
       setCurrentStoreListName(data.name);
       fetchActiveStoreList();
@@ -168,21 +131,13 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setStoreListLoading(false);
     }
-  }, [currentStoreListId, getAuthHeaders, fetchActiveStoreList]);
+  }, [currentStoreListId, token, anonymousId, fetchActiveStoreList]);
 
   const createNewStoreList = useCallback(async (storeIds: number[]) => {
     setStoreListLoading(true);
     setStoreListError(null);
     try {
-      const response = await fetch('/api/store-lists/', {
-        method: 'POST',
-        headers: getAuthHeaders(),
-        body: JSON.stringify({ stores: storeIds }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to create new store list.');
-      }
-      const data: SelectedStoreListType = await response.json();
+      const data = await createNewStoreListAPI(storeIds, token, anonymousId);
       setCurrentStoreListId(data.id);
       setCurrentStoreListName(data.name);
       setSelectedStoreIds(new Set(data.stores));
@@ -192,19 +147,13 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setStoreListLoading(false);
     }
-  }, [getAuthHeaders, setSelectedStoreIds, fetchActiveStoreList]);
+  }, [token, anonymousId, setSelectedStoreIds, fetchActiveStoreList]);
 
   const deleteStoreList = useCallback(async (storeListId: string) => {
     setStoreListLoading(true);
     setStoreListError(null);
     try {
-      const response = await fetch(`/api/store-lists/${storeListId}/`, {
-        method: 'DELETE',
-        headers: getAuthHeaders(),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to delete store list.');
-      }
+      await deleteStoreListAPI(storeListId, token, anonymousId);
       if (currentStoreListId === storeListId) {
         setCurrentStoreListId(null);
         setCurrentStoreListName('Current Selection');
@@ -216,7 +165,7 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setStoreListLoading(false);
     }
-  }, [currentStoreListId, getAuthHeaders, setSelectedStoreIds, fetchActiveStoreList]);
+  }, [currentStoreListId, token, anonymousId, setSelectedStoreIds, fetchActiveStoreList]);
 
   return (
     <StoreListContext.Provider value={{
