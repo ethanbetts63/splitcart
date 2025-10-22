@@ -1,3 +1,4 @@
+import React, { useMemo } from 'react';
 import { ProductCarousel } from "../components/ProductCarousel";
 import { FaqImageSection } from "../components/FaqImageSection";
 import { useStoreList } from "@/context/StoreListContext";
@@ -7,7 +8,7 @@ import kingKongImage from "../assets/king_kong.png";
 
 const HomePage = () => {
   const { selectedStoreIds } = useStoreList();
-  const storeIdsArray = Array.from(selectedStoreIds);
+  const storeIdsArray = React.useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
 
   return (
     <div>
