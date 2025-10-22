@@ -96,10 +96,10 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'Trolley' }: 
                         <SidebarMenuButton
                           asChild
                           isActive={item.name === activePage}
+                          tooltip={item.name} // Add tooltip for accessibility
                         >
                           <a href="#" onClick={(e) => handleNavClick(e, item.name)}>
                             <item.icon />
-                            <span>{item.name}</span>
                           </a>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
