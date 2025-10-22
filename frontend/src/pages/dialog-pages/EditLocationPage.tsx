@@ -204,6 +204,7 @@ const EditLocationPage = () => {
                             setIsEditingListName(!isEditingListName);
                         }}
                         disabled={storeListLoading || !currentStoreListId}
+                        className={isEditingListName ? "bg-green-500 text-white hover:bg-green-600" : ""}
                     >
                         {isEditingListName ? <Save className="h-4 w-4" /> : <Pencil className="h-4 w-4" />}
                     </Button>
