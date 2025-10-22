@@ -193,7 +193,7 @@ toast.success("Email Sent!", {
 
       <div className="mt-16">
         <FaqImageSection
-          title="Cart FAQs"
+          title="Helpful Information"
           page="final_cart"
           imageSrc={futureTodayImage}
           imageAlt="The future is today"

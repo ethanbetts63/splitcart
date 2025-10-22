@@ -24,6 +24,10 @@ const SubstitutionPage = () => {
     setCurrentItemIndex,
   } = useSubstitutions();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const currentItem = itemsToReview[currentItemIndex];
   const currentSubstitutes = substitutes[currentItem?.id] || [];
 
