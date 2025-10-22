@@ -59,8 +59,8 @@ interface StoreContextType {
 
   // New functions for SelectedStoreList operations
   loadStoreList: (storeListId: string) => Promise<void>;
-  saveStoreList: (name: string, storeIds: number[], isDefault: boolean) => Promise<void>;
-  createNewStoreList: (name: string, storeIds: number[], isDefault: boolean) => Promise<void>;
+  saveStoreList: (name: string, storeIds: number[]) => Promise<void>;
+  createNewStoreList: (storeIds: number[]) => Promise<void>;
   deleteStoreList: (storeListId: string) => Promise<void>;
   fetchUserStoreLists: () => Promise<void>;
 }
@@ -206,7 +206,7 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [getAuthHeaders, setSelectedStoreIds]);
 
-  const saveStoreList = useCallback(async (name: string, storeIds: number[], isDefault: boolean) => {
+  const saveStoreList = useCallback(async (name: string, storeIds: number[]) => {
     setStoreListLoading(true);
     setStoreListError(null);
     try {
@@ -215,7 +215,7 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
       const response = await fetch(url, {
         method,
         headers: getAuthHeaders(),
-        body: JSON.stringify({ name, stores: storeIds, is_default: isDefault }),
+        body: JSON.stringify({ name, stores: storeIds }),
       });
       if (!response.ok) {
         throw new Error('Failed to save store list.');
@@ -231,14 +231,14 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [currentStoreListId, getAuthHeaders, fetchUserStoreLists]);
 
-  const createNewStoreList = useCallback(async (name: string, storeIds: number[], isDefault: boolean) => {
+  const createNewStoreList = useCallback(async (storeIds: number[]) => {
     setStoreListLoading(true);
     setStoreListError(null);
     try {
       const response = await fetch('/api/store-lists/', {
         method: 'POST',
         headers: getAuthHeaders(),
-        body: JSON.stringify({ name, stores: storeIds, is_default: isDefault }),
+        body: JSON.stringify({ stores: storeIds }),
       });
       if (!response.ok) {
         throw new Error('Failed to create new store list.');

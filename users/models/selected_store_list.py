@@ -15,9 +15,9 @@ class SelectedStoreList(models.Model):
     anonymous_id = models.UUIDField(null=True, blank=True, db_index=True)
     name = models.CharField(max_length=255, default="My Store List")
     stores = models.ManyToManyField(Store, related_name='store_lists')
-    is_default = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    last_used_at = models.DateTimeField(auto_now_add=True) # Added this field
 
     class Meta:
         verbose_name = "Selected Store List"

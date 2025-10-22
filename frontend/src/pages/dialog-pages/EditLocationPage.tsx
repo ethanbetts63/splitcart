@@ -144,11 +144,7 @@ const EditLocationPage = () => {
                 value={currentStoreListId || ""} // Control the selected value
                 onValueChange={(value) => {
                     if (value === "new") {
-                        // Handle "Create New List"
-                        // For now, we'll just clear the current selection
-                        setCurrentStoreListId(null);
-                        setCurrentStoreListName("New List");
-                        setSelectedStoreIds(new Set());
+                        createNewStoreList(Array.from(selectedStoreIds)); // Call with current selected stores
                     } else {
                         loadStoreList(value); // Load the selected store list
                     }
@@ -167,36 +163,38 @@ const EditLocationPage = () => {
                     </SelectItem>
                     {userStoreLists.map((list) => (
                         <SelectItem key={list.id} value={list.id}>
-                            {list.name} {list.is_default && "(Default)"}
+                            {list.name}
                         </SelectItem>
                     ))}
                 </SelectContent>
             </Select>
-            <div className="flex gap-2">
-                <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="flex-1"
-                    onClick={() => saveStoreList(currentStoreListName, Array.from(selectedStoreIds), false)}
-                    disabled={!isAuthenticated || storeListLoading}
-                >
-                    <Save className="h-4 w-4 mr-2" /> Save Current
-                </Button>
-                <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => saveStoreList(currentStoreListName, Array.from(selectedStoreIds), true)}
-                    disabled={!isAuthenticated || storeListLoading}
-                >
-                    <Star className="h-4 w-4" /> Set Default
-                </Button>
+            {isAuthenticated && currentStoreListId && (
+                <div className="grid gap-2">
+                    <Label htmlFor="store-list-name">List Name</Label>
+                    <Input
+                        id="store-list-name"
+                        type="text"
+                        value={currentStoreListName}
+                        onChange={(e) => setCurrentStoreListName(e.target.value)}
+                        onBlur={() => saveStoreList(currentStoreListName, Array.from(selectedStoreIds))}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                saveStoreList(currentStoreListName, Array.from(selectedStoreIds));
+                                e.currentTarget.blur(); // Remove focus from input
+                            }
+                        }}
+                        disabled={storeListLoading}
+                    />
+                </div>
+            )}
+            <div className="flex gap-2 justify-end">
                 <Button 
                     variant="destructive" 
                     size="sm"
                     onClick={() => currentStoreListId && deleteStoreList(currentStoreListId)}
                     disabled={!isAuthenticated || storeListLoading || !currentStoreListId}
                 >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-4 w-4" /> Delete List
                 </Button>
             </div>
         </div>
