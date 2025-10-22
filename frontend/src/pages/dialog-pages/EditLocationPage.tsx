@@ -74,7 +74,7 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
     }
   }, [isAuthenticated, token, anonymousId, fetchActiveStoreList]);
 
-  const handleLocalStoreSelect = (storeId: number) => {
+  const handleLocalStoreSelect = useCallback((storeId: number) => {
     setLocalSelectedStoreIds(prev => {
       const newSet = new Set(prev);
       if (newSet.has(storeId)) {
@@ -84,7 +84,7 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
       }
       return newSet;
     });
-  };
+  }, [setLocalSelectedStoreIds]);
 
   // --- API Fetching Logic ---
   const handleSearch = useCallback(async () => {
