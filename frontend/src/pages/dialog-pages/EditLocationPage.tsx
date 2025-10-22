@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { PlusCircle, Save, Trash2, Star } from 'lucide-react'; // Icons for actions
+import { PlusCircle, Save, Trash2, Star, Pencil } from 'lucide-react'; // Icons for actions
 
 // Define the type for a single store
 type Store = {
@@ -58,6 +58,7 @@ const EditLocationPage = () => {
   // State for loading and error, which is local to this page
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isEditingListName, setIsEditingListName] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated && token) {
@@ -145,60 +146,72 @@ const EditLocationPage = () => {
         <h3 className="text-lg font-semibold">Controls</h3>
         {isAuthenticated && (
             <div className="flex flex-col gap-2">
-                <Label htmlFor="store-list-select">Saved Store Lists</Label>
-                <Select
-                    value={currentStoreListId || ""} // Control the selected value
-                    onValueChange={(value) => {
-                        if (value === "new") {
-                            createNewStoreList(Array.from(selectedStoreIds)); // Call with current selected stores
-                        } else {
-                            loadStoreList(value); // Load the selected store list
-                        }
-                    }}
-                >
-                    <SelectTrigger id="store-list-select">
-                        <SelectValue placeholder="Select a store list">
-                            {currentStoreListName}
-                        </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="new">
-                            <div className="flex items-center gap-2">
-                                <PlusCircle className="h-4 w-4" /> Create New List
-                            </div>
-                        </SelectItem>
-                        {userStoreLists.map((list) => (
-                            <SelectItem key={list.id} value={list.id}>
-                                {list.name}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-                {currentStoreListId && (
-                    <div className="grid gap-2">
-                        <Label htmlFor="store-list-name">List Name</Label>
+                <Label>Saved Store Lists</Label>
+                <div className="flex items-center gap-2">
+                    {isEditingListName ? (
                         <Input
-                            id="store-list-name"
+                            id="store-list-name-edit"
                             type="text"
                             value={currentStoreListName}
                             onChange={(e) => setCurrentStoreListName(e.target.value)}
-                            onBlur={() => saveStoreList(currentStoreListName, Array.from(selectedStoreIds))}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
                                     saveStoreList(currentStoreListName, Array.from(selectedStoreIds));
-                                    e.currentTarget.blur(); // Remove focus from input
+                                    setIsEditingListName(false);
+                                    e.currentTarget.blur();
                                 }
                             }}
                             disabled={storeListLoading}
+                            className="flex-grow"
                         />
-                    </div>
-                )}
-                <div className="flex gap-2 justify-end">
+                    ) : (
+                        <Select
+                            value={currentStoreListId || ""}
+                            onValueChange={(value) => {
+                                if (value === "new") {
+                                    createNewStoreList(Array.from(selectedStoreIds));
+                                } else {
+                                    loadStoreList(value);
+                                }
+                            }}
+                        >
+                            <SelectTrigger className="flex-grow">
+                                <SelectValue placeholder="Select a store list">
+                                    {currentStoreListName}
+                                </SelectValue>
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="new">
+                                    <div className="flex items-center gap-2">
+                                        <PlusCircle className="h-4 w-4" /> Create New List
+                                    </div>
+                                </SelectItem>
+                                {userStoreLists.map((list) => (
+                                    <SelectItem key={list.id} value={list.id}>
+                                        {list.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    )}
+                    <Button 
+                        variant="outline" 
+                        size="icon"
+                        onClick={() => {
+                            if (isEditingListName) {
+                                saveStoreList(currentStoreListName, Array.from(selectedStoreIds));
+                            }
+                            setIsEditingListName(!isEditingListName);
+                        }}
+                        disabled={storeListLoading || !currentStoreListId}
+                    >
+                        {isEditingListName ? <Save className="h-4 w-4" /> : <Pencil className="h-4 w-4" />}
+                    </Button>
                     <Button 
                         variant="destructive" 
                         size="icon"
                         onClick={() => currentStoreListId && deleteStoreList(currentStoreListId)}
-                        disabled={storeListLoading || !currentStoreListId}
+                        disabled={storeListLoading || !currentStoreListId || isEditingListName}
                     >
                         <Trash2 className="h-4 w-4" />
                     </Button>
