@@ -13,7 +13,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-import { useStoreSelection } from '@/context/StoreContext';
+import { useStoreList } from '@/context/StoreListContext';
 import LoadingSpinner from './LoadingSpinner';
 
 // Type for the API response, using the shared Product type
@@ -38,7 +38,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, catego
   const [totalResults, setTotalResults] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const { selectedStoreIds } = useStoreSelection(); // Get selected stores
+  const { selectedStoreIds } = useStoreList(); // Get selected stores
   const { token } = useAuth();
 
   const fetchProducts = useCallback(async (page: number) => {

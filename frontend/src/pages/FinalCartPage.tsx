@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useShoppingList } from '@/context/ShoppingListContext';
-import { useStoreSelection } from '@/context/StoreContext';
+import { useStoreList } from '@/context/StoreListContext';
 import { useSubstitutions } from '@/context/SubstitutionContext';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
@@ -16,7 +16,7 @@ import type { ApiResponse, ExportData } from '@/types';
 
 const FinalCartPage = () => {
   const { items: originalItems } = useShoppingList();
-  const { selectedStoreIds } = useStoreSelection();
+  const { selectedStoreIds } = useStoreList();
   const { selections } = useSubstitutions();
   const { isAuthenticated, token } = useAuth();
   const navigate = useNavigate();
