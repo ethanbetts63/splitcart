@@ -137,67 +137,68 @@ const EditLocationPage = () => {
       {/* Left Column for Controls */}
       <div className="w-3/7 border-r p-4 flex flex-col gap-4">
         <h3 className="text-lg font-semibold">Controls</h3>
-        {/* Placeholder for Store List Management */}
-        <div className="flex flex-col gap-2">
-            <Label htmlFor="store-list-select">Saved Store Lists</Label>
-            <Select
-                value={currentStoreListId || ""} // Control the selected value
-                onValueChange={(value) => {
-                    if (value === "new") {
-                        createNewStoreList(Array.from(selectedStoreIds)); // Call with current selected stores
-                    } else {
-                        loadStoreList(value); // Load the selected store list
-                    }
-                }}
-            >
-                <SelectTrigger id="store-list-select">
-                    <SelectValue placeholder="Select a store list">
-                        {currentStoreListName}
-                    </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value="new">
-                        <div className="flex items-center gap-2">
-                            <PlusCircle className="h-4 w-4" /> Create New List
-                        </div>
-                    </SelectItem>
-                    {userStoreLists.map((list) => (
-                        <SelectItem key={list.id} value={list.id}>
-                            {list.name}
-                        </SelectItem>
-                    ))}
-                </SelectContent>
-            </Select>
-            {isAuthenticated && currentStoreListId && (
-                <div className="grid gap-2">
-                    <Label htmlFor="store-list-name">List Name</Label>
-                    <Input
-                        id="store-list-name"
-                        type="text"
-                        value={currentStoreListName}
-                        onChange={(e) => setCurrentStoreListName(e.target.value)}
-                        onBlur={() => saveStoreList(currentStoreListName, Array.from(selectedStoreIds))}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                saveStoreList(currentStoreListName, Array.from(selectedStoreIds));
-                                e.currentTarget.blur(); // Remove focus from input
-                            }
-                        }}
-                        disabled={storeListLoading}
-                    />
-                </div>
-            )}
-            <div className="flex gap-2 justify-end">
-                <Button 
-                    variant="destructive" 
-                    size="sm"
-                    onClick={() => currentStoreListId && deleteStoreList(currentStoreListId)}
-                    disabled={!isAuthenticated || storeListLoading || !currentStoreListId}
+        {isAuthenticated && (
+            <div className="flex flex-col gap-2">
+                <Label htmlFor="store-list-select">Saved Store Lists</Label>
+                <Select
+                    value={currentStoreListId || ""} // Control the selected value
+                    onValueChange={(value) => {
+                        if (value === "new") {
+                            createNewStoreList(Array.from(selectedStoreIds)); // Call with current selected stores
+                        } else {
+                            loadStoreList(value); // Load the selected store list
+                        }
+                    }}
                 >
-                    <Trash2 className="h-4 w-4" /> Delete List
-                </Button>
+                    <SelectTrigger id="store-list-select">
+                        <SelectValue placeholder="Select a store list">
+                            {currentStoreListName}
+                        </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="new">
+                            <div className="flex items-center gap-2">
+                                <PlusCircle className="h-4 w-4" /> Create New List
+                            </div>
+                        </SelectItem>
+                        {userStoreLists.map((list) => (
+                            <SelectItem key={list.id} value={list.id}>
+                                {list.name}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+                {currentStoreListId && (
+                    <div className="grid gap-2">
+                        <Label htmlFor="store-list-name">List Name</Label>
+                        <Input
+                            id="store-list-name"
+                            type="text"
+                            value={currentStoreListName}
+                            onChange={(e) => setCurrentStoreListName(e.target.value)}
+                            onBlur={() => saveStoreList(currentStoreListName, Array.from(selectedStoreIds))}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    saveStoreList(currentStoreListName, Array.from(selectedStoreIds));
+                                    e.currentTarget.blur(); // Remove focus from input
+                                }
+                            }}
+                            disabled={storeListLoading}
+                        />
+                    </div>
+                )}
+                <div className="flex gap-2 justify-end">
+                    <Button 
+                        variant="destructive" 
+                        size="sm"
+                        onClick={() => currentStoreListId && deleteStoreList(currentStoreListId)}
+                        disabled={storeListLoading || !currentStoreListId}
+                    >
+                        <Trash2 className="h-4 w-4" /> Delete List
+                    </Button>
+                </div>
             </div>
-        </div>
+        )}
         <div className="grid gap-2">
             <label className="text-sm font-medium">Postcode</label>
             <Input

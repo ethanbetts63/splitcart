@@ -68,7 +68,7 @@ II. Backend Implementation (Django) - **COMPLETE**
 *   Run `python manage.py makemigrations users` and `python manage.py migrate` to apply database changes.
 *   Test the new API endpoints using a tool like Postman or `curl` to ensure they are working as expected.
 
-III. Frontend Implementation (React/TypeScript)
+III. Frontend Implementation (React/TypeScript) - **IN PROGRESS**
 
 1.  `TrolleyPage.tsx` Renaming and UI:
     *   Rename `TrolleyPage.tsx` to `CartPage.tsx` (or similar, to reflect the new functionality).
@@ -82,19 +82,25 @@ III. Frontend Implementation (React/TypeScript)
     *   **Removed "Save Current" and "Set Default" buttons as per user request.**
 
 2.  State Management (Contexts - Modification):
+    *   **`AuthContext` (Updated):**
+        *   `AuthContextType` updated to include `anonymousId`.
+        *   `anonymousId` state and cookie management logic added.
+        *   `login` and `logout` functions updated to clear `anonymousId` cookie.
+        *   `anonymousId` exposed in `AuthContext.Provider`.
+    *   **`StoreContext` (Updated):**
+        *   `SelectedStoreListType` updated (removed `is_default`, added `last_used_at`).
+        *   `StoreContextType` interface updated (modified `saveStoreList` and `createNewStoreList` signatures).
+        *   New state variables for `SelectedStoreList` management added.
+        *   `useAuth` hook call added (destructuring `token` and `anonymousId`).
+        *   Implemented `getAuthHeaders`, `fetchUserStoreLists`, `loadStoreList`, `saveStoreList`, `createNewStoreList`, `deleteStoreList` functions.
+        *   `fetchUserStoreLists` made more robust to handle non-array responses.
+        *   `isAuthenticated` removed from `useAuth` destructuring in `StoreProvider`.
     *   **`ShoppingListContext`:**
         *   Modify to load/save cart items from/to the backend API.
         *   Manage the `currentCartId` and `currentCartName` in state.
         *   Add functions for `loadCart(cartId)`, `saveCart()`, `createNewCart()`, `deleteCart(cartId)`.
-    *   **`StoreContext`:**
-        *   Will need to manage `currentStoreListId` and `currentStoreListName`.
-        *   Add functions for `loadStoreList(storeListId)`, `saveStoreList()`, `createNewStoreList()`, `deleteStoreList(storeListId)`.
-        *   Update `selectedStoreIds` when a new cart or store list is loaded.
     *   **`SubstitutionContext`:**
         *   Update `selections` when a new cart is loaded.
-    *   **`AuthContext`:**
-        *   Integrate with cart merging logic upon login/signup.
-        *   Pass `anonymous_id` (from cookie) to backend during authentication.
 
 3.  Anonymous User Handling (Frontend):
     *   On initial load, check for `anonymous_id` cookie. If not present, make an API call to create an anonymous user and store the returned `anonymous_id` in a cookie.
@@ -126,6 +132,10 @@ III. Frontend Implementation (React/TypeScript)
     *   Display loading states for API calls.
     *   Show toast notifications for success/failure of cart operations.
     *   Handle network errors gracefully.
+
+**Next Steps for Frontend:**
+*   Implement the `/api/anonymous-user/` endpoint on the backend.
+*   Continue implementing the remaining frontend logic in `EditLocationPage.tsx` and other contexts.
 
 IV. Open Questions / Discussion Points
 
