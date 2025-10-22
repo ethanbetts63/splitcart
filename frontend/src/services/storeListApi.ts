@@ -30,7 +30,22 @@ export const fetchActiveStoreListAPI = async (token: string | null, anonymousId:
   if (!response.ok) {
     throw new Error('Failed to fetch store lists.');
   }
-  return response.json();
+
+  const data = await response.json();
+
+  // Handle Django Rest Framework's paginated response
+  if (data && typeof data === 'object' && 'results' in data && Array.isArray(data.results)) {
+    return data.results;
+  }
+
+  // Handle the case where the API returns a direct array (e.g., for anonymous users)
+  if (Array.isArray(data)) {
+    return data;
+  }
+
+  // If the response is neither, log an error and return an empty array to prevent crashes
+  console.error("API response for store lists was not in the expected format (paginated object or direct array):", data);
+  return [];
 };
 
 export const loadStoreListAPI = async (storeListId: string, token: string | null, anonymousId: string | null): Promise<SelectedStoreListType> => {
