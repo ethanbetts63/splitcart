@@ -1,8 +1,10 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { memo } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import SkeletonProductTile from "./SkeletonProductTile";
 import ProductTile from "./ProductTile";
 import '../css/ProductCarousel.css';
 import { useAuth } from '@/context/AuthContext';
+import { Link } from 'react-router-dom';
 
 // --- Type Definitions ---
 type CompanyPriceInfo = {
@@ -25,57 +27,43 @@ type ApiResponse = {
   results: Product[];
 };
 
-import { Link } from 'react-router-dom';
-
 interface ProductCarouselProps {
   sourceUrl: string;
-  storeIds?: number[]; // Make storeIds an optional prop
+  storeIds?: number[];
   title: string;
   searchQuery?: string;
 }
 
+const fetchProducts = async (sourceUrl: string, storeIds: number[] | undefined, token: string | null): Promise<Product[]> => {
+  const [baseUrl, queryString] = sourceUrl.split('?');
+  const params = new URLSearchParams(queryString || '');
+
+  if (storeIds && storeIds.length > 0) {
+    params.append('store_ids', storeIds.join(','));
+  }
+
+  const finalUrl = `http://127.0.0.1:8000${baseUrl}?${params.toString()}`;
+
+  const headers: HeadersInit = {};
+  if (token) {
+    headers['Authorization'] = `Token ${token}`;
+  }
+
+  const response = await fetch(finalUrl, { headers });
+  if (!response.ok) {
+    throw new Error('Failed to fetch products');
+  }
+  const data: ApiResponse = await response.json();
+  return data.results || [];
+};
+
 const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery }) => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const { token } = useAuth();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        // Separate URL and existing params
-        const [baseUrl, queryString] = sourceUrl.split('?');
-        const params = new URLSearchParams(queryString || '');
-
-        // Add store_ids if they are provided
-        if (storeIds && storeIds.length > 0) {
-          params.append('store_ids', storeIds.join(','));
-        }
-
-        const finalUrl = `http://127.0.0.1:8000${baseUrl}?${params.toString()}`;
-
-        const headers: HeadersInit = {};
-        if (token) {
-          headers['Authorization'] = `Token ${token}`;
-        }
-
-        const response = await fetch(finalUrl, { headers });
-        if (!response.ok) {
-          throw new Error('Failed to fetch products');
-        }
-        const data: ApiResponse = await response.json();
-        setProducts(data.results || []);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [sourceUrl, storeIds, token]); // Add storeIds and token to dependency array
+  const { data: products, isLoading, error } = useQuery<Product[], Error>({
+    queryKey: ['products', title, sourceUrl, storeIds],
+    queryFn: () => fetchProducts(sourceUrl, storeIds, token),
+  });
 
   if (isLoading) {
     return (
@@ -102,7 +90,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
   }
 
   if (error) {
-    return <div className="text-center p-4 text-red-500">Error: {error}</div>;
+    return <div className="text-center p-4 text-red-500">Error: {error.message}</div>;
   }
 
   return (
@@ -116,14 +104,14 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
         )}
       </div>
       <div className="custom-carousel">
-      <div className="custom-carousel__container">
-        {products.map((product) => (
-          <div className="custom-carousel__slide" key={product.id}>
-            <ProductTile product={product} />
-          </div>
-        ))}
+        <div className="custom-carousel__container">
+          {products?.map((product) => (
+            <div className="custom-carousel__slide" key={product.id}>
+              <ProductTile product={product} />
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
     </div>
   );
 };

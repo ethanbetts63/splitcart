@@ -60,4 +60,4 @@ const StoreList: React.FC<StoreListProps> = ({ stores, selectedStoreIds, onStore
   );
 };
 
-export default StoreList;
+export default React.memo(StoreList);

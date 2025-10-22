@@ -120,4 +120,4 @@ const StoreMap: React.FC<StoreMapProps> = ({ center, stores, selectedStoreIds, o
     );
 };
 
-export default StoreMap;
+export default React.memo(StoreMap);
