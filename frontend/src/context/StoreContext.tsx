@@ -175,7 +175,11 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
         throw new Error('Failed to fetch store lists.');
       }
       const data: SelectedStoreListType[] = await response.json();
-      setUserStoreLists(data);
+      if (Array.isArray(data)) {
+        setUserStoreLists(data);
+      } else {
+        setUserStoreLists([]); // Set to empty array if response is not an array
+      }
     } catch (err: any) {
       setStoreListError(err.message);
     } finally {

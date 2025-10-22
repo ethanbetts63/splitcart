@@ -56,10 +56,10 @@ const EditLocationPage = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && token) {
       fetchUserStoreLists();
     }
-  }, [isAuthenticated, fetchUserStoreLists]);
+  }, [isAuthenticated, token, fetchUserStoreLists]);
 
   // --- API Fetching Logic ---
   const handleSearch = useCallback(async () => {
