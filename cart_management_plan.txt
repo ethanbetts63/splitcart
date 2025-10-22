@@ -1,0 +1,138 @@
+Plan for Cart Saving and Management System
+
+I. Core Feature Overview
+*   Allow authenticated users to save, load, and manage multiple shopping carts.
+*   Enable anonymous users to build carts that can be converted to saved carts upon login/signup.
+*   Allow users to create and manage reusable lists of stores (`SelectedStoreList`).
+
+II. Backend Implementation (Django)
+
+1.  Database Model Changes:
+    *   **New `SelectedStoreList` Model:**
+        *   `id` (Primary Key)
+        *   `user` (ForeignKey to `User` model, `null=True` for anonymous lists, `on_delete=models.CASCADE`)
+        *   `anonymous_id` (CharField, `null=True`, stores UUID for anonymous users)
+        *   `name` (CharField, max_length=255, default="My Store List")
+        *   `stores` (ManyToManyField to `Store` model)
+        *   `is_default` (BooleanField, default=False, to mark a user's default store list)
+        *   `created_at` (DateTimeField, auto_now_add=True)
+        *   `updated_at` (DateTimeField, auto_now=True)
+    *   **`Cart` Model (Modification):**
+        *   `id` (Primary Key)
+        *   `user` (ForeignKey to `User` model, `null=True` for anonymous carts)
+        *   `anonymous_id` (CharField, `null=True`, stores UUID for anonymous users)
+        *   `name` (CharField, max_length=255, default="Unnamed Cart")
+        *   `selected_store_list` (ForeignKey to `SelectedStoreList` model, `on_delete=models.SET_NULL`, `null=True`, `blank=True`)
+        *   `created_at` (DateTimeField, auto_now_add=True)
+        *   `updated_at` (DateTimeField, auto_now=True)
+    *   `CartItem` Model:
+        *   `id` (Primary Key)
+        *   `cart` (ForeignKey to `Cart` model, related_name='items')
+        *   `product` (ForeignKey to `Product` model)
+        *   `quantity` (IntegerField, default=1)
+        *   `is_deprecated` (BooleanField, default=False, to mark items that are no longer available or have issues)
+    *   `CartSubstitution` Model:
+        *   `id` (Primary Key)
+        *   `cart_item` (ForeignKey to `CartItem` model, related_name='substitutions')
+        *   `substituted_product` (ForeignKey to `Product` model, the actual substitute chosen)
+        *   `quantity` (IntegerField, default=1)
+        *   `original_product` (ForeignKey to `Product` model, the original product this is substituting for)
+
+2.  API Endpoints (Django REST Framework):
+    *   **New Endpoints for `SelectedStoreList`:**
+        *   `GET /api/store-lists/`: List all store lists for the authenticated user (or anonymous user via `anonymous_id`).
+        *   `POST /api/store-lists/`: Create a new store list. If authenticated, associate with user. If anonymous, generate `anonymous_id`.
+        *   `GET /api/store-lists/<uuid:pk>/`: Retrieve a specific store list's details.
+        *   `PUT /api/store-lists/<uuid:pk>/`: Update an existing store list (name, stores).
+        *   `DELETE /api/store-lists/<uuid:pk>/`: Delete a store list.
+    *   **`Cart` Endpoints (Modification):**
+        *   `GET /api/carts/`: List all carts for the authenticated user (or anonymous user via `anonymous_id`).
+        *   `POST /api/carts/`: Create a new cart. If authenticated, associate with user. If anonymous, generate `anonymous_id`. If no `selected_store_list` is provided, assign the user's default `SelectedStoreList` or create a new one based on current `StoreContext` if anonymous.
+        *   `GET /api/carts/<uuid:pk>/`: Retrieve a specific cart's details (items, `selected_store_list`, substitutions).
+        *   `PUT /api/carts/<uuid:pk>/`: Update an existing cart (name, `selected_store_list`, items, substitutions).
+        *   `DELETE /api/carts/<uuid:pk>/`: Delete a cart.
+        *   `POST /api/carts/<uuid:pk>/merge/`: Endpoint to merge an anonymous cart and its associated `SelectedStoreList` into a registered user's account upon login/signup.
+
+3.  Anonymous User Handling (Modification):
+    *   Generate a UUID for `anonymous_id` on the backend for new anonymous sessions.
+    *   Store `anonymous_id` in a secure, http-only cookie on the frontend.
+    *   Middleware or custom authentication to identify anonymous users via `anonymous_id`.
+    *   Logic to transfer `Cart`, `CartItem`, and `SelectedStoreList` records from `anonymous_id` to `user_id` upon successful login/signup.
+
+4.  Data Serialization (Modification):
+    *   Create Django REST Framework serializers for `SelectedStoreList`.
+    *   Update `Cart` serializer to include `selected_store_list` (nested serialization).
+    *   Create serializers for `CartItem` and `CartSubstitution` models, ensuring nested serialization for easy frontend consumption.
+
+III. Frontend Implementation (React/TypeScript)
+
+1.  `TrolleyPage.tsx` Renaming and UI:
+    *   Rename `TrolleyPage.tsx` to `CartPage.tsx` (or similar, to reflect the new functionality).
+    *   Implement a dropdown menu in the top right:
+        *   "Create New Cart" option.
+        *   List of user's saved carts (displaying cart names).
+        *   "Load Cart" functionality when a cart is selected.
+    *   Add UI elements for:
+        *   Renaming the current cart.
+        *   Saving the current cart.
+        *   Deleting the current cart.
+
+2.  State Management (Contexts - Modification):
+    *   **`ShoppingListContext`:**
+        *   Modify to load/save cart items from/to the backend API.
+        *   Manage the `currentCartId` and `currentCartName` in state.
+        *   Add functions for `loadCart(cartId)`, `saveCart()`, `createNewCart()`, `deleteCart(cartId)`.
+    *   **`StoreContext`:**
+        *   Will need to manage `currentStoreListId` and `currentStoreListName`.
+        *   Add functions for `loadStoreList(storeListId)`, `saveStoreList()`, `createNewStoreList()`, `deleteStoreList(storeListId)`.
+        *   Update `selectedStoreIds` when a new cart or store list is loaded.
+    *   **`SubstitutionContext`:**
+        *   Update `selections` when a new cart is loaded.
+    *   **`AuthContext`:**
+        *   Integrate with cart merging logic upon login/signup.
+        *   Pass `anonymous_id` (from cookie) to backend during authentication.
+
+3.  Anonymous User Handling (Frontend):
+    *   On initial load, check for `anonymous_id` cookie. If not present, make an API call to create an anonymous user and store the returned `anonymous_id` in a cookie.
+    *   Include `anonymous_id` in all cart-related API requests if the user is not authenticated.
+    *   Upon login/signup, send the `anonymous_id` along with credentials to the backend for merging.
+
+4.  Cart Operations Logic:
+    *   **Loading a Cart:**
+        *   Fetch cart details from backend.
+        *   Update `ShoppingListContext`, `StoreContext`, `SubstitutionContext` with loaded data.
+        *   Handle deprecated items (e.g., filter out, display warning).
+    *   **Saving a Cart:**
+        *   Determine when to trigger save (e.g., on explicit "Save" button click, on closing cart dialogue, on navigating away from cart page).
+        *   Send current cart state (items, `selected_store_list` ID, substitutions) to backend API.
+    *   **Creating a New Cart:**
+        *   Clear current cart state in contexts.
+        *   Optionally prompt for a cart name.
+        *   Make API call to create a new empty cart on the backend, potentially assigning a default `SelectedStoreList`.
+    *   **Deleting a Cart:**
+        *   Confirmation dialog.
+        *   API call to delete.
+        *   If the deleted cart was the current one, load a new empty cart or default.
+
+5.  Handling Deprecated Items:
+    *   Visually indicate deprecated items in the cart (e.g., greyed out, strikethrough, warning icon).
+    *   Provide options to the user (e.g., "Remove deprecated item", "Find alternative").
+
+6.  Error Handling and User Feedback:
+    *   Display loading states for API calls.
+    *   Show toast notifications for success/failure of cart operations.
+    *   Handle network errors gracefully.
+
+IV. Open Questions / Discussion Points
+
+*   **Saving Frequency:** When exactly should the cart be saved?
+    *   Real-time (on every item change)? (Potentially high API traffic)
+    *   On explicit "Save" button click? (User might lose unsaved changes)
+    *   On closing the cart dialogue?
+    *   On navigating to the next step (e.g., "Final Cart Page")?
+    *   A combination (e.g., auto-save every X seconds, plus explicit save)?
+*   **Cart Naming:** Should new carts be automatically named (e.g., "Cart 1", "Anonymous Cart") or always prompt the user?
+*   **Default Cart:** What happens if a user has no saved carts? Should there always be an "active" cart, even if empty? How is the default `SelectedStoreList` determined for a new user?
+*   **UI for Substitutions in Cart Dialogue:** How will the "remove and adjust quantities" for substitutions be presented within the `TrolleyPage`?
+*   **Deprecation Handling:** What is the exact desired user flow when deprecated items are encountered?
+*   **Store List Management UI:** Where will users create, rename, delete, and set default `SelectedStoreList` instances? (Likely in `SettingsDialog` or a dedicated page).

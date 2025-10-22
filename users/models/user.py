@@ -1,6 +1,9 @@
+import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from .managers import UserManager
+from django.conf import settings
+
+from ..managers import UserManager
 
 class User(AbstractUser):
     """
