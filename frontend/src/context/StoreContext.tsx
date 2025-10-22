@@ -22,9 +22,9 @@ export type SelectedStoreListType = {
   id: string; // UUID
   name: string;
   stores: number[]; // Array of store IDs
-  is_default: boolean;
   created_at: string;
   updated_at: string;
+  last_used_at: string; // Added this field
 };
 
 interface StoreContextType {
