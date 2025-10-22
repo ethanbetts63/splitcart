@@ -1,23 +1,27 @@
 import React, { useState } from 'react';
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-
-// Import logos
-import aldiLogo from '@/assets/ALDI_logo.svg';
-import colesLogo from '@/assets/coles_logo.webp';
-import igaLogo from '@/assets/iga_logo.webp';
-import woolworthsLogo from '@/assets/woolworths_logo.webp';
-
-// Update data structure to include logos
-const companies = [
-  { name: 'Coles', logo: colesLogo },
-  { name: 'Woolworths', logo: woolworthsLogo },
-  { name: 'Aldi', logo: aldiLogo },
-  { name: 'IGA', logo: igaLogo },
-];
+import { companyNames } from '@/lib/companies';
+import { useCompanyLogo } from '@/hooks/useCompanyLogo';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface CompanyFilterProps {
   onSelectionChange?: (selectedCompanies: string[]) => void;
 }
+
+// Internal component to handle the logo loading state
+const CompanyLogo = ({ companyName }: { companyName: string }) => {
+  const { objectUrl, isLoading, error } = useCompanyLogo(companyName);
+
+  if (isLoading) {
+    return <Skeleton className="h-6 w-12" />;
+  }
+
+  if (error || !objectUrl) {
+    return <div className="h-6 w-12 flex items-center justify-center text-xs text-red-500">?</div>;
+  }
+
+  return <img src={objectUrl} alt={`${companyName} logo`} className="h-6 w-auto" />;
+};
 
 const CompanyFilter: React.FC<CompanyFilterProps> = ({ onSelectionChange }) => {
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
@@ -39,9 +43,9 @@ const CompanyFilter: React.FC<CompanyFilterProps> = ({ onSelectionChange }) => {
         onValueChange={handleValueChange}
         className="flex flex-wrap justify-start gap-2"
       >
-        {companies.map(company => (
-          <ToggleGroupItem key={company.name} value={company.name} aria-label={`Toggle ${company.name}`}>
-            <img src={company.logo} alt={`${company.name} logo`} className="h-6 w-auto" />
+        {companyNames.map(name => (
+          <ToggleGroupItem key={name} value={name} aria-label={`Toggle ${name}`}>
+            <CompanyLogo companyName={name} />
           </ToggleGroupItem>
         ))}
       </ToggleGroup>

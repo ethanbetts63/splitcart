@@ -1,20 +1,8 @@
 import React from 'react';
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
-
-// Import logos
-import aldiLogo from '@/assets/ALDI_logo.svg';
-import colesLogo from '@/assets/coles_logo.webp';
-import igaLogo from '@/assets/iga_logo.webp';
-import woolworthsLogo from '@/assets/woolworths_logo.webp';
-
-// Logo mapping
-const companyLogos: { [key: string]: string } = {
-    'Aldi': aldiLogo,
-    'Coles': colesLogo,
-    'Iga': igaLogo,
-    'Woolworths': woolworthsLogo,
-};
+import { useCompanyLogo } from '@/hooks/useCompanyLogo';
+import { Skeleton } from '@/components/ui/skeleton';
 
 // Define the type for a single store
 type Store = {
@@ -29,12 +17,26 @@ interface StoreListProps {
   onStoreSelect: (storeId: number) => void;
 }
 
+// Internal component to handle the logo loading state
+const StoreLogo = ({ companyName }: { companyName: string }) => {
+  const { objectUrl, isLoading, error } = useCompanyLogo(companyName);
+
+  if (isLoading) {
+    return <Skeleton className="h-4 w-10" />;
+  }
+
+  if (error || !objectUrl) {
+    return <div className="h-4 w-10 flex items-center justify-center text-xs text-red-500">?</div>;
+  }
+
+  return <img src={objectUrl} alt={companyName} className="h-4 w-auto" />;
+};
+
 const StoreList: React.FC<StoreListProps> = ({ stores, selectedStoreIds, onStoreSelect }) => {
   return (
     <div className="flex flex-col gap-2">
       {stores.map(store => {
         const isSelected = selectedStoreIds.has(store.id);
-        const logo = companyLogos[store.company_name];
 
         return (
           <Card 
@@ -48,7 +50,7 @@ const StoreList: React.FC<StoreListProps> = ({ stores, selectedStoreIds, onStore
                 onCheckedChange={() => onStoreSelect(store.id)}
                 aria-label={`Select ${store.store_name}`}
               />
-              {logo && <img src={logo} alt={store.company_name} className="h-4 w-auto" />}
+              <StoreLogo companyName={store.company_name} />
               <span className="font-medium text-sm truncate">{store.store_name}</span>
             </CardContent>
           </Card>

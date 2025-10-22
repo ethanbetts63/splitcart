@@ -1,0 +1,29 @@
+ Step 1: Installation (Completed)
+
+   * Action: Add React Query and its companion developer tools to the project.
+   * Command Executed: npm install @tanstack/react-query @tanstack/react-query-devtools
+   * File Affected: C:\Users\ethan\coding\splitcart\frontend\package.json
+
+  ---
+
+  Step 2: Application-Wide Provider Setup
+
+   * Goal: Make the React Query client available to the entire React application tree.
+   * File to Modify: C:\Users\ethan\coding\splitcart\frontend\src\main.tsx
+   * Detailed Actions:
+       1. Import QueryClient and QueryClientProvider from @tanstack/react-query.
+       2. Import ReactQueryDevtools from @tanstack/react-query-devtools.
+       3. Create a single, application-wide instance of the query client: const queryClient = new QueryClient();.
+       4. Wrap the existing <BrowserRouter> component with the <QueryClientProvider client={queryClient}>.
+       5. Place the <ReactQueryDevtools initialIsOpen={false} /> component inside the provider. This will give us a powerful debugging
+          tool to visualize the cache.
+
+  ---
+
+  Step 3: Refactor Product Carousels with `useQuery`
+
+   * Goal: Replace the manual useState/useEffect data fetching logic in the ProductCarousel component with React Query's useQuery hook.
+      This will simplify the code and automatically cache the product data for each carousel.
+   * File to Modify: C:\Users\ethan\coding\splitcart\frontend\src\components\ProductCarousel.tsx
+   * Detailed Actions:
+       1. Import the useQuery hook from
