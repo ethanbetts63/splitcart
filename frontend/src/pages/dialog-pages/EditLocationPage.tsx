@@ -32,7 +32,8 @@ type MapCenter = {
   radius: number;
 } | null;
 
-import { useStoreSelection } from '@/context/StoreContext';
+import { useStoreSearch } from '@/context/StoreSearchContext';
+import { useStoreList } from '@/context/StoreListContext';
 
 const EditLocationPage = () => {
   const { isAuthenticated, token, anonymousId } = useAuth();
@@ -41,15 +42,18 @@ const EditLocationPage = () => {
     radius, setRadius,
     selectedCompanies, setSelectedCompanies,
     mapCenter, setMapCenter,
-    stores, setStores,
+    stores, setStores
+  } = useStoreSearch();
+
+  const {
     selectedStoreIds, setSelectedStoreIds, handleStoreSelect,
     currentStoreListId, setCurrentStoreListId,
     currentStoreListName, setCurrentStoreListName,
     userStoreLists, setUserStoreLists,
     storeListLoading, setStoreListLoading,
     storeListError, setStoreListError,
-    loadStoreList, saveStoreList, createNewStoreList, deleteStoreList, fetchUserStoreLists
-  } = useStoreSelection();
+    loadStoreList, saveStoreList, createNewStoreList, deleteStoreList, fetchActiveStoreList
+  } = useStoreList();
 
   // State for loading and error, which is local to this page
   const [isLoading, setIsLoading] = useState(false);

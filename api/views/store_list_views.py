@@ -7,10 +7,16 @@ from api.serializers import SelectedStoreListSerializer
 
 class SelectedStoreListListCreateView(generics.ListCreateAPIView):
     serializer_class = SelectedStoreListSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        return SelectedStoreList.objects.filter(user=self.request.user)
+        if self.request.user.is_authenticated:
+            return SelectedStoreList.objects.filter(user=self.request.user)
+        else:
+            anonymous_id = self.request.query_params.get('anonymous_id')
+            if anonymous_id:
+                return SelectedStoreList.objects.filter(anonymous_id=anonymous_id)
+            return SelectedStoreList.objects.none()
 
     def perform_create(self, serializer):
         user = self.request.user
@@ -29,10 +35,16 @@ class SelectedStoreListListCreateView(generics.ListCreateAPIView):
 
 class SelectedStoreListRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SelectedStoreListSerializer
-    permission_classes = [permissions.IsAuthenticated] # Changed to IsAuthenticated
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = SelectedStoreList.objects.all()
     lookup_field = 'pk'
 
     def get_queryset(self):
         # Ensure users can only access their own store lists
-        return SelectedStoreList.objects.filter(user=self.request.user)
+        if self.request.user.is_authenticated:
+            return SelectedStoreList.objects.filter(user=self.request.user)
+        else:
+            anonymous_id = self.request.query_params.get('anonymous_id')
+            if anonymous_id:
+                return SelectedStoreList.objects.filter(anonymous_id=anonymous_id)
+            return SelectedStoreList.objects.none()

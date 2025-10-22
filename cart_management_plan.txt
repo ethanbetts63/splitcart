@@ -5,7 +5,7 @@ I. Core Feature Overview
 *   Enable anonymous users to build carts that can be converted to saved carts upon login/signup.
 *   Allow users to create and manage reusable lists of stores (`SelectedStoreList`).
 
-II. Backend Implementation (Django) - **COMPLETE**
+II. Backend Implementation (Django) - **IN PROGRESS**
 
 1.  Database Model Changes: (Implemented in `users/models/` directory)
     *   **`User` Model:** (Moved to `users/models/user.py`)
@@ -38,13 +38,14 @@ II. Backend Implementation (Django) - **COMPLETE**
         *   `substituted_product` (ForeignKey to `Product` model, related_name='substitutes_chosen_for_items', the actual substitute product chosen)
         *   `quantity` (IntegerField, default=1, quantity of the substituted_product)
 
-2.  API Endpoints (Django REST Framework): (Implemented in `api/serializers.py`, `api/views/cart_views.py`, `api/views/store_list_views.py`, and `api/urls.py`)
-    *   **New Endpoints for `SelectedStoreList`:**
-        *   `GET /api/store-lists/`: List all store lists for the authenticated user (or anonymous user via `anonymous_id`).
-        *   `POST /api/store-lists/`: Create a new store list. If authenticated, associate with user. If anonymous, generate `anonymous_id`.
-        *   `GET /api/store-lists/<uuid:pk>/`: Retrieve a specific store list's details.
-        *   `PUT /api/store-lists/<uuid:pk>/`: Update an existing store list (name, stores).
-        *   `DELETE /api/store-lists/<uuid:pk>/`: Delete a store list.
+2.  API Endpoints (Django REST Framework): (Partially Implemented)
+    *   **`SelectedStoreList` Endpoints (`api/views/store_list_views.py`):**
+        *   Secured endpoints to be `IsAuthenticated` only.
+        *   Updated `perform_create` to generate a unique name for new store lists.
+        *   **TODO:** Update `get_queryset` in `SelectedStoreListListCreateView` to handle fetching the default list for an anonymous user via `anonymous_id` query parameter.
+    *   **`AnonymousUserCreateView` (`api/views/anonymous_user_view.py`):**
+        *   Created new view to handle anonymous user creation and default store list.
+        *   URL pattern added in `api/urls.py`.
     *   **`Cart` Endpoints (Modification):**
         *   `GET /api/carts/`: List all carts for the authenticated user (or anonymous user via `anonymous_id`).
         *   `POST /api/carts/`: Create a new cart. If authenticated, associate with user. If anonymous, generate `anonymous_id`. If no `selected_store_list` is provided, assign the user's default `SelectedStoreList` or create a new one based on current `StoreContext` if anonymous.
@@ -70,37 +71,31 @@ II. Backend Implementation (Django) - **COMPLETE**
 
 III. Frontend Implementation (React/TypeScript) - **IN PROGRESS**
 
-1.  `TrolleyPage.tsx` Renaming and UI:
-    *   Rename `TrolleyPage.tsx` to `CartPage.tsx` (or similar, to reflect the new functionality).
-    *   Implement a dropdown menu in the top right:
-        *   "Create New Cart" option.
-        *   List of user's saved carts (displaying cart names).
-        *   "Load Cart" functionality when a cart is selected.
-    *   Add UI elements for:
-        *   Renaming the current cart.
-        *   Deleting the current cart.
-    *   **Removed "Save Current" and "Set Default" buttons as per user request.**
+1.  `EditLocationPage.tsx` (`frontend/src/pages/dialog-pages/EditLocationPage.tsx`):
+    *   Conditionally rendered the store list management UI based on `isAuthenticated`.
+    *   Updated `useEffect` to call `fetchActiveStoreList` for both authenticated and anonymous users.
+    *   ... (other changes are implemented) ...
 
 2.  State Management (Contexts - Modification):
-    *   **`AuthContext` (Updated):**
+    *   **`AuthContext` (`frontend/src/context/AuthContext.tsx`):**
         *   `AuthContextType` updated to include `anonymousId`.
         *   `anonymousId` state and cookie management logic added.
         *   `login` and `logout` functions updated to clear `anonymousId` cookie.
         *   `anonymousId` exposed in `AuthContext.Provider`.
-    *   **`StoreContext` (Updated):**
+    *   **`StoreContext` (`frontend/src/context/StoreContext.tsx`):**
         *   `SelectedStoreListType` updated (removed `is_default`, added `last_used_at`).
         *   `StoreContextType` interface updated (modified `saveStoreList` and `createNewStoreList` signatures).
         *   New state variables for `SelectedStoreList` management added.
         *   `useAuth` hook call added (destructuring `token` and `anonymousId`).
-        *   Implemented `getAuthHeaders`, `fetchUserStoreLists`, `loadStoreList`, `saveStoreList`, `createNewStoreList`, `deleteStoreList` functions.
-        *   `fetchUserStoreLists` made more robust to handle non-array responses.
+        *   Implemented `getAuthHeaders`, `fetchActiveStoreList`, `loadStoreList`, `saveStoreList`, `createNewStoreList`, `deleteStoreList` functions.
+        *   `fetchActiveStoreList` made more robust to handle non-array responses.
         *   `isAuthenticated` removed from `useAuth` destructuring in `StoreProvider`.
-    *   **`ShoppingListContext`:**
-        *   Modify to load/save cart items from/to the backend API.
-        *   Manage the `currentCartId` and `currentCartName` in state.
-        *   Add functions for `loadCart(cartId)`, `saveCart()`, `createNewCart()`, `deleteCart(cartId)`.
-    *   **`SubstitutionContext`:**
-        *   Update `selections` when a new cart is loaded.
+    *   **`ShoppingListContext` (`frontend/src/context/ShoppingListContext.tsx`):**
+        *   **TODO:** Modify to load/save cart items from/to the backend API.
+        *   **TODO:** Manage the `currentCartId` and `currentCartName` in state.
+        *   **TODO:** Add functions for `loadCart(cartId)`, `saveCart()`, `createNewCart()`, `deleteCart(cartId)`.
+    *   **`SubstitutionContext` (`frontend/src/context/SubstitutionContext.tsx`):**
+        *   **TODO:** Update `selections` when a new cart is loaded.
 
 3.  Anonymous User Handling (Frontend):
     *   On initial load, check for `anonymous_id` cookie. If not present, make an API call to create an anonymous user and store the returned `anonymous_id` in a cookie.
