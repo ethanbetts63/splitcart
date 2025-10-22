@@ -8,12 +8,8 @@ import {
   X, // Import the X icon
 } from "lucide-react"
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "@/components/ui/dialog"
+import { useStoreList } from "@/context/StoreListContext";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import {
   Sidebar,
   SidebarContent,
@@ -44,12 +40,25 @@ const data = {
 }
 
 // A component to render the correct page content based on the active page
-const PageContent = ({ activePage, onOpenChange }: { activePage: string, onOpenChange: (open: boolean) => void }) => {
+const PageContent = ({ 
+  activePage, 
+  onOpenChange, 
+  localSelectedStoreIds, 
+  setLocalSelectedStoreIds 
+}: { 
+  activePage: string, 
+  onOpenChange: (open: boolean) => void,
+  localSelectedStoreIds: Set<number>,
+  setLocalSelectedStoreIds: React.Dispatch<React.SetStateAction<Set<number>>>
+}) => {
   switch (activePage) {
     case 'Trolley':
       return <TrolleyPage onOpenChange={onOpenChange} />;
     case 'Edit Location':
-      return <EditLocationPage />;
+      return <EditLocationPage 
+                localSelectedStoreIds={localSelectedStoreIds} 
+                setLocalSelectedStoreIds={setLocalSelectedStoreIds} 
+             />;
     default:
       return (
         <div className="p-4">
@@ -68,20 +77,30 @@ interface SettingsDialogProps {
 
 export function SettingsDialog({ open, onOpenChange, defaultPage = 'Trolley' }: SettingsDialogProps) {
   const [activePage, setActivePage] = React.useState(defaultPage);
+  const { selectedStoreIds, setSelectedStoreIds } = useStoreList();
+  const [localSelectedStoreIds, setLocalSelectedStoreIds] = React.useState<Set<number>>(selectedStoreIds);
 
-  // When the dialog opens, ensure it shows the correct page
+  // When the dialog opens, sync the local state with the global state.
   React.useEffect(() => {
     if (open) {
-      setActivePage(defaultPage);
+      setLocalSelectedStoreIds(new Set(selectedStoreIds));
     }
-  }, [open, defaultPage]);
+  }, [open, selectedStoreIds]);
 
   const handleNavClick = (pageName: string) => {
     setActivePage(pageName);
   };
 
+  const handleOpenChange = (newOpenState: boolean) => {
+    // If the dialog is closing, apply the local state to the global state.
+    if (!newOpenState) {
+      setSelectedStoreIds(localSelectedStoreIds);
+    }
+    onOpenChange(newOpenState);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent 
         showCloseButton={false} // Disable the default close button
         className="overflow-hidden p-0 md:max-h-[500px] md:max-w-[700px] lg:max-w-[800px]"
@@ -106,7 +125,7 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'Trolley' }: 
                         >
                           <button onClick={() => {
                             if (item.isCloseButton) {
-                              onOpenChange(false);
+                              handleOpenChange(false);
                             } else {
                               handleNavClick(item.name)
                             }
@@ -122,7 +141,12 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'Trolley' }: 
             </SidebarContent>
           </Sidebar>
           <main className="flex h-[480px] flex-1 flex-col overflow-hidden">
-            <PageContent activePage={activePage} onOpenChange={onOpenChange} />
+            <PageContent 
+              activePage={activePage} 
+              onOpenChange={handleOpenChange} 
+              localSelectedStoreIds={localSelectedStoreIds}
+              setLocalSelectedStoreIds={setLocalSelectedStoreIds}
+            />
           </main>
         </SidebarProvider>
       </DialogContent>

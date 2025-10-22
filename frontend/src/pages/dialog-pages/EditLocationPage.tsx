@@ -35,7 +35,12 @@ type MapCenter = {
 import { useStoreSearch } from '@/context/StoreSearchContext';
 import { useStoreList } from '@/context/StoreListContext';
 
-const EditLocationPage = () => {
+interface EditLocationPageProps {
+  localSelectedStoreIds: Set<number>;
+  setLocalSelectedStoreIds: React.Dispatch<React.SetStateAction<Set<number>>>;
+}
+
+const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreIds, setLocalSelectedStoreIds }) => {
   const { isAuthenticated, token, anonymousId } = useAuth();
   const {
     postcode, setPostcode,
@@ -46,7 +51,8 @@ const EditLocationPage = () => {
   } = useStoreSearch();
 
   const {
-    selectedStoreIds, setSelectedStoreIds, handleStoreSelect,
+    // selectedStoreIds and handleStoreSelect are now managed by the parent
+    setSelectedStoreIds, // Still needed for the search handler
     currentStoreListId, setCurrentStoreListId,
     currentStoreListName, setCurrentStoreListName,
     userStoreLists, setUserStoreLists,
@@ -67,6 +73,18 @@ const EditLocationPage = () => {
       fetchActiveStoreList();
     }
   }, [isAuthenticated, token, anonymousId, fetchActiveStoreList]);
+
+  const handleLocalStoreSelect = (storeId: number) => {
+    setLocalSelectedStoreIds(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(storeId)) {
+        newSet.delete(storeId);
+      } else {
+        newSet.add(storeId);
+      }
+      return newSet;
+    });
+  };
 
   // --- API Fetching Logic ---
   const handleSearch = useCallback(async () => {
@@ -93,7 +111,8 @@ const EditLocationPage = () => {
       }
       const data: Store[] = await response.json();
       setStores(data || []);
-      setSelectedStoreIds(new Set((data || []).map(store => store.id))); // Select all stores by default
+      // When a new search is performed, update the local state directly
+      setLocalSelectedStoreIds(new Set((data || []).map(store => store.id))); 
 
       // Center map on the first result if available, bundling radius with it
       if (data && data.length > 0) {
@@ -110,7 +129,7 @@ const EditLocationPage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [postcode, radius, selectedCompanies, setStores, setSelectedStoreIds, setMapCenter]);
+  }, [postcode, radius, selectedCompanies, setStores, setLocalSelectedStoreIds, setMapCenter]);
 
 
 
@@ -133,8 +152,8 @@ const EditLocationPage = () => {
     return (
         <StoreList 
             stores={stores}
-            selectedStoreIds={selectedStoreIds}
-            onStoreSelect={handleStoreSelect}
+            selectedStoreIds={localSelectedStoreIds} // Use local state
+            onStoreSelect={handleLocalStoreSelect} // Use local handler
         />
     );
   }
@@ -156,7 +175,7 @@ const EditLocationPage = () => {
                             onChange={(e) => setCurrentStoreListName(e.target.value)}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
-                                    saveStoreList(currentStoreListName, Array.from(selectedStoreIds));
+                                    saveStoreList(currentStoreListName, Array.from(localSelectedStoreIds));
                                     setIsEditingListName(false);
                                     e.currentTarget.blur();
                                 }
@@ -169,7 +188,7 @@ const EditLocationPage = () => {
                             value={currentStoreListId || ""}
                             onValueChange={(value) => {
                                 if (value === "new") {
-                                    createNewStoreList(Array.from(selectedStoreIds));
+                                    createNewStoreList(Array.from(localSelectedStoreIds));
                                 } else {
                                     loadStoreList(value);
                                 }
@@ -199,7 +218,7 @@ const EditLocationPage = () => {
                         size="icon"
                         onClick={() => {
                             if (isEditingListName) {
-                                saveStoreList(currentStoreListName, Array.from(selectedStoreIds));
+                                saveStoreList(currentStoreListName, Array.from(localSelectedStoreIds));
                             }
                             setIsEditingListName(!isEditingListName);
                         }}
@@ -243,14 +262,14 @@ const EditLocationPage = () => {
             <StoreMap 
               center={mapCenter}
               stores={stores || []} // Pass empty array if stores is null
-              selectedStoreIds={selectedStoreIds}
-              onStoreSelect={handleStoreSelect}
+              selectedStoreIds={localSelectedStoreIds} // Use local state
+              onStoreSelect={handleLocalStoreSelect} // Use local handler
             />
         </div>
         {/* Bottom 1/2 for Store List */}
         <div className="h-1/2 border-t flex flex-col">
             <div className="p-4 border-b">
-                <h3 className="text-lg font-semibold">Selected Stores ({selectedStoreIds.size})</h3>
+                <h3 className="text-lg font-semibold">Selected Stores ({localSelectedStoreIds.size})</h3>
             </div>
             <div className="flex-grow overflow-y-auto p-4">
                 {renderStoreList()}
