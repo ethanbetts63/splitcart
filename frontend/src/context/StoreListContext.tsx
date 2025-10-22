@@ -84,17 +84,23 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     setStoreListError(null);
     try {
       const data = await fetchActiveStoreListAPI(token, anonymousId);
-      setUserStoreLists(data || []);
+      if (Array.isArray(data)) {
+        setUserStoreLists(data);
 
-      // Only auto-load the most recent list if there's no active selection in the session
-      const savedSelection = sessionStorage.getItem('selectedStoreIds');
-      const savedSelectionIsEmpty = !savedSelection || JSON.parse(savedSelection).length === 0;
+        // Only auto-load the most recent list if there's no active selection in the session
+        const savedSelection = sessionStorage.getItem('selectedStoreIds');
+        const savedSelectionIsEmpty = !savedSelection || JSON.parse(savedSelection).length === 0;
 
-      if (savedSelectionIsEmpty && Array.isArray(data) && data.length > 0) {
-        const activeList = data.sort((a, b) => new Date(b.last_used_at).getTime() - new Date(a.last_used_at).getTime())[0];
-        setCurrentStoreListId(activeList.id);
-        setCurrentStoreListName(activeList.name);
-        setSelectedStoreIds(new Set(activeList.stores));
+        if (savedSelectionIsEmpty && data.length > 0) {
+          const activeList = data.sort((a, b) => new Date(b.last_used_at).getTime() - new Date(a.last_used_at).getTime())[0];
+          setCurrentStoreListId(activeList.id);
+          setCurrentStoreListName(activeList.name);
+          setSelectedStoreIds(new Set(activeList.stores));
+        }
+      } else {
+        // If data is not an array, treat it as an empty list to prevent errors
+        console.error("fetchActiveStoreListAPI returned non-array data:", data);
+        setUserStoreLists([]);
       }
     } catch (err: any) {
       setStoreListError(err.message);
