@@ -166,8 +166,8 @@ class SelectedStoreListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SelectedStoreList
-        fields = ('id', 'name', 'stores', 'is_default', 'created_at', 'updated_at')
-        read_only_fields = ('created_at', 'updated_at')
+        fields = ('id', 'name', 'stores', 'created_at', 'updated_at', 'last_used_at')
+        read_only_fields = ('created_at', 'updated_at', 'last_used_at')
 
 
 class CartSubstitutionSerializer(serializers.ModelSerializer):
