@@ -196,11 +196,11 @@ const EditLocationPage = () => {
                 <div className="flex gap-2 justify-end">
                     <Button 
                         variant="destructive" 
-                        size="sm"
+                        size="icon"
                         onClick={() => currentStoreListId && deleteStoreList(currentStoreListId)}
                         disabled={storeListLoading || !currentStoreListId}
                     >
-                        <Trash2 className="h-4 w-4" /> Delete List
+                        <Trash2 className="h-4 w-4" />
                     </Button>
                 </div>
             </div>
