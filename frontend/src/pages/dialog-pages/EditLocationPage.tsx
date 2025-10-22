@@ -5,6 +5,16 @@ import CompanyFilter from '@/components/CompanyFilter';
 import StoreList from '@/components/StoreList';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/AuthContext';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { PlusCircle, Save, Trash2, Star } from 'lucide-react'; // Icons for actions
 
 // Define the type for a single store
 type Store = {
@@ -25,18 +35,31 @@ type MapCenter = {
 import { useStoreSelection } from '@/context/StoreContext';
 
 const EditLocationPage = () => {
+  const { isAuthenticated } = useAuth();
   const {
     postcode, setPostcode,
     radius, setRadius,
     selectedCompanies, setSelectedCompanies,
     mapCenter, setMapCenter,
     stores, setStores,
-    selectedStoreIds, setSelectedStoreIds, handleStoreSelect
+    selectedStoreIds, setSelectedStoreIds, handleStoreSelect,
+    currentStoreListId, setCurrentStoreListId,
+    currentStoreListName, setCurrentStoreListName,
+    userStoreLists, setUserStoreLists,
+    storeListLoading, setStoreListLoading,
+    storeListError, setStoreListError,
+    loadStoreList, saveStoreList, createNewStoreList, deleteStoreList, fetchUserStoreLists
   } = useStoreSelection();
 
   // State for loading and error, which is local to this page
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchUserStoreLists();
+    }
+  }, [isAuthenticated, fetchUserStoreLists]);
 
   // --- API Fetching Logic ---
   const handleSearch = useCallback(async () => {
@@ -114,6 +137,69 @@ const EditLocationPage = () => {
       {/* Left Column for Controls */}
       <div className="w-3/7 border-r p-4 flex flex-col gap-4">
         <h3 className="text-lg font-semibold">Controls</h3>
+        {/* Placeholder for Store List Management */}
+        <div className="flex flex-col gap-2">
+            <Label htmlFor="store-list-select">Saved Store Lists</Label>
+            <Select
+                value={currentStoreListId || ""} // Control the selected value
+                onValueChange={(value) => {
+                    if (value === "new") {
+                        // Handle "Create New List"
+                        // For now, we'll just clear the current selection
+                        setCurrentStoreListId(null);
+                        setCurrentStoreListName("New List");
+                        setSelectedStoreIds(new Set());
+                    } else {
+                        loadStoreList(value); // Load the selected store list
+                    }
+                }}
+            >
+                <SelectTrigger id="store-list-select">
+                    <SelectValue placeholder="Select a store list">
+                        {currentStoreListName}
+                    </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="new">
+                        <div className="flex items-center gap-2">
+                            <PlusCircle className="h-4 w-4" /> Create New List
+                        </div>
+                    </SelectItem>
+                    {userStoreLists.map((list) => (
+                        <SelectItem key={list.id} value={list.id}>
+                            {list.name} {list.is_default && "(Default)"}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+            <div className="flex gap-2">
+                <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex-1"
+                    onClick={() => saveStoreList(currentStoreListName, Array.from(selectedStoreIds), false)}
+                    disabled={!isAuthenticated || storeListLoading}
+                >
+                    <Save className="h-4 w-4 mr-2" /> Save Current
+                </Button>
+                <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => saveStoreList(currentStoreListName, Array.from(selectedStoreIds), true)}
+                    disabled={!isAuthenticated || storeListLoading}
+                >
+                    <Star className="h-4 w-4" /> Set Default
+                </Button>
+                <Button 
+                    variant="destructive" 
+                    size="sm"
+                    onClick={() => currentStoreListId && deleteStoreList(currentStoreListId)}
+                    disabled={!isAuthenticated || storeListLoading || !currentStoreListId}
+                >
+                    <Trash2 className="h-4 w-4" />
+                </Button>
+            </div>
+        </div>
         <div className="grid gap-2">
             <label className="text-sm font-medium">Postcode</label>
             <Input

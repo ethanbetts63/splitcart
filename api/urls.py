@@ -17,6 +17,16 @@ from .views.popular_category_list_view import PopularCategoryListView
 from .views.faq_list_view import FaqListView
 from .views.product_substitute_list_view import ProductSubstituteListView
 
+from .views.store_list_views import SelectedStoreListListCreateView, SelectedStoreListRetrieveUpdateDestroyView
+from .views.cart_views import (
+    CartListCreateView,
+    CartRetrieveUpdateDestroyView,
+    CartItemCreateView,
+    CartItemRetrieveUpdateDestroyView,
+    CartSubstitutionCreateView,
+    CartSubstitutionRetrieveUpdateDestroyView
+)
+
 urlpatterns = [
     path('scheduler/next-candidate/', SchedulerView.as_view(), name='scheduler-next-candidate'),
     path('upload/products/', ProductFileUploadView.as_view(), name='product-file-upload'),
@@ -36,4 +46,20 @@ urlpatterns = [
     path('cart/email-list/', EmailShoppingListView.as_view(), name='email-shopping-list'),
     path('stores/nearby/', StoreListView.as_view(), name='store-list'),
     path('postcodes/search/', PostcodeSearchView.as_view(), name='postcode-search'),
+
+    # SelectedStoreList URLs
+    path('store-lists/', SelectedStoreListListCreateView.as_view(), name='store-list-list-create'),
+    path('store-lists/<uuid:pk>/', SelectedStoreListRetrieveUpdateDestroyView.as_view(), name='store-list-retrieve-update-destroy'),
+
+    # Cart URLs
+    path('carts/', CartListCreateView.as_view(), name='cart-list-create'),
+    path('carts/<uuid:pk>/', CartRetrieveUpdateDestroyView.as_view(), name='cart-retrieve-update-destroy'),
+
+    # CartItem URLs (nested under cart)
+    path('carts/<uuid:cart_pk>/items/', CartItemCreateView.as_view(), name='cart-item-create'),
+    path('carts/<uuid:cart_pk>/items/<uuid:pk>/', CartItemRetrieveUpdateDestroyView.as_view(), name='cart-item-retrieve-update-destroy'),
+
+    # CartSubstitution URLs (nested under cart item)
+    path('carts/<uuid:cart_pk>/items/<uuid:cart_item_pk>/substitutions/', CartSubstitutionCreateView.as_view(), name='cart-substitution-create'),
+    path('carts/<uuid:cart_pk>/items/<uuid:cart_item_pk>/substitutions/<uuid:pk>/', CartSubstitutionRetrieveUpdateDestroyView.as_view(), name='cart-substitution-retrieve-update-destroy'),
 ]

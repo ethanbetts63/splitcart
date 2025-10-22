@@ -5,7 +5,7 @@ I. Core Feature Overview
 *   Enable anonymous users to build carts that can be converted to saved carts upon login/signup.
 *   Allow users to create and manage reusable lists of stores (`SelectedStoreList`).
 
-II. Backend Implementation (Django)
+II. Backend Implementation (Django) - **COMPLETE**
 
 1.  Database Model Changes: (Implemented in `users/models/` directory)
     *   **`User` Model:** (Moved to `users/models/user.py`)
@@ -32,14 +32,13 @@ II. Backend Implementation (Django)
         *   `product` (ForeignKey to `Product` model)
         *   `quantity` (IntegerField, default=1)
         *   `is_deprecated` (BooleanField, default=False, to mark items that are no longer available or have issues)
-    *   **`CartSubstitution` Model:** (Created in `users/models/cart_substitution.py`)
+    *   **`CartSubstitution` Model:** (Created in `users/models/cart_substitution.py` and updated)
         *   `id` (Primary Key)
-        *   `cart_item` (ForeignKey to `CartItem` model, related_name='substitutions')
-        *   `substituted_product` (ForeignKey to `Product` model, the actual substitute chosen)
-        *   `quantity` (IntegerField, default=1)
-        *   `original_product` (ForeignKey to `Product` model, the original product this is substituting for)
+        *   `original_cart_item` (ForeignKey to `CartItem` model, related_name='chosen_substitutions', the CartItem that this substitution is replacing)
+        *   `substituted_product` (ForeignKey to `Product` model, related_name='substitutes_chosen_for_items', the actual substitute product chosen)
+        *   `quantity` (IntegerField, default=1, quantity of the substituted_product)
 
-2.  API Endpoints (Django REST Framework):
+2.  API Endpoints (Django REST Framework): (Implemented in `api/serializers.py`, `api/views/cart_views.py`, `api/views/store_list_views.py`, and `api/urls.py`)
     *   **New Endpoints for `SelectedStoreList`:**
         *   `GET /api/store-lists/`: List all store lists for the authenticated user (or anonymous user via `anonymous_id`).
         *   `POST /api/store-lists/`: Create a new store list. If authenticated, associate with user. If anonymous, generate `anonymous_id`.
@@ -60,10 +59,14 @@ II. Backend Implementation (Django)
     *   Middleware or custom authentication to identify anonymous users via `anonymous_id`.
     *   Logic to transfer `Cart`, `CartItem`, and `SelectedStoreList` records from `anonymous_id` to `user_id` upon successful login/signup.
 
-4.  Data Serialization (Modification):
+4.  Data Serialization (Modification): (Implemented in `api/serializers.py`)
     *   Create Django REST Framework serializers for `SelectedStoreList`.
     *   Update `Cart` serializer to include `selected_store_list` (nested serialization).
     *   Create serializers for `CartItem` and `CartSubstitution` models, ensuring nested serialization for easy frontend consumption.
+
+**Next Steps:**
+*   Run `python manage.py makemigrations users` and `python manage.py migrate` to apply database changes.
+*   Test the new API endpoints using a tool like Postman or `curl` to ensure they are working as expected.
 
 III. Frontend Implementation (React/TypeScript)
 

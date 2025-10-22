@@ -4,6 +4,7 @@ from products.models.substitution import ProductSubstitution
 from companies.models import Store, Category, PopularCategory
 from companies.models.postcode import Postcode
 from data_management.models import FAQ
+from users.models import SelectedStoreList, Cart, CartItem, CartSubstitution
 
 class FaqSerializer(serializers.ModelSerializer):
     class Meta:
@@ -158,3 +159,45 @@ class PostcodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Postcode
         fields = ('postcode', 'latitude', 'longitude', 'state')
+
+
+class SelectedStoreListSerializer(serializers.ModelSerializer):
+    stores = serializers.PrimaryKeyRelatedField(many=True, queryset=Store.objects.all())
+
+    class Meta:
+        model = SelectedStoreList
+        fields = ('id', 'name', 'stores', 'is_default', 'created_at', 'updated_at')
+        read_only_fields = ('created_at', 'updated_at')
+
+
+class CartSubstitutionSerializer(serializers.ModelSerializer):
+    original_cart_item = serializers.PrimaryKeyRelatedField(queryset=CartItem.objects.all())
+    substituted_product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
+
+    class Meta:
+        model = CartSubstitution
+        fields = ('id', 'original_cart_item', 'substituted_product', 'quantity', 'created_at', 'updated_at')
+        read_only_fields = ('created_at', 'updated_at')
+
+
+class CartItemSerializer(serializers.ModelSerializer):
+    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
+    substitutions = CartSubstitutionSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = CartItem
+        fields = ('id', 'product', 'quantity', 'is_deprecated', 'substitutions', 'created_at', 'updated_at')
+        read_only_fields = ('is_deprecated', 'created_at', 'updated_at')
+
+
+class CartSerializer(serializers.ModelSerializer):
+    selected_store_list = SelectedStoreListSerializer(read_only=True)
+    selected_store_list_id = serializers.PrimaryKeyRelatedField(
+        queryset=SelectedStoreList.objects.all(), source='selected_store_list', write_only=True, required=False
+    )
+    items = CartItemSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Cart
+        fields = ('id', 'name', 'selected_store_list', 'selected_store_list_id', 'items', 'created_at', 'updated_at')
+        read_only_fields = ('created_at', 'updated_at')

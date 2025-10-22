@@ -1,7 +1,0 @@
-In this session, I performed a series of front-end UI enhancements and code refactoring tasks.
-
-First, I implemented a hover glow effect for several key interface buttons. This began with adding a white glow to the trolley button in the header. This involved extracting the button from the `Header.jsx` component into its own `TrolleyButton.jsx` component with a dedicated CSS file. The effect was refined from a simple box-shadow to a radial-gradient background to achieve a look that is brighter in the center and fades at the edges. The same effect and refactoring pattern was then applied to the map button, creating a `MapButton.jsx` component. Finally, a similar text-based glow effect was applied to the 'splitcart' logo, which was also refactored into a reusable `LogoButton.jsx` component and implemented in both the main search header and the slide-out trolley menu.
-
-Next, I addressed a major project structure change where all CSS files were moved into a `frontend/src/css/` directory. I systematically scanned all `.jsx` files within the `src` directory and updated their CSS import statements to reflect the new file paths, ensuring all components are correctly styled.
-
-Finally, I removed the default black browser outline that appeared when the trolley and map buttons were clicked. This was achieved by adding an `outline: none;` CSS rule to the `:focus` state for both buttons, resulting in a cleaner user experience.
