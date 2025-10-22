@@ -84,17 +84,17 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     setStoreListError(null);
     try {
       const data = await fetchActiveStoreListAPI(token, anonymousId);
-      if (Array.isArray(data) && data.length > 0) {
-        setUserStoreLists(data);
+      setUserStoreLists(data || []);
+
+      // Only auto-load the most recent list if there's no active selection in the session
+      const savedSelection = sessionStorage.getItem('selectedStoreIds');
+      const savedSelectionIsEmpty = !savedSelection || JSON.parse(savedSelection).length === 0;
+
+      if (savedSelectionIsEmpty && Array.isArray(data) && data.length > 0) {
         const activeList = data.sort((a, b) => new Date(b.last_used_at).getTime() - new Date(a.last_used_at).getTime())[0];
         setCurrentStoreListId(activeList.id);
         setCurrentStoreListName(activeList.name);
         setSelectedStoreIds(new Set(activeList.stores));
-      } else {
-        setUserStoreLists([]);
-        setCurrentStoreListId(null);
-        setCurrentStoreListName('Current Selection');
-        setSelectedStoreIds(new Set());
       }
     } catch (err: any) {
       setStoreListError(err.message);
