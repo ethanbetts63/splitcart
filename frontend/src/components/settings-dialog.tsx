@@ -76,8 +76,7 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'Trolley' }: 
     }
   }, [open, defaultPage]);
 
-  const handleNavClick = (e: React.MouseEvent, pageName: string) => {
-    e.preventDefault();
+  const handleNavClick = (pageName: string) => {
     setActivePage(pageName);
   };
 
@@ -105,16 +104,15 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'Trolley' }: 
                           tooltip={item.name}
                           className={item.isCloseButton ? "text-red-500 hover:bg-red-100 hover:text-red-600" : ""}
                         >
-                          <a href="#" onClick={(e) => {
+                          <button onClick={() => {
                             if (item.isCloseButton) {
-                              e.preventDefault();
                               onOpenChange(false);
                             } else {
-                              handleNavClick(e, item.name)
+                              handleNavClick(item.name)
                             }
                           }}>
                             <item.icon />
-                          </a>
+                          </button>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}
