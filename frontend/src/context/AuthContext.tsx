@@ -58,11 +58,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
+    sessionStorage.removeItem('selectedStoreIds'); // Clear selected stores from session storage
     setIsAuthenticated(false);
     setToken(null);
     // Clear anonymousId on logout
     document.cookie = 'anonymousId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     setAnonymousId(null);
+    window.location.reload(); // Force a full page reload to reset all state
   };
 
   return (

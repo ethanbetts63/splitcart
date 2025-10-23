@@ -23,10 +23,11 @@ class CustomLoginSerializer(LoginSerializer):
     anonymous_id = serializers.UUIDField(required=False, allow_null=True)
 
     def validate(self, attrs):
+        anonymous_id = self.initial_data.get('anonymous_id')
+
         # Perform default validation first to get the user object
         attrs = super().validate(attrs)
         user = attrs.get('user')
-        anonymous_id = self.validated_data.get('anonymous_id')
 
         if user and anonymous_id:
             try:
