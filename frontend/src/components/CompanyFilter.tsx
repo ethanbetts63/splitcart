@@ -14,14 +14,14 @@ const CompanyLogo = ({ companyName }: { companyName: string }) => {
   const { objectUrl, isLoading, error } = useCompanyLogo(companyName);
 
   if (isLoading) {
-    return <Skeleton className="h-6 w-12" />;
+    return <Skeleton className="h-3 w-5" />;
   }
 
   if (error || !objectUrl) {
-    return <div className="h-6 w-12 flex items-center justify-center text-xs text-red-500">?</div>;
+    return <div className="h-3 w-5 flex items-center justify-center text-xs text-red-500">?</div>;
   }
 
-  return <img src={objectUrl} alt={`${companyName} logo`} className="h-6 w-auto" />;
+  return <img src={objectUrl} alt={`${companyName} logo`} className="h-5 w-5" />;
 };
 
 const CompanyFilter: React.FC<CompanyFilterProps> = ({ selectedCompanies = [], onSelectionChange }) => {
@@ -50,7 +50,6 @@ const CompanyFilter: React.FC<CompanyFilterProps> = ({ selectedCompanies = [], o
               className="flex items-center gap-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
               <CompanyLogo companyName={name} />
-              <span>{name}</span>
             </label>
           </div>
         ))}

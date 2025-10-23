@@ -105,7 +105,7 @@ const MultiplePostcodeInput: React.FC<MultiplePostcodeInputProps> = ({
         />
       </div>
       <p className="text-sm text-muted-foreground">
-        Enter up to the postcode for any area you might shop in. e.g. Home, Work, School.
+        Enter postcodes for areas you might shop in. e.g. Home, Work, School.
       </p>
     </div>
   );
