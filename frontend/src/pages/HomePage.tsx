@@ -43,12 +43,12 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 md:px-16 pt-8 pb-16">
+      <div className="container mx-auto px-4 md:px-16 pt-1 pb-1">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 max-w-2xl mx-auto">
+          <h2 className="text-5xl font-bold tracking-tight text-gray-900 max-w-2xl mx-auto">
             What percentage of a whole chicken is bone weight?
           </h2>
-          <p className="text-lg mt-4">Short answer: <span className="font-bold">25-32%</span>. Most common answer: <span className="font-bold">Who cares?</span></p>
+          <p className="text-xl mt-4">Short answer: <span className="font-bold">25-32%</span>. Most common answer: <span className="font-bold">Who cares?</span></p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-lg ">
           <div className="flex flex-col gap-4">
