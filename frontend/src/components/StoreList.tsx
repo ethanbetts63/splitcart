@@ -42,9 +42,9 @@ const StoreList: React.FC<StoreListProps> = ({ stores, selectedStoreIds, onStore
           <Card 
             key={store.id} 
             onClick={() => onStoreSelect(store.id)}
-            className="cursor-pointer hover:bg-accent transition-colors"
+            className="cursor-pointer hover:bg-accent transition-colors py-1"
           >
-            <CardContent className="p-1.5 flex items-center gap-2">
+            <CardContent className="px-1 py-0.5 flex items-center gap-2">
               <Checkbox
                 checked={isSelected}
                 onCheckedChange={() => onStoreSelect(store.id)}
