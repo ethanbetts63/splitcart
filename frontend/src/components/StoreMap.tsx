@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import React, { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import type { Store, MapCenter } from '@/types';
@@ -59,12 +59,16 @@ const MapViewController: React.FC<{ center: MapCenter }> = ({ center }) => {
   return null;
 };
 
-const StoreMarker: React.FC<{ store: Store; isSelected: boolean; onStoreSelect: (id: number) => void; }> = ({ store, isSelected, onStoreSelect }) => {
+const StoreMarker: React.FC<{ 
+  store: Store; 
+  isSelected: boolean; 
+  onStoreSelect: (id: number) => void; 
+  onMouseOver: (name: string) => void;
+  onMouseOut: () => void;
+}> = ({ store, isSelected, onStoreSelect, onMouseOver, onMouseOut }) => {
   const { objectUrl, isLoading } = useCompanyLogo(store.company_name);
 
   if (isLoading || !objectUrl) {
-    // Don't render a marker if the logo is still loading or failed
-    // Or render a default placeholder marker
     return null; 
   }
 
@@ -82,16 +86,18 @@ const StoreMarker: React.FC<{ store: Store; isSelected: boolean; onStoreSelect: 
       icon={icon}
       eventHandlers={{
         click: () => onStoreSelect(store.id),
+        mouseover: () => onMouseOver(store.store_name),
+        mouseout: onMouseOut,
       }}
-    >
-      <Popup>{store.store_name}</Popup>
-    </Marker>
+    />
   );
 };
 
 // --- Main Map Component ---
 
 const StoreMap: React.FC<StoreMapProps> = ({ center, stores, selectedStoreIds, onStoreSelect }) => {
+    const [hoveredStoreName, setHoveredStoreName] = useState<string | null>(null);
+
     const displayCenter: [number, number] = center 
         ? [center.latitude, center.longitude] 
         : [-34.9285, 138.6007]; // Default center
@@ -99,7 +105,14 @@ const StoreMap: React.FC<StoreMapProps> = ({ center, stores, selectedStoreIds, o
     const displayZoom = center ? getZoomLevelForRadius(center.radius) : 13;
 
     return (
-        <div style={{ height: '100%', width: '100%' }}>
+        <div style={{ height: '100%', width: '100%', position: 'relative' }}>
+            {hoveredStoreName && (
+              <div 
+                className="absolute top-2 left-1/2 -translate-x-1/2 z-[1000] bg-background/90 p-2 rounded-md shadow-lg text-sm font-semibold"
+              >
+                {hoveredStoreName}
+              </div>
+            )}
             <style>{markerHtmlStyles}</style>
             <MapContainer center={displayCenter} zoom={displayZoom} style={{ height: '100%', width: '100%' }}>
                 <TileLayer
@@ -113,6 +126,8 @@ const StoreMap: React.FC<StoreMapProps> = ({ center, stores, selectedStoreIds, o
                         store={store}
                         isSelected={selectedStoreIds.has(store.id)}
                         onStoreSelect={onStoreSelect}
+                        onMouseOver={setHoveredStoreName}
+                        onMouseOut={() => setHoveredStoreName(null)}
                     />
                 ))}
             </MapContainer>
