@@ -236,7 +236,10 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
             </div>
         )}
         <div className="grid gap-2">
-            <label className="text-sm font-medium">Postcode</label>
+            <label className="text-sm font-medium flex items-center justify-between">
+                <span>Postcode</span>
+                <span className="text-xs text-muted-foreground">e.g. Home, Work, School</span>
+            </label>
             <MultiplePostcodeInput
                 value={postcode}
                 onChange={setPostcode}
