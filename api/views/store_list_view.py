@@ -12,6 +12,7 @@ class StoreListView(APIView):
     def get(self, request, *args, **kwargs):
         postcode_param = request.query_params.get('postcode')
         radius_param = request.query_params.get('radius')
+        companies_param = request.query_params.get('companies')
 
         if not postcode_param or not radius_param:
             return Response(
@@ -24,7 +25,8 @@ class StoreListView(APIView):
             ref_postcode = Postcode.objects.filter(postcode=postcode_param).first()
 
             if ref_postcode:
-                nearby_stores = get_nearby_stores(ref_postcode, radius)
+                companies = companies_param.split(',') if companies_param else None
+                nearby_stores = get_nearby_stores(ref_postcode, radius, companies=companies)
                 serializer = StoreSerializer(nearby_stores, many=True)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:

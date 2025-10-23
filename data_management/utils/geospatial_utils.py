@@ -44,14 +44,19 @@ def get_nearby_postcodes(ref_postcode_obj: Postcode, radius_km: float) -> list[P
             nearby_postcodes.append(postcode)
     return nearby_postcodes
 
-def get_nearby_stores(ref_postcode_obj: Postcode, radius_km: float) -> list[Store]:
+def get_nearby_stores(ref_postcode_obj: Postcode, radius_km: float, companies: list[str] | None = None) -> list[Store]:
     """
     Finds all Store objects within a given radius of a reference Postcode.
+    Optionally filters by a list of company names.
     """
     nearby_stores = []
     # Exclude specific divisions
     excluded_division_ids = [2, 3, 5, 7]
     all_stores = Store.objects.exclude(division_id__in=excluded_division_ids)
+
+    # Filter by company if a list of company names is provided
+    if companies:
+        all_stores = all_stores.filter(company__name__in=companies)
 
     for store in all_stores:
         if store.latitude is None or store.longitude is None:

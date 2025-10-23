@@ -44,7 +44,12 @@ const CompanyFilter: React.FC<CompanyFilterProps> = ({ onSelectionChange }) => {
         className="flex flex-wrap justify-start gap-2"
       >
         {companyNames.map(name => (
-          <ToggleGroupItem key={name} value={name} aria-label={`Toggle ${name}`}>
+          <ToggleGroupItem 
+            key={name} 
+            value={name} 
+            aria-label={`Toggle ${name}`}
+            className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+          >
             <CompanyLogo companyName={name} />
           </ToggleGroupItem>
         ))}
