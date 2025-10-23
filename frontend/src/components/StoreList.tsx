@@ -45,11 +45,13 @@ const StoreList: React.FC<StoreListProps> = ({ stores, selectedStoreIds, onStore
             className="cursor-pointer hover:bg-accent transition-colors py-1"
           >
             <CardContent className="px-1 py-0.5 flex items-center gap-2">
-              <Checkbox
-                checked={isSelected}
-                onCheckedChange={() => onStoreSelect(store.id)}
-                aria-label={`Select ${store.store_name}`}
-              />
+              <div onClick={(e) => e.stopPropagation()}>
+                <Checkbox
+                  checked={isSelected}
+                  onCheckedChange={() => onStoreSelect(store.id)}
+                  aria-label={`Select ${store.store_name}`}
+                />
+              </div>
               <StoreLogo companyName={store.company_name} />
               <span className="font-medium text-sm truncate">{store.store_name}</span>
             </CardContent>
