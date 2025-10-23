@@ -24,7 +24,7 @@ const CompanyLogo = ({ companyName }: { companyName: string }) => {
   return <img src={objectUrl} alt={`${companyName} logo`} className="h-6 w-auto" />;
 };
 
-const CompanyFilter: React.FC<CompanyFilterProps> = ({ selectedCompanies, onSelectionChange }) => {
+const CompanyFilter: React.FC<CompanyFilterProps> = ({ selectedCompanies = [], onSelectionChange }) => {
 
   const handleCheckboxChange = (companyName: string, checked: boolean) => {
     if (checked) {
