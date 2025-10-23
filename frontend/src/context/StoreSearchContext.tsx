@@ -59,8 +59,7 @@ export const StoreSearchProvider = ({ children }: { children: ReactNode }) => {
   }, [radius]);
 
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>(() => {
-    const saved = sessionStorage.getItem('selectedCompanies');
-    return saved ? JSON.parse(saved) : [...companyNames]; // Default to all companies selected
+    return [...companyNames]; // Always default to all companies selected
   });
 
   useEffect(() => {

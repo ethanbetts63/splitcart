@@ -244,7 +244,10 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
             {error && <p className="text-sm text-red-500">{error}</p>}
         </div>
         <RadiusSlider defaultValue={radius} onValueChange={setRadius} />
-        <CompanyFilter onSelectionChange={setSelectedCompanies} />
+        <CompanyFilter 
+          selectedCompanies={selectedCompanies}
+          onSelectionChange={setSelectedCompanies} 
+        />
         <Button onClick={handleSearch} disabled={isLoading} className="w-full">{isLoading ? 'Searching...' : 'Search'}</Button>
         <Button onClick={() => onOpenChange(false)} className="w-full bg-green-500 hover:bg-green-600">Done</Button>
       </div>

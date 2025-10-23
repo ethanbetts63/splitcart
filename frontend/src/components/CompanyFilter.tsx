@@ -39,18 +39,22 @@ const CompanyFilter: React.FC<CompanyFilterProps> = ({ selectedCompanies = [], o
       <label className="text-sm font-medium">Filter by Company</label>
       <div className="flex flex-wrap justify-start gap-2">
         {companyNames.map(name => (
-          <div key={name} className="flex items-center space-x-2 rounded-md border p-2">
+          <div 
+            key={name} 
+            className="flex items-center space-x-2 rounded-md border p-2 cursor-pointer"
+            onClick={() => handleCheckboxChange(name, !selectedCompanies.includes(name))}
+          >
             <Checkbox
               id={name}
               checked={selectedCompanies.includes(name)}
               onCheckedChange={(checked: boolean) => handleCheckboxChange(name, checked)}
             />
-            <label
-              htmlFor={name}
+            <div
               className="flex items-center gap-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
               <CompanyLogo companyName={name} />
-            </label>
+              {name}
+            </div>
           </div>
         ))}
       </div>
