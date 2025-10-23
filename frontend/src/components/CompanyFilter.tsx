@@ -48,7 +48,7 @@ const CompanyFilter: React.FC<CompanyFilterProps> = ({ onSelectionChange }) => {
             key={name} 
             value={name} 
             aria-label={`Toggle ${name}`}
-            className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+            className="data-[state=on]:bg-white data-[state=on]:text-black data-[state=off]:bg-destructive data-[state=off]:text-destructive-foreground"
           >
             <CompanyLogo companyName={name} />
           </ToggleGroupItem>
