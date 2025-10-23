@@ -105,7 +105,7 @@ const MultiplePostcodeInput: React.FC<MultiplePostcodeInputProps> = ({
         />
       </div>
       <p className="text-sm text-muted-foreground">
-        Enter up to {maxPostcodes} 4-digit postcodes. Each will be added automatically. Use backspace to edit the last entry.
+        Enter up to the postcode for any area you might shop in. e.g. Home, Work, School.
       </p>
     </div>
   );

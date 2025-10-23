@@ -59,6 +59,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     localStorage.removeItem('token');
     sessionStorage.removeItem('selectedStoreIds'); // Clear selected stores from session storage
+    sessionStorage.removeItem('postcode'); // Clear postcode from session storage
+    sessionStorage.removeItem('stores'); // Clear stores from session storage
     setIsAuthenticated(false);
     setToken(null);
     // Clear anonymousId on logout
