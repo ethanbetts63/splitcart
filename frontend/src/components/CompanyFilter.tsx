@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import React from 'react';
+import { Checkbox } from "@/components/ui/checkbox";
 import { companyNames } from '@/lib/companies';
 import { useCompanyLogo } from '@/hooks/useCompanyLogo';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface CompanyFilterProps {
-  onSelectionChange?: (selectedCompanies: string[]) => void;
+  selectedCompanies: string[];
+  onSelectionChange: (selectedCompanies: string[]) => void;
 }
 
 // Internal component to handle the logo loading state
@@ -23,37 +24,37 @@ const CompanyLogo = ({ companyName }: { companyName: string }) => {
   return <img src={objectUrl} alt={`${companyName} logo`} className="h-6 w-auto" />;
 };
 
-const CompanyFilter: React.FC<CompanyFilterProps> = ({ onSelectionChange }) => {
-  const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
+const CompanyFilter: React.FC<CompanyFilterProps> = ({ selectedCompanies, onSelectionChange }) => {
 
-  const handleValueChange = (value: string[]) => {
-    setSelectedCompanies(value);
-    if (onSelectionChange) {
-      onSelectionChange(value);
+  const handleCheckboxChange = (companyName: string, checked: boolean) => {
+    if (checked) {
+      onSelectionChange([...selectedCompanies, companyName]);
+    } else {
+      onSelectionChange(selectedCompanies.filter(name => name !== companyName));
     }
   };
 
   return (
     <div className="grid gap-2">
       <label className="text-sm font-medium">Filter by Company</label>
-      <ToggleGroup 
-        type="multiple"
-        variant="outline"
-        value={selectedCompanies}
-        onValueChange={handleValueChange}
-        className="flex flex-wrap justify-start gap-2"
-      >
+      <div className="flex flex-wrap justify-start gap-2">
         {companyNames.map(name => (
-          <ToggleGroupItem 
-            key={name} 
-            value={name} 
-            aria-label={`Toggle ${name}`}
-            className="data-[state=on]:bg-white data-[state=on]:text-black data-[state=off]:bg-destructive data-[state=off]:text-destructive-foreground"
-          >
-            <CompanyLogo companyName={name} />
-          </ToggleGroupItem>
+          <div key={name} className="flex items-center space-x-2 rounded-md border p-2">
+            <Checkbox
+              id={name}
+              checked={selectedCompanies.includes(name)}
+              onCheckedChange={(checked: boolean) => handleCheckboxChange(name, checked)}
+            />
+            <label
+              htmlFor={name}
+              className="flex items-center gap-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              <CompanyLogo companyName={name} />
+              <span>{name}</span>
+            </label>
+          </div>
         ))}
-      </ToggleGroup>
+      </div>
     </div>
   );
 };
