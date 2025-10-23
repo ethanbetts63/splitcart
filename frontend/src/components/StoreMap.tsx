@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import type { Store, MapCenter } from '@/types';
+import type { Store } from '@/types';
 import { useCompanyLogo } from '@/hooks/useCompanyLogo';
 
+type MapBounds = [[number, number], [number, number]] | null;
+
 interface StoreMapProps {
-  center: MapCenter;
+  bounds: MapBounds;
   stores: Store[];
   selectedStoreIds: Set<number>;
   onStoreSelect: (storeId: number) => void;
@@ -36,26 +38,15 @@ const markerHtmlStyles = `
   }
 `;
 
-// --- Helper Functions ---
-const getZoomLevelForRadius = (radiusKm: number): number => {
-  if (radiusKm <= 1) return 14;
-  if (radiusKm <= 2) return 13;
-  if (radiusKm <= 5) return 12;
-  if (radiusKm <= 10) return 11;
-  if (radiusKm <= 25) return 10;
-  return 9;
-};
-
 // --- Child Components ---
 
-const MapViewController: React.FC<{ center: MapCenter }> = ({ center }) => {
+const MapViewController: React.FC<{ bounds: MapBounds }> = ({ bounds }) => {
   const map = useMap();
   useEffect(() => {
-    if (center) {
-      const zoom = getZoomLevelForRadius(center.radius);
-      map.setView([center.latitude, center.longitude], zoom);
+    if (bounds) {
+      map.fitBounds(bounds, { padding: [50, 50] });
     }
-  }, [center, map]);
+  }, [bounds, map]);
   return null;
 };
 
@@ -95,14 +86,8 @@ const StoreMarker: React.FC<{
 
 // --- Main Map Component ---
 
-const StoreMap: React.FC<StoreMapProps> = ({ center, stores, selectedStoreIds, onStoreSelect }) => {
+const StoreMap: React.FC<StoreMapProps> = ({ bounds, stores, selectedStoreIds, onStoreSelect }) => {
     const [hoveredStoreName, setHoveredStoreName] = useState<string | null>(null);
-
-    const displayCenter: [number, number] = center 
-        ? [center.latitude, center.longitude] 
-        : [-34.9285, 138.6007]; // Default center
-
-    const displayZoom = center ? getZoomLevelForRadius(center.radius) : 13;
 
     return (
         <div style={{ height: '100%', width: '100%', position: 'relative' }}>
@@ -114,12 +99,12 @@ const StoreMap: React.FC<StoreMapProps> = ({ center, stores, selectedStoreIds, o
               </div>
             )}
             <style>{markerHtmlStyles}</style>
-            <MapContainer center={displayCenter} zoom={displayZoom} style={{ height: '100%', width: '100%' }}>
+            <MapContainer center={[-27, 133]} zoom={4} style={{ height: '100%', width: '100%' }}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
-                <MapViewController center={center} />
+                <MapViewController bounds={bounds} />
                 {stores.map(store => (
                     <StoreMarker 
                         key={store.id}

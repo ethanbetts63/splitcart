@@ -25,13 +25,6 @@ type Store = {
   longitude: number;
 };
 
-// The map center state now also includes the radius used for the search
-type MapCenter = {
-  latitude: number;
-  longitude: number;
-  radius: number;
-} | null;
-
 import { useStoreSearch } from '@/context/StoreSearchContext';
 import { useStoreList } from '@/context/StoreListContext';
 
@@ -46,7 +39,7 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
     postcode, setPostcode,
     radius, setRadius,
     selectedCompanies, setSelectedCompanies,
-    mapCenter, setMapCenter,
+    mapBounds, setMapBounds,
     stores, setStores
   } = useStoreSearch();
 
@@ -119,13 +112,17 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
       // When a new search is performed, update the local state directly
       setLocalSelectedStoreIds(new Set((data || []).map(store => store.id))); 
 
-      // Center map on the first result if available, bundling radius with it
+      // Calculate bounds of all stores to fit them in the map view
       if (data && data.length > 0) {
-        setMapCenter({ 
-          latitude: data[0].latitude, 
-          longitude: data[0].longitude, 
-          radius: radius 
-        });
+        const bounds = data.reduce((acc, store) => {
+          return [
+            [Math.min(acc[0][0], store.latitude), Math.min(acc[0][1], store.longitude)],
+            [Math.max(acc[1][0], store.latitude), Math.max(acc[1][1], store.longitude)],
+          ];
+        }, [[data[0].latitude, data[0].longitude], [data[0].latitude, data[0].longitude]]) as [[number, number], [number, number]];
+        setMapBounds(bounds);
+      } else {
+        setMapBounds(null); // Clear bounds if no results
       }
 
     } catch (err: any) {
@@ -134,7 +131,7 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
     } finally {
       setIsLoading(false);
     }
-  }, [postcode, radius, selectedCompanies, setStores, setLocalSelectedStoreIds, setMapCenter]);
+  }, [postcode, radius, selectedCompanies, setStores, setLocalSelectedStoreIds, setMapBounds]);
 
 
 
@@ -261,7 +258,7 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
         {/* Top 1/2 for Map */}
         <div className="h-1/2">
             <StoreMap 
-              center={mapCenter}
+              bounds={mapBounds}
               stores={stores || []} // Pass empty array if stores is null
               selectedStoreIds={localSelectedStoreIds} // Use local state
               onStoreSelect={handleLocalStoreSelect} // Use local handler

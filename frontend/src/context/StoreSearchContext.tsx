@@ -9,11 +9,7 @@ type Store = {
   longitude: number;
 };
 
-type MapCenter = {
-  latitude: number;
-  longitude: number;
-  radius: number;
-} | null;
+type MapBounds = [[number, number], [number, number]] | null;
 
 interface StoreSearchContextType {
   stores: Store[] | null;
@@ -24,8 +20,8 @@ interface StoreSearchContextType {
   setRadius: React.Dispatch<React.SetStateAction<number>>;
   selectedCompanies: string[];
   setSelectedCompanies: React.Dispatch<React.SetStateAction<string[]>>;
-  mapCenter: MapCenter;
-  setMapCenter: React.Dispatch<React.SetStateAction<MapCenter>>;
+  mapBounds: MapBounds;
+  setMapBounds: React.Dispatch<React.SetStateAction<MapBounds>>;
 }
 
 // --- Context Creation ---
@@ -70,19 +66,7 @@ export const StoreSearchProvider = ({ children }: { children: ReactNode }) => {
     sessionStorage.setItem('selectedCompanies', JSON.stringify(selectedCompanies));
   }, [selectedCompanies]);
 
-  const [mapCenter, setMapCenter] = useState<MapCenter>(() => {
-    const saved = sessionStorage.getItem('mapCenter');
-    if (saved) {
-      return JSON.parse(saved);
-    }
-    return { latitude: -34.9285, longitude: 138.6007, radius: 5 };
-  });
-
-  useEffect(() => {
-    if (mapCenter) {
-      sessionStorage.setItem('mapCenter', JSON.stringify(mapCenter));
-    }
-  }, [mapCenter]);
+  const [mapBounds, setMapBounds] = useState<MapBounds>(null);
 
   return (
     <StoreSearchContext.Provider value={{
@@ -94,8 +78,8 @@ export const StoreSearchProvider = ({ children }: { children: ReactNode }) => {
       setRadius,
       selectedCompanies,
       setSelectedCompanies,
-      mapCenter,
-      setMapCenter
+      mapBounds,
+      setMapBounds
     }}>
       {children}
     </StoreSearchContext.Provider>
