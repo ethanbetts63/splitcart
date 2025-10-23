@@ -3,7 +3,7 @@ import StoreMap from '@/components/StoreMap';
 import RadiusSlider from '@/components/RadiusSlider';
 import CompanyFilter from '@/components/CompanyFilter';
 import StoreList from '@/components/StoreList';
-import { Input } from '@/components/ui/input';
+import MultiplePostcodeInput from '@/components/MultiplePostcodeInput';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import {
@@ -93,8 +93,8 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
 
   // --- API Fetching Logic ---
   const handleSearch = useCallback(async () => {
-    if (!postcode || !/^\d{4}$/.test(postcode)) {
-      setError("Please enter a valid 4-digit postcode.");
+    if (!postcode || postcode.split(',').some(p => !/^\d{4}$/.test(p.trim()))) {
+      setError("Please enter valid 4-digit postcodes.");
       return;
     }
     
@@ -245,13 +245,9 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
         )}
         <div className="grid gap-2">
             <label className="text-sm font-medium">Postcode</label>
-            <Input
-                type="text"
-                placeholder="4-digit postcode"
+            <MultiplePostcodeInput
                 value={postcode}
-                onChange={(e) => setPostcode(e.target.value)}
-                onKeyDown={handleKeyDown}
-                maxLength={4}
+                onChange={setPostcode}
             />
             {error && <p className="text-sm text-red-500">{error}</p>}
         </div>
