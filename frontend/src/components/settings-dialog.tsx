@@ -80,6 +80,11 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'Trolley' }: 
   const { selectedStoreIds, setSelectedStoreIds } = useStoreList();
   const [localSelectedStoreIds, setLocalSelectedStoreIds] = React.useState<Set<number>>(selectedStoreIds);
 
+  // When the defaultPage prop changes, update the activePage state.
+  React.useEffect(() => {
+    setActivePage(defaultPage);
+  }, [defaultPage]);
+
   // When the dialog opens, sync the local state with the global state.
   React.useEffect(() => {
     if (open) {
