@@ -62,7 +62,7 @@ const MultiplePostcodeInput: React.FC<MultiplePostcodeInputProps> = ({
       e.preventDefault(); // Prevent default browser backspace behavior
       setPostcodes(prev => {
         const lastPostcode = prev[prev.length - 1];
-        setInputValue(lastPostcode); // Put it back into the input for editing
+        setInputValue(lastPostcode.slice(0, -1)); // Put it back into the input, but with the last char removed
         return prev.slice(0, -1); // Remove from badges
       });
     }
