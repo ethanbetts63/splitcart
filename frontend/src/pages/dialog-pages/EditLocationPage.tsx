@@ -58,26 +58,13 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
     userStoreLists, setUserStoreLists,
     storeListLoading, setStoreListLoading,
     storeListError, setStoreListError,
-    loadStoreList, saveStoreList, createNewStoreList, deleteStoreList, fetchActiveStoreList
+    loadStoreList, saveStoreList, createNewStoreList, deleteStoreList
   } = useStoreList();
 
   // State for loading and error, which is local to this page
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isEditingListName, setIsEditingListName] = useState(false);
-
-  useEffect(() => {
-    console.log('Store List ID:', currentStoreListId);
-    console.log('Store List Name:', currentStoreListName);
-  }, [currentStoreListId, currentStoreListName]);
-
-  useEffect(() => {
-    if (isAuthenticated && token) {
-      fetchActiveStoreList();
-    } else if (!isAuthenticated && anonymousId) { // Fetch for anonymous users too
-      fetchActiveStoreList();
-    }
-  }, [isAuthenticated, token, anonymousId, fetchActiveStoreList]);
 
   const handleLocalStoreSelect = useCallback((storeId: number) => {
     setLocalSelectedStoreIds(prev => {
