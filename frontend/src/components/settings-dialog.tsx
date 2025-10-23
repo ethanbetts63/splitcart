@@ -58,6 +58,7 @@ const PageContent = ({
       return <EditLocationPage 
                 localSelectedStoreIds={localSelectedStoreIds} 
                 setLocalSelectedStoreIds={setLocalSelectedStoreIds} 
+                onOpenChange={onOpenChange}
              />;
     default:
       return (

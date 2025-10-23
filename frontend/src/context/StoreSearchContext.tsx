@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
+import { companyNames } from '@/lib/companies';
 
 // --- Type Definitions ---
 type Store = {
@@ -41,7 +42,7 @@ export const StoreSearchProvider = ({ children }: { children: ReactNode }) => {
   }, [stores]);
 
   const [postcode, setPostcode] = useState(() => {
-    return sessionStorage.getItem('postcode') || '5000';
+    return sessionStorage.getItem('postcode') || '';
   });
 
   useEffect(() => {
@@ -59,7 +60,7 @@ export const StoreSearchProvider = ({ children }: { children: ReactNode }) => {
 
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>(() => {
     const saved = sessionStorage.getItem('selectedCompanies');
-    return saved ? JSON.parse(saved) : [];
+    return saved ? JSON.parse(saved) : [...companyNames]; // Default to all companies selected
   });
 
   useEffect(() => {

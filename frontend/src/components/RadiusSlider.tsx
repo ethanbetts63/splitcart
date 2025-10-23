@@ -12,7 +12,7 @@ interface RadiusSliderProps {
 const RadiusSlider: React.FC<RadiusSliderProps> = ({ 
   defaultValue = 5, 
   min = 1, 
-  max = 50, 
+  max = 30, 
   step = 1, 
   onValueChange 
 }) => {

@@ -31,9 +31,10 @@ import { useStoreList } from '@/context/StoreListContext';
 interface EditLocationPageProps {
   localSelectedStoreIds: Set<number>;
   setLocalSelectedStoreIds: React.Dispatch<React.SetStateAction<Set<number>>>;
+  onOpenChange: (open: boolean) => void; // Add this prop
 }
 
-const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreIds, setLocalSelectedStoreIds }) => {
+const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreIds, setLocalSelectedStoreIds, onOpenChange }) => {
   const { isAuthenticated, token, anonymousId } = useAuth();
   const {
     postcode, setPostcode,
@@ -251,6 +252,7 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
         <RadiusSlider defaultValue={radius} onValueChange={setRadius} />
         <CompanyFilter onSelectionChange={setSelectedCompanies} />
         <Button onClick={handleSearch} disabled={isLoading} className="w-full">{isLoading ? 'Searching...' : 'Search'}</Button>
+        <Button onClick={() => onOpenChange(false)} className="w-full bg-green-500 hover:bg-green-600">Done</Button>
       </div>
 
       {/* Right Column for Map and Store List */}
