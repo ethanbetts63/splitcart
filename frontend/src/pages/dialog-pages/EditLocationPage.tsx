@@ -185,17 +185,17 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
                         />
                     ) : (
                         <Select
-                            value={currentStoreListId || ""}
+                            value={currentStoreListId ?? ''}
                             onValueChange={(value) => {
                                 if (value === "new") {
                                     createNewStoreList(Array.from(localSelectedStoreIds));
-                                } else {
+                                } else if (value) {
                                     loadStoreList(value);
                                 }
                             }}
                         >
                             <SelectTrigger className="flex-grow">
-                                <SelectValue placeholder="Select a store list">
+                                <SelectValue>
                                     {currentStoreListName}
                                 </SelectValue>
                             </SelectTrigger>

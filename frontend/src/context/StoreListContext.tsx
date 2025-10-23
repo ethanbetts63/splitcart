@@ -87,6 +87,12 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
       if (Array.isArray(data)) {
         setUserStoreLists(data);
 
+        // If a logged-in user has no lists, create a default one.
+        if (token && data.length === 0) {
+          createNewStoreList([]);
+          return; // Exit after starting the creation process
+        }
+
         // Only auto-load the most recent list if there's no active selection in the session
         const savedSelection = sessionStorage.getItem('selectedStoreIds');
         const savedSelectionIsEmpty = !savedSelection || JSON.parse(savedSelection).length === 0;
