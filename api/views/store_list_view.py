@@ -22,18 +22,19 @@ class StoreListView(APIView):
 
         try:
             radius = float(radius_param)
-            ref_postcode = Postcode.objects.filter(postcode=postcode_param).first()
+            postcode_list = [p.strip() for p in postcode_param.split(',')]
+            all_nearby_stores = set()
+            companies = companies_param.split(',') if companies_param else None
 
-            if ref_postcode:
-                companies = companies_param.split(',') if companies_param else None
-                nearby_stores = get_nearby_stores(ref_postcode, radius, companies=companies)
-                serializer = StoreSerializer(nearby_stores, many=True)
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response(
-                    {'error': 'Invalid postcode.'},
-                    status=status.HTTP_404_NOT_FOUND
-                )
+            for p_code in postcode_list:
+                if not p_code: continue # Skip empty strings
+                ref_postcode = Postcode.objects.filter(postcode=p_code).first()
+                if ref_postcode:
+                    nearby_stores = get_nearby_stores(ref_postcode, radius, companies=companies)
+                    all_nearby_stores.update(nearby_stores)
+            
+            serializer = StoreSerializer(list(all_nearby_stores), many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         except ValueError:
             return Response(
