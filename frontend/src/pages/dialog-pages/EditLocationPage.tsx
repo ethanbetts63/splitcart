@@ -159,7 +159,7 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
   return (
     <div className="flex h-full w-full">
       {/* Left Column for Controls */}
-      <div className="w-3/7 border-r p-4 flex flex-col gap-4">
+      <div className="w-3/7 border-r p-4 flex flex-col gap-3">
         {isAuthenticated && (
             <div className="flex flex-col gap-2">
                 <Label>Saved Store Lists</Label>
