@@ -7,6 +7,7 @@ import { SubstitutionProvider } from './context/SubstitutionContext';
 import { StoreSearchProvider } from './context/StoreSearchContext';
 import { StoreListProvider } from './context/StoreListContext';
 import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
 import { Toaster } from 'sonner';
 import './index.css'
 import App from './App.tsx'
@@ -19,12 +20,10 @@ createRoot(document.getElementById('root')!).render(
       <AuthProvider>
         <StoreSearchProvider>
           <StoreListProvider>
-            <ShoppingListProvider>
-              <SubstitutionProvider>
-                <App />
-                <Toaster position="top-center" />
-              </SubstitutionProvider>
-            </ShoppingListProvider>
+            <CartProvider>
+              <App />
+              <Toaster position="top-center" />
+            </CartProvider>
           </StoreListProvider>
         </StoreSearchProvider>
       </AuthProvider>
@@ -32,5 +31,3 @@ createRoot(document.getElementById('root')!).render(
     <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>
 )
-
-

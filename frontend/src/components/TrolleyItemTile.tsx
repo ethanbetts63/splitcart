@@ -4,6 +4,7 @@ import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
 import type { Product } from '@/types/Product'; // Import shared type
+import { useCart } from '@/context/CartContext';
 
 import { Button } from '@/components/ui/button';
 
@@ -21,22 +22,19 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from '@/components/ui/input';
 
 const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, isApproved, quantity, onQuantityChange, context }) => {
+  const { items, updateItemQuantity, removeItem } = useCart();
+
+  const cartItem = context === 'trolley' ? items.find(item => item.product.id === product.id) : null;
+  const displayQuantity = context === 'trolley' ? cartItem?.quantity : quantity;
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = fallbackImage;
   };
 
-  const getShortDescription = (description?: string) => {
-    if (!description) return '';
-    if (description.includes('different size')) return 'Different Size';
-    if (description.includes('similar product')) return 'Similar Product';
-    if (description.includes('Same category')) return 'Similar Category';
-    if (description.includes('Linked category')) return 'Related Category';
-    return description;
-  };
-
   const handleQuantityChange = (newQuantity: number) => {
-    if (onQuantityChange) {
+    if (context === 'trolley' && cartItem) {
+      updateItemQuantity(cartItem.id, newQuantity);
+    } else if (onQuantityChange) {
       if (newQuantity <= 0) {
         if (onApprove) {
           onApprove(product);
@@ -73,7 +71,19 @@ const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, i
 
       {/* Right Section: Quantity Controls */}
       <div className="flex-shrink-0">
-        {onApprove ? (
+        {context === 'trolley' && cartItem ? (
+          <div className="flex items-center gap-2">
+            <Button size="icon" className="h-8 w-8" onClick={() => handleQuantityChange((displayQuantity || 1) - 1)}>-</Button>
+            <Input
+              type="number"
+              readOnly
+              className="h-8 w-12 text-center no-spinner"
+              value={displayQuantity}
+              min="0"
+            />
+            <Button size="icon" className="h-8 w-8" onClick={() => handleQuantityChange((displayQuantity || 1) + 1)}>+</Button>
+          </div>
+        ) : onApprove ? (
           isApproved ? (
             <div className="flex items-center gap-2">
               <Button size="icon" className="h-8 w-8" onClick={() => handleQuantityChange((quantity || 1) - 1)}>-</Button>

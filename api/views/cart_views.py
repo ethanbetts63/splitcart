@@ -1,7 +1,6 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from rest_framework import status
-
+from rest_framework.views import APIView
 from users.models import Cart, CartItem, CartSubstitution
 from api.serializers import CartSerializer, CartItemSerializer, CartSubstitutionSerializer
 
@@ -12,15 +11,21 @@ class CartListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         if self.request.user.is_authenticated:
             return Cart.objects.filter(user=self.request.user)
-        # For anonymous users, we'll need to get anonymous_id from cookie/header
+        elif hasattr(self.request, 'anonymous_id'):
+            return Cart.objects.filter(anonymous_id=self.request.anonymous_id)
         return Cart.objects.none()
 
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:
-            serializer.save(user=self.request.user)
+            # Deactivate other carts for this user
+            Cart.objects.filter(user=self.request.user, is_active=True).update(is_active=False)
+            serializer.save(user=self.request.user, is_active=True)
+        elif hasattr(self.request, 'anonymous_id'):
+            # Deactivate other carts for this anonymous user
+            Cart.objects.filter(anonymous_id=self.request.anonymous_id, is_active=True).update(is_active=False)
+            serializer.save(anonymous_id=self.request.anonymous_id, is_active=True)
         else:
-            # For anonymous users, save with anonymous_id
-            pass
+            raise permissions.PermissionDenied("Cannot create a cart without being authenticated or having an anonymous ID.")
 
 class CartRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CartSerializer
@@ -31,63 +36,82 @@ class CartRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         if self.request.user.is_authenticated:
             return Cart.objects.filter(user=self.request.user)
-        # For anonymous users, we'll need to get anonymous_id from cookie/header
+        elif hasattr(self.request, 'anonymous_id'):
+            return Cart.objects.filter(anonymous_id=self.request.anonymous_id)
         return Cart.objects.none()
 
-class CartItemCreateView(generics.CreateAPIView):
-    serializer_class = CartItemSerializer
+class ActiveCartDetailView(generics.RetrieveAPIView):
+    serializer_class = CartSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def perform_create(self, serializer):
-        cart_pk = self.kwargs.get('cart_pk')
+    def get_object(self):
+        if self.request.user.is_authenticated:
+            cart, created = Cart.objects.get_or_create(
+                user=self.request.user, is_active=True,
+                defaults={'name': f"{self.request.user.email}'s Cart"}
+            )
+            return cart
+        elif hasattr(self.request, 'anonymous_id'):
+            cart, created = Cart.objects.get_or_create(
+                anonymous_id=self.request.anonymous_id, is_active=True,
+                defaults={'name': 'Anonymous Cart'}
+            )
+            return cart
+        raise permissions.PermissionDenied("No active cart found.")
+
+class SwitchActiveCartView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        cart_id = request.data.get('cart_id')
+        if not cart_id:
+            return Response({'error': 'cart_id is required'}, status=status.HTTP_400_BAD_REQUEST)
+
         try:
-            cart = Cart.objects.get(pk=cart_pk)
-            # Ensure the cart belongs to the user
-            if self.request.user.is_authenticated and cart.user != self.request.user:
-                raise permissions.PermissionDenied("You do not have permission to add items to this cart.")
-            # Add anonymous_id check later
-            serializer.save(cart=cart)
+            # Deactivate current active cart
+            Cart.objects.filter(user=request.user, is_active=True).update(is_active=False)
+            # Activate new cart
+            new_active_cart = Cart.objects.get(user=request.user, pk=cart_id)
+            new_active_cart.is_active = True
+            new_active_cart.save()
+            return Response(CartSerializer(new_active_cart).data, status=status.HTTP_200_OK)
         except Cart.DoesNotExist:
-            raise generics.ValidationError("Cart not found.")
+            return Response({'error': 'Cart not found'}, status=status.HTTP_404_NOT_FOUND)
 
-class CartItemRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+# --- Views for items in the ACTIVE cart ---
+
+class ActiveCartItemListCreateView(generics.ListCreateAPIView):
     serializer_class = CartItemSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    queryset = CartItem.objects.all()
-    lookup_field = 'pk'
+
+    def get_active_cart(self):
+        if self.request.user.is_authenticated:
+            return Cart.objects.filter(user=self.request.user, is_active=True).first()
+        elif hasattr(self.request, 'anonymous_id'):
+            return Cart.objects.filter(anonymous_id=self.request.anonymous_id, is_active=True).first()
+        return None
 
     def get_queryset(self):
-        cart_pk = self.kwargs.get('cart_pk')
-        if self.request.user.is_authenticated:
-            return CartItem.objects.filter(cart__pk=cart_pk, cart__user=self.request.user)
-        # Add anonymous_id check later
+        cart = self.get_active_cart()
+        if cart:
+            return CartItem.objects.filter(cart=cart)
         return CartItem.objects.none()
 
-class CartSubstitutionCreateView(generics.CreateAPIView):
-    serializer_class = CartSubstitutionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
     def perform_create(self, serializer):
-        cart_item_pk = self.kwargs.get('cart_item_pk')
-        try:
-            cart_item = CartItem.objects.get(pk=cart_item_pk)
-            # Ensure the cart_item belongs to the user's cart
-            if self.request.user.is_authenticated and cart_item.cart.user != self.request.user:
-                raise permissions.PermissionDenied("You do not have permission to add substitutions to this cart item.")
-            # Add anonymous_id check later
-            serializer.save(original_cart_item=cart_item)
-        except CartItem.DoesNotExist:
-            raise generics.ValidationError("Cart item not found.")
+        cart = self.get_active_cart()
+        if not cart:
+            raise permissions.PermissionDenied("No active cart available.")
+        serializer.save(cart=cart)
 
-class CartSubstitutionRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = CartSubstitutionSerializer
+class ActiveCartItemUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = CartItemSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    queryset = CartSubstitution.objects.all()
     lookup_field = 'pk'
 
     def get_queryset(self):
-        cart_item_pk = self.kwargs.get('cart_item_pk')
         if self.request.user.is_authenticated:
-            return CartSubstitution.objects.filter(original_cart_item__pk=cart_item_pk, original_cart_item__cart__user=self.request.user)
-        # Add anonymous_id check later
-        return CartSubstitution.objects.none()
+            return CartItem.objects.filter(cart__user=self.request.user, cart__is_active=True)
+        elif hasattr(self.request, 'anonymous_id'):
+            return CartItem.objects.filter(cart__anonymous_id=self.request.anonymous_id, cart__is_active=True)
+        return CartItem.objects.none()
+

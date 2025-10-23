@@ -270,7 +270,7 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
         <div className="h-1/2 border-t flex flex-col">
             <div className="px-2 pb-2 pt-1 border-b">
                 <h3 className="text-lg font-semibold">Selected Stores ({localSelectedStoreIds.size})</h3>
-                <p className="text-sm text-muted-foreground">We will only show you products from these stores.</p>
+                <p className="text-sm text-muted-foreground">Click stores below or in the map to enable/disable.</p>
             </div>
             <div className="flex-grow overflow-y-auto p-2">
                 {renderStoreList()}

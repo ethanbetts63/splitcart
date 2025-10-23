@@ -21,10 +21,10 @@ from .views.store_list_views import SelectedStoreListListCreateView, SelectedSto
 from .views.cart_views import (
     CartListCreateView,
     CartRetrieveUpdateDestroyView,
-    CartItemCreateView,
-    CartItemRetrieveUpdateDestroyView,
-    CartSubstitutionCreateView,
-    CartSubstitutionRetrieveUpdateDestroyView
+    ActiveCartDetailView,
+    SwitchActiveCartView,
+    ActiveCartItemListCreateView,
+    ActiveCartItemUpdateDestroyView,
 )
 from .views.anonymous_user_view import AnonymousUserCreateView
 
@@ -54,15 +54,13 @@ urlpatterns = [
 
     # Cart URLs
     path('carts/', CartListCreateView.as_view(), name='cart-list-create'),
+    path('carts/active/', ActiveCartDetailView.as_view(), name='active-cart-detail'),
+    path('carts/switch-active/', SwitchActiveCartView.as_view(), name='switch-active-cart'),
     path('carts/<uuid:pk>/', CartRetrieveUpdateDestroyView.as_view(), name='cart-retrieve-update-destroy'),
 
-    # CartItem URLs (nested under cart)
-    path('carts/<uuid:cart_pk>/items/', CartItemCreateView.as_view(), name='cart-item-create'),
-    path('carts/<uuid:cart_pk>/items/<uuid:pk>/', CartItemRetrieveUpdateDestroyView.as_view(), name='cart-item-retrieve-update-destroy'),
-
-    # CartSubstitution URLs (nested under cart item)
-    path('carts/<uuid:cart_pk>/items/<uuid:cart_item_pk>/substitutions/', CartSubstitutionCreateView.as_view(), name='cart-substitution-create'),
-    path('carts/<uuid:cart_pk>/items/<uuid:cart_item_pk>/substitutions/<uuid:pk>/', CartSubstitutionRetrieveUpdateDestroyView.as_view(), name='cart-substitution-retrieve-update-destroy'),
+    # CartItem URLs (for the active cart)
+    path('carts/active/items/', ActiveCartItemListCreateView.as_view(), name='active-cart-item-list-create'),
+    path('carts/active/items/<int:pk>/', ActiveCartItemUpdateDestroyView.as_view(), name='active-cart-item-update-destroy'),
 
     # Anonymous User URLs
     path('anonymous-user/', AnonymousUserCreateView.as_view(), name='anonymous-user-create'),

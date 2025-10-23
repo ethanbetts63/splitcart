@@ -1,4 +1,4 @@
-import { useShoppingList } from '@/context/ShoppingListContext';
+import { useCart } from '@/context/CartContext';
 import TrolleyItemTile from '@/components/TrolleyItemTile';
 import NextButton from '@/components/NextButton'; // Import NextButton
 
@@ -7,7 +7,8 @@ interface TrolleyPageProps {
 }
 
 const TrolleyPage: React.FC<TrolleyPageProps> = ({ onOpenChange }) => {
-  const { items, cartTotal } = useShoppingList();
+  const { items } = useCart();
+  const cartTotal = items.reduce((total, item) => total + item.quantity, 0);
 
   return (
     <div className="flex flex-col h-full">

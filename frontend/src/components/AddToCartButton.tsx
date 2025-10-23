@@ -1,32 +1,30 @@
 import React from 'react';
-import { useShoppingList } from '@/context/ShoppingListContext';
+import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import type { Product } from '@/types/Product'; // Import shared type
 
-import { useSubstitutions } from '@/context/SubstitutionContext';
-import { useStoreList } from '@/context/StoreListContext';
+// import { useSubstitutions } from '@/context/SubstitutionContext';
+// import { useStoreList } from '@/context/StoreListContext';
 
 interface AddToCartButtonProps {
   product: Product;
 }
 
 const AddToCartButton: React.FC<AddToCartButtonProps> = ({ product }) => {
-  const { items, addItem, updateItemQuantity, removeItem } = useShoppingList();
-  const { fetchSubstitutes } = useSubstitutions();
-  const { selectedStoreIds } = useStoreList();
+  const { items, addItem, updateItemQuantity } = useCart();
+  // const { fetchSubstitutes } = useSubstitutions();
+  // const { selectedStoreIds } = useStoreList();
   const existingItem = items.find(item => item.product.id === product.id);
 
   const handleAdd = () => {
     addItem(product, 1);
-    fetchSubstitutes(product, Array.from(selectedStoreIds));
+    // fetchSubstitutes(product, Array.from(selectedStoreIds));
   };
 
   const handleQuantityChange = (newQuantity: number) => {
-    if (newQuantity > 0) {
-      updateItemQuantity(product.id, newQuantity);
-    } else {
-      removeItem(product.id);
+    if (existingItem) {
+      updateItemQuantity(existingItem.id, newQuantity);
     }
   };
 

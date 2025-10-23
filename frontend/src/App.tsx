@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SettingsDialog } from "@/components/settings-dialog";
 import { useStoreList } from "@/context/StoreListContext";
-import { useShoppingList } from "@/context/ShoppingListContext";
+import { useCart } from "@/context/CartContext";
 import { Badge } from "@/components/ui/badge";
 import NextButton from "@/components/NextButton";
 import HomePage from "./pages/HomePage";
@@ -42,7 +42,8 @@ const Layout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { selectedStoreIds } = useStoreList();
-  const { cartTotal } = useShoppingList();
+  const { items } = useCart();
+  const cartTotal = items.reduce((total, item) => total + item.quantity, 0);
   const { isAuthenticated, logout } = useAuth();
 
   const [dialogOpen, setDialogOpen] = useState(false);
