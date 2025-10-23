@@ -5,7 +5,7 @@ import { useCompanyLogo } from '@/hooks/useCompanyLogo';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface CompanyFilterProps {
-  selectedCompanies: string[];
+  selectedCompanies?: string[];
   onSelectionChange: (selectedCompanies: string[]) => void;
 }
 

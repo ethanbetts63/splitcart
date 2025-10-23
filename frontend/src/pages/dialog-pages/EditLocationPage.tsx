@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { PlusCircle, Save, Trash2, Star, Pencil } from 'lucide-react'; // Icons for actions
+import { PlusCircle, Save, Trash2, Pencil } from 'lucide-react'; // Icons for actions
 
 // Define the type for a single store
 type Store = {
@@ -47,12 +47,10 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
 
   const {
     // selectedStoreIds and handleStoreSelect are now managed by the parent
-    setSelectedStoreIds, // Still needed for the search handler
-    currentStoreListId, setCurrentStoreListId,
+    currentStoreListId,
     currentStoreListName, setCurrentStoreListName,
-    userStoreLists, setUserStoreLists,
-    storeListLoading, setStoreListLoading,
-    storeListError, setStoreListError,
+    userStoreLists,
+    storeListLoading,
     loadStoreList, saveStoreList, createNewStoreList, deleteStoreList, fetchActiveStoreList
   } = useStoreList();
 
@@ -137,11 +135,7 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
 
 
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      handleSearch();
-    }
-  };
+
 
   const renderStoreList = () => {
     if (stores === null) {
