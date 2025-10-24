@@ -137,6 +137,32 @@ const SubstitutionPage = () => {
     }
   };
 
+  const handleApproveAllAndNext = () => {
+    if (!currentItem) return;
+
+    // Create the new approved selections for the current item
+    const newApprovedForCurrent = currentSubstitutes.map(sub => ({ product: sub, quantity: 1 }));
+
+    // Create the next state for all approved selections
+    const nextApprovedSelections = {
+      ...approvedSelections,
+      [currentItem.id]: newApprovedForCurrent,
+    };
+
+    // Update the state
+    setApprovedSelections(nextApprovedSelections);
+
+    // Now, decide whether to go to the next item or optimize
+    if (currentItemIndex < itemsToReview.length - 1) {
+      setCurrentItemIndex(currentItemIndex + 1);
+    } else {
+      // We are on the last item, so optimize and navigate.
+      // We need to use `nextApprovedSelections` here, not the state `approvedSelections`
+      // because the state update might not have completed.
+      handleOptimizeAndNavigate(nextApprovedSelections);
+    }
+  };
+
   if (!currentItem) {
     return (
       <div className="text-center p-8">
@@ -162,6 +188,9 @@ const SubstitutionPage = () => {
         </div>
         <h1 className="text-2xl font-bold justify-self-center">Product Substitution</h1>
         <div className="justify-self-end flex items-center gap-2">
+          <Button onClick={handleApproveAllAndNext} variant="outline">
+            Approve All & Next
+          </Button>
           <Button onClick={handleNext} className="bg-blue-500 text-white">
             {isLastItem ? 'Split my Cart!' : 'Next'}
           </Button>
