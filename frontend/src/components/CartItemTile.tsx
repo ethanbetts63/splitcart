@@ -78,15 +78,6 @@ const CartItemTile: React.FC<CartItemTileProps> = (props) => {
 
   const imageUrl = product.image_url || fallbackImage;
 
-  const dummySubProduct: Product = {
-    id: 999,
-    name: "Dummy Sub Product",
-    brand_name: "Dummy Brand",
-    size: "1kg",
-    image_url: "https://via.placeholder.com/150",
-    prices: [],
-  };
-
   return (
     <Card className="p-2">
       <div className="flex flex-row items-center gap-0 relative">
@@ -146,15 +137,14 @@ const CartItemTile: React.FC<CartItemTileProps> = (props) => {
           )}
         </div>
       </div>
+      {/* Accordion for Substitutions (will be populated later) */}
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1">
           <AccordionTrigger className="w-full flex justify-center p-2 text-sm text-muted-foreground">
-            Show Substitutions (3)
+            Show Substitutions
           </AccordionTrigger>
           <AccordionContent>
-            <CartSubTile product={dummySubProduct} quantity={1} />
-            <CartSubTile product={dummySubProduct} quantity={2} />
-            <CartSubTile product={dummySubProduct} quantity={1} />
+            {/* CartSubTile components will be rendered here based on actual data */}
           </AccordionContent>
         </AccordionItem>
       </Accordion>
