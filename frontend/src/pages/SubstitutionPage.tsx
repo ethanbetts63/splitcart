@@ -5,6 +5,7 @@ import { useStoreList } from '@/context/StoreListContext';
 import ProductTile from '@/components/ProductTile';
 import CartItemTile from '@/components/CartItemTile';
 import { Button } from '@/components/ui/button';
+import { optimizeCartAPI } from '@/services/SubstitutionApi';
 import type { Product, CartItem } from '@/types';
 
 import { Badge } from "@/components/ui/badge";
@@ -90,13 +91,7 @@ const SubstitutionPage = () => {
     };
 
     try {
-      const response = await fetch('/api/cart/split/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(optimizationData),
-      });
-      if (!response.ok) throw new Error('Optimization failed');
-      const results = await response.json();
+      const results = await optimizeCartAPI(optimizationData);
       setOptimizationResult(results);
       navigate('/final-cart');
     } catch (error) {
@@ -123,13 +118,7 @@ const SubstitutionPage = () => {
     };
 
     try {
-      const response = await fetch('/api/cart/split/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(optimizationData),
-      });
-      if (!response.ok) throw new Error('Optimization failed');
-      const results = await response.json();
+      const results = await optimizeCartAPI(optimizationData);
       setOptimizationResult(results);
       navigate('/final-cart');
     } catch (error) {
