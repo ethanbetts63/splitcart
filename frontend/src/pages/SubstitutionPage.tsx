@@ -7,7 +7,7 @@ import CartItemTile from '@/components/CartItemTile';
 import { Button } from '@/components/ui/button';
 import { optimizeCartAPI } from '@/services/SubstitutionApi';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import type { Product, CartSubstitution } from '@/types';
+import type { Product, CartSubstitution, CartItem } from '@/types';
 import { Badge } from "@/components/ui/badge";
 import { BadgeCheckIcon } from 'lucide-react';
 import { FaqImageSection } from "../components/FaqImageSection";
