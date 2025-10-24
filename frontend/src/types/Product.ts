@@ -19,4 +19,4 @@ export type Product = {
   level_description?: string;
 };
 
-export { type CompanyPriceInfo, type Product };
+export type CompanyPriceInfo;
