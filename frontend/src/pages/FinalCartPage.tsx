@@ -11,6 +11,7 @@ import ResultsDisplay from '@/components/ResultsDisplay';
 import { FaqAccordion } from '@/components/FaqAccordion';
 import { FaqImageSection } from "../components/FaqImageSection";
 import futureTodayImage from "@/assets/future_today.png";
+import { emailCartAPI, downloadCartAPI } from '@/services/FinalCartApi';
 import type { ApiResponse, ExportData } from '@/types';
 
 const FinalCartPage = () => {
@@ -47,20 +48,7 @@ const FinalCartPage = () => {
     setError(null);
 
     try {
-        const response = await fetch('/api/cart/email-list/', {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
-            },
-            body: JSON.stringify(exportData),
-        });
-
-        const resData = await response.json();
-
-        if (!response.ok) {
-            throw new Error(resData.error || `Server returned an unexpected error (${response.status}).`);
-        }
+        await emailCartAPI(exportData, token);
         
 toast.success("Email Sent!", {
             description: "Your shopping list has been sent to your email.",
@@ -81,25 +69,7 @@ toast.success("Email Sent!", {
     setError(null);
 
     try {
-        const response = await fetch('/api/cart/download-list/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(exportData),
-        });
-
-        if (!response.ok) {
-            const contentType = response.headers.get("content-type");
-            let errorMessage = 'Failed to generate PDF.';
-            if (contentType && contentType.indexOf("application/json") !== -1) {
-                const errorData = await response.json();
-                errorMessage = errorData.error || errorMessage;
-            } else {
-                errorMessage = `Server returned an unexpected error (${response.status}).`;
-            }
-            throw new Error(errorMessage);
-        }
-
-        const blob = await response.blob();
+        const blob = await downloadCartAPI(exportData);
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
