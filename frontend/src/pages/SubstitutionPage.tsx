@@ -27,7 +27,7 @@ const SubstitutionPage = () => {
 
   const itemsToReview = currentCart?.items.filter(item => item.substitutions && item.substitutions.length > 0) || [];
   const currentItem = itemsToReview[currentItemIndex];
-  const currentSubstitutes = currentItem ? currentItem.substitutions : [];
+  const currentSubstitutes = currentItem?.substitutions || [];
 
   const handleNext = () => {
     if (currentItemIndex < itemsToReview.length - 1) {
