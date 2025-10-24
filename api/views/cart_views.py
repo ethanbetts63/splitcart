@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import Cart, CartItem
 from api.serializers import CartSerializer, CartItemSerializer
-from users.managers import CartManager
+from users.cart_manager import CartManager
 
 cart_manager = CartManager()
 

@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
-import { Product } from '@/components/ProductTile';
+import { Product } from '@/types/Product';
 
 // Types
 export interface CartItem {

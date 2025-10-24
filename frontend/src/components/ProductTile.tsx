@@ -13,23 +13,7 @@ import PriceDisplay from './PriceDisplay';
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
 
 import { Badge } from "@/components/ui/badge";
-
-// --- Type Definitions to match the API Serializer ---
-type CompanyPriceInfo = {
-  company: string;
-  price_display: string;
-  is_lowest: boolean;
-  image_url?: string;
-};
-
-type Product = {
-  id: number;
-  name: string;
-  brand_name?: string;
-  size?: string;
-  image_url?: string;
-  prices: CompanyPriceInfo[];
-};
+import { Product } from '@/types/Product'; // Import shared type
 
 interface ProductTileProps {
   product: Product;
