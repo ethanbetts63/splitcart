@@ -6,26 +6,28 @@ Refactor the cart and substitution management to centralize all substitution dat
 ## Current Understanding
 
 *   An existing `CartSubstitution` model (`users/models/cart_substitution.py`) links an `original_cart_item` to a `substituted_product` with a `quantity`.
+*   The `CartSubstitution` model has been updated with an `is_approved` boolean field to differentiate between potential and approved substitutes.
 *   The frontend currently fetches *potential* substitutes and stores them locally in `CartContext.potentialSubstitutes`.
 *   The `optimizeCartAPI` expects a "slot" structure, which the frontend currently constructs.
+*   A "slot" is a conceptual grouping of an original `CartItem` and its associated `CartSubstitution` instances (especially those marked `is_approved`), not a distinct Django model.
 
 ## Identified Problems and Proposed Solutions
 
-### Problem 1: `CartSubstitution` model needs an `is_approved` flag and API for managing potential substitutes
+### Problem 1: API for managing potential and approved substitutes
 
-**Description:** The existing `CartSubstitution` model is suitable for storing chosen substitutes, but it lacks a mechanism to differentiate between a *potential* substitute (added by the user for consideration) and an *approved* substitute (selected for optimization). The current API doesn't support adding potential substitutes directly to the cart.
+**Description:** The current API doesn't support adding potential substitutes to the cart directly from the product tile, nor does it provide clear endpoints for approving, rejecting, or updating `CartSubstitution` instances.
 
 **Proposed Solution:**
-1.  **Modify `CartSubstitution` Model:**
-    *   Add an `is_approved` boolean field to `CartSubstitution` with a default value of `False`. This will allow `CartSubstitution` instances to represent both potential (unapproved) and approved substitutes.
-2.  **New API Endpoint for Adding Potential Substitutes:**
-    *   Create a new API endpoint (e.g., `POST /api/carts/active/items/<uuid:cart_item_id>/substitutions/`) that accepts a `product_id` (the potential substitute) and a `quantity`.
-    *   This endpoint will create a new `CartSubstitution` instance linked to the `original_cart_item`, with `substituted_product` set to the provided `product_id`, `quantity`, and `is_approved` initially set to `False`. This will be called when a user "adds" a potential substitute from a product tile or similar UI.
-3.  **API for Approving/Rejecting/Updating Substitutes:**
-    *   Modify or create API endpoints to manage existing `CartSubstitution` instances:
-        *   `PATCH /api/carts/active/items/<uuid:cart_item_id>/substitutions/<uuid:substitution_id>/`: Update the `is_approved` flag and/or `quantity` of a `CartSubstitution`.
+1.  **Automatic Generation of Potential Substitutes (Backend):**
+    *   **New Utility Class:** A `SubstituteManager` class has been created in `data_management/utils/cart_optimization/substitute_manager.py` to encapsulate the logic for finding `ProductSubstitution` instances and creating `CartSubstitution` instances.
+    *   When a `CartItem` is created via the `POST /api/carts/active/items/` endpoint, the backend will automatically use the `SubstituteManager` to identify potential substitutes for the `product.id` of the new `CartItem`.
+    *   These identified potential substitutes will be created as `CartSubstitution` instances linked to the new `CartItem`, with `is_approved` initially set to `False`.
+    *   This logic will be implemented within the `perform_create` method of `ActiveCartItemListCreateView` in `api/views/cart_views.py`.
+2.  **API for Approving/Rejecting/Updating Substitutes:**
+    *   Create new API endpoints to manage existing `CartSubstitution` instances:
+        *   `PATCH /api/carts/active/items/<uuid:cart_item_id>/substitutions/<uuid:substitution_id>/`: Update the `is_approved` flag and/or `quantity` of a `CartSubstitution`. (Note: `substitution_id` refers to the `CartSubstitution` instance ID).
         *   `DELETE /api/carts/active/items/<uuid:cart_item_id>/substitutions/<uuid:substitution_id>/`: Remove a `CartSubstitution` entirely.
-4.  **Serializer Updates:**
+3.  **Serializer Updates:**
     *   Update `CartItemSerializer` to include nested serialization for all associated `CartSubstitution` instances. This will ensure the frontend receives all substitution data (both approved and unapproved) when fetching the cart.
 
 ### Problem 2: Frontend `CartContext` stores redundant `potentialSubstitutes` and lacks backend interaction for substitutions
@@ -36,9 +38,9 @@ Refactor the cart and substitution management to centralize all substitution dat
 1.  **Remove `potentialSubstitutes` state:** Eliminate the `potentialSubstitutes` state variable from `CartContext.tsx`.
 2.  **Update `CartItem` Type:** Ensure the `CartItem` TypeScript type includes a property for its associated `CartSubstitution` objects (e.g., `substitutions: CartSubstitution[]`).
 3.  **New `CartContext` Functions:** Add the following functions to `CartContextType` and implement them in `CartProvider` to interact with the new backend API:
-    *   `addCartItemSubstitution(cartItemId: string, productId: number, quantity: number)`: Calls the new `POST` API endpoint to create an unapproved `CartSubstitution`.
     *   `updateCartItemSubstitution(cartItemId: string, substitutionId: string, isApproved: boolean, quantity: number)`: Calls the `PATCH` API endpoint to update the `is_approved` status and/or quantity.
     *   `removeCartItemSubstitution(cartItemId: string, substitutionId: string)`: Calls the `DELETE` API endpoint to remove a `CartSubstitution`.
+    *   (The `addCartItemSubstitution` function is now implicitly handled by the backend when a `CartItem` is created, so a direct frontend call for this specific purpose might not be needed, or it could be repurposed for manually adding a *specific* potential substitute if that UI is desired later).
 4.  **`fetchActiveCart` Enhancement:** Ensure `fetchActiveCart` correctly fetches and populates the `CartItem` with all its associated `CartSubstitution` instances from the backend.
 
 ### Problem 3: UI Integration in `CartPage.tsx` and `CartItemTile.tsx` needs to display and manage `CartSubstitution` instances
@@ -64,15 +66,21 @@ Refactor the cart and substitution management to centralize all substitution dat
 3.  **`CartPage.tsx` Modifications:**
     *   Ensure `CartPage` passes the `CartItem` object (which now includes `substitutions`) to `CartItemTile`.
     *   Ensure `CartPage` has access to `CartContext` functions for managing substitutions.
+    *   **`SubstitutionPage.tsx`:**
+        *   This page will need a significant refactor or potentially be removed/repurposed. If it remains, it will need to interact with the new backend-centric substitution management. For now, focus on the `CartPage` integration.
 
 ## To-Do List
 
 1.  **Backend (Django):**
     *   [ ] **Modify `CartSubstitution` Model (`users/models/cart_substitution.py`):**
-        *   [ ] Add `is_approved = models.BooleanField(default=False)` field.
+        *   [x] Add `is_approved = models.BooleanField(default=False)` field. (Already completed)
         *   [ ] Run `makemigrations` and `migrate`.
-    *   [ ] **Create/Modify API Endpoints (`api/views/cart_views.py` or new `api/views/cart_substitution_views.py`):**
-        *   [ ] Implement `POST /api/carts/active/items/<uuid:cart_item_id>/substitutions/` to add a new unapproved `CartSubstitution`.
+    *   [ ] **Implement Automatic Generation of Potential Substitutes:**
+        *   [x] Create `SubstituteManager` class in `data_management/utils/cart_optimization/substitute_manager.py`. (Already completed)
+        *   [ ] Modify `ActiveCartItemListCreateView` (`api/views/cart_views.py`) `perform_create` method to:
+            *   [ ] After saving the new `CartItem`, use `SubstituteManager` to find potential substitutes.
+            *   [ ] Create `CartSubstitution` instances for each potential substitute, linked to the new `CartItem`, with `is_approved=False`.
+    *   [ ] **Create/Modify API Endpoints for `CartSubstitution` (`api/views/cart_views.py` or new `api/views/cart_substitution_views.py`):**
         *   [ ] Implement `PATCH /api/carts/active/items/<uuid:cart_item_id>/substitutions/<uuid:substitution_id>/` to update `is_approved` and `quantity`.
         *   [ ] Implement `DELETE /api/carts/active/items/<uuid:cart_item_id>/substitutions/<uuid:substitution_id>/` to remove a `CartSubstitution`.
     *   [ ] **Serializer Updates:**
@@ -85,7 +93,7 @@ Refactor the cart and substitution management to centralize all substitution dat
         *   [ ] Define `CartSubstitution` type mirroring the backend model (including `is_approved`).
     *   [ ] **`CartContext.tsx`:**
         *   [ ] Remove `potentialSubstitutes` state.
-        *   [ ] Add `addCartItemSubstitution`, `updateCartItemSubstitution`, `removeCartItemSubstitution` functions.
+        *   [ ] Add `updateCartItemSubstitution`, `removeCartItemSubstitution` functions.
         *   [ ] Modify `fetchActiveCart` to correctly handle the new `substitutions` data within `CartItem`.
     *   [ ] **`CartSubTile.tsx`:**
         *   [ ] Update props to receive a `CartSubstitution` object.
