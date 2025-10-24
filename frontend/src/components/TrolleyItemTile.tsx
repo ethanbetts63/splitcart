@@ -22,7 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from '@/components/ui/input';
 
 const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, isApproved, quantity, onQuantityChange, context }) => {
-  const { currentCart, updateItemQuantity } = useCart();
+  const { currentCart, updateItemQuantity, removeItem } = useCart();
   const items = currentCart?.items || [];
 
   const cartItem = context === 'trolley' ? items.find(item => item.product.id === product.id) : null;
@@ -34,7 +34,11 @@ const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, i
 
   const handleQuantityChange = (newQuantity: number) => {
     if (context === 'trolley' && cartItem) {
-      updateItemQuantity(cartItem.id, newQuantity);
+      if (newQuantity <= 0) {
+        removeItem(cartItem.id);
+      } else {
+        updateItemQuantity(cartItem.id, newQuantity);
+      }
     } else if (onQuantityChange) {
       if (newQuantity <= 0) {
         if (onApprove) {
