@@ -3,19 +3,33 @@ import { Card } from "@/components/ui/card";
 import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
-import type { Product } from '@/types'; // Import shared type
+import type { Product, CartSubstitution } from '@/types'; // Import shared type
 import { useCart } from '@/context/CartContext';
 
 import { Button } from '@/components/ui/button';
 
-interface cartItemTileProps {
-  product: Product;
-  onApprove?: (product: Product) => void;
-  isApproved?: boolean;
-  quantity?: number;
-  onQuantityChange?: (product: Product, quantity: number) => void;
+// New type for callbacks
+type OnApproveCallback = (sub: CartSubstitution) => Promise<void>;
+type OnQuantityChangeCallback = (sub: CartSubstitution, quantity: number) => Promise<void>;
+
+interface BaseCartItemTileProps {
   context?: 'cart' | 'substitution';
 }
+
+interface CartContextProps extends BaseCartItemTileProps {
+  context: 'cart';
+  product: Product; // For displaying original cart items
+}
+
+interface SubstitutionContextProps extends BaseCartItemTileProps {
+  context: 'substitution';
+  cartSubstitution: CartSubstitution; // For displaying substitute items
+  onApprove: OnApproveCallback; // Mandatory for substitution context
+  onQuantityChange: OnQuantityChangeCallback; // Mandatory for substitution context
+}
+
+// Combine into a single type using a discriminated union
+type CartItemTileProps = CartContextProps | SubstitutionContextProps;
 
 import { Badge } from "@/components/ui/badge";
 
@@ -26,12 +40,23 @@ import CartSubTile from './CartSubTile';
 
 // ... (rest of the imports)
 
-const CartItemTile: React.FC<cartItemTileProps> = ({ product, onApprove, isApproved, quantity, onQuantityChange, context }) => {
+const CartItemTile: React.FC<CartItemTileProps> = (props) => {
+  const { context } = props;
+
+  // Conditionally assign variables based on context
+  const product = context === 'cart' ? props.product : props.cartSubstitution.substituted_product;
+  const cartSubstitution = context === 'substitution' ? props.cartSubstitution : undefined;
+  const onApprove = context === 'substitution' ? props.onApprove : undefined;
+  const onQuantityChange = context === 'substitution' ? props.onQuantityChange : undefined;
+
+  // For 'substitution' context, quantity and isApproved come from cartSubstitution
+  const displayQuantity = cartSubstitution ? cartSubstitution.quantity : (context === 'cart' ? (props as CartContextProps).product.quantity : 0); // This will need careful handling
+  const isApproved = cartSubstitution ? cartSubstitution.is_approved : false;
+
   const { currentCart, updateItemQuantity, removeItem } = useCart();
   const items = currentCart?.items || [];
 
   const cartItem = context === 'cart' ? items.find(item => item.product.id === product.id) : null;
-  const displayQuantity = context === 'cart' ? cartItem?.quantity : quantity;
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = fallbackImage;
@@ -44,14 +69,10 @@ const CartItemTile: React.FC<cartItemTileProps> = ({ product, onApprove, isAppro
       } else {
         updateItemQuantity(cartItem.id, newQuantity);
       }
-    } else if (onQuantityChange) {
-      if (newQuantity <= 0) {
-        if (onApprove) {
-          onApprove(product);
-        }
-      } else {
-        onQuantityChange(product, newQuantity);
-      }
+    } else if (context === 'substitution' && cartSubstitution && onQuantityChange) {
+      // The logic for quantity <= 0 and setting is_approved=false is handled by SubstitutionPage.tsx
+      // CartItemTile just needs to pass the new quantity and the cartSubstitution object
+      onQuantityChange(cartSubstitution, newQuantity);
     }
   };
 
@@ -102,21 +123,21 @@ const CartItemTile: React.FC<cartItemTileProps> = ({ product, onApprove, isAppro
               />
               <Button size="icon" className="h-8 w-8" onClick={() => handleQuantityChange((displayQuantity || 1) + 1)}>+</Button>
             </div>
-          ) : onApprove ? (
+          ) : (context === 'substitution' && cartSubstitution) ? (
             isApproved ? (
               <div className="flex items-center gap-2">
-                <Button size="icon" className="h-8 w-8" onClick={() => handleQuantityChange((quantity || 1) - 1)}>-</Button>
+                <Button size="icon" className="h-8 w-8" onClick={() => handleQuantityChange(cartSubstitution.quantity - 1)}>-</Button>
                 <Input
                   type="number"
                   readOnly
                   className="h-8 w-12 text-center no-spinner"
-                  value={quantity}
+                  value={cartSubstitution.quantity}
                   min="0"
                 />
-                <Button size="icon" className="h-8 w-8" onClick={() => handleQuantityChange((quantity || 1) + 1)}>+</Button>
+                <Button size="icon" className="h-8 w-8" onClick={() => handleQuantityChange(cartSubstitution.quantity + 1)}>+</Button>
               </div>
             ) : (
-              <Button onClick={() => onApprove && onApprove(product)} className="bg-green-500 hover:bg-green-600">
+              <Button onClick={() => onApprove && onApprove(cartSubstitution)} className="bg-green-500 hover:bg-green-600">
                 Approve
               </Button>
             )
