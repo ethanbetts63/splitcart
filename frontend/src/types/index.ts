@@ -49,3 +49,4 @@ export interface ExportData {
 
 export type { Product, CompanyPriceInfo } from './Product';
 export type { Cart, CartItem } from './Cart';
+export type { CartSubstitution } from './CartSubstitution';
