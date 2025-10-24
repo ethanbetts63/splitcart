@@ -2,8 +2,6 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { ShoppingListProvider } from './context/ShoppingListContext';
-import { SubstitutionProvider } from './context/SubstitutionContext';
 import { StoreSearchProvider } from './context/StoreSearchContext';
 import { StoreListProvider } from './context/StoreListContext';
 import { AuthProvider } from './context/AuthContext';

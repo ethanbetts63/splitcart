@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useCart } from '@/context/CartContext';
+import React, { useState, useEffect } from 'react';
+import { useCart, Cart } from '@/context/CartContext';
 import TrolleyItemTile from '@/components/TrolleyItemTile';
 import NextButton from '@/components/NextButton';
 import { useAuth } from '@/context/AuthContext';
@@ -21,6 +21,12 @@ const TrolleyPage: React.FC<TrolleyPageProps> = ({ onOpenChange }) => {
   const [isEditingCartName, setIsEditingCartName] = useState(false);
   const [newCartName, setNewCartName] = useState(currentCart?.name || '');
 
+  useEffect(() => {
+    if (currentCart) {
+      setNewCartName(currentCart.name);
+    }
+  }, [currentCart]);
+
   const cartTotal = currentCart?.items.reduce((total, item) => total + item.quantity, 0) || 0;
 
   const handleRenameCart = () => {
@@ -29,6 +35,15 @@ const TrolleyPage: React.FC<TrolleyPageProps> = ({ onOpenChange }) => {
       setIsEditingCartName(false);
     }
   };
+
+  const handleSwitchCart = (value: string) => {
+    if (value === "new") {
+      const newCartDefaultName = `Shopping List #${userCarts.length + 1}`;
+      createNewCart(newCartDefaultName);
+    } else if (value) {
+      loadCart(value);
+    }
+  }
 
   return (
     <div className="flex flex-col h-full">
@@ -60,13 +75,7 @@ const TrolleyPage: React.FC<TrolleyPageProps> = ({ onOpenChange }) => {
                 ) : (
                     <Select
                         value={currentCart?.id || ''}
-                        onValueChange={(value) => {
-                            if (value === "new") {
-                                createNewCart("New Shopping List");
-                            } else if (value) {
-                                loadCart(value);
-                            }
-                        }}
+                        onValueChange={handleSwitchCart}
                     >
                         <SelectTrigger className="flex-grow">
                             <SelectValue>
@@ -79,7 +88,7 @@ const TrolleyPage: React.FC<TrolleyPageProps> = ({ onOpenChange }) => {
                                     <PlusCircle className="h-4 w-4" /> Create New Cart
                                 </div>
                             </SelectItem>
-                            {userCarts.map((cart) => (
+                            {userCarts.map((cart: Cart) => (
                                 <SelectItem key={cart.id} value={cart.id}>
                                     {cart.name}
                                 </SelectItem>
@@ -107,7 +116,7 @@ const TrolleyPage: React.FC<TrolleyPageProps> = ({ onOpenChange }) => {
                     variant="destructive" 
                     size="icon"
                     onClick={() => currentCart && deleteCart(currentCart.id)}
-                    disabled={cartLoading || !currentCart || isEditingCartName}
+                    disabled={cartLoading || !currentCart || isEditingCartName || userCarts.length <= 1}
                 >
                     <Trash2 className="h-4 w-4" />
                 </Button>
@@ -121,7 +130,7 @@ const TrolleyPage: React.FC<TrolleyPageProps> = ({ onOpenChange }) => {
         ) : currentCart && currentCart.items.length > 0 ? (
           <div className="flex flex-col gap-4">
             {currentCart.items.map(item => (
-              <TrolleyItemTile key={item.id} item={item} context="trolley" />
+              <TrolleyItemTile key={item.id} product={item.product} context="trolley" />
             ))}
           </div>
         ) : (
