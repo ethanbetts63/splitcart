@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
-import type { Product } from '@/types/Product'; // Import shared type
+import type { Product } from '@/types'; // Import shared type
 import { useCart } from '@/context/CartContext';
 
 import { Button } from '@/components/ui/button';
@@ -22,7 +22,8 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from '@/components/ui/input';
 
 const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, isApproved, quantity, onQuantityChange, context }) => {
-  const { items, updateItemQuantity, removeItem } = useCart();
+  const { currentCart, updateItemQuantity } = useCart();
+  const items = currentCart?.items || [];
 
   const cartItem = context === 'trolley' ? items.find(item => item.product.id === product.id) : null;
   const displayQuantity = context === 'trolley' ? cartItem?.quantity : quantity;
