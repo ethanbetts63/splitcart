@@ -1,16 +1,10 @@
 import type { ApiResponse } from '@/types';
 
-interface OptimizationData {
-  cart: { product_id: number; quantity: number; }[][];
-  store_ids: number[];
-  original_items: { product: { id: number; }; quantity: number; }[];
-}
-
-export const optimizeCartAPI = async (optimizationData: OptimizationData): Promise<ApiResponse> => {
+export const optimizeCartAPI = async (cartId: string): Promise<ApiResponse> => {
   const response = await fetch('/api/cart/split/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(optimizationData),
+    body: JSON.stringify({ cart_id: cartId }),
   });
 
   if (!response.ok) {
