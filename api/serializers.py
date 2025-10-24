@@ -186,8 +186,8 @@ class CartItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CartItem
-        fields = ('id', 'product', 'quantity', 'is_deprecated', 'substitutions', 'created_at', 'updated_at')
-        read_only_fields = ('is_deprecated', 'created_at', 'updated_at')
+        fields = ('id', 'product', 'quantity', 'substitutions', 'created_at', 'updated_at')
+        read_only_fields = ('created_at', 'updated_at')
 
 
 class CartSerializer(serializers.ModelSerializer):

@@ -1,12 +1,15 @@
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
-import type { Product, Cart, CartItem } from '@/types';
+import type { Product, Cart, CartItem, ApiResponse } from '@/types';
 
 // Types
 
 export interface CartContextType {
   currentCart: Cart | null;
   userCarts: Cart[];
+  potentialSubstitutes: { [productId: number]: Product[] };
+  optimizationResult: ApiResponse | null;
+  setOptimizationResult: (result: ApiResponse | null) => void;
   cartLoading: boolean;
   cartError: string | null;
   fetchActiveCart: () => void;
@@ -25,6 +28,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { token, anonymousId, isAuthenticated } = useAuth();
   const [currentCart, setCurrentCart] = useState<Cart | null>(null);
   const [userCarts, setUserCarts] = useState<Cart[]>([]);
+  const [potentialSubstitutes, setPotentialSubstitutes] = useState<{ [productId: number]: Product[] }>({});
+  const [optimizationResult, setOptimizationResult] = useState<ApiResponse | null>(null);
   const [cartLoading, setCartLoading] = useState(true);
   const [cartError, setCartError] = useState<string | null>(null);
 
@@ -143,15 +148,26 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const addItem = async (productId: number, quantity: number) => {
     try {
-        const response = await fetch('/api/carts/active/items/', {
-            method: 'POST',
-            headers: getAuthHeaders(),
-            body: JSON.stringify({ product_id: productId, quantity }),
-        });
-        if (!response.ok) throw new Error('Failed to add item to cart.');
-        fetchActiveCart(); // Refresh cart
+      // Add item to cart
+      const addItemResponse = await fetch('/api/carts/active/items/', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ product_id: productId, quantity }),
+      });
+      if (!addItemResponse.ok) throw new Error('Failed to add item to cart.');
+      await fetchActiveCart(); // Refresh cart to show the new item
+
+      // Fetch substitutes for the newly added item
+      const subResponse = await fetch(`/api/products/${productId}/substitutes/`);
+      if (subResponse.ok) {
+        const subData = await subResponse.json();
+        setPotentialSubstitutes(prevSubs => ({
+          ...prevSubs,
+          [productId]: subData,
+        }));
+      }
     } catch (error: any) {
-        setCartError(error.message);
+      setCartError(error.message);
     }
   };
 
@@ -184,7 +200,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   return (
     <CartContext.Provider value={{ 
-        currentCart, userCarts, cartLoading, cartError,
+        currentCart, userCarts, potentialSubstitutes, optimizationResult, setOptimizationResult, cartLoading, cartError,
         fetchActiveCart, loadCart, createNewCart, renameCart, deleteCart,
         addItem, updateItemQuantity, removeItem
     }}>

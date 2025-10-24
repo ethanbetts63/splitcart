@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSubstitutions } from '@/context/SubstitutionContext';
+import { useCart } from '@/context/CartContext';
+import { useStoreList } from '@/context/StoreListContext';
 import ProductTile from '@/components/ProductTile';
 import TrolleyItemTile from '@/components/TrolleyItemTile';
 import { Button } from '@/components/ui/button';
-import type { Product } from '@/types/Product';
+import type { Product, CartItem } from '@/types';
 
-import { Badge } from '@/components/ui/badge';
+import { Badge } from "@/components/ui/badge";
 import { BadgeCheckIcon } from 'lucide-react';
 import { FaqAccordion } from '@/components/FaqAccordion';
 import { FaqImageSection } from "../components/FaqImageSection";
@@ -14,28 +15,25 @@ import kingKongImage from "../assets/king_kong.png";
 
 const SubstitutionPage = () => {
   const navigate = useNavigate();
-  const {
-    itemsToReview,
-    substitutes,
-    selections,
-    updateSelections,
-    updateSelectionQuantity,
-    currentItemIndex,
-    setCurrentItemIndex,
-  } = useSubstitutions();
+  const { currentCart, potentialSubstitutes, setOptimizationResult } = useCart();
+  const { selectedStoreIds } = useStoreList();
+
+  const [currentItemIndex, setCurrentItemIndex] = useState(0);
+  const [approvedSelections, setApprovedSelections] = useState<{ [originalItemId: string]: { product: Product, quantity: number }[] }>({});
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const itemsToReview = currentCart?.items.filter(item => potentialSubstitutes[item.product.id]?.length > 0) || [];
   const currentItem = itemsToReview[currentItemIndex];
-  const currentSubstitutes = substitutes[currentItem?.id] || [];
+  const currentSubstitutes = currentItem ? potentialSubstitutes[currentItem.product.id] : [];
 
   const handleNext = () => {
     if (currentItemIndex < itemsToReview.length - 1) {
       setCurrentItemIndex(currentItemIndex + 1);
     } else {
-      navigate('/final-cart');
+      handleOptimizeAndNavigate();
     }
   };
 
@@ -48,35 +46,70 @@ const SubstitutionPage = () => {
   };
 
   const handleApprove = (product: Product) => {
-    const currentSelections = selections[currentItem.id] || [];
+    const currentSelections = approvedSelections[currentItem.id] || [];
     const isAlreadySelected = currentSelections.some(s => s.product.id === product.id);
 
     let newSelections;
     if (isAlreadySelected) {
-      newSelections = currentSelections.filter(s => s.product.id !== product.id).map(s => s.product);
+      newSelections = currentSelections.filter(s => s.product.id !== product.id);
     } else {
-      newSelections = [...currentSelections.map(s => s.product), product];
+      newSelections = [...currentSelections, { product, quantity: 1 }];
     }
-    updateSelections(currentItem.id, newSelections);
-  };
-
-  const handleApproveAll = () => {
-    if (currentItem && currentSubstitutes.length > 0) {
-      updateSelections(currentItem.id, currentSubstitutes);
-    }
-    handleNext();
+    setApprovedSelections(prev => ({ ...prev, [currentItem.id]: newSelections }));
   };
 
   const handleQuantityChange = (product: Product, quantity: number) => {
-    updateSelectionQuantity(currentItem.id, product.id, quantity);
+    const currentSelections = approvedSelections[currentItem.id] || [];
+    const newSelections = currentSelections.map(s => s.product.id === product.id ? { ...s, quantity } : s);
+    setApprovedSelections(prev => ({ ...prev, [currentItem.id]: newSelections }));
   };
 
-  const handleSkipAll = () => {
-    navigate('/final-cart');
+  const handleOptimizeAndNavigate = async () => {
+    if (!currentCart) return;
+
+    const cartPayload = currentCart.items.map(item => {
+      const approved = approvedSelections[item.id] || [];
+      const slot = [{ product_id: item.product.id, quantity: item.quantity }];
+      approved.forEach(sel => {
+        slot.push({ product_id: sel.product.id, quantity: sel.quantity });
+      });
+      return slot;
+    });
+
+    const originalItemsPayload = currentCart.items.map(item => ({
+      product: { id: item.product.id },
+      quantity: item.quantity
+    }));
+
+    const optimizationData = {
+      cart: cartPayload,
+      store_ids: Array.from(selectedStoreIds),
+      original_items: originalItemsPayload,
+    };
+
+    try {
+      const response = await fetch('/api/cart/split/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(optimizationData),
+      });
+      if (!response.ok) throw new Error('Optimization failed');
+      const results = await response.json();
+      setOptimizationResult(results);
+      navigate('/final-cart');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   if (!currentItem) {
-    return <div>Loading...</div>; // Or a more sophisticated loading state
+    return (
+      <div className="text-center p-8">
+        <h2 className="text-2xl font-bold mb-4">No Substitutes to Review</h2>
+        <p className="mb-4">None of the items in your cart currently have substitute options available.</p>
+        <Button onClick={handleOptimizeAndNavigate}>Proceed to Final Cart</Button>
+      </div>
+    );
   }
 
   const isLastItem = currentItemIndex === itemsToReview.length - 1;
@@ -88,15 +121,9 @@ const SubstitutionPage = () => {
           <Button onClick={handleBack} className="bg-red-500 text-white">
             {currentItemIndex === 0 ? 'Home' : 'Back'}
           </Button>
-          <Button onClick={handleSkipAll} className="bg-black text-white">
-            Skip Substitution
-          </Button>
         </div>
         <h1 className="text-2xl font-bold justify-self-center">Product Substitution</h1>
         <div className="justify-self-end flex items-center gap-2">
-          <Button onClick={handleApproveAll} disabled={currentSubstitutes.length === 0} variant="outline" className="bg-green-500 text-white">
-            Approve All
-          </Button>
           <Button onClick={handleNext} className="bg-blue-500 text-white">
             {isLastItem ? 'Split my Cart!' : 'Next'}
           </Button>
@@ -110,14 +137,14 @@ const SubstitutionPage = () => {
               <BadgeCheckIcon className="w-4 h-4 mr-1" />
               Original Product
             </Badge>
-            <ProductTile product={currentItem} />
+            <ProductTile product={currentItem.product} />
           </div>
         </div>
         <div>
           <h2 className="text-xl font-semibold mb-4">Substitutes</h2>
           <div className="h-[480px] overflow-y-auto border rounded-md p-4 space-y-4">
             {currentSubstitutes.map(sub => {
-              const selection = (selections[currentItem.id] || []).find(s => s.product.id === sub.id);
+              const selection = (approvedSelections[currentItem.id] || []).find(s => s.product.id === sub.id);
               return (
                 <TrolleyItemTile 
                   key={sub.id} 
