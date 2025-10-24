@@ -44,7 +44,7 @@ const Layout = () => {
   const { selectedStoreIds } = useStoreList();
   const { currentCart } = useCart();
   const items = currentCart ? currentCart.items : [];
-  const cartTotal = items.reduce((total, item) => total + item.quantity, 0);
+  const cartTotal = items.length;
   const { isAuthenticated, logout } = useAuth();
 
   const [dialogOpen, setDialogOpen] = useState(false);
