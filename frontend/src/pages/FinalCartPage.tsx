@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '@/context/CartContext';
 import { useStoreList } from '@/context/StoreListContext';
@@ -8,11 +8,10 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ResultsDisplay from '@/components/ResultsDisplay';
-import { FaqAccordion } from '@/components/FaqAccordion';
 import { FaqImageSection } from "../components/FaqImageSection";
 import futureTodayImage from "@/assets/future_today.png";
 import { emailCartAPI, downloadCartAPI } from '@/services/FinalCartApi';
-import type { ApiResponse, ExportData } from '@/types';
+import type { ExportData } from '@/types';
 
 const FinalCartPage = () => {
   const { currentCart, optimizationResult, setOptimizationResult } = useCart();
@@ -20,7 +19,7 @@ const FinalCartPage = () => {
   const { isAuthenticated, token } = useAuth();
   const navigate = useNavigate();
 
-  const [isLoading, setIsLoading] = useState(false); // Optimization is done on previous page
+  const [isLoading] = useState(false); // Optimization is done on previous page
   const [error, setError] = useState<string | null>(null);
   const [viewWithSubstitutes, setViewWithSubstitutes] = useState(true);
   const [exportAction, setExportAction] = useState<{type: 'email' | 'download', plan: string} | null>(null);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '@/context/CartContext';
 import { useStoreList } from '@/context/StoreListContext';
@@ -6,11 +6,9 @@ import ProductTile from '@/components/ProductTile';
 import CartItemTile from '@/components/CartItemTile';
 import { Button } from '@/components/ui/button';
 import { optimizeCartAPI } from '@/services/SubstitutionApi';
-import type { Product, CartItem } from '@/types';
-
+import type { Product } from '@/types';
 import { Badge } from "@/components/ui/badge";
 import { BadgeCheckIcon } from 'lucide-react';
-import { FaqAccordion } from '@/components/FaqAccordion';
 import { FaqImageSection } from "../components/FaqImageSection";
 import kingKongImage from "../assets/king_kong.png";
 
