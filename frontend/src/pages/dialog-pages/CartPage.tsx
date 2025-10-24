@@ -49,7 +49,7 @@ const CartPage: React.FC<cartPageProps> = ({ onOpenChange }) => {
   return (
     <div className="flex flex-col h-full">
       <div className="p-4 border-b flex justify-between items-center">
-        <h3 className="text-lg font-semibold">My cart ({cartTotal} items)</h3>
+        <h3 className="text-lg font-semibold">My Cart ({cartTotal} items)</h3>
         {currentCart && currentCart.items.length > 0 && (
           <NextButton onAfterNavigate={() => onOpenChange(false)} />
         )}
