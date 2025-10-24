@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useCart, Cart } from '@/context/CartContext';
+import { useCart } from '@/context/CartContext';
+import type { Cart } from '@/types';
 import TrolleyItemTile from '@/components/TrolleyItemTile';
 import NextButton from '@/components/NextButton';
 import { useAuth } from '@/context/AuthContext';

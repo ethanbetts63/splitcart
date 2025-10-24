@@ -1,38 +1,8 @@
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
+import type { Product, Cart, CartItem } from '@/types';
 
 // Types
-
-export type CompanyPriceInfo = {
-  company: string;
-  price_display: string;
-  is_lowest: boolean;
-  image_url?: string;
-};
-
-export type Product = {
-  id: number;
-  name: string;
-  brand_name?: string;
-  size?: string;
-  image_url?: string;
-  prices: CompanyPriceInfo[];
-  level?: string;
-  level_description?: string;
-};
-
-export interface CartItem {
-  id: string;
-  product: Product;
-  quantity: number;
-}
-
-export interface Cart {
-  id: string;
-  name: string;
-  items: CartItem[];
-  is_active: boolean;
-}
 
 export interface CartContextType {
   currentCart: Cart | null;

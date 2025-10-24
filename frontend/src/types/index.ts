@@ -31,9 +31,9 @@ export interface BestSingleStore {
 }
 
 export interface OptimizationDataSet {
-    baseline_cost: number;
-    optimization_results: OptimizationResult[];
-    best_single_store?: BestSingleStore;
+  baseline_cost: number;
+  optimization_results: OptimizationResult[];
+  best_single_store?: BestSingleStore;
 }
 
 export interface ApiResponse extends OptimizationDataSet {
@@ -46,3 +46,6 @@ export interface ExportData {
     optimized_cost: number;
     savings: number;
 }
+
+export type { Product, CompanyPriceInfo } from './Product';
+export type { Cart, CartItem } from './Cart';

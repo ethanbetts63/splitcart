@@ -42,7 +42,8 @@ const Layout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { selectedStoreIds } = useStoreList();
-  const { items } = useCart();
+  const { currentCart } = useCart();
+  const items = currentCart ? currentCart.items : [];
   const cartTotal = items.reduce((total, item) => total + item.quantity, 0);
   const { isAuthenticated, logout } = useAuth();
 

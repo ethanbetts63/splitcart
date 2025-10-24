@@ -13,7 +13,7 @@ import PriceDisplay from './PriceDisplay';
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
 
 import { Badge } from "@/components/ui/badge";
-import { Product } from '@/types/Product'; // Import shared type
+import type { Product } from '@/types'; // Import shared type
 
 interface ProductTileProps {
   product: Product;
