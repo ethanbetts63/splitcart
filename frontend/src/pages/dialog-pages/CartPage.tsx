@@ -15,7 +15,7 @@ interface cartPageProps {
 
 const CartPage: React.FC<cartPageProps> = ({ onOpenChange }) => {
   const { 
-    currentCart, userCarts, cartLoading, 
+    currentCart, userCarts, cartLoading, cartError,
     loadCart, createNewCart, renameCart, deleteCart 
   } = useCart();
   const { isAuthenticated } = useAuth();
@@ -39,8 +39,7 @@ const CartPage: React.FC<cartPageProps> = ({ onOpenChange }) => {
 
   const handleSwitchCart = (value: string) => {
     if (value === "new") {
-      const newCartDefaultName = `Shopping List #${userCarts.length + 1}`;
-      createNewCart(newCartDefaultName);
+      createNewCart();
     } else if (value) {
       loadCart(value);
     }
@@ -122,6 +121,7 @@ const CartPage: React.FC<cartPageProps> = ({ onOpenChange }) => {
                     <Trash2 className="h-4 w-4" />
                 </Button>
             </div>
+            {cartError && <p className="text-red-500 text-sm mt-2">{cartError}</p>}
         </div>
       )}
 

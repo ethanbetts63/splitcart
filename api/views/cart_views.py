@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -20,8 +21,7 @@ class CartListCreateView(generics.ListCreateAPIView):
         return Cart.objects.none()
 
     def perform_create(self, serializer):
-        name = serializer.validated_data.get('name', 'New Cart')
-        cart = cart_manager.create_cart(self.request, name)
+        cart = cart_manager.create_cart(self.request)
         if not cart:
             raise permissions.PermissionDenied("Cannot create a cart without being authenticated or having an anonymous ID.")
         serializer.instance = cart
@@ -81,6 +81,8 @@ class RenameCartView(APIView):
             return Response(CartSerializer(cart).data, status=status.HTTP_200_OK)
         except Cart.DoesNotExist:
             return Response({'error': 'Cart not found'}, status=status.HTTP_404_NOT_FOUND)
+        except IntegrityError:
+            return Response({'error': 'A cart with this name already exists.'}, status=status.HTTP_400_BAD_REQUEST)
 
 # --- Views for items in the ACTIVE cart ---
 

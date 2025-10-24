@@ -14,7 +14,7 @@ export interface CartContextType {
   cartError: string | null;
   fetchActiveCart: () => void;
   loadCart: (cartId: string) => void;
-  createNewCart: (name: string) => void;
+  createNewCart: () => void;
   renameCart: (cartId: string, newName: string) => void;
   deleteCart: (cartId: string) => void;
   addItem: (productId: number, quantity: number) => void;
@@ -83,17 +83,21 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await switchActiveCart(cartId);
   };
 
-  const createNewCart = async (name: string) => {
+  const createNewCart = async () => {
     try {
         const response = await fetch('/api/carts/', {
             method: 'POST',
             headers: getAuthHeaders(),
-            body: JSON.stringify({ name }),
+            body: JSON.stringify({}),
         });
-        if (!response.ok) throw new Error('Failed to create new cart.');
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to create new cart.');
+        }
         const newCart = await response.json();
         setCurrentCart(newCart);
         fetchUserCarts(); // Refresh the list of user carts
+        setCartError(null);
     } catch (error: any) {
         setCartError(error.message);
     }
@@ -106,10 +110,14 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
             headers: getAuthHeaders(),
             body: JSON.stringify({ cart_id: cartId, new_name: newName }),
         });
-        if (!response.ok) throw new Error('Failed to rename cart.');
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to rename cart.');
+        }
         const updatedCart = await response.json();
         setCurrentCart(updatedCart);
         fetchUserCarts();
+        setCartError(null); // Clear any previous errors
     } catch (error: any) {
         setCartError(error.message);
     }
