@@ -89,7 +89,7 @@ const TrolleyPage: React.FC<TrolleyPageProps> = ({ onOpenChange }) => {
                                     <PlusCircle className="h-4 w-4" /> Create New Cart
                                 </div>
                             </SelectItem>
-                            {userCarts.map((cart: Cart) => (
+                            {Array.isArray(userCarts) && userCarts.map((cart: Cart) => (
                                 <SelectItem key={cart.id} value={cart.id}>
                                     {cart.name}
                                 </SelectItem>

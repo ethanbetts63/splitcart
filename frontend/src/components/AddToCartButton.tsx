@@ -2,7 +2,7 @@ import React from 'react';
 import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import type { Product } from '@/types/Product'; // Import shared type
+import type { Product } from '@/types'; // Import shared type
 
 // import { useSubstitutions } from '@/context/SubstitutionContext';
 // import { useStoreList } from '@/context/StoreListContext';
@@ -12,13 +12,14 @@ interface AddToCartButtonProps {
 }
 
 const AddToCartButton: React.FC<AddToCartButtonProps> = ({ product }) => {
-  const { items, addItem, updateItemQuantity } = useCart();
+  const { currentCart, addItem, updateItemQuantity } = useCart();
+  const items = currentCart ? currentCart.items : [];
   // const { fetchSubstitutes } = useSubstitutions();
   // const { selectedStoreIds } = useStoreList();
   const existingItem = items.find(item => item.product.id === product.id);
 
   const handleAdd = () => {
-    addItem(product, 1);
+    addItem(product.id, 1);
     // fetchSubstitutes(product, Array.from(selectedStoreIds));
   };
 
