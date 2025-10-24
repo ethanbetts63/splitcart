@@ -1,7 +1,7 @@
 
 // --- Data Structures ---
 
-type CompanyPriceInfo = {
+export type CompanyPriceInfo = {
   company: string;
   price_display: string;
   is_lowest: boolean;
@@ -18,5 +18,3 @@ export type Product = {
   level?: string;
   level_description?: string;
 };
-
-export type CompanyPriceInfo;

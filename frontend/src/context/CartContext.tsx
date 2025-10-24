@@ -1,8 +1,26 @@
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
-import { Product } from '@/types/Product';
 
 // Types
+
+export type CompanyPriceInfo = {
+  company: string;
+  price_display: string;
+  is_lowest: boolean;
+  image_url?: string;
+};
+
+export type Product = {
+  id: number;
+  name: string;
+  brand_name?: string;
+  size?: string;
+  image_url?: string;
+  prices: CompanyPriceInfo[];
+  level?: string;
+  level_description?: string;
+};
+
 export interface CartItem {
   id: string;
   product: Product;
@@ -16,7 +34,7 @@ export interface Cart {
   is_active: boolean;
 }
 
-interface CartContextType {
+export interface CartContextType {
   currentCart: Cart | null;
   userCarts: Cart[];
   cartLoading: boolean;
