@@ -142,6 +142,6 @@ IV. Open Questions / Discussion Points
     *   A combination (e.g., auto-save every X seconds, plus explicit save)?
 *   **Cart Naming:** Should new carts be automatically named (e.g., "Cart 1", "Anonymous Cart") or always prompt the user?
 *   **Default Cart:** What happens if a user has no saved carts? Should there always be an "active" cart, even if empty? How is the default `SelectedStoreList` determined for a new user?
-*   **UI for Substitutions in Cart Dialogue:** How will the "remove and adjust quantities" for substitutions be presented within the `TrolleyPage`?
+*   **UI for Substitutions in Cart Dialogue:** How will the "remove and adjust quantities" for substitutions be presented within the `cartPage`?
 *   **Deprecation Handling:** What is the exact desired user flow when deprecated items are encountered?
 *   **Store List Management UI:** Where will users create, rename, delete, and set default `SelectedStoreList` instances? (Likely in `SettingsDialog` or a dedicated page).

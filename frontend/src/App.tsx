@@ -48,7 +48,7 @@ const Layout = () => {
   const { isAuthenticated, logout } = useAuth();
 
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogPage, setDialogPage] = useState('Trolley');
+  const [dialogPage, setDialogPage] = useState('cart');
   const showNextButton = (location.pathname === '/' || location.pathname === '/search') && cartTotal > 0;
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const Layout = () => {
   };
 
   const openDialog = (page: string) => {
-    if (page === 'Trolley' && selectedStoreIds.size === 0) {
+    if (page === 'cart' && selectedStoreIds.size === 0) {
       setDialogPage('Edit Location');
     } else {
       setDialogPage(page);
@@ -114,9 +114,9 @@ const Layout = () => {
           <div className="flex items-center justify-end gap-2">
             <div className="flex items-center gap-1">
               <div className="relative">
-                <Button variant="ghost" size="icon" className="h-14 w-14" onClick={() => openDialog('Trolley')}>
+                <Button variant="ghost" size="icon" className="h-14 w-14" onClick={() => openDialog('cart')}>
                   <ShoppingCart className="size-10" />
-                  <span className="sr-only">Open Trolley</span>
+                  <span className="sr-only">Open cart</span>
                 </Button>
                 {cartTotal > 0 && (
                   <Badge

@@ -293,7 +293,7 @@ x-nextjs-data
                 "unexpectedError": false,
                 "saveToProfile": false
             },
-            "trolley": {
+            "cart": {
                 "error": null,
                 "itemsBeingUpdated": [],
                 "failedItemGroups": [],
@@ -357,7 +357,7 @@ x-nextjs-data
                 "deliveryMethod": false,
                 "shouldDisplayShopRecipeBtn": false,
                 "recipeDietaryTags": [],
-                "showAddAllToTrolleyBtn": false,
+                "showAddAllTocartBtn": false,
                 "isFetchingShopingredients": true
             },
             "seoJsonLd": {
@@ -662,7 +662,7 @@ x-nextjs-data
                     "reducerPath": "adobeTargetApi"
                 }
             },
-            "abandonedTrolleyFormApi": {
+            "abandonedcartFormApi": {
                 "queries": {},
                 "mutations": {},
                 "provided": {},
@@ -675,7 +675,7 @@ x-nextjs-data
                     "refetchOnReconnect": false,
                     "refetchOnMountOrArgChange": false,
                     "keepUnusedDataFor": 60,
-                    "reducerPath": "abandonedTrolleyFormApi"
+                    "reducerPath": "abandonedcartFormApi"
                 }
             },
             "digitalGraphQLApi": {
@@ -913,7 +913,7 @@ x-nextjs-data
             "unexpectedError": false,
             "saveToProfile": false
         },
-        "trolley": {
+        "cart": {
             "error": null,
             "itemsBeingUpdated": [],
             "failedItemGroups": [],
@@ -977,7 +977,7 @@ x-nextjs-data
             "deliveryMethod": false,
             "shouldDisplayShopRecipeBtn": false,
             "recipeDietaryTags": [],
-            "showAddAllToTrolleyBtn": false,
+            "showAddAllTocartBtn": false,
             "isFetchingShopingredients": true
         },
         "seoJsonLd": {
@@ -1096,7 +1096,7 @@ x-nextjs-data
                 "reducerPath": "adobeTargetApi"
             }
         },
-        "abandonedTrolleyFormApi": {
+        "abandonedcartFormApi": {
             "queries": {},
             "mutations": {},
             "provided": {},
@@ -1109,7 +1109,7 @@ x-nextjs-data
                 "refetchOnReconnect": false,
                 "refetchOnMountOrArgChange": false,
                 "keepUnusedDataFor": 60,
-                "reducerPath": "abandonedTrolleyFormApi"
+                "reducerPath": "abandonedcartFormApi"
             }
         },
         "digitalGraphQLApi": {

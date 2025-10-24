@@ -62,7 +62,7 @@ urlpatterns = [
 
     # CartItem URLs (for the active cart)
     path('carts/active/items/', ActiveCartItemListCreateView.as_view(), name='active-cart-item-list-create'),
-    path('carts/active/items/<int:pk>/', ActiveCartItemUpdateDestroyView.as_view(), name='active-cart-item-update-destroy'),
+    path('carts/active/items/<uuid:pk>/', ActiveCartItemUpdateDestroyView.as_view(), name='active-cart-item-update-destroy'),
 
     # Anonymous User URLs
     path('anonymous-user/', AnonymousUserCreateView.as_view(), name='anonymous-user-create'),

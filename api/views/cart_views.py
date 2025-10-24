@@ -117,6 +117,11 @@ class ActiveCartItemListCreateView(generics.ListCreateAPIView):
             # Item does not exist, proceed with standard creation logic from the parent class.
             return super().create(request, *args, **kwargs)
 
+    def perform_create(self, serializer):
+        cart = cart_manager.get_active_cart(self.request)
+        serializer.save(cart=cart)
+
+
 class ActiveCartItemUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CartItemSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]

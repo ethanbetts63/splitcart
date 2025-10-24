@@ -21,7 +21,7 @@
 *   **The Definitive Fix:** We implemented a systematic solution:
     1.  Created a central `frontend/src/types/index.ts` barrel file.
     2.  Consolidated all shared types (`Product`, `Cart`, `ApiResponse`, etc.) into the `/types` directory.
-    3.  Updated all components (`CartContext`, `ProductTile`, `TrolleyPage`, etc.) to use explicit `import type { ... } from '@/types';` syntax.
+    3.  Updated all components (`CartContext`, `ProductTile`, `cartPage`, etc.) to use explicit `import type { ... } from '@/types';` syntax.
     4.  Performed a "hard reset" (deleting `node_modules` and reinstalling) to clear the corrupted Vite cache, which finally resolved the persistent import errors.
 
 **4. Substitution Workflow Integration:**
@@ -50,9 +50,9 @@
     *   **Cause:** The backend Django development server was not running.
     *   **Resolution:** Instructed the user to start the Django server in a separate terminal (`python manage.py runserver`).
 
-*   **`TypeError: Cannot read properties of undefined (reading 'find')` in `TrolleyItemTile.tsx`:**
-    *   **Cause:** `TrolleyItemTile.tsx` was incorrectly trying to access `items` directly from `useCart()` instead of `currentCart.items`.
-    *   **Resolution:** Modified `TrolleyItemTile.tsx` to correctly access `currentCart?.items || []`.
+*   **`TypeError: Cannot read properties of undefined (reading 'find')` in `cartItemTile.tsx`:**
+    *   **Cause:** `cartItemTile.tsx` was incorrectly trying to access `items` directly from `useCart()` instead of `currentCart.items`.
+    *   **Resolution:** Modified `cartItemTile.tsx` to correctly access `currentCart?.items || []`.
 
 *   **`404 Not Found` on `DELETE /api/carts/active/items/<uuid>/`:**
     *   **Cause:** The URL pattern in `api/urls.py` for `ActiveCartItemUpdateDestroyView` was using `<int:pk>` instead of `<uuid:pk>`, causing Django's URL dispatcher to not find the correct view for UUID-based primary keys.

@@ -17,6 +17,6 @@ This session focused on resolving a major performance issue causing page-wide re
 
 *   **Consolidated Store List Controls:** The UI for managing saved store lists in `EditLocationPage.tsx` was redesigned. The separate dropdown and text input were combined into a single, interactive row featuring a dropdown that transforms into an editable input field, an edit/save button, and a delete button.
 
-*   **Icon-Only Navigation:** To create a thinner side navigation panel in the settings dialog, the text labels for "Trolley," "Edit Location," and "Home" were removed, leaving only the icons with tooltips for accessibility.
+*   **Icon-Only Navigation:** To create a thinner side navigation panel in the settings dialog, the text labels for "cart," "Edit Location," and "Home" were removed, leaving only the icons with tooltips for accessibility.
 
 *   **Custom Close Button:** The default "X" close button was removed from the dialog. A new, red "X" icon was added as the top item in the side navigation to serve as the close button, creating a more integrated design.

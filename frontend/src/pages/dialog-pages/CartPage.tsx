@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '@/context/CartContext';
 import type { Cart } from '@/types';
-import TrolleyItemTile from '@/components/TrolleyItemTile';
+import cartItemTile from '@/components/cartItemTile';
 import NextButton from '@/components/NextButton';
 import { useAuth } from '@/context/AuthContext';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -9,11 +9,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PlusCircle, Save, Trash2, Pencil } from 'lucide-react';
 
-interface TrolleyPageProps {
+interface cartPageProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const TrolleyPage: React.FC<TrolleyPageProps> = ({ onOpenChange }) => {
+const cartPage: React.FC<cartPageProps> = ({ onOpenChange }) => {
   const { 
     currentCart, userCarts, cartLoading, 
     loadCart, createNewCart, renameCart, deleteCart 
@@ -49,7 +49,7 @@ const TrolleyPage: React.FC<TrolleyPageProps> = ({ onOpenChange }) => {
   return (
     <div className="flex flex-col h-full">
       <div className="p-4 border-b flex justify-between items-center">
-        <h3 className="text-lg font-semibold">My Trolley ({cartTotal} items)</h3>
+        <h3 className="text-lg font-semibold">My cart ({cartTotal} items)</h3>
         {currentCart && currentCart.items.length > 0 && (
           <NextButton onAfterNavigate={() => onOpenChange(false)} />
         )}
@@ -131,12 +131,12 @@ const TrolleyPage: React.FC<TrolleyPageProps> = ({ onOpenChange }) => {
         ) : currentCart && currentCart.items.length > 0 ? (
           <div className="flex flex-col gap-4">
             {currentCart.items.map(item => (
-              <TrolleyItemTile key={item.id} product={item.product} context="trolley" />
+              <cartItemTile key={item.id} product={item.product} context="cart" />
             ))}
           </div>
         ) : (
           <div className="text-center text-muted-foreground pt-8">
-            <p>Your trolley is empty.</p>
+            <p>Your cart is empty.</p>
           </div>
         )}
       </div>
@@ -144,4 +144,4 @@ const TrolleyPage: React.FC<TrolleyPageProps> = ({ onOpenChange }) => {
   );
 };
 
-export default TrolleyPage;
+export default cartPage;

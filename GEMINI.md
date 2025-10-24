@@ -20,7 +20,7 @@ The frontend is built using React (JavaScript/TypeScript) and leverages the foll
     *   `StoreContext`: Handles the selection and management of grocery stores.
     *   `SubstitutionContext`: Manages product substitution selections.
     *   `AuthContext`: Manages user authentication status and tokens.
-*   **UI Components:** A mix of custom-built React components (e.g., `FaqImageSection`, `ProductCarousel`, `ProductTile`, `TrolleyItemTile`) and components provided by Shadcn/ui (e.g., `Button`, `Input`, `Card`, `Accordion`, `AspectRatio`, `Switch`, `Label`, `Badge`) are used to construct the user interface.
+*   **UI Components:** A mix of custom-built React components (e.g., `FaqImageSection`, `ProductCarousel`, `ProductTile`, `cartItemTile`) and components provided by Shadcn/ui (e.g., `Button`, `Input`, `Card`, `Accordion`, `AspectRatio`, `Switch`, `Label`, `Badge`) are used to construct the user interface.
 
 **Architecture:**
 

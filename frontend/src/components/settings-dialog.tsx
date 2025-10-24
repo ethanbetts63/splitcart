@@ -21,7 +21,7 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
 import EditLocationPage from "@/pages/dialog-pages/EditLocationPage";
-import TrolleyPage from "@/pages/dialog-pages/TrolleyPage";
+import cartPage from "@/pages/dialog-pages/cartPage";
 
 // Define a type for our navigation items
 type NavItem = {
@@ -33,7 +33,7 @@ type NavItem = {
 const data = {
   nav: [
     { name: "Close", icon: X, isCloseButton: true }, // Add the close button to the nav
-    { name: "Trolley", icon: ShoppingCart },
+    { name: "cart", icon: ShoppingCart },
     { name: "Edit Location", icon: MapPin },
     { name: "Home", icon: Home },
   ],
@@ -52,8 +52,8 @@ const PageContent = ({
   setLocalSelectedStoreIds: React.Dispatch<React.SetStateAction<Set<number>>>
 }) => {
   switch (activePage) {
-    case 'Trolley':
-      return <TrolleyPage onOpenChange={onOpenChange} />;
+    case 'cart':
+      return <cartPage onOpenChange={onOpenChange} />;
     case 'Edit Location':
       return <EditLocationPage 
                 localSelectedStoreIds={localSelectedStoreIds} 
@@ -76,7 +76,7 @@ interface SettingsDialogProps {
   defaultPage?: string;
 }
 
-export function SettingsDialog({ open, onOpenChange, defaultPage = 'Trolley' }: SettingsDialogProps) {
+export function SettingsDialog({ open, onOpenChange, defaultPage = 'cart' }: SettingsDialogProps) {
   const [activePage, setActivePage] = React.useState(defaultPage);
   const { selectedStoreIds, setSelectedStoreIds } = useStoreList();
   const [localSelectedStoreIds, setLocalSelectedStoreIds] = React.useState<Set<number>>(selectedStoreIds);

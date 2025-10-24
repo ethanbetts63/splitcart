@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '@/context/CartContext';
 import { useStoreList } from '@/context/StoreListContext';
 import ProductTile from '@/components/ProductTile';
-import TrolleyItemTile from '@/components/TrolleyItemTile';
+import cartItemTile from '@/components/cartItemTile';
 import { Button } from '@/components/ui/button';
 import type { Product, CartItem } from '@/types';
 
@@ -146,7 +146,7 @@ const SubstitutionPage = () => {
             {currentSubstitutes.map(sub => {
               const selection = (approvedSelections[currentItem.id] || []).find(s => s.product.id === sub.id);
               return (
-                <TrolleyItemTile 
+                <cartItemTile 
                   key={sub.id} 
                   product={sub} 
                   onApprove={handleApprove} 

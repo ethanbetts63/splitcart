@@ -8,32 +8,32 @@ import { useCart } from '@/context/CartContext';
 
 import { Button } from '@/components/ui/button';
 
-interface TrolleyItemTileProps {
+interface cartItemTileProps {
   product: Product;
   onApprove?: (product: Product) => void;
   isApproved?: boolean;
   quantity?: number;
   onQuantityChange?: (product: Product, quantity: number) => void;
-  context?: 'trolley' | 'substitution';
+  context?: 'cart' | 'substitution';
 }
 
 import { Badge } from "@/components/ui/badge";
 
 import { Input } from '@/components/ui/input';
 
-const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, isApproved, quantity, onQuantityChange, context }) => {
+const cartItemTile: React.FC<cartItemTileProps> = ({ product, onApprove, isApproved, quantity, onQuantityChange, context }) => {
   const { currentCart, updateItemQuantity, removeItem } = useCart();
   const items = currentCart?.items || [];
 
-  const cartItem = context === 'trolley' ? items.find(item => item.product.id === product.id) : null;
-  const displayQuantity = context === 'trolley' ? cartItem?.quantity : quantity;
+  const cartItem = context === 'cart' ? items.find(item => item.product.id === product.id) : null;
+  const displayQuantity = context === 'cart' ? cartItem?.quantity : quantity;
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = fallbackImage;
   };
 
   const handleQuantityChange = (newQuantity: number) => {
-    if (context === 'trolley' && cartItem) {
+    if (context === 'cart' && cartItem) {
       if (newQuantity <= 0) {
         removeItem(cartItem.id);
       } else {
@@ -76,7 +76,7 @@ const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, i
 
       {/* Right Section: Quantity Controls */}
       <div className="flex-shrink-0">
-        {context === 'trolley' && cartItem ? (
+        {context === 'cart' && cartItem ? (
           <div className="flex items-center gap-2">
             <Button size="icon" className="h-8 w-8" onClick={() => handleQuantityChange((displayQuantity || 1) - 1)}>-</Button>
             <Input
@@ -114,4 +114,4 @@ const TrolleyItemTile: React.FC<TrolleyItemTileProps> = ({ product, onApprove, i
   );
 };
 
-export default TrolleyItemTile;
+export default cartItemTile;
