@@ -19,6 +19,8 @@ export interface CartContextType {
   addItem: (productId: number, quantity: number) => void;
   updateItemQuantity: (itemId: string, quantity: number) => void;
   removeItem: (itemId: string) => void;
+  updateCartItemSubstitution: (cartItemId: string, substitutionId: string, isApproved: boolean, quantity: number) => void;
+  removeCartItemSubstitution: (cartItemId: string, substitutionId: string) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -195,15 +197,41 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const updateCartItemSubstitution = async (cartItemId: string, substitutionId: string, isApproved: boolean, quantity: number) => {
+    try {
+      const response = await fetch(`/api/carts/active/items/${cartItemId}/substitutions/${substitutionId}/`, {
+        method: 'PATCH',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ is_approved: isApproved, quantity: quantity }),
+      });
+      if (!response.ok) throw new Error('Failed to update cart item substitution.');
+      fetchActiveCart(); // Refresh cart
+    } catch (error: any) {
+      setCartError(error.message);
+    }
+  };
+
+  const removeCartItemSubstitution = async (cartItemId: string, substitutionId: string) => {
+    try {
+      const response = await fetch(`/api/carts/active/items/${cartItemId}/substitutions/${substitutionId}/`, {
+        method: 'DELETE',
+        headers: getAuthHeaders(),
+      });
+      if (!response.ok) throw new Error('Failed to remove cart item substitution.');
+      fetchActiveCart(); // Refresh cart
+    } catch (error: any) {
+      setCartError(error.message);
+    }
+  };
+
   return (
-    <CartContext.Provider value={{ 
-        currentCart, userCarts, potentialSubstitutes, optimizationResult, setOptimizationResult, cartLoading, cartError,
-        fetchActiveCart, loadCart, createNewCart, renameCart, deleteCart,
-        addItem, updateItemQuantity, removeItem
-    }}>
-      {children}
-    </CartContext.Provider>
-  );
+      <CartContext.Provider value={{
+            currentCart, userCarts, potentialSubstitutes, optimizationResult, setOptimizationResult, cartLoading, cartError,
+            fetchActiveCart, loadCart, createNewCart, renameCart, deleteCart,
+            addItem, updateItemQuantity, removeItem, updateCartItemSubstitution, removeCartItemSubstitution
+        }}>
+          {children}
+        </CartContext.Provider>  );
 };
 
 export const useCart = () => {
