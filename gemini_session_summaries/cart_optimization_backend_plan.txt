@@ -1,0 +1,63 @@
+# Cart Optimization Backend Refinement Plan
+
+## Objective
+Refine the cart optimization process by making the backend solely responsible for constructing the "slot" structure required by the optimization algorithm. The frontend will only send the `cart_id` to trigger optimization, as `store_ids` are already associated with the `Cart` model.
+
+## Current Understanding
+
+*   The `Cart` model (`users/models/cart.py`) now includes a `selected_store_list` ForeignKey, meaning the store IDs are directly accessible from the `Cart` instance.
+*   The `optimizeCartAPI` (currently called from `SubstitutionPage.tsx`) expects a `cartPayload` (the "slot" structure), `store_ids`, and `original_items`.
+*   The user has clarified that the frontend should *not* construct the `cartPayload` or send `store_ids` to the optimization endpoint.
+*   The core optimization API endpoint is `CartOptimizationView` located at `api/views/cart_optimization_view.py`.
+*   The utility functions for cart optimization are located in `data_management/utils/cart_optimization`.
+
+## Identified Problems and Proposed Solutions
+
+### Problem 1: Frontend sends redundant `store_ids` and constructs `cartPayload`
+
+**Description:** The current frontend implementation in `SubstitutionPage.tsx` constructs the `cartPayload` (slot structure) and explicitly sends `store_ids` to the `optimizeCartAPI`. This is inefficient and places unnecessary burden on the frontend, especially since `store_ids` are already linked to the `Cart` model.
+
+**Proposed Solution:**
+1.  **Modify `CartOptimizationView` (Backend):**
+    *   Update the `CartOptimizationView` in `api/views/cart_optimization_view.py` to accept only `cart_id` as a required parameter in the request body (and implicitly the user's authentication context).
+    *   Inside this backend view, retrieve the `Cart` object using the provided `cart_id`.
+    *   From the `Cart` object, access its `selected_store_list` to obtain the necessary `store_ids`.
+    *   Construct the `cartPayload` (the "slot" structure) by querying the `CartItem`s associated with the `Cart` and their respective `CartItemSubstitute` instances (once the `CartItemSubstitute` model is implemented as per the previous plan).
+    *   Pass this internally constructed `cartPayload` and the retrieved `store_ids` to the core optimization logic.
+2.  **Simplify Frontend Call:**
+    *   Update the `optimizeCartAPI` function in `frontend/src/services/SubstitutionApi.ts` (or wherever it's defined) to accept only `cartId: string`.
+    *   Modify `SubstitutionPage.tsx` (and eventually `CartContext.tsx` for the new optimization trigger) to call this simplified `optimizeCartAPI` with just the `cartId`.
+
+### Problem 2: Need a utility to build slots from database
+
+**Description:** The backend will need a clear and reusable way to transform the `CartItem` and `CartItemSubstitute` data from the database into the `cartPayload` (slot structure) expected by the optimization algorithm.
+
+**Proposed Solution:**
+1.  **Create a Backend Utility Function:**
+    *   Develop a new utility function, e.g., `build_cart_slots_for_optimization(cart_id)` in `data_management/utils/cart_optimization`.
+    *   This function will take a `cart_id` as input.
+    *   It will query the database to retrieve the `Cart` object, all its `CartItem`s, and for each `CartItem`, all its associated `CartItemSubstitute` instances.
+    *   It will then construct the `cartPayload` (list of slots) in the exact format expected by the optimization algorithm.
+    *   This utility should also return the `store_ids` associated with the `Cart`.
+2.  **Integrate Utility into Optimization API:**
+    *   The `CartOptimizationView` will call this new slot-building utility to get the `cartPayload` and `store_ids` before proceeding with the optimization.
+
+## To-Do List
+
+1.  **Backend (Django):**
+    *   [ ] **(Prerequisite: `CartItemSubstitute` model and related API from previous plan)** Ensure the `CartItemSubstitute` model and its relationship with `CartItem` are fully implemented and functional.
+    *   [ ] **Modify `CartOptimizationView` (`api/views/cart_optimization_view.py`):**
+        *   [ ] Update its `post` method to accept `cart_id` from the request body.
+        *   [ ] Implement logic to retrieve the `Cart` object by `cart_id`.
+        *   [ ] Access `cart.selected_store_list` to get the `store_ids`.
+    *   [ ] **Create Slot Building Utility (`data_management/utils/cart_optimization`):**
+        *   [ ] Create a new utility function `build_cart_slots_for_optimization(cart_id)`.
+        *   [ ] This utility will query `CartItem`s and their `CartItemSubstitute`s to construct the `cartPayload` (list of slots).
+        *   [ ] This utility should return both the `cartPayload` and the `store_ids`.
+    *   [ ] **Integrate Utility:** Call the new slot-building utility within the `CartOptimizationView` to get the `cartPayload` and `store_ids` before passing them to the core optimization logic.
+
+2.  **Frontend (React/TypeScript):**
+    *   [ ] **Simplify `optimizeCartAPI` Call:**
+        *   [ ] Update the `optimizeCartAPI` function in `frontend/src/services/SubstitutionApi.ts` to accept only `cartId: string`.
+        *   [ ] Modify `SubstitutionPage.tsx` to call this simplified `optimizeCartAPI` with just the `cartId`.
+        *   [ ] (Future) Update any new optimization trigger in `CartContext.tsx` to use this simplified call.
