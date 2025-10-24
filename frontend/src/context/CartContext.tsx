@@ -1,119 +1,214 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
-import {
-    getActiveCartAPI,
-    addCartItemAPI,
-    updateCartItemAPI,
-    removeCartItemAPI,
-} from '@/services/cartApi';
-import type { Cart, CartItem, Product } from '@/types';
+import { Product } from '@/components/ProductTile';
+
+// Types
+export interface CartItem {
+  id: string;
+  product: Product;
+  quantity: number;
+}
+
+export interface Cart {
+  id: string;
+  name: string;
+  items: CartItem[];
+  is_active: boolean;
+}
 
 interface CartContextType {
-    cart: Cart | null;
-    items: CartItem[];
-    loading: boolean;
-    error: string | null;
-    addItem: (product: Product, quantity: number) => Promise<void>;
-    updateItemQuantity: (itemId: number, quantity: number) => Promise<void>;
-    removeItem: (itemId: number) => Promise<void>;
-    clearCart: () => Promise<void>;
+  currentCart: Cart | null;
+  userCarts: Cart[];
+  cartLoading: boolean;
+  cartError: string | null;
+  fetchActiveCart: () => void;
+  loadCart: (cartId: string) => void;
+  createNewCart: (name: string) => void;
+  renameCart: (cartId: string, newName: string) => void;
+  deleteCart: (cartId: string) => void;
+  addItem: (productId: number, quantity: number) => void;
+  updateItemQuantity: (itemId: string, quantity: number) => void;
+  removeItem: (itemId: string) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const CartProvider = ({ children }: { children: ReactNode }) => {
-    const { token, anonymousId } = useAuth();
-    const [cart, setCart] = useState<Cart | null>(null);
-    const [items, setItems] = useState<CartItem[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { token, anonymousId, isAuthenticated } = useAuth();
+  const [currentCart, setCurrentCart] = useState<Cart | null>(null);
+  const [userCarts, setUserCarts] = useState<Cart[]>([]);
+  const [cartLoading, setCartLoading] = useState(true);
+  const [cartError, setCartError] = useState<string | null>(null);
 
-    const fetchCart = useCallback(async () => {
-        if (!token && !anonymousId) return;
-        setLoading(true);
-        try {
-            const activeCart = await getActiveCartAPI(token, anonymousId);
-            setCart(activeCart);
-            setItems(activeCart.items || []);
-        } catch (err: any) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    }, [token, anonymousId]);
+  const getAuthHeaders = useCallback(() => {
+    const headers: HeadersInit = { 'Content-Type': 'application/json' };
+    if (isAuthenticated && token) {
+      headers['Authorization'] = `Token ${token}`;
+    } else if (anonymousId) {
+      headers['X-Anonymous-ID'] = anonymousId;
+    }
+    return headers;
+  }, [token, anonymousId, isAuthenticated]);
 
-    useEffect(() => {
-        fetchCart();
-    }, [fetchCart]);
+  const fetchActiveCart = useCallback(async () => {
+    setCartLoading(true);
+    try {
+      const response = await fetch('/api/carts/active/', { headers: getAuthHeaders() });
+      if (!response.ok) throw new Error('Failed to fetch active cart.');
+      const data = await response.json();
+      setCurrentCart(data);
+    } catch (error: any) {
+      setCartError(error.message);
+    } finally {
+      setCartLoading(false);
+    }
+  }, [getAuthHeaders]);
 
-    const addItem = async (product: Product, quantity: number) => {
-        const existingItem = items.find(item => item.product.id === product.id);
-        if (existingItem) {
-            await updateItemQuantity(existingItem.id, existingItem.quantity + quantity);
-        } else {
-            try {
-                const newItem = await addCartItemAPI(product.id, quantity, token, anonymousId);
-                setItems(prevItems => [...prevItems, newItem]);
-            } catch (err: any) {
-                setError(err.message);
-            }
-        }
-    };
+  const fetchUserCarts = useCallback(async () => {
+    if (!isAuthenticated) return;
+    try {
+      const response = await fetch('/api/carts/', { headers: getAuthHeaders() });
+      if (!response.ok) throw new Error('Failed to fetch user carts.');
+      const data = await response.json();
+      setUserCarts(data);
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }, [getAuthHeaders, isAuthenticated]);
 
-    const updateItemQuantity = async (itemId: number, quantity: number) => {
-        if (quantity <= 0) {
-            await removeItem(itemId);
-        } else {
-            try {
-                const updatedItem = await updateCartItemAPI(itemId, quantity, token, anonymousId);
-                setItems(prevItems => prevItems.map(item => item.id === itemId ? updatedItem : item));
-            } catch (err: any) {
-                setError(err.message);
-            }
-        }
-    };
+  useEffect(() => {
+    if (token || anonymousId) {
+      fetchActiveCart();
+      if (isAuthenticated) {
+        fetchUserCarts();
+      }
+    }
+  }, [token, anonymousId, isAuthenticated, fetchActiveCart, fetchUserCarts]);
 
-    const removeItem = async (itemId: number) => {
-        try {
-            await removeCartItemAPI(itemId, token, anonymousId);
-            setItems(prevItems => prevItems.filter(item => item.id !== itemId));
-        } catch (err: any) {
-            setError(err.message);
-        }
-    };
+  const loadCart = async (cartId: string) => {
+    // This will become the active cart on the backend
+    await switchActiveCart(cartId);
+  };
 
-    const clearCart = async () => {
-        // This would require a new API endpoint, for now, we remove items one by one
-        try {
-            await Promise.all(items.map(item => removeCartItemAPI(item.id, token, anonymousId)));
-            setItems([]);
-        } catch (err: any) {
-            setError(err.message);
-        }
-    };
+  const createNewCart = async (name: string) => {
+    try {
+        const response = await fetch('/api/carts/', {
+            method: 'POST',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ name }),
+        });
+        if (!response.ok) throw new Error('Failed to create new cart.');
+        const newCart = await response.json();
+        setCurrentCart(newCart);
+        fetchUserCarts(); // Refresh the list of user carts
+    } catch (error: any) {
+        setCartError(error.message);
+    }
+  };
 
-    const contextValue = {
-        cart,
-        items,
-        loading,
-        error,
-        addItem,
-        updateItemQuantity,
-        removeItem,
-        clearCart,
-    };
+  const renameCart = async (cartId: string, newName: string) => {
+    try {
+        const response = await fetch('/api/carts/rename/', {
+            method: 'POST',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ cart_id: cartId, new_name: newName }),
+        });
+        if (!response.ok) throw new Error('Failed to rename cart.');
+        const updatedCart = await response.json();
+        setCurrentCart(updatedCart);
+        fetchUserCarts();
+    } catch (error: any) {
+        setCartError(error.message);
+    }
+  };
 
-    return (
-        <CartContext.Provider value={contextValue}>
-            {children}
-        </CartContext.Provider>
-    );
+  const deleteCart = async (cartId: string) => {
+    try {
+        const response = await fetch(`/api/carts/${cartId}/`, {
+            method: 'DELETE',
+            headers: getAuthHeaders(),
+        });
+        if (!response.ok) throw new Error('Failed to delete cart.');
+        // After deleting, fetch the new active cart
+        fetchActiveCart();
+        fetchUserCarts();
+    } catch (error: any) {
+        setCartError(error.message);
+    }
+  };
+
+  const switchActiveCart = async (cartId: string) => {
+    try {
+        const response = await fetch('/api/carts/switch-active/', {
+            method: 'POST',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ cart_id: cartId }),
+        });
+        if (!response.ok) throw new Error('Failed to switch active cart.');
+        const newActiveCart = await response.json();
+        setCurrentCart(newActiveCart);
+        fetchUserCarts();
+    } catch (error: any) {
+        setCartError(error.message);
+    }
+  };
+
+  const addItem = async (productId: number, quantity: number) => {
+    try {
+        const response = await fetch('/api/carts/active/items/', {
+            method: 'POST',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ product_id: productId, quantity }),
+        });
+        if (!response.ok) throw new Error('Failed to add item to cart.');
+        fetchActiveCart(); // Refresh cart
+    } catch (error: any) {
+        setCartError(error.message);
+    }
+  };
+
+  const updateItemQuantity = async (itemId: string, quantity: number) => {
+    try {
+        const response = await fetch(`/api/carts/active/items/${itemId}/`, {
+            method: 'PATCH',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ quantity }),
+        });
+        if (!response.ok) throw new Error('Failed to update item quantity.');
+        fetchActiveCart(); // Refresh cart
+    } catch (error: any) {
+        setCartError(error.message);
+    }
+  };
+
+  const removeItem = async (itemId: string) => {
+    try {
+        const response = await fetch(`/api/carts/active/items/${itemId}/`, {
+            method: 'DELETE',
+            headers: getAuthHeaders(),
+        });
+        if (!response.ok) throw new Error('Failed to remove item from cart.');
+        fetchActiveCart(); // Refresh cart
+    } catch (error: any) {
+        setCartError(error.message);
+    }
+  };
+
+  return (
+    <CartContext.Provider value={{ 
+        currentCart, userCarts, cartLoading, cartError,
+        fetchActiveCart, loadCart, createNewCart, renameCart, deleteCart,
+        addItem, updateItemQuantity, removeItem
+    }}>
+      {children}
+    </CartContext.Provider>
+  );
 };
 
 export const useCart = () => {
-    const context = useContext(CartContext);
-    if (context === undefined) {
-        throw new Error('useCart must be used within a CartProvider');
-    }
-    return context;
+  const context = useContext(CartContext);
+  if (context === undefined) {
+    throw new Error('useCart must be used within a CartProvider');
+  }
+  return context;
 };

@@ -1,28 +1,127 @@
+import React, { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import TrolleyItemTile from '@/components/TrolleyItemTile';
-import NextButton from '@/components/NextButton'; // Import NextButton
+import NextButton from '@/components/NextButton';
+import { useAuth } from '@/context/AuthContext';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { PlusCircle, Save, Trash2, Pencil } from 'lucide-react';
 
 interface TrolleyPageProps {
   onOpenChange: (open: boolean) => void;
 }
 
 const TrolleyPage: React.FC<TrolleyPageProps> = ({ onOpenChange }) => {
-  const { items } = useCart();
-  const cartTotal = items.reduce((total, item) => total + item.quantity, 0);
+  const { 
+    currentCart, userCarts, cartLoading, 
+    loadCart, createNewCart, renameCart, deleteCart 
+  } = useCart();
+  const { isAuthenticated } = useAuth();
+  const [isEditingCartName, setIsEditingCartName] = useState(false);
+  const [newCartName, setNewCartName] = useState(currentCart?.name || '');
+
+  const cartTotal = currentCart?.items.reduce((total, item) => total + item.quantity, 0) || 0;
+
+  const handleRenameCart = () => {
+    if (currentCart && newCartName) {
+      renameCart(currentCart.id, newCartName);
+      setIsEditingCartName(false);
+    }
+  };
 
   return (
     <div className="flex flex-col h-full">
       <div className="p-4 border-b flex justify-between items-center">
         <h3 className="text-lg font-semibold">My Trolley ({cartTotal} items)</h3>
-        {items.length > 0 && (
+        {currentCart && currentCart.items.length > 0 && (
           <NextButton onAfterNavigate={() => onOpenChange(false)} />
         )}
       </div>
+
+      {isAuthenticated && (
+        <div className="p-4 border-b flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+                {isEditingCartName ? (
+                    <Input
+                        id="cart-name-edit"
+                        type="text"
+                        value={newCartName}
+                        onChange={(e) => setNewCartName(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                handleRenameCart();
+                                e.currentTarget.blur();
+                            }
+                        }}
+                        disabled={cartLoading}
+                        className="flex-grow"
+                    />
+                ) : (
+                    <Select
+                        value={currentCart?.id || ''}
+                        onValueChange={(value) => {
+                            if (value === "new") {
+                                createNewCart("New Shopping List");
+                            } else if (value) {
+                                loadCart(value);
+                            }
+                        }}
+                    >
+                        <SelectTrigger className="flex-grow">
+                            <SelectValue>
+                                {currentCart?.name || 'Select a Cart'}
+                            </SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="new">
+                                <div className="flex items-center gap-2">
+                                    <PlusCircle className="h-4 w-4" /> Create New Cart
+                                </div>
+                            </SelectItem>
+                            {userCarts.map((cart) => (
+                                <SelectItem key={cart.id} value={cart.id}>
+                                    {cart.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                )}
+                <Button 
+                    variant="outline" 
+                    size="icon"
+                    onClick={() => {
+                        if (isEditingCartName) {
+                            handleRenameCart();
+                        } else {
+                            setNewCartName(currentCart?.name || '');
+                            setIsEditingCartName(true);
+                        }
+                    }}
+                    disabled={cartLoading || !currentCart}
+                    className={isEditingCartName ? "bg-green-500 text-white hover:bg-green-600" : ""}
+                >
+                    {isEditingCartName ? <Save className="h-4 w-4" /> : <Pencil className="h-4 w-4" />}
+                </Button>
+                <Button 
+                    variant="destructive" 
+                    size="icon"
+                    onClick={() => currentCart && deleteCart(currentCart.id)}
+                    disabled={cartLoading || !currentCart || isEditingCartName}
+                >
+                    <Trash2 className="h-4 w-4" />
+                </Button>
+            </div>
+        </div>
+      )}
+
       <div className="flex-grow overflow-y-auto p-4">
-        {items.length > 0 ? (
+        {cartLoading ? (
+            <p>Loading cart...</p>
+        ) : currentCart && currentCart.items.length > 0 ? (
           <div className="flex flex-col gap-4">
-            {items.map(item => (
-              <TrolleyItemTile key={item.product.id} product={item.product} context="trolley" />
+            {currentCart.items.map(item => (
+              <TrolleyItemTile key={item.id} item={item} context="trolley" />
             ))}
           </div>
         ) : (
