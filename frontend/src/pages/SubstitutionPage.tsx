@@ -7,7 +7,7 @@ import CartItemTile from '@/components/CartItemTile';
 import { Button } from '@/components/ui/button';
 import { optimizeCartAPI } from '@/services/SubstitutionApi';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import type { Product } from '@/types';
+import type { Product, CartSubstitution } from '@/types';
 import { Badge } from "@/components/ui/badge";
 import { BadgeCheckIcon } from 'lucide-react';
 import { FaqImageSection } from "../components/FaqImageSection";
@@ -15,20 +15,19 @@ import kingKongImage from "../assets/king_kong.png";
 
 const SubstitutionPage = () => {
   const navigate = useNavigate();
-  const { currentCart, potentialSubstitutes, setOptimizationResult } = useCart();
+  const { currentCart, setOptimizationResult, updateCartItemSubstitution, removeCartItemSubstitution } = useCart();
   const { selectedStoreIds } = useStoreList();
 
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [approvedSelections, setApprovedSelections] = useState<{ [originalItemId: string]: { product: Product, quantity: number }[] }>({});
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const itemsToReview = currentCart?.items.filter(item => potentialSubstitutes[item.product.id]?.length > 0) || [];
+  const itemsToReview = currentCart?.items.filter(item => item.substitutions && item.substitutions.length > 0) || [];
   const currentItem = itemsToReview[currentItemIndex];
-  const currentSubstitutes = currentItem ? potentialSubstitutes[currentItem.product.id] : [];
+  const currentSubstitutes = currentItem ? currentItem.substitutions : [];
 
   const handleNext = () => {
     if (currentItemIndex < itemsToReview.length - 1) {
@@ -46,54 +45,29 @@ const SubstitutionPage = () => {
     }
   };
 
-  const handleApprove = (product: Product) => {
-    const currentSelections = approvedSelections[currentItem.id] || [];
-    const isAlreadySelected = currentSelections.some(s => s.product.id === product.id);
+  const handleApprove = async (sub: CartSubstitution) => {
+    if (!currentItem) return;
+    await updateCartItemSubstitution(currentItem.id, sub.id, !sub.is_approved, sub.quantity);
+  };
 
-    let newSelections;
-    if (isAlreadySelected) {
-      newSelections = currentSelections.filter(s => s.product.id !== product.id);
+  const handleQuantityChange = async (sub: CartSubstitution, newQuantity: number) => {
+    if (!currentItem) return;
+    if (newQuantity <= 0) {
+      // If quantity goes to 0, set is_approved to false
+      await updateCartItemSubstitution(currentItem.id, sub.id, false, 1); // Set quantity to 1 if unapproved
     } else {
-      newSelections = [...currentSelections, { product, quantity: 1 }];
+      await updateCartItemSubstitution(currentItem.id, sub.id, sub.is_approved, newQuantity);
     }
-    setApprovedSelections(prev => ({ ...prev, [currentItem.id]: newSelections }));
   };
 
-  const handleQuantityChange = (product: Product, quantity: number) => {
-    const currentSelections = approvedSelections[currentItem.id] || [];
-    const newSelections = currentSelections.map(s => s.product.id === product.id ? { ...s, quantity } : s);
-    setApprovedSelections(prev => ({ ...prev, [currentItem.id]: newSelections }));
-  };
-
-  const handleOptimizeAndNavigate = async (selections?: typeof approvedSelections) => {
+  const handleOptimizeAndNavigate = async () => {
     if (!currentCart) return;
 
     setIsLoading(true);
 
-    const finalSelections = selections || approvedSelections;
-
-    const cartPayload = currentCart.items.map(item => {
-      const approved = finalSelections[item.id] || [];
-      const slot = [{ product_id: item.product.id, quantity: item.quantity }];
-      approved.forEach(sel => {
-        slot.push({ product_id: sel.product.id, quantity: sel.quantity });
-      });
-      return slot;
-    });
-
-    const originalItemsPayload = currentCart.items.map(item => ({
-      product: { id: item.product.id },
-      quantity: item.quantity
-    }));
-
-    const optimizationData = {
-      cart: cartPayload,
-      store_ids: Array.from(selectedStoreIds),
-      original_items: originalItemsPayload,
-    };
-
     try {
-      const results = await optimizeCartAPI(optimizationData);
+      // Assuming optimizeCartAPI now takes only cartId
+      const results = await optimizeCartAPI(currentCart.id);
       setOptimizationResult(results);
       navigate('/final-cart');
     } catch (error) {
@@ -108,23 +82,9 @@ const SubstitutionPage = () => {
 
     setIsLoading(true);
 
-    const cartPayload = currentCart.items.map(item => {
-      return [{ product_id: item.product.id, quantity: item.quantity }];
-    });
-
-    const originalItemsPayload = currentCart.items.map(item => ({
-      product: { id: item.product.id },
-      quantity: item.quantity
-    }));
-
-    const optimizationData = {
-      cart: cartPayload,
-      store_ids: Array.from(selectedStoreIds),
-      original_items: originalItemsPayload,
-    };
-
     try {
-      const results = await optimizeCartAPI(optimizationData);
+      // Assuming optimizeCartAPI now takes only cartId
+      const results = await optimizeCartAPI(currentCart.id);
       setOptimizationResult(results);
       navigate('/final-cart');
     } catch (error) {
@@ -134,29 +94,25 @@ const SubstitutionPage = () => {
     }
   };
 
-  const handleApproveAllAndNext = () => {
+  const handleApproveAllAndNext = async () => {
     if (!currentItem) return;
-
-    // Create the new approved selections for the current item
-    const newApprovedForCurrent = currentSubstitutes.map(sub => ({ product: sub, quantity: 1 }));
-
-    // Create the next state for all approved selections
-    const nextApprovedSelections = {
-      ...approvedSelections,
-      [currentItem.id]: newApprovedForCurrent,
-    };
-
-    // Update the state
-    setApprovedSelections(nextApprovedSelections);
-
-    // Now, decide whether to go to the next item or optimize
-    if (currentItemIndex < itemsToReview.length - 1) {
-      setCurrentItemIndex(currentItemIndex + 1);
-    } else {
-      // We are on the last item, so optimize and navigate.
-      // We need to use `nextApprovedSelections` here, not the state `approvedSelections`
-      // because the state update might not have completed.
-      handleOptimizeAndNavigate(nextApprovedSelections);
+    setIsLoading(true); // Set loading for the batch update
+    try {
+      for (const sub of currentSubstitutes) {
+        if (!sub.is_approved) { // Only update if not already approved
+          await updateCartItemSubstitution(currentItem.id, sub.id, true, sub.quantity);
+        }
+      }
+      // After approving all, move to next or optimize
+      if (currentItemIndex < itemsToReview.length - 1) {
+        setCurrentItemIndex(currentItemIndex + 1);
+      } else {
+        await handleOptimizeAndNavigate(); // Call the simplified optimize
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -212,14 +168,11 @@ const SubstitutionPage = () => {
           <h2 className="text-xl font-semibold mb-4">Substitutes</h2>
           <div className="h-[480px] overflow-y-auto border rounded-md p-4 space-y-4">
             {currentSubstitutes.map(sub => {
-              const selection = (approvedSelections[currentItem.id] || []).find(s => s.product.id === sub.id);
               return (
                 <CartItemTile 
                   key={sub.id} 
-                  product={sub} 
+                  cartSubstitution={sub} // Pass the CartSubstitution object directly
                   onApprove={handleApprove} 
-                  isApproved={!!selection}
-                  quantity={selection ? selection.quantity : 1}
                   onQuantityChange={handleQuantityChange}
                   context="substitution"
                 />
