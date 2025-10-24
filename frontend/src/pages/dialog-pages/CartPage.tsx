@@ -28,7 +28,7 @@ const CartPage: React.FC<cartPageProps> = ({ onOpenChange }) => {
     }
   }, [currentCart]);
 
-  const cartTotal = currentCart?.items.reduce((total, item) => total + item.quantity, 0) || 0;
+  const cartTotal = currentCart?.items.length || 0;
 
   const handleRenameCart = () => {
     if (currentCart && newCartName) {
