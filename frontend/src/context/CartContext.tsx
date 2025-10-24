@@ -152,7 +152,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const addItemResponse = await fetch('/api/carts/active/items/', {
         method: 'POST',
         headers: getAuthHeaders(),
-        body: JSON.stringify({ product_id: productId, quantity }),
+        body: JSON.stringify({ product: productId, quantity }),
       });
       if (!addItemResponse.ok) throw new Error('Failed to add item to cart.');
       await fetchActiveCart(); // Refresh cart to show the new item

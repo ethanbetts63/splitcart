@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useShoppingList } from '@/context/ShoppingListContext';
-import { useSubstitutions } from '@/context/SubstitutionContext';
+import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -12,13 +11,14 @@ interface NextButtonProps {
 
 const NextButton: React.FC<NextButtonProps> = ({ onAfterNavigate, className }) => {
   const navigate = useNavigate();
-  const { items } = useShoppingList();
-  const { setItemsToReview, substitutes } = useSubstitutions();
+  const { currentCart, potentialSubstitutes } = useCart();
 
   const handleNextClick = () => {
-    const itemsWithSubstitutes = items.filter(item => substitutes[item.product.id] && substitutes[item.product.id].length > 0);
+    const itemsWithSubstitutes = currentCart?.items.filter(item => 
+      potentialSubstitutes[item.product.id] && potentialSubstitutes[item.product.id].length > 0
+    ) || [];
+
     if (itemsWithSubstitutes.length > 0) {
-      setItemsToReview(itemsWithSubstitutes.map(item => item.product));
       navigate('/substitutions');
     } else {
       navigate('/final-cart');
