@@ -6,6 +6,7 @@ import ProductTile from '@/components/ProductTile';
 import CartItemTile from '@/components/CartItemTile';
 import { Button } from '@/components/ui/button';
 import { optimizeCartAPI } from '@/services/SubstitutionApi';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import type { Product } from '@/types';
 import { Badge } from "@/components/ui/badge";
 import { BadgeCheckIcon } from 'lucide-react';
@@ -18,6 +19,7 @@ const SubstitutionPage = () => {
   const { selectedStoreIds } = useStoreList();
 
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [approvedSelections, setApprovedSelections] = useState<{ [originalItemId: string]: { product: Product, quantity: number }[] }>({});
 
   useEffect(() => {
@@ -66,6 +68,8 @@ const SubstitutionPage = () => {
   const handleOptimizeAndNavigate = async (selections?: typeof approvedSelections) => {
     if (!currentCart) return;
 
+    setIsLoading(true);
+
     const finalSelections = selections || approvedSelections;
 
     const cartPayload = currentCart.items.map(item => {
@@ -94,11 +98,15 @@ const SubstitutionPage = () => {
       navigate('/final-cart');
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSkipSubstitutions = async () => {
     if (!currentCart) return;
+
+    setIsLoading(true);
 
     const cartPayload = currentCart.items.map(item => {
       return [{ product_id: item.product.id, quantity: item.quantity }];
@@ -121,6 +129,8 @@ const SubstitutionPage = () => {
       navigate('/final-cart');
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -149,6 +159,10 @@ const SubstitutionPage = () => {
       handleOptimizeAndNavigate(nextApprovedSelections);
     }
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   if (!currentItem) {
     return (
