@@ -23,6 +23,7 @@ from .views.cart_views import (
     CartRetrieveUpdateDestroyView,
     ActiveCartDetailView,
     SwitchActiveCartView,
+    RenameCartView,
     ActiveCartItemListCreateView,
     ActiveCartItemUpdateDestroyView,
 )
@@ -56,6 +57,7 @@ urlpatterns = [
     path('carts/', CartListCreateView.as_view(), name='cart-list-create'),
     path('carts/active/', ActiveCartDetailView.as_view(), name='active-cart-detail'),
     path('carts/switch-active/', SwitchActiveCartView.as_view(), name='switch-active-cart'),
+    path('carts/rename/', RenameCartView.as_view(), name='rename-cart'),
     path('carts/<uuid:pk>/', CartRetrieveUpdateDestroyView.as_view(), name='cart-retrieve-update-destroy'),
 
     # CartItem URLs (for the active cart)
