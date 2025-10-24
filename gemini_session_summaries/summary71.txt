@@ -10,34 +10,50 @@
 **2. Frontend State Management Overhaul:**
 
 *   **`CartContext` Implementation:** A new `CartContext.tsx` was created to serve as the single source of truth for all cart-related state, replacing the old `ShoppingListContext`.
-*   **The "Fetch-on-Add" Architecture:** Based on user feedback, we designed an efficient workflow where potential substitutes for a product are fetched automatically in the background at the moment a user adds that product to their cart. This was implemented by:
+*   **The "Fetch-on-Add" Architecture:** Based on user feedback, we designed an efficient workflow where potential substitutes for a product will be fetched automatically in the background at the moment a user adds that product to their cart. This was implemented by:
     1.  Adding a `potentialSubstitutes` state to the `CartContext`.
     2.  Updating the `addItem` function in the context to trigger this background fetch.
 
 **3. Deep Dive into TypeScript & Vite Debugging:**
 
 *   **The Problem:** We encountered a series of persistent and misleading `SyntaxError` messages (e.g., `does not provide an export named 'Product'`) that seemed to contradict the code. The root cause was identified as a stale/corrupted cache in the Vite development server.
-*   **The Solution (Establishing a Type Hub):** We performed a systematic refactoring to fix the issue and establish a robust typing architecture:
-    1.  **Configuration Analysis:** We reviewed `tsconfig.json` and identified that the strict `verbatimModuleSyntax: true` setting required explicit `import type` statements.
-    2.  **Central Type Hub:** A central barrel file was created at `frontend/src/types/index.ts` to consolidate and re-export all shared types (`Product`, `Cart`, `ApiResponse`, etc.) from a single, consistent location.
-    3.  **Code Refactoring:** All relevant components (`CartContext`, `ProductTile`, `TrolleyPage`, etc.) were updated to use the new central type hub with the correct `import type { ... } from '@/types';` syntax.
-    4.  **Hard Reset:** We successfully cleared the corrupted Vite cache by deleting the `node_modules` directory and reinstalling all dependencies, which finally resolved the persistent import errors.
+*   **The Investigation & Education:** We discussed the differences between `type` and `interface`, the implications of `tsconfig.json` settings like `verbatimModuleSyntax`, and the importance of a central "type hub" for maintainability.
+*   **The Definitive Fix:** We implemented a systematic solution:
+    1.  Created a central `frontend/src/types/index.ts` barrel file.
+    2.  Consolidated all shared types (`Product`, `Cart`, `ApiResponse`, etc.) into the `/types` directory.
+    3.  Updated all components (`CartContext`, `ProductTile`, `TrolleyPage`, etc.) to use explicit `import type { ... } from '@/types';` syntax.
+    4.  Performed a "hard reset" (deleting `node_modules` and reinstalling) to clear the corrupted Vite cache, which finally resolved the persistent import errors.
 
 **4. Substitution Workflow Integration:**
 
 *   **`SubstitutionPage` Refactor:** This page was completely refactored to work with the new system. It now:
     1.  Uses the `useCart` hook to get the `currentCart` and the pre-fetched `potentialSubstitutes`.
     2.  Manages user-approved substitutes in its own local state.
-    3.  Contains the logic to construct the specific "list of lists" payload required by the backend.
-*   **End-to-End Data Flow:** We connected the full workflow by implementing the API call on the `SubstitutionPage` to send the final approved cart to the `/api/cart/split/` endpoint and stored the response in a new `optimizationResult` state within the `CartContext`.
+    3.  Contains the logic to build the specific "list of lists" payload required by the backend and `POST` it to the optimization API.
+*   **End-to-End Data Flow:** The optimization results are stored in a new `optimizationResult` state within the `CartContext`, making them available for the `FinalCartPage`.
 
 **5. Code Cleanup and Final Bug Fixes:**
 
 *   **File Deletion:** We identified and deleted several obsolete files from previous refactors, including `ShoppingListContext.tsx` and `SubstitutionContext.tsx`.
 *   **Component Refactoring:** We refactored `NextButton.tsx` and `FinalCartPage.tsx` to remove their dependencies on the old contexts and use `useCart` instead.
 *   **API Service Restoration:** Per user architectural preference for separation of concerns, we restored the deleted `frontend/src/services/storeListApi.ts` file to keep API logic separate from the `StoreListContext`.
-*   **Backend `IntegrityError`:** We fixed a `UNIQUE constraint failed` error that occurred when adding a duplicate item to the cart. The solution was twofold:
-    1.  **Backend:** The `ActiveCartItemListCreateView` was made more robust to gracefully handle duplicate requests by checking if an item exists before attempting to create it.
-    2.  **Frontend:** The `AddToCartButton` was enhanced with a local loading state to disable it on click, preventing accidental double-clicks and improving UI feedback.
+*   **Backend `IntegrityError` & Frontend Double-Click Issue:**
+    *   **Problem:** An `IntegrityError` occurred when adding an item that already existed in the cart, often triggered by a frontend UI lag causing double-clicks.
+    *   **Resolution (Backend):** The `ActiveCartItemListCreateView` was modified to gracefully handle duplicate requests. If an item already exists in the cart, the backend now simply returns the existing item with a `200 OK` status instead of attempting to create a duplicate.
+    *   **Resolution (Frontend):** The `AddToCartButton` was enhanced with a local loading state to disable the button immediately upon click, preventing accidental double-clicks and improving user feedback.
 
-**Final Outcome:** The session concluded with a fully functional and integrated cart and substitution system. The codebase is now cleaner, more robust, and follows a consistent and modern pattern for both state management and TypeScript type definitions.
+*   **`NameError: name 'Product' is not defined`:**
+    *   **Cause:** A missing import of the `Product` model in `api/views/cart_views.py` after a refactoring step.
+    *   **Resolution:** Added `from products.models import Product` to `api/views/cart_views.py`.
+
+*   **`net::ERR_CONNECTION_REFUSED`:**
+    *   **Cause:** The backend Django development server was not running.
+    *   **Resolution:** Instructed the user to start the Django server in a separate terminal (`python manage.py runserver`).
+
+*   **`TypeError: Cannot read properties of undefined (reading 'find')` in `TrolleyItemTile.tsx`:**
+    *   **Cause:** `TrolleyItemTile.tsx` was incorrectly trying to access `items` directly from `useCart()` instead of `currentCart.items`.
+    *   **Resolution:** Modified `TrolleyItemTile.tsx` to correctly access `currentCart?.items || []`.
+
+*   **`404 Not Found` on `DELETE /api/carts/active/items/<uuid>/`:**
+    *   **Cause:** The URL pattern in `api/urls.py` for `ActiveCartItemUpdateDestroyView` was using `<int:pk>` instead of `<uuid:pk>`, causing Django's URL dispatcher to not find the correct view for UUID-based primary keys.
+    *   **Resolution:** The `api/urls.py` needs to be updated to use `<uuid:pk>` for the `ActiveCartItemUpdateDestroyView` to correctly match the UUID of the `CartItem`.
