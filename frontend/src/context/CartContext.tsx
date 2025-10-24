@@ -7,7 +7,6 @@ import type { Product, Cart, CartItem, ApiResponse } from '@/types';
 export interface CartContextType {
   currentCart: Cart | null;
   userCarts: Cart[];
-  potentialSubstitutes: { [productId: number]: Product[] };
   optimizationResult: ApiResponse | null;
   setOptimizationResult: (result: ApiResponse | null) => void;
   cartLoading: boolean;
@@ -28,7 +27,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { token, anonymousId, isAuthenticated } = useAuth();
   const [currentCart, setCurrentCart] = useState<Cart | null>(null);
   const [userCarts, setUserCarts] = useState<Cart[]>([]);
-  const [potentialSubstitutes, setPotentialSubstitutes] = useState<{ [productId: number]: Product[] }>({});
   const [optimizationResult, setOptimizationResult] = useState<ApiResponse | null>(null);
   const [cartLoading, setCartLoading] = useState(true);
   const [cartError, setCartError] = useState<string | null>(null);
@@ -165,15 +163,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (!addItemResponse.ok) throw new Error('Failed to add item to cart.');
       await fetchActiveCart(); // Refresh cart to show the new item
 
-      // Fetch substitutes for the newly added item
-      const subResponse = await fetch(`/api/products/${productId}/substitutes/`);
-      if (subResponse.ok) {
-        const subData = await subResponse.json();
-        setPotentialSubstitutes(prevSubs => ({
-          ...prevSubs,
-          [productId]: subData,
-        }));
-      }
     } catch (error: any) {
       setCartError(error.message);
     }

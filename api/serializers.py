@@ -172,11 +172,11 @@ class SelectedStoreListSerializer(serializers.ModelSerializer):
 
 class CartSubstitutionSerializer(serializers.ModelSerializer):
     original_cart_item = serializers.PrimaryKeyRelatedField(queryset=CartItem.objects.all())
-    substituted_product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
+    substituted_product = ProductSerializer(read_only=True)
 
     class Meta:
         model = CartSubstitution
-        fields = ('id', 'original_cart_item', 'substituted_product', 'quantity', 'created_at', 'updated_at')
+        fields = ('id', 'original_cart_item', 'substituted_product', 'quantity', 'is_approved', 'created_at', 'updated_at')
         read_only_fields = ('created_at', 'updated_at')
 
 

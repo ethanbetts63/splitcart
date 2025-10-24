@@ -77,22 +77,24 @@ Refactor the cart and substitution management to centralize all substitution dat
         *   [ ] Run `makemigrations` and `migrate`.
     *   [ ] **Implement Automatic Generation of Potential Substitutes:**
         *   [x] Create `SubstituteManager` class in `data_management/utils/cart_optimization/substitute_manager.py`. (Already completed)
-        *   [ ] Modify `ActiveCartItemListCreateView` (`api/views/cart_views.py`) `perform_create` method to:
-            *   [ ] After saving the new `CartItem`, use `SubstituteManager` to find potential substitutes.
-            *   [ ] Create `CartSubstitution` instances for each potential substitute, linked to the new `CartItem`, with `is_approved=False`.
+        *   [x] Modify `ActiveCartItemListCreateView` (`api/views/cart_views.py`) `perform_create` method to:
+            *   [x] After saving the new `CartItem`, use `SubstituteManager` to find potential substitutes.
+            *   [x] Create `CartSubstitution` instances for each potential substitute, linked to the new `CartItem`, with `is_approved=False`.
     *   [ ] **Create/Modify API Endpoints for `CartSubstitution` (`api/views/cart_views.py` or new `api/views/cart_substitution_views.py`):**
         *   [ ] Implement `PATCH /api/carts/active/items/<uuid:cart_item_id>/substitutions/<uuid:substitution_id>/` to update `is_approved` and `quantity`.
         *   [ ] Implement `DELETE /api/carts/active/items/<uuid:cart_item_id>/substitutions/<uuid:substitution_id>/` to remove a `CartSubstitution`.
     *   [ ] **Serializer Updates:**
-        *   [ ] Create `CartSubstitutionSerializer`.
-        *   [ ] Update `CartItemSerializer` to include nested `CartSubstitutionSerializer` for all associated substitutions.
+        *   [x] Create `CartSubstitutionSerializer`. (Completed by modifying existing one)
+        *   [x] Update `CartItemSerializer` to include nested `CartSubstitutionSerializer`. (Completed by modifying existing one)
 
 2.  **Frontend (React/TypeScript):**
     *   [ ] **Update `types.ts`:**
         *   [ ] Modify `CartItem` type to include `substitutions: CartSubstitution[]`.
         *   [ ] Define `CartSubstitution` type mirroring the backend model (including `is_approved`).
     *   [ ] **`CartContext.tsx`:**
-        *   [ ] Remove `potentialSubstitutes` state.
+        *   [x] Remove `potentialSubstitutes` state. (Completed)
+        *   [x] Remove substitute fetching logic from `addItem`. (Completed)
+        *   [x] Update `CartContextType` to remove `potentialSubstitutes`. (Completed)
         *   [ ] Add `updateCartItemSubstitution`, `removeCartItemSubstitution` functions.
         *   [ ] Modify `fetchActiveCart` to correctly handle the new `substitutions` data within `CartItem`.
     *   [ ] **`CartSubTile.tsx`:**

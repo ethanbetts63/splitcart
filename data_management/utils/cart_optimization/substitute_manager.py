@@ -96,3 +96,47 @@ class SubstituteManager:
                 )
                 created_cart_substitutions.append(cart_sub)
         return created_cart_substitutions
+
+    def update_cart_substitution(self, substitution_id: str, is_approved: bool = None, quantity: int = None) -> CartSubstitution | None:
+        """
+        Updates an existing CartSubstitution instance.
+
+        Args:
+            substitution_id: The ID of the CartSubstitution to update.
+            is_approved: Optional boolean to set the approval status.
+            quantity: Optional integer to set the quantity.
+
+        Returns:
+            The updated CartSubstitution object, or None if not found or removed.
+        """
+        try:
+            cart_sub = CartSubstitution.objects.get(id=substitution_id)
+            if is_approved is not None:
+                cart_sub.is_approved = is_approved
+            if quantity is not None:
+                if quantity <= 0:
+                    # If quantity is 0 or less, remove the substitution
+                    self.remove_cart_substitution(str(cart_sub.id))
+                    return None
+                cart_sub.quantity = quantity
+            cart_sub.save()
+            return cart_sub
+        except CartSubstitution.DoesNotExist:
+            return None
+
+    def remove_cart_substitution(self, substitution_id: str) -> bool:
+        """
+        Removes a CartSubstitution instance.
+
+        Args:
+            substitution_id: The ID of the CartSubstitution to remove.
+
+        Returns:
+            True if the substitution was removed, False otherwise.
+        """
+        try:
+            cart_sub = CartSubstitution.objects.get(id=substitution_id)
+            cart_sub.delete()
+            return True
+        except CartSubstitution.DoesNotExist:
+            return False
