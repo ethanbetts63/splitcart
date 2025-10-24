@@ -1,4 +1,6 @@
 from rest_framework import generics, permissions
+from api.permissions import IsAuthenticatedOrAnonymous
+from api.permissions import IsAuthenticatedOrAnonymous
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -7,7 +9,7 @@ from api.serializers import SelectedStoreListSerializer
 
 class SelectedStoreListListCreateView(generics.ListCreateAPIView):
     serializer_class = SelectedStoreListSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrAnonymous]
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
@@ -35,9 +37,12 @@ class SelectedStoreListListCreateView(generics.ListCreateAPIView):
 
 class SelectedStoreListRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SelectedStoreListSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrAnonymous]
     queryset = SelectedStoreList.objects.all()
-    lookup_field = 'pk'
+    def update(self, request, *args, **kwargs):
+        if not request.user.is_authenticated and 'name' in request.data:
+            raise permissions.PermissionDenied("Anonymous users cannot change the store list name.")
+        return super().update(request, *args, **kwargs)
 
     def get_queryset(self):
         # Ensure users can only access their own store lists

@@ -1,5 +1,6 @@
 from django.db import IntegrityError
 from rest_framework import generics, permissions, status
+from api.permissions import IsAuthenticatedOrAnonymous
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import Cart, CartItem
@@ -11,7 +12,7 @@ cart_manager = CartManager()
 
 class CartListCreateView(generics.ListCreateAPIView):
     serializer_class = CartSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrAnonymous]
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
@@ -28,7 +29,7 @@ class CartListCreateView(generics.ListCreateAPIView):
 
 class CartRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CartSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrAnonymous]
     queryset = Cart.objects.all()
     lookup_field = 'pk'
 
@@ -43,7 +44,7 @@ class CartRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         cart_manager.delete_cart(instance)
 
 class ActiveCartDetailView(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrAnonymous]
 
     def get(self, request, *args, **kwargs):
         cart = cart_manager.get_active_cart(request)
@@ -88,7 +89,7 @@ class RenameCartView(APIView):
 
 class ActiveCartItemListCreateView(generics.ListCreateAPIView):
     serializer_class = CartItemSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrAnonymous]
 
     def get_queryset(self):
         cart = cart_manager.get_active_cart(self.request)
@@ -126,7 +127,7 @@ class ActiveCartItemListCreateView(generics.ListCreateAPIView):
 
 class ActiveCartItemUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CartItemSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrAnonymous]
     lookup_field = 'pk'
 
     def get_queryset(self):
