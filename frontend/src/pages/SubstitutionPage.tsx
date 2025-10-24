@@ -168,7 +168,7 @@ const SubstitutionPage = () => {
       <div className="text-center p-8">
         <h2 className="text-2xl font-bold mb-4">No Substitutes to Review</h2>
         <p className="mb-4">None of the items in your cart currently have substitute options available.</p>
-        <Button onClick={handleOptimizeAndNavigate}>Proceed to Final Cart</Button>
+        <Button onClick={() => handleOptimizeAndNavigate()}>Proceed to Final Cart</Button>
       </div>
     );
   }
@@ -183,13 +183,13 @@ const SubstitutionPage = () => {
             {currentItemIndex === 0 ? 'Home' : 'Back'}
           </Button>
           <Button onClick={handleSkipSubstitutions} variant="outline">
-            Skip All Substitutions
+            Skip Substitutions
           </Button>
         </div>
         <h1 className="text-2xl font-bold justify-self-center">Product Substitution</h1>
         <div className="justify-self-end flex items-center gap-2">
           <Button onClick={handleApproveAllAndNext} variant="outline">
-            Approve All & Next
+            Approve All
           </Button>
           <Button onClick={handleNext} className="bg-blue-500 text-white">
             {isLastItem ? 'Split my Cart!' : 'Next'}
