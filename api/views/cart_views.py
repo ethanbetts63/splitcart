@@ -2,6 +2,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import Cart, CartItem
+from products.models import Product
 from api.serializers import CartSerializer, CartItemSerializer
 from users.cart_manager import CartManager
 
@@ -93,11 +94,28 @@ class ActiveCartItemListCreateView(generics.ListCreateAPIView):
             return CartItem.objects.filter(cart=cart)
         return CartItem.objects.none()
 
-    def perform_create(self, serializer):
+    def create(self, request, *args, **kwargs):
         cart = cart_manager.get_active_cart(self.request)
         if not cart:
-            raise permissions.PermissionDenied("No active cart available.")
-        serializer.save(cart=cart)
+            return Response({"detail": "No active cart available."}, status=status.HTTP_400_BAD_REQUEST)
+
+        product_id = request.data.get('product')
+        # Using .get() to avoid an exception if the product doesn't exist, though the serializer would catch it.
+        product = Product.objects.filter(pk=product_id).first()
+
+        if not product:
+            return Response({"detail": "Invalid product ID."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if item exists
+        cart_item = CartItem.objects.filter(cart=cart, product=product).first()
+
+        if cart_item:
+            # Item exists, just serialize and return it gracefully.
+            serializer = self.get_serializer(cart_item)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            # Item does not exist, proceed with standard creation logic from the parent class.
+            return super().create(request, *args, **kwargs)
 
 class ActiveCartItemUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CartItemSerializer

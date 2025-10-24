@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import type { Product } from '@/types'; // Import shared type
-
-// import { useSubstitutions } from '@/context/SubstitutionContext';
-// import { useStoreList } from '@/context/StoreListContext';
+import type { Product } from '@/types';
+import { Loader2 } from 'lucide-react';
 
 interface AddToCartButtonProps {
   product: Product;
@@ -13,26 +11,20 @@ interface AddToCartButtonProps {
 
 const AddToCartButton: React.FC<AddToCartButtonProps> = ({ product }) => {
   const { currentCart, addItem, updateItemQuantity } = useCart();
-  const items = currentCart ? currentCart.items : [];
-  // const { fetchSubstitutes } = useSubstitutions();
-  // const { selectedStoreIds } = useStoreList();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const items = currentCart?.items || [];
   const existingItem = items.find(item => item.product.id === product.id);
 
-  const handleAdd = () => {
-    addItem(product.id, 1);
-    // fetchSubstitutes(product, Array.from(selectedStoreIds));
+  const handleAdd = async () => {
+    setIsLoading(true);
+    await addItem(product.id, 1);
+    setIsLoading(false);
   };
 
   const handleQuantityChange = (newQuantity: number) => {
     if (existingItem) {
       updateItemQuantity(existingItem.id, newQuantity);
-    }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newQuantity = parseInt(e.target.value, 10);
-    if (!isNaN(newQuantity) && newQuantity > 0) {
-        handleQuantityChange(newQuantity);
     }
   };
 
@@ -45,7 +37,6 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({ product }) => {
           readOnly
           className="h-8 w-12 text-center no-spinner"
           value={existingItem.quantity}
-          onChange={handleInputChange}
           min="1"
         />
         <Button size="icon" className="h-8 w-8" onClick={() => handleQuantityChange(existingItem.quantity + 1)}>+</Button>
@@ -54,7 +45,10 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({ product }) => {
   }
 
   return (
-    <Button onClick={handleAdd}>Add to Cart</Button>
+    <Button onClick={handleAdd} disabled={isLoading}>
+      {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      {isLoading ? 'Adding...' : 'Add to Cart'}
+    </Button>
   );
 };
 
