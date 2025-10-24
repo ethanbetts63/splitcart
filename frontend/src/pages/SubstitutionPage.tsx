@@ -64,16 +64,51 @@ const SubstitutionPage = () => {
     setApprovedSelections(prev => ({ ...prev, [currentItem.id]: newSelections }));
   };
 
-  const handleOptimizeAndNavigate = async () => {
+  const handleOptimizeAndNavigate = async (selections?: typeof approvedSelections) => {
     if (!currentCart) return;
 
+    const finalSelections = selections || approvedSelections;
+
     const cartPayload = currentCart.items.map(item => {
-      const approved = approvedSelections[item.id] || [];
+      const approved = finalSelections[item.id] || [];
       const slot = [{ product_id: item.product.id, quantity: item.quantity }];
       approved.forEach(sel => {
         slot.push({ product_id: sel.product.id, quantity: sel.quantity });
       });
       return slot;
+    });
+
+    const originalItemsPayload = currentCart.items.map(item => ({
+      product: { id: item.product.id },
+      quantity: item.quantity
+    }));
+
+    const optimizationData = {
+      cart: cartPayload,
+      store_ids: Array.from(selectedStoreIds),
+      original_items: originalItemsPayload,
+    };
+
+    try {
+      const response = await fetch('/api/cart/split/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(optimizationData),
+      });
+      if (!response.ok) throw new Error('Optimization failed');
+      const results = await response.json();
+      setOptimizationResult(results);
+      navigate('/final-cart');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSkipSubstitutions = async () => {
+    if (!currentCart) return;
+
+    const cartPayload = currentCart.items.map(item => {
+      return [{ product_id: item.product.id, quantity: item.quantity }];
     });
 
     const originalItemsPayload = currentCart.items.map(item => ({
@@ -120,6 +155,9 @@ const SubstitutionPage = () => {
         <div className="justify-self-start flex items-center gap-2">
           <Button onClick={handleBack} className="bg-red-500 text-white">
             {currentItemIndex === 0 ? 'Home' : 'Back'}
+          </Button>
+          <Button onClick={handleSkipSubstitutions} variant="outline">
+            Skip All Substitutions
           </Button>
         </div>
         <h1 className="text-2xl font-bold justify-self-center">Product Substitution</h1>
