@@ -63,7 +63,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const response = await fetch('/api/carts/', { headers: getAuthHeaders() });
       if (!response.ok) throw new Error('Failed to fetch user carts.');
       const data = await response.json();
-      setUserCarts(data);
+      setUserCarts(data.results || []);
     } catch (error: any) {
       console.error(error.message);
     }
