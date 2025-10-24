@@ -1,0 +1,108 @@
+# Cart Substitution Editing from CartPage Plan
+
+## Objective
+Enable users to edit substitution options for items directly within the `CartPage.tsx` dialog. This involves displaying potential substitutes, allowing selection/deselection, and quantity adjustments, with changes persisting to the backend.
+
+## Current Understanding of Substitution Workflow
+
+1.  **Initial Request:** When an item is added to the cart, a list of potential substitutes is requested and stored in `CartContext.potentialSubstitutes`.
+2.  **SubstitutionPage:** Users visit `SubstitutionPage.tsx` to review and approve these potential substitutes.
+3.  **Approved Selections:** Approved substitutes are stored in `approvedSelections` state on `SubstitutionPage.tsx`. Each original item can have multiple approved substitutes, forming a "slot" for the optimization API.
+4.  **Optimization API:** `optimizeCartAPI` is called with the `cartPayload` (including these slots) and `store_ids` to finalize the cart.
+
+## Identified Problems and Proposed Solutions
+
+### Problem 1: Backend Model and API for Substitution Slots
+
+**Description:** The current `CartItem` model only links to the main product. There's no explicit model or API to represent the "slot" concept where an original item can have multiple approved substitutes, each with a specific quantity, as expected by the `optimizeCartAPI`.
+
+**Proposed Solution:**
+1.  **New Model (`CartItemSubstitute`):** Introduce a new Django model, `CartItemSubstitute`, in `users/models/cart_item.py` (or a new `products/models/substitute.py` if it makes more sense). This model will link a `CartItem` to a `Product` (the substitute) and store the `quantity` for that substitute.
+    *   `cart_item` (ForeignKey to `CartItem`)
+    *   `substitute_product` (ForeignKey to `Product`)
+    *   `quantity` (IntegerField)
+2.  **Update `CartItem` Model:** Add a `ManyToManyField` from `CartItem` to `CartItemSubstitute` (or a `related_name` on `CartItemSubstitute.cart_item` to access them). This will allow a `CartItem` to have multiple associated `CartItemSubstitute` instances.
+3.  **New API Endpoints:** Create new API endpoints within `api/views/cart_views.py` (or a new `api/views/cart_substitution_views.py`) to manage `CartItemSubstitute` instances. These endpoints should allow:
+    *   `POST /api/carts/active/items/<uuid:cart_item_id>/substitutes/`: Add a new substitute to a `CartItem`'s slot.
+    *   `PATCH /api/carts/active/items/<uuid:cart_item_id>/substitutes/<int:substitute_id>/`: Update the quantity of an existing substitute.
+    *   `DELETE /api/carts/active/items/<uuid:cart_item_id>/substitutes/<int:substitute_id>/`: Remove a substitute from a `CartItem`'s slot.
+    *   The `substitute_id` here would be the primary key of the `CartItemSubstitute` instance.
+4.  **Serializer Updates:** Update `CartItemSerializer` to include nested serialization for `CartItemSubstitute` instances.
+
+### Problem 2: Frontend State Management in `CartContext.tsx`
+
+**Description:** `CartContext` currently stores `potentialSubstitutes` but lacks mechanisms to store *selected* substitutes for each `CartItem` and functions to interact with the new backend API.
+
+**Proposed Solution:**
+1.  **Update Types:** Modify `CartItem` type to include a `substitutes: CartItemSubstitute[]` property, where `CartItemSubstitute` is a new type mirroring the backend model.
+2.  **New State:** Introduce a new state variable in `CartContext`, e.g., `selectedCartItemSubstitutes: { [cartItemId: string]: CartItemSubstitute[] }`, to hold the currently selected substitutes for each `CartItem`. This might be redundant if `currentCart.items` already contains this information after `fetchActiveCart`. We should aim to keep `currentCart` as the single source of truth for selected substitutes.
+3.  **New Functions:** Add the following functions to `CartContextType` and implement them in `CartProvider`:
+    *   `addCartItemSubstitute(cartItemId: string, productId: number, quantity: number)`: Calls the new `POST` API endpoint.
+    *   `removeCartItemSubstitute(cartItemId: string, substituteId: number)`: Calls the new `DELETE` API endpoint.
+    *   `updateCartItemSubstituteQuantity(cartItemId: string, substituteId: number, quantity: number)`: Calls the new `PATCH` API endpoint.
+    *   All these functions should trigger `fetchActiveCart()` upon successful API calls to refresh the `currentCart` state.
+4.  **`fetchActiveCart` Enhancement:** Ensure `fetchActiveCart` correctly fetches and populates the `substitutes` property for each `CartItem` from the backend.
+
+### Problem 3: UI Integration in `CartPage.tsx` and `CartItemTile.tsx`
+
+**Description:** `CartPage.tsx` currently renders `CartItemTile` without any mechanism to display or interact with substitution options.
+
+**Proposed Solution:**
+1.  **`CartItemTile.tsx` Modifications:**
+    *   Accept new props: `potentialSubstitutesForProduct: Product[]` (from `CartContext.potentialSubstitutes`) and `selectedSubstitutes: CartItemSubstitute[]` (from the `CartItem` itself).
+    *   Conditionally render a collapsible section (e.g., using an Accordion component) below the main product details if `potentialSubstitutesForProduct` is not empty.
+    *   Inside this section, iterate through `potentialSubstitutesForProduct` and render `CartSubTile` for each.
+    *   Pass down necessary props to `CartSubTile`: the substitute `Product`, its current `quantity` (if selected), `isSelected` flag, and callbacks for `onSelect`, `onDeselect`, `onQuantityChange`.
+2.  **`CartSubTile.tsx` Enhancements:**
+    *   Add a checkbox or toggle to allow users to select/deselect the substitute.
+    *   Modify the quantity controls to be functional and trigger `onQuantityChange` callback.
+    *   Accept `isSelected: boolean`, `onSelect: (product: Product, quantity: number) => void`, `onDeselect: (substituteId: number) => void`, `onQuantityChange: (substituteId: number, quantity: number) => void` as props.
+    *   The `substituteId` passed to `onDeselect` and `onQuantityChange` would be the primary key of the `CartItemSubstitute` instance, not the `product.id`. This implies `CartSubTile` will need to know the `CartItemSubstitute` ID if it's already selected.
+3.  **`CartPage.tsx` Modifications:**
+    *   When mapping `currentCart.items` to `CartItemTile`, pass the `potentialSubstitutes[item.product.id]` and `item.substitutes` (the selected ones) as props.
+    *   Ensure `CartPage` has access to `CartContext` functions for managing substitutes.
+
+### Problem 4: Fetching Potential Substitutes for Existing Cart Items
+
+**Description:** `potentialSubstitutes` are currently fetched only when an item is *added* to the cart. When loading an existing cart, these might not be available for display in `CartPage.tsx`.
+
+**Proposed Solution:**
+1.  **Batch Fetching:** When `fetchActiveCart` completes, iterate through `currentCart.items`. For any `item.product.id` that is not present as a key in `CartContext.potentialSubstitutes`, trigger a batch API call to fetch potential substitutes for those product IDs.
+2.  **New API Endpoint (Optional but Recommended):** Create a new backend API endpoint, e.g., `GET /api/products/substitutes/batch/?product_ids=1,2,3`, that accepts a list of product IDs and returns potential substitutes for all of them. This is more efficient than individual calls.
+3.  **`CartContext` Update:** Add a function `fetchPotentialSubstitutesForProducts(productIds: number[])` to `CartContext` that calls this new API and updates the `potentialSubstitutes` state.
+
+## To-Do List
+
+1.  **Backend (Django):**
+    *   [ ] Define `CartItemSubstitute` model in `users/models/cart_item.py` (or `products/models/substitute.py`).
+    *   [ ] Add `ManyToManyField` to `CartItem` for `CartItemSubstitute`.
+    *   [ ] Create `CartItemSubstituteSerializer`.
+    *   [ ] Update `CartItemSerializer` to include nested `CartItemSubstituteSerializer`.
+    *   [ ] Implement new API views/endpoints in `api/views/cart_views.py` for `CartItemSubstitute` (add, update, delete).
+    *   [ ] (Optional) Create a batch API endpoint for fetching potential substitutes for multiple product IDs.
+    *   [ ] Run `makemigrations` and `migrate`.
+
+2.  **Frontend (React/TypeScript):**
+    *   [ ] Update `types.ts` with `CartItemSubstitute` type.
+    *   [ ] **`CartContext.tsx`:**
+        *   [ ] Update `CartItem` type definition to include `substitutes: CartItemSubstitute[]`.
+        *   [ ] Add `addCartItemSubstitute`, `removeCartItemSubstitute`, `updateCartItemSubstituteQuantity` functions.
+        *   [ ] Modify `fetchActiveCart` to handle the new `substitutes` data.
+        *   [ ] Implement logic to fetch `potentialSubstitutes` for existing cart items if not already present.
+    *   [ ] **`CartSubTile.tsx`:**
+        *   [ ] Add props: `isSelected: boolean`, `onSelect: (product: Product, quantity: number) => void`, `onDeselect: (substituteId: number) => void`, `onQuantityChange: (substituteId: number, quantity: number) => void`.
+        *   [ ] Add checkbox/toggle for selection.
+        *   [ ] Make quantity controls functional and linked to `onQuantityChange`.
+    *   [ ] **`CartItemTile.tsx`:**
+        *   [ ] Add props: `potentialSubstitutesForProduct: Product[]`, `selectedSubstitutes: CartItemSubstitute[]`.
+        *   [ ] Implement collapsible section for substitutes.
+        *   [ ] Render `CartSubTile` for each potential substitute, passing relevant props and callbacks.
+        *   [ ] Connect `CartSubTile` callbacks to `CartContext` functions.
+    *   [ ] **`CartPage.tsx`:**
+        *   [ ] Pass `potentialSubstitutes[item.product.id]` and `item.substitutes` to `CartItemTile`.
+        *   [ ] Ensure `CartPage` has access to `CartContext` functions for managing substitutes.
+
+## Open Questions / Clarifications Needed
+
+1.  **`optimizeCartAPI` vs. Direct `CartItemSubstitute` Management:** The `SubstitutionPage` uses `optimizeCartAPI` which takes a `cartPayload` of "slots". If we directly manage `CartItemSubstitute` instances via new API endpoints, will the `optimizeCartAPI` still be used, or will the cart optimization logic directly read from the `CartItem` and `CartItemSubstitute` models? It seems more robust to have the `optimizeCartAPI` read the current state of the cart (including its selected substitutes) directly from the database rather than requiring the frontend to construct the complex `cartPayload`. This would simplify the frontend.
+2.  **Single vs. Multiple Approved Substitutes:** The user stated "Either item A or B but not both" but the `SubstitutionPage`'s `approvedSelections` structure suggests multiple approved substitutes are possible for a single original item. Clarification is needed on whether a `CartItem` can have *only one* selected substitute at a time, or if it can have *multiple* selected substitutes (each with a quantity) that form a "slot" for the optimization. I've assumed the latter for the plan, as it aligns with the `SubstitutionPage`'s current behavior.
