@@ -21,7 +21,7 @@ import { Badge } from "@/components/ui/badge";
 
 import { Input } from '@/components/ui/input';
 
-const cartItemTile: React.FC<cartItemTileProps> = ({ product, onApprove, isApproved, quantity, onQuantityChange, context }) => {
+const CartItemTile: React.FC<cartItemTileProps> = ({ product, onApprove, isApproved, quantity, onQuantityChange, context }) => {
   const { currentCart, updateItemQuantity, removeItem } = useCart();
   const items = currentCart?.items || [];
 
@@ -114,4 +114,4 @@ const cartItemTile: React.FC<cartItemTileProps> = ({ product, onApprove, isAppro
   );
 };
 
-export default cartItemTile;
+export default CartItemTile;

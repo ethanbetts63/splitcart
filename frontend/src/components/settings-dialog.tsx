@@ -21,7 +21,7 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
 import EditLocationPage from "@/pages/dialog-pages/EditLocationPage";
-import cartPage from "@/pages/dialog-pages/cartPage";
+import CartPage from "@/pages/dialog-pages/CartPage";
 
 // Define a type for our navigation items
 type NavItem = {
@@ -53,7 +53,7 @@ const PageContent = ({
 }) => {
   switch (activePage) {
     case 'cart':
-      return <cartPage onOpenChange={onOpenChange} />;
+      return <CartPage onOpenChange={onOpenChange} />;
     case 'Edit Location':
       return <EditLocationPage 
                 localSelectedStoreIds={localSelectedStoreIds} 

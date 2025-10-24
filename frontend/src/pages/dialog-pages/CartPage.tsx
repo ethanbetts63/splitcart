@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '@/context/CartContext';
 import type { Cart } from '@/types';
-import cartItemTile from '@/components/cartItemTile';
+import CartItemTile from '@/components/CartItemTile';
 import NextButton from '@/components/NextButton';
 import { useAuth } from '@/context/AuthContext';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -13,7 +13,7 @@ interface cartPageProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const cartPage: React.FC<cartPageProps> = ({ onOpenChange }) => {
+const CartPage: React.FC<cartPageProps> = ({ onOpenChange }) => {
   const { 
     currentCart, userCarts, cartLoading, 
     loadCart, createNewCart, renameCart, deleteCart 
@@ -131,7 +131,7 @@ const cartPage: React.FC<cartPageProps> = ({ onOpenChange }) => {
         ) : currentCart && currentCart.items.length > 0 ? (
           <div className="flex flex-col gap-4">
             {currentCart.items.map(item => (
-              <cartItemTile key={item.id} product={item.product} context="cart" />
+              <CartItemTile key={item.id} product={item.product} context="cart" />
             ))}
           </div>
         ) : (
@@ -144,4 +144,4 @@ const cartPage: React.FC<cartPageProps> = ({ onOpenChange }) => {
   );
 };
 
-export default cartPage;
+export default CartPage;

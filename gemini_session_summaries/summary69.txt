@@ -14,9 +14,9 @@
 3.  **Solution - Central Type Hub:** We implemented a robust solution by:
     *   Establishing a central "type hub" at `frontend/src/types/index.ts`.
     *   Consolidating all shared types (`Product`, `Cart`, `CartItem`, etc.) into this hub.
-    *   Refactoring all components (`CartContext`, `cartPage`, `ProductTile`) to use explicit `import type { ... } from '@/types'` statements, satisfying the project's strict TypeScript configuration.
+    *   Refactoring all components (`CartContext`, `CartPage`, `ProductTile`) to use explicit `import type { ... } from '@/types'` statements, satisfying the project's strict TypeScript configuration.
 4.  **Hard Reset:** We performed a "hard reset" of the frontend development environment by deleting and reinstalling the `node_modules` directory to clear the corrupted Vite cache, which successfully resolved the persistent syntax errors.
-5.  **Final Bug Fixes:** We resolved subsequent `TypeError` exceptions in `App.tsx`, `AddToCartButton.tsx`, and `cartPage.tsx` that arose from the new context structure.
+5.  **Final Bug Fixes:** We resolved subsequent `TypeError` exceptions in `App.tsx`, `AddToCartButton.tsx`, and `CartPage.tsx` that arose from the new context structure.
 
 **Key Outcomes & Discussions:**
 
