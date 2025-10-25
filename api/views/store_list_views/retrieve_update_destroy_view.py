@@ -1,6 +1,7 @@
-from rest_framework import generics, permissions
-from api.permissions import IsAuthenticatedOrAnonymous
+from rest_framework import generics
+from rest_framework.exceptions import PermissionDenied
 from users.models import SelectedStoreList
+from api.permissions import IsAuthenticatedOrAnonymous
 from api.serializers import SelectedStoreListSerializer
 
 class SelectedStoreListRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
@@ -15,7 +16,7 @@ class SelectedStoreListRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyA
         print(f"Store list '{instance.name}' (ID: {instance.pk}) had {instance.stores.count()} stores before update.")
 
         if not request.user.is_authenticated and 'name' in request.data:
-            raise permissions.PermissionDenied("Anonymous users cannot change the store list name.")
+            raise PermissionDenied("Anonymous users cannot change the store list name.")
         
         response = super().update(request, *args, **kwargs)
 
