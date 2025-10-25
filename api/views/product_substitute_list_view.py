@@ -4,8 +4,6 @@ from rest_framework import status
 from django.db.models import Q
 from products.models import Product
 from products.models.substitution import ProductSubstitution
-from companies.models import Postcode
-from data_management.utils.geospatial_utils import get_nearby_stores
 from ..serializers import ProductSubstitutionSerializer
 
 class ProductSubstituteListView(APIView):
@@ -42,5 +40,6 @@ class ProductSubstituteListView(APIView):
             'original_product_id': product.id,
             'nearby_store_ids': nearby_store_ids
         }
+        print(context)
         serializer = ProductSubstitutionSerializer(substitutions, many=True, context=context)
         return Response(serializer.data, status=status.HTTP_200_OK)
