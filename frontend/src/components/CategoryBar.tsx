@@ -42,10 +42,10 @@ const CategoryBar: React.FC = () => {
 
   return (
     <div className="sticky top-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-40 border-b">
-      <div className="category-carousel">
-        <div className="category-carousel__container">
+      <div className="category-carousel overflow-x-auto pb-0">
+        <div className="flex items-center gap-4 py-1 px-2">
           {categories.map((category) => (
-            <div className="category-carousel__slide" key={category.slug}>
+            <div className="flex-shrink-0" key={category.slug}>
               <Link to={`/search?category_slug=${category.slug}`}>
                 <Badge variant="secondary" className="text-sm px-2 whitespace-nowrap hover:bg-transparent hover:text-foreground hover:border-foreground">
                   {category.name}
