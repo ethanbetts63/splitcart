@@ -1,0 +1,49 @@
+### Cart Performance Improvement Plan
+
+**Objective:**
+
+To refactor the cart management system so that all user interactions (adding an item, changing quantity, removing an item) feel instantaneous, while ensuring data is still synchronized with the backend.
+
+**Current Problem:**
+
+The application has been implemented in two ways, both with drawbacks:
+1.  **Chatty API:** Each cart action made a separate API call and waited for the response. This was slow and made the UI feel sluggish.
+2.  **Batch Sync API:** All local changes were grouped and sent in one large, blocking API call when the user navigated. This simply moved the slow process to a different point, creating a long "Saving..." state and a poor user experience.
+
+**Proposed Architecture: Optimistic UI with Asynchronous Updates**
+
+We will implement a more advanced "fire-and-forget" optimistic UI. The core principle is:
+
+1.  **Instant UI Update:** When a user modifies the cart, the frontend UI will update instantly by changing the local state in the `CartContext`.
+2.  **Asynchronous Backend Call:** Simultaneously, a non-blocking API call will be sent to the backend to save the individual change. The UI will *not* wait for this call to complete.
+3.  **Error Handling:** If a background call fails, the user will be notified gracefully (e.g., via a toast notification) without reverting the UI state immediately, preventing a jarring experience.
+
+This provides the best of both worlds: a highly responsive UI and a backend that is kept consistently up-to-date.
+
+---
+
+### Implementation Plan
+
+**Phase 1: Frontend Refactoring (`CartContext.tsx`)**
+
+The `CartContext` will be refactored to implement the new architecture:
+
+1.  **`addItem`, `updateItemQuantity`, `removeItem`:** These functions will be rewritten to perform two actions:
+    *   **Immediately** modify the `currentCart` object in the local React state.
+    *   **Asynchronously** trigger the corresponding API call (`POST /items/`, `PATCH /items/{id}/`, etc.) in the background. The function will not `await` this call.
+
+2.  **Error Handling:** The `catch` block for these background API calls will be updated to show a non-blocking toast notification to the user if the network request fails.
+
+3.  **Remove Batch Sync:** The `syncCart` function and the corresponding `CartSyncView` on the backend will be removed, as this batch-sync model is now obsolete.
+
+**Phase 2: Backend Optimization**
+
+To ensure the background API calls are fast, the backend endpoints need to be optimized:
+
+1.  **Revert to Granular Endpoints:** We will go back to using the original, granular endpoints for adding, updating, and deleting single cart items.
+
+2.  **Offload Slow Tasks:** The primary bottleneck is the substitution-finding logic that runs when a new item is added. The `ActiveCartItemListCreateView` (which handles adding items) will be modified:
+    *   It will very quickly create the `CartItem` in the database and return a `201 Created` response.
+    *   It will then trigger a **background job** on the server to perform the slow substitution search. This ensures the API call from the frontend resolves almost instantly.
+
+3.  **Data Flow:** Because the substitution search will be a background task, the frontend will receive the updated substitutions on a subsequent fetch of the cart state, which is an acceptable trade-off for the massive performance gain during the `addItem` action.

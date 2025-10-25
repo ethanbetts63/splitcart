@@ -16,7 +16,7 @@ export interface CartContextType {
   createNewCart: () => void;
   renameCart: (cartId: string, newName: string) => void;
   deleteCart: (cartId: string) => void;
-  addItem: (productId: number, quantity: number) => void;
+  addItem: (productId: number, quantity: number, product: any) => void;
   updateItemQuantity: (itemId: string, quantity: number) => void;
   removeItem: (itemId: string) => void;
   updateCartItemSubstitution: (cartItemId: string, substitutionId: string, isApproved: boolean, quantity: number) => void;
@@ -152,47 +152,104 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
     }
   };
 
-  const addItem = async (productId: number, quantity: number) => {
+  const addItem = async (productId: number, quantity: number, product: any) => {
+    if (!currentCart) return;
+
+    const tempId = `temp-${Date.now()}`;
+    const optimisticItem = {
+      id: tempId,
+      product: { ...product, id: productId },
+      quantity: quantity,
+      substitutions: [],
+    };
+
+    // Storing the original cart state for potential rollback
+    const originalCart = currentCart;
+
+    // Optimistically update the UI
+    setCurrentCart(prevCart => {
+      if (!prevCart) return null;
+      
+      const existingItemIndex = prevCart.items.findIndex(item => item.product.id === productId);
+      
+      if (existingItemIndex > -1) {
+        // Item exists, update quantity
+        const newItems = [...prevCart.items];
+        newItems[existingItemIndex].quantity += quantity;
+        return { ...prevCart, items: newItems };
+      } else {
+        // Item doesn't exist, add it
+        return { ...prevCart, items: [...prevCart.items, optimisticItem] };
+      }
+    });
+
     try {
-      // Add item to cart
-      const addItemResponse = await fetch('/api/carts/active/items/', {
+      const response = await fetch('/api/carts/active/items/', {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify({ product: productId, quantity }),
       });
-      if (!addItemResponse.ok) throw new Error('Failed to add item to cart.');
-      await fetchActiveCart(); // Refresh cart to show the new item
+
+      if (!response.ok) {
+        throw new Error('Failed to add item to cart.');
+      }
+
+      // Sync with server state
+      await fetchActiveCart();
 
     } catch (error: any) {
       setCartError(error.message);
+      // Revert the optimistic update on failure
+      setCurrentCart(originalCart);
     }
   };
 
   const updateItemQuantity = async (itemId: string, quantity: number) => {
+    if (!currentCart) return;
+
+    const originalCart = { ...currentCart, items: [...currentCart.items.map(i => ({...i}))] }; // Deep copy for rollback
+    let itemExists = false;
+
+    const newCart = {
+        ...currentCart,
+        items: currentCart.items.map(item => {
+            if (item.id === itemId) {
+                itemExists = true;
+                return { ...item, quantity };
+            }
+            return item;
+        }).filter(item => item.quantity > 0) // Also handle item removal if quantity is 0 or less
+    };
+
+    if (!itemExists) return; // Don't do anything if the item isn't in the cart
+
+    setCurrentCart(newCart);
+
     try {
         const response = await fetch(`/api/carts/active/items/${itemId}/`, {
-            method: 'PATCH',
+            method: quantity > 0 ? 'PATCH' : 'DELETE',
             headers: getAuthHeaders(),
-            body: JSON.stringify({ quantity }),
+            body: quantity > 0 ? JSON.stringify({ quantity }) : undefined,
         });
-        if (!response.ok) throw new Error('Failed to update item quantity.');
-        fetchActiveCart(); // Refresh cart
+
+        if (!response.ok) {
+            throw new Error('Failed to update item quantity.');
+        }
+
+        // A DELETE request won't return the item, so we can't rely on the response body
+        // And a PATCH might not return the full cart. Safest is to refetch.
+        await fetchActiveCart();
+
     } catch (error: any) {
         setCartError(error.message);
+        // Revert the optimistic update on failure
+        setCurrentCart(originalCart);
     }
   };
 
-  const removeItem = async (itemId: string) => {
-    try {
-        const response = await fetch(`/api/carts/active/items/${itemId}/`, {
-            method: 'DELETE',
-            headers: getAuthHeaders(),
-        });
-        if (!response.ok) throw new Error('Failed to remove item from cart.');
-        fetchActiveCart(); // Refresh cart
-    } catch (error: any) {
-        setCartError(error.message);
-    }
+  const removeItem = (itemId: string) => {
+    // The optimistic logic is now handled by updateItemQuantity
+    updateItemQuantity(itemId, 0);
   };
 
   const updateCartItemSubstitution = async (cartItemId: string, substitutionId: string, isApproved: boolean, quantity: number) => {

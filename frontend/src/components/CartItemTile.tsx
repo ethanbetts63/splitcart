@@ -49,14 +49,11 @@ const CartItemTile: React.FC<CartItemTileProps> = (props) => {
   const onApprove = context === 'substitution' ? props.onApprove : undefined;
   const onQuantityChange = context === 'substitution' ? props.onQuantityChange : undefined;
 
-  // For 'substitution' context, quantity and isApproved come from cartSubstitution
-  const displayQuantity = cartSubstitution ? cartSubstitution.quantity : (context === 'cart' ? (props as CartContextProps).product.quantity : 0); // This will need careful handling
-  const isApproved = cartSubstitution ? cartSubstitution.is_approved : false;
-
-  const { currentCart, updateItemQuantity, removeItem } = useCart();
-  const items = currentCart?.items || [];
-
   const cartItem = context === 'cart' ? items.find(item => item.product.id === product.id) : null;
+
+  // The quantity should be sourced from the cartItem in the context for reliability
+  const displayQuantity = cartSubstitution ? cartSubstitution.quantity : (cartItem ? cartItem.quantity : 0);
+  const isApproved = cartSubstitution ? cartSubstitution.is_approved : false;
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = fallbackImage;

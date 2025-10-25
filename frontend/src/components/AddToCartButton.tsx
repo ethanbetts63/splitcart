@@ -3,7 +3,7 @@ import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import type { Product } from '@/types';
-import { Loader2 } from 'lucide-react';
+
 
 interface AddToCartButtonProps {
   product: Product;
@@ -11,15 +11,14 @@ interface AddToCartButtonProps {
 
 const AddToCartButton: React.FC<AddToCartButtonProps> = ({ product }) => {
   const { currentCart, addItem, updateItemQuantity } = useCart();
-  const [isLoading, setIsLoading] = useState(false);
+
 
   const items = currentCart?.items || [];
   const existingItem = items.find(item => item.product.id === product.id);
 
-  const handleAdd = async () => {
-    setIsLoading(true);
-    await addItem(product.id, 1);
-    setIsLoading(false);
+  const handleAdd = () => {
+    // No need to set loading state, the UI will update optimistically
+    addItem(product.id, 1, product);
   };
 
   const handleQuantityChange = (newQuantity: number) => {
@@ -45,9 +44,8 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({ product }) => {
   }
 
   return (
-    <Button onClick={handleAdd} disabled={isLoading}>
-      {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-      {isLoading ? 'Adding...' : 'Add to Cart'}
+    <Button onClick={handleAdd}>
+      Add to Cart
     </Button>
   );
 };
