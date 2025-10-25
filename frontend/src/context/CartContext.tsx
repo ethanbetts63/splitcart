@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
-import type { Product, Cart, CartItem, ApiResponse } from '@/types';
+import type { Cart, ApiResponse } from '@/types';
 
 // Types
 

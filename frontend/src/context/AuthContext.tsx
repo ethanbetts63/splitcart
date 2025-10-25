@@ -24,8 +24,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const initializeUser = async () => {
-      const storedToken = localStorage.getItem('token');
-      const storedAnonymousId = document.cookie.split('; ').find(row => row.startsWith('anonymousId='))?.split('=')[1];
+            const storedToken = localStorage.getItem('token') ?? null;
+            const storedAnonymousId = localStorage.getItem('anonymousId') ?? null;
 
       let currentToken = storedToken;
       let currentAnonymousId = storedAnonymousId;
