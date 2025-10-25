@@ -15,8 +15,8 @@ import kingKongImage from "../assets/king_kong.png";
 
 const SubstitutionPage = () => {
   const navigate = useNavigate();
-  const { currentCart, setOptimizationResult, updateCartItemSubstitution, removeCartItemSubstitution } = useCart();
-  const { selectedStoreIds } = useStoreList();
+  const { currentCart, setOptimizationResult, updateCartItemSubstitution } = useCart();
+  useStoreList(); // Call hook to ensure context is available, but don't destructure
 
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
