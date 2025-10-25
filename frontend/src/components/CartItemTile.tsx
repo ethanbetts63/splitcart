@@ -49,7 +49,16 @@ const CartItemTile: React.FC<CartItemTileProps> = (props) => {
   const onApprove = context === 'substitution' ? props.onApprove : undefined;
   const onQuantityChange = context === 'substitution' ? props.onQuantityChange : undefined;
 
+  const { currentCart, updateItemQuantity, removeItem } = useCart();
+  const items = currentCart?.items || [];
+
   const cartItem = context === 'cart' ? items.find(item => item.product.id === product.id) : null;
+
+  // Defensive check: If we are in the cart context and can't find the item, render nothing.
+  // This can happen during optimistic updates if the context hasn't caught up yet.
+  if (context === 'cart' && !cartItem) {
+    return null;
+  }
 
   // The quantity should be sourced from the cartItem in the context for reliability
   const displayQuantity = cartSubstitution ? cartSubstitution.quantity : (cartItem ? cartItem.quantity : 0);
