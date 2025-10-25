@@ -258,7 +258,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
   const updateCartItemSubstitution = async (cartItemId: string, substitutionId: string, isApproved: boolean, quantity: number) => {
     if (!currentCart) return;
 
-    const originalCart = { ...currentCart, items: [...currentCart.items.map(i => ({...i, substitutions: [...i.substitutions.map(s => ({...s}))]}))] }; // Deep copy for rollback
+    const originalCart = JSON.parse(JSON.stringify(currentCart)); // Deep copy for rollback
 
     // Optimistically update the UI
     setCurrentCart(prevCart => {
@@ -266,13 +266,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
 
       const updatedItems = prevCart.items.map(item => {
         if (item.id === cartItemId) {
-          const updatedSubstitutions = item.substitutions.map(sub => {
-            if (sub.id === substitutionId) {
-              return { ...sub, is_approved: isApproved, quantity: quantity };
-            }
-            return sub;
-          }).filter(sub => sub.quantity > 0); // Remove if quantity becomes 0
-
+          const updatedSubstitutions = item.substitutions.map(sub => 
+            sub.id === substitutionId ? { ...sub, is_approved: isApproved, quantity: quantity } : sub
+          );
           return { ...item, substitutions: updatedSubstitutions };
         }
         return item;
@@ -291,8 +287,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
       if (!response.ok) {
         throw new Error('Failed to update cart item substitution.');
       }
-
-      // No need to process response or fetchActiveCart, optimistic state is already correct.
 
     } catch (error: any) {
       toast.error('Failed to update substitution. Please try again.');
