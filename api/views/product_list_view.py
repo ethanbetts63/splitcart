@@ -9,22 +9,31 @@ class ProductListView(generics.ListAPIView):
     serializer_class = ProductSerializer
 
     def get_queryset(self):
+        print("--- ProductListView: get_queryset called ---")
         queryset = Product.objects.all()
+        print(f"Initial queryset count: {queryset.count()}")
+
         store_ids_param = self.request.query_params.get('store_ids')
         search_query = self.request.query_params.get('search', None)
+        print(f"store_ids_param: {store_ids_param}")
+        print(f"search_query: {search_query}")
 
         if store_ids_param:
             try:
                 store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
+                print(f"Filtering by store_ids: {store_ids}")
                 queryset = queryset.filter(
                     price_records__price_entries__store__id__in=store_ids
                 ).distinct()
                 self.nearby_store_ids = store_ids # Store for serializer context
+                print(f"Queryset count after store_ids filter: {queryset.count()}")
             except (ValueError, TypeError):
+                print("Invalid store_ids_param, ignoring.")
                 pass # Invalid store_ids, ignore filtering
 
         if search_query:
             search_terms = search_query.split()
+            print(f"Filtering by search_terms: {search_terms}")
             
             # Build the filter query
             filter_q = Q()
@@ -34,6 +43,7 @@ class ProductListView(generics.ListAPIView):
                 filter_q |= Q(size__icontains=term)
             
             queryset = queryset.filter(filter_q)
+            print(f"Queryset count after search_query filter: {queryset.count()}")
 
             # Build the scoring annotation
             score = Value(0, output_field=IntegerField())
@@ -57,9 +67,13 @@ class ProductListView(generics.ListAPIView):
             queryset = queryset.annotate(search_score=score)
             
             # Order by score, then by name
-            return queryset.order_by('-search_score', 'name')
+            final_queryset = queryset.order_by('-search_score', 'name')
+            print(f"Final queryset with search ordering: {final_queryset.count()} items")
+            return final_queryset
 
-        return queryset.order_by('name')
+        final_queryset = queryset.order_by('name')
+        print(f"Final queryset without search: {final_queryset.count()} items")
+        return final_queryset
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
