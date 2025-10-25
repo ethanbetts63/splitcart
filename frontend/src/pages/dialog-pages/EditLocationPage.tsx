@@ -32,10 +32,11 @@ import { useStoreList } from '@/context/StoreListContext';
 interface EditLocationPageProps {
   localSelectedStoreIds: Set<number>;
   setLocalSelectedStoreIds: React.Dispatch<React.SetStateAction<Set<number>>>;
-  onOpenChange: (open: boolean) => void; // Add this prop
+  onOpenChange: (open: boolean) => void;
+  setHasSearchOccurred: React.Dispatch<React.SetStateAction<boolean>>; // Add this prop
 }
 
-const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreIds, setLocalSelectedStoreIds, onOpenChange }) => {
+const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreIds, setLocalSelectedStoreIds, onOpenChange, setHasSearchOccurred }) => {
   const { isAuthenticated, token, anonymousId } = useAuth();
   const {
     postcode, setPostcode,
@@ -111,6 +112,7 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
       setStores(data || []);
       // When a new search is performed, update the local state directly
       setLocalSelectedStoreIds(new Set((data || []).map(store => store.id))); 
+      setHasSearchOccurred(true); // Set the flag here
 
       // Calculate bounds of all stores to fit them in the map view
       if (data && data.length > 0) {
@@ -131,7 +133,7 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
     } finally {
       setIsLoading(false);
     }
-  }, [postcode, radius, selectedCompanies, setStores, setLocalSelectedStoreIds, setMapBounds]);
+  }, [postcode, radius, selectedCompanies, setStores, setLocalSelectedStoreIds, setMapBounds, setHasSearchOccurred]);
 
 
 
