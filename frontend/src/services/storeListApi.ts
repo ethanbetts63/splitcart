@@ -67,10 +67,17 @@ export const saveStoreListAPI = async (
 ): Promise<SelectedStoreListType> => {
     const method = listId ? 'PUT' : 'POST';
     const url = listId ? `/api/store-lists/${listId}/` : '/api/store-lists/';
+    const requestBody: { name?: string; stores: number[] } = { stores: storeIds };
+
+    // Only include name if the user is authenticated (has a token)
+    if (token) {
+        requestBody.name = name;
+    }
+
     const response = await fetch(url, {
         method,
         headers: getAuthHeaders(token, anonymousId),
-        body: JSON.stringify({ name, stores: storeIds }),
+        body: JSON.stringify(requestBody),
     });
     if (!response.ok) {
         throw new Error('Failed to save store list.');
