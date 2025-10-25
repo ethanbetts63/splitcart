@@ -28,26 +28,26 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
   const imageUrl = product.image_url || fallbackImage;
 
   return (
-    <Card className="w-full flex flex-col h-full overflow-hidden gap-3 pt-0">
+    <Card className="flex flex-col h-full overflow-hidden gap-2">
       <div className="aspect-square w-full overflow-hidden relative">
         <img
           src={imageUrl}
           onError={handleImageError}
           alt={product.name}
-          className="h-full w-full object-cover transition-transform"
+          className="h-full w-full object-cover transition-transform hover:scale-105"
         />
         {product.size && (
           <Badge className="absolute top-2 right-2">{product.size}</Badge>
         )}
       </div>
-      <CardHeader className="p-0 pb-0 text-center">
-        <CardTitle className="h-12 line-clamp-2 text-base">{product.name}</CardTitle>
-        {product.brand_name && <CardDescription>{product.brand_name}</CardDescription>}
+      <CardHeader className="p-0 text-center">
+        <CardTitle className="h-10 leading-5 text-base font-semibold overflow-hidden text-ellipsis line-clamp-2">{product.name}</CardTitle>
+        {product.brand_name && <CardDescription className="text-sm text-muted-foreground">{product.brand_name}</CardDescription>}
       </CardHeader>
-      <CardContent className="flex-grow p-0">
+      <CardContent className="flex-grow px-3">
         <PriceDisplay prices={product.prices} />
       </CardContent>
-      <CardFooter className="flex justify-center p-0 pt-0">
+      <CardFooter className="flex justify-center pb-0">
         <AddToCartButton product={product} />
       </CardFooter>
     </Card>
