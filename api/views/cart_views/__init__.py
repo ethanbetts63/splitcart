@@ -7,6 +7,8 @@ from .active_cart_item_list_create_view import ActiveCartItemListCreateView
 from .active_cart_item_update_destroy_view import ActiveCartItemUpdateDestroyView
 from .cart_substitution_update_destroy_view import CartSubstitutionUpdateDestroyView
 
+from .cart_sync_view import CartSyncView
+
 __all__ = [
     'CartListCreateView',
     'CartRetrieveUpdateDestroyView',
@@ -16,4 +18,5 @@ __all__ = [
     'ActiveCartItemListCreateView',
     'ActiveCartItemUpdateDestroyView',
     'CartSubstitutionUpdateDestroyView',
+    'CartSyncView',
 ]

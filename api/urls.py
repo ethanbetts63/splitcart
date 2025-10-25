@@ -27,6 +27,7 @@ from .views.cart_views import (
     ActiveCartItemListCreateView,
     ActiveCartItemUpdateDestroyView,
     CartSubstitutionUpdateDestroyView,
+    CartSyncView,
 )
 from .views.initial_setup_view import InitialSetupView
 
@@ -57,6 +58,7 @@ urlpatterns = [
 
     # Cart URLs
     path('carts/', CartListCreateView.as_view(), name='cart-list-create'),
+    path('carts/sync/', CartSyncView.as_view(), name='cart-sync'),
     path('carts/active/', ActiveCartDetailView.as_view(), name='active-cart-detail'),
     path('carts/switch-active/', SwitchActiveCartView.as_view(), name='switch-active-cart'),
     path('carts/rename/', RenameCartView.as_view(), name='rename-cart'),
