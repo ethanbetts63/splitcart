@@ -7,7 +7,7 @@ const getAuthHeaders = (token: string | null, anonymousId: string | null): Heade
   };
   if (token) {
     headers['Authorization'] = `Token ${token}`;
-  } else if (anonymousId) {
+  } else if (anonymousId !== null) {
     headers['X-Anonymous-ID'] = anonymousId;
   }
   return headers;
@@ -16,6 +16,7 @@ const getAuthHeaders = (token: string | null, anonymousId: string | null): Heade
 export interface InitialSetupData {
   cart: Cart;
   store_list: SelectedStoreListType;
+  anonymous_id?: string; // Add anonymous_id as an optional field
 }
 
 export const performInitialSetupAPI = async (token: string | null, anonymousId: string | null): Promise<InitialSetupData> => {

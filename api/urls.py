@@ -28,7 +28,6 @@ from .views.cart_views import (
     ActiveCartItemUpdateDestroyView,
     CartSubstitutionUpdateDestroyView,
 )
-from .views.anonymous_user_view import AnonymousUserCreateView
 from .views.initial_setup_view import InitialSetupView
 
 urlpatterns = [
@@ -67,7 +66,4 @@ urlpatterns = [
     path('carts/active/items/', ActiveCartItemListCreateView.as_view(), name='active-cart-item-list-create'),
     path('carts/active/items/<uuid:pk>/', ActiveCartItemUpdateDestroyView.as_view(), name='active-cart-item-update-destroy'),
     path('carts/active/items/<uuid:cart_item_pk>/substitutions/<uuid:substitution_pk>/', CartSubstitutionUpdateDestroyView.as_view(), name='cart-substitution-update-destroy'),
-
-    # Anonymous User URLs
-    path('anonymous-user/', AnonymousUserCreateView.as_view(), name='anonymous-user-create'),
 ]

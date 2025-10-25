@@ -1,3 +1,4 @@
+import uuid
 from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,8 +13,9 @@ class InitialSetupView(APIView):
         user = request.user if request.user.is_authenticated else None
         anonymous_id = getattr(request, 'anonymous_id', None)
 
+        # If user is not authenticated and no anonymous ID is present, create one.
         if not user and not anonymous_id:
-            return Response({"detail": "Authentication or anonymous ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+            anonymous_id = uuid.uuid4()
 
         # Get or create the store list
         store_list = None
@@ -26,8 +28,6 @@ class InitialSetupView(APIView):
             if user:
                 store_list = SelectedStoreList.objects.create(user=user, name='Default List')
             elif anonymous_id:
-                # TODO: The bug that causes multiple store lists for anonymous users is in
-                # SelectedStoreListListCreateView.perform_create, which doesn't pass the anonymous_id.
                 store_list = SelectedStoreList.objects.create(anonymous_id=anonymous_id, name='Default List')
 
 
@@ -48,7 +48,11 @@ class InitialSetupView(APIView):
         cart_serializer = CartSerializer(cart)
         store_list_serializer = SelectedStoreListSerializer(store_list)
 
-        return Response({
+        response_data = {
             'cart': cart_serializer.data,
             'store_list': store_list_serializer.data
-        }, status=status.HTTP_200_OK)
+        }
+        if anonymous_id:
+            response_data['anonymous_id'] = anonymous_id
+
+        return Response(response_data, status=status.HTTP_200_OK)
