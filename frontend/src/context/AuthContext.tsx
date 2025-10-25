@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
 
         setInitialCart(initialData.cart);
-        setInitialStoreList(initialData.store_list);
+        setInitialStoreList(initialData.cart.selected_store_list);
 
       } catch (error) {
         console.error('Failed during initial user setup:', error);

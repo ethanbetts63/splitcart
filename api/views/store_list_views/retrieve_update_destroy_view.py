@@ -30,7 +30,7 @@ class SelectedStoreListRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyA
         if self.request.user.is_authenticated:
             return SelectedStoreList.objects.filter(user=self.request.user)
         else:
-            anonymous_id = self.request.query_params.get('anonymous_id')
+            anonymous_id = getattr(self.request, 'anonymous_id', None)
             if anonymous_id:
                 return SelectedStoreList.objects.filter(anonymous_id=anonymous_id)
             return SelectedStoreList.objects.none()
