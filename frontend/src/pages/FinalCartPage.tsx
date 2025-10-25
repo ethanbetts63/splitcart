@@ -88,16 +88,7 @@ toast.success("Email Sent!", {
     }
   };
 
-  // The optimization data is now passed via CartContext from SubstitutionPage
-  useEffect(() => {
-    if (!optimizationResult && currentCart?.items.length === 0) {
-      // If no optimization result and cart is empty, navigate home
-      navigate('/');
-    } else if (!optimizationResult) {
-      // If no optimization result but cart has items, navigate to substitutions to trigger optimization
-      navigate('/substitutions');
-    }
-  }, [optimizationResult, currentCart, navigate]);
+
 
   if (isLoading) {
     return <LoadingSpinner />;
