@@ -20,3 +20,21 @@
 - **Unused Variables:** Cleaned up the `signup-form.tsx` by removing unused `login` and `navigate` variables.
 - **Type Narrowing:** Resolved several persistent "possibly 'undefined'" errors in `CartItemTile.tsx` and `ResultsDisplay.tsx` by adding non-null assertions and restructuring JSX to help TypeScript's type inference.
 - **Module Paths:** Corrected an incorrect module import path in `ProductGrid.tsx`.
+
+---
+
+## Improvement Suggestions
+
+Based on the code reviewed during the session, here are a few areas for potential future enhancement:
+
+**1. Redundancy & Efficiency (Data Fetching)**
+- **Observation:** Several components (`GridSourcer`, `ProductCarousel`, `CategoryBar`) implement their own data-fetching logic, leading to repeated boilerplate code for handling auth, URL construction, and responses.
+- **Suggestion:** Abstract this logic into a centralized API client or a set of reusable custom hooks (e.g., `useApiQuery(endpoint, params)`). This would reduce redundancy, improve maintainability, and ensure consistency.
+
+**2. Efficiency (State Management)**
+- **Observation:** The main `CartContext` holds a large `currentCart` object. Any small, nested change forces all consuming components to re-evaluate, which can lead to unnecessary re-renders.
+- **Suggestion:** For future scaling, consider a more granular state management library like Zustand or Jotai. These allow components to subscribe to smaller, specific slices of state, preventing re-renders when unrelated data changes.
+
+**3. Best Practice (Component Responsibility)**
+- **Observation:** Some components, like `GridSourcer`, handle a wide range of responsibilities including data fetching, pagination, and UI rendering.
+- **Suggestion:** The component could be made cleaner and more reusable by extracting the data-fetching and pagination logic into its own custom hook (e.g., `usePaginatedProducts`). This would leave `GridSourcer` as a pure "container" component, aligning better with the Single Responsibility Principle.
