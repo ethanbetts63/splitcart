@@ -9,15 +9,9 @@ from data_management.utils.cart_optimization.substitute_manager import Substitut
 
 cart_manager = CartManager()
 
-class ActiveCartItemListCreateView(generics.ListCreateAPIView):
+class ActiveCartItemListCreateView(generics.CreateAPIView):
     serializer_class = CartItemSerializer
     permission_classes = [IsAuthenticatedOrAnonymous]
-
-    def get_queryset(self):
-        cart = cart_manager.get_active_cart(self.request)
-        if cart:
-            return CartItem.objects.filter(cart=cart)
-        return CartItem.objects.none()
 
     def create(self, request, *args, **kwargs):
         cart = cart_manager.get_active_cart(self.request)
