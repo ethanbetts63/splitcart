@@ -58,6 +58,7 @@ class SubstituteManager:
         ).distinct()
 
         self._potential_product_substitutions = list(substitutions_queryset[:limit])
+        print(f"--- SubstituteManager: Found {len(self._potential_product_substitutions)} potential product substitutions. ---")
         return self._potential_product_substitutions
 
     def create_cart_substitutions(self, original_cart_item: CartItem) -> list[CartSubstitution]:
@@ -71,30 +72,34 @@ class SubstituteManager:
         Returns:
             A list of created CartSubstitution objects.
         """
+        print("--- SubstituteManager: create_cart_substitutions called ---")
         if not isinstance(original_cart_item, CartItem):
             raise TypeError("original_cart_item must be an instance of CartItem.")
 
         found_product_substitutions = self.find_potential_product_substitutions()
+        print(f"Found {len(found_product_substitutions)} product substitutions to process.")
         created_cart_substitutions = []
 
         for ps in found_product_substitutions:
-            # Determine the actual substitute product from the ProductSubstitution object
-            # It's the product in the ProductSubstitution that is NOT the original_product
             substitute_product = ps.product_a if ps.product_b.id == self.product_id else ps.product_b
+            print(f"Processing substitute product: {substitute_product.name}")
             
-            # Ensure we don't create duplicates for the same original_cart_item and substitute_product
-            # This handles cases where the same substitute might be found via different ProductSubstitution entries
             if not CartSubstitution.objects.filter(
                 original_cart_item=original_cart_item,
                 substituted_product=substitute_product
             ).exists():
+                print("  -> Creating new CartSubstitution.")
                 cart_sub = CartSubstitution.objects.create(
                     original_cart_item=original_cart_item,
                     substituted_product=substitute_product,
-                    quantity=1,  # Default quantity, can be adjusted by user later
+                    quantity=1,
                     is_approved=False
                 )
                 created_cart_substitutions.append(cart_sub)
+            else:
+                print("  -> CartSubstitution already exists.")
+        
+        print(f"Created {len(created_cart_substitutions)} new CartSubstitution objects.")
         return created_cart_substitutions
 
     def update_cart_substitution(self, substitution_id: str, is_approved: bool = None, quantity: int = None) -> CartSubstitution | None:

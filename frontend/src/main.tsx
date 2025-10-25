@@ -7,6 +7,9 @@ import { AuthProvider, useAuth } from './context/AuthContext.tsx';
 import { CartProvider } from './context/CartContext.tsx';
 import { StoreListProvider } from './context/StoreListContext.tsx';
 import { StoreSearchProvider } from './context/StoreSearchContext.tsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const Root = () => {
   const { initialCart, initialStoreList } = useAuth();
@@ -31,7 +34,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <Root />
+        <QueryClientProvider client={queryClient}>
+          <Root />
+        </QueryClientProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,
