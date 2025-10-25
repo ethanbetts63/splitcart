@@ -191,8 +191,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
         throw new Error('Failed to add item to cart.');
       }
 
-      // Sync with server state
-      await fetchActiveCart();
+      const realCartItem = await response.json();
+
+      // Silently update the state with the real item from the server
+      setCurrentCart(prevCart => {
+        if (!prevCart) return null;
+        return {
+          ...prevCart,
+          items: prevCart.items.map(item => 
+            item.id === tempId ? realCartItem : item
+          ),
+        };
+      });
 
     } catch (error: any) {
       toast.error('Failed to add item to cart. Please try again.');
@@ -232,10 +242,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
         if (!response.ok) {
             throw new Error('Failed to update item quantity.');
         }
-
-        // A DELETE request won't return the item, so we can't rely on the response body
-        // And a PATCH might not return the full cart. Safest is to refetch.
-        await fetchActiveCart();
 
     } catch (error: any) {
         toast.error('Failed to update item. Please try again.');
