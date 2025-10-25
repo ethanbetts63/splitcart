@@ -16,11 +16,20 @@ class InitialSetupView(APIView):
             return Response({"detail": "Authentication or anonymous ID is required."}, status=status.HTTP_400_BAD_REQUEST)
 
         # Get or create the store list
-        store_list_filter = {'user': user} if user else {'anonymous_id': anonymous_id}
-        store_list, _ = SelectedStoreList.objects.get_or_create(
-            **store_list_filter,
-            defaults={'name': 'Default List'}
-        )
+        store_list = None
+        if user:
+            store_list = SelectedStoreList.objects.filter(user=user).order_by('-last_used_at').first()
+        elif anonymous_id:
+            store_list = SelectedStoreList.objects.filter(anonymous_id=anonymous_id).order_by('-last_used_at').first()
+
+        if not store_list:
+            if user:
+                store_list = SelectedStoreList.objects.create(user=user, name='Default List')
+            elif anonymous_id:
+                # TODO: The bug that causes multiple store lists for anonymous users is in
+                # SelectedStoreListListCreateView.perform_create, which doesn't pass the anonymous_id.
+                store_list = SelectedStoreList.objects.create(anonymous_id=anonymous_id, name='Default List')
+
 
         # Get or create the active cart
         cart_filter = {'user': user, 'is_active': True} if user else {'anonymous_id': anonymous_id, 'is_active': True}
