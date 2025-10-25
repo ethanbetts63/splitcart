@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import ProductGrid from './ProductGrid';
-import type { Product } from '@/types/Product'; // Import shared type
+import type { Product } from '@/types'; // Import shared type
 import { useAuth } from '@/context/AuthContext';
 
 import {
@@ -144,6 +144,10 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, catego
       <h2 className="text-2xl font-bold mb-4">{titleText}</h2>
       <ProductGrid 
         products={products} 
+        onLoadMore={() => handlePageChange(currentPage + 1)} 
+        hasMorePages={currentPage < totalPages} 
+        isLoadingMore={isLoading} 
+        title={titleText} 
       />
       <div className="flex justify-center mt-8">
         <Pagination>

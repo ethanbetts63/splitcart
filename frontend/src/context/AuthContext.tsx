@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { performInitialSetupAPI } from '@/services/auth.api';
-import { type Cart, type InitialSetupData, type SelectedStoreListType } from '@/types';
+import { type Cart, type SelectedStoreListType } from '@/types';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
 
         setInitialCart(initialData.cart);
-        setInitialStoreList(initialData.cart.selected_store_list);
+        setInitialStoreList(initialData.cart.selected_store_list ?? null);
 
       } catch (error) {
         console.error('Failed during initial user setup:', error);

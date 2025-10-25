@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductTile from './ProductTile';
 import { Button } from '@/components/ui/button';
-import type { Product } from '@/types/Product'; // Import shared type
+import type { Product } from '@/types'; // Import shared type
 
 interface ProductGridProps {
   products: Product[];

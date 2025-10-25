@@ -1,5 +1,5 @@
 import React from 'react';
-import type { CompanyPriceInfo } from '@/types/Product'; // Import shared type
+import type { CompanyPriceInfo } from '@/types'; // Import shared type
 import { useCompanyLogo } from '@/hooks/useCompanyLogo';
 import { Skeleton } from '@/components/ui/skeleton';
 
