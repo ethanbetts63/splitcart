@@ -63,6 +63,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
   const { data: products, isLoading, error } = useQuery<Product[], Error>({
     queryKey: ['products', title, sourceUrl, storeIds],
     queryFn: () => fetchProducts(sourceUrl, storeIds, token),
+    enabled: !!storeIds && storeIds.length > 0, // Only run query if storeIds are available
   });
 
   if (isLoading) {

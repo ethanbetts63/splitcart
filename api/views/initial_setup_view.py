@@ -46,11 +46,9 @@ class InitialSetupView(APIView):
 
         # Serialize and return the data
         cart_serializer = CartSerializer(cart)
-        store_list_serializer = SelectedStoreListSerializer(store_list)
 
         response_data = {
             'cart': cart_serializer.data,
-            'store_list': store_list_serializer.data
         }
         if anonymous_id:
             response_data['anonymous_id'] = anonymous_id

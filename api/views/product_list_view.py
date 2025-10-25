@@ -2,7 +2,7 @@ from django.db.models import Q, Case, When, Value, IntegerField
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework.exceptions import ValidationError
-import Product
+from products.models import Product
 from ..serializers import ProductSerializer
 
 class ProductListView(generics.ListAPIView):
