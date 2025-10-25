@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (currentAnonymousId) {
           document.cookie = 'anonymousId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
           setAnonymousId(null);
-          currentAnonymousId = undefined;
+          currentAnonymousId;
         }
       } else if (currentAnonymousId) {
         setAnonymousId(currentAnonymousId);
