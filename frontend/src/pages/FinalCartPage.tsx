@@ -24,12 +24,7 @@ const FinalCartPage = () => {
   const [viewWithSubstitutes, setViewWithSubstitutes] = useState(true);
   const [exportAction, setExportAction] = useState<{type: 'email' | 'download', plan: string} | null>(null);
 
-  // Clear optimization results if cart or stores change, or on unmount
-  useEffect(() => {
-    return () => {
-      setOptimizationResult(null);
-    };
-  }, [currentCart, selectedStoreIds, setOptimizationResult]);
+
 
   const handleEmail = async (exportData: ExportData, planName: string) => {
     if (!isAuthenticated) {

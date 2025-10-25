@@ -126,13 +126,7 @@
                         <tr>
                             <td colspan="6" style="text-align: right;">Store Subtotal:</td>
                             <td>
-                                {% with 0 as total %}
-                                    {% for item in store_plan.items %}
-                                        {% with total|add:(item.price|multiply:item.quantity) as total %}
-                                        {% endwith %}
-                                    {% endfor %}
-                                    ${{ total|floatformat:2 }}
-                                {% endwith %}
+                                ${{ store_plan.subtotal|floatformat:2 }}
                             </td>
                         </tr>
                     </tfoot>
