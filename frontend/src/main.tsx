@@ -1,31 +1,38 @@
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { StoreSearchProvider } from './context/StoreSearchContext';
-import { StoreListProvider } from './context/StoreListContext';
-import { AuthProvider } from './context/AuthContext';
-import { CartProvider } from './context/CartContext';
-import { Toaster } from 'sonner';
-import './index.css'
-import App from './App.tsx'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.tsx';
+import './index.css';
+import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext.tsx';
+import { CartProvider } from './context/CartContext.tsx';
+import { StoreListProvider } from './context/StoreListContext.tsx';
+import { StoreSearchProvider } from './context/StoreSearchContext.tsx';
 
-const queryClient = new QueryClient();
+const Root = () => {
+  const { initialCart, initialStoreList } = useAuth();
 
-createRoot(document.getElementById('root')!).render(
-  <QueryClientProvider client={queryClient}>
+  // Render providers only when initial data is available
+  if (!initialCart || !initialStoreList) {
+    return <div>Loading initial data...</div>; // Or a loading spinner
+  }
+
+  return (
+    <CartProvider initialCart={initialCart}>
+      <StoreListProvider initialStoreList={initialStoreList}>
+        <StoreSearchProvider>
+          <App />
+        </StoreSearchProvider>
+      </StoreListProvider>
+    </CartProvider>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <StoreSearchProvider>
-          <StoreListProvider>
-            <CartProvider>
-              <App />
-              <Toaster position="top-center" />
-            </CartProvider>
-          </StoreListProvider>
-        </StoreSearchProvider>
+        <Root />
       </AuthProvider>
     </BrowserRouter>
-    <ReactQueryDevtools initialIsOpen={false} />
-  </QueryClientProvider>
-)
+  </React.StrictMode>,
+);
