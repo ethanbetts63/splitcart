@@ -1,4 +1,5 @@
 import { type SelectedStoreListType, type Cart, type InitialSetupData } from '@/types';
+import { getAuthHeaders } from '@/lib/utils';
 
 export const performInitialSetupAPI = async (token: string | null, anonymousId: string | null): Promise<InitialSetupData> => {
   const response = await fetch('/api/initial-setup/', {

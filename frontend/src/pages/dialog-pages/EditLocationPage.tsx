@@ -65,13 +65,7 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
     console.log('EditLocationPage - Store List Name:', currentStoreListName);
   }, [currentStoreListId, currentStoreListName]);
 
-  useEffect(() => {
-    if (isAuthenticated && token) {
-      fetchActiveStoreList();
-    } else if (!isAuthenticated && anonymousId) { // Fetch for anonymous users too
-      fetchActiveStoreList();
-    }
-  }, [isAuthenticated, token, anonymousId, fetchActiveStoreList]);
+
 
   const handleLocalStoreSelect = useCallback((storeId: number) => {
     setLocalSelectedStoreIds(prev => {
