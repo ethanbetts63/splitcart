@@ -52,7 +52,7 @@ urlpatterns = [
     path('postcodes/search/', PostcodeSearchView.as_view(), name='postcode-search'),
 
     # SelectedStoreList URLs
-    path('store-lists/', SelectedStoreListListCreateView.as_view(), name='store-list-list-create'),
+    path('store-lists/', SelectedStoreListCreateView.as_view(), name='store-list-list-create'),
     path('store-lists/<uuid:pk>/', SelectedStoreListRetrieveUpdateDestroyView.as_view(), name='store-list-retrieve-update-destroy'),
 
     # Cart URLs
