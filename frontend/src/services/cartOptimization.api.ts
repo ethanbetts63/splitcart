@@ -1,5 +1,4 @@
 import type { ApiResponse, ExportData } from '@/types';
-import { getAuthHeaders } from '@/lib/utils';
 
 export const optimizeCartAPI = async (cartId: string): Promise<ApiResponse> => {
   const response = await fetch('/api/cart/split/', {
