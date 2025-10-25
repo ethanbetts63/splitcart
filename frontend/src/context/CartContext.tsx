@@ -266,9 +266,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
 
       const updatedItems = prevCart.items.map(item => {
         if (item.id === cartItemId) {
-          const updatedSubstitutions = item.substitutions.map(sub => 
-            sub.id === substitutionId ? { ...sub, is_approved: isApproved, quantity: quantity } : sub
-          );
+          const updatedSubstitutions = item.substitutions
+            ? item.substitutions.map(sub => 
+                sub.id === substitutionId ? { ...sub, is_approved: isApproved, quantity: quantity } : sub
+              )
+            : [];
           return { ...item, substitutions: updatedSubstitutions };
         }
         return item;
