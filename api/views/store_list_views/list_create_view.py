@@ -3,7 +3,7 @@ from api.permissions import IsAuthenticatedOrAnonymous
 from users.models import SelectedStoreList
 from api.serializers import SelectedStoreListSerializer
 
-class SelectedStoreListListCreateView(generics.ListCreateAPIView):
+class SelectedStoreListCreateView(generics.ListCreateAPIView):
     serializer_class = SelectedStoreListSerializer
     permission_classes = [IsAuthenticatedOrAnonymous]
 
