@@ -119,10 +119,6 @@ class SubstituteManager:
             if is_approved is not None:
                 cart_sub.is_approved = is_approved
             if quantity is not None:
-                if quantity <= 0:
-                    # If quantity is 0 or less, remove the substitution
-                    self.remove_cart_substitution(str(cart_sub.id))
-                    return None
                 cart_sub.quantity = quantity
             cart_sub.save()
             return cart_sub

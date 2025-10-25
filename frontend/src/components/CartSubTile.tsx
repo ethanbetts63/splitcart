@@ -24,8 +24,13 @@ const CartSubTile: React.FC<CartSubTileProps> = ({ cartSubstitution, cartItemId 
   };
 
   const handleQuantityChange = (newQuantity: number) => {
-    const newIsApproved = newQuantity > 0;
-    updateCartItemSubstitution(cartItemId, cartSubstitution.id, newIsApproved, newQuantity);
+    if (newQuantity < 1) {
+      // This is the "disapprove" action. Keep the quantity, but set is_approved to false.
+      updateCartItemSubstitution(cartItemId, cartSubstitution.id, false, cartSubstitution.quantity);
+    } else {
+      // This is a normal quantity update, ensure it remains approved.
+      updateCartItemSubstitution(cartItemId, cartSubstitution.id, true, newQuantity);
+    }
   };
 
   const imageUrl = product.image_url || fallbackImage;
