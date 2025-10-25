@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import SkeletonProductTile from "./SkeletonProductTile";
 import ProductTile from "./ProductTile";
-import '../css/ProductCarousel.css';
 import { useAuth } from '@/context/AuthContext';
 import { Link } from 'react-router-dom';
 
@@ -77,10 +76,10 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
             </Link>
           )}
         </div>
-        <div className="custom-carousel">
-          <div className="custom-carousel__container">
+        <div className="overflow-x-auto pb-4">
+          <div className="flex">
             {[...Array(5)].map((_, i) => (
-              <div className="custom-carousel__slide" key={i}>
+              <div className="flex-shrink-0 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 pb-2" key={i}>
                 <SkeletonProductTile />
               </div>
             ))}
@@ -104,10 +103,10 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
           </Link>
         )}
       </div>
-      <div className="custom-carousel">
-        <div className="custom-carousel__container">
+      <div className="overflow-x-auto pb-4">
+        <div className="flex">
           {products?.map((product) => (
-            <div className="custom-carousel__slide" key={product.id}>
+            <div className="flex-shrink-0 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 pb-2" key={product.id}>
               <ProductTile product={product} />
             </div>
           ))}

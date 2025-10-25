@@ -1,4 +1,4 @@
-import { type SelectedStoreListType, type Cart, type InitialSetupData } from '@/types';
+import { type InitialSetupData } from '@/types';
 import { getAuthHeaders } from '@/lib/utils';
 
 export const performInitialSetupAPI = async (token: string | null, anonymousId: string | null): Promise<InitialSetupData> => {
