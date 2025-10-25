@@ -5,7 +5,7 @@ import { useStoreList } from '@/context/StoreListContext';
 import ProductTile from '@/components/ProductTile';
 import CartItemTile from '@/components/CartItemTile';
 import { Button } from '@/components/ui/button';
-import { optimizeCartAPI } from '@/services/SubstitutionApi';
+import { optimizeCartAPI } from '@/services/cartOptimization.api';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import type { Product, CartSubstitution, CartItem } from '@/types';
 import { Badge } from "@/components/ui/badge";

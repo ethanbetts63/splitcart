@@ -6,7 +6,7 @@ import {
   saveStoreListAPI,
   createNewStoreListAPI,
   deleteStoreListAPI,
-} from '@/services/storeListApi';
+} from '@/services/storeList.api';
 
 // --- Type Definitions ---
 export type SelectedStoreListType = {

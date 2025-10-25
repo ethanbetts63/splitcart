@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import { performInitialSetupAPI, type InitialSetupData } from '@/services/initialSetupApi';
+import { performInitialSetupAPI, type InitialSetupData } from '@/services/auth.api';
 import { type Cart } from '@/types';
 import { type SelectedStoreListType } from '@/context/StoreListContext';
 
