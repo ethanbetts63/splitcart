@@ -49,7 +49,7 @@ const CategoryBar: React.FC = () => {
         if (scrollLeft >= halfwayPoint) {
           carouselRef.current.scrollLeft = 0; // Jump back to the start
         } else {
-          carouselRef.current.scrollLeft += 0.25; // Adjust for speed
+          carouselRef.current.scrollLeft += 0.2; // Adjust for speed
         }
       }
       animationFrameRef.current = requestAnimationFrame(scroll);
