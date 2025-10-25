@@ -14,8 +14,9 @@ import { emailCartAPI, downloadCartAPI } from '@/services/cartOptimization.api';
 import type { ExportData } from '@/types';
 
 const FinalCartPage = () => {
-  const { currentCart, optimizationResult, setOptimizationResult } = useCart();
-  const { selectedStoreIds } = useStoreList();
+  const { optimizationResult } = useCart();
+  useStoreList(); // Call hook to ensure context is available, but don't destructure
+
   const { isAuthenticated, token } = useAuth();
   const navigate = useNavigate();
 
