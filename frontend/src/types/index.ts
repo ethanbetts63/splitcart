@@ -65,6 +65,14 @@ export type SelectedStoreListType = {
   last_used_at: string;
 };
 
+export type Store = {
+  id: number;
+  company_name: string;
+  store_name: string;
+  latitude: number;
+  longitude: number;
+};
+
 // --- API & Optimization Types ---
 
 export type ShoppingPlan = {
