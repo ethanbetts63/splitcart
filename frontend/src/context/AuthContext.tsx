@@ -24,45 +24,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const initializeUser = async () => {
-            const storedToken = localStorage.getItem('token') ?? null;
-            const storedAnonymousId = localStorage.getItem('anonymousId') ?? null;
+      const storedToken = localStorage.getItem('token') ?? null;
+      // We will rely on the backend to manage and return the anonymous ID
+      const storedAnonymousId = document.cookie.split('; ').find(row => row.startsWith('anonymousId='))?.split('=')[1] ?? null;
 
-      let currentToken = storedToken;
-      let currentAnonymousId = storedAnonymousId;
+      try {
+        const initialData = await performInitialSetupAPI(storedToken, storedAnonymousId);
+        
+        if (storedToken) {
+          setIsAuthenticated(true);
+          setToken(storedToken);
+        }
 
-      if (currentToken) {
-        setIsAuthenticated(true);
-        setToken(currentToken);
-        if (currentAnonymousId) {
-          document.cookie = 'anonymousId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-          setAnonymousId(null);
-          currentAnonymousId;
+        if (initialData.anonymous_id) {
+          document.cookie = `anonymousId=${initialData.anonymous_id}; path=/; max-age=31536000;`; // 1 year expiry
+          setAnonymousId(initialData.anonymous_id);
         }
-      } else if (currentAnonymousId) {
-        setAnonymousId(currentAnonymousId);
-      } else {
-        try {
-          const response = await fetch('/api/anonymous-user/', { method: 'POST' });
-          if (response.ok) {
-            const data = await response.json();
-            document.cookie = `anonymousId=${data.anonymous_id}; path=/; max-age=31536000;`; // 1 year expiry
-            setAnonymousId(data.anonymous_id);
-            currentAnonymousId = data.anonymous_id;
-          }
-        } catch (error) {
-          console.error('Failed to create anonymous user:', error);
-        }
-      }
 
-      // Perform initial setup if we have a token or an anonymousId
-      if (currentToken || currentAnonymousId) {
-        try {
-          const initialData = await performInitialSetupAPI(currentToken, currentAnonymousId);
-          setInitialCart(initialData.cart);
-          setInitialStoreList(initialData.store_list);
-        } catch (error) {
-          console.error('Failed to perform initial setup:', error);
-        }
+        setInitialCart(initialData.cart);
+        setInitialStoreList(initialData.store_list);
+
+      } catch (error) {
+        console.error('Failed during initial user setup:', error);
       }
     };
 
