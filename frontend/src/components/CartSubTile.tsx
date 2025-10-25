@@ -3,14 +3,19 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from "@/components/ui/badge";
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
-import type { Product } from '@/types';
+import type { CartSubstitution } from '@/types';
 
 interface CartSubTileProps {
-  product: Product; // We'll use a dummy product
-  quantity: number;
+  cartSubstitution: CartSubstitution;
 }
 
-const CartSubTile: React.FC<CartSubTileProps> = ({ product, quantity }) => {
+const CartSubTile: React.FC<CartSubTileProps> = ({ cartSubstitution }) => {
+  const { substituted_product: product, quantity } = cartSubstitution;
+
+  if (!product) {
+    return null; // Don't render if there is no product data
+  }
+
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = fallbackImage;
   };
