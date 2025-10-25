@@ -161,6 +161,7 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'cart' }: Set
               onOpenChange={handleOpenChange} 
               localSelectedStoreIds={localSelectedStoreIds}
               setLocalSelectedStoreIds={setLocalSelectedStoreIds}
+              setHasSearchOccurred={setHasSearchOccurred}
             />
           </main>
         </SidebarProvider>
