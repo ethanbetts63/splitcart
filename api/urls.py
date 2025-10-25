@@ -29,8 +29,10 @@ from .views.cart_views import (
     CartSubstitutionUpdateDestroyView,
 )
 from .views.anonymous_user_view import AnonymousUserCreateView
+from .views.initial_setup_view import InitialSetupView
 
 urlpatterns = [
+    path('initial-setup/', InitialSetupView.as_view(), name='initial-setup'),
     path('scheduler/next-candidate/', SchedulerView.as_view(), name='scheduler-next-candidate'),
     path('upload/products/', ProductFileUploadView.as_view(), name='product-file-upload'),
     path('upload/gs1/', Gs1FileUploadView.as_view(), name='gs1-file-upload'),

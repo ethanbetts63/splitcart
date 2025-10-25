@@ -43,7 +43,7 @@ interface StoreListContextType {
 const StoreListContext = createContext<StoreListContextType | undefined>(undefined);
 
 // --- Provider Component ---
-export const StoreListProvider = ({ children }: { children: ReactNode }) => {
+export const StoreListProvider = ({ children, initialStoreList }: { children: ReactNode, initialStoreList: SelectedStoreListType | null }) => {
   const { token, anonymousId } = useAuth();
 
   // --- State Definitions ---
@@ -75,49 +75,21 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     sessionStorage.setItem('selectedStoreIds', JSON.stringify(Array.from(selectedStoreIds)));
   }, [selectedStoreIds]);
 
-  // Self-contained initialization logic
+  // Initialize state from initialStoreList prop
   useEffect(() => {
-    const initialize = async () => {
-      if (!token && !anonymousId) {
-        return; // Wait for an identity
+    if (initialStoreList) {
+      setUserStoreLists([initialStoreList]);
+      setCurrentStoreListId(initialStoreList.id);
+      setCurrentStoreListName(initialStoreList.name);
+
+      const savedSelection = sessionStorage.getItem('selectedStoreIds');
+      const savedSelectionIsEmpty = !savedSelection || JSON.parse(savedSelection).length === 0;
+      if (savedSelectionIsEmpty) {
+        setSelectedStoreIds(new Set(initialStoreList.stores));
       }
-      setStoreListLoading(true);
-      setStoreListError(null);
-      try {
-        let lists = await fetchActiveStoreListAPI(token, anonymousId);
-        let activeList: SelectedStoreListType | null = null;
-
-        if (lists.length === 0) {
-          // No lists exist, so create a default one.
-          const newList = await createNewStoreListAPI([], token, anonymousId);
-          lists = [newList];
-          activeList = newList;
-        } else {
-          // Lists exist, find the most recent one.
-          activeList = lists.sort((a, b) => new Date(b.last_used_at).getTime() - new Date(a.last_used_at).getTime())[0];
-        }
-
-        if (activeList) {
-          setUserStoreLists(lists);
-          setCurrentStoreListId(activeList.id);
-          setCurrentStoreListName(activeList.name);
-
-          // Only auto-load the stores from the active list if the session is empty.
-          const savedSelection = sessionStorage.getItem('selectedStoreIds');
-          const savedSelectionIsEmpty = !savedSelection || JSON.parse(savedSelection).length === 0;
-          if (savedSelectionIsEmpty) {
-            setSelectedStoreIds(new Set(activeList.stores));
-          }
-        }
-      } catch (err: any) {
-        setStoreListError(err.message);
-      } finally {
-        setStoreListLoading(false);
-      }
-    };
-
-    initialize();
-  }, [token, anonymousId]);
+      setStoreListLoading(false);
+    }
+  }, [initialStoreList]);
 
   // --- Context Functions ---
 

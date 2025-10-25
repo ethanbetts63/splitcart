@@ -25,13 +25,20 @@ export interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Cart | null }> = ({ children, initialCart }) => {
   const { token, anonymousId, isAuthenticated } = useAuth();
   const [currentCart, setCurrentCart] = useState<Cart | null>(null);
   const [userCarts, setUserCarts] = useState<Cart[]>([]);
   const [optimizationResult, setOptimizationResult] = useState<ApiResponse | null>(null);
   const [cartLoading, setCartLoading] = useState(true);
   const [cartError, setCartError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (initialCart) {
+      setCurrentCart(initialCart);
+      setCartLoading(false);
+    }
+  }, [initialCart]);
 
   const getAuthHeaders = useCallback(() => {
     const headers: HeadersInit = { 'Content-Type': 'application/json' };
@@ -68,15 +75,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error(error.message);
     }
   }, [getAuthHeaders, isAuthenticated]);
-
-  useEffect(() => {
-    if (token || anonymousId) {
-      fetchActiveCart();
-      if (isAuthenticated) {
-        fetchUserCarts();
-      }
-    }
-  }, [token, anonymousId, isAuthenticated, fetchActiveCart, fetchUserCarts]);
 
   const loadCart = async (cartId: string) => {
     // This will become the active cart on the backend
