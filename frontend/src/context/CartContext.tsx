@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
+import { toast } from 'sonner';
 import type { Cart, ApiResponse } from '@/types';
 
 // Types
@@ -10,7 +11,7 @@ export interface CartContextType {
   optimizationResult: ApiResponse | null;
   setOptimizationResult: (result: ApiResponse | null) => void;
   cartLoading: boolean;
-  cartError: string | null;
+
   fetchActiveCart: () => void;
   loadCart: (cartId: string) => void;
   createNewCart: () => void;
@@ -31,7 +32,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
   const [userCarts, setUserCarts] = useState<Cart[]>([]);
   const [optimizationResult, setOptimizationResult] = useState<ApiResponse | null>(null);
   const [cartLoading, setCartLoading] = useState(true);
-  const [cartError, setCartError] = useState<string | null>(null);
+
 
   useEffect(() => {
     if (initialCart) {
@@ -58,7 +59,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
       const data = await response.json();
       setCurrentCart(data);
     } catch (error: any) {
-      setCartError(error.message);
+      toast.error('Failed to fetch active cart.');
     } finally {
       setCartLoading(false);
     }
@@ -94,10 +95,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
         }
         const newCart = await response.json();
         setCurrentCart(newCart);
-        fetchUserCarts(); // Refresh the list of user carts
-        setCartError(null);
     } catch (error: any) {
-        setCartError(error.message);
+        toast.error(error.message);
     }
   };
 
@@ -114,10 +113,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
         }
         const updatedCart = await response.json();
         setCurrentCart(updatedCart);
-        fetchUserCarts();
-        setCartError(null); // Clear any previous errors
     } catch (error: any) {
-        setCartError(error.message);
+        toast.error(error.message);
     }
   };
 
@@ -132,7 +129,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
         fetchActiveCart();
         fetchUserCarts();
     } catch (error: any) {
-        setCartError(error.message);
+        toast.error('Failed to delete cart.');
     }
   };
 
@@ -148,7 +145,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
         setCurrentCart(newActiveCart);
         fetchUserCarts();
     } catch (error: any) {
-        setCartError(error.message);
+        toast.error('Failed to switch active cart.');
     }
   };
 
@@ -198,7 +195,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
       await fetchActiveCart();
 
     } catch (error: any) {
-      setCartError(error.message);
+      toast.error('Failed to add item to cart. Please try again.');
       // Revert the optimistic update on failure
       setCurrentCart(originalCart);
     }
@@ -241,7 +238,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
         await fetchActiveCart();
 
     } catch (error: any) {
-        setCartError(error.message);
+        toast.error('Failed to update item. Please try again.');
         // Revert the optimistic update on failure
         setCurrentCart(originalCart);
     }
@@ -259,10 +256,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
         headers: getAuthHeaders(),
         body: JSON.stringify({ is_approved: isApproved, quantity: quantity }),
       });
-      if (!response.ok) throw new Error('Failed to update cart item substitution.');
-      fetchActiveCart(); // Refresh cart
     } catch (error: any) {
-      setCartError(error.message);
+      toast.error('Failed to update substitution.');
     }
   };
 
@@ -275,13 +270,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
       if (!response.ok) throw new Error('Failed to remove cart item substitution.');
       fetchActiveCart(); // Refresh cart
     } catch (error: any) {
-      setCartError(error.message);
+      toast.error('Failed to remove substitution.');
     }
   };
 
   return (
       <CartContext.Provider value={{
-            currentCart, userCarts, optimizationResult, setOptimizationResult, cartLoading, cartError,
+            currentCart, userCarts, optimizationResult, setOptimizationResult, cartLoading,
             fetchActiveCart, loadCart, createNewCart, renameCart, deleteCart,
             addItem, updateItemQuantity, removeItem, updateCartItemSubstitution, removeCartItemSubstitution
         }}>
