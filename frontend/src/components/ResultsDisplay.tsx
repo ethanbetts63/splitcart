@@ -71,7 +71,7 @@ const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: {
                                     <Button 
                                         variant="outline" 
                                         size="sm"
-                                        onClick={() => handleEmail({ shopping_plan: data.best_single_store.shopping_plan, baseline_cost: data.baseline_cost, optimized_cost: data.best_single_store.optimized_cost, savings: data.best_single_store.savings }, 'best-single-store')}
+                                        onClick={() => handleEmail({ shopping_plan: data.best_single_store.shopping_plan, baseline_cost: data.baseline_cost, optimized_cost: data.best_single_store.optimized_cost, savings: (data.baseline_cost - data.best_single_store.optimized_cost) }, 'best-single-store')}
                                         disabled={exportAction?.type === 'email' && exportAction?.plan === 'best-single-store'}
                                     >
                                         {exportAction?.type === 'email' && exportAction?.plan === 'best-single-store' ? (
@@ -84,7 +84,7 @@ const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: {
                                     <Button 
                                         variant="outline" 
                                         size="sm"
-                                        onClick={() => handleDownload({ shopping_plan: data.best_single_store.shopping_plan, baseline_cost: data.baseline_cost, optimized_cost: data.best_single_store.optimized_cost, savings: data.best_single_store.savings }, 'best-single-store')}
+                                        onClick={() => handleDownload({ shopping_plan: data.best_single_store.shopping_plan, baseline_cost: data.baseline_cost, optimized_cost: data.best_single_store.optimized_cost, savings: (data.baseline_cost - data.best_single_store.optimized_cost) }, 'best-single-store')}
                                         disabled={exportAction?.type === 'download' && exportAction?.plan === 'best-single-store'}
                                     >
                                         {exportAction?.type === 'download' && exportAction?.plan === 'best-single-store' ? (
