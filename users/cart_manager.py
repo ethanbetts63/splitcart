@@ -1,21 +1,35 @@
 from django.db import IntegrityError
-from users.models import Cart
+from users.models import Cart, SelectedStoreList
 
 class CartManager:
     def get_active_cart(self, request):
+        created = False
+        cart = None
         if request.user.is_authenticated:
-            cart, _ = Cart.objects.get_or_create(
+            cart, created = Cart.objects.get_or_create(
                 user=request.user, is_active=True,
                 defaults={'name': f"{request.user.email}'s Cart"}
             )
-            return cart
         elif hasattr(request, 'anonymous_id'):
-            cart, _ = Cart.objects.get_or_create(
+            cart, created = Cart.objects.get_or_create(
                 anonymous_id=request.anonymous_id, is_active=True,
                 defaults={'name': 'Anonymous Cart'}
             )
-            return cart
-        return None
+        else:
+            return None
+
+        if created:
+            store_list = None
+            if request.user.is_authenticated:
+                store_list = SelectedStoreList.objects.filter(user=request.user).order_by('-last_used_at').first()
+            elif hasattr(request, 'anonymous_id'):
+                store_list = SelectedStoreList.objects.filter(anonymous_id=request.anonymous_id).order_by('-last_used_at').first()
+            
+            if store_list:
+                cart.selected_store_list = store_list
+                cart.save()
+
+        return cart
 
     def switch_active_cart(self, user, cart_id):
         Cart.objects.filter(user=user, is_active=True).update(is_active=False)
@@ -47,6 +61,17 @@ class CartManager:
                 else:
                     # This part needs a unique constraint on (anonymous_id, name) to be robust
                     cart = Cart.objects.create(anonymous_id=anonymous_id, name=name, is_active=is_active)
+                
+                store_list = None
+                if user:
+                    store_list = SelectedStoreList.objects.filter(user=user).order_by('-last_used_at').first()
+                elif anonymous_id:
+                    store_list = SelectedStoreList.objects.filter(anonymous_id=anonymous_id).order_by('-last_used_at').first()
+
+                if store_list:
+                    cart.selected_store_list = store_list
+                    cart.save()
+                
                 return cart
             except IntegrityError:
                 i += 1

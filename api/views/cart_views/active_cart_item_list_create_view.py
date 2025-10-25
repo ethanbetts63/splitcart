@@ -39,11 +39,18 @@ class ActiveCartItemListCreateView(generics.ListCreateAPIView):
             return super().create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
+        print("--- ActiveCartItemListCreateView: perform_create called ---")
         cart = cart_manager.get_active_cart(self.request)
         cart_item = serializer.save(cart=cart)
+        print(f"Created CartItem: {cart_item}")
 
         if cart.selected_store_list:
             store_ids = list(cart.selected_store_list.stores.values_list('id', flat=True))
+            print(f"Found store_ids for substitution search: {store_ids}")
             if store_ids:
+                print(f"Initializing SubstituteManager for product: {cart_item.product.id}")
                 substitute_manager = SubstituteManager(cart_item.product.id, store_ids)
                 substitute_manager.create_cart_substitutions(cart_item)
+                print("Finished create_cart_substitutions call.")
+        else:
+            print("No selected_store_list found on cart, skipping substitution search.")
