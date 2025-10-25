@@ -11,11 +11,11 @@ interface NextButtonProps {
 
 const NextButton: React.FC<NextButtonProps> = ({ onAfterNavigate, className }) => {
   const navigate = useNavigate();
-  const { currentCart, potentialSubstitutes } = useCart();
+  const { currentCart } = useCart();
 
   const handleNextClick = () => {
     const itemsWithSubstitutes = currentCart?.items.filter(item => 
-      potentialSubstitutes[item.product.id] && potentialSubstitutes[item.product.id].length > 0
+      item.substitutions && item.substitutions.length > 0
     ) || [];
 
     if (itemsWithSubstitutes.length > 0) {
