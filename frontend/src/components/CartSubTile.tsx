@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from "@/components/ui/badge";
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
 import type { CartSubstitution } from '@/types';
+import { useCart } from '@/context/CartContext';
 
 interface CartSubTileProps {
   cartSubstitution: CartSubstitution;
@@ -11,6 +12,7 @@ interface CartSubTileProps {
 
 const CartSubTile: React.FC<CartSubTileProps> = ({ cartSubstitution }) => {
   const { substituted_product: product, quantity } = cartSubstitution;
+  const { updateCartItemSubstitution } = useCart();
 
   if (!product) {
     return null; // Don't render if there is no product data
@@ -18,6 +20,11 @@ const CartSubTile: React.FC<CartSubTileProps> = ({ cartSubstitution }) => {
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = fallbackImage;
+  };
+
+  const handleQuantityChange = (newQuantity: number) => {
+    const newIsApproved = newQuantity > 0;
+    updateCartItemSubstitution(cartSubstitution.cart_item_id, cartSubstitution.id, newIsApproved, newQuantity);
   };
 
   const imageUrl = product.image_url || fallbackImage;
@@ -43,7 +50,7 @@ const CartSubTile: React.FC<CartSubTileProps> = ({ cartSubstitution }) => {
 
       {/* Right Section: Quantity Controls */}
       <div className="flex-shrink-0 flex items-center gap-2">
-        <Button size="icon" className="h-6 w-6">-</Button>
+        <Button size="icon" className="h-6 w-6" onClick={() => handleQuantityChange(quantity - 1)}>-</Button>
         <Input
           type="number"
           readOnly
@@ -51,7 +58,7 @@ const CartSubTile: React.FC<CartSubTileProps> = ({ cartSubstitution }) => {
           value={quantity}
           min="0"
         />
-        <Button size="icon" className="h-6 w-6">+</Button>
+        <Button size="icon" className="h-6 w-6" onClick={() => handleQuantityChange(quantity + 1)}>+</Button>
       </div>
     </div>
   );
