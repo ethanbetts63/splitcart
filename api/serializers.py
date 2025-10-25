@@ -182,7 +182,7 @@ class CartSubstitutionSerializer(serializers.ModelSerializer):
 
 class CartItemSerializer(serializers.ModelSerializer):
     product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
-    substitutions = CartSubstitutionSerializer(many=True, read_only=True)
+    substitutions = CartSubstitutionSerializer(many=True, read_only=True, source='chosen_substitutions')
 
     class Meta:
         model = CartItem

@@ -137,17 +137,20 @@ const CartItemTile: React.FC<CartItemTileProps> = (props) => {
           )}
         </div>
       </div>
-      {/* Accordion for Substitutions (will be populated later) */}
-      <Accordion type="single" collapsible className="w-full">
-        <AccordionItem value="item-1">
-          <AccordionTrigger className="w-full flex justify-center p-2 text-sm text-muted-foreground">
-            Show Substitutions
-          </AccordionTrigger>
-          <AccordionContent>
-            {/* CartSubTile components will be rendered here based on actual data */}
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      {context === 'cart' && cartItem?.substitutions?.filter(sub => sub.is_approved).length > 0 && (
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="w-full flex justify-center p-2 text-sm text-muted-foreground">
+              Show {cartItem.substitutions.filter(sub => sub.is_approved).length} Approved Substitution(s)
+            </AccordionTrigger>
+            <AccordionContent>
+              {cartItem.substitutions.filter(sub => sub.is_approved).map(sub => (
+                <CartSubTile key={sub.id} cartSubstitution={sub} />
+              ))}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      )}
     </Card>
   );
 };
