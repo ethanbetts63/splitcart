@@ -1,0 +1,30 @@
+✦ I've updated the cart_and_substitution_management_plan.txt to reflect all completed tasks.
+
+  Session Summary:
+
+  This session involved a major refactor to centralize cart and substitution management on the backend. We updated the CartSubstitution model with an
+   is_approved field and created a SubstituteManager to handle finding, creating, updating, and deleting CartSubstitution instances. The backend's
+  ActiveCartItemListCreateView now automatically generates unapproved CartSubstitutions, and new API endpoints were added for managing them.
+  Serializers were updated to expose this new data structure to the frontend. On the frontend, CartContext was streamlined by removing local
+  substitute state and adding new backend interaction functions. Type definitions were updated, and SubstitutionPage.tsx and CartItemTile.tsx were
+  extensively refactored to use the new backend-centric data flow and simplified optimizeCartAPI call.
+
+  What's Next:
+
+  The remaining tasks focus on completing the frontend UI integration and refining the SubstitutionPage.tsx.
+
+  Remaining Items:
+
+   1. Frontend `CartContext.tsx`:
+       * Ensure fetchActiveCart correctly handles the new substitutions data within CartItem.
+   2. Frontend `CartSubTile.tsx`:
+       * Update props to receive a CartSubstitution object.
+       * Implement UI to display is_approved status.
+       * Add interactive elements (buttons/toggles) for "Approve", "Reject", quantity change, and "Remove", connecting them to callbacks.
+   3. Frontend `CartPage.tsx`:
+       * Ensure CartItemTile receives the full CartItem object.
+       * Ensure CartPage has access to CartContext functions for managing substitutions.
+   4. Frontend `SubstitutionPage.tsx`:
+       * This page will need a significant refactor or potential repurposing.
+
+  The immediate next step is to address CartSubTile.tsx to make it functional with the new CartSubstitution object.
