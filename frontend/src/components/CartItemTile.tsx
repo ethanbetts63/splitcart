@@ -147,10 +147,10 @@ const CartItemTile: React.FC<CartItemTileProps> = (props) => {
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
             <AccordionTrigger className="w-full flex justify-center p-2 text-sm text-muted-foreground">
-              Show {cartItem.substitutions.filter(sub => sub.is_approved).length} Approved Substitution(s)
+              Show {(cartItem!.substitutions?.filter(sub => sub.is_approved) || []).length} Approved Substitution(s)
             </AccordionTrigger>
             <AccordionContent>
-              {cartItem.substitutions.filter(sub => sub.is_approved).map(sub => (
+              {(cartItem!.substitutions?.filter(sub => sub.is_approved) || []).map(sub => (
                 <CartSubTile key={sub.id} cartSubstitution={sub} cartItemId={cartItem.id} />
               ))}
             </AccordionContent>
