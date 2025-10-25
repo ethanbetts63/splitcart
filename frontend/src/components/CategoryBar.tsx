@@ -13,7 +13,7 @@ const CategoryBar: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | null>(null);
   const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const CategoryBar: React.FC = () => {
         if (scrollLeft >= halfwayPoint) {
           carouselRef.current.scrollLeft = 0; // Jump back to the start
         } else {
-          carouselRef.current.scrollLeft += 0.5; // Adjust for speed
+          carouselRef.current.scrollLeft += 0.25; // Adjust for speed
         }
       }
       animationFrameRef.current = requestAnimationFrame(scroll);
