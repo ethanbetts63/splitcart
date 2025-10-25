@@ -1,22 +1,7 @@
 import React, { createContext, useContext, useState, type ReactNode, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
-import {
-  fetchActiveStoreListAPI,
-  loadStoreListAPI,
-  saveStoreListAPI,
-  createNewStoreListAPI,
-  deleteStoreListAPI,
-} from '@/services/storeList.api';
+import { type SelectedStoreListType } from '@/types';
 
-// --- Type Definitions ---
-export type SelectedStoreListType = {
-  id: string; // UUID
-  name: string;
-  stores: number[]; // Array of store IDs
-  created_at: string;
-  updated_at: string;
-  last_used_at: string;
-};
 
 interface StoreListContextType {
   selectedStoreIds: Set<number>;

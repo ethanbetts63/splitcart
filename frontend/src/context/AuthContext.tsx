@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import { performInitialSetupAPI, type InitialSetupData } from '@/services/auth.api';
-import { type Cart } from '@/types';
-import { type SelectedStoreListType } from '@/context/StoreListContext';
+import { performInitialSetupAPI } from '@/services/auth.api';
+import { type Cart, type InitialSetupData, type SelectedStoreListType } from '@/types';
 
 interface AuthContextType {
   isAuthenticated: boolean;
