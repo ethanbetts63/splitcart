@@ -14,6 +14,7 @@ const CategoryBar: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const carouselRef = useRef<HTMLDivElement>(null);
   const animationFrameRef = useRef<number | null>(null);
+  const positionRef = useRef(0); // High-precision position
   const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
@@ -37,43 +38,41 @@ const CategoryBar: React.FC = () => {
     fetchPopularCategories();
   }, []);
 
-  const startScrolling = useCallback(() => {
-    if (!carouselRef.current || isHovering) return;
-
+  useEffect(() => {
     const scroll = () => {
       if (carouselRef.current) {
-        const { scrollLeft, scrollWidth } = carouselRef.current;
-        // The halfway point is the end of the original content
-        const halfwayPoint = scrollWidth / 2;
+        const halfwayPoint = carouselRef.current.scrollWidth / 2;
+        
+        // Increment our high-precision position
+        positionRef.current += 0.2; // This is now the reliable speed control
 
-        if (scrollLeft >= halfwayPoint) {
-          carouselRef.current.scrollLeft = 0; // Jump back to the start
-        } else {
-          carouselRef.current.scrollLeft += 0.2; // Adjust for speed
+        // Reset if we've scrolled past the first set of items
+        if (positionRef.current >= halfwayPoint) {
+          positionRef.current = 0;
         }
+
+        // Apply the position to the actual scrollbar
+        carouselRef.current.scrollLeft = positionRef.current;
       }
       animationFrameRef.current = requestAnimationFrame(scroll);
     };
 
-    animationFrameRef.current = requestAnimationFrame(scroll);
-  }, [isHovering]);
-
-  useEffect(() => {
-    // Only start scrolling if we have categories and the user is not hovering
     if (categories.length > 0 && !isHovering) {
-      startScrolling();
+      // When starting, sync our logical position with the actual scroll position
+      positionRef.current = carouselRef.current?.scrollLeft || 0;
+      animationFrameRef.current = requestAnimationFrame(scroll);
     }
 
-    // Cleanup function to cancel the animation frame when the component unmounts or dependencies change
+    // Always return the cleanup function
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [categories, isHovering, startScrolling]);
+  }, [categories, isHovering]);
 
   if (isLoading || categories.length === 0) {
-    return null; // Don't render anything while loading or if there are no categories
+    return null;
   }
 
   return (
@@ -85,7 +84,6 @@ const CategoryBar: React.FC = () => {
         onMouseLeave={() => setIsHovering(false)}
       >
         <div className="flex items-center gap-4 py-1 px-2">
-          {/* Render the list of categories twice for the infinite loop effect */}
           {[...categories, ...categories].map((category, index) => (
             <div className="flex-shrink-0" key={`${category.slug}-${index}`}>
               <Link to={`/search?category_slug=${category.slug}`}>
