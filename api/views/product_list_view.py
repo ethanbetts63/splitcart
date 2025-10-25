@@ -1,7 +1,8 @@
 from django.db.models import Q, Case, When, Value, IntegerField
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
-from products.models import Product
+from rest_framework.exceptions import ValidationError
+import Product
 from ..serializers import ProductSerializer
 
 class ProductListView(generics.ListAPIView):
@@ -16,17 +17,19 @@ class ProductListView(generics.ListAPIView):
         search_query = self.request.query_params.get('search', None)
         print(f"store_ids_param: {store_ids_param}")
 
-        if store_ids_param:
-            try:
-                store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
-                queryset = queryset.filter(
-                    price_records__price_entries__store__id__in=store_ids
-                ).distinct()
-                self.nearby_store_ids = store_ids # Store for serializer context
-                print(f"Queryset count after store_ids filter: {queryset.count()}")
-            except (ValueError, TypeError):
-                print("Invalid store_ids_param, ignoring.")
-                pass # Invalid store_ids, ignore filtering
+        # New: Require store_ids_param
+        if not store_ids_param:
+            raise ValidationError({'store_ids': 'This field is required.'})
+
+        try:
+            store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
+            queryset = queryset.filter(
+                price_records__price_entries__store__id__in=store_ids
+            ).distinct()
+            self.nearby_store_ids = store_ids # Store for serializer context
+        except (ValueError, TypeError):
+            # New: Raise ValidationError for invalid store_ids
+            raise ValidationError({'store_ids': 'Invalid format. Must be a comma-separated list of integers.'})
 
         if search_query:
             search_terms = search_query.split()
