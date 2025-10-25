@@ -44,12 +44,14 @@ const PageContent = ({
   activePage, 
   onOpenChange, 
   localSelectedStoreIds, 
-  setLocalSelectedStoreIds 
+  setLocalSelectedStoreIds,
+  setHasSearchOccurred
 }: { 
   activePage: string, 
   onOpenChange: (open: boolean) => void,
   localSelectedStoreIds: Set<number>,
-  setLocalSelectedStoreIds: React.Dispatch<React.SetStateAction<Set<number>>>
+  setLocalSelectedStoreIds: React.Dispatch<React.SetStateAction<Set<number>>>,
+  setHasSearchOccurred: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
   switch (activePage) {
     case 'cart':
@@ -59,6 +61,7 @@ const PageContent = ({
                 localSelectedStoreIds={localSelectedStoreIds} 
                 setLocalSelectedStoreIds={setLocalSelectedStoreIds} 
                 onOpenChange={onOpenChange}
+                setHasSearchOccurred={setHasSearchOccurred}
              />;
     default:
       return (
@@ -78,8 +81,9 @@ interface SettingsDialogProps {
 
 export function SettingsDialog({ open, onOpenChange, defaultPage = 'cart' }: SettingsDialogProps) {
   const [activePage, setActivePage] = React.useState(defaultPage);
-  const { selectedStoreIds, setSelectedStoreIds } = useStoreList();
+  const { selectedStoreIds, setSelectedStoreIds, saveStoreList, currentStoreListName } = useStoreList();
   const [localSelectedStoreIds, setLocalSelectedStoreIds] = React.useState<Set<number>>(selectedStoreIds);
+  const [hasSearchOccurred, setHasSearchOccurred] = React.useState(false);
 
   // When the defaultPage prop changes, update the activePage state.
   React.useEffect(() => {
@@ -98,9 +102,14 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'cart' }: Set
   };
 
   const handleOpenChange = (newOpenState: boolean) => {
-    // If the dialog is closing, apply the local state to the global state.
+    // If the dialog is closing, check if a search has occurred before saving.
     if (!newOpenState) {
-      setSelectedStoreIds(localSelectedStoreIds);
+      if (hasSearchOccurred) {
+        setSelectedStoreIds(localSelectedStoreIds);
+        saveStoreList(currentStoreListName, Array.from(localSelectedStoreIds));
+      }
+      // Reset the flag for the next time the dialog opens.
+      setHasSearchOccurred(false);
     }
     onOpenChange(newOpenState);
   };
