@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import {
   Card,
   CardContent,
@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
-import { useAuth } from "@/context/AuthContext"
 import { Spinner } from "@/components/ui/spinner"
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
@@ -26,8 +25,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [errors, setErrors] = useState<Record<string, string[]>>({})
   const [isLoading, setIsLoading] = useState(false)
   const [registrationComplete, setRegistrationComplete] = useState(false)
-  const { login } = useAuth()
-  const navigate = useNavigate()
+
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()

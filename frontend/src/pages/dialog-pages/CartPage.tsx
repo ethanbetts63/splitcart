@@ -15,7 +15,7 @@ interface cartPageProps {
 
 const CartPage: React.FC<cartPageProps> = ({ onOpenChange }) => {
   const { 
-    currentCart, userCarts, cartLoading, cartError,
+    currentCart, userCarts, cartLoading,
     loadCart, createNewCart, renameCart, deleteCart 
   } = useCart();
   const { isAuthenticated } = useAuth();
@@ -121,7 +121,7 @@ const CartPage: React.FC<cartPageProps> = ({ onOpenChange }) => {
                     <Trash2 className="h-4 w-4" />
                 </Button>
             </div>
-            {cartError && <p className="text-red-500 text-sm mt-2">{cartError}</p>}
+
         </div>
       )}
 

@@ -37,7 +37,7 @@ interface EditLocationPageProps {
 }
 
 const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreIds, setLocalSelectedStoreIds, onOpenChange, setHasSearchOccurred }) => {
-  const { isAuthenticated, token, anonymousId } = useAuth();
+  const { isAuthenticated } = useAuth();
   const {
     postcode, setPostcode,
     radius, setRadius,
@@ -52,7 +52,7 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
     currentStoreListName, setCurrentStoreListName,
     userStoreLists,
     storeListLoading,
-    loadStoreList, saveStoreList, createNewStoreList, deleteStoreList, fetchActiveStoreList
+    loadStoreList, saveStoreList, createNewStoreList, deleteStoreList
   } = useStoreList();
 
   // State for loading and error, which is local to this page
