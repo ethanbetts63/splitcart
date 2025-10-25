@@ -47,20 +47,7 @@ export const StoreListProvider = ({ children, initialStoreList }: { children: Re
   const { token, anonymousId } = useAuth();
 
   // --- State Definitions ---
-  const [selectedStoreIds, setSelectedStoreIds] = useState<Set<number>>(() => {
-    const saved = sessionStorage.getItem('selectedStoreIds');
-    try {
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          return new Set(parsed.filter(item => typeof item === 'number'));
-        }
-      }
-    } catch (e) {
-      console.error("Failed to parse selectedStoreIds from sessionStorage", e);
-    }
-    return new Set<number>();
-  });
+  const [selectedStoreIds, setSelectedStoreIds] = useState<Set<number>>(() => new Set<number>());
 
   const [currentStoreListId, setCurrentStoreListId] = useState<string | null>(null);
   const [currentStoreListName, setCurrentStoreListName] = useState<string>("");
@@ -70,11 +57,6 @@ export const StoreListProvider = ({ children, initialStoreList }: { children: Re
 
   // --- Side Effects ---
 
-  // Persist selected stores to sessionStorage
-  useEffect(() => {
-    sessionStorage.setItem('selectedStoreIds', JSON.stringify(Array.from(selectedStoreIds)));
-  }, [selectedStoreIds]);
-
   // Initialize state from initialStoreList prop
   useEffect(() => {
     if (initialStoreList) {
@@ -82,11 +64,7 @@ export const StoreListProvider = ({ children, initialStoreList }: { children: Re
       setCurrentStoreListId(initialStoreList.id);
       setCurrentStoreListName(initialStoreList.name);
 
-      const savedSelection = sessionStorage.getItem('selectedStoreIds');
-      const savedSelectionIsEmpty = !savedSelection || JSON.parse(savedSelection).length === 0;
-      if (savedSelectionIsEmpty) {
-        setSelectedStoreIds(new Set(initialStoreList.stores));
-      }
+      setSelectedStoreIds(new Set(initialStoreList.stores));
       setStoreListLoading(false);
     }
   }, [initialStoreList]);
