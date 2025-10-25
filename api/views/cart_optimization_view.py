@@ -4,32 +4,60 @@ from rest_framework import status
 from companies.models import Store
 from data_management.utils.cart_optimization import calculate_optimized_cost, calculate_baseline_cost, build_price_slots, calculate_best_single_store
 
+from users.models import Cart
+
 class CartOptimizationView(APIView):
     """
     API view to handle cart optimization requests.
-    Accepts a list of product slots and a list of store IDs.
+    Accepts a cart_id and performs optimization based on the cart's contents and selected store list.
     """
 
     def post(self, request, *args, **kwargs):
-        cart = request.data.get('cart')
-        store_ids = request.data.get('store_ids')
-        original_items = request.data.get('original_items')
-        max_stores_options = request.data.get('max_stores_options', [2, 3, 4])
-
-        if not cart or not store_ids or not original_items:
-            return Response(
-                {'error': 'Cart, store_ids, and original_items data are required.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        cart_id = request.data.get('cart_id')
+        if not cart_id:
+            return Response({'error': 'cart_id is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            stores = Store.objects.filter(id__in=store_ids)
-            if not stores.exists():
-                return Response(
-                    {'error': 'Invalid store IDs provided.'},
-                    status=status.HTTP_404_NOT_FOUND
-                )
+            cart_obj = Cart.objects.prefetch_related(
+                'items__product',
+                'items__chosen_substitutions__substituted_product',
+                'selected_store_list__stores'
+            ).get(id=cart_id)
+        except Cart.DoesNotExist:
+            return Response({'error': 'Cart not found.'}, status=status.HTTP_404_NOT_FOUND)
 
+        if not cart_obj.selected_store_list:
+            return Response({'error': 'Cart has no associated store list.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        store_ids = list(cart_obj.selected_store_list.stores.values_list('id', flat=True))
+        if not store_ids:
+            return Response({'error': 'No stores selected in the cart\'s store list.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Construct the data structures required by the optimization logic
+        original_items = []
+        cart_with_substitutes_slots = []
+        for item in cart_obj.items.all():
+            original_items.append({
+                'product': {'id': item.product.id},
+                'quantity': item.quantity
+            })
+
+            approved_subs = item.chosen_substitutions.filter(is_approved=True)
+            slot = []
+            if approved_subs.exists():
+                # If substitutes are approved, the slot contains ONLY the substitutes
+                for sub in approved_subs:
+                    slot.append({'product_id': sub.substituted_product.id, 'quantity': sub.quantity})
+            else:
+                # If no substitutes are approved, the slot contains the original item
+                slot.append({'product_id': item.product.id, 'quantity': item.quantity})
+            cart_with_substitutes_slots.append(slot)
+
+        max_stores_options = request.data.get('max_stores_options', [2, 3, 4])
+        stores = cart_obj.selected_store_list.stores.all()
+
+        # The original logic starts here, using the variables we just built
+        try:
             # 1. Calculate a single baseline cost based ONLY on original items
             simple_cart = [[{'product_id': item['product']['id'], 'quantity': item['quantity']}] for item in original_items]
             simple_price_slots = build_price_slots(simple_cart, stores)
@@ -41,7 +69,7 @@ class CartOptimizationView(APIView):
             baseline_cost = calculate_baseline_cost(simple_price_slots)
 
             # 2. "With Substitutes" calculation
-            subs_price_slots = build_price_slots(cart, stores)
+            subs_price_slots = build_price_slots(cart_with_substitutes_slots, stores)
             subs_optimization_results = []
             if subs_price_slots:
                 for max_stores in max_stores_options:
@@ -56,7 +84,7 @@ class CartOptimizationView(APIView):
                                 'savings': savings,
                                 'shopping_plan': shopping_plan,
                             })
-                subs_best_single_store = calculate_best_single_store(subs_price_slots, cart)
+                subs_best_single_store = calculate_best_single_store(subs_price_slots, cart_with_substitutes_slots)
             else:
                 subs_best_single_store = None
 
