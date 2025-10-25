@@ -19,7 +19,6 @@ class ProductListView(generics.ListAPIView):
         if store_ids_param:
             try:
                 store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
-                print(f"Filtering by store_ids: {store_ids}")
                 queryset = queryset.filter(
                     price_records__price_entries__store__id__in=store_ids
                 ).distinct()
