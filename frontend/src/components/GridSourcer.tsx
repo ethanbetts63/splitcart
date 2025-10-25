@@ -147,7 +147,6 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, catego
         onLoadMore={() => handlePageChange(currentPage + 1)} 
         hasMorePages={currentPage < totalPages} 
         isLoadingMore={isLoading} 
-        title={titleText} 
       />
       <div className="flex justify-center mt-8">
         <Pagination>

@@ -8,7 +8,6 @@ interface ProductGridProps {
   onLoadMore: () => void;
   hasMorePages: boolean;
   isLoadingMore: boolean;
-  title?: string;
 }
 
 const ProductGrid: React.FC<ProductGridProps> = ({ 
@@ -16,11 +15,9 @@ const ProductGrid: React.FC<ProductGridProps> = ({
   onLoadMore, 
   hasMorePages, 
   isLoadingMore, 
-  title 
 }) => {
   return (
     <div>
-      {title && <h2 className="text-2xl font-bold mb-4">{title}</h2>}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {products.length > 0 ? (
           products.map((product) => (
