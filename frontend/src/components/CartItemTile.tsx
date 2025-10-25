@@ -151,7 +151,7 @@ const CartItemTile: React.FC<CartItemTileProps> = (props) => {
             </AccordionTrigger>
             <AccordionContent>
               {cartItem.substitutions.filter(sub => sub.is_approved).map(sub => (
-                <CartSubTile key={sub.id} cartSubstitution={sub} />
+                <CartSubTile key={sub.id} cartSubstitution={sub} cartItemId={cartItem.id} />
               ))}
             </AccordionContent>
           </AccordionItem>

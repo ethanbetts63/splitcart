@@ -8,9 +8,10 @@ import { useCart } from '@/context/CartContext';
 
 interface CartSubTileProps {
   cartSubstitution: CartSubstitution;
+  cartItemId: string;
 }
 
-const CartSubTile: React.FC<CartSubTileProps> = ({ cartSubstitution }) => {
+const CartSubTile: React.FC<CartSubTileProps> = ({ cartSubstitution, cartItemId }) => {
   const { substituted_product: product, quantity } = cartSubstitution;
   const { updateCartItemSubstitution } = useCart();
 
@@ -24,7 +25,7 @@ const CartSubTile: React.FC<CartSubTileProps> = ({ cartSubstitution }) => {
 
   const handleQuantityChange = (newQuantity: number) => {
     const newIsApproved = newQuantity > 0;
-    updateCartItemSubstitution(cartSubstitution.cart_item_id, cartSubstitution.id, newIsApproved, newQuantity);
+    updateCartItemSubstitution(cartItemId, cartSubstitution.id, newIsApproved, newQuantity);
   };
 
   const imageUrl = product.image_url || fallbackImage;
