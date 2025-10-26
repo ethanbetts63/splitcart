@@ -153,7 +153,8 @@ const SubstitutionPage = () => {
           </Button>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="bg-muted p-6 rounded-lg border">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <h2 className="text-xl font-semibold mb-4">Original Product</h2>
           <div className="w-[240px] mx-auto relative">
@@ -180,6 +181,7 @@ const SubstitutionPage = () => {
             })}
           </div>
         </div>
+      </div>
       </div>
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
