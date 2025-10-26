@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { Routes, Route, Outlet, useNavigate, useLocation, Link } from "react-router-dom";
 import { MapPin, ShoppingCart, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,13 +8,17 @@ import { useStoreList } from "@/context/StoreListContext";
 import { useCart } from "@/context/CartContext";
 import { Badge } from "@/components/ui/badge";
 import NextButton from "@/components/NextButton";
-import HomePage from "./pages/HomePage";
-import SearchResultsPage from "./pages/SearchResultsPage";
-import SubstitutionPage from "./pages/SubstitutionPage";
-import FinalCartPage from "./pages/FinalCartPage";
-import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
-import ContactPage from "./pages/ContactPage";
+import LoadingSpinner from "@/components/LoadingSpinner";
+
+// Lazy load page components
+const HomePage = React.lazy(() => import("./pages/HomePage"));
+const SearchResultsPage = React.lazy(() => import("./pages/SearchResultsPage"));
+const SubstitutionPage = React.lazy(() => import("./pages/SubstitutionPage"));
+const FinalCartPage = React.lazy(() => import("./pages/FinalCartPage"));
+const LoginPage = React.lazy(() => import("./pages/LoginPage"));
+const SignupPage = React.lazy(() => import("./pages/SignupPage"));
+const ContactPage = React.lazy(() => import("./pages/ContactPage"));
+
 import { useAuth } from "@/context/AuthContext";
 import CategoryBar from "./components/CategoryBar";
 import Footer from './components/Footer';
@@ -154,7 +158,9 @@ const Layout = () => {
       </header>
       {(location.pathname === '/' || location.pathname === '/search') && <CategoryBar />}
       <main className="flex-grow">
-        <Outlet />
+        <Suspense fallback={<LoadingSpinner fullScreen />}>
+          <Outlet />
+        </Suspense>
       </main>
       <Footer />
       <SettingsDialog 

@@ -6,6 +6,8 @@ from users.models import Cart, SelectedStoreList
 from api.serializers import CartSerializer, SelectedStoreListSerializer
 from api.permissions import IsAuthenticatedOrAnonymous
 
+from products.models import Price
+
 class InitialSetupView(APIView):
     permission_classes = [IsAuthenticatedOrAnonymous]
 
@@ -30,10 +32,9 @@ class InitialSetupView(APIView):
             elif anonymous_id:
                 store_list = SelectedStoreList.objects.create(anonymous_id=anonymous_id, name='Default List')
 
-
         # Get or create the active cart
         cart_filter = {'user': user, 'is_active': True} if user else {'anonymous_id': anonymous_id, 'is_active': True}
-        cart_defaults = {'name': f"{user.email}'s Cart"} if user else {'name': 'Anonymous Cart'}
+        cart_defaults = {'name': f"{user.email}'s Cart"} if user and user.email else {'name': 'Anonymous Cart'}
         cart, _ = Cart.objects.get_or_create(
             **cart_filter,
             defaults=cart_defaults
@@ -44,8 +45,33 @@ class InitialSetupView(APIView):
             cart.selected_store_list = store_list
             cart.save()
 
-        # Serialize and return the data
-        cart_serializer = CartSerializer(cart)
+        # --- OPTIMIZATION --- #
+        # 1. Get all product and store IDs for the query
+        product_ids = [item.product_id for item in cart.items.all()]
+        store_ids = []
+        if cart.selected_store_list:
+            store_ids = cart.selected_store_list.stores.values_list('id', flat=True)
+
+        # 2. Fetch all relevant, pre-filtered prices in a single query
+        prices_queryset = Price.objects.filter(
+            price_record__product_id__in=product_ids,
+            store_id__in=store_ids
+        ).select_related('store__company', 'price_record')
+
+        # 3. Group prices by product ID for efficient lookup in the serializer
+        prices_map = {}
+        for price in prices_queryset:
+            product_id = price.price_record.product_id
+            if product_id not in prices_map:
+                prices_map[product_id] = []
+            prices_map[product_id].append(price)
+
+        # 4. Pass the pre-filtered data to the serializer via context
+        serializer_context = {
+            'prices_map': prices_map,
+            'nearby_store_ids': store_ids # Pass for consistency, though filtering is done
+        }
+        cart_serializer = CartSerializer(cart, context=serializer_context)
 
         response_data = {
             'cart': cart_serializer.data,

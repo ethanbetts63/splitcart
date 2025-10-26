@@ -95,21 +95,20 @@ class ProductSerializer(serializers.ModelSerializer):
         return obj.brand.name if obj.brand else None
 
     def get_prices(self, obj):
+        prices_map = self.context.get('prices_map')
         nearby_store_ids = self.context.get('nearby_store_ids')
-        
-        # Start with all prices for the product
-        prices_queryset = Price.objects.filter(price_record__product=obj)
 
-        # If nearby_store_ids are provided in the context, filter by them
-        if nearby_store_ids is not None:
-            prices_queryset = prices_queryset.filter(store__id__in=nearby_store_ids)
-        
-        # Group prices by company and calculate min/max
+        if prices_map is not None:
+            # Use the pre-fetched prices from the context
+            prices_queryset = prices_map.get(obj.id, [])
+        else:
+            # Fallback to the original query if the map is not provided
+            prices_queryset = Price.objects.filter(price_record__product=obj)
+            # Prefetch store and company to avoid N+1 queries in the loop
+            prices_queryset = prices_queryset.select_related('store__company', 'price_record')
+
         company_prices = {}
         overall_min_price = None
-
-        # Prefetch store and company to avoid N+1 queries in the loop
-        prices_queryset = prices_queryset.select_related('store__company', 'price_record')
 
         for price_obj in prices_queryset:
             company_name = price_obj.store.company.name
