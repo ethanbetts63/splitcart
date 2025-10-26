@@ -1,8 +1,6 @@
 import React, { memo } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import SkeletonProductTile from "./SkeletonProductTile";
 import ProductTile from "./ProductTile";
-import { useAuth } from '@/context/AuthContext';
 import { Link } from 'react-router-dom';
 
 // --- Type Definitions ---
@@ -33,37 +31,25 @@ interface ProductCarouselProps {
   searchQuery?: string;
 }
 
-const fetchProducts = async (sourceUrl: string, storeIds: number[] | undefined, token: string | null): Promise<Product[]> => {
-  const [baseUrl, queryString] = sourceUrl.split('?');
-  const params = new URLSearchParams(queryString || '');
-
-  if (storeIds && storeIds.length > 0) {
-    params.append('store_ids', storeIds.join(','));
-  }
-
-  const finalUrl = `http://127.0.0.1:8000${baseUrl}?${params.toString()}`;
-
-  const headers: HeadersInit = {};
-  if (token) {
-    headers['Authorization'] = `Token ${token}`;
-  }
-
-  const response = await fetch(finalUrl, { headers });
-  if (!response.ok) {
-    throw new Error('Failed to fetch products');
-  }
-  const data: ApiResponse = await response.json();
-  return data.results || [];
-};
+import { useApiQuery } from '@/hooks/useApiQuery';
 
 const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery }) => {
-  const { token } = useAuth();
+  const [baseUrl, queryString] = sourceUrl.split('?');
+  const params = new URLSearchParams(queryString || '');
+  if (storeIds && storeIds.length > 0) {
+    params.set('store_ids', storeIds.join(','));
+  }
 
-  const { data: products, isLoading, error } = useQuery<Product[], Error>({
-    queryKey: ['products', title, sourceUrl, storeIds],
-    queryFn: () => fetchProducts(sourceUrl, storeIds, token),
-    enabled: !!storeIds && storeIds.length > 0, // Only run query if storeIds are available
-  });
+  const finalUrl = `${baseUrl}?${params.toString()}`;
+
+  const { data: apiResponse, isLoading, error } = useApiQuery<ApiResponse>(
+    ['products', title, finalUrl],
+    finalUrl,
+    {},
+    { enabled: !!storeIds && storeIds.length > 0 }
+  );
+
+  const products = apiResponse?.results || [];
 
   if (isLoading) {
     return (

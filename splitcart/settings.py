@@ -141,6 +141,13 @@ CORS_ALLOWED_ORIGINS = [
 
 ]
 
+from corsheaders.defaults import default_headers
+
+CORS_ALLOW_HEADERS = [
+    *default_headers,
+    "X-Anonymous-ID",
+]
+
 
 
 # Custom Account Adapter

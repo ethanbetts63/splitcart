@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import ProductGrid from './ProductGrid';
 import type { Product } from '@/types'; // Import shared type
-import { useAuth } from '@/context/AuthContext';
 
 import {
   Pagination,
@@ -30,89 +29,56 @@ interface GridSourcerProps {
   categorySlug: string | null;
 }
 
+import { useApiQuery } from '@/hooks/useApiQuery';
+
 const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, categorySlug }) => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [totalResults, setTotalResults] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
   const { selectedStoreIds } = useStoreList(); // Get selected stores
-  const { token } = useAuth();
 
-  const fetchProducts = useCallback(async (page: number) => {
-    setIsLoading(true);
-    setIsError(false);
-    setError(null);
-
-    let url = '';
+  // Determine API endpoint and params
+  const { url, params } = React.useMemo(() => {
     const params = new URLSearchParams();
+    let url = '';
 
     if (sourceUrl) {
-      url = sourceUrl;
+      const [baseUrl, queryString] = sourceUrl.split('?');
+      url = baseUrl;
+      const existingParams = new URLSearchParams(queryString || '');
+      existingParams.forEach((value, key) => params.set(key, value));
     } else if (searchTerm) {
-      url = '/api/products/';
-      params.append('search', searchTerm);
+      url = '/products/';
+      params.set('search', searchTerm);
     } else if (categorySlug) {
-      url = '/api/products/by-category/';
-      params.append('category_slug', categorySlug);
-    } else {
-      setIsLoading(false);
-      setProducts([]);
-      setTotalResults(0);
-      return;
+      url = '/products/by-category/';
+      params.set('category_slug', categorySlug);
     }
 
-    // Add store_ids if they are provided
     if (selectedStoreIds && selectedStoreIds.size > 0) {
-      params.append('store_ids', Array.from(selectedStoreIds).join(','));
+      params.set('store_ids', Array.from(selectedStoreIds).join(','));
     }
+    params.set('page', currentPage.toString());
 
-    params.append('page', page.toString());
+    return { url, params };
+  }, [searchTerm, sourceUrl, categorySlug, selectedStoreIds, currentPage]);
 
-    if (params.toString()) {
-      url += `?${params.toString()}`;
-    }
+  const finalUrl = url ? `${url}?${params.toString()}` : null;
 
-    try {
-      const headers: HeadersInit = {};
-      if (token) {
-        headers['Authorization'] = `Token ${token}`;
-      }
+  const { 
+    data: apiResponse,
+    isLoading,
+    isError,
+    error,
+  } = useApiQuery<ApiResponse>(
+    ['products', finalUrl],
+    finalUrl || '',
+    {},
+    { enabled: !!finalUrl }
+  );
 
-      const response = await fetch(`http://127.0.0.1:8000${url}`, { headers });
-      if (!response.ok) {
-        let errorMessage = `Failed to fetch: ${response.statusText}`;
-        try {
-            const errData = await response.json();
-            errorMessage = errData.detail || errData.error || errorMessage;
-        } catch (e) {
-            // Response was not JSON, stick with the status text
-        }
-        throw new Error(errorMessage);
-      }
-      const data: ApiResponse = await response.json();
-      
-      const productList = data.results || [];
-      const count = data.count;
+  const products = apiResponse?.results || [];
+  const totalResults = apiResponse?.count || 0;
+  const totalPages = Math.ceil(totalResults / 20); // Assuming 20 results per page
 
-      setProducts(productList);
-      setTotalResults(count);
-      setTotalPages(Math.ceil(count / 20)); // Assuming 20 results per page
-
-    } catch (e: any) {
-      setIsError(true);
-      setError(e.message);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [searchTerm, sourceUrl, categorySlug, selectedStoreIds, token]);
-
-  // Effect for fetching data when page or search term changes
-  useEffect(() => {
-    fetchProducts(currentPage);
-  }, [currentPage, fetchProducts]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);

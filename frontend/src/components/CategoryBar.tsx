@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import '../css/CategoryCarousel.css';
+import { useApiQuery } from '@/hooks/useApiQuery';
 
 // --- Type Definitions ---
 type Category = {
@@ -10,60 +11,37 @@ type Category = {
 };
 
 const CategoryBar: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: categories = [], isLoading } = useApiQuery<Category[]>(
+    ['popularCategories'],
+    '/categories/popular/'
+  );
+
   const carouselRef = useRef<HTMLDivElement>(null);
   const animationFrameRef = useRef<number | null>(null);
   const positionRef = useRef(0); // High-precision position
   const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
-    const fetchPopularCategories = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch('/api/categories/popular/');
-        if (!response.ok) {
-          throw new Error('Failed to fetch popular categories');
-        }
-        const data: Category[] = await response.json();
-        setCategories(data);
-      } catch (error) {
-        console.error(error);
-        setCategories([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchPopularCategories();
-  }, []);
-
-  useEffect(() => {
     const scroll = () => {
       if (carouselRef.current) {
         const halfwayPoint = carouselRef.current.scrollWidth / 2;
         
-        // Increment our high-precision position
-        positionRef.current += 0.2; // This is now the reliable speed control
+        positionRef.current += 0.2;
 
-        // Reset if we've scrolled past the first set of items
         if (positionRef.current >= halfwayPoint) {
           positionRef.current = 0;
         }
 
-        // Apply the position to the actual scrollbar
         carouselRef.current.scrollLeft = positionRef.current;
       }
       animationFrameRef.current = requestAnimationFrame(scroll);
     };
 
     if (categories.length > 0 && !isHovering) {
-      // When starting, sync our logical position with the actual scroll position
       positionRef.current = carouselRef.current?.scrollLeft || 0;
       animationFrameRef.current = requestAnimationFrame(scroll);
     }
 
-    // Always return the cleanup function
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
