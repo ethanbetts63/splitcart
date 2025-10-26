@@ -120,6 +120,7 @@ STATIC_URL = "static/"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
+    os.path.join(BASE_DIR, 'frontend', 'dist'),
 ]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

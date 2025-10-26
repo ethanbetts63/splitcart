@@ -16,7 +16,8 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
+from api.views.react_app_view import ReactAppView
 
 urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
@@ -25,4 +26,6 @@ urlpatterns = [
     path('api/auth/registration/', include('dj_rest_auth.registration.urls')),
     path("api/", include("api.urls")),
     path("data_management/", include("data_management.urls")),
+    # Let React handle all other routes
+    re_path(r'^.*', ReactAppView.as_view(), name='react_app'),
 ]
