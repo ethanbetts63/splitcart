@@ -152,7 +152,7 @@ const Layout = () => {
           </div>
         </div>
       </header>
-      <CategoryBar />
+      {(location.pathname === '/' || location.pathname === '/search') && <CategoryBar />}
       <main className="flex-grow">
         <Outlet />
       </main>
