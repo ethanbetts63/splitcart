@@ -20,9 +20,9 @@ const apiFetch = async <T>(
 ): Promise<T> => {
   const { method = 'GET', body, ...restOptions } = options;
 
-  const headers: HeadersInit = {
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...restOptions.headers,
+    ...(restOptions.headers as Record<string, string>),
   };
 
   if (token) {
