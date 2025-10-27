@@ -1,6 +1,8 @@
 from django.db import IntegrityError
 from users.models import Cart, SelectedStoreList
 
+from users.utils.name_generator import generate_unique_name
+
 class CartManager:
     def get_active_cart(self, request):
         created = False
@@ -51,30 +53,19 @@ class CartManager:
             elif anonymous_id:
                 Cart.objects.filter(anonymous_id=anonymous_id, is_active=True).update(is_active=False)
 
-        base_name = "Shopping List"
-        i = 1
-        while True:
-            name = f"{base_name} #{i}"
-            try:
-                if user:
-                    cart = Cart.objects.create(user=user, name=name, is_active=is_active)
-                else:
-                    # This part needs a unique constraint on (anonymous_id, name) to be robust
-                    cart = Cart.objects.create(anonymous_id=anonymous_id, name=name, is_active=is_active)
-                
-                store_list = None
-                if user:
-                    store_list = SelectedStoreList.objects.filter(user=user).order_by('-last_used_at').first()
-                elif anonymous_id:
-                    store_list = SelectedStoreList.objects.filter(anonymous_id=anonymous_id).order_by('-last_used_at').first()
+        owner_filter = {'user': user} if user else {'anonymous_id': anonymous_id}
+        unique_name = generate_unique_name(Cart, owner_filter, "Shopping List")
 
-                if store_list:
-                    cart.selected_store_list = store_list
-                    cart.save()
-                
-                return cart
-            except IntegrityError:
-                i += 1
+        cart = Cart.objects.create(**owner_filter, name=unique_name, is_active=is_active)
+        
+        # Associate with the most recent store list
+        store_list_owner_filter = {'user': user} if user else {'anonymous_id': anonymous_id}
+        store_list = SelectedStoreList.objects.filter(**store_list_owner_filter).order_by('-last_used_at').first()
+        if store_list:
+            cart.selected_store_list = store_list
+            cart.save()
+        
+        return cart
 
     def rename_cart(self, cart, new_name):
         cart.name = new_name
