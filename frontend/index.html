@@ -20,6 +20,12 @@
           headers['X-Anonymous-ID'] = anonymousId;
         }
 
+        // Add CSRF token for POST requests
+        const csrfToken = document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1];
+        if (csrfToken) {
+          headers['X-CSRFToken'] = csrfToken;
+        }
+
         window.__initialDataPromise__ = fetch('/api/initial-setup/', {
           method: 'POST',
           headers: headers,
