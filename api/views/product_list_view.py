@@ -1,10 +1,13 @@
 from django.db.models import Q, Case, When, Value, IntegerField
+from django.views.decorators.cache import cache_page # New import
+from django.utils.decorators import method_decorator # New import
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework.exceptions import ValidationError
 from products.models import Product
 from ..serializers import ProductSerializer
 
+@method_decorator(cache_page(3600), name='dispatch') # Apply cache_page decorator
 class ProductListView(generics.ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = ProductSerializer

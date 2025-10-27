@@ -9,6 +9,8 @@ import { useCart } from "@/context/CartContext";
 import { Badge } from "@/components/ui/badge";
 import NextButton from "@/components/NextButton";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 // Lazy load page components
 const HomePage = React.lazy(() => import("./pages/HomePage"));
@@ -76,6 +78,7 @@ const Layout = () => {
         event.preventDefault();
         event.stopPropagation();
         openDialog('Edit Location');
+        toast.info("Please select stores to continue.");
       }
     };
 
@@ -195,6 +198,7 @@ const Layout = () => {
         onOpenChange={setDialogOpen} 
         defaultPage={dialogPage} 
       />
+      <Toaster />
     </div>
   );
 };

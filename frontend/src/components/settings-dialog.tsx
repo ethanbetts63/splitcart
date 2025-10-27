@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/sidebar"
 import EditLocationPage from "@/pages/dialog-pages/EditLocationPage";
 import CartPage from "@/pages/dialog-pages/CartPage";
+import { toast } from "sonner";
 
 // Define a type for our navigation items
 type NavItem = {
@@ -102,8 +103,15 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'cart' }: Set
   };
 
   const handleOpenChange = (newOpenState: boolean) => {
-    // If the dialog is closing, check if a search has occurred before saving.
+    // If trying to close the dialog
     if (!newOpenState) {
+      // and we are on the Edit Location page and no stores are selected
+      if (activePage === 'Edit Location' && localSelectedStoreIds.size === 0) {
+        toast.warning("You must select a location to continue.");
+        return; // Prevent closing
+      }
+
+      // If we are allowed to close, then run the save logic
       if (hasSearchOccurred) {
         setSelectedStoreIds(localSelectedStoreIds);
         saveStoreList(currentStoreListName, Array.from(localSelectedStoreIds));

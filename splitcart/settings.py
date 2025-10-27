@@ -184,3 +184,15 @@ REST_AUTH = {
     'REGISTER_SERIALIZER': 'users.serializers.CustomRegisterSerializer',
 
 }
+
+# Caching configuration
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake', # A unique string for this cache instance
+        'TIMEOUT': 3600, # Cache for 1 hour (3600 seconds)
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000 # Maximum number of entries in the cache
+        }
+    }
+}

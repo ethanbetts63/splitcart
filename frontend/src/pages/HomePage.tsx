@@ -7,8 +7,16 @@ import confusedShopper from "../assets/confused_shopper.png";
 import kingKongImage from "../assets/king_kong.png";
 
 const HomePage = () => {
+  const DEFAULT_STORE_IDS = [
+    515, 5123, 518, 523, 272, 276, 2197, 2198, 2199, 536, 5142, 547, 2218, 2219,
+    2224, 5074, 5080, 5082, 5083, 5094, 5096, 5100, 498, 505, 254,
+  ];
   const { selectedStoreIds } = useStoreList();
-  const storeIdsArray = React.useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
+  const isDefaultStores = selectedStoreIds.size === 0;
+  const storeIdsArray = React.useMemo(() =>
+    isDefaultStores ? DEFAULT_STORE_IDS : Array.from(selectedStoreIds),
+    [selectedStoreIds, isDefaultStores]
+  );
 
   return (
     <div>
@@ -38,6 +46,7 @@ const HomePage = () => {
               searchQuery="bargains"
               sourceUrl="/api/products/bargains/?limit=20"
               storeIds={storeIdsArray}
+              isDefaultStores={isDefaultStores}
             />
           </section>
         </div>
@@ -90,6 +99,7 @@ const HomePage = () => {
               searchQuery="milk"
               sourceUrl="/api/products/?search=milk&limit=20"
               storeIds={storeIdsArray}
+              isDefaultStores={isDefaultStores}
             />
           </section>
 
@@ -99,6 +109,7 @@ const HomePage = () => {
               searchQuery="eggs"
               sourceUrl="/api/products/?search=eggs&limit=20"
               storeIds={storeIdsArray}
+              isDefaultStores={isDefaultStores}
             />
           </section>
 
@@ -108,6 +119,7 @@ const HomePage = () => {
               searchQuery="bread"
               sourceUrl="/api/products/?search=bread&limit=20"
               storeIds={storeIdsArray}
+              isDefaultStores={isDefaultStores}
             />
           </section>
         </div>

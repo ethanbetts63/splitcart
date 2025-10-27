@@ -29,11 +29,12 @@ interface ProductCarouselProps {
   storeIds?: number[];
   title: string;
   searchQuery?: string;
+  isDefaultStores?: boolean; // New prop
 }
 
 import { useApiQuery } from '@/hooks/useApiQuery';
 
-const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery }) => {
+const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores }) => {
   const [baseUrl, queryString] = sourceUrl.split('?');
   const params = new URLSearchParams(queryString || '');
   if (storeIds && storeIds.length > 0) {
@@ -83,6 +84,11 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
     <div>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">{title}</h2>
+        {isDefaultStores && (
+          <span className="ml-2 text-sm text-muted-foreground bg-blue-100 px-2 py-1 rounded-md">
+            Showing example products, please select a location.
+          </span>
+        )}
         {searchQuery && (
           <Link to={`/search?q=${encodeURIComponent(searchQuery)}`} className="text-sm text-blue-500 hover:underline">
             See more
