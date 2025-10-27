@@ -73,7 +73,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ fullScreen = true }) =>
     return (
       <div className="container mx-auto p-4 flex flex-col items-center justify-center text-center" style={{ minHeight: 'calc(100vh - 10rem)' }}>
         <h1 className="text-2xl font-bold mb-4" style={{ whiteSpace: 'pre-line' }}>{loadingMessage}</h1>
-        <Spinner />
+        <Spinner /> 
       </div>
     );
   }
