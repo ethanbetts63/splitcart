@@ -2,6 +2,12 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from '
 import { performInitialSetupAPI } from '@/services/auth.api';
 import { type Cart, type SelectedStoreListType } from '@/types';
 
+declare global {
+  interface Window {
+    __initialDataPromise__?: Promise<any>;
+  }
+}
+
 interface AuthContextType {
   isAuthenticated: boolean;
   token: string | null;
@@ -21,8 +27,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [initialCart, setInitialCart] = useState<Cart | null>(() => ({
     id: 'local',
     name: 'Shopping Cart',
+    is_active: true,
     items: [],
-    selected_store_list: null,
+    selected_store_list: {
+      id: 'local-store-list',
+      name: 'My Stores',
+      stores: [],
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      last_used_at: new Date().toISOString(),
+    },
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   }));

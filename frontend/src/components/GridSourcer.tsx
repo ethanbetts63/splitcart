@@ -102,7 +102,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, catego
   }
 
   if (isError) {
-    return <div className="text-center p-8 text-red-500">Error: {error}</div>;
+    return <div className="text-center p-8 text-red-500">Error: {error.message}</div>;
   }
 
   return (
