@@ -56,11 +56,38 @@ const Layout = () => {
   const showNextButton = (location.pathname === '/' || location.pathname === '/search') && cartTotal > 0;
 
   useEffect(() => {
-    if (selectedStoreIds.size === 0) {
-      setDialogPage('Edit Location');
-      setDialogOpen(true);
-    }
-  }, []);
+    const handleInteraction = (event: MouseEvent | KeyboardEvent) => {
+      if (
+        !dialogOpen &&
+        location.pathname === '/' &&
+        selectedStoreIds.size === 0
+      ) {
+        if (event instanceof KeyboardEvent && event.key !== 'Enter') {
+          return;
+        }
+
+        const target = event.target as HTMLElement;
+        // Allow navigation links in header and footer to work normally.
+        if (target.closest('header a[href], footer a[href]')) {
+            return;
+        }
+
+        // For other interactions, open the dialog and stop the event.
+        event.preventDefault();
+        event.stopPropagation();
+        openDialog('Edit Location');
+      }
+    };
+
+    // Use capture phase to intercept events early.
+    document.addEventListener('click', handleInteraction, true);
+    document.addEventListener('keydown', handleInteraction, true);
+
+    return () => {
+      document.removeEventListener('click', handleInteraction, true);
+      document.removeEventListener('keydown', handleInteraction, true);
+    };
+  }, [dialogOpen, location.pathname, selectedStoreIds.size]);
 
   const handleSearch = () => {
     if (searchTerm.trim() !== '') {
