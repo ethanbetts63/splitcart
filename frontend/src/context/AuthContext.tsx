@@ -37,13 +37,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const initializeUser = async () => {
-      const storedToken = localStorage.getItem('token') ?? null;
-      // We will rely on the backend to manage and return the anonymous ID
-      const storedAnonymousId = document.cookie.split('; ').find(row => row.startsWith('anonymousId='))?.split('=')[1] ?? null;
-
       try {
-        const initialData = await performInitialSetupAPI(storedToken, storedAnonymousId);
-        
+        // Use the pre-fetched promise if it exists, otherwise call the API directly.
+        const initialData = window.__initialDataPromise__ 
+            ? await window.__initialDataPromise__ 
+            : await performInitialSetupAPI(null, null); // Pass nulls as the API service will get credentials
+
+        if (initialData.error) {
+            throw new Error(`Initial data fetch failed with status: ${initialData.status}`);
+        }
+
+        const storedToken = localStorage.getItem('token');
         if (storedToken) {
           setIsAuthenticated(true);
           setToken(storedToken);
@@ -59,6 +63,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       } catch (error) {
         console.error('Failed during initial user setup:', error);
+        // Here you might want to set an error state or show a toast
       }
     };
 
