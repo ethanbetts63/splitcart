@@ -248,7 +248,9 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
           onSelectionChange={setSelectedCompanies} 
         />
         <Button onClick={handleSearch} disabled={isLoading} className="w-full">{isLoading ? 'Searching...' : 'Search'}</Button>
-        <Button onClick={() => onOpenChange(false)} className="w-full bg-green-500 hover:bg-green-600">Done</Button>
+        {localSelectedStoreIds.size > 0 && (
+          <Button onClick={() => onOpenChange(false)} className="w-full bg-green-500 hover:bg-green-600">Done</Button>
+        )}
       </div>
 
       {/* Right Column for Map and Store List */}
