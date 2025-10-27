@@ -14,11 +14,6 @@ const queryClient = new QueryClient();
 const Root = () => {
   const { initialCart, initialStoreList } = useAuth();
 
-  // Render providers only when initial data is available
-  if (!initialCart || !initialStoreList) {
-    return <div>Loading initial data...</div>; // Or a loading spinner
-  }
-
   return (
     <CartProvider initialCart={initialCart}>
       <StoreListProvider initialStoreList={initialStoreList}>

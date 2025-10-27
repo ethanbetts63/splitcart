@@ -18,8 +18,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const [anonymousId, setAnonymousId] = useState<string | null>(null);
-  const [initialCart, setInitialCart] = useState<Cart | null>(null);
-  const [initialStoreList, setInitialStoreList] = useState<SelectedStoreListType | null>(null);
+  const [initialCart, setInitialCart] = useState<Cart | null>(() => ({
+    id: 'local',
+    name: 'Shopping Cart',
+    items: [],
+    selected_store_list: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  }));
+  const [initialStoreList, setInitialStoreList] = useState<SelectedStoreListType | null>(() => ({
+    id: 'local',
+    name: 'My Stores',
+    stores: [],
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    last_used_at: new Date().toISOString(),
+  }));
 
   useEffect(() => {
     const initializeUser = async () => {
