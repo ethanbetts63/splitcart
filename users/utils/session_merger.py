@@ -32,7 +32,7 @@ def merge_anonymous_session(user, anonymous_id):
             new_list.stores.set(anon_list.stores.all())
 
         # Create a new cart for the user, linked to the new list
-        new_cart_name = "Shopping List"
+        new_cart_name = "Cart"
         if anon_cart.name != 'Anonymous Cart':
             new_cart_name = anon_cart.name
 
