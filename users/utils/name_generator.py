@@ -11,7 +11,7 @@ def generate_unique_name(model_class, owner_filter, base_name):
         A unique name string.
     """
     # First, check if the base name itself is available
-    if not model_class.objects.filter(owner_filter, name=base_name).exists():
+    if not model_class.objects.filter(**owner_filter, name=base_name).exists():
         return base_name
 
     # If not, start appending numbers
