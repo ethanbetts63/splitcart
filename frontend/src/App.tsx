@@ -1,12 +1,8 @@
 import React, { useState, useEffect, Suspense } from "react";
-import { Routes, Route, Outlet, useNavigate, useLocation, Link } from "react-router-dom";
-import { MapPin, ShoppingCart, Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Routes, Route, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { SettingsDialog } from "@/components/settings-dialog";
 import { useStoreList } from "@/context/StoreListContext";
 import { useCart } from "@/context/CartContext";
-import { Badge } from "@/components/ui/badge";
 import NextButton from "@/components/NextButton";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { Toaster } from "@/components/ui/sonner";
