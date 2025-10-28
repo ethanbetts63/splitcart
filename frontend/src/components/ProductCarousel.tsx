@@ -56,9 +56,13 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
 
   const products = apiResponse?.results || [];
 
+  if (!isLoading && products.length < 5) {
+    return null;
+  }
+
   if (isLoading) {
     return (
-      <div>
+      <section className="bg-muted p-8 rounded-lg">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">{title}</h2>
           {searchQuery && (
@@ -76,7 +80,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
             ))}
           </div>
         </div>
-      </div>
+      </section>
     );
   }
 
@@ -85,7 +89,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
   }
 
   return (
-    <div>
+    <section className="bg-muted p-8 rounded-lg">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">{title}</h2>
         {isDefaultStores && (
@@ -108,7 +112,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

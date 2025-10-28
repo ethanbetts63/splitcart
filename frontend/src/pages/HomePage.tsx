@@ -40,16 +40,14 @@ const HomePage = () => {
 
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
-          <section className="bg-muted p-8 rounded-lg">
-            <ProductCarousel
-              title="Sweet Savings"
-              searchQuery="sweet-savings"
-              sourceUrl="/api/products/bargains/?limit=20"
-              superCategory="Sweet Savings"
-              storeIds={storeIdsArray}
-              isDefaultStores={isDefaultStores}
-            />
-          </section>
+          <ProductCarousel
+            title="Sweet Savings"
+            searchQuery="sweet-savings"
+            sourceUrl="/api/products/bargains/?limit=20"
+            superCategory="Sweet Savings"
+            storeIds={storeIdsArray}
+            isDefaultStores={isDefaultStores}
+          />
         </div>
       </div>
 
@@ -94,27 +92,23 @@ const HomePage = () => {
 
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
-          <section className="bg-muted p-8 rounded-lg">
-            <ProductCarousel
-              title="Bread, Milk & Bargains"
-              searchQuery="bread-milk-bargains"
-              sourceUrl="/api/products/bargains/?limit=20"
-              superCategory="Bread, Milk & Bargains"
-              storeIds={storeIdsArray}
-              isDefaultStores={isDefaultStores}
-            />
-          </section>
+          <ProductCarousel
+            title="Bread, Milk & Bargains"
+            searchQuery="bread-milk-bargains"
+            sourceUrl="/api/products/bargains/?limit=20"
+            superCategory="Bread, Milk & Bargains"
+            storeIds={storeIdsArray}
+            isDefaultStores={isDefaultStores}
+          />
 
-          <section className="bg-muted p-8 rounded-lg">
-            <ProductCarousel
-              title="Powerful Pantry Prices"
-              searchQuery="powerful-pantry-prices"
-              sourceUrl="/api/products/bargains/?limit=20"
-              superCategory="Powerful Pantry Prices"
-              storeIds={storeIdsArray}
-              isDefaultStores={isDefaultStores}
-            />
-          </section>
+          <ProductCarousel
+            title="Powerful Pantry Prices"
+            searchQuery="powerful-pantry-prices"
+            sourceUrl="/api/products/bargains/?limit=20"
+            superCategory="Powerful Pantry Prices"
+            storeIds={storeIdsArray}
+            isDefaultStores={isDefaultStores}
+          />
 
           <div className="container mx-auto px-4 py-0">
             <div className="flex flex-col gap-8">
@@ -129,38 +123,32 @@ const HomePage = () => {
             </div>
           </div>
 
-          <section className="bg-muted p-8 rounded-lg">
-            <ProductCarousel
-              title="Thirsty for Value?"
-              searchQuery="thirsty-for-value"
-              sourceUrl="/api/products/bargains/?limit=20"
-              superCategory="Thirsty for Value?"
-              storeIds={storeIdsArray}
-              isDefaultStores={isDefaultStores}
-            />
-          </section>
+          <ProductCarousel
+            title="Thirsty for Value?"
+            searchQuery="thirsty-for-value"
+            sourceUrl="/api/products/bargains/?limit=20"
+            superCategory="Thirsty for Value?"
+            storeIds={storeIdsArray}
+            isDefaultStores={isDefaultStores}
+          />
 
-          <section className="bg-muted p-8 rounded-lg">
-            <ProductCarousel
-              title="Frozen Finds"
-              searchQuery="frozen-finds"
-              sourceUrl="/api/products/bargains/?limit=20"
-              superCategory="Frozen Finds"
-              storeIds={storeIdsArray}
-              isDefaultStores={isDefaultStores}
-            />
-          </section>
+          <ProductCarousel
+            title="Frozen Finds"
+            searchQuery="frozen-finds"
+            sourceUrl="/api/products/bargains/?limit=20"
+            superCategory="Frozen Finds"
+            storeIds={storeIdsArray}
+            isDefaultStores={isDefaultStores}
+          />
 
-          <section className="bg-muted p-8 rounded-lg">
-            <ProductCarousel
-              title="Fresh & Frugal"
-              searchQuery="fresh-frugal"
-              sourceUrl="/api/products/bargains/?limit=20"
-              superCategory="Fresh & Frugal"
-              storeIds={storeIdsArray}
-              isDefaultStores={isDefaultStores}
-            />
-          </section>
+          <ProductCarousel
+            title="Fresh & Frugal"
+            searchQuery="fresh-frugal"
+            sourceUrl="/api/products/bargains/?limit=20"
+            superCategory="Fresh & Frugal"
+            storeIds={storeIdsArray}
+            isDefaultStores={isDefaultStores}
+          />
         </div>
       </div>
     </div>
