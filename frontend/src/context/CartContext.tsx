@@ -11,6 +11,7 @@ export interface CartContextType {
   optimizationResult: ApiResponse | null;
   setOptimizationResult: (result: ApiResponse | null) => void;
   cartLoading: boolean;
+  isFetchingSubstitutions: boolean; // New state for substitution loading
 
   fetchActiveCart: () => void;
   loadCart: (cartId: string) => void;
@@ -32,6 +33,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
   const [userCarts, setUserCarts] = useState<Cart[]>([]);
   const [optimizationResult, setOptimizationResult] = useState<ApiResponse | null>(null);
   const [cartLoading, setCartLoading] = useState(true);
+  const [isFetchingSubstitutions, setIsFetchingSubstitutions] = useState(false); // Initialize new state
 
 
   useEffect(() => {
@@ -152,6 +154,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
   const addItem = async (productId: number, quantity: number, product: any) => {
     if (!currentCart) return;
 
+    setIsFetchingSubstitutions(true); // Set loading to true
+
     const tempId = `temp-${Date.now()}`;
     const optimisticItem = {
       id: tempId,
@@ -208,6 +212,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
       toast.error('Failed to add item to cart. Please try again.');
       // Revert the optimistic update on failure
       setCurrentCart(originalCart);
+    } finally {
+      setIsFetchingSubstitutions(false); // Set loading to false in finally block
     }
   };
 
@@ -312,7 +318,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
 
   return (
       <CartContext.Provider value={{
-            currentCart, userCarts, optimizationResult, setOptimizationResult, cartLoading,
+            currentCart, userCarts, optimizationResult, setOptimizationResult, cartLoading, isFetchingSubstitutions,
             fetchActiveCart, loadCart, createNewCart, renameCart, deleteCart,
             addItem, updateItemQuantity, removeItem, updateCartItemSubstitution, removeCartItemSubstitution
         }}>

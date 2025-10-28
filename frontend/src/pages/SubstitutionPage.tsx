@@ -15,7 +15,7 @@ import kingKongImage from "../assets/king_kong.png";
 
 const SubstitutionPage = () => {
   const navigate = useNavigate();
-  const { currentCart, setOptimizationResult, updateCartItemSubstitution } = useCart();
+  const { currentCart, setOptimizationResult, updateCartItemSubstitution, isFetchingSubstitutions } = useCart();
   useStoreList(); // Call hook to ensure context is available, but don't destructure
 
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
@@ -116,7 +116,7 @@ const SubstitutionPage = () => {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || isFetchingSubstitutions) {
     return <LoadingSpinner />;
   }
 
