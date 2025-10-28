@@ -41,7 +41,7 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
         )}
       </div>
       <CardHeader className="p-0 text-center">
-        <CardTitle className="h-10 leading-5 text-base font-semibold overflow-hidden text-ellipsis line-clamp-2">{product.name}</CardTitle>
+        <CardTitle className="h-12 leading-5 text-base font-semibold overflow-hidden text-ellipsis line-clamp-2">{product.name}</CardTitle>
         {product.brand_name && <CardDescription className="text-sm text-muted-foreground">{product.brand_name}</CardDescription>}
       </CardHeader>
       <CardContent className="flex-grow px-3">
