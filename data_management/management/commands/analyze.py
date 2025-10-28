@@ -12,6 +12,7 @@ from data_management.utils.analysis_utils.substitution_analysis import generate_
 from data_management.utils.analysis_utils.savings_benchmark import run_savings_benchmark
 from data_management.utils.analysis_utils.substitution_overlap import calculate_strict_substitution_overlap_matrix, generate_substitution_heatmap_image
 from data_management.utils.analysis_utils.category_analysis import generate_category_product_count_report
+from data_management.utils.analysis_utils.super_category_analysis import generate_super_category_report
 from companies.models import Company, Category
 
 class Command(BaseCommand):
@@ -23,7 +24,7 @@ class Command(BaseCommand):
             type=str,
             required=True,
             help='Specifies which type of analysis or report to generate.',
-            choices=['store_product_counts', 'company_heatmap', 'store_heatmap', 'pricing_heatmap', 'category_heatmap', 'category_tree', 'subs', 'savings', 'sub_heatmap', 'internal_crossover', 'category_product_counts']
+            choices=['store_product_counts', 'company_heatmap', 'store_heatmap', 'pricing_heatmap', 'category_heatmap', 'category_tree', 'subs', 'savings', 'sub_heatmap', 'internal_crossover', 'category_product_counts', 'super_cats']
         )
         parser.add_argument(
             '--company-name',
@@ -178,6 +179,23 @@ class Command(BaseCommand):
             if condensed:
                 file_name = f"{datetime.date.today()}-condensed-category_product_counts.txt"
 
+            file_path = os.path.join(output_dir, file_name)
+
+            try:
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    f.write(report_content)
+                self.stdout.write(self.style.SUCCESS(f"\nSuccessfully wrote analysis report to: {file_path}"))
+            except IOError as e:
+                self.stderr.write(self.style.ERROR(f"Error writing to file: {e}"))
+
+        elif report_type == 'super_cats':
+            self.stdout.write(self.style.SUCCESS("--- Starting Super Category Analysis ---"))
+            report_content = generate_super_category_report()
+            
+            output_dir = os.path.join('data_management', 'data', 'analysis', 'category_reports')
+            os.makedirs(output_dir, exist_ok=True)
+            
+            file_name = f"{datetime.date.today()}-super_cats.txt"
             file_path = os.path.join(output_dir, file_name)
 
             try:
