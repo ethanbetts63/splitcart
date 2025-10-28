@@ -50,6 +50,11 @@ class Command(BaseCommand):
             action='store_true',
             help='Filter for categories with at least 10 products in at least 3 companies.'
         )
+        parser.add_argument(
+            '--condensed',
+            action='store_true',
+            help='Generate a condensed report with categories having >= 100 products, sorted by company count then product count.'
+        )
 
     def handle(self, *args, **options):
         report_type = options['report']
@@ -58,6 +63,7 @@ class Command(BaseCommand):
         state = options['state']
         alphabetical = options['alphabetical']
         strict = options['strict']
+        condensed = options['condensed']
 
         if report_type == 'store_product_counts':
             if not company_name:
@@ -161,13 +167,17 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS("--- Starting Category Product Count Analysis ---"))
             report_content = generate_category_product_count_report(
                 sort_alphabetically=alphabetical, 
-                strict_filter=strict
+                strict_filter=strict,
+                condensed=condensed
             )
             
             output_dir = os.path.join('data_management', 'data', 'analysis', 'category_reports')
             os.makedirs(output_dir, exist_ok=True)
             
             file_name = f"{datetime.date.today()}-category_product_counts.txt"
+            if condensed:
+                file_name = f"{datetime.date.today()}-condensed-category_product_counts.txt"
+
             file_path = os.path.join(output_dir, file_name)
 
             try:
