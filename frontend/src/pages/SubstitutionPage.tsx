@@ -26,6 +26,14 @@ const SubstitutionPage = () => {
   }, []);
 
   const itemsToReview = currentCart?.items.filter(item => item.substitutions && item.substitutions.length > 0) || [];
+
+  useEffect(() => {
+    // Automatically navigate if there are no substitutes to review after loading is complete.
+    if (!isFetchingSubstitutions && currentCart && itemsToReview.length === 0) {
+      handleOptimizeAndNavigate();
+    }
+  }, [isFetchingSubstitutions, currentCart, itemsToReview.length]);
+
   const currentItem = itemsToReview[currentItemIndex];
   const currentSubstitutes = currentItem?.substitutions || [];
 
@@ -120,14 +128,10 @@ const SubstitutionPage = () => {
     return <LoadingSpinner />;
   }
 
-  if (!currentItem) {
-    return (
-      <div className="text-center p-8">
-        <h2 className="text-2xl font-bold mb-4">No Substitutes to Review</h2>
-        <p className="mb-4">None of the items in your cart currently have substitute options available.</p>
-        <Button onClick={() => handleOptimizeAndNavigate()}>Proceed to Final Cart</Button>
-      </div>
-    );
+  // If there are no items to review, we are in the process of navigating away.
+  // Show a loading spinner to avoid rendering the rest of the page with no data.
+  if (itemsToReview.length === 0) {
+    return <LoadingSpinner />;
   }
 
   const isLastItem = currentItemIndex === itemsToReview.length - 1;
