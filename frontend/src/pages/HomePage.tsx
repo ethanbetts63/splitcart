@@ -115,11 +115,31 @@ const HomePage = () => {
               isDefaultStores={isDefaultStores}
             />
           </section>
-        </div>
-      </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col gap-8">
+          <div className="container mx-auto px-4 py-0">
+            <div className="flex flex-col gap-8">
+              <section>
+                <FaqImageSection
+                  title="The Hard Hitting Questions"
+                  page="home"
+                  imageSrc={kingKongImage}
+                  imageAlt="King Kong swatting at discount planes"
+                />
+              </section>
+            </div>
+          </div>
+
+          <section className="bg-muted p-8 rounded-lg">
+            <ProductCarousel
+              title="Thirsty for Value?"
+              searchQuery="thirsty-for-value"
+              sourceUrl="/api/products/bargains/?limit=20"
+              superCategory="Thirsty for Value?"
+              storeIds={storeIdsArray}
+              isDefaultStores={isDefaultStores}
+            />
+          </section>
+
           <section className="bg-muted p-8 rounded-lg">
             <ProductCarousel
               title="Frozen Finds"
@@ -137,34 +157,6 @@ const HomePage = () => {
               searchQuery="fresh-frugal"
               sourceUrl="/api/products/bargains/?limit=20"
               superCategory="Fresh & Frugal"
-              storeIds={storeIdsArray}
-              isDefaultStores={isDefaultStores}
-            />
-          </section>
-        </div>
-      </div>
-
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col gap-8">
-          <section>
-            <FaqImageSection
-              title="The Hard Hitting Questions"
-              page="home"
-              imageSrc={kingKongImage}
-              imageAlt="King Kong swatting at discount planes"
-            />
-          </section>
-        </div>
-      </div>
-
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col gap-8">
-          <section className="bg-muted p-8 rounded-lg">
-            <ProductCarousel
-              title="Thirsty for Value?"
-              searchQuery="thirsty-for-value"
-              sourceUrl="/api/products/bargains/?limit=20"
-              superCategory="Thirsty for Value?"
               storeIds={storeIdsArray}
               isDefaultStores={isDefaultStores}
             />
