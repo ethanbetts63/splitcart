@@ -27,11 +27,12 @@ interface GridSourcerProps {
   searchTerm: string | null;
   sourceUrl: string | null;
   categorySlug: string | null;
+  superCategory: string | null;
 }
 
 import { useApiQuery } from '@/hooks/useApiQuery';
 
-const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, categorySlug }) => {
+const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, categorySlug, superCategory }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const { selectedStoreIds } = useStoreList(); // Get selected stores
 
@@ -46,11 +47,14 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, catego
       const existingParams = new URLSearchParams(queryString || '');
       existingParams.forEach((value, key) => params.set(key, value));
     } else if (searchTerm) {
-      url = '/products/';
+      url = '/api/products/';
       params.set('search', searchTerm);
     } else if (categorySlug) {
-      url = '/products/by-category/';
+      url = '/api/products/by-category/';
       params.set('category_slug', categorySlug);
+    } else if (superCategory) {
+      url = '/api/products/bargains/'; // Assuming bargains endpoint for super categories
+      params.set('super_category', superCategory);
     }
 
     if (selectedStoreIds && selectedStoreIds.size > 0) {
@@ -59,7 +63,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, catego
     params.set('page', currentPage.toString());
 
     return { url, params };
-  }, [searchTerm, sourceUrl, categorySlug, selectedStoreIds, currentPage]);
+  }, [searchTerm, sourceUrl, categorySlug, superCategory, selectedStoreIds, currentPage]);
 
   const finalUrl = url ? `${url}?${params.toString()}` : null;
 
@@ -90,6 +94,8 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, catego
   } else if (categorySlug) {
     const formattedSlug = categorySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     titleText = `Showing ${totalResults} products in "${formattedSlug}"`;
+  } else if (superCategory) {
+    titleText = `Found ${totalResults} products in "${superCategory}"`;
   } else if (sourceUrl) {
     // Basic title for sourceUrl, can be improved
     titleText = `Showing ${totalResults} products`;

@@ -5,6 +5,7 @@ const SearchResultsPage = () => {
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get('q');
   const categorySlug = searchParams.get('category_slug');
+  const superCategory = searchParams.get('super_category');
 
   // The logic for 'sourceUrl' can be added here later if needed.
   const sourceUrl = null;
@@ -15,6 +16,7 @@ const SearchResultsPage = () => {
         searchTerm={searchTerm}
         sourceUrl={sourceUrl}
         categorySlug={categorySlug}
+        superCategory={superCategory}
       />
     </div>
   );

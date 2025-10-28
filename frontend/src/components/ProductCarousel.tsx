@@ -97,8 +97,8 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
             Showing example products, please select a location.
           </span>
         )}
-        {searchQuery && (
-          <Link to={`/search?q=${encodeURIComponent(searchQuery)}`} className="text-sm text-blue-500 hover:underline">
+        {superCategory && (
+          <Link to={`/search?super_category=${encodeURIComponent(superCategory)}`} className="text-sm text-blue-500 hover:underline">
             See more
           </Link>
         )}
