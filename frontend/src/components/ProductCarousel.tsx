@@ -64,7 +64,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
     return (
       <section className="bg-muted p-8 rounded-lg">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">{title}</h2>
+        <h2 className="text-2xl font-semibold">{title}</h2>
           {searchQuery && (
             <Link to={`/search?q=${encodeURIComponent(searchQuery)}`} className="text-sm text-blue-500 hover:underline">
               See more
@@ -89,9 +89,9 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
   }
 
   return (
-    <section className="bg-muted p-8 rounded-lg">
+    <section className="bg-muted p-4 rounded-lg">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">{title}</h2>
+        <h2 className="text-2xl font-bold">{title}</h2>
         {isDefaultStores && (
           <span className="ml-2 text-sm text-muted-foreground bg-blue-100 px-2 py-1 rounded-md">
             Showing example products, please select a location.
