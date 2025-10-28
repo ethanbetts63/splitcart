@@ -133,7 +133,7 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'cart' }: Set
           Customize your settings here.
         </DialogDescription>
         <SidebarProvider className="items-start">
-          <Sidebar collapsible="none" className="hidden md:flex">
+          <Sidebar collapsible="none" className="flex">
             <SidebarContent>
               <SidebarGroup>
                 <SidebarGroupContent>
