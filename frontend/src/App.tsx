@@ -25,7 +25,6 @@ import { useAuth } from "@/context/AuthContext";
 import CategoryBar from "./components/CategoryBar";
 import Footer from './components/Footer';
 import NavBar from './components/NavBar';
-import splitcartLogo from "./assets/splitcart_symbol_v6.png";
 import './App.css';
 
 const App = () => {

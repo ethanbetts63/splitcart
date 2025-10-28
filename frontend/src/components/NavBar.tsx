@@ -38,7 +38,7 @@ const NavBar: React.FC<NavBarProps> = ({
         <div className="flex items-center gap-6">
           <a href="/" className="flex items-center space-x-2">
             <img src={splitcartLogo} alt="SplitCart Logo" className="h-16 w-16" />
-            <span className="font-bold text-2xl">SplitCart</span>
+            <span className="font-bold text-2xl hidden md:block">SplitCart</span>
           </a>
         </div>
         <div className="flex flex-1 items-center justify-center">
