@@ -20,8 +20,8 @@ const HomePage = () => {
 
   return (
     <div>
-      <div className="container mx-auto px-4 pt-8 pb-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div className="container mx-auto px-4 pt-4 pb-1">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
             <AspectRatio ratio={16 / 9}>
               <img src={confusedShopper} alt="Confused Shopper" className="rounded-md object-cover w-full h-full" />
