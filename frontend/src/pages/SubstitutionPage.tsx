@@ -169,15 +169,19 @@ const SubstitutionPage = () => {
           <h2 className="text-xl font-semibold mb-4">Substitutes</h2>
           <div className="h-[480px] overflow-y-auto border rounded-md p-4 space-y-4">
             {currentSubstitutes.map(sub => {
-              return (
-                <CartItemTile 
-                  key={sub.id} 
-                  cartSubstitution={sub} // Pass the CartSubstitution object directly
-                  onApprove={handleApprove} 
-                  onQuantityChange={handleQuantityChange}
-                  context="substitution"
-                />
-              )
+              // Only render the substitute if it has prices
+              if (sub.substituted_product.prices && sub.substituted_product.prices.length > 0) {
+                return (
+                  <CartItemTile 
+                    key={sub.id} 
+                    cartSubstitution={sub} // Pass the CartSubstitution object directly
+                    onApprove={handleApprove} 
+                    onQuantityChange={handleQuantityChange}
+                    context="substitution"
+                  />
+                )
+              }
+              return null; // Do not render if no prices
             })}
           </div>
         </div>
