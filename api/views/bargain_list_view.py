@@ -12,17 +12,21 @@ class BargainListView(generics.ListAPIView):
 
     def get_queryset(self):
         store_ids_param = self.request.query_params.get('store_ids')
+        super_category_param = self.request.query_params.get('super_category')
+
         if not store_ids_param:
-            return Product.objects.none()  # Return nothing if no stores are selected
+            return Product.objects.none()
 
         try:
             store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
-            # Get unique product IDs from the Bargain table that match the user's stores
-            product_ids = Bargain.objects.filter(store__id__in=store_ids).values_list('product_id', flat=True).distinct()
             
-            # Fetch the actual Product objects for those IDs
-            # We can also order them by the bargain's percentage difference if we want
-            # For now, just getting the products is fine.
+            bargain_queryset = Bargain.objects.filter(store__id__in=store_ids)
+
+            if super_category_param:
+                bargain_queryset = bargain_queryset.filter(super_categories__name=super_category_param)
+
+            product_ids = bargain_queryset.values_list('product_id', flat=True).distinct()
+            
             queryset = Product.objects.filter(id__in=product_ids)
             return queryset
         except (ValueError, TypeError):

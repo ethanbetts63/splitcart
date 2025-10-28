@@ -30,15 +30,19 @@ interface ProductCarouselProps {
   title: string;
   searchQuery?: string;
   isDefaultStores?: boolean; // New prop
+  superCategory?: string; // New prop
 }
 
 import { useApiQuery } from '@/hooks/useApiQuery';
 
-const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores }) => {
+const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, superCategory }) => {
   const [baseUrl, queryString] = sourceUrl.split('?');
   const params = new URLSearchParams(queryString || '');
   if (storeIds && storeIds.length > 0) {
     params.set('store_ids', storeIds.join(','));
+  }
+  if (superCategory) {
+    params.set('super_category', superCategory);
   }
 
   const finalUrl = `${baseUrl}?${params.toString()}`;
