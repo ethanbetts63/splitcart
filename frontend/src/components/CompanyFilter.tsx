@@ -53,7 +53,7 @@ const CompanyFilter: React.FC<CompanyFilterProps> = ({ selectedCompanies = [], o
               className="flex items-center gap-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
               <CompanyLogo companyName={name} />
-              {name}
+              <span className="hidden md:inline">{name}</span>
             </div>
           </div>
         ))}

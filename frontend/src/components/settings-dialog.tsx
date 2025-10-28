@@ -126,7 +126,7 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'cart' }: Set
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent 
         showCloseButton={false} // Disable the default close button
-        className="overflow-hidden p-0 md:max-h-[500px] md:max-w-[700px] lg:max-w-[800px]"
+        className="overflow-hidden p-0 max-h-[500px] md:max-w-[700px] lg:max-w-[800px]"
       >
         <DialogTitle className="sr-only">Settings</DialogTitle>
         <DialogDescription className="sr-only">
