@@ -32,7 +32,7 @@ const HomePage = () => {
               They’ve been optimizing for profit. Now it’s your turn.
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Every store has a deal — but finding them all takes forever. SplitCart automates that process by comparing prices across supermarkets and splitting your cart for the cheapest overall shop. One list, multiple stores, maximum savings. Search or browse and add products to your cart to get started! Click "Next" in the top right when you're ready!
+              Every store has a deal — but finding them all takes forever. SplitCart automates that process by comparing prices across supermarkets and splitting your cart for the cheapest overall shop. One list, multiple stores, maximum savings. Search or browse and add products to your cart to get started! Click "Next" in the bottom right when you're ready!
             </p>
           </div>
         </div>

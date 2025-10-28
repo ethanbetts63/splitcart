@@ -55,7 +55,7 @@ const Layout = () => {
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogPage, setDialogPage] = useState('cart');
-  const showNextButton = (location.pathname === '/' || location.pathname === '/search') && cartTotal > 0;
+  const showNextButton = (location.pathname === '/' || location.pathname === '/search') && cartTotal > 0 && !dialogOpen;
 
   useEffect(() => {
     const handleInteraction = (event: MouseEvent | KeyboardEvent) => {
@@ -125,7 +125,6 @@ const Layout = () => {
         selectedStoreIds={selectedStoreIds}
         isAuthenticated={isAuthenticated}
         logout={logout}
-        showNextButton={showNextButton}
       />
       {(location.pathname === '/' || location.pathname === '/search') && <CategoryBar />}
       <main className="flex-grow">
@@ -140,6 +139,9 @@ const Layout = () => {
         defaultPage={dialogPage} 
       />
       <Toaster />
+      {showNextButton && (
+        <NextButton className="fixed bottom-8 right-8 z-50 h-16 w-16 rounded-full shadow-lg" />
+      )}
     </div>
   );
 };

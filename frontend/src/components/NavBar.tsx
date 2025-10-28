@@ -17,7 +17,6 @@ interface NavBarProps {
   selectedStoreIds: Set<number>;
   isAuthenticated: boolean;
   logout: () => void;
-  showNextButton: boolean;
 }
 
 const NavBar: React.FC<NavBarProps> = ({
@@ -30,14 +29,13 @@ const NavBar: React.FC<NavBarProps> = ({
   selectedStoreIds,
   isAuthenticated,
   logout,
-  showNextButton,
 }) => {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-20 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-6">
           <a href="/" className="flex items-center space-x-2">
-            <img src={splitcartLogo} alt="SplitCart Logo" className="h-16 w-16" />
+            <img src={splitcartLogo} alt="SplitCart Logo" className="h-16 w-16 flex-shrink-0" />
             <span className="font-bold text-2xl hidden md:block">SplitCart</span>
           </a>
         </div>
@@ -100,7 +98,6 @@ const NavBar: React.FC<NavBarProps> = ({
               <Button variant="outline">Login</Button>
             </Link>
           )}
-          {showNextButton && <NextButton className="h-12 px-4" />}
         </div>
       </div>
     </header>
