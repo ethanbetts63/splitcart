@@ -3,6 +3,7 @@ import json
 import os
 from django.core.management.base import BaseCommand
 from collections import defaultdict
+from django.conf import settings
 
 # Adapted Logic from ExactCategoryMatcher to work with JSON data
 class LocalExactCategoryMatcher:
@@ -44,22 +45,37 @@ class Command(BaseCommand):
     help = 'Fetches category data from the server, generates semantic links, and saves them to an outbox.'
 
     def add_arguments(self, parser):
-        parser.add_argument('--api-base-url', type=str, default='http://127.0.0.1:8000', help='The base URL of the production server API.')
         parser.add_argument('--outbox-dir', type=str, default='data_management/data/category_links_outbox', help='Directory to save the generated JSON file.')
 
     def handle(self, *args, **options):
-        base_url = options['api_base_url']
         outbox_dir = options['outbox_dir']
-        self.stdout.write(self.style.SUCCESS(f"--- Starting Category Link Generation using API at {base_url} ---"))
-
-        # Ensure outbox directory exists
         os.makedirs(outbox_dir, exist_ok=True)
+
+        try:
+            server_url = settings.API_SERVER_URL
+            api_key = settings.API_SECRET_KEY
+        except AttributeError:
+            self.stderr.write(self.command.style.ERROR("API_SERVER_URL and API_SECRET_KEY must be configured in settings."))
+            return
+
+        upload_url = f"{server_url.rstrip('/')}/api/export/categories/"
+        headers = {
+            'X-API-KEY': api_key,
+            'Accept': 'application/json'
+        }
+
+        self.stdout.write(self.style.SUCCESS(f"--- Starting Category Link Generation using API at {server_url} ---"))
 
         self.stdout.write("Fetching categories from the server...")
         try:
-            categories_response = requests.get(f'{base_url}/api/export/categories/')
+            categories_response = requests.get(upload_url, headers=headers)
             categories_response.raise_for_status()
-            categories = categories_response.json()
+            try:
+                categories = categories_response.json()
+            except json.JSONDecodeError:
+                self.stderr.write(self.style.ERROR("Failed to decode JSON. Server response was:"))
+                self.stdout.write(categories_response.text)
+                return
             self.stdout.write(self.style.SUCCESS(f"Successfully fetched {len(categories)} categories."))
         except requests.exceptions.RequestException as e:
             self.stderr.write(self.style.ERROR(f"Failed to fetch data from the server: {e}"))

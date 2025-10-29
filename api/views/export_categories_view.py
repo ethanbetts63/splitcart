@@ -3,10 +3,9 @@ from companies.models import Category
 
 # A lean serializer for exporting categories
 class CategoryExportSerializer(serializers.ModelSerializer):
-    company = serializers.PrimaryKeyRelatedField(read_only=True)
-
     class Meta:
         model = Category
+        # The 'company' foreign key will be serialized to its ID by default.
         fields = ['id', 'name', 'company']
 
 class ExportCategoriesView(generics.ListAPIView):
@@ -14,5 +13,5 @@ class ExportCategoriesView(generics.ListAPIView):
     API endpoint that allows all categories to be exported.
     Provides a lean JSON representation for local processing.
     """
-    queryset = Category.objects.all().select_related('company')
+    queryset = Category.objects.all()
     serializer_class = CategoryExportSerializer
