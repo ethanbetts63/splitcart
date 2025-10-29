@@ -1,6 +1,6 @@
 
-import { type SelectedStoreListType } from '@/types';
-import { getAuthHeaders } from '@/lib/utils';
+import { type SelectedStoreListType } from '../types';
+import { getAuthHeaders } from '../lib/utils';
 
 export const fetchActiveStoreListAPI = async (token: string | null, anonymousId: string | null): Promise<SelectedStoreListType[]> => {
   let url = '';

@@ -1,4 +1,4 @@
-import type { ApiResponse, ExportData } from '@/types';
+import type { ApiResponse, ExportData } from '../types';
 
 export const optimizeCartAPI = async (cartId: string): Promise<ApiResponse> => {
   const response = await fetch('/api/cart/split/', {
