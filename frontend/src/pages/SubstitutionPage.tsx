@@ -11,7 +11,7 @@ import type { CartSubstitution } from '@/types';
 import { Badge } from "@/components/ui/badge";
 import { BadgeCheckIcon } from 'lucide-react';
 import { FaqImageSection } from "../components/FaqImageSection";
-import kingKongImage from "../assets/king_kong.png";
+import sizeDoesntMatterImage from "../assets/size_doesnt_matter.png";
 import useMediaQuery from '@/hooks/useMediaQuery';
 
 const SubstitutionPage = () => {
@@ -203,8 +203,8 @@ const SubstitutionPage = () => {
             <FaqImageSection
               title="Why substitution?"
               page="substitutes"
-              imageSrc={kingKongImage}
-              imageAlt="King Kong swatting at discount planes"
+              imageSrc={sizeDoesntMatterImage}
+              imageAlt="Scale balancing small bottles with many dollar signs against a large bottle with one dollar sign, with text 'Size doesn't matter, value does.'"
             />
           </section>
         </div>
