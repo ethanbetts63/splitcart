@@ -6,13 +6,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "./ui/card";
 import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
-import fallbackImage from '@/assets/splitcart_symbol_v6.png';
+import fallbackImage from '../assets/splitcart_symbol_v6.png';
 
-import { Badge } from "@/components/ui/badge";
-import type { Product } from '@/types'; // Import shared type
+import { Badge } from "./ui/badge";
+import type { Product } from '../types'; // Import shared type
 
 interface ProductTileProps {
   product: Product;

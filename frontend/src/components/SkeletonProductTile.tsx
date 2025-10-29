@@ -1,5 +1,5 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
+import { Skeleton } from "./ui/skeleton";
+import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
 
 const SkeletonProductTile = () => {
   return (

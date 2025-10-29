@@ -1,8 +1,8 @@
 import React from 'react';
 import { ProductCarousel } from "../components/ProductCarousel";
 import { FaqImageSection } from "../components/FaqImageSection";
-import { useStoreList } from "@/context/StoreListContext";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { useStoreList } from "../context/StoreListContext";
+import { AspectRatio } from "../components/ui/aspect-ratio";
 import confusedShopper from "../assets/confused_shopper.png";
 import kingKongImage from "../assets/king_kong.png";
 

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "./button"
 import { Link } from "react-router-dom"
 import {
   Card,
@@ -6,16 +6,16 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "./card"
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+} from "./field"
+import { Input } from "./input"
 import { useState } from "react"
-import { Spinner } from "@/components/ui/spinner"
+import { Spinner } from "./spinner"
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [fullName, setFullName] = useState("")

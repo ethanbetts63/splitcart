@@ -27,7 +27,7 @@ type Store = {
 };
 
 import { useStoreSearch } from '../../context/StoreSearchContext';
-import { useStoreList } from '@/context/StoreListContext';
+import { useStoreList } from '../../context/StoreListContext';
 
 interface EditLocationPageProps {
   localSelectedStoreIds: Set<number>;

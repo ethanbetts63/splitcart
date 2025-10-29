@@ -1,19 +1,19 @@
-import { cn } from "@/lib/utils"
+import { cn } from "../../lib/utils"
 import priceDestroyerImage from "../../assets/price_destroyer.png"
 import { Link, useNavigate } from "react-router-dom"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "./button"
+import { Card, CardContent } from "./card"
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+} from "./field"
+import { Input } from "./input"
 import { useState } from "react"
-import { useAuth } from "@/context/AuthContext"
+import { useAuth } from "../../context/AuthContext"
 import { toast } from "sonner"
-import { Spinner } from "@/components/ui/spinner"
+import { Spinner } from "./spinner"
 
 export function LoginForm({
   className,

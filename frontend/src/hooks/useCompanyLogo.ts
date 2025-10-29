@@ -1,4 +1,4 @@
-import { companyLogos } from '@/lib/companies';
+import { companyLogos } from '../lib/companies';
 import { useImageAsset } from './useImageAsset';
 
 export const useCompanyLogo = (companyName: string) => {

@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '@/context/CartContext';
-import { useStoreList } from '@/context/StoreListContext';
-import { useAuth } from '@/context/AuthContext';
+import { useCart } from '../context/CartContext';
+import { useStoreList } from '../context/StoreListContext';
+import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
-import LoadingSpinner from '@/components/LoadingSpinner';
-import ResultsDisplay from '@/components/ResultsDisplay';
+import { Switch } from "../components/ui/switch"
+import { Label } from "../components/ui/label"
+import LoadingSpinner from '../components/LoadingSpinner';
+import ResultsDisplay from '../components/ResultsDisplay';
 import { FaqImageSection } from "../components/FaqImageSection";
-import futureTodayImage from "@/assets/future_today.png";
-import { emailCartAPI, downloadCartAPI } from '@/services/cartOptimization.api';
-import type { ExportData } from '@/types';
+import futureTodayImage from "../assets/future_today.png";
+import { emailCartAPI, downloadCartAPI } from '../services/cartOptimization.api';
+import type { ExportData } from '../types';
 
 const FinalCartPage = () => {
   const { optimizationResult } = useCart();

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent } from "@/components/ui/card";
-import { useCompanyLogo } from '@/hooks/useCompanyLogo';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Checkbox } from "./ui/checkbox";
+import { Card, CardContent } from "./ui/card";
+import { useCompanyLogo } from '../hooks/useCompanyLogo';
+import { Skeleton } from './ui/skeleton';
 
 // Define the type for a single store
 type Store = {

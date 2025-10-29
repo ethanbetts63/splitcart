@@ -1,6 +1,6 @@
 
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 
 // --- Type Definitions ---
 

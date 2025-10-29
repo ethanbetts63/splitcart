@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import { performInitialSetupAPI } from '@/services/auth.api';
-import { type Cart, type SelectedStoreListType } from '@/types';
+import { performInitialSetupAPI } from '../services/auth.api';
+import { type Cart, type SelectedStoreListType } from '../types';
 
 declare global {
   interface Window {

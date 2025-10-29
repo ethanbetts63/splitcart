@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
-import { companyNames } from '@/lib/companies';
+import { companyNames } from '../lib/companies';
 
 // --- Type Definitions ---
 type Store = {

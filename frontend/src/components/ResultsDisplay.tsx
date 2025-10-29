@@ -1,10 +1,10 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
 import { Download, Mail } from "lucide-react";
-import { Spinner } from "@/components/ui/spinner";
-import PlanDetails from '@/components/PlanDetails';
-import * as types from '@/types';
+import { Spinner } from "./ui/spinner";
+import PlanDetails from './PlanDetails';
+import * as types from '../types';
 
 const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: { 
     data: types.OptimizationDataSet;
