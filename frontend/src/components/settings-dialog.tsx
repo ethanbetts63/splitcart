@@ -163,7 +163,7 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'cart' }: Set
               </SidebarGroup>
             </SidebarContent>
           </Sidebar>
-          <main className="flex flex-1 flex-col overflow-hidden">
+          <main className="absolute inset-y-0 left-12 right-0 overflow-y-auto">
             <PageContent 
               activePage={activePage} 
               onOpenChange={handleOpenChange} 
