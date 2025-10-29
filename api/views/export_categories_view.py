@@ -13,6 +13,5 @@ class ExportCategoriesView(generics.ListAPIView):
     API endpoint that allows all categories to be exported.
     Provides a lean JSON representation for local processing.
     """
-    pagination_class = None # Disable pagination for this view
     queryset = Category.objects.all()
     serializer_class = CategoryExportSerializer

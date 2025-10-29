@@ -10,6 +10,5 @@ class ExportCategoryLinksView(generics.ListAPIView):
     """
     API endpoint that allows all category links to be exported.
     """
-    pagination_class = None  # Disable pagination
     queryset = CategoryLink.objects.all()
     serializer_class = CategoryLinkExportSerializer

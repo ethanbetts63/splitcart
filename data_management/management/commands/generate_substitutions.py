@@ -249,6 +249,19 @@ class LocalLvl4SubGenerator:
 class Command(BaseCommand):
     help = 'Generates product substitutions locally and saves them to an outbox.'
 
+    def _fetch_paginated_data(self, url, headers, data_type):
+        """Fetches all pages of data from a paginated API endpoint."""
+        all_results = []
+        next_url = url
+        while next_url:
+            response = requests.get(next_url, headers=headers)
+            response.raise_for_status()
+            data = response.json()
+            all_results.extend(data['results'])
+            next_url = data.get('next')
+            self.stdout.write(f"  Fetched {len(all_results)} / {data['count']} {data_type}.")
+        return all_results
+
     def handle(self, *args, **options):
         try:
             server_url = settings.API_SERVER_URL
@@ -258,21 +271,18 @@ class Command(BaseCommand):
             return
 
         headers = {'X-API-KEY': api_key, 'Accept': 'application/json'}
-        self.stdout.write(f"--- Starting Substitution Generation using API at {server_url} ---")
+        self.stdout.write(self.style.SUCCESS(f"--- Starting Substitution Generation using API at {server_url} ---"))
 
-        # 1. Fetch all necessary data
+        # 1. Fetch all necessary data with pagination
         try:
             self.stdout.write("Fetching products...")
-            products = requests.get(f"{server_url}/api/export/products/", headers=headers).json()
-            self.stdout.write(f"Fetched {len(products)} products.")
+            products = self._fetch_paginated_data(f"{server_url}/api/export/products/", headers, "products")
 
             self.stdout.write("Fetching categories...")
-            categories = requests.get(f"{server_url}/api/export/categories/", headers=headers).json()
-            self.stdout.write(f"Fetched {len(categories)} categories.")
+            categories = self._fetch_paginated_data(f"{server_url}/api/export/categories/", headers, "categories")
 
             self.stdout.write("Fetching category links...")
-            category_links = requests.get(f"{server_url}/api/export/category_links/", headers=headers).json()
-            self.stdout.write(f"Fetched {len(category_links)} category links.")
+            category_links = self._fetch_paginated_data(f"{server_url}/api/export/category_links/", headers, "category links")
 
         except requests.exceptions.RequestException as e:
             self.stderr.write(f"Failed to fetch data: {e}"); return

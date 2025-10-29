@@ -23,6 +23,5 @@ class ExportProductsView(generics.ListAPIView):
     API endpoint that allows all products to be exported.
     Provides a lean JSON representation for local processing.
     """
-    pagination_class = None  # Disable pagination
     queryset = Product.objects.all().prefetch_related('category')
     serializer_class = ProductExportSerializer

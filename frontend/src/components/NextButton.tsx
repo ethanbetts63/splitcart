@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -11,7 +10,6 @@ interface NextButtonProps {
 
 const NextButton: React.FC<NextButtonProps> = ({ onAfterNavigate, className }) => {
   const navigate = useNavigate();
-  const { currentCart } = useCart();
 
   // this should user item.substitutions to determine where to go next it should use the page that the user is on.
   const handleNextClick = () => {
