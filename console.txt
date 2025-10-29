@@ -69,8 +69,8 @@ Then i reload the web app
 then i hard refresh the broswer:
 
 result in chrome dev console: 
-(index):1 Refused to apply style from 'https://ethanbetts.pythonanywhere.com/static/assets/index.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.Understand this error
-index.js:1 Failed to load module script: Expected a JavaScript-or-Wasm module script but the server responded with a MIME type of "text/html". Strict MIME type checking is enforced for module scripts per HTML spec.Understand this error
+ailed to load module script: Expected a JavaScript-or-Wasm module script but the server responded with a MIME type of "text/html". Strict MIME type checking is enforced for module scripts per HTML spec.Understand this error
+(index):1 Refused to apply style from 'https://ethanbetts.pythonanywhere.com/assets/index-DwxIRxzu.css' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.Understand this error
 h1-main.js:9 Uncaught (in promise) TypeError: Failed to construct 'URL': Invalid URL
     at Pn (h1-main.js:9:234705)
     at h1-main.js:9:251506
@@ -78,7 +78,6 @@ h1-main.js:9 Uncaught (in promise) TypeError: Failed to construct 'URL': Invalid
     at Generator.next (h1-main.js:9:249990)
     at mr (h1-main.js:9:250172)
     at a (h1-main.js:9:250448)
-
 
 Python anywhere page.
 Configuration for ethanbetts.pythonanywhere.com 
@@ -104,10 +103,11 @@ This is the html response im getting:
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/static/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SplitCart</title>
-    <link rel="stylesheet" href="/static/assets/index.css">
+    <title>frontend</title>
+    <script type="module" crossorigin src="/assets/index-B3onm4BA.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DwxIRxzu.css">
   </head>
   <body>
     <div id="root"></div>
@@ -123,13 +123,17 @@ This is the html response im getting:
           headers['X-Anonymous-ID'] = anonymousId;
         }
 
+        // Add CSRF token for POST requests
+        const csrfToken = document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1];
+        if (csrfToken) {
+          headers['X-CSRFToken'] = csrfToken;
+        }
+
         window.__initialDataPromise__ = fetch('/api/initial-setup/', {
           method: 'POST',
           headers: headers,
         }).then(response => {
           if (!response.ok) {
-            // Don't throw, just return a resolved promise with an error flag
-            // so the main app can handle it gracefully.
             return { error: true, status: response.status };
           }
           return response.json();
@@ -138,20 +142,8 @@ This is the html response im getting:
         });
       })();
     </script>
-    <script type="module" src="/static/assets/index.js"></script>
   </body>
 </html>
-equest URL
-https://ethanbetts.pythonanywhere.com/
-Request Method
-GET
-Status Code
-200 OK
-Remote Address
-35.173.69.207:443
-Referrer Policy
-same-origin
-
 
 
 
