@@ -10,7 +10,7 @@ SECRET_KEY = "django-insecure-##_245mfnvq@dzyqr+&e59vw2aareqpw5^gk%4s%@06)sfvnkq
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ethanbetts63.pythonanywhere.com', 'splitcart.com.au']
 
 API_SECRET_KEY = os.getenv("API_SECRET_KEY")
 API_SERVER_URL = os.getenv("API_SERVER_URL")
