@@ -30,6 +30,7 @@ from .views.cart_views import (
     CartSyncView,
 )
 from .views.initial_setup_view import InitialSetupView
+from .views.export_categories_view import ExportCategoriesView
 
 urlpatterns = [
     path('initial-setup/', InitialSetupView.as_view(), name='initial-setup'),
@@ -51,6 +52,7 @@ urlpatterns = [
     path('cart/email-list/', EmailShoppingListView.as_view(), name='email-shopping-list'),
     path('stores/nearby/', StoreListView.as_view(), name='store-list'),
     path('postcodes/search/', PostcodeSearchView.as_view(), name='postcode-search'),
+    path('export/categories/', ExportCategoriesView.as_view(), name='export-categories'),
 
     # SelectedStoreList URLs
     path('store-lists/', SelectedStoreListCreateView.as_view(), name='store-list-list-create'),

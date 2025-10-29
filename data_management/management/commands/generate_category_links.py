@@ -70,12 +70,7 @@ class Command(BaseCommand):
         try:
             categories_response = requests.get(upload_url, headers=headers)
             categories_response.raise_for_status()
-            try:
-                categories = categories_response.json()
-            except json.JSONDecodeError:
-                self.stderr.write(self.style.ERROR("Failed to decode JSON. Server response was:"))
-                self.stdout.write(categories_response.text)
-                return
+            categories = categories_response.json()
             self.stdout.write(self.style.SUCCESS(f"Successfully fetched {len(categories)} categories."))
         except requests.exceptions.RequestException as e:
             self.stderr.write(self.style.ERROR(f"Failed to fetch data from the server: {e}"))
