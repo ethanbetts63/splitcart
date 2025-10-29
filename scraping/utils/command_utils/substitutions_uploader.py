@@ -8,9 +8,10 @@ class SubstitutionsUploader:
     def __init__(self, command):
         self.command = command
         self.outbox_path_name = 'data_management/data/substitutions_outbox'
-        self.archive_path_name = 'data_management/data/substitutions_archive' # New archive dir
+        self.archive_path_name = 'data_management/data/substitutions_archive'
         self.upload_url_path = '/api/import/semantic_data/'
         self.file_name = 'substitutions.json'
+        self.chunk_size = 2000  # Process 2000 substitutions per request
 
     def run(self):
         outbox_path = os.path.join(settings.BASE_DIR, self.outbox_path_name)
@@ -38,24 +39,33 @@ class SubstitutionsUploader:
 
         try:
             with open(file_path, 'r') as f:
-                data_to_upload = json.load(f)
+                all_substitutions = json.load(f)
             
-            # The import endpoint expects a top-level key
-            payload = {'substitutions': data_to_upload}
+            total_subs = len(all_substitutions)
+            total_chunks = (total_subs + self.chunk_size - 1) // self.chunk_size
 
-            response = requests.post(upload_url, headers=headers, json=payload, timeout=120)
-            response.raise_for_status()
+            self.command.stdout.write(f"Beginning upload of {total_subs} substitutions in {total_chunks} chunks...")
 
-            self.command.stdout.write(self.command.style.SUCCESS(f"Successfully uploaded {self.file_name}."))
-            self.command.stdout.write(str(response.json()))
+            for i in range(0, total_subs, self.chunk_size):
+                chunk = all_substitutions[i:i + self.chunk_size]
+                payload = {'substitutions': chunk}
+                
+                self.command.stdout.write(f"  Uploading chunk {i // self.chunk_size + 1} of {total_chunks} ({len(chunk)} substitutions)...", ending='')
 
-            # Archive the file
+                response = requests.post(upload_url, headers=headers, json=payload, timeout=180) # 3 min timeout per chunk
+                response.raise_for_status()
+                
+                self.command.stdout.write(self.command.style.SUCCESS(" Done."))
+
+            self.command.stdout.write(self.command.style.SUCCESS(f"Successfully uploaded all {total_subs} substitutions."))
+
+            # Archive the file after all chunks are successfully uploaded
             archive_file_path = os.path.join(archive_path, self.file_name)
             os.rename(file_path, archive_file_path)
             self.command.stdout.write(self.command.style.SUCCESS(f"Archived {self.file_name}."))
 
         except requests.exceptions.RequestException as e:
-            self.command.stderr.write(self.command.style.ERROR(f"Failed to upload {self.file_name}: {e}"))
+            self.command.stderr.write(self.command.style.ERROR(f"\nFailed to upload chunk: {e}"))
         except FileNotFoundError:
             self.command.stderr.write(self.command.style.ERROR(f"File not found: {file_path}"))
         except json.JSONDecodeError:
