@@ -12,10 +12,12 @@ import { Badge } from "@/components/ui/badge";
 import { BadgeCheckIcon } from 'lucide-react';
 import { FaqImageSection } from "../components/FaqImageSection";
 import kingKongImage from "../assets/king_kong.png";
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 const SubstitutionPage = () => {
   const navigate = useNavigate();
   const { currentCart, setOptimizationResult, updateCartItemSubstitution, isFetchingSubstitutions } = useCart();
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
   useStoreList(); // Call hook to ensure context is available, but don't destructure
 
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
@@ -158,16 +160,20 @@ const SubstitutionPage = () => {
         </div>
       </div>
       <div className="bg-muted p-6 rounded-lg border">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
           <h2 className="text-xl font-semibold mb-4 text-center">Original Product</h2>
-          <div className="w-[240px] mx-auto relative">
-            <Badge variant="secondary" className="absolute top-2 left-2 z-10 bg-green-500 text-white dark:bg-green-600">
-              <BadgeCheckIcon className="w-4 h-4 mr-1" />
-              Original Product
-            </Badge>
-            <ProductTile product={currentItem.product} />
-          </div>
+          {isDesktop ? (
+            <div className="w-[240px] mx-auto relative">
+              <Badge variant="secondary" className="absolute top-2 left-2 z-10 bg-green-500 text-white dark:bg-green-600">
+                <BadgeCheckIcon className="w-4 h-4 mr-1" />
+                Original Product
+              </Badge>
+              <ProductTile product={currentItem.product} />
+            </div>
+          ) : (
+            <CartItemTile product={currentItem.product} context="cart" />
+          )}
         </div>
         <div>
           <h2 className="text-xl font-semibold mb-4 text-center">Substitutes</h2>

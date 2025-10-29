@@ -5,7 +5,10 @@ import PriceDisplay from './PriceDisplay';
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
 import type { Product, CartSubstitution } from '@/types'; // Import shared type
 import { useCart } from '@/context/CartContext';
-
+import { Badge } from "@/components/ui/badge";
+import { Input } from '@/components/ui/input';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import CartSubTile from './CartSubTile';
 import { Button } from '@/components/ui/button';
 
 // New type for callbacks
@@ -14,6 +17,7 @@ type OnQuantityChangeCallback = (sub: CartSubstitution, quantity: number) => Pro
 
 interface BaseCartItemTileProps {
   context?: 'cart' | 'substitution';
+  hideApprovedSubstitutions?: boolean; // New prop
 }
 
 interface CartContextProps extends BaseCartItemTileProps {
@@ -31,14 +35,6 @@ interface SubstitutionContextProps extends BaseCartItemTileProps {
 // Combine into a single type using a discriminated union
 type CartItemTileProps = CartContextProps | SubstitutionContextProps;
 
-import { Badge } from "@/components/ui/badge";
-
-import { Input } from '@/components/ui/input';
-
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import CartSubTile from './CartSubTile';
-
-// ... (rest of the imports)
 
 const CartItemTile: React.FC<CartItemTileProps> = (props) => {
   const { context } = props;
@@ -48,10 +44,8 @@ const CartItemTile: React.FC<CartItemTileProps> = (props) => {
   const cartSubstitution = context === 'substitution' ? props.cartSubstitution : undefined;
   const onApprove = context === 'substitution' ? props.onApprove : undefined;
   const onQuantityChange = context === 'substitution' ? props.onQuantityChange : undefined;
-
   const { currentCart, updateItemQuantity, removeItem } = useCart();
   const items = currentCart?.items || [];
-
   const cartItem = context === 'cart' ? items.find(item => item.product.id === product.id) : null;
 
   // Defensive check: If we are in the cart context and can't find the item, render nothing.
