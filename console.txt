@@ -98,3 +98,72 @@ Python version:
 3.12
 
 
+This is the html response im getting: 
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/static/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SplitCart</title>
+    <link rel="stylesheet" href="/static/assets/index.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      (function() {
+        const token = localStorage.getItem('token');
+        const anonymousId = document.cookie.split('; ').find(row => row.startsWith('anonymousId='))?.split('=')[1] || null;
+
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) {
+          headers['Authorization'] = `Token ${token}`;
+        } else if (anonymousId) {
+          headers['X-Anonymous-ID'] = anonymousId;
+        }
+
+        window.__initialDataPromise__ = fetch('/api/initial-setup/', {
+          method: 'POST',
+          headers: headers,
+        }).then(response => {
+          if (!response.ok) {
+            // Don't throw, just return a resolved promise with an error flag
+            // so the main app can handle it gracefully.
+            return { error: true, status: response.status };
+          }
+          return response.json();
+        }).catch(error => {
+          return { error: true, message: error.message };
+        });
+      })();
+    </script>
+    <script type="module" src="/static/assets/index.js"></script>
+  </body>
+</html>
+equest URL
+https://ethanbetts.pythonanywhere.com/
+Request Method
+GET
+Status Code
+200 OK
+Remote Address
+35.173.69.207:443
+Referrer Policy
+same-origin
+
+
+
+
+also this is coming in fine: 
+Request URL
+https://ethanbetts.pythonanywhere.com/api/initial-setup/
+Request Method
+POST
+Status Code
+200 OK
+Remote Address
+35.173.69.207:443
+Referrer Policy
+same-origin
+
