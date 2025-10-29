@@ -4,8 +4,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
-import { useAuth } from '@/context/AuthContext';
+} from "./ui/accordion"
+import { useAuth } from '../context/AuthContext';
 
 interface FaqItem {
   question: string;

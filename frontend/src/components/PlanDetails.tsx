@@ -1,5 +1,5 @@
 import React from 'react';
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "./ui/badge";
 import {
   Table,
   TableBody,
@@ -8,15 +8,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "./ui/table";
 import fallbackImage from '@/assets/splitcart_symbol_v6.png';
 
 // These imports will need to be adjusted based on where the logos are.
 // For now, I'll assume they are in the assets folder.
-import aldiLogo from '@/assets/ALDI_logo.svg';
-import colesLogo from '@/assets/coles_logo.webp';
-import igaLogo from '@/assets/iga_logo.webp';
-import woolworthsLogo from '@/assets/woolworths_logo.webp';
+import aldiLogo from '../assets/ALDI_logo.svg';
+import colesLogo from '../assets/coles_logo.webp';
+import igaLogo from '../assets/iga_logo.webp';
+import woolworthsLogo from '../assets/woolworths_logo.webp';
 
 // This type will need to be imported from where it's defined, or defined here.
 // For now, I will define it here.

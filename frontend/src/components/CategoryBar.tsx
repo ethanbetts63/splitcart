@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from './ui/badge';
 import '../css/CategoryCarousel.css';
-import { useApiQuery } from '@/hooks/useApiQuery';
+import { useApiQuery } from '../hooks/useApiQuery';
 
 // --- Type Definitions ---
 type Category = {

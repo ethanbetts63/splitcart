@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
+import { Input } from './ui/input';
+import { Badge } from './ui/badge';
+import { cn } from '../lib/utils';
 
 interface MultiplePostcodeInputProps {
   value: string; // Comma-separated string of postcodes

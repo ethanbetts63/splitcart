@@ -1,7 +1,7 @@
 import React from 'react';
-import type { CompanyPriceInfo } from '@/types'; // Import shared type
-import { useCompanyLogo } from '@/hooks/useCompanyLogo';
-import { Skeleton } from '@/components/ui/skeleton';
+import type { CompanyPriceInfo } from '../types'; // Import shared type
+import { useCompanyLogo } from '../hooks/useCompanyLogo';
+import { Skeleton } from './ui/skeleton';
 
 interface PriceDisplayProps {
   prices: CompanyPriceInfo[];

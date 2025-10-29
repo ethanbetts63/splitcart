@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { Button } from './ui/button';
+import { cn } from '../lib/utils';
 
 interface NextButtonProps {
   onAfterNavigate?: () => void; // Optional callback

@@ -1,20 +1,20 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import StoreMap from '@/components/StoreMap';
-import RadiusSlider from '@/components/RadiusSlider';
-import CompanyFilter from '@/components/CompanyFilter';
-import StoreList from '@/components/StoreList';
-import MultiplePostcodeInput from '@/components/MultiplePostcodeInput';
-import { Button } from '@/components/ui/button';
-import { useAuth } from '@/context/AuthContext';
+import StoreMap from '../../components/StoreMap';
+import RadiusSlider from '../../components/RadiusSlider';
+import CompanyFilter from '../../components/CompanyFilter';
+import StoreList from '../../components/StoreList';
+import MultiplePostcodeInput from '../../components/MultiplePostcodeInput';
+import { Button } from '../../components/ui/button';
+import { useAuth } from '../../context/AuthContext';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+} from "../../components/ui/select";
+import { Label } from "../../components/ui/label";
+import { Input } from "../../components/ui/input";
 import { PlusCircle, Save, Trash2, Pencil } from 'lucide-react'; // Icons for actions
 
 // Define the type for a single store
@@ -26,7 +26,7 @@ type Store = {
   longitude: number;
 };
 
-import { useStoreSearch } from '@/context/StoreSearchContext';
+import { useStoreSearch } from '../../context/StoreSearchContext';
 import { useStoreList } from '@/context/StoreListContext';
 
 interface EditLocationPageProps {

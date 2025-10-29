@@ -1,11 +1,11 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { Routes, Route, Outlet, useNavigate, useLocation } from "react-router-dom";
-import { SettingsDialog } from "@/components/settings-dialog";
-import { useStoreList } from "@/context/StoreListContext";
-import { useCart } from "@/context/CartContext";
-import NextButton from "@/components/NextButton";
-import LoadingSpinner from "@/components/LoadingSpinner";
-import { Toaster } from "@/components/ui/sonner";
+import { SettingsDialog } from "./components/settings-dialog";
+import { useStoreList } from "./context/StoreListContext";
+import { useCart } from "./context/CartContext";
+import NextButton from "./components/NextButton";
+import LoadingSpinner from "./components/LoadingSpinner";
+import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner";
 
 // Lazy load page components
@@ -17,7 +17,7 @@ const LoginPage = React.lazy(() => import("./pages/LoginPage"));
 const SignupPage = React.lazy(() => import("./pages/SignupPage"));
 const ContactPage = React.lazy(() => import("./pages/ContactPage"));
 
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "./context/AuthContext";
 import CategoryBar from "./components/CategoryBar";
 import Footer from './components/Footer';
 import NavBar from './components/NavBar';

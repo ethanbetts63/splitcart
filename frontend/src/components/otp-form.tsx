@@ -1,18 +1,18 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { cn } from "../lib/utils"
+import { Button } from "./ui/button"
+import { Card, CardContent } from "./ui/card"
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
+} from "./ui/field"
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from "@/components/ui/input-otp"
+} from "./ui/input-otp"
 
 export function OTPForm({ className, ...props }: React.ComponentProps<"div">) {
   return (

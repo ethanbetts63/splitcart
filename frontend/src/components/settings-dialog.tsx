@@ -8,8 +8,8 @@ import {
   X, // Import the X icon
 } from "lucide-react"
 
-import { useStoreList } from "@/context/StoreListContext";
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
+import { useStoreList } from "../context/StoreListContext";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "./ui/dialog"
 import {
   Sidebar,
   SidebarContent,
@@ -19,9 +19,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-} from "@/components/ui/sidebar"
-import EditLocationPage from "@/pages/dialog-pages/EditLocationPage";
-import CartPage from "@/pages/dialog-pages/CartPage";
+} from "./ui/sidebar"
+import EditLocationPage from "../pages/dialog-pages/EditLocationPage";
+import CartPage from "../pages/dialog-pages/CartPage";
 import { toast } from "sonner";
 
 // Define a type for our navigation items

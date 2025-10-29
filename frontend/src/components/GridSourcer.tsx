@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ProductGrid from './ProductGrid';
-import type { Product } from '@/types'; // Import shared type
+import type { Product } from '../types'; // Import shared type
 
 import {
   Pagination,
@@ -10,9 +10,9 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
+} from "./ui/pagination";
 
-import { useStoreList } from '@/context/StoreListContext';
+import { useStoreList } from '../context/StoreListContext';
 import LoadingSpinner from './LoadingSpinner';
 
 // Type for the API response, using the shared Product type
@@ -30,7 +30,7 @@ interface GridSourcerProps {
   superCategory: string | null;
 }
 
-import { useApiQuery } from '@/hooks/useApiQuery';
+import { useApiQuery } from '../hooks/useApiQuery';
 
 const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, categorySlug, superCategory }) => {
   const [currentPage, setCurrentPage] = useState(1);

@@ -1,8 +1,8 @@
 import React from 'react';
-import { useCart } from '@/context/CartContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import type { Product } from '@/types';
+import { useCart } from '../context/CartContext';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import type { Product } from '../types';
 
 
 interface AddToCartButtonProps {

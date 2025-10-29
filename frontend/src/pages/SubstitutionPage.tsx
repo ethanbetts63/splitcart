@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '@/context/CartContext';
-import { useStoreList } from '@/context/StoreListContext';
-import ProductTile from '@/components/ProductTile';
-import CartItemTile from '@/components/CartItemTile';
-import { Button } from '@/components/ui/button';
-import { optimizeCartAPI } from '@/services/cartOptimization.api';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import type { CartSubstitution } from '@/types';
-import { Badge } from "@/components/ui/badge";
+import { useCart } from '../context/CartContext';
+import { useStoreList } from '../context/StoreListContext';
+import ProductTile from '../components/ProductTile';
+import CartItemTile from '../components/CartItemTile';
+import { Button } from '../components/ui/button';
+import { optimizeCartAPI } from '../services/cartOptimization.api';
+import LoadingSpinner from '../components/LoadingSpinner';
+import type { CartSubstitution } from '../types';
+import { Badge } from "../components/ui/badge";
 import { BadgeCheckIcon } from 'lucide-react';
 import { FaqImageSection } from "../components/FaqImageSection";
 import sizeDoesntMatterImage from "../assets/size_doesnt_matter.png";
-import useMediaQuery from '@/hooks/useMediaQuery';
+import useMediaQuery from '../hooks/useMediaQuery';
 
 const SubstitutionPage = () => {
   const navigate = useNavigate();

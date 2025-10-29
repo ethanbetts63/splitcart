@@ -14,7 +14,6 @@ class ProductExportSerializer(serializers.ModelSerializer):
             'normalized_name',
             'brand_id',
             'size',
-            'unit_of_measure',
             'category'
         ]
 

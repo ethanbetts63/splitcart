@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useCart } from '@/context/CartContext';
-import type { Cart } from '@/types';
-import CartItemTile from '@/components/CartItemTile';
-import NextButton from '@/components/NextButton';
-import { useAuth } from '@/context/AuthContext';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { useCart } from '../../context/CartContext';
+import type { Cart } from '../../types';
+import CartItemTile from '../../components/CartItemTile';
+import NextButton from '../../components/NextButton';
+import { useAuth } from '../../context/AuthContext';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
+import { Button } from '../../components/ui/button';
+import { Input } from '../../components/ui/input';
 import { PlusCircle, Save, Trash2, Pencil } from 'lucide-react';
 
 interface cartPageProps {

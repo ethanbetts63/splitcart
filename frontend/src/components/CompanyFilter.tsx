@@ -1,8 +1,8 @@
 import React from 'react';
-import { Checkbox } from "@/components/ui/checkbox";
-import { companyNames } from '@/lib/companies';
-import { useCompanyLogo } from '@/hooks/useCompanyLogo';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Checkbox } from "./ui/checkbox";
+import { companyNames } from '../lib/companies';
+import { useCompanyLogo } from '../hooks/useCompanyLogo';
+import { Skeleton } from './ui/skeleton';
 
 interface CompanyFilterProps {
   selectedCompanies?: string[];

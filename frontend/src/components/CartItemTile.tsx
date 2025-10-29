@@ -1,15 +1,15 @@
 import React from 'react';
-import { Card } from "@/components/ui/card";
+import { Card } from "./ui/card";
 import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
-import fallbackImage from '@/assets/splitcart_symbol_v6.png';
-import type { Product, CartSubstitution } from '@/types'; // Import shared type
-import { useCart } from '@/context/CartContext';
-import { Badge } from "@/components/ui/badge";
-import { Input } from '@/components/ui/input';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import fallbackImage from '../assets/splitcart_symbol_v6.png';
+import type { Product, CartSubstitution } from '../types'; // Import shared type
+import { useCart } from '../context/CartContext';
+import { Badge } from "./ui/badge";
+import { Input } from './ui/input';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
 import CartSubTile from './CartSubTile';
-import { Button } from '@/components/ui/button';
+import { Button } from './ui/button';
 
 // New type for callbacks
 type OnApproveCallback = (sub: CartSubstitution) => Promise<void>;
