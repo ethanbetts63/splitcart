@@ -44,7 +44,7 @@ const apiFetch = async <T>(
   // Prepend /api if it's not already there
   const finalEndpoint = endpoint.startsWith('/api') ? endpoint : `/api${endpoint}`;
 
-  const response = await fetch(`http://127.0.0.1:8000${finalEndpoint}`, config);
+  const response = await fetch(finalEndpoint, config);
 
   if (!response.ok) {
     let errorMessage = `API Error: ${response.status} ${response.statusText}`;

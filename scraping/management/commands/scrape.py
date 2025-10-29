@@ -68,7 +68,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.HTTP_INFO("\nRequesting next candidate from scheduler API..."))
             try:
                 # Construct the API URL with query parameters for company filtering
-                api_url = "http://127.0.0.1:8000/api/scheduler/next-candidate/"
+                api_url = f"{settings.API_SERVER_URL}/api/scheduler/next-candidate/"
                 params = {'company': companies_to_scrape}
                 response = requests.get(api_url, params=params, timeout=30)
                 response.raise_for_status() # Raise an exception for bad status codes

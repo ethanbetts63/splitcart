@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from urllib.parse import urlparse
 
 load_dotenv() # Load environment variables from .env file
 
@@ -10,10 +11,12 @@ SECRET_KEY = "django-insecure-##_245mfnvq@dzyqr+&e59vw2aareqpw5^gk%4s%@06)sfvnkq
 
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ethanbetts.pythonanywhere.com', 'splitcart.com.au']
+ALLOWED_HOSTS = ['localhost', 'ethanbetts.pythonanywhere.com', 'splitcart.com.au', '127.0.0.1']
+
 
 API_SECRET_KEY = os.getenv("API_SECRET_KEY")
 API_SERVER_URL = os.getenv("API_SERVER_URL")
+API_SERVER_HOSTNAME = urlparse(API_SERVER_URL).hostname if API_SERVER_URL else None
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -58,9 +61,9 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
+INTERNAL_IPS = []
+if API_SERVER_HOSTNAME:
+    INTERNAL_IPS.append(API_SERVER_HOSTNAME)
 
 ROOT_URLCONF = "splitcart.urls"
 

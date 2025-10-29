@@ -32,7 +32,7 @@ export function FaqAccordion({ page }: FaqAccordionProps) {
           headers['Authorization'] = `Token ${token}`;
         }
 
-        const response = await fetch(`http://127.0.0.1:8000/api/faqs/?page=${page}`, { headers });
+        const response = await fetch(`/api/faqs/?page=${page}`, { headers });
         if (!response.ok) {
           throw new Error('Failed to fetch FAQs');
         }

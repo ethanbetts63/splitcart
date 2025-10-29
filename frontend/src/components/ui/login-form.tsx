@@ -30,7 +30,7 @@ export function LoginForm({
     setIsLoading(true)
     // this is a hardcoded URL for local development; in production, this should point to the actual backend server
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/auth/login/", {
+      const response = await fetch("/api/auth/login/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
