@@ -37,15 +37,17 @@ type CartItemTileProps = CartContextProps | SubstitutionContextProps;
 
 
 const CartItemTile: React.FC<CartItemTileProps> = (props) => {
-  const { context } = props;
+  const { context, hideApprovedSubstitutions } = props;
 
   // Conditionally assign variables based on context
   const product = context === 'cart' ? props.product : props.cartSubstitution.substituted_product;
   const cartSubstitution = context === 'substitution' ? props.cartSubstitution : undefined;
   const onApprove = context === 'substitution' ? props.onApprove : undefined;
   const onQuantityChange = context === 'substitution' ? props.onQuantityChange : undefined;
+
   const { currentCart, updateItemQuantity, removeItem } = useCart();
   const items = currentCart?.items || [];
+
   const cartItem = context === 'cart' ? items.find(item => item.product.id === product.id) : null;
 
   // Defensive check: If we are in the cart context and can't find the item, render nothing.
@@ -80,9 +82,9 @@ const CartItemTile: React.FC<CartItemTileProps> = (props) => {
 
   return (
     <Card className="p-2">
-      <div className="flex flex-row items-center gap-0 relative">
+      <div className="flex flex-col md:flex-row items-center gap-0 relative">
         {/* Image */}
-        <div className="w-28 h-28 flex-shrink-0">
+        <div className="w-full max-w-[112px] h-28 flex-shrink-0 mx-auto md:w-28">
           <img
             src={imageUrl}
             onError={handleImageError}
@@ -92,7 +94,7 @@ const CartItemTile: React.FC<CartItemTileProps> = (props) => {
         </div>
 
         {/* Middle Section: Info & Price */}
-        <div className="flex-grow grid gap-1 justify-items-center">
+        <div className="flex-grow grid gap-1 justify-items-center text-center md:text-left">
           <div className="flex justify-center">
             <p className={`font-semibold text-center ${context === 'substitution' ? 'line-clamp-1' : ''}`}>{product.name}</p>
           </div>
@@ -101,7 +103,7 @@ const CartItemTile: React.FC<CartItemTileProps> = (props) => {
         </div>
 
         {/* Right Section: Quantity Controls */}
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 mt-2 md:mt-0">
           {context === 'cart' && cartItem ? (
             <div className="flex items-center gap-2">
               <Button size="icon" className="h-8 w-8" onClick={() => handleQuantityChange((displayQuantity || 1) - 1)}>-</Button>
@@ -137,7 +139,7 @@ const CartItemTile: React.FC<CartItemTileProps> = (props) => {
           )}
         </div>
       </div>
-      {context === 'cart' && cartItem && cartItem.substitutions && cartItem.substitutions.filter(sub => sub.is_approved).length > 0 && (
+      {context === 'cart' && !hideApprovedSubstitutions && cartItem && cartItem.substitutions && cartItem.substitutions.filter(sub => sub.is_approved).length > 0 && (
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
             <AccordionTrigger className="w-full flex justify-center p-2 text-sm text-muted-foreground">

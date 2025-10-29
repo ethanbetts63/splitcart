@@ -172,7 +172,7 @@ const SubstitutionPage = () => {
               <ProductTile product={currentItem.product} />
             </div>
           ) : (
-            <CartItemTile product={currentItem.product} context="cart" />
+            <CartItemTile product={currentItem.product} context="cart" hideApprovedSubstitutions={true} />
           )}
         </div>
         <div>
