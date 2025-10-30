@@ -15,10 +15,10 @@ from .views.category_product_list_view import CategoryProductListView
 from .views.frontend_views.popular_category_list_view import PopularCategoryListView
 from .views.frontend_views.faq_list_view import FaqListView
 from .views.frontend_views.product_substitute_list_view import ProductSubstituteListView
-from .views.store_list_views.nearby_store_list_view import StoreListView
-from .views.store_list_views.list_create_view import SelectedStoreListCreateView
-from .views.store_list_views.retrieve_update_destroy_view import SelectedStoreListRetrieveUpdateDestroyView
-from .views.cart_views import (
+from .views.frontend_views.store_list_views.nearby_store_list_view import StoreListView
+from .views.frontend_views.store_list_views.list_create_view import SelectedStoreListCreateView
+from .views.frontend_views.store_list_views.retrieve_update_destroy_view import SelectedStoreListRetrieveUpdateDestroyView
+from .views.frontend_views.cart_views import (
     CartListCreateView,
     CartRetrieveUpdateDestroyView,
     ActiveCartDetailView,
