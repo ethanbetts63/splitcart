@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from companies.models import Postcode
-from ..serializers import PostcodeSerializer
+from ...serializers import PostcodeSerializer
 import sys
 
 class PostcodeSearchView(ListAPIView):

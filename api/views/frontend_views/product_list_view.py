@@ -5,7 +5,7 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework.exceptions import ValidationError
 from products.models import Product
-from ..serializers import ProductSerializer
+from ...serializers import ProductSerializer
 
 @method_decorator(cache_page(3600), name='dispatch') # Apply cache_page decorator
 class ProductListView(generics.ListAPIView):

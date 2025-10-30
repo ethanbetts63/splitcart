@@ -2,19 +2,19 @@ from django.urls import path
 from .views.product_file_upload_view import ProductFileUploadView
 from .views.gs1_file_upload_view import Gs1FileUploadView
 from .views.store_file_upload_view import StoreFileUploadView
-from .views.product_list_view import ProductListView
-from .views.bargain_list_view import BargainListView # Import the new view
+from .views.frontend_views.product_list_view import ProductListView
+from .views.frontend_views.bargain_list_view import BargainListView # Import the new view
 from .views.product_translation_file_view import ProductTranslationFileView
 from .views.brand_translation_file_view import BrandTranslationFileView
 from .views.product_barcode_view import ProductBarcodeView
-from .views.cart_optimization_view import CartOptimizationView
-from .views.cart_export_view import DownloadShoppingListView, EmailShoppingListView
+from .views.frontend_views.cart_optimization_view import CartOptimizationView
+from .views.frontend_views.cart_export_view import DownloadShoppingListView, EmailShoppingListView
 from .views.scheduler_view import SchedulerView
-from .views.postcode_search_view import PostcodeSearchView
+from .views.frontend_views.postcode_search_view import PostcodeSearchView
 from .views.category_product_list_view import CategoryProductListView
-from .views.popular_category_list_view import PopularCategoryListView
-from .views.faq_list_view import FaqListView
-from .views.product_substitute_list_view import ProductSubstituteListView
+from .views.frontend_views.popular_category_list_view import PopularCategoryListView
+from .views.frontend_views.faq_list_view import FaqListView
+from .views.frontend_views.product_substitute_list_view import ProductSubstituteListView
 from .views.store_list_views.nearby_store_list_view import StoreListView
 from .views.store_list_views.list_create_view import SelectedStoreListCreateView
 from .views.store_list_views.retrieve_update_destroy_view import SelectedStoreListRetrieveUpdateDestroyView
@@ -29,7 +29,7 @@ from .views.cart_views import (
     CartSubstitutionUpdateDestroyView,
     CartSyncView,
 )
-from .views.initial_setup_view import InitialSetupView
+from .views.frontend_views.initial_setup_view import InitialSetupView
 from .views.export_categories_view import ExportCategoriesView
 from .views.export_products_view import ExportProductsView
 from .views.export_category_links_view import ExportCategoryLinksView

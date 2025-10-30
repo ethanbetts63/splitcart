@@ -3,7 +3,7 @@ from django.utils.decorators import method_decorator # New import
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from products.models import Product, Bargain
-from ..serializers import ProductSerializer
+from ...serializers import ProductSerializer
 
 @method_decorator(cache_page(3600), name='dispatch') # Apply cache_page decorator
 class BargainListView(generics.ListAPIView):

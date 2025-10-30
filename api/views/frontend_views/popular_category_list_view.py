@@ -1,7 +1,7 @@
 from rest_framework import generics
 from django.db.models import Count
 from companies.models import PopularCategory
-from ..serializers import PopularCategorySerializer
+from ...serializers import PopularCategorySerializer
 
 class PopularCategoryListView(generics.ListAPIView):
     serializer_class = PopularCategorySerializer

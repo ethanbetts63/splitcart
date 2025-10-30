@@ -4,7 +4,7 @@ from rest_framework import status
 from django.db.models import Q
 from products.models import Product
 from products.models.substitution import ProductSubstitution
-from ..serializers import ProductSubstitutionSerializer
+from ...serializers import ProductSubstitutionSerializer
 
 class ProductSubstituteListView(APIView):
     def get(self, request, product_id, *args, **kwargs):

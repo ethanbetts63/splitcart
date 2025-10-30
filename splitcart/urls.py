@@ -17,7 +17,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path, re_path
-from api.views.react_app_view import ReactAppView
+from api.views.frontend_views.react_app_view import ReactAppView
 
 urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
