@@ -11,6 +11,13 @@ from data_management.utils.local_substitution_generators.local_lvl4_generator im
 class Command(BaseCommand):
     help = 'Generates product substitutions locally and saves them to an outbox.'
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--dev',
+            action='store_true',
+            help='Use development server URL (http://127.0.0.1:8000) instead of API_SERVER_URL.'
+        )
+
     def _fetch_paginated_data(self, url, headers, data_type):
         """Fetches all pages of data from a paginated API endpoint."""
         all_results = []
@@ -25,12 +32,16 @@ class Command(BaseCommand):
         return all_results
 
     def handle(self, *args, **options):
-        try:
-            server_url = settings.API_SERVER_URL
-            api_key = settings.API_SECRET_KEY
-        except AttributeError:
-            self.stderr.write("API_SERVER_URL and API_SECRET_KEY must be set in settings.")
-            return
+        if options['dev']:
+            server_url = "http://127.0.0.1:8000"
+            api_key = settings.API_SECRET_KEY # Assuming API_SECRET_KEY is still needed for dev
+        else:
+            try:
+                server_url = settings.API_SERVER_URL
+                api_key = settings.API_SECRET_KEY
+            except AttributeError:
+                self.stderr.write("API_SERVER_URL and API_SECRET_KEY must be set in settings.")
+                return
 
         headers = {'X-API-KEY': api_key, 'Accept': 'application/json'}
         self.stdout.write(self.style.SUCCESS(f"--- Starting Substitution Generation using API at {server_url} ---"))
