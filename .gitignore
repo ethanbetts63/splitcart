@@ -56,7 +56,7 @@ coverage.xml
 .vscode/
 
 # Gemini session summaries
-gemini_session_summaries.txt/
+gemini_session_summaries/
 
 data_management/data/
 db.sqlite3
@@ -68,3 +68,4 @@ woolworths1_ids.txt
 woolworths2_ids.txt
 /scraping/data/
 node_modules/
+api_documentation/
