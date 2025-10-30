@@ -1,62 +1,82 @@
+import json
+import os
+import requests
 from django.core.management.base import BaseCommand
-from data_management.utils.substitution_utils.lvl1_substitution_generator import Lvl1SubstitutionGenerator
-from data_management.utils.substitution_utils.lvl2_substitution_generator import Lvl2SubstitutionGenerator
-from data_management.utils.substitution_utils.lvl3_substitution_generator import Lvl3SubstitutionGenerator
-from data_management.utils.substitution_utils.lvl4_substitution_generator import Lvl4SubstitutionGenerator
+from django.conf import settings
+from data_management.utils.local_substitution_generators.local_lvl1_generator import LocalLvl1SubGenerator
+from data_management.utils.local_substitution_generators.local_lvl2_generator import LocalLvl2SubGenerator
+from data_management.utils.local_substitution_generators.local_lvl3_generator import LocalLvl3SubGenerator
+from data_management.utils.local_substitution_generators.local_lvl4_generator import LocalLvl4SubGenerator
 
 class Command(BaseCommand):
-    help = 'Generates product substitutions based on different heuristic levels.'
+    help = 'Generates product substitutions locally and saves them to an outbox.'
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--lvl1',
+            '--dev',
             action='store_true',
-            help='Generate Level 1: Same brand, same product, different size.'
+            help='Use development server URL (http://127.0.0.1:8000) instead of API_SERVER_URL.'
         )
-        parser.add_argument(
-            '--lvl2',
-            action='store_true',
-            help='Generate Level 2: Same brand, similar product, similar size.'
-        )
-        parser.add_argument(
-            '--lvl3',
-            action='store_true',
-            help='Generate Level 3: Semantic Similarity.'
-        )
-        parser.add_argument(
-            '--lvl4',
-            action='store_true',
-            help='Generate Level 4: Linked Category Semantic Similarity (includes MATCH, CLOSE, and DISTANT links).'
-        )
+
+    def _fetch_paginated_data(self, url, headers, data_type):
+        """Fetches all pages of data from a paginated API endpoint."""
+        all_results = []
+        next_url = url
+        while next_url:
+            response = requests.get(next_url, headers=headers)
+            response.raise_for_status()
+            data = response.json()
+            all_results.extend(data['results'])
+            next_url = data.get('next')
+            self.stdout.write(f"  Fetched {len(all_results)} / {data['count']} {data_type}.")
+        return all_results
 
     def handle(self, *args, **options):
-        lvl1 = options['lvl1']
-        lvl2 = options['lvl2']
-        lvl3 = options['lvl3']
-        lvl4 = options['lvl4']
+        if options['dev']:
+            server_url = "http://127.0.0.1:8000"
+            api_key = settings.API_SECRET_KEY # Assuming API_SECRET_KEY is still needed for dev
+        else:
+            try:
+                server_url = settings.API_SERVER_URL
+                api_key = settings.API_SECRET_KEY
+            except AttributeError:
+                self.stderr.write("API_SERVER_URL and API_SECRET_KEY must be set in settings.")
+                return
 
-        # If no specific level is requested, default to running all levels.
-        run_all = not any([lvl1, lvl2, lvl3, lvl4])
-        if run_all:
-            self.stdout.write(self.style.SUCCESS("No specific level requested, running all available generators."))
-            lvl1 = lvl2 = lvl3 = lvl4 = True
+        headers = {'X-API-KEY': api_key, 'Accept': 'application/json'}
+        self.stdout.write(self.style.SUCCESS(f"--- Starting Substitution Generation using API at {server_url} ---"))
+
+        # 1. Fetch all necessary data with pagination
+        try:
+            self.stdout.write("Fetching products...")
+            products = self._fetch_paginated_data(f"{server_url}/api/export/products/", headers, "products")
+
+            self.stdout.write("Fetching categories...")
+            categories = self._fetch_paginated_data(f"{server_url}/api/export/categories/", headers, "categories")
+
+            self.stdout.write("Fetching category links...")
+            category_links = self._fetch_paginated_data(f"{server_url}/api/export/category_links/", headers, "category links")
+
+        except requests.exceptions.RequestException as e:
+            self.stderr.write(f"Failed to fetch data: {e}"); return
+        except json.JSONDecodeError as e:
+            self.stderr.write(f"Failed to decode JSON: {e}"); return
+
+        # 2. Run all generators
+        lvl1_subs = LocalLvl1SubGenerator().generate(self, products)
+        lvl2_subs = LocalLvl2SubGenerator().generate(self, products)
+        lvl3_subs = LocalLvl3SubGenerator().generate(self, products, categories)
+        lvl4_subs = LocalLvl4SubGenerator().generate(self, products, category_links)
+
+        all_subs = lvl1_subs + lvl2_subs + lvl3_subs + lvl4_subs
+        self.stdout.write(self.style.SUCCESS(f"Total substitutions generated: {len(all_subs)}"))
+
+        # 3. Save to outbox
+        outbox_dir = 'data_management/data/substitutions_outbox'
+        os.makedirs(outbox_dir, exist_ok=True)
+        output_path = os.path.join(outbox_dir, 'substitutions.json')
+        with open(output_path, 'w') as f:
+            json.dump(all_subs, f, indent=4)
         
-        self.stdout.write(self.style.SUCCESS("--- Starting Substitution Generation ---"))
-
-        if lvl1:
-            generator = Lvl1SubstitutionGenerator(command=self)
-            generator.generate()
-        
-        if lvl2:
-            generator = Lvl2SubstitutionGenerator(command=self)
-            generator.generate()
-
-        if lvl3:
-            generator = Lvl3SubstitutionGenerator(command=self)
-            generator.generate()
-
-        if lvl4:
-            generator = Lvl4SubstitutionGenerator(command=self)
-            generator.generate()
-
-        self.stdout.write(self.style.SUCCESS("--- Substitution Generation Complete ---"))
+        self.stdout.write(self.style.SUCCESS(f"Saved {len(all_subs)} substitutions to {output_path}"))
+        self.stdout.write(self.style.SUCCESS("--- Substitution Generation Finished ---"))

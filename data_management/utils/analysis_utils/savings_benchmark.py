@@ -12,7 +12,7 @@ from data_management.config import (
 from django.db.models import Count, Q
 from companies.models import Company, Store
 from products.models import Product, Price, ProductSubstitution
-from data_management.utils.substitution_utils.size_comparer import SizeComparer
+from data_management.utils.size_comparer import SizeComparer
 from data_management.utils.cart_optimization import calculate_optimized_cost, calculate_baseline_cost, build_price_slots
 
 def get_substitution_group(anchor_product, depth_limit=SUBSTITUTION_SEARCH_DEPTH):

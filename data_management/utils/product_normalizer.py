@@ -186,7 +186,7 @@ class ProductNormalizer:
         return name_to_clean
 
     def _get_standardized_sizes(self) -> list:
-        from data_management.utils.substitution_utils.size_comparer import SizeComparer
+        from data_management.utils.size_comparer import SizeComparer
         """
         Performs a multi-pass standardization of raw size strings.
         1. Standardizes text variations (e.g., 'pack' -> 'pk', '1ea' -> 'ea').
