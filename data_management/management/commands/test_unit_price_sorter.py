@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 from django.db.models import Count
 from products.models import Product, Price
 from companies.models import Store, Company
-from data_management.utils.substitution_utils.unit_price_sorter import UnitPriceSorter
+from data_management.utils.unit_price_sorter import UnitPriceSorter
 from data_management.utils.analysis_utils.savings_benchmark import get_substitution_group
 
 class Command(BaseCommand):
