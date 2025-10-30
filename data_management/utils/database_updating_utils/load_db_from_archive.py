@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 
 def load_db_from_latest_archive(command):
     base_archive_dir = os.path.join('data_management', 'data', 'archive', 'db_backups')
@@ -31,7 +32,7 @@ def load_db_from_latest_archive(command):
 
     command.stdout.write(f"Loading data from latest archive: {archive_dir}")
 
-    python_executable = os.path.abspath(os.path.join('venv', 'Scripts', 'python.exe'))
+    python_executable = sys.executable
     env = os.environ.copy()
     env['PYTHONUTF8'] = '1'
 
