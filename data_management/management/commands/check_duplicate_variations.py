@@ -1,7 +1,6 @@
 
 from django.core.management.base import BaseCommand
 from products.models import ProductBrand
-from collections import defaultdict
 
 class Command(BaseCommand):
     help = 'Checks for duplicate normalized_name_variations across different ProductBrand objects.'

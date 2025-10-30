@@ -2,7 +2,6 @@ import requests
 import json
 import os
 from django.core.management.base import BaseCommand
-from collections import defaultdict
 from django.conf import settings
 
 # Adapted Logic from ExactCategoryMatcher to work with JSON data
