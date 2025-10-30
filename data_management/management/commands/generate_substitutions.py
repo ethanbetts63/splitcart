@@ -2,10 +2,8 @@
 import re
 import json
 import os
-import unicodedata
 from itertools import combinations
 from collections import defaultdict
-
 import requests
 from django.core.management.base import BaseCommand
 from django.conf import settings

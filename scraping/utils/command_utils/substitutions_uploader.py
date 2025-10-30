@@ -2,11 +2,11 @@
 import os
 import json
 import requests
-from django.conf import settings
+from .base_uploader import BaseUploader
 
-class SubstitutionsUploader:
-    def __init__(self, command):
-        self.command = command
+class SubstitutionsUploader(BaseUploader):
+    def __init__(self, command, dev=False):
+        super().__init__(command, dev)
         self.outbox_path_name = 'data_management/data/substitutions_outbox'
         self.archive_path_name = 'data_management/data/substitutions_archive'
         self.upload_url_path = '/api/import/semantic_data/'
@@ -14,8 +14,8 @@ class SubstitutionsUploader:
         self.chunk_size = 2000  # Process 2000 substitutions per request
 
     def run(self):
-        outbox_path = os.path.join(settings.BASE_DIR, self.outbox_path_name)
-        archive_path = os.path.join(settings.BASE_DIR, self.archive_path_name)
+        outbox_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', self.outbox_path_name)
+        archive_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', self.archive_path_name)
         os.makedirs(archive_path, exist_ok=True)
 
         file_path = os.path.join(outbox_path, self.file_name)
@@ -24,11 +24,9 @@ class SubstitutionsUploader:
             self.command.stdout.write(self.command.style.SUCCESS(f"No file to upload in {self.outbox_path_name}."))
             return
 
-        try:
-            server_url = settings.API_SERVER_URL
-            api_key = settings.API_SECRET_KEY
-        except AttributeError:
-            self.command.stderr.write(self.command.style.ERROR("API_SERVER_URL and API_SECRET_KEY must be configured in settings."))
+        server_url = self.get_server_url()
+        api_key = self.get_api_key()
+        if not server_url or not api_key:
             return
 
         upload_url = f"{server_url.rstrip('/')}/{self.upload_url_path.lstrip('/')}"

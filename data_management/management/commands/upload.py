@@ -14,31 +14,33 @@ class Command(BaseCommand):
         parser.add_argument('--stores', action='store_true', help='Upload store data.')
         parser.add_argument('--category-links', action='store_true', help='Upload generated category links.')
         parser.add_argument('--substitutions', action='store_true', help='Upload generated substitutions.')
+        parser.add_argument('--dev', action='store_true', help='Use development server URL.')
 
     def handle(self, *args, **options):
         run_all = not any(options.values()) # Check if any flag is set
+        dev = options['dev']
 
         if options['products'] or run_all:
             self.stdout.write(self.style.SUCCESS("Uploading product data..."))
-            uploader = ProductUploader(self)
+            uploader = ProductUploader(self, dev=dev)
             uploader.run()
         
         if options['gs1'] or run_all:
             self.stdout.write(self.style.SUCCESS("Uploading GS1 data..."))
-            uploader = Gs1Uploader(self)
+            uploader = Gs1Uploader(self, dev=dev)
             uploader.run()
 
         if options['stores'] or run_all:
             self.stdout.write(self.style.SUCCESS("Uploading store data..."))
-            uploader = StoreUploader(self)
+            uploader = StoreUploader(self, dev=dev)
             uploader.run()
 
         if options['category_links']:
             self.stdout.write(self.style.SUCCESS("Uploading category links..."))
-            uploader = CategoryLinksUploader(self)
+            uploader = CategoryLinksUploader(self, dev=dev)
             uploader.run()
 
         if options['substitutions']:
             self.stdout.write(self.style.SUCCESS("Uploading substitutions..."))
-            uploader = SubstitutionsUploader(self)
+            uploader = SubstitutionsUploader(self, dev=dev)
             uploader.run()

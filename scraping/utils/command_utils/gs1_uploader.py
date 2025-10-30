@@ -1,26 +1,24 @@
 import os
 import gzip
 import requests
-from django.conf import settings
+from .base_uploader import BaseUploader
 
-class Gs1Uploader:
-    def __init__(self, command):
-        self.command = command
+class Gs1Uploader(BaseUploader):
+    def __init__(self, command, dev=False):
+        super().__init__(command, dev)
         self.outbox_path_name = 'gs1_outbox'
         self.archive_path_name = 'temp_jsonl_gs1_storage'
         self.upload_url_path = '/api/upload/gs1/'
 
     def run(self):
-        outbox_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', self.outbox_path_name)
-        archive_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', self.archive_path_name)
+        outbox_path = os.path.join(os.path.dirname(__file__), '..', '..', 'data', self.outbox_path_name)
+        archive_path = os.path.join(os.path.dirname(__file__), '..', '..', 'data', self.archive_path_name)
         os.makedirs(outbox_path, exist_ok=True)
         os.makedirs(archive_path, exist_ok=True)
 
-        try:
-            server_url = settings.API_SERVER_URL
-            api_key = settings.API_SECRET_KEY
-        except AttributeError:
-            self.command.stderr.write(self.command.style.ERROR("API_SERVER_URL and API_SECRET_KEY must be configured in settings."))
+        server_url = self.get_server_url()
+        api_key = self.get_api_key()
+        if not server_url or not api_key:
             return
 
         upload_url = f"{server_url.rstrip('/')}/{self.upload_url_path.lstrip('/')}"
