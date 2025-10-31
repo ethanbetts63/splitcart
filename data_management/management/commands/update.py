@@ -1,12 +1,5 @@
-import os
-from django.conf import settings
-from django.core.management.base import BaseCommand
-from data_management.utils.database_updating_utils.load_db_from_archive import load_db_from_latest_archive
-from data_management.database_updating_classes.update_orchestrator import UpdateOrchestrator
-from data_management.database_updating_classes.prefix_update_orchestrator import PrefixUpdateOrchestrator
-from data_management.database_updating_classes.discovery_update_orchestrator import DiscoveryUpdateOrchestrator
-from data_management.database_updating_classes.category_link_update_orchestrator import CategoryLinkUpdateOrchestrator
 from data_management.database_updating_classes.substitution_update_orchestrator import SubstitutionUpdateOrchestrator
+from data_management.database_updating_classes.bargain_update_orchestrator import BargainUpdateOrchestrator
 
 class Command(BaseCommand):
     help = 'Updates the database with data from various sources.'
@@ -15,8 +8,9 @@ class Command(BaseCommand):
         parser.add_argument('--stores', action='store_true', help='Update stores from the store_inbox directory.')
         parser.add_argument('--products', action='store_true', help='Update products from the product_inbox directory.')
         parser.add_argument('--prefixes', action='store_true', help='Update brand prefixes from the prefix_inbox directory.')
-        parser.add_argument('--cat-links', action='store_true', help='Update category links from the category_links_inbox directory.')
+        parser.add_argument('--category-links', action='store_true', help='Update category links from the category_links_inbox directory.')
         parser.add_argument('--substitutions', action='store_true', help='Update substitutions from the substitutions_inbox directory.')
+        parser.add_argument('--bargains', action='store_true', help='Update bargains from the bargains_inbox directory.')
         parser.add_argument('--archive', action='store_true', help='Flush DB and load data from the most recent archive.')
 
     def handle(self, *args, **options):
@@ -27,12 +21,17 @@ class Command(BaseCommand):
         run_stores_discovery = options['stores']
         run_products_processed = options['products']
         run_prefixes = options['prefixes']
-        run_category_links = options['cat_links']
+        run_category_links = options['category_links']
         run_substitutions = options['substitutions']
+        run_bargains = options['bargains']
 
-        if not any([run_stores_discovery, run_products_processed, run_prefixes, run_category_links, run_substitutions]):
+        if not any([run_stores_discovery, run_products_processed, run_prefixes, run_category_links, run_substitutions, run_bargains]):
             run_stores_discovery = True
             run_products_processed = True
+
+        if run_bargains:
+            orchestrator = BargainUpdateOrchestrator(self)
+            orchestrator.run()
 
         if run_substitutions:
             orchestrator = SubstitutionUpdateOrchestrator(self)
