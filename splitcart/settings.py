@@ -15,6 +15,7 @@ ALLOWED_HOSTS = ['localhost', 'ethanbetts.pythonanywhere.com', 'splitcart.com.au
 
 
 API_SECRET_KEY = os.getenv("API_SECRET_KEY")
+INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY")
 API_SERVER_URL = os.getenv("API_SERVER_URL")
 API_SERVER_HOSTNAME = urlparse(API_SERVER_URL).hostname if API_SERVER_URL else None
 

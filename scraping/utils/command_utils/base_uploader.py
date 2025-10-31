@@ -21,11 +21,11 @@ class BaseUploader:
 
     def get_api_key(self):
         try:
-            api_key = settings.API_SECRET_KEY
+            api_key = settings.INTERNAL_API_KEY
             if not api_key:
-                self.command.stderr.write(self.command.style.ERROR("API_SECRET_KEY is not configured in settings or .env file."))
+                self.command.stderr.write(self.command.style.ERROR("INTERNAL_API_KEY is not configured in settings or .env file."))
                 return None
             return api_key
         except AttributeError:
-            self.command.stderr.write(self.command.style.ERROR("API_SECRET_KEY must be configured in settings or .env file."))
+            self.command.stderr.write(self.command.style.ERROR("INTERNAL_API_KEY must be configured in settings or .env file."))
             return None
