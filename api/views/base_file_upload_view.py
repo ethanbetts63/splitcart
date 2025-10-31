@@ -6,6 +6,7 @@ from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.throttling import ScopedRateThrottle
 
 class BaseFileUploadView(APIView, ABC):
     """
@@ -13,6 +14,9 @@ class BaseFileUploadView(APIView, ABC):
     It handles authentication, decompression, and file saving, while delegating
     the final destination path to subclasses.
     """
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'internal'
+
     def post(self, request, *args, **kwargs):
         # 2. Process the uploaded file
         if 'file' not in request.FILES:

@@ -1,12 +1,18 @@
 from django.http import HttpResponse, JsonResponse
-from django.views import View
+from rest_framework.views import APIView
+from rest_framework.throttling import ScopedRateThrottle
+from api.permissions import IsInternalAPIRequest
 import hashlib
 
-class BasePythonFileView(View):
+class BasePythonFileView(APIView):
     """
     A base view for generating and serving a Python file containing a dictionary.
     Handles ETag-based caching.
     """
+    permission_classes = [IsInternalAPIRequest]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'internal'
+
     generator_class = None
     variable_name = None
 

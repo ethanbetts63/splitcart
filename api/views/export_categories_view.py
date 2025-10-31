@@ -1,5 +1,6 @@
 from rest_framework import serializers, generics
 from companies.models import Category
+from rest_framework.throttling import ScopedRateThrottle
 from api.permissions import IsInternalAPIRequest
 
 # A lean serializer for exporting categories
@@ -15,5 +16,7 @@ class ExportCategoriesView(generics.ListAPIView):
     Provides a lean JSON representation for local processing.
     """
     permission_classes = [IsInternalAPIRequest]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'internal'
     queryset = Category.objects.all()
     serializer_class = CategoryExportSerializer

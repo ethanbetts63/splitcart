@@ -1,4 +1,5 @@
 from rest_framework import views, response, status
+from rest_framework.throttling import ScopedRateThrottle
 from api.permissions import IsInternalAPIRequest
 from products.models import ProductSubstitution
 from companies.models import CategoryLink
@@ -10,6 +11,8 @@ class ImportSemanticDataView(views.APIView):
     This endpoint should be protected and only accessible by admins or via API Key.
     """
     permission_classes = [IsInternalAPIRequest]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'internal'
 
     def post(self, request, *args, **kwargs):
         data = request.data

@@ -4,6 +4,7 @@ from companies.models import Store, StoreGroup
 from django.db.models import Count, Q
 from django.core.cache import cache
 import random
+from rest_framework.throttling import ScopedRateThrottle
 from api.permissions import IsInternalAPIRequest
 
 class SchedulerView(APIView):
@@ -12,6 +13,8 @@ class SchedulerView(APIView):
     of the original ScrapeScheduler.
     """
     permission_classes = [IsInternalAPIRequest]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'internal'
 
     def get(self, request, *args, **kwargs):
         companies_to_scrape = request.query_params.getlist('company')

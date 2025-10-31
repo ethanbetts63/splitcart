@@ -1,5 +1,6 @@
 from rest_framework import serializers, generics
 from products.models import Product
+from rest_framework.throttling import ScopedRateThrottle
 from api.permissions import IsInternalAPIRequest
 
 # A lean serializer for exporting products for local processing
@@ -24,5 +25,7 @@ class ExportProductsView(generics.ListAPIView):
     Provides a lean JSON representation for local processing.
     """
     permission_classes = [IsInternalAPIRequest]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'internal'
     queryset = Product.objects.all().prefetch_related('category')
     serializer_class = ProductExportSerializer
