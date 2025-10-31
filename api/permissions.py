@@ -8,7 +8,16 @@ class IsInternalAPIRequest(permissions.BasePermission):
 
     def has_permission(self, request, view):
         api_key = request.headers.get('X-Internal-API-Key')
-        return api_key == os.environ.get('INTERNAL_API_KEY')
+        internal_api_key = os.environ.get('INTERNAL_API_KEY')
+        print(f"Request API Key: {api_key}")
+        print(f"Server API Key: {internal_api_key}")
+        if not internal_api_key:
+            print("Server INTERNAL_API_KEY is not set.")
+            return False
+        
+        is_authenticated = api_key == internal_api_key
+        print(f"Authentication result: {is_authenticated}")
+        return is_authenticated
 
 class IsAuthenticatedOrAnonymous(permissions.BasePermission):
     """
