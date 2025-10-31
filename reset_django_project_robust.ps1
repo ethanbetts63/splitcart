@@ -6,7 +6,8 @@ cd .\coding\splitcart\
 $apps = @(
     "products",
     "companies",
-    "data_management"
+    "data_management",
+    "users"
 )
 
 # --- EXECUTION ---
