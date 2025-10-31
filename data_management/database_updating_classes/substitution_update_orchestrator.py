@@ -10,7 +10,7 @@ class SubstitutionUpdateOrchestrator:
 
     def __init__(self, command):
         self.command = command
-        self.inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'substitutions_inbox')
+        self.inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'substitutions_inbox')
 
     def run(self):
         """

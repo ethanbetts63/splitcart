@@ -13,4 +13,4 @@ class CategoryLinksFileUploadView(BaseFileUploadView):
         """
         Returns the destination directory for the decompressed category links files.
         """
-        return os.path.join(settings.BASE_DIR, 'data_management', 'data', 'category_links_inbox')
+        return os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'category_links_inbox')

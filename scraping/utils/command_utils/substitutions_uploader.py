@@ -6,7 +6,7 @@ from .base_uploader import BaseUploader
 class SubstitutionsUploader(BaseUploader):
     def __init__(self, command, dev=False):
         super().__init__(command, dev)
-        self.outbox_path_name = 'data_management/data/substitutions_outbox'
+        self.outbox_path_name = 'data_management/data/outboxes/substitutions_outbox'
         self.upload_url_path = '/api/upload/substitutions/'
         self.file_name = 'substitutions.json'
 
@@ -50,3 +50,10 @@ class SubstitutionsUploader(BaseUploader):
 
             # 3. Delete the original file
             os.remove(file_path)
+
+        except requests.exceptions.RequestException as e:
+            self.command.stderr.write(self.command.style.ERROR(f"Failed to upload {self.file_name}: {e}"))
+        finally:
+            # 4. Clean up the compressed file
+            if os.path.exists(compressed_file_path):
+                os.remove(compressed_file_path)

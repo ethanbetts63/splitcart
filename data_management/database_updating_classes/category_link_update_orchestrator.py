@@ -10,7 +10,7 @@ class CategoryLinkUpdateOrchestrator:
 
     def __init__(self, command):
         self.command = command
-        self.inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'category_links_inbox')
+        self.inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'category_links_inbox')
 
     def run(self):
         """

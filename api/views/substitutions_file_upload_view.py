@@ -13,4 +13,4 @@ class SubstitutionsFileUploadView(BaseFileUploadView):
         """
         Returns the destination directory for the decompressed substitutions files.
         """
-        return os.path.join(settings.BASE_DIR, 'data_management', 'data', 'substitutions_inbox')
+        return os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'substitutions_inbox')
