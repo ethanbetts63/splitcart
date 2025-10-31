@@ -14,19 +14,6 @@ class BaseFileUploadView(APIView, ABC):
     the final destination path to subclasses.
     """
     def post(self, request, *args, **kwargs):
-        # 1. Authenticate the request
-        api_key = request.META.get('HTTP_X_API_KEY')
-        if not api_key:
-            return Response({"error": "API key missing."}, status=status.HTTP_401_UNAUTHORIZED)
-
-        try:
-            secret_key = settings.API_SECRET_KEY
-        except AttributeError:
-            return Response({"error": "API_SECRET_KEY not configured on server."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-        if not hmac.compare_digest(api_key, secret_key):
-            return Response({"error": "Invalid API key."}, status=status.HTTP_401_UNAUTHORIZED)
-
         # 2. Process the uploaded file
         if 'file' not in request.FILES:
             return Response({"error": "File not provided."}, status=status.HTTP_400_BAD_REQUEST)
