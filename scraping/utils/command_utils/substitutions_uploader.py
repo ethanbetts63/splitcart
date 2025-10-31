@@ -50,10 +50,3 @@ class SubstitutionsUploader(BaseUploader):
 
             # 3. Delete the original file
             os.remove(file_path)
-
-        except requests.exceptions.RequestException as e:
-            self.command.stderr.write(self.command.style.ERROR(f"Failed to upload {self.file_name}: {e}"))
-        finally:
-            # 4. Clean up the compressed file
-            if os.path.exists(compressed_file_path):
-                os.remove(compressed_file_path)

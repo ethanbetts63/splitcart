@@ -11,7 +11,7 @@ class ProductUploader(BaseUploader):
         self.upload_url_path = '/api/upload/products/'
 
     def run(self):
-        outbox_path = os.path.join(os.path.dirname(__file__), '..', '..', 'data', self.outbox_path_name)
+        outbox_path = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'outboxes', self.outbox_path_name)
         archive_path = os.path.join(os.path.dirname(__file__), '..', '..', 'data', self.archive_path_name)
         os.makedirs(outbox_path, exist_ok=True)
         os.makedirs(archive_path, exist_ok=True)

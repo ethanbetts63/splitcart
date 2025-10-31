@@ -6,7 +6,7 @@ from .base_uploader import BaseUploader
 class CategoryLinksUploader(BaseUploader):
     def __init__(self, command, dev=False):
         super().__init__(command, dev)
-        self.outbox_path_name = 'data_management/data/category_links_outbox'
+        self.outbox_path_name = 'data_management/data/outboxes/category_links_outbox'
         self.upload_url_path = '/api/upload/category-links/'
         self.file_name = 'category_links.json'
 

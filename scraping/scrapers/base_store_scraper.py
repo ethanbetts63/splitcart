@@ -13,7 +13,7 @@ class BaseStoreScraper(ABC):
     def __init__(self, command, company: str, progress_file_name: str = None):
         self.command = command
         self.company = company
-        self.store_inbox_dir = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'store_outbox')
+        self.store_inbox_dir = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'outboxes', 'store_outbox')
         if progress_file_name:
             self.progress_file = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'temp_jsonl_store_storage', f"{progress_file_name}.json")
         else:

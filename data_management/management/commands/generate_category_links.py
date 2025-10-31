@@ -141,7 +141,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f"  Found {potential_close_distant_links} potential 'CLOSE' or 'DISTANT' links."))
 
         # 4. Save to outbox
-        outbox_dir = 'data_management/data/category_links_outbox'
+        outbox_dir = 'data_management/data/outboxes/category_links_outbox'
         os.makedirs(outbox_dir, exist_ok=True)
         output_path = os.path.join(outbox_dir, 'category_links.json')
         with open(output_path, 'w') as f:

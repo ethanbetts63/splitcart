@@ -72,7 +72,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f"Total substitutions generated: {len(all_subs)}"))
 
         # 3. Save to outbox
-        outbox_dir = 'data_management/data/substitutions_outbox'
+        outbox_dir = 'data_management/data/outboxes/substitutions_outbox'
         os.makedirs(outbox_dir, exist_ok=True)
         output_path = os.path.join(outbox_dir, 'substitutions.json')
         with open(output_path, 'w') as f:
