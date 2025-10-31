@@ -76,9 +76,8 @@ python manage.py update --prefixes
 python manage.py generate_cat_links --dev
 python manage.py upload --cat-links --dev
 python manage.py update --cat-links
-python manage.py update --cat-links
+
 python manage.py update --products
-python manage.py analyze --report category_product_counts --strict
 
 python manage.py generate_subs --dev
 python manage.py upload --subs --dev
@@ -89,6 +88,7 @@ python manage.py generate_pop_cats
 python manage.py analyze --report company_heatmap
 python manage.py analyze --report subs
 python manage.py analyze --report savings
+python manage.py analyze --report category_product_counts --strict
 python manage.py debug_savings_run
 python manage.py test_unit_price_sorter
 python manage.py archive
