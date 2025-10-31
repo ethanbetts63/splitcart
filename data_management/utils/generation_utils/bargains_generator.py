@@ -1,24 +1,24 @@
-from django.core.management.base import BaseCommand
 from django.core.paginator import Paginator
 from products.models import Product, Bargain
 from django.db import transaction
 from decimal import Decimal, InvalidOperation # Import InvalidOperation
 
-class Command(BaseCommand):
-    help = 'Finds products that are significantly cheaper in one store compared to others and populates the Bargain model.'
+class BargainsGenerator:
+    def __init__(self, command):
+        self.command = command
 
-    def handle(self, *args, **options):
-        self.stdout.write("Starting to find bargains...")
+    def run(self):
+        self.command.stdout.write("Starting to find bargains...")
         bargain_count = 0
 
-        self.stdout.write("Clearing old bargain data...")
+        self.command.stdout.write("Clearing old bargain data...")
         Bargain.objects.all().delete()
 
         product_queryset = Product.objects.all().order_by('id')
         paginator = Paginator(product_queryset, 200)  # Process 200 products at a time
 
         for page_number in paginator.page_range:
-            self.stdout.write(f"Processing page {page_number}/{paginator.num_pages}...")
+            self.command.stdout.write(f"Processing page {page_number}/{paginator.num_pages}...")
             page = paginator.page(page_number)
 
             try:
@@ -27,7 +27,7 @@ class Command(BaseCommand):
                     id__in=[p.id for p in page.object_list]
                 ).prefetch_related('price_records__price_entries__store'))
             except InvalidOperation as e:
-                self.stdout.write(self.style.WARNING(f"Skipping page {page_number} due to invalid decimal data in a price record. Error: {e}"))
+                self.command.stdout.write(self.command.style.WARNING(f"Skipping page {page_number} due to invalid decimal data in a price record. Error: {e}"))
                 continue # Skip this page
 
             with transaction.atomic():  # Atomic transaction for each chunk
@@ -60,4 +60,4 @@ class Command(BaseCommand):
                         )
                         bargain_count += 1
 
-        self.stdout.write(self.style.SUCCESS(f"Successfully found and created {bargain_count} bargains."))
+        self.command.stdout.write(self.command.style.SUCCESS(f"Successfully found and created {bargain_count} bargains."))
