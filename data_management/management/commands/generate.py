@@ -50,5 +50,5 @@ class Command(BaseCommand):
 
         if options['bargains'] or run_all:
             self.stdout.write(self.style.SUCCESS("Generating bargains..."))
-            generator = BargainsGenerator(self)
+            generator = BargainsGenerator(self, dev=dev)
             generator.run()

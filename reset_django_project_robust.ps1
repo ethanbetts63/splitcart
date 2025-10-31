@@ -83,7 +83,10 @@ python manage.py generate --subs --dev
 python manage.py upload --subs --dev
 python manage.py update --subs
 
-python manage.py find_bargains
+python manage.py generate --bargains --dev
+python manage.py upload --bargains --dev
+python manage.py update --bargains
+
 python manage.py generate_pop_cats
 python manage.py analyze --report company_heatmap
 python manage.py analyze --report subs
