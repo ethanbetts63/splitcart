@@ -1,4 +1,14 @@
+import os
 from rest_framework import permissions
+
+class IsInternalAPIRequest(permissions.BasePermission):
+    """
+    Allows access only to requests with a valid internal API key.
+    """
+
+    def has_permission(self, request, view):
+        api_key = request.headers.get('X-Internal-API-Key')
+        return api_key == os.environ.get('INTERNAL_API_KEY')
 
 class IsAuthenticatedOrAnonymous(permissions.BasePermission):
     """

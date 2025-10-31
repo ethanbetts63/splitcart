@@ -4,12 +4,15 @@ from companies.models import Store, StoreGroup
 from django.db.models import Count, Q
 from django.core.cache import cache
 import random
+from api.permissions import IsInternalAPIRequest
 
 class SchedulerView(APIView):
     """
     Provides the next store to be scraped, encapsulating the logic
     of the original ScrapeScheduler.
     """
+    permission_classes = [IsInternalAPIRequest]
+
     def get(self, request, *args, **kwargs):
         companies_to_scrape = request.query_params.getlist('company')
         company_filter = Q()

@@ -1,5 +1,6 @@
 from rest_framework import serializers, generics
 from companies.models import CategoryLink
+from api.permissions import IsInternalAPIRequest
 
 class CategoryLinkExportSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,5 +11,6 @@ class ExportCategoryLinksView(generics.ListAPIView):
     """
     API endpoint that allows all category links to be exported.
     """
+    permission_classes = [IsInternalAPIRequest]
     queryset = CategoryLink.objects.all()
     serializer_class = CategoryLinkExportSerializer

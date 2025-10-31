@@ -1,5 +1,5 @@
 from rest_framework import views, response, status
-from rest_framework.permissions import IsAdminUser
+from api.permissions import IsInternalAPIRequest
 from products.models import ProductSubstitution
 from companies.models import CategoryLink
 
@@ -9,9 +9,7 @@ class ImportSemanticDataView(views.APIView):
     Expects a JSON payload with 'category_links' and/or 'substitutions'.
     This endpoint should be protected and only accessible by admins or via API Key.
     """
-    # In a real-world scenario, you would use a more robust permission system.
-    # For now, we assume an API key is checked by a middleware or higher-level permission class.
-    # permission_classes = [IsAdminUser] 
+    permission_classes = [IsInternalAPIRequest]
 
     def post(self, request, *args, **kwargs):
         data = request.data

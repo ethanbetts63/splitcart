@@ -1,5 +1,6 @@
 from rest_framework import serializers, generics
 from products.models import Product
+from api.permissions import IsInternalAPIRequest
 
 # A lean serializer for exporting products for local processing
 class ProductExportSerializer(serializers.ModelSerializer):
@@ -22,5 +23,6 @@ class ExportProductsView(generics.ListAPIView):
     API endpoint that allows all products to be exported.
     Provides a lean JSON representation for local processing.
     """
+    permission_classes = [IsInternalAPIRequest]
     queryset = Product.objects.all().prefetch_related('category')
     serializer_class = ProductExportSerializer
