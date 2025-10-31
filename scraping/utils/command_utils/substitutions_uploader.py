@@ -31,7 +31,7 @@ class SubstitutionsUploader(BaseUploader):
 
         upload_url = f"{server_url.rstrip('/')}/{self.upload_url_path.lstrip('/')}"
         headers = {
-            'X-API-KEY': api_key,
+            'X-Internal-API-Key': api_key,
             'Content-Type': 'application/json'
         }
 

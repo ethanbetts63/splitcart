@@ -22,7 +22,7 @@ class StoreUploader(BaseUploader):
             return
 
         upload_url = f"{server_url.rstrip('/')}/{self.upload_url_path.lstrip('/')}"
-        headers = {'X-API-KEY': api_key}
+        headers = {'X-Internal-API-Key': api_key}
 
         files_to_upload = [f for f in os.listdir(outbox_path) if f.endswith('.json')]
 
