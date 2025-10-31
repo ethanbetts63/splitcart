@@ -11,8 +11,6 @@ class CategoryLinkUpdateOrchestrator:
     def __init__(self, command):
         self.command = command
         self.inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'category_links_inbox')
-        self.archive_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'category_links_archive')
-        os.makedirs(self.archive_path, exist_ok=True)
 
     def run(self):
         """
@@ -33,9 +31,6 @@ class CategoryLinkUpdateOrchestrator:
             
             if links_processed is not None:
                 self.command.stdout.write(self.command.style.SUCCESS(f"  Successfully processed {links_processed} links from {filename}."))
-                # Move to archive
-                archive_file_path = os.path.join(self.archive_path, filename)
-                os.rename(file_path, archive_file_path)
             else:
                 self.command.stderr.write(self.command.style.ERROR(f"  Failed to process {filename}."))
 

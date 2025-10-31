@@ -16,25 +16,11 @@ class ImportSemanticDataView(views.APIView):
 
     def post(self, request, *args, **kwargs):
         data = request.data
-        category_links_data = data.get('category_links', [])
         substitutions_data = data.get('substitutions', [])
         
-        links_created_count = 0
         subs_created_count = 0
 
         try:
-            if category_links_data:
-                new_links = []
-                for link_data in category_links_data:
-                    new_links.append(CategoryLink(
-                        category_a_id=link_data['category_a'],
-                        category_b_id=link_data['category_b'],
-                        link_type=link_data['link_type']
-                    ))
-                # ignore_conflicts=True prevents errors if a link already exists
-                created_links = CategoryLink.objects.bulk_create(new_links, ignore_conflicts=True)
-                links_created_count = len(created_links)
-
             if substitutions_data:
                 new_substitutions = []
                 for sub_data in substitutions_data:
@@ -51,7 +37,6 @@ class ImportSemanticDataView(views.APIView):
             return response.Response(
                 {
                     'status': 'success',
-                    'category_links_created': links_created_count,
                     'substitutions_created': subs_created_count
                 },
                 status=status.HTTP_201_CREATED
