@@ -1,3 +1,12 @@
+import os
+from django.conf import settings
+from django.core.management.base import BaseCommand
+from data_management.utils.database_updating_utils.load_db_from_archive import load_db_from_latest_archive      
+from data_management.database_updating_classes.update_orchestrator import UpdateOrchestrator
+from data_management.database_updating_classes.prefix_update_orchestrator import PrefixUpdateOrchestrator
+from data_management.database_updating_classes.discovery_update_orchestrator import DiscoveryUpdateOrchestrator
+from data_management.database_updating_classes.category_link_update_orchestrator import CategoryLinkUpdateOrchestrator                  
+from data_management.database_updating_classes.substitution_update_orchestrator import SubstitutionUpdateOrchestrator    
 from data_management.database_updating_classes.substitution_update_orchestrator import SubstitutionUpdateOrchestrator
 from data_management.database_updating_classes.bargain_update_orchestrator import BargainUpdateOrchestrator
 
