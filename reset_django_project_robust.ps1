@@ -72,10 +72,18 @@ python manage.py update --archive
 python manage.py cluster_stores
 python manage.py update --products
 python manage.py update --prefixes
-python manage.py update --category-links
+
+python manage.py generate_cat_links --dev
+python manage.py upload --cat-links --dev
+python manage.py update --cat-links
+python manage.py update --cat-links
 python manage.py update --products
 python manage.py analyze --report category_product_counts --strict
-python manage.py generate_subs
+
+python manage.py generate_subs --dev
+python manage.py upload --subs --dev
+python manage.py update --subs
+
 python manage.py find_bargains
 python manage.py generate_pop_cats
 python manage.py analyze --report company_heatmap

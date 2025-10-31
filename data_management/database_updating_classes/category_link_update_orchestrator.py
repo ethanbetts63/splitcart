@@ -57,8 +57,7 @@ class CategoryLinkUpdater:
                     category_a_id=link_data['category_a'],
                     category_b_id=link_data['category_b'],
                     defaults={
-                        'link_type': link_data['link_type'],
-                        'similarity_score': link_data.get('similarity_score')
+                        'link_type': link_data['link_type']
                     }
                 )
                 links_processed += 1

@@ -12,8 +12,8 @@ class Command(BaseCommand):
         parser.add_argument('--products', action='store_true', help='Upload product data.')
         parser.add_argument('--gs1', action='store_true', help='Upload GS1 data.')
         parser.add_argument('--stores', action='store_true', help='Upload store data.')
-        parser.add_argument('--category-links', action='store_true', help='Upload generated category links.')
-        parser.add_argument('--substitutions', action='store_true', help='Upload generated substitutions.')
+        parser.add_argument('--cat-links', action='store_true', help='Upload generated category links.')
+        parser.add_argument('--subs', action='store_true', help='Upload generated substitutions.')
         parser.add_argument('--dev', action='store_true', help='Use development server URL.')
 
     def handle(self, *args, **options):
