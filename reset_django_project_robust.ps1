@@ -13,16 +13,26 @@ $apps = @(
 # --- EXECUTION ---
 Write-Host "🚀 Starting Django Project Reset..." -ForegroundColor Yellow
 
-# 1. Delete the SQLite Database file
-Write-Host "🔥 Deleting database file (db.sqlite3)..." -ForegroundColor Cyan
-try {
-    Remove-Item -Path "db.sqlite3" -ErrorAction Stop
-    Write-Host "  - Database file deleted successfully." -ForegroundColor Green
-} catch {
-    Write-Host "  - ERROR: Could not delete database file. It might be locked by another process." -ForegroundColor Red
-    # Exit the script because subsequent steps will fail.
-    exit 1
-}
+# 1. Manual Database Reset (MySQL Workbench or SQL Commands)
+Write-Host "🔥 Skipping automatic MySQL database reset." -ForegroundColor Yellow
+Write-Host "   Please manually drop and recreate the 'splitcart' database using one of the following methods:" -ForegroundColor Yellow
+Write-Host "" -ForegroundColor Yellow
+Write-Host "   Method 1: MySQL Workbench Interface" -ForegroundColor Yellow
+Write-Host "   ----------------------------------" -ForegroundColor Yellow
+Write-Host "   1. Open MySQL Workbench and connect to your local database server." -ForegroundColor Yellow
+Write-Host "   2. In the Navigator panel (Schemas tab), right-click on the 'splitcart' database." -ForegroundColor Yellow
+Write-Host "   3. Select "Drop Schema..." and confirm." -ForegroundColor Yellow
+Write-Host "   4. Right-click in the empty space in the Schemas panel and select "Create Schema..."." -ForegroundColor Yellow
+Write-Host "   5. Enter 'splitcart' as the name, set Charset to 'utf8mb4' and Collation to 'utf8mb4_unicode_ci'." -ForegroundColor Yellow
+Write-Host "   6. Click "Apply" and then "Finish"." -ForegroundColor Yellow
+Write-Host "" -ForegroundColor Yellow
+Write-Host "   Method 2: SQL Commands (in MySQL Workbench Query Tab or MySQL CLI)" -ForegroundColor Yellow
+Write-Host "   ------------------------------------------------------------------" -ForegroundColor Yellow
+Write-Host "   DROP DATABASE IF EXISTS splitcart;" -ForegroundColor Yellow
+Write-Host "   CREATE DATABASE splitcart CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" -ForegroundColor Yellow
+Write-Host "" -ForegroundColor Yellow
+Write-Host "   Press any key to continue after manually resetting the database..." -ForegroundColor Yellow
+Pause
 
 # 2. Delete old migration files from specified apps
 Write-Host "🔥 Deleting old migration files..." -ForegroundColor Cyan
