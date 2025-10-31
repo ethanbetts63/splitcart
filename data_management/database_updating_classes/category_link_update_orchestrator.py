@@ -54,8 +54,8 @@ class CategoryLinkUpdater:
             try:
                 # Assuming the JSON structure matches the model fields
                 CategoryLink.objects.update_or_create(
-                    category1_id=link_data['category1_id'],
-                    category2_id=link_data['category2_id'],
+                    category_a_id=link_data['category_a'],
+                    category_b_id=link_data['category_b'],
                     defaults={
                         'link_type': link_data['link_type'],
                         'similarity_score': link_data.get('similarity_score')
