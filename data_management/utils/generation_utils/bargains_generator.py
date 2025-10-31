@@ -1,63 +1,94 @@
-from django.core.paginator import Paginator
-from products.models import Product, Bargain
-from django.db import transaction
-from decimal import Decimal, InvalidOperation # Import InvalidOperation
+import os
+import json
+import requests
+from django.conf import settings
+from decimal import Decimal
 
 class BargainsGenerator:
-    def __init__(self, command):
+    def __init__(self, command, dev=False):
         self.command = command
+        self.dev = dev
+
+    def _fetch_paginated_data(self, url, headers, data_type):
+        """Fetches all pages of data from a paginated API endpoint."""
+        all_results = []
+        next_url = url
+        while next_url:
+            response = requests.get(next_url, headers=headers)
+            response.raise_for_status()
+            data = response.json()
+            all_results.extend(data['results'])
+            next_url = data.get('next')
+            self.command.stdout.write(f"  Fetched {len(all_results)} / {data['count']} {data_type}.")
+        return all_results
 
     def run(self):
-        self.command.stdout.write("Starting to find bargains...")
+        if self.dev:
+            server_url = "http://127.0.0.1:8000"
+            api_key = settings.INTERNAL_API_KEY
+        else:
+            try:
+                server_url = settings.API_SERVER_URL
+                api_key = settings.INTERNAL_API_KEY
+            except AttributeError:
+                self.command.stderr.write("API_SERVER_URL and INTERNAL_API_KEY must be set in settings.")
+                return
+
+        headers = {'X-Internal-API-Key': api_key, 'Accept': 'application/json'}
+        self.command.stdout.write(self.command.style.SUCCESS(f"--- Starting Bargain Generation using API at {server_url} ---"))
+
+        try:
+            self.command.stdout.write("Fetching products...")
+            products = self._fetch_paginated_data(f"{server_url}/api/export/products/", headers, "products")
+
+            self.command.stdout.write("Fetching prices...")
+            prices = self._fetch_paginated_data(f"{server_url}/api/export/prices/", headers, "prices")
+
+        except requests.exceptions.RequestException as e:
+            self.command.stderr.write(f"Failed to fetch data: {e}"); return
+        except json.JSONDecodeError as e:
+            self.command.stderr.write(f"Failed to decode JSON: {e}"); return
+
+        self.command.stdout.write("Processing bargains...")
+        bargains_data = []
         bargain_count = 0
 
-        self.command.stdout.write("Clearing old bargain data...")
-        Bargain.objects.all().delete()
+        products_by_id = {p['id']: p for p in products}
+        prices_by_product = {}
+        for price in prices:
+            if price['product_id'] not in prices_by_product:
+                prices_by_product[price['product_id']] = []
+            prices_by_product[price['product_id']].append(price)
 
-        product_queryset = Product.objects.all().order_by('id')
-        paginator = Paginator(product_queryset, 200)  # Process 200 products at a time
+        for product_id, product_prices in prices_by_product.items():
+            if len(product_prices) < 2:
+                continue
 
-        for page_number in paginator.page_range:
-            self.command.stdout.write(f"Processing page {page_number}/{paginator.num_pages}...")
-            page = paginator.page(page_number)
+            min_price_entry = min(product_prices, key=lambda p: Decimal(p['price']))
+            max_price_entry = max(product_prices, key=lambda p: Decimal(p['price']))
 
-            try:
-                # Prefetch for the products on the current page and evaluate the queryset
-                products_on_page = list(Product.objects.filter(
-                    id__in=[p.id for p in page.object_list]
-                ).prefetch_related('price_records__price_entries__store'))
-            except InvalidOperation as e:
-                self.command.stdout.write(self.command.style.WARNING(f"Skipping page {page_number} due to invalid decimal data in a price record. Error: {e}"))
-                continue # Skip this page
+            if min_price_entry['store_id'] == max_price_entry['store_id']:
+                continue
 
-            with transaction.atomic():  # Atomic transaction for each chunk
-                for product in products_on_page:
-                    price_entries = []
-                    for record in product.price_records.all():
-                        price_entries.extend(list(record.price_entries.all()))
+            min_price = Decimal(min_price_entry['price'])
+            max_price = Decimal(max_price_entry['price'])
 
-                    if len(price_entries) < 2:
-                        continue
+            if min_price > 0 and max_price > (min_price * Decimal('1.5')):
+                percentage_difference = ((max_price - min_price) / min_price) * Decimal('100')
 
-                    min_price_entry = min(price_entries, key=lambda p: p.price_record.price)
-                    max_price_entry = max(price_entries, key=lambda p: p.price_record.price)
+                bargains_data.append({
+                    'product_id': product_id,
+                    'store_id': min_price_entry['store_id'],
+                    'cheapest_price_record_id': min_price_entry['price_record_id'],
+                    'most_expensive_price_record_id': max_price_entry['price_record_id'],
+                    'percentage_difference': float(percentage_difference)
+                })
+                bargain_count += 1
 
-                    if min_price_entry.store == max_price_entry.store:
-                        continue
+        outbox_dir = 'data_management/data/outboxes/bargains_outbox'
+        os.makedirs(outbox_dir, exist_ok=True)
+        output_path = os.path.join(outbox_dir, 'bargains.json')
+        with open(output_path, 'w') as f:
+            json.dump(bargains_data, f, indent=4)
 
-                    min_price = min_price_entry.price_record.price
-                    max_price = max_price_entry.price_record.price
-
-                    if min_price > 0 and max_price > (min_price * Decimal('1.5')):
-                        percentage_difference = ((max_price - min_price) / min_price) * Decimal('100')
-
-                        Bargain.objects.create(
-                            product=product,
-                            store=min_price_entry.store,
-                            cheapest_price=min_price_entry,
-                            most_expensive_price=max_price_entry,
-                            percentage_difference=float(percentage_difference)
-                        )
-                        bargain_count += 1
-
-        self.command.stdout.write(self.command.style.SUCCESS(f"Successfully found and created {bargain_count} bargains."))
+        self.command.stdout.write(self.command.style.SUCCESS(f"Successfully found {bargain_count} bargains and saved to {output_path}."))

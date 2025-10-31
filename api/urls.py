@@ -4,6 +4,7 @@ from .views.gs1_file_upload_view import Gs1FileUploadView
 from .views.store_file_upload_view import StoreFileUploadView
 from .views.category_links_file_upload_view import CategoryLinksFileUploadView
 from .views.substitutions_file_upload_view import SubstitutionsFileUploadView
+from .views.bargains_file_upload_view import BargainsFileUploadView
 from .views.frontend_views.product_list_view import ProductListView
 from .views.frontend_views.bargain_list_view import BargainListView # Import the new view
 from .views.product_translation_file_view import ProductTranslationFileView
@@ -34,6 +35,7 @@ from .views.frontend_views.cart_views import (
 from .views.frontend_views.initial_setup_view import InitialSetupView
 from .views.export_categories_view import ExportCategoriesView, ExportCategoriesWithProductsView
 from .views.export_products_view import ExportProductsView
+from .views.export_prices_view import ExportPricesView
 from .views.export_category_links_view import ExportCategoryLinksView
 from .views.import_semantic_data_view import ImportSemanticDataView
 
@@ -45,6 +47,7 @@ urlpatterns = [
     path('upload/stores/', StoreFileUploadView.as_view(), name='store-file-upload'),
     path('upload/category-links/', CategoryLinksFileUploadView.as_view(), name='category-links-file-upload'),
     path('upload/substitutions/', SubstitutionsFileUploadView.as_view(), name='substitutions-file-upload'),
+    path('upload/bargains/', BargainsFileUploadView.as_view(), name='bargains-file-upload'),
     path('products/', ProductListView.as_view(), name='product-list'),
     path('products/bargains/', BargainListView.as_view(), name='bargain-product-list'),
     path('products/by-category/', CategoryProductListView.as_view(), name='product-list-by-category'),
@@ -62,6 +65,7 @@ urlpatterns = [
     path('export/categories/', ExportCategoriesView.as_view(), name='export-categories'),
     path('export/categories-with-products/', ExportCategoriesWithProductsView.as_view(), name='export-categories-with-products'),
     path('export/products/', ExportProductsView.as_view(), name='export-products'),
+    path('export/prices/', ExportPricesView.as_view(), name='export-prices'),
     path('export/category_links/', ExportCategoryLinksView.as_view(), name='export-category-links'),
     path('import/semantic_data/', ImportSemanticDataView.as_view(), name='import-semantic-data'),
 

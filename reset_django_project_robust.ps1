@@ -73,13 +73,13 @@ python manage.py cluster_stores
 python manage.py update --products
 python manage.py update --prefixes
 
-python manage.py generate_cat_links --dev
-python manage.py upload --cat-links --dev
+python manage.py generate --cat-links --dev
+python manage.py upload --cat_links --dev
 python manage.py update --cat-links
 
 python manage.py update --products
 
-python manage.py generate_subs --dev
+python manage.py generate --subs --dev
 python manage.py upload --subs --dev
 python manage.py update --subs
 
