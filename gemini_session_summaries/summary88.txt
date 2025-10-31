@@ -1,0 +1,58 @@
+## Session Summary
+
+This session focused on implementing a robust data pipeline for category links and product substitutions, mirroring an existing pattern of `generate -> upload -> update`.
+
+### Key Changes and Implementations:
+
+1.  **Category Links Pipeline:**
+    *   **`CategoryLinksUploader`:** Modified to compress and upload `category_links.json` from the outbox to a dedicated API endpoint (`/api/upload/category-links/`). This ensures the file is placed in the `category_links_inbox` for processing.
+    *   **`CategoryLinksFileUploadView`:** Created to handle the reception of the uploaded compressed category link files, decompress them, and save them to the `category_links_inbox`.
+    *   **API URL:** Added a new URL pattern (`/api/upload/category-links/`) to `api/urls.py` to route requests to the `CategoryLinksFileUploadView`.
+    *   **`CategoryLinkUpdateOrchestrator`:** Created to process the `category_links.json` files from the `category_links_inbox`, parse the data, and create/update `CategoryLink` objects in the database.
+    *   **`update` command modification:** Added a `--category-links` argument to the `update` management command to trigger the `CategoryLinkUpdateOrchestrator`.
+    *   **Bug Fixes:** Addressed `KeyError` and `FieldError` issues in `CategoryLinkUpdateOrchestrator` by correcting the field names used for `CategoryLink` model interaction.
+    *   **Archiving Logic Removal:** Removed unnecessary archiving logic from `CategoryLinksUploader` and `CategoryLinkUpdateOrchestrator` as per user's instruction, relying on a separate archiving system.
+
+2.  **Product Substitutions Pipeline:**
+    *   **`SubstitutionsFileUploadView`:** Created to handle the reception of uploaded compressed substitution files, decompress them, and save them to the `substitutions_inbox`.
+    *   **API URL:** Added a new URL pattern (`/api/upload/substitutions/`) to `api/urls.py` to route requests to the `SubstitutionsFileUploadView`.
+    *   **`SubstitutionsUploader`:** Modified to compress and upload `substitutions.json` from the outbox to the new `/api/upload/substitutions/` endpoint. Removed previous direct database update logic and archiving.
+    *   **`SubstitutionUpdateOrchestrator`:** Created to process `substitutions.json` files from the `substitutions_inbox`, parse the data, and create/update `ProductSubstitution` objects in the database.
+    *   **`update` command modification:** Added a `--substitutions` argument to the `update` management command to trigger the `SubstitutionUpdateOrchestrator`.
+
+3.  **`ImportSemanticDataView` Refinement:**
+    *   Modified `ImportSemanticDataView` to remove category link processing, ensuring it now exclusively handles product substitutions, aligning with the new dedicated file upload views for each data type.
+
+4.  **Directory Restructuring:**
+    *   Updated all relevant paths in `substitutions_uploader.py`, `category_links_uploader.py`, `CategoryLinksFileUploadView`, `SubstitutionsFileUploadView`, `CategoryLinkUpdateOrchestrator`, `SubstitutionUpdateOrchestrator`, `generate_category_links.py`, `generate_subs.py`, and `update.py` to reflect the new `inboxes` and `outboxes` parent directories (`data_management/data/inboxes` and `data_management/data/outboxes`).
+
+5.  **`generate` Management Command Consolidation:**
+    *   Created a new `generate` management command (`data_management/management/commands/generate.py`).
+    *   Refactored the logic from `generate_subs.py`, `generate_category_links.py`, `generate_pop_cats.py`, `generate_map.py`, and `gen_super_cats.py` into separate generator classes (`SubstitutionsGenerator`, `CategoryLinksGenerator`, `PopularCategoriesGenerator`, `MapGenerator`, `SuperCategoriesGenerator`) located in `data_management/utils/generation_utils/`.
+    *   The `generate` command now acts as a dispatcher, with arguments (`--subs`, `--cat-links`, `--pop-cats`, `--map`, `--super-cats`) to trigger the respective generators.
+    *   Deleted the old, individual generation command files (`generate_subs.py`, `generate_category_links.py`, `generate_pop_cats.py`, `generate_map.py`, `gen_super_cats.py`).
+
+6.  **MySQL Database Reset Script Update:**
+    *   Modified `reset_django_project_robust.ps1` to remove the automatic MySQL database drop/create logic.
+    *   Replaced the removed logic with detailed comments explaining how to manually drop and recreate the `splitcart` database using MySQL Workbench or SQL commands.
+
+### Commands to Run:
+
+**For Category Links:**
+1.  `python manage.py generate --cat-links --dev`
+2.  `python manage.py upload --category-links --dev`
+3.  `python manage.py update --category-links`
+
+**For Substitutions:**
+1.  `python manage.py generate --subs --dev`
+2.  `python manage.py upload --substitutions --dev`
+3.  `python manage.py update --substitutions`
+
+**For Popular Categories:**
+1.  `python manage.py generate --pop-cats`
+
+**For Maps:**
+1.  `python manage.py generate --map [--company <company_name>]`
+
+**For Super Categories:**
+1.  `python manage.py generate --super-cats`
