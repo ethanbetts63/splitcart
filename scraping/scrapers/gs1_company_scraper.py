@@ -30,7 +30,7 @@ class Gs1CompanyScraper:
         self.command.stdout.write(self.command.style.SUCCESS('--- Running GS1 Strategic Scraper to Inbox ---\n'))
         
         # --- Setup ---
-        inbox_dir = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'prefix_inbox')
+        inbox_dir = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'prefix_inbox')
         os.makedirs(inbox_dir, exist_ok=True)
         timestamp = timezone.now().strftime('%Y-%m-%d_%H-%M-%S')
         output_file = os.path.join(inbox_dir, f'gs1_results_{timestamp}.jsonl')

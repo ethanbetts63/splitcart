@@ -9,7 +9,7 @@ class DiscoveryUpdateOrchestrator:
 
     def __init__(self, command):
         self.command = command
-        self.store_inbox_path = os.path.join(settings.BASE_DIR, 'data_managementa_management', 'data', 'store_inbox')
+        self.store_inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'store_inbox')
 
     def run(self):
         """

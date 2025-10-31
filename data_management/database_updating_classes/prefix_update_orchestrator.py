@@ -12,7 +12,7 @@ class PrefixUpdateOrchestrator:
     """
     def __init__(self, command):
         self.command = command
-        self.inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'prefix_inbox')
+        self.inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'prefix_inbox')
         self.temp_storage_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'temp_prefix_storage')
         os.makedirs(self.temp_storage_path, exist_ok=True)
 

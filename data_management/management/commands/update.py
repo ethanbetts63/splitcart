@@ -51,7 +51,7 @@ class Command(BaseCommand):
             orchestrator.run()
 
         if run_products_processed:
-            inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'product_inbox')
+            inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'product_inbox')
             if not os.path.exists(inbox_path):
                 self.stdout.write(self.style.WARNING("Product inbox directory not found."))
             else:

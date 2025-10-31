@@ -26,7 +26,7 @@ The frontend is built using React (JavaScript/TypeScript) and leverages the foll
 
 1.  **Data Scraping & Normalization:**
     *   The `scrape` management command initiates the scraping process, with options for specific stores (e.g., `python manage.py scrape --coles`).
-    *   Each product is individually cleaned, normalized (generating a `normalized_name_brand_size` string), and saved as a JSON line (`.jsonl`) file in the `data_management/data/product_inbox/` directory. This approach isolates errors and improves resilience.
+    *   Each product is individually cleaned, normalized (generating a `normalized_name_brand_size` string), and saved as a JSON line (`.jsonl`) file in the `data_management/data/inboxes/product_inbox/` directory. This approach isolates errors and improves resilience.
 
 2.  **Database Update (Refactored OOP System):**
     *   The `update_db` management command (specifically the `--products` flag) now utilizes a refactored, object-oriented system to process files from the `product_inbox` and update the database.
