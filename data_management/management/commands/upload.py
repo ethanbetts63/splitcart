@@ -37,12 +37,12 @@ class Command(BaseCommand):
             uploader = StoreUploader(self, dev=dev)
             uploader.run()
 
-        if options['category_links']:
+        if options['cat_links']:
             self.stdout.write(self.style.SUCCESS("Uploading category links..."))
             uploader = CategoryLinksUploader(self, dev=dev)
             uploader.run()
 
-        if options['substitutions']:
+        if options['subs']:
             self.stdout.write(self.style.SUCCESS("Uploading substitutions..."))
             uploader = SubstitutionsUploader(self, dev=dev)
             uploader.run()

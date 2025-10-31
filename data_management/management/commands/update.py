@@ -17,8 +17,8 @@ class Command(BaseCommand):
         parser.add_argument('--stores', action='store_true', help='Update stores from the store_inbox directory.')
         parser.add_argument('--products', action='store_true', help='Update products from the product_inbox directory.')
         parser.add_argument('--prefixes', action='store_true', help='Update brand prefixes from the prefix_inbox directory.')
-        parser.add_argument('--category-links', action='store_true', help='Update category links from the category_links_inbox directory.')
-        parser.add_argument('--substitutions', action='store_true', help='Update substitutions from the substitutions_inbox directory.')
+        parser.add_argument('--cat-links', action='store_true', help='Update category links from the category_links_inbox directory.')
+        parser.add_argument('--subs', action='store_true', help='Update substitutions from the substitutions_inbox directory.')
         parser.add_argument('--bargains', action='store_true', help='Update bargains from the bargains_inbox directory.')
         parser.add_argument('--archive', action='store_true', help='Flush DB and load data from the most recent archive.')
 
@@ -30,8 +30,8 @@ class Command(BaseCommand):
         run_stores_discovery = options['stores']
         run_products_processed = options['products']
         run_prefixes = options['prefixes']
-        run_category_links = options['category_links']
-        run_substitutions = options['substitutions']
+        run_category_links = options['cat_links']
+        run_substitutions = options['subs']
         run_bargains = options['bargains']
 
         if not any([run_stores_discovery, run_products_processed, run_prefixes, run_category_links, run_substitutions, run_bargains]):
