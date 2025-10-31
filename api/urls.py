@@ -3,6 +3,7 @@ from .views.product_file_upload_view import ProductFileUploadView
 from .views.gs1_file_upload_view import Gs1FileUploadView
 from .views.store_file_upload_view import StoreFileUploadView
 from .views.category_links_file_upload_view import CategoryLinksFileUploadView
+from .views.substitutions_file_upload_view import SubstitutionsFileUploadView
 from .views.frontend_views.product_list_view import ProductListView
 from .views.frontend_views.bargain_list_view import BargainListView # Import the new view
 from .views.product_translation_file_view import ProductTranslationFileView
@@ -43,6 +44,7 @@ urlpatterns = [
     path('upload/gs1/', Gs1FileUploadView.as_view(), name='gs1-file-upload'),
     path('upload/stores/', StoreFileUploadView.as_view(), name='store-file-upload'),
     path('upload/category-links/', CategoryLinksFileUploadView.as_view(), name='category-links-file-upload'),
+    path('upload/substitutions/', SubstitutionsFileUploadView.as_view(), name='substitutions-file-upload'),
     path('products/', ProductListView.as_view(), name='product-list'),
     path('products/bargains/', BargainListView.as_view(), name='bargain-product-list'),
     path('products/by-category/', CategoryProductListView.as_view(), name='product-list-by-category'),
