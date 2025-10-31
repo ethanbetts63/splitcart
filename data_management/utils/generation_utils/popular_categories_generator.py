@@ -1,17 +1,17 @@
-from django.core.management.base import BaseCommand
 from collections import defaultdict
 from django.db.models import Count
 from companies.models import Category, PopularCategory
 
-class Command(BaseCommand):
-    help = 'Generates PopularCategory instances based on product counts and company presence.'
+class PopularCategoriesGenerator:
+    def __init__(self, command):
+        self.command = command
 
-    def handle(self, *args, **options):
-        self.stdout.write(self.style.SUCCESS('--- Generating Popular Categories ---'))
+    def run(self):
+        self.command.stdout.write(self.command.style.SUCCESS('--- Generating Popular Categories ---'))
 
         # Clear existing popular categories
         PopularCategory.objects.all().delete()
-        self.stdout.write(self.style.NOTICE('Cleared existing popular categories.'))
+        self.command.stdout.write(self.command.style.NOTICE('Cleared existing popular categories.'))
 
         # Annotate each category with its product count
         categories_with_counts = Category.objects.annotate(product_count=Count('products'))
@@ -31,10 +31,10 @@ class Command(BaseCommand):
         }
 
         if not popular_category_groups:
-            self.stdout.write(self.style.WARNING('No categories met the criteria to be marked as popular.'))
+            self.command.stdout.write(self.command.style.WARNING('No categories met the criteria to be marked as popular.'))
             return
 
-        self.stdout.write(self.style.SUCCESS(f'Found {len(popular_category_groups)} popular categories to create.'))
+        self.command.stdout.write(self.command.style.SUCCESS(f'Found {len(popular_category_groups)} popular categories to create.'))
 
         # Create PopularCategory instances
         for name, data in popular_category_groups.items():
@@ -46,6 +46,6 @@ class Command(BaseCommand):
             # Add them to the ManyToManyField
             popular_category.categories.add(*categories_to_link)
             
-            self.stdout.write(f'  - Created popular category: {name}')
+            self.command.stdout.write(f'  - Created popular category: {name}')
 
-        self.stdout.write(self.style.SUCCESS('--- Finished Generating Popular Categories ---'))
+        self.command.stdout.write(self.command.style.SUCCESS('--- Finished Generating Popular Categories ---'))
