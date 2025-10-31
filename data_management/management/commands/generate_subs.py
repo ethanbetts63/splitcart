@@ -34,16 +34,16 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if options['dev']:
             server_url = "http://127.0.0.1:8000"
-            api_key = settings.API_SECRET_KEY # Assuming API_SECRET_KEY is still needed for dev
+            api_key = settings.INTERNAL_API_KEY # Assuming INTERNAL_API_KEY is used for dev
         else:
             try:
                 server_url = settings.API_SERVER_URL
-                api_key = settings.API_SECRET_KEY
+                api_key = settings.INTERNAL_API_KEY
             except AttributeError:
-                self.stderr.write("API_SERVER_URL and API_SECRET_KEY must be set in settings.")
+                self.stderr.write("API_SERVER_URL and INTERNAL_API_KEY must be set in settings.")
                 return
 
-        headers = {'X-API-KEY': api_key, 'Accept': 'application/json'}
+        headers = {'X-Internal-API-Key': api_key, 'Accept': 'application/json'}
         self.stdout.write(self.style.SUCCESS(f"--- Starting Substitution Generation using API at {server_url} ---"))
 
         # 1. Fetch all necessary data with pagination

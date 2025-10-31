@@ -35,16 +35,16 @@ def prefill_barcodes_from_api(product_list: list, command=None) -> list:
 
     # Step 2: Call the API to get barcodes for the collected names.
     server_url = settings.API_SERVER_URL
-    api_key = settings.API_SECRET_KEY
+    api_key = settings.INTERNAL_API_KEY
     if not server_url or not api_key:
         if command:
-            command.stdout.write(command.style.ERROR("API_SERVER_URL or API_SECRET_KEY not configured. Skipping barcode prefill."))
+            command.stdout.write(command.style.ERROR("API_SERVER_URL or INTERNAL_API_KEY not configured. Skipping barcode prefill."))
         return product_list
 
     url = f"{server_url.rstrip('/')}/api/products/barcodes/"
     headers = {
         'Content-Type': 'application/json',
-        'X-API-KEY': api_key,
+        'X-Internal-API-Key': api_key,
     }
     payload = {"names": list(names_to_lookup)}
 

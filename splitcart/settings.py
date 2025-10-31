@@ -14,7 +14,6 @@ DEBUG = os.getenv('DEBUG') == 'True'
 ALLOWED_HOSTS = ['localhost', 'ethanbetts.pythonanywhere.com', 'splitcart.com.au', '127.0.0.1']
 
 
-API_SECRET_KEY = os.getenv("API_SECRET_KEY")
 INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY")
 API_SERVER_URL = os.getenv("API_SERVER_URL")
 API_SERVER_HOSTNAME = urlparse(API_SERVER_URL).hostname if API_SERVER_URL else None

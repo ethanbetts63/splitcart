@@ -15,15 +15,15 @@ def fetch_python_file(file_name: str, destination_path: str, command=None):
     os.makedirs(os.path.dirname(destination_path), exist_ok=True)
 
     server_url = settings.API_SERVER_URL
-    api_key = settings.API_SECRET_KEY
+    api_key = settings.INTERNAL_API_KEY
     if not server_url or not api_key:
         if command:
-            command.stdout.write(command.style.ERROR(f"API_SERVER_URL or API_SECRET_KEY not configured."))
+            command.stdout.write(command.style.ERROR(f"API_SERVER_URL or INTERNAL_API_KEY not configured."))
         return
 
     url = f"{server_url.rstrip('/')}/api/files/{file_name}/"
     headers = {
-        'Authorization': f'Api-Key {api_key}',
+        'X-Internal-API-Key': api_key,
     }
 
     etag_path = destination_path + '.etag'
