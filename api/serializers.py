@@ -17,6 +17,17 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ('name', 'slug')
 
+class CategoryWithProductsExportSerializer(serializers.ModelSerializer):
+    company = serializers.CharField(source='company.name')
+    product_ids = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Category
+        fields = ('id', 'name', 'company', 'product_ids')
+
+    def get_product_ids(self, obj):
+        return list(obj.products.values_list('id', flat=True))
+
 class PopularCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = PopularCategory

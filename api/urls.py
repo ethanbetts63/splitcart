@@ -34,7 +34,7 @@ from .views.frontend_views.cart_views import (
     CartSyncView,
 )
 from .views.frontend_views.initial_setup_view import InitialSetupView
-from .views.export_categories_view import ExportCategoriesView, ExportCategoriesWithProductsView
+from .views.export_categories_view import ExportCategoriesView, ExportCategoriesWithProductsView, ExportCategoriesWithProductsView
 from .views.export_products_view import ExportProductsView
 from .views.export_prices_view import ExportPricesView
 from .views.export_category_links_view import ExportCategoryLinksView
@@ -66,6 +66,7 @@ urlpatterns = [
     path('stores/nearby/', StoreListView.as_view(), name='store-list'),
     path('postcodes/search/', PostcodeSearchView.as_view(), name='postcode-search'),
     path('export/categories/', ExportCategoriesView.as_view(), name='export-categories'),
+    path('export/categories-with-products/', ExportCategoriesWithProductsView.as_view(), name='export-categories-with-products'),
     path('export/categories-with-products/', ExportCategoriesWithProductsView.as_view(), name='export-categories-with-products'),
     path('export/products/', ExportProductsView.as_view(), name='export-products'),
     path('export/prices/', ExportPricesView.as_view(), name='export-prices'),
