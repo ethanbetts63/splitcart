@@ -68,26 +68,29 @@ git add .
 git commit -m "reset django project robust.ps1"
 git push
 
-python manage.py update --archive
-python manage.py cluster_stores
+python manage.py update --archive # Server
+python manage.py cluster_stores # Server
+python manage.py update --products # Server
+python manage.py update --prefixes # Server
+
+python manage.py generate --cat-links --dev # Local
+python manage.py upload --cat_links --dev # Local
+python manage.py update --cat-links # Server
+
 python manage.py update --products
-python manage.py update --prefixes
 
-python manage.py generate --cat-links --dev
-python manage.py upload --cat_links --dev
-python manage.py update --cat-links
+python manage.py generate --subs --dev # Local
+python manage.py upload --subs --dev # Local
+python manage.py update --subs # Server
 
-python manage.py update --products
+python manage.py generate --bargains --dev # Local
+python manage.py upload --bargains --dev # Local
+python manage.py update --bargains # Server
 
-python manage.py generate --subs --dev
-python manage.py upload --subs --dev
-python manage.py update --subs
+python manage.py generate --pop-cats # Local 
+python manage.py generate --super-cats # Local
 
-python manage.py generate --bargains --dev
-python manage.py upload --bargains --dev
-python manage.py update --bargains
 
-python manage.py generate_pop_cats
 python manage.py analyze --report company_heatmap
 python manage.py analyze --report subs
 python manage.py analyze --report savings
