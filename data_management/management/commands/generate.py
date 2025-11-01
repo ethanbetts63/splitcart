@@ -6,6 +6,7 @@ from data_management.utils.generation_utils.map_generator import MapGenerator
 from data_management.utils.generation_utils.super_categories_generator import SuperCategoriesGenerator
 from data_management.utils.generation_utils.bargains_generator import BargainsGenerator
 from data_management.utils.generation_utils.store_clusters_generator import StoreClustersGenerator
+from data_management.utils.generation_utils.archive_generator import ArchiveGenerator
 
 class Command(BaseCommand):
     help = 'Generates data for the application.'
@@ -18,6 +19,7 @@ class Command(BaseCommand):
         parser.add_argument('--super-cats', action='store_true', help='Generate super categories.')
         parser.add_argument('--bargains', action='store_true', help='Generate bargains.')
         parser.add_argument('--store-clusters', action='store_true', help='Generate store clusters.')
+        parser.add_argument('--archive', action='store_true', help='Archive the database.')
         parser.add_argument('--company', type=str, help='Filter map generation by company name.')
         parser.add_argument('--dev', action='store_true', help='Use development server URL.')
 
@@ -58,4 +60,9 @@ class Command(BaseCommand):
         if options['store_clusters'] or run_all:
             self.stdout.write(self.style.SUCCESS("Generating store clusters..."))
             generator = StoreClustersGenerator(self, dev=dev)
+            generator.run()
+
+        if options['archive']:
+            self.stdout.write(self.style.SUCCESS("Archiving database..."))
+            generator = ArchiveGenerator(self)
             generator.run()
