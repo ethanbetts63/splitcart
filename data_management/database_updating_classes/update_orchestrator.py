@@ -257,7 +257,7 @@ class UpdateOrchestrator:
                     existing_product.brand_name_company_pairs.append(new_pair)
                     updated = True
 
-                if updated:
+                if updated and existing_product.pk:
                     unit_of_work.add_for_update(existing_product)
                 
                 unit_of_work.add_price(existing_product, store_obj, product_details)

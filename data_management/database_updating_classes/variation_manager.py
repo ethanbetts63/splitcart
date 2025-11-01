@@ -36,7 +36,7 @@ class VariationManager:
                     existing_product.normalized_name_brand_size_variations.append(variation_normalized_string)
                     updated = True
             
-            if updated:
+            if updated and existing_product.pk:
                 self.unit_of_work.add_for_update(existing_product)
 
         # --- Handle Brand Variations ---
@@ -73,6 +73,6 @@ class VariationManager:
                     existing_brand_instance.normalized_name_variations.append(incoming_normalized_brand_key)
                     updated = True
 
-            if updated:
+            if updated and existing_brand_instance.pk:
                 self.unit_of_work.add_for_update(existing_brand_instance)
 
