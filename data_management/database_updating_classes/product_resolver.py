@@ -44,7 +44,7 @@ class ProductResolver:
         """
         Sets the store-specific context by building caches for SKU and prices for that store.
         """
-        self.command.stdout.write(f"--- Building Contextual Caches for {current_store_obj.name} ---")
+        self.command.stdout.write(f"--- Building Contextual Caches for {current_store_obj.store_name} ---")
         self._build_contextual_caches(current_store_obj)
 
     def _build_contextual_caches(self, current_store_obj):
