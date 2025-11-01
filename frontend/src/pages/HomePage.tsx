@@ -3,8 +3,8 @@ import { ProductCarousel } from "../components/ProductCarousel";
 import { FaqImageSection } from "../components/FaqImageSection";
 import { useStoreList } from "../context/StoreListContext";
 import { AspectRatio } from "../components/ui/aspect-ratio";
-import confusedShopper from "../assets/confused_shopper.png";
-import kingKongImage from "../assets/king_kong.png";
+import confusedShopper from "../assets/confused_shopper.webp";
+import kingKongImage from "../assets/king_kong.webp";
 
 const HomePage = () => {
   const DEFAULT_STORE_IDS = [

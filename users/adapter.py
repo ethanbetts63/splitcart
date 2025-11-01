@@ -27,7 +27,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
 
         # Embed the logo
         try:
-            logo_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'splitcart_logo.png')
+            logo_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'splitcart_logo.webp')
             with open(logo_path, 'rb') as f:
                 logo_data = f.read()
             logo = MIMEImage(logo_data)

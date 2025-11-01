@@ -11,7 +11,7 @@ import type { CartSubstitution } from '../types';
 import { Badge } from "../components/ui/badge";
 import { BadgeCheckIcon } from 'lucide-react';
 import { FaqImageSection } from "../components/FaqImageSection";
-import sizeDoesntMatterImage from "../assets/size_doesnt_matter.png";
+import sizeDoesntMatterImage from "../assets/size_doesnt_matter.webp";
 import useMediaQuery from '../hooks/useMediaQuery';
 
 const SubstitutionPage = () => {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from "./ui/card";
 import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
-import fallbackImage from '../assets/splitcart_symbol_v6.png';
+import fallbackImage from '../assets/splitcart_symbol_v6.webp';
 import type { Product, CartSubstitution } from '../types'; // Import shared type
 import { useCart } from '../context/CartContext';
 import { Badge } from "./ui/badge";

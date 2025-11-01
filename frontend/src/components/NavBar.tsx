@@ -4,7 +4,7 @@ import { MapPin, ShoppingCart, Search } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Badge } from './ui/badge';
-import splitcartLogo from "../assets/splitcart_symbol_v6.png";
+import splitcartLogo from "../assets/splitcart_symbol_v6.webp";
 
 interface NavBarProps {
   searchTerm: string;

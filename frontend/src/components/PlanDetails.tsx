@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import fallbackImage from '@/assets/splitcart_symbol_v6.png';
+import fallbackImage from '@/assets/splitcart_symbol_v6.webp';
 
 // These imports will need to be adjusted based on where the logos are.
 // For now, I'll assume they are in the assets folder.

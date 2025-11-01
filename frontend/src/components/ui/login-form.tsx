@@ -1,5 +1,5 @@
 import { cn } from "../../lib/utils"
-import priceDestroyerImage from "../../assets/price_destroyer.png"
+import priceDestroyerImage from "../../assets/price_destroyer.webp"
 import { Link, useNavigate } from "react-router-dom"
 import { Button } from "./button"
 import { Card, CardContent } from "./card"
