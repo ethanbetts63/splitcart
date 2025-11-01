@@ -13,4 +13,4 @@ class ProductFileUploadView(BaseFileUploadView):
         """
         Returns the destination directory for the decompressed product files.
         """
-        return os.path.join(settings.BASE_DIR, 'data_management', 'data', 'product_inbox')
+        return os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'product_inbox')

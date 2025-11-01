@@ -13,4 +13,4 @@ class StoreFileUploadView(BaseFileUploadView):
         """
         Returns the destination directory for the decompressed store files.
         """
-        return os.path.join(settings.BASE_DIR, 'data_management', 'data', 'store_inbox')
+        return os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'store_inbox')
