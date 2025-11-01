@@ -5,6 +5,7 @@ from scraping.utils.command_utils.store_uploader import StoreUploader
 from scraping.utils.command_utils.category_links_uploader import CategoryLinksUploader
 from scraping.utils.command_utils.substitutions_uploader import SubstitutionsUploader
 from scraping.utils.command_utils.bargains_uploader import BargainsUploader
+from scraping.utils.command_utils.store_clusters_uploader import StoreClustersUploader
 
 class Command(BaseCommand):
     help = 'Uploads scraped and generated data to the server.'
@@ -16,6 +17,7 @@ class Command(BaseCommand):
         parser.add_argument('--cat-links', action='store_true', help='Upload generated category links.')
         parser.add_argument('--subs', action='store_true', help='Upload generated substitutions.')
         parser.add_argument('--bargains', action='store_true', help='Upload generated bargains.')
+        parser.add_argument('--store-clusters', action='store_true', help='Upload generated store clusters.')
         parser.add_argument('--dev', action='store_true', help='Use development server URL.')
 
     def handle(self, *args, **options):
@@ -37,12 +39,12 @@ class Command(BaseCommand):
             uploader = StoreUploader(self, dev=dev)
             uploader.run()
 
-        if options['cat_links']:
+        if options['category_links']:
             self.stdout.write(self.style.SUCCESS("Uploading category links..."))
             uploader = CategoryLinksUploader(self, dev=dev)
             uploader.run()
 
-        if options['subs']:
+        if options['substitutions']:
             self.stdout.write(self.style.SUCCESS("Uploading substitutions..."))
             uploader = SubstitutionsUploader(self, dev=dev)
             uploader.run()
@@ -50,4 +52,9 @@ class Command(BaseCommand):
         if options['bargains']:
             self.stdout.write(self.style.SUCCESS("Uploading bargains..."))
             uploader = BargainsUploader(self, dev=dev)
+            uploader.run()
+
+        if options['store_clusters']:
+            self.stdout.write(self.style.SUCCESS("Uploading store clusters..."))
+            uploader = StoreClustersUploader(self, dev=dev)
             uploader.run()
