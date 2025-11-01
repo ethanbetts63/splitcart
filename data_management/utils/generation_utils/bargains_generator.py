@@ -3,6 +3,7 @@ import json
 import requests
 from django.conf import settings
 from decimal import Decimal
+import time
 
 class BargainsGenerator:
     def __init__(self, command, dev=False):
@@ -20,6 +21,7 @@ class BargainsGenerator:
             all_results.extend(data['results'])
             next_url = data.get('next')
             self.command.stdout.write(f"  Fetched {len(all_results)} / {data['count']} {data_type}.")
+            time.sleep(0.1)
         return all_results
 
     def run(self):
