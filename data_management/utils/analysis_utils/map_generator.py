@@ -3,6 +3,7 @@ import geopandas
 import os
 import requests
 from datetime import datetime
+import cartopy.crs as ccrs
 from django.conf import settings
 from .base_map_generator import BaseMapGenerator
 
