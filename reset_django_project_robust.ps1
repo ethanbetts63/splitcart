@@ -81,7 +81,7 @@ python manage.py update --products # Server
 python manage.py update --prefixes # Server
 
 python manage.py generate --cat-links --dev # Local
-python manage.py upload --cat_links --dev # Local
+python manage.py upload --cat-links --dev # Local
 python manage.py update --cat-links # Server
 
 python manage.py update --products
