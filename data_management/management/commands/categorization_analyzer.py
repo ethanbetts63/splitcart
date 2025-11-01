@@ -63,10 +63,10 @@ class Command(BaseCommand):
         return name
 
     def _get_product_overlap_suggestion(self, category_id: int, all_category_links: list, all_categories_dict: dict, all_mappings: dict) -> tuple[str, float]:
-        linked_categories = [link for link in all_category_links if link['category_a'] == category_id or link['category_b'] == category_id]
+        linked_categories = [link for link in all_category_links if link['category_a_id'] == category_id or link['category_b_id'] == category_id]
         
         for link in linked_categories:
-            other_category_id = link['category_a'] if link['category_a'] != category_id else link['category_b']
+            other_category_id = link['category_a_id'] if link['category_a_id'] != category_id else link['category_b_id']
             other_category = all_categories_dict.get(other_category_id)
             if other_category and other_category['company'] in all_mappings:
                 mapped_primary = all_mappings[other_category['company']].get(other_category['name'])
