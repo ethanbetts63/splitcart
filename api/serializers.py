@@ -35,7 +35,7 @@ class StoreExportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Store
-        fields = ('company', 'division', 'latitude', 'longitude')
+        fields = ('id', 'company', 'division', 'latitude', 'longitude')
 
 
 class ProductSubstitutionSerializer(serializers.ModelSerializer):
