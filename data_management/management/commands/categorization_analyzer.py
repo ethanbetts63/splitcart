@@ -74,6 +74,33 @@ class Command(BaseCommand):
                     return mapped_primary, 1.0 # Strong suggestion if linked category is already mapped
         return None, 0.0
 
+    def _get_semantic_suggestion(self, category_name: str, primary_categories: list, model, util, torch) -> tuple[str, float]:
+        """
+        Get a semantic suggestion for a category based on sentence similarity.
+        """
+        if not category_name:
+            return None, 0.0
+
+        # Clean the category name for better comparison
+        cleaned_category_name = self._clean_name_for_semantic_comparison(category_name)
+
+        # Encode the category name and primary categories
+        category_embedding = model.encode(cleaned_category_name, convert_to_tensor=True)
+        primary_embeddings = model.encode(primary_categories, convert_to_tensor=True)
+
+        # Compute cosine similarity
+        cosine_scores = util.pytorch_cos_sim(category_embedding, primary_embeddings)
+
+        # Find the best match
+        best_score, best_idx = torch.max(cosine_scores, dim=1)
+        best_score = best_score.item()
+        best_idx = best_idx.item()
+
+        if best_score > 0.5:  # Set a threshold for suggestions
+            return primary_categories[best_idx], best_score
+        else:
+            return None, 0.0
+
     def handle(self, *args, **options):
         company_name = options['company']
         dev = options['dev']
@@ -147,7 +174,7 @@ class Command(BaseCommand):
             self.stdout.write(f"\n------------------------------------------------------------------")
             self.stdout.write(f"Category to Map: [{company_name}] -> [{category['name']}] (Remaining: {len(unmapped_categories) - i})")
 
-            semantic_suggestion, semantic_score = self._get_semantic_suggestion(category['name'], PRIMARY_CATEGORIES, model)
+            semantic_suggestion, semantic_score = self._get_semantic_suggestion(category['name'], PRIMARY_CATEGORIES, model, util, torch)
             overlap_suggestion, overlap_score = self._get_product_overlap_suggestion(category['id'], all_category_links, all_categories_dict, all_mappings)
 
             suggestion = None
