@@ -152,8 +152,8 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
 
     "http://localhost:5173",
-    "http://ethanbetts63.pythonanywhere.com"
-
+    "http://ethanbetts63.pythonanywhere.com", 
+    "http://www.splitcart.com.au"
 ]
 
 from corsheaders.defaults import default_headers
