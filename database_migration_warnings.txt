@@ -12,6 +12,8 @@ This file documents the warnings that were identified during the migration from 
 **Issue:**
 The `normalized_name_brand_size` field in the `Product` model is a `CharField` with `max_length=500` and `unique=True`. Some MySQL configurations have a limit on the length of indexed fields (often 255 characters for `varchar` fields with utf8mb4 encoding).
 
+**Resolution (2025-11-01):** The `max_length` of the `normalized_name_brand_size` field in the `Product` model was reduced from 500 to 255 characters to comply with MySQL's indexing limitations for unique CharFields. This change was made after confirming that potential data truncation was an acceptable risk.
+
 **Implication:**
 The `unique` constraint on this field may not be enforced at the database level. This could lead to duplicate values in the `normalized_name_brand_size` column, which could cause unexpected behavior in the application as this field is relied upon for uniqueness.
 

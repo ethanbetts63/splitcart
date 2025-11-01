@@ -36,7 +36,7 @@ class Product(models.Model):
         help_text="A list of just the normalized names from the name_variations list."
     )
     normalized_name_brand_size = models.CharField(
-        max_length=500,
+        max_length=255,
         unique=True,
         null=True,
         blank=True,
