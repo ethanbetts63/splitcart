@@ -1,10 +1,15 @@
 from rest_framework import serializers
 from products.models import Product, Price
 from products.models.substitution import ProductSubstitution
-from companies.models import Store, Category, PopularCategory
+from companies.models import Store, Category, PopularCategory, Company
 from companies.models.postcode import Postcode
 from data_management.models import FAQ
 from users.models import SelectedStoreList, Cart, CartItem, CartSubstitution
+
+class CompanySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = ('id', 'name')
 
 class FaqSerializer(serializers.ModelSerializer):
     class Meta:

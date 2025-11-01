@@ -39,6 +39,7 @@ from .views.export_products_view import ExportProductsView
 from .views.export_prices_view import ExportPricesView
 from .views.export_category_links_view import ExportCategoryLinksView
 from .views.export_stores_view import ExportStoresView
+from .views.company_list_view import CompanyListView
 from .views.import_semantic_data_view import ImportSemanticDataView
 
 urlpatterns = [
@@ -67,11 +68,11 @@ urlpatterns = [
     path('postcodes/search/', PostcodeSearchView.as_view(), name='postcode-search'),
     path('export/categories/', ExportCategoriesView.as_view(), name='export-categories'),
     path('export/categories-with-products/', ExportCategoriesWithProductsView.as_view(), name='export-categories-with-products'),
-    path('export/categories-with-products/', ExportCategoriesWithProductsView.as_view(), name='export-categories-with-products'),
     path('export/products/', ExportProductsView.as_view(), name='export-products'),
     path('export/prices/', ExportPricesView.as_view(), name='export-prices'),
     path('export/category_links/', ExportCategoryLinksView.as_view(), name='export-category-links'),
     path('export/stores/', ExportStoresView.as_view(), name='export-stores'),
+    path('export/companies/', CompanyListView.as_view(), name='export-companies'),
     path('import/semantic_data/', ImportSemanticDataView.as_view(), name='import-semantic-data'),
 
     # SelectedStoreList URLs

@@ -74,6 +74,7 @@ python manage.py generate --store-clusters --dev # Local
 python manage.py upload --store-clusters --dev # Local
 python manage.py update --store-clusters # Server
 
+python manage.py upload --product --dev # Local
 python manage.py update --products # Server
 python manage.py update --prefixes # Server
 

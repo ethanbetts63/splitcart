@@ -13,3 +13,7 @@ class ExportCategoriesWithProductsView(ListAPIView):
     permission_classes = [IsInternalAPIRequest]
     throttle_classes = [ScopedRateThrottle]
     throttle_scope = 'internal'
+
+    def get(self, request, *args, **kwargs):
+        print("ExportCategoriesWithProductsView is being called")
+        return super().get(request, *args, **kwargs)

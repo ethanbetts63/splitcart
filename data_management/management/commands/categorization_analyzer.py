@@ -107,13 +107,27 @@ class Command(BaseCommand):
         # Fetch categories and category links
         self.stdout.write("Fetching categories with products...")
         all_categories = self._fetch_paginated_data(f"{server_url}/api/export/categories-with-products/", headers, "categories")
+        print(all_categories[:5]) # Print the first 5 items for inspection
         all_categories_dict = {cat['id']: cat for cat in all_categories}
 
         self.stdout.write("Fetching category links...")
         all_category_links = self._fetch_paginated_data(f"{server_url}/api/export/category_links/", headers, "category links")
         
-        # Filter categories for the current company and top-level
-        company_categories = [cat for cat in all_categories if cat['company'].lower() == company_name.lower()]
+        self.stdout.write("Fetching companies...")
+        all_companies = self._fetch_paginated_data(f"{server_url}/api/companies/", headers, "companies")
+
+        company_id = None
+        for comp in all_companies:
+            if comp['name'].lower() == company_name.lower():
+                company_id = comp['id']
+                break
+
+        if company_id is None:
+            self.stderr.write(self.style.ERROR(f"Company '{company_name}' not found."))
+            return
+
+        # Filter categories for the current company
+        company_categories = [cat for cat in all_categories if cat['company'] == company_id]
 
         # Determine top-level categories (for simplicity, those with no parents in the fetched data)
         # This is a basic heuristic and might need refinement based on actual data structure
