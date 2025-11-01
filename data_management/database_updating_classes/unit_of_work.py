@@ -59,15 +59,20 @@ class UnitOfWork:
             return # Invalid date format
 
         # Get or Create PriceRecord
-        price_record, created = PriceRecord.objects.get_or_create(
-            product=product,
-            price=price_value,
-            was_price=product_details.get('price_was'),
-            unit_price=product_details.get('unit_price'),
-            unit_of_measure=product_details.get('unit_of_measure'),
-            per_unit_price_string=product_details.get('per_unit_price_string'),
-            is_on_special=product_details.get('is_on_special', False)
-        )
+        try:
+            price_record, created = PriceRecord.objects.get_or_create(
+                product=product,
+                price=price_value,
+                was_price=product_details.get('price_was'),
+                unit_price=product_details.get('unit_price'),
+                unit_of_measure=product_details.get('unit_of_measure'),
+                per_unit_price_string=product_details.get('per_unit_price_string'),
+                is_on_special=product_details.get('is_on_special', False)
+            )
+        except (ValidationError, InvalidOperation) as e:
+            self.command.stderr.write(self.command.style.ERROR(f'\nError creating PriceRecord: {e}'))
+            self.command.stderr.write(self.command.style.ERROR(f'Problematic product details: {product_details}'))
+            return
         if created:
             self.new_price_records_created += 1
 
