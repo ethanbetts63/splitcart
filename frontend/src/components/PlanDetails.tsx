@@ -13,7 +13,7 @@ import fallbackImage from '@/assets/splitcart_symbol_v6.png';
 
 // These imports will need to be adjusted based on where the logos are.
 // For now, I'll assume they are in the assets folder.
-import aldiLogo from '../assets/ALDI_logo.svg';
+import aldiLogo from '../assets/ALDI_logo.webp';
 import colesLogo from '../assets/coles_logo.webp';
 import igaLogo from '../assets/iga_logo.webp';
 import woolworthsLogo from '../assets/woolworths_logo.webp';
