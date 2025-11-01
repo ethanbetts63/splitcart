@@ -29,6 +29,14 @@ class StoreSerializer(serializers.ModelSerializer):
         model = Store
         fields = ('id', 'store_name', 'latitude', 'longitude', 'company_name')
 
+class StoreExportSerializer(serializers.ModelSerializer):
+    company = serializers.CharField(source='company.name')
+    division = serializers.CharField(source='division.name', allow_null=True)
+
+    class Meta:
+        model = Store
+        fields = ('company', 'division', 'latitude', 'longitude')
+
 
 class ProductSubstitutionSerializer(serializers.ModelSerializer):
     level_description = serializers.SerializerMethodField()

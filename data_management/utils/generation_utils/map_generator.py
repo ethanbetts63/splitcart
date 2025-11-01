@@ -2,9 +2,10 @@ from django.core.management.base import BaseCommand
 from data_management.utils.analysis_utils.map_generator import generate_store_map
 
 class MapGenerator:
-    def __init__(self, command, company_name=None):
+    def __init__(self, command, company_name=None, dev=False):
         self.command = command
         self.company_name = company_name
+        self.dev = dev
 
     def run(self):
         if self.company_name:
@@ -12,7 +13,7 @@ class MapGenerator:
         else:
             self.command.stdout.write("Generating store location map for all companies...")
         
-        output_file = generate_store_map(company_name=self.company_name)
+        output_file = generate_store_map(self.command, company_name=self.company_name, dev=self.dev)
         
         if output_file:
             self.command.stdout.write(self.command.style.SUCCESS(f"Successfully generated map: {output_file}"))

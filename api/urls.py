@@ -37,6 +37,7 @@ from .views.export_categories_view import ExportCategoriesView, ExportCategories
 from .views.export_products_view import ExportProductsView
 from .views.export_prices_view import ExportPricesView
 from .views.export_category_links_view import ExportCategoryLinksView
+from .views.export_stores_view import ExportStoresView
 from .views.import_semantic_data_view import ImportSemanticDataView
 
 urlpatterns = [
@@ -67,6 +68,7 @@ urlpatterns = [
     path('export/products/', ExportProductsView.as_view(), name='export-products'),
     path('export/prices/', ExportPricesView.as_view(), name='export-prices'),
     path('export/category_links/', ExportCategoryLinksView.as_view(), name='export-category-links'),
+    path('export/stores/', ExportStoresView.as_view(), name='export-stores'),
     path('import/semantic_data/', ImportSemanticDataView.as_view(), name='import-semantic-data'),
 
     # SelectedStoreList URLs

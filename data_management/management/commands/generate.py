@@ -40,7 +40,7 @@ class Command(BaseCommand):
 
         if options['map'] or run_all:
             self.stdout.write(self.style.SUCCESS("Generating store location map..."))
-            generator = MapGenerator(self, company_name=options['company'])
+            generator = MapGenerator(self, company_name=options['company'], dev=dev)
             generator.run()
 
         if options['super_cats'] or run_all:
