@@ -50,7 +50,7 @@ class Command(BaseCommand):
 
     def _save_mappings(self, mappings):
         with open(MAPPINGS_FILE, 'w') as f:
-            f.write("CATEGORY_MAPPINGS = \")
+            f.write("CATEGORY_MAPPINGS = ")
             f.write(json.dumps(mappings, indent=4))
 
     def _clean_name_for_semantic_comparison(self, name: str) -> str:
