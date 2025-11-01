@@ -18,9 +18,27 @@ This session focused on refactoring the bargain generation process to align with
     *   **`store_product_id` to `sku` Renaming:** I confirmed that the renaming of the `store_product_id` field to `sku` has been consistently applied across the project.
     *   **Search Tool:** I diagnosed an issue with the `search_file_content` tool, which was not returning any results.
 
+3.  **Command Refactoring and Bug Fixes:**
+    *   **`generate --bargains` --dev flag:** Fixed a bug where the `--dev` flag was not being correctly passed to the `BargainsGenerator`.
+    *   **API Rate Limiting:** Diagnosed and fixed a `429 Too Many Requests` error by adding the correct throttle scope to the `ExportPricesView`, ensuring it uses the 'internal' rate limit instead of the default anonymous limit.
+    *   **`generate --store-clusters`:** Refactored the `cluster_stores` command into the main `generate` command. This included creating a `StoreClustersGenerator` that fetches data from the API, and integrating it into the full `generate -> upload -> update` pipeline.
+    *   **`generate --archive`:** Refactored the `archive` command into the main `generate` command, creating an `ArchiveGenerator` to handle the database archiving process.
+    *   **KeyError Fix:** Fixed a `KeyError: 'id'` in the `StoreClustersGenerator` by adding the `id` field to the `StoreExportSerializer`.
+
+4.  **Process Explanation:**
+    *   Provided detailed explanations for the `generate --pop-cats`, `generate --super-cats`, `generate --map`, and `archive` commands, outlining their purpose and inner workings.
+
 ### Commands to Run:
 
 **For Bargains:**
 1.  `python manage.py generate --bargains --dev`
 2.  `python manage.py upload --bargains --dev`
 3.  `python manage.py update --bargains`
+
+**For Store Clusters:**
+1.  `python manage.py generate --store-clusters --dev`
+2.  `python manage.py upload --store-clusters --dev`
+3.  `python manage.py update --store-clusters`
+
+**For Archiving:**
+1.  `python manage.py generate --archive`
