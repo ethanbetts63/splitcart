@@ -9,7 +9,7 @@ import { Label } from "../components/ui/label"
 import LoadingSpinner from '../components/LoadingSpinner';
 import ResultsDisplay from '../components/ResultsDisplay';
 import { FaqImageSection } from "../components/FaqImageSection";
-import futureTodayImage from "../assets/future_today.webp";
+import futureTodayImage from "../assets/future_today.png";
 import { emailCartAPI, downloadCartAPI } from '../services/cartOptimization.api';
 import type { ExportData } from '../types';
 
