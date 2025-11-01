@@ -34,5 +34,13 @@ class Cart(models.Model):
             models.UniqueConstraint(fields=['anonymous_id'], condition=models.Q(is_active=True, anonymous_id__isnull=False), name='unique_active_anonymous_cart'),
         ]
 
+    def save(self, *args, **kwargs):
+        if self.is_active:
+            if self.user:
+                Cart.objects.filter(user=self.user, is_active=True).exclude(pk=self.pk).update(is_active=False)
+            elif self.anonymous_id:
+                Cart.objects.filter(anonymous_id=self.anonymous_id, is_active=True).exclude(pk=self.pk).update(is_active=False)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.name} ({self.user.email if self.user else 'Anonymous'})"

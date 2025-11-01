@@ -39,6 +39,7 @@ The `Product`, `Cart`, and `EmailAddress` models use conditional unique constrai
 - **`users.Cart`**:
   - `unique_active_user_cart`: A user can only have one active cart.
   - `unique_active_anonymous_cart`: An anonymous user can only have one active cart.
+  - **Resolution (2025-11-01):** The `Cart.save()` method was overridden to enforce this constraint at the application level. When a cart is saved as active, the method now deactivates any other active carts for the same user or anonymous session, preventing duplicates.
 - **`account.EmailAddress`**: This is from the `django-allauth` package and is a known issue.
 
 **Implication:**
