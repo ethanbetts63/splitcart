@@ -101,7 +101,7 @@ const StoreMap: React.FC<StoreMapProps> = ({ bounds, stores, selectedStoreIds, o
             <style>{markerHtmlStyles}</style>
             <MapContainer center={[-27, 133]} zoom={4} style={{ height: '100%', width: '100%' }}>
                 <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.webp"
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
                 <MapViewController bounds={bounds} />
