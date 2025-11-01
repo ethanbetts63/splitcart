@@ -11,7 +11,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['localhost', 'ethanbetts.pythonanywhere.com', 'splitcart.com.au', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', 'ethanbetts.pythonanywhere.com', 'splitcart.com.au', 'www.splitcart.com.au', '127.0.0.1']
 
 
 INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY")

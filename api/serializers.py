@@ -18,7 +18,7 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ('name', 'slug')
 
 class CategoryWithProductsExportSerializer(serializers.ModelSerializer):
-    company = serializers.CharField(source='company.name')
+    company = serializers.StringRelatedField(source='company')
     product_ids = serializers.SerializerMethodField()
 
     class Meta:
