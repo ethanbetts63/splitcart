@@ -114,7 +114,7 @@ class Command(BaseCommand):
         all_category_links = self._fetch_paginated_data(f"{server_url}/api/export/category_links/", headers, "category links")
         
         self.stdout.write("Fetching companies...")
-        all_companies = self._fetch_paginated_data(f"{server_url}/api/companies/", headers, "companies")
+        all_companies = self._fetch_paginated_data(f"{server_url}/api/export/companies/", headers, "companies")
 
         company_id = None
         for comp in all_companies:

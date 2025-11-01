@@ -67,7 +67,9 @@ class Command(BaseCommand):
 
         if run_products_processed:
             inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'product_inbox')
+            print(f"Checking for inbox at: {inbox_path}")
             if not os.path.exists(inbox_path):
+                self.stdout.write(self.style.WARNING("Product inbox directory not found."))
                 self.stdout.write(self.style.WARNING("Product inbox directory not found."))
             else:
                 orchestrator = UpdateOrchestrator(self, inbox_path)

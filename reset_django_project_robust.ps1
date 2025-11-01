@@ -76,6 +76,8 @@ python manage.py update --store-clusters # Server
 
 python manage.py upload --product --dev # Local
 python manage.py update --products # Server
+
+# NEED TO GET THIS WORKING AGAIN
 python manage.py update --prefixes # Server
 
 python manage.py generate --cat-links --dev # Local

@@ -13,7 +13,7 @@ class ProductUploader(BaseUploader):
 
     def run(self):
         outbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'outboxes', self.outbox_path_name)
-        archive_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', self.archive_path_name)
+        archive_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', self.archive_path_name)
         os.makedirs(outbox_path, exist_ok=True)
         os.makedirs(archive_path, exist_ok=True)
 
