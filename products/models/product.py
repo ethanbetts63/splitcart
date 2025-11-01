@@ -67,6 +67,7 @@ class Product(models.Model):
     )
     barcode = models.CharField(
         max_length=50,
+        unique=True,
         null=True,
         blank=True,
         db_index=True,
@@ -107,18 +108,7 @@ class Product(models.Model):
     )
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['barcode'],
-                condition=Q(barcode__isnull=False) & ~Q(barcode=''),
-                name='unique_barcode_if_not_null_or_empty'
-            ),
-            models.UniqueConstraint(
-                fields=['normalized_name_brand_size'],
-                condition=Q(normalized_name_brand_size__isnull=False),
-                name='unique_normalized_name_brand_size'
-            )
-        ]
+        pass
 
     def clean(self):
         super().clean()

@@ -37,7 +37,9 @@ The `Product`, `Cart`, and `EmailAddress` models use conditional unique constrai
 **Affected Constraints:**
 - **`products.Product`**:
   - `unique_barcode_if_not_null_or_empty`: `barcode` must be unique if it's not null or empty.
+    - **Resolution (2025-11-01):** The `barcode` field in the `Product` model was updated to `unique=True, null=True`. This relies on data preparation ensuring that empty string barcodes are converted to `NULL` before being saved to the database. The corresponding `UniqueConstraint` was removed from `Meta.constraints`.
   - `unique_normalized_name_brand_size`: `normalized_name_brand_size` must be unique if it's not null.
+    - **Resolution (2025-11-01):** The `normalized_name_brand_size` field in the `Product` model already had `unique=True, null=True`. The corresponding `UniqueConstraint` was removed from `Meta.constraints`, as the field definition itself provides the desired database-level uniqueness for non-null values.
 - **`users.Cart`**:
   - `unique_active_user_cart`: A user can only have one active cart.
   - `unique_active_anonymous_cart`: An anonymous user can only have one active cart.

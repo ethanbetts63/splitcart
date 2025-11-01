@@ -232,7 +232,7 @@ class ProductNormalizer:
 
         barcode_str = str(self.barcode).strip().lower()
 
-        if barcode_str == 'notfound' or barcode_str == 'null':
+        if barcode_str == 'notfound' or barcode_str == 'null' or barcode_str == '':
             return None
 
         barcodes = [b.strip() for b in barcode_str.split(',')]
