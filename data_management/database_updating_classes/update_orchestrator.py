@@ -26,6 +26,9 @@ class UpdateOrchestrator:
         
         all_files = [os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')]
         
+        # Instantiate resolver once before the loop.
+        product_resolver = ProductResolver(self.command)
+
         unit_of_work = None # Initialize to handle cases with no processable files
         for file_path in all_files:
             self.command.stdout.write(f"{self.command.style.WARNING('--- Processing file:')} {os.path.basename(file_path)} ---")
@@ -62,16 +65,18 @@ class UpdateOrchestrator:
                 self.processed_files.append(file_path)
                 continue
 
-            resolver = ProductResolver(self.command, company_obj, store_obj)
-            unit_of_work = UnitOfWork(self.command, resolver)
+            # Set the context for the single resolver
+            product_resolver.set_context(store_obj)
+            unit_of_work = UnitOfWork(self.command, product_resolver)
             self.variation_manager.unit_of_work = unit_of_work  # Inject UoW
             brand_manager = BrandManager(self.command)
 
-            product_cache = self._process_consolidated_data(consolidated_data, resolver, unit_of_work, self.variation_manager, brand_manager, store_obj)
+            # Pass the single resolver instance down
+            product_cache = self._process_consolidated_data(consolidated_data, product_resolver, unit_of_work, self.variation_manager, brand_manager, store_obj)
             
             brand_manager.commit()
 
-            if unit_of_work.commit(consolidated_data, product_cache, resolver, store_obj):
+            if unit_of_work.commit(consolidated_data, product_cache, product_resolver, store_obj):
                 self.processed_files.append(file_path)
 
                 # Get the scraped_date from the metadata of the first product in the consolidated data
@@ -278,6 +283,9 @@ class UpdateOrchestrator:
                 )
                 if company_name.lower() == 'coles' and not product_details.get('barcode'):
                     new_product.has_no_coles_barcode = True
+
+                # Add the new product to the run-level cache immediately
+                resolver.add_new_product_to_cache(new_product)
 
                 product_cache[key] = new_product
                 unit_of_work.add_new_product(new_product, product_details)

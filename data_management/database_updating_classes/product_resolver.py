@@ -5,18 +5,25 @@ class ProductResolver:
     """
     Handles all logic related to matching incoming products with existing database records.
     It builds and holds caches of database state to provide fast, in-memory lookups.
+    A single instance is created per run, with global caches built once.
+    The context for a specific store (for SKU and price caches) is set as needed.
     """
-    def __init__(self, command, current_company_obj, current_store_obj):
+    def __init__(self, command):
+        """
+        Initializes the resolver and builds the global, run-level caches.
+        """
         self.command = command
-        self.current_company_obj = current_company_obj
-        self.current_store_obj = current_store_obj
-        self._build_caches(current_company_obj, current_store_obj)
+        self._build_global_caches()
+        # Initialize contextual caches to empty dicts
+        self.sku_cache = {}
+        self.price_cache = {}
 
-    def _build_caches(self, current_company_obj, current_store_obj):
+    def _build_global_caches(self):
         """
-        Builds the in-memory caches for products, prices, and stores, filtered by current context.
+        Builds the in-memory caches for data that is consistent across all stores.
+        This is done only once per run.
         """
-        self.command.stdout.write("--- Building Caches ---")
+        self.command.stdout.write("--- Building Global Caches ---")
         
         # All products (not filtered by company/store, as barcode/normalized_string are global)
         all_products = list(Product.objects.all())
@@ -33,6 +40,17 @@ class ProductResolver:
         self.store_cache = {s.store_id: s for s in Store.objects.all()}
         self.command.stdout.write(f"  - Built cache for {len(self.store_cache)} stores.")
 
+    def set_context(self, current_store_obj):
+        """
+        Sets the store-specific context by building caches for SKU and prices for that store.
+        """
+        self.command.stdout.write(f"--- Building Contextual Caches for {current_store_obj.name} ---")
+        self._build_contextual_caches(current_store_obj)
+
+    def _build_contextual_caches(self, current_store_obj):
+        """
+        Builds caches for data that is specific to the given store.
+        """
         # Filter prices by the current store for relevant caches to prevent SKU conflicts.
         relevant_prices_query = Price.objects.select_related('price_record', 'price_record__product').filter(
             store=current_store_obj
@@ -88,8 +106,8 @@ class ProductResolver:
 
     def add_new_product_to_cache(self, product):
         """
-        Updates the caches with a new product that is about to be created.
-        This is used for de-duplication within a single file's processing.
+        Updates the global caches with a new product that is about to be created.
+        This is used for de-duplication within a single run.
         """
         if product.barcode:
             self.barcode_cache[product.barcode] = product
