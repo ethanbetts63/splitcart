@@ -27,7 +27,7 @@ const Root = () => {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/static/">
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
           <Root />
