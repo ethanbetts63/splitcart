@@ -18,26 +18,42 @@ class BargainUpdateOrchestrator:
         The main public method that orchestrates the update process.
         """
         self.command.stdout.write(self.command.style.SQL_FIELD("--- Starting Bargain Update ---"))
+        self.command.stdout.write(self.command.style.SUCCESS("  - Loading bargains from inbox..."))
         if not os.path.exists(self.inbox_path):
             self.command.stdout.write(self.command.style.WARNING('Bargains inbox directory not found.'))
             return
 
         Bargain.objects.all().delete()
 
-        for filename in os.listdir(self.inbox_path):
-            if not filename.endswith('.json'):
-                continue
+        total_bargains_to_process = 0
+        json_files = [f for f in os.listdir(self.inbox_path) if f.endswith('.json')]
+        for filename in json_files:
+            file_path = os.path.join(self.inbox_path, filename)
+            try:
+                with open(file_path, 'r') as f:
+                    bargains = json.load(f)
+                    total_bargains_to_process += len(bargains)
+            except json.JSONDecodeError:
+                self.command.stderr.write(self.command.style.ERROR(f"Invalid JSON in {filename}, skipping for total count."))
+            except Exception as e:
+                self.command.stderr.write(self.command.style.ERROR(f"Error reading {filename} for total count: {e}"))
 
+        self.command.stdout.write(self.command.style.SUCCESS(f"  - Found {total_bargains_to_process} bargains to process."))
+
+        bargains_processed_count = 0
+        for filename in json_files:
             file_path = os.path.join(self.inbox_path, filename)
             updater = BargainUpdater(self.command, file_path)
-            bargains_processed = updater.run()
+            bargains_in_file = updater.run()
             
-            if bargains_processed is not None:
-                self.command.stdout.write(self.command.style.SUCCESS(f"  Successfully processed {bargains_processed} bargains from {filename}."))
+            if bargains_in_file is not None:
+                bargains_processed_count += bargains_in_file
+                self.command.stdout.write(self.command.style.SUCCESS(f"  - Processing bargains: {bargains_processed_count}/{total_bargains_to_process}"))
                 os.remove(file_path)
             else:
                 self.command.stderr.write(self.command.style.ERROR(f"  Failed to process {filename}."))
 
+        self.command.stdout.write(self.command.style.SUCCESS(f"  Successfully processed {bargains_processed_count}/{total_bargains_to_process} bargains."))
         self.command.stdout.write(self.command.style.SQL_FIELD("--- Bargain Update Complete ---"))
 
 class BargainUpdater:
