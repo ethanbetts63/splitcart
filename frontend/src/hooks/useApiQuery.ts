@@ -74,7 +74,11 @@ export const useApiQuery = <T>(
   queryKey: any[],
   endpoint: string,
   options: Omit<ApiOptions, 'body' | 'method'> = {},
-  reactQueryOptions: { enabled?: boolean } = {}
+  reactQueryOptions: {
+    enabled?: boolean;
+    refetchOnWindowFocus?: boolean;
+    staleTime?: number;
+  } = {}
 ) => {
   const { token, anonymousId } = useAuth();
 
