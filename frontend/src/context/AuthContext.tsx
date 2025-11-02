@@ -81,7 +81,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     };
 
+    const handleUnauthorized = () => {
+      logout();
+    };
+
+    window.addEventListener('unauthorized', handleUnauthorized);
     initializeUser();
+
+    return () => {
+      window.removeEventListener('unauthorized', handleUnauthorized);
+    };
   }, []);
 
   const login = (newToken: string) => {

@@ -47,6 +47,10 @@ const apiFetch = async <T>(
   const response = await fetch(finalEndpoint, config);
 
   if (!response.ok) {
+    if (response.status === 401) {
+      // Dispatch a custom event to be caught by the AuthProvider
+      window.dispatchEvent(new CustomEvent('unauthorized'));
+    }
     let errorMessage = `API Error: ${response.status} ${response.statusText}`;
     try {
       const errorData = await response.json();
