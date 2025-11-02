@@ -9,6 +9,7 @@ from api.permissions import IsAuthenticatedOrAnonymous
 from products.models import Price
 
 class InitialSetupView(APIView):
+    authentication_classes = []
     permission_classes = [IsAuthenticatedOrAnonymous]
 
     def post(self, request, *args, **kwargs):

@@ -17,7 +17,7 @@ export default ({ mode }: { mode: string }) => {
   server: {
     proxy: {
       '/api': {
-          target: env.API_SERVER_URL || 'http://127.0.0.1:8000',
+          target: mode === 'development' ? 'http://127.0.0.1:8000' : env.API_SERVER_URL,
           changeOrigin: true,
         },
     },
