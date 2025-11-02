@@ -58,7 +58,7 @@ const HomePage = () => {
           </h2>
           <p className="text-xl mt-4">Short answer: <span className="font-bold">25-32%</span>. Most common answer: <span className="font-bold">Who cares?</span></p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-lg ">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12 text-lg ">
           <div className="flex flex-col gap-4">
             <p>
               <span className="font-bold">I care. </span>And if you're like me then you care too. If you're like me, you've considered the dollar value of a rewards point. Or weighed the merits of ply count versus the per kilo price of toilet paper.

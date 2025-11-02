@@ -63,7 +63,7 @@ export function FaqAccordion({ page }: FaqAccordionProps) {
       className="w-full"
     >
       {faqs.map((faq, index) => (
-        <AccordionItem value={`item-${index + 1}`} key={index}>
+        <AccordionItem value={`item-${index + 1}`} key={index} className="faq-item">
           <AccordionTrigger>{faq.question}</AccordionTrigger>
           <AccordionContent className="flex flex-col gap-4 text-balance">
             <p>{faq.answer}</p>

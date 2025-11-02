@@ -16,6 +16,7 @@ class FaqListView(ListAPIView):
         page = request.query_params.get('page', None)
         queryset = self.get_queryset()
 
+
         if page:
             filtered_queryset = [faq for faq in queryset if page in faq.pages]
         else:

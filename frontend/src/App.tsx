@@ -65,8 +65,8 @@ const Layout = () => {
         }
 
         const target = event.target as HTMLElement;
-        // Allow navigation links in header and footer to work normally.
-        if (target.closest('header a[href], footer a[href]')) {
+        // Allow navigation links in header and footer and FAQ items to work normally.
+        if (target.closest('header a[href], footer a[href], .faq-item')) {
             return;
         }
 
