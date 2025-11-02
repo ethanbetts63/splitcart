@@ -13,7 +13,9 @@ type Category = {
 const CategoryBar: React.FC = () => {
   const { data: categories = [], isLoading } = useApiQuery<Category[]>(
     ['popularCategories'],
-    '/categories/popular/'
+    '/categories/popular/',
+    {},
+    { refetchOnWindowFocus: false, staleTime: 1000 * 60 * 10 } // 10 minutes
   );
 
   const carouselRef = useRef<HTMLDivElement>(null);

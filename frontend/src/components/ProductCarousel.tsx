@@ -51,7 +51,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
     ['products', title, finalUrl],
     finalUrl,
     {},
-    { enabled: !!storeIds && storeIds.length > 0 }
+    { enabled: !!storeIds && storeIds.length > 0, refetchOnWindowFocus: false, staleTime: 1000 * 60 * 10 } // 10 minutes
   );
 
   const products = apiResponse?.results || [];
