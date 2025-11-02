@@ -42,6 +42,7 @@ class SubstitutionUpdater:
         self.file_path = file_path
 
     def run(self):
+        self.command.stdout.write(f"  - Loading substitutions from {os.path.basename(self.file_path)}...")
         try:
             with open(self.file_path, 'r') as f:
                 subs = json.load(f)
@@ -50,7 +51,9 @@ class SubstitutionUpdater:
             return None
 
         subs_processed = 0
-        for sub_data in subs:
+        total_subs = len(subs)
+        self.command.stdout.write(f"  - Found {total_subs} substitutions to process.")
+        for i, sub_data in enumerate(subs):
             try:
                 ProductSubstitution.objects.update_or_create(
                     product_a_id=sub_data['product_a'],
@@ -62,7 +65,9 @@ class SubstitutionUpdater:
                     }
                 )
                 subs_processed += 1
+                self.command.stdout.write(f'\r    - Processing substitutions: {subs_processed}/{total_subs}', ending='')
             except Exception as e:
-                self.command.stderr.write(self.command.style.ERROR(f"Error processing substitution: {sub_data}. Error: {e}"))
+                self.command.stderr.write(self.command.style.ERROR(f"\nError processing substitution: {sub_data}. Error: {e}"))
         
+        self.command.stdout.write('\n')
         return subs_processed
