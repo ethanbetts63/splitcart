@@ -69,7 +69,7 @@ class Command(BaseCommand):
             generator.run()
 
         if options['categorize']:
-            from data_management.management.commands.categorization_analyzer import Command as CategorizationAnalyzerCommand
+            from data_management.management.commands.cat_analyzer import Command as CategorizationAnalyzerCommand
             self.stdout.write(self.style.SUCCESS("Running interactive category analyzer..."))
             # Create an instance of the CategorizationAnalyzerCommand and call its handle method
             analyzer_command = CategorizationAnalyzerCommand()

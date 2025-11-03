@@ -28,7 +28,7 @@ class CategoryWithProductsExportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('id', 'name', 'company', 'product_ids')
+        fields = ('id', 'name', 'company', 'parents', 'product_ids')
 
     def get_product_ids(self, obj):
         return list(obj.products.values_list('id', flat=True))

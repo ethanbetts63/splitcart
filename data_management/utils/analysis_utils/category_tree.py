@@ -6,6 +6,9 @@ def _build_tree_string_from_map(category, children_map, prefix="", is_last=True,
     # The 'visited' set is now passed by reference and shared across all calls for a single root tree.
     if visited is None:
         visited = set()
+
+    # Define connector before the check to avoid UnboundLocalError
+    connector = "└── " if is_last else "├── "
     
     # If we have seen this node before in this traversal, it's part of a cycle with its parent.
     # However, the more general case is that it's a node we have already processed completely.
@@ -21,7 +24,6 @@ def _build_tree_string_from_map(category, children_map, prefix="", is_last=True,
         command.stdout.write(".", ending="")
         command.stdout.flush()
 
-    connector = "└── " if is_last else "├── "
     tree_string = f"{prefix}{connector}{category['name']}\n"
     
     children = sorted(children_map.get(category['id'], []), key=lambda x: x['name'])

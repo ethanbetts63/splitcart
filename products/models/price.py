@@ -1,4 +1,3 @@
-import datetime
 from django.db import models
 from data_management.utils.price_normalizer import PriceNormalizer
 
