@@ -18,6 +18,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path, re_path
 from api.views.frontend_views.react_app_view import ReactAppView
+from django.contrib.sitemaps.views import sitemap
+from api.sitemaps import StaticViewSitemap
+
+sitemaps = {
+    'static': StaticViewSitemap,
+}
 
 urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
@@ -26,6 +32,6 @@ urlpatterns = [
     path('api/auth/registration/', include('dj_rest_auth.registration.urls')),
     path("api/", include("api.urls")),
     path("data_management/", include("data_management.urls")),
-    # Let React handle all other routes
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     re_path(r'^.*', ReactAppView.as_view(), name='react_app'),
 ]
