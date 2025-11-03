@@ -42,7 +42,7 @@ const NavBar: React.FC<NavBarProps> = ({
             <img 
               src={splitcartLogo} 
               srcSet={`${splitcartLogo320} 320w, ${splitcartLogo640} 640w, ${splitcartLogo768} 768w, ${splitcartLogo1024} 1024w, ${splitcartLogo1280} 1280w`}
-              sizes="(max-width: 640px) 320px, (max-width: 768px) 640px, (max-width: 1024px) 768px, (max-width: 1280px) 1024px, 1280px"
+              sizes="64px"
               alt="SplitCart Logo" 
               className="h-16 w-16 flex-shrink-0" />
             <span className="font-bold text-2xl hidden md:block">SplitCart</span>

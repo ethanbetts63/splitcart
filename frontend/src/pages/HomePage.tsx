@@ -37,7 +37,7 @@ const HomePage = () => {
               <img 
                 src={confusedShopper} 
                 srcSet={`${confusedShopper320} 320w, ${confusedShopper640} 640w, ${confusedShopper768} 768w, ${confusedShopper1024} 1024w, ${confusedShopper1280} 1280w`}
-                sizes="(max-width: 640px) 320px, (max-width: 768px) 640px, (max-width: 1024px) 768px, (max-width: 1280px) 1024px, 1280px"
+                sizes="(min-width: 1024px) 50vw, 100vw"
                 alt="Confused Shopper" 
                 className="rounded-md object-cover w-full h-full" />
             </AspectRatio>
@@ -133,7 +133,7 @@ const HomePage = () => {
                   page="home"
                   imageSrc={kingKongImage}
                   srcSet={`${kingKongImage320} 320w, ${kingKongImage640} 640w, ${kingKongImage768} 768w, ${kingKongImage1024} 1024w, ${kingKongImage1280} 1280w`}
-                  sizes="(max-width: 640px) 320px, (max-width: 768px) 640px, (max-width: 1024px) 768px, (max-width: 1280px) 1024px, 1280px"
+                  sizes="(min-width: 1024px) 50vw, 100vw"
                   imageAlt="King Kong swatting at discount planes"
                 />
               </section>
