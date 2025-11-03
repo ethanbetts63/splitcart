@@ -8,8 +8,9 @@ import LoadingSpinner from "./components/LoadingSpinner";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner";
 
+import HomePage from "./pages/HomePage";
+
 // Lazy load page components
-const HomePage = React.lazy(() => import("./pages/HomePage"));
 const SearchResultsPage = React.lazy(() => import("./pages/SearchResultsPage"));
 const SubstitutionPage = React.lazy(() => import("./pages/SubstitutionPage"));
 const FinalCartPage = React.lazy(() => import("./pages/FinalCartPage"));
