@@ -28,9 +28,9 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
     if (!url.includes('cdn.metcash.media')) {
       return undefined;
     }
-    const sizes = [200, 300, 400, 500];
+    const sizes = [200, 250, 300, 350, 400, 450, 500];
     return sizes
-      .map(size => `${url.replace('w_1500,h_1500', `w_${size},h_${size}`)} ${size}w`)
+      .map(size => `${url.replace('w_1500,h_1500', `w_${size},h_${size},f_auto`)} ${size}w`)
       .join(', ');
   };
 
