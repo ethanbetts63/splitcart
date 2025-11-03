@@ -80,8 +80,38 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f"Found {len(unmapped_categories)} unmapped categories in the top two levels."))
 
         for i, category in enumerate(unmapped_categories):
+            # --- Auto-mapping logic ---
+            auto_mapped = False
+            category_name_lower = category.name.lower().strip()
+
+            for pc in PRIMARY_CATEGORIES:
+                primary_category_lower = pc.lower().strip()
+
+                # Condition A: Exact match
+                if category_name_lower == primary_category_lower:
+                    company_mappings[category.name] = pc
+                    all_mappings[company_name] = company_mappings
+                    self.stdout.write(self.style.SUCCESS(f"Auto-mapped '{category.name}' to '{pc}' (Exact Match)"))
+                    self._save_mappings(all_mappings)
+                    auto_mapped = True
+                    break
+
+                # Condition B: Substring match (with exception for drinks)
+                is_drink_category = "drink" in primary_category_lower
+                if primary_category_lower in category_name_lower and not is_drink_category:
+                    company_mappings[category.name] = pc
+                    all_mappings[company_name] = company_mappings
+                    self.stdout.write(self.style.SUCCESS(f"Auto-mapped '{category.name}' to '{pc}' (Substring Match)"))
+                    self._save_mappings(all_mappings)
+                    auto_mapped = True
+                    break
+            
+            if auto_mapped:
+                continue
+
+            # --- Manual mapping if auto-mapping fails ---
             self.stdout.write(f"\n------------------------------------------------------------------")
-            self.stdout.write(f"Category to Map: [{company_name}] -> [{category.name}] (Remaining: {len(unmapped_categories) - i})")
+            self.stdout.write(f"Category to Map: [{self.style.SUCCESS(category.name)}] (Remaining: {len(unmapped_categories) - i})")
 
             self.stdout.write("\nPrimary Categories:")
             for idx, pc in enumerate(PRIMARY_CATEGORIES):
@@ -101,12 +131,15 @@ class Command(BaseCommand):
                         selected_primary_category = PRIMARY_CATEGORIES[idx]
                         company_mappings[category.name] = selected_primary_category
                         all_mappings[company_name] = company_mappings
+                        self._save_mappings(all_mappings) # Immediate save
                         self.stdout.write(self.style.SUCCESS(f"Mapped '{category.name}' to '{selected_primary_category}'"))
                         break
                     else:
                         self.stdout.write(self.style.ERROR("Invalid number. Please try again."))
                 else:
                     self.stdout.write(self.style.ERROR("Invalid input. Please enter a number, 's', or 'q'."))
+        
+        self.stdout.write(self.style.SUCCESS("--- Category Analyzer Finished. All categories processed. ---"))
         
         self._save_mappings(all_mappings)
         self.stdout.write(self.style.SUCCESS("--- Category Analyzer Finished. Mappings saved. ---"))
