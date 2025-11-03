@@ -39,7 +39,8 @@ const HomePage = () => {
                 srcSet={`${confusedShopper320} 320w, ${confusedShopper640} 640w, ${confusedShopper768} 768w, ${confusedShopper1024} 1024w, ${confusedShopper1280} 1280w`}
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 alt="Confused Shopper" 
-                className="rounded-md object-cover w-full h-full" />
+                className="rounded-md object-cover w-full h-full"
+                fetchpriority="high" />
             </AspectRatio>
           </div>
           <div className="text-left">
