@@ -4,4 +4,4 @@ Disallow: /api/
 Disallow: /substitutions/
 Disallow: /final-cart/
 
-Sitemap: /sitemap.xml
+Sitemap: https://www.splitcart.com.au/sitemap.xml
