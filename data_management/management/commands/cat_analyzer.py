@@ -82,6 +82,18 @@ class Command(BaseCommand):
                 auto_mapped = False
                 category_name_lower = category.name.lower().strip()
 
+                for mapped_name, primary_cat in company_mappings.items():
+                    if category_name_lower == mapped_name.lower().strip():
+                        company_mappings[category.name] = primary_cat
+                        all_mappings[company_name] = company_mappings
+                        self.stdout.write(self.style.SUCCESS(f"Auto-mapped '{category.name}' to '{primary_cat}' (Match with existing mapping: '{mapped_name}')"))
+                        self._save_mappings(all_mappings)
+                        auto_mapped = True
+                        break
+                
+                if auto_mapped:
+                    continue
+
                 for pc in PRIMARY_CATEGORIES:
                     primary_category_lower = pc.lower().strip()
                     if category_name_lower == primary_category_lower:
