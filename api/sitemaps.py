@@ -6,7 +6,7 @@ class StaticViewSitemap(sitemaps.Sitemap):
     changefreq = 'daily'
 
     def items(self):
-        return ['react_app'] # Assuming 'react_app' is the name of your main app view
+        return ['/']
 
     def location(self, item):
-        return reverse(item)
+        return item
