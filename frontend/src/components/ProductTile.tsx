@@ -24,14 +24,27 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
     e.currentTarget.src = fallbackImage;
   };
 
+  const generateSrcSet = (url: string) => {
+    if (!url.includes('cdn.metcash.media')) {
+      return undefined;
+    }
+    const sizes = [200, 300, 400, 500];
+    return sizes
+      .map(size => `${url.replace('w_1500,h_1500', `w_${size},h_${size}`)} ${size}w`)
+      .join(', ');
+  };
+
   // The API now provides a deterministic image_url for the product.
   const imageUrl = product.image_url || fallbackImage;
+  const srcSet = generateSrcSet(imageUrl);
 
   return (
     <Card className="flex flex-col h-full overflow-hidden gap-1 pt-0 pb-2">
       <div className="aspect-square w-full overflow-hidden relative">
         <img
           src={imageUrl}
+          srcSet={srcSet}
+          sizes="273px"
           onError={handleImageError}
           alt={product.name}
           className="h-full w-full object-cover transition-transform hover:scale-105"
