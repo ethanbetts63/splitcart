@@ -5,6 +5,11 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Badge } from './ui/badge';
 import splitcartLogo from "../assets/splitcart_symbol_v6.webp";
+import splitcartLogo320 from "../assets/splitcart_symbol_v6-320w.webp";
+import splitcartLogo640 from "../assets/splitcart_symbol_v6-640w.webp";
+import splitcartLogo768 from "../assets/splitcart_symbol_v6-768w.webp";
+import splitcartLogo1024 from "../assets/splitcart_symbol_v6-1024w.webp";
+import splitcartLogo1280 from "../assets/splitcart_symbol_v6-1280w.webp";
 
 interface NavBarProps {
   searchTerm: string;
@@ -34,7 +39,12 @@ const NavBar: React.FC<NavBarProps> = ({
       <div className="flex h-20 items-center justify-between gap-0 sm:gap-4 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-6">
           <a href="/" className="flex items-center space-x-2">
-            <img src={splitcartLogo} alt="SplitCart Logo" className="h-16 w-16 flex-shrink-0" />
+            <img 
+              src={splitcartLogo} 
+              srcSet={`${splitcartLogo320} 320w, ${splitcartLogo640} 640w, ${splitcartLogo768} 768w, ${splitcartLogo1024} 1024w, ${splitcartLogo1280} 1280w`}
+              sizes="(max-width: 640px) 320px, (max-width: 768px) 640px, (max-width: 1024px) 768px, (max-width: 1280px) 1024px, 1280px"
+              alt="SplitCart Logo" 
+              className="h-16 w-16 flex-shrink-0" />
             <span className="font-bold text-2xl hidden md:block">SplitCart</span>
           </a>
         </div>

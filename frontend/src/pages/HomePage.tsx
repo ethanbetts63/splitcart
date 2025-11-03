@@ -4,7 +4,17 @@ import { FaqImageSection } from "../components/FaqImageSection";
 import { useStoreList } from "../context/StoreListContext";
 import { AspectRatio } from "../components/ui/aspect-ratio";
 import confusedShopper from "../assets/confused_shopper.webp";
+import confusedShopper320 from "../assets/confused_shopper-320w.webp";
+import confusedShopper640 from "../assets/confused_shopper-640w.webp";
+import confusedShopper768 from "../assets/confused_shopper-768w.webp";
+import confusedShopper1024 from "../assets/confused_shopper-1024w.webp";
+import confusedShopper1280 from "../assets/confused_shopper-1280w.webp";
 import kingKongImage from "../assets/king_kong.webp";
+import kingKongImage320 from "../assets/king_kong-320w.webp";
+import kingKongImage640 from "../assets/king_kong-640w.webp";
+import kingKongImage768 from "../assets/king_kong-768w.webp";
+import kingKongImage1024 from "../assets/king_kong-1024w.webp";
+import kingKongImage1280 from "../assets/king_kong-1280w.webp";
 
 const HomePage = () => {
   const DEFAULT_STORE_IDS = [
@@ -24,7 +34,12 @@ const HomePage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
             <AspectRatio ratio={16 / 9}>
-              <img src={confusedShopper} alt="Confused Shopper" className="rounded-md object-cover w-full h-full" />
+              <img 
+                src={confusedShopper} 
+                srcSet={`${confusedShopper320} 320w, ${confusedShopper640} 640w, ${confusedShopper768} 768w, ${confusedShopper1024} 1024w, ${confusedShopper1280} 1280w`}
+                sizes="(max-width: 640px) 320px, (max-width: 768px) 640px, (max-width: 1024px) 768px, (max-width: 1280px) 1024px, 1280px"
+                alt="Confused Shopper" 
+                className="rounded-md object-cover w-full h-full" />
             </AspectRatio>
           </div>
           <div className="text-left">
@@ -117,6 +132,8 @@ const HomePage = () => {
                   title="The Hard Hitting Questions"
                   page="home"
                   imageSrc={kingKongImage}
+                  srcSet={`${kingKongImage320} 320w, ${kingKongImage640} 640w, ${kingKongImage768} 768w, ${kingKongImage1024} 1024w, ${kingKongImage1280} 1280w`}
+                  sizes="(max-width: 640px) 320px, (max-width: 768px) 640px, (max-width: 1024px) 768px, (max-width: 1280px) 1024px, 1280px"
                   imageAlt="King Kong swatting at discount planes"
                 />
               </section>

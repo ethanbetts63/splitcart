@@ -7,9 +7,11 @@ interface FaqImageSectionProps {
   page: string;
   imageSrc: string;
   imageAlt: string;
+  srcSet?: string;
+  sizes?: string;
 }
 
-export const FaqImageSection: React.FC<FaqImageSectionProps> = ({ title, page, imageSrc, imageAlt }) => {
+export const FaqImageSection: React.FC<FaqImageSectionProps> = ({ title, page, imageSrc, imageAlt, srcSet, sizes }) => {
   return (
     <Card className="overflow-hidden p-0 border-0 shadow-none">
       <CardContent className="grid p-0 lg:grid-cols-2">
@@ -18,7 +20,12 @@ export const FaqImageSection: React.FC<FaqImageSectionProps> = ({ title, page, i
           <FaqAccordion page={page} />
         </div>
         <div className="relative flex items-center justify-center h-full order-1 lg:order-2">
-          <img src={imageSrc} alt={imageAlt} className="h-full w-full object-contain dark:brightness-[0.2] dark:grayscale" />
+          <img 
+            src={imageSrc} 
+            srcSet={srcSet}
+            sizes={sizes}
+            alt={imageAlt} 
+            className="h-full w-full object-contain dark:brightness-[0.2] dark:grayscale" />
         </div>
       </CardContent>
     </Card>
