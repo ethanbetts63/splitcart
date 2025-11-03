@@ -40,8 +40,7 @@ const HomePage = () => {
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 alt="Confused Shopper" 
                 className="rounded-md object-cover w-full h-full"
-                fetchpriority="high" />
-            </AspectRatio>
+                                 fetchPriority="high" />            </AspectRatio>
           </div>
           <div className="text-left">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
