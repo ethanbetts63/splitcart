@@ -1,6 +1,5 @@
 import subprocess
 import os
-import sys
 from .base_archiver import BaseArchiver
 from .model_lister import ModelLister
 
@@ -29,7 +28,7 @@ class DatabaseArchiver(BaseArchiver):
             
             self.command.stdout.write(f"  - Archiving {app_label}.{model_name}...")
 
-            python_executable = sys.executable
+            python_executable = os.path.abspath(os.path.join('venv', 'Scripts', 'python.exe'))
             command = [
                 python_executable, 'manage.py', 'dumpdata',
                 f'{app_label}.{model_name}',
