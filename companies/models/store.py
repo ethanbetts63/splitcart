@@ -159,6 +159,11 @@ class Store(models.Model):
         blank=True,
         help_text="The date and time when the store's products were last scraped."
     )
+    scheduled_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="The date and time when the store was last scheduled for scraping."
+    )
 
     # Company-specific fields
     

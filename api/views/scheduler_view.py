@@ -6,6 +6,8 @@ from django.core.cache import cache
 import random
 from rest_framework.throttling import ScopedRateThrottle
 from api.permissions import IsInternalAPIRequest
+from django.utils import timezone
+from datetime import timedelta
 
 class SchedulerView(APIView):
     """
@@ -26,6 +28,10 @@ class SchedulerView(APIView):
 
         if not store_to_scrape:
             return Response({}, status=204) # No content
+
+        # Set scheduled_at timestamp
+        store_to_scrape.scheduled_at = timezone.now()
+        store_to_scrape.save(update_fields=['scheduled_at'])
 
         response_data = {
             'pk': store_to_scrape.pk,
@@ -73,11 +79,6 @@ class SchedulerView(APIView):
         """
         Determines and returns the single next highest-priority store to scrape.
         """
-        CACHE_TIMEOUT = 4 * 3600
-
-        def _is_store_locked(store_pk):
-            return cache.get(f"scraping_lock_{store_pk}")
-
         target_group = self._get_group(company_filter)
         
         if target_group:
@@ -96,16 +97,16 @@ class SchedulerView(APIView):
         excluded_ids = set(list(ambassador_ids)) | set(list(candidate_members))
         eligible_stores = stores_qs.exclude(id__in=excluded_ids)
 
-        unscraped_stores = eligible_stores.filter(last_scraped__isnull=True).order_by('pk')
-        for store in unscraped_stores:
-            if not _is_store_locked(store.pk):
-                cache.set(f"scraping_lock_{store.pk}", True, timeout=CACHE_TIMEOUT)
-                return store
+        # Exclude stores that have been scheduled recently
+        four_hours_ago = timezone.now() - timedelta(hours=4)
+        eligible_stores = eligible_stores.exclude(scheduled_at__gte=four_hours_ago)
 
-        oldest_scraped_stores = eligible_stores.order_by('last_scraped', 'pk')
-        for store in oldest_scraped_stores:
-            if not _is_store_locked(store.pk):
-                cache.set(f"scraping_lock_{store.pk}", True, timeout=CACHE_TIMEOUT)
-                return store
+        unscraped_store = eligible_stores.filter(last_scraped__isnull=True).order_by('pk').first()
+        if unscraped_store:
+            return unscraped_store
+
+        oldest_scraped_store = eligible_stores.order_by('last_scraped', 'pk').first()
+        if oldest_scraped_store:
+            return oldest_scraped_store
         
         return None

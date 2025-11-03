@@ -87,9 +87,9 @@ class UpdateOrchestrator:
                 if scraped_date_value:
                     # Assign directly, assuming it's a format Django's DateTimeField can handle
                     store_obj.last_scraped = scraped_date_value
-                    store_obj.save()
+                    store_obj.scheduled_at = None # Reset the scheduling flag
+                    store_obj.save(update_fields=['last_scraped', 'scheduled_at'])
                     self.command.stdout.write(self.command.style.SUCCESS(f"  - Updated last_scraped for Store PK {store_obj.pk} ({store_obj.store_name}) to {scraped_date_value}."))
-                    cache.delete(f"scraping_lock_{store_obj.pk}") # Clear the lock
                 else:
                     self.command.stderr.write(self.command.style.ERROR(f"  - Warning: No 'scraped_date' found in metadata for file {os.path.basename(file_path)}. last_scraped not updated."))
 
