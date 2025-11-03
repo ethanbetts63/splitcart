@@ -70,7 +70,8 @@ class Command(BaseCommand):
                 # Construct the API URL with query parameters for company filtering
                 api_url = f"{settings.API_SERVER_URL}/api/scheduler/next-candidate/"
                 params = {'company': companies_to_scrape}
-                response = requests.get(api_url, params=params, timeout=30)
+                headers = {'X-Internal-API-Key': settings.INTERNAL_API_KEY}
+                response = requests.get(api_url, params=params, headers=headers, timeout=30)
                 response.raise_for_status() # Raise an exception for bad status codes
 
                 if response.status_code == 204:
