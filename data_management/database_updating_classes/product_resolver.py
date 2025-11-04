@@ -14,8 +14,6 @@ class ProductResolver:
         """
         self.command = command
         self._build_global_caches()
-        # Initialize contextual caches to empty dicts
-        self.sku_cache = {}
 
     def _build_global_caches(self):
         """
@@ -50,19 +48,7 @@ class ProductResolver:
         """
         Builds caches for data that is specific to the given store.
         """
-        # Filter prices by the current store for relevant caches to prevent SKU conflicts.
-        relevant_prices_query = Price.objects.select_related('price_record', 'price_record__product').filter(
-            store=current_store_obj
-        )
-
-        relevant_prices = list(relevant_prices_query.all())
-        # Cache 2: SKU (contextual)
-        self.sku_cache = {}
-        prices_with_ids = [p for p in relevant_prices if p.sku and p.price_record and p.price_record.product]
-        for price in prices_with_ids:
-            # Key is just the sku, as the cache is already filtered by company/store
-            self.sku_cache[price.sku] = price.price_record.product
-        self.command.stdout.write(f"  - Built cache for {len(self.sku_cache)} contextual SKUs.")
+        pass
 
     def find_match(self, product_details, price_history):
         """
@@ -83,14 +69,7 @@ class ProductResolver:
             product = self.barcode_cache[barcode]
             return product
 
-        # Tier 2: Match by SKU (contextual lookup)
-        if not product:
-            sku = product_details.get('sku')
-            if sku and sku in self.sku_cache:
-                product = self.sku_cache[sku]
-                return product
-
-        # Tier 3: Match by Normalized String
+        # Tier 2: Match by Normalized String
         if not product:
             normalized_string = product_details.get('normalized_name_brand_size')
             if normalized_string in self.normalized_string_cache:

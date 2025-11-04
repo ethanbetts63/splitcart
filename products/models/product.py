@@ -70,6 +70,11 @@ class Product(models.Model):
         db_index=True,
         help_text="The universal barcode (UPC/EAN) of the product."
     )
+    company_skus = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text="A dictionary of company names to a list of their SKUs for this product."
+    )
     has_no_coles_barcode = models.BooleanField(
         default=False,
         help_text="Set to True if Coles has been scraped and no barcode was found."

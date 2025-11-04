@@ -11,12 +11,12 @@ class Price(models.Model):
         on_delete=models.PROTECT,
         related_name="price_entries"
     )
-    store = models.ForeignKey(
-        'companies.Store',
+    store_group = models.ForeignKey(
+        'companies.StoreGroup',
         on_delete=models.PROTECT,
         related_name="prices"
     )
-    sku = models.CharField(max_length=100, db_index=True)
+
     
     # is_available = models.BooleanField(
     #     null=True,
@@ -48,14 +48,14 @@ class Price(models.Model):
         ordering = ['-price_record__scraped_date']
 
     def __str__(self):
-        return f"{self.price_record.product.name} at {self.store.store_name} on {self.price_record.scraped_date}"
+        return f"{self.price_record.product.name} at {self.store_group.name} on {self.price_record.scraped_date}"
 
     def save(self, *args, **kwargs):
-        if self.price_record and self.price_record.product_id and self.store_id:
+        if self.price_record and self.price_record.product_id and self.store_group_id:
             price_data = {
                 'product_id': self.price_record.product_id,
-                'store_id': self.store_id,
+                'group_id': self.store_group_id,
             }
-            normalizer = PriceNormalizer(price_data=price_data, company=self.store.company.name)
+            normalizer = PriceNormalizer(price_data=price_data, company=self.store_group.company.name)
             self.normalized_key = normalizer.get_normalized_key()
         super().save(*args, **kwargs)

@@ -27,19 +27,19 @@ class UnitOfWork:
         """
         self.new_products_to_process.append((product_instance, product_details))
 
-    def add_price(self, product, store, product_details):
+    def add_price(self, product, store_group, product_details):
         scraped_date_str = product_details.get('scraped_date')
         price_value = product_details.get('price_current')
 
         if not scraped_date_str or not price_value:
             return
 
-        # Generate the normalized_key for the Price object (product_id-store_id)
+        # Generate the normalized_key for the Price object (product_id-group_id)
         price_data_for_key = {
             'product_id': product.id,
-            'store_id': store.id,
+            'group_id': store_group.id,
         }
-        normalizer_for_key = PriceNormalizer(price_data=price_data_for_key, company=store.company.name)
+        normalizer_for_key = PriceNormalizer(price_data=price_data_for_key, company=store_group.company.name)
         normalized_key = normalizer_for_key.get_normalized_key()
 
         if not normalized_key:
@@ -47,6 +47,7 @@ class UnitOfWork:
 
         # Always create a new PriceRecord for the incoming data
         try:
+            scraped_date = datetime.strptime(scraped_date_str[:10], '%Y-%m-%d').date()
             price_record = PriceRecord.objects.create(
                 product=product,
                 scraped_date=scraped_date,
@@ -58,7 +59,7 @@ class UnitOfWork:
                 is_on_special=product_details.get('is_on_special', False)
             )
             self.new_price_records_created += 1
-        except (ValidationError, InvalidOperation) as e:
+        except (ValidationError, InvalidOperation, ValueError) as e:
             self.command.stderr.write(self.command.style.ERROR(f'\nError creating PriceRecord: {e}'))
             self.command.stderr.write(self.command.style.ERROR(f'Problematic product details: {product_details}'))
             return
@@ -68,7 +69,6 @@ class UnitOfWork:
             existing_price = Price.objects.get(normalized_key=normalized_key)
             # If Price object exists, update it
             existing_price.price_record = price_record
-            existing_price.sku = product_details.get('sku')
             existing_price.source = 'direct_scrape'
             self.prices_to_update.add(existing_price)
         except Price.DoesNotExist:
@@ -76,8 +76,7 @@ class UnitOfWork:
             self.prices_to_create.append(
                 Price(
                     price_record=price_record,
-                    store=store,
-                    sku=product_details.get('sku'),
+                    store_group=store_group,
                     normalized_key=normalized_key,
                     source='direct_scrape'
                 )
@@ -114,7 +113,7 @@ class UnitOfWork:
                 seen_normalized_strings.add(product.normalized_name_brand_size)
         return unique_new_products_with_details
 
-    def commit(self, consolidated_data, product_cache, resolver, store_obj):
+    def commit(self, consolidated_data, product_cache, resolver, store_group):
         self.command.stdout.write("--- Committing changes to database ---")
         try:
             with transaction.atomic():
@@ -129,7 +128,7 @@ class UnitOfWork:
 
                     # Now that products are created and have IDs, create their prices
                     for product_instance, product_details in unique_new_products_with_details:
-                        self.add_price(product_instance, store_obj, product_details)
+                        self.add_price(product_instance, store_group, product_details)
 
                     # Refresh the product_cache with the newly created products
                     for p in new_products:
@@ -141,18 +140,18 @@ class UnitOfWork:
 
                 # Stage 2.1: Update existing Price objects
                 if self.prices_to_update:
-                    price_update_fields = ['price_record', 'sku', 'source']
+                    price_update_fields = ['price_record', 'source']
                     Price.objects.bulk_update(list(self.prices_to_update), price_update_fields, batch_size=500)
                     self.command.stdout.write(f"  - Updated {len(self.prices_to_update)} existing Price objects.")
 
                 # Stage 3: Process categories now that all products exist
-                self.category_manager.process_categories(consolidated_data, product_cache, store_obj)
+                self.category_manager.process_categories(consolidated_data, product_cache, store_group.company)
 
                 # Stage 4: Update existing products
                 if self.products_to_update:
                     update_fields = [
                         'barcode', 'url', 'image_url_pairs', 'has_no_coles_barcode', 
-                        'name_variations', 'normalized_name_brand_size_variations', 'sizes'
+                        'name_variations', 'normalized_name_brand_size_variations', 'sizes', 'company_skus'
                     ]
                     Product.objects.bulk_update(list(self.products_to_update), update_fields, batch_size=500)
                     self.command.stdout.write(f"  - Updated {len(self.products_to_update)} products with new information.")

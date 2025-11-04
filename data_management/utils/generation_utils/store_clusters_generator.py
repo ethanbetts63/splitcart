@@ -59,6 +59,17 @@ class StoreClustersGenerator:
         for company in companies:
             self.command.stdout.write(f"\nProcessing {company}...")
 
+            if company.lower() == 'iga':
+                self.command.stdout.write("  Applying special handling for IGA: Creating single-store clusters.")
+                iga_stores = [s for s in stores_data if s['company'] == company]
+                for store in iga_stores:
+                    all_clusters.append({
+                        'company': company,
+                        'stores': [store['id']]
+                    })
+                self.command.stdout.write(f"  Result: Created {len(iga_stores)} single-store clusters.")
+                continue
+
             stores = [s for s in stores_data if s['company'] == company and s['latitude'] is not None and s['longitude'] is not None]
 
             if len(stores) < min_samples:

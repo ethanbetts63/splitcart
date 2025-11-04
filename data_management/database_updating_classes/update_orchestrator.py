@@ -49,12 +49,16 @@ class UpdateOrchestrator:
 
             try:
                 company_obj, _ = Company.objects.get_or_create(name__iexact=company_name, defaults={'name': company_name})
-                store_obj = Store.objects.get(store_id=store_id, company=company_obj)
+                store_obj = Store.objects.select_related('group_membership__group').get(store_id=store_id, company=company_obj)
 
-                # Stamp the store as a candidate for its group, if it belongs to one.
-                if hasattr(store_obj, 'group_membership') and store_obj.group_membership:
-                    group = store_obj.group_membership.group
-                    group.candidates.add(store_obj)
+                if not hasattr(store_obj, 'group_membership') or not store_obj.group_membership:
+                    self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Store {store_obj.store_name} does not belong to a group."))
+                    self.processed_files.append(file_path)
+                    continue
+                store_group = store_obj.group_membership.group
+
+                # Stamp the store as a candidate for its group
+                store_group.candidates.add(store_obj)
 
             except Store.DoesNotExist:
                 self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Store with ID {store_id} for company {company_name} not found in database."))
@@ -72,11 +76,11 @@ class UpdateOrchestrator:
             brand_manager = BrandManager(self.command)
 
             # Pass the single resolver instance down
-            product_cache = self._process_consolidated_data(consolidated_data, product_resolver, unit_of_work, self.variation_manager, brand_manager, store_obj)
+            product_cache = self._process_consolidated_data(consolidated_data, product_resolver, unit_of_work, self.variation_manager, brand_manager, store_group)
             
             brand_manager.commit()
 
-            if unit_of_work.commit(consolidated_data, product_cache, product_resolver, store_obj):
+            if unit_of_work.commit(consolidated_data, product_cache, resolver, store_group):
                 self.processed_files.append(file_path)
 
                 # Get the scraped_date from the metadata of the first product in the consolidated data
@@ -152,7 +156,7 @@ class UpdateOrchestrator:
         self.command.stdout.write(f"  - Consolidated into {len(consolidated_data)} unique products.")
         return consolidated_data
 
-    def _process_consolidated_data(self, consolidated_data, resolver, unit_of_work, variation_manager, brand_manager, store_obj):
+    def _process_consolidated_data(self, consolidated_data, resolver, unit_of_work, variation_manager, brand_manager, store_group):
         product_cache = {}
         total = len(consolidated_data)
         for i, (key, data) in enumerate(consolidated_data.items()):
@@ -175,6 +179,18 @@ class UpdateOrchestrator:
 
                 # --- Enrich existing product ---
                 updated = False
+
+                # Update company_skus
+                sku = product_details.get('sku')
+                if sku:
+                    if not existing_product.company_skus:
+                        existing_product.company_skus = {}
+                    if company_name not in existing_product.company_skus:
+                        existing_product.company_skus[company_name] = []
+                    
+                    if sku not in existing_product.company_skus[company_name]:
+                        existing_product.company_skus[company_name].append(sku)
+                        updated = True
 
                 # Merge sizes lists
                 incoming_sizes = set(product_details.get('sizes', []))
@@ -247,7 +263,7 @@ class UpdateOrchestrator:
                 if updated and existing_product.pk:
                     unit_of_work.add_for_update(existing_product)
                 
-                unit_of_work.add_price(existing_product, store_obj, product_details)
+                unit_of_work.add_price(existing_product, store_group, product_details)
             else:
                 normalized_brand_key = product_details.get('normalized_brand')
                 brand_obj = brand_manager.brand_cache.get(normalized_brand_key)
@@ -259,6 +275,7 @@ class UpdateOrchestrator:
                     brand=brand_obj,
                     brand_name_company_pairs=[[product_details.get('brand'), company_name]],
                     barcode=product_details.get('barcode'),
+                    company_skus={company_name: [product_details.get('sku')]} if product_details.get('sku') else {},
                     normalized_name_brand_size=key,
                     size=product_details.get('size'),
                     sizes=product_details.get('sizes', []),
