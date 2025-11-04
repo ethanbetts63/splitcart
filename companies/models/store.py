@@ -180,55 +180,55 @@ class Store(models.Model):
     #     help_text="The contact email for the store."
     #     # IGA: email
     # )
-    online_shop_url = models.URLField(
-        max_length=255,
-        blank=True,
-        help_text="The URL for the store's online shopping portal."
-        # IGA: onlineShopUrl
-    )
-    store_url = models.URLField(
-        max_length=255,
-        blank=True,
-        help_text="The URL for the store's website."
-        # IGA: storeUrl
-    )
-    ecommerce_url = models.URLField(
-        max_length=255,
-        blank=True,
-        help_text="The URL for the store's e-commerce platform."
-        # IGA: ecommerceUrl
-    )
-    record_id = models.CharField(
-        max_length=50,
-        blank=True,
-        help_text="The unique identifier for the store record from the IGA system."
-        # IGA: id
-    )
+    # online_shop_url = models.URLField(
+    #     max_length=255,
+    #     blank=True,
+    #     help_text="The URL for the store's online shopping portal."
+    #     # IGA: onlineShopUrl
+    # )
+    # store_url = models.URLField(
+    #     max_length=255,
+    #     blank=True,
+    #     help_text="The URL for the store's website."
+    #     # IGA: storeUrl
+    # # )
+    # ecommerce_url = models.URLField(
+    #     max_length=255,
+    #     blank=True,
+    #     help_text="The URL for the store's e-commerce platform."
+    #     # IGA: ecommerceUrl
+    # )
+    # record_id = models.CharField(
+    #     max_length=50,
+    #     blank=True,
+    #     help_text="The unique identifier for the store record from the IGA system."
+    #     # IGA: id
+    # )
     # status = models.CharField(
     #     max_length=50,
     #     blank=True,
     #     help_text="The status of the store (e.g., 'Active')."
     #     # IGA: status
     # )
-    store_type = models.CharField(
-        max_length=50,
-        blank=True,
-        help_text="The type of the store (e.g., 'Regular')."
-        # IGA: type
-    )
-    site_id = models.CharField(
-        max_length=50,
-        blank=True,
-        help_text="The ID of the site from the IGA system."
-        # IGA: siteId
-    )
+    # store_type = models.CharField(
+    #     max_length=50,
+    #     blank=True,
+    #     help_text="The type of the store (e.g., 'Regular')."
+    #     # IGA: type
+    # )
+    # site_id = models.CharField(
+    #     max_length=50,
+    #     blank=True,
+    #     help_text="The ID of the site from the IGA system."
+    #     # IGA: siteId
+    # )
     
-    shopping_modes = models.JSONField(
-        null=True,
-        blank=True,
-        help_text="A JSON object storing a list of available shopping modes."
-        # IGA: shoppingModes
-    )
+    # shopping_modes = models.JSONField(
+    #     null=True,
+    #     blank=True,
+    #     help_text="A JSON object storing a list of available shopping modes."
+    #     # IGA: shoppingModes
+    # )
 
     # # Aldi
     # available_customer_service_types = models.JSONField(

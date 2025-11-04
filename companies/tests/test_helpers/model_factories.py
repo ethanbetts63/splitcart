@@ -26,30 +26,13 @@ class StoreFactory(DjangoModelFactory):
     division = factory.SubFactory(DivisionFactory)
     store_id = factory.Faker('random_int', min=1000, max=9999)
     is_active = True
-    is_online_shopable = False
     address_line_1 = factory.Faker('street_address')
-    address_line_2 = factory.Faker('secondary_address')
     suburb = factory.Faker('city')
     state = factory.Faker('state_abbr')
     postcode = factory.Faker('postcode')
     latitude = factory.Faker('latitude')
     longitude = factory.Faker('longitude')
-    trading_hours = {}
-    facilities = {}
-    is_trading = factory.Faker('boolean')
-    retailer_store_id = factory.Faker('random_int', min=1000, max=9999)
-    email = factory.Faker('email')
-    online_shop_url = factory.Faker('url')
-    store_url = factory.Faker('url')
-    ecommerce_url = factory.Faker('url')
-    record_id = factory.Faker('uuid4')
-    status = 'Active'
-    store_type = 'Regular'
-    site_id = factory.Faker('random_int', min=1, max=100)
-    
-    shopping_modes = {}
-    available_customer_service_types = {}
-    alcohol_availability = {}
+
 
 class CategoryFactory(DjangoModelFactory):
     class Meta:
