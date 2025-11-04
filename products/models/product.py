@@ -1,6 +1,4 @@
-from data_management.utils.product_normalizer import ProductNormalizer
 from django.db import models
-from django.db.models import Q
 
 class Product(models.Model):
     """
@@ -76,6 +74,8 @@ class Product(models.Model):
         blank=True,
         help_text="List of [company_name, image_url] tuples for this product."
     )
+    url = models.URLField(max_length=1024, blank=True, null=True)
+    
     brand_name_company_pairs = models.JSONField(
         default=list,
         blank=True,
@@ -88,7 +88,6 @@ class Product(models.Model):
         blank=True,
         help_text="Other products that can be used as substitutes, ranked by a score."
     )
-
 
     def __str__(self):
         size_str = f" ({self.size})" if self.size else ""
