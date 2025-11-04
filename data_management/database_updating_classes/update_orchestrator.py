@@ -212,18 +212,6 @@ class UpdateOrchestrator:
                                     pair[1] = url
                                     updated = True
                                     break
-
-                new_description = product_details.get('description_long') or product_details.get('description_short')
-                if new_description:
-                    if not existing_product.description or len(new_description) < len(existing_product.description):
-                        existing_product.description = new_description
-                        updated = True
-                if not existing_product.country_of_origin and product_details.get('country_of_origin'):
-                    existing_product.country_of_origin = product_details.get('country_of_origin')
-                    updated = True
-                if not existing_product.ingredients and product_details.get('ingredients'):
-                    existing_product.ingredients = product_details.get('ingredients')
-                    updated = True
                 
                 # Update name_variations
                 new_normalized_name = product_details.get('normalized_name')
@@ -276,9 +264,6 @@ class UpdateOrchestrator:
                     sizes=product_details.get('sizes', []),
                     url=product_details.get('url'),
                     image_url_pairs=product_details.get('image_url_pairs', []),
-                    description=(product_details.get('description_long') or product_details.get('description_short')),
-                    country_of_origin=product_details.get('country_of_origin'),
-                    ingredients=product_details.get('ingredients')
                 )
                 if company_name.lower() == 'coles' and not product_details.get('barcode'):
                     new_product.has_no_coles_barcode = True

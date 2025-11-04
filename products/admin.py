@@ -17,7 +17,6 @@ class PriceAdmin(admin.ModelAdmin):
 
     def get_product(self, obj):
         return obj.price_record.product
-    get_product.short_description = 'Product'
     get_product.admin_order_field = 'price_record__product'
 
 @admin.register(PriceRecord)

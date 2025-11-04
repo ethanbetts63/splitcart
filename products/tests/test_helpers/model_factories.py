@@ -12,12 +12,7 @@ class ProductFactory(DjangoModelFactory):
     size = factory.Faker('word')
     barcode = factory.Sequence(lambda n: f'123456789012{n}')
     url = factory.Faker('url')
-    description = factory.Faker('text')
-    country_of_origin = factory.Faker('country')
-    allergens = factory.Faker('text')
-    ingredients = factory.Faker('text')
     normalized_name_brand_size_variations = []
-    # category, substitute_goods and size_variants will be handled post-generation for ManyToMany
 
     @classmethod
     def _create(cls, model_class, *args, **kwargs):

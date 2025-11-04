@@ -15,19 +15,15 @@ class UpdateOrchestratorLogicTests(TestCase):
     def test_enrich_existing_product(self):
         """Test that the enrichment logic within _process_consolidated_data works correctly."""
         # 1. Arrange
-        # An existing product with some missing data and an old description
         existing_product = ProductFactory(
             size='100g',
             barcode=None, 
             url=None, 
-            description='a long existing description'
         )
 
-        # New data from a scrape with a new barcode, a new url, and a shorter description
         product_details = {
             'barcode': '1234567890123',
             'url': 'http://new.url/product',
-            'description_long': 'a short new desc',
             'price_current': 9.99 # Needed for add_price
         }
         consolidated_data = {
@@ -59,8 +55,6 @@ class UpdateOrchestratorLogicTests(TestCase):
         # Check that the product object was updated in memory
         self.assertEqual(existing_product.barcode, '1234567890123')
         self.assertEqual(existing_product.url, 'http://new.url/product')
-        # Description should be updated because the new one is shorter
-        self.assertEqual(existing_product.description, 'a short new desc')
 
         # Check that the collaborators were called correctly
         mock_variation_manager.check_for_variation.assert_called_once_with(

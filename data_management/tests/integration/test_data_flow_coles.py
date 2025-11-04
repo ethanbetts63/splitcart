@@ -21,7 +21,6 @@ RAW_COLES_PRODUCTS = [
     "id": 3942620,
     "name": "Graze Lamb Extra Trim Cutlets",
     "brand": "Coles",
-    "description": "COLES GRAZE LAMB EXTRA TRIM CUTLETS 7 X 5",
     "size": "approx. 300g",
     "availability": False,
     "imageUris": [{"uri": "/3/3942620.jpg"}],
