@@ -27,7 +27,6 @@ class StoreFactory(DjangoModelFactory):
     store_id = factory.Faker('random_int', min=1000, max=9999)
     is_active = True
     is_online_shopable = False
-    phone_number = factory.Faker('phone_number')
     address_line_1 = factory.Faker('street_address')
     address_line_2 = factory.Faker('secondary_address')
     suburb = factory.Faker('city')

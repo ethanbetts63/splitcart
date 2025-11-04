@@ -61,8 +61,6 @@ class DiscoveryStoreUpdater:
             'postcode': store_data.get('postcode'),
             'latitude': store_data.get('latitude'),
             'longitude': store_data.get('longitude'),
-            'phone_number': store_data.get('phone_number'),
-            'is_active': store_data.get('is_active', True),
             'retailer_store_id': store_data.get('retailer_store_id')
         }
 

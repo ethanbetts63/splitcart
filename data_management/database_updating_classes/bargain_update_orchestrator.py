@@ -82,7 +82,6 @@ class BargainUpdater:
                     store=store,
                     cheapest_price=cheapest_price_record.price_entries.first(),
                     most_expensive_price=most_expensive_price_record.price_entries.first(),
-                    percentage_difference=bargain_data['percentage_difference']
                 )
                 bargains_processed += 1
             except (Product.DoesNotExist, Store.DoesNotExist, PriceRecord.DoesNotExist) as e:

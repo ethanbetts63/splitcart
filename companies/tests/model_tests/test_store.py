@@ -35,14 +35,12 @@ class StoreModelTest(TestCase):
         """Test that nullable and blankable fields can be saved as None or empty."""
         store = StoreFactory(
             division=None,
-            phone_number="",
             latitude=None,
             longitude=None,
             trading_hours=None,
             is_trading=None
         )
         self.assertIsNone(store.division)
-        self.assertEqual(store.phone_number, "")
         self.assertIsNone(store.latitude)
         self.assertIsNone(store.longitude)
         self.assertIsNone(store.trading_hours)

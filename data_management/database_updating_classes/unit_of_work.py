@@ -64,6 +64,7 @@ class UnitOfWork:
         try:
             price_record, created = PriceRecord.objects.get_or_create(
                 product=product,
+                scraped_date=scraped_date,
                 price=price_value,
                 was_price=product_details.get('price_was'),
                 unit_price=product_details.get('unit_price'),
@@ -84,9 +85,7 @@ class UnitOfWork:
                 price_record=price_record,
                 store=store,
                 sku=product_details.get('sku'),
-                scraped_date=scraped_date,
                 normalized_key=normalized_key,
-                is_available=product_details.get('is_available'),
                 source='direct_scrape'
             )
         )
@@ -155,8 +154,7 @@ class UnitOfWork:
                 # Stage 4: Update existing products
                 if self.products_to_update:
                     update_fields = [
-                        'barcode', 'url', 'image_url_pairs', 'description', 
-                        'country_of_origin', 'ingredients', 'has_no_coles_barcode', 
+                        'barcode', 'url', 'image_url_pairs', 'has_no_coles_barcode', 
                         'name_variations', 'normalized_name_brand_size_variations', 'sizes'
                     ]
                     Product.objects.bulk_update(list(self.products_to_update), update_fields, batch_size=500)

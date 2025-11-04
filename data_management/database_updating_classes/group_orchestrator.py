@@ -102,11 +102,12 @@ class GroupOrchestrator:
 
     def _get_active_prices_for_store(self, store):
         """
-        Fetches the current, active prices for all products in a given store.
+        Fetches the most recent price for each product in a given store.
         Returns a dictionary mapping {product_id: price}.
         """
-        active_prices = Price.objects.filter(store=store, is_active=True).select_related('price_record', 'price_record__product')
-        return {price.price_record.product_id: price.price_record.price for price in active_prices}
+        # Order by product and then by date descending to get the latest price first for each product
+        latest_prices = Price.objects.filter(store=store).order_by('price_record__product_id', '-price_record__scraped_date').distinct('price_record__product_id')
+        return {price.price_record.product_id: price.price_record.price for price in latest_prices}
 
     def _is_match(self, store_a, store_b):
         """
@@ -165,7 +166,8 @@ class GroupOrchestrator:
         membership = rogue_store.group_membership
         old_group_id = membership.group.id if membership else None
         
-        self.uow.add_membership_to_delete(membership)
+        if membership:
+            self.uow.add_membership_to_delete(membership)
 
         print(f"  Store {rogue_store.store_name} outcast. Attempting to find a new home...")
         self._find_new_home_for_rogue(rogue_store, old_group_id)
@@ -215,10 +217,11 @@ class GroupOrchestrator:
         """
         print(f"  Inferring prices for group {group} from ambassador {new_ambassador.store_name}.")
 
-        # Get the active prices for the ambassador store
-        ambassador_prices = Price.objects.filter(store=new_ambassador, is_active=True).select_related('price_record', 'price_record__product')
+        # Get the most recent prices for the ambassador store
+        ambassador_prices = Price.objects.filter(store=new_ambassador).order_by('price_record__product_id', '-price_record__scraped_date').distinct('price_record__product_id').select_related('price_record', 'price_record__product')
+        
         if not ambassador_prices:
-            print(f"  Warning: Ambassador {new_ambassador.store_name} has no active prices to infer from.")
+            print(f"  Warning: Ambassador {new_ambassador.store_name} has no prices to infer from.")
             return
 
         # Find the stores in the group that were NOT scraped in this run
@@ -242,7 +245,7 @@ class GroupOrchestrator:
                     'product_id': amb_price.price_record.product.id,
                     'store_id': store.id,
                     'price': amb_price.price_record.price,
-                    'date': amb_price.scraped_date
+                    'date': amb_price.price_record.scraped_date.isoformat()
                 }
                 normalizer = PriceNormalizer(price_data=price_data, company=store.company.name)
                 normalized_key = normalizer.get_normalized_key()
@@ -255,9 +258,7 @@ class GroupOrchestrator:
                         price_record=amb_price.price_record,
                         store=store,
                         sku=None,  # SKU is store-specific and not known for inferred prices
-                        scraped_date=amb_price.scraped_date,
                         normalized_key=normalized_key,
-                        is_available=amb_price.is_available,
                         source='inferred_group'
                     )
                 )

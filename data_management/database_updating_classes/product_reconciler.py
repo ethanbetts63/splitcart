@@ -69,11 +69,6 @@ class ProductReconciler:
             if not getattr(canonical, field_name) and getattr(duplicate, field_name):
                 update_fields[field_name] = getattr(duplicate, field_name)
 
-        # Handle description (prefer shorter)
-        if duplicate.description:
-            if not canonical.description or len(duplicate.description) < len(canonical.description):
-                update_fields['description'] = duplicate.description
-
         # Handle name variations by merging
         if duplicate.name_variations:
             merged_variations = canonical.name_variations or []

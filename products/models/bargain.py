@@ -16,4 +16,4 @@ class Bargain(models.Model):
         unique_together = ('product', 'store')
 
     def __str__(self):
-        return f"{self.product.name} at {self.store.name} ({self.percentage_difference:.0f}% cheaper)"
+        return f"{self.product.name} at {self.store.name}"

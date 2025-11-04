@@ -75,15 +75,15 @@ class BargainsGenerator:
             min_price = Decimal(min_price_entry['price'])
             max_price = Decimal(max_price_entry['price'])
 
+
+                # what is the point of this line? 
             if min_price > 0 and max_price > (min_price * Decimal('1.5')):
-                percentage_difference = ((max_price - min_price) / min_price) * Decimal('100')
 
                 bargains_data.append({
                     'product_id': product_id,
                     'store_id': min_price_entry['store_id'],
                     'cheapest_price_record_id': min_price_entry['price_record_id'],
                     'most_expensive_price_record_id': max_price_entry['price_record_id'],
-                    'percentage_difference': float(percentage_difference)
                 })
                 bargain_count += 1
 
