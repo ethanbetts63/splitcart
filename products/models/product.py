@@ -25,13 +25,7 @@ class Product(models.Model):
         related_name='products',
         help_text="Link to the canonical ProductBrand entry."
     )
-    normalized_name = models.CharField(max_length=255, db_index=True, blank=True, help_text="The normalized version of the product name.")
-    
-    normalized_name_variations = models.JSONField(
-        default=list,
-        blank=True,
-        help_text="A list of just the normalized names from the name_variations list."
-    )
+
     normalized_name_brand_size = models.CharField(
         max_length=255,
         unique=True,
@@ -85,16 +79,6 @@ class Product(models.Model):
         help_text="List of [company_name, image_url] tuples for this product."
     )
     url = models.URLField(max_length=1024, blank=True, null=True)
-    # description = models.TextField(blank=True, null=True)
-    # country_of_origin = models.CharField(max_length=100, blank=True, null=True)
-    # allergens = models.TextField(blank=True, null=True)
-    # ingredients = models.TextField(blank=True, null=True)
-    # health_star_rating = models.FloatField(null=True, blank=True)
-    # average_user_rating = models.FloatField(null=True, blank=True)
-    # rating_count = models.IntegerField(null=True, blank=True)
-    # unit_of_sale = models.CharField(max_length=50, blank=True, null=True)
-    # dietary_and_lifestyle_tags = models.JSONField(default=list, blank=True)
-    # is_age_restricted = models.BooleanField(default=False)
 
     brand_name_company_pairs = models.JSONField(
         default=list,
@@ -126,7 +110,6 @@ class Product(models.Model):
         normalizer = ProductNormalizer(product_data)
         self.sizes = normalizer.standardized_sizes
         self.normalized_name_brand_size = normalizer.get_normalized_name_brand_size_string()
-        self.normalized_name = normalizer.cleaned_name
 
     def save(self, *args, **kwargs):
         self.clean()  # Ensure data is cleaned and normalized_name_brand_size is set

@@ -19,14 +19,20 @@ class LocalLvl2SubGenerator:
             
             groups = []
             for p in product_list:
-                if not p.get('normalized_name'): continue
+                p_name = p.get('name', '').lower().strip()
+                if not p_name: continue
+
                 placed = False
                 for group in groups:
                     rep = group[0]
-                    score = fuzz.token_set_ratio(p['normalized_name'], rep['normalized_name'])
+                    rep_name = rep.get('name', '').lower().strip()
+                    score = fuzz.token_set_ratio(p_name, rep_name)
                     if 90 < score < 100:
-                        group.append(p); placed = True; break
-                if not placed: groups.append([p])
+                        group.append(p)
+                        placed = True
+                        break
+                if not placed:
+                    groups.append([p])
 
             for group in groups:
                 if len(group) > 1:
