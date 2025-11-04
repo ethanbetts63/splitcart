@@ -27,9 +27,6 @@ class Product(models.Model):
     )
     normalized_name = models.CharField(max_length=255, db_index=True, blank=True, help_text="The normalized version of the product name.")
     
-    # TODO: This field should be populated with the normalized versions of the names
-    # in `name_variations` to make substitution matching more efficient.
-    # This avoids having to re-normalize them on the fly every time.
     normalized_name_variations = models.JSONField(
         default=list,
         blank=True,

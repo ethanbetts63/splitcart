@@ -39,24 +39,24 @@ class Store(models.Model):
         # IGA: storeId
         # Woolworths: StoreNo
     )
-    is_active = models.BooleanField(
-        default=True,
-        help_text="True if the store is currently being scraped."
-    )
-    is_online_shopable = models.BooleanField(
-        default=False,
-        help_text="True if the store has a functioning online shop that can be scraped."
-    )
-    phone_number = models.CharField(
-        max_length=20,
-        blank=True,
-        null=True,
-        help_text="The contact phone number for the store."
-        # Coles: phone
-        # Aldi: publicPhoneNumber
-        # IGA: phone
-        # Woolworths: Phone
-    )
+    # is_active = models.BooleanField(
+    #     default=True,
+    #     help_text="True if the store is currently being scraped."
+    # )
+    # is_online_shopable = models.BooleanField(
+    #     default=False,
+    #     help_text="True if the store has a functioning online shop that can be scraped."
+    # )
+    # phone_number = models.CharField(
+    #     max_length=20,
+    #     blank=True,
+    #     null=True,
+    #     help_text="The contact phone number for the store."
+    #     # Coles: phone
+    #     # Aldi: publicPhoneNumber
+    #     # IGA: phone
+    #     # Woolworths: Phone
+    # )
     address_line_1 = models.CharField(
         max_length=255,
         blank=True,
@@ -67,14 +67,14 @@ class Store(models.Model):
         # IGA: address
         # Woolworths: AddressLine1
     )
-    address_line_2 = models.CharField(
-        max_length=255,
-        blank=True,
-        null=True,
-        help_text="The second line of the store's address."
-        # Aldi: address.address2
-        # Woolworths: AddressLine2
-    )
+    # address_line_2 = models.CharField(
+    #     max_length=255,
+    #     blank=True,
+    #     null=True,
+    #     help_text="The second line of the store's address."
+    #     # Aldi: address.address2
+    #     # Woolworths: AddressLine2
+    # )
     suburb = models.CharField(
         max_length=100,
         blank=True,
@@ -129,27 +129,27 @@ class Store(models.Model):
         # IGA: longitude
         # Woolworths: Longitude
     )
-    trading_hours = models.JSONField(
-        null=True,
-        blank=True,
-        help_text="A JSON object storing the store's trading hours."
-        # IGA: hours and hoursDay
-        # Woolworths: TradingHours
-    )
-    facilities = models.JSONField(
-        null=True,
-        blank=True,
-        help_text="A JSON object storing a list of store facilities."
-        # Aldi: facilities
-        # Woolworths: Facilities
-    )
-    is_trading = models.BooleanField(
-        null=True,
-        blank=True,
-        help_text="Indicates if the store is currently trading."
-        # Coles: isTrading
-        # Aldi: isOpenNow
-    )
+    # trading_hours = models.JSONField(
+    #     null=True,
+    #     blank=True,
+    #     help_text="A JSON object storing the store's trading hours."
+    #     # IGA: hours and hoursDay
+    #     # Woolworths: TradingHours
+    # )
+    # facilities = models.JSONField(
+    #     null=True,
+    #     blank=True,
+    #     help_text="A JSON object storing a list of store facilities."
+    #     # Aldi: facilities
+    #     # Woolworths: Facilities
+    # )
+    # is_trading = models.BooleanField(
+    #     null=True,
+    #     blank=True,
+    #     help_text="Indicates if the store is currently trading."
+    #     # Coles: isTrading
+    #     # Aldi: isOpenNow
+    # )
     last_updated = models.DateTimeField(
         auto_now=True,
         help_text="The date and time when the stores details were last updated."
@@ -159,11 +159,11 @@ class Store(models.Model):
         blank=True,
         help_text="The date and time when the store's products were last scraped."
     )
-    scheduled_at = models.DateTimeField(
-        null=True,
-        blank=True,
-        help_text="The date and time when the store was last scheduled for scraping."
-    )
+    # scheduled_at = models.DateTimeField(
+    #     null=True,
+    #     blank=True,
+    #     help_text="The date and time when the store was last scheduled for scraping."
+    # )
 
     # Company-specific fields
     
@@ -175,11 +175,11 @@ class Store(models.Model):
         help_text="The retailer-specific identifier for the store, if available."
         # IGA: retailerStoreId
     )
-    email = models.EmailField(
-        blank=True,
-        help_text="The contact email for the store."
-        # IGA: email
-    )
+    # email = models.EmailField(
+    #     blank=True,
+    #     help_text="The contact email for the store."
+    #     # IGA: email
+    # )
     online_shop_url = models.URLField(
         max_length=255,
         blank=True,
@@ -204,12 +204,12 @@ class Store(models.Model):
         help_text="The unique identifier for the store record from the IGA system."
         # IGA: id
     )
-    status = models.CharField(
-        max_length=50,
-        blank=True,
-        help_text="The status of the store (e.g., 'Active')."
-        # IGA: status
-    )
+    # status = models.CharField(
+    #     max_length=50,
+    #     blank=True,
+    #     help_text="The status of the store (e.g., 'Active')."
+    #     # IGA: status
+    # )
     store_type = models.CharField(
         max_length=50,
         blank=True,
@@ -230,19 +230,19 @@ class Store(models.Model):
         # IGA: shoppingModes
     )
 
-    # Aldi
-    available_customer_service_types = models.JSONField(
-        null=True,
-        blank=True,
-        help_text="A JSON object storing a list of available customer service types."
-        # Aldi: availableCustomerServiceTypes
-    )
-    alcohol_availability = models.JSONField(
-        null=True,
-        blank=True,
-        help_text="A JSON object storing a list of available alcohol types."
-        # Aldi: alcoholAvailability
-    )
+    # # Aldi
+    # available_customer_service_types = models.JSONField(
+    #     null=True,
+    #     blank=True,
+    #     help_text="A JSON object storing a list of available customer service types."
+    #     # Aldi: availableCustomerServiceTypes
+    # )
+    # alcohol_availability = models.JSONField(
+    #     null=True,
+    #     blank=True,
+    #     help_text="A JSON object storing a list of available alcohol types."
+    #     # Aldi: alcoholAvailability
+    # )
 
     class Meta:
         unique_together = ('company', 'store_id')

@@ -34,11 +34,11 @@ class ProductSubstitution(models.Model):
         db_index=True,
         help_text="Confidence score from 0.0 to 1.0, indicating the quality of the match."
     )
-    source = models.CharField(
-        max_length=50, 
-        help_text="How this substitution was generated (e.g., 'heuristic_v1', 'manual').",
-        default='unknown'
-    )
+    # source = models.CharField(
+    #     max_length=50, 
+    #     help_text="How this substitution was generated (e.g., 'heuristic_v1', 'manual').",
+    #     default='unknown'
+    # )
 
     class Meta:
         # Ensure we don't have duplicate substitution entries.

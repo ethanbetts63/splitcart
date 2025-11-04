@@ -1,5 +1,6 @@
 from django.db import models
 
+# needs a date scraped field. 
 class PriceRecord(models.Model):
     """
     Represents a single, unique combination of price details for a product.

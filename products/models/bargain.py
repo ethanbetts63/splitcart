@@ -9,7 +9,7 @@ class Bargain(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='bargains')
     cheapest_price = models.ForeignKey(Price, on_delete=models.CASCADE, related_name='bargain_as_cheapest')
     most_expensive_price = models.ForeignKey(Price, on_delete=models.CASCADE, related_name='bargain_as_most_expensive')
-    percentage_difference = models.FloatField()
+    # percentage_difference = models.FloatField()
     super_categories = models.ManyToManyField(SuperCategory, related_name='bargains', blank=True)
 
     class Meta:
