@@ -64,7 +64,7 @@ class ProductReconciler:
         update_fields = {}
 
         # Handle simple fields that can be overwritten if blank
-        fields_to_check = ['url', 'image_url_pairs', 'country_of_origin', 'ingredients']
+        fields_to_check = ['url', 'image_url_pairs']
         for field_name in fields_to_check:
             if not getattr(canonical, field_name) and getattr(duplicate, field_name):
                 update_fields[field_name] = getattr(duplicate, field_name)
@@ -87,18 +87,18 @@ class ProductReconciler:
 
         # --- De-duplicate and Move Prices ---
         # Get all prices associated with the duplicate product
-        prices_to_move = Price.objects.filter(price_record__product=duplicate).select_related('price_record')
+        prices_to_move = Price.objects.filter(price_record__product=duplicate).select_related('price_record', 'store')
 
         # Get existing price keys for the canonical product to avoid creating duplicates
         canonical_price_keys = set(
-            (p.store_id, p.scraped_date) for p in Price.objects.filter(price_record__product=canonical)
+            (p.store_id, p.price_record.scraped_date) for p in Price.objects.filter(price_record__product=canonical)
         )
 
         moved_count = 0
         deleted_count = 0
 
         for price in prices_to_move:
-            price_key = (price.store_id, price.scraped_date)
+            price_key = (price.store_id, price.price_record.scraped_date)
             if price_key not in canonical_price_keys:
                 # This price can be moved.
                 old_price_record = price.price_record
@@ -106,6 +106,7 @@ class ProductReconciler:
                 # Find or create a new PriceRecord for the canonical product with the same details.
                 new_price_record, created = PriceRecord.objects.get_or_create(
                     product=canonical,
+                    scraped_date=old_price_record.scraped_date,
                     price=old_price_record.price,
                     was_price=old_price_record.was_price,
                     unit_price=old_price_record.unit_price,
@@ -122,7 +123,7 @@ class ProductReconciler:
                     'product_id': canonical.id,
                     'store_id': price.store_id,
                     'price': new_price_record.price,
-                    'date': price.scraped_date
+                    'date': new_price_record.scraped_date.isoformat()
                 }
                 normalizer = PriceNormalizer(price_data=price_data, company=price.store.company.name)
                 price.normalized_key = normalizer.get_normalized_key()

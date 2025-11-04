@@ -81,17 +81,10 @@ class ProductModelTest(TestCase):
             size="",
             barcode=None,
             url=None,
-            description=None,
-            country_of_origin=None,
-            allergens=None,
-            ingredients=None
+
         )
         self.assertIsNone(product.brand)
         self.assertEqual(product.sizes, [])
         self.assertIsNone(product.barcode)
         self.assertEqual(product.image_url_pairs, [])
         self.assertIsNone(product.url)
-        self.assertIsNone(product.description)
-        self.assertIsNone(product.country_of_origin)
-        self.assertIsNone(product.allergens)
-        self.assertIsNone(product.ingredients)

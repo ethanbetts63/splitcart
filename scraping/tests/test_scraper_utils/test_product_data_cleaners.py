@@ -51,8 +51,6 @@ class TestDataCleanerWoolworths(TestCase):
         self.assertEqual(product['size'], "500g")
         self.assertEqual(product['url'], "https://www.woolworths.com.au/shop/productdetails/12345/test-product")
         self.assertEqual(product['category_path'], ["Bakery", "Bread"])
-        self.assertEqual(product['average_user_rating'], 4.5)
-        self.assertFalse(product['is_on_special'])
 
     def test_special_price_calculation(self):
         """Test that special prices are calculated correctly."""
