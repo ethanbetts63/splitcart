@@ -10,14 +10,19 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Price)
 class PriceAdmin(admin.ModelAdmin):
-    list_display = ('get_product', 'store', 'scraped_date', 'is_active', 'source')
+    list_display = ('get_product', 'store', 'get_scraped_date', 'source')
     autocomplete_fields = ('price_record', 'store')
-    list_filter = ('store', 'scraped_date', 'is_active', 'source')
+    list_filter = ('store', 'price_record__scraped_date', 'source')
     search_fields = ('price_record__product__name', 'store__store_name')
 
     def get_product(self, obj):
         return obj.price_record.product
     get_product.admin_order_field = 'price_record__product'
+
+    def get_scraped_date(self, obj):
+        return obj.price_record.scraped_date
+    get_scraped_date.admin_order_field = 'price_record__scraped_date'
+    get_scraped_date.short_description = 'Scraped Date'
 
 @admin.register(PriceRecord)
 class PriceRecordAdmin(admin.ModelAdmin):
