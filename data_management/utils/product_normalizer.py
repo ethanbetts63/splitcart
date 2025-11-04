@@ -5,7 +5,7 @@ try:
 except (ImportError, SyntaxError):
     BRAND_NAME_TRANSLATIONS = {}
 try:
-    from data_management.data.product_translation_table import PRODUCT_NAME_TRANSLATIONS
+    from data_management.data.product_normalized_name_brand_size_translation_table import PRODUCT_NAME_TRANSLATIONS
 except (ImportError, SyntaxError):
     PRODUCT_NAME_TRANSLATIONS = {}
 
@@ -243,5 +243,13 @@ class ProductNormalizer:
         cleaned_string = re.sub(r'[^a-z0-9\s]', '', cleaned_string)
 
         # 3. Split into words, sort alphabetically, and join to create the final key.
-        words = sorted(list(set(cleaned_string.split())))
-        return words
+        word_list = sorted(list(set(cleaned_string.split())))
+        generated_key = "".join(word_list)
+
+        # 4. Look for a translation for the generated key.
+        canonical_key = PRODUCT_NAME_TRANSLATIONS.get(generated_key)
+    
+        if canonical_key:
+            return canonical_key
+        else:
+            return generated_key

@@ -1,5 +1,5 @@
 from products.models import Product, Price, PriceRecord
-from data_management.data.product_translation_table import PRODUCT_NAME_TRANSLATIONS
+from data_management.data.product_normalized_name_brand_size_translation_table import PRODUCT_NAME_TRANSLATIONS
 from data_management.utils.price_normalizer import PriceNormalizer
 
 class ProductReconciler:
