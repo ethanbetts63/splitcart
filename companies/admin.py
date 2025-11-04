@@ -3,6 +3,11 @@ from .models.company import Company
 from .models.division import Division
 from .models.store import Store
 from .models.category import Category
+from .models.store_group import StoreGroup
+
+@admin.register(StoreGroup)
+class StoreGroupAdmin(admin.ModelAdmin):
+    search_fields = ('name',)
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
