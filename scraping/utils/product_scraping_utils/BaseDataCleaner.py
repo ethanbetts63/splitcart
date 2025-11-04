@@ -116,6 +116,10 @@ class BaseDataCleaner(ABC):
              product['barcode'] = normalizer.get_cleaned_barcode()
 
         product['scraped_date'] = self.timestamp.date().isoformat()
+        
+        # Remove keys with None values to optimize file size
+        product = {k: v for k, v in product.items() if v is not None}
+        
         return product
 
     def _calculate_price_info(self, current_price: float | None, was_price: float | None) -> dict:
