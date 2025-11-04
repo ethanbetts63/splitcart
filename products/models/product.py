@@ -71,7 +71,11 @@ class Product(models.Model):
         default=False,
         help_text="Set to True if Coles has been scraped and no barcode was found."
     )
-
+    image_url_pairs = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="List of [company_name, image_url] tuples for this product."
+    )
     brand_name_company_pairs = models.JSONField(
         default=list,
         blank=True,
