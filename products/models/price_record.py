@@ -1,6 +1,5 @@
 from django.db import models
 
-# needs a date scraped field. 
 class PriceRecord(models.Model):
     """
     Represents a single, unique combination of price details for a product.
@@ -11,6 +10,7 @@ class PriceRecord(models.Model):
         on_delete=models.CASCADE,
         related_name="price_records"
     )
+    scraped_date = models.DateField()
     price = models.DecimalField(
         max_digits=10,
         decimal_places=2
@@ -41,7 +41,7 @@ class PriceRecord(models.Model):
 
     class Meta:
         unique_together = [
-            'product', 'price', 'was_price', 'unit_price',
+            'product', 'scraped_date', 'price', 'was_price', 'unit_price',
             'unit_of_measure', 'per_unit_price_string', 'is_on_special'
         ]
         verbose_name = "Price Record"

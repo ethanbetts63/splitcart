@@ -45,18 +45,18 @@ class Price(models.Model):
     normalized_key = models.CharField(max_length=255, unique=True, db_index=True)
 
     class Meta:
-        ordering = ['-scraped_date']
+        ordering = ['-price_record__scraped_date']
 
     def __str__(self):
-        return f"{self.price_record.product.name} at {self.store.store_name} on {self.scraped_date}"
+        return f"{self.price_record.product.name} at {self.store.store_name} on {self.price_record.scraped_date}"
 
     def save(self, *args, **kwargs):
-        if self.price_record and self.price_record.product_id and self.store_id and self.price_record.price and self.scraped_date:
+        if self.price_record and self.price_record.product_id and self.store_id and self.price_record.price and self.price_record.scraped_date:
             price_data = {
                 'product_id': self.price_record.product_id,
                 'store_id': self.store_id,
                 'price': self.price_record.price,
-                'date': self.scraped_date.isoformat()
+                'date': self.price_record.scraped_date.isoformat()
             }
             normalizer = PriceNormalizer(price_data=price_data, company=self.store.company.name)
             self.normalized_key = normalizer.get_normalized_key()
