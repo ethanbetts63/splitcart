@@ -27,7 +27,7 @@ def get_product_prices_by_store(company_name=None, state=None):
         return {}
 
     print(f"    Fetching all products for stores in company {company_name}...")
-    stores_query = Store.objects.filter(company=company, is_active=True)
+    stores_query = Store.objects.filter(company=company)
     if state:
         print(f"    Filtering for state: {state}...")
         stores_query = stores_query.filter(state__iexact=state)

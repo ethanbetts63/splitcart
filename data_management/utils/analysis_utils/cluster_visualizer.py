@@ -27,7 +27,6 @@ class ClusterMapGenerator(BaseMapGenerator):
 
         stores = Store.objects.filter(
             company=company_obj, 
-            is_active=True, 
             latitude__isnull=False, 
             longitude__isnull=False
         ).select_related('group_membership__group')
