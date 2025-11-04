@@ -80,7 +80,7 @@ class UpdateOrchestrator:
             
             brand_manager.commit()
 
-            if unit_of_work.commit(consolidated_data, product_cache, resolver, store_group):
+            if unit_of_work.commit(consolidated_data, product_cache, product_resolver, store_group):
                 self.processed_files.append(file_path)
 
                 # Get the scraped_date from the metadata of the first product in the consolidated data
