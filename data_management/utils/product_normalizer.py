@@ -41,7 +41,7 @@ class ProductNormalizer:
         self.cleaned_brand = brand_info.get('name', self.brand)
 
         self.raw_sizes = self._extract_all_sizes()
-        self.cleaned_name = self._get_cleaned_name()
+
         self.standardized_sizes = self._get_standardized_sizes()
 
     @staticmethod
@@ -143,47 +143,6 @@ class ProductNormalizer:
         else:
             return normalized_brand_str
 
-    def _get_cleaned_name(self) -> str:
-        name_to_clean = self.name
-
-        # Use the normalized_brand_name to look up details in the refactored cache.
-        brand_details = self.brand_cache.get(self.normalized_brand_name)
-
-        if not brand_details:
-            # If no details found, we can't reliably strip the brand.
-            # Fallback to basic cleaning.
-            name_to_clean = re.sub(r'\s+', ' ', name_to_clean).strip()
-            return name_to_clean
-
-        # The human-readable name from the cache.
-        brand_name = brand_details.get('name')
-        # The list of variation tuples, e.g., [('Coke', 'Coles'), ('Coca Cola', 'Woolworths')]
-        variations = brand_details.get('name_variations', [])
-
-        # Compile a list of all possible brand variations to remove.
-        strings_to_remove = [brand_name, self.brand] + variations
-        
-        # Remove duplicates and None/empty strings, sort by length descending.
-        unique_strings_to_remove = sorted(list(set(s for s in strings_to_remove if s)), key=len, reverse=True)
-
-        # Find the first variation that exists in the name and remove it.
-        for s in unique_strings_to_remove:
-            pattern = r'(\b' + re.escape(s) + r'\b)'
-            if re.search(pattern, name_to_clean, re.IGNORECASE):
-                name_to_clean = re.sub(pattern, '', name_to_clean, flags=re.IGNORECASE).strip()
-                break
-        
-        # Final cleanup of extra spaces and size strings.
-        if self.raw_sizes:
-            for s in self.raw_sizes:
-                name_to_clean = re.sub(re.escape(s), '', name_to_clean, flags=re.IGNORECASE).strip()
-
-        units = ['g', 'gram', 'grams', 'kg', 'kilogram', 'kilograms', 'ml', 'millilitre', 'millilitres', 'l', 'litre', 'litres', 'pk', 'pack', 'each', 'ea']
-        size_pattern = r'\b\d+\.?\d*\s*(' + '|'.join(units) + r')s?\b'
-        name_to_clean = re.sub(size_pattern, '', name_to_clean, flags=re.IGNORECASE)
-        
-        name_to_clean = re.sub(r'\s+', ' ', name_to_clean).strip()
-        return name_to_clean
 
     def _get_standardized_sizes(self) -> list:
         from data_management.utils.size_comparer import SizeComparer
@@ -270,28 +229,13 @@ class ProductNormalizer:
         """
         return self.normalized_brand_name
 
-    def get_fully_normalized_name(self) -> str:
-        """
-        Returns a fully normalized version of the cleaned name, suitable for similarity matching.
-        This version is lowercased and has punctuation removed, but retains spaces.
-        """
-        value = self.cleaned_name
-        # Normalize unicode characters, remove accents, etc.
-        value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('utf-8')
-        value = value.lower()
-        # Remove all non-alphanumeric characters except for whitespace
-        value = re.sub(r'[^a-z0-9\s]', '', value)
-        # Condense multiple whitespace characters into a single space
-        value = re.sub(r'\s+', ' ', value).strip()
-        return value
-
     def get_normalized_name_brand_size_string(self) -> str:
         """ 
         Public method to get the final normalized string for de-duplication.
         This uses a "bag of words" approach to be robust against data entry errors.
         """
         # 1. Get the full string together with spaces intact.
-        combined_string = f"{self.cleaned_name} {self.cleaned_brand} {' '.join(self.standardized_sizes)}"
+        combined_string = f"{self.name} {self.cleaned_brand} {' '.join(self.standardized_sizes)}"
 
         # 2. Clean the string to remove punctuation and standardize case.
         cleaned_string = unicodedata.normalize('NFKD', combined_string).encode('ascii', 'ignore').decode('utf-8')
@@ -300,4 +244,4 @@ class ProductNormalizer:
 
         # 3. Split into words, sort alphabetically, and join to create the final key.
         words = sorted(list(set(cleaned_string.split())))
-        return "".join(words)
+        return words
