@@ -229,11 +229,7 @@ class UpdateOrchestrator:
                                     updated = True
                                     break
                 
-                # Update name_variations
-                new_normalized_name = product_details.get('normalized_name')
-                if new_normalized_name and new_normalized_name not in existing_product.name_variations:
-                    existing_product.name_variations.append(new_normalized_name)
-                    updated = True
+
 
                 if company_name.lower() == 'coles' and not product_details.get('barcode') and not existing_product.has_no_coles_barcode:
                     existing_product.has_no_coles_barcode = True
@@ -270,8 +266,7 @@ class UpdateOrchestrator:
 
                 new_product = Product(
                     name=product_details.get('name', ''),
-                    normalized_name=product_details.get('normalized_name'),
-                    name_variations=[product_details.get('normalized_name')],
+
                     brand=brand_obj,
                     brand_name_company_pairs=[[product_details.get('brand'), company_name]],
                     barcode=product_details.get('barcode'),

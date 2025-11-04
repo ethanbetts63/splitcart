@@ -1,23 +1,33 @@
-
 import os
 import json
 from django.core.management.base import BaseCommand
-from data_management.config import PRODUCT_INBOX_PATH
+from django.conf import settings
 from data_management.utils.product_normalizer import ProductNormalizer
 
 class Command(BaseCommand):
     help = 'Recalculates normalized_name_brand_size and cleans up obsolete fields in JSONL files.'
 
-    def handle(self, *args, **options):
-        self.stdout.write(self.style.SUCCESS("--- Starting JSONL file recalculation and cleanup ---"))
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--directory',
+            type=str,
+            help='The absolute path to the directory containing .jsonl files to process.'
+        )
 
-        if not os.path.exists(PRODUCT_INBOX_PATH):
-            self.stdout.write(self.style.WARNING(f"Product inbox not found at: {PRODUCT_INBOX_PATH}"))
+    def handle(self, *args, **options):
+        directory_path = options['directory']
+        if not directory_path:
+            directory_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'product_inbox')
+
+        self.stdout.write(self.style.SUCCESS(f"--- Starting JSONL file processing in: {directory_path} ---"))
+
+        if not os.path.exists(directory_path):
+            self.stdout.write(self.style.WARNING("Directory not found."))
             return
 
-        for filename in os.listdir(PRODUCT_INBOX_PATH):
+        for filename in os.listdir(directory_path):
             if filename.endswith('.jsonl'):
-                file_path = os.path.join(PRODUCT_INBOX_PATH, filename)
+                file_path = os.path.join(directory_path, filename)
                 self.stdout.write(f"Processing file: {file_path}")
                 
                 processed_lines = []
@@ -72,4 +82,4 @@ class Command(BaseCommand):
                 except Exception as e:
                     self.stdout.write(self.style.ERROR(f"Could not process file {filename}. Error: {e}"))
 
-        self.stdout.write(self.style.SUCCESS("--- JSONL file cleanup complete ---"))
+        self.stdout.write(self.style.SUCCESS("--- JSONL file processing complete ---"))

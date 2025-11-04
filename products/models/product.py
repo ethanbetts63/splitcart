@@ -12,11 +12,7 @@ class Product(models.Model):
         db_index=True,
         help_text="The full name of the product as seen in the store."
     )
-    name_variations = models.JSONField(
-        default=list,
-        blank=True,
-        help_text="A list of normalized name strings for discovered variations."
-    )
+
     brand = models.ForeignKey(
         'ProductBrand',
         on_delete=models.SET_NULL,
@@ -25,7 +21,7 @@ class Product(models.Model):
         related_name='products',
         help_text="Link to the canonical ProductBrand entry."
     )
-
+    # The primary and unique normalized combination of name, brand, and size. 
     normalized_name_brand_size = models.CharField(
         max_length=255,
         unique=True,
@@ -34,6 +30,8 @@ class Product(models.Model):
         db_index=True,
         help_text="Normalized combination of name, brand, and size for uniqueness."
     )
+    # If after being normalized a products normalized_name_brand_size is equal to any of these it is translated to the primary version above.
+    # This allows the update orchestrate to recognize a more name variations of a product as the same product.
     normalized_name_brand_size_variations = models.JSONField(
         default=list,
         blank=True,
@@ -73,12 +71,6 @@ class Product(models.Model):
         default=False,
         help_text="Set to True if Coles has been scraped and no barcode was found."
     )
-    image_url_pairs = models.JSONField(
-        default=list,
-        blank=True,
-        help_text="List of [company_name, image_url] tuples for this product."
-    )
-    url = models.URLField(max_length=1024, blank=True, null=True)
 
     brand_name_company_pairs = models.JSONField(
         default=list,
@@ -93,28 +85,7 @@ class Product(models.Model):
         help_text="Other products that can be used as substitutes, ranked by a score."
     )
 
-    class Meta:
-        pass
-
-    def clean(self):
-        super().clean()
-        # Use the ProductNormalizer class to generate normalized fields.
-        # The normalizer expects a dictionary, so we create one from the model's fields.
-        brand_name = self.brand.name if self.brand else None
-        product_data = {
-            'name': self.name,
-            'brand': brand_name,
-            'size': self.size,  # Map model's 'size' field to 'size'
-            'barcode': self.barcode,
-        }
-        normalizer = ProductNormalizer(product_data)
-        self.sizes = normalizer.standardized_sizes
-        self.normalized_name_brand_size = normalizer.get_normalized_name_brand_size_string()
-
-    def save(self, *args, **kwargs):
-        self.clean()  # Ensure data is cleaned and normalized_name_brand_size is set
-        super().save(*args, **kwargs)
 
     def __str__(self):
-        sizes_str = ', '.join(self.sizes) if self.sizes else ''
-        return f"{self.brand} {self.name} ({sizes_str})"
+        size_str = f" ({self.size})" if self.size else ""
+        return f"{self.brand} {self.name}{size_str}"

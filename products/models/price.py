@@ -16,18 +16,6 @@ class Price(models.Model):
         on_delete=models.PROTECT,
         related_name="prices"
     )
-
-    
-    # is_available = models.BooleanField(
-    #     null=True,
-    #     default=None,
-    #     help_text="Whether the product was in stock at the time of scraping."
-    # )
-    # is_active = models.BooleanField(
-    #     default=True,
-    #     db_index=True,
-    #     help_text="Whether this is the latest price record for the product at this store."
-    # )
     
     SOURCE_CHOICES = [
         ('direct_scrape', 'Direct Scrape'),
@@ -39,9 +27,7 @@ class Price(models.Model):
         default='direct_scrape',
         help_text="How the price was obtained: from a direct scrape or inferred from a group ambassador."
     )
-    
-    # scraped_date = models.DateField()
-    
+        
     normalized_key = models.CharField(max_length=255, unique=True, db_index=True)
 
     class Meta:

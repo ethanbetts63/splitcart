@@ -244,7 +244,7 @@ class ProductNormalizer:
 
         # 3. Split into words, sort alphabetically, and join to create the final key.
         word_list = sorted(list(set(cleaned_string.split())))
-        generated_key = "".join(word_list)
+        generated_key = " ".join(word_list)
 
         # 4. Look for a translation for the generated key.
         canonical_key = PRODUCT_NAME_TRANSLATIONS.get(generated_key)

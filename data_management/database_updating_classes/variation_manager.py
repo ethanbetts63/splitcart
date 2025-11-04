@@ -19,13 +19,7 @@ class VariationManager:
 
         if cleaned_incoming_name and existing_name and cleaned_incoming_name.lower() != existing_name.lower():
             updated = False
-            if not existing_product.name_variations:
-                existing_product.name_variations = []
-            
-            new_variation_entry = [cleaned_incoming_name, company_name]
-            if new_variation_entry not in existing_product.name_variations:
-                existing_product.name_variations.append(new_variation_entry)
-                updated = True
+
 
             variation_normalized_string = incoming_product_details.get('normalized_name_brand_size')
             if variation_normalized_string:
