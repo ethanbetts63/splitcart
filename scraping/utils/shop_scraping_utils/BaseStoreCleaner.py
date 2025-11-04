@@ -62,6 +62,7 @@ class BaseStoreCleaner(ABC):
     def _transform_store(self) -> dict:
         """
         Abstract method to be implemented by subclasses.
+        """
         raise NotImplementedError
 
     def _clean_postcode(self, postcode: str) -> str | None:
