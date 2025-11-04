@@ -51,12 +51,10 @@ class Price(models.Model):
         return f"{self.price_record.product.name} at {self.store.store_name} on {self.price_record.scraped_date}"
 
     def save(self, *args, **kwargs):
-        if self.price_record and self.price_record.product_id and self.store_id and self.price_record.price and self.price_record.scraped_date:
+        if self.price_record and self.price_record.product_id and self.store_id:
             price_data = {
                 'product_id': self.price_record.product_id,
                 'store_id': self.store_id,
-                'price': self.price_record.price,
-                'date': self.price_record.scraped_date.isoformat()
             }
             normalizer = PriceNormalizer(price_data=price_data, company=self.store.company.name)
             self.normalized_key = normalizer.get_normalized_key()

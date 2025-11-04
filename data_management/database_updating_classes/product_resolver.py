@@ -16,7 +16,6 @@ class ProductResolver:
         self._build_global_caches()
         # Initialize contextual caches to empty dicts
         self.sku_cache = {}
-        self.price_cache = {}
 
     def _build_global_caches(self):
         """
@@ -64,10 +63,6 @@ class ProductResolver:
             # Key is just the sku, as the cache is already filtered by company/store
             self.sku_cache[price.sku] = price.price_record.product
         self.command.stdout.write(f"  - Built cache for {len(self.sku_cache)} contextual SKUs.")
-
-        # Cache 5: Existing Prices (contextual)
-        self.price_cache = {p.normalized_key for p in relevant_prices if p.normalized_key}
-        self.command.stdout.write(f"  - Built cache for {len(self.price_cache)} contextual existing prices.")
 
     def find_match(self, product_details, price_history):
         """

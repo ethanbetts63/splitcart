@@ -13,6 +13,7 @@ class UnitOfWork:
         self.resolver = resolver
         self.new_products_to_process = []
         self.prices_to_create = []
+        self.prices_to_update = set()
         self.products_to_update = set()
         self.brands_to_update = set()
         self.groups_to_update = []
@@ -33,36 +34,20 @@ class UnitOfWork:
         if not scraped_date_str or not price_value:
             return
 
-        # Truncate timestamp to just the date part (YYYY-MM-DD)
-        scraped_date_str = scraped_date_str[:10]
-
-        # Generate the normalized_key first to check against the cache
-        price_data = {
+        # Generate the normalized_key for the Price object (product_id-store_id)
+        price_data_for_key = {
             'product_id': product.id,
             'store_id': store.id,
-            'price': price_value,
-            'date': scraped_date_str
         }
-        normalizer = PriceNormalizer(price_data=price_data, company=store.company.name)
-        normalized_key = normalizer.get_normalized_key()
+        normalizer_for_key = PriceNormalizer(price_data=price_data_for_key, company=store.company.name)
+        normalized_key = normalizer_for_key.get_normalized_key()
 
         if not normalized_key:
             return
 
-        # Check if this key already exists in the resolver's cache
-        if self.resolver and self.resolver.price_cache:
-            if normalized_key in self.resolver.price_cache:
-                return # This price already exists, do not add it again
-
-        # --- If we get here, it's a new price, so proceed ---
+        # Always create a new PriceRecord for the incoming data
         try:
-            scraped_date = datetime.strptime(scraped_date_str, '%Y-%m-%d').date()
-        except (ValueError, TypeError):
-            return # Invalid date format
-
-        # Get or Create PriceRecord
-        try:
-            price_record, created = PriceRecord.objects.get_or_create(
+            price_record = PriceRecord.objects.create(
                 product=product,
                 scraped_date=scraped_date,
                 price=price_value,
@@ -72,23 +57,31 @@ class UnitOfWork:
                 per_unit_price_string=product_details.get('per_unit_price_string'),
                 is_on_special=product_details.get('is_on_special', False)
             )
+            self.new_price_records_created += 1
         except (ValidationError, InvalidOperation) as e:
             self.command.stderr.write(self.command.style.ERROR(f'\nError creating PriceRecord: {e}'))
             self.command.stderr.write(self.command.style.ERROR(f'Problematic product details: {product_details}'))
             return
-        if created:
-            self.new_price_records_created += 1
 
-        # Instantiate and append lightweight Price object
-        self.prices_to_create.append(
-            Price(
-                price_record=price_record,
-                store=store,
-                sku=product_details.get('sku'),
-                normalized_key=normalized_key,
-                source='direct_scrape'
+        # Now, handle the Price object: update existing or create new
+        try:
+            existing_price = Price.objects.get(normalized_key=normalized_key)
+            # If Price object exists, update it
+            existing_price.price_record = price_record
+            existing_price.sku = product_details.get('sku')
+            existing_price.source = 'direct_scrape'
+            self.prices_to_update.add(existing_price)
+        except Price.DoesNotExist:
+            # If Price object does not exist, create a new one
+            self.prices_to_create.append(
+                Price(
+                    price_record=price_record,
+                    store=store,
+                    sku=product_details.get('sku'),
+                    normalized_key=normalized_key,
+                    source='direct_scrape'
+                )
             )
-        )
 
     def add_for_update(self, instance):
         if isinstance(instance, Product):
@@ -143,10 +136,14 @@ class UnitOfWork:
                         product_cache[p.normalized_name_brand_size] = p
 
                 # Stage 2: Create all prices (for both new and existing products)
-                self.command.stdout.write(f"  - Creating {self.new_price_records_created} new PriceRecord objects.")
-                self.command.stdout.write(f"  - Creating {len(self.prices_to_create)} new Price objects (links).")
                 if self.prices_to_create:
                     Price.objects.bulk_create(self.prices_to_create, batch_size=500, ignore_conflicts=True)
+
+                # Stage 2.1: Update existing Price objects
+                if self.prices_to_update:
+                    price_update_fields = ['price_record', 'sku', 'source']
+                    Price.objects.bulk_update(list(self.prices_to_update), price_update_fields, batch_size=500)
+                    self.command.stdout.write(f"  - Updated {len(self.prices_to_update)} existing Price objects.")
 
                 # Stage 3: Process categories now that all products exist
                 self.category_manager.process_categories(consolidated_data, product_cache, store_obj)

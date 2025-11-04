@@ -41,9 +41,9 @@ class PriceNormalizer:
         """
         Generates a normalized key for a price record.
         """
-        if not all([self.product_id, self.store_id, self.price, self.date]):
+        if not all([self.product_id, self.store_id]):
             return None
-        return f"{self.product_id}-{self.store_id}-{self.price}-{self.date}"
+        return f"{self.product_id}-{self.store_id}"
 
     def get_normalized_unit_price(self) -> float | None:
         """
