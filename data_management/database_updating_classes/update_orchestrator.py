@@ -13,6 +13,7 @@ from data_management.database_updating_classes.product_reconciler import Product
 from data_management.database_updating_classes.brand_reconciler import BrandReconciler
 from data_management.database_updating_classes.category_cycle_manager import CategoryCycleManager
 from data_management.database_updating_classes.group_orchestrator import GroupOrchestrator
+from data_management.database_updating_classes.post_processor import PostProcessor
 
 class UpdateOrchestrator:
     def __init__(self, command, inbox_path):
@@ -69,8 +70,7 @@ class UpdateOrchestrator:
                 self.processed_files.append(file_path)
                 continue
 
-            # Set the context for the single resolver
-            product_resolver.set_context(store_obj)
+
             unit_of_work = UnitOfWork(self.command, product_resolver)
             self.variation_manager.unit_of_work = unit_of_work  # Inject UoW
             brand_manager = BrandManager(self.command)
