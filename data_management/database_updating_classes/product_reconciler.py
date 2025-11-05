@@ -2,6 +2,7 @@ import os
 from products.models import Product, Price, PriceRecord
 from data_management.utils.price_normalizer import PriceNormalizer
 from .base_reconciler import BaseReconciler
+from .product_enricher import ProductEnricher
 
 TRANSLATION_TABLE_PATH = os.path.abspath(os.path.join(
     os.path.dirname(__file__),
@@ -30,29 +31,7 @@ class ProductReconciler(BaseReconciler):
         self.command.stdout.write(f"  - Merging '{duplicate_item.name}' into '{canonical_item.name}'")
         
         # --- Enrich Fields ---
-        update_fields = {}
-
-        # Handle simple fields that can be overwritten if blank
-        fields_to_check = ['url', 'image_url_pairs']
-        for field_name in fields_to_check:
-            if not getattr(canonical_item, field_name) and getattr(duplicate_item, field_name):
-                update_fields[field_name] = getattr(duplicate_item, field_name)
-
-        # Handle name variations by merging
-        if duplicate_item.name_variations:
-            merged_variations = canonical_item.name_variations or []
-            added_new_variation = False
-            for variation in duplicate_item.name_variations:
-                if variation not in merged_variations:
-                    merged_variations.append(variation)
-                    added_new_variation = True
-            
-            if added_new_variation:
-                update_fields['name_variations'] = merged_variations
-        
-        # Perform a single, direct database update if any fields have changed
-        if update_fields:
-            Product.objects.filter(pk=canonical_item.pk).update(**update_fields)
+        ProductEnricher.enrich_from_product(canonical_item, duplicate_item)
 
         # --- De-duplicate and Move Prices ---
         # Get all prices associated with the duplicate product

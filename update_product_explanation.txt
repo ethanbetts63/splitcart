@@ -1,0 +1,7 @@
+The product update process is a multi-stage pipeline designed to be robust and efficient. It begins by consolidating all product data from the scraped files, ensuring each product is processed only once per file. Before the main processing, the system builds an in-memory cache of existing products, using barcodes and normalized name strings, to avoid slow database queries in a loop.
+
+Next, the system iterates through each incoming product and tries to match it against the cache, first by barcode and then by the normalized name string. If a match is found, the existing database record is enriched with any new information from the scrape. If no match is found, a new product record is prepared. During this stage, a `VariationManager` also detects and records any new name or brand variations, such as "Coke" for "Coca-Cola".
+
+All proposed database changes, including new products, updates to existing ones, and all new price records, are collected in a `UnitOfWork`. This object manages everything as a single, atomic transaction. After all products from a file are processed, the `UnitOfWork` commits all the changes to the database at once using efficient bulk operations.
+
+Finally, after all files are processed, a series of post-processing steps run. This includes generating and updating translation tables with any new product variations discovered, and running reconcilers that use these tables to merge any historical duplicate products or brands. The last step is to clean up and delete the processed files from the inbox.
