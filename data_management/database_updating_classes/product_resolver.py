@@ -78,13 +78,3 @@ class ProductResolver:
         
         return None
 
-    def add_new_product_to_cache(self, product):
-        """
-        Updates the global caches with a new product that is about to be created.
-        This is used for de-duplication within a single run.
-        """
-        if product.barcode:
-            self.barcode_cache[product.barcode] = product
-        if product.normalized_name_brand_size:
-            self.normalized_string_cache[product.normalized_name_brand_size] = product
-        # sku cache is not updated here as it's handled by the UnitOfWork's price creation
