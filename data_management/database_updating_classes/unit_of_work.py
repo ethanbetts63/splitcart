@@ -115,13 +115,26 @@ class UnitOfWork:
 
                 # Stage 2: Upsert Price objects
                 if self.prices_to_upsert:
-                    self.command.stdout.write(f"  - Upserting {len(self.prices_to_upsert)} Price objects.")
-                    for price_data in self.prices_to_upsert:
-                        Price.objects.update_or_create(
+                    created_count = 0
+                    updated_count = 0
+                    total_prices = len(self.prices_to_upsert)
+                    self.command.stdout.write(f"  - Processing {total_prices} Price objects...")
+                    
+                    for i, price_data in enumerate(self.prices_to_upsert):
+                        self.command.stdout.write(f'\r    - Upserting price {i+1}/{total_prices}', ending='')
+                        _, created = Price.objects.update_or_create(
                             product=price_data.pop('product'),
                             store_group=price_data.pop('store_group'),
                             defaults=price_data
                         )
+                        if created:
+                            created_count += 1
+                        else:
+                            updated_count += 1
+                    
+                    self.command.stdout.write('\n') # Newline after the progress indicator
+                    self.command.stdout.write(f"  - Created {created_count} new Price objects.")
+                    self.command.stdout.write(f"  - Updated {updated_count} existing Price objects.")
 
                 # Stage 3: Process categories now that all products exist
                 self.category_manager.process_categories(consolidated_data, product_cache, store_group.company)
