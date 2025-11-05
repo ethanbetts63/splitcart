@@ -57,7 +57,12 @@ class StoreClusterUpdater:
         for cluster_data in clusters:
             try:
                 company = Company.objects.get(name=cluster_data['company'])
-                group = StoreGroup.objects.create(company=company)
+                
+                # Assuming cluster_data['stores'] contains a single store_id for initial groups
+                store_id_for_anchor = cluster_data['stores'][0]
+                anchor_store = Store.objects.get(id=store_id_for_anchor)
+                
+                group = StoreGroup.objects.create(company=company, anchor=anchor_store)
                 
                 for store_id in cluster_data['stores']:
                     try:

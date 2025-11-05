@@ -46,16 +46,7 @@ class UpdateOrchestrator:
 
             try:
                 company_obj, _ = Company.objects.get_or_create(name__iexact=company_name, defaults={'name': company_name})
-                store_obj = Store.objects.select_related('group_membership__group').get(store_id=store_id, company=company_obj)
-
-                if not hasattr(store_obj, 'group_membership') or not store_obj.group_membership:
-                    self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Store {store_obj.store_name} does not belong to a group."))
-                    self.processed_files.append(file_path)
-                    continue
-                store_group = store_obj.group_membership.group
-
-                # Stamp the store as a candidate for its group
-                store_group.candidates.add(store_obj)
+                store_obj = Store.objects.get(store_id=store_id, company=company_obj)
 
             except Store.DoesNotExist:
                 self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Store with ID {store_id} for company {company_name} not found in database."))

@@ -1,7 +1,7 @@
 from django.db import transaction
 from datetime import datetime
 from products.models import Product, Price, ProductBrand
-from companies.models import StoreGroup
+from companies.models import Store # Changed from StoreGroup
 from django.core.exceptions import ValidationError
 from decimal import InvalidOperation
 from .category_manager import CategoryManager
@@ -13,9 +13,7 @@ class UnitOfWork:
         self.new_products_to_process = []
         self.products_to_update = set()
         self.brands_to_update = set()
-        self.groups_to_update = []
-        self.groups_to_clear_candidates = []
-        self.prices_to_upsert = [] # New list to hold data for Price.objects.update_or_create
+        self.prices_to_upsert = []
         self.category_manager = CategoryManager(command)
 
     def add_new_product(self, product_instance, product_details, metadata):
@@ -24,7 +22,7 @@ class UnitOfWork:
         """
         self.new_products_to_process.append((product_instance, product_details, metadata))
 
-    def add_price(self, product, store_group, product_details, metadata):
+    def add_price(self, product, store, product_details, metadata):
         scraped_date_str = metadata.get('scraped_date')
         price_value = product_details.get('price_current')
 
@@ -34,10 +32,9 @@ class UnitOfWork:
         try:
             scraped_date = datetime.strptime(scraped_date_str[:10], '%Y-%m-%d').date()
             
-            # Prepare data for Price.objects.update_or_create
             price_data = {
                 'product': product,
-                'store_group': store_group,
+                'store': store,
                 'scraped_date': scraped_date,
                 'price': price_value,
                 'was_price': product_details.get('price_was'),
@@ -59,13 +56,6 @@ class UnitOfWork:
             self.products_to_update.add(instance)
         elif isinstance(instance, ProductBrand):
             self.brands_to_update.add(instance)
-        elif isinstance(instance, StoreGroup):
-            if instance not in self.groups_to_update:
-                self.groups_to_update.append(instance)
-
-    def add_group_to_clear_candidates(self, group):
-        if group not in self.groups_to_clear_candidates:
-            self.groups_to_clear_candidates.append(group)
 
     def _deduplicate_new_products(self, resolver):
         unique_new_products_with_details = []
@@ -85,7 +75,7 @@ class UnitOfWork:
                 seen_normalized_strings.add(product.normalized_name_brand_size)
         return unique_new_products_with_details
 
-    def commit(self, consolidated_data, product_cache, resolver, store_group):
+    def commit(self, consolidated_data, product_cache, resolver, store):
         self.command.stdout.write("--- Committing changes to database ---")
         try:
             with transaction.atomic():
@@ -107,7 +97,7 @@ class UnitOfWork:
                     # Now that products are created and have IDs, add their prices to the upsert list
                     for norm_string, product_instance_with_id in newly_created_products_with_ids.items():
                         _, product_details, metadata = new_products_map_by_norm_string[norm_string]
-                        self.add_price(product_instance_with_id, store_group, product_details, metadata)
+                        self.add_price(product_instance_with_id, store, product_details, metadata)
 
                     # Refresh the product_cache with the newly created products (which now have IDs)
                     for norm_string, p in newly_created_products_with_ids.items():
@@ -119,15 +109,15 @@ class UnitOfWork:
 
                     # --- Begin Bulk Upsert Logic ---
                     product_ids = {p['product'].id for p in self.prices_to_upsert}
-                    store_group_ids = {p['store_group'].id for p in self.prices_to_upsert}
+                    store_ids = {p['store'].id for p in self.prices_to_upsert}
 
                     # 1. Fetch all existing prices that could possibly match in one query
                     existing_prices = Price.objects.filter(
                         product_id__in=product_ids,
-                        store_group_id__in=store_group_ids
+                        store_id__in=store_ids
                     )
                     existing_prices_map = {
-                        (p.product_id, p.store_group_id): p for p in existing_prices
+                        (p.product_id, p.store_id): p for p in existing_prices
                     }
 
                     prices_to_create = []
@@ -135,7 +125,7 @@ class UnitOfWork:
 
                     # 2. Sort prices into 'create' or 'update' lists
                     for price_data in self.prices_to_upsert:
-                        key = (price_data['product'].id, price_data['store_group'].id)
+                        key = (price_data['product'].id, price_data['store'].id)
                         if key in existing_prices_map:
                             # This price exists, prepare for update
                             existing_price = existing_prices_map[key]
@@ -157,13 +147,13 @@ class UnitOfWork:
                         # Note: This assumes all dicts in prices_to_upsert have the same keys
                         update_fields = list(self.prices_to_upsert[0].keys())
                         update_fields.remove('product')
-                        update_fields.remove('store_group')
+                        update_fields.remove('store')
                         
                         Price.objects.bulk_update(prices_to_update, update_fields, batch_size=500)
                         self.command.stdout.write(f"  - Updated {len(prices_to_update)} existing Price objects.")
 
                 # Stage 3: Process categories now that all products exist
-                self.category_manager.process_categories(consolidated_data, product_cache, store_group.company)
+                self.category_manager.process_categories(consolidated_data, product_cache, store.company)
 
                 # Stage 4: Update existing products
                 if self.products_to_update:
@@ -180,20 +170,6 @@ class UnitOfWork:
                     ProductBrand.objects.bulk_update(list(self.brands_to_update), brand_update_fields, batch_size=500)
                     self.command.stdout.write(f"  - Updated {len(self.brands_to_update)} brands with new variation info.")
 
-                # Stage 6: Update existing groups
-                if self.groups_to_update:
-                    group_update_fields = ['ambassador', 'status', 'is_active']
-                    StoreGroup.objects.bulk_update(self.groups_to_update, group_update_fields, batch_size=500)
-                    self.command.stdout.write(f"  - Updated {len(self.groups_to_update)} store groups.")
-
-                # Stage 7: Clear candidates from groups that have been processed
-                if self.groups_to_clear_candidates:
-                    for group in self.groups_to_clear_candidates:
-                        group.candidates.clear()
-                    self.command.stdout.write(f"  - Cleared candidates from {len(self.groups_to_clear_candidates)} groups.")
-            
-            self.command.stdout.write(self.command.style.SUCCESS("--- Commit successful ---"))
-            return True
         except Exception as e:
             self.command.stderr.write(self.command.style.ERROR(f'An error occurred during commit: {e}'))
             return False

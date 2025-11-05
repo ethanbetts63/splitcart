@@ -14,12 +14,12 @@ class StoreGroup(models.Model):
     status = models.CharField(max_length=25, choices=STATUS_CHOICES, default='HEALTHY')
 
     # The current source of truth for the group's pricing
-    ambassador = models.ForeignKey(
+    anchor = models.ForeignKey(
         'companies.Store',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='ambassador_for_group'
+        related_name='anchor_for_group'
     )
 
     # A temporary list of recently scraped stores to be checked
