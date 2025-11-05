@@ -123,23 +123,15 @@ class UnitOfWork:
                 if unique_new_products_with_details:
                     new_products = [p for p, d, m in unique_new_products_with_details]
                     self.command.stdout.write(f"  - Creating {len(new_products)} truly unique new products.")
-                    # The product objects in `new_products` may not have their PKs populated.
+                    # The product objects in `new_products` will have their PKs populated after this call.
                     Product.objects.bulk_create(new_products, batch_size=500)
 
-                    # Re-fetch the products to ensure we have their IDs
-                    norm_strings_to_fetch = {p.normalized_name_brand_size for p in new_products}
-                    newly_created_products = Product.objects.filter(normalized_name_brand_size__in=norm_strings_to_fetch)
-                    product_map = {p.normalized_name_brand_size: p for p in newly_created_products}
-
                     # Now that products are created and have IDs, create their prices
-                    for _, product_details, metadata in unique_new_products_with_details:
-                        norm_string = product_details.get('normalized_name_brand_size')
-                        saved_product_instance = product_map.get(norm_string)
-                        if saved_product_instance:
-                            self.add_price(saved_product_instance, store_group, product_details, metadata)
+                    for product_instance, product_details, metadata in unique_new_products_with_details:
+                        self.add_price(product_instance, store_group, product_details, metadata)
 
                     # Refresh the product_cache with the newly created products
-                    for p in newly_created_products:
+                    for p in new_products:
                         product_cache[p.normalized_name_brand_size] = p
 
                 # Stage 2: Create all prices (for both new and existing products)
