@@ -1,7 +1,7 @@
 import os
 import json
 from django.conf import settings
-from products.models import Bargain, Product, PriceRecord
+from products.models import Bargain, Product, Price
 from companies.models import Store
 
 class BargainUpdateOrchestrator:
@@ -74,17 +74,17 @@ class BargainUpdater:
             try:
                 product = Product.objects.get(id=bargain_data['product_id'])
                 store = Store.objects.get(id=bargain_data['store_id'])
-                cheapest_price_record = PriceRecord.objects.get(id=bargain_data['cheapest_price_record_id'])
-                most_expensive_price_record = PriceRecord.objects.get(id=bargain_data['most_expensive_price_record_id'])
+                cheapest_price = Price.objects.get(id=bargain_data['cheapest_price_id'])
+                most_expensive_price = Price.objects.get(id=bargain_data['most_expensive_price_id'])
 
                 Bargain.objects.create(
                     product=product,
                     store=store,
-                    cheapest_price=cheapest_price_record.price_entries.first(),
-                    most_expensive_price=most_expensive_price_record.price_entries.first(),
+                    cheapest_price=cheapest_price,
+                    most_expensive_price=most_expensive_price,
                 )
                 bargains_processed += 1
-            except (Product.DoesNotExist, Store.DoesNotExist, PriceRecord.DoesNotExist) as e:
+            except (Product.DoesNotExist, Store.DoesNotExist, Price.DoesNotExist) as e:
                 self.command.stderr.write(self.command.style.ERROR(f"Error processing bargain: {bargain_data}. Error: {e}"))
         
         return bargains_processed
