@@ -93,18 +93,25 @@ class UnitOfWork:
                 unique_new_products_with_details = self._deduplicate_new_products(resolver)
                 
                 if unique_new_products_with_details:
-                    new_products = [p for p, d, m in unique_new_products_with_details]
-                    self.command.stdout.write(f"  - Creating {len(new_products)} truly unique new products.")
-                    # The product objects in `new_products` will have their PKs populated after this call.
-                    Product.objects.bulk_create(new_products, batch_size=500)
+                    new_products_list = [p for p, d, m in unique_new_products_with_details]
+                    new_products_map_by_norm_string = {p.normalized_name_brand_size: (p, d, m) for p, d, m in unique_new_products_with_details}
+                    
+                    self.command.stdout.write(f"  - Creating {len(new_products_list)} truly unique new products.")
+                    Product.objects.bulk_create(new_products_list, batch_size=500)
+
+                    # Re-fetch the products to get their IDs
+                    newly_created_products_with_ids = Product.objects.filter(
+                        normalized_name_brand_size__in=new_products_map_by_norm_string.keys()
+                    ).in_bulk(field_name='normalized_name_brand_size')
 
                     # Now that products are created and have IDs, add their prices to the upsert list
-                    for product_instance, product_details, metadata in unique_new_products_with_details:
-                        self.add_price(product_instance, store_group, product_details, metadata)
+                    for norm_string, product_instance_with_id in newly_created_products_with_ids.items():
+                        _, product_details, metadata = new_products_map_by_norm_string[norm_string]
+                        self.add_price(product_instance_with_id, store_group, product_details, metadata)
 
-                    # Refresh the product_cache with the newly created products
-                    for p in new_products:
-                        product_cache[p.normalized_name_brand_size] = p
+                    # Refresh the product_cache with the newly created products (which now have IDs)
+                    for norm_string, p in newly_created_products_with_ids.items():
+                        product_cache[norm_string] = p
 
                 # Stage 2: Upsert Price objects
                 if self.prices_to_upsert:
