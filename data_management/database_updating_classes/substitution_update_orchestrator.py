@@ -68,7 +68,7 @@ class SubstitutionUpdater:
         
         return len(subs_to_create) + len(subs_to_update)
 
-    def _build_cache():
+    def _build_cache(self):
         self.command.stdout.write("  - Building cache of existing substitutions...")
         cache = {}
         for sub in ProductSubstitution.objects.all():

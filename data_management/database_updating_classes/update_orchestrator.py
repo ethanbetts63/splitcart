@@ -157,135 +157,273 @@ class UpdateOrchestrator:
         return consolidated_data
 
     def _process_consolidated_data(self, consolidated_data, resolver, unit_of_work, variation_manager, brand_manager, store_group):
+
         product_cache = {}
+
         total = len(consolidated_data)
+
         for i, (key, data) in enumerate(consolidated_data.items()):
+
             self.command.stdout.write(f'\r    - Identifying products: {i+1}/{total}', ending='')
+
             product_details = data['product']
+
             metadata = data['metadata']
+
             company_name = metadata.get('company', '')
 
+
+
             brand_manager.process_brand(
+
                 brand_name=product_details.get('brand'), 
+
                 normalized_brand_name=product_details.get('normalized_brand'),
+
                 company_name=company_name
+
             )
 
-            existing_product = resolver.find_match(product_details, [])
 
-            if existing_product:
+
+            product_from_resolver = resolver.find_match(product_details, [])
+
+            
+
+            is_existing = product_from_resolver and product_from_resolver.pk
+
+
+
+            if is_existing:
+
+                # --- EXISTING PRODUCT LOGIC ---
+
+                existing_product = product_from_resolver
+
                 product_cache[key] = existing_product
+
                 variation_manager.check_for_variation(product_details, existing_product, company_name)
 
+
+
                 # --- Enrich existing product ---
+
                 updated = False
 
+
+
                 # Update company_skus
+
                 sku = product_details.get('sku')
+
                 if sku:
+
                     if not existing_product.company_skus:
+
                         existing_product.company_skus = {}
+
                     if company_name not in existing_product.company_skus:
+
                         existing_product.company_skus[company_name] = []
+
                     
+
                     if sku not in existing_product.company_skus[company_name]:
+
                         existing_product.company_skus[company_name].append(sku)
+
                         updated = True
+
+
 
                 # Merge sizes lists
+
                 incoming_sizes = set(product_details.get('sizes', []))
+
                 if incoming_sizes:
+
                     existing_sizes = set(existing_product.sizes)
+
                     if not incoming_sizes.issubset(existing_sizes):
+
                         combined_sizes = sorted(list(existing_sizes.union(incoming_sizes)))
+
                         existing_product.sizes = combined_sizes
+
                         updated = True
 
+
+
                 if not existing_product.barcode and product_details.get('barcode'):
+
                     existing_product.barcode = product_details.get('barcode')
+
                     updated = True
+
                 if not existing_product.url and product_details.get('url'):
+
                     existing_product.url = product_details.get('url')
+
                     updated = True
+
+
 
                 # Update image_url_pairs
-                incoming_image_pairs = product_details.get('image_url_pairs', [])
-                if incoming_image_pairs:
-                    # Create a dictionary of existing image URLs by company for quick lookup
-                    existing_pairs_dict = {pair[0]: pair[1] for pair in existing_product.image_url_pairs} if existing_product.image_url_pairs else {}
-                    
-                    for company, url in incoming_image_pairs:
-                        # If the company is not in our dict, it's a new image pair
-                        if company not in existing_pairs_dict:
-                            if not existing_product.image_url_pairs:
-                                existing_product.image_url_pairs = []
-                            existing_product.image_url_pairs.append([company, url])
-                            updated = True
-                            
-                        elif existing_pairs_dict[company] != url:
-                            for pair in existing_product.image_url_pairs:
-                                if pair[0] == company:
-                                    pair[1] = url
-                                    updated = True
-                                    break
-                
 
+                incoming_image_pairs = product_details.get('image_url_pairs', [])
+
+                if incoming_image_pairs:
+
+                    existing_pairs_dict = {pair[0]: pair[1] for pair in existing_product.image_url_pairs} if existing_product.image_url_pairs else {}
+
+                    
+
+                    for company, url in incoming_image_pairs:
+
+                        if company not in existing_pairs_dict:
+
+                            if not existing_product.image_url_pairs:
+
+                                existing_product.image_url_pairs = []
+
+                            existing_product.image_url_pairs.append([company, url])
+
+                            updated = True
+
+                            
+
+                        elif existing_pairs_dict[company] != url:
+
+                            for pair in existing_product.image_url_pairs:
+
+                                if pair[0] == company:
+
+                                    pair[1] = url
+
+                                    updated = True
+
+                                    break
+
+                
 
                 if company_name.lower() == 'coles' and not product_details.get('barcode') and not existing_product.has_no_coles_barcode:
+
                     existing_product.has_no_coles_barcode = True
+
                     updated = True
+
+
 
                 # Update brand_name_company_pairs
+
                 raw_brand_name = product_details.get('brand')
+
                 new_pair = [raw_brand_name, company_name]
+
                 
+
                 found_existing_company_pair = False
+
                 if existing_product.brand_name_company_pairs:
+
                     for i, pair in enumerate(existing_product.brand_name_company_pairs):
-                        if pair[1] == company_name: # Check if company already exists in a pair
+
+                        if pair[1] == company_name:
+
                             found_existing_company_pair = True
-                            if pair[0] != raw_brand_name: # If brand name is different, do nothing (user rule)
+
+                            if pair[0] != raw_brand_name:
+
                                 pass
-                            else: # Same brand name, no change needed
+
+                            else:
+
                                 pass
+
                             break
+
                 
+
                 if not found_existing_company_pair:
+
                     if not existing_product.brand_name_company_pairs:
+
                         existing_product.brand_name_company_pairs = []
+
                     existing_product.brand_name_company_pairs.append(new_pair)
+
                     updated = True
 
-                if updated and existing_product.pk:
+
+
+                if updated:
+
                     unit_of_work.add_for_update(existing_product)
+
                 
-                unit_of_work.add_price(existing_product, store_group, product_details)
+
+                unit_of_work.add_price(existing_product, store_group, product_details, metadata)
+
             else:
-                normalized_brand_key = product_details.get('normalized_brand')
-                brand_obj = brand_manager.brand_cache.get(normalized_brand_key)
 
-                new_product = Product(
-                    name=product_details.get('name', ''),
+                # --- NEW PRODUCT LOGIC ---
 
-                    brand=brand_obj,
-                    brand_name_company_pairs=[[product_details.get('brand'), company_name]],
-                    barcode=product_details.get('barcode'),
-                    company_skus={company_name: [product_details.get('sku')]} if product_details.get('sku') else {},
-                    normalized_name_brand_size=key,
-                    size=product_details.get('size'),
-                    sizes=product_details.get('sizes', []),
-                    url=product_details.get('url'),
-                    image_url_pairs=product_details.get('image_url_pairs', []),
-                )
-                if company_name.lower() == 'coles' and not product_details.get('barcode'):
-                    new_product.has_no_coles_barcode = True
+                # If resolver returned an unsaved instance, use it. Otherwise, create one.
+
+                new_product = product_from_resolver
+
+                if not new_product:
+
+                    normalized_brand_key = product_details.get('normalized_brand')
+
+                    brand_obj = brand_manager.brand_cache.get(normalized_brand_key)
+
+
+
+                    new_product = Product(
+
+                        name=product_details.get('name', ''),
+
+                        brand=brand_obj,
+
+                        brand_name_company_pairs=[[product_details.get('brand'), company_name]],
+
+                        barcode=product_details.get('barcode'),
+
+                        company_skus={company_name: [product_details.get('sku')]} if product_details.get('sku') else {},
+
+                        normalized_name_brand_size=key,
+
+                        size=product_details.get('size'),
+
+                        sizes=product_details.get('sizes', []),
+
+                        url=product_details.get('url'),
+
+                        image_url_pairs=product_details.get('image_url_pairs', []),
+
+                    )
+
+                    if company_name.lower() == 'coles' and not product_details.get('barcode'):
+
+                        new_product.has_no_coles_barcode = True
+
+
 
                 # Add the new product to the run-level cache immediately
+
                 resolver.add_new_product_to_cache(new_product)
 
+
+
                 product_cache[key] = new_product
-                unit_of_work.add_new_product(new_product, product_details)
+
+                unit_of_work.add_new_product(new_product, product_details, metadata)
+
+                
+
         self.command.stdout.write('\n')
+
         return product_cache
 
     def _cleanup_processed_files(self):

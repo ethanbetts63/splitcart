@@ -21,14 +21,14 @@ class UnitOfWork:
         self.new_price_records_created = 0
         self.category_manager = CategoryManager(command)
 
-    def add_new_product(self, product_instance, product_details):
+    def add_new_product(self, product_instance, product_details, metadata):
         """
         Adds a new product instance along with its raw details for later processing.
         """
-        self.new_products_to_process.append((product_instance, product_details))
+        self.new_products_to_process.append((product_instance, product_details, metadata))
 
-    def add_price(self, product, store_group, product_details):
-        scraped_date_str = product_details.get('scraped_date')
+    def add_price(self, product, store_group, product_details, metadata):
+        scraped_date_str = metadata.get('scraped_date')
         price_value = product_details.get('price_current')
 
         if not scraped_date_str or not price_value:
@@ -97,16 +97,16 @@ class UnitOfWork:
 
     def _deduplicate_new_products(self, resolver):
         unique_new_products_with_details = []
-        seen_barcodes = set(resolver.barcode_cache.keys())
-        seen_normalized_strings = set(resolver.normalized_string_cache.keys())
+        seen_barcodes = set()
+        seen_normalized_strings = set()
 
-        for product, details in self.new_products_to_process:
+        for product, details, metadata in self.new_products_to_process:
             if product.barcode and product.barcode in seen_barcodes:
                 continue
             if product.normalized_name_brand_size and product.normalized_name_brand_size in seen_normalized_strings:
                 continue
             
-            unique_new_products_with_details.append((product, details))
+            unique_new_products_with_details.append((product, details, metadata))
             if product.barcode:
                 seen_barcodes.add(product.barcode)
             if product.normalized_name_brand_size:
@@ -121,14 +121,14 @@ class UnitOfWork:
                 unique_new_products_with_details = self._deduplicate_new_products(resolver)
                 
                 if unique_new_products_with_details:
-                    new_products = [p for p, d in unique_new_products_with_details]
+                    new_products = [p for p, d, m in unique_new_products_with_details]
                     self.command.stdout.write(f"  - Creating {len(new_products)} truly unique new products.")
                     # The product objects in `new_products` will have their PKs populated after this call.
                     Product.objects.bulk_create(new_products, batch_size=500)
 
                     # Now that products are created and have IDs, create their prices
-                    for product_instance, product_details in unique_new_products_with_details:
-                        self.add_price(product_instance, store_group, product_details)
+                    for product_instance, product_details, metadata in unique_new_products_with_details:
+                        self.add_price(product_instance, store_group, product_details, metadata)
 
                     # Refresh the product_cache with the newly created products
                     for p in new_products:
@@ -142,7 +142,10 @@ class UnitOfWork:
                 if self.prices_to_update:
                     price_update_fields = ['price_record', 'source']
                     Price.objects.bulk_update(list(self.prices_to_update), price_update_fields, batch_size=500)
-                    self.command.stdout.write(f"  - Updated {len(self.prices_to_update)} existing Price objects.")
+
+                self.command.stdout.write(f"  - Created {self.new_price_records_created} new PriceRecord objects.")
+                self.command.stdout.write(f"  - Created {len(self.prices_to_create)} new Price objects.")
+                self.command.stdout.write(f"  - Updated {len(self.prices_to_update)} existing Price objects.")
 
                 # Stage 3: Process categories now that all products exist
                 self.category_manager.process_categories(consolidated_data, product_cache, store_group.company)
