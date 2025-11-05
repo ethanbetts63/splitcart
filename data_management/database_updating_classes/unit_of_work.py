@@ -115,26 +115,52 @@ class UnitOfWork:
 
                 # Stage 2: Upsert Price objects
                 if self.prices_to_upsert:
-                    created_count = 0
-                    updated_count = 0
-                    total_prices = len(self.prices_to_upsert)
-                    self.command.stdout.write(f"  - Processing {total_prices} Price objects...")
-                    
-                    for i, price_data in enumerate(self.prices_to_upsert):
-                        self.command.stdout.write(f'\r    - Upserting price {i+1}/{total_prices}', ending='')
-                        _, created = Price.objects.update_or_create(
-                            product=price_data.pop('product'),
-                            store_group=price_data.pop('store_group'),
-                            defaults=price_data
-                        )
-                        if created:
-                            created_count += 1
+                    self.command.stdout.write(f"  - Processing {len(self.prices_to_upsert)} Price objects...")
+
+                    # --- Begin Bulk Upsert Logic ---
+                    product_ids = {p['product'].id for p in self.prices_to_upsert}
+                    store_group_ids = {p['store_group'].id for p in self.prices_to_upsert}
+
+                    # 1. Fetch all existing prices that could possibly match in one query
+                    existing_prices = Price.objects.filter(
+                        product_id__in=product_ids,
+                        store_group_id__in=store_group_ids
+                    )
+                    existing_prices_map = {
+                        (p.product_id, p.store_group_id): p for p in existing_prices
+                    }
+
+                    prices_to_create = []
+                    prices_to_update = []
+
+                    # 2. Sort prices into 'create' or 'update' lists
+                    for price_data in self.prices_to_upsert:
+                        key = (price_data['product'].id, price_data['store_group'].id)
+                        if key in existing_prices_map:
+                            # This price exists, prepare for update
+                            existing_price = existing_prices_map[key]
+                            # Update the fields on the existing object
+                            for field, value in price_data.items():
+                                setattr(existing_price, field, value)
+                            prices_to_update.append(existing_price)
                         else:
-                            updated_count += 1
-                    
-                    self.command.stdout.write('\n') # Newline after the progress indicator
-                    self.command.stdout.write(f"  - Created {created_count} new Price objects.")
-                    self.command.stdout.write(f"  - Updated {updated_count} existing Price objects.")
+                            # This price is new, prepare for creation
+                            prices_to_create.append(Price(**price_data))
+
+                    # 3. Perform bulk operations
+                    if prices_to_create:
+                        Price.objects.bulk_create(prices_to_create, batch_size=500)
+                        self.command.stdout.write(f"  - Created {len(prices_to_create)} new Price objects.")
+
+                    if prices_to_update:
+                        # Get all fields to update from one of the data dicts
+                        # Note: This assumes all dicts in prices_to_upsert have the same keys
+                        update_fields = list(self.prices_to_upsert[0].keys())
+                        update_fields.remove('product')
+                        update_fields.remove('store_group')
+                        
+                        Price.objects.bulk_update(prices_to_update, update_fields, batch_size=500)
+                        self.command.stdout.write(f"  - Updated {len(prices_to_update)} existing Price objects.")
 
                 # Stage 3: Process categories now that all products exist
                 self.category_manager.process_categories(consolidated_data, product_cache, store_group.company)
