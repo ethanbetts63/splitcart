@@ -1,6 +1,5 @@
 import os
-from products.models import Product, Price, PriceRecord
-from data_management.utils.price_normalizer import PriceNormalizer
+from products.models import Product, Price
 from .base_reconciler import BaseReconciler
 from .product_enricher import ProductEnricher
 
@@ -35,52 +34,27 @@ class ProductReconciler(BaseReconciler):
 
         # --- De-duplicate and Move Prices ---
         # Get all prices associated with the duplicate product
-        prices_to_move = Price.objects.filter(price_record__product=duplicate_item).select_related('price_record', 'store')
+        prices_to_move = Price.objects.filter(product=duplicate_item)
 
-        # Get existing price keys for the canonical product to avoid creating duplicates
-        canonical_price_keys = set(
-            (p.store_id, p.price_record.scraped_date) for p in Price.objects.filter(price_record__product=canonical_item)
-        )
-
-        moved_count = 0
-        deleted_count = 0
-
-        for price in prices_to_move:
-            price_key = (price.store_id, price.price_record.scraped_date)
-            if price_key not in canonical_price_keys:
-                # This price can be moved.
-                old_price_record = price.price_record
-                
-                # Find or create a new PriceRecord for the canonical product with the same details.
-                new_price_record, created = PriceRecord.objects.get_or_create(
-                    product=canonical_item,
-                    scraped_date=old_price_record.scraped_date,
-                    price=old_price_record.price,
-                    was_price=old_price_record.was_price,
-                    unit_price=old_price_record.unit_price,
-                    unit_of_measure=old_price_record.unit_of_measure,
-                    per_unit_price_string=old_price_record.per_unit_price_string,
-                    is_on_special=old_price_record.is_on_special
-                )
-                
-                # Update the Price object to point to the new record.
-                price.price_record = new_price_record
-
-                # Recalculate the normalized_key
-                price_data = {
-                    'product_id': canonical_item.id,
-                    'store_id': price.store_id,
-                    'price': new_price_record.price,
-                    'date': new_price_record.scraped_date.isoformat()
-                }
-                normalizer = PriceNormalizer(price_data=price_data, company=price.store.company.name)
-                price.normalized_key = normalizer.get_normalized_key()
-                
-                price.save()
-                moved_count += 1
-            else:
-                # A price for this store and date already exists for the canonical product.
-                # This is a true duplicate price entry, so we can delete it.
-                price.delete()
-                deleted_count += 1
-
+        for price_to_move in prices_to_move:
+            # Prepare data for update_or_create
+            price_data = {
+                'scraped_date': price_to_move.scraped_date,
+                'price': price_to_move.price,
+                'was_price': price_to_move.was_price,
+                'unit_price': price_to_move.unit_price,
+                'unit_of_measure': price_to_move.unit_of_measure,
+                'per_unit_price_string': price_to_move.per_unit_price_string,
+                'is_on_special': price_to_move.is_on_special,
+                'source': price_to_move.source,
+            }
+            
+            # Perform an upsert for the canonical product and the store group
+            Price.objects.update_or_create(
+                product=canonical_item,
+                store_group=price_to_move.store_group,
+                defaults=price_data
+            )
+            
+            # Delete the original price object associated with the duplicate product
+            price_to_move.delete()
