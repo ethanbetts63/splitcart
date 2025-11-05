@@ -9,7 +9,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Price)
 class PriceAdmin(admin.ModelAdmin):
-    list_display = ('product', 'store_group', 'scraped_date', 'source')
-    autocomplete_fields = ('product', 'store_group')
-    list_filter = ('store_group', 'scraped_date', 'source')
-    search_fields = ('product__name', 'store_group__name')
+    list_display = ('product', 'store', 'price', 'scraped_date', 'source')
+    autocomplete_fields = ('product', 'store')
+    list_filter = ('store', 'scraped_date', 'source')
+    search_fields = ('product__name', 'store__name')

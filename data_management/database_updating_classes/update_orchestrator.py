@@ -76,7 +76,7 @@ class UpdateOrchestrator:
             
             brand_manager.commit()
 
-            if unit_of_work.commit(consolidated_data, product_cache, product_resolver, store_group):
+            if unit_of_work.commit(consolidated_data, product_cache, product_resolver, store_obj):
                 self.command.stdout.write("  - Updating resolver cache with new products...")
                 for norm_string, product_obj in product_cache.items():
                     if norm_string not in product_resolver.normalized_string_cache:
@@ -166,7 +166,7 @@ class UpdateOrchestrator:
                 if updated and existing_product.pk:
                     unit_of_work.add_for_update(existing_product)
                 
-                unit_of_work.add_price(existing_product, store_group, product_details, metadata)
+                unit_of_work.add_price(existing_product, store_obj, product_details, metadata)
             else:
                 normalized_brand_key = product_details.get('normalized_brand')
                 brand_obj = brand_manager.brand_cache.get(normalized_brand_key)
