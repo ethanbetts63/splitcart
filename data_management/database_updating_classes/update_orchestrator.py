@@ -178,7 +178,7 @@ class UpdateOrchestrator:
                 company_name=company_name
             )
 
-            existing_product = resolver.find_match(product_details, [])
+            existing_product = resolver.find_match(product_details)
 
             if existing_product:
                 product_cache[key] = existing_product

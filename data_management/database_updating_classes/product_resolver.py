@@ -37,20 +37,9 @@ class ProductResolver:
         self.store_cache = {s.store_id: s for s in Store.objects.all()}
         self.command.stdout.write(f"  - Built cache for {len(self.store_cache)} stores.")
 
-    def set_context(self, current_store_obj):
-        """
-        Sets the store-specific context by building caches for SKU and prices for that store.
-        """
-        self.command.stdout.write(f"--- Building Contextual Caches for {current_store_obj.store_name} ---")
-        self._build_contextual_caches(current_store_obj)
 
-    def _build_contextual_caches(self, current_store_obj):
-        """
-        Builds caches for data that is specific to the given store.
-        """
-        pass
 
-    def find_match(self, product_details, price_history):
+    def find_match(self, product_details):
         """
         Implements the 3-tier matching logic to find an existing product.
 
