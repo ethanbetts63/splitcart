@@ -1,15 +1,13 @@
 from django.db import models
-from data_management.utils.price_normalizer import PriceNormalizer
 
 class Price(models.Model):
     """
-    Represents a single, historical price point for a Product at a specific
-    Store on a specific date. This is a lightweight pointer to a PriceRecord.
+    Represents the single, most recent price for a Product at a specific StoreGroup.
     """
-    price_record = models.ForeignKey(
-        'PriceRecord',
-        on_delete=models.PROTECT,
-        related_name="price_entries"
+    product = models.ForeignKey(
+        'products.Product',
+        on_delete=models.CASCADE,
+        related_name="prices"
     )
     store_group = models.ForeignKey(
         'companies.StoreGroup',
@@ -17,6 +15,36 @@ class Price(models.Model):
         related_name="prices"
     )
     
+    # Fields moved from the old PriceRecord model
+    scraped_date = models.DateField()
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
+    was_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+    unit_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+    unit_of_measure = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True
+    )
+    per_unit_price_string = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True
+    )
+    is_on_special = models.BooleanField(default=False)
+
     SOURCE_CHOICES = [
         ('direct_scrape', 'Direct Scrape'),
         ('inferred_group', 'Inferred from Group'),
@@ -27,21 +55,10 @@ class Price(models.Model):
         default='direct_scrape',
         help_text="How the price was obtained: from a direct scrape or inferred from a group ambassador."
     )
-        
-    normalized_key = models.CharField(max_length=255, unique=True, db_index=True)
 
     class Meta:
-        ordering = ['-price_record__scraped_date']
+        unique_together = ('product', 'store_group')
+        ordering = ['product__name']
 
     def __str__(self):
-        return f"{self.price_record.product.name} at {self.store_group.name} on {self.price_record.scraped_date}"
-
-    def save(self, *args, **kwargs):
-        if self.price_record and self.price_record.product_id and self.store_group_id:
-            price_data = {
-                'product_id': self.price_record.product_id,
-                'group_id': self.store_group_id,
-            }
-            normalizer = PriceNormalizer(price_data=price_data, company=self.store_group.company.name)
-            self.normalized_key = normalizer.get_normalized_key()
-        super().save(*args, **kwargs)
+        return f"{self.product.name} at {self.store_group.name} - ${self.price}"
