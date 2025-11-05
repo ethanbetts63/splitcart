@@ -53,7 +53,7 @@ The `update_db` command uses a stateful, database-driven approach. The `UpdateOr
 ### Outcasting & Re-homing Rogue Stores
 When a `Rogue` store is outcast, the `update_db` process attempts to find a new home for it by comparing it against the Ambassadors of other potential groups using the "True Overlap" metric. If no match is found, it is classified as an outlier.
 
-### Data Source Tracking
+### Data Source Trackingp
 The `products.Price` model includes a `source` field with values like `'direct_scrape'` or `'inferred_group'` to track the origin of every price, enabling accuracy measurement and feedback loops.
 
 ## 4. Scrape Scheduler Implementation

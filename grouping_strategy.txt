@@ -1,0 +1,39 @@
+### Grouping and Maintenance Strategy
+
+This document outlines the "bottom-up" strategy for creating and maintaining store groups based on price matching.
+
+#### 1. Core Philosophy & Terminology
+
+The system is designed around a "bottom-up" approach. Every store always belongs to a group, starting in a group of one. Groups are then merged as price matches are confirmed.
+
+*   **Group:** A set of one or more stores confirmed to have matching prices.
+*   **Anchor:** Each `Group` has one `Anchor` store. This store is the single "source of truth" for the group's prices. All comparisons are made against the `Anchor`.
+*   **Member:** Any store belonging to a `Group`.
+*   **Current Pricing:** Price data is considered "Current" if it was scraped within the last 72 hours. This is a critical rule for all comparisons.
+
+#### 2. Initial State: The `cluster_stores` Command
+
+The system is initialized using a simplified `cluster_stores` command. This command will first delete all existing `StoreGroup` objects. Then, it will iterate through every `Store` in the database and create a new, dedicated `StoreGroup` for each one, setting that store as its own `Anchor`.
+
+#### 3. The Update & Comparison Cycle
+
+The core logic is executed at the end of the `update_db --products` command, after all new prices for the run have been saved. The process is split into two distinct phases:
+
+**Phase 1: Internal Group Maintenance (Health Checks)**
+
+This phase ensures that existing groups remain accurate.
+
+1.  The system identifies all `Groups` with more than one `Member`.
+2.  For each `Group`, it checks if the `Anchor` and at least one other `Member` both have "Current Pricing".
+3.  If they do, an **Internal Comparison** is performed, comparing the `Member`'s prices against the `Anchor`'s prices.
+    *   **If they match:** The `Member` is confirmed as healthy.
+    *   **If they do not match:** The `Member` is ejected from the `Group` and placed into a new `Group` of one, becoming its own `Anchor`.
+4.  A special case exists for stale data: If an `Internal Comparison` fails, but the `Anchor`'s price data is not "Current", the `Member` is **not** ejected. Instead, the `Anchor` store is added to a high-priority queue to be re-scraped. This prevents unfair ejections based on out-of-date information.
+
+**Phase 2: Inter-Group Merging**
+
+This phase grows the groups by finding new matches.
+
+1.  After the maintenance phase is complete, the system finds all `Groups` whose `Anchor` has "Current Pricing".
+2.  An **Intergroup Comparison** is performed, comparing every `Anchor` against every other `Anchor`.
+3.  If two `Anchor`s are found to have matching prices, their `Groups` are merged. The `Group` with fewer members is merged into the one with more members. The old, smaller group is then deactivated.
