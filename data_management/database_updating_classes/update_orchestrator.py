@@ -9,6 +9,7 @@ from data_management.database_updating_classes.variation_manager import Variatio
 from data_management.database_updating_classes.brand_manager import BrandManager
 from data_management.database_updating_classes.post_processor import PostProcessor
 from data_management.database_updating_classes.product_enricher import ProductEnricher
+from data_management.database_updating_classes.group_maintenance_orchestrator import GroupMaintenanceOrchestrator
 
 class UpdateOrchestrator:
     def __init__(self, command, inbox_path):
@@ -102,6 +103,10 @@ class UpdateOrchestrator:
         if unit_of_work:
             post_processor = PostProcessor(self.command, unit_of_work)
             post_processor.run()
+
+            # Run the new group maintenance logic
+            group_maintenance_orchestrator = GroupMaintenanceOrchestrator(self.command)
+            group_maintenance_orchestrator.run()
 
         # Final cleanup of processed files
         self._cleanup_processed_files()
