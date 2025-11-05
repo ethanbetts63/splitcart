@@ -2,20 +2,20 @@ from django.db import models
 
 class Price(models.Model):
     """
-    Represents the single, most recent price for a Product at a specific StoreGroup.
+    Represents the single, most recent price for a Product at a specific Store.
     """
     product = models.ForeignKey(
         'products.Product',
         on_delete=models.CASCADE,
         related_name="prices"
     )
-    store_group = models.ForeignKey(
-        'companies.StoreGroup',
-        on_delete=models.PROTECT,
+    store = models.ForeignKey(
+        'companies.Store',
+        on_delete=models.CASCADE,
         related_name="prices"
     )
     
-    # Fields moved from the old PriceRecord model
+    # Price details
     scraped_date = models.DateField()
     price = models.DecimalField(
         max_digits=10,
@@ -57,8 +57,8 @@ class Price(models.Model):
     )
 
     class Meta:
-        unique_together = ('product', 'store_group')
+        unique_together = ('product', 'store')
         ordering = ['product__name']
 
     def __str__(self):
-        return f"{self.product.name} at {self.store_group.name} - ${self.price}"
+        return f"{self.product.name} at {self.store.store_name} - ${self.price}"

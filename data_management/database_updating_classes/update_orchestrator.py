@@ -72,7 +72,7 @@ class UpdateOrchestrator:
             brand_manager = BrandManager(self.command)
 
             # Pass the single resolver instance down
-            product_cache = self._process_consolidated_data(consolidated_data, product_resolver, unit_of_work, self.variation_manager, brand_manager, store_group)
+            product_cache = self._process_consolidated_data(consolidated_data, product_resolver, unit_of_work, self.variation_manager, brand_manager, store_obj)
             
             brand_manager.commit()
 
@@ -139,7 +139,7 @@ class UpdateOrchestrator:
         self.command.stdout.write(f"  - Consolidated into {len(consolidated_data)} unique products.")
         return consolidated_data
 
-    def _process_consolidated_data(self, consolidated_data, resolver, unit_of_work, variation_manager, brand_manager, store_group):
+    def _process_consolidated_data(self, consolidated_data, resolver, unit_of_work, variation_manager, brand_manager, store_obj):
         product_cache = {}
         total = len(consolidated_data)
         for i, (key, data) in enumerate(consolidated_data.items()):
