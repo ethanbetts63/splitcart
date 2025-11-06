@@ -28,7 +28,7 @@ def _find_leaf_categories(nodes: list) -> list:
             leaf_categories.extend(_find_leaf_categories(children))
     return leaf_categories
 
-def get_iga_categories(command, retailer_store_id: str, session: requests.Session, dev: bool = False) -> list:
+def get_iga_categories(command, retailer_store_id: str, session: requests.Session) -> list:
     """
     Fetches the category hierarchy for a specific IGA store and extracts a list
     of all the leaf subcategories to be scraped.
@@ -43,10 +43,8 @@ def get_iga_categories(command, retailer_store_id: str, session: requests.Sessio
         A list of specific subcategory names to scrape, or an empty list if an error occurs.
     """
     command.stdout.write(f"    Fetching category hierarchy for store ID: {retailer_store_id}...")
-    if dev:
-        api_url = f"http://127.0.0.1:8000/static/iga_category_tree.json"
-    else:
-        api_url = f"https://www.igashop.com.au/api/storefront/stores/{retailer_store_id}/categoryHierarchy"
+
+    api_url = f"https://www.igashop.com.au/api/storefront/stores/{retailer_store_id}/categoryHierarchy"
     
     try:
         response = session.get(api_url, timeout=60)

@@ -5,7 +5,7 @@ This project is a Django-based application called "splitcart". It is designed as
 **Key Technologies:**
 
 *   **Backend:** Django
-*   **Database:** SQLite (as per `settings.py`)
+*   **Database:** MySql (as per `settings.py`)
 *   **Data Scraping:** The project uses custom scrapers to fetch data from stores' websites.
 
 **Frontend Architecture:**
@@ -72,9 +72,9 @@ This section outlines the standard workflow for collecting, processing, and arch
     ```bash
     python manage.py find_stores --company <company_name>
     ```
-2.  **Update Database:** Use the `update_db` command to add the newly discovered stores to the database.
+2.  **Update Database:** Use the `update` command to add the newly discovered stores to the database.
     ```bash
-    python manage.py update_db --stores
+    python manage.py update --stores
     ```
 
 ### Step 2: Scrape Product Data
@@ -86,7 +86,7 @@ This section outlines the standard workflow for collecting, processing, and arch
 
 ### Step 3: Update Database with Products
 
-*   **Update:** Use the `update_db --products` command to populate the database with the processed product and price information from the `product_inbox`. This step now leverages the refactored object-oriented system for robust and efficient processing. For a detailed explanation of this new workflow, refer to `final_workflow_explanation.txt`.
+*   **Update:** Use the `update --products` command to populate the database with the processed product and price information from the `product_inbox`. This step now leverages the refactored object-oriented system for robust and efficient processing. For a detailed explanation of this new workflow, refer to `final_workflow_explanation.txt`.
     ```bash
     python manage.py update_db --products
     ```
