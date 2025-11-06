@@ -20,13 +20,16 @@ class Command(BaseCommand):
         parser.add_argument('--coles', action='store_true', help='Limit the scraper to Coles stores.')
         parser.add_argument('--aldi', action='store_true', help='Limit the scraper to Aldi stores.')
         parser.add_argument('--iga', action='store_true', help='Limit the scraper to IGA stores.')
+        parser.add_argument('--dev', action='store_true', help='Use dev server.')
 
     def handle(self, *args, **options):
+        base_url = "http://127.0.0.1:8000" if options['dev'] else settings.API_SERVER_URL
+        
         self.stdout.write(self.style.SUCCESS('Updating translation tables...'))
         product_table_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'product_translation_table.py')
         brand_table_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'brand_translation_table.py')
-        fetch_python_file('product_translations', product_table_path, self)
-        fetch_python_file('brand_translations', brand_table_path, self)
+        fetch_python_file('product_translations', product_table_path, self, base_url)
+        fetch_python_file('brand_translations', brand_table_path, self, base_url)
         self.stdout.write(self.style.SUCCESS('Translation tables are up to date.'))
 
         stop_file = os.path.join('scraping', 'stop.txt')
@@ -47,9 +50,9 @@ class Command(BaseCommand):
             return
 
         # If no one-off task is specified, start the persistent worker loop
-        self._run_worker_loop(options)
+        self._run_worker_loop(options, base_url)
 
-    def _run_worker_loop(self, options):
+    def _run_worker_loop(self, options, base_url):
         companies_to_scrape = []
         if options['woolworths']: companies_to_scrape.append('Woolworths')
         if options['coles']: companies_to_scrape.append('Coles')
@@ -68,7 +71,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.HTTP_INFO("\nRequesting next candidate from scheduler API..."))
             try:
                 # Construct the API URL with query parameters for company filtering
-                api_url = f"{settings.API_SERVER_URL}/api/scheduler/next-candidate/"
+                api_url = f"{base_url}/api/scheduler/next-candidate/"
                 params = {'company': companies_to_scrape}
                 headers = {'X-Internal-API-Key': settings.INTERNAL_API_KEY}
                 response = requests.get(api_url, params=params, headers=headers, timeout=30)
