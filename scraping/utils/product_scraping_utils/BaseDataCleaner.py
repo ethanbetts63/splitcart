@@ -113,10 +113,15 @@ class BaseDataCleaner(ABC):
         product['normalized_brand'] = normalizer.get_normalized_brand_name()
         product['sizes'] = normalizer.get_raw_sizes()
         product['normalized_name_brand_size'] = normalizer.get_normalized_name_brand_size_string()
-        if 'barcode' in product and product.get('barcode'):
+        if product.get('barcode') is not None:
              product['barcode'] = normalizer.get_cleaned_barcode()
 
         product['scraped_date'] = self.timestamp.date().isoformat()
+
+        # Convert all empty string fields to None to ensure consistency
+        for key, value in product.items():
+            if isinstance(value, str) and not value.strip():
+                product[key] = None
 
         # Generate the price hash after all other fields are set
         product['price_hash'] = generate_price_hash(product, self.store_id)
