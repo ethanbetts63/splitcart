@@ -1,6 +1,6 @@
 import os
 import json
-from products.models import Product
+from products.models import Product, Price
 from companies.models import Company, Store
 from django.core.cache import cache
 from data_management.database_updating_classes.product_resolver import ProductResolver
@@ -57,6 +57,26 @@ class UpdateOrchestrator:
                 self.processed_files.append(file_path)
                 continue
 
+            # 1. Determine if this is a 'Full Sync' or 'Upsert Only' run. 
+            # This protects against a partial scrape corrupting the DB.
+            db_price_count = Price.objects.filter(store=store_obj).count()
+            file_price_count = len(consolidated_data)
+            is_full_sync = False
+
+            if db_price_count > 0:
+                if (file_price_count / db_price_count) >= 0.9:
+                    is_full_sync = True
+            else:
+                # If no prices in DB, any new file is considered a full sync
+                is_full_sync = True
+            
+            if is_full_sync:
+                self.command.stdout.write(self.command.style.SUCCESS(f"  - Running in Full Sync mode for {store_obj.store_name}."))
+            else:
+                self.command.stdout.write(self.command.style.WARNING(f"  - Running in Upsert Only mode for {store_obj.store_name} (file count {file_price_count} vs db count {db_price_count})."))
+
+            # 2. Pre-fetch all existing prices for the store (for upsert and diff)
+            initial_price_cache = list(Price.objects.filter(store=store_obj))
 
             unit_of_work = UnitOfWork(self.command, product_resolver)
             self.variation_manager.unit_of_work = unit_of_work  # Inject UoW
@@ -67,7 +87,16 @@ class UpdateOrchestrator:
             
             brand_manager.commit()
 
-            if unit_of_work.commit(consolidated_data, product_cache, product_resolver, store_obj):
+            # 3. Commit changes and get back stale prices
+            stale_prices = unit_of_work.commit(consolidated_data, product_cache, product_resolver, store_obj, initial_price_cache, is_full_sync)
+
+            if stale_prices is not None:
+                # 4. Conditionally delete stale prices
+                if is_full_sync and stale_prices:
+                    stale_price_ids = [p.id for p in stale_prices]
+                    Price.objects.filter(id__in=stale_price_ids).delete()
+                    self.command.stdout.write(self.command.style.SUCCESS(f"  - Deleted {len(stale_price_ids)} delisted products for store {store_obj.store_name}."))
+
                 self.command.stdout.write("  - Updating resolver cache with new products...")
                 for norm_string, product_obj in product_cache.items():
                     if norm_string not in product_resolver.normalized_string_cache:
