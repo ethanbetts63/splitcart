@@ -7,7 +7,7 @@ from data_management.utils.price_normalizer import PriceNormalizer
 class GroupOrchestrator:
     """
     Orchestrates the process of verifying group integrity after new data has been scraped.
-    It compares new 'Candidate' stores against the group's 'Ambassador' to detect any divergence.
+    It compares new 'Candidate' stores against the group's 'anchor' to detect any divergence.
     """
     def __init__(self, unit_of_work: UnitOfWork):
         self.uow = unit_of_work

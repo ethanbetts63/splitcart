@@ -233,7 +233,7 @@ class Migration(migrations.Migration):
                             ("inferred_group", "Inferred from Group"),
                         ],
                         default="direct_scrape",
-                        help_text="How the price was obtained: from a direct scrape or inferred from a group ambassador.",
+                        help_text="How the price was obtained: from a direct scrape or inferred from a group anchor.",
                         max_length=20,
                     ),
                 ),

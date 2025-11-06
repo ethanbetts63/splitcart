@@ -15,43 +15,43 @@ The core of the system is the "Intelligent Scraping Loop," which is the ongoing 
 ### Key Terminology
 To ensure clarity, we will use the following precise terms:
 *   **True Overlap:** The primary metric for grouping. It is the percentage of shared products between two stores that have the exact same price, based on data scraped within the same tight time window.
-*   **The Ambassador:** For each group, one store is designated the official Ambassador. It serves as the single "source of truth" for the group's current pricing. This is a rolling title, passed to the most recently confirmed matching store.
-*   **The Candidate:** A store selected by the `ScrapeScheduler` for a routine health check. Its data is tested against the group's current Ambassador.
-*   **The Rogue:** A store that was previously a member of a group but is found to no longer match the Ambassador's pricing. It is ejected from the group and becomes an outlier.
+*   **The anchor:** For each group, one store is designated the official anchor. It serves as the single "source of truth" for the group's current pricing. This is a rolling title, passed to the most recently confirmed matching store.
+*   **The Candidate:** A store selected by the `ScrapeScheduler` for a routine health check. Its data is tested against the group's current anchor.
+*   **The Rogue:** A store that was previously a member of a group but is found to no longer match the anchor's pricing. It is ejected from the group and becomes an outlier.
 
 ### The "Top-Down" Grouping Philosophy with Geographic Seeding
 To start the process, we will adopt a "top-down" approach using a single, reliable heuristic: geography.
 
 *   **Geographic Seeding:** We will not guess store sub-types from names. Instead, we will begin by creating initial "monolith" groups based purely on geographic location (e.g., the Perth metropolitan area) using the `cluster_stores` command.
 
-*   **Discovering Sub-Types:** The true store sub-types (e.g., "Metro", "Supermarket") will be *discovered* by the system. As the Ambassador health checks run, a large geographic group will naturally be "chiseled" into smaller, more accurate sub-groups based on the actual pricing behavior of its member stores. This is a more robust, data-driven method than relying on uncertain heuristics.
+*   **Discovering Sub-Types:** The true store sub-types (e.g., "Metro", "Supermarket") will be *discovered* by the system. As the anchor health checks run, a large geographic group will naturally be "chiseled" into smaller, more accurate sub-groups based on the actual pricing behavior of its member stores. This is a more robust, data-driven method than relying on uncertain heuristics.
 
 ### The "True Overlap" Metric
 *   **The Metric:** The primary metric for grouping will be **"True Overlap"**: the percentage of shared products between two stores that have the *exact same price*.
 *   **The Constraint:** This comparison must be performed on data scraped on the same day (or within a tight 48-hour window) to be valid.
 *   **Optimization:** The calculation includes a "fail-fast" mechanism. It determines the maximum number of mismatches allowed to meet the overlap threshold and exits the comparison immediately once that number is exceeded.
 
-### Group Maintenance: The Ambassador & Candidate Workflow
+### Group Maintenance: The anchor & Candidate Workflow
 This model provides a clear and robust process for maintaining group integrity. The `GroupOrchestrator` within the `update_db` process will handle a batch of new `Candidates` for a group using the following iterative logic:
 
-1.  **Fetch Data:** The orchestrator receives a list of all new `Candidate` stores for a specific group and fetches the group's current `Ambassador`.
+1.  **Fetch Data:** The orchestrator receives a list of all new `Candidate` stores for a specific group and fetches the group's current `anchor`.
 
-2.  **Iterate and Sort:** The orchestrator loops through every `Candidate`, compares it to the `Ambassador`, and sorts them into `confirmed_matches` and `potential_rogues`.
+2.  **Iterate and Sort:** The orchestrator loops through every `Candidate`, compares it to the `anchor`, and sorts them into `confirmed_matches` and `potential_rogues`.
 
 3.  **Analyze Results and Act:**
-    *   **If `confirmed_matches` is not empty:** The group is healthy. The first store in `confirmed_matches` is promoted to be the new `Ambassador`. Any `potential_rogues` are outcast.
+    *   **If `confirmed_matches` is not empty:** The group is healthy. The first store in `confirmed_matches` is promoted to be the new `anchor`. Any `potential_rogues` are outcast.
     *   **If `confirmed_matches` is empty:** This is a "Major Divergence."
         *   **If other members remain:** The group's `status` is set to `DIVERGENCE_DETECTED`. The failed candidates are outcast. This signals the `ScrapeScheduler` to queue a new member from the group as a tie-breaker.
         *   **If no other members remain:** The group is dissolved by setting its `is_active` flag to `False`.
 
 ### GroupOrchestrator Implementation Refinements
-The `GroupOrchestrator` is fully integrated with the `UnitOfWork` to ensure atomic transactions. It handles price inference by creating new `Price` entries for all non-scraped group members, linking them to the new ambassador's `PriceRecord` instances. The logic for handling a "Major Divergence" is implemented as designed, preventing premature group dissolution.
+The `GroupOrchestrator` is fully integrated with the `UnitOfWork` to ensure atomic transactions. It handles price inference by creating new `Price` entries for all non-scraped group members, linking them to the new anchor's `PriceRecord` instances. The logic for handling a "Major Divergence" is implemented as designed, preventing premature group dissolution.
 
 ### The Grouper Workflow (`update_db`)
-The `update_db` command uses a stateful, database-driven approach. The `UpdateOrchestrator` processes incoming files and stamps stores as `candidates` on their respective `StoreGroup`. After processing all files, the `GroupOrchestrator` runs the "Ambassador & Candidate Workflow" on all groups with candidates. Finally, it clears the `candidates` list for the processed groups. All operations are committed in a single atomic transaction by the `UnitOfWork`.
+The `update_db` command uses a stateful, database-driven approach. The `UpdateOrchestrator` processes incoming files and stamps stores as `candidates` on their respective `StoreGroup`. After processing all files, the `GroupOrchestrator` runs the "anchor & Candidate Workflow" on all groups with candidates. Finally, it clears the `candidates` list for the processed groups. All operations are committed in a single atomic transaction by the `UnitOfWork`.
 
 ### Outcasting & Re-homing Rogue Stores
-When a `Rogue` store is outcast, the `update_db` process attempts to find a new home for it by comparing it against the Ambassadors of other potential groups using the "True Overlap" metric. If no match is found, it is classified as an outlier.
+When a `Rogue` store is outcast, the `update_db` process attempts to find a new home for it by comparing it against the anchors of other potential groups using the "True Overlap" metric. If no match is found, it is classified as an outlier.
 
 ### Data Source Trackingp
 The `products.Price` model includes a `source` field with values like `'direct_scrape'` or `'inferred_group'` to track the origin of every price, enabling accuracy measurement and feedback loops.
@@ -69,7 +69,7 @@ The process is as follows:
         *   **20% (Explore):** It explores other options. This is further split, giving a 15% overall chance of picking a random smaller group and a 5% chance of returning `None` to signal that an outlier (a store with no group membership) should be scraped.
 
 2.  **Select a Candidate Store:** Once a target context (a group or outliers) is determined, the scheduler selects the single best `Store` to scrape from that context.
-    *   **Filter Eligible Stores:** It first builds a queryset of all stores in the target context and filters out any store that is already an ambassador or a candidate in the current run.
+    *   **Filter Eligible Stores:** It first builds a queryset of all stores in the target context and filters out any store that is already an anchor or a candidate in the current run.
     *   **Prioritize New Stores:** From the eligible list, it **always** prioritizes the first store it finds that has never been scraped (`last_scraped` is `null`). This is the primary mechanism for discovery and building out the dataset.
     *   **Select Oldest Scraped:** If all eligible stores in the context have been scraped at least once, it selects the one with the oldest `last_scraped` timestamp, ensuring all stores are periodically re-checked.
 
@@ -81,6 +81,6 @@ This strategy opens up several questions that will need to be answered during im
 
 1.  **Thresholds:** What is the initial "True Overlap" percentage required to form a group (95%, 98%)? What level of price deviation in a spot-check triggers a full re-scrape?
 2.  **Re-analysis Frequency:** How often should the full, system-wide re-analysis of all groups be performed (e.g., weekly, monthly, quarterly)?
-3.  **Ambassador Selection:** When rotating an ambassador, is the selection random, or round-robin?
+3.  **anchor Selection:** When rotating an anchor, is the selection random, or round-robin?
 4.  **Data Freshness:** What is the maximum acceptable age for data used in the "True Overlap" analysis? (e.g., must be from the same 24-hour period).
 5.  **Future Performance Optimizations:** For the "re-homing" process, could we use more advanced techniques like data fingerprinting (e.g., MD5 hashing for perfect matches, or SimHash for near-matches) to accelerate finding candidate groups even faster than the two-stage check?

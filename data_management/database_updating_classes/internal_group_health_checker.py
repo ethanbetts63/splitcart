@@ -26,7 +26,7 @@ class InternalGroupHealthChecker:
         StoreGroupMembership.objects.filter(store=member_store).delete()
 
         # Create a new group for the ejected member
-        new_group = StoreGroup.objects.create(company=member_store.company, ambassador=member_store)
+        new_group = StoreGroup.objects.create(company=member_store.company, anchor=member_store)
         StoreGroupMembership.objects.create(store=member_store, group=new_group)
         self.command.stdout.write(f"    - Created new Group {new_group.id} for ejected member.")
 
@@ -37,7 +37,7 @@ class InternalGroupHealthChecker:
         self.command.stdout.write(f"  - Found {len(groups_to_check)} groups with more than one member to check.")
 
         for group in groups_to_check:
-            anchor = group.ambassador
+            anchor = group.anchor
             if not anchor:
                 self.command.stdout.write(self.command.style.WARNING(f"  - Skipping Group {group.id}: No anchor set."))
                 continue

@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RemoveField(
             model_name="storegroup",
-            name="ambassador",
+            name="anchor",
         ),
         migrations.AddField(
             model_name="storegroup",

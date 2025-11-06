@@ -91,10 +91,10 @@ class SchedulerView(APIView):
         stores_qs = stores_qs.exclude(coles_exclusion | woolworths_exclusion)
 
         relevant_groups = StoreGroup.objects.filter(company_filter)
-        ambassador_ids = relevant_groups.filter(ambassador__isnull=False).values_list('ambassador_id', flat=True)
+        anchor_ids = relevant_groups.filter(anchor__isnull=False).values_list('anchor_id', flat=True)
         candidate_members = relevant_groups.prefetch_related('candidates').values_list('candidates__id', flat=True)
 
-        excluded_ids = set(list(ambassador_ids)) | set(list(candidate_members))
+        excluded_ids = set(list(anchor_ids)) | set(list(candidate_members))
         eligible_stores = stores_qs.exclude(id__in=excluded_ids)
 
         # Exclude stores that have been scheduled recently

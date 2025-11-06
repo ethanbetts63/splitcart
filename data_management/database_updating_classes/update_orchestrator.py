@@ -70,10 +70,8 @@ class UpdateOrchestrator:
                 # If no prices in DB, any new file is considered a full sync
                 is_full_sync = True
             
-            if is_full_sync:
-                self.command.stdout.write(self.command.style.SUCCESS(f"  - Running in Full Sync mode for {store_obj.store_name}."))
-            else:
-                self.command.stdout.write(self.command.style.WARNING(f"  - Running in Upsert Only mode for {store_obj.store_name} (file count {file_price_count} vs db count {db_price_count})."))
+            if not is_full_sync:
+                self.command.stderr.write(self.command.style.ERROR(f"  - Partial scrape detected for {store_obj.store_name} (file count {file_price_count} vs db count {db_price_count}). Running in Upsert Only mode."))
 
             # 2. Pre-fetch all existing prices for the store (for upsert and diff)
             initial_price_cache = list(Price.objects.filter(store=store_obj))

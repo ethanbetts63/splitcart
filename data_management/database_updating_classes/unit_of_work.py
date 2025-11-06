@@ -115,8 +115,12 @@ class UnitOfWork:
                     prices_to_create = []
                     prices_to_update = []
 
-                    # Sort prices into 'create' or 'update' lists
-                    for price_data in self.prices_to_upsert:
+                    # 2. Sort prices into 'create' or 'update' lists
+                    total_prices = len(self.prices_to_upsert)
+                    for i, price_data in enumerate(self.prices_to_upsert):
+                        if (i + 1) % 250 == 0 or (i + 1) == total_prices:
+                            self.command.stdout.write(f'\r    - Sorting prices: {i + 1}/{total_prices}', ending='')
+
                         key = (price_data['product'].id, price_data['store'].id)
                         if key in stale_prices_map:
                             # This price exists, prepare for update
@@ -129,6 +133,7 @@ class UnitOfWork:
                         else:
                             # This price is new, prepare for creation
                             prices_to_create.append(Price(**price_data))
+                    self.command.stdout.write('') # Newline after progress bar
 
                     # 3. Perform bulk operations
                     if prices_to_create:

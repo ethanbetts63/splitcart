@@ -24,12 +24,12 @@ class IntergroupComparer:
         ).values_list('store_id', flat=True).distinct()
 
         # Get active groups and their anchors
-        active_groups = StoreGroup.objects.filter(is_active=True).prefetch_related('ambassador')
+        active_groups = StoreGroup.objects.filter(is_active=True).prefetch_related('anchor')
 
         # Filter to get only anchors that have recent prices
         anchors_to_compare = [
-            g.ambassador for g in active_groups 
-            if g.ambassador and g.ambassador.id in stores_with_recent_prices
+            g.anchor for g in active_groups 
+            if g.anchor and g.anchor.id in stores_with_recent_prices
         ]
         return anchors_to_compare
 

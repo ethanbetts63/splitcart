@@ -140,7 +140,7 @@ def generate_random_cart(stores, num_products):
         candidate_subs = [c for c in candidate_subs if c not in clones]
 
         if len(final_options) < portfolio_cap:
-            ambassadors = {}
+            anchors = {}
             anchor_store_id = anchor_prices[0].store.id
             other_stores = [s for s in stores if s.id != anchor_store_id]
             for store in other_stores:
@@ -148,14 +148,14 @@ def generate_random_cart(stores, num_products):
                 if not store_candidates:
                     continue
                 
-                best_ambassador = max(store_candidates, key=lambda x: get_relation(anchor_product, x[0]).score if get_relation(anchor_product, x[0]) else 0)
-                ambassadors[store.id] = best_ambassador
+                best_anchor = max(store_candidates, key=lambda x: get_relation(anchor_product, x[0]).score if get_relation(anchor_product, x[0]) else 0)
+                anchors[store.id] = best_anchor
 
-            for amb in ambassadors.values():
+            for amb in anchors.values():
                 if amb not in final_options and len(final_options) < portfolio_cap:
                     final_options.append(amb)
             
-            candidate_subs = [c for c in candidate_subs if c not in ambassadors.values()]
+            candidate_subs = [c for c in candidate_subs if c not in anchors.values()]
 
         if len(final_options) < portfolio_cap:
             candidate_subs.sort(key=lambda x: get_relation(anchor_product, x[0]).score if get_relation(anchor_product, x[0]) else 0, reverse=True)

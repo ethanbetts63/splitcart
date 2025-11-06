@@ -53,7 +53,7 @@ class Price(models.Model):
         max_length=20,
         choices=SOURCE_CHOICES,
         default='direct_scrape',
-        help_text="How the price was obtained: from a direct scrape or inferred from a group ambassador."
+        help_text="How the price was obtained: from a direct scrape or inferred from a group anchor."
     )
 
     class Meta:

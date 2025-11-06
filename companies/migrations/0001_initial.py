@@ -406,12 +406,12 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "ambassador",
+                    "anchor",
                     models.ForeignKey(
                         blank=True,
                         null=True,
                         on_delete=django.db.models.deletion.SET_NULL,
-                        related_name="ambassador_for_group",
+                        related_name="anchor_for_group",
                         to="companies.store",
                     ),
                 ),
