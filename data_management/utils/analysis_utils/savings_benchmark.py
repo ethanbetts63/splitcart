@@ -181,8 +181,11 @@ def generate_random_cart(stores, num_products):
             store_address = ", ".join(part for part in address_parts if part)
 
             company_name = price_obj.store.company.name
-            image_urls_by_company = {k.lower(): v for k, v in product.image_url_pairs}
-            image_url = image_urls_by_company.get(company_name.lower())
+            image_url = None
+            if product.aldi_image_url and company_name.lower() == 'aldi':
+                image_url = product.aldi_image_url
+            elif price_obj.store.company.image_url_template and product.sku:
+                image_url = price_obj.store.company.image_url_template.format(sku=product.sku)
 
             current_slot.append({
                 "product_id": product.id,
