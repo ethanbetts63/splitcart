@@ -85,7 +85,5 @@ class DataCleanerWoolworths(BaseDataCleaner):
 
         cleaned_product['is_available'] = raw_product.get('IsAvailable', False)
 
-        normalizer = ProductNormalizer(cleaned_product)
-        cleaned_product['normalized_name'] = normalizer.get_fully_normalized_name()
 
         return cleaned_product

@@ -72,8 +72,4 @@ class DataCleanerIga(BaseDataCleaner):
         unit_price_info = self._get_standardized_unit_price_info(cleaned_product)
         cleaned_product.update(unit_price_info)
 
-        # Add normalized name for better matching
-        normalizer = ProductNormalizer(cleaned_product)
-        cleaned_product['normalized_name'] = normalizer.get_fully_normalized_name()
-
         return cleaned_product
