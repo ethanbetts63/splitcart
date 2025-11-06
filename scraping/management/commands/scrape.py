@@ -146,7 +146,10 @@ class Command(BaseCommand):
                 return
 
             if scraper:
-                scraper.run()
+                try:
+                    scraper.run()
+                except Exception as e:
+                    self.stdout.write(self.style.ERROR(f"An unexpected error occurred during the scrape for {store.store_name}: {e}"))
 
         except Store.DoesNotExist:
             self.stdout.write(self.style.ERROR(f"Store with PK {store_pk} not found."))

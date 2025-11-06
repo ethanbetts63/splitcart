@@ -68,10 +68,15 @@ class ProductScraperWoolworths(BaseProductScraper):
                 "storeId": self.store_id
             }
 
+            #self.command.stdout.write(f"\n--- Requesting data for category: {category_slug} (ID: {category_id}), Page: {page_num} ---")
+            # self.command.stdout.write(f"API URL: {api_url}")
+            # self.command.stdout.write(f"Payload: {json.dumps(payload, indent=2)}")
+
             try:
                 response = self.session.post(api_url, json=payload, timeout=20)
                 response.raise_for_status()
                 data = response.json()
+                #self.command.stdout.write(f"Raw Response (Page {page_num}):\n{response.text[:500]}...\n")
                 
                 raw_products_on_page = [p for bundle in data.get("Bundles", []) if bundle and bundle.get("Products") for p in bundle["Products"]]
 

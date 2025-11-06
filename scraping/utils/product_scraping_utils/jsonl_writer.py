@@ -6,7 +6,7 @@ from .atomic_scraping_utils import finalize_scrape
 
 class JsonlWriter:
     def __init__(self, company: str, store_name_slug: str, state: str):
-        self.temp_dir = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'temp_inbox')
+        self.temp_dir = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'temp_outbox')
         if not os.path.exists(self.temp_dir):
             os.makedirs(self.temp_dir)
         
@@ -19,7 +19,7 @@ class JsonlWriter:
         date_str = datetime.now().strftime('%Y-%m-%d')
         self.temp_file_path = os.path.join(self.temp_dir, f"{self.company.lower()}-{self.store_name_slug.lower()}-{date_str}.jsonl")
         
-        self.inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'outboxes', 'product_outbox')
+        self.final_outbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'outboxes', 'product_outbox')
         self.temp_file_handle = None
         self.seen_product_keys = set()
 
@@ -58,10 +58,11 @@ class JsonlWriter:
         """Moves the temporary file to the final inbox directory."""
         if os.path.exists(self.temp_file_path):
             final_file_name = os.path.basename(self.temp_file_path)
-            finalize_scrape(self.temp_file_path, self.inbox_path, final_file_name)
+            finalize_scrape(self.temp_file_path, self.final_outbox_path, final_file_name)
 
     def cleanup(self):
         """Closes and removes the temporary file."""
+        print(f"--- Cleanup called for {self.temp_file_path} ---")
         self.close()
         if os.path.exists(self.temp_file_path):
             os.remove(self.temp_file_path)
