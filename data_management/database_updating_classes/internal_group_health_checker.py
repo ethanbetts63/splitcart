@@ -33,7 +33,7 @@ class InternalGroupHealthChecker:
     def run(self):
         self.command.stdout.write(self.command.style.SUCCESS("--- Running Internal Group Health Checks ---"))
         
-        groups_to_check = StoreGroup.objects.annotate(num_members=models.Count('memberships')).filter(num_members__gt=1, is_active=True)
+        groups_to_check = StoreGroup.objects.annotate(num_members=models.Count('memberships')).filter(num_members__gt=1)
         self.command.stdout.write(f"  - Found {len(groups_to_check)} groups with more than one member to check.")
 
         for group in groups_to_check:

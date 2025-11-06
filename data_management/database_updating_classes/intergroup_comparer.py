@@ -25,7 +25,7 @@ class IntergroupComparer:
         ).values_list('store_id', flat=True).distinct()
 
         # Get active groups and their anchors
-        active_groups = StoreGroup.objects.filter(is_active=True).prefetch_related('anchor')
+        active_groups = StoreGroup.objects.prefetch_related('anchor')
 
         # Filter to get only anchors that have recent prices
         anchors_to_compare = [
@@ -47,9 +47,8 @@ class IntergroupComparer:
         # Re-assign all members from the smaller group to the larger group
         StoreGroupMembership.objects.filter(group=smaller_group).update(group=larger_group)
 
-        # Deactivate the smaller group
-        smaller_group.is_active = False
-        smaller_group.save()
+        # Delete the now-empty smaller group
+        smaller_group.delete()
 
     def run(self):
         self.command.stdout.write(self.command.style.SUCCESS("--- Running Inter-Group Merging ---"))

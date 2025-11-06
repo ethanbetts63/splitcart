@@ -7,7 +7,7 @@ This document outlines the "bottom-up" strategy for creating and maintaining sto
 The system is designed around a "bottom-up" approach. Every store always belongs to a group, starting in a group of one. Groups are then merged as price matches are confirmed.
 
 *   **Group:** A set of one or more stores confirmed to have matching prices.
-*   **Anchor:** Each `Group` has one `Anchor` store. This store is the single "source of truth" for the group's prices. All comparisons are made against the `Anchor`.
+*   **Anchor:** Each `Group` has one `Anchor` store. This store is the single "source of truth" for the group's prices. All comparisons are made against the `Anchor`. The Anchor can never be ejected. 
 *   **Member:** Any store belonging to a `Group`.
 *   **Current Pricing:** Price data is considered "Current" if it was scraped within the last 72 hours. This is a critical rule for all comparisons.
 
