@@ -14,7 +14,7 @@ def get_woolworths_categories(command):
     }
 
     try:
-        response = requests.get(api_url, headers=headers, timeout=60)
+        response = requests.get(api_url, headers=headers, timeout=20)
         response.raise_for_status()
         data = response.json()
     except requests.exceptions.RequestException as e:

@@ -30,7 +30,7 @@ class ProductScraperWoolworths(BaseProductScraper):
         })
 
         try:
-            self.session.get("https://www.woolworths.com.au/", timeout=60)
+            self.session.get("https://www.woolworths.com.au/", timeout=20)
         except requests.exceptions.RequestException as e:
             self.command.stderr.write(self.command.style.ERROR(f"Failed to initialize session: {e}"))
             return
@@ -69,7 +69,7 @@ class ProductScraperWoolworths(BaseProductScraper):
             }
 
             try:
-                response = self.session.post(api_url, json=payload, timeout=60)
+                response = self.session.post(api_url, json=payload, timeout=20)
                 response.raise_for_status()
                 data = response.json()
                 
