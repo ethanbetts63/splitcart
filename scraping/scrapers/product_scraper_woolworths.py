@@ -11,11 +11,10 @@ class ProductScraperWoolworths(BaseProductScraper):
     A scraper for Woolworths stores.
     """
 
-    def __init__(self, command, company: str, store_id: str, store_name: str, state: str, categories_to_fetch: list, dev: bool = False):
+    def __init__(self, command, company: str, store_id: str, store_name: str, state: str, categories_to_fetch: list):
         super().__init__(command, company, store_id, store_name, state)
         self.session = None
         self.categories_to_fetch = categories_to_fetch
-        self.dev = dev
 
     def setup(self):
         """
