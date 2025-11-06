@@ -10,7 +10,7 @@ class Command(BaseCommand):
         parser.add_argument('--map', action='store_true', help='Generate store location map.')
         parser.add_argument('--super-cats', action='store_true', help='Generate super categories.')
         parser.add_argument('--bargains', action='store_true', help='Generate bargains.')
-        parser.add_argument('--store-clusters', action='store_true', help='Generate store clusters.')
+        parser.add_argument('--store-groups', action='store_true', help='Generate store groups.')
         parser.add_argument('--archive', action='store_true', help='Archive the database.')
         parser.add_argument('--categorize', action='store_true', help='Run the interactive category analyzer.')
         parser.add_argument('--company', type=str, help='Filter map generation by company name or specify company for categorization.')
@@ -56,10 +56,10 @@ class Command(BaseCommand):
             generator = BargainsGenerator(self, dev=dev)
             generator.run()
 
-        if options['store_clusters'] or run_all:
-            from data_management.utils.generation_utils.store_clusters_generator import StoreClustersGenerator
-            self.stdout.write(self.style.SUCCESS("Generating store clusters..."))
-            generator = StoreClustersGenerator(self, dev=dev)
+        if options['store_groups'] or run_all:
+            from data_management.utils.generation_utils.store_groups_generator import StoreGroupsGenerator
+            self.stdout.write(self.style.SUCCESS("Generating store groups..."))
+            generator = StoreGroupsGenerator(self, dev=dev)
             generator.run()
 
         if options['archive']:

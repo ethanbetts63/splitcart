@@ -21,7 +21,6 @@ class Command(BaseCommand):
         parser.add_argument('--cat-links', action='store_true', help='Update category links from the category_links_inbox directory.')
         parser.add_argument('--subs', action='store_true', help='Update substitutions from the substitutions_inbox directory.')
         parser.add_argument('--bargains', action='store_true', help='Update bargains from the bargains_inbox directory.')
-        parser.add_argument('--store-clusters', action='store_true', help='Update store clusters from the store_clusters_inbox directory.')
         parser.add_argument('--archive', action='store_true', help='Flush DB and load data from the most recent archive.')
 
     def handle(self, *args, **options):
@@ -35,15 +34,10 @@ class Command(BaseCommand):
         run_category_links = options['cat_links']
         run_substitutions = options['subs']
         run_bargains = options['bargains']
-        run_store_clusters = options['store_clusters']
 
-        if not any([run_stores_discovery, run_products_processed, run_prefixes, run_category_links, run_substitutions, run_bargains, run_store_clusters]):
+        if not any([run_stores_discovery, run_products_processed, run_prefixes, run_category_links, run_substitutions, run_bargains]):
             run_stores_discovery = True
             run_products_processed = True
-
-        if run_store_clusters:
-            orchestrator = StoreClusterUpdateOrchestrator(self)
-            orchestrator.run()
 
         if run_bargains:
             orchestrator = BargainUpdateOrchestrator(self)

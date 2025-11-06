@@ -2,14 +2,14 @@ from django.core.management.base import BaseCommand
 from data_management.utils.analysis_utils.cluster_visualizer import generate_cluster_map
 
 class Command(BaseCommand):
-    help = 'Generates a map visualizing the geographic clusters for a specific company.'
+    help = 'Generates a map visualizing the geographic groups for a specific company.'
 
     def add_arguments(self, parser):
         parser.add_argument(
             '--company',
             type=str,
             required=True,
-            help='The name of the company to visualize clusters for.'
+            help='The name of the company to visualize groups for.'
         )
 
     def handle(self, *args, **options):

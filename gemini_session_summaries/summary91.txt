@@ -48,7 +48,7 @@
    * Documentation: A detailed grouping_strategy.txt was created to document this new design.
 
   6. Initial Implementation of New Grouping Strategy:
-   * The generate --store-clusters command was refactored to initialize all stores into groups of one, with themselves as Anchors.
+   * The generate --store-groups command was refactored to initialize all stores into groups of one, with themselves as Anchors.
    * A core PriceComparer utility was created to handle price comparisons between two stores.
    * Three new classes were created for the new orchestration: GroupMaintenanceOrchestrator, InternalGroupHealthChecker, and
      IntergroupComparer.

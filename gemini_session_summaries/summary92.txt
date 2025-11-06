@@ -6,10 +6,10 @@ Okay, here is a detailed summary of our session:
    1. Initial `products.admin.PriceAdmin` Fix: We began by resolving an error in products/admin.py where PriceAdmin was incorrectly
       referencing store_group. This was corrected to use store and store_id fields, aligning with the updated Price model.
 
-   2. Refactoring `generate --store-clusters`: The generate --store-clusters command was initially performing direct database
+   2. Refactoring `generate --store-groups`: The generate --store-groups command was initially performing direct database
       operations, leading to bulk_create errors. Following user clarification, we refactored
-      data_management/utils/generation_utils/store_clusters_generator.py to adopt an API-client pattern. It now fetches store data from
-      the /api/export/stores/ endpoint and generates a store_clusters.json file, which is then processed by other commands.
+      data_management/utils/generation_utils/store_groups_generator.py to adopt an API-client pattern. It now fetches store data from
+      the /api/export/stores/ endpoint and generates a store_groups.json file, which is then processed by other commands.
 
    3. Renaming `ambassador` to `anchor`: To standardize terminology, the ambassador field on the StoreGroup model was renamed to anchor.
       This involved:

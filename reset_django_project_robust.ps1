@@ -70,9 +70,9 @@ git push
 
 python manage.py update --archive # Server
 
-python manage.py generate --store-clusters --dev # Local
-python manage.py upload --store-clusters --dev # Local
-python manage.py update --store-clusters # Server
+python manage.py generate --store-groups --dev # Local
+python manage.py upload --store-groups --dev # Local
+python manage.py update --store-groups # Server
 
 python manage.py upload --product --dev # Local
 python manage.py update --products # Server
