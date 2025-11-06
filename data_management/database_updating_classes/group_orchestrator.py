@@ -38,25 +38,25 @@ class GroupOrchestrator:
 
     def _perform_health_check(self, group, candidates):
         """
-        Performs the Ambassador vs. Candidate workflow for a single group, handling
+        Performs the Anchor vs. Candidate workflow for a single group, handling
         an arbitrary number of candidates.
         """
-        ambassador = group.ambassador
-        if not ambassador:
-            print(f"Warning: Group {group} has no Ambassador. Promoting first candidate.")
-            self._promote_new_ambassador(group, candidates[0])
+        anchor = group.anchor
+        if not anchor:
+            print(f"Warning: Group {group} has no Anchor. Promoting first candidate.")
+            self._promote_new_anchor(group, candidates[0])
             # In a real run, we might want to re-run the check for the rest of the candidates
             return
 
         print(f"--- Health Check for Group: {group} ---")
-        print(f"Current Ambassador: {ambassador.store_name}")
+        print(f"Current Anchor: {anchor.store_name}")
 
         confirmed_matches = []
         potential_rogues = []
 
         for candidate in candidates:
             print(f"  Testing Candidate: {candidate.store_name}...")
-            if self._is_match(candidate, ambassador):
+            if self._is_match(candidate, anchor):
                 print(f"    -> Match")
                 confirmed_matches.append(candidate)
             else:
@@ -64,25 +64,25 @@ class GroupOrchestrator:
                 potential_rogues.append(candidate)
 
         if confirmed_matches:
-            # The group is healthy. Promote a new ambassador and outcast any rogues.
-            new_ambassador = confirmed_matches[0]
-            print(f"Group is healthy. Promoting {new_ambassador.store_name} to new Ambassador.")
-            self._promote_new_ambassador(group, new_ambassador)
+            # The group is healthy. Promote a new anchor and outcast any rogues.
+            new_anchor = confirmed_matches[0]
+            print(f"Group is healthy. Promoting {new_anchor.store_name} to new Anchor.")
+            self._promote_new_anchor(group, new_anchor)
             
-            # Infer prices for the rest of the group based on the new ambassador's data
-            self._infer_prices_for_group(group, new_ambassador, confirmed_matches)
+            # Infer prices for the rest of the group based on the new anchor's data
+            self._infer_prices_for_group(group, new_anchor, confirmed_matches)
 
             for rogue in potential_rogues:
                 print(f"Outcasting rogue store: {rogue.store_name}")
                 self._outcast_rogue(rogue)
         else:
-            # All candidates failed to match the ambassador. This is a major divergence.
-            print(f"Major Divergence! All candidates failed to match Ambassador {ambassador.store_name}.")
+            # All candidates failed to match the anchor. This is a major divergence.
+            print(f"Major Divergence! All candidates failed to match Anchor {anchor.store_name}.")
 
             # Check if there are any other members in the group who were NOT part of this check.
-            # We exclude the ambassador and all the candidates we just tested.
+            # We exclude the anchor and all the candidates we just tested.
             other_members_exist = group.memberships.exclude(
-                store_id=group.ambassador_id
+                store_id=group.anchor_id
             ).exclude(
                 store_id__in=[c.id for c in candidates]
             ).exists()
@@ -105,9 +105,8 @@ class GroupOrchestrator:
         Fetches the most recent price for each product in a given store.
         Returns a dictionary mapping {product_id: price}.
         """
-        # Order by product and then by date descending to get the latest price first for each product
-        latest_prices = Price.objects.filter(store=store).order_by('price_record__product_id', '-price_record__scraped_date').distinct('price_record__product_id')
-        return {price.price_record.product_id: price.price_record.price for price in latest_prices}
+        all_prices = Price.objects.filter(store=store)
+        return {price.product_id: price.price for price in all_prices}
 
     def _is_match(self, store_a, store_b):
         """
@@ -155,9 +154,9 @@ class GroupOrchestrator:
 
         return overlap_percentage >= self.true_overlap_threshold
 
-    def _promote_new_ambassador(self, group, new_ambassador_store):
-        """Updates the group to set a new ambassador."""
-        group.ambassador = new_ambassador_store
+    def _promote_new_anchor(self, group, new_anchor_store):
+        """Updates the group to set a new anchor."""
+        group.anchor = new_anchor_store
         self.uow.add_for_update(group)
 
     def _outcast_rogue(self, rogue_store):
@@ -175,7 +174,7 @@ class GroupOrchestrator:
     def _find_new_home_for_rogue(self, rogue_store, old_group_id=None):
         """
         Attempts to find a new group for a rogue store by comparing it directly
-        against other group Ambassadors using the True Overlap metric.
+        against other group Anchors using the True Overlap metric.
         """
         print(f"  Attempting to re-home Rogue: {rogue_store.store_name}...")
         
@@ -188,14 +187,14 @@ class GroupOrchestrator:
             potential_groups = potential_groups.exclude(id=old_group_id) # Exclude its old group
 
         for group in potential_groups:
-            ambassador = group.ambassador
-            if not ambassador:
-                continue # Skip groups without an ambassador
+            anchor = group.anchor
+            if not anchor:
+                continue # Skip groups without an anchor
 
-            print(f"    Checking against Group: {group} (Ambassador: {ambassador.store_name})...")
+            print(f"    Checking against Group: {group} (Anchor: {anchor.store_name})...")
             
             # Directly use the _is_match (True Overlap) for simplicity
-            if self._is_match(rogue_store, ambassador):
+            if self._is_match(rogue_store, anchor):
                 print(f"      Match found! Re-homing {rogue_store.store_name} to Group: {group}.")
                 self.uow.add_membership_to_create(rogue_store, group)
                 return # Found a home, exit
@@ -211,17 +210,17 @@ class GroupOrchestrator:
         group.is_active = False
         self.uow.add_for_update(group)
 
-    def _infer_prices_for_group(self, group, new_ambassador, candidates):
+    def _infer_prices_for_group(self, group, new_anchor, candidates):
         """
-        Infers prices for all non-scraped members of a group based on the new ambassador's data.
+        Infers prices for all non-scraped members of a group based on the new anchor's data.
         """
-        print(f"  Inferring prices for group {group} from ambassador {new_ambassador.store_name}.")
+        print(f"  Inferring prices for group {group} from anchor {new_anchor.store_name}.")
 
-        # Get the most recent prices for the ambassador store
-        ambassador_prices = Price.objects.filter(store=new_ambassador).order_by('price_record__product_id', '-price_record__scraped_date').distinct('price_record__product_id').select_related('price_record', 'price_record__product')
+        # Get the most recent prices for the anchor store
+        anchor_prices = Price.objects.filter(store=new_anchor)
         
-        if not ambassador_prices:
-            print(f"  Warning: Ambassador {new_ambassador.store_name} has no prices to infer from.")
+        if not anchor_prices:
+            print(f"  Warning: Anchor {new_anchor.store_name} has no prices to infer from.")
             return
 
         # Find the stores in the group that were NOT scraped in this run
@@ -236,33 +235,24 @@ class GroupOrchestrator:
         
         newly_inferred_prices = []
         for store in target_stores:
-            for amb_price in ambassador_prices:
-                # This is the core logic: create a new Price entry for the member store,
-                # but link it to the ambassador's existing PriceRecord.
-                
-                # We need to generate a new normalized_key for this specific store/date combo
-                price_data = {
-                    'product_id': amb_price.price_record.product.id,
-                    'store_id': store.id,
-                    'price': amb_price.price_record.price,
-                    'date': amb_price.price_record.scraped_date.isoformat()
-                }
-                normalizer = PriceNormalizer(price_data=price_data, company=store.company.name)
-                normalized_key = normalizer.get_normalized_key()
-
-                if not normalized_key:
-                    continue
-
+            for anchor_price in anchor_prices:
                 newly_inferred_prices.append(
                     Price(
-                        price_record=amb_price.price_record,
+                        product=anchor_price.product,
                         store=store,
-                        sku=None,  # SKU is store-specific and not known for inferred prices
-                        normalized_key=normalized_key,
+                        scraped_date=anchor_price.scraped_date,
+                        price=anchor_price.price,
+                        was_price=anchor_price.was_price,
+                        unit_price=anchor_price.unit_price,
+                        unit_of_measure=anchor_price.unit_of_measure,
+                        per_unit_price_string=anchor_price.per_unit_price_string,
+                        is_on_special=anchor_price.is_on_special,
                         source='inferred_group'
                     )
                 )
         
         if newly_inferred_prices:
             print(f"  Staging {len(newly_inferred_prices)} new inferred prices for creation.")
-            self.uow.add_inferred_prices(newly_inferred_prices)
+            # Use ignore_conflicts=True to prevent errors if a price for that product/store already exists.
+            # This can happen in complex scenarios and it's safer to just skip creating the duplicate.
+            Price.objects.bulk_create(newly_inferred_prices, ignore_conflicts=True, batch_size=500)
