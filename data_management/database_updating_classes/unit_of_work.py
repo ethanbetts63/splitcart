@@ -75,7 +75,7 @@ class UnitOfWork:
                 seen_normalized_strings.add(product.normalized_name_brand_size)
         return unique_new_products_with_details
 
-    def commit(self, consolidated_data, product_cache, resolver, store):
+    def commit(self, consolidated_data, product_cache, resolver, store, initial_price_cache, is_full_sync):
         self.command.stdout.write("--- Committing changes to database ---")
         try:
             with transaction.atomic():
@@ -104,35 +104,28 @@ class UnitOfWork:
                         product_cache[norm_string] = p
 
                 # Stage 2: Upsert Price objects
+                stale_prices_for_deletion = []
                 if self.prices_to_upsert:
                     self.command.stdout.write(f"  - Processing {len(self.prices_to_upsert)} Price objects...")
 
-                    # --- Begin Bulk Upsert Logic ---
-                    product_ids = {p['product'].id for p in self.prices_to_upsert}
-                    store_ids = {p['store'].id for p in self.prices_to_upsert}
-
-                    # 1. Fetch all existing prices that could possibly match in one query
-                    existing_prices = Price.objects.filter(
-                        product_id__in=product_ids,
-                        store_id__in=store_ids
-                    )
-                    existing_prices_map = {
-                        (p.product_id, p.store_id): p for p in existing_prices
-                    }
+                    # Create a mutable copy of the initial cache for tracking stale prices
+                    # Use a dictionary for efficient lookup and removal
+                    stale_prices_map = {(p.product.id, p.store.id): p for p in initial_price_cache}
 
                     prices_to_create = []
                     prices_to_update = []
 
-                    # 2. Sort prices into 'create' or 'update' lists
+                    # Sort prices into 'create' or 'update' lists
                     for price_data in self.prices_to_upsert:
                         key = (price_data['product'].id, price_data['store'].id)
-                        if key in existing_prices_map:
+                        if key in stale_prices_map:
                             # This price exists, prepare for update
-                            existing_price = existing_prices_map[key]
+                            existing_price = stale_prices_map[key]
                             # Update the fields on the existing object
                             for field, value in price_data.items():
                                 setattr(existing_price, field, value)
                             prices_to_update.append(existing_price)
+                            del stale_prices_map[key] # Mark as not stale
                         else:
                             # This price is new, prepare for creation
                             prices_to_create.append(Price(**price_data))
@@ -151,6 +144,9 @@ class UnitOfWork:
                         
                         Price.objects.bulk_update(prices_to_update, update_fields, batch_size=500)
                         self.command.stdout.write(f"  - Updated {len(prices_to_update)} existing Price objects.")
+                    
+                    # The remaining items in stale_prices_map are truly stale
+                    stale_prices_for_deletion = list(stale_prices_map.values())
 
                 # Stage 3: Process categories now that all products exist
                 self.category_manager.process_categories(consolidated_data, product_cache, store.company)
@@ -169,7 +165,9 @@ class UnitOfWork:
                     brand_update_fields = ['name_variations', 'normalized_name_variations']
                     ProductBrand.objects.bulk_update(list(self.brands_to_update), brand_update_fields, batch_size=500)
                     self.command.stdout.write(f"  - Updated {len(self.brands_to_update)} brands with new variation info.")
-
+            
+            self.command.stdout.write(self.command.style.SUCCESS("--- Commit successful ---"))
+            return stale_prices_for_deletion
         except Exception as e:
             self.command.stderr.write(self.command.style.ERROR(f'An error occurred during commit: {e}'))
-            return False
+            return None

@@ -58,21 +58,6 @@ class UpdateOrchestrator:
                 continue
 
 
-            # 1. Determine if this is a 'Full Sync' or 'Upsert Only' run
-            db_price_count = Price.objects.filter(store=store_obj).count()
-            file_price_count = len(consolidated_data)
-            is_full_sync = False
-
-            if db_price_count > 0:
-                if (file_price_count / db_price_count) >= 0.9:
-                    is_full_sync = True
-            else:
-                # If no prices in DB, any new file is considered a full sync
-                is_full_sync = True
-
-            # 2. Pre-fetch all existing prices for the store (for upsert and diff)
-            initial_price_cache = list(Price.objects.filter(store=store_obj))
-
             unit_of_work = UnitOfWork(self.command, product_resolver)
             self.variation_manager.unit_of_work = unit_of_work  # Inject UoW
             brand_manager = BrandManager(self.command)
@@ -82,10 +67,7 @@ class UpdateOrchestrator:
             
             brand_manager.commit()
 
-            # 3. Commit changes and get back stale prices
-            stale_prices = unit_of_work.commit(consolidated_data, product_cache, product_resolver, store_obj, initial_price_cache, is_full_sync)
-
-            if stale_prices is not None:
+            if unit_of_work.commit(consolidated_data, product_cache, product_resolver, store_obj):
                 self.command.stdout.write("  - Updating resolver cache with new products...")
                 for norm_string, product_obj in product_cache.items():
                     if norm_string not in product_resolver.normalized_string_cache:
@@ -94,12 +76,6 @@ class UpdateOrchestrator:
                             product_resolver.barcode_cache[product_obj.barcode] = product_obj
 
                 self.processed_files.append(file_path)
-
-                # 4. Conditionally delete stale prices
-                if is_full_sync and stale_prices:
-                    stale_price_ids = [p.id for p in stale_prices]
-                    Price.objects.filter(id__in=stale_price_ids).delete()
-                    self.command.stdout.write(self.command.style.SUCCESS(f"  - Deleted {len(stale_price_ids)} delisted products for store {store_obj.store_name}."))
 
                 # Get the scraped_date from the metadata of the first product in the consolidated data
                 # Assuming all products in a single .jsonl file share the same scrape date
@@ -113,5 +89,105 @@ class UpdateOrchestrator:
                     self.command.stdout.write(self.command.style.SUCCESS(f"  - Updated last_scraped for Store PK {store_obj.pk} ({store_obj.store_name}) to {scraped_date_value}."))
                 else:
                     self.command.stderr.write(self.command.style.ERROR(f"  - Warning: No 'scraped_date' found in metadata for file {os.path.basename(file_path)}. last_scraped not updated."))
+
+        # After processing all files, run post-processing if a UoW was created
+        if unit_of_work:
+            post_processor = PostProcessor(self.command, unit_of_work)
+            post_processor.run()
+
+            # Run the new group maintenance logic
+            group_maintenance_orchestrator = GroupMaintenanceOrchestrator(self.command)
+            group_maintenance_orchestrator.run()
+
+        # Final cleanup of processed files
+        self._cleanup_processed_files()
+
+        self.command.stdout.write(self.command.style.SUCCESS("-- Orchestrator finished --"))
+
+    def _consolidate_from_file(self, file_path):
+        consolidated_data = {}
+        with open(file_path, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+            self.command.stdout.write(f"  - Consolidating {len(lines)} raw product entries...")
+            for line in lines:
+                try:
+                    data = json.loads(line)
+                    product_data = data.get('product')
+                    if not product_data:
+                        continue
+                    
+                    key = product_data.get('normalized_name_brand_size')
+                    if not key:
+                        continue
+                    
+                    if key in consolidated_data:
+                        continue
+                    
+                    consolidated_data[key] = data
+
+                except json.JSONDecodeError:
+                    continue
+        self.command.stdout.write(f"  - Consolidated into {len(consolidated_data)} unique products.")
+        return consolidated_data
+
+    def _process_consolidated_data(self, consolidated_data, resolver, unit_of_work, variation_manager, brand_manager, store_obj):
+        product_cache = {}
+        total = len(consolidated_data)
+        for i, (key, data) in enumerate(consolidated_data.items()):
+            self.command.stdout.write(f'\r    - Identifying products: {i+1}/{total}', ending='')
+            product_details = data['product']
+            metadata = data['metadata']
+            company_name = metadata.get('company', '')
+
+            brand_manager.process_brand(
+                brand_name=product_details.get('brand'), 
+                normalized_brand_name=product_details.get('normalized_brand'),
+                company_name=company_name
+            )
+
+            existing_product = resolver.find_match(product_details)
+
+            if existing_product:
+                product_cache[key] = existing_product
+                variation_manager.check_for_variation(product_details, existing_product, company_name)
+
+                # --- Enrich existing product ---
+                updated = ProductEnricher.enrich_from_dict(existing_product, product_details, company_name)
+
+                if updated and existing_product.pk:
+                    unit_of_work.add_for_update(existing_product)
+                
+                unit_of_work.add_price(existing_product, store_obj, product_details, metadata)
             else:
-                self.command.stderr.write(self.command.style.ERROR(f"  - Commit failed for file {os.path.basename(file_path)}."))
+                normalized_brand_key = product_details.get('normalized_brand')
+                brand_obj = brand_manager.brand_cache.get(normalized_brand_key)
+
+                new_product = Product(
+                    name=product_details.get('name', ''),
+
+                    brand=brand_obj,
+                    brand_name_company_pairs=[[product_details.get('brand'), company_name]],
+                    barcode=product_details.get('barcode'),
+                    company_skus={company_name: [product_details.get('sku')]} if product_details.get('sku') else {},
+                    normalized_name_brand_size=key,
+                    size=product_details.get('size'),
+                    sizes=product_details.get('sizes', []),
+                    url=product_details.get('url'),
+                    image_url_pairs=product_details.get('image_url_pairs', []),
+                )
+                if company_name.lower() == 'coles' and not product_details.get('barcode'):
+                    new_product.has_no_coles_barcode = True
+
+                product_cache[key] = new_product
+                unit_of_work.add_new_product(new_product, product_details, metadata)
+        self.command.stdout.write('\n')
+        return product_cache
+
+    def _cleanup_processed_files(self):
+        self.command.stdout.write("--- Deleting processed inbox files ---")
+        
+        for file_path in self.processed_files:
+            try:
+                os.remove(file_path)
+            except OSError as e:
+                self.command.stderr.write(self.command.style.ERROR(f'Could not delete file {file_path}: {e}'))
