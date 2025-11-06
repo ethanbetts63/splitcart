@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.db import transaction
 from django.db.models import Count
 from companies.models import Store, StoreGroup, StoreGroupMembership
+from products.models import Price # Added missing import
 from data_management.utils.price_comparer import PriceComparer
 import itertools
 
