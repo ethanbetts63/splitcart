@@ -42,7 +42,7 @@ class Command(BaseCommand):
         self.stdout.write(f"    - Merging '{duplicate.name}' (PK: {duplicate.id}) into canonical product.")
         
         update_fields = {}
-        fields_to_check = ['url', 'image_url_pairs']
+        fields_to_check = ['url', 'aldi_image_url']
         for field_name in fields_to_check:
             if not getattr(canonical, field_name) and getattr(duplicate, field_name):
                 update_fields[field_name] = getattr(duplicate, field_name)

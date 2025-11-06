@@ -61,6 +61,7 @@ def get_aldi_categories(command, store_id: str, session: requests.Session, dev: 
 
     except requests.exceptions.RequestException as e:
         command.stdout.write(f"    ERROR: Could not fetch category hierarchy for store {store_id}. Error: {e}\n")
+        raise
     except json.JSONDecodeError:
         command.stdout.write(f"    ERROR: Failed to decode JSON for category hierarchy for store {store_id}.\n")
     

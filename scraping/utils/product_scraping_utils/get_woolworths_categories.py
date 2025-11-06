@@ -22,7 +22,7 @@ def get_woolworths_categories(command, dev: bool = False):
         data = response.json()
     except requests.exceptions.RequestException as e:
         command.stdout.write(f"ERROR: Request failed when fetching categories: {e}\n")
-        return []
+        raise
     except ValueError: # Catches JSON decoding errors
         command.stdout.write("ERROR: Failed to decode JSON when fetching categories.\n")
         return []

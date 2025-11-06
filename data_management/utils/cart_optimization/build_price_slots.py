@@ -53,11 +53,18 @@ def build_price_slots(cart, stores):
                 unit_price = float(price_obj.price_record.price)
                 total_price = unit_price * quantity
 
-                # Find the correct image_url from the product's image_url_pairs
+                # Construct the image URL based on the company
+                image_url = None
+                company = price_obj.store.company
                 company_name = price_obj.store.company.name
-                image_urls_by_company = {k.lower(): v for k, v in product_obj.image_url_pairs}
-                company_name_lower = company_name.lower()
-                image_url = image_urls_by_company.get(company_name_lower)
+                if company_name.lower() == 'aldi':
+                    image_url = product_obj.aldi_image_url
+                elif company.image_url_template:
+                    # Get the first SKU for the given company from the product's company_skus dict
+                    company_skus = product_obj.company_skus.get(company.name, [])
+                    if company_skus:
+                        sku = company_skus[0]
+                        image_url = company.image_url_template.format(sku=sku)
 
                 # Construct the store address
                 address_parts = [
