@@ -5,7 +5,6 @@ from scraping.utils.command_utils.store_uploader import StoreUploader
 from scraping.utils.command_utils.category_links_uploader import CategoryLinksUploader
 from scraping.utils.command_utils.substitutions_uploader import SubstitutionsUploader
 from scraping.utils.command_utils.bargains_uploader import BargainsUploader
-from scraping.utils.command_utils.store_groups_uploader import StoreGroupsUploader
 
 class Command(BaseCommand):
     help = 'Uploads scraped and generated data to the server.'

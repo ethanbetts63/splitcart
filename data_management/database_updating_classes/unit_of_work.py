@@ -170,7 +170,7 @@ class UnitOfWork:
                 # Stage 4: Update existing products
                 if self.products_to_update:
                     update_fields = [
-                        'barcode', 'url', 'image_url_pairs', 'has_no_coles_barcode', 
+                        'barcode', 'url', 'aldi_image_url', 'has_no_coles_barcode', 
                         'normalized_name_brand_size_variations', 'sizes', 'company_skus'
                     ]
                     Product.objects.bulk_update(list(self.products_to_update), update_fields, batch_size=500)

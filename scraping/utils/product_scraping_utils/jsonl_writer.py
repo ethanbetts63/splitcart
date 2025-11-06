@@ -19,7 +19,7 @@ class JsonlWriter:
         date_str = datetime.now().strftime('%Y-%m-%d')
         self.temp_file_path = os.path.join(self.temp_dir, f"{self.company.lower()}-{self.store_name_slug.lower()}-{date_str}.jsonl")
         
-        self.inbox_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'outboxes', 'product_outbox')
+        self.inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'outboxes', 'product_outbox')
         self.temp_file_handle = None
         self.seen_product_keys = set()
 
