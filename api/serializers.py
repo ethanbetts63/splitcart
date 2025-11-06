@@ -110,19 +110,21 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_image_url(self, obj):
         """
-        Deterministically select one image URL from the available pairs.
+        Constructs the image URL based on the company's template or aldi_image_url.
         """
-        if not obj.image_url_pairs:
-            return None
+        if obj.aldi_image_url:
+            return obj.aldi_image_url
 
-        # Get a list of non-empty URLs from the pairs
-        # Each pair is [company_name, image_url]
-        urls = [pair[1] for pair in obj.image_url_pairs if pair and len(pair) == 2 and pair[1]]
-        if not urls:
-            return None
-
-        # Deterministic selection using product ID
-        return urls[obj.id % len(urls)]
+        # Assuming a product will have at least one price associated with a store/company
+        # to determine its company for the template.
+        # This might need optimization if products can exist without prices.
+        first_price = obj.price_set.select_related('store__company').first()
+        if first_price and first_price.store and first_price.store.company:
+            company = first_price.store.company
+            if company.image_url_template and obj.sku:
+                # Assuming product.sku is the correct identifier for the template
+                return company.image_url_template.format(sku=obj.sku)
+        return None
 
     def get_brand_name(self, obj):
         return obj.brand.name if obj.brand else None
@@ -162,21 +164,27 @@ class ProductSerializer(serializers.ModelSerializer):
             if overall_min_price is None or current_price < overall_min_price:
                 overall_min_price = current_price
         
-        image_urls_by_company = dict(obj.image_url_pairs)
-
         # Format the output for the frontend
         formatted_prices = []
-        for company, data in company_prices.items():
+        for company_name, data in company_prices.items():
             price_range = f"{data['min_price']:.2f}"
             if data['min_price'] != data['max_price']:
                 price_range = f"{data['min_price']:.2f} - {data['max_price']:.2f}"
             
             is_lowest = (data['min_price'] == overall_min_price) if overall_min_price is not None else False
 
-            image_url = image_urls_by_company.get(company)
+            # Dynamically construct image_url
+            image_url = None
+            if obj.aldi_image_url and company_name.lower() == 'aldi':
+                image_url = obj.aldi_image_url
+            else:
+                # Find the company object to get its template
+                company_obj = Company.objects.filter(name__iexact=company_name).first()
+                if company_obj and company_obj.image_url_template and obj.sku:
+                    image_url = company_obj.image_url_template.format(sku=obj.sku)
 
             formatted_prices.append({
-                'company': company,
+                'company': company_name,
                 'price_display': price_range,
                 'is_lowest': is_lowest,
                 'image_url': image_url

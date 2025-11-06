@@ -35,23 +35,12 @@ class ProductEnricher:
             existing_product.url = product_details.get('url')
             updated = True
 
-        # Update image_url_pairs
-        incoming_image_pairs = product_details.get('image_url_pairs', [])
-        if incoming_image_pairs:
-            existing_pairs_dict = {pair[0]: pair[1] for pair in existing_product.image_url_pairs} if existing_product.image_url_pairs else {}
-            
-            for company, url in incoming_image_pairs:
-                if company not in existing_pairs_dict:
-                    if not existing_product.image_url_pairs:
-                        existing_product.image_url_pairs = []
-                    existing_product.image_url_pairs.append([company, url])
-                    updated = True
-                elif existing_pairs_dict[company] != url:
-                    for pair in existing_product.image_url_pairs:
-                        if pair[0] == company:
-                            pair[1] = url
-                            updated = True
-                            break
+        # Update aldi_image_url for Aldi products
+        if company_name.lower() == 'aldi':
+            incoming_aldi_image_url = product_details.get('aldi_image_url')
+            if incoming_aldi_image_url and existing_product.aldi_image_url != incoming_aldi_image_url:
+                existing_product.aldi_image_url = incoming_aldi_image_url
+                updated = True
 
         if company_name.lower() == 'coles' and not product_details.get('barcode') and not existing_product.has_no_coles_barcode:
             existing_product.has_no_coles_barcode = True
@@ -85,7 +74,7 @@ class ProductEnricher:
         update_fields = {}
 
         # Handle simple fields that can be overwritten if blank
-        fields_to_check = ['url', 'image_url_pairs']
+        fields_to_check = ['url', 'aldi_image_url']
         for field_name in fields_to_check:
             if not getattr(canonical_product, field_name) and getattr(duplicate_product, field_name):
                 update_fields[field_name] = getattr(duplicate_product, field_name)

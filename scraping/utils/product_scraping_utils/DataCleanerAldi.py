@@ -73,14 +73,12 @@ class DataCleanerAldi(BaseDataCleaner):
             if processed_url.endswith('/{slug}'):
                 processed_url = processed_url[:-len('/{slug}')]
             
-            # Assign to image_url_pairs
-            cleaned_product['image_url_pairs'] = [[self.company, processed_url]]
+            # Assign to aldi_image_url
+            cleaned_product['aldi_image_url'] = processed_url
         else:
-            cleaned_product['image_url_pairs'] = [] # Initialize as empty list if no image URL
+            cleaned_product['aldi_image_url'] = None # Initialize as None if no image URL
 
-        # Remove the old image_url key if it exists, as it's no longer needed
-        if 'image_url' in cleaned_product:
-            del cleaned_product['image_url']
+
 
         # Standardize unit price
 

@@ -66,16 +66,7 @@ class DataCleanerIga(BaseDataCleaner):
         # Handle availability
         cleaned_product['is_available'] = raw_product.get('available', False)
 
-        # Construct image_url_pairs
-        image_url = cleaned_product.get('image_url')
-        if image_url:
-            cleaned_product['image_url_pairs'] = [[self.company, image_url]]
-        else:
-            cleaned_product['image_url_pairs'] = []
-        
-        # Remove the old image_url key
-        if 'image_url' in cleaned_product:
-            del cleaned_product['image_url']
+
 
         # Standardize unit price
         unit_price_info = self._get_standardized_unit_price_info(cleaned_product)
