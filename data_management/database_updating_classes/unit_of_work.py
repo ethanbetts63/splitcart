@@ -42,6 +42,7 @@ class UnitOfWork:
                 'unit_of_measure': product_details.get('unit_of_measure'),
                 'per_unit_price_string': product_details.get('per_unit_price_string'),
                 'is_on_special': product_details.get('is_on_special', False),
+                'price_hash': product_details.get('price_hash'),
                 'source': 'direct_scrape'
             }
             self.prices_to_upsert.append(price_data)
@@ -103,35 +104,46 @@ class UnitOfWork:
                     for norm_string, p in newly_created_products_with_ids.items():
                         product_cache[norm_string] = p
 
-                # Stage 2: Upsert Price objects
-                stale_prices_for_deletion = []
+                # Stage 2: Upsert Price objects using hash-based comparison
+                stale_price_ids = []
                 if self.prices_to_upsert:
-                    self.command.stdout.write(f"  - Processing {len(self.prices_to_upsert)} Price objects...")
+                    self.command.stdout.write(f"  - Processing {len(self.prices_to_upsert)} Price objects using hash comparison...")
 
-                    # Create a mutable copy of the initial cache for tracking stale prices
-                    # Use a dictionary for efficient lookup and removal
-                    stale_prices_map = {(p.product.id, p.store.id): p for p in initial_price_cache}
-
+                    # 1. Build lookup maps from the database cache
+                    # Maps product_id to its existing price record ID
+                    product_id_to_price_id_map = {p['product_id']: p['id'] for p in initial_price_cache}
+                    # Maps a hash to its existing price record ID
+                    existing_hashes_map = {p['price_hash']: p['id'] for p in initial_price_cache if p['price_hash']}
+                    
                     prices_to_create = []
                     prices_to_update = []
+                    seen_hashes = set()
 
                     # 2. Sort prices into 'create' or 'update' lists
                     total_prices = len(self.prices_to_upsert)
                     for i, price_data in enumerate(self.prices_to_upsert):
-                        if (i + 1) % 250 == 0 or (i + 1) == total_prices:
-                            self.command.stdout.write(f'\r    - Sorting prices: {i + 1}/{total_prices}', ending='')
+                        if (i + 1) % 500 == 0 or (i + 1) == total_prices:
+                            self.command.stdout.write(f'\r    - Comparing prices: {i + 1}/{total_prices}', ending='')
+                        
+                        incoming_hash = price_data.get('price_hash')
+                        if not incoming_hash:
+                            continue # Should not happen, but good to be safe
 
-                        key = (price_data['product'].id, price_data['store'].id)
-                        if key in stale_prices_map:
-                            # This price exists, prepare for update
-                            existing_price = stale_prices_map[key]
-                            # Update the fields on the existing object
-                            for field, value in price_data.items():
-                                setattr(existing_price, field, value)
-                            prices_to_update.append(existing_price)
-                            del stale_prices_map[key] # Mark as not stale
+                        seen_hashes.add(incoming_hash)
+
+                        # If hash exists, price is unchanged. Skip it.
+                        if incoming_hash in existing_hashes_map:
+                            continue
+
+                        # This price is either new or updated.
+                        product_id = price_data['product'].id
+                        if product_id in product_id_to_price_id_map:
+                            # It's an UPDATE because the product already has a price record, but the hash is different.
+                            price_id = product_id_to_price_id_map[product_id]
+                            price_obj = Price(id=price_id, **price_data)
+                            prices_to_update.append(price_obj)
                         else:
-                            # This price is new, prepare for creation
+                            # It's a CREATE because the product does not have a price record.
                             prices_to_create.append(Price(**price_data))
                     self.command.stdout.write('') # Newline after progress bar
 
@@ -141,17 +153,16 @@ class UnitOfWork:
                         self.command.stdout.write(f"  - Created {len(prices_to_create)} new Price objects.")
 
                     if prices_to_update:
-                        # Get all fields to update from one of the data dicts
-                        # Note: This assumes all dicts in prices_to_upsert have the same keys
                         update_fields = list(self.prices_to_upsert[0].keys())
                         update_fields.remove('product')
                         update_fields.remove('store')
-                        
                         Price.objects.bulk_update(prices_to_update, update_fields, batch_size=500)
                         self.command.stdout.write(f"  - Updated {len(prices_to_update)} existing Price objects.")
-                    
-                    # The remaining items in stale_prices_map are truly stale
-                    stale_prices_for_deletion = list(stale_prices_map.values())
+
+                    # 4. Identify stale prices for deletion
+                    stale_hashes = set(existing_hashes_map.keys()) - seen_hashes
+                    stale_price_ids = [existing_hashes_map[h] for h in stale_hashes]
+
 
                 # Stage 3: Process categories now that all products exist
                 self.category_manager.process_categories(consolidated_data, product_cache, store.company)
@@ -172,7 +183,7 @@ class UnitOfWork:
                     self.command.stdout.write(f"  - Updated {len(self.brands_to_update)} brands with new variation info.")
             
             self.command.stdout.write(self.command.style.SUCCESS("--- Commit successful ---"))
-            return stale_prices_for_deletion
+            return stale_price_ids
         except Exception as e:
             self.command.stderr.write(self.command.style.ERROR(f'An error occurred during commit: {e}'))
             return None

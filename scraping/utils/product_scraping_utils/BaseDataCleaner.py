@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from data_management.utils.product_normalizer import ProductNormalizer
 from data_management.utils.price_normalizer import PriceNormalizer
+from data_management.utils.price_hasher import generate_price_hash
 from .wrap_cleaned_products import wrap_cleaned_products
 from products.models import ProductBrand
 
@@ -116,6 +117,9 @@ class BaseDataCleaner(ABC):
              product['barcode'] = normalizer.get_cleaned_barcode()
 
         product['scraped_date'] = self.timestamp.date().isoformat()
+
+        # Generate the price hash after all other fields are set
+        product['price_hash'] = generate_price_hash(product, self.store_id)
         
         # Remove keys with None values to optimize file size
         product = {k: v for k, v in product.items() if v is not None}

@@ -74,7 +74,7 @@ class UpdateOrchestrator:
                 self.command.stderr.write(self.command.style.ERROR(f"  - Partial scrape detected for {store_obj.store_name} (file count {file_price_count} vs db count {db_price_count}). Running in Upsert Only mode."))
 
             # 2. Pre-fetch all existing prices for the store (for upsert and diff)
-            initial_price_cache = list(Price.objects.filter(store=store_obj))
+            initial_price_cache = Price.objects.filter(store=store_obj).values('price_hash', 'id', 'product_id')
 
             unit_of_work = UnitOfWork(self.command, product_resolver)
             self.variation_manager.unit_of_work = unit_of_work  # Inject UoW

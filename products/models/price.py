@@ -44,6 +44,7 @@ class Price(models.Model):
         blank=True
     )
     is_on_special = models.BooleanField(default=False)
+    price_hash = models.CharField(max_length=64, null=True, blank=True, db_index=True)
 
     SOURCE_CHOICES = [
         ('direct_scrape', 'Direct Scrape'),
