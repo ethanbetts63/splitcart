@@ -10,6 +10,11 @@ class Company(models.Model):
         unique=True,
         help_text="The name of the parent company."
     )
+    image_url_template = models.TextField(
+        null=True,
+        blank=True,
+        help_text="URL template for constructing product image URLs. Use {sku} as a placeholder."
+    )
 
     class Meta:
         verbose_name_plural = "Companies"
