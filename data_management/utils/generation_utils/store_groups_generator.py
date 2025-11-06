@@ -33,5 +33,5 @@ class StoreGroupsGenerator:
                 self.command.stdout.write(self.command.style.SUCCESS(f"  Successfully created {len(all_stores)} new store groups."))
 
         except Exception as e:
-            self.command.stderr.write(self.command.style.ERROR(f"An error occurred during store cluster generation: {e}"))
+            self.command.stderr.write(self.command.style.ERROR(f"An error occurred during store group generation: {e}"))
             # The transaction will be rolled back automatically by the 'with' block.

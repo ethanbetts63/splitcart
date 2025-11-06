@@ -9,7 +9,6 @@ from data_management.database_updating_classes.category_link_update_orchestrator
 from data_management.database_updating_classes.substitution_update_orchestrator import SubstitutionUpdateOrchestrator    
 from data_management.database_updating_classes.substitution_update_orchestrator import SubstitutionUpdateOrchestrator
 from data_management.database_updating_classes.bargain_update_orchestrator import BargainUpdateOrchestrator
-from data_management.database_updating_classes.store_cluster_update_orchestrator import StoreClusterUpdateOrchestrator
 
 class Command(BaseCommand):
     help = 'Updates the database with data from various sources.'
