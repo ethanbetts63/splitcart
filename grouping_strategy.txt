@@ -37,3 +37,10 @@ This phase grows the groups by finding new matches.
 1.  After the maintenance phase is complete, the system finds all `Groups` whose `Anchor` has "Current Pricing".
 2.  An **Intergroup Comparison** is performed, comparing every `Anchor` against every other `Anchor`.
 3.  If two `Anchor`s are found to have matching prices, their `Groups` are merged. The `Group` with fewer members is merged into the one with more members. The old, smaller group is then deactivated.
+
+C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\internal_group_health_checker.py
+C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\group_maintenance_orchestrator.py
+C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\intergroup_comparer.py
+C:\Users\ethan\coding\splitcart\companies\models\store_group.py
+C:\Users\ethan\coding\splitcart\companies\models\store_group_membership.py
+C:\Users\ethan\coding\splitcart\companies\models\store.py

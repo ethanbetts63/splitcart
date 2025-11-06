@@ -61,9 +61,10 @@ class InternalGroupHealthChecker:
                 if not match:
                     # The stores do not match. Now we apply the stale anchor rule.
                     if not anchor_is_current:
-                        # Anchor data is stale, so we can't be sure. Trigger re-scrape.
-                        self.command.stdout.write(self.command.style.WARNING(f"    - Mismatch found, but anchor data is stale. Re-scraping anchor is needed."))
-                        # In a real system, you would add the anchor to a high-priority scrape queue here.
+                        # Anchor data is stale. Flag it for a high-priority re-scrape.
+                        self.command.stdout.write(self.command.style.WARNING(f"    - Mismatch found, but anchor data is stale. Flagging anchor '{anchor.store_name}' for re-scrape."))
+                        anchor.needs_rescraping = True
+                        anchor.save(update_fields=['needs_rescraping'])
                     else:
                         # Anchor data is fresh, so the member is a confirmed rogue.
                         self.command.stdout.write(self.command.style.ERROR(f"    - Mismatch confirmed. Ejecting member."))

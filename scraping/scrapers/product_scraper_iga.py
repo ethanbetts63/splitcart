@@ -14,10 +14,11 @@ class IgaScraper(BaseProductScraper):
     """
     A scraper for IGA stores.
     """
-    def __init__(self, command, company: str, store_id: str, retailer_store_id: str, store_name: str, state: str):
+    def __init__(self, command, company: str, store_id: str, retailer_store_id: str, store_name: str, state: str, dev: bool = False):
         super().__init__(command, company, store_id, store_name, state)
         self.session = None
         self.retailer_store_id = retailer_store_id
+        self.dev = dev
 
     def setup(self):
         """

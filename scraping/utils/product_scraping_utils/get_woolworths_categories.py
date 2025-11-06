@@ -1,10 +1,13 @@
 import requests
 
-def get_woolworths_categories(command):
+def get_woolworths_categories(command, dev: bool = False):
     """
     Fetches the category hierarchy from Woolworths' api and extracts a flattened list of categories.
     """
-    api_url = "https://www.woolworths.com.au/apis/ui/PiesCategoriesWithSpecials"
+    if dev:
+        api_url = "http://127.0.0.1:8000/static/woolworths_categories.json"
+    else:
+        api_url = "https://www.woolworths.com.au/apis/ui/PiesCategoriesWithSpecials"
     headers = {
         "accept": "application/json, text/plain, */*",
         "accept-language": "en-US,en;q=0.9",
