@@ -53,38 +53,56 @@ class IntergroupComparer:
     def run(self):
         self.command.stdout.write(self.command.style.SUCCESS("--- Running Inter-Group Merging ---"))
         
-        # 1. Get all anchors with current pricing
-        anchors_to_compare = self._get_anchor_stores_with_current_pricing()
-        self.command.stdout.write(f"  - Found {len(anchors_to_compare)} group anchors with current pricing to compare.")
+        merges_occurred_in_total = 0
+        pass_count = 0
+        while True:
+            pass_count += 1
+            self.command.stdout.write(f"  --- Pass {pass_count}: Re-evaluating for merges ---")
+            merges_occurred_in_pass = False
+            
+            # 1. Get all anchors with current pricing (re-fetch each pass)
+            anchors_to_compare = self._get_anchor_stores_with_current_pricing()
+            self.command.stdout.write(f"  - Found {len(anchors_to_compare)} group anchors with current pricing to compare in this pass.")
 
-        if len(anchors_to_compare) < 2:
-            self.command.stdout.write("  - Not enough active anchors to compare. Skipping.")
-            return
+            if len(anchors_to_compare) < 2:
+                self.command.stdout.write("  - Not enough active anchors to compare. Skipping pass.")
+                break # No more merges possible
 
-        # 2. Generate unique pairs of anchors to compare
-        anchor_pairs = list(itertools.combinations(anchors_to_compare, 2))
-        self.command.stdout.write(f"  - Generated {len(anchor_pairs)} unique pairs for comparison.")
+            # 2. Generate unique pairs of anchors to compare
+            anchor_pairs = list(itertools.combinations(anchors_to_compare, 2))
+            self.command.stdout.write(f"  - Generated {len(anchor_pairs)} unique pairs for comparison in this pass.")
 
-        # Keep track of merged groups to avoid re-merging
-        merged_group_ids = set()
+            # Keep track of merged groups in this pass to avoid re-merging within the same pass
+            merged_group_ids_this_pass = set()
 
-        for anchor_a, anchor_b in anchor_pairs:
-            group_a = anchor_a.group_membership.group
-            group_b = anchor_b.group_membership.group
+            for anchor_a, anchor_b in anchor_pairs:
+                group_a = anchor_a.group_membership.group
+                group_b = anchor_b.group_membership.group
 
-            # Skip if either group has already been merged in this run
-            if group_a.id in merged_group_ids or group_b.id in merged_group_ids:
-                continue
+                # Skip if either group has already been merged in this pass
+                if group_a.id in merged_group_ids_this_pass or group_b.id in merged_group_ids_this_pass:
+                    continue
 
-            # 3. Compare the pair
-            self.command.stdout.write(f"  - Comparing Anchor '{anchor_a.store_name}' (Group {group_a.id}) vs. '{anchor_b.store_name}' (Group {group_b.id})...")
-            if self.comparer.compare(anchor_a, anchor_b):
-                self.command.stdout.write(self.command.style.SUCCESS("    - Match found!"))
-                # 4. If they match, merge the groups
-                with transaction.atomic():
-                    self._merge_groups(group_a, group_b)
-                # Add the merged group's ID to the set to prevent re-processing
-                merged_group_ids.add(group_a.id)
-                merged_group_ids.add(group_b.id)
+                # 3. Compare the pair
+                self.command.stdout.write(f"  - Comparing Anchor '{anchor_a.store_name}' (Group {group_a.id}) vs. '{anchor_b.store_name}' (Group {group_b.id})...")
+                if self.comparer.compare(anchor_a, anchor_b):
+                    self.command.stdout.write(self.command.style.SUCCESS("    - Match found!"))
+                    # 4. If they match, merge the groups
+                    with transaction.atomic():
+                        self._merge_groups(group_a, group_b)
+                    
+                    merges_occurred_in_pass = True
+                    merges_occurred_in_total += 1
+                    # Add the IDs of the groups involved to prevent re-processing in this pass
+                    merged_group_ids_this_pass.add(group_a.id)
+                    merged_group_ids_this_pass.add(group_b.id) 
+                else:
+                    self.command.stdout.write("    - No match.")
+            
+            if not merges_occurred_in_pass:
+                self.command.stdout.write("  - No merges occurred in this pass. Merging complete.")
+                break
             else:
-                self.command.stdout.write("    - No match.")
+                self.command.stdout.write(f"  - {merges_occurred_in_pass} merges occurred in this pass. Re-evaluating for more merges.")
+
+        self.command.stdout.write(self.command.style.SUCCESS(f"--- Inter-Group Merging Complete. Total merges: {merges_occurred_in_total} ---"))

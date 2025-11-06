@@ -89,7 +89,12 @@ class Command(BaseCommand):
                 time.sleep(60)
                 continue
 
-            self._scrape_single_store(store_to_scrape['pk'])
+            try:
+                self._scrape_single_store(store_to_scrape['pk'])
+            except requests.exceptions.RequestException as e:
+                self.stdout.write(self.style.ERROR(f"A critical network error occurred during scraping: {e}"))
+                self.stdout.write(self.style.ERROR("Stopping the scraper worker due to network issues."))
+                break
             
 
         self.stdout.write(self.style.SUCCESS('Scraping worker stopped.'))
