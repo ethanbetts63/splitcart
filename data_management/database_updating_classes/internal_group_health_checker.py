@@ -1,6 +1,6 @@
 from datetime import timedelta
 from django.utils import timezone
-from django.db import transaction
+from django.db import transaction, models
 from companies.models import Store, StoreGroup, StoreGroupMembership
 from data_management.utils.price_comparer import PriceComparer
 

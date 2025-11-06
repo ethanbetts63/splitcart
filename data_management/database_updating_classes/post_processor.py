@@ -1,4 +1,4 @@
-from .group_orchestrator import GroupOrchestrator
+
 from .brand_translation_table_generator import BrandTranslationTableGenerator
 from .product_translation_table_generator import ProductTranslationTableGenerator
 from .product_reconciler import ProductReconciler
@@ -12,10 +12,7 @@ class PostProcessor:
         self.unit_of_work = unit_of_work
 
     def run(self):
-        # Run the group orchestrator to infer prices
-        self.command.stdout.write(self.command.style.SQL_FIELD("-- Starting Group Orchestration --"))
-        group_orchestrator = GroupOrchestrator(self.unit_of_work)
-        group_orchestrator.run()
+
 
         # Regenerate the translation tables to include new variations
         BrandTranslationTableGenerator().run()

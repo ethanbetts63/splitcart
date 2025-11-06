@@ -22,12 +22,7 @@ class StoreGroup(models.Model):
         related_name='anchor_for_group'
     )
 
-    # A temporary list of recently scraped stores to be checked
-    candidates = models.ManyToManyField(
-        'companies.Store',
-        related_name='candidate_for_groups',
-        blank=True
-    )
+
 
     def __str__(self):
         return f"{self.company.name} Group {self.id}"
