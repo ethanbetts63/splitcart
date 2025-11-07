@@ -1,5 +1,6 @@
 import os
 import json
+from datetime import datetime
 from products.models import Product, Price
 from companies.models import Company, Store
 from django.core.cache import cache
@@ -54,6 +55,28 @@ class UpdateOrchestrator:
                 continue
             except Exception as e:
                 self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Error fetching company/store: {e}"))
+                self.processed_files.append(file_path)
+                continue
+
+            # Check if the incoming file is stale
+            incoming_scraped_date_str = first_product_data['metadata'].get('scraped_date')
+            if not incoming_scraped_date_str:
+                self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Missing 'scraped_date' in metadata."))
+                self.processed_files.append(file_path)
+                continue
+            
+            try:
+                incoming_scraped_date = datetime.fromisoformat(incoming_scraped_date_str)
+            except ValueError:
+                self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Could not parse 'scraped_date': {incoming_scraped_date_str}."))
+                self.processed_files.append(file_path)
+                continue
+
+            if store_obj.last_scraped and incoming_scraped_date <= store_obj.last_scraped:
+                self.command.stdout.write(self.command.style.WARNING(
+                    f"Skipping file {os.path.basename(file_path)}: "
+                    f"Its date ({incoming_scraped_date.date()}) is not newer than the last processed date ({store_obj.last_scraped.date()})."
+                ))
                 self.processed_files.append(file_path)
                 continue
 
