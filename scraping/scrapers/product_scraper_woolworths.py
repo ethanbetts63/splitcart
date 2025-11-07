@@ -14,7 +14,10 @@ class ProductScraperWoolworths(BaseProductScraper):
     def __init__(self, command, company: str, store_id: str, store_name: str, state: str, categories_to_fetch: list):
         super().__init__(command, company, store_id, store_name, state)
         self.session = None
-        self.categories_to_fetch = categories_to_fetch
+        self.EXCLUDED_CATEGORY_PREFIX = "everyday-market"
+        self.categories_to_fetch = [
+            cat for cat in categories_to_fetch if not cat[0].startswith(self.EXCLUDED_CATEGORY_PREFIX)
+        ]
 
     def setup(self):
         """
@@ -63,34 +66,24 @@ class ProductScraperWoolworths(BaseProductScraper):
                 "formatObject": f'{{"name":"{category_slug}"}}', "isSpecial": False, "isBundle": False,
                 "isMobile": False, "filters": [{"Key": "SoldBy", "Items": [{"Term": "Woolworths"}]}],
                 "token": "", "gpBoost": 0, "isHideUnavailableProducts": False,
+                "isHideEverydayMarketProducts": True,
+                "isHideUnavailableProducts": True,
                 "isRegisteredRewardCardPromotion": False, "categoryVersion": "v2",
                 "enableAdReRanking": False, "groupEdmVariants": False, "activePersonalizedViewType": "",
                 "storeId": self.store_id
             }
 
-            #self.command.stdout.write(f"\n--- Requesting data for category: {category_slug} (ID: {category_id}), Page: {page_num} ---")
-            # self.command.stdout.write(f"API URL: {api_url}")
-            # self.command.stdout.write(f"Payload: {json.dumps(payload, indent=2)}")
-
-            try:
-                response = self.session.post(api_url, json=payload, timeout=20)
-                response.raise_for_status()
-                data = response.json()
-                #self.command.stdout.write(f"Raw Response (Page {page_num}):\n{response.text[:500]}...\n")
-                
-                raw_products_on_page = [p for bundle in data.get("Bundles", []) if bundle and bundle.get("Products") for p in bundle["Products"]]
-
-                if not raw_products_on_page:
-                    break
-
-                all_raw_products.extend(raw_products_on_page)
-
-            except (requests.exceptions.RequestException, json.JSONDecodeError) as e:
-                self.command.stderr.write(self.command.style.ERROR(f"Error fetching data for category {category_slug}: {e}"))
-                break
+            response = self.session.post(api_url, json=payload, timeout=20)
+            response.raise_for_status()
+            data = response.json()
             
+            raw_products_on_page = [p for bundle in data.get("Bundles", []) if bundle and bundle.get("Products") for p in bundle["Products"]]
+            
+            if not raw_products_on_page:
+                break
+
+            all_raw_products.extend(raw_products_on_page)
             page_num += 1
-        
         return all_raw_products
 
     def clean_raw_data(self, raw_data: list) -> dict:
@@ -105,4 +98,5 @@ class ProductScraperWoolworths(BaseProductScraper):
             state=self.state,
             timestamp=datetime.now()
         )
-        return cleaner.clean_data()
+        cleaned_data = cleaner.clean_data()
+        return cleaned_data

@@ -21,6 +21,7 @@ class BaseProductScraper(ABC):
         """The main public method that orchestrates the entire scraping process."""
         scrape_successful = False
         if not self.setup():
+            print("Setup failed, aborting scrape.")
             return
 
         try:
@@ -35,8 +36,16 @@ class BaseProductScraper(ABC):
                 if not raw_data_list:
                     continue
 
-                cleaned_data_packet = self.clean_raw_data(raw_data_list)
-                self.write_data(cleaned_data_packet)
+                try:
+                    cleaned_data_packet = self.clean_raw_data(raw_data_list)
+                    if cleaned_data_packet and cleaned_data_packet.get('products'):
+                        self.write_data(cleaned_data_packet)
+                except Exception as e:
+                    self.command.stderr.write(self.command.style.ERROR(f"\nAn unexpected error occurred during data cleaning: {e}"))
+                    import traceback
+                    self.command.stderr.write(traceback.format_exc())
+                    # Stop the scrape for this store if cleaning fails catastrophically
+                    break
             
             if self.output.new_products > 0 or self.output.duplicate_products > 0:
                 scrape_successful = True

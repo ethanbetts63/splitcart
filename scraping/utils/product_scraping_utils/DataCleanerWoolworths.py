@@ -2,7 +2,6 @@ import json
 from datetime import datetime
 from .BaseDataCleaner import BaseDataCleaner
 from .field_maps import WOOLWORTHS_FIELD_MAP
-from data_management.utils.product_normalizer import ProductNormalizer
 
 class DataCleanerWoolworths(BaseDataCleaner):
     """
@@ -71,8 +70,6 @@ class DataCleanerWoolworths(BaseDataCleaner):
         if stockcode and slug:
             cleaned_product['url'] = f"https://www.woolworths.com.au/shop/productdetails/{stockcode}/{slug}"
 
-
-
         hsr = cleaned_product.get('health_star_rating')
         if hsr:
             try:
@@ -84,6 +81,5 @@ class DataCleanerWoolworths(BaseDataCleaner):
         cleaned_product.update(unit_price_info)
 
         cleaned_product['is_available'] = raw_product.get('IsAvailable', False)
-
 
         return cleaned_product
