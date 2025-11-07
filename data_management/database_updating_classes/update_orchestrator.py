@@ -86,12 +86,11 @@ class UpdateOrchestrator:
             brand_manager.commit()
 
             # 3. Commit changes and get back stale prices
-            stale_prices = unit_of_work.commit(consolidated_data, product_cache, product_resolver, store_obj, initial_price_cache, is_full_sync)
+            stale_price_ids = unit_of_work.commit(consolidated_data, product_cache, product_resolver, store_obj, initial_price_cache, is_full_sync)
 
-            if stale_prices is not None:
+            if stale_price_ids is not None:
                 # 4. Conditionally delete stale prices
-                if is_full_sync and stale_prices:
-                    stale_price_ids = [p.id for p in stale_prices]
+                if is_full_sync and stale_price_ids:
                     Price.objects.filter(id__in=stale_price_ids).delete()
                     self.command.stdout.write(self.command.style.SUCCESS(f"  - Deleted {len(stale_price_ids)} delisted products for store {store_obj.store_name}."))
 
