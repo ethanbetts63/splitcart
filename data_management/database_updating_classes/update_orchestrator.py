@@ -16,7 +16,6 @@ class UpdateOrchestrator:
     def __init__(self, command, inbox_path):
         self.command = command
         self.inbox_path = inbox_path
-        self.processed_files = []
         self.variation_manager = VariationManager(self.command, unit_of_work=None)
 
     def run(self):
@@ -33,7 +32,7 @@ class UpdateOrchestrator:
             
             consolidated_data = self._consolidate_from_file(file_path)
             if not consolidated_data:
-                self.processed_files.append(file_path)
+                os.remove(file_path)
                 continue
 
             first_product_data = next(iter(consolidated_data.values()))
@@ -42,34 +41,33 @@ class UpdateOrchestrator:
 
             if not company_name or not store_id:
                 self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Missing company or store_id in metadata."))
-                self.processed_files.append(file_path)
+                os.remove(file_path)
                 continue
-
             try:
                 company_obj, _ = Company.objects.get_or_create(name__iexact=company_name, defaults={'name': company_name})
                 store_obj = Store.objects.get(store_id=store_id, company=company_obj)
 
             except Store.DoesNotExist:
                 self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Store with ID {store_id} for company {company_name} not found in database."))
-                self.processed_files.append(file_path)
+                os.remove(file_path)
                 continue
             except Exception as e:
                 self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Error fetching company/store: {e}"))
-                self.processed_files.append(file_path)
+                os.remove(file_path)
                 continue
 
+
             # Check if the incoming file is stale
-            incoming_scraped_date_str = first_product_data['metadata'].get('scraped_date')
+            incoming_scraped_date_str = first_product_data['metadata'].get('scraped_date')            
             if not incoming_scraped_date_str:
                 self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Missing 'scraped_date' in metadata."))
-                self.processed_files.append(file_path)
+                os.remove(file_path)
                 continue
-            
             try:
                 incoming_scraped_date = datetime.fromisoformat(incoming_scraped_date_str)
             except ValueError:
                 self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Could not parse 'scraped_date': {incoming_scraped_date_str}."))
-                self.processed_files.append(file_path)
+                os.remove(file_path)
                 continue
 
             if store_obj.last_scraped and incoming_scraped_date <= store_obj.last_scraped:
@@ -77,8 +75,9 @@ class UpdateOrchestrator:
                     f"Skipping file {os.path.basename(file_path)}: "
                     f"Its date ({incoming_scraped_date.date()}) is not newer than the last processed date ({store_obj.last_scraped.date()})."
                 ))
-                self.processed_files.append(file_path)
+                os.remove(file_path)
                 continue
+
 
             # 1. Determine if this is a 'Full Sync' or 'Upsert Only' run. 
             # This protects against a partial scrape corrupting the DB.
@@ -124,7 +123,7 @@ class UpdateOrchestrator:
                         if product_obj.barcode and product_obj.barcode not in product_resolver.barcode_cache:
                             product_resolver.barcode_cache[product_obj.barcode] = product_obj
 
-                self.processed_files.append(file_path)
+
 
                 # Get the scraped_date from the metadata of the first product in the consolidated data
                 # Assuming all products in a single .jsonl file share the same scrape date
@@ -139,6 +138,12 @@ class UpdateOrchestrator:
                 else:
                     self.command.stderr.write(self.command.style.ERROR(f"  - Warning: No 'scraped_date' found in metadata for file {os.path.basename(file_path)}. last_scraped not updated."))
 
+                try:
+                    os.remove(file_path)
+                    self.command.stdout.write(f"  - Successfully processed and deleted file: {os.path.basename(file_path)}")
+                except OSError as e:
+                    self.command.stderr.write(self.command.style.ERROR(f'Could not delete file {file_path}: {e}'))
+
         # After processing all files, run post-processing if a UoW was created
         if unit_of_work:
             post_processor = PostProcessor(self.command, unit_of_work)
@@ -148,8 +153,6 @@ class UpdateOrchestrator:
             group_maintenance_orchestrator = GroupMaintenanceOrchestrator(self.command)
             group_maintenance_orchestrator.run()
 
-        # Final cleanup of processed files
-        self._cleanup_processed_files()
 
         self.command.stdout.write(self.command.style.SUCCESS("-- Orchestrator finished --"))
 
@@ -232,12 +235,3 @@ class UpdateOrchestrator:
                 unit_of_work.add_new_product(new_product, product_details, metadata)
         self.command.stdout.write('\n')
         return product_cache
-
-    def _cleanup_processed_files(self):
-        self.command.stdout.write("--- Deleting processed inbox files ---")
-        
-        for file_path in self.processed_files:
-            try:
-                os.remove(file_path)
-            except OSError as e:
-                self.command.stderr.write(self.command.style.ERROR(f'Could not delete file {file_path}: {e}'))
