@@ -150,6 +150,18 @@ class Command(BaseCommand):
                     scraper.run()
                 except Exception as e:
                     self.stdout.write(self.style.ERROR(f"An unexpected error occurred during the scrape for {store.store_name}: {e}"))
+                    # Detailed error logging for network-related exceptions
+                    if hasattr(e, 'response') and e.response is not None:
+                        self.stdout.write(self.style.ERROR(f"  - URL: {e.response.url}"))
+                        self.stdout.write(self.style.ERROR(f"  - Status Code: {e.response.status_code}"))
+                        self.stdout.write(self.style.ERROR(f"  - Response Body: {e.response.text}"))
+                    if hasattr(e, 'request') and e.request is not None and hasattr(e.request, 'body') and e.request.body:
+                        try:
+                            # Decode request body for printing, assuming utf-8
+                            request_body = e.request.body.decode('utf-8')
+                            self.stdout.write(self.style.ERROR(f"  - Request Body: {request_body}"))
+                        except (UnicodeDecodeError, AttributeError):
+                            self.stdout.write(self.style.ERROR("  - Request Body: (Could not decode body)"))
 
         except Store.DoesNotExist:
             self.stdout.write(self.style.ERROR(f"Store with PK {store_pk} not found."))
