@@ -4,6 +4,7 @@ from datetime import datetime
 from products.models import Product, Price
 from companies.models import Company, Store
 from django.core.cache import cache
+from django.utils import timezone
 from data_management.database_updating_classes.product_resolver import ProductResolver
 from data_management.database_updating_classes.unit_of_work import UnitOfWork
 from data_management.database_updating_classes.variation_manager import VariationManager
@@ -69,6 +70,10 @@ class UpdateOrchestrator:
                 self.command.stderr.write(self.command.style.ERROR(f"Skipping file {os.path.basename(file_path)}: Could not parse 'scraped_date': {incoming_scraped_date_str}."))
                 os.remove(file_path)
                 continue
+
+            # Ensure incoming_scraped_date is timezone-aware for comparison
+            if timezone.is_naive(incoming_scraped_date):
+                incoming_scraped_date = timezone.make_aware(incoming_scraped_date)
 
             if store_obj.last_scraped and incoming_scraped_date <= store_obj.last_scraped:
                 self.command.stdout.write(self.command.style.WARNING(
