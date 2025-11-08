@@ -5,7 +5,7 @@ from django.conf import settings
 from .atomic_scraping_utils import finalize_scrape
 
 class JsonlWriter:
-    def __init__(self, company: str, store_name_slug: str, state: str):
+    def __init__(self, company: str, store_name_slug: str, state: str, final_outbox_path: str = None):
         self.temp_dir = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'temp_outbox')
         if not os.path.exists(self.temp_dir):
             os.makedirs(self.temp_dir)
@@ -19,7 +19,10 @@ class JsonlWriter:
         date_str = datetime.now().strftime('%Y-%m-%d')
         self.temp_file_path = os.path.join(self.temp_dir, f"{self.company.lower()}-{self.store_name_slug.lower()}-{date_str}.jsonl")
         
-        self.final_outbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'outboxes', 'product_outbox')
+        if final_outbox_path:
+            self.final_outbox_path = final_outbox_path
+        else:
+            self.final_outbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'outboxes', 'product_outbox')
         self.temp_file_handle = None
         self.seen_product_keys = set()
 

@@ -4,6 +4,7 @@ import math
 import requests
 from bs4 import BeautifulSoup
 from django.utils.text import slugify
+from django.conf import settings
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
@@ -32,12 +33,23 @@ class ColesScraper(BaseProductScraper):
         """
         numeric_store_id = self.store_id.split(':')[-1] if self.store_id and ':' in self.store_id else self.store_id
         store_name_slug = f"{slugify(self.store_name)}-{numeric_store_id}"
-        self.jsonl_writer = JsonlWriter(self.company, store_name_slug, self.state)
+        
+        # Define the custom output path for the barcode scraper's inbox
+        barcode_inbox_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'inboxes', 'barcode_scraper_inbox')
+        if not os.path.exists(barcode_inbox_path):
+            os.makedirs(barcode_inbox_path)
+            
+        self.jsonl_writer = JsonlWriter(
+            self.company, 
+            store_name_slug, 
+            self.state,
+            final_outbox_path=barcode_inbox_path
+        )
 
         driver = None
         try:
             options = webdriver.ChromeOptions()
-            options.add_argument("user-agent=SplitCartScraper/1.0 (Contact: admin@splitcart.com)")
+            options.add_argument("user-agent=SplitCartScraper/1.0 (Contact: admin@splitcart.com.au)")
             driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
             
             driver.get("https://www.coles.com.au")
@@ -54,7 +66,7 @@ class ColesScraper(BaseProductScraper):
             )
 
             self.session = requests.Session()
-            self.session.headers.update({"User-Agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com)"})
+            self.session.headers.update({"User-Agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com.au)"})
             for cookie in driver.get_cookies():
                 self.session.cookies.set(cookie['name'], cookie['value'])
 
@@ -138,17 +150,4 @@ class ColesScraper(BaseProductScraper):
         )
         return cleaner.clean_data()
 
-    def post_scrape_enrichment(self):
-        """Enriches the scraped data with barcode information."""
-        temp_file_path = self.jsonl_writer.temp_file_path
-        try:
-            self.command.stdout.write(self.command.style.SQL_FIELD(f"--- Handing over {os.path.basename(temp_file_path)} for barcode enrichment ---"))
-            
-            # Instantiate and run the barcode scraper directly
-            barcode_scraper = ColesBarcodeScraper(command=self.command, source_file_path=temp_file_path)
-            barcode_scraper.run()
-
-            self.command.stdout.write(self.command.style.SUCCESS(f"--- Enrichment complete. Committing {os.path.basename(temp_file_path)} to inbox. ---"))
-        except Exception as e:
-            self.command.stderr.write(self.command.style.ERROR(f"\nBarcode enrichment failed: {e}"))
-            raise e
+    
