@@ -14,9 +14,9 @@ class ProductScraperWoolworths(BaseProductScraper):
     def __init__(self, command, company: str, store_id: str, store_name: str, state: str, categories_to_fetch: list):
         super().__init__(command, company, store_id, store_name, state)
         self.session = None
-        self.EXCLUDED_CATEGORY_PREFIX = "everyday-market"
+        self.EXCLUDED_CATEGORY_SLUGS = ["everyday-market", "cigarettes-tobacco"]
         self.categories_to_fetch = [
-            cat for cat in categories_to_fetch if not cat[0].startswith(self.EXCLUDED_CATEGORY_PREFIX)
+            cat for cat in categories_to_fetch if cat[0] not in self.EXCLUDED_CATEGORY_SLUGS
         ]
 
     def setup(self):
