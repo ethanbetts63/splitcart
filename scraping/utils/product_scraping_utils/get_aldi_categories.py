@@ -27,7 +27,7 @@ def _find_leaf_categories(nodes: list) -> list:
             leaf_categories.extend(_find_leaf_categories(children))
     return leaf_categories
 
-def get_aldi_categories(command, store_id: str, session: requests.Session) -> list:
+def get_aldi_categories(command, store_id: str, session: requests.Session, dev: bool = False) -> list:
     """
     Fetches the category hierarchy for a specific ALDI store and extracts a list
     of all the leaf subcategories to be scraped.
