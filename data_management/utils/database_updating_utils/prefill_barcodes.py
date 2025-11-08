@@ -2,10 +2,6 @@ import requests
 import json
 from django.conf import settings
 
-try:
-    from scraping.data.product_translation_table import PRODUCT_NAME_TRANSLATIONS
-except ImportError:
-    PRODUCT_NAME_TRANSLATIONS = {}
 
 def prefill_barcodes_from_api(product_list: list, command=None) -> list:
     """
@@ -24,7 +20,7 @@ def prefill_barcodes_from_api(product_list: list, command=None) -> list:
                 continue
             
             # Find the canonical name using the translation table.
-            canonical_name = PRODUCT_NAME_TRANSLATIONS.get(incoming_normalized_string, incoming_normalized_string)
+            canonical_name = incoming_normalized_string
             names_to_lookup.add(canonical_name)
             products_to_update.append(product_data)
 
@@ -61,7 +57,7 @@ def prefill_barcodes_from_api(product_list: list, command=None) -> list:
     prefilled_count = 0
     for product_data in products_to_update:
         incoming_normalized_string = product_data.get('normalized_name_brand_size')
-        canonical_name = PRODUCT_NAME_TRANSLATIONS.get(incoming_normalized_string, incoming_normalized_string)
+        canonical_name = incoming_normalized_string
         
         if canonical_name in barcode_map:
             product_data['barcode'] = barcode_map[canonical_name]
