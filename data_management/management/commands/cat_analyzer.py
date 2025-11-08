@@ -11,6 +11,7 @@ PRIMARY_CATEGORIES = [
     "Bakery",
     "Cleaning",
     "Dairy",
+    "Deals"
     "Eggs",
     "Electronics",
     "Freezer",
