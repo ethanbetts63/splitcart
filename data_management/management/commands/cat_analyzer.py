@@ -6,10 +6,26 @@ from companies.models import Category, Company
 
 # --- Primary Categories (Hardcoded) ---
 PRIMARY_CATEGORIES = [
-    "Fruit", "Veg", "Meat", "Seafood", "Dairy", "Eggs", "Freezer",
-    "Snacks", "Pantry", "Non-Alcoholic Drinks", "Alcoholic Drinks",
-    "Health and Beauty", "Cleaning", "Pet", "Baby", "Electronics",
-    "Bakery", "Garden"
+    "Alcoholic Drinks",
+    "Baby",
+    "Bakery",
+    "Cleaning",
+    "Dairy",
+    "Eggs",
+    "Electronics",
+    "Freezer",
+    "Fruit",
+    "Garden",
+    "Health and Beauty",
+    "Household",
+    "Meat",
+    "Miscellaneous",
+    "Non-Alcoholic Drinks",
+    "Pantry",
+    "Pet",
+    "Seafood",
+    "Snacks",
+    "Veg"
 ]
 
 # --- Output file for mappings ---

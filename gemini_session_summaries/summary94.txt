@@ -35,3 +35,17 @@ This session was highly productive, focusing on improving the robustness, error 
     *   Initially, this was run by a `check_outbox` command. After a successful test run, the user requested the tool be modified to actively *delete* invalid lines from the files.
     *   I refactored the `sanity_checker` to perform this "read, validate, and rewrite" operation.
     *   Finally, the standalone `check_outbox` command was deleted, and the `run_sanity_checks` function was integrated directly into the `ProductUploader` utility, ensuring all data is automatically sanitized before being processed.
+
+### 6. Aldi Scraper `TypeError` Fix
+
+*   **Problem:** A `TypeError` related to the wrong number of arguments being passed to `get_aldi_categories` was crashing the Aldi scraper.
+*   **Investigation:** I traced the call from `product_scraper_aldi.py` and confirmed its function definition in `get_aldi_categories.py` was missing a `dev` parameter that had been added during a previous refactoring.
+*   **Solution:** I updated the function signature to accept the `dev` parameter, resolving the crash.
+
+### 7. Inter-Group Comparison Optimization
+
+*   **Problem:** The user identified a major inefficiency in the group merging logic: the system was re-comparing every group against every other group on every run, wasting compute resources.
+*   **Solution:** We designed a time-based cooldown system to prevent redundant comparisons. At the user's suggestion, this was implemented using a file-based cache instead of a new database model for simplicity.
+    *   A new `ComparisonCacheManager` utility was created to handle all logic for reading, pruning expired entries from, and saving the cache.
+    *   An empty `group_comparison_cache.py` file was created to store the cache data.
+    *   The `IntergroupComparer` was refactored to use the new manager, skipping comparisons that were performed within the 7-day cooldown period and saving the updated cache at the end of its run.
