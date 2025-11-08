@@ -3,6 +3,7 @@ import gzip
 import requests
 from django.conf import settings
 from .base_uploader import BaseUploader
+from scraping.utils.command_utils.sanity_checker import run_sanity_checks
 
 class ProductUploader(BaseUploader):
     def __init__(self, command, dev=False):
@@ -33,6 +34,21 @@ class ProductUploader(BaseUploader):
 
         for file_name in files_to_upload:
             file_path = os.path.join(outbox_path, file_name)
+
+            # 0. Run sanity checks and clean the file
+            self.command.stdout.write(f"--- Running sanity checks on {file_name} ---")
+            errors = run_sanity_checks(file_path)
+            if errors:
+                self.command.stdout.write(self.command.style.WARNING(f"Found and fixed {len(errors)} issues in {file_name}:"))
+                for error in errors:
+                    # Shorten the error for cleaner logging if it's the 'File sanitized' message
+                    if "File sanitized" in error:
+                        self.command.stdout.write(self.command.style.SUCCESS(f"  - {error}"))
+                    else:
+                        self.command.stdout.write(self.command.style.ERROR(f"  - {error}"))
+            else:
+                self.command.stdout.write(self.command.style.SUCCESS("No issues found."))
+
             compressed_file_path = file_path + '.gz'
 
             # 1. Compress the file
