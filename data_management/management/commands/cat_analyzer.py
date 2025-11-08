@@ -25,6 +25,7 @@ PRIMARY_CATEGORIES = [
     "Pet",
     "Seafood",
     "Snacks",
+    "Sweets",
     "Veg"
 ]
 
