@@ -13,9 +13,10 @@ class ProductExportSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'name',
-            'normalized_name',
+            'normalized_name_brand_size',
             'brand_id',
             'size',
+            'sizes',
             'category'
         ]
 

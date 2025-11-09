@@ -1,15 +1,11 @@
 from itertools import combinations
 from collections import defaultdict
-from .local_size_comparer import LocalSizeComparer
+from thefuzz import fuzz
 
 class LocalLvl2SubGenerator:
     def generate(self, command, products):
         command.stdout.write("--- Generating Level 2 Subs ---")
-        try: from thefuzz import fuzz
-        except ImportError: command.stderr.write("Lvl2 requires 'thefuzz'. Please pip install it."); return []
-        
         subs = []
-        size_comparer = LocalSizeComparer()
         products_by_brand = defaultdict(list)
         for p in products: 
             if p.get('brand_id'): products_by_brand[p['brand_id']].append(p)
@@ -37,7 +33,9 @@ class LocalLvl2SubGenerator:
             for group in groups:
                 if len(group) > 1:
                     for prod_a, prod_b in combinations(group, 2):
-                        if size_comparer.are_sizes_compatible(prod_a, prod_b):
+                        sizes_a = set(prod_a.get('sizes', []))
+                        sizes_b = set(prod_b.get('sizes', []))
+                        if sizes_a and sizes_a == sizes_b:
                             subs.append({'product_a': prod_a['id'], 'product_b': prod_b['id'], 'level': 'LVL2', 'score': 0.95, 'source': 'local_size_similarity_v1'})
         command.stdout.write(f"  Generated {len(subs)} Lvl2 subs.")
         return subs

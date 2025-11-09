@@ -18,7 +18,7 @@ class LocalLvl3SubGenerator:
             products_in_cat = products_by_cat.get(cat['id'], [])
             if len(products_in_cat) < 2: continue
 
-            corpus = [p['normalized_name'] for p in products_in_cat]
+            corpus = [p['name'] for p in products_in_cat]
             corpus_embeddings = model.encode(corpus, convert_to_tensor=True)
             cosine_scores = util.cos_sim(corpus_embeddings, corpus_embeddings)
             indices_rows, indices_cols = torch.where(cosine_scores > 0.75)
