@@ -27,6 +27,11 @@ class CategoryProductListView(generics.ListAPIView):
                 # Store ids for the serializer context to fetch correct prices
                 self.nearby_store_ids = store_ids
             
+            # Filter for bargains if requested
+            bargains_param = self.request.query_params.get('bargains', 'false')
+            if bargains_param.lower() == 'true':
+                queryset = queryset.filter(price_records__price_entries__is_on_special=True).distinct()
+
             # Keep default ordering for now as per user's request
             return queryset
 

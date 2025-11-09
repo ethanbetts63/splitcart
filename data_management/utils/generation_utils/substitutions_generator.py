@@ -2,10 +2,10 @@ import json
 import os
 import requests
 from django.conf import settings
-from data_management.utils.local_substitution_generators.local_lvl1_generator import LocalLvl1SubGenerator
-from data_management.utils.local_substitution_generators.local_lvl2_generator import LocalLvl2SubGenerator
-from data_management.utils.local_substitution_generators.local_lvl3_generator import LocalLvl3SubGenerator
-from data_management.utils.local_substitution_generators.local_lvl4_generator import LocalLvl4SubGenerator
+from data_management.utils.substitution_generators.lvl1_sub_generator import LocalLvl1SubGenerator
+from data_management.utils.substitution_generators.lvl2_sub_generator import LocalLvl2SubGenerator
+from data_management.utils.substitution_generators.lvl3_sub_generator import LocalLvl3SubGenerator
+from data_management.utils.substitution_generators.lvl4_sub_generator import LocalLvl4SubGenerator
 
 class SubstitutionsGenerator:
     def __init__(self, command, dev=False):

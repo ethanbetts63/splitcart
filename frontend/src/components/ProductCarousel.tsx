@@ -29,20 +29,24 @@ interface ProductCarouselProps {
   storeIds?: number[];
   title: string;
   searchQuery?: string;
-  isDefaultStores?: boolean; // New prop
-  superCategory?: string; // New prop
+  isDefaultStores?: boolean;
+  primaryCategorySlug?: string; // Replaces superCategory
+  isBargainCarousel?: boolean; // To flag this as a bargains carousel
 }
 
 import { useApiQuery } from '@/hooks/useApiQuery';
 
-const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, superCategory }) => {
+const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, isBargainCarousel }) => {
   const [baseUrl, queryString] = sourceUrl.split('?');
   const params = new URLSearchParams(queryString || '');
   if (storeIds && storeIds.length > 0) {
     params.set('store_ids', storeIds.join(','));
   }
-  if (superCategory) {
-    params.set('super_category', superCategory);
+  if (primaryCategorySlug) {
+    params.set('primary_category_slug', primaryCategorySlug);
+  }
+  if (isBargainCarousel) {
+    params.set('bargains', 'true');
   }
 
   const finalUrl = `${baseUrl}?${params.toString()}`;
@@ -97,8 +101,8 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
             Showing example products, please select a location.
           </span>
         )}
-        {superCategory && (
-          <Link to={`/search?super_category=${encodeURIComponent(superCategory)}`} className="text-sm text-blue-500 hover:underline">
+        {primaryCategorySlug && isBargainCarousel && (
+          <Link to={`/search?primary_category_slug=${encodeURIComponent(primaryCategorySlug)}&bargains=true`} className="text-sm text-blue-500 hover:underline">
             See more
           </Link>
         )}
