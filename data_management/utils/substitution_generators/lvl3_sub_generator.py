@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-class LocalLvl3SubGenerator:
+class Lvl3SubGenerator:
     def generate(self, command, products, categories):
         command.stdout.write("--- Generating Level 3 Subs ---")
         try:

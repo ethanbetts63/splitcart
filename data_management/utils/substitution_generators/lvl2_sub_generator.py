@@ -2,7 +2,7 @@ from itertools import combinations
 from collections import defaultdict
 from thefuzz import fuzz
 
-class LocalLvl2SubGenerator:
+class Lvl2SubGenerator:
     def generate(self, command, products):
         command.stdout.write("--- Generating Level 2 Subs ---")
         subs = []

@@ -6,9 +6,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--subs', action='store_true', help='Generate product substitutions.')
         parser.add_argument('--cat-links', action='store_true', help='Generate category links.')
-        parser.add_argument('--pop-cats', action='store_true', help='Generate popular categories.')
         parser.add_argument('--map', action='store_true', help='Generate store location map.')
-        parser.add_argument('--super-cats', action='store_true', help='Generate super categories.')
         parser.add_argument('--primary-cats', action='store_true', help='Generate primary categories.')
         parser.add_argument('--bargains', action='store_true', help='Generate bargains.')
         parser.add_argument('--store-groups', action='store_true', help='Generate store groups.')

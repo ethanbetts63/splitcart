@@ -2,10 +2,10 @@ import json
 import os
 import requests
 from django.conf import settings
-from data_management.utils.substitution_generators.lvl1_sub_generator import LocalLvl1SubGenerator
-from data_management.utils.substitution_generators.lvl2_sub_generator import LocalLvl2SubGenerator
-from data_management.utils.substitution_generators.lvl3_sub_generator import LocalLvl3SubGenerator
-from data_management.utils.substitution_generators.lvl4_sub_generator import LocalLvl4SubGenerator
+from data_management.utils.substitution_generators.lvl1_sub_generator import Lvl1SubGenerator
+from data_management.utils.substitution_generators.lvl2_sub_generator import Lvl2SubGenerator
+from data_management.utils.substitution_generators.lvl3_sub_generator import Lvl3SubGenerator
+from data_management.utils.substitution_generators.lvl4_sub_generator import Lvl4SubGenerator
 
 class SubstitutionsGenerator:
     def __init__(self, command, dev=False):
@@ -57,10 +57,10 @@ class SubstitutionsGenerator:
             self.command.stderr.write(f"Failed to decode JSON: {e}"); return
 
         # 2. Run all generators
-        lvl1_subs = LocalLvl1SubGenerator().generate(self.command, products)
-        lvl2_subs = LocalLvl2SubGenerator().generate(self.command, products)
-        lvl3_subs = LocalLvl3SubGenerator().generate(self.command, products, categories)
-        lvl4_subs = LocalLvl4SubGenerator().generate(self.command, products, category_links)
+        lvl1_subs = Lvl1SubGenerator().generate(self.command, products)
+        lvl2_subs = Lvl2SubGenerator().generate(self.command, products)
+        lvl3_subs = Lvl3SubGenerator().generate(self.command, products, categories)
+        lvl4_subs = Lvl4SubGenerator().generate(self.command, products, category_links)
 
         all_subs = lvl1_subs + lvl2_subs + lvl3_subs + lvl4_subs
         self.command.stdout.write(self.command.style.SUCCESS(f"Total substitutions generated: {len(all_subs)}"))

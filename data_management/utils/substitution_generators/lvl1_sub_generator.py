@@ -1,7 +1,7 @@
 from itertools import combinations
 from collections import defaultdict
 
-class LocalLvl1SubGenerator:
+class Lvl1SubGenerator:
     def generate(self, command, products):
         command.stdout.write("--- Generating Level 1 Subs ---")
         subs = []

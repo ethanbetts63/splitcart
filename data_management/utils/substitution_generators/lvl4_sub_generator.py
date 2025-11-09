@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-class LocalLvl4SubGenerator:
+class Lvl4SubGenerator:
     def generate(self, command, products, category_links):
         command.stdout.write("--- Generating Level 4 Subs ---")
         try:
