@@ -73,7 +73,7 @@ class ColesBarcodeScraper(BaseProductScraper):
         try:
             numeric_store_id = self.store_id.split(':')[-1]
             options = webdriver.ChromeOptions()
-            #options.add_argument("user-agent=SplitCartScraper/1.0 (Contact: admin@splitcart.com)")
+            options.add_argument("user-agent=SplitCartScraper/1.0 (Contact: admin@splitcart.com.au)")
             driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
             driver.get("https://www.coles.com.au")
             driver.delete_all_cookies()
@@ -242,7 +242,7 @@ class ColesBarcodeScraper(BaseProductScraper):
                 self.output.update_progress(total_categories=len(work_items))
 
                 consecutive_failures = 0
-                MAX_FAILURES = 3
+                MAX_FAILURES = 999
 
                 for i, item in enumerate(work_items):
                     self.output.update_progress(categories_scraped=i + 1)
