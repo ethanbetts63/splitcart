@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
+from decimal import Decimal
 from data_management.utils.product_normalizer import ProductNormalizer
 from data_management.utils.price_normalizer import PriceNormalizer
 from data_management.utils.price_hasher import generate_price_hash
@@ -132,11 +133,15 @@ class BaseDataCleaner(ABC):
         return product
 
     def _calculate_price_info(self, current_price: float | None, was_price: float | None) -> dict:
-        is_on_special = was_price is not None and current_price is not None and was_price > current_price
-        save_amount = round(was_price - current_price, 2) if is_on_special else None
+        # Convert to Decimal and round to 2 decimal places
+        current_price_decimal = Decimal(str(current_price)).quantize(Decimal('0.01')) if current_price is not None else None
+        was_price_decimal = Decimal(str(was_price)).quantize(Decimal('0.01')) if was_price is not None else None
+
+        is_on_special = was_price_decimal is not None and current_price_decimal is not None and was_price_decimal > current_price_decimal
+        save_amount = round(was_price_decimal - current_price_decimal, 2) if is_on_special else None
         return {
-            "price_current": current_price,
-            "price_was": was_price,
+            "price_current": current_price_decimal,
+            "price_was": was_price_decimal,
             "is_on_special": is_on_special,
             "price_save_amount": save_amount,
         }

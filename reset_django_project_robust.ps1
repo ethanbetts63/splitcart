@@ -70,6 +70,8 @@ git push
 
 python manage.py update --archive # Server
 
+# python manage.py generate --primary-cats # Server
+
 python manage.py generate --store-groups # Server
 
 python manage.py upload --product --dev # Local
