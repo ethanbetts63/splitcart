@@ -157,7 +157,6 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-
     "http://localhost:5173",
     "https://ethanbetts63.pythonanywhere.com", 
     "https://www.splitcart.com.au",
@@ -170,8 +169,6 @@ CORS_ALLOW_HEADERS = [
     *default_headers,
     "X-Anonymous-ID",
 ]
-
-
 
 # Custom Account Adapter
 ACCOUNT_ADAPTER = 'users.adapter.CustomAccountAdapter'
@@ -197,7 +194,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'ethan.betts.dev@gmail.com'
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-
 
 # Custom Serializer for Registration
 
