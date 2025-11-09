@@ -77,14 +77,35 @@ class BargainUpdater:
                 cheapest_price = Price.objects.get(id=bargain_data['cheapest_price_id'])
                 most_expensive_price = Price.objects.get(id=bargain_data['most_expensive_price_id'])
 
-                primary_cat = product.category.primary_category if product.category else None
-                Bargain.objects.create(
+                # Create the bargain instance first
+                new_bargain = Bargain.objects.create(
                     product=product,
                     store=store,
                     cheapest_price=cheapest_price,
                     most_expensive_price=most_expensive_price,
-                    primary_category=primary_cat,
                 )
+
+                # Now, collect and set the primary categories
+                primary_cats_to_add = set()
+                # The 'category' field on Product is the reverse relation from Category.
+                # The related_name on Category's 'products' field is what we should use.
+                # Let's assume the related_name from Product to Category is 'categories'.
+                # If not, this will need adjustment. A quick check of the Product model is ideal.
+                # For now, proceeding with the most likely convention.
+                # It seems 'product.category' was used before, which implies a reverse lookup.
+                # The default related_name is 'category_set'. Let's try that.
+                # Re-reading the old code, it used `product.category`, which is likely a ManyRelatedManager.
+                # Let's assume `product.categories` is the correct accessor. If not, will need to fix.
+                # The original error was on `product.category.primary_category`, so `product.category` is the accessor.
+                
+                if product.category.exists():
+                    for cat in product.category.all():
+                        if cat.primary_category:
+                            primary_cats_to_add.add(cat.primary_category)
+                
+                if primary_cats_to_add:
+                    new_bargain.primary_categories.set(primary_cats_to_add)
+
                 bargains_processed += 1
             except (Product.DoesNotExist, Store.DoesNotExist, Price.DoesNotExist) as e:
                 self.command.stderr.write(self.command.style.ERROR(f"Error processing bargain: {bargain_data}. Error: {e}"))

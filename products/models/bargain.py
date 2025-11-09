@@ -9,7 +9,7 @@ class Bargain(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='bargains')
     cheapest_price = models.ForeignKey(Price, on_delete=models.CASCADE, related_name='bargain_as_cheapest')
     most_expensive_price = models.ForeignKey(Price, on_delete=models.CASCADE, related_name='bargain_as_most_expensive')
-    primary_category = models.ForeignKey(PrimaryCategory, on_delete=models.CASCADE, related_name='bargains', null=True)
+    primary_categories = models.ManyToManyField(PrimaryCategory, related_name='bargains', blank=True)
 
     class Meta:
         unique_together = ('product', 'store')
