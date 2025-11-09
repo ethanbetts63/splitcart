@@ -2,14 +2,13 @@ import requests
 import json
 import re
 import os
-import time
-from django.conf import settings
+from django.conf import settings # Added settings import
 from django.utils import timezone
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from products.models import Product, ProductBrand
+# Removed: from products.models import Product, ProductBrand
 
 class Gs1CompanyScraper:
     """
@@ -29,6 +28,9 @@ class Gs1CompanyScraper:
         """
         self.command.stdout.write(self.command.style.SUCCESS('--- Running GS1 Strategic Scraper to Inbox ---\n'))
         
+        base_url = "http://127.0.0.1:8000" # Assuming local dev server for scraper
+        headers = {'X-Internal-API-Key': settings.INTERNAL_API_KEY}
+
         # --- Setup ---
         inbox_dir = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'prefix_inbox')
         os.makedirs(inbox_dir, exist_ok=True)
@@ -36,69 +38,88 @@ class Gs1CompanyScraper:
         output_file = os.path.join(inbox_dir, f'gs1_results_{timestamp}.jsonl')
         self.command.stdout.write(f"Saving results to: {output_file}\n")
 
-        # --- Prioritize Brands ---
-        self.command.stdout.write("Prioritizing unconfirmed brands by product count...")
-        
-        unconfirmed_brands = []
-        all_brands = ProductBrand.objects.all()
-
-        for brand in all_brands:
-            if brand.confirmed_official_prefix:
-                continue
-            
-            count = Product.objects.filter(brand=brand).count()
-            if count > 0:
-                unconfirmed_brands.append({'brand': brand, 'count': count})
-        
-        sorted_brands = sorted(unconfirmed_brands, key=lambda x: x['count'], reverse=True)
-        self.command.stdout.write(f"Found {len(sorted_brands)} unconfirmed brands with products to scrape.")
-
-        # --- Initialize Scraper Session (ONCE) ---
-        first_product_for_session = Product.objects.exclude(barcode__isnull=True).exclude(barcode__exact='').first()
-        if not first_product_for_session:
-            self.command.stdout.write(self.command.style.ERROR("No products with barcodes found in the database. Cannot initialize GS1 session."))
+        # --- Prioritize Brands (via API) ---
+        self.command.stdout.write("Fetching unconfirmed brands from API...")
+        try:
+            api_url = f"{base_url}/api/gs1/unconfirmed-brands/"
+            response = requests.get(api_url, headers=headers, timeout=30)
+            response.raise_for_status()
+            unconfirmed_brands_data = response.json()
+            self.command.stdout.write(f"Found {len(unconfirmed_brands_data)} unconfirmed brands to scrape.")
+        except requests.exceptions.RequestException as e:
+            self.command.stderr.write(self.command.style.ERROR(f"Failed to fetch unconfirmed brands from API: {e}"))
             return
 
-        if not self.initialize_session(first_product_for_session.barcode):
+        # --- Initialize Scraper Session (ONCE) ---
+        if not unconfirmed_brands_data:
+            self.command.stdout.write(self.command.style.WARNING("No unconfirmed brands found. Skipping session initialization."))
+            return
+
+        # Get a barcode for the first unconfirmed brand to initialize the session
+        first_brand_id = unconfirmed_brands_data[0]['brand_id']
+        first_brand_name = unconfirmed_brands_data[0]['brand_name']
+        initial_barcode = None
+        try:
+            api_url = f"{base_url}/api/brands/{first_brand_id}/sample-barcode/"
+            response = requests.get(api_url, headers=headers, timeout=30)
+            response.raise_for_status()
+            barcode_data = response.json()
+            initial_barcode = barcode_data.get('barcode')
+            if not initial_barcode:
+                self.command.stderr.write(self.command.style.ERROR(f"No barcode found for brand {first_brand_name} (ID: {first_brand_id}). Cannot initialize GS1 session."))
+                return
+        except requests.exceptions.RequestException as e:
+            self.command.stderr.write(self.command.style.ERROR(f"Failed to fetch initial barcode for brand {first_brand_name} (ID: {first_brand_id}) from API: {e}"))
+            return
+
+        if not self.initialize_session(initial_barcode):
             self.command.stdout.write(self.command.style.ERROR("Failed to initialize GS1 session. Aborting scrape."))
             return
 
         # --- Main Scraping Loop ---
         successful_scrapes = 0
-        target_brands = sorted_brands[:30]
+        target_brands = unconfirmed_brands_data # Already limited to top 30 by API
 
         for i, brand_info in enumerate(target_brands):
-            target_brand = brand_info['brand']
+            target_brand_id = brand_info['brand_id']
+            target_brand_name = brand_info['brand_name']
             self.command.stdout.write(f"--- Scrape Attempt {i + 1}/{len(target_brands)} ---\n")
-            self.command.stdout.write(f"Selected brand: {target_brand.name}\n")
+            self.command.stdout.write(f"Selected brand: {target_brand_name}\n")
 
-            product_with_barcode = Product.objects.filter(
-                brand=target_brand
-            ).exclude(barcode__isnull=True).exclude(barcode__exact='').first()
-
-            if not product_with_barcode:
-                self.command.stdout.write(self.command.style.WARNING(f"Brand {target_brand.name} has no products with barcodes. Skipping."))
+            barcode_to_scrape = None
+            try:
+                api_url = f"{base_url}/api/brands/{target_brand_id}/sample-barcode/"
+                response = requests.get(api_url, headers=headers, timeout=30)
+                response.raise_for_status()
+                barcode_data = response.json()
+                barcode_to_scrape = barcode_data.get('barcode')
+                if not barcode_to_scrape:
+                    self.command.stdout.write(self.command.style.WARNING(f"No barcode found for brand {target_brand_name} (ID: {target_brand_id}). Skipping."))
+                    continue
+            except requests.exceptions.RequestException as e:
+                self.command.stderr.write(self.command.style.ERROR(f"Failed to fetch barcode for brand {target_brand_name} (ID: {target_brand_id}) from API: {e}. Skipping."))
                 continue
 
-            result = self.scrape_barcode(product_with_barcode.barcode)
+
+            result = self.scrape_barcode(barcode_to_scrape)
 
             if result and result.get('license_key'):
-                self._write_result_to_inbox(result, target_brand, product_with_barcode.barcode, output_file)
+                self._write_result_to_inbox(result, target_brand_id, target_brand_name, barcode_to_scrape, output_file)
                 successful_scrapes += 1
             else:
-                self.command.stderr.write(self.command.style.ERROR(f"Scrape failed for {target_brand.name}."))
+                self.command.stderr.write(self.command.style.ERROR(f"Scrape failed for {target_brand_name}."))
 
             if i < len(target_brands) - 1:
                 pass
         
         self.command.stdout.write(self.command.style.SUCCESS(f'--- GS1 Scraper Run Complete. {successful_scrapes} new records saved to inbox. ---\n'))
 
-    def _write_result_to_inbox(self, result, target_brand, barcode, output_file):
-        self.command.stdout.write(self.command.style.SUCCESS(f"Successfully scraped {target_brand.name}."))
+    def _write_result_to_inbox(self, result, target_brand_id, target_brand_name, barcode, output_file):
+        self.command.stdout.write(self.command.style.SUCCESS(f"Successfully scraped {target_brand_name}."))
         output_record = {
             'scraped_date': timezone.now().date().isoformat(),
-            'target_brand_id': target_brand.id,
-            'target_brand_name': target_brand.name,
+            'target_brand_id': target_brand_id,
+            'target_brand_name': target_brand_name,
             'scraped_barcode': barcode,
             'confirmed_license_key': result['license_key'],
             'confirmed_company_name': result['company_name'],

@@ -41,6 +41,7 @@ from .views.export_category_links_view import ExportCategoryLinksView
 from .views.export_stores_view import ExportStoresView
 from .views.company_list_view import CompanyListView
 from .views.import_semantic_data_view import ImportSemanticDataView
+from .views.gs1_views import GS1UnconfirmedBrandsView, BrandSampleBarcodeView # Updated import
 
 urlpatterns = [
     path('initial-setup/', InitialSetupView.as_view(), name='initial-setup'),
@@ -51,6 +52,8 @@ urlpatterns = [
     path('upload/category-links/', CategoryLinksFileUploadView.as_view(), name='category-links-file-upload'),
     path('upload/substitutions/', SubstitutionsFileUploadView.as_view(), name='substitutions-file-upload'),
     path('upload/bargains/', BargainsFileUploadView.as_view(), name='bargains-file-upload'),
+    path('gs1/unconfirmed-brands/', GS1UnconfirmedBrandsView.as_view(), name='gs1-unconfirmed-brands'),
+    path('brands/<int:brand_id>/sample-barcode/', BrandSampleBarcodeView.as_view(), name='brand-sample-barcode'), # New path
     path('products/', ProductListView.as_view(), name='product-list'),
     path('products/bargains/', BargainListView.as_view(), name='bargain-product-list'),
     path('products/by-category/', CategoryProductListView.as_view(), name='product-list-by-category'),
