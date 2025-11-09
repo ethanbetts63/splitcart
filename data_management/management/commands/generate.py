@@ -9,6 +9,7 @@ class Command(BaseCommand):
         parser.add_argument('--pop-cats', action='store_true', help='Generate popular categories.')
         parser.add_argument('--map', action='store_true', help='Generate store location map.')
         parser.add_argument('--super-cats', action='store_true', help='Generate super categories.')
+        parser.add_argument('--primary-cats', action='store_true', help='Generate primary categories.')
         parser.add_argument('--bargains', action='store_true', help='Generate bargains.')
         parser.add_argument('--store-groups', action='store_true', help='Generate store groups.')
         parser.add_argument('--archive', action='store_true', help='Archive the database.')
@@ -48,6 +49,12 @@ class Command(BaseCommand):
             from data_management.utils.generation_utils.super_categories_generator import SuperCategoriesGenerator
             self.stdout.write(self.style.SUCCESS("Generating super categories..."))
             generator = SuperCategoriesGenerator(self)
+            generator.run()
+
+        if options['primary_cats']:
+            from data_management.utils.generation_utils.primary_categories_generator import PrimaryCategoriesGenerator
+            self.stdout.write(self.style.SUCCESS("Generating primary categories..."))
+            generator = PrimaryCategoriesGenerator(self)
             generator.run()
 
         if options['bargains'] or run_all:

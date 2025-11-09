@@ -36,6 +36,14 @@ class Category(models.Model):
         blank=True,
         help_text="Links to categories in other companies with a defined relationship type."
     )
+    primary_category = models.ForeignKey(
+        'companies.PrimaryCategory',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='categories',
+        help_text="The primary category that this category belongs to."
+    )
 
     class Meta:
         verbose_name_plural = "Categories"

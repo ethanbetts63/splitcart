@@ -10,14 +10,16 @@ PRIMARY_CATEGORIES = [
     "Baby",
     "Bakery",
     "Cleaning",
+    "Clothing",
     "Dairy",
-    "Deals"
+    "Deals",
     "Eggs",
     "Electronics",
     "Freezer",
     "Fruit",
     "Garden",
     "Health and Beauty",
+    "Health Foods",
     "Household",
     "Meat",
     "Miscellaneous",
@@ -26,6 +28,7 @@ PRIMARY_CATEGORIES = [
     "Pet",
     "Seafood",
     "Snacks",
+    "Spices",
     "Sweets",
     "Veg"
 ]
