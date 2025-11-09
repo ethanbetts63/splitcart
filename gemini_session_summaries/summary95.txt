@@ -1,0 +1,15 @@
+This session focused on a deep dive into diagnosing and fixing a cascade of performance issues related to the `generate --bargains` management command.
+
+Our initial problem was a 500 Internal Server Error when the command tried to fetch prices. We identified that this was caused by the `ExportPricesView` and its serializer being out of sync with a recently refactored `Price` model. We corrected the view and serializer to align with the new model, which resolved the error.
+
+However, this revealed a major performance bottleneck: the command was attempting to download hundreds of thousands of price records. To address this, we implemented a series of cascading optimizations.
+
+First, we decided to leverage the store grouping logic to only fetch prices for "anchor" stores. An investigation revealed that the grouping mechanism wasn't effective because most stores lacked price data, but we also found and fixed a critical bug in the `ExportPricesView` where it was ignoring the store ID filter, causing it to always return all prices. We also optimized the `ExportAnchorStoresView` to only return anchors that had price data to begin with.
+
+Second, to speed up the server's response time, we modified the `ExportPricesView` to bypass the very slow default serialization process. By using the `.values()` queryset method, we enabled the API to send data directly from the database as simple dictionaries, significantly reducing the server's workload.
+
+Third, we observed that the data transfer was fast initially but slowed down over time. We identified this as a classic database issue caused by offset-based pagination. We resolved this by switching the API to use `CursorPagination`, which ensures that every page of data is fetched in constant time. This involved debugging a few tricky implementation errors until the view was configured correctly.
+
+Finally, we made a small adjustment to the client-side `bargains_generator.py` script to make it compatible with the new cursor pagination response format, which does not include a total count.
+
+The result of these cumulative fixes is a `generate --bargains` command that is now dramatically faster, more resource-efficient on the server, and more robust in its logic.

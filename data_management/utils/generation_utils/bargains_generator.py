@@ -20,7 +20,7 @@ class BargainsGenerator:
             data = response.json()
             all_results.extend(data['results'])
             next_url = data.get('next')
-            self.command.stdout.write(f"  Fetched {len(all_results)} / {data['count']} {data_type}.")
+            self.command.stdout.write(f"  Fetched {len(all_results)} {data_type}...")
             time.sleep(0.1)
         return all_results
 
