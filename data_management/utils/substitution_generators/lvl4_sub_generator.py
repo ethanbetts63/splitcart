@@ -107,8 +107,7 @@ class Lvl4SubGenerator:
                     'product_a': prod_a['id'],
                     'product_b': prod_b['id'],
                     'level': 'LVL4',
-                    'score': cosine_scores[r, c].item(),
-                    'source': 'local_sbert_linked_v1'
+                    'score': cosine_scores[r, c].item()
                 })
 
         # Clear the progress line

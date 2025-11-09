@@ -68,8 +68,7 @@ class Lvl2SubGenerator:
                                 'product_a': prod_a['id'],
                                 'product_b': prod_b['id'],
                                 'level': 'LVL2',
-                                'score': 0.95,
-                                'source': 'local_size_similarity_v1'
+                                'score': 0.95
                             })
         
         # Clear the progress line

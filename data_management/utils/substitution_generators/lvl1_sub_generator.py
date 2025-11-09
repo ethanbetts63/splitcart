@@ -19,6 +19,6 @@ class Lvl1SubGenerator:
                     sizes_a = set(prod_a.get('sizes', []))
                     sizes_b = set(prod_b.get('sizes', []))
                     if sizes_a and sizes_b and sizes_a != sizes_b:
-                        subs.append({'product_a': prod_a['id'], 'product_b': prod_b['id'], 'level': 'LVL1', 'score': 1.0, 'source': 'local_strict_name_v1'})
+                        subs.append({'product_a': prod_a['id'], 'product_b': prod_b['id'], 'level': 'LVL1', 'score': 1.0})
         command.stdout.write(f"  Generated {len(subs)} Lvl1 subs.")
         return subs
