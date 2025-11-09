@@ -14,7 +14,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from scraping.scrapers.base_product_scraper import BaseProductScraper
 from scraping.utils.product_scraping_utils.DataCleanerColes import DataCleanerColes
 from scraping.utils.product_scraping_utils.jsonl_writer import JsonlWriter
-from scraping.scrapers.barcode_scraper_coles import ColesBarcodeScraper
 
 class ColesScraper(BaseProductScraper):
     """

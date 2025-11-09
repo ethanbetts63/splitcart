@@ -2,10 +2,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from products.models import Product, ProductBrand
-from api.permissions import IsInternalAPICall
+from api.permissions import IsInternalAPIRequest
 
 class GS1UnconfirmedBrandsView(APIView):
-    permission_classes = [IsInternalAPICall]
+    permission_classes = [IsInternalAPIRequest]
 
     def get(self, request, *args, **kwargs):
         unconfirmed_brands = []
@@ -32,7 +32,7 @@ class GS1UnconfirmedBrandsView(APIView):
         return Response(top_30_brands_data, status=status.HTTP_200_OK)
 
 class BrandSampleBarcodeView(APIView):
-    permission_classes = [IsInternalAPICall]
+    permission_classes = [IsInternalAPIRequest]
 
     def get(self, request, brand_id, *args, **kwargs):
         try:

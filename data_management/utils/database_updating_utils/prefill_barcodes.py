@@ -3,7 +3,7 @@ import json
 from django.conf import settings
 
 
-def prefill_barcodes_from_api(product_list: list, command=None) -> list:
+def prefill_barcodes_from_api(product_list: list, command=None, dev: bool = False) -> list:
     """
     Enriches a list of product dictionaries with barcodes by calling a dedicated API endpoint.
     """
@@ -30,7 +30,7 @@ def prefill_barcodes_from_api(product_list: list, command=None) -> list:
         return product_list
 
     # Step 2: Call the API to get barcodes for the collected names.
-    server_url = settings.API_SERVER_URL
+    server_url = "http://127.0.0.1:8000" if dev else settings.API_SERVER_URL
     api_key = settings.INTERNAL_API_KEY
     if not server_url or not api_key:
         if command:
@@ -44,10 +44,15 @@ def prefill_barcodes_from_api(product_list: list, command=None) -> list:
     }
     payload = {"names": list(names_to_lookup)}
 
+    if command:
+        command.stdout.write(f"  - Querying API with {len(names_to_lookup)} unique product names.")
+
     try:
         response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=30)
         response.raise_for_status()
         barcode_map = response.json()
+        if command:
+            command.stdout.write(f"  - API returned {len(barcode_map)} barcodes.")
     except requests.exceptions.RequestException as e:
         if command:
             command.stdout.write(command.style.ERROR(f"  - API call for barcodes failed: {e}"))

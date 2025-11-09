@@ -6,6 +6,9 @@ from scraping.scrapers.barcode_scraper_coles import ColesBarcodeScraper
 class Command(BaseCommand):
     help = 'Scans the barcode scraper inbox and processes files.'
 
+    def add_arguments(self, parser):
+        parser.add_argument('--dev', action='store_true', help='Use dev server for API calls.')
+
     def handle(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('--- Starting Barcode Scraper Worker ---'))
         
@@ -32,7 +35,7 @@ class Command(BaseCommand):
                 # Currently, we only have a barcode scraper for Coles.
                 # This logic can be expanded if other scrapers need a barcode enrichment step.
                 if 'coles' in file_name.lower():
-                    scraper = ColesBarcodeScraper(command=self, source_file_path=source_file_path)
+                    scraper = ColesBarcodeScraper(command=self, source_file_path=source_file_path, dev=options['dev'])
                     scraper.run()
 
                     # After the scraper.run() is successful, the original source file is deleted by the scraper.

@@ -20,13 +20,14 @@ class ColesBarcodeScraper(BaseProductScraper):
     barcodes, and writes the enriched data to a new file.
     """
 
-    def __init__(self, command, source_file_path: str):
+    def __init__(self, command, source_file_path: str, dev: bool = False):
         self.command = command
         self.source_file_path = source_file_path
         self.progress_file_path = source_file_path + ".progress"
         self.session = None
         self.jsonl_writer = None
         self.output = None # Will be initialized in setup
+        self.dev = dev
 
         # These will be populated from the source file's metadata
         self.company = "coles"
@@ -124,7 +125,7 @@ class ColesBarcodeScraper(BaseProductScraper):
 
         # --- Step 3: Prefill from DB and identify what needs scraping ---
         master_product_list = [line.get('product') for line in master_line_list]
-        enriched_master_list = prefill_barcodes_from_api(master_product_list, self.command)
+        enriched_master_list = prefill_barcodes_from_api(master_product_list, self.command, self.dev)
         for i, line_data in enumerate(master_line_list):
             if 'product' in line_data:
                 line_data['product'] = enriched_master_list[i]
