@@ -82,8 +82,8 @@ class BargainsGenerator:
                 bargains_data.append({
                     'product_id': product_id,
                     'store_id': min_price_entry['store_id'],
-                    'cheapest_price_record_id': min_price_entry['price_record_id'],
-                    'most_expensive_price_record_id': max_price_entry['price_record_id'],
+                    'cheapest_price_id': min_price_entry['id'],
+                    'most_expensive_price_id': max_price_entry['id'],
                 })
                 bargain_count += 1
 
