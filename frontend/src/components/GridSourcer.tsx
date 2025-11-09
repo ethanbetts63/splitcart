@@ -27,12 +27,11 @@ interface GridSourcerProps {
   searchTerm: string | null;
   sourceUrl: string | null;
   primaryCategorySlug: string | null;
-  bargains: boolean | null; // Replaces superCategory
 }
 
 import { useApiQuery } from '../hooks/useApiQuery';
 
-const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primaryCategorySlug, bargains }) => {
+const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primaryCategorySlug }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const { selectedStoreIds } = useStoreList(); // Get selected stores
 
@@ -54,17 +53,13 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
       params.set('primary_category_slug', primaryCategorySlug);
     }
 
-    if (bargains) {
-      params.set('bargains', 'true');
-    }
-
     if (selectedStoreIds && selectedStoreIds.size > 0) {
       params.set('store_ids', Array.from(selectedStoreIds).join(','));
     }
     params.set('page', currentPage.toString());
 
     return { url, params };
-  }, [searchTerm, sourceUrl, primaryCategorySlug, bargains, selectedStoreIds, currentPage]);
+  }, [searchTerm, sourceUrl, primaryCategorySlug, selectedStoreIds, currentPage]);
 
   const finalUrl = url ? `${url}?${params.toString()}` : null;
 
@@ -94,11 +89,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
     titleText = `Found ${totalResults} results for "${searchTerm}"`;
   } else if (primaryCategorySlug) {
     const formattedSlug = primaryCategorySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-    if (bargains) {
-      titleText = `Showing ${totalResults} Bargains in "${formattedSlug}"`;
-    } else {
-      titleText = `Showing ${totalResults} products in "${formattedSlug}"`;
-    }
+    titleText = `Showing ${totalResults} products in "${formattedSlug}"`;
   } else if (sourceUrl) {
     // Basic title for sourceUrl, can be improved
     titleText = `Showing ${totalResults} products`;

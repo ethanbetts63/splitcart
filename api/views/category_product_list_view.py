@@ -1,6 +1,6 @@
 from rest_framework import generics
-from django.db.models import Count
-from products.models import Product
+from django.db.models import Exists, OuterRef
+from products.models import Product, Bargain
 from ..serializers import ProductSerializer
 from companies.models import Category
 
@@ -15,28 +15,34 @@ class CategoryProductListView(generics.ListAPIView):
             return Product.objects.none()
 
         try:
-            # Filter products that belong to any category linked to the primary category.
+            store_ids = []
+            if store_ids_param:
+                store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
+                # Store ids for the serializer context to fetch correct prices
+                self.nearby_store_ids = store_ids
+
+            # Base queryset
             queryset = Product.objects.filter(category__primary_category__slug=primary_category_slug)
 
             # Further filter by selected stores if store_ids are provided.
-            if store_ids_param:
-                store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
+            if store_ids:
                 queryset = queryset.filter(
                     price_records__price_entries__store__id__in=store_ids
                 ).distinct()
-                # Store ids for the serializer context to fetch correct prices
-                self.nearby_store_ids = store_ids
-            
-            # Filter for bargains if requested
-            bargains_param = self.request.query_params.get('bargains', 'false')
-            if bargains_param.lower() == 'true':
-                queryset = queryset.filter(price_records__price_entries__is_on_special=True).distinct()
 
-            # Keep default ordering for now as per user's request
+            # Annotate with bargain status within the selected stores
+            bargain_exists = Bargain.objects.filter(
+                product=OuterRef('pk'),
+                store__id__in=store_ids
+            )
+            queryset = queryset.annotate(
+                is_bargain=Exists(bargain_exists)
+            )
+
+            # Order by bargain status first, then by name
+            queryset = queryset.order_by('-is_bargain', 'name')
+
             return queryset
-
-        except (ValueError, TypeError):
-            return Product.objects.none()
 
         except (ValueError, TypeError):
             return Product.objects.none()

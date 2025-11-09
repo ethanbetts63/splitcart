@@ -77,11 +77,13 @@ class BargainUpdater:
                 cheapest_price = Price.objects.get(id=bargain_data['cheapest_price_id'])
                 most_expensive_price = Price.objects.get(id=bargain_data['most_expensive_price_id'])
 
+                primary_cat = product.category.primary_category if product.category else None
                 Bargain.objects.create(
                     product=product,
                     store=store,
                     cheapest_price=cheapest_price,
                     most_expensive_price=most_expensive_price,
+                    primary_category=primary_cat,
                 )
                 bargains_processed += 1
             except (Product.DoesNotExist, Store.DoesNotExist, Price.DoesNotExist) as e:
