@@ -9,8 +9,8 @@ class Lvl1SubGenerator:
         # Group products by brand and normalized name
         name_map = defaultdict(list)
         for p in products:
-            if p.get('brand_id') and p.get('normalized_name'):
-                key = (p['brand_id'], p['normalized_name'])
+            if p.get('brand_id') and p.get('name'):
+                key = (p['brand_id'], p['name'])
                 name_map[key].append(p)
 
         for product_group in name_map.values():

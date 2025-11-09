@@ -94,10 +94,6 @@ python manage.py generate --bargains --dev # Local
 python manage.py upload --bargains --dev # Local
 python manage.py update --bargains # Server
 
-python manage.py generate --pop-cats # Server 
-python manage.py generate --super-cats # Server
-
-
 python manage.py analyze --report company_heatmap
 python manage.py analyze --report subs
 python manage.py analyze --report savings
