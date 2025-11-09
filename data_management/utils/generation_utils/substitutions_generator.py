@@ -60,7 +60,7 @@ class SubstitutionsGenerator:
         lvl1_subs = Lvl1SubGenerator().generate(self.command, products)
         lvl2_subs = Lvl2SubGenerator().generate(self.command, products)
         lvl3_subs = Lvl3SubGenerator(self.command).generate(products, categories)
-        lvl4_subs = Lvl4SubGenerator().generate(self.command, products, category_links)
+        lvl4_subs = Lvl4SubGenerator(self.command).generate(products, category_links)
 
         all_subs = lvl1_subs + lvl2_subs + lvl3_subs + lvl4_subs
         self.command.stdout.write(self.command.style.SUCCESS(f"Total substitutions generated: {len(all_subs)}"))
