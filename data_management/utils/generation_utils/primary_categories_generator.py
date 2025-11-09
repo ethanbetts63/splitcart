@@ -1,6 +1,3 @@
-import os
-import sys
-from collections import defaultdict
 from django.db import transaction
 from companies.models import Category, Company, PrimaryCategory
 from data_management.data.category_mappings import CATEGORY_MAPPINGS
