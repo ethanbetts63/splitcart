@@ -78,12 +78,13 @@ python manage.py upload --product --dev # Local
 python manage.py update --products # Server
 
 # NEED TO GET THIS WORKING AGAIN
-python manage.py update --prefixes # Server
+# python manage.py update --prefixes # Server
 
 python manage.py generate --cat-links --dev # Local
 python manage.py upload --cat-links --dev # Local
 python manage.py update --cat-links # Server
 
+python manage.py upload --product --dev # Local
 python manage.py update --products
 
 python manage.py generate --subs --dev # Local
@@ -100,6 +101,5 @@ python manage.py analyze --report savings
 python manage.py analyze --report category_product_counts --strict
 python manage.py debug_savings_run
 python manage.py test_unit_price_sorter
-python manage.py archive
 
 python manage.py generate --map --dev # Local
