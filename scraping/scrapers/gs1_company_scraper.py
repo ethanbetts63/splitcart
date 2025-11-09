@@ -2,13 +2,12 @@ import requests
 import json
 import re
 import os
-from django.conf import settings # Added settings import
+from django.conf import settings
 from django.utils import timezone
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-# Removed: from products.models import Product, ProductBrand
 
 class Gs1CompanyScraper:
     """
@@ -78,13 +77,26 @@ class Gs1CompanyScraper:
 
         # --- Main Scraping Loop ---
         successful_scrapes = 0
-        target_brands = unconfirmed_brands_data # Already limited to top 30 by API
+        consecutive_failures = 0
+        MAX_SUCCESSFUL_SCRAPES = 30
+        MAX_CONSECUTIVE_FAILURES = 5
+        
+        brand_index = 0
+        target_brands = unconfirmed_brands_data
 
-        for i, brand_info in enumerate(target_brands):
+        while successful_scrapes < MAX_SUCCESSFUL_SCRAPES and brand_index < len(target_brands):
+            if consecutive_failures >= MAX_CONSECUTIVE_FAILURES:
+                self.command.stderr.write(self.command.style.ERROR(f"Stopping scrape due to {MAX_CONSECUTIVE_FAILURES} consecutive failures."))
+                break
+
+            brand_info = target_brands[brand_index]
             target_brand_id = brand_info['brand_id']
             target_brand_name = brand_info['brand_name']
-            self.command.stdout.write(f"--- Scrape Attempt {i + 1}/{len(target_brands)} ---\n")
+            
+            self.command.stdout.write(f"--- Scrape Attempt {brand_index + 1}/{len(target_brands)} (Successes: {successful_scrapes}/{MAX_SUCCESSFUL_SCRAPES}) ---\n")
             self.command.stdout.write(f"Selected brand: {target_brand_name}\n")
+
+            brand_index += 1 # Move to the next brand for the next iteration
 
             barcode_to_scrape = None
             try:
@@ -95,22 +107,22 @@ class Gs1CompanyScraper:
                 barcode_to_scrape = barcode_data.get('barcode')
                 if not barcode_to_scrape:
                     self.command.stdout.write(self.command.style.WARNING(f"No barcode found for brand {target_brand_name} (ID: {target_brand_id}). Skipping."))
+                    consecutive_failures += 1
                     continue
             except requests.exceptions.RequestException as e:
                 self.command.stderr.write(self.command.style.ERROR(f"Failed to fetch barcode for brand {target_brand_name} (ID: {target_brand_id}) from API: {e}. Skipping."))
+                consecutive_failures += 1
                 continue
-
 
             result = self.scrape_barcode(barcode_to_scrape)
 
             if result and result.get('license_key'):
                 self._write_result_to_inbox(result, target_brand_id, target_brand_name, barcode_to_scrape, output_file)
                 successful_scrapes += 1
+                consecutive_failures = 0 # Reset on success
             else:
                 self.command.stderr.write(self.command.style.ERROR(f"Scrape failed for {target_brand_name}."))
-
-            if i < len(target_brands) - 1:
-                pass
+                consecutive_failures += 1
         
         self.command.stdout.write(self.command.style.SUCCESS(f'--- GS1 Scraper Run Complete. {successful_scrapes} new records saved to inbox. ---\n'))
 
