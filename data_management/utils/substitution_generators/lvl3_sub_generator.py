@@ -44,7 +44,7 @@ class Lvl3SubGenerator:
 
         # Step 3: Batch encode all product names at once for efficiency
         self.command.stdout.write(f"  - Encoding {len(corpus_names)} product names...")
-        corpus_embeddings = self.model.encode(corpus_names, convert_to_tensor=True, show_progress_bar=True)
+        corpus_embeddings = self.model.encode(corpus_names, convert_to_tensor=True)
         
         # Create a mapping from product ID to its embedding
         embedding_map = {product_list[i]['id']: corpus_embeddings[i] for i in range(len(product_list))}

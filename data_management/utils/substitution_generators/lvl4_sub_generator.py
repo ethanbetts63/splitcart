@@ -65,7 +65,7 @@ class Lvl4SubGenerator:
 
         # Step 4: Batch encode all product names
         self.command.stdout.write(f"  - Encoding {len(corpus_names)} product names...")
-        corpus_embeddings = self.model.encode(corpus_names, convert_to_tensor=True, show_progress_bar=True)
+        corpus_embeddings = self.model.encode(corpus_names, convert_to_tensor=True)
         embedding_map = {product_list[i]['id']: corpus_embeddings[i] for i in range(len(product_list))}
 
         # Step 5: Process each super-group to find similar pairs
