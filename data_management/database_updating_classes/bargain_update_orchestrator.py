@@ -56,6 +56,8 @@ class BargainUpdateOrchestrator:
         self.command.stdout.write(self.command.style.SUCCESS(f"  Successfully processed {bargains_processed_count}/{total_bargains_to_process} bargains."))
         self.command.stdout.write(self.command.style.SQL_FIELD("--- Bargain Update Complete ---"))
 
+from companies.models.primary_category import PrimaryCategory
+
 class BargainUpdater:
     def __init__(self, command, file_path):
         self.command = command
@@ -64,50 +66,82 @@ class BargainUpdater:
     def run(self):
         try:
             with open(self.file_path, 'r') as f:
-                bargains = json.load(f)
+                bargains_data = json.load(f)
         except json.JSONDecodeError:
             self.command.stderr.write(self.command.style.ERROR(f"Invalid JSON in {self.file_path}"))
             return None
 
-        bargains_processed = 0
-        for bargain_data in bargains:
-            try:
-                product = Product.objects.get(id=bargain_data['product_id'])
-                store = Store.objects.get(id=bargain_data['store_id'])
-                cheapest_price = Price.objects.get(id=bargain_data['cheapest_price_id'])
-                most_expensive_price = Price.objects.get(id=bargain_data['most_expensive_price_id'])
+        if not bargains_data:
+            return 0
 
-                # Create the bargain instance first
-                new_bargain = Bargain.objects.create(
-                    product=product,
-                    store=store,
-                    cheapest_price=cheapest_price,
-                    most_expensive_price=most_expensive_price,
-                )
+        # 1. Pre-fetch all required data
+        product_ids = {b['product_id'] for b in bargains_data}
+        store_ids = {b['store_id'] for b in bargains_data}
+        price_ids = {b['cheapest_price_id'] for b in bargains_data} | {b['most_expensive_price_id'] for b in bargains_data}
 
-                # Now, collect and set the primary categories
-                primary_cats_to_add = set()
-                # The 'category' field on Product is the reverse relation from Category.
-                # The related_name on Category's 'products' field is what we should use.
-                # Let's assume the related_name from Product to Category is 'categories'.
-                # If not, this will need adjustment. A quick check of the Product model is ideal.
-                # For now, proceeding with the most likely convention.
-                # It seems 'product.category' was used before, which implies a reverse lookup.
-                # The default related_name is 'category_set'. Let's try that.
-                # Re-reading the old code, it used `product.category`, which is likely a ManyRelatedManager.
-                # Let's assume `product.categories` is the correct accessor. If not, will need to fix.
-                # The original error was on `product.category.primary_category`, so `product.category` is the accessor.
-                
-                if product.category.exists():
-                    for cat in product.category.all():
-                        if cat.primary_category:
-                            primary_cats_to_add.add(cat.primary_category)
-                
-                if primary_cats_to_add:
-                    new_bargain.primary_categories.set(primary_cats_to_add)
+        products = Product.objects.filter(id__in=product_ids).prefetch_related('category__primary_category')
+        stores = Store.objects.filter(id__in=store_ids)
+        prices = Price.objects.filter(id__in=price_ids)
 
-                bargains_processed += 1
-            except (Product.DoesNotExist, Store.DoesNotExist, Price.DoesNotExist) as e:
-                self.command.stderr.write(self.command.style.ERROR(f"Error processing bargain: {bargain_data}. Error: {e}"))
+        products_map = {p.id: p for p in products}
+        stores_map = {s.id: s for s in stores}
+        prices_map = {p.id: p for p in prices}
+
+        # 2. Prepare Bargain objects and M2M relationships in memory
+        bargains_to_create = []
+        bargain_cats_map = {}
         
-        return bargains_processed
+        total_in_file = len(bargains_data)
+        for i, bargain_data in enumerate(bargains_data):
+            product = products_map.get(bargain_data['product_id'])
+            store = stores_map.get(bargain_data['store_id'])
+            cheapest_price = prices_map.get(bargain_data['cheapest_price_id'])
+            most_expensive_price = prices_map.get(bargain_data['most_expensive_price_id'])
+
+            if not all([product, store, cheapest_price, most_expensive_price]):
+                self.command.stderr.write(self.command.style.ERROR(f"Skipping bargain due to missing data: {bargain_data}"))
+                continue
+
+            bargains_to_create.append(Bargain(
+                product=product,
+                store=store,
+                cheapest_price=cheapest_price,
+                most_expensive_price=most_expensive_price,
+            ))
+
+            primary_cats_to_add = set()
+            if product.category.exists():
+                for cat in product.category.all():
+                    if cat.primary_category:
+                        primary_cats_to_add.add(cat.primary_category)
+            
+            if primary_cats_to_add:
+                bargain_cats_map[(product.id, store.id)] = primary_cats_to_add
+            
+            if (i + 1) % 100 == 0 or (i + 1) == total_in_file:
+                self.command.stdout.write(f"\r        - Preparing bargains: {i + 1}/{total_in_file}...", ending="")
+
+        self.command.stdout.write("") # Newline after prep
+
+        # 3. Bulk create Bargain objects
+        self.command.stdout.write("  - Bulk creating bargains...")
+        Bargain.objects.bulk_create(bargains_to_create, batch_size=500)
+
+        # 4. Efficiently set M2M relationships
+        self.command.stdout.write("  - Setting primary category relationships...")
+        newly_created_bargains = Bargain.objects.filter(product_id__in=product_ids)
+        
+        BargainPrimaryCategory = Bargain.primary_categories.through
+        m2m_relations_to_create = []
+
+        for bargain in newly_created_bargains:
+            cats_to_add = bargain_cats_map.get((bargain.product_id, bargain.store_id))
+            if cats_to_add:
+                for cat in cats_to_add:
+                    m2m_relations_to_create.append(
+                        BargainPrimaryCategory(bargain_id=bargain.id, primarycategory_id=cat.id)
+                    )
+        
+        BargainPrimaryCategory.objects.bulk_create(m2m_relations_to_create, batch_size=500, ignore_conflicts=True)
+
+        return len(bargains_to_create)
