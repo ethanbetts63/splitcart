@@ -12,8 +12,8 @@ type Category = {
 
 const CategoryBar: React.FC = () => {
   const { data: categories = [], isLoading } = useApiQuery<Category[]>(
-    ['popularCategories'],
-    '/categories/popular/',
+    ['primaryCategories'],
+    '/categories/primary/',
     {},
     { refetchOnWindowFocus: false, staleTime: 1000 * 60 * 10 } // 10 minutes
   );
@@ -66,7 +66,7 @@ const CategoryBar: React.FC = () => {
         <div className="flex items-center gap-4 py-1 px-2">
           {[...categories, ...categories].map((category, index) => (
             <div className="flex-shrink-0" key={`${category.slug}-${index}`}>
-              <Link to={`/search?category_slug=${category.slug}`}>
+              <Link to={`/search?primary_category_slug=${category.slug}`}>
                 <Badge variant="secondary" className="text-sm px-2 whitespace-nowrap hover:bg-transparent hover:text-foreground hover:border-foreground">
                   {category.name}
                 </Badge>

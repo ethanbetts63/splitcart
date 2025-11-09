@@ -33,22 +33,10 @@ class Command(BaseCommand):
             generator = CategoryLinksGenerator(self, dev=dev)
             generator.run()
 
-        if options['pop_cats'] or run_all:
-            from data_management.utils.generation_utils.popular_categories_generator import PopularCategoriesGenerator
-            self.stdout.write(self.style.SUCCESS("Generating popular categories..."))
-            generator = PopularCategoriesGenerator(self)
-            generator.run()
-
         if options['map'] or run_all:
             from data_management.utils.generation_utils.map_generator import MapGenerator
             self.stdout.write(self.style.SUCCESS("Generating store location map..."))
             generator = MapGenerator(self, company_name=options['company'], dev=dev)
-            generator.run()
-
-        if options['super_cats'] or run_all:
-            from data_management.utils.generation_utils.super_categories_generator import SuperCategoriesGenerator
-            self.stdout.write(self.style.SUCCESS("Generating super categories..."))
-            generator = SuperCategoriesGenerator(self)
             generator.run()
 
         if options['primary_cats']:

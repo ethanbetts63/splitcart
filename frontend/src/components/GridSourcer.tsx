@@ -26,13 +26,13 @@ type ApiResponse = {
 interface GridSourcerProps {
   searchTerm: string | null;
   sourceUrl: string | null;
-  categorySlug: string | null;
+  primaryCategorySlug: string | null; // Changed from categorySlug
   superCategory: string | null;
 }
 
 import { useApiQuery } from '../hooks/useApiQuery';
 
-const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, categorySlug, superCategory }) => {
+const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primaryCategorySlug, superCategory }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const { selectedStoreIds } = useStoreList(); // Get selected stores
 
@@ -49,9 +49,9 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, catego
     } else if (searchTerm) {
       url = '/api/products/';
       params.set('search', searchTerm);
-    } else if (categorySlug) {
+    } else if (primaryCategorySlug) { // Changed from categorySlug
       url = '/api/products/by-category/';
-      params.set('category_slug', categorySlug);
+      params.set('primary_category_slug', primaryCategorySlug); // Changed from category_slug
     } else if (superCategory) {
       url = '/api/products/bargains/'; // Assuming bargains endpoint for super categories
       params.set('super_category', superCategory);
@@ -63,7 +63,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, catego
     params.set('page', currentPage.toString());
 
     return { url, params };
-  }, [searchTerm, sourceUrl, categorySlug, superCategory, selectedStoreIds, currentPage]);
+  }, [searchTerm, sourceUrl, primaryCategorySlug, superCategory, selectedStoreIds, currentPage]); // Changed categorySlug to primaryCategorySlug
 
   const finalUrl = url ? `${url}?${params.toString()}` : null;
 
@@ -91,8 +91,8 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, catego
   let titleText = "";
   if (searchTerm) {
     titleText = `Found ${totalResults} results for "${searchTerm}"`;
-  } else if (categorySlug) {
-    const formattedSlug = categorySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  } else if (primaryCategorySlug) { // Changed from categorySlug
+    const formattedSlug = primaryCategorySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     titleText = `Showing ${totalResults} products in "${formattedSlug}"`;
   } else if (superCategory) {
     titleText = `Found ${totalResults} products in "${superCategory}"`;

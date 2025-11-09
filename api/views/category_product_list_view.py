@@ -8,21 +8,15 @@ class CategoryProductListView(generics.ListAPIView):
     serializer_class = ProductSerializer
 
     def get_queryset(self):
-        category_slug = self.request.query_params.get('category_slug', None)
+        primary_category_slug = self.request.query_params.get('primary_category_slug', None)
         store_ids_param = self.request.query_params.get('store_ids')
 
-        if not category_slug:
+        if not primary_category_slug:
             return Product.objects.none()
 
         try:
-            # Since a slug can be used by multiple companies, we find all
-            # categories matching the slug.
-            categories = Category.objects.filter(slug=category_slug)
-            if not categories.exists():
-                return Product.objects.none()
-
-            # Filter products that belong to any of the found categories.
-            queryset = Product.objects.filter(category__in=categories)
+            # Filter products that belong to any category linked to the primary category.
+            queryset = Product.objects.filter(category__primary_category__slug=primary_category_slug)
 
             # Further filter by selected stores if store_ids are provided.
             if store_ids_param:
@@ -33,12 +27,11 @@ class CategoryProductListView(generics.ListAPIView):
                 # Store ids for the serializer context to fetch correct prices
                 self.nearby_store_ids = store_ids
             
-            # Annotate with the number of stores and order accordingly
-            queryset = queryset.annotate(
-                num_stores=Count('price_records__price_entries__store', distinct=True)
-            ).order_by('-num_stores', 'name')
-
+            # Keep default ordering for now as per user's request
             return queryset
+
+        except (ValueError, TypeError):
+            return Product.objects.none()
 
         except (ValueError, TypeError):
             return Product.objects.none()

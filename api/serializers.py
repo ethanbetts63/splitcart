@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from products.models import Product, Price
 from products.models.substitution import ProductSubstitution
-from companies.models import Store, Category, PopularCategory, Company
+from companies.models import Store, Category, PrimaryCategory, Company
 from companies.models.postcode import Postcode
 from data_management.models import FAQ
 from users.models import SelectedStoreList, Cart, CartItem, CartSubstitution
@@ -33,9 +33,9 @@ class CategoryWithProductsExportSerializer(serializers.ModelSerializer):
     def get_product_ids(self, obj):
         return list(obj.products.values_list('id', flat=True))
 
-class PopularCategorySerializer(serializers.ModelSerializer):
+class PrimaryCategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = PopularCategory
+        model = PrimaryCategory
         fields = ('name', 'slug')
 
 class StoreSerializer(serializers.ModelSerializer):
