@@ -36,6 +36,7 @@ from .views.frontend_views.initial_setup_view import InitialSetupView
 from .views.export_categories_view import ExportCategoriesView, ExportCategoriesWithProductsView, ExportCategoriesWithProductsView
 from .views.export_products_view import ExportProductsView
 from .views.export_prices_view import ExportPricesView
+from .views.export_anchor_stores_view import ExportAnchorStoresView
 from .views.export_category_links_view import ExportCategoryLinksView
 from .views.export_stores_view import ExportStoresView
 from .views.company_list_view import CompanyListView
@@ -68,6 +69,7 @@ urlpatterns = [
     path('export/categories-with-products/', ExportCategoriesWithProductsView.as_view(), name='export-categories-with-products'),
     path('export/products/', ExportProductsView.as_view(), name='export-products'),
     path('export/prices/', ExportPricesView.as_view(), name='export-prices'),
+    path('export/anchor-stores/', ExportAnchorStoresView.as_view(), name='export-anchor-stores'),
     path('export/category_links/', ExportCategoryLinksView.as_view(), name='export-category-links'),
     path('export/stores/', ExportStoresView.as_view(), name='export-stores'),
     path('export/companies/', CompanyListView.as_view(), name='export-companies'),

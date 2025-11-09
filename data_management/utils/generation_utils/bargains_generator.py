@@ -24,6 +24,20 @@ class BargainsGenerator:
             time.sleep(0.1)
         return all_results
 
+    def _fetch_anchor_store_ids(self, url, headers):
+        """Fetches anchor store IDs from the API."""
+        self.command.stdout.write("Fetching anchor stores...")
+        try:
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            self.command.stderr.write(f"Failed to fetch anchor stores: {e}")
+            return None
+        except json.JSONDecodeError as e:
+            self.command.stderr.write(f"Failed to decode anchor stores JSON: {e}")
+            return None
+
     def run(self):
         if self.dev:
             server_url = "http://127.0.0.1:8000"
@@ -39,12 +53,18 @@ class BargainsGenerator:
         headers = {'X-Internal-API-Key': api_key, 'Accept': 'application/json'}
         self.command.stdout.write(self.command.style.SUCCESS(f"--- Starting Bargain Generation using API at {server_url} ---"))
 
-        try:
-            self.command.stdout.write("Fetching products...")
-            products = self._fetch_paginated_data(f"{server_url}/api/export/products/", headers, "products")
+        anchor_store_ids = self._fetch_anchor_store_ids(f"{server_url}/api/export/anchor-stores/", headers)
 
-            self.command.stdout.write("Fetching prices...")
-            prices = self._fetch_paginated_data(f"{server_url}/api/export/prices/", headers, "prices")
+        if anchor_store_ids is None:
+            return
+
+        self.command.stdout.write(f"  Fetched {len(anchor_store_ids)} anchor stores.")
+
+        try:
+            self.command.stdout.write("Fetching prices for anchor stores...")
+            store_ids_str = ','.join(map(str, anchor_store_ids))
+            prices_url = f"{server_url}/api/export/prices/?store_ids={store_ids_str}"
+            prices = self._fetch_paginated_data(prices_url, headers, "prices")
 
         except requests.exceptions.RequestException as e:
             self.command.stderr.write(f"Failed to fetch data: {e}"); return
@@ -55,7 +75,6 @@ class BargainsGenerator:
         bargains_data = []
         bargain_count = 0
 
-        products_by_id = {p['id']: p for p in products}
         prices_by_product = {}
         for price in prices:
             if price['product_id'] not in prices_by_product:

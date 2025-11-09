@@ -10,5 +10,5 @@ class ExportAnchorStoresView(ListAPIView):
     permission_classes = [IsInternalAPIRequest]
 
     def get(self, request, *args, **kwargs):
-        anchor_ids = StoreGroup.objects.filter(anchor__isnull=False).values_list('anchor_id', flat=True).distinct()
+        anchor_ids = StoreGroup.objects.filter(anchor__isnull=False, anchor__prices__isnull=False).values_list('anchor_id', flat=True).distinct()
         return Response(list(anchor_ids))
