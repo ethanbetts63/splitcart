@@ -91,13 +91,9 @@ class PriceSerializer(serializers.ModelSerializer):
         fields = ('store', 'price')
 
 class PriceExportSerializer(serializers.ModelSerializer):
-    product_id = serializers.IntegerField(source='price_record.product_id')
-    price = serializers.DecimalField(source='price_record.price', max_digits=10, decimal_places=2)
-    price_record_id = serializers.IntegerField(source='price_record.id')
-
     class Meta:
         model = Price
-        fields = ('product_id', 'store_id', 'price', 'price_record_id')
+        fields = ('product_id', 'store_id', 'price', 'id')
 
 class ProductSerializer(serializers.ModelSerializer):
     prices = serializers.SerializerMethodField()

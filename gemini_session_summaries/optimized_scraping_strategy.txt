@@ -32,7 +32,7 @@ To start the process, we will adopt a "top-down" approach using a single, reliab
 *   **Optimization:** The calculation includes a "fail-fast" mechanism. It determines the maximum number of mismatches allowed to meet the overlap threshold and exits the comparison immediately once that number is exceeded.
 
 ### Group Maintenance: The anchor & Candidate Workflow
-This model provides a clear and robust process for maintaining group integrity. The `GroupOrchestrator` within the `update_db` process will handle a batch of new `Candidates` for a group using the following iterative logic:
+This model provides a clear and robust process for maintaining group integrity. The `GroupOrchestrator` within the `update` process will handle a batch of new `Candidates` for a group using the following iterative logic:
 
 1.  **Fetch Data:** The orchestrator receives a list of all new `Candidate` stores for a specific group and fetches the group's current `anchor`.
 
@@ -47,11 +47,11 @@ This model provides a clear and robust process for maintaining group integrity. 
 ### GroupOrchestrator Implementation Refinements
 The `GroupOrchestrator` is fully integrated with the `UnitOfWork` to ensure atomic transactions. It handles price inference by creating new `Price` entries for all non-scraped group members, linking them to the new anchor's `PriceRecord` instances. The logic for handling a "Major Divergence" is implemented as designed, preventing premature group dissolution.
 
-### The Grouper Workflow (`update_db`)
-The `update_db` command uses a stateful, database-driven approach. The `UpdateOrchestrator` processes incoming files and stamps stores as `candidates` on their respective `StoreGroup`. After processing all files, the `GroupOrchestrator` runs the "anchor & Candidate Workflow" on all groups with candidates. Finally, it clears the `candidates` list for the processed groups. All operations are committed in a single atomic transaction by the `UnitOfWork`.
+### The Grouper Workflow (`update`)
+The `update` command uses a stateful, database-driven approach. The `UpdateOrchestrator` processes incoming files and stamps stores as `candidates` on their respective `StoreGroup`. After processing all files, the `GroupOrchestrator` runs the "anchor & Candidate Workflow" on all groups with candidates. Finally, it clears the `candidates` list for the processed groups. All operations are committed in a single atomic transaction by the `UnitOfWork`.
 
 ### Outcasting & Re-homing Rogue Stores
-When a `Rogue` store is outcast, the `update_db` process attempts to find a new home for it by comparing it against the anchors of other potential groups using the "True Overlap" metric. If no match is found, it is classified as an outlier.
+When a `Rogue` store is outcast, the `update` process attempts to find a new home for it by comparing it against the anchors of other potential groups using the "True Overlap" metric. If no match is found, it is classified as an outlier.
 
 ### Data Source Trackingp
 The `products.Price` model includes a `source` field with values like `'direct_scrape'` or `'inferred_group'` to track the origin of every price, enabling accuracy measurement and feedback loops.

@@ -8,7 +8,7 @@ class ExportPricesView(ListAPIView):
     """
     A view to export all price data.
     """
-    queryset = Price.objects.all().select_related('price_record')
+    queryset = Price.objects.all()
     serializer_class = PriceExportSerializer
     permission_classes = [IsInternalAPIRequest]
     throttle_classes = [ScopedRateThrottle]

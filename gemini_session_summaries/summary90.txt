@@ -1,4 +1,4 @@
-This session was focused on a deep debugging and refactoring of the `update_db --products` management command. The initial problem was that the command appeared to run successfully but failed to create any new `Product` or `Price` objects in the database.
+This session was focused on a deep debugging and refactoring of the `update --products` management command. The initial problem was that the command appeared to run successfully but failed to create any new `Product` or `Price` objects in the database.
 
 Our investigation began in the `UnitOfWork` class, where we first discovered that the `add_price` method was failing silently because it was looking for the `scraped_date` in the wrong place. We corrected this by passing the `metadata` dictionary from the scraped file all the way down to the function, allowing it to find the date and proceed.
 
@@ -12,4 +12,4 @@ This allowed the process to run on a single file, but it failed with a `Duplicat
 
 Finally, this revealed one last bug: a `Duplicate entry` error on product barcodes. We traced this to the "enrichment" logic, where the code would try to add a barcode to an existing product without checking if that barcode was already assigned to a different product in the database. The final fix was to add a check to this logic, preventing the crash and logging a warning about the data conflict.
 
-After this series of fixes, the `update_db --products` command is now in a robust and reliable state, able to correctly process multiple files, create products and prices, and handle data conflicts gracefully.
+After this series of fixes, the `update --products` command is now in a robust and reliable state, able to correctly process multiple files, create products and prices, and handle data conflicts gracefully.

@@ -29,7 +29,7 @@ The frontend is built using React (JavaScript/TypeScript) and leverages the foll
     *   Each product is individually cleaned, normalized (generating a `normalized_name_brand_size` string), and saved as a JSON line (`.jsonl`) file in the `data_management/data/inboxes/product_inbox/` directory. This approach isolates errors and improves resilience.
 
 2.  **Database Update (Refactored OOP System):**
-    *   The `update_db` management command (specifically the `--products` flag) now utilizes a refactored, object-oriented system to process files from the `product_inbox` and update the database.
+    *   The `update` management command (specifically the `--products` flag) now utilizes a refactored, object-oriented system to process files from the `product_inbox` and update the database.
     *   This system is designed for clarity, testability, and robustness, handling data consolidation, product matching, category relationships, and price updates efficiently.
 
     **Core Database Update Services:**
@@ -55,7 +55,7 @@ Here is a brief overview of the available management commands:
 
 *   `find_stores`: Discovers store locations for a specific company and saves the data for processing.
 *   `scrape`: Scrapes product data from specified store websites, saving it to the `product_inbox`.
-*   `update_db`: A consolidated command that updates the database with new data. Its `--products` flag now uses the refactored OOP system for robust product and price updates from the inbox. It also supports updating stores from discovery (`--stores`) or from archives (`--archive`).
+*   `update`: A consolidated command that updates the database with new data. Its `--products` flag now uses the refactored OOP system for robust product and price updates from the inbox. It also supports updating stores from discovery (`--stores`) or from archives (`--archive`).
 *   `build_company_jsons`: Generates JSON archives containing data about companies and their stores.
 *   `build_store_jsons`: Generates detailed JSON archives for each store, including product and price history.
 *   `analyze_data`: A flexible tool for data analysis that can generate various reports, charts, and heatmaps.
@@ -88,7 +88,7 @@ This section outlines the standard workflow for collecting, processing, and arch
 
 *   **Update:** Use the `update --products` command to populate the database with the processed product and price information from the `product_inbox`. This step now leverages the refactored object-oriented system for robust and efficient processing. For a detailed explanation of this new workflow, refer to `final_workflow_explanation.txt`.
     ```bash
-    python manage.py update_db --products
+    python manage.py update --products
     ```
 
 ### Step 4: Analyze Data and Generate Archives (Optional)

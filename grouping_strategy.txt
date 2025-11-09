@@ -17,7 +17,7 @@ The system is initialized using a simplified `cluster_stores` command. This comm
 
 #### 3. The Update & Comparison Cycle
 
-The core logic is executed at the end of the `update_db --products` command, after all new prices for the run have been saved. The process is split into two distinct phases:
+The core logic is executed at the end of the `update --products` command, after all new prices for the run have been saved. The process is split into two distinct phases:
 
 **Phase 1: Internal Group Maintenance (Health Checks)**
 
