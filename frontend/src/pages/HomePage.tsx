@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProductCarousel } from "../components/ProductCarousel";
+import CarouselManager from '../components/CarouselManager'; // New import
 import { FaqImageSection } from "../components/FaqImageSection";
 import { useStoreList } from "../context/StoreListContext";
 import { AspectRatio } from "../components/ui/aspect-ratio";
@@ -40,7 +40,8 @@ const HomePage = () => {
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 alt="Confused Shopper" 
                 className="rounded-md object-cover w-full h-full"
-                                 fetchPriority="high" />            </AspectRatio>
+                                 fetchPriority="high" />
+            </AspectRatio>
           </div>
           <div className="text-left">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
@@ -54,16 +55,7 @@ const HomePage = () => {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col gap-8">
-          <ProductCarousel
-            title="Sweet Savings"
-            searchQuery="sweet-savings"
-            sourceUrl="/api/products/bargains/?limit=20"
-            superCategory="Sweet Savings"
-            storeIds={storeIdsArray}
-            isDefaultStores={isDefaultStores}
-          />
-        </div>
+        <CarouselManager storeIds={storeIdsArray} />
       </div>
 
       <div className="container mx-auto px-4 md:px-16 pt-1 pb-1">
@@ -107,24 +99,6 @@ const HomePage = () => {
 
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
-          <ProductCarousel
-            title="Bread, Milk & Bargains"
-            searchQuery="bread-milk-bargains"
-            sourceUrl="/api/products/bargains/?limit=20"
-            superCategory="Bread, Milk & Bargains"
-            storeIds={storeIdsArray}
-            isDefaultStores={isDefaultStores}
-          />
-
-          <ProductCarousel
-            title="Powerful Pantry Prices"
-            searchQuery="powerful-pantry-prices"
-            sourceUrl="/api/products/bargains/?limit=20"
-            superCategory="Powerful Pantry Prices"
-            storeIds={storeIdsArray}
-            isDefaultStores={isDefaultStores}
-          />
-
           <div className="container mx-auto px-4 py-0">
             <div className="flex flex-col gap-8">
               <section>
@@ -139,33 +113,6 @@ const HomePage = () => {
               </section>
             </div>
           </div>
-
-          <ProductCarousel
-            title="Thirsty for Value?"
-            searchQuery="thirsty-for-value"
-            sourceUrl="/api/products/bargains/?limit=20"
-            superCategory="Thirsty for Value?"
-            storeIds={storeIdsArray}
-            isDefaultStores={isDefaultStores}
-          />
-
-          <ProductCarousel
-            title="Frozen Finds"
-            searchQuery="frozen-finds"
-            sourceUrl="/api/products/bargains/?limit=20"
-            superCategory="Frozen Finds"
-            storeIds={storeIdsArray}
-            isDefaultStores={isDefaultStores}
-          />
-
-          <ProductCarousel
-            title="Fresh & Frugal"
-            searchQuery="fresh-frugal"
-            sourceUrl="/api/products/bargains/?limit=20"
-            superCategory="Fresh & Frugal"
-            storeIds={storeIdsArray}
-            isDefaultStores={isDefaultStores}
-          />
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -19,9 +19,18 @@ interface ProductTileProps {
 }
 
 const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
+  const [imageUrl, setImageUrl] = useState(product.image_url || fallbackImage);
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = fallbackImage;
+  // Effect to reset the image URL when the product prop changes
+  useEffect(() => {
+    setImageUrl(product.image_url || fallbackImage);
+  }, [product.image_url]);
+
+  const handleImageError = () => {
+    // Prevent a loop if the fallback image itself is broken
+    if (imageUrl !== fallbackImage) {
+      setImageUrl(fallbackImage);
+    }
   };
 
   const generateSrcSet = (url: string) => {
@@ -34,8 +43,6 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
       .join(', ');
   };
 
-  // The API now provides a deterministic image_url for the product.
-  const imageUrl = product.image_url || fallbackImage;
   const srcSet = generateSrcSet(imageUrl);
 
   return (

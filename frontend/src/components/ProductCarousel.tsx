@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import SkeletonProductTile from "./SkeletonProductTile";
 import ProductTile from "./ProductTile";
 import { Link } from 'react-router-dom';
@@ -34,12 +34,13 @@ interface ProductCarouselProps {
   title: string;
   searchQuery?: string;
   isDefaultStores?: boolean;
-  primaryCategorySlug?: string; // Replaces superCategory
+  primaryCategorySlug?: string;
+  onValidation?: (slug: string, isValid: boolean) => void;
 }
 
 import { useApiQuery } from '@/hooks/useApiQuery';
 
-const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug }) => {
+const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, onValidation }) => {
   const [baseUrl, queryString] = sourceUrl.split('?');
   const params = new URLSearchParams(queryString || '');
   if (storeIds && storeIds.length > 0) {
@@ -48,19 +49,36 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
   if (primaryCategorySlug) {
     params.set('primary_category_slug', primaryCategorySlug);
   }
+  // Add a limit to the query
+  params.set('limit', '20');
+
 
   const finalUrl = `${baseUrl}?${params.toString()}`;
 
-  const { data: apiResponse, isLoading, error } = useApiQuery<ApiResponse>(
+  const { data: apiResponse, isLoading, error, isFetched } = useApiQuery<ApiResponse>(
     ['products', title, finalUrl],
     finalUrl,
     {},
     { enabled: !!storeIds && storeIds.length > 0, refetchOnWindowFocus: false, staleTime: 1000 * 60 * 10 } // 10 minutes
   );
 
+  // Ref to prevent calling onValidation multiple times
+  const validationCalled = useRef(false);
+
+  useEffect(() => {
+    if (isFetched && onValidation && primaryCategorySlug && !validationCalled.current) {
+      const isValid = apiResponse?.results?.length >= 4;
+      onValidation(primaryCategorySlug, isValid);
+      validationCalled.current = true;
+    }
+  }, [isFetched, apiResponse, onValidation, primaryCategorySlug]);
+
+
   const products = apiResponse?.results || [];
 
-  if (!isLoading && products.length < 5) {
+  // While the manager finds a replacement, this component might still be rendered for a short time.
+  // If loading is done and it's invalid, render nothing.
+  if (!isLoading && products.length < 4) {
     return null;
   }
 

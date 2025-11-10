@@ -146,10 +146,6 @@ class ProductSerializer(serializers.ModelSerializer):
         if first_price and first_price.store and first_price.store.company:
             company = first_price.store.company
             return self._get_image_url_for_company(obj, company.name, company_obj=company)
-        
-        # Fallback for products that might not have prices but could be Aldi
-        if obj.aldi_image_url:
-            return obj.aldi_image_url
             
         return None
 
