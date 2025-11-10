@@ -14,12 +14,16 @@ class Command(BaseCommand):
         self.stdout.write(f"Total prices in the system: {total_prices:,}")
 
         self.stdout.write("\n--- Per-Company Breakdown ---")
-        # 2. Get the count per company
-        companies = Company.objects.all().order_by('name')
-        for company in companies:
-            company_price_count = Price.objects.filter(store__company=company).count()
-            if company_price_count > 0:
-                self.stdout.write(f"{company.name}: {company_price_count:,}")
+        # 2. Get the count per company efficiently with a single query
+        company_price_counts = Price.objects.values('store__company__name').annotate(
+            count=Count('id')
+        ).order_by('store__company__name')
+
+        for item in company_price_counts:
+            company_name = item['store__company__name']
+            count = item['count']
+            if company_name and count > 0:
+                self.stdout.write(f"{company_name}: {count:,}")
 
         self.stdout.write("\n" + self.style.SUCCESS("--- Per-Group Breakdown ---"))
         
@@ -29,35 +33,29 @@ class Command(BaseCommand):
             for item in Price.objects.values('store_id').annotate(count=Count('id'))
         }
 
-        # Get all store groups, prefetching the related stores
-        store_groups = StoreGroup.objects.prefetch_related('stores').all().order_by('name')
+        # Get all store groups, prefetching the related stores and ordering them consistently
+        store_groups = StoreGroup.objects.prefetch_related('memberships__store', 'company', 'anchor').all().order_by('company__name', 'id')
 
         for group in store_groups:
-            self.stdout.write(self.style.SUCCESS(f"\nGroup: {group.name} (ID: {group.id})"))
+            self.stdout.write(self.style.SUCCESS(f"\nGroup: {group}"))
             
             non_anchor_price_count = 0
-            anchor_stores = []
-            non_anchor_stores = []
-
-            # Separate stores into anchor and non-anchor
-            for store in group.stores.all():
-                if store.is_anchor:
-                    anchor_stores.append(store)
-                else:
-                    non_anchor_stores.append(store)
-
-            # Process anchor stores
-            if anchor_stores:
-                self.stdout.write(self.style.WARNING("  Anchor Stores:"))
-                for anchor in anchor_stores:
-                    count = price_counts_by_store_id.get(anchor.id, 0)
-                    self.stdout.write(f"    - {anchor.store_name}: {count:,}")
+            
+            # Process the anchor store first
+            if group.anchor:
+                self.stdout.write(self.style.WARNING("  Anchor Store:"))
+                count = price_counts_by_store_id.get(group.anchor.id, 0)
+                self.stdout.write(f"    - {group.anchor.store_name}: {count:,}")
             else:
-                self.stdout.write(self.style.WARNING("  No anchor stores found for this group."))
+                self.stdout.write(self.style.WARNING("  No anchor store set for this group."))
 
-            # Process non-anchor stores
-            for non_anchor in non_anchor_stores:
-                non_anchor_price_count += price_counts_by_store_id.get(non_anchor.id, 0)
+            # Process non-anchor stores by iterating through memberships
+            for membership in group.memberships.all():
+                store = membership.store
+                # Exclude the anchor from this calculation, as it's handled above
+                if group.anchor and store.id == group.anchor.id:
+                    continue
+                non_anchor_price_count += price_counts_by_store_id.get(store.id, 0)
             
             self.stdout.write(self.style.WARNING("  Non-Anchor Stores Total:"))
             self.stdout.write(f"    - Total prices: {non_anchor_price_count:,}")
