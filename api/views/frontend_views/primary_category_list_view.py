@@ -7,4 +7,4 @@ class PrimaryCategoryListView(generics.ListAPIView):
     pagination_class = None
 
     def get_queryset(self):
-        return PrimaryCategory.objects.all()
+        return PrimaryCategory.objects.all().order_by('name')
