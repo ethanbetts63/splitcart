@@ -41,3 +41,28 @@ After using a temporary `count_prices` command (which I created and then enhance
     1.  I modified `intergroup_comparer.py` to delete all prices for all stores from a smaller group after it has been successfully merged into a larger one.
     2.  I modified `internal_group_health_checker.py` to delete all prices for a member store after a health check confirms its prices match its anchor.
 *   **Documentation:** Finally, I updated the `grouping_strategy.txt` file to document this new, aggressive data retention policy.
+
+### 6. Group Maintenance Orchestration and Bug Fixes
+
+*   **Decoupling Group Checks:** You requested that group maintenance checks run regardless of whether new product files are processed. I refactored the `update` management command to call the `GroupMaintenanceOrchestrator` directly, moving it out of the `UpdateOrchestrator`'s conditional execution.
+*   **`NameError` Fix:** After the refactoring, a `NameError: name 'Price' is not defined` occurred in `internal_group_health_checker.py`. I fixed this by adding the missing `from products.models import Price` import.
+*   **`SyntaxError` Fix:** A `SyntaxError: 'continue' not properly in loop` was introduced in `internal_group_health_checker.py` due to an indentation error during a previous `replace` operation. I corrected the indentation to properly place the `continue` statement within its loop.
+
+### 7. Further Performance Optimizations for Group Maintenance
+
+*   **Optimizing Anchor Retrieval:** You identified an inefficiency in `intergroup_comparer.py` where finding anchors with current pricing involved multiple database queries and Python-side processing. I optimized this to a single, more efficient database query using Django ORM's filtering across relationships.
+*   **Pre-fetching Prices for Comparisons:** To drastically reduce database queries during price comparisons, I implemented a significant refactoring:
+    *   **`PriceComparer` Refactoring:** The `PriceComparer` class was made database-agnostic. Its `compare` method now expects pre-fetched price dictionaries as arguments, removing all internal database query logic.
+    *   **`IntergroupComparer` Update:** Modified its `run` method to pre-fetch all prices for all candidate anchors in a single query at the beginning of each pass. These prices are stored in an in-memory cache and passed to the `PriceComparer.compare` method.
+    *   **`InternalGroupHealthChecker` Update:** Modified its `run` method to pre-fetch prices for the anchor and all members of a group in a single query before processing that group. These prices are then passed to the `PriceComparer.compare` method.
+*   **Health Check Caching:** To avoid redundant health checks, I implemented a new caching mechanism:
+    *   **`HealthCheckCacheManager`:** Created a new utility class to manage a `health_check_cache.py` file. This cache stores records of member stores that have been confirmed healthy within the last 7 days.
+    *   **`InternalGroupHealthChecker` Integration:** Integrated the `HealthCheckCacheManager` into `InternalGroupHealthChecker`. It now skips health checks for members found in the cache and records newly confirmed healthy members.
+*   **Optimizing Health Check Deletion:** The price deletion for healthy members in `internal_group_health_checker.py` was initially one query per member. I optimized this to a single bulk delete query per group, collecting all healthy members' IDs before deletion.
+*   **Stale Anchor Handling:** The logic in `internal_group_health_checker.py` was refined. If an anchor's data is stale, the entire group's health check is now skipped, and the anchor is flagged for re-scrape once, avoiding redundant comparisons against a stale anchor.
+
+### 8. Data Freshness Filter for Bargain Generation
+
+*   **Implementation:** To ensure bargains are generated only from fresh data, I implemented a 7-day freshness filter.
+    *   **`ExportPricesView` Update:** Modified the API view to accept and filter prices by a `scraped_date_gte` query parameter.
+    *   **`BargainsGenerator` Update:** Modified the generator to calculate a 7-day freshness threshold and include it as a `scraped_date_gte` parameter in its API request for prices.

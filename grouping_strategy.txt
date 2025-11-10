@@ -47,6 +47,8 @@ To prevent redundant, expensive price comparisons on every run, the system utili
 
 *   **Inter-Group Comparison Cache:** When two `Anchor` stores are compared and found to **not** be a match, this non-match is recorded in a separate cache. For the next 7 days, the system will automatically skip comparing this specific pair of anchors, focusing only on pairs that have not been recently checked.
 
+*   **In-Memory Price Data Pre-fetching:** To further optimize performance, relevant price data for all stores involved in a comparison pass (for inter-group merging) or within a specific group (for internal health checks) is now fetched into an in-memory cache at the beginning of the process. This eliminates repeated database queries during the comparison loops, allowing the `PriceComparer` to operate on fast, in-memory data.
+
 C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\internal_group_health_checker.py
 C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\group_maintenance_orchestrator.py
 C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\intergroup_comparer.py
