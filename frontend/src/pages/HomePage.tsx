@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useApiQuery } from '@/hooks/useApiQuery';
-import { ProductCarousel } from '../components/ProductCarousel';
+import React from 'react';
+import { useCarouselManager } from '../hooks/useCarouselManager';
+import { ProductCarousel } from "../components/ProductCarousel";
 import { FaqImageSection } from "../components/FaqImageSection";
 import { useStoreList } from "../context/StoreListContext";
 import { AspectRatio } from "../components/ui/aspect-ratio";
@@ -17,19 +17,6 @@ import kingKongImage768 from "../assets/king_kong-768w.webp";
 import kingKongImage1024 from "../assets/king_kong-1024w.webp";
 import kingKongImage1280 from "../assets/king_kong-1280w.webp";
 
-// Type for the primary category data fetched from the API
-type PrimaryCategory = {
-  name: string;
-  slug: string;
-};
-
-// --- Carousel Configuration ---
-const PRIORITY_CATEGORIES = ['deals', 'sweets', 'meat'];
-const NUM_SLOT_1 = 1;
-const NUM_SLOT_2 = 2;
-const NUM_SLOT_3 = 3;
-const TOTAL_CAROUSELS = NUM_SLOT_1 + NUM_SLOT_2 + NUM_SLOT_3;
-
 const HomePage = () => {
   const DEFAULT_STORE_IDS = [
     515, 5123, 518, 523, 272, 276, 2197, 2198, 2199, 536, 5142, 547, 2218, 2219,
@@ -42,85 +29,30 @@ const HomePage = () => {
     [selectedStoreIds, isDefaultStores]
   );
 
-  // --- Carousel Management Logic ---
-  const { data: allCategories } = useApiQuery<PrimaryCategory[]>(
-    ['primary-categories'],
-    '/api/categories/primary/',
-    {},
-    {
-      refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 60, // 1 hour
+  const { carouselSlots, handleValidation } = useCarouselManager(6);
+
+  const renderCarouselForSlot = (slotIndex: number) => {
+    const category = carouselSlots[slotIndex];
+    if (!category) {
+      return null; // Or a placeholder/skeleton
     }
-  );
-
-  const [candidateQueue, setCandidateQueue] = useState<PrimaryCategory[]>([]);
-  const [slot1, setSlot1] = useState<PrimaryCategory[]>([]);
-  const [slot2, setSlot2] = useState<PrimaryCategory[]>([]);
-  const [slot3, setSlot3] = useState<PrimaryCategory[]>([]);
-
-  useEffect(() => {
-    if (allCategories) {
-      const priority = PRIORITY_CATEGORIES.map(slug => 
-        allCategories.find(cat => cat.slug === slug)
-      ).filter((cat): cat is PrimaryCategory => !!cat);
-
-      const remaining = allCategories.filter(cat => 
-        !PRIORITY_CATEGORIES.includes(cat.slug)
-      );
-
-      for (let i = remaining.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
-      }
-
-      const initialCandidates = [...priority, ...remaining];
-      
-      setSlot1(initialCandidates.slice(0, NUM_SLOT_1));
-      setSlot2(initialCandidates.slice(NUM_SLOT_1, NUM_SLOT_1 + NUM_SLOT_2));
-      setSlot3(initialCandidates.slice(NUM_SLOT_1 + NUM_SLOT_2, TOTAL_CAROUSELS));
-      setCandidateQueue(initialCandidates.slice(TOTAL_CAROUSELS));
-    }
-  }, [allCategories]);
-
-  const handleValidation = useCallback((slug: string, isValid: boolean, slot: number) => {
-    if (!isValid) {
-      const newQueue = [...candidateQueue];
-      const nextCandidate = newQueue.shift();
-      
-      const setSlot = (setter: React.Dispatch<React.SetStateAction<PrimaryCategory[]>>) => {
-        setter(currentCarousels => {
-          if (!nextCandidate) {
-            return currentCarousels.filter(c => c.slug !== slug);
-          }
-          return currentCarousels.map(c => c.slug === slug ? nextCandidate : c);
-        });
-      };
-
-      switch (slot) {
-        case 1: setSlot(setSlot1); break;
-        case 2: setSlot(setSlot2); break;
-        case 3: setSlot(setSlot3); break;
-      }
-      setCandidateQueue(newQueue);
-    }
-  }, [candidateQueue]);
-
-  const renderCarousels = (categories: PrimaryCategory[], slot: number) => {
-    return categories.map(category => (
+    return (
       <ProductCarousel
         key={category.slug}
         title={category.name}
         sourceUrl="/api/products/"
         storeIds={storeIdsArray}
         primaryCategorySlug={category.slug}
-        onValidation={(slug, isValid) => handleValidation(slug, isValid, slot)}
+        onValidation={(slug, isValid) => handleValidation(isValid, slotIndex)}
+        slot={slotIndex}
         isDefaultStores={isDefaultStores}
       />
-    ));
+    );
   };
 
   return (
     <div>
+      {/* --- Hero Section --- */}
       <div className="container mx-auto px-4 pt-4 pb-1">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
@@ -131,7 +63,7 @@ const HomePage = () => {
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 alt="Confused Shopper" 
                 className="rounded-md object-cover w-full h-full"
-                                 fetchPriority="high" />
+                fetchPriority="high" />
             </AspectRatio>
           </div>
           <div className="text-left">
@@ -145,12 +77,14 @@ const HomePage = () => {
         </div>
       </div>
 
+      {/* --- Carousel Slot 1 (Index 0) --- */}
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
-          {renderCarousels(slot1, 1)}
+          {renderCarouselForSlot(0)}
         </div>
       </div>
 
+      {/* --- Letter Section --- */}
       <div className="container mx-auto px-4 md:px-16 pt-1 pb-1">
         <div className="text-center mb-8">
           <h2 className="text-5xl font-bold tracking-tight text-gray-900 max-w-2xl mx-auto">
@@ -158,7 +92,7 @@ const HomePage = () => {
           </h2>
           <p className="text-xl mt-4">Short answer: <span className="font-bold">25-32%</span>. Most common answer: <span className="font-bold bg-yellow-200 px-0.5 py-1 rounded">Who cares?</span></p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md::gap-12 text-lg ">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12 text-lg ">
           <div className="flex flex-col gap-4">
             <p>
               <span className="font-bold bg-yellow-200 px-0.5 py-1 rounded">I care.</span> And if you're like me then you care too. If you're like me, you've considered the dollar value of a rewards point. Or weighed the merits of ply count versus the per kilo price of toilet paper.
@@ -184,38 +118,41 @@ const HomePage = () => {
               <p>Happy hunting,</p>
               <p className="font-bold"><span className="font-bold bg-yellow-200 px-0.5 py-1 rounded">Ethan Betts</span>, <a href="mailto:ethanbetts63@gmail.com" className="text-blue-600 hover:underline">ethanbetts63@gmail.com</a></p>
               <p className="italic text-sm text-gray-600">Founder and Developer</p>
-              
             </div>
           </div>
         </div>
       </div>
 
-      {/* --- Carousel Slot 2 --- */}
+      {/* --- Carousel Slot 2 & 3 (Index 1, 2) --- */}
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
-          {renderCarousels(slot2, 2)}
+          {renderCarouselForSlot(1)}
+          {renderCarouselForSlot(2)}
         </div>
       </div>
       
       {/* --- FAQ Section --- */}
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
-          <div className="container mx-auto px-4 py-0">
-            <div className="flex flex-col gap-8">
-              <section>
-                <FaqImageSection
-                  title="The Hard Hitting Questions"
-                  page="home"
-                  imageSrc={kingKongImage}
-                  srcSet={`${kingKongImage320} 320w, ${kingKongImage640} 640w, ${kingKongImage768} 768w, ${kingKongImage1024} 1024w, ${kingKongImage1280} 1280w`}
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  imageAlt="King Kong swatting at discount planes"
-                />
-              </section>
-            </div>
-          </div>
-          {/* --- Carousel Slot 3 --- */}
-          {renderCarousels(slot3, 3)}
+          <section>
+            <FaqImageSection
+              title="The Hard Hitting Questions"
+              page="home"
+              imageSrc={kingKongImage}
+              srcSet={`${kingKongImage320} 320w, ${kingKongImage640} 640w, ${kingKongImage768} 768w, ${kingKongImage1024} 1024w, ${kingKongImage1280} 1280w`}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              imageAlt="King Kong swatting at discount planes"
+            />
+          </section>
+        </div>
+      </div>
+
+      {/* --- Carousel Slot 4, 5, 6 (Index 3, 4, 5) --- */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col gap-8">
+          {renderCarouselForSlot(3)}
+          {renderCarouselForSlot(4)}
+          {renderCarouselForSlot(5)}
         </div>
       </div>
     </div>
