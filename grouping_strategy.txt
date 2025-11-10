@@ -27,6 +27,7 @@ This phase ensures that existing groups remain accurate.
 2.  For each `Group`, it checks if the `Anchor` and at least one other `Member` both have "Current Pricing".
 3.  If they do, an **Internal Comparison** is performed, comparing the `Member`'s prices against the `Anchor`'s prices.
     *   **If they match:** The `Member` is confirmed as healthy.
+        *   To conserve database space, all `Price` objects for the healthy `Member` are then deleted, as they are now considered redundant copies of the `Anchor`'s prices.
     *   **If they do not match:** The `Member` is ejected from the `Group` and placed into a new `Group` of one, becoming its own `Anchor`.
 4.  A special case exists for stale data: If an `Internal Comparison` fails, but the `Anchor`'s price data is not "Current", the `Member` is **not** ejected. Instead, the `Anchor` store is added to a high-priority queue to be re-scraped. This prevents unfair ejections based on out-of-date information.
 
@@ -36,7 +37,7 @@ This phase grows the groups by finding new matches.
 
 1.  After the maintenance phase is complete, the system finds all `Groups` whose `Anchor` has "Current Pricing".
 2.  An **Intergroup Comparison** is performed, comparing every `Anchor` against every other `Anchor`.
-3.  If two `Anchor`s are found to have matching prices, their `Groups` are merged. The `Group` with fewer members is merged into the one with more members. The old, smaller group is then deactivated.
+3.  If two `Anchor`s are found to have matching prices, their `Groups` are merged. The `Group` with fewer members is merged into the one with more members. When this happens, all `Price` objects for all stores in the smaller group are deleted. The old, smaller group is then deactivated.
 
 C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\internal_group_health_checker.py
 C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\group_maintenance_orchestrator.py

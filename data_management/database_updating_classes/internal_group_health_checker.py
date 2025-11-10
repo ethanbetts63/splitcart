@@ -2,6 +2,7 @@ from datetime import timedelta
 from django.utils import timezone
 from django.db import transaction, models
 from companies.models import Store, StoreGroup, StoreGroupMembership
+from products.models import Price # Added missing import
 from data_management.utils.price_comparer import PriceComparer
 
 class InternalGroupHealthChecker:
@@ -47,6 +48,8 @@ class InternalGroupHealthChecker:
             
             # Get all members excluding the anchor
             members_to_check = Store.objects.filter(group_membership__group=group).exclude(pk=anchor.pk)
+            
+            healthy_members_to_purge = []
 
             for member in members_to_check:
                 if not self._store_has_current_pricing(member):
@@ -72,8 +75,12 @@ class InternalGroupHealthChecker:
                             self._eject_member(member, group)
                 else:
                     self.command.stdout.write(self.command.style.SUCCESS("    - Match confirmed. Member is healthy."))
-                    # Now that the member is confirmed to match the anchor, its own price data is redundant.
-                    self.command.stdout.write(f"    - Deleting redundant prices for healthy member '{member.store_name}'.")
-                    deleted_count, _ = Price.objects.filter(store=member).delete()
-                    if deleted_count > 0:
-                        self.command.stdout.write(f"    - Deleted {deleted_count:,} price objects.")
+                    healthy_members_to_purge.append(member)
+
+            # After checking all members, perform a single bulk delete for the healthy ones
+            if healthy_members_to_purge:
+                store_ids_to_purge = [m.id for m in healthy_members_to_purge]
+                self.command.stdout.write(f"    - Deleting redundant prices for {len(healthy_members_to_purge)} healthy members in bulk.")
+                deleted_count, _ = Price.objects.filter(store_id__in=store_ids_to_purge).delete()
+                if deleted_count > 0:
+                    self.command.stdout.write(f"    - Deleted {deleted_count:,} price objects.")

@@ -6,10 +6,10 @@ from data_management.database_updating_classes.update_orchestrator import Update
 from data_management.database_updating_classes.prefix_update_orchestrator import PrefixUpdateOrchestrator
 from data_management.database_updating_classes.discovery_update_orchestrator import DiscoveryUpdateOrchestrator
 from data_management.database_updating_classes.category_link_update_orchestrator import CategoryLinkUpdateOrchestrator                  
-from data_management.database_updating_classes.substitution_update_orchestrator import SubstitutionUpdateOrchestrator    
 from data_management.database_updating_classes.substitution_update_orchestrator import SubstitutionUpdateOrchestrator
 from data_management.database_updating_classes.bargain_update_orchestrator import BargainUpdateOrchestrator
-
+from data_management.database_updating_classes.substitution_update_orchestrator import SubstitutionUpdateOrchestrator
+from data_management.database_updating_classes.group_maintenance_orchestrator import GroupMaintenanceOrchestrator
 class Command(BaseCommand):
     help = 'Updates the database with data from various sources.'
 
@@ -68,5 +68,9 @@ class Command(BaseCommand):
                 orchestrator = UpdateOrchestrator(self, inbox_path)
                 orchestrator.run()
             self.stdout.write(self.style.SUCCESS('--- Product update from inbox complete ---'))
+
+            # Run group maintenance tasks regardless of whether product files were processed
+            group_maintenance_orchestrator = GroupMaintenanceOrchestrator(self)
+            group_maintenance_orchestrator.run()
 
         self.stdout.write(self.style.SUCCESS('All update tasks finished.'))
