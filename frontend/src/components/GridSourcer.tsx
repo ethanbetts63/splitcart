@@ -85,101 +85,106 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
     setCurrentPage(page);
   };
 
-  let titleText = "";
-  if (searchTerm) {
-    titleText = `Found ${totalResults} results for "${searchTerm}"`;
-  } else if (primaryCategorySlug) {
-    const formattedSlug = primaryCategorySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-    titleText = `Showing ${totalResults} products in "${formattedSlug}"`;
-  } else if (sourceUrl) {
-    // Basic title for sourceUrl, can be improved
-    titleText = `Showing ${totalResults} products`;
-  } else if (products.length === 0) {
-    titleText = "Please enter a search to begin.";
-  }
-
-  if (isLoading) {
-    return <LoadingSpinner fullScreen={false} />;
-  }
-
-  if (isError) {
-    return <div className="text-center p-8 text-red-500">Error: {error.message}</div>;
-  }
-
-  return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">{titleText}</h2>
-      <ProductGrid 
-        products={products} 
-      />
-      <div className="flex justify-center mt-8">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious 
-                href="#" 
-                onClick={() => handlePageChange(currentPage - 1)} 
-                className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-              />
-            </PaginationItem>
-            {
-              (() => {
-                const paginationItems = [];
-                const siblings = 1;
-                const boundaries = 1;
-
-                if (totalPages <= 5) {
-                  for (let i = 1; i <= totalPages; i++) {
-                    paginationItems.push(i);
+    return (
+      <div>
+        <h2 className="text-2xl font-bold mb-4">
+          {searchTerm && (
+            <>
+              Found {totalResults} results for{" "}
+              <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic">
+                "{searchTerm}"
+              </span>
+            </>
+          )}
+          {primaryCategorySlug && !searchTerm && (
+            (() => {
+              const formattedSlug = primaryCategorySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+              return (
+                <>
+                  Showing {totalResults} products in{" "}
+                  <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic">
+                    "{formattedSlug}"
+                  </span>
+                </>
+              );
+            })()
+          )}
+          {sourceUrl && !searchTerm && !primaryCategorySlug && (
+            <>
+              Showing {totalResults} products
+            </>
+          )}
+        </h2>
+        <ProductGrid 
+          products={products} 
+        />
+        <div className="flex justify-center mt-8">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious 
+                  href="#" 
+                  onClick={() => handlePageChange(currentPage - 1)} 
+                  className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+              {
+                (() => {
+                  const paginationItems = [];
+                  const siblings = 1;
+                  const boundaries = 1;
+  
+                  if (totalPages <= 5) {
+                    for (let i = 1; i <= totalPages; i++) {
+                      paginationItems.push(i);
+                    }
+                  } else {
+                    paginationItems.push(1);
+                    if (currentPage > siblings + boundaries + 1) {
+                      paginationItems.push('ellipsis-start');
+                    }
+  
+                    const startPage = Math.max(2, currentPage - siblings);
+                    const endPage = Math.min(totalPages - 1, currentPage + siblings);
+  
+                    for (let i = startPage; i <= endPage; i++) {
+                      paginationItems.push(i);
+                    }
+  
+                    if (currentPage < totalPages - siblings - boundaries - 1) {
+                      paginationItems.push('ellipsis-end');
+                    }
+                    paginationItems.push(totalPages);
                   }
-                } else {
-                  paginationItems.push(1);
-                  if (currentPage > siblings + boundaries + 1) {
-                    paginationItems.push('ellipsis-start');
-                  }
-
-                  const startPage = Math.max(2, currentPage - siblings);
-                  const endPage = Math.min(totalPages - 1, currentPage + siblings);
-
-                  for (let i = startPage; i <= endPage; i++) {
-                    paginationItems.push(i);
-                  }
-
-                  if (currentPage < totalPages - siblings - boundaries - 1) {
-                    paginationItems.push('ellipsis-end');
-                  }
-                  paginationItems.push(totalPages);
-                }
-
-                return paginationItems.map((item, i) => (
-                  <PaginationItem key={i}>
-                    {typeof item === 'number' ? (
-                      <PaginationLink
-                        href="#"
-                        onClick={() => handlePageChange(item)}
-                        isActive={currentPage === item}
-                      >
-                        {item}
-                      </PaginationLink>
-                    ) : (
-                      <PaginationEllipsis />
-                    )}
-                  </PaginationItem>
-                ));
-              })()
-            }
-            <PaginationItem>
-              <PaginationNext 
-                href="#" 
-                onClick={() => handlePageChange(currentPage + 1)} 
-                className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+  
+                  return paginationItems.map((item, i) => (
+                    <PaginationItem key={i}>
+                      {typeof item === 'number' ? (
+                        <PaginationLink
+                          href="#"
+                          onClick={() => handlePageChange(item)}
+                          isActive={currentPage === item}
+                        >
+                          {item}
+                        </PaginationLink>
+                      ) : (
+                        <PaginationEllipsis />
+                      )}
+                    </PaginationItem>
+                  ));
+                })()
+              }
+              <PaginationItem>
+                <PaginationNext 
+                  href="#" 
+                  onClick={() => handlePageChange(currentPage + 1)} 
+                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
       </div>
-    </div>
-  );
-};
-
+    );
+  };
 export default GridSourcer;
