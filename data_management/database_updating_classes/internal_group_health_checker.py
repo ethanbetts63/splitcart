@@ -72,3 +72,8 @@ class InternalGroupHealthChecker:
                             self._eject_member(member, group)
                 else:
                     self.command.stdout.write(self.command.style.SUCCESS("    - Match confirmed. Member is healthy."))
+                    # Now that the member is confirmed to match the anchor, its own price data is redundant.
+                    self.command.stdout.write(f"    - Deleting redundant prices for healthy member '{member.store_name}'.")
+                    deleted_count, _ = Price.objects.filter(store=member).delete()
+                    if deleted_count > 0:
+                        self.command.stdout.write(f"    - Deleted {deleted_count:,} price objects.")

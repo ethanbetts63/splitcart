@@ -21,7 +21,7 @@ class ExportPricesView(ListAPIView):
         Optionally restricts the returned prices to a given set of stores,
         by filtering against a `store_ids` query parameter in the URL.
         """
-        queryset = Price.objects.all()
+        queryset = Price.objects.order_by('id') # Explicitly order by ID for pagination
         store_ids_str = self.request.query_params.get('store_ids', None)
         if store_ids_str:
             store_ids = [int(sid) for sid in store_ids_str.split(',')]

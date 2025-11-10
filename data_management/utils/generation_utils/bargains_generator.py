@@ -20,8 +20,10 @@ class BargainsGenerator:
             data = response.json()
             all_results.extend(data['results'])
             next_url = data.get('next')
-            self.command.stdout.write(f"  Fetched {len(all_results)} {data_type}...")
-            time.sleep(0.1)
+            
+            self.command.stdout.write(f"  Fetched {len(all_results)} {data_type}...", ending='\r')
+        
+        self.command.stdout.write(f"  Fetched {len(all_results)} {data_type}.") # Final newline
         return all_results
 
     def _fetch_anchor_store_ids(self, url, headers):

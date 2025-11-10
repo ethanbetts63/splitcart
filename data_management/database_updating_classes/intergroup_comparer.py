@@ -45,8 +45,18 @@ class IntergroupComparer:
 
         self.command.stdout.write(f"    - Merging Group {smaller_group.id} into Group {larger_group.id}.")
 
+        # Get all stores from the smaller group whose prices will be deleted.
+        stores_to_purge = Store.objects.filter(group_membership__group=smaller_group)
+        store_ids_to_purge = list(stores_to_purge.values_list('id', flat=True))
+
         # Re-assign all members from the smaller group to the larger group
         StoreGroupMembership.objects.filter(group=smaller_group).update(group=larger_group)
+
+        # Delete the prices for the stores from the now-merged smaller group
+        if store_ids_to_purge:
+            self.command.stdout.write(f"    - Deleting redundant prices for {len(store_ids_to_purge)} stores from dissolved group.")
+            deleted_count, _ = Price.objects.filter(store_id__in=store_ids_to_purge).delete()
+            self.command.stdout.write(f"    - Deleted {deleted_count:,} price objects.")
 
         # Delete the now-empty smaller group
         smaller_group.delete()
