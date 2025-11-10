@@ -18,6 +18,7 @@ class ProductListView(generics.ListAPIView):
 
         store_ids_param = self.request.query_params.get('store_ids')
         search_query = self.request.query_params.get('search', None)
+        limit_param = self.request.query_params.get('limit')
         print(f"store_ids_param: {store_ids_param}")
 
         # New: Require store_ids_param
@@ -69,9 +70,18 @@ class ProductListView(generics.ListAPIView):
             
             # Order by score, then by name
             final_queryset = queryset.order_by('-search_score', 'name')
-            return final_queryset
+        else:
+            final_queryset = queryset.order_by('name')
 
-        final_queryset = queryset.order_by('name')
+        if limit_param:
+            try:
+                limit = int(limit_param)
+                if limit > 50:
+                    limit = 50
+                final_queryset = final_queryset[:limit]
+            except (ValueError, TypeError):
+                pass # Ignore invalid limit
+
         return final_queryset
 
     def get_serializer_context(self):

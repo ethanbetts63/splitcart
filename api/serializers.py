@@ -119,17 +119,15 @@ class ProductSerializer(serializers.ModelSerializer):
         if first_price and first_price.store and first_price.store.company:
             company = first_price.store.company
             company_name = company.name # Get company name here
-            company_skus_list = obj.company_skus.get(company_name, [])
+            company_skus_list = obj.company_skus.get(company_name.lower(), [])
 
             if company.image_url_template and company_skus_list:
                 sku = company_skus_list[0]
                 if company_name.lower() == 'coles':
                     # Special handling for Coles image URLs
-                    first_digit = sku[0] if sku else '0' # Default to '0' if SKU is empty
-                    # Manually construct the Coles URL
-                    url = f"https://productimages.coles.com.au/productimages/{first_digit}/{sku}.jpg"
-                    print(url)
-                    return url
+                    sku_str = str(sku)
+                    first_digit = sku_str[0] if sku_str else '0'
+                    return f"https://productimages.coles.com.au/productimages/{first_digit}/{sku_str}.jpg"
                 else:
                     return company.image_url_template.format(sku=sku)
         return None
@@ -190,15 +188,16 @@ class ProductSerializer(serializers.ModelSerializer):
                 company_obj = Company.objects.filter(name__iexact=company_name).first()
                 if company_obj and company_obj.image_url_template:
                     # Get the first SKU for the given company from the product's company_skus dict
-                    company_skus_list = obj.company_skus.get(company_obj.name, [])
+                    company_skus_list = obj.company_skus.get(company_obj.name.lower(), [])
+                    print(company_skus_list)
                     if company_skus_list:
                         sku = company_skus_list[0]
                         if company_name.lower() == 'coles':
-                            first_digit = sku[0] if sku else '0'
-                            image_url = f"https://productimages.coles.com.au/productimages/{first_digit}/{sku}.jpg"
+                            sku_str = str(sku)
+                            first_digit = sku_str[0] if sku_str else '0'
+                            image_url = f"https://productimages.coles.com.au/productimages/{first_digit}/{sku_str}.jpg"
                         else:
                             image_url = company_obj.image_url_template.format(sku=sku)
-
             formatted_prices.append({
                 'company': company_name,
                 'price_display': price_range,

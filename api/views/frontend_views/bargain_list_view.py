@@ -13,6 +13,7 @@ class BargainListView(generics.ListAPIView):
     def get_queryset(self):
         store_ids_param = self.request.query_params.get('store_ids')
         super_category_param = self.request.query_params.get('super_category')
+        limit_param = self.request.query_params.get('limit')
 
         if not store_ids_param:
             return Product.objects.none()
@@ -28,6 +29,16 @@ class BargainListView(generics.ListAPIView):
             product_ids = bargain_queryset.values_list('product_id', flat=True).distinct()
             
             queryset = Product.objects.filter(id__in=product_ids)
+
+            if limit_param:
+                try:
+                    limit = int(limit_param)
+                    if limit > 50:
+                        limit = 50
+                    queryset = queryset[:limit]
+                except (ValueError, TypeError):
+                    pass # Ignore invalid limit
+
             return queryset
         except (ValueError, TypeError):
             return Product.objects.none()
