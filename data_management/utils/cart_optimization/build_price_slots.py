@@ -8,14 +8,14 @@ def build_price_slots(cart, stores):
     # Step 2: Fetch all relevant product and price data from the database in bulk to minimize queries.
     products = Product.objects.in_bulk(product_ids)
     prices = Price.objects.filter(
-        price_record__product_id__in=product_ids,
+        product_id__in=product_ids,
         store__in=stores
-    ).select_related('store', 'price_record', 'price_record__product__brand')
+    ).select_related('store', 'product__brand')
 
     # Step 3: Organize the fetched prices into a dictionary for quick lookups by product ID.
     prices_by_product = {}
     for price in prices:
-        prod_id = price.price_record.product_id
+        prod_id = price.product_id
         if prod_id not in prices_by_product:
             prices_by_product[prod_id] = []
         prices_by_product[prod_id].append(price)
@@ -46,11 +46,9 @@ def build_price_slots(cart, stores):
 
             # Step 7: Create the detailed 'option' dictionaries for each available price.
             for k, price_obj in enumerate(product_prices):
-                if not price_obj.price_record:
-                    continue
                 
                 quantity = item.get('quantity', 1)
-                unit_price = float(price_obj.price_record.price)
+                unit_price = float(price_obj.price)
                 total_price = unit_price * quantity
 
                 # Construct the image URL based on the company

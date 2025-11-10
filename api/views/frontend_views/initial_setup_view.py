@@ -55,14 +55,14 @@ class InitialSetupView(APIView):
 
         # 2. Fetch all relevant, pre-filtered prices in a single query
         prices_queryset = Price.objects.filter(
-            price_record__product_id__in=product_ids,
+            product_id__in=product_ids,
             store_id__in=store_ids
-        ).select_related('store__company', 'price_record')
+        ).select_related('store__company')
 
         # 3. Group prices by product ID for efficient lookup in the serializer
         prices_map = {}
         for price in prices_queryset:
-            product_id = price.price_record.product_id
+            product_id = price.product_id
             if product_id not in prices_map:
                 prices_map[product_id] = []
             prices_map[product_id].append(price)

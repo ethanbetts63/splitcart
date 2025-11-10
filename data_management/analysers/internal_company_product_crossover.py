@@ -21,7 +21,7 @@ def generate_internal_company_product_crossover_report(company_name, command=Non
 
     # Get all products for the company
     print("    Fetching all products for stores in company...")
-    all_products = Product.objects.filter(price_records__price_entries__store__company=company).distinct()
+    all_products = Product.objects.filter(prices__store__company=company).distinct()
     total_products = all_products.count()
 
     # Get all stores for the company

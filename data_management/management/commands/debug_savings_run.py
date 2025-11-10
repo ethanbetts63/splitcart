@@ -64,9 +64,9 @@ class Command(BaseCommand):
             
             # Find the cheapest price for the anchor product among the selected stores
             anchor_min_price = float('inf')
-            for price_obj in Price.objects.filter(price_record__product=anchor):
-                if price_obj.store in selected_stores and price_obj.price_record and price_obj.price_record.price < anchor_min_price:
-                    anchor_min_price = price_obj.price_record.price
+            for price_obj in Price.objects.filter(product=anchor):
+                if price_obj.store in selected_stores and price_obj.price < anchor_min_price:
+                    anchor_min_price = price_obj.price
 
             report_lines.append(f"\n--- Cart Slot {i+1} ---")
             price_str = f"(Cheapest: ${anchor_min_price:.2f})" if anchor_min_price != float('inf') else "(Price not found)"

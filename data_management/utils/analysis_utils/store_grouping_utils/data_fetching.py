@@ -23,16 +23,16 @@ def get_store_product_prices(company_name):
     store_map = {store.id: store for store in stores}
 
     # Fetch all prices for the stores in a single query
-    prices = Price.objects.filter(store__in=stores).select_related('price_record').values(
+    prices = Price.objects.filter(store__in=stores).values(
         'store_id', 
         'product_id', 
-        'price_record__price'
+        'price'
     )
 
     # Process prices into a nested dictionary for quick lookup
     store_price_data = defaultdict(dict)
     for price in prices:
-        if price['price_record__price'] is not None:
-            store_price_data[price['store_id']][price['product_id']] = price['price_record__price']
+        if price['price'] is not None:
+            store_price_data[price['store_id']][price['product_id']] = price['price']
 
     return store_map, store_price_data
