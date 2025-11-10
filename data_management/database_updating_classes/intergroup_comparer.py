@@ -19,20 +19,16 @@ class IntergroupComparer:
         self.freshness_threshold = timezone.now() - timedelta(days=3)
 
     def _get_anchor_stores_with_current_pricing(self):
-        """Get all active group anchors that have recent price data."""
-        # Get IDs of stores that have recent prices
-        stores_with_recent_prices = Price.objects.filter(
-            scraped_date__gte=self.freshness_threshold
-        ).values_list('store_id', flat=True).distinct()
+        """Get all active group anchors that have recent price data using a single, optimized query."""
+        
+        # Find StoreGroups whose anchor has recent prices, all in one query.
+        # This joins StoreGroup -> Store (anchor) -> Price
+        groups_with_current_anchors = StoreGroup.objects.filter(
+            anchor__prices__scraped_date__gte=self.freshness_threshold
+        ).distinct().prefetch_related('anchor')
 
-        # Get active groups and their anchors
-        active_groups = StoreGroup.objects.prefetch_related('anchor')
-
-        # Filter to get only anchors that have recent prices
-        anchors_to_compare = [
-            g.anchor for g in active_groups 
-            if g.anchor and g.anchor.id in stores_with_recent_prices
-        ]
+        anchors_to_compare = [g.anchor for g in groups_with_current_anchors if g.anchor]
+        
         return anchors_to_compare
 
     def _merge_groups(self, group_a, group_b):
