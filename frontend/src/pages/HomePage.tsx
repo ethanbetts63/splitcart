@@ -190,6 +190,14 @@ const HomePage = () => {
         </div>
       </div>
 
+      {/* --- Carousel Slot 2 --- */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col gap-8">
+          {renderCarousels(slot2, 2)}
+        </div>
+      </div>
+      
+      {/* --- FAQ Section --- */}
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
           <div className="container mx-auto px-4 py-0">
@@ -206,6 +214,8 @@ const HomePage = () => {
               </section>
             </div>
           </div>
+          {/* --- Carousel Slot 3 --- */}
+          {renderCarousels(slot3, 3)}
         </div>
       </div>
     </div>

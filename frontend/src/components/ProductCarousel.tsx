@@ -35,12 +35,13 @@ interface ProductCarouselProps {
   searchQuery?: string;
   isDefaultStores?: boolean;
   primaryCategorySlug?: string;
-  onValidation?: (slug: string, isValid: boolean) => void;
+  onValidation?: (slug: string, isValid: boolean, slot: number) => void;
+  slot: number; // New prop
 }
 
 import { useApiQuery } from '@/hooks/useApiQuery';
 
-const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, onValidation }) => {
+const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, onValidation, slot }) => {
   const [baseUrl, queryString] = sourceUrl.split('?');
   const params = new URLSearchParams(queryString || '');
   if (storeIds && storeIds.length > 0) {
@@ -68,10 +69,10 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
   useEffect(() => {
     if (isFetched && onValidation && primaryCategorySlug && !validationCalled.current) {
       const isValid = apiResponse?.results?.length >= 4;
-      onValidation(primaryCategorySlug, isValid);
+      onValidation(primaryCategorySlug, isValid, slot); // Pass slot here
       validationCalled.current = true;
     }
-  }, [isFetched, apiResponse, onValidation, primaryCategorySlug]);
+  }, [isFetched, apiResponse, onValidation, primaryCategorySlug, slot]);
 
 
   const products = apiResponse?.results || [];
