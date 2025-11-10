@@ -84,7 +84,7 @@ class ProductSubstitutionSerializer(serializers.ModelSerializer):
 
 class PriceSerializer(serializers.ModelSerializer):
     store = serializers.StringRelatedField()
-    price = serializers.DecimalField(source='price_record.price', max_digits=10, decimal_places=2)
+    price = serializers.DecimalField(source='price', max_digits=10, decimal_places=2)
 
     class Meta:
         model = Price
@@ -134,16 +134,16 @@ class ProductSerializer(serializers.ModelSerializer):
             prices_queryset = prices_map.get(obj.id, [])
         else:
             # Fallback to the original query if the map is not provided
-            prices_queryset = Price.objects.filter(price_record__product=obj)
+            prices_queryset = Price.objects.filter(product=obj)
             # Prefetch store and company to avoid N+1 queries in the loop
-            prices_queryset = prices_queryset.select_related('store__company', 'price_record')
+            prices_queryset = prices_queryset.select_related('store__company')
 
         company_prices = {}
         overall_min_price = None
 
         for price_obj in prices_queryset:
             company_name = price_obj.store.company.name
-            current_price = price_obj.price_record.price
+            current_price = price_obj.price
 
             if company_name not in company_prices:
                 company_prices[company_name] = {

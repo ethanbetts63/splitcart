@@ -27,7 +27,7 @@ class CategoryProductListView(generics.ListAPIView):
             # Further filter by selected stores if store_ids are provided.
             if store_ids:
                 queryset = queryset.filter(
-                    price_records__price_entries__store__id__in=store_ids
+                    prices__store__id__in=store_ids
                 ).distinct()
 
             # Annotate with bargain status within the selected stores

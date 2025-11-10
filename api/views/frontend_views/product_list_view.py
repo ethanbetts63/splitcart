@@ -27,7 +27,7 @@ class ProductListView(generics.ListAPIView):
         try:
             store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
             queryset = queryset.filter(
-                price_records__price_entries__store__id__in=store_ids
+                prices__store__id__in=store_ids
             ).distinct()
             self.nearby_store_ids = store_ids # Store for serializer context
         except (ValueError, TypeError):

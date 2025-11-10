@@ -26,8 +26,8 @@ class ProductSubstituteListView(APIView):
                 
                 # Filter substitutions where the *other* product has prices in the provided stores
                 substitutions_queryset = substitutions_queryset.filter(
-                    Q(product_a=product, product_b__price_records__price_entries__store__id__in=nearby_store_ids) |
-                    Q(product_b=product, product_a__price_records__price_entries__store__id__in=nearby_store_ids)
+                    Q(product_a=product, product_b__prices__store__id__in=nearby_store_ids) |
+                    Q(product_b=product, product_a__prices__store__id__in=nearby_store_ids)
                 ).distinct()
             except (ValueError, TypeError):
                 pass # Invalid store_ids, ignore filtering
