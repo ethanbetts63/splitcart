@@ -1,5 +1,6 @@
-import React from 'react';
-import CarouselManager from '../components/CarouselManager'; // New import
+import React, { useState, useEffect, useCallback } from 'react';
+import { useApiQuery } from '@/hooks/useApiQuery';
+import { ProductCarousel } from '../components/ProductCarousel';
 import { FaqImageSection } from "../components/FaqImageSection";
 import { useStoreList } from "../context/StoreListContext";
 import { AspectRatio } from "../components/ui/aspect-ratio";
@@ -16,6 +17,19 @@ import kingKongImage768 from "../assets/king_kong-768w.webp";
 import kingKongImage1024 from "../assets/king_kong-1024w.webp";
 import kingKongImage1280 from "../assets/king_kong-1280w.webp";
 
+// Type for the primary category data fetched from the API
+type PrimaryCategory = {
+  name: string;
+  slug: string;
+};
+
+// --- Carousel Configuration ---
+const PRIORITY_CATEGORIES = ['deals', 'sweets', 'meat'];
+const NUM_SLOT_1 = 1;
+const NUM_SLOT_2 = 2;
+const NUM_SLOT_3 = 3;
+const TOTAL_CAROUSELS = NUM_SLOT_1 + NUM_SLOT_2 + NUM_SLOT_3;
+
 const HomePage = () => {
   const DEFAULT_STORE_IDS = [
     515, 5123, 518, 523, 272, 276, 2197, 2198, 2199, 536, 5142, 547, 2218, 2219,
@@ -27,6 +41,83 @@ const HomePage = () => {
     isDefaultStores ? DEFAULT_STORE_IDS : Array.from(selectedStoreIds),
     [selectedStoreIds, isDefaultStores]
   );
+
+  // --- Carousel Management Logic ---
+  const { data: allCategories } = useApiQuery<PrimaryCategory[]>(
+    ['primary-categories'],
+    '/api/categories/primary/',
+    {},
+    {
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 60, // 1 hour
+    }
+  );
+
+  const [candidateQueue, setCandidateQueue] = useState<PrimaryCategory[]>([]);
+  const [slot1, setSlot1] = useState<PrimaryCategory[]>([]);
+  const [slot2, setSlot2] = useState<PrimaryCategory[]>([]);
+  const [slot3, setSlot3] = useState<PrimaryCategory[]>([]);
+
+  useEffect(() => {
+    if (allCategories) {
+      const priority = PRIORITY_CATEGORIES.map(slug => 
+        allCategories.find(cat => cat.slug === slug)
+      ).filter((cat): cat is PrimaryCategory => !!cat);
+
+      const remaining = allCategories.filter(cat => 
+        !PRIORITY_CATEGORIES.includes(cat.slug)
+      );
+
+      for (let i = remaining.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
+      }
+
+      const initialCandidates = [...priority, ...remaining];
+      
+      setSlot1(initialCandidates.slice(0, NUM_SLOT_1));
+      setSlot2(initialCandidates.slice(NUM_SLOT_1, NUM_SLOT_1 + NUM_SLOT_2));
+      setSlot3(initialCandidates.slice(NUM_SLOT_1 + NUM_SLOT_2, TOTAL_CAROUSELS));
+      setCandidateQueue(initialCandidates.slice(TOTAL_CAROUSELS));
+    }
+  }, [allCategories]);
+
+  const handleValidation = useCallback((slug: string, isValid: boolean, slot: number) => {
+    if (!isValid) {
+      const newQueue = [...candidateQueue];
+      const nextCandidate = newQueue.shift();
+      
+      const setSlot = (setter: React.Dispatch<React.SetStateAction<PrimaryCategory[]>>) => {
+        setter(currentCarousels => {
+          if (!nextCandidate) {
+            return currentCarousels.filter(c => c.slug !== slug);
+          }
+          return currentCarousels.map(c => c.slug === slug ? nextCandidate : c);
+        });
+      };
+
+      switch (slot) {
+        case 1: setSlot(setSlot1); break;
+        case 2: setSlot(setSlot2); break;
+        case 3: setSlot(setSlot3); break;
+      }
+      setCandidateQueue(newQueue);
+    }
+  }, [candidateQueue]);
+
+  const renderCarousels = (categories: PrimaryCategory[], slot: number) => {
+    return categories.map(category => (
+      <ProductCarousel
+        key={category.slug}
+        title={category.name}
+        sourceUrl="/api/products/"
+        storeIds={storeIdsArray}
+        primaryCategorySlug={category.slug}
+        onValidation={(slug, isValid) => handleValidation(slug, isValid, slot)}
+        isDefaultStores={isDefaultStores}
+      />
+    ));
+  };
 
   return (
     <div>
@@ -55,7 +146,9 @@ const HomePage = () => {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        <CarouselManager storeIds={storeIdsArray} />
+        <div className="flex flex-col gap-8">
+          {renderCarousels(slot1, 1)}
+        </div>
       </div>
 
       <div className="container mx-auto px-4 md:px-16 pt-1 pb-1">
@@ -65,7 +158,7 @@ const HomePage = () => {
           </h2>
           <p className="text-xl mt-4">Short answer: <span className="font-bold">25-32%</span>. Most common answer: <span className="font-bold bg-yellow-200 px-0.5 py-1 rounded">Who cares?</span></p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12 text-lg ">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md::gap-12 text-lg ">
           <div className="flex flex-col gap-4">
             <p>
               <span className="font-bold bg-yellow-200 px-0.5 py-1 rounded">I care.</span> And if you're like me then you care too. If you're like me, you've considered the dollar value of a rewards point. Or weighed the merits of ply count versus the per kilo price of toilet paper.
