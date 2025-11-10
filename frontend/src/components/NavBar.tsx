@@ -45,7 +45,7 @@ const NavBar: React.FC<NavBarProps> = ({
               sizes="64px"
               alt="SplitCart Logo" 
               className="h-16 w-16 flex-shrink-0" />
-            <span className="font-bold text-2xl hidden md:block">SplitCart</span>
+            <span className="font-bold text-2xl hidden md:block bg-yellow-300 px-0.5 py-1 rounded italic text-black">SplitCart</span>
           </a>
         </div>
         <div className="flex flex-1 items-center justify-center">

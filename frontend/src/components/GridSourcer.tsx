@@ -91,7 +91,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
           {searchTerm && (
             <>
               Found {totalResults} results for{" "}
-              <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic">
+              <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
                 "{searchTerm}"
               </span>
             </>
@@ -102,7 +102,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
               return (
                 <>
                   Showing {totalResults} products in{" "}
-                  <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic">
+                  <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
                     "{formattedSlug}"
                   </span>
                 </>
