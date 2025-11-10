@@ -9,7 +9,6 @@ class PrimaryCategoriesGenerator:
         self.style = command.style
 
     def run(self):
-        self.stdout.write(self.style.SUCCESS("Generating primary categories..."))
         self._create_primary_categories()
         self._assign_primary_categories()
         self.stdout.write(self.style.SUCCESS("Successfully generated primary categories."))

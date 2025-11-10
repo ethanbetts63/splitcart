@@ -95,6 +95,10 @@ python manage.py generate --bargains --dev # Local
 python manage.py upload --bargains --dev # Local
 python manage.py update --bargains # Server
 
+python manage.py generate --primary-cats --dev # Local
+python manage.py upload --primary-cats --dev # Local
+python manage.py update --primary-cats # Server
+
 python manage.py analyze --report company_heatmap
 python manage.py analyze --report subs
 python manage.py analyze --report savings
