@@ -76,7 +76,7 @@ class ProductListView(generics.ListAPIView):
             # Order by score, then by name
             final_queryset = queryset.order_by('-search_score', 'name')
         else:
-            final_queryset = queryset.order_by('name')
+            final_queryset = queryset
 
         if limit_param:
             try:
