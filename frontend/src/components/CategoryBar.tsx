@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Badge } from './ui/badge';
 import '../css/CategoryCarousel.css';
 import { useApiQuery } from '../hooks/useApiQuery';
@@ -11,6 +11,7 @@ type Category = {
 };
 
 const CategoryBar: React.FC = () => {
+  const navigate = useNavigate();
   const { data: categories = [], isLoading } = useApiQuery<Category[]>(
     ['primaryCategories'],
     '/categories/primary/',
@@ -51,6 +52,14 @@ const CategoryBar: React.FC = () => {
     };
   }, [categories, isHovering]);
 
+  const handleRandomClick = () => {
+    if (categories.length > 0) {
+      const randomIndex = Math.floor(Math.random() * categories.length);
+      const randomCategory = categories[randomIndex];
+      navigate(`/search?primary_category_slug=${randomCategory.slug}`);
+    }
+  };
+
   if (isLoading || categories.length === 0) {
     return null;
   }
@@ -73,6 +82,15 @@ const CategoryBar: React.FC = () => {
               </Link>
             </div>
           ))}
+          <div className="flex-shrink-0">
+            <Badge 
+              variant="secondary" 
+              className="text-sm px-2 whitespace-nowrap bg-yellow-300 text-black italic hover:bg-yellow-400 cursor-pointer"
+              onClick={handleRandomClick}
+            >
+              Random
+            </Badge>
+          </div>
         </div>
       </div>
     </div>
