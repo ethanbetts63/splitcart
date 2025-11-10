@@ -24,6 +24,10 @@ export type Product = {
   quantity?: number; // Often added for cart item context
   level?: string;
   level_description?: string;
+  primary_category?: {
+    name: string;
+    slug: string;
+  };
 };
 
 export type CartSubstitution = {

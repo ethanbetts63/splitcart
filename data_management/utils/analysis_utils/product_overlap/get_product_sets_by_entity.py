@@ -18,14 +18,10 @@ def get_product_sets_by_entity(entity_type='company', company_name=None, state=N
     
     if entity_type == 'company':
         print("    Fetching all products and their company relationships...")
-        queryset = Product.objects.prefetch_related('price_records__price_entries__store__company').all()
+        queryset = Product.objects.prefetch_related('prices__store__company').all()
         for product in queryset.iterator(chunk_size=500):
-            entities = set()
-            for price_record in product.price_records.all():
-                for price_entry in price_record.price_entries.all():
-                    if price_entry.store and price_entry.store.company:
-                        entities.add(price_entry.store.company.name)
-            for entity_name in entities:
+            company_names = {price.store.company.name for price in product.prices.all() if price.store and price.store.company}
+            for entity_name in company_names:
                 entity_products[entity_name].add(product.id)
     
     elif entity_type == 'store':
@@ -47,15 +43,11 @@ def get_product_sets_by_entity(entity_type='company', company_name=None, state=N
         stores = list(stores_query)
         store_map = {store.id: store.store_name for store in stores}
         
-        queryset = Product.objects.prefetch_related('price_records__price_entries__store').filter(price_records__price_entries__store__in=stores).distinct()
+        queryset = Product.objects.prefetch_related('prices__store').filter(prices__store__in=stores).distinct()
         
         for product in queryset.iterator(chunk_size=500):
-            product_stores = set()
-            for price_record in product.price_records.all():
-                for price_entry in price_record.price_entries.all():
-                    if price_entry.store_id in store_map:
-                        product_stores.add(price_entry.store_id)
-            for store_id in product_stores:
+            store_ids = {price.store.id for price in product.prices.all() if price.store_id in store_map}
+            for store_id in store_ids:
                 entity_products[store_map[store_id]].add(product.id)
                 
     return entity_products

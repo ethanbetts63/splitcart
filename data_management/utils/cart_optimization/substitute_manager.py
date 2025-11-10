@@ -53,8 +53,8 @@ class SubstituteManager:
 
         # Mandatory filtering by store_ids
         substitutions_queryset = substitutions_queryset.filter(
-            Q(product_a=original_product, product_b__price_records__price_entries__store__id__in=self.store_ids) |
-            Q(product_b=original_product, product_a__price_records__price_entries__store__id__in=self.store_ids)
+            Q(product_a=original_product, product_b__prices__store__id__in=self.store_ids) |
+            Q(product_b=original_product, product_a__prices__store__id__in=self.store_ids)
         ).distinct()
 
         self._potential_product_substitutions = list(substitutions_queryset[:limit])

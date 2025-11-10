@@ -25,7 +25,7 @@ def generate_category_price_correlation_heatmap(company_name, category_name):
         return
 
     stores = Store.objects.filter(company=company).annotate(
-        product_count=Count('prices__price_record__product', filter=Q(prices__price_record__product__category=category))
+        product_count=Count('prices__product', filter=Q(prices__product__category=category))
     ).filter(product_count__gt=10)
     store_count = stores.count()
     if store_count < 2:
@@ -50,8 +50,8 @@ def generate_category_price_correlation_heatmap(company_name, category_name):
                 print(f"Comparing stores: {store1.store_name} and {store2.store_name} ({current_comparison}/{total_comparisons})")
 
                 # Get all products in the category for each store
-                products1 = set(Product.objects.filter(category=category, price_records__price_entries__store=store1).values_list('id', flat=True))
-                products2 = set(Product.objects.filter(category=category, price_records__price_entries__store=store2).values_list('id', flat=True))
+                products1 = set(Product.objects.filter(category=category, prices__store=store1).values_list('id', flat=True))
+                products2 = set(Product.objects.filter(category=category, prices__store=store2).values_list('id', flat=True))
 
                 common_product_ids = products1.intersection(products2)
                 
@@ -61,10 +61,10 @@ def generate_category_price_correlation_heatmap(company_name, category_name):
                     identical_price_count = 0
                     for product_id in common_product_ids:
                         try:
-                            price1_obj = Price.objects.select_related('price_record').filter(price_record__product_id=product_id, store=store1).latest('scraped_date')
-                            price2_obj = Price.objects.select_related('price_record').filter(price_record__product_id=product_id, store=store2).latest('scraped_date')
-                            if price1_obj.price_record and price2_obj.price_record:
-                                if price1_obj.price_record.price == price2_obj.price_record.price:
+                            price1_obj = Price.objects.filter(product_id=product_id, store=store1).latest('scraped_date')
+                            price2_obj = Price.objects.filter(product_id=product_id, store=store2).latest('scraped_date')
+                            if price1_obj and price2_obj:
+                                if price1_obj.price == price2_obj.price:
                                     identical_price_count += 1
                         except Price.DoesNotExist:
                             continue

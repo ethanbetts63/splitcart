@@ -18,6 +18,10 @@ type Product = {
   size?: string;
   image_url?: string;
   prices: CompanyPriceInfo[];
+  primary_category?: {
+    name: string;
+    slug: string;
+  };
 };
 
 type ApiResponse = {

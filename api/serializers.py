@@ -99,10 +99,11 @@ class ProductSerializer(serializers.ModelSerializer):
     prices = serializers.SerializerMethodField()
     brand_name = serializers.SerializerMethodField()
     image_url = serializers.SerializerMethodField()
+    primary_category = PrimaryCategorySerializer(read_only=True)
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'brand_name', 'size', 'image_url', 'prices')
+        fields = ('id', 'name', 'brand_name', 'size', 'image_url', 'prices', 'primary_category')
 
     def get_image_url(self, obj):
         """
