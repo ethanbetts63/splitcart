@@ -162,7 +162,9 @@ const SubstitutionPage = () => {
       <div className="bg-muted p-6 rounded-lg border">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
-          <h2 className="text-xl font-semibold mb-4 text-center">Original Product</h2>
+          <h2 className="text-xl font-bold mb-4 text-center">
+            <span className="italic bg-yellow-300 px-0.5 py-1 rounded text-black">Original Product</span>
+          </h2>
           {isDesktop ? (
             <div className="w-[240px] mx-auto relative">
               <Badge variant="secondary" className="absolute top-2 left-2 z-10 bg-green-500 text-white dark:bg-green-600">
