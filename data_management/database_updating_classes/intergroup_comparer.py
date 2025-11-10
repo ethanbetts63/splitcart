@@ -15,7 +15,7 @@ class IntergroupComparer:
     """
     def __init__(self, command):
         self.command = command
-        self.comparer = PriceComparer(freshness_days=3)
+        self.comparer = PriceComparer()
         self.freshness_threshold = timezone.now() - timedelta(days=3)
 
     def _get_anchor_stores_with_current_pricing(self):
@@ -77,6 +77,21 @@ class IntergroupComparer:
                     self.command.stdout.write("  - Not enough active anchors to compare. Skipping pass.")
                     break
 
+                # --- Pre-fetch all prices for all anchors at once ---
+                anchor_ids = [a.id for a in anchors_to_compare]
+                self.command.stdout.write(f"  - Pre-fetching prices for {len(anchor_ids)} anchors...")
+                
+                price_queryset = Price.objects.filter(
+                    store_id__in=anchor_ids,
+                    scraped_date__gte=self.freshness_threshold
+                ).values('store_id', 'product_id', 'price')
+
+                all_prices_cache = {anchor_id: {} for anchor_id in anchor_ids}
+                for price_data in price_queryset:
+                    all_prices_cache[price_data['store_id']][price_data['product_id']] = price_data['price']
+                self.command.stdout.write("  - Price cache built.")
+                # --- End of pre-fetching ---
+
                 anchor_pairs = list(itertools.combinations(anchors_to_compare, 2))
                 self.command.stdout.write(f"  - Generated {len(anchor_pairs)} unique pairs for comparison in this pass.")
 
@@ -90,13 +105,17 @@ class IntergroupComparer:
                     if group_a.id in merged_group_ids_this_pass or group_b.id in merged_group_ids_this_pass:
                         continue
                     
-                    # Use the cache to skip recent non-matches
                     if cache_manager.should_skip(group_a.id, group_b.id):
                         skipped_count += 1
                         continue
 
                     self.command.stdout.write(f"  - Comparing Anchor '{anchor_a.store_name}' (Group {group_a.id}) vs. '{anchor_b.store_name}' (Group {group_b.id})...")
-                    if self.comparer.compare(anchor_a, anchor_b):
+                    
+                    # Use the pre-fetched price cache for comparison
+                    price_map_a = all_prices_cache.get(anchor_a.id, {})
+                    price_map_b = all_prices_cache.get(anchor_b.id, {})
+
+                    if self.comparer.compare(price_map_a, price_map_b):
                         self.command.stdout.write(self.command.style.SUCCESS("    - Match found!"))
                         with transaction.atomic():
                             self._merge_groups(group_a, group_b)
@@ -107,7 +126,6 @@ class IntergroupComparer:
                         merged_group_ids_this_pass.add(group_b.id) 
                     else:
                         self.command.stdout.write("    - No match.")
-                        # Record the non-match in the cache
                         cache_manager.record_comparison(group_a.id, group_b.id)
                 
                 if skipped_count > 0:
@@ -120,7 +138,6 @@ class IntergroupComparer:
                     self.command.stdout.write(f"  - {merges_occurred_in_pass} merges occurred in this pass. Re-evaluating for more merges.")
 
         finally:
-            # Ensure the cache is always saved, even if an error occurs
             cache_manager.save()
 
         self.command.stdout.write(self.command.style.SUCCESS(f"--- Inter-Group Merging Complete. Total merges: {merges_occurred_in_total} ---"))

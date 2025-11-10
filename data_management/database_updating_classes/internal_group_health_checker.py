@@ -13,12 +13,12 @@ class InternalGroupHealthChecker:
     """
     def __init__(self, command):
         self.command = command
-        self.comparer = PriceComparer(freshness_days=3) # Use 72-hour freshness rule
+        self.comparer = PriceComparer()
         self.freshness_threshold = timezone.now() - timedelta(days=3)
 
-    def _store_has_current_pricing(self, store):
-        """Helper method to check if a store has any price data newer than the threshold."""
-        return store.prices.filter(scraped_date__gte=self.freshness_threshold).exists()
+    def _store_has_current_pricing(self, store_id, all_prices_cache):
+        """Helper method to check if a store has any price data in the pre-fetched cache."""
+        return store_id in all_prices_cache and bool(all_prices_cache[store_id])
 
     def _eject_member(self, member_store, old_group):
         """Ejects a member from its group and places it into a new group of one."""
@@ -48,17 +48,27 @@ class InternalGroupHealthChecker:
                     continue
 
                 self.command.stdout.write(f"  - Checking Group {group.id} (Anchor: {anchor.store_name})...")
-                anchor_is_current = self._store_has_current_pricing(anchor)
+                
+                # Pre-fetch prices for the anchor and all its members at once
+                all_store_ids_in_group = list(group.memberships.values_list('store_id', flat=True))
+                
+                price_queryset = Price.objects.filter(
+                    store_id__in=all_store_ids_in_group,
+                    scraped_date__gte=self.freshness_threshold
+                ).values('store_id', 'product_id', 'price')
 
-                # If anchor data is stale, no meaningful comparison can be done.
-                # Flag for re-scrape and skip the entire group.
+                group_prices_cache = {store_id: {} for store_id in all_store_ids_in_group}
+                for price_data in price_queryset:
+                    group_prices_cache[price_data['store_id']][price_data['product_id']] = price_data['price']
+
+                anchor_is_current = self._store_has_current_pricing(anchor.id, group_prices_cache)
+
                 if not anchor_is_current:
                     self.command.stdout.write(self.command.style.WARNING(f"    - Anchor data is stale. Flagging for re-scrape and skipping checks for this group."))
                     anchor.needs_rescraping = True
                     anchor.save(update_fields=['needs_rescraping'])
                     continue
                 
-                # Anchor is current, so we can proceed with checks.
                 members_to_check = Store.objects.filter(group_membership__group=group).exclude(pk=anchor.pk)
                 
                 healthy_members_to_purge = []
@@ -69,15 +79,16 @@ class InternalGroupHealthChecker:
                         skipped_count += 1
                         continue
 
-                    if not self._store_has_current_pricing(member):
+                    if not self._store_has_current_pricing(member.id, group_prices_cache):
                         continue
 
                     self.command.stdout.write(f"    - Comparing member '{member.store_name}' against anchor...")
                     
-                    match = self.comparer.compare(anchor, member)
+                    price_map_a = group_prices_cache.get(anchor.id, {})
+                    price_map_b = group_prices_cache.get(member.id, {})
+                    match = self.comparer.compare(price_map_a, price_map_b)
 
                     if not match:
-                        # Anchor is fresh, so the member is a confirmed rogue.
                         self.command.stdout.write(self.command.style.ERROR(f"    - Mismatch confirmed. Ejecting member."))
                         with transaction.atomic():
                             self._eject_member(member, group)
