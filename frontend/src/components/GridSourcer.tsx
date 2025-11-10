@@ -85,6 +85,10 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
     setCurrentPage(page);
   };
 
+  if (isLoading) {
+    return <LoadingSpinner fullScreen={false} />;
+  }
+
     return (
       <div>
         <h2 className="text-2xl font-bold mb-4">
