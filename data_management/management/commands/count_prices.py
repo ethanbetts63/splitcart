@@ -33,8 +33,13 @@ class Command(BaseCommand):
             for item in Price.objects.values('store_id').annotate(count=Count('id'))
         }
 
-        # Get all store groups, prefetching the related stores and ordering them consistently
-        store_groups = StoreGroup.objects.prefetch_related('memberships__store', 'company', 'anchor').all().order_by('company__name', 'id')
+        # Get IDs of stores that have at least one price
+        stores_with_prices_ids = price_counts_by_store_id.keys()
+
+        # Get all store groups where the anchor has prices, prefetching related data
+        store_groups = StoreGroup.objects.filter(
+            anchor_id__in=stores_with_prices_ids
+        ).prefetch_related('memberships__store', 'company', 'anchor').order_by('company__name', 'id')
 
         for group in store_groups:
             self.stdout.write(self.style.SUCCESS(f"\nGroup: {group}"))
