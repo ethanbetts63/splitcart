@@ -44,14 +44,14 @@ def get_product_prices_by_store(company_name=None, state=None):
     prices = Price.objects.filter(
         store__in=stores,
         id=Subquery(latest_prices_subquery)
-    ).select_related('price_record', 'product', 'store')
+    ).select_related('product', 'store')
     
     print(f"    Found {stores.count()} stores for {company_name}.")
     print(f"    Found {prices.count()} prices.")
 
     for price in prices:
-        if price.store.id in store_map and price.price_record:
+        if price.store.id in store_map:
             store_name = store_map[price.store.id]
-            store_product_prices[store_name][price.price_record.product.id] = price.price_record.price
+            store_product_prices[store_name][price.product.id] = price.price
             
     return store_product_prices

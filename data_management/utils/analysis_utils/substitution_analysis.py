@@ -59,7 +59,7 @@ def _get_company_stats_text(company):
     # Get all unique products for this company
     product_ids = Price.objects.filter(
         store__company=company
-    ).values_list('price_record__product_id', flat=True).distinct()
+    ).values_list('product_id', flat=True).distinct()
     company_products = Product.objects.filter(id__in=product_ids)
     if not company_products.exists():
         report_lines.append("  No products found for this company.")

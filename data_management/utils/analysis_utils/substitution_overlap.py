@@ -21,7 +21,7 @@ def calculate_strict_substitution_overlap_matrix():
 
     # Pre-fetch all product ID sets for each company
     company_product_sets = {
-        company.id: set(Price.objects.filter(store__company=company).values_list('price_record__product_id', flat=True))
+        company.id: set(Price.objects.filter(store__company=company).values_list('product_id', flat=True))
         for company in companies
     }
 

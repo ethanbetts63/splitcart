@@ -23,22 +23,10 @@ class ProductFactory(DjangoModelFactory):
         obj.save()
         return obj
 
-class PriceRecordFactory(DjangoModelFactory):
-    class Meta:
-        model = PriceRecord
-
-    product = factory.SubFactory(ProductFactory)
-    price = factory.Faker('pydecimal', left_digits=2, right_digits=2, positive=True)
-    was_price = factory.Faker('pydecimal', left_digits=2, right_digits=2, positive=True)
-    unit_price = factory.Faker('pydecimal', left_digits=2, right_digits=2, positive=True)
-    unit_of_measure = factory.Faker('word')
-    is_on_special = factory.Faker('boolean')
-
 class PriceFactory(DjangoModelFactory):
     class Meta:
         model = Price
 
-    price_record = factory.SubFactory(PriceRecordFactory)
     store = factory.SubFactory(StoreFactory)
     sku = factory.Faker('uuid4')
     is_available = factory.Faker('boolean')
