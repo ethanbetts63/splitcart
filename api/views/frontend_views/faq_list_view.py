@@ -16,11 +16,11 @@ class FaqListView(ListAPIView):
         page = request.query_params.get('page', None)
         queryset = self.get_queryset()
 
-
         if page:
-            filtered_queryset = [faq for faq in queryset if page in faq.pages]
+            queryset = queryset.filter(pages__contains=[page])
         else:
-            filtered_queryset = []
+            # If no page is specified, return an empty queryset as per original logic
+            queryset = queryset.none()
 
-        serializer = self.get_serializer(filtered_queryset, many=True)
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)

@@ -1,0 +1,13 @@
+During this session, we addressed a series of interconnected issues across the SplitCart project, focusing on backend data handling, API responses, and frontend display logic.
+
+We began by investigating a discrepancy in Woolworths' category counts, which was ultimately deemed a logging anomaly rather than a functional bug, with the user opting to retain the existing database behavior.
+
+A major task involved resolving a widespread `FieldError` caused by the deprecated `price_records` field. This required systematically updating numerous backend files, including API views, serializers, and data analysis utilities, to correctly reference the `prices` related name or direct `price` field.
+
+Image loading issues were a recurring theme. An `AttributeError` (`'Product' object has no attribute 'sku'`) was fixed by updating `ProductSerializer` to correctly access product SKUs from the `company_skus` dictionary. This led to a `TypeError` (`'int' object is not subscriptable`) when processing Coles' image URLs, which was resolved by explicitly converting integer SKUs to strings. The image URL construction logic within `ProductSerializer` was then refactored into a single, DRY helper method (`_get_image_url_for_company`) to centralize and simplify its management.
+
+Frontend carousel display was significantly enhanced. We fixed an issue where carousels displayed identical products by ensuring `ProductListView` correctly filtered by `primary_category_slug`. We also implemented a `limit` parameter with a maximum cap of 50 in `ProductListView` and `BargainListView` to control the number of items displayed. The FAQ loading issue on the home page was resolved by updating `FaqListView` to use Django ORM's `JSONField` querying for more efficient and reliable database-level filtering.
+
+The most extensive frontend change involved redesigning the homepage carousel system. This included creating a `useCarouselManager` custom hook to manage carousel data, updating `ProductCarousel.tsx` for validation callbacks, and refactoring `HomePage.tsx` to utilize this hook for a 6-slot layout with priority categories, randomization, parallel fetching, and dynamic replacement of carousels with insufficient products. The redundant `CarouselManager.tsx` component was subsequently removed.
+
+Finally, an image error loop in `ProductTile.tsx` was addressed by implementing a state-based image fallback mechanism using React's `useState` and `useEffect` hooks, preventing repeated requests for failed images.
