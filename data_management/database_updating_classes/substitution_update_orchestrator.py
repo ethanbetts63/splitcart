@@ -90,9 +90,16 @@ class SubstitutionUpdater:
                 if (existing_sub.level != sub_data['level'] or
                     existing_sub.score != sub_data['score']):
                     
-                    existing_sub.level = sub_data['level']
-                    existing_sub.score = sub_data['score']
-                    subs_to_update.append(existing_sub)
+                    # Only add to the update list if it's a real, persisted object
+                    if existing_sub.pk:
+                        existing_sub.level = sub_data['level']
+                        existing_sub.score = sub_data['score']
+                        subs_to_update.append(existing_sub)
+                    else:
+                        # It's an in-memory object seen earlier in the file.
+                        # Just update its values; it's already in subs_to_create.
+                        existing_sub.level = sub_data['level']
+                        existing_sub.score = sub_data['score']
             else:
                 # It's a new substitution
                 new_sub = ProductSubstitution(
