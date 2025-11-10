@@ -77,7 +77,11 @@ def run_sanity_checks(file_path: str) -> list:
             if not product:
                 line_errors.append(f"L{line_number}: Line is missing 'product' key.")
             else:
-                line_errors.extend(_validate_product_fields(product, line_number))
+                # New check for "donation" in product name
+                if 'donation' in product.get('name', '').lower():
+                    line_errors.append(f"L{line_number}: Product name contains 'donation', removing line.")
+                else:
+                    line_errors.extend(_validate_product_fields(product, line_number))
         except json.JSONDecodeError:
             line_errors.append(f"L{line_number}: Invalid JSON format.")
         
