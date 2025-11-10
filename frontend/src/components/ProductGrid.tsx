@@ -4,10 +4,12 @@ import type { Product } from '../types'; // Import shared type
 
 interface ProductGridProps {
   products: Product[];
+  hasResults: boolean;
 }
 
 const ProductGrid: React.FC<ProductGridProps> = ({ 
   products, 
+  hasResults,
 }) => {
   return (
     <div>
@@ -16,11 +18,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
           products.map((product) => (
             <ProductTile key={product.id} product={product} />
           ))
-        ) : (
-          <div className="col-span-full text-center py-8">
-            <p>No products found.</p>
-          </div>
-        )}
+        ) : null}
       </div>
     </div>
   );
