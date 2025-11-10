@@ -105,31 +105,52 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('id', 'name', 'brand_name', 'size', 'image_url', 'prices', 'primary_category')
 
+    def _get_image_url_for_company(self, product_obj, company_name, company_obj=None):
+        """
+        A single, reusable method to generate an image URL for a given product and company.
+        """
+        # Handle Aldi first, as it's a special case on the product itself
+        if company_name.lower() == 'aldi' and product_obj.aldi_image_url:
+            return product_obj.aldi_image_url
+
+        # If company object isn't passed, fetch it
+        if not company_obj:
+            company_obj = Company.objects.filter(name__iexact=company_name).first()
+
+        if not company_obj or not company_obj.image_url_template:
+            return None
+
+        # Get SKU for the company
+        company_skus_list = product_obj.company_skus.get(company_name.lower(), [])
+        if not company_skus_list:
+            return None
+        
+        sku = company_skus_list[0]
+        sku_str = str(sku)
+
+        # Handle Coles' special URL structure
+        if company_name.lower() == 'coles':
+            first_digit = sku_str[0] if sku_str else '0'
+            return f"https://productimages.coles.com.au/productimages/{first_digit}/{sku_str}.jpg"
+        
+        # Handle all other companies with a template
+        return company_obj.image_url_template.format(sku=sku)
+
     def get_image_url(self, obj):
         """
-        Constructs the image URL based on the company's template or aldi_image_url.
+        Constructs a single representative image URL for the product.
+        It uses a simple heuristic: find the first available price and use that company.
         """
-        if obj.aldi_image_url:
-            return obj.aldi_image_url
-
-        # Assuming a product will have at least one price associated with a store/company
-        # to determine its company for the template.
-        # This might need optimization if products can exist without prices.
+        # Determine a primary company to generate a single representative image URL.
         first_price = obj.prices.select_related('store__company').first()
         if first_price and first_price.store and first_price.store.company:
             company = first_price.store.company
-            company_name = company.name # Get company name here
-            company_skus_list = obj.company_skus.get(company_name.lower(), [])
-
-            if company.image_url_template and company_skus_list:
-                sku = company_skus_list[0]
-                if company_name.lower() == 'coles':
-                    # Special handling for Coles image URLs
-                    sku_str = str(sku)
-                    first_digit = sku_str[0] if sku_str else '0'
-                    return f"https://productimages.coles.com.au/productimages/{first_digit}/{sku_str}.jpg"
-                else:
-                    return company.image_url_template.format(sku=sku)
+            return self._get_image_url_for_company(obj, company.name, company_obj=company)
+        
+        # Fallback for products that might not have prices but could be Aldi
+        if obj.aldi_image_url:
+            return obj.aldi_image_url
+            
         return None
 
     def get_brand_name(self, obj):
@@ -179,25 +200,9 @@ class ProductSerializer(serializers.ModelSerializer):
             
             is_lowest = (data['min_price'] == overall_min_price) if overall_min_price is not None else False
 
-            # Dynamically construct image_url
-            image_url = None
-            if obj.aldi_image_url and company_name.lower() == 'aldi':
-                image_url = obj.aldi_image_url
-            else:
-                # Find the company object to get its template
-                company_obj = Company.objects.filter(name__iexact=company_name).first()
-                if company_obj and company_obj.image_url_template:
-                    # Get the first SKU for the given company from the product's company_skus dict
-                    company_skus_list = obj.company_skus.get(company_obj.name.lower(), [])
-                    print(company_skus_list)
-                    if company_skus_list:
-                        sku = company_skus_list[0]
-                        if company_name.lower() == 'coles':
-                            sku_str = str(sku)
-                            first_digit = sku_str[0] if sku_str else '0'
-                            image_url = f"https://productimages.coles.com.au/productimages/{first_digit}/{sku_str}.jpg"
-                        else:
-                            image_url = company_obj.image_url_template.format(sku=sku)
+            # Call the reusable helper method to get the image URL
+            image_url = self._get_image_url_for_company(obj, company_name)
+
             formatted_prices.append({
                 'company': company_name,
                 'price_display': price_range,
