@@ -182,7 +182,7 @@ class ProductSerializer(serializers.ModelSerializer):
                 company_obj = Company.objects.filter(name__iexact=company_name).first()
                 if company_obj and company_obj.image_url_template:
                     # Get the first SKU for the given company from the product's company_skus dict
-                    company_skus_list = product_obj.company_skus.get(company_obj.name, [])
+                    company_skus_list = obj.company_skus.get(company_obj.name, [])
                     if company_skus_list:
                         sku = company_skus_list[0]
                         image_url = company_obj.image_url_template.format(sku=sku)
