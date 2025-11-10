@@ -47,54 +47,54 @@ class InternalGroupHealthChecker:
                     self.command.stdout.write(self.command.style.WARNING(f"  - Skipping Group {group.id}: No anchor set."))
                     continue
 
-            self.command.stdout.write(f"  - Checking Group {group.id} (Anchor: {anchor.store_name})...")
-            anchor_is_current = self._store_has_current_pricing(anchor)
+                self.command.stdout.write(f"  - Checking Group {group.id} (Anchor: {anchor.store_name})...")
+                anchor_is_current = self._store_has_current_pricing(anchor)
 
-            # If anchor data is stale, no meaningful comparison can be done.
-            # Flag for re-scrape and skip the entire group.
-            if not anchor_is_current:
-                self.command.stdout.write(self.command.style.WARNING(f"    - Anchor data is stale. Flagging for re-scrape and skipping checks for this group."))
-                anchor.needs_rescraping = True
-                anchor.save(update_fields=['needs_rescraping'])
-                continue
-            
-            # Anchor is current, so we can proceed with checks.
-            members_to_check = Store.objects.filter(group_membership__group=group).exclude(pk=anchor.pk)
-            
-            healthy_members_to_purge = []
-            skipped_count = 0
-
-            for member in members_to_check:
-                if cache_manager.should_skip(member.id):
-                    skipped_count += 1
+                # If anchor data is stale, no meaningful comparison can be done.
+                # Flag for re-scrape and skip the entire group.
+                if not anchor_is_current:
+                    self.command.stdout.write(self.command.style.WARNING(f"    - Anchor data is stale. Flagging for re-scrape and skipping checks for this group."))
+                    anchor.needs_rescraping = True
+                    anchor.save(update_fields=['needs_rescraping'])
                     continue
-
-                if not self._store_has_current_pricing(member):
-                    continue
-
-                self.command.stdout.write(f"    - Comparing member '{member.store_name}' against anchor...")
                 
-                match = self.comparer.compare(anchor, member)
+                # Anchor is current, so we can proceed with checks.
+                members_to_check = Store.objects.filter(group_membership__group=group).exclude(pk=anchor.pk)
+                
+                healthy_members_to_purge = []
+                skipped_count = 0
 
-                if not match:
-                    # Anchor is fresh, so the member is a confirmed rogue.
-                    self.command.stdout.write(self.command.style.ERROR(f"    - Mismatch confirmed. Ejecting member."))
-                    with transaction.atomic():
-                        self._eject_member(member, group)
-                else:
-                    self.command.stdout.write(self.command.style.SUCCESS("    - Match confirmed. Member is healthy."))
-                    healthy_members_to_purge.append(member)
-                    cache_manager.record_healthy_member(member.id)
+                for member in members_to_check:
+                    if cache_manager.should_skip(member.id):
+                        skipped_count += 1
+                        continue
 
-            if skipped_count > 0:
-                self.command.stdout.write(f"    - Skipped {skipped_count} members based on recent health check cache.")
+                    if not self._store_has_current_pricing(member):
+                        continue
 
-            if healthy_members_to_purge:
-                store_ids_to_purge = [m.id for m in healthy_members_to_purge]
-                self.command.stdout.write(f"    - Deleting redundant prices for {len(healthy_members_to_purge)} healthy members in bulk.")
-                deleted_count, _ = Price.objects.filter(store_id__in=store_ids_to_purge).delete()
-                if deleted_count > 0:
-                    self.command.stdout.write(f"    - Deleted {deleted_count:,} price objects.")
+                    self.command.stdout.write(f"    - Comparing member '{member.store_name}' against anchor...")
+                    
+                    match = self.comparer.compare(anchor, member)
+
+                    if not match:
+                        # Anchor is fresh, so the member is a confirmed rogue.
+                        self.command.stdout.write(self.command.style.ERROR(f"    - Mismatch confirmed. Ejecting member."))
+                        with transaction.atomic():
+                            self._eject_member(member, group)
+                    else:
+                        self.command.stdout.write(self.command.style.SUCCESS("    - Match confirmed. Member is healthy."))
+                        healthy_members_to_purge.append(member)
+                        cache_manager.record_healthy_member(member.id)
+
+                if skipped_count > 0:
+                    self.command.stdout.write(f"    - Skipped {skipped_count} members based on recent health check cache.")
+
+                if healthy_members_to_purge:
+                    store_ids_to_purge = [m.id for m in healthy_members_to_purge]
+                    self.command.stdout.write(f"    - Deleting redundant prices for {len(healthy_members_to_purge)} healthy members in bulk.")
+                    deleted_count, _ = Price.objects.filter(store_id__in=store_ids_to_purge).delete()
+                    if deleted_count > 0:
+                        self.command.stdout.write(f"    - Deleted {deleted_count:,} price objects.")
         finally:
             cache_manager.save()
 
