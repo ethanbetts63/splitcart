@@ -88,12 +88,10 @@ class SubstitutionUpdater:
             if existing_sub:
                 # It's an update, check if data has changed
                 if (existing_sub.level != sub_data['level'] or
-                    existing_sub.score != sub_data['score'] or
-                    existing_sub.source != sub_data['source']):
+                    existing_sub.score != sub_data['score']):
                     
                     existing_sub.level = sub_data['level']
                     existing_sub.score = sub_data['score']
-                    existing_sub.source = sub_data['source']
                     subs_to_update.append(existing_sub)
             else:
                 # It's a new substitution
@@ -101,8 +99,7 @@ class SubstitutionUpdater:
                     product_a_id=product_a_id,
                     product_b_id=product_b_id,
                     level=sub_data['level'],
-                    score=sub_data['score'],
-                    source=sub_data['source']
+                    score=sub_data['score']
                 )
                 subs_to_create.append(new_sub)
                 # Add to cache to handle duplicates within the same file
@@ -124,7 +121,7 @@ class SubstitutionUpdater:
             
             if subs_to_update:
                 self.command.stdout.write(f"  - Bulk updating {len(subs_to_update)} existing substitutions...")
-                ProductSubstitution.objects.bulk_update(subs_to_update, fields=['level', 'score', 'source'], batch_size=500)
+                ProductSubstitution.objects.bulk_update(subs_to_update, fields=['level', 'score'], batch_size=500)
             
             self.command.stdout.write(self.command.style.SUCCESS("  - Commit successful."))
         except Exception as e:
