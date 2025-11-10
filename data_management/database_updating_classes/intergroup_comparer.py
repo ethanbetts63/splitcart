@@ -16,7 +16,7 @@ class IntergroupComparer:
     def __init__(self, command):
         self.command = command
         self.comparer = PriceComparer()
-        self.freshness_threshold = timezone.now() - timedelta(days=3)
+        self.freshness_threshold = timezone.now() - timedelta(days=7)
 
     def _get_groups_with_current_pricing(self):
         """Get all active groups whose anchor has recent price data."""

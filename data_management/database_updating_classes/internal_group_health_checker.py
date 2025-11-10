@@ -14,7 +14,7 @@ class InternalGroupHealthChecker:
     def __init__(self, command):
         self.command = command
         self.comparer = PriceComparer()
-        self.freshness_threshold = timezone.now() - timedelta(days=3)
+        self.freshness_threshold = timezone.now() - timedelta(days=7)
 
     def _store_has_current_pricing(self, store_id, all_prices_cache):
         """Helper method to check if a store has any price data in the pre-fetched cache."""
