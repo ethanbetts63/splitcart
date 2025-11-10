@@ -115,12 +115,15 @@ class ProductSerializer(serializers.ModelSerializer):
         # Assuming a product will have at least one price associated with a store/company
         # to determine its company for the template.
         # This might need optimization if products can exist without prices.
-        first_price = obj.price_set.select_related('store__company').first()
+        first_price = obj.prices.select_related('store__company').first()
         if first_price and first_price.store and first_price.store.company:
             company = first_price.store.company
-            if company.image_url_template and obj.sku:
-                # Assuming product.sku is the correct identifier for the template
-                return company.image_url_template.format(sku=obj.sku)
+            # Check company_skus for the specific company
+            company_skus_list = obj.company_skus.get(company.name, [])
+            if company.image_url_template and company_skus_list:
+                # Use the first SKU found for that company
+                sku = company_skus_list[0]
+                return company.image_url_template.format(sku=sku)
         return None
 
     def get_brand_name(self, obj):
@@ -177,8 +180,12 @@ class ProductSerializer(serializers.ModelSerializer):
             else:
                 # Find the company object to get its template
                 company_obj = Company.objects.filter(name__iexact=company_name).first()
-                if company_obj and company_obj.image_url_template and obj.sku:
-                    image_url = company_obj.image_url_template.format(sku=obj.sku)
+                if company_obj and company_obj.image_url_template:
+                    # Get the first SKU for the given company from the product's company_skus dict
+                    company_skus_list = product_obj.company_skus.get(company_obj.name, [])
+                    if company_skus_list:
+                        sku = company_skus_list[0]
+                        image_url = company_obj.image_url_template.format(sku=sku)
 
             formatted_prices.append({
                 'company': company_name,
