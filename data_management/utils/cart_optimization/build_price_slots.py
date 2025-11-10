@@ -55,14 +55,21 @@ def build_price_slots(cart, stores):
                 image_url = None
                 company = price_obj.store.company
                 company_name = price_obj.store.company.name
+                
                 if company_name.lower() == 'aldi':
                     image_url = product_obj.aldi_image_url
                 elif company.image_url_template:
-                    # Get the first SKU for the given company from the product's company_skus dict
-                    company_skus = product_obj.company_skus.get(company.name, [])
+                    # Use lowercase name for lookup, as keys are stored this way
+                    company_skus = product_obj.company_skus.get(company_name.lower(), [])
                     if company_skus:
-                        sku = company_skus[0]
-                        image_url = company.image_url_template.format(sku=sku)
+                        sku = str(company_skus[0])
+                        # Handle Coles' special URL structure
+                        if company_name.lower() == 'coles':
+                            first_digit = sku[0] if sku else '0'
+                            image_url = f"https://productimages.coles.com.au/productimages/{first_digit}/{sku}.jpg"
+                        else:
+                            # Use the correct placeholder name for all other companies
+                            image_url = company.image_url_template.format(sku=sku)
 
                 # Construct the store address
                 address_parts = [
