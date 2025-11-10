@@ -30,10 +30,14 @@ interface GridSourcerProps {
 }
 
 import { useApiQuery } from '../hooks/useApiQuery';
+import { useAuth } from '../context/AuthContext';
+import { useQueryClient } from '@tanstack/react-query';
 
 const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primaryCategorySlug }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const { selectedStoreIds } = useStoreList(); // Get selected stores
+  const queryClient = useQueryClient();
+  const { token, anonymousId } = useAuth();
 
   // Determine API endpoint and params
   const { url, params } = React.useMemo(() => {
@@ -75,6 +79,40 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
     {},
     { enabled: !!finalUrl }
   );
+
+  // Prefetch the next page
+  React.useEffect(() => {
+    if (apiResponse?.next) {
+      const nextPage = currentPage + 1;
+      const nextParams = new URLSearchParams(params);
+      nextParams.set('page', nextPage.toString());
+      
+      // Ensure the URL starts with /api/
+      const nextUrlPath = url.startsWith('/api') ? url : `/api${url.substring(1)}`;
+      const nextFinalUrl = `${nextUrlPath}?${nextParams.toString()}`;
+
+      const nextQueryKey = ['products', nextFinalUrl];
+
+      queryClient.prefetchQuery({
+        queryKey: nextQueryKey,
+        queryFn: async () => {
+          const headers: Record<string, string> = {
+            'Content-Type': 'application/json',
+          };
+          if (token) {
+            headers['Authorization'] = `Token ${token}`;
+          } else if (anonymousId) {
+            headers['X-Anonymous-ID'] = anonymousId;
+          }
+          const response = await fetch(nextFinalUrl, { headers });
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        },
+      });
+    }
+  }, [apiResponse, currentPage, params, url, queryClient, token, anonymousId]);
 
   const products = apiResponse?.results || [];
   const totalResults = apiResponse?.count || 0;
