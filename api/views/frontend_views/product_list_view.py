@@ -4,20 +4,26 @@ from django.utils.decorators import method_decorator
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework.exceptions import ValidationError
+from rest_framework.pagination import PageNumberPagination
 from products.models import Product, Bargain
 from ...serializers import ProductSerializer
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 20
+    page_size_query_param = 'page_size'
+    max_page_size = 50
 
 @method_decorator(cache_page(3600), name='dispatch')
 class ProductListView(generics.ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = ProductSerializer
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         queryset = Product.objects.all()
 
         store_ids_param = self.request.query_params.get('store_ids')
         search_query = self.request.query_params.get('search', None)
-        limit_param = self.request.query_params.get('limit')
         primary_category_slug = self.request.query_params.get('primary_category_slug', None)
 
         if not store_ids_param:
@@ -63,15 +69,6 @@ class ProductListView(generics.ListAPIView):
             
         else:
             final_queryset = queryset
-
-        if limit_param:
-            try:
-                limit = int(limit_param)
-                if limit > 50:
-                    limit = 50
-                final_queryset = final_queryset[:limit]
-            except (ValueError, TypeError):
-                pass
 
         return final_queryset
 

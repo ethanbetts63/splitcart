@@ -57,7 +57,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
       params.set('store_ids', Array.from(selectedStoreIds).join(','));
     }
     params.set('page', currentPage.toString());
-    params.set('limit', '20');
+    params.set('page_size', '20');
 
     return { url, params };
   }, [searchTerm, sourceUrl, primaryCategorySlug, selectedStoreIds, currentPage]);
