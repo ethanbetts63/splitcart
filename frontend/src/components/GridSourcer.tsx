@@ -111,9 +111,6 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
       <h2 className="text-2xl font-bold mb-4">{titleText}</h2>
       <ProductGrid 
         products={products} 
-        onLoadMore={() => handlePageChange(currentPage + 1)} 
-        hasMorePages={currentPage < totalPages} 
-        isLoadingMore={isLoading} 
       />
       <div className="flex justify-center mt-8">
         <Pagination>
