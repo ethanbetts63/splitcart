@@ -36,7 +36,7 @@ This phase ensures that existing groups remain accurate.
 This phase grows the groups by finding new matches.
 
 1.  After the maintenance phase is complete, the system finds all `Groups` whose `Anchor` has "Current Pricing".
-2.  An **Intergroup Comparison** is performed, comparing every `Anchor` against every other `Anchor`.
+2. An **Intergroup Comparison** is performed, comparing every `Anchor` against every other `Anchor` within the same company.
 3.  If two `Anchor`s are found to have matching prices, their `Groups` are merged. The `Group` with fewer members is merged into the one with more members. When this happens, all `Price` objects for all stores in the smaller group are deleted. The old, smaller group is then deactivated.
 
 #### 4. Caching for Performance
