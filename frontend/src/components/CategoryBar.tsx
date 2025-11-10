@@ -64,6 +64,9 @@ const CategoryBar: React.FC = () => {
     return null;
   }
 
+  const randomCategory: Category = { name: 'Random', slug: 'random-category-selection' };
+  const categoriesWithRandom = [...categories, randomCategory];
+
   return (
     <div className="sticky top-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-40 border-b">
       <div 
@@ -73,24 +76,25 @@ const CategoryBar: React.FC = () => {
         onMouseLeave={() => setIsHovering(false)}
       >
         <div className="flex items-center gap-4 py-1 px-2">
-          {[...categories, ...categories].map((category, index) => (
+          {[...categoriesWithRandom, ...categoriesWithRandom].map((category, index) => (
             <div className="flex-shrink-0" key={`${category.slug}-${index}`}>
-              <Link to={`/search?primary_category_slug=${category.slug}`}>
-                <Badge variant="secondary" className="text-sm px-2 whitespace-nowrap hover:bg-transparent hover:text-foreground hover:border-foreground">
+              {category.slug === 'random-category-selection' ? (
+                <Badge 
+                  variant="secondary" 
+                  className="text-sm px-2 whitespace-nowrap bg-yellow-300 text-black italic hover:bg-yellow-400 cursor-pointer"
+                  onClick={handleRandomClick}
+                >
                   {category.name}
                 </Badge>
-              </Link>
+              ) : (
+                <Link to={`/search?primary_category_slug=${category.slug}`}>
+                  <Badge variant="secondary" className="text-sm px-2 whitespace-nowrap hover:bg-transparent hover:text-foreground hover:border-foreground">
+                    {category.name}
+                  </Badge>
+                </Link>
+              )}
             </div>
           ))}
-          <div className="flex-shrink-0">
-            <Badge 
-              variant="secondary" 
-              className="text-sm px-2 whitespace-nowrap bg-yellow-300 text-black italic hover:bg-yellow-400 cursor-pointer"
-              onClick={handleRandomClick}
-            >
-              Random
-            </Badge>
-          </div>
         </div>
       </div>
     </div>
