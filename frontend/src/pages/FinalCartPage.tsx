@@ -14,7 +14,7 @@ import { emailCartAPI, downloadCartAPI } from '../services/cartOptimization.api'
 import type { ExportData } from '../types';
 
 const FinalCartPage = () => {
-  const { optimizationResult } = useCart();
+  const { optimizationResult, currentCart } = useCart();
   useStoreList(); // Call hook to ensure context is available, but don't destructure
 
   const { isAuthenticated, token } = useAuth();
@@ -106,7 +106,7 @@ toast.success("Email Sent!", {
         )}
       </div>
 
-      {resultsToShow ? <ResultsDisplay data={resultsToShow} handleDownload={handleDownload} handleEmail={handleEmail} exportAction={exportAction} /> : <p>No results to display for this option.</p>}
+      {resultsToShow && currentCart ? <ResultsDisplay cart={currentCart} data={resultsToShow} handleDownload={handleDownload} handleEmail={handleEmail} exportAction={exportAction} /> : <p>No results to display for this option.</p>}
 
       <div className="mt-16">
         <FaqImageSection

@@ -43,6 +43,7 @@ export type CartItem = {
   id: string;
   product: Product;
   quantity: number;
+  baseline_price?: number; // Added for store-specific baseline calculation
   substitutions?: CartSubstitution[];
   created_at?: string;
   updated_at?: string;

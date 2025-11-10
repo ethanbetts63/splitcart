@@ -6,7 +6,8 @@ import { Spinner } from "./ui/spinner";
 import PlanDetails from './PlanDetails';
 import * as types from '../types';
 
-const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: { 
+const ResultsDisplay = ({ cart, data, handleDownload, handleEmail, exportAction }: { 
+    cart: types.Cart;
     data: types.OptimizationDataSet;
     handleDownload: (exportData: types.ExportData, planName: string) => Promise<void>;
     handleEmail: (exportData: types.ExportData, planName: string) => Promise<void>;
@@ -14,6 +15,30 @@ const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: {
 }) => {
     if (!data || (!data.best_single_store && (!data.optimization_results || data.optimization_results.length === 0))) {
         return <p className="mt-4">No optimization results available for this selection.</p>;
+    }
+
+    let singleStoreBaselineCost = 0;
+    let singleStoreSavings = 0;
+
+    if (data.best_single_store && cart) {
+        const singleStoreProducts = new Set<string>();
+        const plan = data.best_single_store.shopping_plan;
+        for (const storeName in plan) {
+            plan[storeName].items.forEach(item => {
+                const productIdentifier = `${item.product_name}|${item.brand || 'null'}|${item.size || ''}`;
+                singleStoreProducts.add(productIdentifier);
+            });
+        }
+
+        singleStoreBaselineCost = cart.items.reduce((total, cartItem) => {
+            const productIdentifier = `${cartItem.product.name}|${cartItem.product.brand_name || 'null'}|${cartItem.product.size || ''}`;
+            if (singleStoreProducts.has(productIdentifier) && cartItem.baseline_price) {
+                return total + (cartItem.baseline_price * cartItem.quantity);
+            }
+            return total;
+        }, 0);
+
+        singleStoreSavings = singleStoreBaselineCost > 0 ? singleStoreBaselineCost - data.best_single_store.optimized_cost : 0;
     }
     
     const defaultTab = data.best_single_store ? "tab-1" : (data.optimization_results.length > 0 ? `tab-${data.optimization_results[0].max_stores}`: "");
@@ -63,14 +88,14 @@ const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: {
                             <div className="flex justify-between items-start mb-4">
                                 <div>
                                     <h3 className="font-bold text-lg">Total Cost: ${data.best_single_store.optimized_cost.toFixed(2)}</h3>
-                                    <p className="text-sm text-green-600 font-semibold">Savings: ${(data.baseline_cost - data.best_single_store.optimized_cost).toFixed(2)}</p>
+                                    <p className="text-sm text-green-600 font-semibold">Savings: ${singleStoreSavings.toFixed(2)}</p>
                                     <p className="text-sm text-muted-foreground mt-1">Found {data.best_single_store.items_found_count} of {data.best_single_store.total_items_in_cart} items.</p>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Button 
                                         variant="outline" 
                                         size="sm"
-                                        onClick={() => handleEmail({ shopping_plan: data.best_single_store!.shopping_plan, baseline_cost: data.baseline_cost, optimized_cost: data.best_single_store!.optimized_cost, savings: (data.baseline_cost - data.best_single_store!.optimized_cost) }, 'best-single-store')}
+                                        onClick={() => handleEmail({ shopping_plan: data.best_single_store!.shopping_plan, baseline_cost: singleStoreBaselineCost, optimized_cost: data.best_single_store!.optimized_cost, savings: singleStoreSavings }, 'best-single-store')}
                                         disabled={exportAction?.type === 'email' && exportAction?.plan === 'best-single-store'}
                                     >
                                         {exportAction?.type === 'email' && exportAction?.plan === 'best-single-store' ? (
@@ -83,7 +108,7 @@ const ResultsDisplay = ({ data, handleDownload, handleEmail, exportAction }: {
                                     <Button 
                                         variant="outline" 
                                         size="sm"
-                                        onClick={() => handleDownload({ shopping_plan: data.best_single_store!.shopping_plan, baseline_cost: data.baseline_cost, optimized_cost: data.best_single_store!.optimized_cost, savings: (data.baseline_cost - data.best_single_store!.optimized_cost) }, 'best-single-store')}
+                                        onClick={() => handleDownload({ shopping_plan: data.best_single_store!.shopping_plan, baseline_cost: singleStoreBaselineCost, optimized_cost: data.best_single_store!.optimized_cost, savings: singleStoreSavings }, 'best-single-store')}
                                         disabled={exportAction?.type === 'download' && exportAction?.plan === 'best-single-store'}
                                     >
                                         {exportAction?.type === 'download' && exportAction?.plan === 'best-single-store' ? (

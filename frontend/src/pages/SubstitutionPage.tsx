@@ -83,7 +83,7 @@ const SubstitutionPage = () => {
     } catch (error) {
       console.error(error);
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false); // Removed to prevent flash before navigation
     }
   };
 
