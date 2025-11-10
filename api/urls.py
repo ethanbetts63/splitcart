@@ -13,7 +13,6 @@ from .views.frontend_views.cart_optimization_view import CartOptimizationView
 from .views.frontend_views.cart_export_view import DownloadShoppingListView, EmailShoppingListView
 from .views.scheduler_view import SchedulerView
 from .views.frontend_views.postcode_search_view import PostcodeSearchView
-from .views.category_product_list_view import CategoryProductListView
 from .views.frontend_views.primary_category_list_view import PrimaryCategoryListView
 from .views.frontend_views.faq_list_view import FaqListView
 from .views.frontend_views.product_substitute_list_view import ProductSubstituteListView
@@ -54,7 +53,6 @@ urlpatterns = [
     path('gs1/unconfirmed-brands/', GS1UnconfirmedBrandsView.as_view(), name='gs1-unconfirmed-brands'),
     path('brands/<int:brand_id>/sample-barcode/', BrandSampleBarcodeView.as_view(), name='brand-sample-barcode'), # New path
     path('products/', ProductListView.as_view(), name='product-list'),
-    path('products/by-category/', CategoryProductListView.as_view(), name='product-list-by-category'),
     path('categories/primary/', PrimaryCategoryListView.as_view(), name='primary-category-list'),
     path('faqs/', FaqListView.as_view(), name='faq-list'),
     path('products/<int:product_id>/substitutes/', ProductSubstituteListView.as_view(), name='product-substitute-list'),

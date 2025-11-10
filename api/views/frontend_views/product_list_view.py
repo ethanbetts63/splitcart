@@ -1,28 +1,25 @@
-from django.db.models import Q, Case, When, Value, IntegerField
-from django.views.decorators.cache import cache_page # New import
-from django.utils.decorators import method_decorator # New import
+from django.db.models import Q, Case, When, Value, IntegerField, Exists, OuterRef
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework.exceptions import ValidationError
-from products.models import Product
+from products.models import Product, Bargain
 from ...serializers import ProductSerializer
 
-@method_decorator(cache_page(3600), name='dispatch') # Apply cache_page decorator
+@method_decorator(cache_page(3600), name='dispatch')
 class ProductListView(generics.ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = ProductSerializer
 
     def get_queryset(self):
         queryset = Product.objects.all()
-        print(f"Initial queryset count: {queryset.count()}")
 
         store_ids_param = self.request.query_params.get('store_ids')
         search_query = self.request.query_params.get('search', None)
         limit_param = self.request.query_params.get('limit')
-        primary_category_slug = self.request.query_params.get('primary_category_slug', None) # New line
-        print(f"store_ids_param: {store_ids_param}")
+        primary_category_slug = self.request.query_params.get('primary_category_slug', None)
 
-        # New: Require store_ids_param
         if not store_ids_param:
             raise ValidationError({'store_ids': 'This field is required.'})
 
@@ -31,50 +28,39 @@ class ProductListView(generics.ListAPIView):
             queryset = queryset.filter(
                 prices__store__id__in=store_ids
             ).distinct()
-            self.nearby_store_ids = store_ids # Store for serializer context
+            self.nearby_store_ids = store_ids
         except (ValueError, TypeError):
-            # New: Raise ValidationError for invalid store_ids
             raise ValidationError({'store_ids': 'Invalid format. Must be a comma-separated list of integers.'})
 
-        # Filter by primary category slug if provided
         if primary_category_slug:
             queryset = queryset.filter(category__primary_category__slug=primary_category_slug)
 
         if search_query:
             search_terms = search_query.split()
-
-            # Build the filter query
             filter_q = Q()
             for term in search_terms:
                 filter_q |= Q(name__icontains=term)
                 filter_q |= Q(brand__name__icontains=term)
                 filter_q |= Q(size__icontains=term)
-            
             queryset = queryset.filter(filter_q)
 
-            # Build the scoring annotation
             score = Value(0, output_field=IntegerField())
             for term in search_terms:
-                score += Case(
-                    When(name__icontains=term, then=Value(10)),
-                    default=Value(0),
-                    output_field=IntegerField()
-                )
-                score += Case(
-                    When(brand__name__icontains=term, then=Value(5)),
-                    default=Value(0),
-                    output_field=IntegerField()
-                )
-                score += Case(
-                    When(size__icontains=term, then=Value(2)),
-                    default=Value(0),
-                    output_field=IntegerField()
-                )
+                score += Case(When(name__icontains=term, then=Value(10)), default=Value(0), output_field=IntegerField())
+                score += Case(When(brand__name__icontains=term, then=Value(5)), default=Value(0), output_field=IntegerField())
+                score += Case(When(size__icontains=term, then=Value(2)), default=Value(0), output_field=IntegerField())
             
             queryset = queryset.annotate(search_score=score)
+            final_queryset = queryset.order_by('-search_score')
+        
+        elif primary_category_slug:
+            bargain_exists = Bargain.objects.filter(
+                product=OuterRef('pk'),
+                store__id__in=store_ids
+            )
+            queryset = queryset.annotate(is_bargain=Exists(bargain_exists))
+            final_queryset = queryset.order_by('-is_bargain')
             
-            # Order by score, then by name
-            final_queryset = queryset.order_by('-search_score', 'name')
         else:
             final_queryset = queryset
 
@@ -85,7 +71,7 @@ class ProductListView(generics.ListAPIView):
                     limit = 50
                 final_queryset = final_queryset[:limit]
             except (ValueError, TypeError):
-                pass # Ignore invalid limit
+                pass
 
         return final_queryset
 

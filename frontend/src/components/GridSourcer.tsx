@@ -49,7 +49,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
       url = '/api/products/';
       params.set('search', searchTerm);
     } else if (primaryCategorySlug) {
-      url = '/api/products/by-category/';
+      url = '/api/products/';
       params.set('primary_category_slug', primaryCategorySlug);
     }
 
