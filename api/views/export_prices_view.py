@@ -1,6 +1,7 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
-from rest_framework.pagination import CursorPagination # New import
+from rest_framework.pagination import CursorPagination
+from datetime import date # New import
 from products.models import Price
 from api.serializers import PriceExportSerializer
 from api.permissions import IsInternalAPIRequest
@@ -26,6 +27,16 @@ class ExportPricesView(ListAPIView):
         if store_ids_str:
             store_ids = [int(sid) for sid in store_ids_str.split(',')]
             queryset = queryset.filter(store_id__in=store_ids)
+
+        scraped_date_gte_str = self.request.query_params.get('scraped_date_gte', None)
+        if scraped_date_gte_str:
+            try:
+                scraped_date_gte = date.fromisoformat(scraped_date_gte_str)
+                queryset = queryset.filter(scraped_date__gte=scraped_date_gte)
+            except ValueError:
+                # Handle invalid date format gracefully, perhaps log a warning
+                pass # For now, just ignore invalid date filters
+
         return queryset
 
     def list(self, request, *args, **kwargs):

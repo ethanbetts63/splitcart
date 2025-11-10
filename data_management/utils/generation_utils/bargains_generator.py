@@ -3,6 +3,8 @@ import json
 import requests
 from django.conf import settings
 from decimal import Decimal
+from datetime import timedelta
+from django.utils import timezone
 import time
 
 class BargainsGenerator:
@@ -65,7 +67,10 @@ class BargainsGenerator:
         try:
             self.command.stdout.write("Fetching prices for anchor stores...")
             store_ids_str = ','.join(map(str, anchor_store_ids))
-            prices_url = f"{server_url}/api/export/prices/?store_ids={store_ids_str}"
+            
+            freshness_threshold = timezone.now() - timedelta(days=7)
+            prices_url = f"{server_url}/api/export/prices/?store_ids={store_ids_str}&scraped_date_gte={freshness_threshold.date().isoformat()}"
+            
             prices = self._fetch_paginated_data(prices_url, headers, "prices")
 
         except requests.exceptions.RequestException as e:
