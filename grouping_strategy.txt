@@ -29,7 +29,7 @@ This phase ensures that existing groups remain accurate.
     *   **If they match:** The `Member` is confirmed as healthy.
         *   To conserve database space, all `Price` objects for the healthy `Member` are then deleted, as they are now considered redundant copies of the `Anchor`'s prices.
     *   **If they do not match:** The `Member` is ejected from the `Group` and placed into a new `Group` of one, becoming its own `Anchor`.
-4.  A special case exists for stale data: If an `Internal Comparison` fails, but the `Anchor`'s price data is not "Current", the `Member` is **not** ejected. Instead, the `Anchor` store is added to a high-priority queue to be re-scraped. This prevents unfair ejections based on out-of-date information.
+4.  A special case exists for stale data: Before checking any members, the system first verifies if the `Anchor` itself has "Current Pricing". If it does not, the entire group is skipped for the current run, and the `Anchor` store is flagged for a high-priority re-scrape. This prevents any wasteful comparisons against out-of-date anchor data.
 
 **Phase 2: Inter-Group Merging**
 
@@ -38,6 +38,14 @@ This phase grows the groups by finding new matches.
 1.  After the maintenance phase is complete, the system finds all `Groups` whose `Anchor` has "Current Pricing".
 2.  An **Intergroup Comparison** is performed, comparing every `Anchor` against every other `Anchor`.
 3.  If two `Anchor`s are found to have matching prices, their `Groups` are merged. The `Group` with fewer members is merged into the one with more members. When this happens, all `Price` objects for all stores in the smaller group are deleted. The old, smaller group is then deactivated.
+
+#### 4. Caching for Performance
+
+To prevent redundant, expensive price comparisons on every run, the system utilizes two caching mechanisms, both with a 7-day cooldown period.
+
+*   **Internal Health Check Cache:** When a `Member` store is successfully health-checked against its `Anchor` and confirmed to be a match, it is recorded in a cache. For the next 7 days, the system will automatically skip health checks for this specific member, assuming it remains healthy.
+
+*   **Inter-Group Comparison Cache:** When two `Anchor` stores are compared and found to **not** be a match, this non-match is recorded in a separate cache. For the next 7 days, the system will automatically skip comparing this specific pair of anchors, focusing only on pairs that have not been recently checked.
 
 C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\internal_group_health_checker.py
 C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\group_maintenance_orchestrator.py
