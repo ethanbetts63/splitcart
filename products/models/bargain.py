@@ -15,4 +15,4 @@ class Bargain(models.Model):
         unique_together = ('product', 'store')
 
     def __str__(self):
-        return f"{self.product.name} at {self.store.name}"
+        return f"{self.product.name} at {self.store.store_name}"
