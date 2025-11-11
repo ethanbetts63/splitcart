@@ -225,10 +225,12 @@ class UpdateOrchestrator:
                     sizes=product_details.get('sizes', []),
                     url=product_details.get('url'),
                 )
-                if company_name.lower() == 'coles' and not product_details.get('barcode'):
-                    new_product.has_no_coles_barcode = True
                 if company_name.lower() == 'aldi':
                     new_product.aldi_image_url = product_details.get('aldi_image_url')
+                
+                # If the scraper explicitly flags that a Coles product has no barcode, set the field.
+                if product_details.get('has_no_coles_barcode'):
+                    new_product.has_no_coles_barcode = True
 
                 product_cache[key] = new_product
                 unit_of_work.add_new_product(new_product, product_details, metadata)

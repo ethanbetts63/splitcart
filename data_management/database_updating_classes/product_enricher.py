@@ -41,10 +41,14 @@ class ProductEnricher:
             if incoming_aldi_image_url and existing_product.aldi_image_url != incoming_aldi_image_url:
                 existing_product.aldi_image_url = incoming_aldi_image_url
                 updated = True
-
-        if company_name.lower() == 'coles' and not product_details.get('barcode') and not existing_product.has_no_coles_barcode:
+        
+        # If the scraper explicitly flags that a Coles product has no barcode, update the field.
+        if product_details.get('has_no_coles_barcode') and not existing_product.has_no_coles_barcode:
             existing_product.has_no_coles_barcode = True
             updated = True
+
+
+
 
         # Update brand_name_company_pairs
         raw_brand_name = product_details.get('brand')

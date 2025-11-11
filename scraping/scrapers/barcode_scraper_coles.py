@@ -225,6 +225,7 @@ class ColesBarcodeScraper(BaseProductScraper):
             product_data['barcode'] = cleaned_barcode
         else:
             product_data['barcode'] = None # Mark as processed
+            product_data['has_no_coles_barcode'] = True
 
         # We return the full original item structure, but with the updated product data
         original_item['product'] = product_data
