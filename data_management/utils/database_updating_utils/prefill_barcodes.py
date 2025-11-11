@@ -45,21 +45,35 @@ def prefill_barcodes_from_api(product_list: list, command=None, dev: bool = Fals
         'Content-Type': 'application/json',
         'X-Internal-API-Key': api_key,
     }
-    payload = {"skus": list(skus_to_lookup)}
+
+    # Batch SKUs to avoid long running queries and timeouts
+    batch_size = 200
+    sku_list = list(skus_to_lookup)
+    api_response_map = {}
 
     if command:
-        command.stdout.write(f"  - Querying API with {len(skus_to_lookup)} unique product SKUs.")
+        command.stdout.write(f"  - Querying API with {len(sku_list)} unique product SKUs in batches of {batch_size}...")
 
-    try:
-        response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=30)
-        response.raise_for_status()
-        api_response_map = response.json()
+    for i in range(0, len(sku_list), batch_size):
+        batch = sku_list[i:i + batch_size]
+        payload = {"skus": batch}
+        
         if command:
-            command.stdout.write(f"  - API returned data for {len(api_response_map)} products.")
-    except requests.exceptions.RequestException as e:
-        if command:
-            command.stdout.write(command.style.ERROR(f"  - API call for barcodes failed: {e}"))
-        return product_list # Return original list on failure
+            command.stdout.write(f"    - Sending batch {i//batch_size + 1}/{(len(sku_list) + batch_size - 1)//batch_size} ({len(batch)} SKUs)")
+
+        try:
+            # Increased timeout to 60 seconds for more complex queries
+            response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=60)
+            response.raise_for_status()
+            api_response_map.update(response.json())
+        except requests.exceptions.RequestException as e:
+            if command:
+                command.stdout.write(command.style.ERROR(f"    - API call for batch failed: {e}"))
+            # Continue with other batches
+            continue
+    
+    if command:
+        command.stdout.write(f"  - API returned data for a total of {len(api_response_map)} products.")
 
     # Step 3: Update the product list with the data received from the API.
     prefilled_count = 0
