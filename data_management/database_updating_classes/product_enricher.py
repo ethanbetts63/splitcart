@@ -28,8 +28,12 @@ class ProductEnricher:
                 existing_product.sizes = combined_sizes
                 updated = True
 
+        # If a barcode is found for a product that didn't have one, add it.
+        # Also, explicitly set has_no_coles_barcode to False, in case it was previously flagged.
         if not existing_product.barcode and product_details.get('barcode'):
             existing_product.barcode = product_details.get('barcode')
+            if existing_product.has_no_coles_barcode:
+                existing_product.has_no_coles_barcode = False
             updated = True
         if not existing_product.url and product_details.get('url'):
             existing_product.url = product_details.get('url')

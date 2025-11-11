@@ -50,23 +50,27 @@ def prefill_barcodes_from_api(product_list: list, command=None, dev: bool = Fals
     try:
         response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=30)
         response.raise_for_status()
-        barcode_map = response.json()
+        api_response_map = response.json()
         if command:
-            command.stdout.write(f"  - API returned {len(barcode_map)} barcodes.")
+            command.stdout.write(f"  - API returned data for {len(api_response_map)} products.")
     except requests.exceptions.RequestException as e:
         if command:
             command.stdout.write(command.style.ERROR(f"  - API call for barcodes failed: {e}"))
         return product_list # Return original list on failure
 
-    # Step 3: Update the product list with the barcodes received from the API.
+    # Step 3: Update the product list with the data received from the API.
     prefilled_count = 0
     for product_data in products_to_update:
         incoming_normalized_string = product_data.get('normalized_name_brand_size')
         canonical_name = incoming_normalized_string
         
-        if canonical_name in barcode_map:
-            product_data['barcode'] = barcode_map[canonical_name]
-            prefilled_count += 1
+        if canonical_name in api_response_map:
+            product_api_data = api_response_map[canonical_name]
+            if product_api_data.get('barcode'):
+                product_data['barcode'] = product_api_data['barcode']
+                prefilled_count += 1
+            if product_api_data.get('has_no_coles_barcode'):
+                product_data['has_no_coles_barcode'] = True
 
     if command:
         command.stdout.write(command.style.SUCCESS(f"  - Prefilled {prefilled_count} barcodes from API."))

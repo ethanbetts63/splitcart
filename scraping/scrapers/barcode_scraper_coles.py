@@ -140,8 +140,8 @@ class ColesBarcodeScraper(BaseProductScraper):
                 self.jsonl_writer.write_product(found_products[sku]['product'], found_products[sku].get('metadata', {}))
                 continue
 
-            # If it has a barcode or no URL, it doesn't need scraping.
-            if product_info.get('barcode') or not product_info.get('url'):
+            # If it has a barcode, no URL, or is already flagged as having no barcode, it doesn't need scraping.
+            if product_info.get('barcode') or not product_info.get('url') or product_info.get('has_no_coles_barcode'):
                 self.jsonl_writer.write_product(product_info, line_data.get('metadata', {}))
                 # Also write to progress file to mark it as done
                 with open(self.progress_file_path, 'a') as progress_f:

@@ -17,11 +17,18 @@ class ProductBarcodeView(BaseAPIView):
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON."}, status=400)
 
-        # 2. Query the database
-        # We use __in to perform an efficient bulk lookup.
-        products = Product.objects.filter(normalized_name_brand_size__in=names_to_lookup).only('normalized_name_brand_size', 'barcode')
+        # 2. Query the database for products matching the names
+        products = Product.objects.filter(
+            normalized_name_brand_size__in=names_to_lookup
+        ).only('normalized_name_brand_size', 'barcode', 'has_no_coles_barcode')
 
-        # 3. Construct the response dictionary
-        barcode_map = {p.normalized_name_brand_size: p.barcode for p in products if p.barcode}
+        # 3. Construct the response dictionary with barcode and flag
+        response_map = {
+            p.normalized_name_brand_size: {
+                'barcode': p.barcode,
+                'has_no_coles_barcode': p.has_no_coles_barcode
+            }
+            for p in products
+        }
 
-        return JsonResponse(barcode_map)
+        return JsonResponse(response_map)
