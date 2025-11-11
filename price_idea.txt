@@ -1,0 +1,92 @@
+# Proposal 1: Change the Price Model to use a ManyToManyField for Stores
+
+This document outlines a proposal to change the data model for prices and analyzes its potential impact.
+
+## Overview of the Idea
+
+The proposal is to refactor the `Price` model to normalize the database and reduce data redundancy. The core idea is to have a single `Price` instance represent the same price for a product across multiple stores.
+
+This would involve two key changes:
+1.  Change the `store` field on the `Price` model from a `ForeignKey` to a `ManyToManyField`.
+2.  Change the uniqueness constraint from `('product', 'store')` to `('product', 'price_hash')`, where `price_hash` is a hash of the core price components (e.g., `price`, `was_price`, `unit_price`, `is_on_special`).
+
+The goal is that if two stores share the exact same price and promotional details for a product, they would both link to the same single `Price` instance, rather than having two separate, identical rows in the database.
+
+## Pros
+
+*   **Database Normalization & Reduced Redundancy:** This is the primary benefit. For commonly priced items, this would reduce the total number of rows in the `price` table, potentially saving a significant amount of database storage over time.
+*   **Data Insight:** It could make it easier to run queries to see which stores share exact price points for a given product.
+
+## Cons & Complications
+
+Despite the benefit of data normalization, this change introduces significant complexity and has major drawbacks for this specific application.
+
+**1. Complexity in the Data Update Process**
+
+The current update process is highly optimized around the simple `unique_together = ('product', 'store')` constraint, which allows for efficient bulk "upsert" operations. The proposed model would make this process much more complex and less performant.
+
+*   **Finding Prices:** To update a price, the system would first have to search for an existing `Price` object that matches all the relevant fields (price, was_price, etc.), rather than just looking up a product-store pair.
+*   **Managing Relationships:** If a matching price is found, the store must be added to the new `Price` object's `ManyToManyField`. Critically, the system must also find the *old* `Price` object for that store and *remove* the relationship. If the store was the last one associated with that old price, the old `Price` object would then need to be deleted. This multi-step process (search, associate, de-associate, conditionally delete) is far more complex than the current bulk update.
+
+**2. Negative Impact on Query Performance**
+
+This is a critical issue. The most common and important query in the application is "What is the price for Product X at Store Y?". The proposed model makes this simple question much harder and less performant to answer.
+
+*   **Loss of Direct Joins:** The backend could no longer use a simple, fast database `JOIN` to get prices for a user's selected stores.
+*   **Complex Lookups:** Instead, it would have to fetch a product, then get *all* its possible prices, then for each price, look up its associated stores in the many-to-many table, and finally filter that list in the application code to find the relevant price. This moves filtering from the highly optimized database layer to the less efficient application layer and can lead to "N+1 query" performance problems.
+*   **Slower Application:** Key features like the search results page and the cart optimization engine would become slower because they rely heavily on fetching prices for many products across many stores simultaneously.
+
+**3. Ambiguity of Price Attributes**
+
+Fields on the `Price` model like `scraped_date` and `source` would lose their clear meaning. A single `Price` object could be linked to stores that were scraped on different dates. This makes the data less reliable and harder to reason about.
+
+## Conclusion for Proposal 1
+
+While the proposal is valid from a pure database normalization perspective, it is not a good fit for this application's specific needs. The performance degradation and added complexity on both the data update and query sides far outweigh the benefits of reduced data storage. The current, simpler data model is pragmatic and highly optimized for the application's most critical functions. It is recommended to keep the existing model.
+
+---
+
+# Proposal 2: Hierarchical Price Storage ("Groups of Groups")
+
+This proposal builds on the existing store grouping system to create a hierarchical structure for storing prices, aiming for even greater data reduction.
+
+## Overview of the Idea
+
+1.  **Identify Super-Groups:** After creating the standard ~98% similarity store groups ("Standard Groups"), run another process to find clusters of these groups that share a lower, but still significant, price similarity (e.g., 80%). This would form a "Super-Group".
+2.  **Hierarchical Price Storage:** For a "Super-Group," store the common 80% of `Price` objects only once, at the Super-Group level. Each Standard Group within it would then only need to store the remaining 20% of prices that are unique to it.
+3.  **The Goal:** To achieve maximum data reduction by not repeating the common 80% of price data across multiple Standard Groups.
+
+## Pros
+
+*   **Maximum Data Reduction:** This is the primary advantage. For a company with many stores that have broadly similar pricing, this could result in massive database storage savings, far beyond what the current system already provides.
+*   **Deeper Pricing Insights:** The model would create a new data layer that explicitly shows which clusters of stores follow similar, but not identical, pricing strategies.
+
+## Cons & Complications
+
+This is a very creative idea for data compression, but the complexity it introduces is substantial and would likely have a negative impact on the application in critical ways.
+
+**1. Massive Increase in Query Complexity (The Biggest Issue)**
+
+Reconstructing the full price list for a single store would become a complex, multi-step, hierarchical process that would be much slower than the current model. To get all prices for a given store, the application would need to:
+1.  Find the "Standard Group" the store belongs to and identify its anchor.
+2.  Find the "Super-Group" that the Standard Group belongs to.
+3.  Fetch the 80% of prices stored at the "Super-Group" level.
+4.  Fetch the unique 20% of prices stored with the "Standard Group's" anchor.
+5.  Combine these two sets of prices in the application code to get the complete list.
+
+This hierarchical fetching would need to be implemented everywhere prices are used (the search page, cart optimizer, etc.), making the code much more complex and almost certainly slower.
+
+**2. Extreme Complexity in Group Maintenance**
+
+The logic for creating and maintaining this hierarchy would be an order of magnitude more complex than the current system.
+*   **Finding Super-Groups:** A new, computationally expensive process would be needed to compare every group's anchor against every other group's anchor to find the 80% similarity clusters.
+*   **Constant Re-evaluation:** The set of products that make up the "common 80%" is not static. It would require a constant, heavy "diffing" process to determine which prices should be stored at the Super-Group level versus the Standard Group level.
+*   **Group Migrations:** If a Standard Group's pricing changes enough that it needs to move to a different Super-Group, the system would have to perform a very complex operation to detach it, calculate the new set of unique prices against the new Super-Group, and re-assign all the price relationships.
+
+**3. Brittle and Abstract System**
+
+The model is highly abstract. The simple logic of "a store's prices are its anchor's prices" would be replaced by "a store's prices are a combination of its Super-Group's prices plus its anchor's unique prices." This makes the system much harder for developers to reason about, more difficult to debug, and more prone to subtle bugs.
+
+## Conclusion for Proposal 2
+
+While this is a powerful idea for data compression, it is likely a premature optimization for this application. The current grouping strategy already provides an excellent balance of significant data reduction while keeping the query model simple and fast. The performance risks and engineering complexity of a hierarchical "group of groups" model are very high and would likely outweigh the benefits of the additional storage savings.
