@@ -99,6 +99,7 @@ from django.db.models import Q
 def prefill_barcodes_from_db(product_list: list, command=None) -> list:
     """
     Enriches a list of product dictionaries with barcode info by directly querying the database.
+    Uses a brute-force Python filtering method because direct JSON lookups are failing.
     """
     if command:
         command.stdout.write(f"  - Prefilling barcodes via direct DB lookup for {len(product_list)} products...")
@@ -113,14 +114,13 @@ def prefill_barcodes_from_db(product_list: list, command=None) -> list:
                 continue
             
             try:
-                # Use SKU as an integer for consistent lookups, matching the DB schema.
                 sku_int = int(sku)
                 skus_to_lookup.add(sku_int)
                 if sku_int not in products_by_sku:
                     products_by_sku[sku_int] = []
                 products_by_sku[sku_int].append(product_data)
             except (ValueError, TypeError):
-                continue # Skip SKUs that cannot be converted to int
+                continue
 
     if not skus_to_lookup:
         if command:
@@ -130,22 +130,18 @@ def prefill_barcodes_from_db(product_list: list, command=None) -> list:
     if command:
         command.stdout.write(f"  - Found {len(skus_to_lookup)} unique SKUs in the file to look up.")
 
-    # Step 2: Query the database for products matching the SKUs.
-    # NOTE: Using Q objects with `contains` is less performant than `overlap` for large lists,
-    # but is used here to ensure correctness due to issues with `overlap` on JSONField integers.
-    query = Q()
-    for sku_val in skus_to_lookup:
-        query |= Q(company_skus__coles__contains=sku_val)
-    
-    matching_products = Product.objects.filter(query).only('company_skus', 'barcode', 'has_no_coles_barcode')
-
+    # Step 2: Broadly query all products with a 'coles' key.
+    all_coles_products = Product.objects.filter(company_skus__has_key='coles')
     if command:
-        command.stdout.write(f"  - Found {matching_products.count()} matching products in DB.")
+        command.stdout.write(f"  - Found {all_coles_products.count()} products with a 'coles' key in DB. Filtering in Python...")
 
-    # Step 3: Create a map from SKU to barcode information.
+    # Step 3: Create a map from SKU to barcode information by iterating in Python.
     sku_to_barcode_map = {}
-    for p in matching_products:
+    for p in all_coles_products.iterator():
         product_coles_skus = p.company_skus.get('coles', [])
+        if not isinstance(product_coles_skus, list):
+            product_coles_skus = [product_coles_skus]
+            
         for sku in product_coles_skus:
             try:
                 sku_int = int(sku)
@@ -163,7 +159,7 @@ def prefill_barcodes_from_db(product_list: list, command=None) -> list:
         if sku in products_by_sku:
             for product_data in products_by_sku[sku]:
                 if product_db_data.get('barcode'):
-                    if not product_data.get('barcode'): # Check if barcode is not already set
+                    if not product_data.get('barcode'):
                         product_data['barcode'] = product_db_data['barcode']
                         prefilled_count += 1
                 if product_db_data.get('has_no_coles_barcode'):
