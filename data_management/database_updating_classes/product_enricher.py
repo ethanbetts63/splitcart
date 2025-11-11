@@ -47,9 +47,10 @@ class ProductEnricher:
                 updated = True
         
         # If the scraper explicitly flags that a Coles product has no barcode, update the field.
-        if product_details.get('has_no_coles_barcode') and not existing_product.has_no_coles_barcode:
-            existing_product.has_no_coles_barcode = True
-            updated = True
+        if product_details.get('has_no_coles_barcode'):
+            if not existing_product.has_no_coles_barcode:
+                existing_product.has_no_coles_barcode = True
+                updated = True
 
 
 
