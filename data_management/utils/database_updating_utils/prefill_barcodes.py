@@ -91,3 +91,81 @@ def prefill_barcodes_from_api(product_list: list, command=None, dev: bool = Fals
         command.stdout.write(command.style.SUCCESS(f"  - Prefilled {prefilled_count} barcodes from API."))
 
     return product_list
+
+
+from products.models import Product
+
+def prefill_barcodes_from_db(product_list: list, command=None) -> list:
+    """
+    Enriches a list of product dictionaries with barcode info by directly querying the database.
+    """
+    if command:
+        command.stdout.write(f"  - Prefilling barcodes via direct DB lookup for {len(product_list)} products...")
+
+    # Step 1: Identify products that need a lookup (have a SKU but no barcode).
+    skus_to_lookup = set()
+    products_by_sku = {}
+    for product_data in product_list:
+        if not product_data.get('barcode'):
+            sku = product_data.get('sku')
+            if not sku:
+                continue
+            
+            try:
+                # Use SKU as an integer for consistent lookups, matching the DB schema.
+                sku_int = int(sku)
+                skus_to_lookup.add(sku_int)
+                if sku_int not in products_by_sku:
+                    products_by_sku[sku_int] = []
+                products_by_sku[sku_int].append(product_data)
+            except (ValueError, TypeError):
+                continue # Skip SKUs that cannot be converted to int
+
+    if not skus_to_lookup:
+        if command:
+            command.stdout.write("  - No products required barcode prefilling.")
+        return product_list
+
+    if command:
+        command.stdout.write(f"  - Found {len(skus_to_lookup)} unique SKUs in the file to look up.")
+
+    # Step 2: Query the database for products matching the SKUs.
+    # Use the efficient __overlap lookup with a list of integers.
+    matching_products = Product.objects.filter(
+        company_skus__coles__overlap=list(skus_to_lookup)
+    ).only('company_skus', 'barcode', 'has_no_coles_barcode')
+
+    if command:
+        command.stdout.write(f"  - Found {matching_products.count()} matching products in DB.")
+
+    # Step 3: Create a map from SKU to barcode information.
+    sku_to_barcode_map = {}
+    for p in matching_products:
+        product_coles_skus = p.company_skus.get('coles', [])
+        for sku in product_coles_skus:
+            try:
+                sku_int = int(sku)
+                if sku_int in skus_to_lookup:
+                    sku_to_barcode_map[sku_int] = {
+                        'barcode': p.barcode,
+                        'has_no_coles_barcode': p.has_no_coles_barcode
+                    }
+            except (ValueError, TypeError):
+                continue
+
+    # Step 4: Update the product list with the data received from the database.
+    prefilled_count = 0
+    for sku, product_db_data in sku_to_barcode_map.items():
+        if sku in products_by_sku:
+            for product_data in products_by_sku[sku]:
+                if product_db_data.get('barcode'):
+                    if not product_data.get('barcode'): # Check if barcode is not already set
+                        product_data['barcode'] = product_db_data['barcode']
+                        prefilled_count += 1
+                if product_db_data.get('has_no_coles_barcode'):
+                    product_data['has_no_coles_barcode'] = True
+
+    if command:
+        command.stdout.write(command.style.SUCCESS(f"  - Successfully prefilled {prefilled_count} barcodes from DB."))
+
+    return product_list

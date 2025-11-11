@@ -5,7 +5,7 @@ try:
 except (ImportError, SyntaxError):
     BRAND_NAME_TRANSLATIONS = {}
 try:
-    from data_management.data.product_normalized_name_brand_size_translation_table import PRODUCT_NAME_TRANSLATIONS
+    from data_management.data.archive.product_normalized_name_brand_size_translation_table import PRODUCT_NAME_TRANSLATIONS
 except (ImportError, SyntaxError):
     PRODUCT_NAME_TRANSLATIONS = {}
 
