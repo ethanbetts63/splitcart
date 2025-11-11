@@ -94,6 +94,7 @@ def prefill_barcodes_from_api(product_list: list, command=None, dev: bool = Fals
 
 
 from products.models import Product
+from django.db.models import Q
 
 def prefill_barcodes_from_db(product_list: list, command=None) -> list:
     """
@@ -130,10 +131,13 @@ def prefill_barcodes_from_db(product_list: list, command=None) -> list:
         command.stdout.write(f"  - Found {len(skus_to_lookup)} unique SKUs in the file to look up.")
 
     # Step 2: Query the database for products matching the SKUs.
-    # Use the efficient __overlap lookup with a list of integers.
-    matching_products = Product.objects.filter(
-        company_skus__coles__overlap=list(skus_to_lookup)
-    ).only('company_skus', 'barcode', 'has_no_coles_barcode')
+    # NOTE: Using Q objects with `contains` is less performant than `overlap` for large lists,
+    # but is used here to ensure correctness due to issues with `overlap` on JSONField integers.
+    query = Q()
+    for sku_val in skus_to_lookup:
+        query |= Q(company_skus__coles__contains=sku_val)
+    
+    matching_products = Product.objects.filter(query).only('company_skus', 'barcode', 'has_no_coles_barcode')
 
     if command:
         command.stdout.write(f"  - Found {matching_products.count()} matching products in DB.")
