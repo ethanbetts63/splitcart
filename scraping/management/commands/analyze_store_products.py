@@ -36,7 +36,8 @@ class Command(BaseCommand):
         field_counts = defaultdict(int)
         
         # Get all fields from the Product model
-        product_fields = [f.name for f in Product._meta.get_fields() if not f.is_relation or f.one_to_one or (f.many_to_one and f.related_name)]
+        product_fields = [f.name for f in Product._meta.fields]
+        product_fields += [f.name for f in Product._meta.many_to_many]
 
         for product in products.iterator():
             for field_name in product_fields:
@@ -44,7 +45,7 @@ class Command(BaseCommand):
                     value = getattr(product, field_name)
                     
                     # Check for non-empty/non-null values
-                    if value is not None and value != '' and value != [] and value != {{}}:
+                    if value is not None and value != '' and value != [] and value != {}:
                         # For related managers (like ManyToMany), we need to check existence
                         if hasattr(value, 'exists'):
                             if value.exists():
