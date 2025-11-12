@@ -2,7 +2,7 @@ from collections import defaultdict
 from django.db.models import Count
 from companies.models import Company
 from products.models import Product, Price
-from .product_enricher import ProductEnricher
+from ..product_enricher import ProductEnricher
 
 class SkuReconciler:
     def __init__(self, command, unit_of_work):

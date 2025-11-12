@@ -3,7 +3,7 @@ from products.models import Product, Price
 from companies.models import Company
 from ...translation_table_generators.brand_translation_table_generator import BrandTranslationTableGenerator
 from ...translation_table_generators.product_translation_table_generator import ProductTranslationTableGenerator
-from ..sku_reconciler import SkuReconciler
+from .sku_reconciler import SkuReconciler
 from ..product_reconciler import ProductReconciler
 from ..brand_reconciler import BrandReconciler
 from .category_cycle_manager import CategoryCycleManager
