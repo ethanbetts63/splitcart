@@ -20,11 +20,12 @@ We are moving away from a single transaction per file. Instead, each Manager is 
 ### 1. `UpdateOrchestrator` (The Conductor and State Holder)
 This is the main entry point for the update process.
 - **Responsibilities**:
-    - Initializes the shared global caches (brands, products, etc.) and a container for price caches.
-    - Instantiates the domain-specific managers, giving them access to the shared caches.
-    - For each file, it calls the managers in the correct order of dependency.
-    - **Crucially, before calling the `PriceManager`, it prepares a fresh, store-specific, two-level price cache to ensure the `PriceManager` has an up-to-date view of the database.**
-    - Provides methods for the managers to update the shared caches after they have performed database writes.
+    - Initializes the shared global caches and a container for price caches.
+    - Instantiates the domain-specific managers.
+    - For each file, it first calls a private method to perform critical validation (e.g., checking scrape date and product count) before proceeding.
+    - If a file is valid, it calls the managers in the correct order of dependency.
+    - Before calling the `PriceManager`, it prepares a fresh, store-specific price cache.
+    - Provides methods for the managers to update the shared caches.
 
 ### 2. `FileReader` (The Parser)
 A simple utility class with one job:
