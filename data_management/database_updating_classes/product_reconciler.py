@@ -49,10 +49,10 @@ class ProductReconciler(BaseReconciler):
                 'source': price_to_move.source,
             }
             
-            # Perform an upsert for the canonical product and the store group
+            # Perform an upsert for the canonical product and the store
             Price.objects.update_or_create(
                 product=canonical_item,
-                store_group=price_to_move.store_group,
+                store=price_to_move.store,
                 defaults=price_data
             )
             
