@@ -32,20 +32,22 @@ A simple utility class with one job:
 ### 3. `BrandManager` (The Brand Service)
 A self-contained service for handling all `ProductBrand` logic.
 - **Input**: Raw product data from the `FileReader` and access to the shared caches.
-- **Job**:
-    - Identifies all unique brands from the input data.
-    - Compares them against the shared brand cache to find new or updated brands.
-    - Performs its own database operations (`bulk_create`, `bulk_update`) for brands within its own transaction.
-    - After committing to the database, it updates the shared brand cache via a method on the `UpdateOrchestrator`.
+- **Job (Step-by-Step)**:
+    1.  **Identify New Brands**: Iterates through the raw data, extracts the `normalized_brand` for each product, and collects any brand names not present in the shared `normalized_brand_names` cache into a temporary set.
+    2.  **Prepare Objects**: If new brand names were found, it loops through the set and creates a list of unsaved `ProductBrand` model instances.
+    3.  **Persist to DB**: It performs a `ProductBrand.objects.bulk_create()` with the list of new objects, saving them all to the database in a single, atomic transaction.
+    4.  **Update Cache**: After creation, it re-fetches the newly created brands from the database to get their database-assigned IDs. It then calls the `cache_updater` from the `UpdateOrchestrator` to add these complete objects to the shared `normalized_brand_names` cache.
 
 ### 4. `ProductManager` (The Product Service)
 A self-contained service for handling all `Product` logic.
 - **Input**: Raw product data and access to the shared caches (which now include any new brands from the `BrandManager`).
-- **Job**:
-    - Contains the logic for resolving, enriching, and mapping product data (conceptually, it replaces the old `Resolver`, `Enricher`, and `Mapper`).
-    - Identifies products to be created and updated.
-    - Performs its own database operations (`bulk_create`, `bulk_update`) for products within its own transaction.
-    - After committing, it updates the shared product caches.
+- **Job (Step-by-Step)**:
+    1.  **Resolve Products**: Iterates through the raw data and uses a 3-tier matching logic (barcode -> SKU -> normalized string) against the shared product caches to sort all items into internal "create" and "update" lists.
+    2.  **Prepare Objects**: It processes both lists to create the final objects for the database.
+        - For the "create" list, it maps the raw dictionaries to new, unsaved `Product` instances, ensuring to link the `brand` by looking up the brand object in the now-complete shared brand cache.
+        - For the "update" list, it runs enrichment logic on each `(existing_product, new_data)` pair, modifying the `existing_product` object in memory and keeping only those that have actually changed.
+    3.  **Persist to DB**: It performs `Product.objects.bulk_create()` and `Product.objects.bulk_update()` for the prepared lists of objects, all within a single, atomic transaction.
+    4.  **Update Cache**: After the transaction, it re-fetches the newly created products to get their IDs and then updates all the shared product caches (`products_by_barcode`, `products_by_norm_string`, etc.) with the new and updated product information.
 
 ### 5. `PriceManager` (Future Service)
 A future service that will follow the same pattern. It will be called after the `ProductManager` and will use the updated product cache to handle all price creation, updates, and deletions.
