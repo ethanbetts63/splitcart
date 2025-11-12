@@ -148,10 +148,10 @@ class UpdateOrchestrator:
                 except OSError as e:
                     self.command.stderr.write(self.command.style.ERROR(f'Could not delete file {file_path}: {e}'))
 
-        # After processing all files, run post-processing if a UoW was created
-        if unit_of_work:
-            post_processor = PostProcessor(self.command, unit_of_work)
-            post_processor.run()
+        # After processing all files, run post-processing.
+        # The PostProcessor now creates its own UnitOfWork for reconciliation tasks.
+        post_processor = PostProcessor(self.command)
+        post_processor.run()
 
         self.command.stdout.write(self.command.style.SUCCESS("-- Orchestrator finished --"))
 
