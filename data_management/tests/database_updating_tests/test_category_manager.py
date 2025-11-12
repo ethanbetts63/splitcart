@@ -1,7 +1,7 @@
 from django.test import TestCase
 from unittest.mock import Mock, patch
 
-from data_management.database_updating_classes.category_manager import CategoryManager
+from data_management.database_updating_classes.product_updating.category_manager import CategoryManager
 from companies.models import Company, Category
 from products.models import Product
 

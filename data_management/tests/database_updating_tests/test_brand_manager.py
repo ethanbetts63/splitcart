@@ -1,7 +1,7 @@
 from django.test import TestCase
 from unittest.mock import Mock
 
-from data_management.database_updating_classes.brand_manager import BrandManager
+from data_management.database_updating_classes.product_updating.brand_manager import BrandManager
 from products.models import ProductBrand
 from products.tests.test_helpers.model_factories import ProductBrandFactory
 

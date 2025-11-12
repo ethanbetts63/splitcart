@@ -5,11 +5,11 @@ from data_management.utils.database_updating_utils.load_db_from_archive import l
 from data_management.database_updating_classes.update_orchestrator import UpdateOrchestrator
 from data_management.database_updating_classes.prefix_update_orchestrator import PrefixUpdateOrchestrator
 from data_management.database_updating_classes.discovery_update_orchestrator import DiscoveryUpdateOrchestrator
-from data_management.database_updating_classes.category_link_update_orchestrator import CategoryLinkUpdateOrchestrator                  
+from data_management.database_updating_classes.product_updating.category_link_update_orchestrator import CategoryLinkUpdateOrchestrator                  
 from data_management.database_updating_classes.substitution_update_orchestrator import SubstitutionUpdateOrchestrator
 from data_management.database_updating_classes.bargain_update_orchestrator import BargainUpdateOrchestrator
 from data_management.database_updating_classes.substitution_update_orchestrator import SubstitutionUpdateOrchestrator
-from data_management.database_updating_classes.group_maintenance_orchestrator import GroupMaintenanceOrchestrator
+from data_management.database_updating_classes.group_maintanance.group_maintenance_orchestrator import GroupMaintenanceOrchestrator
 class Command(BaseCommand):
     help = 'Updates the database with data from various sources.'
 

@@ -5,12 +5,12 @@ from products.models import Product, Price
 from companies.models import Company, Store
 from django.core.cache import cache
 from django.utils import timezone
-from data_management.database_updating_classes.product_resolver import ProductResolver
+from data_management.database_updating_classes.product_updating.product_resolver import ProductResolver
 from data_management.database_updating_classes.unit_of_work import UnitOfWork
 from data_management.database_updating_classes.variation_manager import VariationManager
-from data_management.database_updating_classes.brand_manager import BrandManager
-from data_management.database_updating_classes.post_processor import PostProcessor
-from data_management.database_updating_classes.product_enricher import ProductEnricher
+from data_management.database_updating_classes.product_updating.brand_manager import BrandManager
+from data_management.database_updating_classes.product_updating.post_processing.post_processor import PostProcessor
+from data_management.database_updating_classes.product_updating.product_enricher import ProductEnricher
 
 class UpdateOrchestrator:
     def __init__(self, command, inbox_path):

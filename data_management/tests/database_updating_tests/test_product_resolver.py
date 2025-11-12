@@ -1,7 +1,7 @@
 from django.test import TestCase
 from unittest.mock import Mock
 
-from data_management.database_updating_classes.product_resolver import ProductResolver
+from data_management.database_updating_classes.product_updating.product_resolver import ProductResolver
 from products.models import Product, Price
 from companies.models import Store, Company
 

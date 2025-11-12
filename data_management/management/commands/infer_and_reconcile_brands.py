@@ -1,7 +1,7 @@
 import time
 from django.core.management.base import BaseCommand
 from products.models import Product, ProductBrand
-from data_management.database_updating_classes.product_translation_table_generator import ProductTranslationTableGenerator
+from data_management.database_updating_classes.translation_table_generators.product_translation_table_generator import ProductTranslationTableGenerator
 
 def find_longest_common_prefix(strs):
     if not strs:
