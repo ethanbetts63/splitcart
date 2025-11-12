@@ -70,7 +70,6 @@ class PriceManager:
                 'per_unit_price_string': product_dict.get('per_unit_price_string'),
                 'is_on_special': product_dict.get('is_on_special', False),
                 'price_hash': current_price_hash,
-                'source': 'direct_scrape' # Assuming direct scrape for now
             }
 
             # Determine if create or update
@@ -114,7 +113,7 @@ class PriceManager:
                     update_fields = [
                         'scraped_date', 'price', 'was_price', 'unit_price',
                         'unit_of_measure', 'per_unit_price_string', 'is_on_special',
-                        'price_hash', 'source'
+                        'price_hash'
                     ]
                     Price.objects.bulk_update(prices_to_update, update_fields, batch_size=500)
             

@@ -4,11 +4,12 @@ from django.utils import timezone
 from django.db.models import Max
 from django.conf import settings
 from products.models import Product, ProductBrand, Price
-from companies.models import Store
+from companies.models import Store, Company, Category
 from .file_reader import FileReader
 from .brand_manager import BrandManager
 from .product_manager import ProductManager
-from .price_manager import PriceManager # Import PriceManager
+from .price_manager import PriceManager
+from .category_manager import CategoryManager
 
 class UpdateOrchestrator:
     """
@@ -24,10 +25,12 @@ class UpdateOrchestrator:
         """Builds the initial in-memory caches for all relevant models."""
         self.command.stdout.write("--- Building Global Caches ---")
         
+        # Brand Cache
         all_brands = ProductBrand.objects.all()
         self.caches['normalized_brand_names'] = {b.normalized_name: b for b in all_brands}
         self.command.stdout.write(f"  - Cached {len(self.caches['normalized_brand_names'])} brands by normalized name.")
 
+        # Product Caches
         all_products = Product.objects.select_related('brand').all()
         self.caches['products_by_barcode'] = {p.barcode: p for p in all_products if p.barcode}
         self.caches['products_by_norm_string'] = {p.normalized_name_brand_size: p for p in all_products if p.normalized_name_brand_size}
@@ -44,6 +47,12 @@ class UpdateOrchestrator:
                         self.caches['products_by_sku'][company][sku] = p
         self.command.stdout.write(f"  - Cached products for {len(self.caches['products_by_sku'])} companies by SKU.")
 
+        # Category Cache (Company-Aware)
+        all_categories = Category.objects.select_related('company').all()
+        self.caches['categories'] = {(c.name, c.company_id): c for c in all_categories}
+        self.command.stdout.write(f"  - Cached {len(self.caches['categories'])} categories.")
+
+        # Price Cache Container
         self.caches['prices_by_store'] = {}
         self.command.stdout.write("  - Initialized empty container for price caches.")
 
@@ -120,7 +129,8 @@ class UpdateOrchestrator:
 
         brand_manager = BrandManager(self.command, self.caches, self.update_cache)
         product_manager = ProductManager(self.command, self.caches, self.update_cache)
-        price_manager = PriceManager(self.command, self.caches, self.update_cache) # Instantiate PriceManager
+        price_manager = PriceManager(self.command, self.caches, self.update_cache)
+        category_manager = CategoryManager(self.command, self.caches, self.update_cache)
 
         all_files = [os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')]
         
@@ -148,7 +158,10 @@ class UpdateOrchestrator:
             # 4. Process Prices
             price_manager.process(raw_product_data, store)
 
-            # 5. Cleanup
+            # 5. Process Categories
+            category_manager.process(raw_product_data, store.company)
+
+            # 6. Cleanup
             os.remove(file_path)
             self.command.stdout.write(f"  - Successfully processed and deleted file: {os.path.basename(file_path)}")
 
