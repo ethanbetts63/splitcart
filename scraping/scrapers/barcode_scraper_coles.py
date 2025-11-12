@@ -11,7 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from scraping.scrapers.base_product_scraper import BaseProductScraper
 from scraping.utils.product_scraping_utils.jsonl_writer import JsonlWriter
 from data_management.utils.product_normalizer import ProductNormalizer
-from data_management.utils.database_updating_utils.prefill_barcodes import prefill_barcodes_from_db
+from data_management.utils.database_updating_utils.prefill_barcodes import prefill_barcodes_from_api
 
 class ColesBarcodeScraper(BaseProductScraper):
     """
@@ -126,7 +126,7 @@ class ColesBarcodeScraper(BaseProductScraper):
         # --- Step 3: Prefill from DB and identify what needs scraping ---
         master_product_list = [line.get('product') for line in master_line_list]
         self.command.stdout.write(f"  - Found {len(master_product_list)} product entries in the file.")
-        enriched_master_list = prefill_barcodes_from_db(master_product_list, self.command)
+        enriched_master_list = prefill_barcodes_from_api(master_product_list, self.command, self.dev)
         for i, line_data in enumerate(master_line_list):
             if 'product' in line_data:
                 line_data['product'] = enriched_master_list[i]
