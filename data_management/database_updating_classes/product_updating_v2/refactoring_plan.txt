@@ -1,70 +1,51 @@
-# Product Update V2 - Refactoring Plan (v6)
+# Product Update V2 - Refactoring Plan (v7)
 
 This plan is designed around three core goals:
-1.  **Database Integrity**: All changes for a given store are committed in a single, atomic transaction.
-2.  **Speed**: Minimize database lookups through smart caching and use bulk operations for all writes.
-3.  **Simplicity**: Each class has a clear, single responsibility.
+1.  **Clarity and Simplicity**: Each "Manager" class has a clear, single responsibility for its data domain (e.g., Brands, Products).
+2.  **Speed**: Minimize database lookups through smart, shared caching and use bulk operations for all database writes.
+3.  **Encapsulation**: Each Manager handles its own logic end-to-end, from data processing to database persistence.
 
-## Core Principle 1: The Dynamic Cache
+## Core Principle 1: Shared, Dynamic Caches
 
-The process revolves around two types of caches:
+The process revolves around a central set of shared, in-memory caches owned by the `UpdateOrchestrator`.
+- **Global Caches**: Built once at the start of the run and dynamically updated by the Managers. This includes caches for products, brands, etc.
+- **Cache Integrity**: The `UpdateOrchestrator` ensures that Managers are called in the correct order, so a manager always has access to caches that have been updated by the previous manager in the sequence.
 
-*   **Global Caches**: Master in-memory caches for data shared across all stores. These are built **once** at the start of the entire run and are dynamically updated as new products are created. This includes:
-    *   A cache of all product barcodes.
-    *   A cache of all `normalized_name_brand_size` strings.
-    *   A cache of company-specific SKUs.
-*   **Per-File Caches**: Temporary caches built at the start of each file's processing cycle and then discarded. This includes:
-    *   A cache of all existing `Price` objects for the specific store being processed.
+## Core Principle 2: Manager-Led Transactions
 
-The overall flow is: `Build Global Caches -> For each file: (Build Per-File Caches -> Process Data -> Commit & Update Global Caches) -> Repeat`.
-
-## Core Principle 2: Order of Operations
-
-To ensure database integrity, all database writes within the transaction will follow a strict order. The `UnitOfWork` will execute queries in this sequence:
-1.  **DELETE**: Bulk delete stale prices.
-2.  **UPDATE**: Bulk update existing products and prices.
-3.  **CREATE**: Bulk create new products and prices.
+We are moving away from a single transaction per file. Instead, each Manager is responsible for its own database writes and will perform them in its own transaction(s). This simplifies the logic within each manager. For example, the `BrandManager` will commit new brands before the `ProductManager` begins its work.
 
 ## Class Structure and Workflow
 
-### 1. `UpdateOrchestrator` (The Conductor)
-This is the main entry point. It initializes the global caches once. For each file in the inbox, it orchestrates the process:
-- Instantiates all necessary services: `FileReader`, `ProductResolver`, `ProductEnricher`, `DictToObjectMapper`, and `UnitOfWork`.
-- Uses `FileReader` to get a list of product data.
-- Passes the data and global caches to the `ProductResolver` to get two lists: `raw_data_for_create` and `(existing_product, raw_data_for_update)` tuples.
-- Passes the update tuples to the `ProductEnricher` to get a list of "merged" dictionaries for products that need updating.
-- Passes both the `raw_data_for_create` list and the "merged" list to the `DictToObjectMapper` to get final lists of `Product` model instances.
-- Populates the `UnitOfWork` with these lists of `Product` instances and their corresponding price data.
-- Calls `UnitOfWork.commit()`, which saves all changes for the file in one transaction and updates the global caches.
-- Deletes the processed file.
+### 1. `UpdateOrchestrator` (The Conductor and State Holder)
+This is the main entry point for the update process.
+- **Responsibilities**:
+    - Initializes the shared global caches (brands, products, etc.).
+    - Instantiates the domain-specific managers (`BrandManager`, `ProductManager`, etc.), giving them access to the shared caches.
+    - For each file, it calls the managers in the correct order of dependency to process the file's data.
+    - Provides methods for the managers to update the shared caches after they have performed database writes.
 
 ### 2. `FileReader` (The Parser)
-A simple class with one job:
+A simple utility class with one job:
 - Reads a `.jsonl` file and consolidates the data into a list of unique product data dictionaries.
 
-### 3. `ProductResolver` (The Matchmaker)
-A per-file class with a single, focused responsibility.
-- Receives product data from the `FileReader` and the global caches.
-- Uses a strict 3-tier logic (Barcode > SKU > normalized string) to find matches.
-- Returns two lists: `raw_data_for_create` (list of dictionaries) and `raw_data_for_update` (list of `(existing_product_object, incoming_data_dict)` tuples).
+### 3. `BrandManager` (The Brand Service)
+A self-contained service for handling all `ProductBrand` logic.
+- **Input**: Raw product data from the `FileReader` and access to the shared caches.
+- **Job**:
+    - Identifies all unique brands from the input data.
+    - Compares them against the shared brand cache to find new or updated brands.
+    - Performs its own database operations (`bulk_create`, `bulk_update`) for brands within its own transaction.
+    - After committing to the database, it updates the shared brand cache via a method on the `UpdateOrchestrator`.
 
-### 4. `ProductEnricher` (The Data Merger)
-A class focused on data-level merging.
-- **Input**: A list of `(existing_product_object, incoming_data_dict)` tuples.
-- **Job**: Compares the incoming data with the existing product. If changes are detected, it produces a new dictionary representing the final, merged state of the product, including its `pk`.
-- **Output**: A list of "merged" dictionaries for only the products that actually need updating.
+### 4. `ProductManager` (The Product Service)
+A self-contained service for handling all `Product` logic.
+- **Input**: Raw product data and access to the shared caches (which now include any new brands from the `BrandManager`).
+- **Job**:
+    - Contains the logic for resolving, enriching, and mapping product data (conceptually, it replaces the old `Resolver`, `Enricher`, and `Mapper`).
+    - Identifies products to be created and updated.
+    - Performs its own database operations (`bulk_create`, `bulk_update`) for products within its own transaction.
+    - After committing, it updates the shared product caches.
 
-### 5. `DictToObjectMapper` (The Central Factory)
-The universal object creator.
-- **Input**: Two lists of dictionaries: one for new products (from `Resolver`) and one for updated products (from `Enricher`).
-- **Job**: Converts both lists of dictionaries into lists of `Product` model instances.
-- **Output**: Two lists of `Product` objects, one ready for `bulk_create` and one ready for `bulk_update`.
-
-### 6. `UnitOfWork` (The Transaction Manager)
-This class collects all proposed database changes for a single file.
-- It receives the final lists of `Product` instances for creation and updating.
-- It also collects all related price data.
-- Its `commit()` method executes all collected changes in the correct order within a single atomic transaction.
-
-### 7. `CategoryManager` & `VariationManager`
-These services will be used by the `UnitOfWork` to handle category and variation logic, executing their own bulk database operations within the main `commit()` transaction.
+### 5. `PriceManager` (Future Service)
+A future service that will follow the same pattern. It will be called after the `ProductManager` and will use the updated product cache to handle all price creation, updates, and deletions.
