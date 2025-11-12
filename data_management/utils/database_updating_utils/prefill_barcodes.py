@@ -136,6 +136,7 @@ def prefill_barcodes_from_db(product_list: list, command=None) -> list:
         command.stdout.write(f"  - Found {all_coles_products.count()} products with a 'coles' key in DB. Filtering in Python...")
 
     # Step 3: Create a map from SKU to barcode information by iterating in Python.
+    # This logic is designed to be thorough and "lock in" a good barcode when it's found.
     sku_to_barcode_map = {}
     for p in all_coles_products.iterator():
         product_coles_skus = p.company_skus.get('coles', [])
@@ -146,10 +147,22 @@ def prefill_barcodes_from_db(product_list: list, command=None) -> list:
             try:
                 sku_int = int(sku)
                 if sku_int in skus_to_lookup:
-                    sku_to_barcode_map[sku_int] = {
-                        'barcode': p.barcode,
-                        'has_no_coles_barcode': p.has_no_coles_barcode
-                    }
+                    # If we haven't seen this SKU yet, add it.
+                    if sku_int not in sku_to_barcode_map:
+                        sku_to_barcode_map[sku_int] = {
+                            'barcode': p.barcode,
+                            'has_no_coles_barcode': p.has_no_coles_barcode
+                        }
+                    # If we have seen it, only update it if the existing entry has no barcode
+                    # and this new product does have one.
+                    else:
+                        existing_entry = sku_to_barcode_map[sku_int]
+                        if not existing_entry.get('barcode') and p.barcode:
+                            existing_entry['barcode'] = p.barcode
+                            # Also update the 'has_no_coles_barcode' flag if necessary
+                            if p.has_no_coles_barcode is not None:
+                                existing_entry['has_no_coles_barcode'] = p.has_no_coles_barcode
+
             except (ValueError, TypeError):
                 continue
 
@@ -157,6 +170,7 @@ def prefill_barcodes_from_db(product_list: list, command=None) -> list:
     prefilled_count = 0
     for sku, product_db_data in sku_to_barcode_map.items():
         if sku in products_by_sku:
+            # A single SKU from the file can correspond to multiple products in the list
             for product_data in products_by_sku[sku]:
                 if product_db_data.get('barcode'):
                     if not product_data.get('barcode'):
@@ -167,5 +181,16 @@ def prefill_barcodes_from_db(product_list: list, command=None) -> list:
 
     if command:
         command.stdout.write(command.style.SUCCESS(f"  - Successfully prefilled {prefilled_count} barcodes from DB."))
+
+        # --- New Diagnostic Step ---
+        found_skus = set(sku_to_barcode_map.keys())
+        missing_skus = skus_to_lookup - found_skus
+        if missing_skus:
+            command.stdout.write(command.style.WARNING(f"\n--- SKU Mismatch Analysis ---"))
+            command.stdout.write(command.style.WARNING(f"  - Could not find {len(missing_skus)} SKUs from the file in the database."))
+            command.stdout.write(f"  - Sample of missing SKUs: {sorted(list(missing_skus))[:20]}")
+        else:
+            command.stdout.write(command.style.SUCCESS("\n--- SKU Mismatch Analysis: All SKUs found! ---"))
+
 
     return product_list
