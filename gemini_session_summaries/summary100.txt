@@ -1,0 +1,37 @@
+## Session Summary: Fixing Barcode Prefilling in `scrape_barcodes`
+
+This session focused on diagnosing and resolving a critical issue where the `scrape_barcodes` management command was failing to prefill product barcodes from the database, consistently returning 0 products despite evidence that the data existed.
+
+**Initial Problem & Diagnosis:**
+The `scrape_barcodes` command, specifically its `prefill_barcodes_from_api` utility, was designed to call an API endpoint (`/api/products/barcodes/`) to retrieve barcode information for a list of Coles SKUs. The API endpoint, `ProductBarcodeView`, was using Django ORM lookups (`__overlap`) on a `JSONField` (`company_skus`) to find matching products. This query was returning 0 results.
+
+**Initial Attempts & Challenges:**
+1.  **Query Refinement:** Attempts were made to switch from `__overlap` to `Q` objects with `__contains` in `ProductBarcodeView`, assuming a type mismatch or ORM issue. This led to timeouts due to the inefficiency of `Q` objects with large SKU lists.
+2.  **API Batching:** To mitigate timeouts, the `prefill_barcodes_from_api` function was modified to send SKUs in smaller batches. While this prevented single large timeouts, the cumulative time for many small requests was still too slow.
+3.  **SKU Type Enforcement:** A theory emerged that SKUs were being stored as integers in the database but queried as strings, or vice-versa. Code was introduced to enforce string-based SKUs, but this was later found to be incorrect as the database correctly stored integers.
+
+**Diagnostic Commands & Key Findings:**
+To thoroughly understand the data and the query failures, several diagnostic management commands were developed:
+*   `analyze_product_jsonl`: Analyzed the field presence in `.jsonl` input files.
+*   `analyze_store_products`: Analyzed field presence for products associated with a specific store in the database.
+*   `find_product_by_coles_sku`: A simple command to test direct database queries for a specific Coles SKU.
+*   `inspect_product`: Allowed direct inspection of all fields, including raw `company_skus`, for a given product PK.
+*   `compare_store_skus`: Compared the set of SKUs for a store in the database against those in a `.jsonl` file.
+*   `analyze_coles_data_quality`: Provided an overall data quality summary for all Coles stores, showing barcode and SKU presence.
+
+Through these diagnostics, several critical insights were gained:
+*   The `company_skus` field in the database correctly stores Coles SKUs as **integers within a list** (e.g., `{"coles": [122234]}`).
+*   Despite this, all standard Django ORM JSON lookups (`__overlap`, `__contains`, direct equality) were **failing unexpectedly** in the environment when attempting to find products by SKU.
+*   A "brute force" Python-side filtering method (fetching all products with a `coles` key and then iterating through them in Python) was proven to work in the `find_product_by_coles_sku` command, confirming the data's existence and accessibility.
+*   The `compare_store_skus` command revealed a very high overlap (over 15,000 SKUs) between the input file and the database for a specific store, contradicting the low prefill counts.
+*   The `analyze_coles_data_quality` command showed that while 100% of Coles products have an SKU, only ~51% have a barcode.
+
+**Root Cause Identification:**
+The primary reason for the low prefill count was identified as **duplicate `Product` entries in the database sharing the same Coles SKU**. When the "brute force" map-building logic iterated through all Coles products, "bad" data (duplicate products with `barcode: null`) was frequently overwriting "good" data (products with actual barcodes) in the `sku_to_barcode_map`. This "last-one-wins" scenario led to thousands of SKUs being marked as having no barcode, even when a valid barcode existed for a different `Product` entry with the same SKU.
+
+**Final Solution & Outcome:**
+1.  **API View Refactoring (`ProductBarcodeView`):** The `ProductBarcodeView` was refactored to implement a robust "brute force" logic. It now fetches all products with a `coles` key and intelligently builds the `sku_to_barcode_map`. This logic prioritizes valid barcodes, ensuring that a `null` barcode never overwrites a real one for the same SKU.
+2.  **API-Calling Restoration (`prefill_barcodes_from_api`):** The `prefill_barcodes_from_api` function was restored to its original API-calling role, now invoking the upgraded `ProductBarcodeView`. A long timeout (300 seconds) was added to accommodate the server-side computation.
+3.  **Scraper Integration:** The `ColesBarcodeScraper` was updated to correctly call `prefill_barcodes_from_api`.
+
+This comprehensive solution successfully resolved the barcode prefilling issue. The `scrape_barcodes` command now correctly prefilled **13,483** barcodes, aligning with the expected numbers based on the data analysis. The architecture is restored, and the logic is robust against data inconsistencies.
