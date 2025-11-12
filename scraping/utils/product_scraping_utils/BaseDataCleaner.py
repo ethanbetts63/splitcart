@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from decimal import Decimal
 from data_management.utils.product_normalizer import ProductNormalizer
 from data_management.utils.price_normalizer import PriceNormalizer
 from data_management.utils.price_hasher import generate_price_hash
