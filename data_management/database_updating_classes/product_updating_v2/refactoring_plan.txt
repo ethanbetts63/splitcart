@@ -1,4 +1,4 @@
-# Product Update V2 - Refactoring Plan (v5)
+# Product Update V2 - Refactoring Plan (v6)
 
 This plan is designed around three core goals:
 1.  **Database Integrity**: All changes for a given store are committed in a single, atomic transaction.
@@ -29,48 +29,42 @@ To ensure database integrity, all database writes within the transaction will fo
 
 ### 1. `UpdateOrchestrator` (The Conductor)
 This is the main entry point. It initializes the global caches once. For each file in the inbox, it orchestrates the process:
-- Instantiates a `FileReader`, `ProductResolver`, `DictToObjectMapper`, `ProductEnricher`, and `UnitOfWork`.
+- Instantiates all necessary services: `FileReader`, `ProductResolver`, `ProductEnricher`, `DictToObjectMapper`, and `UnitOfWork`.
 - Uses `FileReader` to get a list of product data.
 - Passes the data and global caches to the `ProductResolver` to get two lists: `raw_data_for_create` and `(existing_product, raw_data_for_update)` tuples.
-- Passes `raw_data_for_create` to the `DictToObjectMapper` to get a list of new `Product` instances.
-- Passes `(existing_product, raw_data_for_update)` tuples to the `ProductEnricher` to get a list of updated `Product` instances.
-- Populates the `UnitOfWork` with these two lists of `Product` instances (and other related data like prices).
+- Passes the update tuples to the `ProductEnricher` to get a list of "merged" dictionaries for products that need updating.
+- Passes both the `raw_data_for_create` list and the "merged" list to the `DictToObjectMapper` to get final lists of `Product` model instances.
+- Populates the `UnitOfWork` with these lists of `Product` instances and their corresponding price data.
 - Calls `UnitOfWork.commit()`, which saves all changes for the file in one transaction and updates the global caches.
 - Deletes the processed file.
 
 ### 2. `FileReader` (The Parser)
-A new, simple class with one job:
-- Reads a `.jsonl` file.
-- Consolidates the data into a list of unique product data dictionaries.
-- Returns this list.
+A simple class with one job:
+- Reads a `.jsonl` file and consolidates the data into a list of unique product data dictionaries.
 
 ### 3. `ProductResolver` (The Matchmaker)
-This class is instantiated per file and has a single, focused responsibility.
-- It receives the list of product data from the `FileReader` and the global caches.
-- It iterates through the incoming products and attempts to find a match in the database using the global caches and a strict 3-tier logic:
-    1.  **Tier 1: Barcode**: The highest priority match.
-    2.  **Tier 2: SKU**: Must be unique *within the product's company*.
-    3.  **Tier 3: `normalized_name_brand_size`**: The fallback identifier.
-- It returns two lists: `raw_data_for_create` (list of dictionaries) and `raw_data_for_update` (list of `(existing_product_object, incoming_data_dict)` tuples). It does not interact with the database directly.
+A per-file class with a single, focused responsibility.
+- Receives product data from the `FileReader` and the global caches.
+- Uses a strict 3-tier logic (Barcode > SKU > normalized string) to find matches.
+- Returns two lists: `raw_data_for_create` (list of dictionaries) and `raw_data_for_update` (list of `(existing_product_object, incoming_data_dict)` tuples).
 
-### 4. `DictToObjectMapper` (The New Product Factory)
-A new, highly focused class:
-- **Input**: A list of raw data dictionaries for products to be created.
-- **Job**: Converts each dictionary into a new, unsaved `Product` model instance.
-- **Output**: A list of `Product` instances ready for `bulk_create`.
-
-### 5. `ProductEnricher` (The Existing Product Updater)
-This class is instantiated per file and has a single, focused responsibility.
+### 4. `ProductEnricher` (The Data Merger)
+A class focused on data-level merging.
 - **Input**: A list of `(existing_product_object, incoming_data_dict)` tuples.
-- **Job**: Iterates through the tuples, compares the incoming data with the existing product object, and updates the product object's attributes *in memory* if changes are detected.
-- **Output**: A list of `Product` instances (with `pk`s) that have been modified and are ready for `bulk_update`. Only products that actually changed are included.
+- **Job**: Compares the incoming data with the existing product. If changes are detected, it produces a new dictionary representing the final, merged state of the product, including its `pk`.
+- **Output**: A list of "merged" dictionaries for only the products that actually need updating.
+
+### 5. `DictToObjectMapper` (The Central Factory)
+The universal object creator.
+- **Input**: Two lists of dictionaries: one for new products (from `Resolver`) and one for updated products (from `Enricher`).
+- **Job**: Converts both lists of dictionaries into lists of `Product` model instances.
+- **Output**: Two lists of `Product` objects, one ready for `bulk_create` and one ready for `bulk_update`.
 
 ### 6. `UnitOfWork` (The Transaction Manager)
 This class collects all proposed database changes for a single file.
-- It receives the lists of `Product` instances for creation (from `DictToObjectMapper`) and for updating (from `ProductEnricher`).
-- It has internal lists for `prices_to_create`, `prices_to_update`, and `prices_to_delete`.
-- It works with a `CategoryManager` and `VariationManager` to handle related data.
+- It receives the final lists of `Product` instances for creation and updating.
+- It also collects all related price data.
 - Its `commit()` method executes all collected changes in the correct order within a single atomic transaction.
 
 ### 7. `CategoryManager` & `VariationManager`
-These services will be used by the `UnitOfWork` to handle category and variation logic. They will collect data during the main processing and execute their own bulk database operations within the `UnitOfWork.commit()` transaction, ensuring atomicity.
+These services will be used by the `UnitOfWork` to handle category and variation logic, executing their own bulk database operations within the main `commit()` transaction.
