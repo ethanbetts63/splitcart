@@ -1,9 +1,11 @@
 import os
 from django.conf import settings
-from products.models import Product, ProductBrand
+from products.models import Product, ProductBrand, Price
+from companies.models import Store
 from .file_reader import FileReader
 from .brand_manager import BrandManager
 from .product_manager import ProductManager
+# from .price_manager import PriceManager # Future import
 
 class UpdateOrchestrator:
     """
@@ -31,7 +33,6 @@ class UpdateOrchestrator:
         self.command.stdout.write(f"  - Cached {len(self.caches['products_by_barcode'])} products by barcode.")
         self.command.stdout.write(f"  - Cached {len(self.caches['products_by_norm_string'])} products by normalized string.")
         
-        # We will also need a SKU cache, which is more complex as it's per-company
         self.caches['products_by_sku'] = {}
         for p in all_products:
             if p.company_skus:
@@ -42,6 +43,25 @@ class UpdateOrchestrator:
                         self.caches['products_by_sku'][company][sku] = p
         self.command.stdout.write(f"  - Cached products for {len(self.caches['products_by_sku'])} companies by SKU.")
 
+        # Price Cache Container
+        self.caches['prices_by_store'] = {}
+        self.command.stdout.write("  - Initialized empty container for price caches.")
+
+    def _prepare_price_cache_for_store(self, store):
+        """Builds a lightweight, two-level price cache for a specific store."""
+        self.command.stdout.write(f"    - Preparing price cache for store: {store.store_name} ({store.store_id})")
+        
+        # Use .values() for a highly efficient query
+        price_data = Price.objects.filter(store=store).values('price_hash', 'pk', 'product_id')
+        
+        hash_to_pk_cache = {p['price_hash']: p['pk'] for p in price_data if p['price_hash']}
+        product_id_to_pk_cache = {p['product_id']: p['pk'] for p in price_data}
+
+        self.caches['prices_by_store'][store.id] = {
+            'hash_to_pk': hash_to_pk_cache,
+            'product_id_to_pk': product_id_to_pk_cache
+        }
+        self.command.stdout.write(f"      - Cached {len(hash_to_pk_cache)} price hashes for store.")
 
     def update_cache(self, cache_name, key, value):
         """A centralized method for managers to update the shared cache."""
@@ -56,6 +76,7 @@ class UpdateOrchestrator:
 
         brand_manager = BrandManager(self.command, self.caches, self.update_cache)
         product_manager = ProductManager(self.command, self.caches, self.update_cache)
+        # price_manager = PriceManager(self.command, self.caches, self.update_cache) # Future
 
         all_files = [os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')]
         
@@ -63,13 +84,20 @@ class UpdateOrchestrator:
             self.command.stdout.write(f"\n{self.command.style.WARNING('--- Processing file:')} {os.path.basename(file_path)} ---")
             
             file_reader = FileReader(file_path)
-            # Note: read_and_consolidate needs to be implemented in FileReader
-            raw_product_data = file_reader.read_and_consolidate()
+            metadata, raw_product_data = file_reader.read_and_consolidate()
 
-            if not raw_product_data:
-                self.command.stdout.write("  - File is empty or invalid, skipping.")
-                # Optionally delete empty/invalid file
-                # os.remove(file_path)
+            # File Validation Checks (this should be a method in FileReader in future)
+            # Contains data (we can get rid of this as its covered by the other checks)
+            if not metadata or not raw_product_data:
+                self.command.stdout.write("  - File is empty or metadata is missing, skipping.")
+                continue
+            # 1. first line of meta data scrape date is newer than latest in DB 
+            # 2. the number of goods in the jsonl file is at least 90% of the number in the DB for that store
+
+            try:
+                store = Store.objects.get(store_id=metadata['store_id'])
+            except Store.DoesNotExist:
+                self.command.stderr.write(self.command.style.ERROR(f"  - Store with ID {metadata['store_id']} not found in database. Skipping file."))
                 continue
 
             # 1. Process Brands
@@ -78,10 +106,13 @@ class UpdateOrchestrator:
             # 2. Process Products
             product_manager.process(raw_product_data)
 
-            # 3. Process Prices (Future)
-            # price_manager.process(raw_product_data)
+            # 3. Prepare Price Cache for the current store
+            self._prepare_price_cache_for_store(store)
 
-            # 4. Cleanup
+            # 4. Process Prices (Future)
+            # price_manager.process(raw_product_data, store)
+
+            # 5. Cleanup
             # os.remove(file_path)
             self.command.stdout.write(f"  - Finished processing file: {os.path.basename(file_path)}")
 

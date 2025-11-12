@@ -20,14 +20,16 @@ We are moving away from a single transaction per file. Instead, each Manager is 
 ### 1. `UpdateOrchestrator` (The Conductor and State Holder)
 This is the main entry point for the update process.
 - **Responsibilities**:
-    - Initializes the shared global caches (brands, products, etc.).
-    - Instantiates the domain-specific managers (`BrandManager`, `ProductManager`, etc.), giving them access to the shared caches.
-    - For each file, it calls the managers in the correct order of dependency to process the file's data.
+    - Initializes the shared global caches (brands, products, etc.) and a container for price caches.
+    - Instantiates the domain-specific managers, giving them access to the shared caches.
+    - For each file, it calls the managers in the correct order of dependency.
+    - **Crucially, before calling the `PriceManager`, it prepares a fresh, store-specific, two-level price cache to ensure the `PriceManager` has an up-to-date view of the database.**
     - Provides methods for the managers to update the shared caches after they have performed database writes.
 
 ### 2. `FileReader` (The Parser)
 A simple utility class with one job:
-- Reads a `.jsonl` file and consolidates the data into a list of unique product data dictionaries.
+- Reads a `.jsonl` file, consolidates the data into a list of unique product data dictionaries, and extracts the shared metadata (e.g., `store_id`).
+- Returns a tuple of `(metadata, product_data_list)`.
 
 ### 3. `BrandManager` (The Brand Service)
 A self-contained service for handling all `ProductBrand` logic.
@@ -49,5 +51,14 @@ A self-contained service for handling all `Product` logic.
     3.  **Persist to DB**: It performs `Product.objects.bulk_create()` and `Product.objects.bulk_update()` for the prepared lists of objects, all within a single, atomic transaction.
     4.  **Update Cache**: After the transaction, it re-fetches the newly created products to get their IDs and then updates all the shared product caches (`products_by_barcode`, `products_by_norm_string`, etc.) with the new and updated product information.
 
-### 5. `PriceManager` (Future Service)
-A future service that will follow the same pattern. It will be called after the `ProductManager` and will use the updated product cache to handle all price creation, updates, and deletions.
+### 5. `PriceManager` (The Price Service)
+A self-contained service for handling all `Price` logic for a single store.
+- **Input**: Raw product data, the shared product cache, and the freshly prepared, store-specific price cache from the `UpdateOrchestrator`.
+- **Job (Step-by-Step)**:
+    1.  **Identify Changes**: Iterates through the raw product data. For each item, it calculates the `price_hash` and adds it to a `seen_hashes` set for the current file.
+    2.  **Sort Operations**: It uses the two-level price cache to determine the correct action:
+        - If the `price_hash` exists in the `hash_to_pk` cache, the price is unchanged. Do nothing.
+        - If the hash is new, check the `product_id_to_pk` cache. If the product ID exists, it's an **update**. If not, it's a **create**.
+    3.  **Prepare Objects**: It prepares lists of `Price` objects for creation and updating based on the logic above.
+    4.  **Identify Deletions**: After checking all incoming products, it compares the `seen_hashes` set with the keys from the original `hash_to_pk` cache. Any hashes in the original cache but not "seen" in the file are for delisted items. It collects the primary keys for these prices to be deleted.
+    5.  **Persist to DB**: It performs `bulk_create`, `bulk_update`, and `pk__in.delete()` for the prices, all within a single, atomic transaction.
