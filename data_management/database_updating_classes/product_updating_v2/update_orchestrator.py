@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.db.models import Max
 from django.conf import settings
 from products.models import Product, ProductBrand, Price
-from companies.models import Store, Category
+from companies.models import Store, Category, Company
 from products.models import SKU
 from .file_reader import FileReader
 from .brand_manager import BrandManager
@@ -151,7 +151,7 @@ class UpdateOrchestrator:
             brand_manager.process(raw_product_data)
 
             # 2. Process Products
-            product_manager.process(raw_product_data)
+            product_manager.process(raw_product_data, store.company)
 
             # 3. Prepare Price Cache for the current store
             self._prepare_price_cache_for_store(store)
