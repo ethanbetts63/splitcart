@@ -38,7 +38,7 @@ The frontend is built using React (JavaScript/TypeScript) and leverages the foll
     *   **`UnitOfWork`**: Manages all proposed database changes (new products, prices, updates). It collects these changes and performs efficient `bulk_create` and `bulk_update` operations within a single, atomic database transaction.
     *   **`CategoryManager`**: Handles the creation of new categories, establishes parent-child relationships, and links products to their respective categories within the database transaction.
     *   **`VariationManager`**: Detects product name variations, manages a reconciliation list for potential duplicates, and performs post-processing reconciliation to merge actual duplicate product records.
-    *   **`TranslationTableGenerator`**: A utility that regenerates a Python file containing a mapping of product name variations to their canonical names, based on the database's `name_variations` data.
+    *   **`TranslationTableGenerator`**: A utility that regenerates a Python file containing a mapping of product name variations to their canonical names, based on the database's  data.
 
 **Models:**
 
