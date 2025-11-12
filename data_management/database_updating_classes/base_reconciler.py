@@ -9,6 +9,7 @@ class BaseReconciler(ABC):
     def __init__(self, command, translation_table_path):
         self.command = command
         self.translation_table_path = translation_table_path
+        self.duplicates_to_delete = []
 
     def _load_translation_table(self):
         """
@@ -46,32 +47,35 @@ class BaseReconciler(ABC):
         """Merge the duplicate item into the canonical item."""
         pass
 
-    def run(self):
+    def run(self, all_involved_products=None):
         """
         The main reconciliation logic.
+        Can accept a pre-fetched queryset for performance.
         """
         model = self.get_model()
         model_name = model._meta.verbose_name
-        self.command.stdout.write(self.command.style.SUCCESS(f"{model_name.capitalize()} Reconciler run started."))
         
         translations = self._load_translation_table()
-
         if not translations:
-            self.command.stdout.write(f"{model_name.capitalize()} translation table is empty or could not be loaded. Nothing to reconcile.")
             return
 
-        variation_keys = list(translations.keys())
-        
-        filter_kwargs = {f"{self.get_variation_field_name()}__in": variation_keys}
-        potential_duplicates = model.objects.filter(**filter_kwargs)
+        if all_involved_products is not None:
+            # Use the pre-fetched queryset
+            item_map = {getattr(p, self.get_canonical_field_name()): p for p in all_involved_products}
+            potential_duplicates = [p for p in all_involved_products if getattr(p, self.get_variation_field_name()) in translations]
+        else:
+            # Fallback to individual queries if not optimized
+            item_map = {p.get_canonical_field_name(): p for p in model.objects.all()}
+            variation_keys = list(translations.keys())
+            filter_kwargs = {f"{self.get_variation_field_name()}__in": variation_keys}
+            potential_duplicates = model.objects.filter(**filter_kwargs)
 
-        if not potential_duplicates.exists():
+        if not potential_duplicates:
             self.command.stdout.write(f"No {model_name}s found matching any variation keys.")
             return
 
-        self.command.stdout.write(f"Found {potential_duplicates.count()} potential duplicate {model_name}s to process.")
+        self.command.stdout.write(f"Found {len(potential_duplicates)} potential duplicate {model_name}s to process.")
 
-        items_to_delete = []
         for duplicate_item in potential_duplicates:
             variation_key = getattr(duplicate_item, self.get_variation_field_name())
             canonical_key = translations.get(variation_key)
@@ -79,15 +83,16 @@ class BaseReconciler(ABC):
                 continue
 
             try:
-                filter_kwargs = {f"{self.get_canonical_field_name()}": canonical_key}
-                canonical_item = model.objects.get(**filter_kwargs)
-                
+                canonical_item = item_map.get(canonical_key)
+                if not canonical_item:
+                    raise model.DoesNotExist
+
                 if canonical_item.id == duplicate_item.id:
                     continue
 
                 self.merge_items(canonical_item, duplicate_item)
-                if duplicate_item not in items_to_delete:
-                    items_to_delete.append(duplicate_item)
+                if duplicate_item not in self.duplicates_to_delete:
+                    self.duplicates_to_delete.append(duplicate_item)
 
             except model.DoesNotExist:
                 self.command.stderr.write(self.command.style.ERROR(f"Could not find canonical {model_name} for key {canonical_key}. Skipping."))
@@ -96,9 +101,5 @@ class BaseReconciler(ABC):
                 self.command.stderr.write(self.command.style.ERROR(f"An unexpected error occurred for {variation_key}: {e}"))
                 continue
         
-        if items_to_delete:
-            self.command.stdout.write(f"--- Deleting {len(items_to_delete)} merged {model_name}s ---")
-            for item in items_to_delete:
-                item.delete()
-
-        self.command.stdout.write(self.command.style.SUCCESS(f"{model_name.capitalize()} Reconciler run finished."))
+        # Deletion is now handled by the subclass to allow for bulk operations
+        self.command.stdout.write(f"{model_name.capitalize()} Reconciler staging complete.")

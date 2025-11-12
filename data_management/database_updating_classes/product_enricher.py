@@ -78,38 +78,38 @@ class ProductEnricher:
     def enrich_from_product(canonical_product, duplicate_product):
         """
         Enriches a canonical Product instance with data from a duplicate Product instance.
-        This method performs a direct database update and does not return a flag.
+        This method now modifies the canonical_product in memory and returns a boolean.
         """
-        update_fields = {}
+        updated = False
 
         # Handle simple fields that can be overwritten if blank
         fields_to_check = ['url', 'aldi_image_url']
         for field_name in fields_to_check:
             if not getattr(canonical_product, field_name) and getattr(duplicate_product, field_name):
-                update_fields[field_name] = getattr(duplicate_product, field_name)
+                setattr(canonical_product, field_name, getattr(duplicate_product, field_name))
+                updated = True
 
         # Handle normalized_name_brand_size_variations by merging
-        if duplicate_product.normalized_name_brand_size_variations:
-            # Ensure the canonical product's variation list is a list
+        if duplicate_product.normalized_name_brand_size_variations or duplicate_product.normalized_name_brand_size:
             merged_variations = canonical_product.normalized_name_brand_size_variations or []
             if not isinstance(merged_variations, list):
                 merged_variations = []
 
-            added_new_variation = False
-            for variation in duplicate_product.normalized_name_brand_size_variations:
-                if variation not in merged_variations:
-                    merged_variations.append(variation)
-                    added_new_variation = True
-            
-            # Also add the duplicate's own canonical name as a variation on the main product
-            if duplicate_product.normalized_name_brand_size and duplicate_product.normalized_name_brand_size not in merged_variations:
-                merged_variations.append(duplicate_product.normalized_name_brand_size)
-                added_new_variation = True
+            # Use a set for efficient checking
+            existing_variations_set = set(merged_variations)
+            initial_set_size = len(existing_variations_set)
 
-            if added_new_variation:
-                update_fields['normalized_name_brand_size_variations'] = merged_variations
+            # Add variations from the duplicate
+            if duplicate_product.normalized_name_brand_size_variations:
+                for variation in duplicate_product.normalized_name_brand_size_variations:
+                    existing_variations_set.add(variation)
+            
+            # Also add the duplicate's own canonical name as a variation
+            if duplicate_product.normalized_name_brand_size:
+                existing_variations_set.add(duplicate_product.normalized_name_brand_size)
+
+            if len(existing_variations_set) > initial_set_size:
+                canonical_product.normalized_name_brand_size_variations = sorted(list(existing_variations_set))
+                updated = True
         
-        # Perform a single, direct database update if any fields have changed
-        if update_fields:
-            from products.models import Product
-            Product.objects.filter(pk=canonical_product.pk).update(**update_fields)
+        return updated
