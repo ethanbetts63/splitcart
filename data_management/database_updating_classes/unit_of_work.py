@@ -2,7 +2,7 @@ from django.db import transaction, utils as db_utils
 from datetime import datetime
 import re
 from products.models import Product, Price, ProductBrand
-from companies.models import Store # Changed from StoreGroup
+from companies.models import Store 
 from django.core.exceptions import ValidationError
 from decimal import InvalidOperation
 from .category_manager import CategoryManager
