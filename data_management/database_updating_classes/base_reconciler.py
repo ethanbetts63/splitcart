@@ -65,7 +65,8 @@ class BaseReconciler(ABC):
             potential_duplicates = [p for p in all_involved_products if getattr(p, self.get_variation_field_name()) in translations]
         else:
             # Fallback to individual queries if not optimized
-            item_map = {p.get_canonical_field_name(): p for p in model.objects.all()}
+            canonical_field = self.get_canonical_field_name()
+            item_map = {getattr(p, canonical_field): p for p in model.objects.all()}
             variation_keys = list(translations.keys())
             filter_kwargs = {f"{self.get_variation_field_name()}__in": variation_keys}
             potential_duplicates = model.objects.filter(**filter_kwargs)

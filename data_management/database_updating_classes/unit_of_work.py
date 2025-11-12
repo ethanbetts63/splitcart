@@ -181,6 +181,7 @@ class UnitOfWork:
                         'normalized_name_brand_size_variations', 'sizes', 'company_skus'
                     ]
                     Product.objects.bulk_update(list(self.products_to_update), update_fields, batch_size=500)
+                    self.command.stdout.write(f"  - Updated {len(self.products_to_update)} products with new information.")
 
                 # Stage 5: Update existing brands
                 if self.brands_to_update:
@@ -188,16 +189,6 @@ class UnitOfWork:
                     ProductBrand.objects.bulk_update(list(self.brands_to_update), brand_update_fields, batch_size=500)
                     self.command.stdout.write(f"  - Updated {len(self.brands_to_update)} brands with new variation info.")
 
-                if self.products_to_update:
-                    update_fields = ['barcode', 'url', 'aldi_image_url', 'has_no_coles_barcode', 'normalized_name_brand_size_variations', 'sizes', 'company_skus']
-                    Product.objects.bulk_update(list(self.products_to_update), update_fields, batch_size=500)
-                    self.command.stdout.write(f"  - Updated {len(self.products_to_update)} products with new information.")
-
-                if self.brands_to_update:
-                    brand_update_fields = ['name_variations', 'normalized_name_variations']
-                    ProductBrand.objects.bulk_update(list(self.brands_to_update), brand_update_fields, batch_size=500)
-                    self.command.stdout.write(f"  - Updated {len(self.brands_to_update)} brands with new variation info.")
-            
             self.command.stdout.write(self.command.style.SUCCESS("--- Commit successful ---"))
             return stale_price_ids
 
