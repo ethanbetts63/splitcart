@@ -4,7 +4,8 @@ from django.utils import timezone
 from django.db.models import Max
 from django.conf import settings
 from products.models import Product, ProductBrand, Price
-from companies.models import Store, Company, Category
+from companies.models import Store, Category
+from products.models import SKU
 from .file_reader import FileReader
 from .brand_manager import BrandManager
 from .product_manager import ProductManager
@@ -37,14 +38,14 @@ class UpdateOrchestrator:
         self.command.stdout.write(f"  - Cached {len(self.caches['products_by_barcode'])} products by barcode.")
         self.command.stdout.write(f"  - Cached {len(self.caches['products_by_norm_string'])} products by normalized string.")
         
+        # SKU Cache (Company-Aware)
         self.caches['products_by_sku'] = {}
-        for p in all_products:
-            if p.company_skus:
-                for company, skus in p.company_skus.items():
-                    if company not in self.caches['products_by_sku']:
-                        self.caches['products_by_sku'][company] = {}
-                    for sku in skus:
-                        self.caches['products_by_sku'][company][sku] = p
+        all_skus = SKU.objects.select_related('product', 'company').all()
+        for sku_obj in all_skus:
+            company_name = sku_obj.company.name
+            if company_name not in self.caches['products_by_sku']:
+                self.caches['products_by_sku'][company_name] = {}
+            self.caches['products_by_sku'][company_name][sku_obj.sku] = sku_obj.product
         self.command.stdout.write(f"  - Cached products for {len(self.caches['products_by_sku'])} companies by SKU.")
 
         # Category Cache (Company-Aware)
