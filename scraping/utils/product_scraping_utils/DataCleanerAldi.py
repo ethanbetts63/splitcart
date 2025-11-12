@@ -2,7 +2,6 @@ import re
 from datetime import datetime
 from .BaseDataCleaner import BaseDataCleaner
 from .field_maps import ALDI_FIELD_MAP
-from data_management.utils.product_normalizer import ProductNormalizer
 
 class DataCleanerAldi(BaseDataCleaner):
     """
@@ -78,17 +77,11 @@ class DataCleanerAldi(BaseDataCleaner):
         else:
             cleaned_product['aldi_image_url'] = None # Initialize as None if no image URL
 
-
-
-        # Standardize unit price
-
         # Standardize unit price
         unit_price_info = self._get_standardized_unit_price_info(cleaned_product)
         cleaned_product.update(unit_price_info)
 
         # Handle availability
         cleaned_product['is_available'] = not raw_product.get('notForSale', False)
-
-
 
         return cleaned_product
