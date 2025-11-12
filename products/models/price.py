@@ -46,17 +46,6 @@ class Price(models.Model):
     is_on_special = models.BooleanField(default=False)
     price_hash = models.CharField(max_length=64, null=True, blank=True, db_index=True)
 
-    SOURCE_CHOICES = [
-        ('direct_scrape', 'Direct Scrape'),
-        ('inferred_group', 'Inferred from Group'),
-    ]
-    source = models.CharField(
-        max_length=20,
-        choices=SOURCE_CHOICES,
-        default='direct_scrape',
-        help_text="How the price was obtained: from a direct scrape or inferred from a group anchor."
-    )
-
     class Meta:
         unique_together = ('product', 'store')
         ordering = ['product__name']

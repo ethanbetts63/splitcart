@@ -8,7 +8,7 @@ from companies.models import Store
 from .file_reader import FileReader
 from .brand_manager import BrandManager
 from .product_manager import ProductManager
-# from .price_manager import PriceManager # Future import
+from .price_manager import PriceManager # Import PriceManager
 
 class UpdateOrchestrator:
     """
@@ -120,7 +120,7 @@ class UpdateOrchestrator:
 
         brand_manager = BrandManager(self.command, self.caches, self.update_cache)
         product_manager = ProductManager(self.command, self.caches, self.update_cache)
-        # price_manager = PriceManager(self.command, self.caches, self.update_cache) # Future
+        price_manager = PriceManager(self.command, self.caches, self.update_cache) # Instantiate PriceManager
 
         all_files = [os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')]
         
@@ -145,11 +145,11 @@ class UpdateOrchestrator:
             # 3. Prepare Price Cache for the current store
             self._prepare_price_cache_for_store(store)
 
-            # 4. Process Prices (Future)
-            # price_manager.process(raw_product_data, store)
+            # 4. Process Prices
+            price_manager.process(raw_product_data, store)
 
             # 5. Cleanup
-            # os.remove(file_path)
-            self.command.stdout.write(f"  - Finished processing file: {os.path.basename(file_path)}")
+            os.remove(file_path)
+            self.command.stdout.write(f"  - Successfully processed and deleted file: {os.path.basename(file_path)}")
 
         self.command.stdout.write(self.command.style.SUCCESS("-- Orchestrator finished --"))
