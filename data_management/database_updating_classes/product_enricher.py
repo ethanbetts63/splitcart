@@ -88,17 +88,26 @@ class ProductEnricher:
             if not getattr(canonical_product, field_name) and getattr(duplicate_product, field_name):
                 update_fields[field_name] = getattr(duplicate_product, field_name)
 
-        # Handle name variations by merging
-        if duplicate_product.name_variations:
-            merged_variations = canonical_product.name_variations or []
+        # Handle normalized_name_brand_size_variations by merging
+        if duplicate_product.normalized_name_brand_size_variations:
+            # Ensure the canonical product's variation list is a list
+            merged_variations = canonical_product.normalized_name_brand_size_variations or []
+            if not isinstance(merged_variations, list):
+                merged_variations = []
+
             added_new_variation = False
-            for variation in duplicate_product.name_variations:
+            for variation in duplicate_product.normalized_name_brand_size_variations:
                 if variation not in merged_variations:
                     merged_variations.append(variation)
                     added_new_variation = True
             
+            # Also add the duplicate's own canonical name as a variation on the main product
+            if duplicate_product.normalized_name_brand_size and duplicate_product.normalized_name_brand_size not in merged_variations:
+                merged_variations.append(duplicate_product.normalized_name_brand_size)
+                added_new_variation = True
+
             if added_new_variation:
-                update_fields['name_variations'] = merged_variations
+                update_fields['normalized_name_brand_size_variations'] = merged_variations
         
         # Perform a single, direct database update if any fields have changed
         if update_fields:
