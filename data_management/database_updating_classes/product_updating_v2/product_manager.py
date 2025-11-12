@@ -55,22 +55,26 @@ class ProductManager:
         product_objects_to_create = []
         for data in products_to_create_data:
             product_dict = data['product']
+            metadata = data['metadata']
             
-            # Link brand from cache
             normalized_brand = product_dict.get('normalized_brand')
             brand_obj = self.caches['normalized_brand_names'].get(normalized_brand)
             if not brand_obj:
-                # This should not happen if BrandManager runs first, but as a safeguard:
                 self.command.stderr.write(self.command.style.ERROR(f"      - ERROR: Brand '{normalized_brand}' not found in cache. Skipping product '{product_dict.get('name')}'.'"))
                 continue
 
-            # Create new Product instance
             new_product = Product(
                 name=product_dict.get('name', ''),
                 brand=brand_obj,
                 barcode=product_dict.get('barcode'),
                 normalized_name_brand_size=product_dict.get('normalized_name_brand_size'),
-                # Add other fields as necessary
+                size=product_dict.get('size'),
+                sizes=product_dict.get('sizes', []),
+                has_no_coles_barcode=product_dict.get('has_no_coles_barcode', False),
+                aldi_image_url=product_dict.get('aldi_image_url'),
+                url=product_dict.get('url'),
+                brand_name_company_pairs=[[product_dict.get('brand'), metadata.get('company')]]
+                # company_skus will be handled later
             )
             product_objects_to_create.append(new_product)
         return product_objects_to_create
@@ -80,15 +84,56 @@ class ProductManager:
         product_objects_to_update = []
         for existing_product, data in products_to_update_data:
             product_dict = data['product']
+            metadata = data['metadata']
             updated = False
 
-            # Example enrichment logic: add a new barcode if one wasn't present
-            new_barcode = product_dict.get('barcode')
-            if new_barcode and not existing_product.barcode:
-                existing_product.barcode = new_barcode
+            # Simple fields (update if blank)
+            if not existing_product.barcode and product_dict.get('barcode'):
+                existing_product.barcode = product_dict.get('barcode')
                 updated = True
-            
-            # Add more enrichment logic here for other fields...
+            if not existing_product.url and product_dict.get('url'):
+                existing_product.url = product_dict.get('url')
+                updated = True
+            if not existing_product.aldi_image_url and product_dict.get('aldi_image_url'):
+                existing_product.aldi_image_url = product_dict.get('aldi_image_url')
+                updated = True
+
+            # Boolean field
+            if product_dict.get('has_no_coles_barcode') and not existing_product.has_no_coles_barcode:
+                existing_product.has_no_coles_barcode = True
+                updated = True
+
+            # JSON list fields (merge unique)
+            new_sizes = set(existing_product.sizes)
+            incoming_sizes = product_dict.get('sizes', [])
+            initial_size_count = len(new_sizes)
+            for s in incoming_sizes:
+                new_sizes.add(s)
+            if len(new_sizes) > initial_size_count:
+                existing_product.sizes = sorted(list(new_sizes))
+                updated = True
+
+            # Logic for normalized_name_brand_size_variations
+            new_variations = set(existing_product.normalized_name_brand_size_variations)
+            incoming_variation = product_dict.get('normalized_name_brand_size')
+            initial_variation_count = len(new_variations)
+            if incoming_variation:
+                new_variations.add(incoming_variation)
+            if len(new_variations) > initial_variation_count:
+                existing_product.normalized_name_brand_size_variations = sorted(list(new_variations))
+                updated = True
+
+            # Logic for brand_name_company_pairs
+            new_pairs = list(existing_product.brand_name_company_pairs)
+            company = metadata.get('company')
+            raw_brand = product_dict.get('brand')
+            # Add pair only if a pair for that company doesn't already exist
+            if company and raw_brand and not any(p[1] == company for p in new_pairs):
+                new_pairs.append([raw_brand, company])
+                existing_product.brand_name_company_pairs = new_pairs
+                updated = True
+
+            # company_skus will be handled later
 
             if updated:
                 product_objects_to_update.append(existing_product)
@@ -97,19 +142,13 @@ class ProductManager:
     def _update_caches(self, created_products, updated_products):
         """Updates the shared caches with new and updated product info."""
         self.command.stdout.write("    - Updating shared product caches...")
-        # Update for newly created products
-        for product in created_products:
+        products_to_process = created_products + updated_products
+        
+        for product in products_to_process:
             if product.barcode:
                 self.cache_updater('products_by_barcode', product.barcode, product)
             if product.normalized_name_brand_size:
                 self.cache_updater('products_by_norm_string', product.normalized_name_brand_size, product)
-            # Add SKU cache update logic here...
-
-        # Update for updated products (in case a key like barcode was added)
-        for product in updated_products:
-            if product.barcode:
-                self.cache_updater('products_by_barcode', product.barcode, product)
-            # No need to update norm_string cache as it's the key and shouldn't change
             # Add SKU cache update logic here...
         self.command.stdout.write("      - Caches updated.")
 
@@ -141,11 +180,13 @@ class ProductManager:
                 
                 if objects_to_update:
                     self.command.stdout.write(f"    - Updating {len(objects_to_update)} existing products...")
-                    update_fields = ['barcode'] # Add other enriched fields here
+                    update_fields = [
+                        'barcode', 'url', 'aldi_image_url', 'has_no_coles_barcode',
+                        'sizes', 'normalized_name_brand_size_variations', 'brand_name_company_pairs'
+                    ]
                     Product.objects.bulk_update(objects_to_update, update_fields, batch_size=500)
 
             # 4. Cache Update (only after successful transaction)
-            # Re-fetch created products to get their DB-assigned pks
             if objects_to_create:
                 norm_strings = [p.normalized_name_brand_size for p in objects_to_create]
                 newly_created_products = list(Product.objects.filter(normalized_name_brand_size__in=norm_strings))
