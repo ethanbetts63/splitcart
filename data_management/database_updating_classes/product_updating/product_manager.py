@@ -79,14 +79,20 @@ class ProductManager:
             metadata = data['metadata']
             
             normalized_brand = product_dict.get('normalized_brand')
-            brand_obj = self.caches['normalized_brand_names'].get(normalized_brand)
-            if not brand_obj:
-                self.command.stderr.write(self.command.style.ERROR(f"      - ERROR: Brand '{normalized_brand}' not found in cache. Skipping product '{product_dict.get('name')}'.'"))
-                continue
+            brand_obj = None # Initialize brand_obj to None
+
+            if normalized_brand: # Only try to look up a brand if normalized_brand is not None/empty
+                brand_obj = self.caches['normalized_brand_names'].get(normalized_brand)
+                if not brand_obj:
+                    # This means normalized_brand had a value, but it wasn't in the cache.
+                    # This is a genuine error, so we should skip.
+                    self.command.stderr.write(self.command.style.ERROR(f"      - ERROR: Brand '{normalized_brand}' not found in cache. Skipping product '{product_dict.get('name')}'.'"))
+                    continue
+            # If normalized_brand was None/empty, brand_obj remains None, which is allowed by the Product model.
 
             new_product = Product(
                 name=product_dict.get('name', ''),
-                brand=brand_obj,
+                brand=brand_obj, # This will be None if no brand was found or provided
                 barcode=product_dict.get('barcode'),
                 normalized_name_brand_size=product_dict.get('normalized_name_brand_size'),
                 size=product_dict.get('size'),

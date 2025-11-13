@@ -131,11 +131,9 @@ class ProductReconciler:
                     
                     # 4. Perform bulk database operations
                     if prices_to_delete_pks:
-                        self.command.stdout.write(f"    - Deleting {len(prices_to_delete_pks)} older/conflicting price(s).")
                         Price.objects.filter(pk__in=prices_to_delete_pks).delete()
                     
                     if prices_to_update_pks:
-                        self.command.stdout.write(f"    - Updating {len(prices_to_update_pks)} prices to point to canonical product.")
                         Price.objects.filter(pk__in=prices_to_update_pks).update(product_id=canon_id)
 
                 # 2. Update canonical products with enriched data
