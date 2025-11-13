@@ -44,14 +44,14 @@ class PriceManager:
             return
 
         for data in raw_product_data:
-            product_dict = data.get('product', {})
+            product_dict = data.get('product')
             if not product_dict:
                 continue
 
             # Get the product object from the shared product cache
             product_obj = self.caches['products_by_norm_string'].get(product_dict.get('normalized_name_brand_size'))
             if not product_obj:
-                self.command.stderr.write(self.command.style.ERROR(f"    - Product '{product_dict.get('name')}' not found in cache. Skipping price."))
+                self.command.stderr.write(self.command.style.ERROR(f"    - Product '{product_dict}' not found in cache. Skipping price."))
                 continue
 
             # Get the price_hash from the file data
