@@ -1,7 +1,7 @@
 import os
 from products.models import Product, Price
 from .base_reconciler import BaseReconciler
-from .product_enricher import ProductEnricher
+from ...product_updating.product_enricher import ProductEnricher
 from django.db.models import Q
 
 TRANSLATION_TABLE_PATH = os.path.abspath(os.path.join(

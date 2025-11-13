@@ -1,6 +1,6 @@
 from django.test import TestCase
 from unittest.mock import patch, MagicMock
-from data_management.database_updating_classes.product_updating.brand_reconciler import BrandReconciler
+from data_management.database_updating_classes.product_updating_v2.post_processing.brand_reconciler import BrandReconciler
 from products.models import ProductBrand
 from products.tests.test_helpers.model_factories import ProductBrandFactory, ProductFactory
 

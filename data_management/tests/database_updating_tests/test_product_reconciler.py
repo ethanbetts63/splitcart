@@ -4,7 +4,7 @@ import tempfile
 from django.test import TestCase
 from unittest.mock import MagicMock, patch
 
-from data_management.database_updating_classes.product_updating.product_reconciler import ProductReconciler
+from data_management.database_updating_classes.product_updating_v2.post_processing.product_reconciler import ProductReconciler
 from products.models import Product, Price
 from companies.models import Store
 from products.tests.test_helpers.model_factories import ProductFactory, PriceFactory, ProductBrandFactory, PriceRecordFactory

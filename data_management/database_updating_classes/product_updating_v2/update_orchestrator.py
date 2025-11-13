@@ -11,6 +11,8 @@ from .brand_manager import BrandManager
 from .product_manager import ProductManager
 from .price_manager import PriceManager
 from .category_manager import CategoryManager
+from .translation_table_generators.brand_translation_table_generator import BrandTranslationTableGenerator
+from .translation_table_generators.product_translation_table_generator import ProductTranslationTableGenerator
 
 class UpdateOrchestrator:
     """
@@ -132,6 +134,8 @@ class UpdateOrchestrator:
         product_manager = ProductManager(self.command, self.caches, self.update_cache)
         price_manager = PriceManager(self.command, self.caches, self.update_cache)
         category_manager = CategoryManager(self.command, self.caches, self.update_cache)
+        brand_translation_generator = BrandTranslationTableGenerator()
+        product_translation_generator = ProductTranslationTableGenerator()
 
         all_files = [os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')]
         
@@ -162,7 +166,12 @@ class UpdateOrchestrator:
             # 5. Process Categories
             category_manager.process(raw_product_data, store.company)
 
-            # 6. Cleanup
+            # 6. Generate Translation Tables
+            self.command.stdout.write("\n--- Generating Translation Tables ---")
+            brand_translation_generator.run()
+            product_translation_generator.run()
+
+            # 7. Cleanup
             os.remove(file_path)
             self.command.stdout.write(f"  - Successfully processed and deleted file: {os.path.basename(file_path)}")
 
