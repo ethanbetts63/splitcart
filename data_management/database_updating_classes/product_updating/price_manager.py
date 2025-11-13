@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import transaction
 from products.models import Price
 from data_management.utils.price_hasher import generate_price_hash
@@ -36,9 +37,14 @@ class PriceManager:
             self.command.stderr.write(self.command.style.ERROR("    - No scraped_date found in metadata. Cannot process prices."))
             return
 
+        scraped_datetime = None
         try:
-            scraped_date = datetime.fromisoformat(scraped_date_str).date()
-        except ValueError:
+            scraped_datetime = datetime.fromisoformat(scraped_date_str)
+            # Make the datetime timezone-aware if it's naive
+            if timezone.is_naive(scraped_datetime):
+                scraped_datetime = timezone.make_aware(scraped_datetime)
+            scraped_date = scraped_datetime.date()
+        except (ValueError, TypeError):
             self.command.stderr.write(self.command.style.ERROR(f"    - Could not parse scraped_date: {scraped_date_str}. Cannot process prices."))
             return
 
@@ -118,9 +124,9 @@ class PriceManager:
                     Price.objects.bulk_update(prices_to_update, update_fields, batch_size=500)
             
             # Update store's last_scraped date
-            store.last_scraped = scraped_date
+            store.last_scraped = scraped_datetime
             store.save(update_fields=['last_scraped'])
-            self.command.stdout.write(self.command.style.SUCCESS(f"    - Updated store {store.store_name} last_scraped to {scraped_date}."))
+            self.command.stdout.write(self.command.style.SUCCESS(f"    - Updated store {store.store_name} last_scraped to {scraped_datetime.date()}."))
 
         except Exception as e:
             self.command.stderr.write(self.command.style.ERROR(f"    - Error processing prices: {e}"))
