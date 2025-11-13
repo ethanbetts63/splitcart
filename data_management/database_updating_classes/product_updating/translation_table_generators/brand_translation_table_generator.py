@@ -6,6 +6,8 @@ from .base_translation_table_generator import BaseTranslationTableGenerator
 TRANSLATION_TABLE_PATH = os.path.abspath(os.path.join(
     os.path.dirname(__file__),
     '..',
+    '..',
+    '..',
     'data',
     'brand_translation_table.py'
 ))
