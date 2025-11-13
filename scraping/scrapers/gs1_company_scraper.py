@@ -82,18 +82,35 @@ class Gs1CompanyScraper:
         MAX_CONSECUTIVE_FAILURES = 5
         
         brand_index = 0
-        target_brands = unconfirmed_brands_data
+        target_brands = unconfirmed_brands_data # Initial fetch
 
-        while successful_scrapes < MAX_SUCCESSFUL_SCRAPES and brand_index < len(target_brands):
-            if consecutive_failures >= MAX_CONSECUTIVE_FAILURES:
-                self.command.stderr.write(self.command.style.ERROR(f"Stopping scrape due to {MAX_CONSECUTIVE_FAILURES} consecutive failures."))
+        while successful_scrapes < MAX_SUCCESSFUL_SCRAPES and consecutive_failures < MAX_CONSECUTIVE_FAILURES:
+            if not target_brands: # No brands to scrape, or ran out
+                self.command.stdout.write(self.command.style.WARNING("No more unconfirmed brands to scrape. Stopping."))
                 break
+
+            if brand_index >= len(target_brands):
+                self.command.stdout.write("Ran out of brands in current list. Fetching more...")
+                try:
+                    api_url = f"{base_url}/api/gs1/unconfirmed-brands/"
+                    response = requests.get(api_url, headers=headers, timeout=30)
+                    response.raise_for_status()
+                    new_unconfirmed_brands_data = response.json()
+                    if not new_unconfirmed_brands_data:
+                        self.command.stdout.write(self.command.style.WARNING("No new unconfirmed brands found. Stopping."))
+                        break
+                    target_brands = new_unconfirmed_brands_data
+                    brand_index = 0 # Reset index for the new list
+                    self.command.stdout.write(f"Fetched {len(target_brands)} new unconfirmed brands.")
+                except requests.exceptions.RequestException as e:
+                    self.command.stderr.write(self.command.style.ERROR(f"Failed to fetch more unconfirmed brands from API: {e}. Stopping."))
+                    break
 
             brand_info = target_brands[brand_index]
             target_brand_id = brand_info['brand_id']
             target_brand_name = brand_info['brand_name']
             
-            self.command.stdout.write(f"--- Scrape Attempt {brand_index + 1}/{len(target_brands)} (Successes: {successful_scrapes}/{MAX_SUCCESSFUL_SCRAPES}) ---\n")
+            self.command.stdout.write(f"--- Scrape Attempt (Successes: {successful_scrapes}/{MAX_SUCCESSFUL_SCRAPES}, Failures: {consecutive_failures}/{MAX_CONSECUTIVE_FAILURES}) ---")
             self.command.stdout.write(f"Selected brand: {target_brand_name}\n")
 
             brand_index += 1 # Move to the next brand for the next iteration
