@@ -13,6 +13,9 @@ from .price_manager import PriceManager
 from .category_manager import CategoryManager
 from .translation_table_generators.brand_translation_table_generator import BrandTranslationTableGenerator
 from .translation_table_generators.product_translation_table_generator import ProductTranslationTableGenerator
+from .post_processing.brand_reconciler import BrandReconciler
+from .post_processing.product_reconciler import ProductReconciler
+from .post_processing.category_cycle_manager import CategoryCycleManager
 
 class UpdateOrchestrator:
     """
@@ -166,13 +169,26 @@ class UpdateOrchestrator:
             # 5. Process Categories
             category_manager.process(raw_product_data, store.company)
 
-            # 6. Generate Translation Tables
-            self.command.stdout.write("\n--- Generating Translation Tables ---")
-            brand_translation_generator.run()
-            product_translation_generator.run()
-
-            # 7. Cleanup
+            # 6. Cleanup
             os.remove(file_path)
             self.command.stdout.write(f"  - Successfully processed and deleted file: {os.path.basename(file_path)}")
 
-        self.command.stdout.write(self.command.style.SUCCESS("-- Orchestrator finished --"))
+        # --- Post-Processing Section ---
+        self.command.stdout.write(self.command.style.SUCCESS("\n--- Post-Processing Run Started ---"))
+        
+        # 1. First, generate translation tables based on the latest data
+        self.command.stdout.write(self.command.style.SUCCESS("\n--- Generating Translation Tables ---"))
+        BrandTranslationTableGenerator().run()
+        ProductTranslationTableGenerator().run()
+
+        # 2. Reconcile Brands and Products using the new tables
+        self.command.stdout.write(self.command.style.SUCCESS("\n--- Reconciling Duplicates ---"))
+        BrandReconciler(self.command).run()
+        ProductReconciler(self.command).run()
+
+        # 3. Prune Category Cycles
+        self.command.stdout.write(self.command.style.SUCCESS("\n--- Pruning Category Cycles ---"))
+        for company in Company.objects.all():
+            CategoryCycleManager(self.command, company).prune_cycles()
+
+        self.command.stdout.write(self.command.style.SUCCESS("\n-- Orchestrator finished --"))
