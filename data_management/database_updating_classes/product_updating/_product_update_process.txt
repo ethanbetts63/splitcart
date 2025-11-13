@@ -1,0 +1,88 @@
+# Product Update V2 - Refactoring Plan (v8)
+
+This plan is designed around three core goals:
+1.  **Clarity and Simplicity**: Each "Manager" class has a clear, single responsibility for its data domain (e.g., Brands, Products).
+2.  **Speed**: Minimize database lookups through smart, shared caching and use bulk operations for all database writes.
+3.  **Encapsulation**: Each Manager handles its own logic end-to-end, from data processing to database persistence.
+
+## Core Principle 1: Shared, Dynamic Caches
+
+The process revolves around a central set of shared, in-memory caches owned by the `UpdateOrchestrator`.
+- **Global Caches**: Built once at the start of the run and dynamically updated by the Managers. This includes caches for products, brands, SKUs, etc.
+- **Cache Integrity**: The `UpdateOrchestrator` ensures that Managers are called in the correct order, so a manager always has access to caches that have been updated by the previous manager in the sequence.
+
+## Core Principle 2: Manager-Led Transactions
+
+During the file-processing phase, we move away from a single transaction per file. Instead, each Manager is responsible for its own database writes and will perform them in its own transaction(s). This simplifies the logic within each manager. For example, the `BrandManager` will commit new brands before the `ProductManager` begins its work. Post-processing tasks (like reconciliation) also manage their own transactions.
+
+## Class Structure and Workflow
+
+### 1. `UpdateOrchestrator` (The Conductor and State Holder)
+This is the main entry point for the entire update process.
+- **Responsibilities**:
+    - Initializes the shared global caches (Products, Brands, SKUs, Categories).
+    - Instantiates the domain-specific managers.
+    - **File Processing**: Iterates through each file in the inbox. For each valid file, it calls the managers in the correct order of dependency.
+    - **Post-Processing**: After all files have been processed, it orchestrates a series of clean-up and maintenance tasks, including running translation table generators, duplicate reconcilers, category cycle pruning, and store group maintenance.
+    - Provides methods for the managers to update the shared caches.
+
+### 2. `FileReader` (The Parser)
+A simple utility class with one job:
+- Reads a `.jsonl` file, consolidates the data into a list of unique product data dictionaries, and extracts the shared metadata (e.g., `store_id`).
+- Returns a tuple of `(metadata, product_data_list)`.
+
+### 3. `BrandManager` (The Brand Service)
+A self-contained service for handling all `ProductBrand` logic.
+- **Input**: Raw product data from the `FileReader` and access to the shared caches.
+- **Job (Step-by-Step)**:
+    1.  **Identify Changes**: Iterates through the raw data to identify both new brands to create and new `name_variations` for existing brands.
+    2.  **Prepare Objects**: Collects a list of new `ProductBrand` instances to be created and a list of existing `ProductBrand` objects that need their `name_variations` field updated.
+    3.  **Persist to DB**: Performs `ProductBrand.objects.bulk_create()` for new brands and `ProductBrand.objects.bulk_update()` for existing brands with new variations.
+    4.  **Update Cache**: After creation, it re-fetches the newly created brands to get their database-assigned IDs and updates the shared `normalized_brand_names` cache.
+
+### 4. `ProductManager` (The Product Service)
+A self-contained service for handling all `Product` and `SKU` logic.
+- **Input**: Raw product data, the company object for the current file, and access to the shared caches.
+- **Job (Step-by-Step)**:
+    1.  **Resolve Products & SKUs**: Iterates through the raw data and uses a 3-tier matching logic (barcode -> SKU -> normalized string) to sort items into "create" and "update" lists. It also identifies which `SKU` relationships need to be created for both new and existing products.
+    2.  **Prepare Product Objects**: It processes both lists to create the final objects for the database, enriching existing products and creating new `Product` instances as needed.
+    3.  **Persist Products**: It performs `Product.objects.bulk_create()` and `Product.objects.bulk_update()` for the prepared lists of objects.
+    4.  **Persist SKUs**: After products are persisted (ensuring all products have a database ID), it performs a `SKU.objects.bulk_create()` to save all the new SKU relationships identified in step 1.
+    5.  **Update Caches**: After the transactions, it updates all relevant shared caches (`products_by_barcode`, `products_by_norm_string`, `products_by_sku`) with the new and updated information.
+
+### 5. `CategoryManager` (The Category Service)
+A self-contained service for handling all category-related logic. It is called after the `ProductManager` to ensure all products exist.
+- **Input**: Raw product data, the company object for the current file, and access to the shared caches.
+- **Job (Step-by-Step)**:
+    1.  **Create Categories**: It first scans all `category_path` data from the input file, finds all unique category names for the given company, and `bulk_create`s any that don't already exist.
+    2.  **Create Parent-Child Links**: It then identifies all necessary parent-child relationships and `bulk_create`s the missing hierarchical links.
+    3.  **Link Products to Categories**: Finally, it links products to their leaf categories, `bulk_create`ing all the new product-to-category relationships at once.
+
+### 6. `PriceManager` (The Price Service)
+A self-contained service for handling all `Price` logic for a single store.
+- **Input**: Raw product data, the shared product cache, and the freshly prepared, store-specific price cache.
+- **Job (Step-by-Step)**:
+    1.  **Identify Changes**: Iterates through the raw product data, calculating the `price_hash` for each item.
+    2.  **Sort Operations**: Uses a two-level price cache to determine if a price is new, unchanged, or updated.
+    3.  **Identify Deletions**: Compares hashes from the file with hashes from the cache to find delisted items.
+    4.  **Persist to DB**: Performs `bulk_create`, `bulk_update`, and `delete` operations for all price changes in a single transaction.
+
+## Post-Processing Workflow
+After all inbox files are processed, the `UpdateOrchestrator` executes a series of self-contained post-processing tasks to clean and maintain the data.
+
+### 1. `TranslationTableGenerator`s
+- **Purpose**: These classes (`BrandTranslationTableGenerator`, `ProductTranslationTableGenerator`) run first. They scan the database for objects with synonym fields (e.g., `name_variations`) and generate simple Python dictionary files. These files map variation names to their canonical counterparts.
+- **Outcome**: Two files (`brand_translation_table.py`, `product_normalized_name_brand_size_translation_table.py`) are created, which act as the input for the reconciliation step.
+
+### 2. `BrandReconciler` & `ProductReconciler`
+- **Purpose**: These self-contained classes read the translation tables generated in the previous step. They identify duplicate `ProductBrand` and `Product` objects that should be merged.
+- **Job**: Each reconciler finds canonical/duplicate pairs, re-assigns child objects (like `Product`s or `Price`s) from the duplicate to the canonical object, merges synonym lists, and deletes the duplicate object. All database operations are done in a single transaction per reconciler using bulk methods for efficiency.
+
+### 3. `CategoryCycleManager`
+- **Purpose**: This utility runs after reconciliation to detect and prune any circular dependencies in the category hierarchy (e.g., 'Snacks' is a parent of 'Chips', and 'Chips' is a parent of 'Snacks').
+
+### 4. `GroupMaintenanceOrchestrator`
+- **Purpose**: This is the final step. It runs a two-phase process to ensure the health of `StoreGroup` entities.
+- **Phase 1 (Internal Health Check)**: Compares member stores to their group's anchor store and ejects any that no longer match.
+- **Phase 2 (Inter-Group Merging)**: Compares the anchors of different groups and merges any groups that are found to be identical.
+

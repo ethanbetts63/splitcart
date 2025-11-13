@@ -1,8 +1,9 @@
 import os
-from products.models import Product, Price
-from .base_reconciler import BaseReconciler
-from ...product_updating.product_enricher import ProductEnricher
+import ast
+from django.db import transaction
 from django.db.models import Q
+from products.models import Product, Price
+from ...product_updating.product_enricher import ProductEnricher
 
 TRANSLATION_TABLE_PATH = os.path.abspath(os.path.join(
     os.path.dirname(__file__),
@@ -11,79 +12,108 @@ TRANSLATION_TABLE_PATH = os.path.abspath(os.path.join(
     'product_normalized_name_brand_size_translation_table.py'
 ))
 
-class ProductReconciler(BaseReconciler):
-    def __init__(self, command, unit_of_work):
-        super().__init__(command, TRANSLATION_TABLE_PATH)
-        self.unit_of_work = unit_of_work
-        # These lists are for items that the UoW doesn't handle, like deleting products
-        self.products_to_update = []
-        self.prices_to_delete_ids = []
+class ProductReconciler:
+    """
+    Finds and merges duplicate Product objects based on a translation table.
+    This is a self-contained process that runs after all products have been updated.
+    """
+    def __init__(self, command):
+        self.command = command
+        self.translation_table_path = TRANSLATION_TABLE_PATH
 
-    def get_model(self):
-        return Product
-
-    def get_variation_field_name(self):
-        return 'normalized_name_brand_size'
-
-    def get_canonical_field_name(self):
-        return 'normalized_name_brand_size'
+    def _load_translation_table(self):
+        """Safely loads the translation dictionary from the .py file."""
+        try:
+            with open(self.translation_table_path, 'r', encoding='utf-8') as f:
+                file_content = f.read()
+            if '=' in file_content:
+                dict_str = file_content.split('=', 1)[1].strip()
+                return ast.literal_eval(dict_str)
+            return {}
+        except (FileNotFoundError, SyntaxError, ValueError) as e:
+            self.command.stderr.write(self.command.style.ERROR(f"Error loading product translation table: {e}"))
+            return {}
 
     def run(self):
         """
-        Orchestrates the reconciliation process by finding duplicates and delegating
-        the merging logic to merge_items. It relies on pre-fetched data.
+        Orchestrates the entire product reconciliation process.
         """
         self.command.stdout.write("--- Product Reconciler run started. ---")
-        translation_dict = self._load_translation_table()
-        if not translation_dict:
-            self.command.stdout.write("Product translation table is empty or could not be loaded. Nothing to reconcile.")
+        translations = self._load_translation_table()
+        if not translations:
+            self.command.stdout.write("Product translation table is empty. Nothing to reconcile.")
             return
 
-        variation_strings = list(translation_dict.keys())
-        canonical_strings = list(translation_dict.values())
+        variation_strings = list(translations.keys())
+        canonical_strings = list(set(translations.values()))
 
-        all_involved_products = list(self.get_model().objects.filter(
-            Q(**{f"{self.get_variation_field_name()}__in": variation_strings}) |
-            Q(**{f"{self.get_canonical_field_name()}__in": canonical_strings})
+        all_products = list(Product.objects.filter(
+            Q(normalized_name_brand_size__in=variation_strings) |
+            Q(normalized_name_brand_size__in=canonical_strings)
         ).select_related('brand'))
 
-        all_involved_product_ids = [p.id for p in all_involved_products]
-        all_prices = Price.objects.filter(product_id__in=all_involved_product_ids).select_related('store')
+        if not all_products:
+            self.command.stdout.write("No products found matching translation table. Nothing to reconcile.")
+            return
 
-        self.prices_by_product_id = {}
-        for price in all_prices:
-            if price.product_id not in self.prices_by_product_id:
-                self.prices_by_product_id[price.product_id] = []
-            self.prices_by_product_id[price.product_id].append(price)
-
-        super().run(all_involved_products=all_involved_products)
-
-    def merge_items(self, canonical_item, duplicate_item):
-        """
-        Merges a duplicate product into a canonical one by staging changes
-        in the central UnitOfWork.
-        """
-        self.command.stdout.write(f"  - Staging merge of '{duplicate_item.name}' (PK: {duplicate_item.pk}) into '{canonical_item.name}' (PK: {canonical_item.pk})")
+        product_map = {p.normalized_name_brand_size: p for p in all_products}
         
-        was_updated = ProductEnricher.enrich_from_product(canonical_item, duplicate_item)
-        if was_updated and canonical_item not in self.products_to_update:
-            self.products_to_update.append(canonical_item)
+        products_to_update = {}  # {canonical_id: canonical_obj}
+        fk_updates = {}  # {canonical_id: [list_of_duplicate_ids]}
+        products_to_delete_ids = set()
 
-        prices_to_move = self.prices_by_product_id.get(duplicate_item.id, [])
-        for price in prices_to_move:
-            # The UoW's add_price is designed for scraped dicts, not Price objects.
-            # So, we'll manually create the dict it expects.
-            price_details = {
-                'price_current': price.price,
-                'was_price': price.was_price,
-                'unit_price': price.unit_price,
-                'unit_of_measure': price.unit_of_measure,
-                'per_unit_price_string': price.per_unit_price_string,
-                'is_on_special': price.is_on_special,
-                'price_hash': price.price_hash,
-            }
-            metadata = {'scraped_date': price.scraped_date.strftime('%Y-%m-%d')}
+        for variation_name, canonical_name in translations.items():
+            duplicate_product = product_map.get(variation_name)
+            canonical_product = product_map.get(canonical_name)
+
+            if not duplicate_product or not canonical_product or duplicate_product.id == canonical_product.id:
+                continue
+
+            # Stage FK update for Price objects
+            fk_updates.setdefault(canonical_product.id, []).append(duplicate_product.id)
             
-            # Delegate price handling to the central UnitOfWork
-            self.unit_of_work.add_price(canonical_item, price.store, price_details, metadata)
-            self.prices_to_delete_ids.append(price.id)
+            # Stage product for deletion
+            products_to_delete_ids.add(duplicate_product.id)
+
+            # Stage update of canonical product
+            if canonical_product.id not in products_to_update:
+                products_to_update[canonical_product.id] = canonical_product
+            
+            canon_obj = products_to_update[canonical_product.id]
+            ProductEnricher.enrich_from_product(canon_obj, duplicate_product)
+
+        if not products_to_delete_ids:
+            self.command.stdout.write("No product duplicates found to merge.")
+            return
+
+        self.command.stdout.write(f"Found {len(products_to_delete_ids)} duplicate products to merge.")
+
+        try:
+            with transaction.atomic():
+                # 1. Update foreign keys on Price table
+                self.command.stdout.write("  - Re-assigning prices from duplicate products...")
+                for canon_id, dupe_ids in fk_updates.items():
+                    # This can create duplicate prices for the same (product, store) pair.
+                    # This should be handled by a separate cleanup process or by improving
+                    # the price model's constraints (e.g., unique_together).
+                    # For now, we proceed with the re-assignment.
+                    Price.objects.filter(product_id__in=dupe_ids).update(product_id=canon_id)
+
+                # 2. Update canonical products with enriched data
+                if products_to_update:
+                    update_fields = [
+                        'barcode', 'url', 'aldi_image_url', 'has_no_coles_barcode',
+                        'sizes', 'normalized_name_brand_size_variations', 'brand_name_company_pairs'
+                    ]
+                    Product.objects.bulk_update(products_to_update.values(), update_fields, batch_size=500)
+                    self.command.stdout.write(f"  - Bulk updated {len(products_to_update)} canonical products.")
+
+                # 3. Delete the duplicate products
+                Product.objects.filter(id__in=products_to_delete_ids).delete()
+                self.command.stdout.write(f"  - Bulk deleted {len(products_to_delete_ids)} duplicate products.")
+
+            self.command.stdout.write(self.command.style.SUCCESS("Product reconciliation completed successfully."))
+
+        except Exception as e:
+            self.command.stderr.write(self.command.style.ERROR(f"An error occurred during product reconciliation: {e}"))
+            raise
