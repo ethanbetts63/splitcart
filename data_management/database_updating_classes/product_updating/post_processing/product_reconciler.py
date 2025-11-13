@@ -3,7 +3,7 @@ import ast
 from django.db import transaction
 from django.db.models import Q
 from products.models import Product, Price
-from ...product_updating.product_enricher import ProductEnricher
+from .product_enricher import ProductEnricher
 
 TRANSLATION_TABLE_PATH = os.path.abspath(os.path.join(
     os.path.dirname(__file__),
@@ -80,7 +80,7 @@ class ProductReconciler:
                 products_to_update[canonical_product.id] = canonical_product
             
             canon_obj = products_to_update[canonical_product.id]
-            ProductEnricher.enrich_from_product(canon_obj, duplicate_product)
+            ProductEnricher.enrich_canonical_product(canon_obj, duplicate_product)
 
         if not products_to_delete_ids:
             self.command.stdout.write("No product duplicates found to merge.")
