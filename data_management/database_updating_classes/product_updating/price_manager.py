@@ -28,14 +28,9 @@ class PriceManager:
         seen_hashes = set()
         
         # Get the scraped_date from the metadata of the first product in the consolidated data
-        # Assuming all products in a single .jsonl file share the same scrape date
         scraped_date_str = None
         if raw_product_data:
             scraped_date_str = raw_product_data[0].get('metadata', {}).get('scraped_date')
-        
-        if not scraped_date_str:
-            self.command.stderr.write(self.command.style.ERROR("    - No scraped_date found in metadata. Cannot process prices."))
-            return
 
         scraped_datetime = None
         try:
