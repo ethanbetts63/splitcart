@@ -48,14 +48,6 @@ class ProductManager:
                     match = self.caches['products_by_norm_string'][norm_string]
 
             if match:
-                # If a match is found, there's a chance the incoming normalized string is a variation.
-                # We update the raw data in-memory to use the canonical normalized string.
-                # This ensures the PriceManager can find the product in the cache.
-                incoming_norm_string = product_dict.get('normalized_name_brand_size')
-                canonical_norm_string = match.normalized_name_brand_size
-                if incoming_norm_string and canonical_norm_string and incoming_norm_string != canonical_norm_string:
-                    data['product']['normalized_name_brand_size'] = canonical_norm_string
-
                 products_to_update_data.append((match, data))
                 # If we found an existing product, we still need to check if a NEW SKU link needs to be created for it.
                 if sku and sku not in company_sku_cache:

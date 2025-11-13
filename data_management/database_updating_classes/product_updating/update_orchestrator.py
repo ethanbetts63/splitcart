@@ -128,6 +128,46 @@ class UpdateOrchestrator:
         if cache_name in self.caches:
             self.caches[cache_name][key] = value
 
+    def _deduplicate_product_data_for_pricing(self, raw_product_data: list) -> list:
+        self.command.stdout.write("  - De-duplicating product list for PriceManager...")
+        final_list_for_pricing = []
+        seen_nnbs = set()
+        seen_skus = set()
+        seen_barcodes = set()
+
+        for data in raw_product_data:
+            product_dict = data.get('product', {})
+            if not product_dict:
+                continue
+
+            nnbs = product_dict.get('normalized_name_brand_size')
+            sku = product_dict.get('sku')
+            barcode = product_dict.get('barcode')
+
+            # The nnbs from the file is already unique thanks to FileReader, 
+            # but we check again for safety.
+            if nnbs in seen_nnbs:
+                continue
+
+            if sku:
+                if sku in seen_skus:
+                    self.command.stdout.write(f"    - Skipping duplicate SKU for pricing: {sku}")
+                    continue
+                seen_skus.add(sku)
+
+            if barcode:
+                if barcode in seen_barcodes:
+                    self.command.stdout.write(f"    - Skipping duplicate barcode for pricing: {barcode}")
+                    continue
+                seen_barcodes.add(barcode)
+            
+            final_list_for_pricing.append(data)
+            if nnbs:
+                seen_nnbs.add(nnbs)
+        
+        self.command.stdout.write(f"  - Original list size: {len(raw_product_data)}, De-duplicated list size: {len(final_list_for_pricing)}")
+        return final_list_for_pricing
+
     def run(self):
         """The main orchestration method."""
         self.command.stdout.write(self.command.style.SQL_FIELD("-- Starting Product Update (V2) --"))
@@ -159,11 +199,14 @@ class UpdateOrchestrator:
             # 2. Process Products
             product_manager.process(raw_product_data, store.company)
 
+            # 2.5. De-duplicate the product list before pricing to prevent unique constraint errors
+            final_list_for_pricing = self._deduplicate_product_data_for_pricing(raw_product_data)
+
             # 3. Prepare Price Cache for the current store
             self._prepare_price_cache_for_store(store)
 
             # 4. Process Prices
-            price_manager.process(raw_product_data, store)
+            price_manager.process(final_list_for_pricing, store)
 
             # 5. Process Categories
             category_manager.process(raw_product_data, store.company)

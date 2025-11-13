@@ -96,11 +96,9 @@ def run_sanity_checks(file_path: str) -> list:
     # Pass 2: Perform file-wide consistency and uniqueness checks
     final_valid_lines = []
     seen_nnbs = set()
-    seen_barcodes = set()
-    seen_skus = set() # Initialize set for SKUs
     first_metadata = None
 
-    for line_info in valid_lines_data: # Corrected typo here
+    for line_info in valid_lines_data:
         if not line_info['is_valid']:
             continue
 
@@ -118,30 +116,13 @@ def run_sanity_checks(file_path: str) -> list:
             all_errors.append(f"L{line_number}: Metadata mismatch. Inconsistent 'store_id' or 'company'.")
             is_line_still_valid = False
 
-        # Uniqueness checks
+        # Uniqueness check for normalized_name_brand_size ONLY
         if nnbs:
             if nnbs in seen_nnbs:
                 all_errors.append(f"L{line_number}: Duplicate 'normalized_name_brand_size' (keeping first occurrence): {nnbs}")
                 is_line_still_valid = False
             else:
                 seen_nnbs.add(nnbs)
-        
-        barcode = product.get('barcode')
-        if barcode:
-            if barcode in seen_barcodes:
-                all_errors.append(f"L{line_number}: Duplicate 'barcode' (keeping first occurrence): {barcode}")
-                is_line_still_valid = False
-            else:
-                seen_barcodes.add(barcode)
-        
-        # SKU uniqueness check
-        sku = product.get('sku')
-        if sku:
-            if sku in seen_skus:
-                all_errors.append(f"L{line_number}: Duplicate 'sku' (keeping first occurrence): {sku}")
-                is_line_still_valid = False
-            else:
-                seen_skus.add(sku)
 
         if is_line_still_valid:
             final_valid_lines.append(line_info['original_line'])
