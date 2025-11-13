@@ -8,6 +8,8 @@ from .product_enricher import ProductEnricher
 TRANSLATION_TABLE_PATH = os.path.abspath(os.path.join(
     os.path.dirname(__file__),
     '..',
+    '..',
+    '..',
     'data',
     'product_normalized_name_brand_size_translation_table.py'
 ))
@@ -93,11 +95,48 @@ class ProductReconciler:
                 # 1. Update foreign keys on Price table
                 self.command.stdout.write("  - Re-assigning prices from duplicate products...")
                 for canon_id, dupe_ids in fk_updates.items():
-                    # This can create duplicate prices for the same (product, store) pair.
-                    # This should be handled by a separate cleanup process or by improving
-                    # the price model's constraints (e.g., unique_together).
-                    # For now, we proceed with the re-assignment.
-                    Price.objects.filter(product_id__in=dupe_ids).update(product_id=canon_id)
+                    # 1. Fetch all prices for both canonical and duplicate products
+                    involved_prices = list(Price.objects.filter(
+                        Q(product_id=canon_id) | Q(product_id__in=dupe_ids)
+                    ))
+
+                    # 2. Group prices by store
+                    prices_by_store = {}
+                    for p in involved_prices:
+                        prices_by_store.setdefault(p.store_id, []).append(p)
+
+                    prices_to_delete_pks = []
+                    prices_to_update_pks = []
+
+                    # 3. Process each store group to find conflicts and resolve them
+                    for store_id, price_group in prices_by_store.items():
+                        if len(price_group) == 1:
+                            # No conflict, but if it's a duplicate's price, it needs updating
+                            price = price_group[0]
+                            if price.product_id in dupe_ids:
+                                prices_to_update_pks.append(price.pk)
+                        else:
+                            # CONFLICT: More than one price for this store. Find the winner.
+                            price_group.sort(key=lambda x: x.scraped_date, reverse=True)
+                            winner = price_group[0]
+                            losers = price_group[1:]
+                            
+                            # Mark losers for deletion
+                            for loser in losers:
+                                prices_to_delete_pks.append(loser.pk)
+                            
+                            # If the winner was a duplicate, it needs to be updated
+                            if winner.product_id in dupe_ids:
+                                prices_to_update_pks.append(winner.pk)
+                    
+                    # 4. Perform bulk database operations
+                    if prices_to_delete_pks:
+                        self.command.stdout.write(f"    - Deleting {len(prices_to_delete_pks)} older/conflicting price(s).")
+                        Price.objects.filter(pk__in=prices_to_delete_pks).delete()
+                    
+                    if prices_to_update_pks:
+                        self.command.stdout.write(f"    - Updating {len(prices_to_update_pks)} prices to point to canonical product.")
+                        Price.objects.filter(pk__in=prices_to_update_pks).update(product_id=canon_id)
 
                 # 2. Update canonical products with enriched data
                 if products_to_update:
