@@ -31,10 +31,10 @@ class Gs1CompanyScraper:
         headers = {'X-Internal-API-Key': settings.INTERNAL_API_KEY}
 
         # --- Setup ---
-        inbox_dir = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'prefix_inbox')
-        os.makedirs(inbox_dir, exist_ok=True)
+        outbox_dir = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'outboxes', 'gs1_outbox')
+        os.makedirs(outbox_dir, exist_ok=True)
         timestamp = timezone.now().strftime('%Y-%m-%d_%H-%M-%S')
-        output_file = os.path.join(inbox_dir, f'gs1_results_{timestamp}.jsonl')
+        output_file = os.path.join(outbox_dir, f'gs1_results_{timestamp}.jsonl')
         self.command.stdout.write(f"Saving results to: {output_file}\n")
 
         # --- Prioritize Brands (via API) ---
