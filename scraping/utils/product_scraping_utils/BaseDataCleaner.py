@@ -124,7 +124,7 @@ class BaseDataCleaner(ABC):
                 product[key] = None
 
         # Generate the price hash after all other fields are set
-        product['price_hash'] = generate_price_hash(product, self.store_id)
+        product['price_hash'] = generate_price_hash(product)
         
         # Remove keys with None values to optimize file size
         product = {k: v for k, v in product.items() if v is not None}

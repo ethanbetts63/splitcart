@@ -194,4 +194,9 @@ class UpdateOrchestrator:
         self.command.stdout.write(self.command.style.SUCCESS("\n--- Running Group Maintenance ---"))
         GroupMaintenanceOrchestrator(self.command).run()
 
+        # 5. Regenerate Translation Tables after reconciliation
+        self.command.stdout.write(self.command.style.SUCCESS("\n--- Generating Translation Tables ---"))
+        BrandTranslationTableGenerator().run()
+        ProductTranslationTableGenerator().run()
+
         self.command.stdout.write(self.command.style.SUCCESS("\n-- Orchestrator finished --"))
