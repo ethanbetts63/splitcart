@@ -27,20 +27,22 @@ class ProductBarcodeView(BaseAPIView):
         if not skus_to_lookup:
             return JsonResponse({})
 
-        # Step 1: Broadly query all products with a 'coles' key.
-        all_coles_products = Product.objects.filter(company_skus__has_key='coles')
+        # Step 1: Broadly query all products that have a SKU associated with Coles.
+        all_coles_products = Product.objects.filter(skus__company__name__iexact='Coles').prefetch_related('skus__company')
 
         # Step 2: Create a map from SKU to barcode information by iterating in Python.
         # This logic is designed to be thorough and "lock in" a good barcode when it's found.
         sku_to_barcode_map = {}
         for p in all_coles_products.iterator():
-            product_coles_skus = p.company_skus.get('coles', [])
-            if not isinstance(product_coles_skus, list):
-                product_coles_skus = [product_coles_skus]
-            
-            for sku in product_coles_skus:
+            # Iterate through the prefetched SKU objects for the product
+            for sku_obj in p.skus.all():
+                # We can be reasonably sure the company is Coles due to the initial filter,
+                # but a check doesn't hurt if products can have SKUs from multiple companies.
+                if sku_obj.company.name.lower() != 'coles':
+                    continue
+
                 try:
-                    sku_int = int(sku)
+                    sku_int = int(sku_obj.sku)
                     if sku_int in skus_to_lookup:
                         # If we haven't seen this SKU yet, add it.
                         if sku_int not in sku_to_barcode_map:

@@ -59,10 +59,9 @@ def build_price_slots(cart, stores):
                 if company_name.lower() == 'aldi':
                     image_url = product_obj.aldi_image_url
                 elif company.image_url_template:
-                    # Use lowercase name for lookup, as keys are stored this way
-                    company_skus = product_obj.company_skus.get(company_name.lower(), [])
-                    if company_skus:
-                        sku = str(company_skus[0])
+                    sku_obj = product_obj.skus.filter(company=company).first()
+                    if sku_obj:
+                        sku = str(sku_obj.sku)
                         # Handle Coles' special URL structure
                         if company_name.lower() == 'coles':
                             first_digit = sku[0] if sku else '0'

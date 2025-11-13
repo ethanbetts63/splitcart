@@ -1,7 +1,7 @@
 import json
 from django.core.management.base import BaseCommand
 from companies.models import Store
-from products.models import Product, Price
+from products.models import Product, Price, SKU
 
 class Command(BaseCommand):
     help = 'Compares the Coles SKUs for a store in the DB against the SKUs in a JSONL file.'
@@ -20,19 +20,23 @@ class Command(BaseCommand):
             # --- Step 1: Get SKUs from the Database ---
             self.stdout.write(f"1. Fetching SKUs from database for Store PK {store_pk}...")
             store = Store.objects.get(pk=store_pk)
-            product_ids = Price.objects.filter(store=store).values_list('product_id', flat=True).distinct()
-            products_in_db = Product.objects.filter(id__in=product_ids, company_skus__has_key='coles')
             
+            # Get all product IDs that have a price at the given store
+            product_ids_in_store = Price.objects.filter(store=store).values_list('product_id', flat=True).distinct()
+            
+            # Directly query the SKU model for those products and for Coles
+            db_sku_queryset = SKU.objects.filter(
+                product_id__in=product_ids_in_store,
+                company__name__iexact='Coles'
+            ).values_list('sku', flat=True)
+
             db_skus = set()
-            for product in products_in_db.iterator():
-                coles_skus = product.company_skus.get('coles', [])
-                if not isinstance(coles_skus, list):
-                    coles_skus = [coles_skus]
-                for sku in coles_skus:
-                    try:
-                        db_skus.add(int(sku))
-                    except (ValueError, TypeError):
-                        continue
+            for sku in db_sku_queryset:
+                try:
+                    db_skus.add(int(sku))
+                except (ValueError, TypeError):
+                    continue
+            
             self.stdout.write(f"   - Found {len(db_skus)} unique Coles SKUs in the database for this store.")
 
             # --- Step 2: Get SKUs from the File ---

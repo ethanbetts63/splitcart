@@ -21,9 +21,7 @@ class Command(BaseCommand):
             # Get all concrete fields from the model
             for field in product._meta.concrete_fields:
                 value = getattr(product, field.name)
-                if field.name == 'company_skus':
-                    self.stdout.write(f"  {field.name}: {json.dumps(value, indent=2)}")
-                elif field.name == 'sizes' or field.name == 'normalized_name_brand_size_variations' or field.name == 'brand_name_company_pairs':
+                if field.name in ['sizes', 'normalized_name_brand_size_variations', 'brand_name_company_pairs']:
                     self.stdout.write(f"  {field.name}: {json.dumps(value)}")
                 else:
                     self.stdout.write(f"  {field.name}: {value}")
@@ -35,6 +33,15 @@ class Command(BaseCommand):
                     self.stdout.write(f"  {field.name}: {[str(obj) for obj in related_objects]}")
                 else:
                     self.stdout.write(f"  {field.name}: (empty)")
+
+            # Explicitly show related SKUs
+            self.stdout.write(self.style.HTTP_INFO("\n--- Related SKUs ---"))
+            related_skus = product.skus.all()
+            if related_skus.exists():
+                for sku_obj in related_skus:
+                    self.stdout.write(f"  - Company: {sku_obj.company.name}, SKU: {sku_obj.sku}")
+            else:
+                self.stdout.write("  (No associated SKUs found)")
 
         except Product.DoesNotExist:
             self.stderr.write(self.style.ERROR(f"Product with PK {product_pk} not found."))
