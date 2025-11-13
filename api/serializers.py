@@ -120,12 +120,13 @@ class ProductSerializer(serializers.ModelSerializer):
         if not company_obj or not company_obj.image_url_template:
             return None
 
-        # Get SKU for the company
-        company_skus_list = product_obj.company_skus.get(company_name.lower(), [])
-        if not company_skus_list:
+        # Get SKU for the company by querying the SKU model
+        sku_obj = product_obj.skus.filter(company=company_obj).first()
+
+        if not sku_obj:
             return None
         
-        sku = company_skus_list[0]
+        sku = sku_obj.sku
         sku_str = str(sku)
 
         # Handle Coles' special URL structure
