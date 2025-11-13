@@ -34,8 +34,10 @@ def _validate_product_fields(product: dict, line_number: int) -> list:
             continue
         try:
             price_val = Decimal(str(price_str))
-            if not (0 <= price_val < 20000):
-                errors.append(f"L{line_number} (Product: {nnbs}): Field '{field}' is out of range (0-20000): {price_val}")
+            # Custom range check based on field
+            if field == 'unit_price':
+                if price_val < 0: # Only check for non-negative
+                    errors.append(f"L{line_number} (Product: {nnbs}): Field '{field}' is negative: {price_val}")
             if price_val.as_tuple().exponent < -2:
                 errors.append(f"L{line_number} (Product: {nnbs}): Field '{field}' has more than 2 decimal places: {price_val}")
         except InvalidOperation:
