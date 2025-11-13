@@ -63,6 +63,6 @@ class Command(BaseCommand):
             if not os.path.exists(inbox_path):
                 self.stdout.write(self.style.WARNING("Product inbox directory not found."))
             else:
-                orchestrator = UpdateOrchestrator(self, inbox_path)
+                orchestrator = UpdateOrchestrator(self)
                 orchestrator.run()
             self.stdout.write(self.style.SUCCESS('--- Product update from inbox complete ---'))
