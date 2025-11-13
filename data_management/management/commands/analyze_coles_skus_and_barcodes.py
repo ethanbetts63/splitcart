@@ -25,14 +25,14 @@ class Command(BaseCommand):
             if total_store_products == 0:
                 continue # Skip stores with no products 
 
-            products_with_coles_sku = store_products.filter(company_skus__has_key='coles')
+            products_with_coles_sku = store_products.filter(skus__company__name__iexact='Coles')
             count_with_coles_sku = products_with_coles_sku.count()
 
             products_with_barcode = store_products.filter(barcode__isnull=False).exclude(barcode__exact='')
             count_with_barcode = products_with_barcode.count()
 
             products_with_both = store_products.filter(
-                company_skus__has_key='coles',
+                skus__company__name__iexact='Coles',
                 barcode__isnull=False
             ).exclude(barcode__exact='')
             count_with_both = products_with_both.count()

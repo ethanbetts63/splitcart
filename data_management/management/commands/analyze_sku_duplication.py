@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from collections import defaultdict
 from companies.models import Company
-from products.models import Product, Price
+from products.models import Product, Price, SKU
 
 class Command(BaseCommand):
     help = 'Analyzes SKU duplication within each company.'
@@ -28,11 +28,13 @@ class Command(BaseCommand):
 
             # 2. Build the SKU-to-Product map
             sku_to_products = defaultdict(list)
-            products = Product.objects.filter(pk__in=product_pks)
-            for product in products:
-                sku_list = product.company_skus.get(company_name_lower, [])
-                for sku in sku_list:
-                    sku_to_products[sku].append(product.pk)
+            # Query SKU objects directly for the given company and product PKs
+            skus_for_company_products = SKU.objects.select_related('product').filter(
+                company=company,
+                product_id__in=product_pks
+            )
+            for sku_obj in skus_for_company_products:
+                sku_to_products[sku_obj.sku].append(sku_obj.product.pk)
 
             # 3. Analyze the map for conflicts
             conflicting_skus = {}

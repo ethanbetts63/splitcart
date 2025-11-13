@@ -9,7 +9,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("--- Starting Coles Product Analysis ---"))
 
         # Find all products associated with Coles by checking the company_skus field.
-        coles_products = Product.objects.filter(company_skus__has_key='coles')
+        coles_products = Product.objects.filter(skus__company__name__iexact='Coles')
         total_coles_products = coles_products.count()
 
         if total_coles_products == 0:

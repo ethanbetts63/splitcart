@@ -40,8 +40,8 @@ class Command(BaseCommand):
             # Use annotations for efficiency
             stats = products.aggregate(
                 has_barcode_count=Count('pk', filter=Q(barcode__isnull=False) & ~Q(barcode='')),
-                has_sku_count=Count('pk', filter=Q(company_skus__has_key='coles')),
-                has_both_count=Count('pk', filter=(Q(barcode__isnull=False) & ~Q(barcode='')) & Q(company_skus__has_key='coles'))
+                has_sku_count=Count('pk', filter=Q(skus__company__name__iexact='Coles')),
+                has_both_count=Count('pk', filter=(Q(barcode__isnull=False) & ~Q(barcode='')) & Q(skus__company__name__iexact='Coles'))
             )
 
             has_barcode = stats['has_barcode_count']

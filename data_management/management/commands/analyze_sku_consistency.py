@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from companies.models import Company
-from products.models import Product, Price
+from products.models import Product, Price, SKU
+from django.db.models import Count
 
 class Command(BaseCommand):
     help = 'Analyzes the consistency and coverage of SKUs for each company.'
@@ -26,23 +27,27 @@ class Command(BaseCommand):
 
             self.stdout.write(f"  Found {total_company_products} unique products sold by {company.name}.")
 
-            # 2. Get all relevant Product objects in one query
-            products = Product.objects.filter(pk__in=product_pks)
+            # 2. Get all relevant Product objects in one query (no longer needed to fetch all products)
+            # products = Product.objects.filter(pk__in=product_pks) # This line can be removed
 
-            # 3. Initialize counters
-            products_with_any_sku = 0
-            products_with_multiple_skus = 0
+            # 3. Initialize counters (no longer needed)
+            # products_with_any_sku = 0
+            # products_with_multiple_skus = 0
 
-            # 4. Analyze the products
-            for product in products:
-                # The company_skus field might not have an entry for this company
-                sku_list = product.company_skus.get(company.name.lower(), [])
-                
-                if len(sku_list) > 0:
-                    products_with_any_sku += 1
-                
-                if len(sku_list) > 1:
-                    products_with_multiple_skus += 1
+            # 4. Analyze the products using aggregate queries on the SKU model
+            
+            # Count products with at least one SKU for this company
+            products_with_any_sku = SKU.objects.filter(
+                company=company,
+                product_id__in=product_pks
+            ).values('product_id').distinct().count()
+
+            # Count products with multiple SKUs for this company
+            # Group by product_id and count SKUs, then filter for counts > 1
+            products_with_multiple_skus = SKU.objects.filter(
+                company=company,
+                product_id__in=product_pks
+            ).values('product_id').annotate(sku_count=Count('sku')).filter(sku_count__gt=1).count()
 
             # 5. Calculate and print percentages
             if total_company_products > 0:
