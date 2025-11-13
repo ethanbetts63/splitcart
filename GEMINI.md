@@ -1,6 +1,6 @@
 # Project Overview
 
-This project is a Django-based application called "splitcart". It is designed as a web scraper and data aggregation tool for comparing prices of products from different Australian grocery stores, including Coles, Woolworths, IGA, Spudshed, and Aldi. The project is structured into three main Django apps: `companies`, `products`, and `data_management`.
+This project is a Django-based application called "splitcart". It is designed as a web scraper and data aggregation tool for comparing prices of products from different Australian grocery stores, including Coles, Woolworths, IGA, and Aldi. 
 
 **Key Technologies:**
 
@@ -33,34 +33,14 @@ The frontend is built using React (JavaScript/TypeScript) and leverages the foll
     *   This system is designed for clarity, testability, and robustness, handling data consolidation, product matching, category relationships, and price updates efficiently.
 
     **Core Database Update Services:**
-    *   **`UpdateOrchestrator`**: The central controller. It iterates through inbox files, instantiates per-file services, and manages the overall flow from consolidation to final commit and cleanup.
-    *   **`ProductResolver`**: Built per-file, this service holds contextual in-memory caches (barcodes, normalized strings, store-specific product IDs, existing prices) to efficiently match incoming products against existing database records.
-    *   **`UnitOfWork`**: Manages all proposed database changes (new products, prices, updates). It collects these changes and performs efficient `bulk_create` and `bulk_update` operations within a single, atomic database transaction.
-    *   **`CategoryManager`**: Handles the creation of new categories, establishes parent-child relationships, and links products to their respective categories within the database transaction.
-    *   **`VariationManager`**: Detects product name variations, manages a reconciliation list for potential duplicates, and performs post-processing reconciliation to merge actual duplicate product records.
-    *   **`TranslationTableGenerator`**: A utility that regenerates a Python file containing a mapping of product name variations to their canonical names, based on the database's  data.
 
 **Models:**
 
-*   **`companies` app:**
-    *   `Store`: Represents a grocery store (e.g., Coles, Woolworths).
-    *   `Category`: Represents a product category, with support for hierarchical relationships and association with a `Company`.
-*   **`products` app:**
-    *   `Product`: Represents a master product, independent of any single store, with fields for name variations and normalized identifiers.
-    *   `Price`: Represents the price of a product at a specific store on a specific date, linked to `Product` and `Store` models.
 
 ## Management Commands
 
 Here is a brief overview of the available management commands:
 
-*   `find_stores`: Discovers store locations for a specific company and saves the data for processing.
-*   `scrape`: Scrapes product data from specified store websites, saving it to the `product_inbox`.
-*   `update`: A consolidated command that updates the database with new data. Its `--products` flag now uses the refactored OOP system for robust product and price updates from the inbox. It also supports updating stores from discovery (`--stores`) or from archives (`--archive`).
-*   `build_company_jsons`: Generates JSON archives containing data about companies and their stores.
-*   `build_store_jsons`: Generates detailed JSON archives for each store, including product and price history.
-*   `analyze_data`: A flexible tool for data analysis that can generate various reports, charts, and heatmaps.
-*   `compare_stores`: A utility to compare the product offerings between two specified stores.
-*   `get_woolworths_substitutes`: A specialized command to fetch substitute product information from Woolworths.
 
 ## Data Pipeline Flow
 
@@ -89,18 +69,6 @@ This section outlines the standard workflow for collecting, processing, and arch
 *   **Update:** Use the `update --products` command to populate the database with the processed product and price information from the `product_inbox`. This step now leverages the refactored object-oriented system for robust and efficient processing. For a detailed explanation of this new workflow, refer to `final_workflow_explanation.txt`.
     ```bash
     python manage.py update --products
-    ```
-
-### Step 4: Analyze Data and Generate Archives (Optional)
-
-*   **Analyze:** Use the `analyze_data` command to generate reports, charts, and heatmaps.
-    ```bash
-    python manage.py analyze_data --report company_heatmap
-    ```
-*   **Archive:** Use the `build_company_jsons` and `build_store_jsons` commands to create data archives.
-    ```bash
-    python manage.py build_company_jsons
-    python manage.py build_store_jsons
     ```
 
 ## Session Summaries

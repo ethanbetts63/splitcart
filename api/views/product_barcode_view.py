@@ -33,7 +33,7 @@ class ProductBarcodeView(BaseAPIView):
         # Step 2: Create a map from SKU to barcode information by iterating in Python.
         # This logic is designed to be thorough and "lock in" a good barcode when it's found.
         sku_to_barcode_map = {}
-        for p in all_coles_products.iterator():
+        for p in all_coles_products.iterator(chunk_size=2000):
             # Iterate through the prefetched SKU objects for the product
             for sku_obj in p.skus.all():
                 # We can be reasonably sure the company is Coles due to the initial filter,
