@@ -54,8 +54,8 @@ class PriceManager:
                 self.command.stderr.write(self.command.style.ERROR(f"    - Product '{product_dict.get('name')}' not found in cache. Skipping price."))
                 continue
 
-            # Calculate the price hash
-            current_price_hash = generate_price_hash(product_dict)
+            # Get the price_hash from the file data
+            current_price_hash = product_dict.get('price_hash')
             seen_hashes.add(current_price_hash)
 
             # Prepare price data

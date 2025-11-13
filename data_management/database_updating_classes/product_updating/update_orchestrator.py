@@ -138,8 +138,6 @@ class UpdateOrchestrator:
         product_manager = ProductManager(self.command, self.caches, self.update_cache)
         price_manager = PriceManager(self.command, self.caches, self.update_cache)
         category_manager = CategoryManager(self.command, self.caches, self.update_cache)
-        brand_translation_generator = BrandTranslationTableGenerator()
-        product_translation_generator = ProductTranslationTableGenerator()
 
         all_files = [os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')]
         
