@@ -1,5 +1,8 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
+from django.conf import settings
+import os
+import ast
 from data_management.utils.product_normalizer import ProductNormalizer
 from data_management.utils.price_normalizer import PriceNormalizer
 from data_management.utils.price_hasher import generate_price_hash
@@ -22,6 +25,40 @@ class BaseDataCleaner(ABC):
         self.cleaned_products = []
         self.final_products = []
         self.brand_cache = self._build_brand_cache()
+        self.brand_translations, self.product_translations = self._load_translation_tables()
+
+    def _load_translation_tables(self):
+        """
+        Loads the brand and product translation tables from the local scraping/data
+        directory. Returns empty dictionaries if files are not found.
+        """
+        brand_translations = {}
+        product_translations = {}
+
+        brand_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'brand_translation_table.py')
+        product_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'product_normalized_name_brand_size_translation_table.py')
+
+        try:
+            with open(brand_path, 'r', encoding='utf-8') as f:
+                file_content = f.read()
+            # The file is expected to contain a single dictionary assignment
+            if '=' in file_content:
+                dict_str = file_content.split('=', 1)[1].strip()
+                brand_translations = ast.literal_eval(dict_str)
+        except (FileNotFoundError, SyntaxError, ValueError):
+            # Fail silently and proceed with an empty dictionary
+            pass
+
+        try:
+            with open(product_path, 'r', encoding='utf-8') as f:
+                file_content = f.read()
+            if '=' in file_content:
+                dict_str = file_content.split('=', 1)[1].strip()
+                product_translations = ast.literal_eval(dict_str)
+        except (FileNotFoundError, SyntaxError, ValueError):
+            pass
+            
+        return brand_translations, product_translations
 
     def _build_brand_cache(self):
         """
@@ -106,7 +143,12 @@ class BaseDataCleaner(ABC):
         """
         Performs generic normalization on a cleaned product.
         """
-        normalizer = ProductNormalizer(product, self.brand_cache)
+        normalizer = ProductNormalizer(
+            product,
+            brand_cache=self.brand_cache,
+            brand_translations=self.brand_translations,
+            product_translations=self.product_translations
+        )
         # Overwrite the brand with the canonical version
         product['brand'] = normalizer.cleaned_brand
         # Add the new normalized brand key

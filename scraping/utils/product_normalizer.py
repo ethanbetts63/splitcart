@@ -1,13 +1,5 @@
 import re
 import unicodedata
-try:
-    from data_management.data.brand_translation_table import BRAND_NAME_TRANSLATIONS
-except (ImportError, SyntaxError):
-    BRAND_NAME_TRANSLATIONS = {}
-try:
-    from data_management.data.archive.product_normalized_name_brand_size_translation_table import PRODUCT_NAME_TRANSLATIONS
-except (ImportError, SyntaxError):
-    PRODUCT_NAME_TRANSLATIONS = {}
 
 class ProductNormalizer:
     """
@@ -16,13 +8,15 @@ class ProductNormalizer:
     This class takes raw product data, processes it through a pipeline of cleaning
     and standardization methods, and provides clean, normalized outputs.
     """
-    def __init__(self, product_data, brand_cache=None):
+    def __init__(self, product_data, brand_cache=None, brand_translations=None, product_translations=None):
         """
         Initializes the normalizer with raw product data.
 
         Args:
             product_data (dict): A dictionary containing product info like 'name', 'brand', etc.
             brand_cache (dict): A cache of brand information, including name variations.
+            brand_translations (dict): A dictionary mapping brand variations to canonical names.
+            product_translations (dict): A dictionary mapping product name variations to canonical names.
         """
         self.name = str(product_data.get('name', ''))
         raw_brand = product_data.get('brand')
@@ -31,9 +25,11 @@ class ProductNormalizer:
         self.barcode = product_data.get('barcode')
         self.sku = product_data.get('sku')
         self.brand_cache = brand_cache if brand_cache is not None else {}
+        self.brand_translations = brand_translations if brand_translations is not None else {}
+        self.product_translations = product_translations if product_translations is not None else {}
 
         # Immediately process the data to populate internal state
-        self.normalized_brand_name = ProductNormalizer._get_normalized_brand_name(self.brand)
+        self.normalized_brand_name = self._get_normalized_brand_name(self.brand)
 
         # Get the human-readable name from the cache using the normalized brand name
         brand_info = self.brand_cache.get(self.normalized_brand_name, {})
@@ -124,8 +120,7 @@ class ProductNormalizer:
                 all_sizes.add(size.lower())
         return sorted(list(all_sizes))
 
-    @staticmethod
-    def _get_normalized_brand_name(brand_str: str) -> str:
+    def _get_normalized_brand_name(self, brand_str: str) -> str:
         """
         Resolves the raw brand string to a normalized key.
         """
@@ -133,10 +128,10 @@ class ProductNormalizer:
             return ''
 
         # Normalize the raw brand string to create a lookup key
-        normalized_brand_str = ProductNormalizer._clean_value(brand_str)
+        normalized_brand_str = self._clean_value(brand_str)
         
         # Look for a translation
-        translated_normalized_brand_str = BRAND_NAME_TRANSLATIONS.get(normalized_brand_str)
+        translated_normalized_brand_str = self.brand_translations.get(normalized_brand_str)
     
         if translated_normalized_brand_str:
             return translated_normalized_brand_str
@@ -247,7 +242,7 @@ class ProductNormalizer:
         generated_key = " ".join(word_list)
 
         # 4. Look for a translation for the generated key.
-        canonical_key = PRODUCT_NAME_TRANSLATIONS.get(generated_key)
+        canonical_key = self.product_translations.get(generated_key)
     
         if canonical_key:
             return canonical_key

@@ -63,10 +63,22 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f"Starting scraper in persistent worker mode{scope_message}..."))
         self.stdout.write(self.style.SUCCESS("Create a 'stop.txt' file in the 'scraping' directory to gracefully stop the worker."))
 
+        scrape_counter = 0
+        stores_per_refresh = 5
+
         while True:
             if os.path.exists(os.path.join('scraping', 'stop.txt')):
                 self.stdout.write(self.style.WARNING("Stop signal detected. Shutting down worker."))
                 break
+
+            if scrape_counter >= stores_per_refresh:
+                self.stdout.write(self.style.SUCCESS(f'Scraped {scrape_counter} stores. Refreshing translation tables...'))
+                product_table_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'product_normalized_name_brand_size_translation_table.py')
+                brand_table_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'brand_translation_table.py')
+                fetch_python_file('product_translations', product_table_path, self, base_url)
+                fetch_python_file('brand_translations', brand_table_path, self, base_url)
+                self.stdout.write(self.style.SUCCESS('Translation tables are up to date.'))
+                scrape_counter = 0 # Reset counter
 
             self.stdout.write(self.style.HTTP_INFO("\nRequesting next candidate from scheduler API..."))
             try:
@@ -91,6 +103,7 @@ class Command(BaseCommand):
 
             try:
                 self._scrape_single_store(store_to_scrape['pk'])
+                scrape_counter += 1
             except requests.exceptions.RequestException as e:
                 self.stdout.write(self.style.ERROR(f"A critical network error occurred during scraping: {e}"))
                 self.stdout.write(self.style.ERROR("Stopping the scraper worker due to network issues."))
