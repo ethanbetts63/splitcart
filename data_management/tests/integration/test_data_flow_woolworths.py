@@ -5,10 +5,7 @@ import shutil
 from datetime import datetime
 from unittest.mock import Mock
 from decimal import Decimal
-
 from django.test import TestCase, override_settings
-
-from companies.models import Company, Division, Store
 from products.models import Product, Price
 from companies.tests.test_helpers.model_factories import CompanyFactory, DivisionFactory, StoreFactory
 from scraping.utils.product_scraping_utils.DataCleanerWoolworths import DataCleanerWoolworths
