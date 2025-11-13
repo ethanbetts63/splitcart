@@ -49,7 +49,6 @@ class PriceManager:
                 continue
 
             # Get the product object from the shared product cache
-            # We assume product_manager has already run and updated the cache
             product_obj = self.caches['products_by_norm_string'].get(product_dict.get('normalized_name_brand_size'))
             if not product_obj:
                 self.command.stderr.write(self.command.style.ERROR(f"    - Product '{product_dict.get('name')}' not found in cache. Skipping price."))
