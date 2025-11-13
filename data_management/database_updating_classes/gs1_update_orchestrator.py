@@ -5,23 +5,24 @@ from products.models import ProductBrand, Product
 from scraping.utils.product_scraping_utils.product_normalizer import ProductNormalizer
 from data_management.database_updating_classes.product_updating.translation_table_generators.brand_translation_table_generator import BrandTranslationTableGenerator
 
-class PrefixUpdateOrchestrator:
+class GS1UpdateOrchestrator:
     """
     Orchestrates the process of updating brand prefix information from the GS1 scraper inbox.
     It reconciles any discovered brand name synonyms.
     """
     def __init__(self, command):
         self.command = command
-        self.inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'prefix_inbox')
-        self.temp_storage_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'temp_prefix_storage')
+        self.inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'gs1_inbox')
+        self.temp_storage_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'gs1_storage')
+        os.makedirs(self.inbox_path, exist_ok=True)
         os.makedirs(self.temp_storage_path, exist_ok=True)
 
     def run(self):
-        self.command.stdout.write(self.command.style.SUCCESS("--- Running Prefix Database Updater ---"))
+        self.command.stdout.write(self.command.style.SUCCESS("--- Running GS1 Database Updater ---"))
         
         all_files = [os.path.join(self.inbox_path, f) for f in os.listdir(self.inbox_path) if f.endswith('.jsonl')]
         if not all_files:
-            self.command.stdout.write("Prefix inbox is empty. No new data to process.")
+            self.command.stdout.write("GS1 inbox is empty. No new data to process.")
             return
 
         processed_files = []
@@ -38,7 +39,7 @@ class PrefixUpdateOrchestrator:
                         continue
             processed_files.append(file_path)
 
-        self.command.stdout.write(self.command.style.SUCCESS("--- Prefix Database Updater finished ---"))
+        self.command.stdout.write(self.command.style.SUCCESS("--- GS1 Database Updater finished ---"))
 
     def _process_record(self, data: dict):
         confirmed_key = data.get('confirmed_license_key')
@@ -107,5 +108,3 @@ class PrefixUpdateOrchestrator:
         if brandless_products_ids:
             self.command.stdout.write(f"  - Found {len(brandless_products_ids)} products with no brand. Linking them to '{canonical_brand.name}'.")
             Product.objects.filter(id__in=brandless_products_ids).update(brand=canonical_brand)
-
-
