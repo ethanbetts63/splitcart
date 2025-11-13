@@ -1,9 +1,6 @@
 from django.db import transaction
 from products.models import Product, Price
 from companies.models import Company
-from ...translation_table_generators.brand_translation_table_generator import BrandTranslationTableGenerator
-from ...translation_table_generators.product_translation_table_generator import ProductTranslationTableGenerator
-from .sku_reconciler import SkuReconciler
 from ..product_reconciler import ProductReconciler
 from ..brand_reconciler import BrandReconciler
 from .category_cycle_manager import CategoryCycleManager
@@ -18,14 +15,6 @@ class PostProcessor:
     def run(self):
         self.command.stdout.write(self.command.style.SUCCESS("--- Post-Processing Run Started ---"))
 
-        # Run SKU-based reconciliation first, as it's the most definitive
-        sku_reconciler = SkuReconciler(self.command, self.unit_of_work)
-        sku_reconciler.run()
-
-        # Regenerate the translation tables to include new variations from the main run AND the SKU reconciliation
-        BrandTranslationTableGenerator().run()
-        ProductTranslationTableGenerator().run()
-
         # Run the name-based product reconciler, which will stage changes in the UoW
         product_reconciler = ProductReconciler(self.command, self.unit_of_work)
         product_reconciler.run()
@@ -35,7 +24,7 @@ class PostProcessor:
         brand_reconciler.run()
 
         # --- Commit all staged changes from the reconcilers ---
-        self.commit_reconciliation_changes(sku_reconciler, product_reconciler, brand_reconciler)
+        self.commit_reconciliation_changes( product_reconciler, brand_reconciler)
 
         # Run category cycle pruning as a final cleanup step
         self.command.stdout.write(self.command.style.SUCCESS("--- Running Category Cycle Pruning ---"))
