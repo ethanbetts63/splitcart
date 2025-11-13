@@ -2,7 +2,7 @@ from datetime import datetime
 from django.utils.text import slugify
 from .BaseDataCleaner import BaseDataCleaner
 from .field_maps import COLES_FIELD_MAP
-from data_management.utils.product_normalizer import ProductNormalizer
+from scraping.utils.product_scraping_utils.product_normalizer import ProductNormalizer
 
 class DataCleanerColes(BaseDataCleaner):
     """

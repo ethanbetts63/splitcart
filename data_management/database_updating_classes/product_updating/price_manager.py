@@ -1,7 +1,7 @@
 from django.utils import timezone
 from django.db import transaction
 from products.models import Price
-from data_management.utils.price_hasher import generate_price_hash
+from scraping.utils.product_scraping_utils.price_hasher import generate_price_hash
 from datetime import datetime
 
 class PriceManager:

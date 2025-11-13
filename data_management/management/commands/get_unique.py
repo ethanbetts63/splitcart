@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from products.models.product import Product
-from data_management.utils.product_normalizer import ProductNormalizer
+from scraping.utils.product_scraping_utils.product_normalizer import ProductNormalizer
 import os
 
 class Command(BaseCommand):

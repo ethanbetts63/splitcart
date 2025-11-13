@@ -1,7 +1,7 @@
 import os
 import json
 from django.core.management.base import BaseCommand
-from data_management.utils.price_hasher import generate_price_hash
+from scraping.utils.product_scraping_utils.price_hasher import generate_price_hash
 
 class Command(BaseCommand):
     help = 'Recalculates the price_hash for all product .jsonl files in a given directory.'

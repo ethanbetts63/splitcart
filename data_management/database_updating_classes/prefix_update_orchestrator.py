@@ -2,7 +2,7 @@ import os
 import json
 from django.conf import settings
 from products.models import ProductBrand, Product
-from data_management.utils.product_normalizer import ProductNormalizer
+from scraping.utils.product_scraping_utils.product_normalizer import ProductNormalizer
 from data_management.database_updating_classes.product_updating.translation_table_generators.brand_translation_table_generator import BrandTranslationTableGenerator
 
 class PrefixUpdateOrchestrator:

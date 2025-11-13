@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from scraping.scrapers.base_product_scraper import BaseProductScraper
 from scraping.utils.product_scraping_utils.jsonl_writer import JsonlWriter
-from data_management.utils.product_normalizer import ProductNormalizer
+from scraping.utils.product_scraping_utils.product_normalizer import ProductNormalizer
 from data_management.utils.database_updating_utils.prefill_barcodes import prefill_barcodes_from_api
 
 class ColesBarcodeScraper(BaseProductScraper):

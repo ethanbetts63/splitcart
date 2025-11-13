@@ -3,9 +3,9 @@ from datetime import datetime
 from django.conf import settings
 import os
 import ast
-from data_management.utils.product_normalizer import ProductNormalizer
-from data_management.utils.price_normalizer import PriceNormalizer
-from data_management.utils.price_hasher import generate_price_hash
+from scraping.utils.product_scraping_utils.product_normalizer import ProductNormalizer
+from scraping.utils.product_scraping_utils.price_normalizer import PriceNormalizer
+from scraping.utils.product_scraping_utils.price_hasher import generate_price_hash
 from .wrap_cleaned_products import wrap_cleaned_products
 from products.models import ProductBrand
 
