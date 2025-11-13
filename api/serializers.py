@@ -140,15 +140,25 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_image_url(self, obj):
         """
         Constructs a single representative image URL for the product.
-        It uses a simple heuristic: find the first available price and use that company.
+        It iterates through the available prices until it finds a company
+        for which it can generate a valid image URL.
         """
-        # Determine a primary company to generate a single representative image URL.
-        first_price = obj.prices.select_related('store__company').first()
-        if first_price and first_price.store and first_price.store.company:
-            company = first_price.store.company
-            return self._get_image_url_for_company(obj, company.name, company_obj=company)
+        # Use the prices from the context if available, otherwise fetch them.
+        prices_map = self.context.get('prices_map')
+        if prices_map is not None:
+            prices_queryset = prices_map.get(obj.id, [])
+        else:
+            prices_queryset = obj.prices.select_related('store__company').all()
+
+        for price in prices_queryset:
+            if price.store and price.store.company:
+                company = price.store.company
+                # Try to generate a URL for this company
+                image_url = self._get_image_url_for_company(obj, company.name, company_obj=company)
+                if image_url:
+                    return image_url # Return the first valid URL we find
             
-        return None
+        return None # Return None if no valid URL could be generated
 
     def get_brand_name(self, obj):
         return obj.brand.name if obj.brand else None
