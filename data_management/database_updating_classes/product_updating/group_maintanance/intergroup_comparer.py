@@ -122,8 +122,6 @@ class IntergroupComparer:
 
                         if not anchor_a or not anchor_b:
                             continue
-
-                        self.command.stdout.write(f"     - Comparing Anchor '{anchor_a.store_name}' (Group {group_a.id}) vs. '{anchor_b.store_name}' (Group {group_b.id})...")
                         
                         price_map_a = all_prices_cache.get(anchor_a.id, {})
                         price_map_b = all_prices_cache.get(anchor_b.id, {})
@@ -138,7 +136,6 @@ class IntergroupComparer:
                             merged_group_ids_this_pass.add(group_a.id)
                             merged_group_ids_this_pass.add(group_b.id) 
                         else:
-                            self.command.stdout.write("       - No match.")
                             cache_manager.record_comparison(group_a.id, group_b.id)
                     
                     if skipped_count > 0:
