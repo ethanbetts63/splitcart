@@ -50,13 +50,19 @@ class ProductEnricher:
         # Merge 'normalized_name_brand_size_variations'
         canonical_variations = set(canonical_product.normalized_name_brand_size_variations or [])
         initial_variation_count = len(canonical_variations)
-        # Add the duplicate's own canonical name as a variation
-        if duplicate_product.normalized_name_brand_size:
-            canonical_variations.add(duplicate_product.normalized_name_brand_size)
+        
+        # Add the duplicate's own canonical name as a variation, ONLY if it's different
+        incoming_variation = duplicate_product.normalized_name_brand_size
+        if incoming_variation and incoming_variation != canonical_product.normalized_name_brand_size:
+            canonical_variations.add(incoming_variation)
+
         # Add the duplicate's existing variations
         if duplicate_product.normalized_name_brand_size_variations:
             for v in duplicate_product.normalized_name_brand_size_variations:
-                canonical_variations.add(v)
+                # Also check here to be safe
+                if v != canonical_product.normalized_name_brand_size:
+                    canonical_variations.add(v)
+
         if len(canonical_variations) > initial_variation_count:
             canonical_product.normalized_name_brand_size_variations = sorted(list(canonical_variations))
             updated = True
