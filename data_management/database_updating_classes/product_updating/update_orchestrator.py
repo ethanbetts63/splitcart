@@ -27,6 +27,20 @@ class UpdateOrchestrator:
         self.command = command
         self.inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'product_inbox')
         self.caches = {}
+        self.brand_translation_cache = self._load_brand_translation_cache()
+        self.discovered_brand_pairs = set()
+
+        # Initialize managers
+        self.brand_manager = BrandManager(self.command, self.caches, self.update_cache, self.brand_translation_cache)
+        self.product_manager = ProductManager(self.command, self.caches, self.update_cache, self.discovered_brand_pairs)
+        self.price_manager = PriceManager(self.command, self.caches, self.update_cache)
+        self.category_manager = CategoryManager(self.command, self.caches, self.update_cache)
+
+    def _load_brand_translation_cache(self):
+        """Loads the brand translation table from a file."""
+        # TODO: Implement file loading logic
+        self.command.stdout.write("  - Initialized empty brand translation cache.")
+        return {}
 
     def _build_global_caches(self):
         """Builds the initial in-memory caches for all relevant models."""
@@ -165,16 +179,14 @@ class UpdateOrchestrator:
         
         self._build_global_caches()
 
-        brand_manager = BrandManager(self.command, self.caches, self.update_cache)
-        product_manager = ProductManager(self.command, self.caches, self.update_cache)
-        price_manager = PriceManager(self.command, self.caches, self.update_cache)
-        category_manager = CategoryManager(self.command, self.caches, self.update_cache)
-
         all_files = [os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')]
         
         for file_path in all_files:
             self.command.stdout.write(f"\n{self.command.style.WARNING('--- Processing file:')} {os.path.basename(file_path)} ---")
             
+            # Clear the discovered pairs cache for each new file
+            self.discovered_brand_pairs.clear()
+
             file_reader = FileReader(file_path)
             metadata, raw_product_data = file_reader.read_and_consolidate()
 
@@ -184,23 +196,23 @@ class UpdateOrchestrator:
             
             store = store_or_reason
 
-            # 1. Process Brands
-            brand_manager.process(raw_product_data)
+            # 1. Process Products (runs first to discover brand pairs)
+            self.product_manager.process(raw_product_data, store.company)
 
-            # 2. Process Products
-            product_manager.process(raw_product_data, store.company)
-
-            # 2.5. De-duplicate the product list before pricing to prevent unique constraint errors
+            # 1.5. De-duplicate the product list before pricing to prevent unique constraint errors
             final_list_for_pricing = self._deduplicate_product_data_for_pricing(raw_product_data)
+            
+            # 2. Process Brands
+            self.brand_manager.process(raw_product_data, self.discovered_brand_pairs)
 
             # 3. Prepare Price Cache for the current store
             self._prepare_price_cache_for_store(store)
 
             # 4. Process Prices
-            price_manager.process(final_list_for_pricing, store)
+            self.price_manager.process(final_list_for_pricing, store)
 
             # 5. Process Categories
-            category_manager.process(raw_product_data, store.company)
+            self.category_manager.process(raw_product_data, store.company)
 
             # 6. Cleanup
             os.remove(file_path)

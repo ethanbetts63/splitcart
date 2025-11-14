@@ -8,10 +8,11 @@ class ProductManager:
     This class encapsulates the logic for resolving, enriching, mapping,
     persisting, and caching products and their company-specific SKUs.
     """
-    def __init__(self, command, caches, cache_updater):
+    def __init__(self, command, caches, cache_updater, discovered_brand_pairs):
         self.command = command
         self.caches = caches
         self.cache_updater = cache_updater
+        self.discovered_brand_pairs = discovered_brand_pairs
 
     def _resolve_products(self, raw_product_data, company_obj):
         """
@@ -57,6 +58,14 @@ class ProductManager:
                 if incoming_norm_string and canonical_norm_string and incoming_norm_string != canonical_norm_string:
                     self.cache_updater('products_by_norm_string', incoming_norm_string, match)
 
+                # If matched by barcode or SKU, check for brand variations
+                if barcode or sku:
+                    incoming_brand = product_dict.get('normalized_brand')
+                    canonical_brand = match.brand.normalized_name if match.brand else None
+                    if incoming_brand and canonical_brand and incoming_brand != canonical_brand:
+                        pair = tuple(sorted((incoming_brand, canonical_brand)))
+                        self.discovered_brand_pairs.add(pair)
+
                 products_to_update_data.append((match, data))
                 # If we found an existing product, we still need to check if a NEW SKU link needs to be created for it.
                 if sku and sku not in company_sku_cache:
@@ -79,18 +88,6 @@ class ProductManager:
             product_dict = data['product']
             metadata = data['metadata']
             
-            normalized_brand = product_dict.get('normalized_brand')
-            brand_obj = None # Initialize brand_obj to None
-
-            if normalized_brand: # Only try to look up a brand if normalized_brand is not None/empty
-                brand_obj = self.caches['normalized_brand_names'].get(normalized_brand)
-                if not brand_obj:
-                    # This means normalized_brand had a value, but it wasn't in the cache.
-                    # This is a genuine error, so we should skip.
-                    self.command.stderr.write(self.command.style.ERROR(f"      - ERROR: Brand '{normalized_brand}' not found in cache. Skipping product '{product_dict.get('name')}'.'"))
-                    continue
-            # If normalized_brand was None/empty, brand_obj remains None, which is allowed by the Product model.
-
             raw_brand = product_dict.get('brand')
             company = metadata.get('company')
             initial_pairs = []
@@ -99,7 +96,7 @@ class ProductManager:
 
             new_product = Product(
                 name=product_dict.get('name', ''),
-                brand=brand_obj, # This will be None if no brand was found or provided
+                brand=None, # Brand will be linked later by BrandManager
                 barcode=product_dict.get('barcode'),
                 normalized_name_brand_size=product_dict.get('normalized_name_brand_size'),
                 size=product_dict.get('size'),
@@ -125,7 +122,7 @@ class ProductManager:
             # Create a temporary, in-memory Product instance from the incoming data
             # to use the generic ProductEnricher utility.
             # We need to fetch the brand object from the cache for this.
-            brand_obj = self.caches['normalized_brand_names'].get(product_dict.get('normalized_brand'))
+            brand_obj = None # Brand is set to None as it's handled by BrandManager
             
             incoming_product_instance = Product(
                 name=product_dict.get('name'),
