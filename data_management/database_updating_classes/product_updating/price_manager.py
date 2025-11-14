@@ -120,7 +120,6 @@ class PriceManager:
             # Update store's last_scraped date
             store.last_scraped = scraped_datetime
             store.save(update_fields=['last_scraped'])
-            self.command.stdout.write(self.command.style.SUCCESS(f"    - Updated store {store.store_name} last_scraped to {scraped_datetime.date()}."))
 
         except Exception as e:
             self.command.stderr.write(self.command.style.ERROR(f"    - Error processing prices: {e}"))

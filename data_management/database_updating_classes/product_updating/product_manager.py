@@ -91,6 +91,12 @@ class ProductManager:
                     continue
             # If normalized_brand was None/empty, brand_obj remains None, which is allowed by the Product model.
 
+            raw_brand = product_dict.get('brand')
+            company = metadata.get('company')
+            initial_pairs = []
+            if raw_brand and company:
+                initial_pairs.append([raw_brand, company])
+
             new_product = Product(
                 name=product_dict.get('name', ''),
                 brand=brand_obj, # This will be None if no brand was found or provided
@@ -101,7 +107,7 @@ class ProductManager:
                 has_no_coles_barcode=product_dict.get('has_no_coles_barcode', False),
                 aldi_image_url=product_dict.get('aldi_image_url'),
                 url=product_dict.get('url'),
-                brand_name_company_pairs=[[product_dict.get('brand'), metadata.get('company')]]
+                brand_name_company_pairs=initial_pairs
             )
             product_objects_to_create.append(new_product)
         return product_objects_to_create
