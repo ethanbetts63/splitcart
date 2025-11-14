@@ -63,7 +63,8 @@ class ProductManager:
                     incoming_brand = product_dict.get('normalized_brand')
                     canonical_brand = match.brand.normalized_name if match.brand else None
                     if incoming_brand and canonical_brand and incoming_brand != canonical_brand:
-                        pair = tuple(sorted((incoming_brand, canonical_brand)))
+                        # The pair is directional: (incoming, existing)
+                        pair = (incoming_brand, canonical_brand)
                         self.discovered_brand_pairs.add(pair)
 
                 products_to_update_data.append((match, data))
