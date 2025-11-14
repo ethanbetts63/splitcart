@@ -5,12 +5,13 @@ class BrandManager:
     """
     Manages the creation and updating of ProductBrand objects.
     """
-    def __init__(self, command, caches, cache_updater):
+    def __init__(self, command, caches, cache_updater, brand_translation_cache):
         self.command = command
         self.caches = caches
         self.cache_updater = cache_updater
+        self.brand_translation_cache = brand_translation_cache
 
-    def process(self, raw_product_data):
+    def process(self, processed_product_data_list, discovered_brand_pairs):
         """
         Ensures all brands from the raw data exist in the database,
         updates existing brands with new name variations, and updates the shared cache.
