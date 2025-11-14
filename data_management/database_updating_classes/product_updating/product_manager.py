@@ -1,5 +1,6 @@
 from django.db import transaction
 from products.models import Product, SKU
+from data_management.database_updating_classes.product_updating.post_processing.product_enricher import ProductEnricher
 
 class ProductManager:
     """
@@ -106,57 +107,41 @@ class ProductManager:
         return product_objects_to_create
 
     def _prepare_updates(self, products_to_update_data):
-        """Enriches existing Product objects and returns a list of those that changed."""
+        """
+        Enriches existing Product objects using the ProductEnricher utility
+        and returns a list of those that were actually changed.
+        """
         product_objects_to_update = []
         for existing_product, data in products_to_update_data:
             product_dict = data['product']
             metadata = data['metadata']
-            updated = False
 
-            # Simple fields (update if blank)
-            if not existing_product.barcode and product_dict.get('barcode'):
-                existing_product.barcode = product_dict.get('barcode')
-                updated = True
-            if not existing_product.url and product_dict.get('url'):
-                existing_product.url = product_dict.get('url')
-                updated = True
-            if not existing_product.aldi_image_url and product_dict.get('aldi_image_url'):
-                existing_product.aldi_image_url = product_dict.get('aldi_image_url')
-                updated = True
+            # Create a temporary, in-memory Product instance from the incoming data
+            # to use the generic ProductEnricher utility.
+            # We need to fetch the brand object from the cache for this.
+            brand_obj = self.caches['normalized_brand_names'].get(product_dict.get('normalized_brand'))
+            
+            incoming_product_instance = Product(
+                name=product_dict.get('name'),
+                brand=brand_obj,
+                barcode=product_dict.get('barcode'),
+                normalized_name_brand_size=product_dict.get('normalized_name_brand_size'),
+                size=product_dict.get('size'),
+                sizes=product_dict.get('sizes', []),
+                has_no_coles_barcode=product_dict.get('has_no_coles_barcode', False),
+                aldi_image_url=product_dict.get('aldi_image_url'),
+                url=product_dict.get('url'),
+                brand_name_company_pairs=[[product_dict.get('brand'), metadata.get('company')]],
+                # The variation list of the incoming product itself is not needed
+                # as its own nnbs is what we are adding as a variation.
+                normalized_name_brand_size_variations=[] 
+            )
 
-            # Boolean field
-            if product_dict.get('has_no_coles_barcode') and not existing_product.has_no_coles_barcode:
-                existing_product.has_no_coles_barcode = True
-                updated = True
-
-            # JSON list fields (merge unique)
-            new_sizes = set(existing_product.sizes)
-            incoming_sizes = product_dict.get('sizes', [])
-            initial_size_count = len(new_sizes)
-            for s in incoming_sizes:
-                new_sizes.add(s)
-            if len(new_sizes) > initial_size_count:
-                existing_product.sizes = sorted(list(new_sizes))
-                updated = True
-
-            # Logic for normalized_name_brand_size_variations
-            new_variations = set(existing_product.normalized_name_brand_size_variations)
-            incoming_variation = product_dict.get('normalized_name_brand_size')
-            initial_variation_count = len(new_variations)
-            if incoming_variation:
-                new_variations.add(incoming_variation)
-            if len(new_variations) > initial_variation_count:
-                existing_product.normalized_name_brand_size_variations = sorted(list(new_variations))
-                updated = True
-
-            # Logic for brand_name_company_pairs
-            new_pairs = list(existing_product.brand_name_company_pairs)
-            company = metadata.get('company')
-            raw_brand = product_dict.get('brand')
-            if company and raw_brand and not any(p[1] == company for p in new_pairs):
-                new_pairs.append([raw_brand, company])
-                existing_product.brand_name_company_pairs = new_pairs
-                updated = True
+            # Use the centralized enricher to merge the data
+            updated = ProductEnricher.enrich_canonical_product(
+                canonical_product=existing_product,
+                duplicate_product=incoming_product_instance
+            )
 
             if updated:
                 product_objects_to_update.append(existing_product)
