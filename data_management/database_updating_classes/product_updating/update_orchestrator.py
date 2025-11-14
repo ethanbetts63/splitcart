@@ -131,39 +131,30 @@ class UpdateOrchestrator:
     def _deduplicate_product_data_for_pricing(self, raw_product_data: list) -> list:
         self.command.stdout.write("  - De-duplicating product list for PriceManager...")
         final_list_for_pricing = []
-        seen_nnbs = set()
-        seen_skus = set()
-        seen_barcodes = set()
+        seen_product_pks = set()
 
         for data in raw_product_data:
             product_dict = data.get('product', {})
             if not product_dict:
                 continue
 
+            # Resolve the canonical product using the cache, which now contains aliases
             nnbs = product_dict.get('normalized_name_brand_size')
-            sku = product_dict.get('sku')
-            barcode = product_dict.get('barcode')
+            canonical_product = self.caches['products_by_norm_string'].get(nnbs)
 
-            # The nnbs from the file is already unique thanks to FileReader, 
-            # but we check again for safety.
-            if nnbs in seen_nnbs:
+            if not canonical_product:
+                # This can happen if the product was new and couldn't be resolved by barcode/sku.
+                # The nnbs is its own canonical key. We use the nnbs itself to track uniqueness
+                # for products that are new in this run and haven't been assigned a PK yet.
+                if nnbs not in seen_product_pks:
+                     final_list_for_pricing.append(data)
+                     seen_product_pks.add(nnbs)
                 continue
 
-            if sku:
-                if sku in seen_skus:
-                    self.command.stdout.write(f"    - Skipping duplicate SKU for pricing: {sku}")
-                    continue
-                seen_skus.add(sku)
-
-            if barcode:
-                if barcode in seen_barcodes:
-                    self.command.stdout.write(f"    - Skipping duplicate barcode for pricing: {barcode}")
-                    continue
-                seen_barcodes.add(barcode)
-            
-            final_list_for_pricing.append(data)
-            if nnbs:
-                seen_nnbs.add(nnbs)
+            # If we found a canonical product, use its PK for uniqueness check
+            if canonical_product.pk not in seen_product_pks:
+                final_list_for_pricing.append(data)
+                seen_product_pks.add(canonical_product.pk)
         
         self.command.stdout.write(f"  - Original list size: {len(raw_product_data)}, De-duplicated list size: {len(final_list_for_pricing)}")
         return final_list_for_pricing

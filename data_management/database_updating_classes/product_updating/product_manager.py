@@ -50,12 +50,12 @@ class ProductManager:
 
             if match:
                 # If a match is found, there's a chance the incoming normalized string is a variation.
-                # We update the raw data in-memory to use the canonical normalized string.
-                # This ensures the PriceManager can find the product in the cache.
+                # We create an alias in the cache so that this variation string can be resolved
+                # by downstream processes (like PriceManager).
                 incoming_norm_string = product_dict.get('normalized_name_brand_size')
                 canonical_norm_string = match.normalized_name_brand_size
                 if incoming_norm_string and canonical_norm_string and incoming_norm_string != canonical_norm_string:
-                    data['product']['normalized_name_brand_size'] = canonical_norm_string
+                    self.cache_updater('products_by_norm_string', incoming_norm_string, match)
 
                 products_to_update_data.append((match, data))
                 # If we found an existing product, we still need to check if a NEW SKU link needs to be created for it.
@@ -142,7 +142,6 @@ class ProductManager:
                 # as its own nnbs is what we are adding as a variation.
                 normalized_name_brand_size_variations=[] 
             )
-
             # Use the centralized enricher to merge the data
             updated = ProductEnricher.enrich_canonical_product(
                 canonical_product=existing_product,
