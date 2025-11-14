@@ -136,7 +136,11 @@ class ProductReconciler:
                     if prices_to_update_pks:
                         Price.objects.filter(pk__in=prices_to_update_pks).update(product_id=canon_id)
 
-                # 2. Update canonical products with enriched data
+                # 2. Delete the duplicate products first to free up unique constraints
+                Product.objects.filter(id__in=products_to_delete_ids).delete()
+                self.command.stdout.write(f"  - Bulk deleted {len(products_to_delete_ids)} duplicate products.")
+
+                # 3. Update canonical products with enriched data
                 if products_to_update:
                     update_fields = [
                         'barcode', 'url', 'aldi_image_url', 'has_no_coles_barcode',
@@ -144,10 +148,6 @@ class ProductReconciler:
                     ]
                     Product.objects.bulk_update(products_to_update.values(), update_fields, batch_size=500)
                     self.command.stdout.write(f"  - Bulk updated {len(products_to_update)} canonical products.")
-
-                # 3. Delete the duplicate products
-                Product.objects.filter(id__in=products_to_delete_ids).delete()
-                self.command.stdout.write(f"  - Bulk deleted {len(products_to_delete_ids)} duplicate products.")
 
             self.command.stdout.write(self.command.style.SUCCESS("Product reconciliation completed successfully."))
 

@@ -1,4 +1,4 @@
-# Product Update V2 - Refactoring Plan (v8)
+# Product Update V2 - Refactoring Plan (v9)
 
 This plan is designed around three core goals:
 1.  **Clarity and Simplicity**: Each "Manager" class has a clear, single responsibility for its data domain (e.g., Brands, Products).
@@ -44,13 +44,19 @@ A self-contained service for handling all `ProductBrand` logic.
 A self-contained service for handling all `Product` and `SKU` logic.
 - **Input**: Raw product data, the company object for the current file, and access to the shared caches.
 - **Job (Step-by-Step)**:
-    1.  **Resolve Products & SKUs**: Iterates through the raw data and uses a 3-tier matching logic (barcode -> SKU -> normalized string) to sort items into "create" and "update" lists. It also identifies which `SKU` relationships need to be created for both new and existing products.
-    2.  **Prepare Product Objects**: It processes both lists to create the final objects for the database, enriching existing products and creating new `Product` instances as needed.
-    3.  **Persist Products**: It performs `Product.objects.bulk_create()` and `Product.objects.bulk_update()` for the prepared lists of objects.
-    4.  **Persist SKUs**: After products are persisted (ensuring all products have a database ID), it performs a `SKU.objects.bulk_create()` to save all the new SKU relationships identified in step 1.
-    5.  **Update Caches**: After the transactions, it updates all relevant shared caches (`products_by_barcode`, `products_by_norm_string`, `products_by_sku`) with the new and updated information.
+    1.  **Resolve Products & SKUs**: Iterates through the raw data and uses a 3-tier matching logic (barcode -> SKU -> normalized string) to sort items into "create" and "update" lists. It also identifies which `SKU` relationships need to be created.
+    2.  **Create Cache Aliases**: When a product is matched via barcode or SKU but has a different `normalized_name_brand_size`, the `ProductManager` creates a temporary 'alias' in the `products_by_norm_string` cache. This alias maps the variation's name to the canonical product object, ensuring that downstream processes can correctly resolve the product.
+    3.  **Prepare Product Objects**: It processes both lists to create the final objects for the database, enriching existing products (using the `ProductEnricher`) and creating new `Product` instances as needed.
+    4.  **Persist Products**: It performs `Product.objects.bulk_create()` and `Product.objects.bulk_update()` for the prepared lists of objects.
+    5.  **Persist SKUs**: After products are persisted (ensuring all products have a database ID), it performs a `SKU.objects.bulk_create()` to save all the new SKU relationships identified in step 1.
+    6.  **Update Caches**: After the transactions, it updates all relevant shared caches (`products_by_barcode`, `products_by_norm_string`, `products_by_sku`) with the new and updated information.
 
-### 5. `CategoryManager` (The Category Service)
+### 5. `UpdateOrchestrator` (De-duplication for Pricing)
+Before prices are processed, the orchestrator performs a crucial de-duplication step.
+- **Job**: It iterates through the raw product data list. Using the now alias-aware `products_by_norm_string` cache, it resolves each product to its canonical ID. It then builds a new, clean list containing only the first-seen entry for each unique canonical product.
+- **Outcome**: This ensures the `PriceManager` receives a list with no duplicates, preventing database errors during price creation.
+
+### 6. `CategoryManager` (The Category Service)
 A self-contained service for handling all category-related logic. It is called after the `ProductManager` to ensure all products exist.
 - **Input**: Raw product data, the company object for the current file, and access to the shared caches.
 - **Job (Step-by-Step)**:
@@ -58,11 +64,11 @@ A self-contained service for handling all category-related logic. It is called a
     2.  **Create Parent-Child Links**: It then identifies all necessary parent-child relationships and `bulk_create`s the missing hierarchical links.
     3.  **Link Products to Categories**: Finally, it links products to their leaf categories, `bulk_create`ing all the new product-to-category relationships at once.
 
-### 6. `PriceManager` (The Price Service)
+### 7. `PriceManager` (The Price Service)
 A self-contained service for handling all `Price` logic for a single store.
-- **Input**: Raw product data, the shared product cache, and the freshly prepared, store-specific price cache.
+- **Input**: The de-duplicated product data list, the shared (and now alias-aware) product cache, and the freshly prepared, store-specific price cache.
 - **Job (Step-by-Step)**:
-    1.  **Identify Changes**: Iterates through the raw product data, calculating the `price_hash` for each item.
+    1.  **Identify Changes**: Iterates through the de-duplicated product data, calculating the `price_hash` for each item.
     2.  **Sort Operations**: Uses a two-level price cache to determine if a price is new, unchanged, or updated.
     3.  **Identify Deletions**: Compares hashes from the file with hashes from the cache to find delisted items.
     4.  **Persist to DB**: Performs `bulk_create`, `bulk_update`, and `delete` operations for all price changes in a single transaction.
@@ -76,7 +82,7 @@ After all inbox files are processed, the `UpdateOrchestrator` executes a series 
 
 ### 2. `BrandReconciler` & `ProductReconciler`
 - **Purpose**: These self-contained classes read the translation tables generated in the previous step. They identify duplicate `ProductBrand` and `Product` objects that should be merged.
-- **Job**: Each reconciler finds canonical/duplicate pairs, re-assigns child objects (like `Product`s or `Price`s) from the duplicate to the canonical object, merges synonym lists, and deletes the duplicate object. All database operations are done in a single transaction per reconciler using bulk methods for efficiency.
+- **Job**: Each reconciler finds canonical/duplicate pairs, re-assigns child objects (like `Product`s or `Price`s) from the duplicate to the canonical object, merges synonym lists, and deletes the duplicate object. All database operations are done in a single transaction per reconciler using bulk methods for efficiency. The order of operations is to delete the duplicate first to free up unique constraints before saving the updated canonical object.
 
 ### 3. `CategoryCycleManager`
 - **Purpose**: This utility runs after reconciliation to detect and prune any circular dependencies in the category hierarchy (e.g., 'Snacks' is a parent of 'Chips', and 'Chips' is a parent of 'Snacks').

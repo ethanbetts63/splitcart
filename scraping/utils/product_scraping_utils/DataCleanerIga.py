@@ -1,7 +1,6 @@
 from datetime import datetime
 from .BaseDataCleaner import BaseDataCleaner
 from .field_maps import IGA_FIELD_MAP
-from scraping.utils.product_scraping_utils.product_normalizer import ProductNormalizer
 
 class DataCleanerIga(BaseDataCleaner):
     """

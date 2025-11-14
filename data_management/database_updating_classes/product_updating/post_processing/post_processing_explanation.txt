@@ -2,6 +2,18 @@
 
 This document explains the purpose of each file in the `post_processing` directory. These scripts are run by the `UpdateOrchestrator` after all the product data from the inbox files has been processed and saved to the database. Their collective goal is to clean, merge, and maintain the integrity of the product data.
 
+### Order of Operations
+
+The post-processing scripts are run in a specific, deliberate order to ensure data integrity. The sequence is:
+
+1.  **Generators (`...TranslationTableGenerator.py`):** These run first. They act like detectives, scanning the newly updated database to find products and brands that look like duplicates (e.g., 'St Dalfour' and 'St. Dalfour'). They don't change any data; they simply create "instruction files" (translation tables) for the next step.
+
+2.  **Reconcilers (`...Reconciler.py`):** These run second. They are the "movers" that read the instruction files from the generators. They perform the actual merging of duplicate products and brands, re-assigning prices and other linked data to the single canonical record. This step must happen before category and group maintenance, as it can change which products belong to which categories or stores.
+
+3.  **`CategoryCycleManager.py`:** This runs after reconciliation. Merging products that belonged to different categories can sometimes create illogical loops in the category hierarchy (e.g., 'Snacks' -> 'Chips' -> 'Snacks'). This utility cleans up any such cycles.
+
+4.  **`GroupMaintenanceOrchestrator.py`:** This is the final cleanup step. It ensures that store groupings are correct after all the underlying product data has been settled and reconciled.
+
 ### `product_enricher.py`
 
 *   **Purpose:** This file contains a single utility class, `ProductEnricher`, which is not a standalone process but a helper used by the `ProductReconciler`.
@@ -38,3 +50,10 @@ This document explains the purpose of each file in the `post_processing` directo
     2.  Keeps track of the path it has taken.
     3.  If it encounters a category that is already in its current path, it identifies this as a cycle.
     4.  It then "prunes" the cycle by removing the problematic parent-child link, ensuring the category hierarchy remains a valid tree structure.
+
+### `group_maintenance_orchestrator.py`
+
+*   **Purpose:** This is the final step in post-processing. It runs a two-phase process to ensure the health of `StoreGroup` entities after all product and category changes have been finalized.
+*   **Functionality:**
+    *   **Phase 1 (Internal Health Check)**: Compares member stores within each group to their group's anchor store and ejects any that no longer have a matching product set.
+    *   **Phase 2 (Inter-Group Merging)**: Compares the anchors of different groups and merges any groups that are found to be identical, reducing redundancy.

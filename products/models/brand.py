@@ -1,5 +1,4 @@
 from django.db import models
-from scraping.utils.product_scraping_utils.product_normalizer import ProductNormalizer
 
 class ProductBrand(models.Model):
     name = models.CharField(
@@ -27,8 +26,6 @@ class ProductBrand(models.Model):
     confirmed_official_prefix = models.CharField(max_length=12, null=True, blank=True, db_index=True)
 
     def save(self, *args, **kwargs):
-        if self.name and not self.normalized_name:
-            self.normalized_name = ProductNormalizer._get_normalized_brand_name(self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):
