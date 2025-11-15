@@ -75,8 +75,7 @@ python manage.py generate --store-groups # Server
 python manage.py upload --product --dev # Local
 python manage.py update --products # Server
 
-# NEED TO GET THIS WORKING AGAIN
-# python manage.py update --prefixes # Server
+python manage.py update --prefixes # Server
 
 python manage.py generate --cat-links --dev # Local
 python manage.py upload --cat-links --dev # Local

@@ -49,7 +49,7 @@ class ProductNormalizer:
         value = value.lower()
         value = re.sub(r'[^a-z0-9\s]', '', value)
         words = sorted(list(set(value.split())))
-        return "".join(words)
+        return " ".join(words)
 
     def _extract_sizes_from_string(self, text: str) -> list:
         """ Corresponds to the original, more precise extract_sizes.py logic. """
@@ -230,7 +230,7 @@ class ProductNormalizer:
         This uses a "bag of words" approach to be robust against data entry errors.
         """
         # 1. Get the full string together with spaces intact.
-        combined_string = f"{self.name} {self.cleaned_brand} {' '.join(self.standardized_sizes)}"
+        combined_string = f"{self.name} {self.normalized_brand_name} {' '.join(self.standardized_sizes)}"
 
         # 2. Clean the string to remove punctuation and standardize case.
         cleaned_string = unicodedata.normalize('NFKD', combined_string).encode('ascii', 'ignore').decode('utf-8')
