@@ -21,12 +21,10 @@ class Price(models.Model):
         max_digits=10,
         decimal_places=2
     )
-    was_price = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        null=True,
-        blank=True
-    )
+    was_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
+    save_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    
     unit_price = models.DecimalField(
         max_digits=10,
         decimal_places=2,

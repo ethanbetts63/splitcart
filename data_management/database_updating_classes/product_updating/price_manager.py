@@ -18,6 +18,10 @@ class PriceManager:
         """
         self.command.stdout.write(f"  - PriceManager: Processing prices for store {store.store_name}...")
 
+        # Step 1: Reset was_price for all prices in this store
+        self.command.stdout.write(f"    - Resetting was_price for all existing prices in store {store.store_name}...")
+        Price.objects.filter(store=store).update(was_price=None)
+
         store_price_cache = self.caches['prices_by_store'].get(store.id, {})
         hash_to_pk_cache = store_price_cache.get('hash_to_pk', {})
         product_id_to_pk_cache = store_price_cache.get('product_id_to_pk', {})
@@ -42,6 +46,9 @@ class PriceManager:
             self.command.stderr.write(self.command.style.ERROR(f"    - Could not parse scraped_date: {scraped_date_str}. Cannot process prices."))
             return
 
+        # Collect PKs of prices that will be updated to fetch their old prices
+        pks_of_prices_to_update = []
+
         for data in raw_product_data:
             product_dict = data.get('product')
             if not product_dict:
@@ -57,18 +64,19 @@ class PriceManager:
             current_price_hash = product_dict.get('price_hash')
             seen_hashes.add(current_price_hash)
 
-            # Prepare price data
+            # Prepare price data (was_price and save_amount will be set later for updates)
             price_data = {
                 'product': product_obj,
                 'store': store,
                 'scraped_date': scraped_date,
                 'price': product_dict.get('price_current'),
-                'was_price': product_dict.get('price_was'),
                 'unit_price': product_dict.get('unit_price'),
                 'unit_of_measure': product_dict.get('unit_of_measure'),
                 'per_unit_price_string': product_dict.get('per_unit_price_string'),
                 'is_on_special': product_dict.get('is_on_special', False),
                 'price_hash': current_price_hash,
+                'was_price': None, # Initialize as None, set later for updates
+                'save_amount': None, # Initialize as None, set later for updates
             }
 
             # Determine if create or update
@@ -82,11 +90,25 @@ class PriceManager:
                     price_pk = product_id_to_pk_cache[product_obj.pk]
                     price_obj = Price(pk=price_pk, **price_data)
                     prices_to_update.append(price_obj)
+                    pks_of_prices_to_update.append(price_pk)
                 else:
                     # No existing price for this product -> CREATE
                     price_obj = Price(**price_data)
                     prices_to_create.append(price_obj)
         
+        # Step 3: Get old prices for those that will be updated
+        old_prices_map = {p.pk: p.price for p in Price.objects.filter(pk__in=pks_of_prices_to_update)}
+
+        # Step 4: Set new was_price and calculate save_amount for prices to update
+        for price_obj in prices_to_update:
+            old_price = old_prices_map.get(price_obj.pk)
+            if old_price is not None: # Should always be true for prices_to_update
+                price_obj.was_price = old_price
+                price_obj.save_amount = old_price - price_obj.price # Calculate save_amount
+            else:
+                price_obj.was_price = None 
+                price_obj.save_amount = None
+
         # Identify prices to delete (delisted products)
         initial_hashes_in_db = set(hash_to_pk_cache.keys())
         hashes_to_delete = initial_hashes_in_db - seen_hashes
@@ -112,7 +134,7 @@ class PriceManager:
                     update_fields = [
                         'scraped_date', 'price', 'was_price', 'unit_price',
                         'unit_of_measure', 'per_unit_price_string', 'is_on_special',
-                        'price_hash'
+                        'price_hash', 'save_amount' # Add save_amount to update fields
                     ]
                     Price.objects.bulk_update(prices_to_update, update_fields, batch_size=500)
             
