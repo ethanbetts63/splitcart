@@ -39,7 +39,16 @@ def _validate_product_fields(product: dict, line_number: int) -> list:
                 if price_val < 0: # Only check for non-negative
                     errors.append(f"L{line_number} (Product: {nnbs}): Field '{field}' is negative: {price_val}")
             if price_val.as_tuple().exponent < -2:
-                errors.append(f"L{line_number} (Product: {nnbs}): Field '{field}' has more than 2 decimal places: {price_val}")
+                # If it has more than 2 decimal places
+                if price_val.as_tuple().exponent < -10: # More than 10 decimal places, treat as error
+                    errors.append(f"L{line_number} (Product: {nnbs}): Field '{field}' has excessive decimal places (>10): {price_val}")
+                else:
+                    # Round to 2 decimal places
+                    rounded_price = price_val.quantize(Decimal('0.01'))
+                    if rounded_price != price_val: # Only update if rounding actually changed the value
+                        product[field] = str(rounded_price) # Update the product dictionary
+                        # Optionally, log a warning that it was rounded, but don't add to 'errors'
+                        # self.command.stdout.write(f"L{line_number} (Product: {nnbs}): Field '{field}' rounded from {price_val} to {rounded_price}")
         except InvalidOperation:
             errors.append(f"L{line_number} (Product: {nnbs}): Field '{field}' is not a valid number: '{price_str}'")
 

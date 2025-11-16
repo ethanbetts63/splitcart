@@ -39,6 +39,14 @@ class GS1UpdateOrchestrator:
                         continue
             processed_files.append(file_path)
 
+        self.command.stdout.write("--- Deleting processed GS1 files ---")
+        for file_path in processed_files:
+            try:
+                os.remove(file_path)
+                self.command.stdout.write(f"  - Deleted {os.path.basename(file_path)}")
+            except OSError as e:
+                self.command.stderr.write(self.command.style.ERROR(f"  - Failed to delete {os.path.basename(file_path)}: {e}"))
+
         self.command.stdout.write(self.command.style.SUCCESS("--- GS1 Database Updater finished ---"))
 
     def _process_record(self, data: dict):
