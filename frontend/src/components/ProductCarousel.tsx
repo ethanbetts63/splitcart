@@ -68,7 +68,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
 
   useEffect(() => {
     if (isFetched && onValidation && primaryCategorySlug && !validationCalled.current) {
-      const isValid = apiResponse?.results?.length >= 4;
+      const isValid = (apiResponse?.results?.length ?? 0) >= 4;
       onValidation(primaryCategorySlug, isValid, slot); // Pass slot here
       validationCalled.current = true;
     }

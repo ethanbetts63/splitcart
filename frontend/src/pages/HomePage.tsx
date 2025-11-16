@@ -43,7 +43,7 @@ const HomePage = () => {
         sourceUrl="/api/products/"
         storeIds={storeIdsArray}
         primaryCategorySlug={category.slug}
-        onValidation={(slug, isValid) => handleValidation(isValid, slotIndex)}
+        onValidation={(_, isValid) => handleValidation(isValid, slotIndex)}
         slot={slotIndex}
         isDefaultStores={isDefaultStores}
       />

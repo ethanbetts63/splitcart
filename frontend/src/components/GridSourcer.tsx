@@ -71,8 +71,6 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
   const { 
     data: apiResponse,
     isLoading,
-    isError,
-    error,
   } = useApiQuery<ApiResponse>(
     ['products', finalUrl],
     finalUrl || '',

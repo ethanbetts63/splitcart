@@ -9,7 +9,6 @@ interface ProductGridProps {
 
 const ProductGrid: React.FC<ProductGridProps> = ({ 
   products, 
-  hasResults,
 }) => {
   return (
     <div>
