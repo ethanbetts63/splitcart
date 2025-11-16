@@ -9,21 +9,13 @@ class SelectedStoreListRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyA
     permission_classes = [IsAuthenticatedOrAnonymous]
     queryset = SelectedStoreList.objects.all()
     def update(self, request, *args, **kwargs):
-        print("--- SelectedStoreListRetrieveUpdateDestroyView: update called ---")
-        print(f"Incoming data: {request.data}")
 
         instance = self.get_object()
-        print(f"Store list '{instance.name}' (ID: {instance.pk}) had {instance.stores.count()} stores before update.")
-
         if not request.user.is_authenticated and 'name' in request.data:
             raise PermissionDenied("Anonymous users cannot change the store list name.")
         
         response = super().update(request, *args, **kwargs)
-
-        instance.refresh_from_db()
-        print(f"Store list '{instance.name}' (ID: {instance.pk}) now has {instance.stores.count()} stores after update.")
-        print("-----------------------------------------------------------------")
-        
+        instance.refresh_from_db()        
         return response
 
     def get_queryset(self):

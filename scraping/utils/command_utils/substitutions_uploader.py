@@ -1,7 +1,10 @@
 import os
 import gzip
+import json
 import requests
 from .base_uploader import BaseUploader
+from data_management.utils.deduplication_utils.substitution_deduplicator import deduplicate_substitutions
+
 
 class SubstitutionsUploader(BaseUploader):
     def __init__(self, command, dev=False):
@@ -26,34 +29,36 @@ class SubstitutionsUploader(BaseUploader):
         upload_url = f"{server_url.rstrip('/')}/{self.upload_url_path.lstrip('/')}"
         headers = {'X-Internal-API-Key': api_key}
 
-        compressed_file_path = file_path + '.gz'
-
-        # 1. Compress the file
         try:
-            with open(file_path, 'rb') as f_in:
-                with gzip.open(compressed_file_path, 'wb') as f_out:
-                    f_out.writelines(f_in)
-            self.command.stdout.write(self.command.style.SUCCESS(f"Successfully compressed {self.file_name}"))
-        except Exception as e:
-            self.command.stderr.write(self.command.style.ERROR(f"Failed to compress {self.file_name}: {e}"))
-            return
-
-        # 2. Upload the compressed file
-        try:
-            with open(compressed_file_path, 'rb') as f:
-                files = {'file': (os.path.basename(compressed_file_path), f)}
-                response = requests.post(upload_url, headers=headers, files=files, timeout=120)
+            # 1. Read and de-duplicate the data
+            with open(file_path, 'r', encoding='utf-8') as f:
+                subs_data = json.load(f)
             
+            deduplicated_subs = deduplicate_substitutions(subs_data)
+            self.command.stdout.write(self.command.style.SUCCESS(f"Successfully de-duplicated substitutions. Original: {len(subs_data)}, Final: {len(deduplicated_subs)}"))
+
+            # 2. Compress the de-duplicated data in memory
+            json_string = json.dumps(deduplicated_subs)
+            compressed_data = gzip.compress(json_string.encode('utf-8'))
+            
+            # 3. Upload the compressed in-memory data
+            compressed_filename = self.file_name + '.gz'
+            files = {'file': (compressed_filename, compressed_data, 'application/gzip')}
+            
+            self.command.stdout.write(f"Uploading {compressed_filename}...")
+            response = requests.post(upload_url, headers=headers, files=files, timeout=120)
             response.raise_for_status()
 
             self.command.stdout.write(self.command.style.SUCCESS(f"Successfully uploaded {self.file_name}"))
 
-            # 3. Delete the original file
+            # 4. Delete the original file after successful upload
             os.remove(file_path)
 
+        except FileNotFoundError:
+            self.command.stderr.write(self.command.style.ERROR(f"File not found: {file_path}"))
+        except json.JSONDecodeError:
+            self.command.stderr.write(self.command.style.ERROR(f"Failed to decode JSON from {file_path}"))
         except requests.exceptions.RequestException as e:
             self.command.stderr.write(self.command.style.ERROR(f"Failed to upload {self.file_name}: {e}"))
-        finally:
-            # 4. Clean up the compressed file
-            if os.path.exists(compressed_file_path):
-                os.remove(compressed_file_path)
+        except Exception as e:
+            self.command.stderr.write(self.command.style.ERROR(f"An unexpected error occurred: {e}"))
