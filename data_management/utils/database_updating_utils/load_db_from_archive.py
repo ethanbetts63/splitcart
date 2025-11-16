@@ -9,6 +9,7 @@ def load_db_from_latest_archive(command):
         'companies.division.json',
         'companies.store.json',
         'companies.postcode.json',
+        'companies.primarycategory.json',
         'companies.category.json',
         'companies.storegroup.json',
         'companies.storegroupmembership.json',
