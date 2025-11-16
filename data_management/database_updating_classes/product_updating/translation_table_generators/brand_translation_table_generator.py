@@ -64,7 +64,7 @@ class BrandTranslationTableGenerator(BaseTranslationTableGenerator):
 
                 # Check if this variation is already mapped to a different canonical name
                 if variation_name in synonyms and synonyms[variation_name] != canonical_name:
-                    print(f"  - Warning: Variation '{variation_name}' is ambiguously mapped to both '{synonyms[variation_name]}' and '{canonical_name}'.")
+                    continue
                     # For now, the last one wins, but this could be a point for future improvement.
                 
                 synonyms[variation_name] = canonical_name

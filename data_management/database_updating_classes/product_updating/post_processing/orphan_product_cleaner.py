@@ -31,7 +31,7 @@ class OrphanProductCleaner:
             with transaction.atomic():
                 deleted_count, _ = orphans_to_delete.delete()
 
-            self.command.stdout.write(self.command.style.SUCCESS(f"  - Successfully deleted {deleted_count} orphan products."))
+            self.command.stdout.write(self.command.style.SUCCESS(f"  - Successfully deleted {deleted_count} orphan products and associated sku and brand objects."))
 
         except Exception as e:
             self.command.stderr.write(self.command.style.ERROR(f"  - An error occurred during orphan product cleanup: {e}"))
