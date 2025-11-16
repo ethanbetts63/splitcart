@@ -161,7 +161,11 @@ class ProductSerializer(serializers.ModelSerializer):
         return None # Return None if no valid URL could be generated
 
     def get_brand_name(self, obj):
-        return obj.brand.name if obj.brand else None
+        if obj.brand_name_company_pairs and len(obj.brand_name_company_pairs) > 0:
+            # Assuming the structure is [[brand_name, company_name], ...]
+            # Return the first element of the first pair
+            return obj.brand_name_company_pairs[0][0]
+        return None
 
     def get_prices(self, obj):
         prices_map = self.context.get('prices_map')

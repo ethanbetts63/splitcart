@@ -178,7 +178,9 @@ const SubstitutionPage = () => {
           )}
         </div>
         <div>
-          <h2 className="text-xl font-semibold mb-4 text-center">Substitutes</h2>
+          <h2 className="text-xl font-bold mb-4 text-center">
+            <span className="italic bg-yellow-300 px-0.5 py-1 rounded text-black">Substitutes</span>
+          </h2>
           <div className="h-[480px] overflow-y-auto border rounded-md p-4 space-y-4">
             {currentSubstitutes.map(sub => {
               // Only render the substitute if it has prices
