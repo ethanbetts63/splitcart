@@ -59,7 +59,8 @@ class SubstitutionUpdater:
         self.command.stdout.write(f"  - Found {total_subs} substitutions to process.")
 
         for i, sub_data in enumerate(subs_data):
-            self.command.stdout.write(f'\r    - Processing substitutions: {i+1}/{total_subs}', ending='')
+            if (i + 1) % 1000 == 0 or (i + 1) == total_subs:
+                self.command.stdout.write(f'\r    - Processing substitutions: {i+1}/{total_subs}', ending='')
             self._process_substitution(sub_data, cache, subs_to_create, subs_to_update)
         
         self.command.stdout.write('\n') # Newline after progress bar
