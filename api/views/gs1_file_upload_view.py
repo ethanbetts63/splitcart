@@ -13,4 +13,4 @@ class Gs1FileUploadView(BaseFileUploadView):
         """
         Returns the destination directory for the decompressed GS1 files.
         """
-        return os.path.join(settings.BASE_DIR, 'data_management', 'data', 'gs1_inbox')
+        return os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'gs1_inbox')
