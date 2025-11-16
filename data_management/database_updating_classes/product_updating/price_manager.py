@@ -2,6 +2,7 @@ from django.utils import timezone
 from django.db import transaction
 from products.models import Price
 from datetime import datetime
+from decimal import Decimal
 
 class PriceManager:
     """
@@ -64,13 +65,15 @@ class PriceManager:
             current_price_hash = product_dict.get('price_hash')
             seen_hashes.add(current_price_hash)
 
-            # Prepare price data (was_price and save_amount will be set later for updates)
+            price_current_val = product_dict.get('price_current')
+            unit_price_val = product_dict.get('unit_price')
+
             price_data = {
                 'product': product_obj,
                 'store': store,
                 'scraped_date': scraped_date,
-                'price': product_dict.get('price_current'),
-                'unit_price': product_dict.get('unit_price'),
+                'price': Decimal(str(price_current_val)),
+                'unit_price': Decimal(str(unit_price_val)) if unit_price_val is not None else None,
                 'unit_of_measure': product_dict.get('unit_of_measure'),
                 'per_unit_price_string': product_dict.get('per_unit_price_string'),
                 'is_on_special': product_dict.get('is_on_special', False),

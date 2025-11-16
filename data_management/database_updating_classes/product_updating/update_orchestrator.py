@@ -28,7 +28,7 @@ class UpdateOrchestrator:
         self.command = command
         self.inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'product_inbox')
         self.caches = {}
-        self.brand_translation_cache = self._load_brand_translation_cache()
+        self.brand_translation_cache = {}
         self.discovered_brand_pairs = set()
 
         # Initialize managers
@@ -36,12 +36,6 @@ class UpdateOrchestrator:
         self.product_manager = ProductManager(self.command, self.caches, self.update_cache, self.discovered_brand_pairs)
         self.price_manager = PriceManager(self.command, self.caches, self.update_cache)
         self.category_manager = CategoryManager(self.command, self.caches, self.update_cache)
-
-    def _load_brand_translation_cache(self):
-        """Loads the brand translation table from a file."""
-        # TODO: Implement file loading logic
-        self.command.stdout.write("  - Initialized empty brand translation cache.")
-        return {}
 
     def _build_global_caches(self):
         """Builds the initial in-memory caches for all relevant models."""
@@ -193,6 +187,7 @@ class UpdateOrchestrator:
 
             is_valid, store_or_reason = self._is_file_valid(metadata, raw_product_data)
             if not is_valid:
+                os.remove(file_path)
                 continue
             
             store = store_or_reason
