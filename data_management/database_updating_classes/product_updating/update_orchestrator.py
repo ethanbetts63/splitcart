@@ -50,14 +50,14 @@ class UpdateOrchestrator:
         # Brand Cache
         all_brands = ProductBrand.objects.all()
         self.caches['normalized_brand_names'] = {b.normalized_name: b for b in all_brands}
-        self.command.stdout.write(f"  - Cached {len(self.caches['normalized_brand_names'])} brands by normalized name.")
+        self.command.stdout.write(f"  - Cached {len(self.caches['normalized_brand_names'])} brands by normalized brand name.")
 
         # Product Caches
         all_products = Product.objects.select_related('brand').all()
         self.caches['products_by_barcode'] = {p.barcode: p for p in all_products if p.barcode}
         self.caches['products_by_norm_string'] = {p.normalized_name_brand_size: p for p in all_products if p.normalized_name_brand_size}
         self.command.stdout.write(f"  - Cached {len(self.caches['products_by_barcode'])} products by barcode.")
-        self.command.stdout.write(f"  - Cached {len(self.caches['products_by_norm_string'])} products by normalized string.")
+        self.command.stdout.write(f"  - Cached {len(self.caches['products_by_norm_string'])} products by normalized name-brand-size string.")
         
         # SKU Cache (Company-Aware)
         self.caches['products_by_sku'] = {}
