@@ -67,7 +67,7 @@ const PillarPage: React.FC = () => {
                       <ProductCarousel
                           key={category.slug}    title={category.name}
     sourceUrl="/api/products/"
-    primaryCategorySlug={category.slug}
+    primaryCategorySlugs={[category.slug]}
     pillarPageLinkSlug={slug}
     storeIds={storeIdsArray}
     slot={index}
