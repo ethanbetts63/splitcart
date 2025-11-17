@@ -17,6 +17,7 @@ const FinalCartPage = React.lazy(() => import("./pages/FinalCartPage"));
 const LoginPage = React.lazy(() => import("./pages/LoginPage"));
 const SignupPage = React.lazy(() => import("./pages/SignupPage"));
 const ContactPage = React.lazy(() => import("./pages/ContactPage"));
+const PillarPage = React.lazy(() => import("./pages/PillarPage"));
 
 import { useAuth } from "./context/AuthContext";
 import CategoryBar from "./components/CategoryBar";
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/categories/:slug" element={<PillarPage />} />
       </Route>
     </Routes>
   );

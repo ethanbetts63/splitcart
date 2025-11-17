@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from products.models import Product, Price
 from products.models.substitution import ProductSubstitution
-from companies.models import Store, Category, PrimaryCategory, Company
+from companies.models import Store, Category, PrimaryCategory, Company, PillarPage
 from companies.models.postcode import Postcode
 from data_management.models import FAQ
 from users.models import SelectedStoreList, Cart, CartItem, CartSubstitution
@@ -15,6 +15,8 @@ class FaqSerializer(serializers.ModelSerializer):
     class Meta:
         model = FAQ
         fields = ('question', 'answer')
+
+
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -37,6 +39,14 @@ class PrimaryCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = PrimaryCategory
         fields = ('name', 'slug')
+
+class PillarPageSerializer(serializers.ModelSerializer):
+    primary_categories = PrimaryCategorySerializer(many=True, read_only=True)
+    faqs = FaqSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = PillarPage
+        fields = ('name', 'slug', 'hero_title', 'introduction_paragraph', 'image_path', 'primary_categories', 'faqs')
 
 class StoreSerializer(serializers.ModelSerializer):
     company_name = serializers.CharField(source='company.name')
