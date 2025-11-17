@@ -65,6 +65,7 @@ const HomePage = () => {
             sourceUrl="/api/products/"
             storeIds={storeIdsArray}
             primaryCategorySlugs={['meat', 'seafood']}
+            pillarPageLinkSlug="meat-and-seafood" // Added prop
             slot={0}
             isDefaultStores={isDefaultStores}
           />

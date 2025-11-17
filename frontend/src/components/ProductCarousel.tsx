@@ -35,14 +35,15 @@ interface ProductCarouselProps {
   searchQuery?: string;
   isDefaultStores?: boolean;
   primaryCategorySlug?: string;
-  primaryCategorySlugs?: string[]; // New prop
+  primaryCategorySlugs?: string[];
+  pillarPageLinkSlug?: string; // New prop for linking to a pillar page
   onValidation?: (slug: string, isValid: boolean, slot: number) => void;
-  slot: number; // New prop
+  slot: number;
 }
 
 import { useApiQuery } from '@/hooks/useApiQuery';
 
-const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, onValidation, slot }) => {
+const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, onValidation, slot }) => {
   const [baseUrl, queryString] = sourceUrl.split('?');
   const params = new URLSearchParams(queryString || '');
   if (storeIds && storeIds.length > 0) {
@@ -73,7 +74,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
     if (isFetched && onValidation && (primaryCategorySlug || primaryCategorySlugs) && !validationCalled.current) {
       const identifier = primaryCategorySlugs ? primaryCategorySlugs.join(',') : primaryCategorySlug!;
       const isValid = (apiResponse?.results?.length ?? 0) >= 4;
-      onValidation(identifier, isValid, slot); // Pass slot here
+      onValidation(identifier, isValid, slot);
       validationCalled.current = true;
     }
   }, [isFetched, apiResponse, onValidation, primaryCategorySlug, primaryCategorySlugs, slot]);
@@ -117,9 +118,11 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
     return <div className="text-center p-4 text-red-500">Error: {error.message}</div>;
   }
 
-  const seeMoreLink = primaryCategorySlugs
-    ? `/search?primary_category_slugs=${encodeURIComponent(primaryCategorySlugs.join(','))}`
-    : (primaryCategorySlug ? `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlug)}` : null);
+  const seeMoreLink = pillarPageLinkSlug
+    ? `/categories/${encodeURIComponent(pillarPageLinkSlug)}`
+    : (primaryCategorySlugs
+      ? `/search?primary_category_slugs=${encodeURIComponent(primaryCategorySlugs.join(','))}`
+      : (primaryCategorySlug ? `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlug)}` : null));
 
   return (
     <section className="bg-muted p-4 rounded-lg">
