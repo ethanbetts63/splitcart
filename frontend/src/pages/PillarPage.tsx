@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useApiQuery } from '../hooks/useApiQuery';
 import LoadingSpinner from '../components/LoadingSpinner';
-import ProductCarousel from '../components/ProductCarousel';
+import { ProductCarousel } from '../components/ProductCarousel';
 import {
   Accordion,
   AccordionContent,
@@ -10,9 +10,12 @@ import {
   AccordionTrigger,
 } from "../components/ui/accordion";
 import type { PrimaryCategory, FAQ, PillarPage as PillarPageType } from '../types';
+import { useStoreSearch } from '../context/StoreSearchContext';
 
 const PillarPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
+  const { stores } = useStoreSearch();
+  const storeIds = stores?.map(s => s.id);
 
   const {
     data: pillarPage,
@@ -51,10 +54,17 @@ const PillarPage: React.FC = () => {
 
       <div className="container mx-auto px-4 py-8">
         {/* Product Carousels */}
-        {pillarPage.primary_categories.map((category: PrimaryCategory) => (
+        {pillarPage.primary_categories.map((category: PrimaryCategory, index: number) => (
           <div key={category.slug} className="mb-8">
             <h2 className="text-2xl font-bold mb-4">{category.name}</h2>
-            <ProductCarousel primaryCategorySlug={category.slug} />
+            <ProductCarousel
+    title={category.name}
+    sourceUrl="/api/products/"
+    primaryCategorySlugs={[category.slug]}
+    pillarPageLinkSlug={slug}
+    storeIds={storeIds}
+    slot={index}
+/>
           </div>
         ))}
 
