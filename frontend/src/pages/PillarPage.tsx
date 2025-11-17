@@ -10,12 +10,20 @@ import {
   AccordionTrigger,
 } from "../components/ui/accordion";
 import type { PrimaryCategory, FAQ, PillarPage as PillarPageType } from '../types';
-import { useStoreSearch } from '../context/StoreSearchContext';
+import { useStoreList } from '../context/StoreListContext';
 
 const PillarPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { stores } = useStoreSearch();
-  const storeIds = stores?.map(s => s.id);
+  const DEFAULT_STORE_IDS = [
+    515, 5123, 518, 523, 272, 276, 2197, 2198, 2199, 536, 5142, 547, 2218, 2219,
+    2224, 5074, 5080, 5082, 5083, 5094, 5096, 5100, 498, 505, 254,
+  ];
+  const { selectedStoreIds } = useStoreList();
+  const isDefaultStores = selectedStoreIds.size === 0;
+  const storeIdsArray = React.useMemo(() =>
+    isDefaultStores ? DEFAULT_STORE_IDS : Array.from(selectedStoreIds),
+    [selectedStoreIds, isDefaultStores]
+  );
 
   const {
     data: pillarPage,
@@ -55,15 +63,15 @@ const PillarPage: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Product Carousels */}
         {pillarPage.primary_categories.map((category: PrimaryCategory, index: number) => (
-          <div key={category.slug} className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">{category.name}</h2>
-            <ProductCarousel
-    title={category.name}
+                    <div key={category.slug} className="mb-8">
+                      <ProductCarousel
+                          key={category.slug}    title={category.name}
     sourceUrl="/api/products/"
-    primaryCategorySlugs={[category.slug]}
+    primaryCategorySlug={category.slug}
     pillarPageLinkSlug={slug}
-    storeIds={storeIds}
+    storeIds={storeIdsArray}
     slot={index}
+    isDefaultStores={isDefaultStores}
 />
           </div>
         ))}
