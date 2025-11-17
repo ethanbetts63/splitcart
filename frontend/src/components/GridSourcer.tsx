@@ -27,13 +27,14 @@ interface GridSourcerProps {
   searchTerm: string | null;
   sourceUrl: string | null;
   primaryCategorySlug: string | null;
+  primaryCategorySlugs: string | null;
 }
 
 import { useApiQuery } from '../hooks/useApiQuery';
 import { useAuth } from '../context/AuthContext';
 import { useQueryClient } from '@tanstack/react-query';
 
-const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primaryCategorySlug }) => {
+const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const { selectedStoreIds } = useStoreList(); // Get selected stores
   const queryClient = useQueryClient();
@@ -52,7 +53,11 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
     } else if (searchTerm) {
       url = '/api/products/';
       params.set('search', searchTerm);
-    } else if (primaryCategorySlug) {
+    } else if (primaryCategorySlugs) {
+      url = '/api/products/';
+      params.set('primary_category_slugs', primaryCategorySlugs);
+    }
+    else if (primaryCategorySlug) {
       url = '/api/products/';
       params.set('primary_category_slug', primaryCategorySlug);
     }
@@ -64,7 +69,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
     params.set('page_size', '20');
 
     return { url, params };
-  }, [searchTerm, sourceUrl, primaryCategorySlug, selectedStoreIds, currentPage]);
+  }, [searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, selectedStoreIds, currentPage]);
 
   const finalUrl = url ? `${url}?${params.toString()}` : null;
 

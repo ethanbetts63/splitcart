@@ -35,19 +35,22 @@ interface ProductCarouselProps {
   searchQuery?: string;
   isDefaultStores?: boolean;
   primaryCategorySlug?: string;
+  primaryCategorySlugs?: string[]; // New prop
   onValidation?: (slug: string, isValid: boolean, slot: number) => void;
   slot: number; // New prop
 }
 
 import { useApiQuery } from '@/hooks/useApiQuery';
 
-const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, onValidation, slot }) => {
+const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, onValidation, slot }) => {
   const [baseUrl, queryString] = sourceUrl.split('?');
   const params = new URLSearchParams(queryString || '');
   if (storeIds && storeIds.length > 0) {
     params.set('store_ids', storeIds.join(','));
   }
-  if (primaryCategorySlug) {
+  if (primaryCategorySlugs && primaryCategorySlugs.length > 0) {
+    params.set('primary_category_slugs', primaryCategorySlugs.join(','));
+  } else if (primaryCategorySlug) {
     params.set('primary_category_slug', primaryCategorySlug);
   }
   // Add a limit to the query
@@ -67,12 +70,13 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
   const validationCalled = useRef(false);
 
   useEffect(() => {
-    if (isFetched && onValidation && primaryCategorySlug && !validationCalled.current) {
+    if (isFetched && onValidation && (primaryCategorySlug || primaryCategorySlugs) && !validationCalled.current) {
+      const identifier = primaryCategorySlugs ? primaryCategorySlugs.join(',') : primaryCategorySlug!;
       const isValid = (apiResponse?.results?.length ?? 0) >= 4;
-      onValidation(primaryCategorySlug, isValid, slot); // Pass slot here
+      onValidation(identifier, isValid, slot); // Pass slot here
       validationCalled.current = true;
     }
-  }, [isFetched, apiResponse, onValidation, primaryCategorySlug, slot]);
+  }, [isFetched, apiResponse, onValidation, primaryCategorySlug, primaryCategorySlugs, slot]);
 
 
   const products = apiResponse?.results || [];
@@ -113,6 +117,10 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
     return <div className="text-center p-4 text-red-500">Error: {error.message}</div>;
   }
 
+  const seeMoreLink = primaryCategorySlugs
+    ? `/search?primary_category_slugs=${encodeURIComponent(primaryCategorySlugs.join(','))}`
+    : (primaryCategorySlug ? `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlug)}` : null);
+
   return (
     <section className="bg-muted p-4 rounded-lg">
       <div className="flex justify-between items-center mb-4">
@@ -124,8 +132,8 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
             Showing example products, please select a location.
           </span>
         )}
-        {primaryCategorySlug && (
-          <Link to={`/search?primary_category_slug=${encodeURIComponent(primaryCategorySlug)}`} className="text-sm text-blue-500 hover:underline">
+        {seeMoreLink && (
+          <Link to={seeMoreLink} className="text-sm text-blue-500 hover:underline">
             See more
           </Link>
         )}

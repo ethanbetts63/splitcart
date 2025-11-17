@@ -29,27 +29,6 @@ const HomePage = () => {
     [selectedStoreIds, isDefaultStores]
   );
 
-  const { carouselSlots, handleValidation } = useCarouselManager(6);
-
-  const renderCarouselForSlot = (slotIndex: number) => {
-    const category = carouselSlots[slotIndex];
-    if (!category) {
-      return null; // Or a placeholder/skeleton
-    }
-    return (
-      <ProductCarousel
-        key={category.slug}
-        title={category.name}
-        sourceUrl="/api/products/"
-        storeIds={storeIdsArray}
-        primaryCategorySlug={category.slug}
-        onValidation={(_, isValid) => handleValidation(isValid, slotIndex)}
-        slot={slotIndex}
-        isDefaultStores={isDefaultStores}
-      />
-    );
-  };
-
   return (
     <div>
       {/* --- Hero Section --- */}
@@ -80,7 +59,15 @@ const HomePage = () => {
       {/* --- Carousel Slot 1 (Index 0) --- */}
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
-          {renderCarouselForSlot(0)}
+          <ProductCarousel
+            key="meat-and-seafood"
+            title="Meat & Seafood"
+            sourceUrl="/api/products/"
+            storeIds={storeIdsArray}
+            primaryCategorySlugs={['meat', 'seafood']}
+            slot={0}
+            isDefaultStores={isDefaultStores}
+          />
         </div>
       </div>
 
@@ -126,8 +113,7 @@ const HomePage = () => {
       {/* --- Carousel Slot 2 & 3 (Index 1, 2) --- */}
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
-          {renderCarouselForSlot(1)}
-          {renderCarouselForSlot(2)}
+          {/* Add other carousels here if needed */}
         </div>
       </div>
       
@@ -150,9 +136,7 @@ const HomePage = () => {
       {/* --- Carousel Slot 4, 5, 6 (Index 3, 4, 5) --- */}
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
-          {renderCarouselForSlot(3)}
-          {renderCarouselForSlot(4)}
-          {renderCarouselForSlot(5)}
+          {/* Add other carousels here if needed */}
         </div>
       </div>
     </div>

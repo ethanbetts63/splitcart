@@ -25,6 +25,7 @@ class ProductListView(generics.ListAPIView):
         store_ids_param = self.request.query_params.get('store_ids')
         search_query = self.request.query_params.get('search', None)
         primary_category_slug = self.request.query_params.get('primary_category_slug', None)
+        primary_category_slugs = self.request.query_params.get('primary_category_slugs', None)
 
         if not store_ids_param:
             raise ValidationError({'store_ids': 'This field is required.'})
@@ -38,7 +39,10 @@ class ProductListView(generics.ListAPIView):
         except (ValueError, TypeError):
             raise ValidationError({'store_ids': 'Invalid format. Must be a comma-separated list of integers.'})
 
-        if primary_category_slug:
+        if primary_category_slugs:
+            slugs = [slug.strip() for slug in primary_category_slugs.split(',')]
+            queryset = queryset.filter(category__primary_category__slug__in=slugs)
+        elif primary_category_slug:
             queryset = queryset.filter(category__primary_category__slug=primary_category_slug)
 
         if search_query:
