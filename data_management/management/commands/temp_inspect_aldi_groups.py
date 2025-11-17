@@ -35,7 +35,14 @@ class Command(BaseCommand):
                 price_count = Price.objects.filter(store=store).count()
                 product_count = Product.objects.filter(prices__store=store).distinct().count()
                 
+                last_scraped_date = store.last_scraped.strftime('%Y-%m-%d %H:%M:%S') if store.last_scraped else "N/A"
+
+                first_price_obj = Price.objects.filter(store=store).order_by('scraped_date').first()
+                first_price_date = first_price_obj.scraped_date.strftime('%Y-%m-%d') if first_price_obj else "N/A"
+
                 self.stdout.write(f"    - {store.store_name} (ID: {store.id})")
+                self.stdout.write(f"      Last Scraped: {last_scraped_date}")
+                self.stdout.write(f"      First Price Date: {first_price_date}")
                 self.stdout.write(f"      Products: {product_count}")
                 self.stdout.write(f"      Prices: {price_count}")
 
