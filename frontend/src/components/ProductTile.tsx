@@ -45,9 +45,66 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
 
   const srcSet = generateSrcSet(imageUrl);
 
+  const bargainInfo = React.useMemo(() => {
+    if (!product.prices || product.prices.length <= 1) {
+      return null;
+    }
+
+    const companyShortNames: { [key: string]: string } = {
+      "Woolworths": "Woolies",
+      "Coles": "Coles",
+      "IGA": "IGA",
+      "Aldi": "Aldi",
+    };
+
+    const companyColors: { [key: string]: string } = {
+      "Aldi": "bg-blue-300 text-gray-800", // Light blue, dark text for contrast
+      "Woolies": "bg-green-500 text-white", // Green, white text
+      "Coles": "bg-red-500 text-white", // Red, white text
+      "IGA": "bg-white text-red-600 border border-red-600", // White, red text, red border
+    };
+
+    // Parse prices to numbers and filter out invalid ones
+    const numericPrices = product.prices.map(p => ({
+      company: p.company,
+      price: parseFloat(p.price_display.replace('$', '')), // Assuming price_display is like "$X.YY"
+    })).filter(p => !isNaN(p.price));
+
+    if (numericPrices.length <= 1) {
+      return null; // Not enough valid prices to compare
+    }
+
+    const minPrice = Math.min(...numericPrices.map(p => p.price));
+    const maxPrice = Math.max(...numericPrices.map(p => p.price));
+
+    if (minPrice === maxPrice) {
+      return null; // No difference
+    }
+
+    const percentage = Math.round(((maxPrice - minPrice) / maxPrice) * 100);
+    const cheapestCompanies = numericPrices
+      .filter(p => p.price === minPrice)
+      .map(p => companyShortNames[p.company] || p.company); // Use mapped name or fallback
+
+    const bargainBadgeClasses = cheapestCompanies.length === 1
+      ? companyColors[cheapestCompanies[0]] || "bg-gray-700 text-white" // Default if company not found
+      : "bg-gray-700 text-white"; // Default for multiple companies
+
+    return { percentage, cheapestCompanies, bargainBadgeClasses };
+  }, [product.prices]);
+
+
   return (
     <Card className="flex flex-col h-full overflow-hidden gap-1 pt-0 pb-2">
       <div className="aspect-square w-full overflow-hidden relative">
+        {bargainInfo && (
+          <Badge className={`absolute top-2 right-2 z-10 ${bargainInfo.bargainBadgeClasses}`}>
+            -{bargainInfo.percentage}% at {bargainInfo.cheapestCompanies.join(' or ')}
+          </Badge>
+        )}
+        {product.size && (
+          <Badge className={`absolute ${bargainInfo ? 'top-8' : 'top-2'} right-2`}>{product.size}</Badge>
+        )}
         <img
           src={imageUrl}
           srcSet={srcSet}
@@ -56,9 +113,6 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
           alt={product.name}
           className="h-full w-full object-cover transition-transform hover:scale-105"
         />
-        {product.size && (
-          <Badge className="absolute top-2 right-2">{product.size}</Badge>
-        )}
       </div>
       <CardHeader className="p-0 text-center">
         <CardTitle className="h-12 leading-5 text-base font-semibold overflow-hidden text-ellipsis line-clamp-2">{product.name}</CardTitle>

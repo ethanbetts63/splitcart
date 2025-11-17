@@ -23,7 +23,7 @@ const CompanyLogo = ({ companyName, priceDisplay }: { companyName: string; price
     <img 
       src={objectUrl} 
       alt={companyName} 
-      className="h-5 w-5 rounded-sm"
+      className="h-5 w-5 rounded-sm transition-all duration-200 hover:scale-105 hover:shadow-md cursor-pointer"
       width="20"
       height="20"
       title={`${companyName}: $${priceDisplay}`}
