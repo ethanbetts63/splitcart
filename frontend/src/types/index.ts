@@ -137,3 +137,25 @@ export type InitialSetupData = {
   cart: Cart;
   anonymous_id?: string;
 };
+
+// --- Pillar Page Types ---
+
+export interface PrimaryCategory {
+  name: string;
+  slug: string;
+}
+
+export interface FAQ {
+  question: string;
+  answer: string;
+}
+
+export interface PillarPage {
+  name: string;
+  slug: string;
+  hero_title: string;
+  introduction_paragraph: string;
+  image_path: string;
+  primary_categories: PrimaryCategory[];
+  faqs: FAQ[];
+}
