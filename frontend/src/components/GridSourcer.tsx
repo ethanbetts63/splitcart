@@ -35,7 +35,7 @@ interface GridSourcerProps {
   searchTerm: string | null;
   sourceUrl: string | null;
   primaryCategorySlug: string | null;
-  primaryCategorySlugs: string | null;
+  primaryCategorySlugs?: string | null;
 }
 
 import { useApiQuery } from '../hooks/useApiQuery';

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useCarouselManager } from '../hooks/useCarouselManager';
 import { ProductCarousel } from "../components/ProductCarousel";
 import { FaqImageSection } from "../components/FaqImageSection";
 import { useStoreList } from "../context/StoreListContext";
@@ -47,7 +46,7 @@ const HomePage = () => {
           </div>
           <div className="text-left">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-              They’ve been optimizing for profit. Now it’s your turn.
+              They’ve been optimising for profit. Now it’s your turn.
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
               Every store has a deal — but finding them all takes forever. SplitCart automates that process by comparing prices across supermarkets and splitting your cart for the cheapest overall shop. <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">One list, multiple stores, maximum savings.</span> Search or browse and add products to your cart to get started! Click "Next" in the bottom right when you're ready!
