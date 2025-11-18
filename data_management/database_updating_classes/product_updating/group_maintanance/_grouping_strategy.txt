@@ -9,7 +9,8 @@ The system is designed around a "bottom-up" approach. Every store always belongs
 *   **Group:** A set of one or more stores confirmed to have matching prices.
 *   **Anchor:** Each `Group` has one `Anchor` store. This store is the single "source of truth" for the group's prices. All comparisons are made against the `Anchor`. The Anchor can never be ejected. 
 *   **Member:** Any store belonging to a `Group`.
-*   **Current Pricing:** Price data is considered "Current" if it was scraped within the last 72 hours. This is a critical rule for all comparisons.
+*   **Current Pricing:** Price data is considered "Current" if it was scraped within the last 7 days. This is a critical rule for all comparisons.
+*   **Scrape Scheduling: The scrape schedular does not know anything about group merging. It first checks for stores that have never been scraped, then it checks for stores that have been flagged, then if neither of those checks are fruitful it picks the store with the most stale data. 
 
 #### 2. Initial State: The `cluster_stores` Command
 
