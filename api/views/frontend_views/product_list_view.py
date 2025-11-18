@@ -1,4 +1,4 @@
-from django.db.models import Q, Case, When, Value, IntegerField, Exists, OuterRef
+from django.db.models import Q, Case, When, Value, IntegerField, Exists, OuterRef, Min
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from rest_framework import generics
@@ -26,6 +26,7 @@ class ProductListView(generics.ListAPIView):
         search_query = self.request.query_params.get('search', None)
         primary_category_slug = self.request.query_params.get('primary_category_slug', None)
         primary_category_slugs = self.request.query_params.get('primary_category_slugs', None)
+        ordering = self.request.query_params.get('ordering', None)
 
         if not store_ids_param:
             raise ValidationError({'store_ids': 'This field is required.'})
@@ -45,6 +46,7 @@ class ProductListView(generics.ListAPIView):
         elif primary_category_slug:
             queryset = queryset.filter(category__primary_category__slug=primary_category_slug)
 
+        search_terms = []
         if search_query:
             search_terms = search_query.split()
             filter_q = Q()
@@ -54,25 +56,40 @@ class ProductListView(generics.ListAPIView):
                 filter_q |= Q(size__icontains=term)
             queryset = queryset.filter(filter_q)
 
-            score = Value(0, output_field=IntegerField())
-            for term in search_terms:
-                score += Case(When(name__icontains=term, then=Value(10)), default=Value(0), output_field=IntegerField())
-                score += Case(When(brand__name__icontains=term, then=Value(5)), default=Value(0), output_field=IntegerField())
-                score += Case(When(size__icontains=term, then=Value(2)), default=Value(0), output_field=IntegerField())
-            
-            queryset = queryset.annotate(search_score=score)
-            final_queryset = queryset.order_by('-search_score')
-        
-        elif primary_category_slug:
-            bargain_exists = Bargain.objects.filter(
-                product=OuterRef('pk'),
-                store__id__in=store_ids
-            )
-            queryset = queryset.annotate(is_bargain=Exists(bargain_exists))
-            final_queryset = queryset.order_by('-is_bargain')
-            
+        if ordering == 'price_asc':
+            final_queryset = queryset.annotate(
+                min_price=Min('prices__price', filter=Q(prices__store__id__in=store_ids))
+            ).order_by('min_price')
+        elif ordering == 'price_desc':
+            final_queryset = queryset.annotate(
+                min_price=Min('prices__price', filter=Q(prices__store__id__in=store_ids))
+            ).order_by('-min_price')
+        elif ordering == 'unit_price_asc':
+            final_queryset = queryset.annotate(
+                min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=store_ids))
+            ).order_by('min_unit_price')
         else:
-            final_queryset = queryset
+            # Default ordering logic
+            if search_query:
+                score = Value(0, output_field=IntegerField())
+                for term in search_terms:
+                    score += Case(When(name__icontains=term, then=Value(10)), default=Value(0), output_field=IntegerField())
+                    score += Case(When(brand__name__icontains=term, then=Value(5)), default=Value(0), output_field=IntegerField())
+                    score += Case(When(size__icontains=term, then=Value(2)), default=Value(0), output_field=IntegerField())
+                
+                queryset = queryset.annotate(search_score=score)
+                final_queryset = queryset.order_by('-search_score')
+            
+            elif primary_category_slug:
+                bargain_exists = Bargain.objects.filter(
+                    product=OuterRef('pk'),
+                    store__id__in=store_ids
+                )
+                queryset = queryset.annotate(is_bargain=Exists(bargain_exists))
+                final_queryset = queryset.order_by('-is_bargain')
+                
+            else:
+                final_queryset = queryset
 
         return final_queryset
 

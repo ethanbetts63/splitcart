@@ -12,6 +12,14 @@ import {
   PaginationPrevious,
 } from "./ui/pagination";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
 import { useStoreList } from '../context/StoreListContext';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -36,6 +44,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortOption, setSortOption] = useState('');
   const { selectedStoreIds } = useStoreList(); // Get selected stores
   const queryClient = useQueryClient();
   const { token, anonymousId } = useAuth();
@@ -68,8 +77,12 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
     params.set('page', currentPage.toString());
     params.set('page_size', '20');
 
+    if (sortOption) {
+      params.set('ordering', sortOption);
+    }
+
     return { url, params };
-  }, [searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, selectedStoreIds, currentPage]);
+  }, [searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, selectedStoreIds, currentPage, sortOption]);
 
   const finalUrl = url ? `${url}?${params.toString()}` : null;
 
@@ -132,34 +145,49 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
 
     return (
       <div>
-        <h2 className="text-2xl font-bold mb-4">
-          {searchTerm && (
-            <>
-              Found {totalResults} results for{" "}
-              <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
-                "{searchTerm}"
-              </span>
-            </>
-          )}
-          {primaryCategorySlug && !searchTerm && (
-            (() => {
-              const formattedSlug = primaryCategorySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-              return (
-                <>
-                  Showing {totalResults} products in{" "}
-                  <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
-                    "{formattedSlug}"
-                  </span>
-                </>
-              );
-            })()
-          )}
-          {sourceUrl && !searchTerm && !primaryCategorySlug && (
-            <>
-              Showing {totalResults} products
-            </>
-          )}
-        </h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">
+            {searchTerm && (
+              <>
+                Found {totalResults} results for{" "}
+                <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
+                  "{searchTerm}"
+                </span>
+              </>
+            )}
+            {primaryCategorySlug && !searchTerm && (
+              (() => {
+                const formattedSlug = primaryCategorySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                return (
+                  <>
+                    Showing {totalResults} products in{" "}
+                    <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
+                      "{formattedSlug}"
+                    </span>
+                  </>
+                );
+              })()
+            )}
+            {sourceUrl && !searchTerm && !primaryCategorySlug && (
+              <>
+                Showing {totalResults} products
+              </>
+            )}
+          </h2>
+          <div className="flex items-center">
+            <Select onValueChange={(value) => setSortOption(value)} value={sortOption}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="default">Default</SelectItem>
+                <SelectItem value="price_asc">Price: Low to High</SelectItem>
+                <SelectItem value="price_desc">Price: High to Low</SelectItem>
+                <SelectItem value="unit_price_asc">Per Unit Price: Low to High</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
         <ProductGrid 
           products={products} 
           hasResults={totalResults > 0}
