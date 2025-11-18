@@ -93,17 +93,34 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
     return { percentage, cheapestCompanies, bargainBadgeClasses };
   }, [product.prices]);
 
+  const cheapestPriceInfo = product.prices && product.prices.length > 0 ? product.prices[0] : null;
+  const perUnitPriceString = cheapestPriceInfo?.per_unit_price_string;
+
+  let currentTopPosition = 2; // Initial top position for the first badge
+
+  const getNextTopPosition = (hasBadge: boolean) => {
+    if (hasBadge) {
+      const position = currentTopPosition;
+      currentTopPosition += 6; // Increment by 6 (tailwind 'top-8' is 6 units more than 'top-2')
+      return `top-${position}`;
+    }
+    return ''; // No badge, no position
+  };
+
 
   return (
     <Card className="flex flex-col h-full overflow-hidden gap-1 pt-0 pb-2">
       <div className="aspect-square w-full overflow-hidden relative">
+        {perUnitPriceString && (
+          <Badge className={`absolute ${getNextTopPosition(true)} right-2 z-20`}>{perUnitPriceString}</Badge>
+        )}
         {bargainInfo && (
-          <Badge className={`absolute top-2 right-2 z-10 ${bargainInfo.bargainBadgeClasses}`}>
+          <Badge className={`absolute ${getNextTopPosition(true)} right-2 z-20 ${bargainInfo.bargainBadgeClasses}`}>
             -{bargainInfo.percentage}% at {bargainInfo.cheapestCompanies.join(' or ')}
           </Badge>
         )}
         {product.size && (
-          <Badge className={`absolute ${bargainInfo ? 'top-8' : 'top-2'} right-2`}>{product.size}</Badge>
+          <Badge className={`absolute ${getNextTopPosition(true)} right-2 z-20`}>{product.size}</Badge>
         )}
         <img
           src={imageUrl}

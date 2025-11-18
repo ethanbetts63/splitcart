@@ -228,7 +228,8 @@ class ProductSerializer(serializers.ModelSerializer):
                 'company': company_name,
                 'price_display': price_range,
                 'is_lowest': is_lowest,
-                'image_url': image_url
+                'image_url': image_url,
+                'per_unit_price_string': price_obj.per_unit_price_string if price_obj.per_unit_price_string else None
             })
         
         # Sort by lowest price first, then company name

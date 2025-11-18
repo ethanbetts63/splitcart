@@ -12,6 +12,7 @@ export type CompanyPriceInfo = {
   price_display: string;
   is_lowest: boolean;
   image_url?: string;
+  per_unit_price_string?: string;
 };
 
 export type Product = {
