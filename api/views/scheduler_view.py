@@ -59,15 +59,15 @@ class SchedulerView(APIView):
         four_hours_ago = timezone.now() - timedelta(hours=4)
         eligible_stores = eligible_stores.exclude(scheduled_at__gte=four_hours_ago)
 
-        # Priority 1: Stores flagged for re-scraping
-        priority_store = eligible_stores.filter(needs_rescraping=True).order_by('last_updated').first()
-        if priority_store:
-            return priority_store
-
-        # Priority 2: Stores that have never been scraped
+        # Priority 1: Stores that have never been scraped
         unscraped_store = eligible_stores.filter(last_scraped__isnull=True).order_by('pk').first()
         if unscraped_store:
             return unscraped_store
+
+        # Priority 2: Stores flagged for re-scraping
+        priority_store = eligible_stores.filter(needs_rescraping=True).order_by('last_updated').first()
+        if priority_store:
+            return priority_store
 
         # Priority 3: Oldest scraped store
         oldest_scraped_store = eligible_stores.order_by('last_scraped', 'pk').first()
