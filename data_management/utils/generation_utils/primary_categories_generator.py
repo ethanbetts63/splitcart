@@ -25,9 +25,12 @@ class PrimaryCategoriesGenerator:
         for store_mappings in CATEGORY_MAPPINGS.values():
             primary_category_names.update(store_mappings.values())
 
-        for name in primary_category_names:
+        # Filter out None values before creating objects
+        valid_primary_category_names = {name for name in primary_category_names if name is not None}
+
+        for name in valid_primary_category_names:
             PrimaryCategory.objects.get_or_create(name=name)
-        self.stdout.write(f"Found {len(primary_category_names)} unique primary categories.")
+        self.stdout.write(f"Found {len(valid_primary_category_names)} unique primary categories to create.")
 
     def _assign_primary_categories(self):
         self.stdout.write("Assigning primary categories to categories...")
@@ -45,6 +48,11 @@ class PrimaryCategoriesGenerator:
             with transaction.atomic():
                 for i, (store_category_name, primary_category_name) in enumerate(mappings.items()):
                     self.stdout.write(f"  Processing mapping {i+1}/{len(mappings)}: '{store_category_name}' -> '{primary_category_name}'")
+                    
+                    # Skip ignored categories
+                    if primary_category_name is None:
+                        continue
+
                     try:
                         primary_category = PrimaryCategory.objects.get(name=primary_category_name)
                         
