@@ -1,0 +1,76 @@
+# Memory Optimization Plan for Product Update (V2)
+
+## Problem Statement
+The `python manage.py update --products` script is encountering an Out-of-Memory (OOM) "Killed" error, likely due to excessive memory consumption by global in-memory caches. Investigation confirms that the `UpdateOrchestrator`'s `_build_global_caches` method loads full Django model objects (especially Product instances) into memory, which becomes prohibitive with a growing database.
+
+## Goal
+Reduce the memory footprint of the product update process, primarily by optimizing cache usage, while maintaining or improving existing performance.
+
+## Proposed Solution: Two-Tier Caching System
+
+This approach combines a lean, global cache for efficient lookup with a just-in-time fetch for full object interactions.
+
+### Tier 1: Lean Global Cache (Primary Memory Saver)
+
+**Objective:** Significantly reduce the memory footprint of the `UpdateOrchestrator`'s global caches.
+
+**Details:**
+Instead of caching full Django model objects, the global caches (`products_by_barcode`, `products_by_norm_string`, `products_by_sku`) will store only essential identifiers. A central `products_by_id` cache will map product IDs to a slim dictionary containing only the fields necessary for initial matching and brand variation checks.
+
+**Structure of `caches['products_by_id'][product_id]`:**
+```python
+{
+    'id': <product_id>,
+    'normalized_name_brand_size': "<product_nnbs_string>",
+    'brand_normalized_name': "<brand_nnbs_string>"
+}
+```
+
+**Implementation Steps (Code Changes in `update_orchestrator.py`):**
+
+1.  **Modify `_build_global_caches`:**
+    *   Use `.values()` on `Product.objects.select_related('brand')` to efficiently retrieve `id`, `barcode`, `normalized_name_brand_size`, and `brand__normalized_name` as dictionaries.
+    *   Populate `self.caches['products_by_id']` with the slim dictionaries described above.
+    *   Populate `self.caches['products_by_barcode']` and `self.caches['products_by_norm_string']` to map their respective keys directly to the `product_id`.
+    *   Populate `self.caches['products_by_sku']` to map company/sku to `product_id`.
+    *   Retain current caching for `ProductBrand` (as it's small) and `Category` (not the primary memory bottleneck).
+
+2.  **Adapt `UpdateOrchestrator._deduplicate_product_data_for_pricing`:**
+    *   Update this method to retrieve `product_id` from `self.caches['products_by_norm_string']` and use it for de-duplication.
+
+### Tier 2: Just-in-Time Full Object Fetch (For `ProductManager` Updates)
+
+**Objective:** Provide full `Product` objects to the `ProductManager` for enrichment only when and where they are absolutely needed.
+
+**Details:**
+Only the `ProductManager`'s update process (`_prepare_updates`) strictly requires the full `Product` object for field-by-field comparison and merging.
+
+**Implementation Steps (Code Changes in `product_manager.py`):**
+
+1.  **Modify `_resolve_products`:**
+    *   The `match` variable will now hold a `product_id` (retrieved from the lean global caches).
+    *   When needing `normalized_name_brand_size` or `brand_normalized_name` for alias creation or brand variation checks, retrieve this info from `self.caches['products_by_id'][product_id]`.
+    *   The `products_to_update_data` list will now store `(product_id, data)` tuples.
+
+2.  **Modify `ProductManager.process` (orchestration):**
+    *   Before calling `_prepare_updates`, collect all unique `product_id`s that are present in the `to_update_data` list for the current file.
+    *   Perform a single batch query: `Product.objects.filter(id__in=list_of_product_ids)` to fetch all required full `Product` objects from the database.
+    *   Create a temporary, in-memory dictionary mapping `product_id` to its full `Product` object (`products_for_update_dict`).
+    *   Pass this `products_for_update_dict` to `_prepare_updates`.
+
+3.  **Modify `_prepare_updates`:**
+    *   Receive the `products_for_update_dict`.
+    *   Retrieve the full `existing_product` object from `products_for_update_dict[product_id]` for each item needing an update.
+    *   **Bug Fix:** Ensure `normalized_name_brand_size_variations` from the incoming `product_dict` is correctly passed to the temporary `incoming_product_instance` for proper merging by `ProductEnricher`.
+
+4.  **Modify `_update_caches`:**
+    *   When updating caches after creation/updates (for newly created/updated products), ensure that `self.caches['products_by_id']` is updated with the slim dictionary information, and `products_by_barcode`, `products_by_norm_string` are updated to point to the correct `product_id`.
+
+### Other Manager Adaptations (Minor Changes)
+
+*   **`price_manager.py`:**
+    *   Update `process` to retrieve `product_id` from `self.caches['products_by_norm_string']` (now an `int`). Use this `product_id` directly when creating `Price` objects (`'product_id': product_id` in `Price(**price_data)`).
+*   **`category_manager.py`:**
+    *   Update `process` (specifically `_link_products_to_categories`) to retrieve `product_id` from `self.caches['products_by_norm_string']`. Use this `product_id` directly when creating `ProductCategory` links (`ProductCategory(product_id=product_id, ...)`).
+
+This plan provides a detailed roadmap for implementing the memory optimization, covering all identified points of impact and ensuring the system's integrity and performance.
