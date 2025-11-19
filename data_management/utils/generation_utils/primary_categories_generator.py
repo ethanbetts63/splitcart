@@ -9,9 +9,15 @@ class PrimaryCategoriesGenerator:
         self.style = command.style
 
     def run(self):
+        self._delete_existing_primary_categories()
         self._create_primary_categories()
         self._assign_primary_categories()
         self.stdout.write(self.style.SUCCESS("Successfully generated primary categories."))
+
+    def _delete_existing_primary_categories(self):
+        self.stdout.write("Deleting existing primary category objects...")
+        deleted_count, _ = PrimaryCategory.objects.all().delete()
+        self.stdout.write(f"Deleted {deleted_count} existing primary category objects.")
 
     def _create_primary_categories(self):
         self.stdout.write("Creating primary category objects...")
