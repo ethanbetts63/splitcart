@@ -1,15 +1,15 @@
 from django.core.management.base import BaseCommand
-from django.db.models import Min, F
+from django.db.models import Count, Avg
 from itertools import combinations
 from collections import defaultdict
 from companies.models import PrimaryCategory, Company
 from products.models import Price
 
 class Command(BaseCommand):
-    help = 'Efficiently compares product prices and updates the database.'
+    help = 'Super-efficiently compares product prices using a slim memory cache and updates the database.'
 
     def handle(self, *args, **options):
-        self.stdout.write(self.style.SUCCESS("Starting price comparison update (high-efficiency)..."))
+        self.stdout.write(self.style.SUCCESS("Starting price comparison update (super-slim cache)..."))
 
         company_names = ["Coles", "Woolworths", "IGA", "Aldi"]
         companies = {c.id: c for c in Company.objects.filter(name__in=company_names)}
@@ -18,44 +18,58 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR("Need at least two major companies to compare."))
             return
 
+        # 1. Find all products sold by at least 2 of the target companies
+        self.stdout.write(self.style.HTTP_INFO("Step 1/4: Identifying products sold by multiple companies..."))
+        relevant_product_ids = Price.objects.filter(
+            store__company_id__in=companies.keys()
+        ).values('product_id').annotate(
+            company_count=Count('store__company', distinct=True)
+        ).filter(company_count__gte=2).values_list('product_id', flat=True)
+        self.stdout.write(f"Found {len(relevant_product_ids)} relevant products.")
+
+        # 2. Build the "super slim" price cache for only those products
+        self.stdout.write(self.style.HTTP_INFO("Step 2/4: Building slim price cache with average prices..."))
+        price_data_qs = Price.objects.filter(
+            product_id__in=list(relevant_product_ids),
+            store__company_id__in=companies.keys()
+        ).values(
+            'product__category__primary_category_id',
+            'product_id',
+            'store__company_id'
+        ).annotate(avg_price=Avg('price'))
+
+        # 3. Restructure the cached data into a nested dictionary for fast lookups
+        self.stdout.write(self.style.HTTP_INFO("Step 3/4: Structuring cached data for in-memory processing..."))
+        all_prices_by_category = defaultdict(lambda: defaultdict(dict))
+        for price_data in price_data_qs:
+            cat_id = price_data['product__category__primary_category_id']
+            prod_id = price_data['product_id']
+            comp_id = price_data['store__company_id']
+            price = price_data['avg_price']
+            if cat_id:
+                all_prices_by_category[cat_id][prod_id][comp_id] = price
+
+        # 4. Process all categories entirely in-memory
+        self.stdout.write(self.style.HTTP_INFO("Step 4/4: Performing in-memory comparisons for all categories..."))
         all_categories = list(PrimaryCategory.objects.all().order_by('name'))
         categories_to_update = []
-        total_categories = len(all_categories)
-
-        for i, category in enumerate(all_categories):
-            self.stdout.write(self.style.HTTP_INFO(f"\n--- Analyzing Category ({i+1}/{total_categories}): {category.name} ---"))
-            
-            # 1. Bulk fetch all prices for the current primary category
-            prices_qs = Price.objects.filter(
-                product__category__primary_category=category,
-                store__company_id__in=companies.keys()
-            ).values('product_id', 'store__company_id').annotate(min_price=Min('price'))
-
-            # 2. Process data in-memory
-            product_prices_by_company = defaultdict(dict)
-            for price_data in prices_qs:
-                product_prices_by_company[price_data['product_id']][price_data['store__company_id']] = price_data['min_price']
-
+        for category in all_categories:
             category.price_comparison_data = {"comparisons": []}
-            
-            # Iterate through company pairs to perform in-memory comparison
+            product_prices_by_company = all_prices_by_category.get(category.id, {})
+
             for comp_a_id, comp_b_id in combinations(companies.keys(), 2):
                 company_a = companies[comp_a_id]
                 company_b = companies[comp_b_id]
-                self.stdout.write(f"  Comparing {company_a.name} vs {company_b.name}...")
 
                 cheaper_at_a, cheaper_at_b, same_price = 0, 0, 0
                 
-                # Find overlapping products in-memory
                 overlapping_products = [
                     p for p, prices in product_prices_by_company.items()
                     if comp_a_id in prices and comp_b_id in prices
                 ]
                 
                 overlap_count = len(overlapping_products)
-
                 if overlap_count < 5:
-                    self.stdout.write(f"    Skipping: Only {overlap_count} overlapping products (less than 5 required).")
                     continue
 
                 for product_id in overlapping_products:
@@ -68,36 +82,27 @@ class Command(BaseCommand):
                     else:
                         same_price += 1
 
-                cheaper_at_a_percent = round((cheaper_at_a / overlap_count) * 100)
-                cheaper_at_b_percent = round((cheaper_at_b / overlap_count) * 100)
-                same_price_percent = round((same_price / overlap_count) * 100)
-
                 category.price_comparison_data["comparisons"].append({
                     "company_a_id": comp_a_id, "company_a_name": company_a.name,
                     "company_b_id": comp_b_id, "company_b_name": company_b.name,
                     "overlap_count": overlap_count,
-                    "cheaper_at_a_percentage": cheaper_at_a_percent,
-                    "cheaper_at_b_percentage": cheaper_at_b_percent,
-                    "same_price_percentage": same_price_percent,
+                    "cheaper_at_a_percentage": round((cheaper_at_a / overlap_count) * 100),
+                    "cheaper_at_b_percentage": round((cheaper_at_b / overlap_count) * 100),
+                    "same_price_percentage": round((same_price / overlap_count) * 100),
                 })
-                self.stdout.write(f"    Comparison added (Overlap: {overlap_count})")
             
-            categories_to_update.append(category)
+            if category.price_comparison_data["comparisons"]:
+                categories_to_update.append(category)
 
-        # 3. Bulk update
         if categories_to_update:
-            self.stdout.write(self.style.SUCCESS("\nSaving all updated data to the database..."))
+            self.stdout.write(self.style.SUCCESS(f"\nSaving data for {len(categories_to_update)} categories to the database..."))
             PrimaryCategory.objects.bulk_update(categories_to_update, ['price_comparison_data'])
             self.stdout.write(self.style.SUCCESS("Database update complete."))
         else:
-            self.stdout.write(self.style.WARNING("No categories were updated."))
+            self.stdout.write(self.style.WARNING("No categories had sufficient data to warrant a database update."))
 
         self.stdout.write("\n--- Stored Comparison Data Summary ---")
         for category in categories_to_update:
             self.stdout.write(self.style.WARNING(f"\nCategory: {category.name}"))
-            if category.price_comparison_data and category.price_comparison_data.get("comparisons"):
-                for comp in category.price_comparison_data["comparisons"]:
-                   self.stdout.write(f"  - {comp['company_a_name']} ({comp['cheaper_at_a_percentage']}%) vs {comp['company_b_name']} ({comp['cheaper_at_b_percentage']}%): Same ({comp['same_price_percentage']}%) | Overlap: {comp['overlap_count']}")
-            else:
-                self.stdout.write("  No comparison data for this category.")
-
+            for comp in category.price_comparison_data["comparisons"]:
+               self.stdout.write(f"  - {comp['company_a_name']} vs {comp['company_b_name']}: Overlap {comp['overlap_count']}")

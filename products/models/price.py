@@ -47,6 +47,9 @@ class Price(models.Model):
     class Meta:
         unique_together = ('product', 'store')
         ordering = ['product__name']
+        indexes = [
+            models.Index(fields=['store', 'product']),
+        ]
 
     def __str__(self):
         return f"{self.product.name} at {self.store.store_name} - ${self.price}"

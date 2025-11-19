@@ -78,7 +78,8 @@ class BrandManager:
             for brand_obj in newly_created_brands:
                 self.cache_updater('normalized_brand_names', brand_obj.normalized_name, brand_obj)
         
-        products_to_link = []
+        # Identify which products need their brand link updated
+        product_brand_links_to_update = []
         for product_data in processed_product_data_list:
             product_dict = product_data.get('product', {})
             normalized_brand = product_dict.get('normalized_brand')
@@ -87,17 +88,35 @@ class BrandManager:
             if not normalized_brand or not product_norm_string:
                 continue
 
+            product_id = self.caches['products_by_norm_string'].get(product_norm_string)
+            if not product_id:
+                continue
+            
+            # The brand might not have an ID if it's new, but we still need to check its existing link
+            product_info = self.caches['products_by_id'].get(product_id, {})
+            existing_brand_on_product = product_info.get('brand_normalized_name')
+
             canonical_name = temp_translation_updates.get(normalized_brand, self.brand_translation_cache.get(normalized_brand, normalized_brand))
             brand_obj = self.caches['normalized_brand_names'].get(canonical_name)
-            product_obj = self.caches['products_by_norm_string'].get(product_norm_string)
 
-            if product_obj and brand_obj and product_obj.brand_id != brand_obj.id:
-                product_obj.brand = brand_obj
-                products_to_link.append(product_obj)
-        
-        if products_to_link:
-            self.command.stdout.write(f"    - Linking {len(products_to_link)} products to their brands.")
-            Product.objects.bulk_update(products_to_link, ['brand'], batch_size=500)
+            if brand_obj and existing_brand_on_product != brand_obj.normalized_name:
+                product_brand_links_to_update.append((product_id, brand_obj))
+
+        if product_brand_links_to_update:
+            product_ids_to_fetch = {link[0] for link in product_brand_links_to_update}
+            product_objects = Product.objects.filter(id__in=list(product_ids_to_fetch))
+            product_map = {p.id: p for p in product_objects}
+
+            products_to_link = []
+            for product_id, brand_obj in product_brand_links_to_update:
+                product_obj = product_map.get(product_id)
+                if product_obj:
+                    product_obj.brand = brand_obj
+                    products_to_link.append(product_obj)
+
+            if products_to_link:
+                self.command.stdout.write(f"    - Linking {len(products_to_link)} products to their brands.")
+                Product.objects.bulk_update(products_to_link, ['brand'], batch_size=500)
 
         # --- Step 5: Update Master Translation Cache (Final Step) ---
         if temp_translation_updates:

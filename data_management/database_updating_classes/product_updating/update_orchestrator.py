@@ -47,21 +47,39 @@ class UpdateOrchestrator:
         self.command.stdout.write(f"  - Cached {len(self.caches['normalized_brand_names'])} brands by normalized brand name.")
 
         # Product Caches
-        all_products = Product.objects.select_related('brand').all()
-        self.caches['products_by_barcode'] = {p.barcode: p for p in all_products if p.barcode}
-        self.caches['products_by_norm_string'] = {p.normalized_name_brand_size: p for p in all_products if p.normalized_name_brand_size}
-        self.command.stdout.write(f"  - Cached {len(self.caches['products_by_barcode'])} products by barcode.")
-        self.command.stdout.write(f"  - Cached {len(self.caches['products_by_norm_string'])} products by normalized name-brand-size string.")
+        self.caches['products_by_id'] = {}
+        all_products_values = Product.objects.select_related('brand').values(
+            'id', 'barcode', 'normalized_name_brand_size', 'brand__normalized_name'
+        )
+        for p_values in all_products_values:
+            product_id = p_values['id']
+            self.caches['products_by_id'][product_id] = {
+                'id': product_id,
+                'normalized_name_brand_size': p_values['normalized_name_brand_size'],
+                'brand_normalized_name': p_values['brand__normalized_name']
+            }
+
+        self.caches['products_by_barcode'] = {
+            p_values['barcode']: p_values['id']
+            for p_values in all_products_values if p_values['barcode']
+        }
+        self.caches['products_by_norm_string'] = {
+            p_values['normalized_name_brand_size']: p_values['id']
+            for p_values in all_products_values if p_values['normalized_name_brand_size']
+        }
+        self.command.stdout.write(f"  - Cached {len(self.caches['products_by_id'])} products by ID with lean data.")
+        self.command.stdout.write(f"  - Cached {len(self.caches['products_by_barcode'])} products by barcode (ID only).")
+        self.command.stdout.write(f"  - Cached {len(self.caches['products_by_norm_string'])} products by normalized name-brand-size string (ID only).")
         
         # SKU Cache (Company-Aware)
         self.caches['products_by_sku'] = {}
-        all_skus = SKU.objects.select_related('product', 'company').all()
+        all_skus = SKU.objects.select_related('company').all() # No need to select_related('product') anymore
         for sku_obj in all_skus:
             company_name = sku_obj.company.name
             if company_name not in self.caches['products_by_sku']:
                 self.caches['products_by_sku'][company_name] = {}
-            self.caches['products_by_sku'][company_name][sku_obj.sku] = sku_obj.product
-        self.command.stdout.write(f"  - Cached products for {len(self.caches['products_by_sku'])} companies by SKU.")
+            self.caches['products_by_sku'][company_name][sku_obj.sku] = sku_obj.product_id # Store product_id instead of object
+        self.command.stdout.write(f"  - Cached product IDs for {len(self.caches['products_by_sku'])} companies by SKU.")
 
         # Category Cache (Company-Aware)
         all_categories = Category.objects.select_related('company').all()
@@ -147,11 +165,11 @@ class UpdateOrchestrator:
             if not product_dict:
                 continue
 
-            # Resolve the canonical product using the cache, which now contains aliases
+            # Resolve the canonical product_id using the cache
             nnbs = product_dict.get('normalized_name_brand_size')
-            canonical_product = self.caches['products_by_norm_string'].get(nnbs)
+            product_id = self.caches['products_by_norm_string'].get(nnbs)
 
-            if not canonical_product:
+            if not product_id:
                 # This can happen if the product was new and couldn't be resolved by barcode/sku.
                 # The nnbs is its own canonical key. We use the nnbs itself to track uniqueness
                 # for products that are new in this run and haven't been assigned a PK yet.
@@ -160,10 +178,10 @@ class UpdateOrchestrator:
                      seen_product_pks.add(nnbs)
                 continue
 
-            # If we found a canonical product, use its PK for uniqueness check
-            if canonical_product.pk not in seen_product_pks:
+            # If we found a canonical product_id, use it for uniqueness check
+            if product_id not in seen_product_pks:
                 final_list_for_pricing.append(data)
-                seen_product_pks.add(canonical_product.pk)
+                seen_product_pks.add(product_id)
         
         self.command.stdout.write(f"  - Original list size: {len(raw_product_data)}, De-duplicated list size: {len(final_list_for_pricing)}")
         return final_list_for_pricing
