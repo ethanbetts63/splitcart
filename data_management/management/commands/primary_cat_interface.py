@@ -1,5 +1,6 @@
 import os
 import json
+import pprint
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from companies.models import Category, Company
@@ -21,6 +22,7 @@ PRIMARY_CATEGORIES = [
     "Health and Beauty",
     "Health Foods",
     "Home and Garden",
+    "International",
     "Meat",
     "Miscellaneous",
     "Non-Alcoholic Drinks",
@@ -62,7 +64,7 @@ class Command(BaseCommand):
     def _save_mappings(self, mappings):
         with open(MAPPINGS_FILE, 'w') as f:
             f.write("CATEGORY_MAPPINGS = ")
-            f.write(json.dumps(mappings, indent=4))
+            f.write(pprint.pformat(mappings, indent=4))
 
     def _handle_refine_misc(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('--- Refining "Miscellaneous" Categories ---'))
@@ -77,7 +79,7 @@ class Command(BaseCommand):
                 for cat_name, primary_cat_name in mappings.items():
                     if primary_cat_name == "Miscellaneous":
                         try:
-                            category = Category.objects.prefetch_related('subcategories').get(name=cat_name, company=company_obj)
+                            category = Category.objects.prefetch_related('subcategories', 'parents', 'company').get(name=cat_name, company=company_obj)
                             if category.subcategories.exists():
                                 misc_parents.append(category)
                         except Category.DoesNotExist:
@@ -91,72 +93,109 @@ class Command(BaseCommand):
 
         self.stdout.write(f"Found {len(misc_parents)} 'Miscellaneous' categories with children to refine.")
         
-        # 2. Collect all children that need potential re-mapping
-        categories_to_remap = []
+        # 2. Loop through each parent one by one
         for parent_cat in misc_parents:
-            company_mappings = all_mappings.get(parent_cat.company.name, {})
+            company_name = parent_cat.company.name
+            company_mappings = all_mappings.get(company_name, {})
+
+            # Find children of this specific parent that need mapping
+            children_to_map = []
             for child_cat in parent_cat.subcategories.all():
-                # Process if the child is unmapped OR is explicitly mapped to "Miscellaneous"
                 if child_cat.name not in company_mappings or company_mappings.get(child_cat.name) == "Miscellaneous":
-                    categories_to_remap.append(child_cat)
-
-        # De-duplicate and sort
-        if not categories_to_remap:
-            self.stdout.write("All children of 'Miscellaneous' categories are already mapped to specific primary categories.")
-            return
+                    children_to_map.append(child_cat)
             
-        unique_categories_to_remap = list(set(categories_to_remap))
-        unique_categories_to_remap.sort(key=lambda x: (x.company.name, x.name))
-        
-        total_to_remap = len(unique_categories_to_remap)
-        self.stdout.write(f"Found {total_to_remap} child categories to potentially re-map.")
+            if not children_to_map:
+                self.stdout.write(f"\nAll children of '{parent_cat.name}' are already specifically mapped. Ignoring parent.")
+                all_mappings[company_name][parent_cat.name] = None
+                self._save_mappings(all_mappings)
+                continue
 
-        # 3. Interactive mapping loop
-        for i, category in enumerate(unique_categories_to_remap):
-            company_name = category.company.name
+            self.stdout.write(f"\n--- Refining children of '{parent_cat.name}' ({company_name}) ---")
             
-            self.stdout.write(f"\n------------------------------------------------------------------")
-            parent_names = ", ".join(p.name for p in category.parents.all())
-            self.stdout.write(f"Category to Re-Map: [{self.style.SUCCESS(category.name)}] from Company: [{self.style.WARNING(company_name)}] (Remaining: {total_to_remap - i})")
-            self.stdout.write(f"(Child of: {parent_names})")
+            # 3. Inner loop for the children of the current parent
+            total_children = len(children_to_map)
+            quit_early = False
+            for i, child_category in enumerate(children_to_map):
+                
+                # --- Auto-mapping logic ---
+                auto_mapped = False
+                category_name_lower = child_category.name.lower().strip()
 
-            self.stdout.write("\nPrimary Categories:")
-            for idx, pc in enumerate(PRIMARY_CATEGORIES):
-                self.stdout.write(f"{idx+1}. {pc}")
-            
-            while True:
-                choice = input("Enter the number of the correct primary category (or 's' to skip, 'i' to permanently ignore, 'q' to quit): ").strip().lower()
-                if choice == 'q':
-                    self.stdout.write(self.style.SUCCESS("Exiting. Mappings saved."))
-                    return
-                elif choice == 's':
-                    break
-                elif choice == 'i':
-                    if company_name not in all_mappings:
-                        all_mappings[company_name] = {}
-                    all_mappings[company_name][category.name] = None
-                    self._save_mappings(all_mappings)
-                    self.stdout.write(self.style.WARNING(f"Permanently ignoring '{category.name}' for company {company_name}."))
-                    break
-                elif choice.isdigit():
-                    idx = int(choice) - 1
-                    if 0 <= idx < len(PRIMARY_CATEGORIES):
-                        selected_primary_category = PRIMARY_CATEGORIES[idx]
-                        
-                        if company_name not in all_mappings:
-                            all_mappings[company_name] = {}
-                        
-                        all_mappings[company_name][category.name] = selected_primary_category
-                        
+                for mapped_name, primary_cat in company_mappings.items():
+                    if primary_cat is None: continue
+                    if category_name_lower == mapped_name.lower().strip():
+                        all_mappings[company_name][child_category.name] = primary_cat
                         self._save_mappings(all_mappings)
-                        self.stdout.write(self.style.SUCCESS(f"Mapped '{category.name}' to '{selected_primary_category}' for company {company_name}."))
+                        self.stdout.write(self.style.SUCCESS(f"Auto-mapped '{child_category.name}' to '{primary_cat}' (Match with existing mapping: '{mapped_name}')"))
+                        auto_mapped = True
                         break
-                    else:
-                        self.stdout.write(self.style.ERROR("Invalid number. Please try again."))
-                else:
-                    self.stdout.write(self.style.ERROR("Invalid input. Please enter a number, 's', 'i', or 'q'."))
+                
+                if auto_mapped: continue
 
-        self.stdout.write(self.style.SUCCESS("\n--- Finished refining miscellaneous categories. ---"))
+                for pc in PRIMARY_CATEGORIES:
+                    primary_category_lower = pc.lower().strip()
+                    if category_name_lower == primary_category_lower:
+                        all_mappings[company_name][child_category.name] = pc
+                        self._save_mappings(all_mappings)
+                        self.stdout.write(self.style.SUCCESS(f"Auto-mapped '{child_category.name}' to '{pc}' (Exact Match)"))
+                        auto_mapped = True
+                        break
+
+                if auto_mapped: continue
+                # --- End of auto-mapping logic ---
+
+                self.stdout.write(f"\n------------------------------------------------------------------")
+                parent_names = ", ".join(p.name for p in child_category.parents.all())
+                self.stdout.write(f"Category to Re-Map: [{self.style.SUCCESS(child_category.name)}] from Company: [{self.style.WARNING(company_name)}]")
+                self.stdout.write(f"(Child of: {parent_names}) (Remaining: {total_children - i})")
+
+                self.stdout.write("\nPrimary Categories:")
+                for idx, pc in enumerate(PRIMARY_CATEGORIES):
+                    self.stdout.write(f"{idx+1}. {pc}")
+
+                while True:
+                    choice = input("Enter the number of the correct primary category (or 's' to skip, 'i' to permanently ignore, 'q' to quit): ").strip().lower()
+                    if choice == 'q':
+                        quit_early = True
+                        break
+                    elif choice == 's':
+                        break
+                    elif choice == 'i':
+                        if company_name not in all_mappings: all_mappings[company_name] = {}
+                        all_mappings[company_name][child_category.name] = None
+                        self._save_mappings(all_mappings)
+                        self.stdout.write(self.style.WARNING(f"Permanently ignoring '{child_category.name}' for company {company_name}."))
+                        break
+                    elif choice.isdigit():
+                        idx = int(choice) - 1
+                        if 0 <= idx < len(PRIMARY_CATEGORIES):
+                            selected_primary_category = PRIMARY_CATEGORIES[idx]
+                            if company_name not in all_mappings: all_mappings[company_name] = {}
+                            all_mappings[company_name][child_category.name] = selected_primary_category
+                            self._save_mappings(all_mappings)
+                            self.stdout.write(self.style.SUCCESS(f"Mapped '{child_category.name}' to '{selected_primary_category}' for company {company_name}."))
+                            break
+                        else:
+                            self.stdout.write(self.style.ERROR("Invalid number. Please try again."))
+                    else:
+                        self.stdout.write(self.style.ERROR("Invalid input. Please enter a number, 's', 'i', or 'q'."))
+                if quit_early:
+                    break
+            
+            if quit_early:
+                self.stdout.write(self.style.SUCCESS("Exiting refinement process. Mappings saved."))
+                return
+
+            # 4. After the inner loop finishes, update the parent
+            self.stdout.write(f"\nFinished refining children for '{parent_cat.name}'.")
+            self.stdout.write(f"Setting parent category '{parent_cat.name}' to be permanently ignored.")
+            
+            if company_name not in all_mappings:
+                all_mappings[company_name] = {}
+            all_mappings[company_name][parent_cat.name] = None
+            self._save_mappings(all_mappings)
+
+        self.stdout.write(self.style.SUCCESS("\n--- Finished refining all miscellaneous categories. ---"))
 
     def _handle_unattached(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('--- Processing Unattached Categories ---'))
