@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useApiQuery } from '../hooks/useApiQuery';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { ProductCarousel } from '../components/ProductCarousel';
+import PriceComparisonChart from '../components/PriceComparisonChart';
 import {
   Accordion,
   AccordionContent,
@@ -61,18 +62,25 @@ const PillarPage: React.FC = () => {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        {/* Product Carousels */}
+        {/* Product Carousels and Price Comparisons */}
         {pillarPage.primary_categories.map((category: PrimaryCategory, index: number) => (
-                    <div key={category.slug} className="mb-8">
-                      <ProductCarousel
-                          key={category.slug}    title={category.name}
-    sourceUrl="/api/products/"
-    primaryCategorySlugs={[category.slug]}
-    pillarPageLinkSlug={slug}
-    storeIds={storeIdsArray}
-    slot={index}
-    isDefaultStores={isDefaultStores}
-/>
+          <div key={category.slug} className="mb-8">
+            <ProductCarousel
+                title={category.name}
+                sourceUrl="/api/products/"
+                primaryCategorySlugs={[category.slug]}
+                pillarPageLinkSlug={slug}
+                storeIds={storeIdsArray}
+                slot={index}
+                isDefaultStores={isDefaultStores}
+            />
+            {category.price_comparison_data && category.price_comparison_data.comparisons.length > 0 && (
+              <div className="mt-4">
+                {category.price_comparison_data.comparisons.map((comparison, compIndex) => (
+                  <PriceComparisonChart key={compIndex} comparison={comparison} />
+                ))}
+              </div>
+            )}
           </div>
         ))}
 

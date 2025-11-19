@@ -141,9 +141,25 @@ export type InitialSetupData = {
 
 // --- Pillar Page Types ---
 
+export interface PriceComparison {
+  company_a_id: number;
+  company_a_name: string;
+  company_b_id: number;
+  company_b_name: string;
+  overlap_count: number;
+  cheaper_at_a_percentage: number;
+  cheaper_at_b_percentage: number;
+  same_price_percentage: number;
+}
+
+export interface PriceComparisonData {
+  comparisons: PriceComparison[];
+}
+
 export interface PrimaryCategory {
   name: string;
   slug: string;
+  price_comparison_data?: PriceComparisonData;
 }
 
 export interface FAQ {

@@ -38,7 +38,7 @@ class CategoryWithProductsExportSerializer(serializers.ModelSerializer):
 class PrimaryCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = PrimaryCategory
-        fields = ('name', 'slug')
+        fields = ('name', 'slug', 'price_comparison_data')
 
 class PillarPageSerializer(serializers.ModelSerializer):
     primary_categories = PrimaryCategorySerializer(many=True, read_only=True)
