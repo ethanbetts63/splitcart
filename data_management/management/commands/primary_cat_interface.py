@@ -13,6 +13,7 @@ PRIMARY_CATEGORIES = [
     "Clothing",
     "Dairy",
     "Deals",
+    "Deli",
     "Eggs",
     "Electronics",
     "Freezer",
@@ -93,9 +94,10 @@ class Command(BaseCommand):
         # 2. Collect all children that need potential re-mapping
         categories_to_remap = []
         for parent_cat in misc_parents:
+            company_mappings = all_mappings.get(parent_cat.company.name, {})
             for child_cat in parent_cat.subcategories.all():
-                child_mapping = all_mappings.get(parent_cat.company.name, {}).get(child_cat.name)
-                if child_mapping is None or child_mapping == "Miscellaneous":
+                # Process if the child is unmapped OR is explicitly mapped to "Miscellaneous"
+                if child_cat.name not in company_mappings or company_mappings.get(child_cat.name) == "Miscellaneous":
                     categories_to_remap.append(child_cat)
 
         # De-duplicate and sort
@@ -106,7 +108,8 @@ class Command(BaseCommand):
         unique_categories_to_remap = list(set(categories_to_remap))
         unique_categories_to_remap.sort(key=lambda x: (x.company.name, x.name))
         
-        self.stdout.write(f"Found {len(unique_categories_to_remap)} child categories to potentially re-map.")
+        total_to_remap = len(unique_categories_to_remap)
+        self.stdout.write(f"Found {total_to_remap} child categories to potentially re-map.")
 
         # 3. Interactive mapping loop
         for i, category in enumerate(unique_categories_to_remap):
@@ -114,7 +117,7 @@ class Command(BaseCommand):
             
             self.stdout.write(f"\n------------------------------------------------------------------")
             parent_names = ", ".join(p.name for p in category.parents.all())
-            self.stdout.write(f"Category to Re-Map: [{self.style.SUCCESS(category.name)}] from Company: [{self.style.WARNING(company_name)}]")
+            self.stdout.write(f"Category to Re-Map: [{self.style.SUCCESS(category.name)}] from Company: [{self.style.WARNING(company_name)}] (Remaining: {total_to_remap - i})")
             self.stdout.write(f"(Child of: {parent_names})")
 
             self.stdout.write("\nPrimary Categories:")
@@ -122,11 +125,18 @@ class Command(BaseCommand):
                 self.stdout.write(f"{idx+1}. {pc}")
             
             while True:
-                choice = input("Enter the number of the correct primary category (or 's' to skip, 'q' to quit): ").strip().lower()
+                choice = input("Enter the number of the correct primary category (or 's' to skip, 'i' to permanently ignore, 'q' to quit): ").strip().lower()
                 if choice == 'q':
                     self.stdout.write(self.style.SUCCESS("Exiting. Mappings saved."))
                     return
                 elif choice == 's':
+                    break
+                elif choice == 'i':
+                    if company_name not in all_mappings:
+                        all_mappings[company_name] = {}
+                    all_mappings[company_name][category.name] = None
+                    self._save_mappings(all_mappings)
+                    self.stdout.write(self.style.WARNING(f"Permanently ignoring '{category.name}' for company {company_name}."))
                     break
                 elif choice.isdigit():
                     idx = int(choice) - 1
@@ -144,7 +154,7 @@ class Command(BaseCommand):
                     else:
                         self.stdout.write(self.style.ERROR("Invalid number. Please try again."))
                 else:
-                    self.stdout.write(self.style.ERROR("Invalid input. Please enter a number, 's', or 'q'."))
+                    self.stdout.write(self.style.ERROR("Invalid input. Please enter a number, 's', 'i', or 'q'."))
 
         self.stdout.write(self.style.SUCCESS("\n--- Finished refining miscellaneous categories. ---"))
 
@@ -177,11 +187,18 @@ class Command(BaseCommand):
                 self.stdout.write(f"{idx+1}. {pc}")
             
             while True:
-                choice = input("Enter the number of the correct primary category (or 's' to skip, 'q' to quit): ").strip().lower()
+                choice = input("Enter the number of the correct primary category (or 's' to skip, 'i' to permanently ignore, 'q' to quit): ").strip().lower()
                 if choice == 'q':
                     self.stdout.write(self.style.SUCCESS("Exiting. Mappings saved."))
                     return
                 elif choice == 's':
+                    break
+                elif choice == 'i':
+                    if company_name not in all_mappings:
+                        all_mappings[company_name] = {}
+                    all_mappings[company_name][category.name] = None
+                    self._save_mappings(all_mappings)
+                    self.stdout.write(self.style.WARNING(f"Permanently ignoring '{category.name}' for company {company_name}."))
                     break
                 elif choice.isdigit():
                     idx = int(choice) - 1
@@ -199,7 +216,7 @@ class Command(BaseCommand):
                     else:
                         self.stdout.write(self.style.ERROR("Invalid number. Please try again."))
                 else:
-                    self.stdout.write(self.style.ERROR("Invalid input. Please enter a number, 's', or 'q'."))
+                    self.stdout.write(self.style.ERROR("Invalid input. Please enter a number, 's', 'i', or 'q'."))
 
         self.stdout.write(self.style.SUCCESS("\n--- Finished processing unattached categories. ---"))
 
@@ -254,6 +271,7 @@ class Command(BaseCommand):
                 category_name_lower = category.name.lower().strip()
 
                 for mapped_name, primary_cat in company_mappings.items():
+                    if primary_cat is None: continue
                     if category_name_lower == mapped_name.lower().strip():
                         company_mappings[category.name] = primary_cat
                         all_mappings[company_name] = company_mappings
@@ -295,11 +313,18 @@ class Command(BaseCommand):
                     self.stdout.write(f"{idx+1}. {pc}")
                 
                 while True:
-                    choice = input("Enter the number of the correct primary category (or 's' to skip, 'q' to quit): ").strip().lower()
+                    choice = input("Enter the number of the correct primary category (or 's' to skip, 'i' to permanently ignore, 'q' to quit): ").strip().lower()
                     if choice == 'q':
                         self.stdout.write(self.style.SUCCESS("Exiting analyzer. Mappings saved."))
                         return
                     elif choice == 's':
+                        break
+                    elif choice == 'i':
+                        if company_name not in all_mappings:
+                            all_mappings[company_name] = {}
+                        all_mappings[company_name][category.name] = None
+                        self._save_mappings(all_mappings)
+                        self.stdout.write(self.style.WARNING(f"Permanently ignoring '{category.name}' for company {company_name}."))
                         break
                     elif choice.isdigit():
                         idx = int(choice) - 1
@@ -313,6 +338,7 @@ class Command(BaseCommand):
                         else:
                             self.stdout.write(self.style.ERROR("Invalid number. Please try again."))
                     else:
-                        self.stdout.write(self.style.ERROR("Invalid input. Please enter a number, 's', or 'q'."))
+                        self.stdout.write(self.style.ERROR("Invalid input. Please enter a number, 's', 'i', or 'q'."))
         
         self.stdout.write(self.style.SUCCESS("\n--- Category Analyzer Finished. All companies processed. ---"))
+
