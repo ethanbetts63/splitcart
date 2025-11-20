@@ -4,9 +4,10 @@ import type { PriceComparison } from '../types';
 
 interface PriceComparisonChartProps {
   comparison: PriceComparison;
+  categoryName: string;
 }
 
-const PriceComparisonChart: React.FC<PriceComparisonChartProps> = ({ comparison }) => {
+const PriceComparisonChart: React.FC<PriceComparisonChartProps> = ({ comparison, categoryName }) => {
   const {
     company_a_name,
     company_b_name,
@@ -16,6 +17,33 @@ const PriceComparisonChart: React.FC<PriceComparisonChartProps> = ({ comparison 
     overlap_count
   } = comparison;
 
+  // Determine if the verb should be "Is" or "Are" for the title
+  const titleVerb = categoryName.endsWith('s') ? 'Are' : 'Is';
+  const title = `${titleVerb} ${categoryName} cheaper at ${company_a_name} or ${company_b_name}?`;
+
+  // Generate the summary sentence
+  const sentenceVerb = categoryName.endsWith('s') ? 'were' : 'was';
+  let summarySentence;
+  if (cheaper_at_a_percentage > cheaper_at_b_percentage) {
+    summarySentence = (
+      <>
+        <span className="font-bold">{cheaper_at_a_percentage}%</span> of {categoryName} tested {sentenceVerb} cheaper at <span className="font-bold">{company_a_name}</span> than {company_b_name}.
+      </>
+    );
+  } else if (cheaper_at_b_percentage > cheaper_at_a_percentage) {
+    summarySentence = (
+      <>
+        <span className="font-bold">{cheaper_at_b_percentage}%</span> of {categoryName} tested {sentenceVerb} cheaper at <span className="font-bold">{company_b_name}</span> than {company_a_name}.
+      </>
+    );
+  } else {
+    summarySentence = (
+      <>
+        Prices for <span className="font-bold">{categoryName}</span> were competitive between {company_a_name} and {company_b_name}.
+      </>
+    );
+  }
+
   const segments = [
     { percentage: cheaper_at_a_percentage, color: 'bg-blue-500', label: company_a_name },
     { percentage: same_price_percentage, color: 'bg-gray-400', label: 'Same Price' },
@@ -23,12 +51,13 @@ const PriceComparisonChart: React.FC<PriceComparisonChartProps> = ({ comparison 
   ];
 
   return (
-    <Card className="w-full max-w-2xl mx-auto my-4">
+    <Card className="w-full h-full">
       <CardHeader>
         <CardTitle className="text-lg">
-          {company_a_name} vs. {company_b_name}
+          {title}
         </CardTitle>
-        <p className="text-sm text-muted-foreground">{overlap_count} common products compared</p>
+        <p className="text-base text-gray-700 mt-1">{summarySentence}</p>
+        <p className="text-sm text-muted-foreground pt-2">{overlap_count} common products compared</p>
       </CardHeader>
       <CardContent>
         <div className="w-full">

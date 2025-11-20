@@ -118,11 +118,22 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
     return <div className="text-center p-4 text-red-500">Error: {error.message}</div>;
   }
 
-  const seeMoreLink = pillarPageLinkSlug
-    ? `/categories/${encodeURIComponent(pillarPageLinkSlug)}`
-    : (primaryCategorySlugs
-      ? `/search?primary_category_slugs=${encodeURIComponent(primaryCategorySlugs.join(','))}`
-      : (primaryCategorySlug ? `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlug)}` : null));
+  let seeMoreLink = null;
+  if (primaryCategorySlugs) {
+    if (primaryCategorySlugs.length > 1 && pillarPageLinkSlug) {
+      // Home page case: multiple slugs, link to the pillar page
+      seeMoreLink = `/categories/${encodeURIComponent(pillarPageLinkSlug)}`;
+    } else if (primaryCategorySlugs.length === 1) {
+      // Pillar page case: single slug, link to a search for that primary category
+      seeMoreLink = `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlugs[0])}`;
+    } else {
+      // Fallback for multiple slugs but no pillarPageLinkSlug, or other edge cases
+      seeMoreLink = `/search?primary_category_slugs=${encodeURIComponent(primaryCategorySlugs.join(','))}`;
+    }
+  } else if (primaryCategorySlug) {
+    // Fallback for the old singular prop
+    seeMoreLink = `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlug)}`;
+  }
 
   return (
     <section className="bg-muted p-4 rounded-lg">

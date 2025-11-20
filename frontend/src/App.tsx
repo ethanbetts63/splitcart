@@ -125,7 +125,7 @@ const Layout = () => {
         isAuthenticated={isAuthenticated}
         logout={logout}
       />
-      {(location.pathname === '/' || location.pathname === '/search') && <CategoryBar />}
+      {(location.pathname === '/' || location.pathname === '/search' || location.pathname.startsWith('/categories/')) && <CategoryBar />}
       <main className="flex-grow">
         <Suspense fallback={<LoadingSpinner fullScreen />}>
           <Outlet />

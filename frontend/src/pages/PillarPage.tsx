@@ -12,6 +12,7 @@ import confusedShopper768 from "../assets/confused_shopper-768w.webp"; // Added 
 import confusedShopper1024 from "../assets/confused_shopper-1024w.webp"; // Added import
 import confusedShopper1280 from "../assets/confused_shopper-1280w.webp"; // Added import
 
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import type { PrimaryCategory, FAQ, PillarPage as PillarPageType } from '../types';
 import { useStoreList } from '../context/StoreListContext';
 
@@ -77,11 +78,30 @@ const PillarPage: React.FC = () => {
                 isDefaultStores={isDefaultStores}
             />
             {category.price_comparison_data && category.price_comparison_data.comparisons.length > 0 && (
-              <div className="mt-4">
-                {category.price_comparison_data.comparisons.map((comparison, compIndex) => (
-                  <PriceComparisonChart key={compIndex} comparison={comparison} />
-                ))}
-              </div>
+              <>
+                <h2 className="text-3xl font-bold text-center my-8">
+                  Where to buy cheap {category.name} in Australia?
+                </h2>
+                <div className="mt-4 flex flex-wrap -mx-2">
+                  {category.price_comparison_data.comparisons.map((comparison, compIndex) => (
+                    <div key={compIndex} className="w-full lg:w-1/2 px-2 mb-4">
+                      <PriceComparisonChart comparison={comparison} categoryName={category.name} />
+                    </div>
+                  ))}
+                  <div className="w-full lg:w-1/2 px-2 mb-4">
+                    <Card className="h-full">
+                      <CardHeader>
+                        <CardTitle>How We Compare</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-gray-700">
+                          Our price comparisons are based on all products shared by two companies in our system for a category. This 'product overlap' is why you'll see a higher number of items compared between large supermarkets like Coles and Woolworths. When comparing with stores that have a more unique range, such as IGA or Aldi, the number of common products is smaller, and may occasionally not be large enough to provide a meaningful comparison. In such a case, we will omit the results entirely. Aldi, Coles and Woolworths generally have nationally consistant pricing but for IGA prices differ store to store, therefor we take the average price for IGA stores. 
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              </>
             )}
           </div>
         ))}
