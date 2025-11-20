@@ -1,12 +1,32 @@
+import os
+import pprint
 from django.db import transaction
 from companies.models import Category, Company, PrimaryCategory
 from data_management.data.category_mappings import CATEGORY_MAPPINGS
+
+EXCLUSIONS_FILE = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'category_exclusions.py')
 
 class PrimaryCategoriesGenerator:
     def __init__(self, command):
         self.command = command
         self.stdout = command.stdout
         self.style = command.style
+        self.exclusions = self._load_exclusions()
+
+    def _load_exclusions(self):
+        if not os.path.exists(EXCLUSIONS_FILE):
+            return {}
+        
+        with open(EXCLUSIONS_FILE, 'r') as f:
+            content = f.read()
+            exclusions = {}
+            try:
+                exec(content, {'__builtins__': {}}, exclusions)
+            except Exception as e:
+                # Use command's stderr and style
+                self.stdout.write(self.style.ERROR(f"Error loading exclusions file: {e}"))
+                return {}
+            return exclusions.get('CATEGORY_EXCLUSIONS', {})
 
     def run(self):
         self._delete_existing_primary_categories()
@@ -49,14 +69,13 @@ class PrimaryCategoriesGenerator:
                 for i, (store_category_name, primary_category_name) in enumerate(mappings.items()):
                     self.stdout.write(f"  Processing mapping {i+1}/{len(mappings)}: '{store_category_name}' -> '{primary_category_name}'")
                     
-                    # Skip ignored categories
                     if primary_category_name is None:
                         continue
 
                     try:
                         primary_category = PrimaryCategory.objects.get(name=primary_category_name)
-                        
-                        # Find all categories with this name for the given company
+                        exclusions_for_primary_cat = self.exclusions.get(primary_category.name, [])
+
                         store_categories = Category.objects.filter(name=store_category_name, company=company)
                         
                         if not store_categories.exists():
@@ -64,13 +83,17 @@ class PrimaryCategoriesGenerator:
                             continue
 
                         for store_category in store_categories:
-                            # Get all descendants
                             descendants = self._get_all_descendants(store_category, set())
+                            all_categories_to_process = [store_category] + list(descendants)
                             
-                            # Combine the category itself with its descendants
-                            all_categories_to_update = [store_category] + list(descendants)
-                            
-                            for category in all_categories_to_update:
+                            for category in all_categories_to_process:
+                                category_identifier = f"{category.name} ({category.company.name})"
+                                
+                                # Check against exclusion list
+                                if category_identifier in exclusions_for_primary_cat:
+                                    self.stdout.write(f"    Skipping excluded category: '{category_identifier}' for '{primary_category.name}'")
+                                    continue
+
                                 if category.primary_category != primary_category:
                                     category.primary_category = primary_category
                                     categories_to_update.append(category)

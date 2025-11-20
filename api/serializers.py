@@ -16,9 +16,6 @@ class FaqSerializer(serializers.ModelSerializer):
         model = FAQ
         fields = ('question', 'answer')
 
-
-
-
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
