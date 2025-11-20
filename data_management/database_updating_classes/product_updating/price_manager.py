@@ -66,14 +66,25 @@ class PriceManager:
             seen_hashes.add(current_price_hash)
 
             price_current_val = product_dict.get('price_current')
+            if price_current_val is None:
+                self.command.stdout.write(self.command.style.WARNING(f"    - Skipping price for product NNBS '{product_dict.get('normalized_name_brand_size')}' due to missing 'price_current' value."))
+                continue
+
             unit_price_val = product_dict.get('unit_price')
+
+            try:
+                price_decimal = Decimal(str(price_current_val))
+                unit_price_decimal = Decimal(str(unit_price_val)) if unit_price_val is not None else None
+            except Exception: # Catches decimal.InvalidOperation and other potential errors
+                self.command.stdout.write(self.command.style.WARNING(f"    - Skipping price for product NNBS '{product_dict.get('normalized_name_brand_size')}' due to invalid price value: '{price_current_val}'."))
+                continue
 
             price_data = {
                 'product_id': product_id, # Use product_id directly
                 'store': store,
                 'scraped_date': scraped_date,
-                'price': Decimal(str(price_current_val)),
-                'unit_price': Decimal(str(unit_price_val)) if unit_price_val is not None else None,
+                'price': price_decimal,
+                'unit_price': unit_price_decimal,
                 'unit_of_measure': product_dict.get('unit_of_measure'),
                 'per_unit_price_string': product_dict.get('per_unit_price_string'),
                 'is_on_special': product_dict.get('is_on_special', False),
