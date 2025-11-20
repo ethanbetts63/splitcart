@@ -1,15 +1,17 @@
-from django.core.management.base import BaseCommand
 from django.db.models import Count, Avg
 from itertools import combinations
 from collections import defaultdict
 from companies.models import PrimaryCategory, Company
 from products.models import Price
 
-class Command(BaseCommand):
-    help = 'Super-efficiently compares product prices using a slim memory cache and updates the database.'
+class PriceComparisonsGenerator:
+    def __init__(self, command):
+        self.command = command
+        self.stdout = command.stdout
+        self.style = command.style
 
-    def handle(self, *args, **options):
-        self.stdout.write(self.style.SUCCESS("Starting price comparison update (super-slim cache)..."))
+    def run(self):
+        self.stdout.write(self.style.SUCCESS("Starting price comparison update..."))
 
         company_names = ["Coles", "Woolworths", "IGA", "Aldi"]
         companies = {c.id: c for c in Company.objects.filter(name__in=company_names)}
@@ -18,7 +20,6 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR("Need at least two major companies to compare."))
             return
 
-        # 1. Find all products sold by at least 2 of the target companies
         self.stdout.write(self.style.HTTP_INFO("Step 1/4: Identifying products sold by multiple companies..."))
         relevant_product_ids = Price.objects.filter(
             store__company_id__in=companies.keys()
@@ -27,7 +28,6 @@ class Command(BaseCommand):
         ).filter(company_count__gte=2).values_list('product_id', flat=True)
         self.stdout.write(f"Found {len(relevant_product_ids)} relevant products.")
 
-        # 2. Build the "super slim" price cache for only those products
         self.stdout.write(self.style.HTTP_INFO("Step 2/4: Building slim price cache with average prices..."))
         price_data_qs = Price.objects.filter(
             product_id__in=list(relevant_product_ids),
@@ -38,7 +38,6 @@ class Command(BaseCommand):
             'store__company_id'
         ).annotate(avg_price=Avg('price'))
 
-        # 3. Restructure the cached data into a nested dictionary for fast lookups
         self.stdout.write(self.style.HTTP_INFO("Step 3/4: Structuring cached data for in-memory processing..."))
         all_prices_by_category = defaultdict(lambda: defaultdict(dict))
         for price_data in price_data_qs:
@@ -49,7 +48,6 @@ class Command(BaseCommand):
             if cat_id:
                 all_prices_by_category[cat_id][prod_id][comp_id] = price
 
-        # 4. Process all categories entirely in-memory
         self.stdout.write(self.style.HTTP_INFO("Step 4/4: Performing in-memory comparisons for all categories..."))
         all_categories = list(PrimaryCategory.objects.all().order_by('name'))
         categories_to_update = []

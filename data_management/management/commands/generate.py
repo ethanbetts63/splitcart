@@ -10,13 +10,14 @@ class Command(BaseCommand):
         parser.add_argument('--primary-cats', action='store_true', help='Generate primary categories.')
         parser.add_argument('--bargains', action='store_true', help='Generate bargains.')
         parser.add_argument('--store-groups', action='store_true', help='Generate store groups.')
+        parser.add_argument('--price-comps', action='store_true', help='Generate price comparison data.')
         parser.add_argument('--archive', action='store_true', help='Archive the database.')
         parser.add_argument('--categorize', action='store_true', help='Run the interactive category analyzer.')
         parser.add_argument('--company', type=str, help='Filter map generation by company name or specify company for categorization.')
         parser.add_argument('--dev', action='store_true', help='Use development server URL.')
 
     def handle(self, *args, **options):
-        run_all = not any(options.values()) # Check if any flag is set
+        run_all = not any(options[key] for key in ['subs', 'cat_links', 'map', 'primary_cats', 'bargains', 'store_groups', 'price_comps', 'archive', 'categorize'])
         dev = options['dev']
 
         if options['subs'] or run_all:
@@ -55,15 +56,14 @@ class Command(BaseCommand):
             generator = StoreGroupsGenerator(self, dev=dev)
             generator.run()
 
+        if options['price_comps'] or run_all:
+            from data_management.utils.generation_utils.price_comparisons_generator import PriceComparisonsGenerator
+            self.stdout.write(self.style.SUCCESS("Generating price comparisons..."))
+            generator = PriceComparisonsGenerator(self)
+            generator.run()
+
         if options['archive']:
             from data_management.utils.generation_utils.archive_generator import ArchiveGenerator
             self.stdout.write(self.style.SUCCESS("Archiving database..."))
             generator = ArchiveGenerator(self)
             generator.run()
-
-        if options['categorize']:
-            from data_management.management.commands.cat_analyzer import Command as CategorizationAnalyzerCommand
-            self.stdout.write(self.style.SUCCESS("Running interactive category analyzer..."))
-            # Create an instance of the CategorizationAnalyzerCommand and call its handle method
-            analyzer_command = CategorizationAnalyzerCommand()
-            analyzer_command.handle(company=options['company'], dev=dev)

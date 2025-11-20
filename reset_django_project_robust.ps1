@@ -102,3 +102,8 @@ python manage.py debug_savings_run
 python manage.py test_unit_price_sorter
 
 python manage.py generate --map --dev # Local
+
+
+python manage.py generate --primary-cats
+python manage.py input_pillars
+python manage.py generate --category_stats
