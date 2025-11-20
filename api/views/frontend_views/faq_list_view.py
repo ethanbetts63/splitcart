@@ -17,7 +17,7 @@ class FaqListView(ListAPIView):
         queryset = self.get_queryset()
 
         if page:
-            queryset = queryset.filter(pages__contains=[page])
+            queryset = queryset.filter(pages__contains=page)
         else:
             # If no page is specified, return an empty queryset as per original logic
             queryset = queryset.none()

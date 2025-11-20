@@ -4,12 +4,14 @@ import { useApiQuery } from '../hooks/useApiQuery';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { ProductCarousel } from '../components/ProductCarousel';
 import PriceComparisonChart from '../components/PriceComparisonChart';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../components/ui/accordion";
+import { FaqImageSection } from "../components/FaqImageSection"; // Added import
+import confusedShopper from "../assets/confused_shopper.webp"; // Added import
+import confusedShopper320 from "../assets/confused_shopper-320w.webp"; // Added import
+import confusedShopper640 from "../assets/confused_shopper-640w.webp"; // Added import
+import confusedShopper768 from "../assets/confused_shopper-768w.webp"; // Added import
+import confusedShopper1024 from "../assets/confused_shopper-1024w.webp"; // Added import
+import confusedShopper1280 from "../assets/confused_shopper-1280w.webp"; // Added import
+
 import type { PrimaryCategory, FAQ, PillarPage as PillarPageType } from '../types';
 import { useStoreList } from '../context/StoreListContext';
 
@@ -85,19 +87,20 @@ const PillarPage: React.FC = () => {
         ))}
 
         {/* FAQ Section */}
-        {pillarPage.faqs && pillarPage.faqs.length > 0 && (
-          <div>
-            <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
-            <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
-              {pillarPage.faqs.map((faq: FAQ, index: number) => (
-                <AccordionItem value={`item-${index}`} key={index}>
-                  <AccordionTrigger>{faq.question}</AccordionTrigger>
-                  <AccordionContent>{faq.answer}</AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex flex-col gap-8">
+            <section>
+              <FaqImageSection
+                title={`Frequently Asked Questions about ${pillarPage.hero_title}`}
+                page={slug || 'general'} // Use slug for page prop
+                imageSrc={confusedShopper}
+                srcSet={`${confusedShopper320} 320w, ${confusedShopper640} 640w, ${confusedShopper768} 768w, ${confusedShopper1024} 1024w, ${confusedShopper1280} 1280w`}
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                imageAlt="Confused Shopper"
+              />
+            </section>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

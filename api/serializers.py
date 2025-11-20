@@ -42,11 +42,10 @@ class PrimaryCategorySerializer(serializers.ModelSerializer):
 
 class PillarPageSerializer(serializers.ModelSerializer):
     primary_categories = PrimaryCategorySerializer(many=True, read_only=True)
-    faqs = FaqSerializer(many=True, read_only=True)
 
     class Meta:
         model = PillarPage
-        fields = ('name', 'slug', 'hero_title', 'introduction_paragraph', 'image_path', 'primary_categories', 'faqs')
+        fields = ('name', 'slug', 'hero_title', 'introduction_paragraph', 'image_path', 'primary_categories')
 
 class StoreSerializer(serializers.ModelSerializer):
     company_name = serializers.CharField(source='company.name')
