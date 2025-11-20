@@ -55,10 +55,10 @@ class PriceManager:
             if not product_dict:
                 continue
 
-            # Get the product_id from the shared product cache
-            product_id = self.caches['products_by_norm_string'].get(product_dict.get('normalized_name_brand_size'))
-            if not product_id:
-                self.command.stderr.write(self.command.style.ERROR(f"    - Product (NNBS: {product_dict.get('normalized_name_brand_size')}) not found in cache. Skipping price."))
+            # Get the product object from the shared product cache
+            product_obj = self.caches['products_by_norm_string'].get(product_dict.get('normalized_name_brand_size'))
+            if not product_obj:
+                self.command.stderr.write(self.command.style.ERROR(f"    - Product '{product_dict}' not found in cache. Skipping price."))
                 continue
 
             # Get the price_hash from the file data
@@ -66,25 +66,14 @@ class PriceManager:
             seen_hashes.add(current_price_hash)
 
             price_current_val = product_dict.get('price_current')
-            if price_current_val is None:
-                self.command.stdout.write(self.command.style.WARNING(f"    - Skipping price for product NNBS '{product_dict.get('normalized_name_brand_size')}' due to missing 'price_current' value."))
-                continue
-
             unit_price_val = product_dict.get('unit_price')
 
-            try:
-                price_decimal = Decimal(str(price_current_val))
-                unit_price_decimal = Decimal(str(unit_price_val)) if unit_price_val is not None else None
-            except Exception: # Catches decimal.InvalidOperation and other potential errors
-                self.command.stdout.write(self.command.style.WARNING(f"    - Skipping price for product NNBS '{product_dict.get('normalized_name_brand_size')}' due to invalid price value: '{price_current_val}'."))
-                continue
-
             price_data = {
-                'product_id': product_id, # Use product_id directly
+                'product': product_obj,
                 'store': store,
                 'scraped_date': scraped_date,
-                'price': price_decimal,
-                'unit_price': unit_price_decimal,
+                'price': Decimal(str(price_current_val)),
+                'unit_price': Decimal(str(unit_price_val)) if unit_price_val is not None else None,
                 'unit_of_measure': product_dict.get('unit_of_measure'),
                 'per_unit_price_string': product_dict.get('per_unit_price_string'),
                 'is_on_special': product_dict.get('is_on_special', False),
@@ -99,9 +88,9 @@ class PriceManager:
                 pass
             else:
                 # Price data has changed or is new
-                if product_id in product_id_to_pk_cache: # Use product_id here
+                if product_obj.pk in product_id_to_pk_cache:
                     # Existing price for this product, but data changed -> UPDATE
-                    price_pk = product_id_to_pk_cache[product_id] # Use product_id here
+                    price_pk = product_id_to_pk_cache[product_obj.pk]
                     price_obj = Price(pk=price_pk, **price_data)
                     prices_to_update.append(price_obj)
                     pks_of_prices_to_update.append(price_pk)
