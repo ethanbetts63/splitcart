@@ -89,19 +89,19 @@ class CategoryManager:
             product_dict = data.get('product', {})
             path = product_dict.get('category_path')
             
-            # Get product from shared cache
-            product_obj = self.caches['products_by_norm_string'].get(product_dict.get('normalized_name_brand_size'))
+            # Get product ID from the lean shared cache
+            product_id = self.caches['products_by_norm_string'].get(product_dict.get('normalized_name_brand_size'))
 
-            if product_obj and path and isinstance(path, list):
+            if product_id and path and isinstance(path, list):
                 leaf_category_name = path[-1]
                 category_obj = self.caches['categories'].get((leaf_category_name, company_obj.id))
                 
                 if category_obj:
-                    if (product_obj.id, category_obj.id) not in seen_links:
+                    if (product_id, category_obj.id) not in seen_links:
                         links_to_create.append(
-                            ProductCategory(product_id=product_obj.id, category_id=category_obj.id)
+                            ProductCategory(product_id=product_id, category_id=category_obj.id)
                         )
-                        seen_links.add((product_obj.id, category_obj.id))
+                        seen_links.add((product_id, category_obj.id))
         
         if links_to_create:
             self.command.stdout.write(f"      - Creating {len(links_to_create)} new product-category links.")

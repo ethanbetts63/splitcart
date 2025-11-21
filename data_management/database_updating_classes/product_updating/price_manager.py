@@ -55,10 +55,11 @@ class PriceManager:
             if not product_dict:
                 continue
 
-            # Get the product object from the shared product cache
-            product_obj = self.caches['products_by_norm_string'].get(product_dict.get('normalized_name_brand_size'))
-            if not product_obj:
-                self.command.stderr.write(self.command.style.ERROR(f"    - Product '{product_dict}' not found in cache. Skipping price."))
+            # Get the product ID from the shared (lean) product cache
+            product_id = self.caches['products_by_norm_string'].get(product_dict.get('normalized_name_brand_size'))
+            if not product_id:
+                # This could happen for products that were meant to be created but failed, so we log and skip.
+                self.command.stderr.write(self.command.style.WARNING(f"    - Product with NNBS '{product_dict.get('normalized_name_brand_size')}' not found in cache. Skipping price."))
                 continue
 
             # Get the price_hash from the file data
@@ -69,7 +70,7 @@ class PriceManager:
             unit_price_val = product_dict.get('unit_price')
 
             price_data = {
-                'product': product_obj,
+                'product_id': product_id,
                 'store': store,
                 'scraped_date': scraped_date,
                 'price': Decimal(str(price_current_val)),
@@ -88,9 +89,9 @@ class PriceManager:
                 pass
             else:
                 # Price data has changed or is new
-                if product_obj.pk in product_id_to_pk_cache:
+                if product_id in product_id_to_pk_cache:
                     # Existing price for this product, but data changed -> UPDATE
-                    price_pk = product_id_to_pk_cache[product_obj.pk]
+                    price_pk = product_id_to_pk_cache[product_id]
                     price_obj = Price(pk=price_pk, **price_data)
                     prices_to_update.append(price_obj)
                     pks_of_prices_to_update.append(price_pk)

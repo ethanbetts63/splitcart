@@ -38,32 +38,56 @@ class UpdateOrchestrator:
         self.category_manager = CategoryManager(self.command, self.caches, self.update_cache)
 
     def _build_global_caches(self):
-        """Builds the initial in-memory caches for all relevant models."""
-        self.command.stdout.write("--- Building Global Caches ---")
+        """
+        Builds the initial, memory-efficient, two-tier in-memory caches.
+        - Tier 1 (Lean Global Cache): Maps barcodes, norm_strings, and SKUs to product IDs (int).
+        - Tier 2 (ID-to-Data Cache): Maps a product ID to a slim dictionary of essential data needed for resolution.
+        """
+        self.command.stdout.write("--- Building Global Caches (Lean) ---")
         
-        # Brand Cache
+        # Brand Cache (remains as full objects, as it's not a memory bottleneck)
         all_brands = ProductBrand.objects.all()
         self.caches['normalized_brand_names'] = {b.normalized_name: b for b in all_brands}
         self.command.stdout.write(f"  - Cached {len(self.caches['normalized_brand_names'])} brands by normalized brand name.")
 
-        # Product Caches
-        all_products = Product.objects.select_related('brand').all()
-        self.caches['products_by_barcode'] = {p.barcode: p for p in all_products if p.barcode}
-        self.caches['products_by_norm_string'] = {p.normalized_name_brand_size: p for p in all_products if p.normalized_name_brand_size}
+        # Product Caches (Lean Implementation)
+        self.caches['products_by_id'] = {}
+        self.caches['products_by_barcode'] = {}
+        self.caches['products_by_norm_string'] = {}
+
+        product_values = Product.objects.select_related('brand').values(
+            'id', 'barcode', 'normalized_name_brand_size', 'brand__normalized_name'
+        )
+
+        for p_dict in product_values:
+            product_id = p_dict['id']
+            # Tier 2 cache: ID -> slim data dictionary
+            self.caches['products_by_id'][product_id] = {
+                'id': product_id,
+                'normalized_name_brand_size': p_dict['normalized_name_brand_size'],
+                'brand_normalized_name': p_dict['brand__normalized_name']
+            }
+            # Tier 1 caches: key -> ID
+            if p_dict['barcode']:
+                self.caches['products_by_barcode'][p_dict['barcode']] = product_id
+            if p_dict['normalized_name_brand_size']:
+                self.caches['products_by_norm_string'][p_dict['normalized_name_brand_size']] = product_id
+
+        self.command.stdout.write(f"  - Cached {len(self.caches['products_by_id'])} products by ID (lean).")
         self.command.stdout.write(f"  - Cached {len(self.caches['products_by_barcode'])} products by barcode.")
         self.command.stdout.write(f"  - Cached {len(self.caches['products_by_norm_string'])} products by normalized name-brand-size string.")
         
-        # SKU Cache (Company-Aware)
+        # SKU Cache (Company-Aware, storing product_id)
         self.caches['products_by_sku'] = {}
-        all_skus = SKU.objects.select_related('product', 'company').all()
-        for sku_obj in all_skus:
-            company_name = sku_obj.company.name
+        all_skus = SKU.objects.select_related('company').values('company__name', 'sku', 'product_id')
+        for sku_dict in all_skus:
+            company_name = sku_dict['company__name']
             if company_name not in self.caches['products_by_sku']:
                 self.caches['products_by_sku'][company_name] = {}
-            self.caches['products_by_sku'][company_name][sku_obj.sku] = sku_obj.product
-        self.command.stdout.write(f"  - Cached products for {len(self.caches['products_by_sku'])} companies by SKU.")
+            self.caches['products_by_sku'][company_name][sku_dict['sku']] = sku_dict['product_id']
+        self.command.stdout.write(f"  - Cached product IDs for {len(self.caches['products_by_sku'])} companies by SKU.")
 
-        # Category Cache (Company-Aware)
+        # Category Cache (Company-Aware, no change needed)
         all_categories = Category.objects.select_related('company').all()
         self.caches['categories'] = {(c.name, c.company_id): c for c in all_categories}
         self.command.stdout.write(f"  - Cached {len(self.caches['categories'])} categories.")
@@ -140,30 +164,30 @@ class UpdateOrchestrator:
     def _deduplicate_product_data_for_pricing(self, raw_product_data: list) -> list:
         self.command.stdout.write("  - De-duplicating product list for PriceManager...")
         final_list_for_pricing = []
-        seen_product_pks = set()
+        seen_product_ids = set()
 
         for data in raw_product_data:
             product_dict = data.get('product', {})
             if not product_dict:
                 continue
 
-            # Resolve the canonical product using the cache, which now contains aliases
+            # Resolve the canonical product ID using the cache, which now contains aliases
             nnbs = product_dict.get('normalized_name_brand_size')
-            canonical_product = self.caches['products_by_norm_string'].get(nnbs)
+            canonical_product_id = self.caches['products_by_norm_string'].get(nnbs)
 
-            if not canonical_product:
+            if not canonical_product_id:
                 # This can happen if the product was new and couldn't be resolved by barcode/sku.
                 # The nnbs is its own canonical key. We use the nnbs itself to track uniqueness
                 # for products that are new in this run and haven't been assigned a PK yet.
-                if nnbs not in seen_product_pks:
+                if nnbs not in seen_product_ids:
                      final_list_for_pricing.append(data)
-                     seen_product_pks.add(nnbs)
+                     seen_product_ids.add(nnbs)
                 continue
 
-            # If we found a canonical product, use its PK for uniqueness check
-            if canonical_product.pk not in seen_product_pks:
+            # If we found a canonical product, use its ID for uniqueness check
+            if canonical_product_id not in seen_product_ids:
                 final_list_for_pricing.append(data)
-                seen_product_pks.add(canonical_product.pk)
+                seen_product_ids.add(canonical_product_id)
         
         self.command.stdout.write(f"  - Original list size: {len(raw_product_data)}, De-duplicated list size: {len(final_list_for_pricing)}")
         return final_list_for_pricing
