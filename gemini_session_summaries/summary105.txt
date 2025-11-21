@@ -1,0 +1,18 @@
+This session focused on resolving a critical Out-of-Memory (OOM) error in the `python manage.py update --products` script.
+
+The root cause was identified as the script loading the entire `Product` table into memory as full Django objects for caching purposes. This approach was not scalable.
+
+The following multi-stage solution was implemented:
+
+1.  **Lean Cache Implementation:** The core caching mechanism was refactored. Instead of caching heavy model objects, the system now uses a two-tier approach:
+    *   A "lean" global cache that maps identifiers (barcode, normalized string) to lightweight `product_id` integers.
+    *   A secondary cache that maps `product_id`s to a small dictionary of essential data needed for comparisons.
+
+2.  **Manager Refactoring:** All data-handling managers were adapted to this new architecture.
+    *   `ProductManager` was updated to resolve products using IDs and to fetch full objects "just-in-time" in a single batch query only when needed for updates.
+    *   `PriceManager` and `CategoryManager` were updated to work directly with `product_id`s when creating database relationships.
+    *   A bug was found and fixed in `BrandManager`, which had been missed in the initial refactoring and was still expecting full objects.
+
+3.  **Just-in-Time SKU Caching:** Based on a user suggestion, the SKU cache was further optimized. Instead of loading SKUs for all companies at the start, the orchestrator now loads them on a per-company, as-needed basis, further reducing the script's peak memory usage.
+
+After these changes, the `update --products` command runs successfully without memory-related crashes, making the entire data update process more robust and scalable.

@@ -89,9 +89,9 @@ class PriceNormalizer:
         all_unit_variations = list(unit_map.keys())
 
         # 2. Create a comprehensive regex pattern
-        # Looks for a number (optional) followed by a unit.
-        # e.g., "100 g", "kg", "1EA"
-        pattern = r'(\d+\.?\d*)\s*(' + '|'.join(all_unit_variations) + r')'
+        # Looks for a number (optional) followed by a separator (whitespace or /) and a unit.
+        # e.g., "100 g", "kg", "1EA", "1.75/l"
+        pattern = r'(\d+\.?\d*)\s*[/]?\s*(' + '|'.join(all_unit_variations) + r')'
 
         # 3. Prioritize sources: raw measure field first, then the full string
         for text_to_search in [self.unit_measure_raw, self.unit_string_raw]:

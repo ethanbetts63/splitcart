@@ -76,28 +76,31 @@ class ProductNormalizer:
         unit_map = {variation: standard for standard, variations in units.items() for variation in variations}
         all_unit_variations = list(unit_map.keys())
 
-        range_pattern = r'(\d+\.?\d*)\s*-\s*(\d+\.?\d*)\s*(' + '|'.join(all_unit_variations) + r')\b'
+        # Updated regex part to handle optional slash
+        separator_pattern = r'\s*[/]?\s*'
+
+        range_pattern = r'(\d+\.?\d*)' + separator_pattern + r'-\s*(\d+\.?\d*)' + separator_pattern + r'(' + '|'.join(all_unit_variations) + r')\b'
         for match in re.finditer(range_pattern, processed_text):
             unit = unit_map[match.group(3)]
             sizes.add(f"{match.group(1)}{unit}")
             sizes.add(f"{match.group(2)}{unit}")
         processed_text = re.sub(range_pattern, '', processed_text)
 
-        multipack_pattern_1 = r'(\d+)\s*[xX]\s*(\d+\.?\d*)\s*(' + '|'.join(all_unit_variations) + r')\b'
+        multipack_pattern_1 = r'(\d+)\s*[xX]' + separator_pattern + r'(\d+\.?\d*)' + separator_pattern + r'(' + '|'.join(all_unit_variations) + r')\b'
         for match in re.finditer(multipack_pattern_1, processed_text):
             unit = unit_map[match.group(3)]
             sizes.add(f"{match.group(1)}pk")
             sizes.add(f"{match.group(2)}{unit}")
         processed_text = re.sub(multipack_pattern_1, '', processed_text)
 
-        multipack_pattern_2 = r'(\d+\.?\d*)\s*(' + '|'.join(all_unit_variations) + r')\s*[xX]\s*(\d+)'
+        multipack_pattern_2 = r'(\d+\.?\d*)' + separator_pattern + r'(' + '|'.join(all_unit_variations) + r')\s*[xX]\s*(\d+)'
         for match in re.finditer(multipack_pattern_2, processed_text):
             unit = unit_map[match.group(2)]
             sizes.add(f"{match.group(1)}{unit}")
             sizes.add(f"{match.group(3)}pk")
         processed_text = re.sub(multipack_pattern_2, '', processed_text)
 
-        number_unit_pattern = r'(\d+\.?\d*)\s*(' + '|'.join(all_unit_variations) + r')\b'
+        number_unit_pattern = r'(\d+\.?\d*)' + separator_pattern + r'(' + '|'.join(all_unit_variations) + r')\b'
         for match in re.finditer(number_unit_pattern, processed_text):
             unit = unit_map[match.group(2)]
             sizes.add(f"{match.group(1)}{unit}")
