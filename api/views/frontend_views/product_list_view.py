@@ -1,4 +1,4 @@
-from django.db.models import Q, Case, When, Value, IntegerField, Exists, OuterRef, Min
+from django.db.models import F, Q, Case, When, Value, IntegerField, Exists, OuterRef, Min
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from rest_framework import generics
@@ -13,7 +13,6 @@ class StandardResultsSetPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size = 50
 
-@method_decorator(cache_page(3600), name='dispatch')
 class ProductListView(generics.ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = ProductSerializer
@@ -67,7 +66,7 @@ class ProductListView(generics.ListAPIView):
         elif ordering == 'unit_price_asc':
             final_queryset = queryset.annotate(
                 min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=store_ids))
-            ).order_by('min_unit_price')
+            ).order_by(F('min_unit_price').asc(nulls_last=True))
         elif ordering == 'carousel_default':
             bargain_exists = Exists(Bargain.objects.filter(product=OuterRef('pk'), store__id__in=store_ids))
             base_queryset = queryset.annotate(is_bargain=bargain_exists)
