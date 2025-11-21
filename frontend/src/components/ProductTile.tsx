@@ -58,37 +58,40 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
     };
 
     const companyColors: { [key: string]: string } = {
-      "Aldi": "bg-blue-300 text-gray-800", // Light blue, dark text for contrast
-      "Woolies": "bg-green-500 text-white", // Green, white text
-      "Coles": "bg-red-500 text-white", // Red, white text
-      "IGA": "bg-white text-red-600 border border-red-600", // White, red text, red border
+      "Aldi": "bg-blue-300 text-gray-800",
+      "Woolies": "bg-green-500 text-white",
+      "Coles": "bg-red-500 text-white",
+      "IGA": "bg-white text-red-600 border border-red-600",
     };
 
-    // Parse prices to numbers and filter out invalid ones
     const numericPrices = product.prices.map(p => ({
       company: p.company,
-      price: parseFloat(p.price_display.replace('$', '')), // Assuming price_display is like "$X.YY"
+      price: parseFloat(p.price_display.replace('$', '')),
     })).filter(p => !isNaN(p.price));
 
     if (numericPrices.length <= 1) {
-      return null; // Not enough valid prices to compare
+      return null;
     }
 
     const minPrice = Math.min(...numericPrices.map(p => p.price));
     const maxPrice = Math.max(...numericPrices.map(p => p.price));
 
     if (minPrice === maxPrice) {
-      return null; // No difference
+      return null;
     }
 
-    const percentage = Math.round(((maxPrice - minPrice) / maxPrice) * 100);
+    let percentage = Math.round(((maxPrice - minPrice) / maxPrice) * 100);
+    if (percentage === 0 && minPrice < maxPrice) {
+      percentage = 1; // Default to 1% if there's any difference
+    }
+
     const cheapestCompanies = numericPrices
       .filter(p => p.price === minPrice)
-      .map(p => companyShortNames[p.company] || p.company); // Use mapped name or fallback
+      .map(p => companyShortNames[p.company] || p.company);
 
     const bargainBadgeClasses = cheapestCompanies.length === 1
-      ? companyColors[cheapestCompanies[0]] || "bg-gray-700 text-white" // Default if company not found
-      : "bg-gray-700 text-white"; // Default for multiple companies
+      ? companyColors[cheapestCompanies[0]] || "bg-gray-700 text-white"
+      : "bg-gray-700 text-white";
 
     return { percentage, cheapestCompanies, bargainBadgeClasses };
   }, [product.prices]);
@@ -96,7 +99,6 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
   const cheapestPriceInfo = product.prices && product.prices.length > 0 ? product.prices[0] : null;
   const perUnitPriceString = cheapestPriceInfo?.per_unit_price_string;
 
-  // Defensively handle the size property in case it's a stringified array
   let displaySize = product.size;
   if (product.size && typeof product.size === 'string' && product.size.startsWith('[')) {
     try {
@@ -109,32 +111,22 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
     }
   }
 
-  let currentTopPosition = 2; // Initial top position for the first badge
-
-  const getNextTopPosition = (hasBadge: boolean) => {
-    if (hasBadge) {
-      const position = currentTopPosition;
-      currentTopPosition += 6; // Increment by 6 (tailwind 'top-8' is 6 units more than 'top-2')
-      return `top-${position}`;
-    }
-    return ''; // No badge, no position
-  };
-
-
   return (
     <Card className="flex flex-col h-full overflow-hidden gap-1 pt-0 pb-2">
       <div className="aspect-square w-full overflow-hidden relative">
-        {perUnitPriceString && (
-          <Badge className={`absolute ${getNextTopPosition(true)} right-2 z-20`}>{perUnitPriceString}</Badge>
-        )}
-        {bargainInfo && (
-          <Badge className={`absolute ${getNextTopPosition(true)} right-2 z-20 ${bargainInfo.bargainBadgeClasses}`}>
-            -{bargainInfo.percentage}% at {bargainInfo.cheapestCompanies.join(' or ')}
-          </Badge>
-        )}
-        {displaySize && (
-          <Badge className={`absolute ${getNextTopPosition(true)} right-2 z-20`}>{displaySize}</Badge>
-        )}
+        <div className="absolute top-2 right-2 z-20 flex flex-col items-end gap-1">
+          {bargainInfo && (
+            <Badge className={bargainInfo.bargainBadgeClasses}>
+              -{bargainInfo.percentage}% at {bargainInfo.cheapestCompanies.join(' or ')}
+            </Badge>
+          )}
+          {perUnitPriceString && (
+            <Badge>{perUnitPriceString}</Badge>
+          )}
+          {displaySize && (
+            <Badge>{displaySize}</Badge>
+          )}
+        </div>
         <img
           src={imageUrl}
           srcSet={srcSet}
