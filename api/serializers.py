@@ -106,10 +106,11 @@ class ProductSerializer(serializers.ModelSerializer):
     brand_name = serializers.SerializerMethodField()
     image_url = serializers.SerializerMethodField()
     primary_category = PrimaryCategorySerializer(read_only=True)
+    min_unit_price = serializers.DecimalField(max_digits=10, decimal_places=4, read_only=True, required=False)
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'brand_name', 'size', 'image_url', 'prices', 'primary_category')
+        fields = ('id', 'name', 'brand_name', 'size', 'image_url', 'prices', 'primary_category', 'min_unit_price')
 
     def _get_image_url_for_company(self, product_obj, company_name, company_obj=None):
         """

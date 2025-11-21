@@ -126,6 +126,9 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
           {displaySize && (
             <Badge>{displaySize}</Badge>
           )}
+          {product.min_unit_price && (
+            <Badge variant="destructive">DEBUG U-PRICE: {product.min_unit_price}</Badge>
+          )}
         </div>
         <img
           src={imageUrl}

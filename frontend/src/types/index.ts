@@ -29,6 +29,7 @@ export type Product = {
     name: string;
     slug: string;
   };
+  min_unit_price?: number | null;
 };
 
 export type CartSubstitution = {

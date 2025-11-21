@@ -27,7 +27,7 @@ class Price(models.Model):
     
     unit_price = models.DecimalField(
         max_digits=10,
-        decimal_places=2,
+        decimal_places=4,
         null=True,
         blank=True
     )

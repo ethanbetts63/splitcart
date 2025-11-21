@@ -55,6 +55,11 @@ class ProductListView(generics.ListAPIView):
                 filter_q |= Q(size__icontains=term)
             queryset = queryset.filter(filter_q)
 
+        # Annotate with min_unit_price for sorting and serialization.
+        queryset = queryset.annotate(
+            min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=store_ids))
+        )
+
         if ordering == 'price_asc':
             final_queryset = queryset.annotate(
                 min_price=Min('prices__price', filter=Q(prices__store__id__in=store_ids))
@@ -64,9 +69,7 @@ class ProductListView(generics.ListAPIView):
                 min_price=Min('prices__price', filter=Q(prices__store__id__in=store_ids))
             ).order_by('-min_price')
         elif ordering == 'unit_price_asc':
-            final_queryset = queryset.annotate(
-                min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=store_ids))
-            ).order_by(F('min_unit_price').asc(nulls_last=True))
+            final_queryset = queryset.order_by(F('min_unit_price').asc(nulls_last=True))
         elif ordering == 'carousel_default':
             bargain_exists = Exists(Bargain.objects.filter(product=OuterRef('pk'), store__id__in=store_ids))
             base_queryset = queryset.annotate(is_bargain=bargain_exists)
@@ -79,7 +82,6 @@ class ProductListView(generics.ListAPIView):
                 num_needed = 20 - num_bargains
                 remaining_ids = list(
                     base_queryset.exclude(id__in=bargain_ids)
-                                 .annotate(min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=store_ids)))
                                  .order_by('min_unit_price')
                                  .values_list('id', flat=True)[:num_needed]
                 )
