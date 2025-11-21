@@ -17,6 +17,14 @@ const PriceComparisonChart: React.FC<PriceComparisonChartProps> = ({ comparison,
     overlap_count
   } = comparison;
 
+  // Define the mapping of company names to Tailwind CSS color classes
+  const companyColorMap: { [key: string]: string } = {
+    'Woolworths': 'bg-green-500',
+    'Coles': 'bg-red-500',
+    'Aldi': 'bg-black',
+    'IGA': 'bg-black',
+  };
+
   // Determine if the verb should be "Is" or "Are" for the title
   const titleVerb = categoryName.endsWith('s') ? 'Are' : 'Is';
   const title = `${titleVerb} ${categoryName} cheaper at ${company_a_name} or ${company_b_name}?`;
@@ -44,10 +52,23 @@ const PriceComparisonChart: React.FC<PriceComparisonChartProps> = ({ comparison,
     );
   }
 
+  // Dynamically build the segments array with correct colors
   const segments = [
-    { percentage: cheaper_at_a_percentage, color: 'bg-blue-500', label: company_a_name },
-    { percentage: same_price_percentage, color: 'bg-gray-400', label: 'Same Price' },
-    { percentage: cheaper_at_b_percentage, color: 'bg-green-500', label: company_b_name },
+    {
+      percentage: cheaper_at_a_percentage,
+      color: companyColorMap[company_a_name] || 'bg-gray-700', // Fallback color
+      label: company_a_name
+    },
+    {
+      percentage: same_price_percentage,
+      color: 'bg-gray-400',
+      label: 'Same Price'
+    },
+    {
+      percentage: cheaper_at_b_percentage,
+      color: companyColorMap[company_b_name] || 'bg-gray-800', // Fallback color
+      label: company_b_name
+    }
   ];
 
   return (

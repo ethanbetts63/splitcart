@@ -56,6 +56,8 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
   }
   // Add a limit to the query
   params.set('limit', '20');
+  // Add the special ordering for carousels
+  params.set('ordering', 'carousel_default');
 
 
   const finalUrl = `${baseUrl}?${params.toString()}`;

@@ -68,6 +68,31 @@ class ProductListView(generics.ListAPIView):
             final_queryset = queryset.annotate(
                 min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=store_ids))
             ).order_by('min_unit_price')
+        elif ordering == 'carousel_default':
+            bargain_exists = Exists(Bargain.objects.filter(product=OuterRef('pk'), store__id__in=store_ids))
+            base_queryset = queryset.annotate(is_bargain=bargain_exists)
+
+            bargain_ids = list(base_queryset.filter(is_bargain=True).values_list('id', flat=True)[:20])
+            
+            num_bargains = len(bargain_ids)
+            remaining_ids = []
+            if num_bargains < 20:
+                num_needed = 20 - num_bargains
+                remaining_ids = list(
+                    base_queryset.exclude(id__in=bargain_ids)
+                                 .annotate(min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=store_ids)))
+                                 .order_by('min_unit_price')
+                                 .values_list('id', flat=True)[:num_needed]
+                )
+            
+            ordered_ids = bargain_ids + remaining_ids
+            
+            if not ordered_ids:
+                return queryset.none()
+
+            preserved_order = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(ordered_ids)])
+            final_queryset = queryset.filter(id__in=ordered_ids).order_by(preserved_order)
+
         else:
             # Default ordering logic
             if search_query:

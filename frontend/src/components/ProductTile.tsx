@@ -96,6 +96,19 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
   const cheapestPriceInfo = product.prices && product.prices.length > 0 ? product.prices[0] : null;
   const perUnitPriceString = cheapestPriceInfo?.per_unit_price_string;
 
+  // Defensively handle the size property in case it's a stringified array
+  let displaySize = product.size;
+  if (product.size && typeof product.size === 'string' && product.size.startsWith('[')) {
+    try {
+      const sizes = JSON.parse(product.size);
+      if (Array.isArray(sizes) && sizes.length > 0) {
+        displaySize = sizes[0];
+      }
+    } catch (e) {
+      // Not valid JSON, so we'll just use the original string.
+    }
+  }
+
   let currentTopPosition = 2; // Initial top position for the first badge
 
   const getNextTopPosition = (hasBadge: boolean) => {
@@ -119,8 +132,8 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
             -{bargainInfo.percentage}% at {bargainInfo.cheapestCompanies.join(' or ')}
           </Badge>
         )}
-        {product.size && (
-          <Badge className={`absolute ${getNextTopPosition(true)} right-2 z-20`}>{product.size}</Badge>
+        {displaySize && (
+          <Badge className={`absolute ${getNextTopPosition(true)} right-2 z-20`}>{displaySize}</Badge>
         )}
         <img
           src={imageUrl}

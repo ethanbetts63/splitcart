@@ -55,20 +55,18 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* --- Carousel Slot 1 (Index 0) --- */}
+      {/* --- Carousel: Snacks and Sweets --- */}
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col gap-8">
-          <ProductCarousel
-            key="meat-and-seafood"
-            title="Meat & Seafood"
-            sourceUrl="/api/products/"
-            storeIds={storeIdsArray}
-            primaryCategorySlugs={['meat', 'seafood']}
-            pillarPageLinkSlug="meat-and-seafood" // Added prop
-            slot={0}
-            isDefaultStores={isDefaultStores}
-          />
-        </div>
+        <ProductCarousel
+          key="snacks-and-sweets"
+          title="Snacks & Sweets"
+          sourceUrl="/api/products/"
+          storeIds={storeIdsArray}
+          primaryCategorySlugs={['snacks', 'sweets']}
+          pillarPageLinkSlug="snacks-and-sweets"
+          slot={0}
+          isDefaultStores={isDefaultStores}
+        />
       </div>
 
       {/* --- Letter Section --- */}
@@ -110,33 +108,79 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* --- Carousel Slot 2 & 3 (Index 1, 2) --- */}
+      {/* --- Carousels: Meat, Seafood / Eggs, Dairy --- */}
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
-          {/* Add other carousels here if needed */}
+          <ProductCarousel
+            key="meat-and-seafood"
+            title="Meat & Seafood"
+            sourceUrl="/api/products/"
+            storeIds={storeIdsArray}
+            primaryCategorySlugs={['meat', 'seafood']}
+            pillarPageLinkSlug="meat-and-seafood"
+            slot={1}
+            isDefaultStores={isDefaultStores}
+          />
+          <ProductCarousel
+            key="eggs-and-dairy"
+            title="Eggs & Dairy"
+            sourceUrl="/api/products/"
+            storeIds={storeIdsArray}
+            primaryCategorySlugs={['eggs', 'dairy']}
+            pillarPageLinkSlug="eggs-and-dairy"
+            slot={2}
+            isDefaultStores={isDefaultStores}
+          />
         </div>
       </div>
       
       {/* --- FAQ Section --- */}
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col gap-8">
-          <section>
-            <FaqImageSection
-              title="The Hard Hitting Questions"
-              page="home"
-              imageSrc={kingKongImage}
-              srcSet={`${kingKongImage320} 320w, ${kingKongImage640} 640w, ${kingKongImage768} 768w, ${kingKongImage1024} 1024w, ${kingKongImage1280} 1280w`}
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              imageAlt="King Kong swatting at discount planes"
-            />
-          </section>
-        </div>
+        <section>
+          <FaqImageSection
+            title="The Hard Hitting Questions"
+            page="home"
+            imageSrc={kingKongImage}
+            srcSet={`${kingKongImage320} 320w, ${kingKongImage640} 640w, ${kingKongImage768} 768w, ${kingKongImage1024} 1024w, ${kingKongImage1280} 1280w`}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            imageAlt="King Kong swatting at discount planes"
+          />
+        </section>
       </div>
 
-      {/* --- Carousel Slot 4, 5, 6 (Index 3, 4, 5) --- */}
+      {/* --- Carousels: Fruit, Veg, Spices / Pantry, International / Health, Beauty, Supplements --- */}
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
-          {/* Add other carousels here if needed */}
+          <ProductCarousel
+            key="fruit-veg-and-spices"
+            title="Fruit, Veg & Spices"
+            sourceUrl="/api/products/"
+            storeIds={storeIdsArray}
+            primaryCategorySlugs={['fruit', 'veg', 'spices']}
+            pillarPageLinkSlug="fruit-veg-and-spices"
+            slot={3}
+            isDefaultStores={isDefaultStores}
+          />
+          <ProductCarousel
+            key="pantry-and-international"
+            title="Pantry & International"
+            sourceUrl="/api/products/"
+            storeIds={storeIdsArray}
+            primaryCategorySlugs={['pantry', 'international']}
+            pillarPageLinkSlug="pantry-and-international"
+            slot={4}
+            isDefaultStores={isDefaultStores}
+          />
+          <ProductCarousel
+            key="health-beauty-and-supplements"
+            title="Health, Beauty & Supplements"
+            sourceUrl="/api/products/"
+            storeIds={storeIdsArray}
+            primaryCategorySlugs={['health-and-beauty', 'health-foods']}
+            pillarPageLinkSlug="health-beauty-and-supplements"
+            slot={5}
+            isDefaultStores={isDefaultStores}
+          />
         </div>
       </div>
     </div>

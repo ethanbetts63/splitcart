@@ -80,7 +80,7 @@ const PillarPage: React.FC = () => {
             {category.price_comparison_data && category.price_comparison_data.comparisons.length > 0 && (
               <>
                 <h2 className="text-3xl font-bold text-center my-8">
-                  Where to buy cheap {category.name} in Australia?
+                  Where to buy <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">cheap</span>  {category.name} in Australia?
                 </h2>
                 <div className="mt-4 flex flex-wrap -mx-2">
                   {category.price_comparison_data.comparisons.map((comparison, compIndex) => (
