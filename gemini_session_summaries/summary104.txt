@@ -1,0 +1,27 @@
+This session was a deep dive into debugging a complex product sorting issue, which evolved through several stages of investigation and ended with multiple data-level fixes.
+
+**Initial Problem:**
+The user reported that sorting products by "per unit price" was not working correctly. The results appeared to be grouped by company instead of being sorted in a single global list.
+
+**Investigation and Discoveries:**
+
+1.  **Initial Analysis:** We first investigated the `ProductListView`, the associated `Product` and `Price` models, and the frontend `GridSourcer` component. The sorting logic in the view appeared correct, and there were no obvious errors.
+
+2.  **The Caching Culprit:** By adding a print statement to see the raw SQL query, we discovered that the sorting parameters from the frontend were being ignored on subsequent requests. We identified the `@cache_page` decorator on the `ProductListView` as the cause. It was caching the response based only on the URL path, ignoring query parameters like `ordering`, and therefore always serving the initial, default-sorted list.
+
+3.  **The Data Precision Problem:** After removing the cache decorator, sorting began to work, but the order was still wrong. The user requested a way to see the sorting value on the frontend. We temporarily added the `min_unit_price` to the API response and displayed it on the product tiles. This led to the key discovery: products with different unit prices (e.g., `$0.89 per 100g` and `$0.94 per 100ml`) were both being calculated and then rounded to the same value (`0.09`) because the `Price.unit_price` field in the database was only configured to store 2 decimal places.
+
+4.  **Data Normalization Explained:** We then clarified the data normalization process. We confirmed that the application *does* standardize prices to a "per kg" or "per L" value during the scraping process. The `BaseDataCleaner` calculates a standardized numeric `unit_price` (which is used for sorting) while also preserving the original `per_unit_price_string` (which is used for display), explaining the discrepancy between the two.
+
+**Resolution:**
+
+To permanently fix the sorting issue, we focused on correcting the data at its source.
+
+1.  **Increased Database Precision:** We modified the `Price` model, changing the `unit_price` field's `decimal_places` from 2 to 4. This ensures that the small but significant differences in calculated unit prices are not lost to rounding.
+
+2.  **Data Correction Commands:** To fix the existing data without requiring a full re-scrape, two management commands were created:
+    *   `recalculate_unit_prices`: Iterates through the raw `.jsonl` files and recalculates the `unit_price` with the new, higher precision.
+    *   `recalculate_db_unit_prices`: Performs the same recalculation for `Price` records already in the database.
+
+**Final Action:**
+After implementing the data-level fixes, per the user's explicit request, the original `@cache_page` decorator was added back to the `ProductListView`. This was done despite the knowledge that it will cause the sorting functionality to break again by serving stale, cached results. The temporary debugging fields added to the frontend and serializer were left in place.
