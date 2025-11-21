@@ -77,15 +77,9 @@ class UpdateOrchestrator:
         self.command.stdout.write(f"  - Cached {len(self.caches['products_by_barcode'])} products by barcode.")
         self.command.stdout.write(f"  - Cached {len(self.caches['products_by_norm_string'])} products by normalized name-brand-size string.")
         
-        # SKU Cache (Company-Aware, storing product_id)
+        # SKU Cache - Will be loaded Just-in-Time for each company
         self.caches['products_by_sku'] = {}
-        all_skus = SKU.objects.select_related('company').values('company__name', 'sku', 'product_id')
-        for sku_dict in all_skus:
-            company_name = sku_dict['company__name']
-            if company_name not in self.caches['products_by_sku']:
-                self.caches['products_by_sku'][company_name] = {}
-            self.caches['products_by_sku'][company_name][sku_dict['sku']] = sku_dict['product_id']
-        self.command.stdout.write(f"  - Cached product IDs for {len(self.caches['products_by_sku'])} companies by SKU.")
+        self.command.stdout.write("  - Initialized empty container for SKU cache (will be loaded JIT).")
 
         # Category Cache (Company-Aware, no change needed)
         all_categories = Category.objects.select_related('company').all()
@@ -95,6 +89,25 @@ class UpdateOrchestrator:
         # Price Cache Container
         self.caches['prices_by_store'] = {}
         self.command.stdout.write("  - Initialized empty container for price caches.")
+
+    def _prepare_sku_cache_for_company(self, company):
+        """Builds a SKU cache for a single company, clearing any previous data."""
+        self.command.stdout.write(f"--- Building SKU Cache for {company.name} ---")
+        
+        # Clear the old SKU cache
+        self.caches['products_by_sku'].clear()
+
+        # Fetch and cache SKUs only for the specified company
+        all_skus = SKU.objects.filter(company=company).values('company__name', 'sku', 'product_id')
+        
+        company_sku_cache = {}
+        for sku_dict in all_skus:
+            company_name = sku_dict['company__name']
+            if company_name not in self.caches['products_by_sku']:
+                self.caches['products_by_sku'][company_name] = {}
+            self.caches['products_by_sku'][company_name][sku_dict['sku']] = sku_dict['product_id']
+        
+        self.command.stdout.write(f"  - Cached {len(all_skus)} product IDs by SKU for {company.name}.")
 
     def _prepare_price_cache_for_store(self, store):
         """Builds a lightweight, two-level price cache for a specific store."""
@@ -198,8 +211,10 @@ class UpdateOrchestrator:
         
         self._build_global_caches()
 
-        all_files = [os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')]
+        all_files = sorted([os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')])
         
+        current_company_id_in_cache = None
+
         for file_path in all_files:
             self.command.stdout.write(f"\n{self.command.style.WARNING('--- Processing file:')} {os.path.basename(file_path)} ---")
             
@@ -215,6 +230,11 @@ class UpdateOrchestrator:
                 continue
             
             store = store_or_reason
+
+            # JIT Caching for SKUs
+            if store.company.id != current_company_id_in_cache:
+                self._prepare_sku_cache_for_company(store.company)
+                current_company_id_in_cache = store.company.id
 
             # 1. Process Products (runs first to discover brand pairs)
             self.product_manager.process(raw_product_data, store.company)
