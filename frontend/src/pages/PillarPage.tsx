@@ -125,7 +125,7 @@ const PillarPage: React.FC = () => {
                       </CardHeader>
                       <CardContent>
                         <p className="text-sm text-gray-700">
-                          Our price comparisons are based on all products shared by two companies in our system for a category. This 'product overlap' is why you'll see a higher number of items compared between large supermarkets like Coles and Woolworths. When comparing with stores that have a more unique range, such as IGA or Aldi, the number of common products is smaller, and may occasionally not be large enough to provide a meaningful comparison. In such a case, we will omit the results entirely. Aldi, Coles and Woolworths generally have nationally consistant pricing but for IGA prices differ store to store, therefor we take the average price for IGA stores. 
+                          Our price comparisons are based on all products shared by two companies in our system for a category. This 'product overlap' is why you'll sometimes see more items compared between companies like Coles and Woolworths then stores that have a more unique range, such as IGA or Aldi. Sometimes the range is so unique for a category that there is not enough product overlap to do a fair comparison. In such a case, we will omit the results entirely. Aldi, Coles and Woolworths generally have nationally consistant pricing but for IGA prices differ store to store, therefor we take the average price for IGA stores. 
                         </p>
                       </CardContent>
                     </Card>

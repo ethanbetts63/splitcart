@@ -21,7 +21,7 @@ const PriceComparisonChart: React.FC<PriceComparisonChartProps> = ({ comparison,
   const companyColorMap: { [key: string]: string } = {
     'Woolworths': 'bg-green-500',
     'Coles': 'bg-red-500',
-    'Aldi': 'bg-black',
+    'Aldi': 'bg-blue-500',
     'IGA': 'bg-black',
   };
 
