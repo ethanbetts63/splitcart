@@ -11,8 +11,12 @@ import confusedShopper640 from "../assets/confused_shopper-640w.webp"; // Added 
 import confusedShopper768 from "../assets/confused_shopper-768w.webp"; // Added import
 import confusedShopper1024 from "../assets/confused_shopper-1024w.webp"; // Added import
 import confusedShopper1280 from "../assets/confused_shopper-1280w.webp"; // Added import
+import meatImage from '../assets/fish_meat_box.png';
+import fruitImage from '../assets/fruit_detectives.png';
+import snackImage from '../assets/snack_lineup.png';
 
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { AspectRatio } from '../components/ui/aspect-ratio';
 import type { PrimaryCategory, FAQ, PillarPage as PillarPageType } from '../types';
 import { useStoreList } from '../context/StoreListContext';
 
@@ -53,14 +57,40 @@ const PillarPage: React.FC = () => {
     );
   }
 
+  let imageUrl;
+  if (slug === 'meat-and-seafood') {
+    imageUrl = meatImage;
+  } else if (slug === 'fruit-veg-and-spices') {
+    imageUrl = fruitImage;
+  } else if (slug === 'snacks-and-sweets') {
+    imageUrl = snackImage;
+  } else {
+    imageUrl = confusedShopper;
+  }
+
+
   return (
     <div>
-      {/* Hero Section */}
-      <div className="relative h-96 bg-cover bg-center" style={{ backgroundImage: `url(${pillarPage.image_path})` }}>
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="relative z-10 flex flex-col items-center justify-center h-full text-white text-center">
-          <h1 className="text-4xl font-bold">{pillarPage.hero_title}</h1>
-          <p className="mt-4 max-w-2xl">{pillarPage.introduction_paragraph}</p>
+      {/* --- Hero Section --- */}
+      <div className="container mx-auto px-4 pt-4 pb-1">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <div>
+            <AspectRatio ratio={16 / 9}>
+              <img 
+                src={imageUrl} 
+                alt={pillarPage.hero_title}
+                className="rounded-md object-cover w-full h-full"
+                fetchPriority="high" />
+            </AspectRatio>
+          </div>
+          <div className="text-left">
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
+              {pillarPage.hero_title}
+            </h1>
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              {pillarPage.introduction_paragraph}
+            </p>
+          </div>
         </div>
       </div>
 

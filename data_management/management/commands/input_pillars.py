@@ -25,7 +25,6 @@ class Command(BaseCommand):
                                 'name': data['name'],
                                 'hero_title': data['hero_title'],
                                 'introduction_paragraph': data['introduction_paragraph'],
-                                'image_path': data['image_path']
                             }
                         )
 

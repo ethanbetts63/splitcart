@@ -10,7 +10,6 @@ class PillarPage(models.Model):
     slug = models.SlugField(max_length=120, unique=True)
     hero_title = models.CharField(max_length=200)
     introduction_paragraph = models.TextField()
-    image_path = models.CharField(max_length=255, blank=True, null=True)
     
     primary_categories = models.ManyToManyField(
         PrimaryCategory,

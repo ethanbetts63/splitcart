@@ -42,7 +42,7 @@ class PillarPageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PillarPage
-        fields = ('name', 'slug', 'hero_title', 'introduction_paragraph', 'image_path', 'primary_categories')
+        fields = ('name', 'slug', 'hero_title', 'introduction_paragraph', 'primary_categories')
 
 class StoreSerializer(serializers.ModelSerializer):
     company_name = serializers.CharField(source='company.name')
