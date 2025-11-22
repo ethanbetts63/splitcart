@@ -14,6 +14,8 @@ import confusedShopper1280 from "../assets/confused_shopper-1280w.webp"; // Adde
 import meatImage from '../assets/fish_meat_box.png';
 import fruitImage from '../assets/fruit_detectives.png';
 import snackImage from '../assets/snack_lineup.png';
+import eggImage from '../assets/egg_frying.png';
+import shampoImage from '../assets/shampoo.png';
 
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { AspectRatio } from '../components/ui/aspect-ratio';
@@ -64,6 +66,10 @@ const PillarPage: React.FC = () => {
     imageUrl = fruitImage;
   } else if (slug === 'snacks-and-sweets') {
     imageUrl = snackImage;
+  } else if (slug === 'eggs-and-dairy') {
+    imageUrl = eggImage;
+  } else if (slug === 'health-beauty-and-supplements') {
+    imageUrl = shampoImage;
   } else {
     imageUrl = confusedShopper;
   }
