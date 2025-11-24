@@ -20,7 +20,7 @@ import survivalImage from '../assets/survival.png';
 
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { AspectRatio } from '../components/ui/aspect-ratio';
-import type { PrimaryCategory, FAQ as FaqType, PillarPage as PillarPageType } from '../types';
+import type { PrimaryCategory, PillarPage as PillarPageType } from '../types';
 import { useStoreList } from '../context/StoreListContext';
 
 const PillarPage: React.FC = () => {

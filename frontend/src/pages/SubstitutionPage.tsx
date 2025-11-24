@@ -204,7 +204,7 @@ const SubstitutionPage = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
           <section>
-            <FaqImageSection
+            <FAQ
               title="Why substitution?"
               page="substitutes"
               imageSrc={sizeDoesntMatterImage}
