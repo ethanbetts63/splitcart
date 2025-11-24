@@ -4,7 +4,7 @@ import { useApiQuery } from '../hooks/useApiQuery';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { ProductCarousel } from '../components/ProductCarousel';
 import PriceComparisonChart from '../components/PriceComparisonChart';
-import { FaqImageSection } from "../components/FaqImageSection"; // Added import
+import { FAQ } from "../components/FAQ"; // Added import
 import confusedShopper from "../assets/confused_shopper.webp"; // Added import
 import confusedShopper320 from "../assets/confused_shopper-320w.webp"; // Added import
 import confusedShopper640 from "../assets/confused_shopper-640w.webp"; // Added import
@@ -20,7 +20,7 @@ import survivalImage from '../assets/survival.png';
 
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { AspectRatio } from '../components/ui/aspect-ratio';
-import type { PrimaryCategory, FAQ, PillarPage as PillarPageType } from '../types';
+import type { PrimaryCategory, FAQ as FaqType, PillarPage as PillarPageType } from '../types';
 import { useStoreList } from '../context/StoreListContext';
 
 const PillarPage: React.FC = () => {
@@ -149,7 +149,7 @@ const PillarPage: React.FC = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col gap-8">
             <section>
-              <FaqImageSection
+              <FAQ
                 title={`Frequently Asked Questions about ${pillarPage.hero_title}`}
                 page={slug || 'general'} // Use slug for page prop
                 imageSrc={confusedShopper}

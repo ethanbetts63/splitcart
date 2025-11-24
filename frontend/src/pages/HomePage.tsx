@@ -1,6 +1,6 @@
 import React from 'react';
 import { ProductCarousel } from "../components/ProductCarousel";
-import { FaqImageSection } from "../components/FaqImageSection";
+import { FAQ } from "../components/FAQ";
 import { useStoreList } from "../context/StoreListContext";
 import { AspectRatio } from "../components/ui/aspect-ratio";
 import confusedShopper from "../assets/confused_shopper.webp";
@@ -137,7 +137,7 @@ const HomePage = () => {
       {/* --- FAQ Section --- */}
       <div className="container mx-auto px-4 py-8">
         <section>
-          <FaqImageSection
+          <FAQ
             title="The Hard Hitting Questions"
             page="home"
             imageSrc={kingKongImage}

@@ -19,6 +19,13 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from api.views.frontend_views.react_app_view import ReactAppView
 from django.views.generic.base import TemplateView
+from django.contrib.sitemaps.views import sitemap
+from api.sitemaps import StaticViewSitemap, PillarPageSitemap
+
+sitemaps = {
+    'static': StaticViewSitemap,
+    'pillar-pages': PillarPageSitemap,
+}
 
 urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
@@ -27,7 +34,7 @@ urlpatterns = [
     path('api/auth/registration/', include('dj_rest_auth.registration.urls')),
     path("api/", include("api.urls")),
     path("data_management/", include("data_management.urls")),
-    path("sitemap.xml", TemplateView.as_view(template_name="sitemap.xml", content_type="application/xml")),
+    path("sitemap.xml", sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     re_path(r'^.*', ReactAppView.as_view(), name='react_app'),
 ]

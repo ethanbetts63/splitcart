@@ -10,7 +10,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import type { CartSubstitution } from '../types';
 import { Badge } from "../components/ui/badge";
 import { BadgeCheckIcon } from 'lucide-react';
-import { FaqImageSection } from "../components/FaqImageSection";
+import { FAQ } from "../components/FAQ";
 import sizeDoesntMatterImage from "../assets/size_doesnt_matter.webp";
 import useMediaQuery from '../hooks/useMediaQuery';
 
