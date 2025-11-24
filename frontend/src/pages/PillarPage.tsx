@@ -15,7 +15,8 @@ import meatImage from '../assets/fish_meat_box.png';
 import fruitImage from '../assets/fruit_detectives.png';
 import snackImage from '../assets/snack_lineup.png';
 import eggImage from '../assets/egg_frying.png';
-import shampoImage from '../assets/shampoo.png';
+import shampooImage from '../assets/shampoo.png';
+import survivalImage from '../assets/survival.png';
 
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { AspectRatio } from '../components/ui/aspect-ratio';
@@ -69,7 +70,9 @@ const PillarPage: React.FC = () => {
   } else if (slug === 'eggs-and-dairy') {
     imageUrl = eggImage;
   } else if (slug === 'health-beauty-and-supplements') {
-    imageUrl = shampoImage;
+    imageUrl = shampooImage;
+  } else if (slug === 'pantry-and-international') {
+    imageUrl = survivalImage;
   } else {
     imageUrl = confusedShopper;
   }
