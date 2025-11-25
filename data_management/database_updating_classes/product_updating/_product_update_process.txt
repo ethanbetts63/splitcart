@@ -51,6 +51,9 @@ A self-contained service for handling all `Product` and `SKU` logic.
     5.  **Persist SKUs**: After products are persisted (ensuring all products have a database ID), it performs a `SKU.objects.bulk_create()` to save all the new SKU relationships identified in step 1.
     6.  **Update Caches**: After the transactions, it updates all relevant shared caches (`products_by_barcode`, `products_by_norm_string`, `products_by_sku`) with the new and updated information.
 
+**Known Issues:**
+*   The "Resolve Products & SKUs" logic does not account for duplicate products (e.g., two items with the same barcode) within a single input file. Because the caches are not updated during the resolution loop, each duplicate is incorrectly treated as a new product, which can lead to a `Duplicate entry` error during the `bulk_create` database operation.
+
 ### 5. `UpdateOrchestrator` (De-duplication for Pricing)
 Before prices are processed, the orchestrator performs a crucial de-duplication step.
 - **Job**: It iterates through the raw product data list. Using the now alias-aware `products_by_norm_string` cache, it resolves each product to its canonical ID. It then builds a new, clean list containing only the first-seen entry for each unique canonical product.

@@ -4,6 +4,8 @@ import ProductTile from "./ProductTile";
 import { Link } from 'react-router-dom';
 import type { Product } from '../types';
 import JsonLdItemList from './JsonLdItemList';
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 
 interface ProductCarouselProps {
   sourceUrl: string;
@@ -143,9 +145,12 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
             </span>
           )}
           {seeMoreLink && (
-            <Link to={seeMoreLink} className="text-sm text-blue-500 hover:underline">
-              See more
-            </Link>
+            <Button asChild size="sm">
+              <Link to={seeMoreLink}>
+                Explore All Deals
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
           )}
         </div>
         <div className="overflow-x-auto pb-4">

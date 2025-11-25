@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
 import { ProductCarousel } from "../components/ProductCarousel";
 import { FAQ } from "../components/FAQ";
 import { useStoreList } from "../context/StoreListContext";
@@ -22,6 +23,11 @@ const HomePage = () => {
     2224, 5074, 5080, 5082, 5083, 5094, 5096, 5100, 498, 505, 254,
   ];
   const { selectedStoreIds } = useStoreList();
+  useDocumentHead(
+    "SplitCart: Australian Grocery Price Comparison",
+    "Every store has a deal — but finding them all takes forever. SplitCart automates that process by comparing prices across Coles, Woolworths, Aldi and IGA and splitting your cart for the cheapest overall shop. One list, multiple stores, maximum savings."
+  );
+
   const isDefaultStores = selectedStoreIds.size === 0;
   const storeIdsArray = React.useMemo(() =>
     isDefaultStores ? DEFAULT_STORE_IDS : Array.from(selectedStoreIds),
