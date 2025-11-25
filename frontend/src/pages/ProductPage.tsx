@@ -50,8 +50,8 @@ const ProductPage: React.FC = () => {
             </div>
 
             {/* Details Column */}
-            <div className="flex flex-col p-6 items-center">
-              <CardHeader className="p-0 text-center">
+            <div className="flex flex-col p-6">
+              <CardHeader className="p-0">
                 <CardTitle className="text-2xl lg:text-3xl font-bold">{product.name}</CardTitle>
                 {product.brand_name && (
                   <CardDescription className="text-xl lg:text-2xl text-muted-foreground pt-2">
@@ -70,7 +70,7 @@ const ProductPage: React.FC = () => {
                 <PriceDisplay prices={product.prices} displayMode="full" />
               </CardContent>
 
-              <div className="mt-auto pt-6">
+              <div className="mt-auto pt-6 flex justify-center">
                 <AddToCartButton product={product} />
               </div>
             </div>
