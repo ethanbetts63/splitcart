@@ -17,14 +17,16 @@ interface ProductCarouselProps {
   isDefaultStores?: boolean;
   primaryCategorySlug?: string;
   primaryCategorySlugs?: string[];
-  pillarPageLinkSlug?: string; // New prop for linking to a pillar page
+  pillarPageLinkSlug?: string;
   onValidation?: (slug: string, isValid: boolean, slot: number) => void;
-  slot: number;
+  slot?: number; // Make slot optional
+  dataKey?: string; // Key to access product data in a nested object
+  minProducts?: number; // Minimum number of products to render the carousel
 }
 
 import { useApiQuery } from '@/hooks/useApiQuery';
 
-const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, onValidation, slot }) => {
+const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, onValidation, slot, dataKey, minProducts = 4 }) => {
   const [baseUrl, queryString] = sourceUrl.split('?');
   const params = new URLSearchParams(queryString || '');
   if (storeIds && storeIds.length > 0) {
@@ -35,15 +37,17 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
   } else if (primaryCategorySlug) {
     params.set('primary_category_slug', primaryCategorySlug);
   }
-  // Add a limit to the query
-  params.set('limit', '20');
-  // Add the special ordering for carousels
-  params.set('ordering', 'carousel_default');
+  // Add a limit to the query, but not for substitutes
+  if (!sourceUrl.includes('substitutes')) {
+    params.set('limit', '20');
+    // Add the special ordering for carousels
+    params.set('ordering', 'carousel_default');
+  }
 
 
   const finalUrl = `${baseUrl}?${params.toString()}`;
 
-  const { data: apiResponse, isLoading, error, isFetched } = useApiQuery<ApiResponse>(
+  const { data: responseData, isLoading, error, isFetched } = useApiQuery<any>(
     ['products', title, finalUrl],
     finalUrl,
     {},
@@ -53,21 +57,33 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
   // Ref to prevent calling onValidation multiple times
   const validationCalled = useRef(false);
 
+  // Process the response to get the final list of products
+  const products: Product[] = React.useMemo(() => {
+    if (!responseData) return [];
+    
+    // Handle responses that are direct arrays (like substitutes) vs objects with a 'results' key
+    const results = Array.isArray(responseData) ? responseData : responseData.results || [];
+
+    // If a dataKey is provided, map over the results to extract the nested product data
+    if (dataKey) {
+      return results.map((item: any) => item[dataKey]).filter(Boolean); // filter out null/undefined
+    }
+
+    return results;
+  }, [responseData, dataKey]);
+
   useEffect(() => {
-    if (isFetched && onValidation && (primaryCategorySlug || primaryCategorySlugs) && !validationCalled.current) {
+    if (isFetched && onValidation && (primaryCategorySlug || primaryCategorySlugs) && !validationCalled.current && slot !== undefined) {
       const identifier = primaryCategorySlugs ? primaryCategorySlugs.join(',') : primaryCategorySlug!;
-      const isValid = (apiResponse?.results?.length ?? 0) >= 4;
+      const isValid = products.length >= minProducts;
       onValidation(identifier, isValid, slot);
       validationCalled.current = true;
     }
-  }, [isFetched, apiResponse, onValidation, primaryCategorySlug, primaryCategorySlugs, slot]);
+  }, [isFetched, products, onValidation, primaryCategorySlug, primaryCategorySlugs, slot, minProducts]);
 
 
-  const products = apiResponse?.results || [];
-
-  // While the manager finds a replacement, this component might still be rendered for a short time.
   // If loading is done and it's invalid, render nothing.
-  if (!isLoading && products.length < 4) {
+  if (!isLoading && products.length < minProducts) {
     return null;
   }
 

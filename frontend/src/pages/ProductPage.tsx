@@ -9,9 +9,12 @@ import fallbackImage from '../assets/splitcart_symbol_v6.webp';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import JsonLdProduct from '../components/JsonLdProduct';
+import { ProductCarousel } from '../components/ProductCarousel';
+import { useStoreList } from '../context/StoreListContext';
 
 const ProductPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
+  const { storeIdsArray } = useStoreList();
 
   // Extract the ID from the slug
   const productId = slug ? slug.split('-').pop() : undefined;
@@ -87,13 +90,15 @@ const ProductPage: React.FC = () => {
           </div>
         </Card>
 
-        {/* Substitutes Carousel will go here */}
         <div className="mt-12">
-          <h2 className="text-2xl font-bold mb-4">Substitutes</h2>
-          {/* Placeholder for the ProductCarousel for substitutes */}
-          <div className="p-8 text-center bg-gray-100 rounded-lg">
-            <p>Substitute carousel coming soon.</p>
-          </div>
+          <ProductCarousel
+            key={`substitutes-for-${product.id}`}
+            title="Substitutes"
+            sourceUrl={`/api/products/${product.id}/substitutes/`}
+            storeIds={storeIdsArray}
+            dataKey="substituted_product"
+            minProducts={1}
+          />
         </div>
       </div>
     </div>
