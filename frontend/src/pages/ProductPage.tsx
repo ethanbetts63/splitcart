@@ -36,7 +36,7 @@ const ProductPage: React.FC = () => {
   const imageUrl = product.image_url || fallbackImage;
 
   return (
-    <div className="container mx-auto p-4 md:p-8">
+    <div className="container mx-auto p-4 md:p-4">
       <div className="max-w-5xl mx-auto">
         <Card className="overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
@@ -50,7 +50,7 @@ const ProductPage: React.FC = () => {
             </div>
 
             {/* Details Column */}
-            <div className="flex flex-col p-6">
+            <div className="flex flex-col p-2">
               <CardHeader className="p-0">
                 <CardTitle className="text-2xl lg:text-3xl font-bold">{product.name}</CardTitle>
                 {product.brand_name && (
