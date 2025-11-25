@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Card,
   CardContent,
@@ -110,46 +111,59 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
       // Not valid JSON, so we'll just use the original string.
     }
   }
+  
+  if (!product.slug) {
+    // Render a non-clickable version or a placeholder if there's no slug
+    return (
+      <Card className="flex flex-col h-full overflow-hidden gap-1 pt-0 pb-2 opacity-50">
+        {/* Simplified content for when it's not linkable */}
+      </Card>
+    );
+  }
 
   return (
-    <Card className="flex flex-col h-full overflow-hidden gap-1 pt-0 pb-2">
-      <div className="aspect-square w-full overflow-hidden relative">
-        <div className="absolute top-2 right-2 z-20 flex flex-col items-end gap-1">
-          {bargainInfo && (
-            <Badge className={bargainInfo.bargainBadgeClasses}>
-              -{bargainInfo.percentage}% at {bargainInfo.cheapestCompanies.join(' or ')}
-            </Badge>
-          )}
-          {perUnitPriceString && (
-            <Badge>{perUnitPriceString}</Badge>
-          )}
-          {displaySize && (
-            <Badge>{displaySize}</Badge>
-          )}
-          {product.min_unit_price && (
-            <Badge variant="destructive">DEBUG U-PRICE: {product.min_unit_price}</Badge>
-          )}
+    <Link to={`/product/${product.slug}`} className="group block h-full">
+      <Card className="flex flex-col h-full overflow-hidden gap-1 pt-0 pb-2 group-hover:shadow-lg transition-shadow duration-200">
+        <div className="aspect-square w-full overflow-hidden relative">
+          <div className="absolute top-2 right-2 z-20 flex flex-col items-end gap-1">
+            {bargainInfo && (
+              <Badge className={bargainInfo.bargainBadgeClasses}>
+                -{bargainInfo.percentage}% at {bargainInfo.cheapestCompanies.join(' or ')}
+              </Badge>
+            )}
+            {perUnitPriceString && (
+              <Badge>{perUnitPriceString}</Badge>
+            )}
+            {displaySize && (
+              <Badge>{displaySize}</Badge>
+            )}
+            {product.min_unit_price && (
+              <Badge variant="destructive">DEBUG U-PRICE: {product.min_unit_price}</Badge>
+            )}
+          </div>
+          <img
+            src={imageUrl}
+            srcSet={srcSet}
+            sizes="273px"
+            onError={handleImageError}
+            alt={product.name}
+            className="h-full w-full object-cover transition-transform group-hover:scale-105 duration-200"
+          />
         </div>
-        <img
-          src={imageUrl}
-          srcSet={srcSet}
-          sizes="273px"
-          onError={handleImageError}
-          alt={product.name}
-          className="h-full w-full object-cover transition-transform hover:scale-105"
-        />
-      </div>
-      <CardHeader className="p-0 text-center">
-        <CardTitle className="h-12 leading-5 text-base font-semibold overflow-hidden text-ellipsis line-clamp-2">{product.name}</CardTitle>
-        {product.brand_name && <CardDescription className="text-sm text-muted-foreground">{product.brand_name}</CardDescription>}
-      </CardHeader>
-      <CardContent className="flex-grow px-3">
-        <PriceDisplay prices={product.prices} />
-      </CardContent>
-      <CardFooter className="flex justify-center pb-0">
-        <AddToCartButton product={product} />
-      </CardFooter>
-    </Card>
+        <CardHeader className="p-0 text-center">
+          <CardTitle className="h-12 leading-5 text-base font-semibold overflow-hidden text-ellipsis line-clamp-2">{product.name}</CardTitle>
+          {product.brand_name && <CardDescription className="text-sm text-muted-foreground">{product.brand_name}</CardDescription>}
+        </CardHeader>
+        <CardContent className="flex-grow px-3">
+          <PriceDisplay prices={product.prices} />
+        </CardContent>
+        <CardFooter className="flex justify-center pb-0">
+          <div onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+            <AddToCartButton product={product} />
+          </div>
+        </CardFooter>
+      </Card>
+    </Link>
   );
 };
 

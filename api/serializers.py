@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.utils.text import slugify
 from products.models import Product, Price
 from products.models.substitution import ProductSubstitution
 from companies.models import Store, Category, PrimaryCategory, Company, PillarPage
@@ -107,10 +108,14 @@ class ProductSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
     primary_category = PrimaryCategorySerializer(read_only=True)
     min_unit_price = serializers.DecimalField(max_digits=10, decimal_places=4, read_only=True, required=False)
+    slug = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'brand_name', 'size', 'image_url', 'prices', 'primary_category', 'min_unit_price')
+        fields = ('id', 'name', 'brand_name', 'size', 'image_url', 'prices', 'primary_category', 'min_unit_price', 'slug')
+
+    def get_slug(self, obj):
+        return f"{slugify(obj.name)}-{obj.id}"
 
     def _get_image_url_for_company(self, product_obj, company_name, company_obj=None):
         """

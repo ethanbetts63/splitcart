@@ -1,0 +1,27 @@
+This session focused on diagnosing and beginning to resolve a key SEO issue: product carousels were not being indexed by search engines.
+
+### 1. Investigation & Findings
+
+*   I analyzed the frontend components (`ProductCarousel.tsx`, `ProductTile.tsx`, `App.tsx`) and confirmed the user's suspicion.
+*   **Root Cause:** Products within carousels were not wrapped in `<a>` link tags, and no dedicated, indexable pages for individual products existed in the application's routing. This meant search engine crawlers had no path to discover or index the products as individual entities.
+
+### 2. Strategy Discussion
+
+*   We discussed several potential solutions, weighing their SEO impact and implementation effort.
+*   **Individual Product Pages:** My initial recommendation to create a page for each product was met with valid user concern about adding pages that might not provide direct user value.
+*   **Outbound Links:** The user's idea of linking directly to retailer sites was discussed. I advised against this, as it would pass SEO authority to the retailers and prevent the site from ranking for product terms.
+*   **JSON-LD Structured Data:** I proposed this as a way to explicitly describe the carousel contents to search engines without creating new pages.
+*   **Agreed-Upon Strategy:** We decided on a powerful two-phase hybrid approach:
+    1.  **Phase 1 (Completed):** Implement JSON-LD structured data for the carousels to make the main pages eligible for rich search results (like product carousels appearing directly in Google).
+    2.  **Phase 2 (Planned):** Revisit the creation of minimalist, low-effort product pages to capture specific, "long-tail" search queries for individual products.
+
+### 3. Implementation (Phase 1)
+
+*   To implement the JSON-LD solution, I created a new, reusable component: `frontend/src/components/JsonLdItemList.tsx`.
+*   This component takes a list of products and a title, formats them into a valid `ItemList` schema as recommended by Google, and dynamically injects the resulting `<script type="application/ld+json">` tag into the page's `<head>`.
+*   I then updated the `ProductCarousel.tsx` component to use `JsonLdItemList.tsx`, ensuring that every carousel that successfully loads data also provides the corresponding structured data for crawlers.
+
+### 4. Verification & Clarification
+
+*   I guided the user on how to verify the dynamic script injection using their browser's "Elements" inspector rather than "View Source."
+*   I also clarified that using both `lowPrice` and `highPrice` in the `AggregateOffer` schema is the correct best practice, as it provides the most accurate and transparent data to Google.
