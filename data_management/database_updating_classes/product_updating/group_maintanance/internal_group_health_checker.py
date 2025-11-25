@@ -11,10 +11,23 @@ class InternalGroupHealthChecker:
     Handles the logic for Phase 1: Internal Group Maintenance (Health Checks).
     It compares members to their anchor to find and eject stores that no longer match.
     """
-    def __init__(self, command):
+    def __init__(self, command, relaxed_staleness=False):
         self.command = command
         self.comparer = PriceComparer()
-        self.freshness_threshold = timezone.now() - timedelta(days=7)
+        self.relaxed_staleness = relaxed_staleness
+
+        if self.relaxed_staleness:
+            self.command.stdout.write(self.command.style.WARNING("Using relaxed staleness check for internal health checks."))
+            try:
+                latest_scrape_date = Price.objects.latest('scraped_date').scraped_date
+                self.freshness_threshold = latest_scrape_date - timedelta(days=7)
+            except Price.DoesNotExist:
+                # If there are no prices, fall back to the default
+                self.freshness_threshold = timezone.now() - timedelta(days=7)
+        else:
+            self.freshness_threshold = timezone.now() - timedelta(days=7)
+        
+        self.command.stdout.write(f"  - Using freshness threshold: {self.freshness_threshold.date()}")
 
     def _store_has_current_pricing(self, store_id, all_prices_cache):
         """Helper method to check if a store has any price data in the pre-fetched cache."""

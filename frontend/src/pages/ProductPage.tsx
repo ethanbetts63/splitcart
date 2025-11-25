@@ -14,7 +14,9 @@ import { useStoreList } from '../context/StoreListContext';
 
 const ProductPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { storeIdsArray } = useStoreList();
+  const { selectedStoreIds } = useStoreList();
+
+  const storeIdsArray = React.useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
 
   // Extract the ID from the slug
   const productId = slug ? slug.split('-').pop() : undefined;

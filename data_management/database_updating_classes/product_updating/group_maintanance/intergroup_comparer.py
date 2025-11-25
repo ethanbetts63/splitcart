@@ -13,10 +13,23 @@ class IntergroupComparer:
     Handles the logic for Phase 2: Inter-Group Merging.
     It compares the anchors of all groups with recent data and merges any that are identical.
     """
-    def __init__(self, command):
+    def __init__(self, command, relaxed_staleness=False):
         self.command = command
         self.comparer = PriceComparer()
-        self.freshness_threshold = timezone.now() - timedelta(days=7)
+        self.relaxed_staleness = relaxed_staleness
+
+        if self.relaxed_staleness:
+            self.command.stdout.write(self.command.style.WARNING("Using relaxed staleness check for inter-group comparisons."))
+            try:
+                latest_scrape_date = Price.objects.latest('scraped_date').scraped_date
+                self.freshness_threshold = latest_scrape_date - timedelta(days=7)
+            except Price.DoesNotExist:
+                # If there are no prices, fall back to the default
+                self.freshness_threshold = timezone.now() - timedelta(days=7)
+        else:
+            self.freshness_threshold = timezone.now() - timedelta(days=7)
+        
+        self.command.stdout.write(f"  - Using freshness threshold: {self.freshness_threshold.date()}")
 
     def _get_groups_with_current_pricing(self):
         """Get all active groups whose anchor has recent price data."""

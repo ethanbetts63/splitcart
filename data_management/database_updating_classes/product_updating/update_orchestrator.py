@@ -24,8 +24,9 @@ class UpdateOrchestrator:
     The main entry point for the V2 product update process.
     Initializes the global caches and orchestrates the pipeline for each file.
     """
-    def __init__(self, command):
+    def __init__(self, command, relaxed_staleness=False):
         self.command = command
+        self.relaxed_staleness = relaxed_staleness
         self.inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'product_inbox')
         self.caches = {}
         self.brand_translation_cache = {}
@@ -278,7 +279,7 @@ class UpdateOrchestrator:
 
         # 4. Run Group Maintenance
         self.command.stdout.write(self.command.style.SUCCESS("\n--- Running Group Maintenance ---"))
-        GroupMaintenanceOrchestrator(self.command).run()
+        GroupMaintenanceOrchestrator(self.command, relaxed_staleness=self.relaxed_staleness).run()
 
         # 5. Regenerate Translation Tables after reconciliation
         self.command.stdout.write(self.command.style.SUCCESS("\n--- Generating Translation Tables ---"))

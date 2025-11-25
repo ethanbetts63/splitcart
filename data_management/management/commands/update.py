@@ -20,6 +20,7 @@ class Command(BaseCommand):
         parser.add_argument('--subs', action='store_true', help='Update substitutions from the substitutions_inbox directory.')
         parser.add_argument('--bargains', action='store_true', help='Update bargains from the bargains_inbox directory.')
         parser.add_argument('--archive', action='store_true', help='Flush DB and load data from the most recent archive.')
+        parser.add_argument('--relaxed-staleness', action='store_true', help='Use a relative 7-day window for store group comparisons, based on the latest scrape date in the DB.')
 
     def handle(self, *args, **options):
         if options['archive']:
@@ -32,6 +33,7 @@ class Command(BaseCommand):
         run_category_links = options['cat_links']
         run_substitutions = options['subs']
         run_bargains = options['bargains']
+        relaxed_staleness = options['relaxed_staleness']
 
         if not any([run_stores_discovery, run_products_processed, run_gs1, run_category_links, run_substitutions, run_bargains]):
             run_stores_discovery = True
@@ -63,6 +65,6 @@ class Command(BaseCommand):
             if not os.path.exists(inbox_path):
                 self.stdout.write(self.style.WARNING("Product inbox directory not found."))
             else:
-                orchestrator = UpdateOrchestrator(self)
+                orchestrator = UpdateOrchestrator(self, relaxed_staleness=relaxed_staleness)
                 orchestrator.run()
             self.stdout.write(self.style.SUCCESS('--- Product update from inbox complete ---'))

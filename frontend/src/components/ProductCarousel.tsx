@@ -5,10 +5,6 @@ import { Link } from 'react-router-dom';
 import type { Product } from '../types';
 import JsonLdItemList from './JsonLdItemList';
 
-type ApiResponse = {
-  results: Product[];
-};
-
 interface ProductCarouselProps {
   sourceUrl: string;
   storeIds?: number[];
