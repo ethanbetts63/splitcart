@@ -227,7 +227,10 @@ class UpdateOrchestrator:
 
             is_valid, store_or_reason = self._is_file_valid(metadata, raw_product_data)
             if not is_valid:
-                os.remove(file_path)
+                try:
+                    os.remove(file_path)
+                except FileNotFoundError:
+                    pass  # File is already gone, which is fine.
                 continue
             
             store = store_or_reason
@@ -256,8 +259,12 @@ class UpdateOrchestrator:
             self.category_manager.process(raw_product_data, store.company)
 
             # 6. Cleanup
-            os.remove(file_path)
-            self.command.stdout.write(f"  - Successfully processed and deleted file: {os.path.basename(file_path)}")
+            try:
+                os.remove(file_path)
+                self.command.stdout.write(f"  - Successfully processed and deleted file: {os.path.basename(file_path)}")
+            except FileNotFoundError:
+                self.command.stdout.write(f"  - File already removed, skipping deletion: {os.path.basename(file_path)}")
+
 
         # --- Post-Processing Section ---
         self.command.stdout.write(self.command.style.SUCCESS("\n--- Post-Processing Run Started ---"))
