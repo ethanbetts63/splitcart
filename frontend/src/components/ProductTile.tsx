@@ -60,10 +60,10 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
     };
 
     const companyColors: { [key: string]: string } = {
-      "Aldi": "bg-blue-300 text-gray-800",
-      "Woolies": "bg-green-500 text-white",
-      "Coles": "bg-red-500 text-white",
-      "IGA": "bg-white text-red-600 border border-red-600",
+      "Aldi": "bg-blue-300 text-black",
+      "Woolies": "bg-green-500 text-black",
+      "Coles": "bg-red-500 text-black",
+      "IGA": "bg-black text-white border border-red-600",
     };
 
     const numericPrices = product.prices.map(p => ({
@@ -137,9 +137,6 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
             )}
             {displaySize && (
               <Badge>{displaySize}</Badge>
-            )}
-            {product.min_unit_price && (
-              <Badge variant="destructive">DEBUG U-PRICE: {product.min_unit_price}</Badge>
             )}
           </div>
           <img
