@@ -8,7 +8,7 @@ class Command(BaseCommand):
     help = 'Imports Pillar Pages from a JSONL file into the database.'
 
     def handle(self, *args, **options):
-        pillar_pages_file_path = settings.BASE_DIR / 'data_management' / 'data' / 'pillar_contents' / 'pillar_pages.jsonl'
+        pillar_pages_file_path = settings.BASE_DIR / 'data_management' / 'data' / 'pillar_pages.jsonl'
         self.stdout.write(f"Importing Pillar Pages from {pillar_pages_file_path}...")
 
         with open(pillar_pages_file_path, 'r', encoding='utf-8') as f:
