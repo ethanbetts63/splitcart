@@ -94,7 +94,7 @@ python manage.py update --bargains # Server
 
 python manage.py generate --primary-cats # Server
 python manage.py input_pillars
-python manage.py generate --category_stats
+python manage.py generate --price-comps
 python manage.py import_faqs
 python manage.py import_postcodes
 
