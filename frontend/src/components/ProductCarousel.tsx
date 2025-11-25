@@ -140,7 +140,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
             <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">{title}</span>
           </h2>
           {isDefaultStores && (
-            <span className="ml-2 text-sm text-muted-foreground bg-blue-100 px-2 py-1 rounded-md">
+            <span className="ml-2 text-sm text-black bg-blue-100 px-2 py-1 rounded-md">
               Showing example products, please select a location.
             </span>
           )}
