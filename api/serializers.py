@@ -119,35 +119,49 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def _get_image_url_for_company(self, product_obj, company_name, company_obj=None):
         """
-        A single, reusable method to generate an image URL for a given product and company.
+        A single, reusable method to generate a smaller, optimized image URL for a given product and company.
         """
-        # Handle Aldi first, as it's a special case on the product itself
-        if company_name.lower() == 'aldi' and product_obj.aldi_image_url:
-            return product_obj.aldi_image_url
+        company_name_lower = company_name.lower()
+
+        # --- Handle Aldi (special case on product model) ---
+        if company_name_lower == 'aldi' and product_obj.aldi_image_url:
+            # Replace the width parameter to request a smaller image
+            return product_obj.aldi_image_url.replace("/scaleWidth/500/", "/scaleWidth/280/")
 
         # If company object isn't passed, fetch it
         if not company_obj:
             company_obj = Company.objects.filter(name__iexact=company_name).first()
 
-        if not company_obj or not company_obj.image_url_template:
+        if not company_obj:
             return None
 
         # Get SKU for the company by querying the SKU model
         sku_obj = product_obj.skus.filter(company=company_obj).first()
-
         if not sku_obj:
             return None
-        
         sku = sku_obj.sku
         sku_str = str(sku)
 
-        # Handle Coles' special URL structure
-        if company_name.lower() == 'coles':
-            first_digit = sku_str[0] if sku_str else '0'
-            return f"https://productimages.coles.com.au/productimages/{first_digit}/{sku_str}.jpg"
+        # --- Handle Coles (hardcoded URL structure, no resize options) ---
+        if company_name_lower == 'coles':
+            return f"https://productimages.coles.com.au/productimages/{sku_str[0] if sku_str else '0'}/{sku_str}.jpg"
+
+        # --- Handle companies with a template from the DB ---
+        if not company_obj.image_url_template:
+            return None
         
-        # Handle all other companies with a template
-        return company_obj.image_url_template.format(sku=sku)
+        base_url = company_obj.image_url_template.format(sku=sku)
+
+        # --- Handle Woolworths (resize by changing path segment) ---
+        if company_name_lower == 'woolworths':
+            return base_url.replace("/large/", "/medium/")
+
+        # --- Handle IGA (resize by changing URL parameters) ---
+        if company_name_lower == 'iga':
+            return base_url.replace("w_500", "w_280").replace("h_500", "h_280")
+            
+        # For any other company, return the formatted template URL as is
+        return base_url
 
     def get_image_url(self, obj):
         """
