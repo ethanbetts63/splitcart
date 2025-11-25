@@ -6,7 +6,9 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import PriceDisplay from '../components/PriceDisplay';
 import AddToCartButton from '../components/AddToCartButton';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
+import { useDocumentHead } from '../hooks/useDocumentHead';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
+import JsonLdProduct from '../components/JsonLdProduct';
 
 const ProductPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -21,6 +23,14 @@ const ProductPage: React.FC = () => {
     { enabled: !!productId } // Only run query if productId is available
   );
 
+  // Set document head metadata when product data is available
+  const pageTitle = product ? `${product.name} - Price Comparison` : 'SplitCart';
+  const pageDescription = product
+    ? `Compare prices for ${product.name}${product.brand_name ? ` from ${product.brand_name}` : ''} across major Australian supermarkets. Find the best deals with SplitCart.`
+    : 'Compare prices across major Australian supermarkets and find the best deals with SplitCart.';
+  
+  useDocumentHead(pageTitle, pageDescription);
+
   if (isLoading) {
     return <LoadingSpinner fullScreen />;
   }
@@ -32,11 +42,11 @@ const ProductPage: React.FC = () => {
   if (!product) {
     return <div className="text-center p-4">Product not found.</div>;
   }
-
   const imageUrl = product.image_url || fallbackImage;
 
   return (
     <div className="container mx-auto p-4 md:p-4">
+      {product && <JsonLdProduct product={product} />}
       <div className="max-w-5xl mx-auto">
         <Card className="overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
