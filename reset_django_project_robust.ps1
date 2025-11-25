@@ -93,6 +93,10 @@ python manage.py upload --bargains --dev # Local
 python manage.py update --bargains # Server
 
 python manage.py generate --primary-cats # Server
+python manage.py input_pillars
+python manage.py generate --category_stats
+python manage.py import_faqs
+python manage.py import_postcodes
 
 python manage.py analyze --report company_heatmap
 python manage.py analyze --report subs
@@ -103,7 +107,3 @@ python manage.py test_unit_price_sorter
 
 python manage.py generate --map --dev # Local
 
-
-python manage.py generate --primary-cats
-python manage.py input_pillars
-python manage.py generate --category_stats

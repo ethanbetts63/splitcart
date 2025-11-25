@@ -67,6 +67,9 @@ class PriceManager:
             seen_hashes.add(current_price_hash)
 
             price_current_val = product_dict.get('price_current')
+            if price_current_val is None:
+                self.command.stderr.write(self.command.style.WARNING(f"    - Product with NNBS '{product_dict.get('normalized_name_brand_size')}' has a null price. Skipping price record."))
+                continue
             unit_price_val = product_dict.get('unit_price')
 
             price_data = {
