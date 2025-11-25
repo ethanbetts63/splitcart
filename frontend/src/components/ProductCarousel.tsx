@@ -146,7 +146,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
           )}
           {seeMoreLink && (
             <Button asChild size="sm">
-              <Link to={seeMoreLink}>
+              <Link to={seeMoreLink} aria-label={`Explore All Deals in ${title}`}>
                 Explore All Deals
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
