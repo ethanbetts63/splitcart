@@ -60,10 +60,10 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
     };
 
     const companyColors: { [key: string]: string } = {
-      "Aldi": "bg-blue-300 text-black",
-      "Woolies": "bg-green-500 text-black",
-      "Coles": "bg-red-500 text-black",
-      "IGA": "bg-black text-white border border-red-600",
+      "Aldi": "bg-blue-300 text-black font-bold",
+      "Woolies": "bg-green-500 text-black font-bold",
+      "Coles": "bg-red-500 text-white font-bold",
+      "IGA": "bg-black text-white border border-red-600 font-bold",
     };
 
     const numericPrices = product.prices.map(p => ({
@@ -92,8 +92,8 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
       .map(p => companyShortNames[p.company] || p.company);
 
     const bargainBadgeClasses = cheapestCompanies.length === 1
-      ? companyColors[cheapestCompanies[0]] || "bg-gray-700 text-white"
-      : "bg-gray-700 text-white";
+      ? companyColors[cheapestCompanies[0]] || "bg-gray-700 text-white font-bold"
+      : "bg-gray-700 text-white font-bold";
 
     return { percentage, cheapestCompanies, bargainBadgeClasses };
   }, [product.prices]);
