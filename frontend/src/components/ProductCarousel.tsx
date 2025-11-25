@@ -2,27 +2,8 @@ import React, { memo, useEffect, useRef } from 'react';
 import SkeletonProductTile from "./SkeletonProductTile";
 import ProductTile from "./ProductTile";
 import { Link } from 'react-router-dom';
-
-// --- Type Definitions ---
-type CompanyPriceInfo = {
-  company: string;
-  price_display: string;
-  is_lowest: boolean;
-  image_url?: string;
-};
-
-type Product = {
-  id: number;
-  name: string;
-  brand_name?: string;
-  size?: string;
-  image_url?: string;
-  prices: CompanyPriceInfo[];
-  primary_category?: {
-    name: string;
-    slug: string;
-  };
-};
+import type { Product } from '../types';
+import JsonLdItemList from './JsonLdItemList';
 
 type ApiResponse = {
   results: Product[];
@@ -138,32 +119,35 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
   }
 
   return (
-    <section className="bg-muted p-4 rounded-lg">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">
-          <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">{title}</span>
-        </h2>
-        {isDefaultStores && (
-          <span className="ml-2 text-sm text-muted-foreground bg-blue-100 px-2 py-1 rounded-md">
-            Showing example products, please select a location.
-          </span>
-        )}
-        {seeMoreLink && (
-          <Link to={seeMoreLink} className="text-sm text-blue-500 hover:underline">
-            See more
-          </Link>
-        )}
-      </div>
-      <div className="overflow-x-auto pb-4">
-        <div className="flex">
-          {products?.map((product) => (
-            <div className="flex-shrink-0 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 pb-2" key={product.id}>
-              <ProductTile product={product} />
-            </div>
-          ))}
+    <>
+      <section className="bg-muted p-4 rounded-lg">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">
+            <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">{title}</span>
+          </h2>
+          {isDefaultStores && (
+            <span className="ml-2 text-sm text-muted-foreground bg-blue-100 px-2 py-1 rounded-md">
+              Showing example products, please select a location.
+            </span>
+          )}
+          {seeMoreLink && (
+            <Link to={seeMoreLink} className="text-sm text-blue-500 hover:underline">
+              See more
+            </Link>
+          )}
         </div>
-      </div>
-    </section>
+        <div className="overflow-x-auto pb-4">
+          <div className="flex">
+            {products?.map((product) => (
+              <div className="flex-shrink-0 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 pb-2" key={product.id}>
+                <ProductTile product={product} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      {products.length > 0 && <JsonLdItemList products={products} title={title} />}
+    </>
   );
 };
 
