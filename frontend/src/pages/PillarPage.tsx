@@ -4,19 +4,19 @@ import { useApiQuery } from '../hooks/useApiQuery';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { ProductCarousel } from '../components/ProductCarousel';
 import PriceComparisonChart from '../components/PriceComparisonChart';
-import { FAQ } from "../components/FAQ"; // Added import
-import confusedShopper from "../assets/confused_shopper.webp"; // Added import
-import confusedShopper320 from "../assets/confused_shopper-320w.webp"; // Added import
-import confusedShopper640 from "../assets/confused_shopper-640w.webp"; // Added import
-import confusedShopper768 from "../assets/confused_shopper-768w.webp"; // Added import
-import confusedShopper1024 from "../assets/confused_shopper-1024w.webp"; // Added import
-import confusedShopper1280 from "../assets/confused_shopper-1280w.webp"; // Added import
-import meatImage from '../assets/fish_meat_box.png';
-import fruitImage from '../assets/fruit_detectives.png';
-import snackImage from '../assets/snack_lineup.png';
-import eggImage from '../assets/egg_frying.png';
-import shampooImage from '../assets/shampoo.png';
-import survivalImage from '../assets/survival.png';
+import { FAQ } from "../components/FAQ"; 
+import confusedShopper from "../assets/confused_shopper.webp"; 
+import confusedShopper320 from "../assets/confused_shopper-320w.webp"; 
+import confusedShopper640 from "../assets/confused_shopper-640w.webp"; 
+import confusedShopper768 from "../assets/confused_shopper-768w.webp"; 
+import confusedShopper1024 from "../assets/confused_shopper-1024w.webp"; 
+import confusedShopper1280 from "../assets/confused_shopper-1280w.webp"; 
+import meatImage from '../assets/fish_meat_box.webp';
+import fruitImage from '../assets/fruit_detectives.webp';
+import snackImage from '../assets/snack_lineup.webp';
+import eggImage from '../assets/egg_frying.webp';
+import shampooImage from '../assets/shampoo.webp';
+import survivalImage from '../assets/survival.webp';
 
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { AspectRatio } from '../components/ui/aspect-ratio';
