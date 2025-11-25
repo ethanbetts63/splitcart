@@ -21,6 +21,7 @@ interface ProductTileProps {
 
 const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
   const [imageUrl, setImageUrl] = useState(product.image_url || fallbackImage);
+  const [isButtonHovered, setIsButtonHovered] = useState(false);
 
   // Effect to reset the image URL when the product prop changes
   useEffect(() => {
@@ -123,7 +124,7 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
 
   return (
     <Link to={`/product/${product.slug}`} className="group block h-full">
-      <Card className="flex flex-col h-full overflow-hidden gap-1 pt-0 pb-2 group-hover:shadow-lg transition-shadow duration-200">
+      <Card className={`flex flex-col h-full overflow-hidden gap-1 pt-0 pb-2 transition-shadow duration-200 ${!isButtonHovered && 'group-hover:shadow-lg'}`}>
         <div className="aspect-square w-full overflow-hidden relative">
           <div className="absolute top-2 right-2 z-20 flex flex-col items-end gap-1">
             {bargainInfo && (
@@ -147,18 +148,22 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
             sizes="273px"
             onError={handleImageError}
             alt={product.name}
-            className="h-full w-full object-cover transition-transform group-hover:scale-105 duration-200"
+            className={`h-full w-full object-cover transition-transform duration-200 ${!isButtonHovered && 'group-hover:scale-105'}`}
           />
         </div>
         <CardHeader className="p-0 text-center">
-          <CardTitle className="h-12 leading-5 text-base font-semibold overflow-hidden text-ellipsis line-clamp-2 group-hover:underline">{product.name}</CardTitle>
+          <CardTitle className={`h-12 leading-5 text-base font-semibold overflow-hidden text-ellipsis line-clamp-2 ${!isButtonHovered && 'group-hover:underline'}`}>{product.name}</CardTitle>
           {product.brand_name && <CardDescription className="text-sm text-muted-foreground">{product.brand_name}</CardDescription>}
         </CardHeader>
         <CardContent className="flex-grow px-3">
           <PriceDisplay prices={product.prices} />
         </CardContent>
         <CardFooter className="flex justify-center pb-0">
-          <div onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+          <div 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            onMouseEnter={() => setIsButtonHovered(true)}
+            onMouseLeave={() => setIsButtonHovered(false)}
+          >
             <AddToCartButton product={product} />
           </div>
         </CardFooter>
