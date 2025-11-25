@@ -29,7 +29,7 @@ class IntergroupComparer:
         else:
             self.freshness_threshold = timezone.now() - timedelta(days=7)
         
-        self.command.stdout.write(f"  - Using freshness threshold: {self.freshness_threshold.date()}")
+        self.command.stdout.write(f"  - Using freshness threshold: {self.freshness_threshold}")
 
     def _get_groups_with_current_pricing(self):
         """Get all active groups whose anchor has recent price data."""

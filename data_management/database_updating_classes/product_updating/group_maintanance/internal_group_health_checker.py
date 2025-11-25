@@ -27,7 +27,7 @@ class InternalGroupHealthChecker:
         else:
             self.freshness_threshold = timezone.now() - timedelta(days=7)
         
-        self.command.stdout.write(f"  - Using freshness threshold: {self.freshness_threshold.date()}")
+        self.command.stdout.write(f"  - Using freshness threshold: {self.freshness_threshold}")
 
     def _store_has_current_pricing(self, store_id, all_prices_cache):
         """Helper method to check if a store has any price data in the pre-fetched cache."""
