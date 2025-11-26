@@ -38,7 +38,7 @@ class UpdateOrchestrator:
         self.price_manager = PriceManager(self.command, self.caches, self.update_cache)
         self.category_manager = CategoryManager(self.command, self.caches, self.update_cache)
 
-    def build_global_caches(self):
+    def _build_global_caches(self):
         """
         Builds the initial, memory-efficient, two-tier in-memory caches.
         - Tier 1 (Lean Global Cache): Maps barcodes, norm_strings, and SKUs to product IDs (int).
@@ -206,13 +206,14 @@ class UpdateOrchestrator:
         self.command.stdout.write(f"  - Original list size: {len(raw_product_data)}, De-duplicated list size: {len(final_list_for_pricing)}")
         return final_list_for_pricing
 
-    def process_files_in_inbox(self):
-        """Processes all .jsonl files currently in the inbox."""
+    def run(self):
+        """The main orchestration method."""
+        self.command.stdout.write(self.command.style.SQL_FIELD("-- Starting Product Update (V2) --"))
+        
+        self._build_global_caches()
+
         all_files = sorted([os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')])
         
-        if not all_files:
-            return False # No files were processed
-
         current_company_id_in_cache = None
 
         for file_path in all_files:
@@ -263,11 +264,8 @@ class UpdateOrchestrator:
                 self.command.stdout.write(f"  - Successfully processed and deleted file: {os.path.basename(file_path)}")
             except FileNotFoundError:
                 self.command.stdout.write(f"  - File already removed, skipping deletion: {os.path.basename(file_path)}")
-        
-        return True # Files were processed
 
-    def run_post_processing(self):
-        """Runs all post-processing tasks after file ingestion."""
+
         # --- Post-Processing Section ---
         self.command.stdout.write(self.command.style.SUCCESS("\n--- Post-Processing Run Started ---"))
         
@@ -298,13 +296,5 @@ class UpdateOrchestrator:
         # 6. Final Cleanup: Remove products with no prices
         self.command.stdout.write(self.command.style.SUCCESS("\n--- Cleaning Orphan Products ---"))
         OrphanProductCleaner(self.command).run()
-
-    def run(self):
-        """The main orchestration method."""
-        self.command.stdout.write(self.command.style.SQL_FIELD("-- Starting Product Update (V2) --"))
-        
-        self.build_global_caches()
-        self.process_files_in_inbox()
-        self.run_post_processing()
 
         self.command.stdout.write(self.command.style.SUCCESS("\n-- Orchestrator finished --"))

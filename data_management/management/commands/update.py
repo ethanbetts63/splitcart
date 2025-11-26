@@ -60,10 +60,19 @@ class Command(BaseCommand):
 
         if run_products_processed:
             inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'product_inbox')
-            print(f"Checking for inbox at: {inbox_path}")
-            if not os.path.exists(inbox_path):
-                self.stdout.write(self.style.WARNING("Product inbox directory not found."))
-            else:
+
+            def files_exist_in_inbox():
+                if not os.path.exists(inbox_path):
+                    return False
+                for _, _, files in os.walk(inbox_path):
+                    if any(f.endswith('.jsonl') for f in files):
+                        return True
+                return False
+
+            while files_exist_in_inbox():
+                self.stdout.write(self.style.SUCCESS('Found files in product inbox. Starting update orchestrator...'))
                 orchestrator = UpdateOrchestrator(self, relaxed_staleness=relaxed_staleness)
                 orchestrator.run()
+                self.stdout.write(self.style.SUCCESS('Update orchestrator finished cycle. Checking for more files...'))
+
             self.stdout.write(self.style.SUCCESS('--- Product update from inbox complete ---'))
