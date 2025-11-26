@@ -61,7 +61,11 @@ class ProductListView(generics.ListAPIView):
             min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=store_ids))
         )
 
-        if ordering == 'price_asc':
+        elif ordering == 'carousel_default':
+            # Sort by the pre-calculated has_bargain flag first, then by unit price.
+            final_queryset = queryset.order_by('-has_bargain', F('min_unit_price').asc(nulls_last=True))
+
+        elif ordering == 'price_asc':
             final_queryset = queryset.annotate(
                 min_price=Min('prices__price', filter=Q(prices__store__id__in=store_ids))
             ).order_by('min_price')
@@ -70,10 +74,6 @@ class ProductListView(generics.ListAPIView):
                 min_price=Min('prices__price', filter=Q(prices__store__id__in=store_ids))
             ).order_by('-min_price')
         elif ordering == 'unit_price_asc':
-            final_queryset = queryset.order_by(F('min_unit_price').asc(nulls_last=True))
-        elif ordering == 'carousel_default':
-            # With the new dynamic bargain system, we no longer need a complex sort.
-            # Defaulting to sorting by unit price is a sensible choice for carousels.
             final_queryset = queryset.order_by(F('min_unit_price').asc(nulls_last=True))
         else:
             # Default ordering logic for search and category pages

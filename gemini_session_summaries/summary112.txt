@@ -1,0 +1,19 @@
+This session involved a deep refactoring of the frontend and backend to fix several subtle bugs and completely overhaul the "Bargain" system, moving it from a static, flawed model to a fully dynamic, user-centric one.
+
+Key activities included:
+
+1.  **Frontend Debugging:**
+    *   **Substitutes Carousel:** Investigated and fixed a bug where the substitutes carousel on the Product Page would not appear. The issue was a mismatch between a `dataKey` prop in the component and the actual data structure of the API response. The unnecessary prop was removed to resolve the issue.
+    *   **TypeScript Errors:** Resolved a series of TypeScript errors that occurred after the backend API was updated. This was fixed by updating the frontend `Product` type definition to include the new `bargain_info` object.
+
+2.  **Data Pipeline Fix ("True Fix"):**
+    *   Investigated a bug where non-human-readable, normalized brand names were being displayed to the user.
+    *   Traced the issue back to the `BaseDataCleaner` in the data pipeline, where the original, raw brand name was being incorrectly overwritten.
+    *   Fixed the issue by removing the destructive overwrite, ensuring the raw brand name is preserved for display while the normalized name is used for internal logic.
+
+3.  **Bargain System Overhaul:**
+    *   **Problem Identification:** We collaboratively identified several fundamental flaws in the old `Bargain` model: it was not dynamic based on a user's store selection, it used a "winner-take-all" model that missed many locally relevant deals, and it caused bugs on the frontend due to incomplete data.
+    *   **New Dynamic Architecture:** Implemented a completely new system where bargains are calculated on-the-fly for every API request. The `ProductSerializer` now calculates a discount percentage for each product based *only on the stores the user has selected*.
+    *   **New Bargain Rules:** The definition of a bargain was updated to be a discount between 25% and 75%, inclusive.
+    *   **Frontend Update:** The `ProductTile` component was updated to consume the new `bargain_info` object from the API and display a user-friendly "Up to X% less at Y" badge, removing all client-side calculation.
+    *   **Complete Cleanup:** After implementing the new dynamic system, the old, obsolete static `Bargain` system was systematically removed from the codebase. This included deleting the `Bargain` model, the generator and update scripts, and removing all related logic from management commands, API views, and URL configurations.

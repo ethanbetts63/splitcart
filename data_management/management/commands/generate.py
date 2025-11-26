@@ -8,6 +8,7 @@ class Command(BaseCommand):
         parser.add_argument('--cat-links', action='store_true', help='Generate category links.')
         parser.add_argument('--map', action='store_true', help='Generate store location map.')
         parser.add_argument('--primary-cats', action='store_true', help='Generate primary categories.')
+        parser.add_argument('--bargains', action='store_true', help='Generate bargain flags for products.')
         parser.add_argument('--store-groups', action='store_true', help='Generate store groups.')
         parser.add_argument('--price-comps', action='store_true', help='Generate price comparison data.')
         parser.add_argument('--archive', action='store_true', help='Archive the database.')
@@ -16,7 +17,7 @@ class Command(BaseCommand):
         parser.add_argument('--dev', action='store_true', help='Use development server URL.')
 
     def handle(self, *args, **options):
-        run_all = not any(options[key] for key in ['subs', 'cat_links', 'map', 'primary_cats', 'store_groups', 'price_comps', 'archive', 'categorize'])
+        run_all = not any(options[key] for key in ['subs', 'cat_links', 'map', 'primary_cats', 'bargains', 'store_groups', 'price_comps', 'archive', 'categorize'])
         dev = options['dev']
 
         if options['subs'] or run_all:
@@ -41,6 +42,12 @@ class Command(BaseCommand):
             from data_management.utils.generation_utils.primary_categories_generator import PrimaryCategoriesGenerator
             self.stdout.write(self.style.SUCCESS("Generating primary categories..."))
             generator = PrimaryCategoriesGenerator(self)
+            generator.run()
+
+        if options['bargains'] or run_all:
+            from data_management.utils.generation_utils.bargains_generator import BargainsGenerator
+            self.stdout.write(self.style.SUCCESS("Generating bargain flags..."))
+            generator = BargainsGenerator(self, dev=dev)
             generator.run()
 
         if options['store_groups'] or run_all:

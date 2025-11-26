@@ -110,10 +110,11 @@ class ProductSerializer(serializers.ModelSerializer):
     primary_category = PrimaryCategorySerializer(read_only=True)
     min_unit_price = serializers.DecimalField(max_digits=10, decimal_places=4, read_only=True, required=False)
     slug = serializers.SerializerMethodField()
+    bargain_info = serializers.ReadOnlyField()
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'brand_name', 'size', 'image_url', 'prices', 'primary_category', 'min_unit_price', 'slug')
+        fields = ('id', 'name', 'brand_name', 'size', 'image_url', 'prices', 'primary_category', 'min_unit_price', 'slug', 'bargain_info')
 
     def get_slug(self, obj):
         return f"{slugify(obj.name)}-{obj.id}"
@@ -147,7 +148,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
                 if min_price > 0 and max_price > min_price:
                     discount = round(((max_price - min_price) / max_price) * 100)
-                    if 25 <= discount <= 75:
+                    if 5 <= discount <= 75:
                         bargain_info = {
                             "discount_percentage": int(discount),
                             "cheapest_company_name": min_price_entry['company']
