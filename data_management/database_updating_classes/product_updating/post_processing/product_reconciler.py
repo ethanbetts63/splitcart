@@ -91,16 +91,13 @@ class ProductReconciler:
                 ProductEnricher.enrich_canonical_product(canon_obj, duplicate_product)
 
             if not products_to_delete_ids:
-                # self.command.stdout.write("  - No product duplicates found to merge in this chunk.")
                 continue
 
-            # self.command.stdout.write(f"  - Found {len(products_to_delete_ids)} duplicate products to merge in this chunk.")
             total_merged += len(products_to_delete_ids)
             total_updated += len(products_to_update)
 
             try:
                 with transaction.atomic():
-                    # self.command.stdout.write("    - Re-assigning prices from duplicate products...")
                     for canon_id, dupe_ids in fk_updates.items():
                         involved_prices = list(Price.objects.filter(
                             Q(product_id=canon_id) | Q(product_id__in=dupe_ids)
