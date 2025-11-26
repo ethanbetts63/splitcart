@@ -101,17 +101,20 @@ class BargainsGenerator:
             min_price = Decimal(min_price_entry['price'])
             max_price = Decimal(max_price_entry['price'])
 
+            if min_price > 0 and max_price > min_price:
+                # Calculate discount percentage
+                discount_percentage = round(((max_price - min_price) / max_price) * 100)
 
-                # what is the point of this line? 
-            if min_price > 0 and max_price > (min_price * Decimal('1.5')):
-
-                bargains_data.append({
-                    'product_id': product_id,
-                    'store_id': min_price_entry['store_id'],
-                    'cheapest_price_id': min_price_entry['id'],
-                    'most_expensive_price_id': max_price_entry['id'],
-                })
-                bargain_count += 1
+                # New Rule: A bargain is a discount between 25% and 75% inclusive.
+                if 25 <= discount_percentage <= 75:
+                    bargains_data.append({
+                        'product_id': product_id,
+                        'store_id': min_price_entry['store_id'],
+                        'cheapest_price_id': min_price_entry['id'],
+                        'most_expensive_price_id': max_price_entry['id'],
+                        'discount_percentage': int(discount_percentage)
+                    })
+                    bargain_count += 1
 
         outbox_dir = 'data_management/data/outboxes/bargains_outbox'
         os.makedirs(outbox_dir, exist_ok=True)

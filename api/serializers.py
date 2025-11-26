@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.utils.text import slugify
+from decimal import Decimal
 from products.models import Product, Price
 from products.models.substitution import ProductSubstitution
 from companies.models import Store, Category, PrimaryCategory, Company, PillarPage
@@ -116,6 +117,44 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_slug(self, obj):
         return f"{slugify(obj.name)}-{obj.id}"
+
+    def to_representation(self, instance):
+        """
+        Calculates bargain info dynamically after the main serialization is done.
+        """
+        representation = super().to_representation(instance)
+        
+        bargain_info = None
+        prices_list = representation.get('prices', [])
+        
+        # We need at least two different companies to compare.
+        if len(prices_list) >= 2:
+            all_prices = []
+            for p in prices_list:
+                # Get the min price from the display string "5.00" or "5.00 - 6.00"
+                try:
+                    price_val = float(p['price_display'].split(' ')[0])
+                    all_prices.append({'price': price_val, 'company': p['company']})
+                except (ValueError, IndexError):
+                    continue
+
+            if len(all_prices) >= 2:
+                min_price_entry = min(all_prices, key=lambda x: x['price'])
+                max_price_entry = max(all_prices, key=lambda x: x['price'])
+
+                min_price = Decimal(min_price_entry['price'])
+                max_price = Decimal(max_price_entry['price'])
+
+                if min_price > 0 and max_price > min_price:
+                    discount = round(((max_price - min_price) / max_price) * 100)
+                    if 25 <= discount <= 75:
+                        bargain_info = {
+                            "discount_percentage": int(discount),
+                            "cheapest_company_name": min_price_entry['company']
+                        }
+
+        representation['bargain_info'] = bargain_info
+        return representation
 
     def _get_image_url_for_company(self, product_obj, company_name, company_obj=None):
         """

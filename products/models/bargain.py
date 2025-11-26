@@ -9,6 +9,11 @@ class Bargain(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='bargains')
     cheapest_price = models.ForeignKey(Price, on_delete=models.CASCADE, related_name='bargain_as_cheapest')
     most_expensive_price = models.ForeignKey(Price, on_delete=models.CASCADE, related_name='bargain_as_most_expensive')
+    discount_percentage = models.PositiveIntegerField(
+        null=True, 
+        blank=True,
+        help_text="The calculated discount percentage ((most_expensive - cheapest) / most_expensive) * 100."
+    )
     primary_categories = models.ManyToManyField(PrimaryCategory, related_name='bargains', blank=True)
 
     class Meta:

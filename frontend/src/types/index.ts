@@ -31,6 +31,10 @@ export type Product = {
   };
   min_unit_price?: number | null;
   slug?: string;
+  bargain_info?: {
+    discount_percentage: number;
+    cheapest_company_name: string;
+  } | null;
 };
 
 export type CartSubstitution = {

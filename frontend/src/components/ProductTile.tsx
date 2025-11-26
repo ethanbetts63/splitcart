@@ -48,7 +48,8 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
   const srcSet = generateSrcSet(imageUrl);
 
   const bargainInfo = React.useMemo(() => {
-    if (!product.prices || product.prices.length <= 1) {
+    // Use the new pre-calculated bargain_info from the API
+    if (!product.bargain_info) {
       return null;
     }
 
@@ -66,37 +67,17 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
       "IGA": "bg-black text-white border border-red-600 font-bold",
     };
 
-    const numericPrices = product.prices.map(p => ({
-      company: p.company,
-      price: parseFloat(p.price_display.replace('$', '')),
-    })).filter(p => !isNaN(p.price));
+    const companyName = product.bargain_info.cheapest_company_name;
+    const shortName = companyShortNames[companyName] || companyName;
 
-    if (numericPrices.length <= 1) {
-      return null;
-    }
+    const bargainBadgeClasses = companyColors[shortName] || "bg-gray-700 text-white font-bold";
 
-    const minPrice = Math.min(...numericPrices.map(p => p.price));
-    const maxPrice = Math.max(...numericPrices.map(p => p.price));
-
-    if (minPrice === maxPrice) {
-      return null;
-    }
-
-    let percentage = Math.round(((maxPrice - minPrice) / maxPrice) * 100);
-    if (percentage === 0 && minPrice < maxPrice) {
-      percentage = 1; // Default to 1% if there's any difference
-    }
-
-    const cheapestCompanies = numericPrices
-      .filter(p => p.price === minPrice)
-      .map(p => companyShortNames[p.company] || p.company);
-
-    const bargainBadgeClasses = cheapestCompanies.length === 1
-      ? companyColors[cheapestCompanies[0]] || "bg-gray-700 text-white font-bold"
-      : "bg-gray-700 text-white font-bold";
-
-    return { percentage, cheapestCompanies, bargainBadgeClasses };
-  }, [product.prices]);
+    return {
+      percentage: product.bargain_info.discount_percentage,
+      cheapestCompany: shortName,
+      bargainBadgeClasses: bargainBadgeClasses,
+    };
+  }, [product.bargain_info]);
 
   const cheapestPriceInfo = product.prices && product.prices.length > 0 ? product.prices[0] : null;
   const perUnitPriceString = cheapestPriceInfo?.per_unit_price_string;
@@ -129,7 +110,7 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
           <div className="absolute top-2 right-2 z-20 flex flex-col items-end gap-1">
             {bargainInfo && (
               <Badge className={bargainInfo.bargainBadgeClasses}>
-                -{bargainInfo.percentage}% at {bargainInfo.cheapestCompanies.join(' or ')}
+                Up to {bargainInfo.percentage}% less at {bargainInfo.cheapestCompany}
               </Badge>
             )}
             {perUnitPriceString && (

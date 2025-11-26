@@ -97,8 +97,9 @@ class BargainUpdater:
             store = stores_map.get(bargain_data['store_id'])
             cheapest_price = prices_map.get(bargain_data['cheapest_price_id'])
             most_expensive_price = prices_map.get(bargain_data['most_expensive_price_id'])
+            discount_percentage = bargain_data.get('discount_percentage')
 
-            if not all([product, store, cheapest_price, most_expensive_price]):
+            if not all([product, store, cheapest_price, most_expensive_price, discount_percentage is not None]):
                 self.command.stderr.write(self.command.style.ERROR(f"Skipping bargain due to missing data: {bargain_data}"))
                 continue
 
@@ -107,6 +108,7 @@ class BargainUpdater:
                 store=store,
                 cheapest_price=cheapest_price,
                 most_expensive_price=most_expensive_price,
+                discount_percentage=discount_percentage,
             ))
 
             primary_cats_to_add = set()
