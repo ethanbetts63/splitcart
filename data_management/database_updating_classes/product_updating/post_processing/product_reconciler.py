@@ -46,111 +46,109 @@ class ProductReconciler:
             self.command.stdout.write("Product translation table is empty. Nothing to reconcile.")
             return
 
-        variation_strings = list(translations.keys())
-        canonical_strings = list(set(translations.values()))
+        translation_items = list(translations.items())
+        CHUNK_SIZE = 1000
+        total_merged = 0
+        total_updated = 0
 
-        all_products = list(Product.objects.filter(
-            Q(normalized_name_brand_size__in=variation_strings) |
-            Q(normalized_name_brand_size__in=canonical_strings)
-        ).select_related('brand'))
+        for i in range(0, len(translation_items), CHUNK_SIZE):
+            chunk_items = translation_items[i:i + CHUNK_SIZE]
+            chunk_translations = dict(chunk_items)
+            self.command.stdout.write(f"\nProcessing chunk {i//CHUNK_SIZE + 1}/{(len(translation_items) + CHUNK_SIZE - 1)//CHUNK_SIZE}...")
 
-        if not all_products:
-            self.command.stdout.write("No products found matching translation table. Nothing to reconcile.")
-            return
+            variation_strings = list(chunk_translations.keys())
+            canonical_strings = list(set(chunk_translations.values()))
 
-        product_map = {p.normalized_name_brand_size: p for p in all_products}
-        
-        products_to_update = {}  # {canonical_id: canonical_obj}
-        fk_updates = {}  # {canonical_id: [list_of_duplicate_ids]}
-        products_to_delete_ids = set()
+            all_products = list(Product.objects.filter(
+                Q(normalized_name_brand_size__in=variation_strings) |
+                Q(normalized_name_brand_size__in=canonical_strings)
+            ).select_related('brand'))
 
-        for variation_name, canonical_name in translations.items():
-            duplicate_product = product_map.get(variation_name)
-            canonical_product = product_map.get(canonical_name)
-
-            if not duplicate_product or not canonical_product or duplicate_product.id == canonical_product.id:
+            if not all_products:
+                self.command.stdout.write("  - No products found in this chunk. Skipping.")
                 continue
 
-            # Stage FK update for Price objects
-            fk_updates.setdefault(canonical_product.id, []).append(duplicate_product.id)
+            product_map = {p.normalized_name_brand_size: p for p in all_products}
             
-            # Stage product for deletion
-            products_to_delete_ids.add(duplicate_product.id)
+            products_to_update = {}
+            fk_updates = {}
+            products_to_delete_ids = set()
 
-            # Stage update of canonical product
-            if canonical_product.id not in products_to_update:
-                products_to_update[canonical_product.id] = canonical_product
-            
-            canon_obj = products_to_update[canonical_product.id]
-            ProductEnricher.enrich_canonical_product(canon_obj, duplicate_product)
+            for variation_name, canonical_name in chunk_translations.items():
+                duplicate_product = product_map.get(variation_name)
+                canonical_product = product_map.get(canonical_name)
 
-        if not products_to_delete_ids:
-            self.command.stdout.write("No product duplicates found to merge.")
-            return
+                if not duplicate_product or not canonical_product or duplicate_product.id == canonical_product.id:
+                    continue
 
-        self.command.stdout.write(f"Found {len(products_to_delete_ids)} duplicate products to merge.")
+                fk_updates.setdefault(canonical_product.id, []).append(duplicate_product.id)
+                products_to_delete_ids.add(duplicate_product.id)
 
-        try:
-            with transaction.atomic():
-                # 1. Update foreign keys on Price table
-                self.command.stdout.write("  - Re-assigning prices from duplicate products...")
-                for canon_id, dupe_ids in fk_updates.items():
-                    # 1. Fetch all prices for both canonical and duplicate products
-                    involved_prices = list(Price.objects.filter(
-                        Q(product_id=canon_id) | Q(product_id__in=dupe_ids)
-                    ))
+                if canonical_product.id not in products_to_update:
+                    products_to_update[canonical_product.id] = canonical_product
+                
+                canon_obj = products_to_update[canonical_product.id]
+                ProductEnricher.enrich_canonical_product(canon_obj, duplicate_product)
 
-                    # 2. Group prices by store
-                    prices_by_store = {}
-                    for p in involved_prices:
-                        prices_by_store.setdefault(p.store_id, []).append(p)
+            if not products_to_delete_ids:
+                self.command.stdout.write("  - No product duplicates found to merge in this chunk.")
+                continue
 
-                    prices_to_delete_pks = []
-                    prices_to_update_pks = []
+            self.command.stdout.write(f"  - Found {len(products_to_delete_ids)} duplicate products to merge in this chunk.")
+            total_merged += len(products_to_delete_ids)
+            total_updated += len(products_to_update)
 
-                    # 3. Process each store group to find conflicts and resolve them
-                    for store_id, price_group in prices_by_store.items():
-                        if len(price_group) == 1:
-                            # No conflict, but if it's a duplicate's price, it needs updating
-                            price = price_group[0]
-                            if price.product_id in dupe_ids:
-                                prices_to_update_pks.append(price.pk)
-                        else:
-                            # CONFLICT: More than one price for this store. Find the winner.
-                            price_group.sort(key=lambda x: x.scraped_date, reverse=True)
-                            winner = price_group[0]
-                            losers = price_group[1:]
-                            
-                            # Mark losers for deletion
-                            for loser in losers:
-                                prices_to_delete_pks.append(loser.pk)
-                            
-                            # If the winner was a duplicate, it needs to be updated
-                            if winner.product_id in dupe_ids:
-                                prices_to_update_pks.append(winner.pk)
+            try:
+                with transaction.atomic():
+                    self.command.stdout.write("    - Re-assigning prices from duplicate products...")
+                    for canon_id, dupe_ids in fk_updates.items():
+                        involved_prices = list(Price.objects.filter(
+                            Q(product_id=canon_id) | Q(product_id__in=dupe_ids)
+                        ))
+
+                        prices_by_store = {}
+                        for p in involved_prices:
+                            prices_by_store.setdefault(p.store_id, []).append(p)
+
+                        prices_to_delete_pks = []
+                        prices_to_update_pks = []
+
+                        for store_id, price_group in prices_by_store.items():
+                            if len(price_group) == 1:
+                                price = price_group[0]
+                                if price.product_id in dupe_ids:
+                                    prices_to_update_pks.append(price.pk)
+                            else:
+                                price_group.sort(key=lambda x: x.scraped_date, reverse=True)
+                                winner = price_group[0]
+                                losers = price_group[1:]
+                                
+                                for loser in losers:
+                                    prices_to_delete_pks.append(loser.pk)
+                                
+                                if winner.product_id in dupe_ids:
+                                    prices_to_update_pks.append(winner.pk)
+                        
+                        if prices_to_delete_pks:
+                            Price.objects.filter(pk__in=prices_to_delete_pks).delete()
+                        
+                        if prices_to_update_pks:
+                            Price.objects.filter(pk__in=prices_to_update_pks).update(product_id=canon_id)
+
+                    Product.objects.filter(id__in=products_to_delete_ids).delete()
                     
-                    # 4. Perform bulk database operations
-                    if prices_to_delete_pks:
-                        Price.objects.filter(pk__in=prices_to_delete_pks).delete()
-                    
-                    if prices_to_update_pks:
-                        Price.objects.filter(pk__in=prices_to_update_pks).update(product_id=canon_id)
+                    if products_to_update:
+                        update_fields = [
+                            'barcode', 'url', 'aldi_image_url', 'has_no_coles_barcode',
+                            'sizes', 'normalized_name_brand_size_variations', 'brand_name_company_pairs'
+                        ]
+                        Product.objects.bulk_update(list(products_to_update.values()), update_fields, batch_size=500)
 
-                # 2. Delete the duplicate products first to free up unique constraints
-                Product.objects.filter(id__in=products_to_delete_ids).delete()
-                self.command.stdout.write(f"  - Bulk deleted {len(products_to_delete_ids)} duplicate products.")
+            except Exception as e:
+                self.command.stderr.write(self.command.style.ERROR(f"An error occurred during product reconciliation chunk: {e}"))
+                raise
 
-                # 3. Update canonical products with enriched data
-                if products_to_update:
-                    update_fields = [
-                        'barcode', 'url', 'aldi_image_url', 'has_no_coles_barcode',
-                        'sizes', 'normalized_name_brand_size_variations', 'brand_name_company_pairs'
-                    ]
-                    Product.objects.bulk_update(products_to_update.values(), update_fields, batch_size=500)
-                    self.command.stdout.write(f"  - Bulk updated {len(products_to_update)} canonical products.")
-
-            self.command.stdout.write(self.command.style.SUCCESS("Product reconciliation completed successfully."))
-
-        except Exception as e:
-            self.command.stderr.write(self.command.style.ERROR(f"An error occurred during product reconciliation: {e}"))
-            raise
+        self.command.stdout.write("\n--- Product Reconciler Summary ---")
+        self.command.stdout.write(f"Total duplicate products merged: {total_merged}")
+        self.command.stdout.write(f"Total canonical products updated: {total_updated}")
+        self.command.stdout.write(self.command.style.SUCCESS("Product reconciliation completed successfully."))
