@@ -100,7 +100,7 @@ class ProductReconciler:
 
             try:
                 with transaction.atomic():
-                    self.command.stdout.write("    - Re-assigning prices from duplicate products...")
+                    # self.command.stdout.write("    - Re-assigning prices from duplicate products...")
                     for canon_id, dupe_ids in fk_updates.items():
                         involved_prices = list(Price.objects.filter(
                             Q(product_id=canon_id) | Q(product_id__in=dupe_ids)
