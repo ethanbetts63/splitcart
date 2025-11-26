@@ -24,9 +24,10 @@ class UpdateOrchestrator:
     The main entry point for the V2 product update process.
     Initializes the global caches and orchestrates the pipeline for each file.
     """
-    def __init__(self, command, relaxed_staleness=False):
+    def __init__(self, command, relaxed_staleness=False, post_process_only=False):
         self.command = command
         self.relaxed_staleness = relaxed_staleness
+        self.post_process_only = post_process_only
         self.inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'product_inbox')
         self.caches = {}
         self.brand_translation_cache = {}
@@ -210,60 +211,61 @@ class UpdateOrchestrator:
         """The main orchestration method."""
         self.command.stdout.write(self.command.style.SQL_FIELD("-- Starting Product Update (V2) --"))
         
-        self._build_global_caches()
+        if not self.post_process_only:
+            self._build_global_caches()
 
-        all_files = sorted([os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')])
-        
-        current_company_id_in_cache = None
-
-        for file_path in all_files:
-            self.command.stdout.write(f"\n{self.command.style.WARNING('--- Processing file:')} {os.path.basename(file_path)} ---")
+            all_files = sorted([os.path.join(root, file) for root, _, files in os.walk(self.inbox_path) for file in files if file.endswith('.jsonl')])
             
-            # Clear the discovered pairs cache for each new file
-            self.discovered_brand_pairs.clear()
+            current_company_id_in_cache = None
 
-            file_reader = FileReader(file_path)
-            metadata, raw_product_data = file_reader.read_and_consolidate()
+            for file_path in all_files:
+                self.command.stdout.write(f"\n{self.command.style.WARNING('--- Processing file:')} {os.path.basename(file_path)} ---")
+                
+                # Clear the discovered pairs cache for each new file
+                self.discovered_brand_pairs.clear()
 
-            is_valid, store_or_reason = self._is_file_valid(metadata, raw_product_data)
-            if not is_valid:
+                file_reader = FileReader(file_path)
+                metadata, raw_product_data = file_reader.read_and_consolidate()
+
+                is_valid, store_or_reason = self._is_file_valid(metadata, raw_product_data)
+                if not is_valid:
+                    try:
+                        os.remove(file_path)
+                    except FileNotFoundError:
+                        pass  # File is already gone, which is fine.
+                    continue
+                
+                store = store_or_reason
+
+                # JIT Caching for SKUs
+                if store.company.id != current_company_id_in_cache:
+                    self._prepare_sku_cache_for_company(store.company)
+                    current_company_id_in_cache = store.company.id
+
+                # 1. Process Products (runs first to discover brand pairs)
+                self.product_manager.process(raw_product_data, store.company)
+
+                # 1.5. De-duplicate the product list before pricing to prevent unique constraint errors
+                final_list_for_pricing = self._deduplicate_product_data_for_pricing(raw_product_data)
+                
+                # 2. Process Brands
+                self.brand_manager.process(raw_product_data, self.discovered_brand_pairs)
+
+                # 3. Prepare Price Cache for the current store
+                self._prepare_price_cache_for_store(store)
+
+                # 4. Process Prices
+                self.price_manager.process(final_list_for_pricing, store)
+
+                # 5. Process Categories
+                self.category_manager.process(raw_product_data, store.company)
+
+                # 6. Cleanup
                 try:
                     os.remove(file_path)
+                    self.command.stdout.write(f"  - Successfully processed and deleted file: {os.path.basename(file_path)}")
                 except FileNotFoundError:
-                    pass  # File is already gone, which is fine.
-                continue
-            
-            store = store_or_reason
-
-            # JIT Caching for SKUs
-            if store.company.id != current_company_id_in_cache:
-                self._prepare_sku_cache_for_company(store.company)
-                current_company_id_in_cache = store.company.id
-
-            # 1. Process Products (runs first to discover brand pairs)
-            self.product_manager.process(raw_product_data, store.company)
-
-            # 1.5. De-duplicate the product list before pricing to prevent unique constraint errors
-            final_list_for_pricing = self._deduplicate_product_data_for_pricing(raw_product_data)
-            
-            # 2. Process Brands
-            self.brand_manager.process(raw_product_data, self.discovered_brand_pairs)
-
-            # 3. Prepare Price Cache for the current store
-            self._prepare_price_cache_for_store(store)
-
-            # 4. Process Prices
-            self.price_manager.process(final_list_for_pricing, store)
-
-            # 5. Process Categories
-            self.category_manager.process(raw_product_data, store.company)
-
-            # 6. Cleanup
-            try:
-                os.remove(file_path)
-                self.command.stdout.write(f"  - Successfully processed and deleted file: {os.path.basename(file_path)}")
-            except FileNotFoundError:
-                self.command.stdout.write(f"  - File already removed, skipping deletion: {os.path.basename(file_path)}")
+                    self.command.stdout.write(f"  - File already removed, skipping deletion: {os.path.basename(file_path)}")
 
 
         # --- Post-Processing Section ---
