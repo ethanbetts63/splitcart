@@ -8,7 +8,7 @@ class Command(BaseCommand):
         parser.add_argument('--cat-links', action='store_true', help='Generate category links.')
         parser.add_argument('--map', action='store_true', help='Generate store location map.')
         parser.add_argument('--primary-cats', action='store_true', help='Generate primary categories.')
-        parser.add_argument('--bargains', action='store_true', help='Generate bargain flags for products.')
+        parser.add_argument('--bargains', action='store_true', help='Generate all viable bargain combinations and save to a file.')
         parser.add_argument('--store-groups', action='store_true', help='Generate store groups.')
         parser.add_argument('--price-comps', action='store_true', help='Generate price comparison data.')
         parser.add_argument('--archive', action='store_true', help='Archive the database.')
@@ -45,9 +45,9 @@ class Command(BaseCommand):
             generator.run()
 
         if options['bargains'] or run_all:
-            from data_management.utils.generation_utils.bargains_generator import BargainsGenerator
-            self.stdout.write(self.style.SUCCESS("Generating bargain flags..."))
-            generator = BargainsGenerator(self, dev=dev)
+            from data_management.utils.generation_utils.bargain_generator import BargainGenerator
+            self.stdout.write(self.style.SUCCESS("Generating all bargain combinations..."))
+            generator = BargainGenerator(self, dev=dev)
             generator.run()
 
         if options['store_groups'] or run_all:

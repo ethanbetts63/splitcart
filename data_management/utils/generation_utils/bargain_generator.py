@@ -1,0 +1,133 @@
+import os
+import json
+import itertools
+from decimal import Decimal
+import requests
+from django.conf import settings
+from django.utils import timezone
+from datetime import timedelta
+
+class BargainGenerator:
+    """
+    Finds all viable bargain combinations between store prices for every product
+    by fetching data from the API and exports them to a JSON file.
+    """
+    def __init__(self, command, dev=False):
+        self.command = command
+        self.dev = dev
+        self.outbox_dir = 'data_management/data/outboxes/bargains_outbox'
+        os.makedirs(self.outbox_dir, exist_ok=True)
+
+    def _fetch_paginated_data(self, url, headers, data_type):
+        """Fetches all pages of data from a paginated API endpoint."""
+        all_results = []
+        next_url = url
+        page_num = 1
+        while next_url:
+            try:
+                response = requests.get(next_url, headers=headers)
+                response.raise_for_status()
+                data = response.json()
+                all_results.extend(data['results'])
+                next_url = data.get('next')
+                self.command.stdout.write(f"\r    - Fetched page {page_num} ({len(all_results)} total {data_type})...", ending="")
+                page_num += 1
+            except requests.exceptions.RequestException as e:
+                self.command.stderr.write(self.command.style.ERROR(f"\nError fetching data from {next_url}: {e}"))
+                return None # Indicate failure
+        
+        self.command.stdout.write(f"\r    - Fetched {len(all_results)} total {data_type}. Done.              ")
+        self.command.stdout.write("") # For a newline
+        return all_results
+
+    def run(self):
+        """
+        Orchestrates the entire bargain generation process.
+        """
+        self.command.stdout.write(self.command.style.SUCCESS("--- Starting New Bargain Generation (All Combinations via API) ---"))
+        
+        # Set up server URL and API key based on dev flag
+        if self.dev:
+            server_url = "http://127.0.0.1:8000"
+            api_key = settings.INTERNAL_API_KEY
+        else:
+            try:
+                server_url = settings.API_SERVER_URL
+                api_key = settings.INTERNAL_API_KEY
+            except AttributeError:
+                self.command.stderr.write("API_SERVER_URL and INTERNAL_API_KEY must be set in settings.")
+                return
+        
+        headers = {'X-Internal-API-Key': api_key, 'Accept': 'application/json'}
+        self.command.stdout.write(f"  - Targeting API server at {server_url}")
+
+        # Fetch all prices via API
+        self.command.stdout.write("  - Fetching all prices from API...")
+        prices_url = f"{server_url}/api/export/prices/"
+        all_prices = self._fetch_paginated_data(prices_url, headers, "prices")
+
+        if all_prices is None:
+            self.command.stderr.write(self.command.style.ERROR("Aborting due to failure in price fetching."))
+            return
+
+        # Group prices by product
+        self.command.stdout.write("  - Grouping prices by product...")
+        prices_by_product = {}
+        for price_data in all_prices:
+            product_id = price_data['product_id']
+            if product_id not in prices_by_product:
+                prices_by_product[product_id] = []
+            prices_by_product[product_id].append(price_data)
+        self.command.stdout.write(f"    - Grouped prices for {len(prices_by_product)} unique products.")
+
+        # Calculate all viable bargain combinations
+        self.command.stdout.write("  - Calculating all bargain combinations...")
+        bargains_data = []
+        total_products_with_bargains = 0
+        processed_products = 0
+        total_products = len(prices_by_product)
+
+        for product_id, prices in prices_by_product.items():
+            processed_products += 1
+            if len(prices) < 2:
+                continue
+
+            has_bargain_for_this_product = False
+            for price1, price2 in itertools.combinations(prices, 2):
+                if price1['store_id'] == price2['store_id']:
+                    continue
+
+                price1_decimal = Decimal(price1['price'])
+                price2_decimal = Decimal(price2['price'])
+
+                cheaper, expensive = (price1, price2) if price1_decimal < price2_decimal else (price2, price1)
+                min_price, max_price = Decimal(cheaper['price']), Decimal(expensive['price'])
+
+                if min_price > 0 and max_price > min_price:
+                    discount = int(round(((max_price - min_price) / max_price) * 100))
+                    
+                    if 10 <= discount <= 75:
+                        bargains_data.append({
+                            'product_id': product_id,
+                            'discount_percentage': discount,
+                            'cheaper_store_id': cheaper['store_id'],
+                            'expensive_store_id': expensive['store_id'],
+                        })
+                        has_bargain_for_this_product = True
+            
+            if has_bargain_for_this_product:
+                total_products_with_bargains += 1
+            
+            if processed_products % 500 == 0 or processed_products == total_products:
+                self.command.stdout.write(f"\r    - Processed {processed_products}/{total_products} products...", ending="")
+        
+        self.command.stdout.write(f"\r    - Processed {total_products}/{total_products} products. Done.                 ")
+        self.command.stdout.write(f"    - Found {len(bargains_data)} total bargains across {total_products_with_bargains} products.")
+
+        # Write to outbox
+        output_path = os.path.join(self.outbox_dir, 'new_bargains.json')
+        self.command.stdout.write(f"  - Writing bargain data to {output_path}...")
+        with open(output_path, 'w') as f:
+            json.dump(bargains_data, f)
+
+        self.command.stdout.write(self.command.style.SUCCESS("--- New Bargain Generation Complete ---"))
