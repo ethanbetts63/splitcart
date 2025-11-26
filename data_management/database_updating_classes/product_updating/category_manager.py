@@ -13,15 +13,12 @@ class CategoryManager:
         self.cache_updater = cache_updater
 
     def _create_new_categories(self, all_category_paths, company_obj):
-        """Ensures all categories from the file exist in the database."""
-        self.command.stdout.write("    - Ensuring all categories exist...")
-        
+        """Ensures all categories from the file exist in the database."""        
         all_required_cat_tuples = {(name, company_obj.id) for path in all_category_paths for name in path}
         existing_cat_tuples = set(self.caches['categories'].keys())
         new_cat_tuples = all_required_cat_tuples - existing_cat_tuples
 
         if not new_cat_tuples:
-            self.command.stdout.write("      - No new categories to create.")
             return
 
         self.command.stdout.write(f"      - Found {len(new_cat_tuples)} new categories to create for {company_obj.name}.")
@@ -39,7 +36,6 @@ class CategoryManager:
             newly_created_cats = Category.objects.filter(company=company_obj, name__in=new_category_names)
             for category in newly_created_cats:
                 self.cache_updater('categories', (category.name, category.company_id), category)
-            self.command.stdout.write("      - Shared category cache updated.")
 
         except Exception as e:
             self.command.stderr.write(self.command.style.ERROR(f"      - An error occurred during category creation: {e}"))
@@ -47,7 +43,6 @@ class CategoryManager:
 
     def _create_parent_child_links(self, all_category_paths, company_obj):
         """Creates the hierarchical links between parent and child categories."""
-        self.command.stdout.write("    - Creating parent-child category relationships...")
         CategoryParents = Category.parents.through
         links_to_create = []
         
@@ -73,12 +68,10 @@ class CategoryManager:
             self.command.stdout.write(f"      - Creating {len(links_to_create)} new parent-child links.")
             with transaction.atomic():
                 CategoryParents.objects.bulk_create(links_to_create, ignore_conflicts=True)
-        else:
-            self.command.stdout.write("      - No new parent-child links to create.")
+
 
     def _link_products_to_categories(self, raw_product_data, company_obj):
         """Links products to their leaf categories."""
-        self.command.stdout.write("    - Creating product-to-category relationships...")
         ProductCategory = Product.category.through
         links_to_create = []
         
@@ -107,8 +100,7 @@ class CategoryManager:
             self.command.stdout.write(f"      - Creating {len(links_to_create)} new product-category links.")
             with transaction.atomic():
                 ProductCategory.objects.bulk_create(links_to_create, ignore_conflicts=True)
-        else:
-            self.command.stdout.write("      - No new product-category links to create.")
+
 
     def process(self, raw_product_data, company_obj):
         """
