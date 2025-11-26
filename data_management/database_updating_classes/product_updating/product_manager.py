@@ -26,6 +26,7 @@ class ProductManager:
         skus_to_create_tuples = []    # Stores (product_id or norm_string, sku_value)
 
         company_sku_cache = self.caches['products_by_sku'].get(company_obj.name, {})
+        staged_barcodes = {} # New cache for this batch
 
         for data in raw_product_data:
             product_dict = data.get('product', {})
@@ -76,11 +77,23 @@ class ProductManager:
                 if sku and sku not in company_sku_cache:
                     skus_to_create_tuples.append((matched_product_id, sku))
             else:
-                products_to_create_data.append(data)
-                # For new products, the SKU link will also be new
-                if sku:
-                    norm_string = product_dict.get('normalized_name_brand_size')
-                    skus_to_create_tuples.append((norm_string, sku))
+                # Potential new product. Check for barcode collision within this batch.
+                norm_string = product_dict.get('normalized_name_brand_size')
+                if barcode and barcode in staged_barcodes:
+                    # Collision found. Treat as an update to the staged product.
+                    # For now, just link the SKU to the first-occurrence product.
+                    first_product_norm_string = staged_barcodes[barcode]
+                    if sku:
+                        skus_to_create_tuples.append((first_product_norm_string, sku))
+                else:
+                    # This is a genuine new product for this batch.
+                    products_to_create_data.append(data)
+                    # Stage the barcode to catch subsequent duplicates in this batch.
+                    if barcode:
+                        staged_barcodes[barcode] = norm_string
+                    # For new products, the SKU link will also be new.
+                    if sku:
+                        skus_to_create_tuples.append((norm_string, sku))
         
         self.command.stdout.write(f"      - Products to create: {len(products_to_create_data)}, Products to update: {len(products_to_update_data)}")
         self.command.stdout.write(f"      - SKU links to create: {len(skus_to_create_tuples)}")

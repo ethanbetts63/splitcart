@@ -54,7 +54,7 @@ class ProductReconciler:
         for i in range(0, len(translation_items), CHUNK_SIZE):
             chunk_items = translation_items[i:i + CHUNK_SIZE]
             chunk_translations = dict(chunk_items)
-            self.command.stdout.write(f"\nProcessing chunk {i//CHUNK_SIZE + 1}/{(len(translation_items) + CHUNK_SIZE - 1)//CHUNK_SIZE}...")
+            # self.command.stdout.write(f"\nProcessing chunk {i//CHUNK_SIZE + 1}/{(len(translation_items) + CHUNK_SIZE - 1)//CHUNK_SIZE}...")
 
             variation_strings = list(chunk_translations.keys())
             canonical_strings = list(set(chunk_translations.values()))
@@ -65,7 +65,7 @@ class ProductReconciler:
             ).select_related('brand'))
 
             if not all_products:
-                self.command.stdout.write("  - No products found in this chunk. Skipping.")
+                # self.command.stdout.write("  - No products found in this chunk. Skipping.")
                 continue
 
             product_map = {p.normalized_name_brand_size: p for p in all_products}
@@ -91,10 +91,10 @@ class ProductReconciler:
                 ProductEnricher.enrich_canonical_product(canon_obj, duplicate_product)
 
             if not products_to_delete_ids:
-                self.command.stdout.write("  - No product duplicates found to merge in this chunk.")
+                # self.command.stdout.write("  - No product duplicates found to merge in this chunk.")
                 continue
 
-            self.command.stdout.write(f"  - Found {len(products_to_delete_ids)} duplicate products to merge in this chunk.")
+            # self.command.stdout.write(f"  - Found {len(products_to_delete_ids)} duplicate products to merge in this chunk.")
             total_merged += len(products_to_delete_ids)
             total_updated += len(products_to_update)
 
