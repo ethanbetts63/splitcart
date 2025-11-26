@@ -95,10 +95,9 @@ const ProductPage: React.FC = () => {
         <div className="mt-12">
           <ProductCarousel
             key={`substitutes-for-${product.id}`}
-            title="Substitutes"
+            title="Similar Products"
             sourceUrl={`/api/products/${product.id}/substitutes/`}
             storeIds={storeIdsArray}
-            dataKey="substituted_product"
             minProducts={1}
           />
         </div>
