@@ -15,7 +15,6 @@ class StandardResultsSetPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size = 50
 
-@method_decorator(cache_page(21600), name='dispatch')
 class ProductListView(generics.ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = ProductSerializer
@@ -140,7 +139,7 @@ class ProductListView(generics.ListAPIView):
                 max_price = max(min_prices_per_company)
 
                 if min_price > 0 and max_price > min_price:
-                    calculated_discount = round(((max_price - min_price) / max_price) * 100)
+                    calculated_discount = int(round(((max_price - min_price) / max_price) * 100))
                     # This is the range for user-facing bargains in the serializer
                     if 10 <= calculated_discount <= 75:
                         discount = calculated_discount

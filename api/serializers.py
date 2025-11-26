@@ -243,6 +243,8 @@ class ProductSerializer(serializers.ModelSerializer):
         else:
             # Fallback to the original query if the map is not provided
             prices_queryset = Price.objects.filter(product=obj)
+            if nearby_store_ids:
+                prices_queryset = prices_queryset.filter(store__id__in=nearby_store_ids)
             # Prefetch store and company to avoid N+1 queries in the loop
             prices_queryset = prices_queryset.select_related('store__company')
 
