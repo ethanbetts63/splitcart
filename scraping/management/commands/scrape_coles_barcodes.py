@@ -4,28 +4,35 @@ import os
 from scraping.scrapers.barcode_scraper_coles import ColesBarcodeScraper
 
 class Command(BaseCommand):
-    help = 'Manually runs the Coles barcode enrichment process on a specific file.'
-
-    def add_arguments(self, parser):
-        parser.add_argument('--file', type=str, required=True, help='The absolute path to a specific .jsonl file to process.')
+    help = 'Runs the Coles barcode enrichment process on all files in the barcode_enrichment_inbox.'
 
     def handle(self, *args, **options):
-        file_path = options['file']
+        inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'barcode_enrichment_inbox')
 
-        if not os.path.isabs(file_path):
-            self.stdout.write(self.style.ERROR("Please provide an absolute path for the file."))
-            return
+        if not os.path.exists(inbox_path):
+            os.makedirs(inbox_path)
+            self.stdout.write(self.style.WARNING(f"Created barcode inbox at: {inbox_path}"))
+        
+        def get_next_file():
+            for file_name in os.listdir(inbox_path):
+                if file_name.endswith('.jsonl'):
+                    return os.path.join(inbox_path, file_name)
+            return None
 
-        if not os.path.exists(file_path):
-            self.stdout.write(self.style.ERROR(f"File not found: {file_path}"))
-            return
+        while file_path := get_next_file():
+            self.stdout.write(f"--- Starting enrichment for: {os.path.basename(file_path)} ---")
+            try:
+                scraper = ColesBarcodeScraper(self, file_path)
+                scraper.run()
+                self.stdout.write(self.style.SUCCESS(f"Enrichment process completed for {os.path.basename(file_path)}."))
+            except InterruptedError as e:
+                self.stderr.write(self.style.ERROR(f"A critical error occurred while processing {os.path.basename(file_path)}: {e}"))
+                self.stderr.write(self.style.ERROR("Halting barcode scraping command to prevent further errors."))
+                break
+            except Exception as e:
+                self.stderr.write(self.style.ERROR(f"An unexpected error occurred for {os.path.basename(file_path)}: {e}"))
+                self.stderr.write(self.style.ERROR("Halting barcode scraping command."))
+                break
+        
+        self.stdout.write(self.style.SUCCESS('--- All barcode enrichment complete ---'))
 
-        self.stdout.write(f"Starting enrichment for: {file_path}")
-        try:
-            scraper = ColesBarcodeScraper(self, file_path)
-            scraper.run()
-            self.stdout.write(self.style.SUCCESS("Enrichment process completed."))
-        except InterruptedError as e:
-            self.stdout.write(self.style.WARNING(f"Process stopped: {e}"))
-        except Exception as e:
-            self.stderr.write(self.style.ERROR(f"An unexpected error occurred: {e}"))
