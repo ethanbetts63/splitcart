@@ -4,7 +4,6 @@ from .views.gs1_file_upload_view import Gs1FileUploadView
 from .views.store_file_upload_view import StoreFileUploadView
 from .views.category_links_file_upload_view import CategoryLinksFileUploadView
 from .views.substitutions_file_upload_view import SubstitutionsFileUploadView
-from .views.bargains_file_upload_view import BargainsFileUploadView
 from .views.frontend_views.product_list_view import ProductListView
 from .views.frontend_views.product_detail_view import ProductDetailView
 from .views.product_translation_file_view import ProductTranslationFileView
@@ -51,7 +50,6 @@ urlpatterns = [
     path('upload/stores/', StoreFileUploadView.as_view(), name='store-file-upload'),
     path('upload/category-links/', CategoryLinksFileUploadView.as_view(), name='category-links-file-upload'),
     path('upload/substitutions/', SubstitutionsFileUploadView.as_view(), name='substitutions-file-upload'),
-    path('upload/bargains/', BargainsFileUploadView.as_view(), name='bargains-file-upload'),
     path('gs1/unconfirmed-brands/', GS1UnconfirmedBrandsView.as_view(), name='gs1-unconfirmed-brands'),
     path('brands/<int:brand_id>/sample-barcode/', BrandSampleBarcodeView.as_view(), name='brand-sample-barcode'), # New path
     path('products/', ProductListView.as_view(), name='product-list'),

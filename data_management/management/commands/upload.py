@@ -4,7 +4,6 @@ from scraping.utils.command_utils.gs1_uploader import Gs1Uploader
 from scraping.utils.command_utils.store_uploader import StoreUploader
 from scraping.utils.command_utils.category_links_uploader import CategoryLinksUploader
 from scraping.utils.command_utils.substitutions_uploader import SubstitutionsUploader
-from scraping.utils.command_utils.bargains_uploader import BargainsUploader
 
 class Command(BaseCommand):
     help = 'Uploads scraped and generated data to the server.'
@@ -15,7 +14,6 @@ class Command(BaseCommand):
         parser.add_argument('--stores', action='store_true', help='Upload store data.')
         parser.add_argument('--cat-links', action='store_true', help='Upload generated category links.')
         parser.add_argument('--subs', action='store_true', help='Upload generated substitutions.')
-        parser.add_argument('--bargains', action='store_true', help='Upload generated bargains.')
         parser.add_argument('--dev', action='store_true', help='Use development server URL.')
 
     def handle(self, *args, **options):
@@ -45,9 +43,4 @@ class Command(BaseCommand):
         if options['subs']:
             self.stdout.write(self.style.SUCCESS("Uploading substitutions..."))
             uploader = SubstitutionsUploader(self, dev=dev)
-            uploader.run()
-
-        if options['bargains']:
-            self.stdout.write(self.style.SUCCESS("Uploading bargains..."))
-            uploader = BargainsUploader(self, dev=dev)
             uploader.run()

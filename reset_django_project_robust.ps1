@@ -88,10 +88,6 @@ python manage.py generate --subs --dev # Local
 python manage.py upload --subs --dev # Local
 python manage.py update --subs # Server
 
-python manage.py generate --bargains --dev # Local
-python manage.py upload --bargains --dev # Local
-python manage.py update --bargains # Server
-
 python manage.py generate --primary-cats # Server
 python manage.py input_pillars
 python manage.py generate --price-comps

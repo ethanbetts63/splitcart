@@ -5,7 +5,7 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import PageNumberPagination
-from products.models import Product, Bargain
+from products.models import Product
 from ...serializers import ProductSerializer
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -72,31 +72,11 @@ class ProductListView(generics.ListAPIView):
         elif ordering == 'unit_price_asc':
             final_queryset = queryset.order_by(F('min_unit_price').asc(nulls_last=True))
         elif ordering == 'carousel_default':
-            bargain_exists = Exists(Bargain.objects.filter(product=OuterRef('pk'), store__id__in=store_ids))
-            base_queryset = queryset.annotate(is_bargain=bargain_exists)
-
-            bargain_ids = list(base_queryset.filter(is_bargain=True).values_list('id', flat=True)[:20])
-            
-            num_bargains = len(bargain_ids)
-            remaining_ids = []
-            if num_bargains < 20:
-                num_needed = 20 - num_bargains
-                remaining_ids = list(
-                    base_queryset.exclude(id__in=bargain_ids)
-                                 .order_by('min_unit_price')
-                                 .values_list('id', flat=True)[:num_needed]
-                )
-            
-            ordered_ids = bargain_ids + remaining_ids
-            
-            if not ordered_ids:
-                return queryset.none()
-
-            preserved_order = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(ordered_ids)])
-            final_queryset = queryset.filter(id__in=ordered_ids).order_by(preserved_order)
-
+            # With the new dynamic bargain system, we no longer need a complex sort.
+            # Defaulting to sorting by unit price is a sensible choice for carousels.
+            final_queryset = queryset.order_by(F('min_unit_price').asc(nulls_last=True))
         else:
-            # Default ordering logic
+            # Default ordering logic for search and category pages
             if search_query:
                 score = Value(0, output_field=IntegerField())
                 for term in search_terms:
@@ -106,17 +86,9 @@ class ProductListView(generics.ListAPIView):
                 
                 queryset = queryset.annotate(search_score=score)
                 final_queryset = queryset.order_by('-search_score')
-            
-            elif primary_category_slug:
-                bargain_exists = Bargain.objects.filter(
-                    product=OuterRef('pk'),
-                    store__id__in=store_ids
-                )
-                queryset = queryset.annotate(is_bargain=Exists(bargain_exists))
-                final_queryset = queryset.order_by('-is_bargain')
-                
             else:
-                final_queryset = queryset
+                # For category pages without a specific sort, we can also default to unit price
+                final_queryset = queryset.order_by(F('min_unit_price').asc(nulls_last=True))
 
         return final_queryset
 
