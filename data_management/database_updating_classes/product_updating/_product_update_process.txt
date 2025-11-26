@@ -52,7 +52,15 @@ A self-contained service for handling all `Product` and `SKU` logic.
     6.  **Update Caches**: After the transactions, it updates all relevant shared caches (`products_by_barcode`, `products_by_norm_string`, `products_by_sku`) with the new and updated information.
 
 **Known Issues:**
-*   The "Resolve Products & SKUs" logic does not account for duplicate products (e.g., two items with the same barcode) within a single input file. Because the caches are not updated during the resolution loop, each duplicate is incorrectly treated as a new product, which can lead to a `Duplicate entry` error during the `bulk_create` database operation.
+*   **Inter-file Duplicate Barcode Errors**: The "Resolve Products & SKUs" logic, despite its caching mechanism, can occasionally fail to identify an existing product when its barcode was newly created by a *preceding* input file within the same `update --products` run. This can lead to a `Duplicate entry` error during the `bulk_create` database operation when a subsequent file attempts to create the same product again. The exact root cause of this inter-file cache inconsistency is still under investigation.
+*   **Intra-file Duplicate Products**: Additionally, the current resolution logic for a single input file does not fully account for duplicate products (e.g., two items with the same barcode appearing within that file) if they are both considered "new" from the perspective of the global cache. This could also contribute to `Duplicate entry` errors.
+
+**Workaround for Duplicate Barcode Errors:**
+To ensure robustness against these `Duplicate entry` errors (particularly the inter-file type), the `update --products` management command has been enhanced. If an `IntegrityError` indicating a duplicate barcode is detected during an `UpdateOrchestrator` run, the command will now:
+1.  Log a warning message.
+2.  Wait for 30 seconds to allow for any potential file system or database synchronization delays.
+3.  Restart the entire `UpdateOrchestrator` process. This effectively "reboots" the caching system, allowing the process to start fresh, which typically resolves the transient cache inconsistency.
+4.  An internal counter limits these consecutive restarts to `MAX_RESTARTS` (currently 10) to prevent infinite loops. A successful run of the orchestrator resets this counter. This mechanism ensures that all files in the inbox are eventually processed.
 
 ### 5. `UpdateOrchestrator` (De-duplication for Pricing)
 Before prices are processed, the orchestrator performs a crucial de-duplication step.

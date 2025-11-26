@@ -1,4 +1,5 @@
 import os
+import time
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db import IntegrityError
@@ -89,9 +90,10 @@ class Command(BaseCommand):
                 except IntegrityError as e:
                     if 'Duplicate entry' in str(e) and 'for key \'products_product.barcode\'' in str(e):
                         self.stdout.write(self.style.WARNING(
-                            f"Duplicate barcode error detected. Restarting process... (Attempt {error_counter + 1}/{MAX_RESTARTS})"
+                            f"Duplicate barcode error detected. Waiting 30 seconds before restarting... (Attempt {error_counter + 1}/{MAX_RESTARTS})"
                         ))
                         error_counter += 1
+                        time.sleep(30)
                         continue # Loop to the next attempt
                     else:
                         # It's a different integrity error, we should not loop.
