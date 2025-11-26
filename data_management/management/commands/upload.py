@@ -4,6 +4,7 @@ from scraping.utils.command_utils.gs1_uploader import Gs1Uploader
 from scraping.utils.command_utils.store_uploader import StoreUploader
 from scraping.utils.command_utils.category_links_uploader import CategoryLinksUploader
 from scraping.utils.command_utils.substitutions_uploader import SubstitutionsUploader
+from scraping.utils.command_utils.bargain_uploader import BargainUploader
 
 class Command(BaseCommand):
     help = 'Uploads scraped and generated data to the server.'
@@ -14,10 +15,13 @@ class Command(BaseCommand):
         parser.add_argument('--stores', action='store_true', help='Upload store data.')
         parser.add_argument('--cat-links', action='store_true', help='Upload generated category links.')
         parser.add_argument('--subs', action='store_true', help='Upload generated substitutions.')
+        parser.add_argument('--bargains', action='store_true', help='Upload generated bargains.')
         parser.add_argument('--dev', action='store_true', help='Use development server URL.')
 
     def handle(self, *args, **options):
-        run_all = not any(options.values()) # Check if any flag is set
+        # Correctly determine if any task-specific flag was set
+        task_flags = ['products', 'gs1', 'stores', 'cat_links', 'subs', 'bargains']
+        run_all = not any(options[task] for task in task_flags)
         dev = options['dev']
 
         if options['products'] or run_all:
@@ -43,4 +47,9 @@ class Command(BaseCommand):
         if options['subs']:
             self.stdout.write(self.style.SUCCESS("Uploading substitutions..."))
             uploader = SubstitutionsUploader(self, dev=dev)
+            uploader.run()
+        
+        if options['bargains']:
+            self.stdout.write(self.style.SUCCESS("Uploading bargain data..."))
+            uploader = BargainUploader(self, dev=dev)
             uploader.run()

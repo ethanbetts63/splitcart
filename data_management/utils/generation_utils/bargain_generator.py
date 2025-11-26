@@ -61,9 +61,10 @@ class BargainGenerator:
         headers = {'X-Internal-API-Key': api_key, 'Accept': 'application/json'}
         self.command.stdout.write(f"  - Targeting API server at {server_url}")
 
-        # Fetch all prices via API
-        self.command.stdout.write("  - Fetching all prices from API...")
-        prices_url = f"{server_url}/api/export/prices/"
+        # Fetch all recent prices via API
+        self.command.stdout.write("  - Fetching recent prices from API...")
+        freshness_threshold = timezone.now() - timedelta(days=7)
+        prices_url = f"{server_url}/api/export/prices/?scraped_date_gte={freshness_threshold.date().isoformat()}"
         all_prices = self._fetch_paginated_data(prices_url, headers, "prices")
 
         if all_prices is None:
@@ -94,6 +95,10 @@ class BargainGenerator:
 
             has_bargain_for_this_product = False
             for price1, price2 in itertools.combinations(prices, 2):
+                # Ensure we have price IDs, which are crucial for the new model
+                if 'id' not in price1 or 'id' not in price2:
+                    continue
+
                 if price1['store_id'] == price2['store_id']:
                     continue
 
@@ -110,8 +115,8 @@ class BargainGenerator:
                         bargains_data.append({
                             'product_id': product_id,
                             'discount_percentage': discount,
-                            'cheaper_store_id': cheaper['store_id'],
-                            'expensive_store_id': expensive['store_id'],
+                            'cheaper_price_id': cheaper['id'],
+                            'expensive_price_id': expensive['id'],
                         })
                         has_bargain_for_this_product = True
             
@@ -125,7 +130,7 @@ class BargainGenerator:
         self.command.stdout.write(f"    - Found {len(bargains_data)} total bargains across {total_products_with_bargains} products.")
 
         # Write to outbox
-        output_path = os.path.join(self.outbox_dir, 'new_bargains.json')
+        output_path = os.path.join(self.outbox_dir, 'bargains.json')
         self.command.stdout.write(f"  - Writing bargain data to {output_path}...")
         with open(output_path, 'w') as f:
             json.dump(bargains_data, f)
