@@ -149,8 +149,6 @@ class BaseDataCleaner(ABC):
             brand_translations=self.brand_translations,
             product_translations=self.product_translations
         )
-        # Overwrite the brand with the canonical version
-        product['brand'] = normalizer.cleaned_brand
         # Add the new normalized brand key
         product['normalized_brand'] = normalizer.get_normalized_brand_name()
         product['sizes'] = normalizer.get_raw_sizes()
