@@ -8,6 +8,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--dev', action='store_true', help='Use dev server for API calls.')
+        parser.add_argument('--coles-v2', action='store_true', help='Use the refactored Coles barcode scraper workflow.')
 
     def handle(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('--- Starting Barcode Scraper Worker ---'))
@@ -27,41 +28,69 @@ class Command(BaseCommand):
 
         self.stdout.write(f"Found {len(files_to_process)} files to process.")
 
-        for file_name in files_to_process:
-            source_file_path = os.path.join(barcode_inbox_path, file_name)
-            self.stdout.write(self.style.HTTP_INFO(f"--- Processing file: {file_name} ---"))
+        if options['coles_v2']:
+            # --- V2 Workflow ---
+            from scraping.scrapers.barcode_scraper_coles_v2 import ColesBarcodeScraperV2
+            from scraping.utils.coles_session_manager import ColesSessionManager
+            
+            self.stdout.write(self.style.SUCCESS("--- Running in V2 (session-persistent) mode ---"))
+            session_manager = ColesSessionManager(self)
 
-            try:
-                # Currently, we only have a barcode scraper for Coles.
-                # This logic can be expanded if other scrapers need a barcode enrichment step.
-                if 'coles' in file_name.lower():
-                    scraper = ColesBarcodeScraper(command=self, source_file_path=source_file_path, dev=options['dev'])
+            for file_name in files_to_process:
+                source_file_path = os.path.join(barcode_inbox_path, file_name)
+                
+                if 'coles' not in file_name.lower():
+                    self.stdout.write(self.style.WARNING(f"No barcode scraper available for {file_name}. Moving to final outbox as-is."))
+                    final_destination = os.path.join(product_outbox_path, file_name)
+                    try:
+                        os.rename(source_file_path, final_destination)
+                    except FileNotFoundError:
+                        self.stdout.write(self.style.WARNING(f"File {file_name} was not found, it may have been moved by another process."))
+                    continue
+
+                self.stdout.write(self.style.HTTP_INFO(f"--- Processing file: {file_name} ---"))
+                try:
+                    scraper = ColesBarcodeScraperV2(
+                        command=self, 
+                        source_file_path=source_file_path, 
+                        session_manager=session_manager, 
+                        dev=options['dev']
+                    )
                     scraper.run()
-
-                    # After the scraper.run() is successful, the original source file is deleted by the scraper.
-                    # The enriched file is now in the temp_outbox. We need to move it to the final product_outbox.
-                    # This part of the logic needs to be coordinated with the scraper's output.
-                    
-                    # For now, let's assume the scraper's `commit` places it in a known location.
-                    # The current `ColesBarcodeScraper` deletes the source and commits its new file.
-                    # We need to ensure that commit goes to the right place.
-                    
-                    # Let's re-read barcode_scraper_coles.py to check its output logic.
-                    # It seems the barcode scraper will create a new file and commit it.
-                    # We need to adjust that in Part 3. For now, this structure is a good start.
                     self.stdout.write(self.style.SUCCESS(f"Successfully processed {file_name}."))
 
-                else:
-                    self.stdout.write(self.style.WARNING(f"No barcode scraper available for {file_name}. Moving to final outbox as-is."))
-                    # If no barcode scraper, move the file directly to the final outbox
-                    final_destination = os.path.join(product_outbox_path, file_name)
-                    os.rename(source_file_path, final_destination)
+                except InterruptedError:
+                    self.stdout.write(self.style.ERROR(f"Session blocked by CAPTCHA while processing {file_name}."))
+                    self.stdout.write(self.style.WARNING(f"File {file_name} will be left in the inbox to be retried. A new session will be created."))
+                    session_manager.close()
+                    session_manager = ColesSessionManager(self)
+                    continue
+                
+                except Exception as e:
+                    self.stderr.write(self.style.ERROR(f"An unexpected error occurred while processing {file_name}: {e}"))
+                    self.stdout.write(self.style.WARNING(f"File {file_name} will be left in the inbox to be retried."))
+                    continue
+            
+            session_manager.close()
 
+        else:
+            # --- Original Workflow ---
+            for file_name in files_to_process:
+                source_file_path = os.path.join(barcode_inbox_path, file_name)
+                self.stdout.write(self.style.HTTP_INFO(f"--- Processing file: {file_name} ---"))
 
-            except Exception as e:
-                self.stderr.write(self.style.ERROR(f"An error occurred while processing {file_name}: {e}"))
-                # Decide on an error strategy: move to a 'failed' folder, or leave it?
-                # For now, we'll leave it in the inbox to be retried.
-                continue
+                try:
+                    if 'coles' in file_name.lower():
+                        scraper = ColesBarcodeScraper(command=self, source_file_path=source_file_path, dev=options['dev'])
+                        scraper.run()
+                        self.stdout.write(self.style.SUCCESS(f"Successfully processed {file_name}."))
+                    else:
+                        self.stdout.write(self.style.WARNING(f"No barcode scraper available for {file_name}. Moving to final outbox as-is."))
+                        final_destination = os.path.join(product_outbox_path, file_name)
+                        os.rename(source_file_path, final_destination)
+
+                except Exception as e:
+                    self.stderr.write(self.style.ERROR(f"An error occurred while processing {file_name}: {e}"))
+                    continue
         
         self.stdout.write(self.style.SUCCESS('--- Barcode Scraper Worker Finished ---'))

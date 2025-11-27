@@ -21,9 +21,14 @@ class Command(BaseCommand):
         parser.add_argument('--aldi', action='store_true', help='Limit the scraper to Aldi stores.')
         parser.add_argument('--iga', action='store_true', help='Limit the scraper to IGA stores.')
         parser.add_argument('--dev', action='store_true', help='Use dev server.')
+        parser.add_argument('--coles-v2', action='store_true', help='Run the refactored Coles scraper workflow.')
 
     def handle(self, *args, **options):
         base_url = "http://127.0.0.1:8000" if options['dev'] else settings.API_SERVER_URL
+
+        if options['coles_v2']:
+            self._run_coles_v2_worker(options)
+            return
         
         self.stdout.write(self.style.SUCCESS('Updating translation tables...'))
         product_table_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'product_normalized_name_brand_size_translation_table.py')
@@ -51,6 +56,60 @@ class Command(BaseCommand):
 
         # If no one-off task is specified, start the persistent worker loop
         self._run_worker_loop(options, base_url)
+
+    def _run_coles_v2_worker(self, options):
+        """
+        Runs the refactored, session-persistent scraper for all Coles stores.
+        """
+        from scraping.scrapers.product_scraper_coles_v2 import ColesScraperV2
+        from scraping.utils.coles_session_manager import ColesSessionManager
+
+        self.stdout.write(self.style.SUCCESS("--- Starting refactored Coles scraper workflow (V2) ---"))
+        
+        stores = Store.objects.filter(company__name="Coles").order_by('store_id')
+        if not stores:
+            self.stdout.write(self.style.WARNING("No active Coles stores found in the database."))
+            return
+
+        session_manager = ColesSessionManager(self)
+        
+        for store in stores:
+            self.stdout.write(self.style.SUCCESS(f"-- Scraping: {store.store_name} (Coles) [PK: {store.pk}]"))
+            try:
+                # Get a valid session for the current store
+                # This will either warm-up (first run) or switch the store
+                session = session_manager.get_session(store.store_id)
+                
+                categories = get_coles_categories()
+                if not categories:
+                    self.stdout.write(self.style.ERROR('Could not fetch Coles categories. Skipping store.'))
+                    continue
+
+                scraper = ColesScraperV2(
+                    command=self,
+                    company="Coles",
+                    store_id=store.store_id,
+                    store_name=store.store_name,
+                    state=store.state,
+                    categories_to_fetch=categories,
+                    session=session,
+                    session_manager=session_manager
+                )
+                scraper.run()
+
+            except InterruptedError:
+                self.stdout.write(self.style.ERROR("Session blocked by CAPTCHA. A new session will be created for the next store."))
+                session_manager.close() # Dispose of the dead browser
+                session_manager = ColesSessionManager(self) # Create a fresh manager
+                continue # Move to the next store
+            
+            except Exception as e:
+                self.stdout.write(self.style.ERROR(f"An unexpected error occurred while scraping {store.store_name}: {e}"))
+                self.stdout.write(self.style.WARNING("Attempting to continue with the next store..."))
+                continue
+        
+        session_manager.close()
+        self.stdout.write(self.style.SUCCESS("--- Refactored Coles scraper workflow complete ---"))
 
     def _run_worker_loop(self, options, base_url):
         companies_to_scrape = []
