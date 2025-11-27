@@ -16,7 +16,7 @@ class Price(models.Model):
     )
     
     # Price details
-    scraped_date = models.DateField()
+    scraped_date = models.DateField(db_index=True)
     price = models.DecimalField(
         max_digits=10,
         decimal_places=2
