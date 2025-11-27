@@ -44,7 +44,7 @@ class ExportPricesView(ListAPIView):
 
         # Directly get values, bypassing the serializer for performance.
         # The fields selected here must match what the client-side script expects.
-        values_queryset = queryset.values('product_id', 'store_id', 'price', 'id')
+        values_queryset = queryset.values('product_id', 'store_id', 'price', 'id', 'store__company_id')
 
         # Manually configure and paginate
         paginator = self.pagination_class()

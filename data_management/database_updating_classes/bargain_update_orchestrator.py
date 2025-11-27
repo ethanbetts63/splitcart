@@ -41,8 +41,11 @@ class BargainUpdateOrchestrator:
 
         try:
             with transaction.atomic():
-                # No longer deleting all bargains. We will rely on cascade deletes
-                # from Price objects and ignore conflicts on bulk_create for existing bargains.
+                # Clear all old bargains before inserting new ones to ensure data is fresh.
+                self.command.stdout.write("  - Deleting all existing bargain records...")
+                count, _ = Bargain.objects.all().delete()
+                self.command.stdout.write(f"    - Deleted {count} old records.")
+
                 self.command.stdout.write("  - Preparing new bargain records...")
 
                 # Prepare Bargain objects in memory
@@ -58,9 +61,9 @@ class BargainUpdateOrchestrator:
                     for data in bargains_data
                 ]
 
-                # Bulk create the new objects, ignoring any that would violate uniqueness
-                self.command.stdout.write(f"  - Creating {len(bargains_to_create)} new bargain records (ignoring conflicts)...")
-                Bargain.objects.bulk_create(bargains_to_create, batch_size=1000, ignore_conflicts=True)
+                # Bulk create the new objects. Since we just deleted, we don't need to ignore conflicts.
+                self.command.stdout.write(f"  - Creating {len(bargains_to_create)} new bargain records...")
+                Bargain.objects.bulk_create(bargains_to_create, batch_size=1000)
                 self.command.stdout.write("    - Bulk create complete.")
 
             # Clean up the processed file

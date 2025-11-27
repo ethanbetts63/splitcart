@@ -82,7 +82,7 @@ class BargainGenerator:
         self.command.stdout.write(f"    - Grouped prices for {len(prices_by_product)} unique products.")
 
         # Calculate all viable bargain combinations
-        self.command.stdout.write("  - Calculating all bargain combinations...")
+        self.command.stdout.write("  - Calculating all viable inter-company bargain combinations...")
         bargains_data = []
         total_products_with_bargains = 0
         processed_products = 0
@@ -95,11 +95,16 @@ class BargainGenerator:
 
             has_bargain_for_this_product = False
             for price1, price2 in itertools.combinations(prices, 2):
-                # Ensure we have price IDs, which are crucial for the new model
-                if 'id' not in price1 or 'id' not in price2:
+                # Ensure we have the necessary IDs
+                if 'id' not in price1 or 'id' not in price2 or 'store__company_id' not in price1 or 'store__company_id' not in price2:
+                    continue
+                
+                # Skip if they are from the same store
+                if price1['store_id'] == price2['store_id']:
                     continue
 
-                if price1['store_id'] == price2['store_id']:
+                # NEW: Skip if they are from the same company
+                if price1['store__company_id'] == price2['store__company_id']:
                     continue
 
                 price1_decimal = Decimal(price1['price'])
