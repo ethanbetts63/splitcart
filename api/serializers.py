@@ -169,8 +169,10 @@ class ProductSerializer(serializers.ModelSerializer):
             discount = int(round(((max_price_other_company - min_price) / max_price_other_company) * 100))
             
             if discount >= 5:
-                cheapest_companies.sort()
-                company_string = ", ".join(cheapest_companies)
+                # Replace "Woolworths" with "Woolies" for display
+                display_names = ["Woolies" if name == "Woolworths" else name for name in cheapest_companies]
+                display_names.sort()
+                company_string = ", ".join(display_names)
                 
                 return {
                     "discount_percentage": discount,

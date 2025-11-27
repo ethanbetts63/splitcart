@@ -110,7 +110,7 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
           <div className="absolute top-2 right-2 z-20 flex flex-col items-end gap-1">
             {bargainInfo && (
               <Badge className={bargainInfo.bargainBadgeClasses}>
-                Up to {bargainInfo.percentage}% less at {bargainInfo.cheapestCompany}
+                -{bargainInfo.percentage}% at {bargainInfo.cheapestCompany}
               </Badge>
             )}
             {perUnitPriceString && (

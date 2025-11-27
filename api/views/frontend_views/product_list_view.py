@@ -46,6 +46,20 @@ class ProductListView(generics.ListAPIView):
         except (ValueError, TypeError):
             raise ValidationError({'store_ids': 'Invalid format. Must be a comma-separated list of integers.'})
 
+        anchor_store_ids = list(StoreGroupMembership.objects.filter(
+            store_id__in=store_ids
+        ).values_list('group__anchor_id', flat=True).distinct())
+
+        best_bargain_subquery = Bargain.objects.filter(
+            product=OuterRef('pk'),
+            cheaper_store_id__in=anchor_store_ids,
+            expensive_store_id__in=anchor_store_ids
+        ).order_by('-discount_percentage')
+
+        queryset = queryset.annotate(
+            best_discount=Subquery(best_bargain_subquery.values('discount_percentage')[:1])
+        )
+
 
 
         if primary_category_slugs:
@@ -69,7 +83,7 @@ class ProductListView(generics.ListAPIView):
         )
 
         if ordering == 'carousel_default':
-            final_queryset = queryset.order_by(F('min_unit_price').asc(nulls_last=True))
+            final_queryset = queryset.order_by(F('best_discount').desc(nulls_last=True), F('min_unit_price').asc(nulls_last=True))
         elif ordering == 'price_asc':
             final_queryset = queryset.annotate(
                 min_price=Min('prices__price', filter=Q(prices__store__id__in=store_ids))
@@ -90,7 +104,7 @@ class ProductListView(generics.ListAPIView):
                     score += Case(When(size__icontains=term, then=Value(2)), default=Value(0), output_field=IntegerField())
                 
                 queryset = queryset.annotate(search_score=score)
-                final_queryset = queryset.order_by('-search_score', F('min_unit_price').asc(nulls_last=True))
+                final_queryset = queryset.order_by('-search_score', F('best_discount').desc(nulls_last=True))
             else:
                 final_queryset = queryset.order_by(F('min_unit_price').asc(nulls_last=True))
 
