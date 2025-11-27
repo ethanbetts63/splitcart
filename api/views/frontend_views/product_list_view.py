@@ -8,6 +8,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from products.models import Product, Price, Bargain
+from companies.models import StoreGroupMembership
 from ...serializers import ProductSerializer
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -41,12 +42,16 @@ class ProductListView(generics.ListAPIView):
         except (ValueError, TypeError):
             raise ValidationError({'store_ids': 'Invalid format. Must be a comma-separated list of integers.'})
 
-        # --- New Bargain Annotation Logic ---
-        # Subquery to find the best bargain for each product within the selected stores
+        # --- New Anchor Store Logic ---
+        anchor_store_ids = list(StoreGroupMembership.objects.filter(
+            store_id__in=store_ids
+        ).values_list('group__anchor_id', flat=True).distinct())
+
+        # Subquery to find the best bargain using the correct anchor store IDs
         best_bargain_subquery = Bargain.objects.filter(
             product=OuterRef('pk'),
-            cheaper_store_id__in=store_ids,
-            expensive_store_id__in=store_ids
+            cheaper_store_id__in=anchor_store_ids,
+            expensive_store_id__in=anchor_store_ids
         ).order_by('-discount_percentage')
 
         # Annotate the queryset with the details from the best bargain
