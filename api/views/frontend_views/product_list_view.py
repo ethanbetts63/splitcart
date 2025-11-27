@@ -21,6 +21,10 @@ class ProductListView(generics.ListAPIView):
     serializer_class = ProductSerializer
     pagination_class = StandardResultsSetPagination
 
+    @method_decorator(cache_page(60 * 5)) # Cache for 5 minutes
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
     def get_queryset(self):
         queryset = Product.objects.all()
 
@@ -42,32 +46,9 @@ class ProductListView(generics.ListAPIView):
         except (ValueError, TypeError):
             raise ValidationError({'store_ids': 'Invalid format. Must be a comma-separated list of integers.'})
 
-        # --- TEMPORARY DEBUGGER V3 ---
-        print(f"\n--- BARGAIN DEBUGGER V3 ---")
-        print(f"[1] Received {len(store_ids)} store IDs.")
-
         anchor_store_ids = list(StoreGroupMembership.objects.filter(
             store_id__in=store_ids
         ).values_list('group__anchor_id', flat=True).distinct())
-        print(f"[2] Derived {len(anchor_store_ids)} unique anchor store IDs")
-
-        product_ids_in_scope = list(queryset.values_list('id', flat=True))
-        print(f"[3] Initial queryset contains {len(product_ids_in_scope)} products.")
-
-        if not anchor_store_ids:
-            print("[!] Anchor store list is empty. No bargains can be found.")
-        elif not product_ids_in_scope:
-            print("[!] Product list is empty. No bargains to check.")
-        else:
-            total_bargains = Bargain.objects.filter(product_id__in=product_ids_in_scope).count()
-            print(f"[4] Found {total_bargains} total bargains in the DB for these products.")
-            
-            relevant_bargains = Bargain.objects.filter(
-                product_id__in=product_ids_in_scope,
-                cheaper_store_id__in=anchor_store_ids,
-                expensive_store_id__in=anchor_store_ids
-            ).count()
-            print(f"[5] Found {relevant_bargains} relevant bargains matching the anchor stores.")
 
         best_bargain_subquery = Bargain.objects.filter(
             product=OuterRef('pk'),
@@ -79,10 +60,8 @@ class ProductListView(generics.ListAPIView):
             best_discount=Subquery(best_bargain_subquery.values('discount_percentage')[:1]),
             cheapest_company_name=Subquery(best_bargain_subquery.values('cheaper_store__company__name')[:1])
         )
-        
-        print(f"[6] Main query with annotation (before ordering):\n{queryset.query}\n")
-        print(f"--- END DEBUGGER V3 ---\n")
-        # --- END TEMPORARY DEBUGGER ---
+
+
 
         if primary_category_slugs:
             slugs = [slug.strip() for slug in primary_category_slugs.split(',')]

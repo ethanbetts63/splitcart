@@ -71,6 +71,22 @@ class BargainGenerator:
             self.command.stderr.write(self.command.style.ERROR("Aborting due to failure in price fetching."))
             return
 
+        # Fetch companies to identify IGA
+        self.command.stdout.write("  - Fetching companies to identify IGA...")
+        companies_url = f"{server_url}/api/export/companies/"
+        all_companies = self._fetch_paginated_data(companies_url, headers, "companies")
+        if all_companies is None:
+            self.command.stderr.write(self.command.style.ERROR("Aborting due to failure in company fetching."))
+            return
+        
+        try:
+            iga_company_id = next(c['id'] for c in all_companies if c['name'] == 'IGA')
+            self.command.stdout.write(f"    - Identified IGA with company ID: {iga_company_id}")
+        except StopIteration:
+            self.command.stdout.write(self.command.style.WARNING("  - Could not find company 'IGA' via API. No special intra-company logic will be applied."))
+            iga_company_id = None
+
+
         # Group prices by product
         self.command.stdout.write("  - Grouping prices by product...")
         prices_by_product = {}
@@ -103,9 +119,11 @@ class BargainGenerator:
                 if price1['store_id'] == price2['store_id']:
                     continue
 
-                # NEW: Skip if they are from the same company
+                # NEW: Skip if they are from the same company, UNLESS it's IGA
                 if price1['store__company_id'] == price2['store__company_id']:
-                    continue
+                    # If we couldn't find IGA or the company isn't IGA, skip.
+                    if iga_company_id is None or price1['store__company_id'] != iga_company_id:
+                        continue
 
                 price1_decimal = Decimal(price1['price'])
                 price2_decimal = Decimal(price2['price'])
@@ -116,7 +134,7 @@ class BargainGenerator:
                 if min_price > 0 and max_price > min_price:
                     discount = int(round(((max_price - min_price) / max_price) * 100))
                     
-                    if 10 <= discount <= 75:
+                    if 5 <= discount <= 75:
                         bargains_data.append({
                             'product_id': product_id,
                             'discount_percentage': discount,

@@ -121,17 +121,60 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_bargain_info(self, obj):
         """
-        Constructs the bargain_info object from annotations provided by the view.
+        Recalculates the bargain for display. It finds the absolute lowest price,
+        identifies all companies sharing that price, and then finds the highest price
+        from any OTHER company to calculate the discount. This ensures bargains are
+        always inter-company. It also formats the message string directly.
         """
-        # The view annotated the product with 'best_discount' and 'cheapest_company_name'
-        discount = getattr(obj, 'best_discount', None)
-        company_name = getattr(obj, 'cheapest_company_name', None)
+        prices_map = self.context.get('prices_map')
+        nearby_store_ids = self.context.get('nearby_store_ids')
 
-        if discount is not None and company_name is not None:
-            return {
-                "discount_percentage": discount,
-                "cheapest_company_name": company_name
-            }
+        if prices_map is not None:
+            prices_queryset = prices_map.get(obj.id, [])
+        else:
+            prices_queryset = Price.objects.filter(product=obj)
+            if nearby_store_ids:
+                prices_queryset = prices_queryset.filter(store__id__in=nearby_store_ids)
+            prices_queryset = prices_queryset.select_related('store__company')
+
+        if not prices_queryset or prices_queryset.count() == 0:
+            return None
+
+        # Find absolute min price and all companies that have it
+        min_price = None
+        cheapest_companies = []
+        for price_obj in prices_queryset:
+            if min_price is None or price_obj.price < min_price:
+                min_price = price_obj.price
+                cheapest_companies = [price_obj.store.company.name]
+            elif price_obj.price == min_price:
+                if price_obj.store.company.name not in cheapest_companies:
+                    cheapest_companies.append(price_obj.store.company.name)
+        
+        if min_price is None:
+            return None
+
+        # Find the max price from any company NOT in the cheapest list
+        max_price_other_company = None
+        for price_obj in prices_queryset:
+            if price_obj.store.company.name not in cheapest_companies:
+                if max_price_other_company is None or price_obj.price > max_price_other_company:
+                    max_price_other_company = price_obj.price
+
+        if max_price_other_company and max_price_other_company > min_price:
+            discount = int(round(((max_price_other_company - min_price) / max_price_other_company) * 100))
+            
+            if discount >= 5:
+                cheapest_companies.sort()
+                company_string = ", ".join(cheapest_companies)
+                
+                return {
+                    "discount_percentage": discount,
+                    "cheapest_company_name": company_string,
+                    "message": f"-{discount}% at {company_string}",
+                    "cheapest_company_logo_url": self._get_image_url_for_company(obj, cheapest_companies[0])
+                }
+                
         return None
 
     def _get_image_url_for_company(self, product_obj, company_name, company_obj=None):
@@ -182,11 +225,16 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_image_url(self, obj):
         """
-        Constructs a single representative image URL for the product.
-        It iterates through the available prices until it finds a company
-        for which it can generate a valid image URL.
+        Constructs a single representative image URL for the product tile.
+        It prioritizes using the image from the cheapest company if a bargain exists,
+        ensuring consistency between the bargain badge and the product image.
         """
-        # Use the prices from the context if available, otherwise fetch them.
+        # Attempt to get the accurate bargain info first
+        bargain_info = self.get_bargain_info(obj)
+        if bargain_info and bargain_info.get('cheapest_company_logo_url'):
+            return bargain_info['cheapest_company_logo_url']
+
+        # Fallback to the old method if no bargain is found
         prices_map = self.context.get('prices_map')
         if prices_map is not None:
             prices_queryset = prices_map.get(obj.id, [])
@@ -196,7 +244,6 @@ class ProductSerializer(serializers.ModelSerializer):
         for price in prices_queryset:
             if price.store and price.store.company:
                 company = price.store.company
-                # Try to generate a URL for this company
                 image_url = self._get_image_url_for_company(obj, company.name, company_obj=company)
                 if image_url:
                     return image_url # Return the first valid URL we find
