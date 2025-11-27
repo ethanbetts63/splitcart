@@ -44,7 +44,14 @@ class BargainUploader(BaseUploader):
                 files = {'file': (os.path.basename(compressed_file_path), f)}
                 response = requests.post(upload_url, headers=headers, files=files, timeout=120)
                 response.raise_for_status()
+
+            # 3. Cleanup on success
             self.command.stdout.write(self.command.style.SUCCESS("  - Upload successful."))
+            if os.path.exists(self.source_file):
+                os.remove(self.source_file)
+            if os.path.exists(compressed_file_path):
+                os.remove(compressed_file_path)
+            self.command.stdout.write(f"  - Cleanup complete.")
 
         except requests.exceptions.RequestException as e:
             self.command.stderr.write(self.command.style.ERROR(f"  - An error occurred during upload: {e}"))
@@ -56,11 +63,3 @@ class BargainUploader(BaseUploader):
             self.command.stderr.write(self.command.style.ERROR(f"  - An unexpected error occurred: {e}"))
             # Do not clean up files on failure
             raise
-        finally:
-            # 3. Cleanup on success
-            # If the code reaches here without an exception, the upload was successful.
-            if os.path.exists(self.source_file):
-                os.remove(self.source_file)
-            if os.path.exists(compressed_file_path):
-                os.remove(compressed_file_path)
-            self.command.stdout.write(f"  - Cleanup complete.")

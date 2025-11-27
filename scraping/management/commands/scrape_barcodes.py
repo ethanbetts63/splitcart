@@ -49,27 +49,34 @@ class Command(BaseCommand):
                     continue
 
                 self.stdout.write(self.style.HTTP_INFO(f"--- Processing file: {file_name} ---"))
-                try:
-                    scraper = ColesBarcodeScraperV2(
-                        command=self, 
-                        source_file_path=source_file_path, 
-                        session_manager=session_manager, 
-                        dev=options['dev']
-                    )
-                    scraper.run()
-                    self.stdout.write(self.style.SUCCESS(f"Successfully processed {file_name}."))
-
-                except InterruptedError:
-                    self.stdout.write(self.style.ERROR(f"Session blocked by CAPTCHA while processing {file_name}."))
-                    self.stdout.write(self.style.WARNING(f"File {file_name} will be left in the inbox to be retried. A new session will be created."))
-                    session_manager.close()
-                    session_manager = ColesSessionManager(self)
-                    continue
                 
-                except Exception as e:
-                    self.stderr.write(self.style.ERROR(f"An unexpected error occurred while processing {file_name}: {e}"))
-                    self.stdout.write(self.style.WARNING(f"File {file_name} will be left in the inbox to be retried."))
-                    continue
+                MAX_RETRIES = 5
+                retries = 0
+                while retries < MAX_RETRIES:
+                    try:
+                        scraper = ColesBarcodeScraperV2(
+                            command=self, 
+                            source_file_path=source_file_path, 
+                            session_manager=session_manager, 
+                            dev=options['dev']
+                        )
+                        scraper.run()
+                        self.stdout.write(self.style.SUCCESS(f"Successfully processed {file_name}."))
+                        break 
+
+                    except InterruptedError:
+                        retries += 1
+                        self.stdout.write(self.command.style.ERROR(f"Session blocked by CAPTCHA. Restarting session... (Attempt {retries}/{MAX_RETRIES})"))
+                        session_manager.close()
+                        session_manager = ColesSessionManager(self)
+                    
+                    except Exception as e:
+                        self.stderr.write(self.command.style.ERROR(f"An unexpected error occurred while processing {file_name}: {e}"))
+                        self.stdout.write(self.command.style.WARNING(f"File {file_name} will be left in the inbox. Moving to next file."))
+                        break
+                
+                if retries >= MAX_RETRIES:
+                    self.stderr.write(self.command.style.ERROR(f"Max retries reached for {file_name}. Moving to next file."))
             
             session_manager.close()
 
