@@ -29,7 +29,8 @@ class Price(models.Model):
         max_digits=10,
         decimal_places=4,
         null=True,
-        blank=True
+        blank=True,
+        db_index=True
     )
     unit_of_measure = models.CharField(
         max_length=50,
