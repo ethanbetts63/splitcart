@@ -84,11 +84,6 @@ class Product(models.Model):
         blank=True,
         help_text="Other products that can be used as substitutes, ranked by a score."
     )
-    has_bargain = models.BooleanField(
-        default=False,
-        db_index=True,
-        help_text="A pre-calculated flag indicating if this product is a significant global bargain."
-    )
 
     def __str__(self):
         size_str = f" ({self.size})" if self.size else ""
