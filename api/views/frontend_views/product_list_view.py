@@ -108,7 +108,9 @@ class ProductListView(generics.ListAPIView):
             else:
                 final_queryset = queryset.order_by(F('min_unit_price').asc(nulls_last=True))
 
-        return final_queryset.prefetch_related('prices__store__company', 'skus')
+        return final_queryset.prefetch_related(
+            'prices__store__company', 'skus', 'category__primary_category'
+        ).defer('normalized_name_brand_size_variations', 'sizes')
 
     # The complex 'list' method is no longer needed, as the default implementation
     # from ListAPIView will now work correctly with the annotated queryset.
