@@ -132,12 +132,16 @@ class ProductSerializer(serializers.ModelSerializer):
         if prices_map is not None:
             prices_queryset = prices_map.get(obj.id, [])
         else:
-            prices_queryset = Price.objects.filter(product=obj)
+            # Access the prefetched data, which is a list, not a queryset.
+            # No database hit occurs here.
+            all_prices = obj.prices.all()
             if nearby_store_ids:
-                prices_queryset = prices_queryset.filter(store__id__in=nearby_store_ids)
-            prices_queryset = prices_queryset.select_related('store__company')
+                # Filter the list in Python.
+                prices_queryset = [p for p in all_prices if p.store_id in nearby_store_ids]
+            else:
+                prices_queryset = all_prices
 
-        if not prices_queryset or prices_queryset.count() == 0:
+        if not prices_queryset or len(prices_queryset) == 0:
             return None
 
         # Find absolute min price and all companies that have it
@@ -265,12 +269,13 @@ class ProductSerializer(serializers.ModelSerializer):
             # Use the pre-fetched prices from the context
             prices_queryset = prices_map.get(obj.id, [])
         else:
-            # Fallback to the original query if the map is not provided
-            prices_queryset = Price.objects.filter(product=obj)
+            # Access the prefetched data; no DB hit occurs here.
+            all_prices = obj.prices.all()
             if nearby_store_ids:
-                prices_queryset = prices_queryset.filter(store__id__in=nearby_store_ids)
-            # Prefetch store and company to avoid N+1 queries in the loop
-            prices_queryset = prices_queryset.select_related('store__company')
+                # Filter the list in Python.
+                prices_queryset = [p for p in all_prices if p.store_id in nearby_store_ids]
+            else:
+                prices_queryset = all_prices
 
         company_prices = {}
         overall_min_price = None
