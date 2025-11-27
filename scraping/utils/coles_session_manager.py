@@ -55,7 +55,8 @@ class ColesSessionManager:
             # Copy cookies from Selenium to requests.Session
             self.session = requests.Session()
             self.session.headers.update({"User-Agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com.au)"})
-            self.session.cookies.set(cookie['name'], cookie['value'])
+            for cookie in self.driver.get_cookies():
+                self.session.cookies.set(cookie['name'], cookie['value'])
             
             self.current_store_id = store_id
 

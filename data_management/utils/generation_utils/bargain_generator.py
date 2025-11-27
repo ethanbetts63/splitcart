@@ -71,6 +71,50 @@ class BargainGenerator:
             self.command.stderr.write(self.command.style.ERROR("Aborting due to failure in price fetching."))
             return
 
+        # --- DEBUGGING START ---
+        self.command.stdout.write(self.command.style.WARNING("\n--- STARTING DATA DIAGNOSTICS ---"))
+
+        company_counts = {}
+        for price in all_prices:
+            company_id = price.get('store__company_id')
+            if company_id not in company_counts:
+                company_counts[company_id] = 0
+            company_counts[company_id] += 1
+
+        self.command.stdout.write("  - Price counts per company ID:")
+        for company_id, count in company_counts.items():
+            self.command.stdout.write(f"    - Company ID {company_id}: {count} prices")
+
+        prices_by_product_debug = {}
+        for price in all_prices:
+            product_id = price.get('product_id')
+            if product_id not in prices_by_product_debug:
+                prices_by_product_debug[product_id] = []
+            prices_by_product_debug[product_id].append(price)
+
+        multi_company_products = 0
+        for product_id, prices in prices_by_product_debug.items():
+            companies_for_product = set(p.get('store__company_id') for p in prices)
+            if len(companies_for_product) > 1:
+                multi_company_products += 1
+
+        self.command.stdout.write(f"  - Total unique products found: {len(prices_by_product_debug)}")
+        self.command.stdout.write(f"  - Number of products with prices from more than one company: {multi_company_products}")
+
+        example_count = 0
+        if multi_company_products > 0:
+            self.command.stdout.write("  - Example products with multi-company prices:")
+            for product_id, prices in prices_by_product_debug.items():
+                companies_for_product = set(p.get('store__company_id') for p in prices)
+                if len(companies_for_product) > 1:
+                    self.command.stdout.write(f"    - Product ID {product_id} has prices from company IDs: {list(companies_for_product)}")
+                    example_count += 1
+                    if example_count >= 5:
+                        break
+
+        self.command.stdout.write(self.command.style.WARNING("--- ENDING DATA DIAGNOSTICS ---\n"))
+        # --- DEBUGGING END ---
+
         # Fetch companies to identify IGA
         self.command.stdout.write("  - Fetching companies to identify IGA...")
         companies_url = f"{server_url}/api/export/companies/"
@@ -80,7 +124,7 @@ class BargainGenerator:
             return
         
         try:
-            iga_company_id = next(c['id'] for c in all_companies if c['name'] == 'IGA')
+            iga_company_id = next(c['id'] for c in all_companies if c['name'].upper() == 'IGA')
             self.command.stdout.write(f"    - Identified IGA with company ID: {iga_company_id}")
         except StopIteration:
             self.command.stdout.write(self.command.style.WARNING("  - Could not find company 'IGA' via API. No special intra-company logic will be applied."))
