@@ -26,7 +26,8 @@ class BargainGenerator:
         page_num = 1
         while next_url:
             try:
-                response = requests.get(next_url, headers=headers)
+                self.command.stdout.write(f"\r    - Requesting page {page_num} from server...", ending="")
+                response = requests.get(next_url, headers=headers, timeout=60)
                 response.raise_for_status()
                 data = response.json()
                 all_results.extend(data['results'])

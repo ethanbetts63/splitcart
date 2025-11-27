@@ -1,0 +1,18 @@
+This session focused on a major refactoring of the Coles scraping process to improve efficiency and on fixing and optimizing the bargain generation/upload workflow.
+
+**Coles Scraper Refactoring:**
+The primary achievement was a complete overhaul of the Coles product and barcode scrapers to reduce the frequency of manual CAPTCHA intervention.
+1.  A centralized `ColesSessionManager` was created to manage a single, persistent browser session that is reused across multiple scraping tasks.
+2.  New V2 versions of the product and barcode scrapers were created to be stateless and rely on the session manager.
+3.  The `scrape` and `scrape_barcodes` management commands were updated to use this new session-persistent logic. This included adding retry logic for the barcode scraper to ensure it resumes work on the same file after a CAPTCHA block.
+4.  Several bugs identified during testing were fixed, including errors related to database queries, `NoneType` exceptions, and typos from previous edits.
+5.  As a UX improvement, the browser window is now automatically minimized after the CAPTCHA is solved.
+6.  The refactoring was finalized by removing the old V1 scraper files and logic, making the new, efficient workflow the default for all Coles scraping.
+
+**Bargain Workflow Fixes & Optimizations:**
+A series of issues with the bargain generation and upload process were diagnosed and resolved.
+1.  Fixed a bug in the `generate --bargains` command where a case-sensitive check for the "IGA" company name was causing it to fail on production data.
+2.  To address a server slowdown when fetching prices, a rate-limiting mitigation (a small delay) and improved logging were added to the bargain generator's API requests.
+3.  The `upload --bargains` workflow was completely fixed. It was previously just moving the file locally. It now correctly uploads a compressed file to a newly created `/api/upload/bargains/` endpoint on the server, which handles decompression, mirroring the product upload process. A bug was also fixed to prevent the source file from being deleted after a failed upload.
+4.  The `update --bargains` command was significantly optimized. It now uses a streaming JSON parser (`ijson`) to process the data in chunks, dramatically reducing memory usage and improving speed. It no longer deletes all bargains before running, relying instead on the database's cascading deletes.
+5.  The `ijson` dependency was added to both `requirements.txt` and `requirements_dev.txt`.
