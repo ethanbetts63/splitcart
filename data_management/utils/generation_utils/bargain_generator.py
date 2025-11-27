@@ -116,7 +116,7 @@ class BargainGenerator:
                 if min_price > 0 and max_price > min_price:
                     discount = int(round(((max_price - min_price) / max_price) * 100))
                     
-                    if 25 <= discount <= 75:
+                    if 10 <= discount <= 75:
                         bargains_data.append({
                             'product_id': product_id,
                             'discount_percentage': discount,
