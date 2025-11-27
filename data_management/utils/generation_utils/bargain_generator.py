@@ -117,6 +117,8 @@ class BargainGenerator:
                             'discount_percentage': discount,
                             'cheaper_price_id': cheaper['id'],
                             'expensive_price_id': expensive['id'],
+                            'cheaper_store_id': cheaper['store_id'],
+                            'expensive_store_id': expensive['store_id'],
                         })
                         has_bargain_for_this_product = True
             

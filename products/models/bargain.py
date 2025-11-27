@@ -1,4 +1,5 @@
 from django.db import models
+from companies.models import Store
 
 class Bargain(models.Model):
     """
@@ -9,6 +10,10 @@ class Bargain(models.Model):
     cheaper_price = models.ForeignKey('products.Price', on_delete=models.CASCADE, related_name='bargains_as_cheaper')
     expensive_price = models.ForeignKey('products.Price', on_delete=models.CASCADE, related_name='bargains_as_expensive')
 
+    # Denormalized fields for performance
+    cheaper_store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='bargains_as_cheaper_store', null=True)
+    expensive_store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='bargains_as_expensive_store', null=True)
+
     class Meta:
         """
         Meta options for the Bargain model.
@@ -16,6 +21,8 @@ class Bargain(models.Model):
         unique_together = ('product', 'cheaper_price', 'expensive_price')
         indexes = [
             models.Index(fields=['product', '-discount_percentage']),
+            # Index for the new high-performance query
+            models.Index(fields=['cheaper_store', 'expensive_store', '-discount_percentage']),
         ]
 
     def __str__(self):

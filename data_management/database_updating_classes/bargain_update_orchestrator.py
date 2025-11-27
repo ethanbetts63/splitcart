@@ -51,7 +51,9 @@ class BargainUpdateOrchestrator:
                         product_id=data['product_id'],
                         discount_percentage=data['discount_percentage'],
                         cheaper_price_id=data['cheaper_price_id'],
-                        expensive_price_id=data['expensive_price_id']
+                        expensive_price_id=data['expensive_price_id'],
+                        cheaper_store_id=data['cheaper_store_id'],
+                        expensive_store_id=data['expensive_store_id']
                     )
                     for data in bargains_data
                 ]

@@ -110,7 +110,7 @@ class ProductSerializer(serializers.ModelSerializer):
     primary_category = PrimaryCategorySerializer(read_only=True)
     min_unit_price = serializers.DecimalField(max_digits=10, decimal_places=4, read_only=True, required=False)
     slug = serializers.SerializerMethodField()
-    bargain_info = serializers.ReadOnlyField()
+    bargain_info = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
@@ -119,43 +119,20 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_slug(self, obj):
         return f"{slugify(obj.name)}-{obj.id}"
 
-    def to_representation(self, instance):
+    def get_bargain_info(self, obj):
         """
-        Calculates bargain info dynamically after the main serialization is done.
+        Constructs the bargain_info object from annotations provided by the view.
         """
-        representation = super().to_representation(instance)
-        
-        bargain_info = None
-        prices_list = representation.get('prices', [])
-        
-        # We need at least two different companies to compare.
-        if len(prices_list) >= 2:
-            all_prices = []
-            for p in prices_list:
-                # Get the min price from the display string "5.00" or "5.00 - 6.00"
-                try:
-                    price_val = float(p['price_display'].split(' ')[0])
-                    all_prices.append({'price': price_val, 'company': p['company']})
-                except (ValueError, IndexError):
-                    continue
+        # The view annotated the product with 'best_discount' and 'cheapest_company_name'
+        discount = getattr(obj, 'best_discount', None)
+        company_name = getattr(obj, 'cheapest_company_name', None)
 
-            if len(all_prices) >= 2:
-                min_price_entry = min(all_prices, key=lambda x: x['price'])
-                max_price_entry = max(all_prices, key=lambda x: x['price'])
-
-                min_price = Decimal(min_price_entry['price'])
-                max_price = Decimal(max_price_entry['price'])
-
-                if min_price > 0 and max_price > min_price:
-                    discount = round(((max_price - min_price) / max_price) * 100)
-                    if 5 <= discount <= 75:
-                        bargain_info = {
-                            "discount_percentage": int(discount),
-                            "cheapest_company_name": min_price_entry['company']
-                        }
-
-        representation['bargain_info'] = bargain_info
-        return representation
+        if discount is not None and company_name is not None:
+            return {
+                "discount_percentage": discount,
+                "cheapest_company_name": company_name
+            }
+        return None
 
     def _get_image_url_for_company(self, product_obj, company_name, company_obj=None):
         """
