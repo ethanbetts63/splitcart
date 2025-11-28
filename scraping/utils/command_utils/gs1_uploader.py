@@ -57,7 +57,7 @@ class Gs1Uploader(BaseUploader):
 
                 # 3. Archive the original file
                 archive_file_path = os.path.join(archive_path, file_name)
-                os.rename(file_path, archive_file_path)
+                os.replace(file_path, archive_file_path)
                 self.command.stdout.write(self.command.style.SUCCESS(f"Archived {file_name}"))
 
             except requests.exceptions.RequestException as e:
