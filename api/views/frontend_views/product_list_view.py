@@ -8,6 +8,7 @@ from rest_framework.permissions import AllowAny
 from products.models import Product, Bargain
 from companies.models import StoreGroupMembership
 from ...serializers import ProductSerializer
+from ...utils.get_pricing_stores import get_pricing_stores
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 20
@@ -33,9 +34,7 @@ class ProductListView(generics.ListAPIView):
         CAROUSEL_SIZE = 20
 
         # --- Step 1: Get Anchor Stores ---
-        anchor_store_ids = list(StoreGroupMembership.objects.filter(
-            store_id__in=store_ids
-        ).values_list('group__anchor_id', flat=True).distinct())
+        anchor_store_ids = get_pricing_stores(store_ids)
         
         if not anchor_store_ids:
             # If no anchors, fall back to a simple unit price query on the original stores
@@ -133,7 +132,7 @@ class ProductListView(generics.ListAPIView):
             ).defer('normalized_name_brand_size_variations', 'sizes')
 
         # --- General Search/Filtering Logic ---
-        self.nearby_store_ids = store_ids # Default to user's selection for other views
+        self.nearby_store_ids = get_pricing_stores(store_ids)
         queryset = Product.objects.filter(prices__store__id__in=store_ids).distinct()
 
         # Category filtering
