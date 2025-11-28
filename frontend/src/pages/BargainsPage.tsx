@@ -7,6 +7,8 @@ import confusedShopper768 from "../assets/confused_shopper-768w.webp";
 import confusedShopper1024 from "../assets/confused_shopper-1024w.webp"; 
 import confusedShopper1280 from "../assets/confused_shopper-1280w.webp"; 
 import { useDocumentHead } from '@/hooks/useDocumentHead';
+import { useStoreList } from '../context/StoreListContext';
+import { ProductCarousel } from "../components/ProductCarousel";
 
 const BargainsPage: React.FC = () => {
     useDocumentHead(
@@ -17,6 +19,24 @@ const BargainsPage: React.FC = () => {
   const hero_title = "Australia's Best Grocery Bargains";
   const introduction_paragraph = "We've scoured the shelves to find the products with the biggest discounts. Here are the top grocery bargains available right now from your selected stores. Happy hunting!";
   const imageUrl = confusedShopper;
+
+  const DEFAULT_STORE_IDS = [
+    515, 5123, 518, 523, 272, 276, 2197, 2198, 2199, 536, 5142, 547, 2218, 2219,
+    2224, 5074, 5080, 5082, 5083, 5094, 5096, 5100, 498, 505, 254,
+  ];
+  const { selectedStoreIds } = useStoreList();
+  const isDefaultStores = selectedStoreIds.size === 0;
+  const storeIdsArray = React.useMemo(() =>
+    isDefaultStores ? DEFAULT_STORE_IDS : Array.from(selectedStoreIds),
+    [selectedStoreIds, isDefaultStores]
+  );
+  
+  const companies = [
+      { name: 'Coles', id: 1 },
+      { name: 'Woolworths', id: 2 },
+      { name: 'Aldi', id: 3 },
+      { name: 'Iga', id: 4 }
+  ]
 
   return (
     <div>
@@ -44,8 +64,22 @@ const BargainsPage: React.FC = () => {
           </div>
         </div>
       </div>
+      <div className="container mx-auto px-4 py-8">
+            <div className="flex flex-col gap-8">
+            {companies.map(company => (
+                <ProductCarousel
+                    key={company.id}
+                    title={`${company.name} Bargains`}
+                    sourceUrl={`/api/products/bargain-carousel/?company_id=${company.id}`}
+                    storeIds={storeIdsArray}
+                    isDefaultStores={isDefaultStores}
+                />
+            ))}
+            </div>
+      </div>
     </div>
   );
 };
 
 export default BargainsPage;
+

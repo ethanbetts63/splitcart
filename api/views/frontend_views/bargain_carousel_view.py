@@ -28,13 +28,13 @@ class BargainCarouselView(generics.ListAPIView):
 
     def get_queryset(self):
         store_ids_param = self.request.query_params.get('store_ids')
+        company_id = self.request.query_params.get('company_id') # get company_id
 
         if not store_ids_param:
             raise ValidationError({'store_ids': 'This field is required.'})
 
         try:
             store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
-            # We need to pass the store_ids to the serializer context
             self.nearby_store_ids = store_ids
         except (ValueError, TypeError):
             raise ValidationError({'store_ids': 'Invalid format. Must be a comma-separated list of integers.'})
@@ -54,22 +54,39 @@ class BargainCarouselView(generics.ListAPIView):
             expensive_store_id__in=anchor_store_ids
         ).order_by('-discount_percentage').values_list('product_id', flat=True).distinct()[:40]
 
+        #  If company_id is given, filter these products.
+        if company_id:
+            # From the pool of top bargain products, find which ones have a bargain 
+            # where the specified company is the cheaper one.
+            top_product_ids = Bargain.objects.filter(
+                product_id__in=top_product_ids,
+                cheaper_store__company_id=company_id,
+                # We still care about bargains relevant to the user's stores
+                cheaper_store_id__in=anchor_store_ids, 
+                expensive_store_id__in=anchor_store_ids
+            ).values_list('product_id', flat=True).distinct()
+
         if not top_product_ids:
             return Product.objects.none()
 
-        # 3. Now, run the annotation subquery on ONLY this small set of products.
-        #    This is fast because the subquery runs on a tiny fraction of the product table.
+        # 3. Now, run the annotation subquery.
         best_bargain_subquery = Bargain.objects.filter(
             product=OuterRef('pk'),
             cheaper_store_id__in=anchor_store_ids,
             expensive_store_id__in=anchor_store_ids
-        ).order_by('-discount_percentage')
+        )
+        
+        # NEW: Adjust subquery for company if needed
+        if company_id:
+            best_bargain_subquery = best_bargain_subquery.filter(cheaper_store__company_id=company_id)
+
+        best_bargain_subquery = best_bargain_subquery.order_by('-discount_percentage')
 
         queryset = Product.objects.filter(
             pk__in=list(top_product_ids)
         ).annotate(
             best_discount=Subquery(best_bargain_subquery.values('discount_percentage')[:1])
-        ).order_by('-best_discount')[:20] # Final limit for the carousel
+        ).order_by('-best_discount')[:20]
 
         return queryset.prefetch_related(
             'prices__store__company', 'skus', 'category__primary_category'
