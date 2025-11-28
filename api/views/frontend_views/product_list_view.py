@@ -1,4 +1,3 @@
-from decimal import Decimal
 from django.db.models import F, Q, Case, When, Value, IntegerField, Min, Subquery, OuterRef
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
@@ -6,8 +5,7 @@ from rest_framework import generics
 from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
-from products.models import Product, Price, Bargain
+from products.models import Product, Bargain
 from companies.models import StoreGroupMembership
 from ...serializers import ProductSerializer
 
