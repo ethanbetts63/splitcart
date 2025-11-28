@@ -20,11 +20,12 @@ interface ProductCarouselProps {
   slot?: number; // Make slot optional
   dataKey?: string; // Key to access product data in a nested object
   minProducts?: number; // Minimum number of products to render the carousel
+  ordering?: string; // New explicit ordering prop
 }
 
 import { useApiQuery } from '@/hooks/useApiQuery';
 
-const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, onValidation, slot, dataKey, minProducts = 4 }) => {
+const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, onValidation, slot, dataKey, minProducts = 4, ordering }) => {
   const [baseUrl, queryString] = sourceUrl.split('?');
   const params = new URLSearchParams(queryString || '');
   if (storeIds && storeIds.length > 0) {
@@ -38,8 +39,12 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
   // Add a limit to the query, but not for substitutes
   if (!sourceUrl.includes('substitutes')) {
     params.set('limit', '20');
-    // Add the special ordering for carousels
-    params.set('ordering', 'carousel_default');
+    // Add the special ordering for carousels if not already specified by prop or URL
+    if (ordering) {
+      params.set('ordering', ordering);
+    } else if (!params.has('ordering')) {
+      params.set('ordering', 'carousel_default');
+    }
   }
 
 

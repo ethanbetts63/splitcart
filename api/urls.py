@@ -6,6 +6,7 @@ from .views.category_links_file_upload_view import CategoryLinksFileUploadView
 from .views.substitutions_file_upload_view import SubstitutionsFileUploadView
 from .views.bargain_file_upload_view import BargainFileUploadView
 from .views.frontend_views.product_list_view import ProductListView
+from .views.frontend_views.bargain_carousel_view import BargainCarouselView
 from .views.frontend_views.product_detail_view import ProductDetailView
 from .views.product_translation_file_view import ProductTranslationFileView
 from .views.brand_translation_file_view import BrandTranslationFileView
@@ -55,6 +56,7 @@ urlpatterns = [
     path('gs1/unconfirmed-brands/', GS1UnconfirmedBrandsView.as_view(), name='gs1-unconfirmed-brands'),
     path('brands/<int:brand_id>/sample-barcode/', BrandSampleBarcodeView.as_view(), name='brand-sample-barcode'), # New path
     path('products/', ProductListView.as_view(), name='product-list'),
+    path('products/bargain-carousel/', BargainCarouselView.as_view(), name='bargain-carousel'),
     path('products/<int:pk>/', ProductDetailView.as_view(), name='product-detail'),
     path('categories/primary/', PrimaryCategoryListView.as_view(), name='primary-category-list'),
     path('pillar-pages/<slug:slug>/', PillarPageView.as_view(), name='pillar-page-detail'),

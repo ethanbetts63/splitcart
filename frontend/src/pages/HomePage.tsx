@@ -61,6 +61,17 @@ const HomePage = () => {
         </div>
       </div>
 
+      {/* --- Carousel: Bargains --- */}
+      <div className="container mx-auto px-4 py-8">
+        <ProductCarousel
+          key="bargains"
+          title="Bargains"
+          sourceUrl="/api/products/bargain-carousel/"
+          storeIds={storeIdsArray}
+          isDefaultStores={isDefaultStores}
+        />
+      </div>
+
       {/* --- Carousel: Snacks and Sweets --- */}
       <div className="container mx-auto px-4 py-8">
         <ProductCarousel

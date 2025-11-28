@@ -60,7 +60,9 @@ class ProductListView(generics.ListAPIView):
             best_discount=Subquery(best_bargain_subquery.values('discount_percentage')[:1])
         )
 
-
+        if ordering == 'bargains':
+            final_queryset = queryset.filter(best_discount__isnull=False).order_by(F('best_discount').desc())
+            return final_queryset.prefetch_related('prices__store__company', 'skus', 'category__primary_category').defer('normalized_name_brand_size_variations', 'sizes')
 
         if primary_category_slugs:
             slugs = [slug.strip() for slug in primary_category_slugs.split(',')]

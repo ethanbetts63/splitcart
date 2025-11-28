@@ -34,7 +34,7 @@ class BargainGenerator:
                 next_url = data.get('next')
                 self.command.stdout.write(f"\r    - Fetched page {page_num} ({len(all_results)} total {data_type})...", ending="")
                 page_num += 1
-                time.sleep(0.5) # Add a delay to avoid rate-limiting
+                time.sleep(0.1) # Add a delay to avoid rate-limiting
             except requests.exceptions.RequestException as e:
                 self.command.stderr.write(self.command.style.ERROR(f"\nError fetching data from {next_url}: {e}"))
                 return None # Indicate failure
