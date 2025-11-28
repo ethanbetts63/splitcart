@@ -1,0 +1,15 @@
+This session focused on a deep and iterative optimization of the homepage carousels' backend logic.
+
+**Homepage Carousel Performance & Logic Overhaul:**
+The user reported that the new "Bargains" carousel was not working correctly and that the other carousels were slow. This led to a multi-step investigation and refactoring process.
+
+1.  **Initial Bug Fixes:** We first discovered the frontend `ProductCarousel` component was incorrectly overwriting the sorting parameter. A more robust solution was implemented by adding a dedicated `ordering` prop to the component.
+
+2.  **Performance Diagnosis:** It was found that the default carousel logic was extremely slow because it performed a complex subquery to find bargains on every single product in a category. This worked for small categories but was unusable for the main "Bargains" carousel and slow for large categories.
+
+3.  **Advanced Query Refactoring:** To solve both the performance and correctness issues, the `ProductListView` was significantly refactored. The final implementation uses a sophisticated, high-performance, two-query hybrid strategy:
+    *   It first runs a fast query to find up to 20 top bargain products.
+    *   If fewer than 20 are found, it runs a second fast query to find the best unit-price products from the relevant anchor stores to fill the remaining slots.
+    *   This ensures the carousels load quickly, prioritize showing bargains, but remain full even if no bargains are available.
+
+4.  **Final Bug Fix:** A subsequent "no prices available" error was traced to a logic disconnect, where the database query was using anchor stores while the serializer was using the user's directly selected stores. This was fixed by ensuring the serializer receives the correct list of anchor stores to use for pricing.

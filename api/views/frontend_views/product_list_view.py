@@ -16,6 +16,7 @@ class StandardResultsSetPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size = 50
 
+@method_decorator(cache_page(60 * 60 * 6))
 class ProductListView(generics.ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = ProductSerializer

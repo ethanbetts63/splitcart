@@ -1,6 +1,9 @@
 from django.db.models import F, Subquery, OuterRef
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 from rest_framework import generics
 from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import AllowAny
 
 from products.models import Product, Bargain
 from companies.models import StoreGroupMembership
@@ -14,10 +17,14 @@ class BargainCarouselView(generics.ListAPIView):
     set of top bargain products first, and then fetches the full product details,
     avoiding slow, large-scale annotations on the entire Product table.
     """
-    permission_classes = [] # AllowAny
+    permission_classes = [AllowAny]
     serializer_class = ProductSerializer
     # No pagination needed for a carousel with a fixed limit
     pagination_class = None
+
+    @method_decorator(cache_page(60 * 60 * 6)) # Cache for 6 hours
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         store_ids_param = self.request.query_params.get('store_ids')
