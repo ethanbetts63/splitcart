@@ -1,3 +1,4 @@
+from products.models import Product, Price
 import os
 import json
 import itertools
@@ -7,6 +8,7 @@ import requests
 from django.conf import settings
 from django.utils import timezone
 from datetime import timedelta
+from django.db.models import Q
 
 class BargainGenerator:
     """
@@ -20,35 +22,11 @@ class BargainGenerator:
         self.outbox_dir = 'data_management/data/outboxes/bargains_outbox'
         os.makedirs(self.outbox_dir, exist_ok=True)
 
-    def _fetch_paginated_data(self, url, headers, data_type):
-        """Fetches all pages of data from a paginated API endpoint."""
-        all_results = []
-        next_url = url
-        page_num = 1
-        while next_url:
-            try:
-                self.command.stdout.write(f"\r    - Requesting page {page_num} from server...", ending="")
-                response = requests.get(next_url, headers=headers, timeout=60)
-                response.raise_for_status()
-                data = response.json()
-                all_results.extend(data['results'])
-                next_url = data.get('next')
-                self.command.stdout.write(f"\r    - Fetched page {page_num} ({len(all_results)} total {data_type})...", ending="")
-                page_num += 1
-                time.sleep(0.1) # Add a delay to avoid rate-limiting
-            except requests.exceptions.RequestException as e:
-                self.command.stderr.write(self.command.style.ERROR(f"\nError fetching data from {next_url}: {e}"))
-                return None # Indicate failure
-        
-        self.command.stdout.write(f"\r    - Fetched {len(all_results)} total {data_type}. Done.              ")
-        self.command.stdout.write("") # For a newline
-        return all_results
-
     def run(self):
         """
         Orchestrates the entire bargain generation process.
         """
-        self.command.stdout.write(self.command.style.SUCCESS("--- Starting New Bargain Generation (All Combinations via API) ---"))
+        self.command.stdout.write(self.command.style.SUCCESS("--- Starting New Bargain Generation (Bulk PK Lookup) ---"))
         
         # Set up server URL and API key based on dev flag
         if self.dev:
@@ -62,50 +40,56 @@ class BargainGenerator:
                 self.command.stderr.write("API_SERVER_URL and INTERNAL_API_KEY must be set in settings.")
                 return
         
-        headers = {'X-Internal-API-Key': api_key, 'Accept': 'application/json'}
+        headers = {'X-Internal-API-Key': api_key, 'Content-Type': 'application/json'}
         self.command.stdout.write(f"  - Targeting API server at {server_url}")
 
-        # Fetch prices via API, chunking by two-letter prefixes to avoid timeouts
+        # 1. Get all relevant product IDs directly from the database
+        self.command.stdout.write("  - Getting all relevant product IDs...")
+        if self.use_stale:
+            # If using stale, get all product IDs that have at least one price
+            product_ids = list(Price.objects.values_list('product_id', flat=True).distinct())
+        else:
+            # If not using stale, only get products that have a recent price
+            freshness_threshold = timezone.now() - timedelta(days=7)
+            product_ids = list(Price.objects.filter(
+                scraped_date__gte=freshness_threshold.date()
+            ).values_list('product_id', flat=True).distinct())
+        
+        if not product_ids:
+            self.command.stdout.write(self.command.style.WARNING("  - No relevant products found. Nothing to do."))
+            return
+        
+        self.command.stdout.write(f"  - Found {len(product_ids)} products to process.")
+
+        # 2. Fetch all prices for these products in chunks via the new bulk API
         all_prices = []
-        # All possible characters for the start of a normalized name
-        chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
-        self.command.stdout.write("  - Fetching prices from API using two-character prefixes...")
+        chunk_size = 2500
+        prices_url = f"{server_url}/api/internal/prices-for-products/"
 
-        # Create a list of two-character prefixes
-        prefixes = [c1 + c2 for c1 in chars for c2 in chars]
+        self.command.stdout.write(f"  - Fetching prices from API in chunks of {chunk_size} product IDs...")
+        for i in range(0, len(product_ids), chunk_size):
+            chunk_of_ids = product_ids[i:i + chunk_size]
+            self.command.stdout.write(f"\r    - Fetching chunk {i // chunk_size + 1}/{(len(product_ids) // chunk_size) + 1}...", ending="")
+            
+            try:
+                response = requests.post(prices_url, headers=headers, json={'product_ids': chunk_of_ids}, timeout=120)
+                response.raise_for_status()
+                all_prices.extend(response.json())
+            except requests.exceptions.RequestException as e:
+                self.command.stderr.write(self.command.style.ERROR(f"\nAborting due to failure in price fetching for chunk starting with product ID {chunk_of_ids[0]}: {e}"))
+                return
 
-        for prefix in prefixes:
-            self.command.stdout.write(f"\n  - Fetching prices for products starting with '{prefix}'...")
-            
-            base_prices_url = f"{server_url}/api/export/prices/"
-            
-            # Build query parameters
-            params = []
-            if not self.use_stale:
-                freshness_threshold = timezone.now() - timedelta(days=7)
-                params.append(f"scraped_date_gte={freshness_threshold.date().isoformat()}")
-            
-            params.append(f"name_starts_with={prefix}")
-            
-            prices_url = f"{base_prices_url}?{'&'.join(params)}"
-            
-            # Fetch all pages for this character chunk
-            prefix_prices = self._fetch_paginated_data(prices_url, headers, f"prices for '{prefix}'")
-            
-            if prefix_prices is None:
-                self.command.stderr.write(self.command.style.ERROR(f"Aborting due to failure in price fetching for prefix '{prefix}'."))
-                return # Abort the entire run if one chunk fails
-                
-            all_prices.extend(prefix_prices)
+        self.command.stdout.write(f"\n  - Total prices fetched across all chunks: {len(all_prices)}.")
 
-        self.command.stdout.write(f"\n  - Total prices fetched across all prefixes: {len(all_prices)}.")
-
-        # Fetch companies to identify IGA
+        # 3. Fetch company data (this is small, so original method is fine)
         self.command.stdout.write("  - Fetching companies to identify IGA...")
         companies_url = f"{server_url}/api/export/companies/"
-        all_companies = self._fetch_paginated_data(companies_url, headers, "companies")
-        if all_companies is None:
-            self.command.stderr.write(self.command.style.ERROR("Aborting due to failure in company fetching."))
+        try:
+            response = requests.get(companies_url, headers=headers, timeout=60)
+            response.raise_for_status()
+            all_companies = response.json().get('results', [])
+        except requests.exceptions.RequestException as e:
+            self.command.stderr.write(self.command.style.ERROR(f"\nError fetching data from {companies_url}: {e}"))
             return
         
         try:
@@ -114,7 +98,6 @@ class BargainGenerator:
         except StopIteration:
             self.command.stdout.write(self.command.style.WARNING("  - Could not find company 'IGA' via API. No special intra-company logic will be applied."))
             iga_company_id = None
-
 
         # Group prices by product
         self.command.stdout.write("  - Grouping prices by product...")

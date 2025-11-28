@@ -37,16 +37,18 @@ class ExportPricesView(ListAPIView):
                 # Handle invalid date format gracefully, perhaps log a warning
                 pass # For now, just ignore invalid date filters
 
-        # For alphabetical pagination, pre-filter product IDs for performance.
-        name_starts_with = self.request.query_params.get('name_starts_with', None)
-        if name_starts_with:
-            # This is much faster than a direct join filter on the large Price table.
-            # It finds the relevant product IDs first using an indexed field.
-            product_ids = Product.objects.filter(
-                normalized_name_brand_size__istartswith=name_starts_with
-            ).values_list('id', flat=True)
-            
-            queryset = queryset.filter(product_id__in=product_ids)
+        # For numeric pagination by product ID chunks.
+        try:
+            product_id_gte = self.request.query_params.get('product_id_gte', None)
+            if product_id_gte is not None:
+                queryset = queryset.filter(product_id__gte=int(product_id_gte))
+
+            product_id_lt = self.request.query_params.get('product_id_lt', None)
+            if product_id_lt is not None:
+                queryset = queryset.filter(product_id__lt=int(product_id_lt))
+        except (ValueError, TypeError):
+            # Ignore if params are not valid integers
+            pass
 
         return queryset
 

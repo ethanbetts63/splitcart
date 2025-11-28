@@ -43,10 +43,12 @@ from .views.export_stores_view import ExportStoresView
 from .views.company_list_view import CompanyListView
 from .views.import_semantic_data_view import ImportSemanticDataView
 from .views.gs1_views import GS1UnconfirmedBrandsView, BrandSampleBarcodeView # Updated import
+from .views.internal.price_bulk_export_view import PriceBulkExportView
 
 urlpatterns = [
     path('initial-setup/', InitialSetupView.as_view(), name='initial-setup'),
     path('scheduler/next-candidate/', SchedulerView.as_view(), name='scheduler-next-candidate'),
+    path('internal/prices-for-products/', PriceBulkExportView.as_view(), name='price-bulk-export'),
     path('upload/products/', ProductFileUploadView.as_view(), name='product-file-upload'),
     path('upload/gs1/', Gs1FileUploadView.as_view(), name='gs1-file-upload'),
     path('upload/stores/', StoreFileUploadView.as_view(), name='store-file-upload'),

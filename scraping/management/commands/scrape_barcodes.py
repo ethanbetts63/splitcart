@@ -67,7 +67,7 @@ class Command(BaseCommand):
                 
                 except Exception as e:
                     self.stderr.write(self.style.ERROR(f"An unexpected error occurred while processing {file_name}: {e}"))
-                    self.stdout.write(self.command.style.WARNING(f"File {file_name} will be left in the inbox. Moving to next file."))
+                    self.stdout.write(self.style.WARNING(f"File {file_name} will be left in the inbox. Moving to next file."))
                     break
             
             if retries >= MAX_RETRIES:
