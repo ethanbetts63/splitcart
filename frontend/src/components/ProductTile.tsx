@@ -135,6 +135,15 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
         </CardHeader>
         <CardContent className="flex-grow px-3">
           <PriceDisplay prices={product.prices} />
+          {/* --- DEBUG INFO --- */}
+          {product.best_discount !== null && product.best_discount !== undefined && (
+            <div className="text-xs text-red-500 mt-2">
+              <p>Pre-calc Discount: {product.best_discount}%</p>
+              <p>Store: {product.cheaper_store_name}</p>
+              <p>Company: {product.cheaper_company_name}</p>
+            </div>
+          )}
+          {/* --- END DEBUG INFO --- */}
         </CardContent>
         <CardFooter className="flex justify-center pb-0">
           <div 

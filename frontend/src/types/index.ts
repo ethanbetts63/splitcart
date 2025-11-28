@@ -35,6 +35,9 @@ export type Product = {
     discount_percentage: number;
     cheapest_company_name: string;
   } | null;
+  best_discount?: number;
+  cheaper_store_name?: string;
+  cheaper_company_name?: string;
 };
 
 export type CartSubstitution = {

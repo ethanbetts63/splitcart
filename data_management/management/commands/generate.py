@@ -9,6 +9,7 @@ class Command(BaseCommand):
         parser.add_argument('--map', action='store_true', help='Generate store location map.')
         parser.add_argument('--primary-cats', action='store_true', help='Generate primary categories.')
         parser.add_argument('--bargains', action='store_true', help='Generate all viable bargain combinations and save to a file.')
+        parser.add_argument('--use-stale', action='store_true', help='Include all prices, not just fresh ones, in bargain generation.')
         parser.add_argument('--store-groups', action='store_true', help='Generate store groups.')
         parser.add_argument('--price-comps', action='store_true', help='Generate price comparison data.')
         parser.add_argument('--archive', action='store_true', help='Archive the database.')
@@ -47,7 +48,7 @@ class Command(BaseCommand):
         if options['bargains'] or run_all:
             from data_management.utils.generation_utils.bargain_generator import BargainGenerator
             self.stdout.write(self.style.SUCCESS("Generating all bargain combinations..."))
-            generator = BargainGenerator(self, dev=dev)
+            generator = BargainGenerator(self, dev=dev, use_stale=options['use_stale'])
             generator.run()
 
         if options['store_groups'] or run_all:

@@ -11,8 +11,8 @@ class Bargain(models.Model):
     expensive_price = models.ForeignKey('products.Price', on_delete=models.CASCADE, related_name='bargains_as_expensive')
 
     # Denormalized fields for performance
-    cheaper_store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='bargains_as_cheaper_store', null=True)
-    expensive_store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='bargains_as_expensive_store', null=True)
+    cheaper_store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='bargains_as_cheaper_store')
+    expensive_store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='bargains_as_expensive_store')
 
     class Meta:
         """

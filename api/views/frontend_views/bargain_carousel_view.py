@@ -82,7 +82,9 @@ class BargainCarouselView(generics.ListAPIView):
         queryset = Product.objects.filter(
             pk__in=list(top_product_ids)
         ).annotate(
-            best_discount=Subquery(best_bargain_subquery.values('discount_percentage')[:1])
+            best_discount=Subquery(best_bargain_subquery.values('discount_percentage')[:1]),
+            cheaper_store_name=Subquery(best_bargain_subquery.values('cheaper_store__store_name')[:1]),
+            cheaper_company_name=Subquery(best_bargain_subquery.values('cheaper_store__company__name')[:1])
         ).order_by('-best_discount')[:20] # Final limit for the carousel
 
         return queryset.prefetch_related(

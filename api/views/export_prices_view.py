@@ -2,7 +2,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.pagination import CursorPagination
 from datetime import date # New import
-from products.models import Price
+from products.models import Price, Product
 from api.serializers import PriceExportSerializer
 from api.permissions import IsInternalAPIRequest
 from rest_framework.throttling import ScopedRateThrottle
@@ -36,6 +36,17 @@ class ExportPricesView(ListAPIView):
             except ValueError:
                 # Handle invalid date format gracefully, perhaps log a warning
                 pass # For now, just ignore invalid date filters
+
+        # For alphabetical pagination, pre-filter product IDs for performance.
+        name_starts_with = self.request.query_params.get('name_starts_with', None)
+        if name_starts_with:
+            # This is much faster than a direct join filter on the large Price table.
+            # It finds the relevant product IDs first using an indexed field.
+            product_ids = Product.objects.filter(
+                normalized_name_brand_size__istartswith=name_starts_with
+            ).values_list('id', flat=True)
+            
+            queryset = queryset.filter(product_id__in=product_ids)
 
         return queryset
 

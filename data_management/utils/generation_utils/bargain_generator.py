@@ -13,9 +13,10 @@ class BargainGenerator:
     Finds all viable bargain combinations between store prices for every product
     by fetching data from the API and exports them to a JSON file.
     """
-    def __init__(self, command, dev=False):
+    def __init__(self, command, dev=False, use_stale=False):
         self.command = command
         self.dev = dev
+        self.use_stale = use_stale
         self.outbox_dir = 'data_management/data/outboxes/bargains_outbox'
         os.makedirs(self.outbox_dir, exist_ok=True)
 
@@ -64,15 +65,40 @@ class BargainGenerator:
         headers = {'X-Internal-API-Key': api_key, 'Accept': 'application/json'}
         self.command.stdout.write(f"  - Targeting API server at {server_url}")
 
-        # Fetch all recent prices via API
-        self.command.stdout.write("  - Fetching recent prices from API...")
-        freshness_threshold = timezone.now() - timedelta(days=7)
-        prices_url = f"{server_url}/api/export/prices/?scraped_date_gte={freshness_threshold.date().isoformat()}"
-        all_prices = self._fetch_paginated_data(prices_url, headers, "prices")
+        # Fetch prices via API, chunking by two-letter prefixes to avoid timeouts
+        all_prices = []
+        # All possible characters for the start of a normalized name
+        chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
+        self.command.stdout.write("  - Fetching prices from API using two-character prefixes...")
 
-        if all_prices is None:
-            self.command.stderr.write(self.command.style.ERROR("Aborting due to failure in price fetching."))
-            return
+        # Create a list of two-character prefixes
+        prefixes = [c1 + c2 for c1 in chars for c2 in chars]
+
+        for prefix in prefixes:
+            self.command.stdout.write(f"\n  - Fetching prices for products starting with '{prefix}'...")
+            
+            base_prices_url = f"{server_url}/api/export/prices/"
+            
+            # Build query parameters
+            params = []
+            if not self.use_stale:
+                freshness_threshold = timezone.now() - timedelta(days=7)
+                params.append(f"scraped_date_gte={freshness_threshold.date().isoformat()}")
+            
+            params.append(f"name_starts_with={prefix}")
+            
+            prices_url = f"{base_prices_url}?{'&'.join(params)}"
+            
+            # Fetch all pages for this character chunk
+            prefix_prices = self._fetch_paginated_data(prices_url, headers, f"prices for '{prefix}'")
+            
+            if prefix_prices is None:
+                self.command.stderr.write(self.command.style.ERROR(f"Aborting due to failure in price fetching for prefix '{prefix}'."))
+                return # Abort the entire run if one chunk fails
+                
+            all_prices.extend(prefix_prices)
+
+        self.command.stdout.write(f"\n  - Total prices fetched across all prefixes: {len(all_prices)}.")
 
         # Fetch companies to identify IGA
         self.command.stdout.write("  - Fetching companies to identify IGA...")
@@ -99,6 +125,19 @@ class BargainGenerator:
                 prices_by_product[product_id] = []
             prices_by_product[product_id].append(price_data)
         self.command.stdout.write(f"    - Grouped prices for {len(prices_by_product)} unique products.")
+
+        # Filter out products that don't have prices from at least two companies
+        self.command.stdout.write("  - Filtering products for multiple company presence...")
+        products_with_multiple_companies = {}
+        for product_id, prices in prices_by_product.items():
+            # Get unique company IDs for the current product's prices
+            if not prices: continue
+            companies = {price['store__company_id'] for price in prices if 'store__company_id' in price}
+            if len(companies) >= 2:
+                products_with_multiple_companies[product_id] = prices
+        
+        self.command.stdout.write(f"    - Found {len(products_with_multiple_companies)} products with multi-company prices (out of {len(prices_by_product)} total).")
+        prices_by_product = products_with_multiple_companies
 
         # Calculate all viable bargain combinations
         self.command.stdout.write("  - Calculating all viable inter-company bargain combinations...")

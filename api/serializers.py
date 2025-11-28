@@ -112,36 +112,54 @@ class ProductSerializer(serializers.ModelSerializer):
     slug = serializers.SerializerMethodField()
     bargain_info = serializers.SerializerMethodField()
 
+    # Keep debug fields as requested
+    best_discount = serializers.IntegerField(read_only=True, required=False)
+    cheaper_store_name = serializers.CharField(read_only=True, required=False)
+    cheaper_company_name = serializers.CharField(read_only=True, required=False)
+
     class Meta:
         model = Product
-        fields = ('id', 'name', 'brand_name', 'size', 'image_url', 'prices', 'primary_category', 'min_unit_price', 'slug', 'bargain_info')
+        fields = ('id', 'name', 'brand_name', 'size', 'image_url', 'prices', 'primary_category', 'min_unit_price', 'slug', 'bargain_info',
+                  'best_discount', 'cheaper_store_name', 'cheaper_company_name')
 
-    def get_slug(self, obj):
-        return f"{slugify(obj.name)}-{obj.id}"
+    def _get_filtered_prices(self, obj):
+        """
+        Internal helper to get the definitive, filtered list of prices for a product.
+        Memoizes the result on the object instance to avoid re-computation during
+        a single serialization.
+        """
+        # Check if the prices have already been computed for this object instance
+        if hasattr(obj, '_filtered_prices_cache'):
+            return obj._filtered_prices_cache
 
-    def get_bargain_info(self, obj):
-        """
-        Recalculates the bargain for display. It finds the absolute lowest price,
-        identifies all companies sharing that price, and then finds the highest price
-        from any OTHER company to calculate the discount. This ensures bargains are
-        always inter-company. It also formats the message string directly.
-        """
         prices_map = self.context.get('prices_map')
         nearby_store_ids = self.context.get('nearby_store_ids')
 
         if prices_map is not None:
             prices_queryset = prices_map.get(obj.id, [])
         else:
-            # Access the prefetched data, which is a list, not a queryset.
-            # No database hit occurs here.
+            # Access the prefetched data; no DB hit occurs here.
             all_prices = obj.prices.all()
             if nearby_store_ids:
-                # Filter the list in Python.
                 prices_queryset = [p for p in all_prices if p.store_id in nearby_store_ids]
             else:
-                prices_queryset = all_prices
+                prices_queryset = list(all_prices)
+        
+        # Cache the result on the object instance for this serialization run
+        obj._filtered_prices_cache = prices_queryset
+        return prices_queryset
 
-        if not prices_queryset or len(prices_queryset) == 0:
+    def get_slug(self, obj):
+        return f"{slugify(obj.name)}-{obj.id}"
+
+    def get_bargain_info(self, obj):
+        """
+        Recalculates the bargain for display using the single, consistent,
+        filtered price list provided by the internal helper method.
+        """
+        prices_queryset = self._get_filtered_prices(obj)
+
+        if not prices_queryset or len(prices_queryset) < 2:
             return None
 
         # Find absolute min price and all companies that have it
@@ -241,11 +259,7 @@ class ProductSerializer(serializers.ModelSerializer):
             return bargain_info['cheapest_company_logo_url']
 
         # Fallback to the old method if no bargain is found
-        prices_map = self.context.get('prices_map')
-        if prices_map is not None:
-            prices_queryset = prices_map.get(obj.id, [])
-        else:
-            prices_queryset = obj.prices.select_related('store__company').all()
+        prices_queryset = self._get_filtered_prices(obj)
 
         for price in prices_queryset:
             if price.store and price.store.company:
@@ -264,21 +278,11 @@ class ProductSerializer(serializers.ModelSerializer):
         return None
 
     def get_prices(self, obj):
-        prices_map = self.context.get('prices_map')
-        nearby_store_ids = self.context.get('nearby_store_ids')
-
-        if prices_map is not None:
-            # Use the pre-fetched prices from the context
-            prices_queryset = prices_map.get(obj.id, [])
-        else:
-            # Access the prefetched data; no DB hit occurs here.
-            all_prices = obj.prices.all()
-            if nearby_store_ids:
-                # Filter the list in Python.
-                prices_queryset = [p for p in all_prices if p.store_id in nearby_store_ids]
-            else:
-                prices_queryset = all_prices
-
+        """
+        Formats the filtered list of prices for frontend display.
+        """
+        prices_queryset = self._get_filtered_prices(obj)
+        
         company_prices = {}
         overall_min_price = None
 
@@ -313,12 +317,18 @@ class ProductSerializer(serializers.ModelSerializer):
             # Call the reusable helper method to get the image URL
             image_url = self._get_image_url_for_company(obj, company_name)
 
+            # Find the original price object to get the per_unit_price_string
+            # This is not perfectly efficient but necessary for now
+            original_price_obj = next((p for p in prices_queryset if p.store.company.name == company_name), None)
+            per_unit_price_string = original_price_obj.per_unit_price_string if original_price_obj and original_price_obj.per_unit_price_string else None
+
+
             formatted_prices.append({
                 'company': company_name,
                 'price_display': price_range,
                 'is_lowest': is_lowest,
                 'image_url': image_url,
-                'per_unit_price_string': price_obj.per_unit_price_string if price_obj.per_unit_price_string else None
+                'per_unit_price_string': per_unit_price_string
             })
         
         # Sort by lowest price first, then company name
