@@ -134,35 +134,42 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
     }
   } else if (primaryCategorySlug) {
     // Fallback for the old singular prop
-    seeMoreLink = `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlug)}`;
-  }
-
-  return (
-    <>
-      <section className="bg-muted p-4 rounded-lg">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">
-            <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">{title}</span>
-          </h2>
-          {isDefaultStores && (
-            <span className="ml-2 text-sm text-black bg-blue-100 px-2 py-1 rounded-md">
-              Showing example products, please select a location.
-            </span>
-          )}
-          {seeMoreLink && (
-            <Button asChild size="sm">
-              <Link to={seeMoreLink} aria-label={`Explore All Deals in ${title}`}>
-                Explore All Deals
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          )}
-        </div>
-        <div className="overflow-x-auto pb-4">
-          <div className="flex">
-            {products?.map((product) => (
-              <div className="flex-shrink-0 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 pb-2" key={product.id}>
-                <ProductTile product={product} />
+          seeMoreLink = `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlug)}`;
+      }
+    
+      return (
+        <>
+          <section className="bg-muted p-4 rounded-lg">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">
+                <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">{title}</span>
+              </h2>
+              {isDefaultStores && (
+                <span className="ml-2 text-sm text-black bg-blue-100 px-2 py-1 rounded-md">
+                  Showing example products, please select a location.
+                </span>
+              )}
+              {seeMoreLink && (
+                <Button asChild size="sm">
+                  <Link to={seeMoreLink} aria-label={`Explore All Deals in ${title}`}>
+                    Explore All Deals
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              )}
+              {title === 'Bargains' && (
+                <Button asChild size="sm">
+                  <Link to="/bargains" aria-label="Explore More Bargains">
+                    Explore More Bargains
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              )}
+            </div>
+            <div className="overflow-x-auto pb-4">
+              <div className="flex">
+                {products?.map((product) => (
+                  <div className="flex-shrink-0 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 pb-2" key={product.id}>                <ProductTile product={product} />
               </div>
             ))}
           </div>

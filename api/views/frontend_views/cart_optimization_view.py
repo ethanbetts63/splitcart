@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from companies.models import Store
 from data_management.utils.cart_optimization import calculate_optimized_cost, calculate_baseline_cost, build_price_slots, calculate_best_single_store
+from api.utils.get_pricing_stores import get_pricing_stores
 
 from users.models import Cart
 
@@ -33,6 +34,10 @@ class CartOptimizationView(APIView):
         if not store_ids:
             return Response({'error': 'No stores selected in the cart\'s store list.'}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Get the correct stores for pricing, including fallbacks to national anchors
+        pricing_store_ids = get_pricing_stores(store_ids)
+        stores = Store.objects.filter(id__in=pricing_store_ids)
+
         # Construct the data structures required by the optimization logic
         original_items = []
         cart_with_substitutes_slots = []
@@ -54,7 +59,6 @@ class CartOptimizationView(APIView):
             cart_with_substitutes_slots.append(slot)
 
         max_stores_options = request.data.get('max_stores_options', [2, 3, 4])
-        stores = cart_obj.selected_store_list.stores.all()
 
         # The original logic starts here, using the variables we just built
         try:
