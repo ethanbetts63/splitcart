@@ -21,70 +21,75 @@ class ProductListView(generics.ListAPIView):
     serializer_class = ProductSerializer
     pagination_class = StandardResultsSetPagination
 
-    @method_decorator(cache_page(60 * 60 * 6))
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
     def _get_carousel_queryset(self, store_ids, primary_category_slugs):
         """
         Gets a hybrid queryset for carousels. It prioritizes the top 20 bargain
-        products and fills the remaining slots with the best unit-price products.
+        products and fills the remaining slots with the best unit-price products,
+        using anchor stores for all price lookups.
+        Returns a tuple of (queryset, store_ids_for_context).
         """
         CAROUSEL_SIZE = 20
 
-        # --- Step 1: Get Bargain Products (Fast) ---
+        # --- Step 1: Get Anchor Stores ---
         anchor_store_ids = list(StoreGroupMembership.objects.filter(
             store_id__in=store_ids
         ).values_list('group__anchor_id', flat=True).distinct())
+        
+        if not anchor_store_ids:
+            # If no anchors, fall back to a simple unit price query on the original stores
+            # to prevent showing nothing.
+            qs = Product.objects.filter(
+                prices__store__id__in=store_ids,
+                category__primary_category__slug__in=primary_category_slugs
+            ).annotate(
+                min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=store_ids))
+            ).order_by('min_unit_price')[:CAROUSEL_SIZE]
+            return qs, store_ids
 
+        # --- Step 2: Get Bargain Products (Fast) ---
         bargain_product_ids = []
-        if anchor_store_ids:
-            # Get top products that have bargains in the specified categories
-            bargain_query = Bargain.objects.filter(
-                cheaper_store_id__in=anchor_store_ids,
-                expensive_store_id__in=anchor_store_ids,
-                product__category__primary_category__slug__in=primary_category_slugs
-            ).order_by('-discount_percentage')
-            
-            # Get unique product IDs from the top bargains
-            # We fetch more than CAROUSEL_SIZE to account for multiple bargains for the same product
-            potential_bargain_pids = bargain_query.values_list('product_id', flat=True)[:200]
-            
-            seen_pids = set()
-            for pid in potential_bargain_pids:
-                if pid not in seen_pids:
-                    seen_pids.add(pid)
-                    bargain_product_ids.append(pid)
-                if len(bargain_product_ids) >= CAROUSEL_SIZE:
-                    break
+        bargain_query = Bargain.objects.filter(
+            cheaper_store_id__in=anchor_store_ids,
+            expensive_store_id__in=anchor_store_ids,
+            product__category__primary_category__slug__in=primary_category_slugs
+        ).order_by('-discount_percentage')
+        
+        potential_bargain_pids = bargain_query.values_list('product_id', flat=True)[:200]
+        seen_pids = set()
+        for pid in potential_bargain_pids:
+            if pid not in seen_pids:
+                seen_pids.add(pid)
+                bargain_product_ids.append(pid)
+            if len(bargain_product_ids) >= CAROUSEL_SIZE:
+                break
 
-        # --- Step 2: Get Filler Products (Fast, if needed) ---
+        # --- Step 3: Get Filler Products (Fast, if needed) ---
         num_bargains = len(bargain_product_ids)
         filler_product_ids = []
         if num_bargains < CAROUSEL_SIZE:
             num_to_fill = CAROUSEL_SIZE - num_bargains
             
-            # Query for cheap unit-price products, excluding those already found
             filler_queryset = Product.objects.filter(
-                prices__store__id__in=store_ids,
+                prices__store__id__in=anchor_store_ids, # Use anchors
                 category__primary_category__slug__in=primary_category_slugs
             ).exclude(
                 pk__in=bargain_product_ids
             ).annotate(
-                min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=store_ids))
+                min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=anchor_store_ids)) # Use anchors
             ).order_by('min_unit_price')
             
             filler_product_ids = list(filler_queryset.values_list('pk', flat=True)[:num_to_fill])
 
-        # --- Step 3: Combine, Fetch, and Annotate ---
+        # --- Step 4: Combine and Return ---
         final_product_ids = bargain_product_ids + filler_product_ids
         if not final_product_ids:
-            return Product.objects.none()
+            return Product.objects.none(), []
 
-        # Create a preserved order for the final query
         preserved_order = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(final_product_ids)])
         
-        # Build the final queryset
         best_bargain_subquery = Bargain.objects.filter(
             product=OuterRef('pk'),
             cheaper_store_id__in=anchor_store_ids,
@@ -92,11 +97,11 @@ class ProductListView(generics.ListAPIView):
         ).order_by('-discount_percentage')
 
         final_queryset = Product.objects.filter(pk__in=final_product_ids).annotate(
-            best_discount=Subquery(best_bargain_subquery.values('discount_percentage')[:1]),
-            min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=store_ids))
+            best_discount=Subquery(best_bargain_subquery.values('discount_percentage')[:1])
         ).order_by(preserved_order)
-
-        return final_queryset
+        
+        # Return the queryset and the list of stores that should be used for price serialization
+        return final_queryset, anchor_store_ids
 
     def get_queryset(self):
         store_ids_param = self.request.query_params.get('store_ids')
@@ -110,7 +115,6 @@ class ProductListView(generics.ListAPIView):
 
         try:
             store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
-            self.nearby_store_ids = store_ids
         except (ValueError, TypeError):
             raise ValidationError({'store_ids': 'Invalid format. Must be a comma-separated list of integers.'})
 
@@ -122,11 +126,15 @@ class ProductListView(generics.ListAPIView):
             elif primary_category_slug_param:
                 slugs = [primary_category_slug_param]
             
-            return self._get_carousel_queryset(store_ids, slugs).prefetch_related(
+            # The helper method now returns both the queryset and the store IDs for the context
+            queryset, stores_for_context = self._get_carousel_queryset(store_ids, slugs)
+            self.nearby_store_ids = stores_for_context # Set for serializer context
+            return queryset.prefetch_related(
                 'prices__store__company', 'skus', 'category__primary_category'
             ).defer('normalized_name_brand_size_variations', 'sizes')
 
         # --- General Search/Filtering Logic ---
+        self.nearby_store_ids = store_ids # Default to user's selection for other views
         queryset = Product.objects.filter(prices__store__id__in=store_ids).distinct()
 
         # Category filtering
