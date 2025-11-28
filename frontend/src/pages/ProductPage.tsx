@@ -21,9 +21,13 @@ const ProductPage: React.FC = () => {
   // Extract the ID from the slug
   const productId = slug ? slug.split('-').pop() : undefined;
 
+  // Construct the API URL with store_ids query parameter
+  const storeIdsQuery = storeIdsArray.length > 0 ? `?store_ids=${storeIdsArray.join(',')}` : '';
+  const apiUrl = `/api/products/${productId}/${storeIdsQuery}`;
+
   const { data: product, isLoading, error } = useApiQuery<Product>(
-    ['product', productId],
-    `/api/products/${productId}/`,
+    ['product', productId, storeIdsArray.join(',')], // Add storeIds to query key for reactive updates
+    apiUrl,
     {},
     { enabled: !!productId } // Only run query if productId is available
   );
