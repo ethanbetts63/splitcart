@@ -5,13 +5,12 @@ from data_management.analysers.company_analysis import generate_store_product_co
 from data_management.analysers.company_product_overlap import generate_company_product_overlap_heatmap
 from data_management.analysers.store_product_overlap import generate_store_product_overlap_heatmap
 from data_management.analysers.store_pricing_heatmap import generate_store_pricing_heatmap
-from data_management.analysers.category_price_correlation import generate_category_price_correlation_heatmap
+
 from data_management.analysers.internal_company_product_crossover import generate_internal_company_product_crossover_report
 from data_management.utils.analysis_utils.category_tree import generate_category_tree
 from data_management.utils.analysis_utils.substitution_analysis import generate_substitution_analysis_report
 from data_management.utils.analysis_utils.savings_benchmark import run_savings_benchmark
 from data_management.utils.analysis_utils.substitution_overlap import calculate_strict_substitution_overlap_matrix, generate_substitution_heatmap_image
-from data_management.utils.analysis_utils.super_category_analysis import generate_super_category_report
 from companies.models import Company, Category
 
 class Command(BaseCommand):
@@ -96,27 +95,6 @@ class Command(BaseCommand):
             overlap_matrix = calculate_strict_substitution_overlap_matrix()
             generate_substitution_heatmap_image(overlap_matrix)
 
-        elif report_type == 'category_heatmap':
-            if not company_name:
-                self.stdout.write(self.style.ERROR(
-                    'The --company-name argument is required for the category_heatmap report.'))
-                return
-
-            if category_name:
-                self.stdout.write(self.style.SUCCESS(
-                    f"Generating category pricing heatmap for '{company_name}' and category '{category_name}'..."))
-                generate_category_price_correlation_heatmap(company_name, category_name)
-            else:
-                self.stdout.write(self.style.SUCCESS(
-                    f"Generating category pricing heatmaps for all categories in '{company_name}'..."))
-                try:
-                    company = Company.objects.get(name__iexact=company_name)
-                    categories = Category.objects.filter(company=company)
-                    for category in categories:
-                        self.stdout.write(self.style.SUCCESS(f"  Generating heatmap for category '{category.name}'..."))
-                        generate_category_price_correlation_heatmap(company_name, category.name)
-                except Company.DoesNotExist:
-                    self.stdout.write(self.style.ERROR(f"Company '{company_name}' not found."))
 
         elif report_type == 'category_tree':
             if not company_name:
@@ -162,24 +140,7 @@ class Command(BaseCommand):
                     'The --company-name argument is required for the internal_crossover report.'))
                 return
             generate_internal_company_product_crossover_report(company_name, self)
-
-        elif report_type == 'super_cats':
-            self.stdout.write(self.style.SUCCESS("--- Starting Super Category Analysis ---"))
-            report_content = generate_super_category_report()
             
-            output_dir = os.path.join('data_management', 'data', 'analysis', 'category_reports')
-            os.makedirs(output_dir, exist_ok=True)
-            
-            file_name = f"{datetime.date.today()}-super_cats.txt"
-            file_path = os.path.join(output_dir, file_name)
-
-            try:
-                with open(file_path, 'w', encoding='utf-8') as f:
-                    f.write(report_content)
-                self.stdout.write(self.style.SUCCESS(f"\nSuccessfully wrote analysis report to: {file_path}"))
-            except IOError as e:
-                self.stderr.write(self.style.ERROR(f"Error writing to file: {e}"))
-
         else:
             self.stdout.write(self.style.WARNING(
                 f"Report type '{report_type}' is not yet implemented."))
