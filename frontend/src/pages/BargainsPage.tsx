@@ -9,6 +9,7 @@ import confusedShopper1280 from "../assets/confused_shopper-1280w.webp";
 import { useDocumentHead } from '@/hooks/useDocumentHead';
 import { useStoreList } from '../context/StoreListContext';
 import { ProductCarousel } from "../components/ProductCarousel";
+import { FAQ } from "../components/FAQ";
 
 const BargainsPage: React.FC = () => {
     useDocumentHead(
@@ -76,6 +77,21 @@ const BargainsPage: React.FC = () => {
                 />
             ))}
             </div>
+      </div>
+      {/* FAQ Section */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col gap-8">
+          <section>
+            <FAQ
+              title="Frequently Asked Questions about Bargains"
+              page="bargains"
+              imageSrc={confusedShopper}
+              srcSet={`${confusedShopper320} 320w, ${confusedShopper640} 640w, ${confusedShopper768} 768w, ${confusedShopper1024} 1024w, ${confusedShopper1280} 1280w`}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              imageAlt="Confused Shopper"
+            />
+          </section>
+        </div>
       </div>
     </div>
   );

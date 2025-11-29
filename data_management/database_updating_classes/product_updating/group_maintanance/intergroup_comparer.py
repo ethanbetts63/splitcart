@@ -89,36 +89,51 @@ class IntergroupComparer:
                         self.command.stdout.write("     - More than 100 groups found. Sampling 50 to reduce load.")
                         groups_to_process = random.sample(company_groups, 50)
 
-                    company_anchors = [g.anchor for g in groups_to_process if g.anchor]
+                    # Step 1: Generate all potential pairs for the selected groups
+                    potential_pairs = list(itertools.combinations(groups_to_process, 2))
+                    self.command.stdout.write(f"     - Generated {len(potential_pairs)} potential pairs for comparison.")
 
-                    # --- Pre-fetch all prices for this company's anchors ---
-                    anchor_ids = [a.id for a in company_anchors]
-                    self.command.stdout.write(f"     - Pre-fetching prices for {len(anchor_ids)} anchors...")
+                    # Step 2: Filter out pairs that should be skipped
+                    pairs_to_compare = []
+                    for group_a, group_b in potential_pairs:
+                        if not cache_manager.should_skip(group_a.id, group_b.id):
+                            pairs_to_compare.append((group_a, group_b))
                     
-                    price_queryset = Price.objects.filter(
-                        store_id__in=anchor_ids
-                    ).values('store_id', 'product_id', 'price')
+                    skipped_count = len(potential_pairs) - len(pairs_to_compare)
+                    if skipped_count > 0:
+                        self.command.stdout.write(f"     - Skipping {skipped_count} pairs based on recent comparison cache.")
+                    
+                    # Step 3: Identify the unique set of anchors that actually need their prices fetched
+                    necessary_anchor_ids = set()
+                    for group_a, group_b in pairs_to_compare:
+                        if group_a.anchor:
+                            necessary_anchor_ids.add(group_a.anchor.id)
+                        if group_b.anchor:
+                            necessary_anchor_ids.add(group_b.anchor.id)
+                    
+                    # Step 4: Pre-fetch prices only for the necessary anchors
+                    all_prices_cache = {}
+                    if necessary_anchor_ids:
+                        self.command.stdout.write(f"     - Pre-fetching prices for {len(necessary_anchor_ids)} required anchors...")
+                        
+                        price_queryset = Price.objects.filter(
+                            store_id__in=list(necessary_anchor_ids)
+                        ).values('store_id', 'product_id', 'price')
 
-                    all_prices_cache = {anchor_id: {} for anchor_id in anchor_ids}
-                    for price_data in price_queryset:
-                        all_prices_cache[price_data['store_id']][price_data['product_id']] = price_data['price']
-                    self.command.stdout.write("     - Price cache built.")
-                    # --- End of pre-fetching ---
+                        all_prices_cache = {anchor_id: {} for anchor_id in necessary_anchor_ids}
+                        for price_data in price_queryset:
+                            all_prices_cache[price_data['store_id']][price_data['product_id']] = price_data['price']
+                        self.command.stdout.write("     - Price cache built.")
+                    else:
+                        self.command.stdout.write("     - No new comparisons needed for this company in this pass.")
 
-                    group_pairs = list(itertools.combinations(groups_to_process, 2))
-                    self.command.stdout.write(f"     - Generated {len(group_pairs)} unique pairs for comparison.")
-
+                    # Step 5: Perform the comparisons on the pre-filtered list
                     merged_group_ids_this_pass = set()
-                    skipped_count = 0
-
-                    for group_a, group_b in group_pairs:
+                    
+                    for group_a, group_b in pairs_to_compare:
                         if group_a.id in merged_group_ids_this_pass or group_b.id in merged_group_ids_this_pass:
                             continue
                         
-                        if cache_manager.should_skip(group_a.id, group_b.id):
-                            skipped_count += 1
-                            continue
-
                         anchor_a = group_a.anchor
                         anchor_b = group_b.anchor
 
@@ -139,9 +154,6 @@ class IntergroupComparer:
                             merged_group_ids_this_pass.add(group_b.id) 
                         else:
                             cache_manager.record_comparison(group_a.id, group_b.id)
-                    
-                    if skipped_count > 0:
-                        self.command.stdout.write(f"     - Skipped {skipped_count} pairs based on recent comparison cache.")
 
                 if not merges_occurred_in_pass:
                     self.command.stdout.write("\n  - No merges occurred in this pass across all companies. Merging complete.")
