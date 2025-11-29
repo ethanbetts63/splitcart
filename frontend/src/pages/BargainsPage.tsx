@@ -10,6 +10,10 @@ import { useDocumentHead } from '@/hooks/useDocumentHead';
 import { useStoreList } from '../context/StoreListContext';
 import { ProductCarousel } from "../components/ProductCarousel";
 import { FAQ } from "../components/FAQ";
+import { useApiQuery } from '../hooks/useApiQuery';
+import type { PriceComparison } from '../types';
+import PriceComparisonChart from '../components/PriceComparisonChart';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const BargainsPage: React.FC = () => {
     useDocumentHead(
@@ -37,7 +41,16 @@ const BargainsPage: React.FC = () => {
       { name: 'Woolworths', id: 2 },
       { name: 'Aldi', id: 3 },
       { name: 'Iga', id: 4 }
-  ]
+  ];
+
+  const {
+    data: bargainStats,
+    isLoading: isLoadingStats,
+    isError: isErrorStats,
+  } = useApiQuery<PriceComparison[]>(
+    ['bargainStats'],
+    '/api/stats/bargains/',
+  );
 
   return (
     <div>
@@ -78,6 +91,23 @@ const BargainsPage: React.FC = () => {
             ))}
             </div>
       </div>
+
+      {/* --- Bargain Stats Section --- */}
+      <div className="container mx-auto px-4 py-8">
+        <h2 className="text-3xl font-bold text-center mb-8">Bargain Breakdown</h2>
+        {isLoadingStats && <LoadingSpinner />}
+        {isErrorStats && <p className="text-center text-red-500">Could not load bargain statistics.</p>}
+        {bargainStats && (
+            <div className="mt-4 flex flex-wrap -mx-2">
+                {bargainStats.map((comparison, index) => (
+                    <div key={index} className="w-full lg:w-1/2 px-2 mb-4">
+                        <PriceComparisonChart comparison={comparison} categoryName="products" />
+                    </div>
+                ))}
+            </div>
+        )}
+      </div>
+
       {/* FAQ Section */}
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">

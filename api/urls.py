@@ -18,6 +18,7 @@ from .views.frontend_views.postcode_search_view import PostcodeSearchView
 from .views.frontend_views.primary_category_list_view import PrimaryCategoryListView
 from .views.frontend_views.faq_list_view import FaqListView
 from .views.pillar_page_view import PillarPageView
+from .views.bargain_stats_view import BargainStatsView
 from .views.frontend_views.product_substitute_list_view import ProductSubstituteListView
 from .views.frontend_views.store_list_views.nearby_store_list_view import StoreListView
 from .views.frontend_views.store_list_views.list_create_view import SelectedStoreListCreateView
@@ -62,6 +63,7 @@ urlpatterns = [
     path('products/<int:pk>/', ProductDetailView.as_view(), name='product-detail'),
     path('categories/primary/', PrimaryCategoryListView.as_view(), name='primary-category-list'),
     path('pillar-pages/<slug:slug>/', PillarPageView.as_view(), name='pillar-page-detail'),
+    path('stats/bargains/', BargainStatsView.as_view(), name='bargain-stats'),
     path('faqs/', FaqListView.as_view(), name='faq-list'),
     path('products/<int:product_id>/substitutes/', ProductSubstituteListView.as_view(), name='product-substitute-list'),
     path('files/product_translations/', ProductTranslationFileView.as_view(), name='product-translation-file'),

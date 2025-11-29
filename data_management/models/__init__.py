@@ -1,2 +1,2 @@
 from .faq import FAQ
-from .site_statistic import SiteStatistic
+from .bargain_stats import BargainStats

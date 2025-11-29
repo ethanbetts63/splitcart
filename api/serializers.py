@@ -5,7 +5,7 @@ from products.models import Product, Price
 from products.models.substitution import ProductSubstitution
 from companies.models import Store, Category, PrimaryCategory, Company, PillarPage
 from companies.models.postcode import Postcode
-from data_management.models import FAQ
+from data_management.models import FAQ, BargainStats
 from users.models import SelectedStoreList, Cart, CartItem, CartSubstitution
 
 class CompanySerializer(serializers.ModelSerializer):
@@ -17,6 +17,11 @@ class FaqSerializer(serializers.ModelSerializer):
     class Meta:
         model = FAQ
         fields = ('question', 'answer')
+
+class BargainStatsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BargainStats
+        fields = ('key', 'data', 'updated_at')
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
