@@ -5,6 +5,7 @@ from products.models import Price
 from data_management.utils.price_comparer import PriceComparer
 from data_management.utils.group_comparison_cache_manager import ComparisonCacheManager
 import itertools
+import random
 
 class IntergroupComparer:
     """
@@ -83,7 +84,12 @@ class IntergroupComparer:
                         self.command.stdout.write("     - Not enough groups for this company to compare. Skipping.")
                         continue
                     
-                    company_anchors = [g.anchor for g in company_groups if g.anchor]
+                    groups_to_process = company_groups
+                    if len(company_groups) > 100:
+                        self.command.stdout.write("     - More than 100 groups found. Sampling 50 to reduce load.")
+                        groups_to_process = random.sample(company_groups, 50)
+
+                    company_anchors = [g.anchor for g in groups_to_process if g.anchor]
 
                     # --- Pre-fetch all prices for this company's anchors ---
                     anchor_ids = [a.id for a in company_anchors]
@@ -99,7 +105,7 @@ class IntergroupComparer:
                     self.command.stdout.write("     - Price cache built.")
                     # --- End of pre-fetching ---
 
-                    group_pairs = list(itertools.combinations(company_groups, 2))
+                    group_pairs = list(itertools.combinations(groups_to_process, 2))
                     self.command.stdout.write(f"     - Generated {len(group_pairs)} unique pairs for comparison.")
 
                     merged_group_ids_this_pass = set()
