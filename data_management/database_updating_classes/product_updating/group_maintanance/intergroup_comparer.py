@@ -1,9 +1,7 @@
-from datetime import timedelta
-from django.utils import timezone
 from django.db import transaction
 from django.db.models import Count
 from companies.models import Store, StoreGroup, StoreGroupMembership
-from products.models import Price # Added missing import
+from products.models import Price
 from data_management.utils.price_comparer import PriceComparer
 from data_management.utils.group_comparison_cache_manager import ComparisonCacheManager
 import itertools
@@ -11,30 +9,16 @@ import itertools
 class IntergroupComparer:
     """
     Handles the logic for Phase 2: Inter-Group Merging.
-    It compares the anchors of all groups with recent data and merges any that are identical.
+    It compares the anchors of all groups with price data and merges any that are identical.
     """
-    def __init__(self, command, relaxed_staleness=False):
+    def __init__(self, command, **kwargs):
         self.command = command
         self.comparer = PriceComparer()
-        self.relaxed_staleness = relaxed_staleness
 
-        if self.relaxed_staleness:
-            self.command.stdout.write(self.command.style.WARNING("Using relaxed staleness check for inter-group comparisons."))
-            try:
-                latest_scrape_date = Price.objects.latest('scraped_date').scraped_date
-                self.freshness_threshold = latest_scrape_date - timedelta(days=7)
-            except Price.DoesNotExist:
-                # If there are no prices, fall back to the default
-                self.freshness_threshold = timezone.now() - timedelta(days=7)
-        else:
-            self.freshness_threshold = timezone.now() - timedelta(days=7)
-        
-        self.command.stdout.write(f"  - Using freshness threshold: {self.freshness_threshold}")
-
-    def _get_groups_with_current_pricing(self):
-        """Get all active groups whose anchor has recent price data."""
+    def _get_groups_with_any_pricing(self):
+        """Get all active groups whose anchor has any price data."""
         return StoreGroup.objects.filter(
-            anchor__prices__scraped_date__gte=self.freshness_threshold
+            anchor__prices__isnull=False
         ).distinct().prefetch_related('anchor', 'company')
 
     def _merge_groups(self, group_a, group_b):
@@ -76,8 +60,8 @@ class IntergroupComparer:
                 self.command.stdout.write(f"  --- Pass {pass_count}: Re-evaluating for merges ---")
                 merges_occurred_in_pass = False
                 
-                all_groups = self._get_groups_with_current_pricing()
-                self.command.stdout.write(f"  - Found {len(all_groups)} total groups with current pricing.")
+                all_groups = self._get_groups_with_any_pricing()
+                self.command.stdout.write(f"  - Found {len(all_groups)} total groups with any pricing.")
 
                 if len(all_groups) < 2:
                     self.command.stdout.write("  - Not enough active groups to compare. Halting.")
@@ -106,8 +90,7 @@ class IntergroupComparer:
                     self.command.stdout.write(f"     - Pre-fetching prices for {len(anchor_ids)} anchors...")
                     
                     price_queryset = Price.objects.filter(
-                        store_id__in=anchor_ids,
-                        scraped_date__gte=self.freshness_threshold
+                        store_id__in=anchor_ids
                     ).values('store_id', 'product_id', 'price')
 
                     all_prices_cache = {anchor_id: {} for anchor_id in anchor_ids}
