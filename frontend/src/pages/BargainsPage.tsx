@@ -156,6 +156,11 @@ const BargainsPage: React.FC = () => {
         {isErrorStats && <p className="text-center text-red-500">Could not load bargain statistics.</p>}
         {bargainStats && (
             <div className="mt-4 flex flex-wrap -mx-2">
+                {bargainStats.map((comparison, index) => (
+                    <div key={index} className="w-full lg:w-1/2 px-2 mb-4">
+                        <PriceComparisonChart comparison={comparison} categoryName="products" />
+                    </div>
+                ))}
                 <div className="w-full lg:w-1/2 px-2 mb-4">
                     <Card className="h-full">
                       <CardHeader>
@@ -168,11 +173,6 @@ const BargainsPage: React.FC = () => {
                       </CardContent>
                     </Card>
                 </div>
-                {bargainStats.map((comparison, index) => (
-                    <div key={index} className="w-full lg:w-1/2 px-2 mb-4">
-                        <PriceComparisonChart comparison={comparison} categoryName="products" />
-                    </div>
-                ))}
             </div>
         )}
       </div>
