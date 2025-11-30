@@ -11,7 +11,8 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         self.stdout.write("Starting bargain stats calculation...")
 
-        products = Product.objects.prefetch_related('prices__store__company').all()
+        product_count = Product.objects.count()
+        products_iterator = Product.objects.prefetch_related('prices__store__company').iterator(chunk_size=5000)
         
         # {('Coles', 'Woolworths'): {'Coles': 10, 'Woolworths': 5}}
         pair_wins = defaultdict(lambda: defaultdict(int))
@@ -19,9 +20,9 @@ class Command(BaseCommand):
         # {('Coles', 'Woolworths'): 15}
         pair_total_bargains = defaultdict(int)
 
-        self.stdout.write(f"Processing {len(products)} products...")
+        self.stdout.write(f"Processing {product_count} products...")
         
-        for i, product in enumerate(products):
+        for i, product in enumerate(products_iterator):
             if i > 0 and i % 1000 == 0:
                 self.stdout.write(f"  - Processed {i} products...")
 

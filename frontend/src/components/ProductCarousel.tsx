@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 
 interface ProductCarouselProps {
-  sourceUrl: string;
+  sourceUrl?: string;
+  products?: Product[];
   storeIds?: number[];
   title: string;
   searchQuery?: string;
@@ -26,9 +27,10 @@ interface ProductCarouselProps {
 import { useApiQuery } from '@/hooks/useApiQuery';
 import { useDialog } from '@/context/DialogContext';
 
-const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, onValidation, slot, dataKey, minProducts = 4, ordering }) => {
+const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, products: initialProducts, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, onValidation, slot, dataKey, minProducts = 4, ordering }) => {
   const { openDialog } = useDialog();
-  const [baseUrl, queryString] = sourceUrl.split('?');
+
+  const [baseUrl, queryString] = sourceUrl ? sourceUrl.split('?') : ['', ''];
   const params = new URLSearchParams(queryString || '');
   if (storeIds && storeIds.length > 0) {
     params.set('store_ids', storeIds.join(','));
@@ -39,7 +41,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
     params.set('primary_category_slug', primaryCategorySlug);
   }
   // Add a limit to the query, but not for substitutes
-  if (!sourceUrl.includes('substitutes')) {
+  if (sourceUrl && !sourceUrl.includes('substitutes')) {
     params.set('limit', '20');
     // Add the special ordering for carousels if not already specified by prop or URL
     if (ordering) {
@@ -49,14 +51,13 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
     }
   }
 
+  const finalUrl = sourceUrl ? `${baseUrl}?${params.toString()}` : '';
 
-  const finalUrl = `${baseUrl}?${params.toString()}`;
-
-  const { data: responseData, isLoading, error, isFetched } = useApiQuery<any>(
+  const { data: responseData, isLoading: isFetching, error, isFetched } = useApiQuery<any>(
     ['products', title, finalUrl],
     finalUrl,
     {},
-    { enabled: !!storeIds && storeIds.length > 0, refetchOnWindowFocus: false, staleTime: 1000 * 60 * 10 } // 10 minutes
+    { enabled: !!sourceUrl && !initialProducts && !!storeIds && storeIds.length > 0, refetchOnWindowFocus: false, staleTime: 1000 * 60 * 10 } // 10 minutes
   );
 
   // Ref to prevent calling onValidation multiple times
@@ -64,6 +65,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
 
   // Process the response to get the final list of products
   const products: Product[] = React.useMemo(() => {
+    if (initialProducts) return initialProducts;
     if (!responseData) return [];
     
     // Handle responses that are direct arrays (like substitutes) vs objects with a 'results' key
@@ -75,7 +77,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
     }
 
     return results;
-  }, [responseData, dataKey]);
+  }, [initialProducts, responseData, dataKey]);
 
   useEffect(() => {
     if (isFetched && onValidation && (primaryCategorySlug || primaryCategorySlugs) && !validationCalled.current && slot !== undefined) {
@@ -85,7 +87,8 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
       validationCalled.current = true;
     }
   }, [isFetched, products, onValidation, primaryCategorySlug, primaryCategorySlugs, slot, minProducts]);
-
+  
+  const isLoading = isFetching && !initialProducts;
 
   // If loading is done and there are not enough products to be valid, render nothing.
   if (!isLoading && products.length < minProducts) {

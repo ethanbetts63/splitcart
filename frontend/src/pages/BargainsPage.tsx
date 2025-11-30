@@ -11,7 +11,7 @@ import { useStoreList } from '../context/StoreListContext';
 import { ProductCarousel } from "../components/ProductCarousel";
 import { FAQ } from "../components/FAQ";
 import { useApiQuery } from '../hooks/useApiQuery';
-import type { PriceComparison } from '../types';
+import type { PriceComparison, Product } from '../types';
 import PriceComparisonChart from '../components/PriceComparisonChart';
 import LoadingSpinner from '../components/LoadingSpinner';
 
@@ -42,6 +42,36 @@ const BargainsPage: React.FC = () => {
       { name: 'Aldi', id: 3 },
       { name: 'Iga', id: 4 }
   ];
+
+  // --- Fetching and Sorting Bargains ---
+  const { data: bargainProductResponse, isLoading: isLoadingBargains } = useApiQuery<{ results: Product[] }>(
+    ['bargains', storeIdsArray],
+    `/api/products/bargains/?store_ids=${storeIdsArray.join(',')}`,
+    {},
+    { enabled: storeIdsArray.length > 0 }
+  );
+
+  const sortedBargains = React.useMemo(() => {
+    const companyBargains: { [key: string]: Product[] } = {
+      Coles: [],
+      Woolworths: [],
+      Aldi: [],
+      Iga: [],
+    };
+
+    if (bargainProductResponse?.results) {
+      bargainProductResponse.results.forEach(product => {
+        if (product.cheapest_price_store?.company_name) {
+          const companyName = product.cheapest_price_store.company_name;
+          if (companyBargains.hasOwnProperty(companyName)) {
+            companyBargains[companyName].push(product);
+          }
+        }
+      });
+    }
+    return companyBargains;
+  }, [bargainProductResponse]);
+
 
   const {
     data: bargainStats,
@@ -79,17 +109,23 @@ const BargainsPage: React.FC = () => {
         </div>
       </div>
       <div className="container mx-auto px-4 py-8">
-            <div className="flex flex-col gap-8">
-            {companies.map(company => (
-                <ProductCarousel
-                    key={company.id}
-                    title={`${company.name} Bargains`}
-                    sourceUrl={`/api/products/bargain-carousel/?company_id=${company.id}`}
-                    storeIds={storeIdsArray}
-                    isDefaultStores={isDefaultStores}
-                />
-            ))}
-            </div>
+        <div className="flex flex-col gap-8">
+            {isLoadingBargains ? (
+                <LoadingSpinner />
+            ) : (
+                companies.map(company => (
+                    sortedBargains[company.name] && sortedBargains[company.name].length > 0 && (
+                        <ProductCarousel
+                            key={company.id}
+                            title={`${company.name} Bargains`}
+                            products={sortedBargains[company.name]}
+                            storeIds={storeIdsArray}
+                            isDefaultStores={isDefaultStores}
+                        />
+                    )
+                ))
+            )}
+        </div>
       </div>
 
       {/* --- Bargain Stats Section --- */}
@@ -128,4 +164,3 @@ const BargainsPage: React.FC = () => {
 };
 
 export default BargainsPage;
-
