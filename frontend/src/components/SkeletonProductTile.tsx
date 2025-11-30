@@ -3,17 +3,17 @@ import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
 
 const SkeletonProductTile = () => {
   return (
-    <Card className="w-full flex flex-col h-full overflow-hidden gap-3">
+    <Card className="w-full flex flex-col h-full overflow-hidden">
       <Skeleton className="aspect-square w-full" />
-      <CardHeader className="p-0 pb-0 flex flex-col items-center">
-        <Skeleton className="h-6 w-3/4" />
-        <Skeleton className="h-4 w-1/2" />
+      <CardHeader className="p-0 text-center flex flex-col items-center gap-1 pt-2">
+        <Skeleton className="h-12 w-3/4" /> {/* Match h-12 of real title */}
+        <Skeleton className="h-4 w-1/2" /> {/* For the brand description */}
       </CardHeader>
-      <CardContent className="flex-grow p-0 flex justify-center">
-        <Skeleton className="h-8 w-1/3" />
+      <CardContent className="flex-grow px-3 flex justify-center items-center">
+        <Skeleton className="h-6 w-2/3" /> {/* Represents PriceDisplay */}
       </CardContent>
-      <CardFooter className="flex justify-center p-4 pt-0">
-        <Skeleton className="h-10 w-full" />
+      <CardFooter className="flex justify-center pb-0 px-4">
+        <Skeleton className="h-10 w-full" /> {/* Represents AddToCartButton */}
       </CardFooter>
     </Card>
   );

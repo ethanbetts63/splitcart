@@ -6,6 +6,7 @@ import { useCart } from "./context/CartContext";
 import NextButton from "./components/NextButton";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { Toaster } from "./components/ui/sonner";
+import { useDialog } from "./context/DialogContext";
 import { toast } from "sonner";
 
 import HomePage from "./pages/HomePage";
@@ -55,45 +56,13 @@ const Layout = () => {
   const items = currentCart ? currentCart.items : [];
   const cartTotal = items.length;
   const { isAuthenticated, logout } = useAuth();
+  
+  // Get dialog state and functions from the new context
+  const { isDialogOpen, dialogPage, openDialog, closeDialog } = useDialog();
 
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogPage, setDialogPage] = useState('cart');
-  const showNextButton = (location.pathname === '/' || location.pathname === '/search') && cartTotal > 0 && !dialogOpen;
+  const showNextButton = (location.pathname === '/' || location.pathname === '/search') && cartTotal > 0 && !isDialogOpen;
 
-  useEffect(() => {
-    const handleInteraction = (event: MouseEvent | KeyboardEvent) => {
-      if (
-        !dialogOpen &&
-        location.pathname === '/' &&
-        selectedStoreIds.size === 0
-      ) {
-        if (event instanceof KeyboardEvent && event.key !== 'Enter') {
-          return;
-        }
-
-        const target = event.target as HTMLElement;
-        // Allow navigation links in header and footer and FAQ items to work normally.
-        if (target.closest('header a[href], footer a[href], .faq-item')) {
-            return;
-        }
-
-        // For other interactions, open the dialog and stop the event.
-        event.preventDefault();
-        event.stopPropagation();
-        openDialog('Edit Location');
-        toast.info("Please select stores to continue.");
-      }
-    };
-
-    // Use capture phase to intercept events early.
-    document.addEventListener('click', handleInteraction, true);
-    document.addEventListener('keydown', handleInteraction, true);
-
-    return () => {
-      document.removeEventListener('click', handleInteraction, true);
-      document.removeEventListener('keydown', handleInteraction, true);
-    };
-  }, [dialogOpen, location.pathname, selectedStoreIds.size]);
+  // The problematic useEffect that caused the global click issue has been removed.
 
   const handleSearch = () => {
     if (searchTerm.trim() !== '') {
@@ -106,14 +75,15 @@ const Layout = () => {
       handleSearch();
     }
   };
-
-  const openDialog = (page: string) => {
+  
+  // This function now just calls the context function.
+  // It also handles the special case of checking for selected stores when opening the cart.
+  const handleOpenDialog = (page: string) => {
     if (page === 'cart' && selectedStoreIds.size === 0) {
-      setDialogPage('Edit Location');
+      openDialog('Edit Location');
     } else {
-      setDialogPage(page);
+      openDialog(page);
     }
-    setDialogOpen(true);
   };
 
   return (
@@ -123,7 +93,7 @@ const Layout = () => {
         setSearchTerm={setSearchTerm}
         handleSearch={handleSearch}
         handleSearchKeyDown={handleSearchKeyDown}
-        openDialog={openDialog}
+        openDialog={handleOpenDialog} // Pass the new handler
         cartTotal={cartTotal}
         selectedStoreIds={selectedStoreIds}
         isAuthenticated={isAuthenticated}
@@ -137,8 +107,8 @@ const Layout = () => {
       </main>
       <Footer />
       <SettingsDialog 
-        open={dialogOpen} 
-        onOpenChange={setDialogOpen} 
+        open={isDialogOpen} 
+        onOpenChange={(isOpen) => { if (!isOpen) closeDialog() }}
         defaultPage={dialogPage} 
       />
       <Toaster />

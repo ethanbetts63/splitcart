@@ -85,97 +85,89 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
   }, [isFetched, products, onValidation, primaryCategorySlug, primaryCategorySlugs, slot, minProducts]);
 
 
-  // If loading is done and it's invalid, render nothing.
+  // If loading is done and there are not enough products to be valid, render nothing.
   if (!isLoading && products.length < minProducts) {
     return null;
   }
 
-  if (isLoading) {
-    return (
-      <section className="bg-muted p-8 rounded-lg">
-        <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-semibold">
-          <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">{title}</span>
-        </h2>
-          {searchQuery && (
-            <Link to={`/search?q=${encodeURIComponent(searchQuery)}`} className="text-sm text-blue-500 hover:underline">
-              See more
-            </Link>
-          )}
-        </div>
-        <div className="overflow-x-auto pb-4">
-          <div className="flex">
-            {[...Array(5)].map((_, i) => (
-              <div className="flex-shrink-0 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 pb-2" key={i}>
-                <SkeletonProductTile />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
+  // Handle errors after the loading check
   if (error) {
     return <div className="text-center p-4 text-red-500">Error: {error.message}</div>;
   }
 
+  // --- Unified Header Logic ---
+  // This logic is now outside the conditional rendering blocks.
   let seeMoreLink = null;
   if (primaryCategorySlugs) {
     if (primaryCategorySlugs.length > 1 && pillarPageLinkSlug) {
-      // Home page case: multiple slugs, link to the pillar page
       seeMoreLink = `/categories/${encodeURIComponent(pillarPageLinkSlug)}`;
     } else if (primaryCategorySlugs.length === 1) {
-      // Pillar page case: single slug, link to a search for that primary category
       seeMoreLink = `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlugs[0])}`;
     } else {
-      // Fallback for multiple slugs but no pillarPageLinkSlug, or other edge cases
       seeMoreLink = `/search?primary_category_slugs=${encodeURIComponent(primaryCategorySlugs.join(','))}`;
     }
   } else if (primaryCategorySlug) {
-    // Fallback for the old singular prop
-          seeMoreLink = `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlug)}`;
-      }
-    
-      return (
-        <>
-          <section className="bg-muted p-4 rounded-lg">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold">
-                <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">{title}</span>
-              </h2>
-              {isDefaultStores && (
-                <span className="ml-2 text-sm text-black bg-blue-100 px-2 py-1 rounded-md">
-                  Showing example products, please select a location.
-                </span>
-              )}
-              {seeMoreLink && (
-                <Button asChild size="sm">
-                  <Link to={seeMoreLink} aria-label={`Explore All Deals in ${title}`}>
-                    Explore All Deals
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              )}
-              {title === 'Bargains' && (
-                <Button asChild size="sm">
-                  <Link to="/bargains" aria-label="Explore More Bargains">
-                    Explore More Bargains
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              )}
-            </div>
-            <div className="overflow-x-auto pb-4">
-              <div className="flex">
-                {products?.map((product) => (
-                  <div className="flex-shrink-0 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 pb-2" key={product.id}>                <ProductTile product={product} />
-              </div>
-            ))}
+    seeMoreLink = `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlug)}`;
+  } else if (searchQuery) {
+    seeMoreLink = `/search?q=${encodeURIComponent(searchQuery)}`;
+  }
+
+  const headerContent = (
+    <div className="flex justify-between items-center mb-4">
+      <h2 className="text-2xl font-bold">
+        <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">{title}</span>
+      </h2>
+      <div className="flex items-center gap-2">
+        {isDefaultStores && !isLoading && (
+          <span className="ml-2 text-sm text-black bg-blue-100 px-2 py-1 rounded-md">
+            Showing example products, please select a location.
+          </span>
+        )}
+        {seeMoreLink && (
+          <Button asChild size="sm">
+            <Link to={seeMoreLink} aria-label={`Explore All Deals in ${title}`}>
+              Explore All Deals
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+        )}
+        {title === 'Bargains' && !seeMoreLink && (
+          <Button asChild size="sm">
+            <Link to="/bargains" aria-label="Explore More Bargains">
+              Explore More Bargains
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+
+  const tileContent = isLoading ? (
+    [...Array(5)].map((_, i) => (
+      <div className="flex-shrink-0 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 pb-2" key={i}>
+        <SkeletonProductTile />
+      </div>
+    ))
+  ) : (
+    products?.map((product) => (
+      <div className="flex-shrink-0 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 pb-2" key={product.id}>
+        <ProductTile product={product} />
+      </div>
+    ))
+  );
+
+  return (
+    <>
+      <section className="bg-muted p-4 rounded-lg">
+        {headerContent}
+        <div className="overflow-x-auto pb-4">
+          <div className="flex">
+            {tileContent}
           </div>
         </div>
       </section>
-      {products.length > 0 && <JsonLdItemList products={products} title={title} />}
+      {!isLoading && products.length > 0 && <JsonLdItemList products={products} title={title} />}
     </>
   );
 };
