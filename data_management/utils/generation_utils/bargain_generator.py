@@ -1,15 +1,9 @@
-from products.models import Product, Price
 import os
 import json
 import itertools
-import time
 from decimal import Decimal
 import requests
 from django.conf import settings
-from django.utils import timezone
-from datetime import timedelta
-from django.db.models import Q
-from math import radians, sin, cos, sqrt, asin
 
 class BargainGenerator:
     """
@@ -44,17 +38,26 @@ class BargainGenerator:
         headers = {'X-Internal-API-Key': api_key, 'Content-Type': 'application/json'}
         self.command.stdout.write(f"  - Targeting API server at {server_url}")
 
-        # 1. Get all relevant product IDs directly from the database
-        self.command.stdout.write("  - Getting all relevant product IDs...")
-        if self.use_stale:
-            # If using stale, get all product IDs that have at least one price
-            product_ids = list(Price.objects.values_list('product_id', flat=True).distinct())
-        else:
-            # If not using stale, only get products that have a recent price
-            freshness_threshold = timezone.now() - timedelta(days=7)
-            product_ids = list(Price.objects.filter(
-                scraped_date__gte=freshness_threshold.date()
-            ).values_list('product_id', flat=True).distinct())
+        # 1. Get all product IDs from the API
+        self.command.stdout.write("  - Getting all product IDs from API...")
+        product_ids = []
+        products_url = f"{server_url}/api/export/products/"
+        page_num = 1
+
+        while products_url:
+            self.command.stdout.write(f"\r    - Fetching product ID page {page_num}...", ending="")
+            try:
+                response = requests.get(products_url, headers=headers, timeout=60)
+                response.raise_for_status()
+                data = response.json()
+                product_ids.extend([p['id'] for p in data.get('results', [])])
+                products_url = data.get('next')  # Get URL for the next page
+                page_num += 1
+            except requests.exceptions.RequestException as e:
+                self.command.stderr.write(self.command.style.ERROR(f"\nError fetching products from {products_url}: {e}"))
+                return
+        
+        self.command.stdout.write("\n")
         
         if not product_ids:
             self.command.stdout.write(self.command.style.WARNING("  - No relevant products found. Nothing to do."))

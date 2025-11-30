@@ -124,7 +124,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
       {/* Center: Example Products Text */}
       <div className="text-center">
         {isDefaultStores && !isLoading && (
-          <span className="text-sm text-black bg-blue-100 px-2 py-1 rounded-md font-bold">
+          <span className="text-sm text-black bg-red-100 px-2 py-1 rounded-md font-bold">
             Showing example products, please&nbsp;
             <button 
               onClick={() => openDialog('Edit Location')} 
