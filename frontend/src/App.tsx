@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, Suspense } from "react";
 import { Routes, Route, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { SettingsDialog } from "./components/settings-dialog";
 import { useStoreList } from "./context/StoreListContext";
@@ -7,7 +7,6 @@ import NextButton from "./components/NextButton";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { Toaster } from "./components/ui/sonner";
 import { useDialog } from "./context/DialogContext";
-import { toast } from "sonner";
 
 import HomePage from "./pages/HomePage";
 
