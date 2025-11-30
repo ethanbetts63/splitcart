@@ -10,6 +10,7 @@ from data_management.database_updating_classes.discovery_update_orchestrator imp
 from data_management.database_updating_classes.category_link_update_orchestrator import CategoryLinkUpdateOrchestrator                  
 from data_management.database_updating_classes.substitution_update_orchestrator import SubstitutionUpdateOrchestrator
 from data_management.database_updating_classes.bargain_update_orchestrator import BargainUpdateOrchestrator
+from data_management.database_updating_classes.faq_update_orchestrator import FaqUpdateOrchestrator
 class Command(BaseCommand):
     help = 'Updates the database with data from various sources.'
 
@@ -21,6 +22,7 @@ class Command(BaseCommand):
         parser.add_argument('--cat-links', action='store_true', help='Update category links from the category_links_inbox directory.')
         parser.add_argument('--subs', action='store_true', help='Update substitutions from the substitutions_inbox directory.')
         parser.add_argument('--bargains', action='store_true', help='Update bargains from the bargains_outbox directory.')
+        parser.add_argument('--faqs', action='store_true', help='Update FAQs from the FAQ.jsonl file.')
         parser.add_argument('--archive', action='store_true', help='Flush DB and load data from the most recent archive.')
         parser.add_argument('--relaxed-staleness', action='store_true', help='Use a relative 7-day window for store group comparisons, based on the latest scrape date in the DB.')
 
@@ -35,12 +37,17 @@ class Command(BaseCommand):
         run_category_links = options['cat_links']
         run_substitutions = options['subs']
         run_bargains = options['bargains']
+        run_faqs = options['faqs']
         relaxed_staleness = options['relaxed_staleness']
         post_process_only = options['post_process_only']
 
-        if not any([run_stores_discovery, run_products_processed, run_gs1, run_category_links, run_substitutions, run_bargains]):
+        if not any([run_stores_discovery, run_products_processed, run_gs1, run_category_links, run_substitutions, run_bargains, run_faqs]):
             run_stores_discovery = True
             run_products_processed = True
+
+        if run_faqs:
+            orchestrator = FaqUpdateOrchestrator(self)
+            orchestrator.run()
 
         if run_bargains:
             orchestrator = BargainUpdateOrchestrator(self)
