@@ -22,12 +22,13 @@ interface ProductCarouselProps {
   dataKey?: string; // Key to access product data in a nested object
   minProducts?: number; // Minimum number of products to render the carousel
   ordering?: string; // New explicit ordering prop
+  isLoading?: boolean; // Add isLoading prop
 }
 
 import { useApiQuery } from '@/hooks/useApiQuery';
 import { useDialog } from '@/context/DialogContext';
 
-const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, products: initialProducts, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, onValidation, slot, dataKey, minProducts = 4, ordering }) => {
+const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, products: initialProducts, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, onValidation, slot, dataKey, minProducts = 4, ordering, isLoading: isLoadingProp }) => {
   const { openDialog } = useDialog();
 
   const [baseUrl, queryString] = sourceUrl ? sourceUrl.split('?') : ['', ''];
@@ -88,7 +89,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
     }
   }, [isFetched, products, onValidation, primaryCategorySlug, primaryCategorySlugs, slot, minProducts]);
   
-  const isLoading = isFetching && !initialProducts;
+  const isLoading = isLoadingProp ?? (isFetching && !initialProducts);
 
   // If loading is done and there are not enough products to be valid, render nothing.
   if (!isLoading && products.length < minProducts) {

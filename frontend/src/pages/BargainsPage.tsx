@@ -44,9 +44,9 @@ const BargainsPage: React.FC = () => {
   ];
 
   // --- Fetching and Sorting Bargains ---
-  const { data: bargainProductResponse, isLoading: isLoadingBargains } = useApiQuery<{ results: Product[] }>(
-    ['bargains', storeIdsArray],
-    `/api/products/bargains/?store_ids=${storeIdsArray.join(',')}`,
+  const { data: bargainProductResponse, isLoading: isLoadingBargains } = useApiQuery<Product[]>(
+    ['bargains', storeIdsArray, 60],
+    `/api/products/bargain-carousel/?store_ids=${storeIdsArray.join(',')}&limit=60`,
     {},
     { enabled: storeIdsArray.length > 0 }
   );
@@ -59,15 +59,29 @@ const BargainsPage: React.FC = () => {
       Iga: [],
     };
 
-    if (bargainProductResponse?.results) {
-      bargainProductResponse.results.forEach(product => {
-        if (product.cheapest_price_store?.company_name) {
-          const companyName = product.cheapest_price_store.company_name;
+    const products = Array.isArray(bargainProductResponse) 
+      ? bargainProductResponse 
+      : bargainProductResponse?.results;
+
+    if (products) {
+      // Group products by the company name in bargain_info
+      products.forEach(product => {
+        if (product.bargain_info?.cheapest_company_name) {
+          const companyName = product.bargain_info.cheapest_company_name;
           if (companyBargains.hasOwnProperty(companyName)) {
             companyBargains[companyName].push(product);
           }
         }
       });
+
+      // Sort products within each company's array by discount percentage
+      for (const companyName in companyBargains) {
+        companyBargains[companyName].sort((a, b) => {
+          const discountA = a.bargain_info?.discount_percentage ?? 0;
+          const discountB = b.bargain_info?.discount_percentage ?? 0;
+          return discountB - discountA; // Sort descending
+        });
+      }
     }
     return companyBargains;
   }, [bargainProductResponse]);
@@ -110,21 +124,27 @@ const BargainsPage: React.FC = () => {
       </div>
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
-            {isLoadingBargains ? (
-                <LoadingSpinner />
-            ) : (
-                companies.map(company => (
-                    sortedBargains[company.name] && sortedBargains[company.name].length > 0 && (
-                        <ProductCarousel
-                            key={company.id}
-                            title={`${company.name} Bargains`}
-                            products={sortedBargains[company.name]}
-                            storeIds={storeIdsArray}
-                            isDefaultStores={isDefaultStores}
-                        />
-                    )
-                ))
-            )}
+          {isLoadingBargains ? (
+            companies.map(company => (
+              <ProductCarousel
+                key={company.id}
+                title={`${company.name} Bargains`}
+                isLoading={true}
+              />
+            ))
+          ) : (
+            companies.map(company => (
+              sortedBargains[company.name] && sortedBargains[company.name].length > 0 && (
+                <ProductCarousel
+                  key={company.id}
+                  title={`${company.name} Bargains`}
+                  products={sortedBargains[company.name]}
+                  storeIds={storeIdsArray}
+                  isDefaultStores={isDefaultStores}
+                />
+              )
+            ))
+          )}
         </div>
       </div>
 

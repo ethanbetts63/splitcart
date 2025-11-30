@@ -31,6 +31,13 @@ class BargainCarouselView(generics.ListAPIView):
     def get_queryset(self):
         store_ids_param = self.request.query_params.get('store_ids')
         company_id = self.request.query_params.get('company_id')
+        try:
+            limit = int(self.request.query_params.get('limit', 20))
+        except (ValueError, TypeError):
+            limit = 20
+        
+        # Enforce a reasonable maximum limit
+        limit = min(limit, 100)
 
         if not store_ids_param:
             raise ValidationError({'store_ids': 'This field is required.'})
@@ -47,8 +54,9 @@ class BargainCarouselView(generics.ListAPIView):
         if not pricing_store_ids:
             return Product.objects.none()
 
-        # 2. Find the IDs of the top ~40 unique products that have bargains
-        #    strictly between the relevant pricing stores.
+        # 2. Find the IDs of the top unique products that have bargains
+        #    strictly between the relevant pricing stores. Fetch more to ensure we have enough unique products.
+        initial_fetch_limit = limit * 2
         bargain_query = Bargain.objects.filter(
             cheaper_store_id__in=pricing_store_ids,
             expensive_store_id__in=pricing_store_ids
@@ -60,7 +68,7 @@ class BargainCarouselView(generics.ListAPIView):
         
         top_product_ids = bargain_query.order_by(
             '-discount_percentage'
-        ).values_list('product_id', flat=True).distinct()[:40]
+        ).values_list('product_id', flat=True).distinct()[:initial_fetch_limit]
 
 
         if not top_product_ids:
@@ -85,7 +93,7 @@ class BargainCarouselView(generics.ListAPIView):
             best_discount=Subquery(best_bargain_subquery.values('discount_percentage')[:1]),
             cheaper_store_name=Subquery(best_bargain_subquery.values('cheaper_store__store_name')[:1]),
             cheaper_company_name=Subquery(best_bargain_subquery.values('cheaper_store__company__name')[:1])
-        ).order_by('-best_discount')[:20] # Final limit for the carousel
+        ).order_by('-best_discount')[:limit] # Final limit for the carousel
 
         return queryset.prefetch_related(
             'prices__store__company', 'skus', 'category__primary_category'
