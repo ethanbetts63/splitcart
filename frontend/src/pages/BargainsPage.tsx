@@ -11,6 +11,7 @@ import { useStoreList } from '../context/StoreListContext';
 import { ProductCarousel } from "../components/ProductCarousel";
 import { FAQ } from "../components/FAQ";
 import { useApiQuery } from '../hooks/useApiQuery';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import type { PriceComparison, Product } from '../types';
 import PriceComparisonChart from '../components/PriceComparisonChart';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -155,6 +156,18 @@ const BargainsPage: React.FC = () => {
         {isErrorStats && <p className="text-center text-red-500">Could not load bargain statistics.</p>}
         {bargainStats && (
             <div className="mt-4 flex flex-wrap -mx-2">
+                <div className="w-full lg:w-1/2 px-2 mb-4">
+                    <Card className="h-full">
+                      <CardHeader>
+                        <CardTitle>How We Compare</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-gray-700">
+                          This is some placeholder text that explains how the bargain statics are generated and what they mean. The user will replace this with actual content later.
+                        </p>
+                      </CardContent>
+                    </Card>
+                </div>
                 {bargainStats.map((comparison, index) => (
                     <div key={index} className="w-full lg:w-1/2 px-2 mb-4">
                         <PriceComparisonChart comparison={comparison} categoryName="products" />
