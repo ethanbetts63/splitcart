@@ -125,77 +125,99 @@ class BargainGenerator:
 
         # Calculate all viable bargain combinations and stream to file
         self.command.stdout.write("  - Calculating and streaming viable inter-company bargain combinations...")
-        output_path = os.path.join(self.outbox_dir, 'bargains.json')
+        
         total_bargains_found = 0
         processed_products = 0
         total_products = len(prices_by_product)
-        is_first_bargain = True
+        
+        # File splitting variables
+        file_counter = 1
+        bargains_in_current_file = 0
+        MAX_BARGAINS_PER_FILE = 1_000_000
+        current_file_handle = None
+        is_first_bargain_in_file = True
+
+        def open_new_file(counter):
+            nonlocal current_file_handle, is_first_bargain_in_file
+            if current_file_handle:
+                current_file_handle.write('\n]')
+                current_file_handle.close()
+            
+            # Use a simple counter for subsequent files, but keep the first as `bargains.json`
+            filename = 'bargains.json' if counter == 1 else f'bargains_{counter}.json'
+            output_path = os.path.join(self.outbox_dir, filename)
+            
+            self.command.stdout.write(f"\n    - Creating new file: {output_path}")
+            current_file_handle = open(output_path, 'w')
+            current_file_handle.write('[')
+            is_first_bargain_in_file = True
+            return current_file_handle
 
         try:
-            with open(output_path, 'w') as f:
-                f.write('[') # Start the JSON array
+            for product_id, prices in prices_by_product.items():
+                processed_products += 1
+                if len(prices) < 2:
+                    continue
 
-                for product_id, prices in prices_by_product.items():
-                    processed_products += 1
-                    if len(prices) < 2:
+                for price1, price2 in itertools.combinations(prices, 2):
+                    if 'id' not in price1 or 'id' not in price2 or 'store__company_id' not in price1 or 'store__company_id' not in price2:
+                        continue
+                    
+                    if price1.get('store__state') != price2.get('store__state'):
                         continue
 
-                    for price1, price2 in itertools.combinations(prices, 2):
-                        if 'id' not in price1 or 'id' not in price2 or 'store__company_id' not in price1 or 'store__company_id' not in price2:
+                    store1_id = price1['store_id']
+                    store2_id = price2['store_id']
+                    if store1_id == store2_id:
+                        continue
+
+                    if price1['store__company_id'] == price2['store__company_id']:
+                        if iga_company_id is None or price1['store__company_id'] != iga_company_id:
                             continue
+
+                    price1_decimal = Decimal(price1['price'])
+                    price2_decimal = Decimal(price2['price'])
+
+                    cheaper, expensive = (price1, price2) if price1_decimal < price2_decimal else (price2, price1)
+                    min_price, max_price = Decimal(cheaper['price']), Decimal(expensive['price'])
+
+                    if min_price > 0 and max_price > min_price:
+                        discount = int(round(((max_price - min_price) / max_price) * 100))
                         
-                        # Optimization: Skip if stores are not in the same state.
-                        if price1.get('store__state') != price2.get('store__state'):
-                            continue
+                        if 10 <= discount <= 75:
+                            # Check if we need to create a new file
+                            if current_file_handle is None or bargains_in_current_file >= MAX_BARGAINS_PER_FILE:
+                                open_new_file(file_counter)
+                                file_counter += 1
+                                bargains_in_current_file = 0
 
-                        store1_id = price1['store_id']
-                        store2_id = price2['store_id']
-                        if store1_id == store2_id:
-                            continue
-
-                        if price1['store__company_id'] == price2['store__company_id']:
-                            if iga_company_id is None or price1['store__company_id'] != iga_company_id:
-                                continue
-
-                        price1_decimal = Decimal(price1['price'])
-                        price2_decimal = Decimal(price2['price'])
-
-                        cheaper, expensive = (price1, price2) if price1_decimal < price2_decimal else (price2, price1)
-                        min_price, max_price = Decimal(cheaper['price']), Decimal(expensive['price'])
-
-                        if min_price > 0 and max_price > min_price:
-                            discount = int(round(((max_price - min_price) / max_price) * 100))
+                            bargain_dict = {
+                                'product_id': product_id,
+                                'discount_percentage': discount,
+                                'cheaper_price_id': cheaper['id'],
+                                'expensive_price_id': expensive['id'],
+                                'cheaper_store_id': cheaper['store_id'],
+                                'expensive_store_id': expensive['store_id'],
+                            }
                             
-                            if 10 <= discount <= 75:
-                                bargain_dict = {
-                                    'product_id': product_id,
-                                    'discount_percentage': discount,
-                                    'cheaper_price_id': cheaper['id'],
-                                    'expensive_price_id': expensive['id'],
-                                    'cheaper_store_id': cheaper['store_id'],
-                                    'expensive_store_id': expensive['store_id'],
-                                }
-                                
-                                if not is_first_bargain:
-                                    f.write(',')
-                                f.write('\n') # Add newline for readability
-                                json.dump(bargain_dict, f)
-                                is_first_bargain = False
-                                total_bargains_found += 1
-                    
-                    if processed_products % 500 == 0 or processed_products == total_products:
-                        self.command.stdout.write(f"\r    - Processed {processed_products}/{total_products} products...", ending="")
+                            if not is_first_bargain_in_file:
+                                current_file_handle.write(',')
+                            current_file_handle.write('\n')
+                            json.dump(bargain_dict, current_file_handle)
+                            
+                            is_first_bargain_in_file = False
+                            total_bargains_found += 1
+                            bargains_in_current_file += 1
+                
+                if processed_products % 500 == 0 or processed_products == total_products:
+                    self.command.stdout.write(f"\r    - Processed {processed_products}/{total_products} products...", ending="")
 
-                f.write('\n]') # End the JSON array
+        finally:
+            # Ensure the last file is properly closed
+            if current_file_handle:
+                current_file_handle.write('\n]')
+                current_file_handle.close()
 
-            self.command.stdout.write(f"\r    - Processed {total_products}/{total_products} products. Done.                 ")
-            self.command.stdout.write(f"    - Found and wrote {total_bargains_found} total bargains to {output_path}.")
-
-        except Exception as e:
-            self.command.stderr.write(self.command.style.ERROR(f"\nAn error occurred during bargain calculation and writing: {e}"))
-            # Clean up partially written file if an error occurs
-            if os.path.exists(output_path):
-                os.remove(output_path)
-            raise
-
+        self.command.stdout.write(f"\r    - Processed {total_products}/{total_products} products. Done.                 ")
+        self.command.stdout.write(f"    - Found and wrote {total_bargains_found} total bargains to disk.")
         self.command.stdout.write(self.command.style.SUCCESS("--- New Bargain Generation Complete ---"))

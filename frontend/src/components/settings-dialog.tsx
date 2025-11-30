@@ -107,7 +107,7 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'cart' }: Set
     if (!newOpenState) {
       // and we are on the Edit Location page and no stores are selected
       if (activePage === 'Edit Location' && localSelectedStoreIds.size === 0) {
-        toast.warning("You must select a location to continue.");
+        toast.warning("You must select a location to continue.", { position: "top-center" });
         return; // Prevent closing
       }
 
