@@ -60,9 +60,7 @@ const BargainsPage: React.FC = () => {
       Iga: [],
     };
 
-    const products = Array.isArray(bargainProductResponse) 
-      ? bargainProductResponse 
-      : bargainProductResponse?.results;
+    const products = bargainProductResponse || [];
 
     if (products) {
       // Group products by the company name in bargain_info
@@ -150,8 +148,10 @@ const BargainsPage: React.FC = () => {
       </div>
 
       {/* --- Bargain Stats Section --- */}
-      <div className="container mx-auto px-4 py-8">
-        <h2 className="text-3xl font-bold text-center mb-8">Bargain Breakdown</h2>
+      <div className="container mx-auto px-4 py-2">
+        <h2 className="text-3xl font-bold text-center my-8">
+            Which supermarket is the <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">cheapest</span> in Australia?
+        </h2>
         {isLoadingStats && <LoadingSpinner />}
         {isErrorStats && <p className="text-center text-red-500">Could not load bargain statistics.</p>}
         {bargainStats && (
@@ -167,9 +167,14 @@ const BargainsPage: React.FC = () => {
                         <CardTitle>How We Compare</CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-sm text-gray-700">
-                          This is some placeholder text that explains how the bargain statics are generated and what they mean. The user will replace this with actual content later.
-                        </p>
+                        <div className="flex flex-col gap-2">
+                          <p className="text-sm text-gray-700">
+                            These statistics are based on the full set of identical products that two companies both sell according to our database.
+                          </p>
+                          <p className="text-sm text-gray-700">
+                            You'll notice this number changes for each pairing. Companies like Aldi have a highly unique product range, which results in a smaller overlap and fewer items being compared. For IGA, stores are independently owned and prices vary, so we use the average IGA price for each product to make the comparison fair.
+                          </p>
+                        </div>
                       </CardContent>
                     </Card>
                 </div>

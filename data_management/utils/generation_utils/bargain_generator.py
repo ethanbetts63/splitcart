@@ -186,8 +186,8 @@ class BargainGenerator:
 
                     if min_price > 0 and max_price > min_price:
                         discount = int(round(((max_price - min_price) / max_price) * 100))
-                        
-                        if 10 <= discount <= 75:
+                        # I just wa
+                        if 30 <= discount <= 60:
                             # Check if we need to create a new file
                             if current_file_handle is None or bargains_in_current_file >= MAX_BARGAINS_PER_FILE:
                                 open_new_file(file_counter)
