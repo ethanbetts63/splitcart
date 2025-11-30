@@ -24,8 +24,10 @@ interface ProductCarouselProps {
 }
 
 import { useApiQuery } from '@/hooks/useApiQuery';
+import { useDialog } from '@/context/DialogContext';
 
 const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, onValidation, slot, dataKey, minProducts = 4, ordering }) => {
+  const { openDialog } = useDialog();
   const [baseUrl, queryString] = sourceUrl.split('?');
   const params = new URLSearchParams(queryString || '');
   if (storeIds && storeIds.length > 0) {
@@ -113,16 +115,30 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, s
   }
 
   const headerContent = (
-    <div className="flex justify-between items-center mb-4">
+    <div className="grid grid-cols-3 items-center mb-4">
+      {/* Left: Title */}
       <h2 className="text-2xl font-bold">
         <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">{title}</span>
       </h2>
-      <div className="flex items-center gap-2">
+
+      {/* Center: Example Products Text */}
+      <div className="text-center">
         {isDefaultStores && !isLoading && (
-          <span className="ml-2 text-sm text-black bg-blue-100 px-2 py-1 rounded-md">
-            Showing example products, please select a location.
+          <span className="text-sm text-black bg-blue-100 px-2 py-1 rounded-md font-bold">
+            Showing example products, please&nbsp;
+            <button 
+              onClick={() => openDialog('Edit Location')} 
+              className="text-blue-600 underline hover:text-blue-800"
+            >
+              select a location
+            </button>
+            .
           </span>
         )}
+      </div>
+
+      {/* Right: Buttons */}
+      <div className="flex items-center gap-2 justify-end">
         {seeMoreLink && (
           <Button asChild size="sm">
             <Link to={seeMoreLink} aria-label={`Explore All Deals in ${title}`}>
