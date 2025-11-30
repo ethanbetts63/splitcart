@@ -32,6 +32,6 @@ class PriceBulkExportView(APIView):
 
         # Directly get values, bypassing the serializer for performance.
         # The fields selected here must match what the BargainGenerator expects.
-        values = list(queryset.values('product_id', 'store_id', 'price', 'id', 'store__company_id'))
+        values = list(queryset.values('product_id', 'store_id', 'price', 'id', 'store__company_id', 'store__state'))
 
         return Response(values, status=status.HTTP_200_OK)

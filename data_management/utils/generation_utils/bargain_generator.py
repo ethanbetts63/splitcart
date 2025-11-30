@@ -22,65 +22,6 @@ class BargainGenerator:
         self.use_stale = use_stale
         self.outbox_dir = 'data_management/data/outboxes/bargains_outbox'
         os.makedirs(self.outbox_dir, exist_ok=True)
-        self.proximity_map = {}
-
-    def _haversine_distance(self, lat1, lon1, lat2, lon2):
-        """
-        Calculate the great-circle distance between two points
-        on the earth (specified in decimal degrees).
-        """
-        if None in [lat1, lon1, lat2, lon2]:
-            return float('inf')
-            
-        R = 6371  # Earth radius in kilometers
-        dLat = radians(lat2 - lat1)
-        dLon = radians(lon2 - lon1)
-        lat1 = radians(lat1)
-        lat2 = radians(lat2)
-        a = sin(dLat / 2)**2 + cos(lat1) * cos(lat2) * sin(dLon / 2)**2
-        c = 2 * asin(sqrt(a))
-        return R * c
-
-    def _build_proximity_map(self, server_url, headers):
-        """
-        Fetches all stores and builds a map of stores within a 50km radius of each other.
-        """
-        self.command.stdout.write("  - Building store proximity map (50km radius)...")
-        stores_url = f"{server_url}/api/export/stores/"
-        try:
-            response = requests.get(stores_url, headers=headers, timeout=180)
-            response.raise_for_status()
-            all_stores = response.json().get('results', [])
-        except requests.exceptions.RequestException as e:
-            self.command.stderr.write(self.command.style.ERROR(f"\nError fetching stores from {stores_url}: {e}"))
-            raise  # Re-raise to abort the command
-
-        stores_with_coords = [
-            s for s in all_stores if s.get('latitude') and s.get('longitude')
-        ]
-        self.command.stdout.write(f"    - Found {len(stores_with_coords)} stores with coordinates to process.")
-
-        self.proximity_map = {store['id']: set() for store in stores_with_coords}
-        total_pairs = len(stores_with_coords) * (len(stores_with_coords) - 1) // 2
-        processed_pairs = 0
-
-        for i, store1 in enumerate(stores_with_coords):
-            for store2 in stores_with_coords[i+1:]:
-                processed_pairs += 1
-                if processed_pairs % 100000 == 0:
-                     self.command.stdout.write(f"\r      - Processed {processed_pairs}/{total_pairs} store pairs...", ending="")
-
-                lat1, lon1 = Decimal(store1['latitude']), Decimal(store1['longitude'])
-                lat2, lon2 = Decimal(store2['latitude']), Decimal(store2['longitude'])
-                
-                distance = self._haversine_distance(lat1, lon1, lat2, lon2)
-                if distance <= 50:
-                    self.proximity_map[store1['id']].add(store2['id'])
-                    self.proximity_map[store2['id']].add(store1['id'])
-        
-        self.command.stdout.write(f"\r      - Processed {total_pairs}/{total_pairs} store pairs. Done.              ")
-        self.command.stdout.write("    - Proximity map built successfully.")
-
 
     def run(self):
         """
@@ -102,13 +43,6 @@ class BargainGenerator:
         
         headers = {'X-Internal-API-Key': api_key, 'Content-Type': 'application/json'}
         self.command.stdout.write(f"  - Targeting API server at {server_url}")
-
-        # 0. Build the proximity map
-        try:
-            self._build_proximity_map(server_url, headers)
-        except Exception as e:
-            self.command.stderr.write(self.command.style.ERROR(f"Aborting due to failure in building proximity map: {e}"))
-            return
 
         # 1. Get all relevant product IDs directly from the database
         self.command.stdout.write("  - Getting all relevant product IDs...")
@@ -210,12 +144,12 @@ class BargainGenerator:
                         if 'id' not in price1 or 'id' not in price2 or 'store__company_id' not in price1 or 'store__company_id' not in price2:
                             continue
                         
-                        # Optimization: Skip if stores are not in proximity
-                        store1_id = price1['store_id']
-                        store2_id = price2['store_id']
-                        if store1_id not in self.proximity_map or store2_id not in self.proximity_map.get(store1_id, set()):
+                        # Optimization: Skip if stores are not in the same state.
+                        if price1.get('store__state') != price2.get('store__state'):
                             continue
 
+                        store1_id = price1['store_id']
+                        store2_id = price2['store_id']
                         if store1_id == store2_id:
                             continue
 

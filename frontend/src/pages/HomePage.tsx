@@ -44,7 +44,7 @@ const HomePage = () => {
               <img 
                 src={confusedShopper} 
                 srcSet={`${confusedShopper320} 320w, ${confusedShopper640} 640w, ${confusedShopper768} 768w, ${confusedShopper1024} 1024w, ${confusedShopper1280} 1280w`}
-                sizes="(min-width: 1024px) 50vw, 100vw"
+                sizes="(min-width: 1024px) 50vw, calc(100vw - 2rem)"
                 alt="Confused Shopper" 
                 className="rounded-md object-cover w-full h-full"
                 fetchPriority="high" />
@@ -159,7 +159,7 @@ const HomePage = () => {
             page="home"
             imageSrc={kingKongImage}
             srcSet={`${kingKongImage320} 320w, ${kingKongImage640} 640w, ${kingKongImage768} 768w, ${kingKongImage1024} 1024w, ${kingKongImage1280} 1280w`}
-            sizes="(min-width: 1024px) 50vw, 100vw"
+            sizes="(min-width: 1024px) 50vw, calc(100vw - 2rem)"
             imageAlt="King Kong swatting at discount planes"
           />
         </section>
