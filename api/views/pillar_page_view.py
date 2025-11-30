@@ -4,7 +4,10 @@ from companies.models import PillarPage
 from data_management.models import FAQ
 from api.serializers import PillarPageSerializer
 from django.http import Http404
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
+@method_decorator(cache_page(60 * 60 * 24), name='dispatch')
 class PillarPageView(RetrieveAPIView):
     """
     API view to retrieve a Pillar Page by its slug.

@@ -24,7 +24,7 @@ class BargainCarouselView(generics.ListAPIView):
     # No pagination needed for a carousel with a fixed limit
     pagination_class = None
 
-    @method_decorator(cache_page(60 * 60 * 6)) # Cache for 6 hours
+    @method_decorator(cache_page(60 * 60 * 24)) # Cache for 24 hours
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 

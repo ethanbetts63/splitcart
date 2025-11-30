@@ -20,7 +20,7 @@ class ProductListView(generics.ListAPIView):
     serializer_class = ProductSerializer
     pagination_class = StandardResultsSetPagination
 
-    @method_decorator(cache_page(60 * 60 * 6))
+    @method_decorator(cache_page(60 * 60 * 24))
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 

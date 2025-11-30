@@ -109,7 +109,7 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
         <div className="aspect-square w-full overflow-hidden relative">
           <div className="absolute top-2 right-2 z-20 flex flex-col items-end gap-1">
             {bargainInfo && (
-              <Badge className={bargainInfo.bargainBadgeClasses}>
+              <Badge className={`${bargainInfo.bargainBadgeClasses} text-sm py-px px-1.5`}>
                 -{bargainInfo.percentage}% at {bargainInfo.cheapestCompany}
               </Badge>
             )}
