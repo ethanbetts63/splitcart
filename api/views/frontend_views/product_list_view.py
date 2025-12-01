@@ -8,7 +8,6 @@ from rest_framework.permissions import AllowAny
 from products.models import Product, Bargain
 from companies.models import StoreGroupMembership
 from ...serializers import ProductSerializer
-from ...utils.get_pricing_stores import get_pricing_stores
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 20
@@ -24,7 +23,7 @@ class ProductListView(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
-    def _get_carousel_queryset(self, store_ids, primary_category_slugs):
+    def _get_carousel_queryset(self, anchor_store_ids, primary_category_slugs):
         """
         Gets a hybrid queryset for carousels. It prioritizes the top 20 bargain
         products and fills the remaining slots with the best unit-price products,
@@ -33,19 +32,16 @@ class ProductListView(generics.ListAPIView):
         """
         CAROUSEL_SIZE = 20
 
-        # --- Step 1: Get Anchor Stores ---
-        anchor_store_ids = get_pricing_stores(store_ids)
-        
+        # --- Step 1: The incoming store_ids are already anchor_store_ids ---
         if not anchor_store_ids:
-            # If no anchors, fall back to a simple unit price query on the original stores
-            # to prevent showing nothing.
+            # If no anchors, fall back to prevent showing nothing.
             qs = Product.objects.filter(
-                prices__store__id__in=store_ids,
+                prices__store__id__in=anchor_store_ids,
                 category__primary_category__slug__in=primary_category_slugs
             ).annotate(
-                min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=store_ids))
+                min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=anchor_store_ids))
             ).order_by('min_unit_price')[:CAROUSEL_SIZE]
-            return qs, store_ids
+            return qs, anchor_store_ids
 
         # --- Step 2: Get Bargain Products (Fast) ---
         bargain_product_ids = []
@@ -125,6 +121,7 @@ class ProductListView(generics.ListAPIView):
                 slugs = [primary_category_slug_param]
             
             # The helper method now returns both the queryset and the store IDs for the context
+            # The incoming store_ids are already the anchor_store_ids
             queryset, stores_for_context = self._get_carousel_queryset(store_ids, slugs)
             self.nearby_store_ids = stores_for_context # Set for serializer context
             return queryset.prefetch_related(
@@ -132,8 +129,10 @@ class ProductListView(generics.ListAPIView):
             ).defer('normalized_name_brand_size_variations', 'sizes')
 
         # --- General Search/Filtering Logic ---
-        self.nearby_store_ids = get_pricing_stores(store_ids)
-        queryset = Product.objects.filter(prices__store__id__in=store_ids).distinct()
+        # The incoming store_ids are already the anchor_store_ids
+        anchor_store_ids = store_ids
+        self.nearby_store_ids = anchor_store_ids
+        queryset = Product.objects.filter(prices__store__id__in=anchor_store_ids).distinct()
 
         # Category filtering
         if primary_category_slugs_param:
@@ -154,10 +153,6 @@ class ProductListView(generics.ListAPIView):
             queryset = queryset.filter(filter_q)
 
         # Annotations for sorting
-        anchor_store_ids = list(StoreGroupMembership.objects.filter(
-            store_id__in=store_ids
-        ).values_list('group__anchor_id', flat=True).distinct())
-
         best_bargain_subquery = Bargain.objects.filter(
             product=OuterRef('pk'),
             cheaper_store_id__in=anchor_store_ids,
@@ -166,17 +161,17 @@ class ProductListView(generics.ListAPIView):
 
         queryset = queryset.annotate(
             best_discount=Subquery(best_bargain_subquery.values('discount_percentage')[:1]),
-            min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=store_ids))
+            min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=anchor_store_ids))
         )
 
         # Final Ordering
         if ordering == 'price_asc':
             final_queryset = queryset.annotate(
-                min_price=Min('prices__price', filter=Q(prices__store__id__in=store_ids))
+                min_price=Min('prices__price', filter=Q(prices__store__id__in=anchor_store_ids))
             ).order_by('min_price')
         elif ordering == 'price_desc':
             final_queryset = queryset.annotate(
-                min_price=Min('prices__price', filter=Q(prices__store__id__in=store_ids))
+                min_price=Min('prices__price', filter=Q(prices__store__id__in=anchor_store_ids))
             ).order_by('-min_price')
         elif ordering == 'unit_price_asc':
             final_queryset = queryset.order_by(F('min_unit_price').asc(nulls_last=True))

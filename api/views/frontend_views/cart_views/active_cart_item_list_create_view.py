@@ -6,7 +6,7 @@ from products.models import Product
 from api.serializers import CartItemSerializer
 from users.cart_manager import CartManager
 from data_management.utils.cart_optimization.substitute_manager import SubstituteManager
-from api.utils.get_pricing_stores import get_pricing_stores
+from api.utils.get_pricing_stores import get_pricing_stores_map
 
 cart_manager = CartManager()
 
@@ -41,7 +41,8 @@ class ActiveCartItemListCreateView(generics.CreateAPIView):
             store_ids = list(cart.selected_store_list.stores.values_list('id', flat=True))
             if store_ids:
                 # Use the helper to determine the correct stores for price lookups
-                pricing_store_ids = get_pricing_stores(store_ids)
+                pricing_map = get_pricing_stores_map(store_ids)
+                pricing_store_ids = list(set(pricing_map.values()))
                 print(f"Initializing SubstituteManager for product: {cart_item.product.id}")
                 substitute_manager = SubstituteManager(cart_item.product.id, pricing_store_ids)
                 substitute_manager.create_cart_substitutions(cart_item)

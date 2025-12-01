@@ -18,21 +18,33 @@ import kingKongImage1024 from "../assets/king_kong-1024w.webp";
 import kingKongImage1280 from "../assets/king_kong-1280w.webp";
 
 const HomePage = () => {
-  const DEFAULT_STORE_IDS = [
-    515, 5123, 518, 523, 272, 276, 2197, 2198, 2199, 536, 5142, 547, 2218, 2219,
-    2224, 5074, 5080, 5082, 5083, 5094, 5096, 5100, 498, 505, 254,
+  // This list contains the pre-translated anchor IDs for the default stores.
+  const DEFAULT_ANCHOR_IDS = [
+    105, 458, 549, 504, 562, 4186
   ];
-  const { selectedStoreIds } = useStoreList();
+  
+  const { selectedStoreIds, anchorStoreMap } = useStoreList();
   useDocumentHead(
     "SplitCart: Australian Grocery Price Comparison",
     "Every store has a deal — but finding them all takes forever. SplitCart automates that process by comparing prices across Coles, Woolworths, Aldi and IGA and splitting your cart for the cheapest overall shop. One list, multiple stores, maximum savings."
   );
 
   const isDefaultStores = selectedStoreIds.size === 0;
-  const storeIdsArray = React.useMemo(() =>
-    isDefaultStores ? DEFAULT_STORE_IDS : Array.from(selectedStoreIds),
-    [selectedStoreIds, isDefaultStores]
-  );
+
+  const anchorStoreIdsArray = React.useMemo(() => {
+    if (isDefaultStores) {
+      return DEFAULT_ANCHOR_IDS;
+    }
+    const anchorIds = new Set<number>();
+    for (const storeId of selectedStoreIds) {
+      const anchorId = anchorStoreMap[storeId];
+      if (anchorId) {
+        anchorIds.add(anchorId);
+      }
+    }
+    // Fallback to default if the mapping results in an empty list
+    return anchorIds.size > 0 ? Array.from(anchorIds) : DEFAULT_ANCHOR_IDS;
+  }, [selectedStoreIds, anchorStoreMap, isDefaultStores]);
 
   return (
     <div>
@@ -67,7 +79,7 @@ const HomePage = () => {
           key="bargains"
           title="Bargains"
           sourceUrl="/api/products/bargain-carousel/"
-          storeIds={storeIdsArray}
+          storeIds={anchorStoreIdsArray}
           isDefaultStores={isDefaultStores}
         />
       </div>
@@ -78,7 +90,7 @@ const HomePage = () => {
           key="snacks-and-sweets"
           title="Snacks & Sweets"
           sourceUrl="/api/products/"
-          storeIds={storeIdsArray}
+          storeIds={anchorStoreIdsArray}
           primaryCategorySlugs={['snacks', 'sweets']}
           pillarPageLinkSlug="snacks-and-sweets"
           slot={0}
@@ -132,7 +144,7 @@ const HomePage = () => {
             key="meat-and-seafood"
             title="Meat & Seafood"
             sourceUrl="/api/products/"
-            storeIds={storeIdsArray}
+            storeIds={anchorStoreIdsArray}
             primaryCategorySlugs={['meat', 'seafood']}
             pillarPageLinkSlug="meat-and-seafood"
             slot={1}
@@ -142,7 +154,7 @@ const HomePage = () => {
             key="eggs-and-dairy"
             title="Eggs & Dairy"
             sourceUrl="/api/products/"
-            storeIds={storeIdsArray}
+            storeIds={anchorStoreIdsArray}
             primaryCategorySlugs={['eggs', 'dairy']}
             pillarPageLinkSlug="eggs-and-dairy"
             slot={2}
@@ -172,7 +184,7 @@ const HomePage = () => {
             key="fruit-veg-and-spices"
             title="Fruit, Veg & Spices"
             sourceUrl="/api/products/"
-            storeIds={storeIdsArray}
+            storeIds={anchorStoreIdsArray}
             primaryCategorySlugs={['fruit', 'veg', 'spices']}
             pillarPageLinkSlug="fruit-veg-and-spices"
             slot={3}
@@ -182,7 +194,7 @@ const HomePage = () => {
             key="pantry-and-international"
             title="Pantry & International"
             sourceUrl="/api/products/"
-            storeIds={storeIdsArray}
+            storeIds={anchorStoreIdsArray}
             primaryCategorySlugs={['pantry', 'international']}
             pillarPageLinkSlug="pantry-and-international"
             slot={4}
@@ -192,7 +204,7 @@ const HomePage = () => {
             key="health-beauty-and-supplements"
             title="Health, Beauty & Supplements"
             sourceUrl="/api/products/"
-            storeIds={storeIdsArray}
+            storeIds={anchorStoreIdsArray}
             primaryCategorySlugs={['health-and-beauty', 'health-foods']}
             pillarPageLinkSlug="health-beauty-and-supplements"
             slot={5}

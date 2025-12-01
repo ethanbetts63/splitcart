@@ -4,6 +4,7 @@ from rest_framework import status
 from companies.models import Postcode
 from data_management.utils.geospatial_utils import get_nearby_stores
 from api.serializers import StoreSerializer
+from api.utils.get_pricing_stores import get_pricing_stores_map
 
 class StoreListView(APIView):
     """
@@ -33,8 +34,20 @@ class StoreListView(APIView):
                     nearby_stores = get_nearby_stores(ref_postcode, radius, companies=companies)
                     all_nearby_stores.update(nearby_stores)
             
-            serializer = StoreSerializer(list(all_nearby_stores), many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            stores_list = list(all_nearby_stores)
+            store_ids = [store.id for store in stores_list]
+            
+            # Use the centralized utility to get the correct anchor store mapping
+            anchor_map = get_pricing_stores_map(store_ids)
+            
+            store_serializer = StoreSerializer(stores_list, many=True)
+            
+            response_data = {
+                'stores': store_serializer.data,
+                'anchor_map': anchor_map,
+            }
+            
+            return Response(response_data, status=status.HTTP_200_OK)
 
         except ValueError:
             return Response(

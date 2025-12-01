@@ -1,14 +1,11 @@
-from django.db.models import F, Subquery, OuterRef
+from django.db.models import Subquery, OuterRef
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from rest_framework import generics
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
-
 from products.models import Product, Bargain
-from companies.models import StoreGroupMembership
 from ...serializers import ProductSerializer
-from ...utils.get_pricing_stores import get_pricing_stores
 
 
 class BargainCarouselView(generics.ListAPIView):
@@ -47,19 +44,19 @@ class BargainCarouselView(generics.ListAPIView):
         except (ValueError, TypeError):
             raise ValidationError({'store_ids': 'Invalid format. Must be a comma-separated list of integers.'})
 
-        # 1. Get the definitive list of stores to use for all pricing and bargain logic.
-        pricing_store_ids = get_pricing_stores(store_ids)
-        self.pricing_store_ids = pricing_store_ids # Store for serializer context
+        # 1. The incoming store_ids are now pre-translated anchor IDs.
+        # We can use them directly for all pricing and bargain logic.
+        self.pricing_store_ids = store_ids # Store for serializer context
 
-        if not pricing_store_ids:
+        if not self.pricing_store_ids:
             return Product.objects.none()
 
         # 2. Find the IDs of the top unique products that have bargains
         #    strictly between the relevant pricing stores. Fetch more to ensure we have enough unique products.
         initial_fetch_limit = limit * 2
         bargain_query = Bargain.objects.filter(
-            cheaper_store_id__in=pricing_store_ids,
-            expensive_store_id__in=pricing_store_ids
+            cheaper_store_id__in=self.pricing_store_ids,
+            expensive_store_id__in=self.pricing_store_ids
         )
 
         # Optional: Filter by a specific company's bargains
@@ -78,8 +75,8 @@ class BargainCarouselView(generics.ListAPIView):
         #    The subquery must also respect the definitive pricing_store_ids.
         best_bargain_subquery = Bargain.objects.filter(
             product=OuterRef('pk'),
-            cheaper_store_id__in=pricing_store_ids,
-            expensive_store_id__in=pricing_store_ids
+            cheaper_store_id__in=self.pricing_store_ids,
+            expensive_store_id__in=self.pricing_store_ids
         )
         if company_id:
             best_bargain_subquery = best_bargain_subquery.filter(cheaper_store__company_id=company_id)

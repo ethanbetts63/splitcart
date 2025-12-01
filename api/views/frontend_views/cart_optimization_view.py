@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from companies.models import Store
 from data_management.utils.cart_optimization import calculate_optimized_cost, calculate_baseline_cost, build_price_slots, calculate_best_single_store
-from api.utils.get_pricing_stores import get_pricing_stores
+from api.utils.get_pricing_stores import get_pricing_stores_map
 
 from users.models import Cart
 
@@ -35,7 +35,8 @@ class CartOptimizationView(APIView):
             return Response({'error': 'No stores selected in the cart\'s store list.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Get the correct stores for pricing, including fallbacks to national anchors
-        pricing_store_ids = get_pricing_stores(store_ids)
+        pricing_map = get_pricing_stores_map(store_ids)
+        pricing_store_ids = list(set(pricing_map.values()))
         stores = Store.objects.filter(id__in=pricing_store_ids)
 
         # Construct the data structures required by the optimization logic

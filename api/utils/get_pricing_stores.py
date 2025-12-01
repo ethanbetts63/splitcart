@@ -3,7 +3,7 @@ from django.db.models import Count
 from companies.models import Store, StoreGroup
 from products.models import Price
 
-def get_default_anchor(company_id):
+def get_default_anchor_for_company(company_id):
     """
     Finds and caches the anchor of the largest store group for a given company.
     This is used as a fallback for nationally-priced companies.
@@ -23,68 +23,52 @@ def get_default_anchor(company_id):
         return default_anchor_id
     return None
 
-def get_pricing_stores(requested_store_ids):
+def get_pricing_stores_map(requested_store_ids):
     """
-    Determines the correct store IDs to use for price lookups.
+    Determines the correct anchor store ID for each requested store ID based on
+    business logic for price lookups.
 
-    For a given list of store IDs, this function returns a list of store IDs that
-    should be used for fetching prices.
-
-    - If a store's designated anchor has price data, that anchor is used.
-    - If the anchor has no price data and the store is not IGA, it falls back
-      to the default national anchor for that company.
-    - For IGA, it always uses the store's own anchor.
+    Returns a dictionary mapping {requested_store_id: final_anchor_id}.
     """
     if not requested_store_ids:
-        return []
+        return {}
 
     stores = Store.objects.filter(id__in=requested_store_ids).select_related(
         'company', 'group_membership__group__anchor'
     )
-    
-    # Create a map of {store_id: store_object}
     store_map = {s.id: s for s in stores}
 
-    # Get all unique anchors for the requested stores
-    anchor_map = {
-        s.id: s.group_membership.group.anchor
-        for s in stores if s.group_membership and s.group_membership.group and s.group_membership.group.anchor
-    }
-    all_possible_anchor_ids = {a.id for a in anchor_map.values()}
+    # 1. Create initial translation map based on group membership
+    translation_map = {}
+    self_anchored_store_ids = set()
+    for store in stores:
+        if store.group_membership and store.group_membership.group and store.group_membership.group.anchor:
+            anchor_id = store.group_membership.group.anchor.id
+            translation_map[store.id] = anchor_id
+            if store.id == anchor_id:
+                self_anchored_store_ids.add(store.id)
+        else:
+            # Store has no group, so it's its own anchor
+            translation_map[store.id] = store.id
+            self_anchored_store_ids.add(store.id)
 
-    # Find which of those anchors have price data
-    priced_anchor_ids = set(Price.objects.filter(store_id__in=all_possible_anchor_ids).values_list('store_id', flat=True))
+    # 2. Find which self-anchored stores have no price data
+    priced_self_anchored_ids = set(Price.objects.filter(store_id__in=self_anchored_store_ids).values_list('store_id', flat=True))
+    unpriced_self_anchored_ids = self_anchored_store_ids - priced_self_anchored_ids
 
-    final_pricing_stores = set()
-
-    for store_id in requested_store_ids:
+    # 3. Apply fallback logic for unpriced, self-anchored stores
+    for store_id in unpriced_self_anchored_ids:
         store = store_map.get(store_id)
         if not store:
             continue
 
-        anchor = anchor_map.get(store.id)
-
-        # Case 1: The store's anchor has prices. Use it.
-        if anchor and anchor.id in priced_anchor_ids:
-            final_pricing_stores.add(anchor.id)
+        # For IGA, do nothing. Accept that it has no prices.
+        if store.company.name.lower() == 'iga':
             continue
-
-        # Case 2: Anchor has no prices, and company is not IGA. Use default.
-        if store.company.name != 'Iga':
-            default_anchor_id = get_default_anchor(store.company.id)
-            if default_anchor_id:
-                final_pricing_stores.add(default_anchor_id)
-            # Fallback to the store's own (unpriced) anchor if no default exists
-            elif anchor:
-                final_pricing_stores.add(anchor.id)
-            else: # Ultimate fallback to the store itself
-                final_pricing_stores.add(store.id)
         
-        # Case 3: For IGA, always use its own anchor, even if unpriced.
-        else:
-            if anchor:
-                final_pricing_stores.add(anchor.id)
-            else: # Fallback for IGA store with no group/anchor
-                final_pricing_stores.add(store.id)
+        # For other companies, find the default anchor for their company
+        default_anchor_id = get_default_anchor_for_company(store.company.id)
+        if default_anchor_id:
+            translation_map[store.id] = default_anchor_id
             
-    return list(final_pricing_stores) if final_pricing_stores else requested_store_ids
+    return translation_map

@@ -3,6 +3,8 @@ import { useAuth } from './AuthContext';
 import { type SelectedStoreListType } from '../types';
 import { loadStoreListAPI, saveStoreListAPI, createNewStoreListAPI, deleteStoreListAPI } from '../services/storeList.api';
 
+// Type for the anchor map
+export type AnchorMap = { [storeId: number]: number };
 
 interface StoreListContextType {
   selectedStoreIds: Set<number>;
@@ -23,6 +25,8 @@ interface StoreListContextType {
   createNewStoreList: (storeIds: number[]) => Promise<void>;
   deleteStoreList: (storeListId: string) => Promise<void>;
   fetchActiveStoreList: () => Promise<void>;
+  anchorStoreMap: AnchorMap;
+  setAnchorStoreMap: React.Dispatch<React.SetStateAction<AnchorMap>>;
 }
 
 // --- Context Creation ---
@@ -34,6 +38,7 @@ export const StoreListProvider = ({ children, initialStoreList }: { children: Re
 
   // --- State Definitions ---
   const [selectedStoreIds, setSelectedStoreIds] = useState<Set<number>>(() => new Set<number>());
+  const [anchorStoreMap, setAnchorStoreMap] = useState<AnchorMap>({});
 
   const [currentStoreListId, setCurrentStoreListId] = useState<string | null>(null);
   const [currentStoreListName, setCurrentStoreListName] = useState<string>("");
@@ -162,6 +167,8 @@ export const StoreListProvider = ({ children, initialStoreList }: { children: Re
     createNewStoreList,
     deleteStoreList,
     fetchActiveStoreList: async () => { console.warn("fetchActiveStoreList is deprecated"); },
+    anchorStoreMap,
+    setAnchorStoreMap,
   };
 
   return (

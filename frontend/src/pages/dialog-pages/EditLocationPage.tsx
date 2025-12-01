@@ -16,9 +16,10 @@ import {
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { PlusCircle, Save, Trash2, Pencil } from 'lucide-react'; // Icons for actions
+import { type AnchorMap } from '../../context/StoreListContext';
 
-// Define the type for a single store
-type Store = {
+// Define the type for a single store from the API
+type ApiStore = {
   id: number;
   store_name: string;
   company_name: string;
@@ -52,7 +53,8 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
     currentStoreListName, setCurrentStoreListName,
     userStoreLists,
     storeListLoading,
-    loadStoreList, saveStoreList, createNewStoreList, deleteStoreList
+    loadStoreList, saveStoreList, createNewStoreList, deleteStoreList,
+    setAnchorStoreMap
   } = useStoreList();
 
   // State for loading and error, which is local to this page
@@ -102,20 +104,25 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
         const errData = await response.json();
         throw new Error(errData.error || 'Failed to fetch stores.');
       }
-      const data: Store[] = await response.json();
-      setStores(data || []);
+      const data: { stores: ApiStore[], anchor_map: AnchorMap } = await response.json();
+      const fetchedStores = data.stores || [];
+      const fetchedAnchorMap = data.anchor_map || {};
+
+      setStores(fetchedStores);
+      setAnchorStoreMap(fetchedAnchorMap);
+
       // When a new search is performed, update the local state directly
-      setLocalSelectedStoreIds(new Set((data || []).map(store => store.id))); 
+      setLocalSelectedStoreIds(new Set(fetchedStores.map(store => store.id))); 
       setHasSearchOccurred(true); // Set the flag here
 
       // Calculate bounds of all stores to fit them in the map view
-      if (data && data.length > 0) {
-        const bounds = data.reduce((acc, store) => {
+      if (fetchedStores.length > 0) {
+        const bounds = fetchedStores.reduce((acc, store) => {
           return [
             [Math.min(acc[0][0], store.latitude), Math.min(acc[0][1], store.longitude)],
             [Math.max(acc[1][0], store.latitude), Math.max(acc[1][1], store.longitude)],
           ];
-        }, [[data[0].latitude, data[0].longitude], [data[0].latitude, data[0].longitude]]) as [[number, number], [number, number]];
+        }, [[fetchedStores[0].latitude, fetchedStores[0].longitude], [fetchedStores[0].latitude, fetchedStores[0].longitude]]) as [[number, number], [number, number]];
         setMapBounds(bounds);
       } else {
         setMapBounds(null); // Clear bounds if no results
@@ -127,7 +134,7 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
     } finally {
       setIsLoading(false);
     }
-  }, [postcode, radius, selectedCompanies, setStores, setLocalSelectedStoreIds, setMapBounds, setHasSearchOccurred]);
+  }, [postcode, radius, selectedCompanies, setStores, setLocalSelectedStoreIds, setMapBounds, setHasSearchOccurred, setAnchorStoreMap]);
 
 
 
@@ -280,3 +287,4 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
 };
 
 export default EditLocationPage;
+

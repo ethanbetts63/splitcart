@@ -1,7 +1,7 @@
 from rest_framework.generics import RetrieveAPIView
 from products.models import Product
 from ...serializers import ProductSerializer
-from ...utils.get_pricing_stores import get_pricing_stores
+from ...utils.get_pricing_stores import get_pricing_stores_map
 
 class ProductDetailView(RetrieveAPIView):
     """
@@ -22,7 +22,9 @@ class ProductDetailView(RetrieveAPIView):
             try:
                 store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
                 # Use the helper to get the final list of stores for pricing
-                context['nearby_store_ids'] = get_pricing_stores(store_ids)
+                # get_pricing_stores_map returns {original_id: anchor_id}, so we need its values
+                pricing_map = get_pricing_stores_map(store_ids)
+                context['nearby_store_ids'] = list(set(pricing_map.values()))
             except (ValueError, TypeError):
                 # Fail gracefully if store_ids are invalid
                 context['nearby_store_ids'] = []
