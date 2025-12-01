@@ -5,12 +5,15 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from products.models import Product, Price, ProductPriceSummary
 from companies.models import Company
 from ...serializers import ProductSerializer
 
 
+@method_decorator(cache_page(60 * 60 * 24), name='dispatch')
 class BargainCarouselView(APIView):
     """
     An optimized view to serve products for the "Bargains" carousel using a hybrid calculation model.

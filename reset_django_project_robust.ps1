@@ -95,6 +95,7 @@ python manage.py generate --price-comps
 python manage.py update --faqs
 python manage.py import_postcodes
 python manage.py generate --store-stats
+python manage.py generate --price-summaries
 
 python manage.py analyze --report company_heatmap
 python manage.py analyze --report subs
