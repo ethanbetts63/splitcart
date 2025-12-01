@@ -53,48 +53,6 @@ const BargainsPage: React.FC = () => {
       { name: 'Iga', id: 4 }
   ];
 
-  // --- Fetching and Sorting Bargains ---
-  const { data: bargainProductResponse, isLoading: isLoadingBargains } = useApiQuery<Product[]>(
-    ['bargains', anchorStoreIdsArray, 60],
-    `/api/products/bargain-carousel/?store_ids=${anchorStoreIdsArray.join(',')}&limit=60`,
-    {},
-    { enabled: anchorStoreIdsArray.length > 0 }
-  );
-
-  const sortedBargains = React.useMemo(() => {
-    const companyBargains: { [key: string]: Product[] } = {
-      Coles: [],
-      Woolworths: [],
-      Aldi: [],
-      Iga: [],
-    };
-
-    const products = bargainProductResponse || [];
-
-    if (products) {
-      // Group products by the company name in bargain_info
-      products.forEach(product => {
-        if (product.bargain_info?.cheapest_company_name) {
-          const companyName = product.bargain_info.cheapest_company_name;
-          if (companyBargains.hasOwnProperty(companyName)) {
-            companyBargains[companyName].push(product);
-          }
-        }
-      });
-
-      // Sort products within each company's array by discount percentage
-      for (const companyName in companyBargains) {
-        companyBargains[companyName].sort((a, b) => {
-          const discountA = a.bargain_info?.discount_percentage ?? 0;
-          const discountB = b.bargain_info?.discount_percentage ?? 0;
-          return discountB - discountA; // Sort descending
-        });
-      }
-    }
-    return companyBargains;
-  }, [bargainProductResponse]);
-
-
   const {
     data: bargainStats,
     isLoading: isLoadingStats,
@@ -132,27 +90,17 @@ const BargainsPage: React.FC = () => {
       </div>
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
-          {isLoadingBargains ? (
-            companies.map(company => (
-              <ProductCarousel
-                key={company.id}
-                title={`${company.name} Bargains`}
-                isLoading={true}
-              />
-            ))
-          ) : (
-            companies.map(company => (
-              sortedBargains[company.name] && sortedBargains[company.name].length > 0 && (
-                <ProductCarousel
-                  key={company.id}
-                  title={`${company.name} Bargains`}
-                  products={sortedBargains[company.name]}
-                  storeIds={anchorStoreIdsArray}
-                  isDefaultStores={isDefaultStores}
-                />
-              )
-            ))
-          )}
+          {companies.map(company => (
+            <ProductCarousel
+              key={company.id}
+              title={`${company.name} Bargains`}
+              sourceUrl="/api/products/bargain-carousel/"
+              storeIds={anchorStoreIdsArray}
+              companyName={company.name}
+              isDefaultStores={isDefaultStores}
+              minProducts={1}
+            />
+          ))}
         </div>
       </div>
 

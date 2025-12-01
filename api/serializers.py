@@ -117,10 +117,10 @@ class ProductSerializer(serializers.ModelSerializer):
     slug = serializers.SerializerMethodField()
     bargain_info = serializers.SerializerMethodField()
 
-    # Keep debug fields as requested
-    best_discount = serializers.IntegerField(read_only=True, required=False)
-    cheaper_store_name = serializers.CharField(read_only=True, required=False)
-    cheaper_company_name = serializers.CharField(read_only=True, required=False)
+    # Keep debug fields, but convert to SerializerMethodFields to use context data
+    best_discount = serializers.SerializerMethodField()
+    cheaper_store_name = serializers.SerializerMethodField()
+    cheaper_company_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
@@ -159,52 +159,53 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_bargain_info(self, obj):
         """
-        Recalculates the bargain for display using the single, consistent,
-        filtered price list provided by the internal helper method.
+        Reads pre-calculated bargain info from the serializer context, provided by the view.
+        This avoids re-calculating logic and ensures the data is consistent with the view's sorting.
         """
-        prices_queryset = self._get_filtered_prices(obj)
+        # Memoize the result to avoid re-calculating for other method fields
+        if hasattr(obj, '_bargain_info_cache'):
+            return obj._bargain_info_cache
 
-        if not prices_queryset or len(prices_queryset) < 2:
+        bargain_info_map = self.context.get('bargain_info_map')
+        if not bargain_info_map:
+            obj._bargain_info_cache = None
             return None
 
-        # Find absolute min price and all companies that have it
-        min_price = None
-        cheapest_companies = []
-        for price_obj in prices_queryset:
-            if min_price is None or price_obj.price < min_price:
-                min_price = price_obj.price
-                cheapest_companies = [price_obj.store.company.name]
-            elif price_obj.price == min_price:
-                if price_obj.store.company.name not in cheapest_companies:
-                    cheapest_companies.append(price_obj.store.company.name)
+        bargain_data = bargain_info_map.get(obj.id)
+        if not bargain_data:
+            obj._bargain_info_cache = None
+            return None
         
-        if min_price is None:
-            return None
+        discount = bargain_data.get('discount')
+        cheapest_company = bargain_data.get('cheaper_company_name', 'Unknown')
+        
+        # Replace "Woolworths" with "Woolies" for display
+        display_name = "Woolies" if cheapest_company == "Woolworths" else cheapest_company
+        
+        result = {
+            "discount_percentage": discount,
+            "cheapest_company_name": cheapest_company, # Keep original name for grouping
+            "message": f"-{discount}% at {display_name}",
+            "cheapest_company_logo_url": bargain_data.get('cheaper_company_logo_url')
+        }
+        
+        obj._bargain_info_cache = result
+        return result
 
-        # Find the max price from any company NOT in the cheapest list
-        max_price_other_company = None
-        for price_obj in prices_queryset:
-            if price_obj.store.company.name not in cheapest_companies:
-                if max_price_other_company is None or price_obj.price > max_price_other_company:
-                    max_price_other_company = price_obj.price
+    def get_best_discount(self, obj):
+        bargain_info = self.get_bargain_info(obj)
+        return bargain_info.get('discount_percentage') if bargain_info else None
 
-        if max_price_other_company and max_price_other_company > min_price:
-            discount = int(round(((max_price_other_company - min_price) / max_price_other_company) * 100))
-            
-            if discount >= 5:
-                # Replace "Woolworths" with "Woolies" for display
-                display_names = ["Woolies" if name == "Woolworths" else name for name in cheapest_companies]
-                display_names.sort()
-                company_string = ", ".join(display_names)
-                
-                return {
-                    "discount_percentage": discount,
-                    "cheapest_company_name": company_string,
-                    "message": f"-{discount}% at {company_string}",
-                    "cheapest_company_logo_url": self._get_image_url_for_company(obj, cheapest_companies[0])
-                }
-                
-        return None
+    def get_cheaper_store_name(self, obj):
+        # The new view logic provides company name, not store name, for the top-level bargain.
+        # This can be adjusted if store-level detail is needed again.
+        bargain_info_map = self.context.get('bargain_info_map', {})
+        bargain_data = bargain_info_map.get(obj.id)
+        return bargain_data.get('cheaper_store_name') if bargain_data else None
+
+    def get_cheaper_company_name(self, obj):
+        bargain_info = self.get_bargain_info(obj)
+        return bargain_info.get('cheapest_company_name') if bargain_info else None
 
     def _get_image_url_for_company(self, product_obj, company_name, company_obj=None):
         """

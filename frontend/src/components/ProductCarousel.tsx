@@ -17,6 +17,7 @@ interface ProductCarouselProps {
   primaryCategorySlug?: string;
   primaryCategorySlugs?: string[];
   pillarPageLinkSlug?: string;
+  companyName?: string; // Add companyName prop
   onValidation?: (slug: string, isValid: boolean, slot: number) => void;
   slot?: number; // Make slot optional
   dataKey?: string; // Key to access product data in a nested object
@@ -28,7 +29,7 @@ interface ProductCarouselProps {
 import { useApiQuery } from '@/hooks/useApiQuery';
 import { useDialog } from '@/context/DialogContext';
 
-const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, products: initialProducts, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, onValidation, slot, dataKey, minProducts = 4, ordering, isLoading: isLoadingProp }) => {
+const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, products: initialProducts, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, companyName, onValidation, slot, dataKey, minProducts = 4, ordering, isLoading: isLoadingProp }) => {
   const { openDialog } = useDialog();
 
   const [baseUrl, queryString] = sourceUrl ? sourceUrl.split('?') : ['', ''];
@@ -40,6 +41,10 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
     params.set('primary_category_slugs', primaryCategorySlugs.join(','));
   } else if (primaryCategorySlug) {
     params.set('primary_category_slug', primaryCategorySlug);
+  }
+  // Add the company name for targeted bargain fetching
+  if (companyName) {
+    params.set('company_name', companyName);
   }
   // Add a limit to the query, but not for substitutes
   if (sourceUrl && !sourceUrl.includes('substitutes')) {
