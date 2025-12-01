@@ -1,11 +1,12 @@
-from django.db.models import F, Q, Case, When, Value, IntegerField, Min, Subquery, OuterRef
+from collections import defaultdict
+from django.db.models import F, Q, Case, When, Value, IntegerField, Min, Subquery, OuterRef, Exists
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from rest_framework import generics
 from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
-from products.models import Product, Bargain
+from products.models import Product, Price, ProductPriceSummary
 from companies.models import StoreGroupMembership
 from ...serializers import ProductSerializer
 
@@ -26,75 +27,97 @@ class ProductListView(generics.ListAPIView):
     def _get_carousel_queryset(self, anchor_store_ids, primary_category_slugs):
         """
         Gets a hybrid queryset for carousels. It prioritizes the top 20 bargain
-        products and fills the remaining slots with the best unit-price products,
-        using anchor stores for all price lookups.
-        Returns a tuple of (queryset, store_ids_for_context).
+        products and fills the remaining slots with the best unit-price products.
         """
         CAROUSEL_SIZE = 20
+        self.carousel_bargain_map = {} # Reset map for each request
 
-        # --- Step 1: The incoming store_ids are already anchor_store_ids ---
         if not anchor_store_ids:
-            # If no anchors, fall back to prevent showing nothing.
-            qs = Product.objects.filter(
-                prices__store__id__in=anchor_store_ids,
-                category__primary_category__slug__in=primary_category_slugs
-            ).annotate(
+            return Product.objects.none(), []
+
+        # --- Step 1: Identify potential candidates ---
+        candidate_product_ids = list(ProductPriceSummary.objects.filter(
+            product__category__primary_category__slug__in=primary_category_slugs,
+            product__prices__store__id__in=anchor_store_ids
+        ).distinct().order_by('-best_possible_discount').values_list('product_id', flat=True)[:200])
+
+        if not candidate_product_ids:
+             # Fallback to simple unit price ordering if no candidates found
+            return Product.objects.filter(
+                category__primary_category__slug__in=primary_category_slugs,
+                prices__store__id__in=anchor_store_ids
+            ).distinct().annotate(
                 min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=anchor_store_ids))
-            ).order_by('min_unit_price')[:CAROUSEL_SIZE]
-            return qs, anchor_store_ids
+            ).order_by('min_unit_price')[:CAROUSEL_SIZE], anchor_store_ids
 
-        # --- Step 2: Get Bargain Products (Fast) ---
-        bargain_product_ids = []
-        bargain_query = Bargain.objects.filter(
-            cheaper_store_id__in=anchor_store_ids,
-            product__category__primary_category__slug__in=primary_category_slugs
-        ).order_by('-discount_percentage')
+        # --- Step 2: Calculate "real" bargains for the candidates ---
+        live_prices = Price.objects.filter(
+            product_id__in=candidate_product_ids,
+            store_id__in=anchor_store_ids
+        ).select_related('store__company')
+
+        products_with_prices = defaultdict(list)
+        for price in live_prices:
+            products_with_prices[price.product_id].append(price)
+
+        calculated_bargains = []
+        for product_id, prices in products_with_prices.items():
+            if len(prices) < 2:
+                continue
+            
+            company_ids = {p.store.company_id for p in prices}
+            is_iga = any(p.store.company.name.lower() == 'iga' for p in prices)
+            iga_stores = {p.store_id for p in prices if p.store.company.name.lower() == 'iga'}
+            if len(company_ids) < 2 and (not is_iga or len(iga_stores) < 2):
+                continue
+
+            min_price_obj = min(prices, key=lambda p: p.price)
+            max_price_obj = max(prices, key=lambda p: p.price)
+
+            if min_price_obj.price == max_price_obj.price:
+                continue
+
+            actual_discount = int(((max_price_obj.price - min_price_obj.price) / max_price_obj.price) * 100)
+            if not (5 <= actual_discount <= 70):
+                continue
+            
+            calculated_bargains.append({
+                'product_id': product_id, 'discount': actual_discount,
+                'cheaper_store_name': min_price_obj.store.store_name,
+                'cheaper_company_name': min_price_obj.store.company.name,
+            })
         
-        potential_bargain_pids = bargain_query.values_list('product_id', flat=True)[:200]
-        seen_pids = set()
-        for pid in potential_bargain_pids:
-            if pid not in seen_pids:
-                seen_pids.add(pid)
-                bargain_product_ids.append(pid)
-            if len(bargain_product_ids) >= CAROUSEL_SIZE:
-                break
+        sorted_bargains = sorted(calculated_bargains, key=lambda b: b['discount'], reverse=True)
+        
+        # Store bargain info for serializer context
+        self.carousel_bargain_map = {b['product_id']: b for b in sorted_bargains}
+        confirmed_bargain_ids = [b['product_id'] for b in sorted_bargains]
 
-        # --- Step 3: Get Filler Products (Fast, if needed) ---
-        num_bargains = len(bargain_product_ids)
+        # --- Step 3: Get Filler Products if needed ---
+        num_bargains = len(confirmed_bargain_ids)
         filler_product_ids = []
         if num_bargains < CAROUSEL_SIZE:
             num_to_fill = CAROUSEL_SIZE - num_bargains
             
             filler_queryset = Product.objects.filter(
-                prices__store__id__in=anchor_store_ids, # Use anchors
+                prices__store__id__in=anchor_store_ids,
                 category__primary_category__slug__in=primary_category_slugs
             ).exclude(
-                pk__in=bargain_product_ids
+                pk__in=confirmed_bargain_ids
             ).annotate(
-                min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=anchor_store_ids)) # Use anchors
+                min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=anchor_store_ids))
             ).order_by('min_unit_price')
             
             filler_product_ids = list(filler_queryset.values_list('pk', flat=True)[:num_to_fill])
 
         # --- Step 4: Combine and Return ---
-        final_product_ids = bargain_product_ids + filler_product_ids
+        final_product_ids = confirmed_bargain_ids[:CAROUSEL_SIZE] + filler_product_ids
         if not final_product_ids:
             return Product.objects.none(), []
 
         preserved_order = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(final_product_ids)])
+        final_queryset = Product.objects.filter(pk__in=final_product_ids).order_by(preserved_order)
         
-        best_bargain_subquery = Bargain.objects.filter(
-            product=OuterRef('pk'),
-            cheaper_store_id__in=anchor_store_ids
-        ).order_by('-discount_percentage')
-
-        final_queryset = Product.objects.filter(pk__in=final_product_ids).annotate(
-            best_discount=Subquery(best_bargain_subquery.values('discount_percentage')[:1]),
-            cheaper_store_name=Subquery(best_bargain_subquery.values('cheaper_store__store_name')[:1]),
-            cheaper_company_name=Subquery(best_bargain_subquery.values('cheaper_store__company__name')[:1])
-        ).order_by(preserved_order)
-        
-        # Return the queryset and the list of stores that should be used for price serialization
         return final_queryset, anchor_store_ids
 
     def get_queryset(self):
@@ -194,4 +217,7 @@ class ProductListView(generics.ListAPIView):
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context['nearby_store_ids'] = getattr(self, 'nearby_store_ids', None)
+        # Add the calculated bargain info for the carousel serializer to use
+        if hasattr(self, 'carousel_bargain_map'):
+            context['bargain_info_map'] = self.carousel_bargain_map
         return context
