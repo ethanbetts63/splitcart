@@ -93,12 +93,12 @@ python manage.py upload --subs --dev # Local
 python manage.py update --subs # Server
 
 python manage.py generate --primary-cats # Server
+python manage.py generate --bargain-stats
 python manage.py input_pillars
 python manage.py generate --price-comps
-python manage.py import_faqs
+python manage.py update --faqs
 python manage.py import_postcodes
-python manage.py store_stats
-python manage.py calculate_bargain_stats
+python manage.py generate --store-stats
 
 python manage.py analyze --report company_heatmap
 python manage.py analyze --report subs

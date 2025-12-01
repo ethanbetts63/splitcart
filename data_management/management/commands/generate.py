@@ -13,6 +13,7 @@ class Command(BaseCommand):
         parser.add_argument('--store-groups', action='store_true', help='Generate store groups.')
         parser.add_argument('--price-comps', action='store_true', help='Generate price comparison data.')
         parser.add_argument('--bargain-stats', action='store_true', help='Generate company price comparison statistics.')
+        parser.add_argument('--store-stats', action='store_true', help='Display statistics about stores and their price data freshness.')
         parser.add_argument('--archive', action='store_true', help='Archive the database.')
         parser.add_argument('--categorize', action='store_true', help='Run the interactive category analyzer.')
         parser.add_argument('--company', type=str, help='Filter map generation by company name or specify company for categorization.')
@@ -70,8 +71,26 @@ class Command(BaseCommand):
             generator = BargainStatsGenerator(self)
             generator.run()
 
-        if options['archive']:
-            from data_management.utils.generation_utils.archive_generator import ArchiveGenerator
-            self.stdout.write(self.style.SUCCESS("Archiving database..."))
-            generator = ArchiveGenerator(self)
-            generator.run()
+                if options['archive']:
+
+                    from data_management.utils.generation_utils.archive_generator import ArchiveGenerator
+
+                    self.stdout.write(self.style.SUCCESS("Archiving database..."))
+
+                    generator = ArchiveGenerator(self)
+
+                    generator.run()
+
+        
+
+                if options['store_stats']:
+
+                    from data_management.utils.generation_utils.store_stats_generator import StoreStatsGenerator
+
+                    self.stdout.write(self.style.SUCCESS("Generating store statistics report..."))
+
+                    generator = StoreStatsGenerator(self)
+
+                    generator.run()
+
+        
