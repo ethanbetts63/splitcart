@@ -24,6 +24,19 @@ import EditLocationPage from "../pages/dialog-pages/EditLocationPage";
 import CartPage from "../pages/dialog-pages/CartPage";
 import { toast } from "sonner";
 
+// Utility function to compare two sets
+function areSetsEqual<T>(a: Set<T>, b: Set<T>): boolean {
+  if (a.size !== b.size) {
+    return false;
+  }
+  for (const item of a) {
+    if (!b.has(item)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 // Define a type for our navigation items
 type NavItem = {
   name: string;
@@ -52,7 +65,7 @@ const PageContent = ({
   onOpenChange: (open: boolean) => void,
   localSelectedStoreIds: Set<number>,
   setLocalSelectedStoreIds: React.Dispatch<React.SetStateAction<Set<number>>>,
-  setHasSearchOccurred: React.Dispatch<React.SetStateAction<boolean>>
+  setHasSearchOccurred: React.SetStateAction<boolean>
 }) => {
   switch (activePage) {
     case 'cart':
@@ -84,7 +97,8 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'cart' }: Set
   const [activePage, setActivePage] = React.useState(defaultPage);
   const { selectedStoreIds, setSelectedStoreIds, saveStoreList, currentStoreListName } = useStoreList();
   const [localSelectedStoreIds, setLocalSelectedStoreIds] = React.useState<Set<number>>(selectedStoreIds);
-  const [hasSearchOccurred, setHasSearchOccurred] = React.useState(false);
+  // Renamed from setHasSearchOccurred to setLocalChangesMade as it better reflects the intent
+  const [localChangesMade, setLocalChangesMade] = React.useState(false); 
 
   // When the defaultPage prop changes, update the activePage state.
   React.useEffect(() => {
@@ -95,8 +109,20 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'cart' }: Set
   React.useEffect(() => {
     if (open) {
       setLocalSelectedStoreIds(new Set(selectedStoreIds));
+      setLocalChangesMade(false); // Reset changes made flag when opening
     }
   }, [open, selectedStoreIds]);
+  
+  // Effect to track local changes for performance/save logic
+  React.useEffect(() => {
+    // Only set localChangesMade to true if localSelectedStoreIds actually differs from global
+    // after the initial sync from 'selectedStoreIds'.
+    // This prevents it from being true immediately on opening if there are no changes.
+    if (open && !areSetsEqual(localSelectedStoreIds, selectedStoreIds)) {
+        setLocalChangesMade(true);
+    }
+  }, [localSelectedStoreIds, open, selectedStoreIds]);
+
 
   const handleNavClick = (pageName: string) => {
     setActivePage(pageName);
@@ -111,13 +137,14 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'cart' }: Set
         return; // Prevent closing
       }
 
-      // If we are allowed to close, then run the save logic
-      if (hasSearchOccurred) {
-        setSelectedStoreIds(localSelectedStoreIds);
+      // Always update global state when closing the dialog to reflect the latest local selection
+      setSelectedStoreIds(localSelectedStoreIds);
+
+      // Only save to backend if the local selected stores are actually different from the global ones
+      // This implicitly covers explicit searches and manual selections.
+      if (!areSetsEqual(localSelectedStoreIds, selectedStoreIds)) {
         saveStoreList(currentStoreListName, Array.from(localSelectedStoreIds));
       }
-      // Reset the flag for the next time the dialog opens.
-      setHasSearchOccurred(false);
     }
     onOpenChange(newOpenState);
   };
@@ -169,7 +196,7 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'cart' }: Set
               onOpenChange={handleOpenChange} 
               localSelectedStoreIds={localSelectedStoreIds}
               setLocalSelectedStoreIds={setLocalSelectedStoreIds}
-              setHasSearchOccurred={setHasSearchOccurred}
+              setHasSearchOccurred={setLocalChangesMade} // Pass the localChangesMade setter
             />
           </main>
         </SidebarProvider>

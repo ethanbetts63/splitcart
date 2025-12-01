@@ -5,7 +5,7 @@ from data_management.models import BargainStats
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 
-@method_decorator(cache_page(60 * 60 * 24), name='dispatch')
+#@method_decorator(cache_page(60 * 60 * 24), name='dispatch')
 class BargainStatsView(APIView):
     """
     API view to retrieve pre-calculated bargain statistics.

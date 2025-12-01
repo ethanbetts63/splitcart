@@ -21,7 +21,7 @@ class BargainCarouselView(generics.ListAPIView):
     # No pagination needed for a carousel with a fixed limit
     pagination_class = None
 
-    @method_decorator(cache_page(60 * 60 * 24)) # Cache for 24 hours
+    #@method_decorator(cache_page(60 * 60 * 24)) # Cache for 24 hours
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
@@ -55,8 +55,7 @@ class BargainCarouselView(generics.ListAPIView):
         #    strictly between the relevant pricing stores. Fetch more to ensure we have enough unique products.
         initial_fetch_limit = limit * 2
         bargain_query = Bargain.objects.filter(
-            cheaper_store_id__in=self.pricing_store_ids,
-            expensive_store_id__in=self.pricing_store_ids
+            cheaper_store_id__in=self.pricing_store_ids
         )
 
         # Optional: Filter by a specific company's bargains
@@ -75,8 +74,7 @@ class BargainCarouselView(generics.ListAPIView):
         #    The subquery must also respect the definitive pricing_store_ids.
         best_bargain_subquery = Bargain.objects.filter(
             product=OuterRef('pk'),
-            cheaper_store_id__in=self.pricing_store_ids,
-            expensive_store_id__in=self.pricing_store_ids
+            cheaper_store_id__in=self.pricing_store_ids
         )
         if company_id:
             best_bargain_subquery = best_bargain_subquery.filter(cheaper_store__company_id=company_id)

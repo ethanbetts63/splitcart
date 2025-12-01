@@ -19,7 +19,7 @@ class ProductListView(generics.ListAPIView):
     serializer_class = ProductSerializer
     pagination_class = StandardResultsSetPagination
 
-    @method_decorator(cache_page(60 * 60 * 24))
+    #@method_decorator(cache_page(60 * 60 * 24))
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
@@ -47,7 +47,6 @@ class ProductListView(generics.ListAPIView):
         bargain_product_ids = []
         bargain_query = Bargain.objects.filter(
             cheaper_store_id__in=anchor_store_ids,
-            expensive_store_id__in=anchor_store_ids,
             product__category__primary_category__slug__in=primary_category_slugs
         ).order_by('-discount_percentage')
         
@@ -86,8 +85,7 @@ class ProductListView(generics.ListAPIView):
         
         best_bargain_subquery = Bargain.objects.filter(
             product=OuterRef('pk'),
-            cheaper_store_id__in=anchor_store_ids,
-            expensive_store_id__in=anchor_store_ids
+            cheaper_store_id__in=anchor_store_ids
         ).order_by('-discount_percentage')
 
         final_queryset = Product.objects.filter(pk__in=final_product_ids).annotate(
@@ -157,8 +155,7 @@ class ProductListView(generics.ListAPIView):
         # Annotations for sorting
         best_bargain_subquery = Bargain.objects.filter(
             product=OuterRef('pk'),
-            cheaper_store_id__in=anchor_store_ids,
-            expensive_store_id__in=anchor_store_ids
+            cheaper_store_id__in=anchor_store_ids
         ).order_by('-discount_percentage')
 
         queryset = queryset.annotate(
