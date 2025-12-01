@@ -91,7 +91,9 @@ class ProductListView(generics.ListAPIView):
         ).order_by('-discount_percentage')
 
         final_queryset = Product.objects.filter(pk__in=final_product_ids).annotate(
-            best_discount=Subquery(best_bargain_subquery.values('discount_percentage')[:1])
+            best_discount=Subquery(best_bargain_subquery.values('discount_percentage')[:1]),
+            cheaper_store_name=Subquery(best_bargain_subquery.values('cheaper_store__store_name')[:1]),
+            cheaper_company_name=Subquery(best_bargain_subquery.values('cheaper_store__company__name')[:1])
         ).order_by(preserved_order)
         
         # Return the queryset and the list of stores that should be used for price serialization
@@ -161,6 +163,8 @@ class ProductListView(generics.ListAPIView):
 
         queryset = queryset.annotate(
             best_discount=Subquery(best_bargain_subquery.values('discount_percentage')[:1]),
+            cheaper_store_name=Subquery(best_bargain_subquery.values('cheaper_store__store_name')[:1]),
+            cheaper_company_name=Subquery(best_bargain_subquery.values('cheaper_store__company__name')[:1]),
             min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=anchor_store_ids))
         )
 
