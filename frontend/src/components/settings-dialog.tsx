@@ -65,7 +65,7 @@ const PageContent = ({
   onOpenChange: (open: boolean) => void,
   localSelectedStoreIds: Set<number>,
   setLocalSelectedStoreIds: React.Dispatch<React.SetStateAction<Set<number>>>,
-  setHasSearchOccurred: React.SetStateAction<boolean>
+  setHasSearchOccurred: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
   switch (activePage) {
     case 'cart':
@@ -97,8 +97,8 @@ export function SettingsDialog({ open, onOpenChange, defaultPage = 'cart' }: Set
   const [activePage, setActivePage] = React.useState(defaultPage);
   const { selectedStoreIds, setSelectedStoreIds, saveStoreList, currentStoreListName } = useStoreList();
   const [localSelectedStoreIds, setLocalSelectedStoreIds] = React.useState<Set<number>>(selectedStoreIds);
-  // Renamed from setHasSearchOccurred to setLocalChangesMade as it better reflects the intent
-  const [localChangesMade, setLocalChangesMade] = React.useState(false); 
+  // Rename to indicate it's intentionally not read
+  const [_localChangesMade, setLocalChangesMade] = React.useState(false); 
 
   // When the defaultPage prop changes, update the activePage state.
   React.useEffect(() => {

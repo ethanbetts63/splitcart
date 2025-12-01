@@ -12,7 +12,7 @@ import { ProductCarousel } from "../components/ProductCarousel";
 import { FAQ } from "../components/FAQ";
 import { useApiQuery } from '../hooks/useApiQuery';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import type { PriceComparison, Product } from '../types';
+import type { PriceComparison } from '../types';
 import PriceComparisonChart from '../components/PriceComparisonChart';
 import LoadingSpinner from '../components/LoadingSpinner';
 
