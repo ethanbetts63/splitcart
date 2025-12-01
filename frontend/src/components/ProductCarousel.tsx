@@ -128,15 +128,14 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
       {/* Center: Example Products Text */}
       <div className="text-center">
         {isDefaultStores && !isLoading && (
-          <span className="text-base text-black px-2 py-1 rounded-md font-bold">
+          <span className="text-base text-black px-2 py-2 rounded-md font-bold">
             Showing example products, please&nbsp;
             <button 
               onClick={() => openDialog('Edit Location')} 
               className="text-blue-600 underline hover:text-blue-800"
             >
               select a location
-            </button>
-            .
+            </button>.
           </span>
         )}
       </div>

@@ -71,26 +71,16 @@ class Command(BaseCommand):
             generator = BargainStatsGenerator(self)
             generator.run()
 
-                if options['archive']:
+        if options['archive']:
+            from data_management.utils.generation_utils.archive_generator import ArchiveGenerator
+            self.stdout.write(self.style.SUCCESS("Archiving database..."))
+            generator = ArchiveGenerator(self)
+            generator.run()
 
-                    from data_management.utils.generation_utils.archive_generator import ArchiveGenerator
-
-                    self.stdout.write(self.style.SUCCESS("Archiving database..."))
-
-                    generator = ArchiveGenerator(self)
-
-                    generator.run()
-
-        
-
-                if options['store_stats']:
-
-                    from data_management.utils.generation_utils.store_stats_generator import StoreStatsGenerator
-
-                    self.stdout.write(self.style.SUCCESS("Generating store statistics report..."))
-
-                    generator = StoreStatsGenerator(self)
-
-                    generator.run()
+        if options['store_stats']:
+            from data_management.utils.generation_utils.store_stats_generator import StoreStatsGenerator
+            self.stdout.write(self.style.SUCCESS("Generating store statistics report..."))
+            generator = StoreStatsGenerator(self)
+            generator.run()
 
         
