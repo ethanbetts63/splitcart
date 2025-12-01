@@ -139,8 +139,8 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
               onClick={() => openDialog('Edit Location')} 
               className="text-blue-600 underline hover:text-blue-800"
             >
-              select a location
-            </button>.
+              select a location.
+            </button>
           </span>
         )}
       </div>
