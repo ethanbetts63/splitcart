@@ -8,6 +8,7 @@ class Command(BaseCommand):
         parser.add_argument('--cat-links', action='store_true', help='Generate category links.')
         parser.add_argument('--map', action='store_true', help='Generate store location map.')
         parser.add_argument('--primary-cats', action='store_true', help='Generate primary categories.')
+        parser.add_argument('--price-summaries', action='store_true', help='Generate product price summaries.')
         parser.add_argument('--store-groups', action='store_true', help='Generate store groups.')
         parser.add_argument('--price-comps', action='store_true', help='Generate price comparison data.')
         parser.add_argument('--bargain-stats', action='store_true', help='Generate company price comparison statistics.')
@@ -18,7 +19,7 @@ class Command(BaseCommand):
         parser.add_argument('--dev', action='store_true', help='Use development server URL.')
 
     def handle(self, *args, **options):
-        run_all = not any(options[key] for key in ['subs', 'cat_links', 'map', 'primary_cats', 'store_groups', 'price_comps', 'archive', 'categorize', 'bargain_stats'])
+        run_all = not any(options[key] for key in ['subs', 'cat_links', 'map', 'primary_cats', 'price_summaries', 'store_groups', 'price_comps', 'archive', 'categorize', 'bargain_stats'])
         dev = options['dev']
 
         if options['subs'] or run_all:
@@ -43,6 +44,12 @@ class Command(BaseCommand):
             from data_management.utils.generation_utils.primary_categories_generator import PrimaryCategoriesGenerator
             self.stdout.write(self.style.SUCCESS("Generating primary categories..."))
             generator = PrimaryCategoriesGenerator(self)
+            generator.run()
+
+        if options['price_summaries'] or run_all:
+            from data_management.utils.generation_utils.price_summaries_generator import PriceSummariesGenerator
+            self.stdout.write(self.style.SUCCESS("Generating product price summaries..."))
+            generator = PriceSummariesGenerator(self)
             generator.run()
 
         if options['store_groups'] or run_all:
