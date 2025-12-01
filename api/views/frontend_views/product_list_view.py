@@ -2,11 +2,13 @@ from collections import defaultdict
 from django.db.models import F, Q, Case, When, Value, IntegerField, Min, Subquery, OuterRef, Exists
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
+from django.core.cache import cache
 from rest_framework import generics
 from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 from products.models import Product, Price, ProductPriceSummary
+from data_management.models import SystemSetting
 from companies.models import StoreGroupMembership
 from ...serializers import ProductSerializer
 
@@ -127,13 +129,26 @@ class ProductListView(generics.ListAPIView):
         primary_category_slugs_param = self.request.query_params.get('primary_category_slugs', None)
         ordering = self.request.query_params.get('ordering', None)
 
-        if not store_ids_param:
-            raise ValidationError({'store_ids': 'This field is required.'})
+        store_ids = []
+        if store_ids_param:
+            try:
+                store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
+            except (ValueError, TypeError):
+                raise ValidationError({'store_ids': 'Invalid format. Must be a comma-separated list of integers.'})
+        else:
+            # If no store IDs are provided, fetch the default list from SystemSetting
+            default_stores = cache.get('default_anchor_stores')
+            if default_stores is None:
+                try:
+                    setting = SystemSetting.objects.get(key='default_anchor_stores')
+                    default_stores = setting.value
+                    cache.set('default_anchor_stores', default_stores, 60 * 60) # Cache for 1 hour
+                except SystemSetting.DoesNotExist:
+                    default_stores = []
+            store_ids = default_stores
 
-        try:
-            store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
-        except (ValueError, TypeError):
-            raise ValidationError({'store_ids': 'Invalid format. Must be a comma-separated list of integers.'})
+        if not store_ids:
+            return Product.objects.none()
 
         # --- Carousel Logic: Fast-path for performance ---
         if ordering == 'carousel_default' and (primary_category_slug_param or primary_category_slugs_param):
@@ -143,16 +158,13 @@ class ProductListView(generics.ListAPIView):
             elif primary_category_slug_param:
                 slugs = [primary_category_slug_param]
             
-            # The helper method now returns both the queryset and the store IDs for the context
-            # The incoming store_ids are already the anchor_store_ids
             queryset, stores_for_context = self._get_carousel_queryset(store_ids, slugs)
-            self.nearby_store_ids = stores_for_context # Set for serializer context
+            self.nearby_store_ids = stores_for_context 
             return queryset.prefetch_related(
                 'prices__store__company', 'skus', 'category__primary_category'
             ).defer('normalized_name_brand_size_variations', 'sizes')
 
         # --- General Search/Filtering Logic ---
-        # The incoming store_ids are already the anchor_store_ids
         anchor_store_ids = store_ids
         self.nearby_store_ids = anchor_store_ids
         queryset = Product.objects.filter(prices__store__id__in=anchor_store_ids).distinct()
