@@ -7,9 +7,10 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-
+from django.core.cache import cache
 from products.models import Product, Price, ProductPriceSummary
 from companies.models import Company
+from data_management.models import SystemSetting
 from ...serializers import ProductSerializer
 
 
@@ -35,15 +36,26 @@ class BargainCarouselView(APIView):
         
         limit = min(limit, 100)
 
-        if not store_ids_param:
-            raise ValidationError({'store_ids': 'This field is required.'})
-
-        try:
-            user_store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
-        except (ValueError, TypeError):
-            raise ValidationError({'store_ids': 'Invalid format. Must be a comma-separated list of integers.'})
+        user_store_ids = []
+        if store_ids_param:
+            try:
+                user_store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
+            except (ValueError, TypeError):
+                raise ValidationError({'store_ids': 'Invalid format. Must be a comma-separated list of integers.'})
+        else:
+            # If no store IDs are provided, fetch the default list from SystemSetting
+            default_stores = cache.get('default_anchor_stores')
+            if default_stores is None:
+                try:
+                    setting = SystemSetting.objects.get(key='default_anchor_stores')
+                    default_stores = setting.value
+                    cache.set('default_anchor_stores', default_stores, 60 * 60) # Cache for 1 hour
+                except SystemSetting.DoesNotExist:
+                    default_stores = []
+            user_store_ids = default_stores
 
         if not user_store_ids:
+            # This can happen if param is empty or setting doesn't exist
             return Response([])
 
         # --- Step 1: Get Potential Bargain Candidates ---
