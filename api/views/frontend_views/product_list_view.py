@@ -176,15 +176,10 @@ class ProductListView(generics.ListAPIView):
             queryset = queryset.filter(filter_q)
 
         # Annotations for sorting
-        best_bargain_subquery = Bargain.objects.filter(
-            product=OuterRef('pk'),
-            cheaper_store_id__in=anchor_store_ids
-        ).order_by('-discount_percentage')
+        summary_subquery = ProductPriceSummary.objects.filter(product=OuterRef('pk'))
 
         queryset = queryset.annotate(
-            best_discount=Subquery(best_bargain_subquery.values('discount_percentage')[:1]),
-            cheaper_store_name=Subquery(best_bargain_subquery.values('cheaper_store__store_name')[:1]),
-            cheaper_company_name=Subquery(best_bargain_subquery.values('cheaper_store__company__name')[:1]),
+            best_discount=Subquery(summary_subquery.values('best_possible_discount')[:1]),
             min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=anchor_store_ids))
         )
 

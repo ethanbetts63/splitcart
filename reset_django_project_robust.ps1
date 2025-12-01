@@ -81,10 +81,6 @@ python manage.py generate --cat-links --dev # Local
 python manage.py upload --cat-links --dev # Local
 python manage.py update --cat-links # Server
 
-python manage.py generate --bargains --dev
-python manage.py upload --bargains --dev # Local
-python manage.py update --bargains # Server
-
 python manage.py upload --product --dev # Local
 python manage.py update --products
 
