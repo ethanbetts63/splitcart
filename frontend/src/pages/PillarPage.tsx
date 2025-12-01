@@ -25,16 +25,26 @@ import { useStoreList } from '../context/StoreListContext';
 
 const PillarPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const DEFAULT_STORE_IDS = [
-    515, 5123, 518, 523, 272, 276, 2197, 2198, 2199, 536, 5142, 547, 2218, 2219,
-    2224, 5074, 5080, 5082, 5083, 5094, 5096, 5100, 498, 505, 254,
-  ];
-  const { selectedStoreIds } = useStoreList();
+  const DEFAULT_ANCHOR_IDS = [105, 458, 549, 504, 562, 4186];
+
+  const { selectedStoreIds, anchorStoreMap } = useStoreList();
   const isDefaultStores = selectedStoreIds.size === 0;
-  const storeIdsArray = React.useMemo(() =>
-    isDefaultStores ? DEFAULT_STORE_IDS : Array.from(selectedStoreIds),
-    [selectedStoreIds, isDefaultStores]
-  );
+
+  const anchorStoreIdsArray = React.useMemo(() => {
+    if (isDefaultStores) {
+      return DEFAULT_ANCHOR_IDS;
+    }
+    const anchorIds = new Set<number>();
+    for (const storeId of selectedStoreIds) {
+      const anchorId = anchorStoreMap[storeId];
+      if (anchorId) {
+        anchorIds.add(anchorId);
+      }
+    }
+    // Fallback to default if the mapping results in an empty list
+    return anchorIds.size > 0 ? Array.from(anchorIds) : DEFAULT_ANCHOR_IDS;
+  }, [selectedStoreIds, anchorStoreMap, isDefaultStores]);
+
 
   const {
     data: pillarPage,
@@ -112,7 +122,7 @@ const PillarPage: React.FC = () => {
                 sourceUrl="/api/products/"
                 primaryCategorySlugs={[category.slug]}
                 pillarPageLinkSlug={slug}
-                storeIds={storeIdsArray}
+                storeIds={anchorStoreIdsArray}
                 slot={index}
                 isDefaultStores={isDefaultStores}
             />
