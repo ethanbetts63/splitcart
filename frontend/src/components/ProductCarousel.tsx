@@ -47,38 +47,41 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
     };
   }, []);
 
-  const [baseUrl, queryString] = sourceUrl ? sourceUrl.split('?') : ['', ''];
-  const params = new URLSearchParams(queryString || '');
-  if (storeIds && storeIds.length > 0) {
-    params.set('store_ids', storeIds.join(','));
-  }
-  if (primaryCategorySlugs && primaryCategorySlugs.length > 0) {
-    params.set('primary_category_slugs', primaryCategorySlugs.join(','));
-  } else if (primaryCategorySlug) {
-    params.set('primary_category_slug', primaryCategorySlug);
-  }
-  // Add the company name for targeted bargain fetching
-  if (companyName) {
-    params.set('company_name', companyName);
-  }
-  // Add a limit to the query, but not for substitutes
-  if (sourceUrl && !sourceUrl.includes('substitutes')) {
-    params.set('limit', '20');
-    // Add the special ordering for carousels if not already specified by prop or URL
-    if (ordering) {
-      params.set('ordering', ordering);
-    } else if (!params.has('ordering')) {
-      params.set('ordering', 'carousel_default');
-    }
-  }
+  const isWaitingForStores = !storeIds || storeIds.length === 0;
 
-  const finalUrl = sourceUrl ? `${baseUrl}?${params.toString()}` : '';
+  const finalUrl = React.useMemo(() => {
+    if (isWaitingForStores) {
+      return '';
+    }
+    const [baseUrl, queryString] = sourceUrl ? sourceUrl.split('?') : ['', ''];
+    const params = new URLSearchParams(queryString || '');
+    if (storeIds && storeIds.length > 0) {
+      params.set('store_ids', storeIds.join(','));
+    }
+    if (primaryCategorySlugs && primaryCategorySlugs.length > 0) {
+      params.set('primary_category_slugs', primaryCategorySlugs.join(','));
+    } else if (primaryCategorySlug) {
+      params.set('primary_category_slug', primaryCategorySlug);
+    }
+    if (companyName) {
+      params.set('company_name', companyName);
+    }
+    if (sourceUrl && !sourceUrl.includes('substitutes')) {
+      params.set('limit', '20');
+      if (ordering) {
+        params.set('ordering', ordering);
+      } else if (!params.has('ordering')) {
+        params.set('ordering', 'carousel_default');
+      }
+    }
+    return sourceUrl ? `${baseUrl}?${params.toString()}` : '';
+  }, [sourceUrl, storeIds, primaryCategorySlugs, primaryCategorySlug, companyName, ordering, isWaitingForStores]);
 
   const { data: responseData, isLoading: isFetching, error, isFetched } = useApiQuery<any>(
     ['products', title, finalUrl],
     finalUrl,
     {},
-    { enabled: !!sourceUrl && !initialProducts && !!storeIds && storeIds.length > 0, refetchOnWindowFocus: false, staleTime: 1000 * 60 * 10 } // 10 minutes
+    { enabled: !!finalUrl && !initialProducts, refetchOnWindowFocus: false, staleTime: 1000 * 60 * 10 } // 10 minutes
   );
 
   // Ref to prevent calling onValidation multiple times
@@ -109,7 +112,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
     }
   }, [isFetched, products, onValidation, primaryCategorySlug, primaryCategorySlugs, slot, minProducts]);
   
-  const isLoading = isLoadingProp ?? (isFetching && !initialProducts);
+  const isLoading = (isLoadingProp ?? (isWaitingForStores || isFetching)) && !initialProducts;
 
   // If loading is done and there are not enough products to be valid, render nothing.
   if (!isLoading && products.length < minProducts) {

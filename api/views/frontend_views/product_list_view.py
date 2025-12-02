@@ -9,7 +9,6 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 from products.models import Product, Price, ProductPriceSummary
 from data_management.models import SystemSetting
-from companies.models import StoreGroupMembership
 from ...serializers import ProductSerializer
 from ...utils.bargain_utils import calculate_bargains
 
