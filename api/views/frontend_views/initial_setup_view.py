@@ -1,4 +1,5 @@
 import uuid
+from django.core.cache import cache
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -6,6 +7,7 @@ from users.models import Cart, SelectedStoreList
 from api.serializers import CartSerializer
 from api.permissions import IsAuthenticatedOrAnonymous
 from api.utils.get_pricing_stores import get_pricing_stores_map
+from data_management.models import SystemSetting
 
 from products.models import Price
 
@@ -29,10 +31,23 @@ class InitialSetupView(APIView):
             store_list = SelectedStoreList.objects.filter(anonymous_id=anonymous_id).order_by('-last_used_at').first()
 
         if not store_list:
+            # If no store list exists, create one with default stores
+            default_stores_ids = cache.get('default_anchor_stores')
+            if default_stores_ids is None:
+                try:
+                    setting = SystemSetting.objects.get(key='default_anchor_stores')
+                    default_stores_ids = setting.value
+                    cache.set('default_anchor_stores', default_stores_ids, 60 * 60) # Cache for 1 hour
+                except SystemSetting.DoesNotExist:
+                    default_stores_ids = []
+
             if user:
                 store_list = SelectedStoreList.objects.create(user=user, name='Default List')
             elif anonymous_id:
                 store_list = SelectedStoreList.objects.create(anonymous_id=anonymous_id, name='Default List')
+            
+            if default_stores_ids:
+                store_list.stores.add(*default_stores_ids)
 
         # Get or create the active cart
         cart_filter = {'user': user, 'is_active': True} if user else {'anonymous_id': anonymous_id, 'is_active': True}

@@ -3,7 +3,10 @@ from rest_framework.response import Response
 from companies.models import Postcode
 from ...serializers import PostcodeSerializer
 import sys
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
+@method_decorator(cache_page(60 * 60 * 24), name='dispatch')
 class PostcodeSearchView(ListAPIView):
     serializer_class = PostcodeSerializer
 
