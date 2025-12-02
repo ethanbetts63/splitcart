@@ -32,6 +32,20 @@ import { useDialog } from '@/context/DialogContext';
 
 const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, products: initialProducts, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, companyName, isBargainCarousel, onValidation, slot, dataKey, minProducts = 4, ordering, isLoading: isLoadingProp }) => {
   const { openDialog } = useDialog();
+  const [isSmallScreen, setIsSmallScreen] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 750);
+    };
+
+    handleResize(); // Set initial value
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const [baseUrl, queryString] = sourceUrl ? sourceUrl.split('?') : ['', ''];
   const params = new URLSearchParams(queryString || '');
@@ -153,7 +167,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
         {seeMoreLink && (
           <Button asChild size="sm">
             <Link to={seeMoreLink} aria-label={`Explore All Deals in ${title}`}>
-              Explore All Deals
+              {isSmallScreen ? 'Explore' : 'Explore All Deals'}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
@@ -161,7 +175,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
         {title === 'Bargains' && !seeMoreLink && (
           <Button asChild size="sm">
             <Link to="/bargains" aria-label="Explore More Bargains">
-              Explore More Bargains
+              {isSmallScreen ? 'Explore' : 'Explore More Bargains'}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>

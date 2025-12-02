@@ -30,7 +30,7 @@ const BargainsPage: React.FC = () => {
     );
 
   const hero_title = "Australia's Best Grocery Bargains";
-  const introduction_paragraph = "Forget the flashy ‘specials’ — these are the real bargains hiding in plain sight. We’ve compared prices across supermarkets to show you who actually sells each item for less.";
+  const introduction_paragraph = "Forget the flashy ‘specials’ — these are the real bargains hiding in plain sight. We’ve compared prices across supermarkets to show you who actually sells each item for less. Interested in the stats? We've graphed the trends so you can see which supermarket comes out on top overall.";
   const imageUrl = bargains;
 
   const DEFAULT_ANCHOR_IDS = [105, 458, 549, 504, 562, 4186];
@@ -90,7 +90,7 @@ const BargainsPage: React.FC = () => {
               {hero_title}
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              {introduction_paragraph}
+              Forget the flashy ‘specials’ — these are the real bargains hiding in plain sight. We’ve compared prices across supermarkets to show you who actually sells each item for less. <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">Interested in the stats?</span> We've graphed the trends below so you can see which supermarket comes out on top overall.
             </p>
           </div>
         </div>
