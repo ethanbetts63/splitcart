@@ -34,7 +34,18 @@ PRIMARY_CATEGORIES = [
     "Spices",
     "Sauces",
     "Sweets",
-    "Veg"
+    "Veg",
+    "Beef",
+    "Chicken",
+    "Pork",
+    "Lamb",
+    "Cheese",
+    "Milk",
+    "Yogurt",
+    "Ice-Cream",
+    "Chocolate",
+    "Lollies",
+    "Cakes"
 ]
 """
 secondary categories are added as needed for the categories with a lot of products

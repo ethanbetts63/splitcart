@@ -10,6 +10,12 @@ class PrimaryCategory(models.Model):
         default=dict,
         help_text="Stores price comparison data between companies."
     )
+    sub_categories = models.ManyToManyField(
+        'self',
+        blank=True,
+        symmetrical=False,
+        related_name='parent_categories'
+    )
 
     class Meta:
         verbose_name_plural = "Primary Categories"

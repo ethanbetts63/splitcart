@@ -2,7 +2,7 @@ import os
 import pprint
 from django.db import transaction
 from companies.models import Category, Company, PrimaryCategory
-from data_management.data.category_mappings import CATEGORY_MAPPINGS
+from data_management.data.category_mappings import CATEGORY_MAPPINGS, PRIMARY_CATEGORY_HIERARCHY
 
 EXCLUSIONS_FILE = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'category_exclusions.py')
 
@@ -31,6 +31,7 @@ class PrimaryCategoriesGenerator:
     def run(self):
         self._delete_existing_primary_categories()
         self._create_primary_categories()
+        self._assign_sub_categories()
         self._assign_primary_categories()
         self.stdout.write(self.style.SUCCESS("Successfully generated primary categories."))
 
@@ -45,12 +46,32 @@ class PrimaryCategoriesGenerator:
         for store_mappings in CATEGORY_MAPPINGS.values():
             primary_category_names.update(store_mappings.values())
 
+        # Also include categories from the hierarchy definition
+        for parent, children in PRIMARY_CATEGORY_HIERARCHY.items():
+            primary_category_names.add(parent)
+            primary_category_names.update(children)
+
         # Filter out None values before creating objects
         valid_primary_category_names = {name for name in primary_category_names if name is not None}
 
         for name in valid_primary_category_names:
             PrimaryCategory.objects.get_or_create(name=name)
         self.stdout.write(f"Found {len(valid_primary_category_names)} unique primary categories to create.")
+
+    def _assign_sub_categories(self):
+        self.stdout.write("Assigning sub-categories to primary categories...")
+        for parent_name, child_names in PRIMARY_CATEGORY_HIERARCHY.items():
+            try:
+                parent_category = PrimaryCategory.objects.get(name=parent_name)
+                for child_name in child_names:
+                    try:
+                        child_category = PrimaryCategory.objects.get(name=child_name)
+                        parent_category.sub_categories.add(child_category)
+                    except PrimaryCategory.DoesNotExist:
+                        self.stdout.write(self.style.WARNING(f"Child category '{child_name}' not found for parent '{parent_name}'. Skipping."))
+                self.stdout.write(f"Assigned sub-categories for '{parent_name}'.")
+            except PrimaryCategory.DoesNotExist:
+                self.stdout.write(self.style.WARNING(f"Parent category '{parent_name}' not found. Skipping."))
 
     def _assign_primary_categories(self):
         self.stdout.write("Assigning primary categories to categories...")
