@@ -1,12 +1,12 @@
-from rest_framework.permissions import AllowAny
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.exceptions import ValidationError
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
-from products.models import Product, Price, ProductPriceSummary
-from companies.models import Company
+from django.db import models
+from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response 
+from rest_framework.views import APIView      
+from rest_framework.permissions import AllowAny
+from products.models import Product, ProductPriceSummary
 from data_management.models import SystemSetting
 from ...serializers import ProductSerializer
 from ...utils.bargain_utils import calculate_bargains
@@ -60,11 +60,12 @@ class BargainCarouselView(APIView):
         # Widen the net when filtering by a specific company
         candidate_limit = 400 if company_name else 200
         candidate_product_ids = list(ProductPriceSummary.objects.filter(
+            product__prices__store__id__in=user_store_ids,
             best_possible_discount__gte=5,
             best_possible_discount__lte=70,
         ).filter(
             models.Q(company_count__gte=2) | models.Q(iga_store_count__gte=2)
-        ).order_by('-best_possible_discount').values_list('product_id', flat=True)[:candidate_limit])
+        ).distinct().order_by('-best_possible_discount').values_list('product_id', flat=True)[:candidate_limit])
 
         if not candidate_product_ids:
             return Response([])

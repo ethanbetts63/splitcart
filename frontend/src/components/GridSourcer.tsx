@@ -187,17 +187,19 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
             )}
           </h2>
           <div className="flex items-center">
-            <Select onValueChange={(value) => setSortOption(value)} value={sortOption}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="default">Default</SelectItem>
-                <SelectItem value="price_asc">Price: Low to High</SelectItem>
-                <SelectItem value="price_desc">Price: High to Low</SelectItem>
-                <SelectItem value="unit_price_asc">Per Unit Price: Low to High</SelectItem>
-              </SelectContent>
-            </Select>
+            {!bargainCompany && (
+              <Select onValueChange={(value) => setSortOption(value)} value={sortOption}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="default">Default</SelectItem>
+                  <SelectItem value="price_asc">Price: Low to High</SelectItem>
+                  <SelectItem value="price_desc">Price: High to Low</SelectItem>
+                  <SelectItem value="unit_price_asc">Per Unit Price: Low to High</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
           </div>
         </div>
         <ProductGrid 
