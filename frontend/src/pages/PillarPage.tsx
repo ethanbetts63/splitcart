@@ -25,15 +25,10 @@ import { useStoreList } from '../context/StoreListContext';
 
 const PillarPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const DEFAULT_ANCHOR_IDS = [105, 458, 549, 504, 562, 4186];
 
-  const { selectedStoreIds, anchorStoreMap } = useStoreList();
-  const isDefaultStores = selectedStoreIds.size === 0;
-
+  const { selectedStoreIds, anchorStoreMap, isUserDefinedList } = useStoreList();
+  
   const anchorStoreIdsArray = React.useMemo(() => {
-    if (isDefaultStores) {
-      return DEFAULT_ANCHOR_IDS;
-    }
     const anchorIds = new Set<number>();
     for (const storeId of selectedStoreIds) {
       const anchorId = anchorStoreMap[storeId];
@@ -41,9 +36,10 @@ const PillarPage: React.FC = () => {
         anchorIds.add(anchorId);
       }
     }
-    // Fallback to default if the mapping results in an empty list
-    return anchorIds.size > 0 ? Array.from(anchorIds) : DEFAULT_ANCHOR_IDS;
-  }, [selectedStoreIds, anchorStoreMap, isDefaultStores]);
+    return Array.from(anchorIds);
+  }, [selectedStoreIds, anchorStoreMap]);
+
+  const isDefaultStores = !isUserDefinedList; // This is still needed for ProductCarousel prop
 
 
   const {

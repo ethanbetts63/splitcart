@@ -18,11 +18,6 @@ import kingKongImage1024 from "../assets/king_kong-1024w.webp";
 import kingKongImage1280 from "../assets/king_kong-1280w.webp";
 
 const HomePage = () => {
-  // This list contains the pre-translated anchor IDs for the default stores.
-  const DEFAULT_ANCHOR_IDS = [
-    105, 458, 549, 504, 562, 4186
-  ];
-  
   const { selectedStoreIds, anchorStoreMap, isUserDefinedList } = useStoreList();
   useDocumentHead(
     "SplitCart: Australian Grocery Price Comparison",
@@ -32,10 +27,6 @@ const HomePage = () => {
   const isDefaultStores = !isUserDefinedList;
 
   const anchorStoreIdsArray = React.useMemo(() => {
-    // Use default IDs if the list is not user-defined or if it's empty during initial load.
-    if (isDefaultStores || selectedStoreIds.size === 0) {
-      return DEFAULT_ANCHOR_IDS;
-    }
     const anchorIds = new Set<number>();
     for (const storeId of selectedStoreIds) {
       const anchorId = anchorStoreMap[storeId];
@@ -43,9 +34,8 @@ const HomePage = () => {
         anchorIds.add(anchorId);
       }
     }
-    // Fallback to default if the mapping results in an empty list
-    return anchorIds.size > 0 ? Array.from(anchorIds) : DEFAULT_ANCHOR_IDS;
-  }, [selectedStoreIds, anchorStoreMap, isDefaultStores]);
+    return Array.from(anchorIds);
+  }, [selectedStoreIds, anchorStoreMap]);
 
   return (
     <div>

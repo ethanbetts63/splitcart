@@ -32,15 +32,9 @@ const BargainsPage: React.FC = () => {
   const hero_title = "Australia's Best Grocery Bargains";
   const imageUrl = bargains;
 
-  const DEFAULT_ANCHOR_IDS = [105, 458, 549, 504, 562, 4186];
-  
-  const { selectedStoreIds, anchorStoreMap } = useStoreList();
-  const isDefaultStores = selectedStoreIds.size === 0;
+  const { selectedStoreIds, anchorStoreMap, isUserDefinedList } = useStoreList();
 
   const anchorStoreIdsArray = React.useMemo(() => {
-    if (isDefaultStores) {
-      return DEFAULT_ANCHOR_IDS;
-    }
     const anchorIds = new Set<number>();
     for (const storeId of selectedStoreIds) {
       const anchorId = anchorStoreMap[storeId];
@@ -48,9 +42,10 @@ const BargainsPage: React.FC = () => {
         anchorIds.add(anchorId);
       }
     }
-    // Fallback to default if the mapping results in an empty list
-    return anchorIds.size > 0 ? Array.from(anchorIds) : DEFAULT_ANCHOR_IDS;
-  }, [selectedStoreIds, anchorStoreMap, isDefaultStores]);
+    return Array.from(anchorIds);
+  }, [selectedStoreIds, anchorStoreMap]);
+  
+  const isDefaultStores = !isUserDefinedList; // This is still needed for ProductCarousel prop
   
   const companies = [
       { name: 'Coles', id: 1 },
