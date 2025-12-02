@@ -7,45 +7,43 @@ from companies.models import Category, Company
 
 # --- Primary Categories (Hardcoded) ---
 PRIMARY_CATEGORIES = [
+    "Miscellaneous",
     "Alcoholic Drinks",
     "Baby",
     "Bakery",
+    "Beef",
+    "Cakes",
+    "Cheese",
+    "Chicken",
+    "Chocolate",
     "Cleaning",
-    "Clothing",
     "Dairy",
     "Deals",
     "Deli",
     "Eggs",
-    "Electronics",
     "Freezer",
     "Fruit",
     "Garden",
     "Health and Beauty",
     "Health Foods",
     "Home",
+    "Ice-Cream",
     "International",
+    "Lamb",
+    "Lollies",
     "Meat",
-    "Miscellaneous",
+    "Milk",
     "Non-Alcoholic Drinks",
     "Pantry",
     "Pet",
+    "Pork",
     "Seafood",
     "Snacks",
     "Spices",
     "Sauces",
     "Sweets",
     "Veg",
-    "Beef",
-    "Chicken",
-    "Pork",
-    "Lamb",
-    "Cheese",
-    "Milk",
-    "Yogurt",
-    "Ice-Cream",
-    "Chocolate",
-    "Lollies",
-    "Cakes"
+    "Yogurt"
 ]
 """
 secondary categories are added as needed for the categories with a lot of products
@@ -177,7 +175,7 @@ class Command(BaseCommand):
                     self.stdout.write(f"{idx+1}. {pc}")
 
                 while True:
-                    choice = input("Enter the number of the correct primary category (or 's' to skip, 'i' to permanently ignore, 'q' to quit): ").strip().lower()
+                    choice = input("Num or 's'/skip, 'i'/ignore, 'q'/quit): ").strip().lower()
                     if choice == 'q':
                         quit_early = True
                         break
@@ -244,7 +242,6 @@ class Command(BaseCommand):
             self.stdout.write(f"\n------------------------------------------------------------------")
             self.stdout.write(f"Category to Map: [{self.style.SUCCESS(category.name)}] from Company: [{self.style.WARNING(company_name)}] (Remaining: {len(unattached_categories) - i})")
 
-            self.stdout.write("\nPrimary Categories:")
             for idx, pc in enumerate(PRIMARY_CATEGORIES):
                 self.stdout.write(f"{idx+1}. {pc}")
             
