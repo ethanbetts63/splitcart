@@ -4,7 +4,7 @@ from ...serializers import PrimaryCategorySerializer
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 
-#@method_decorator(cache_page(60 * 60 * 24), name='dispatch')
+@method_decorator(cache_page(60 * 60 * 24), name='dispatch')
 class PrimaryCategoryListView(generics.ListAPIView):
     serializer_class = PrimaryCategorySerializer
     pagination_class = None

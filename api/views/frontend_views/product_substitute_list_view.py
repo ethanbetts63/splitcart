@@ -8,7 +8,7 @@ from products.models import Product
 from products.models.substitution import ProductSubstitution
 from ...serializers import ProductSubstitutionSerializer
 
-#@method_decorator(cache_page(60 * 60 * 6), name='dispatch')
+@method_decorator(cache_page(60 * 60 * 6), name='dispatch')
 class ProductSubstituteListView(APIView):
     def get(self, request, product_id, *args, **kwargs):
         try:

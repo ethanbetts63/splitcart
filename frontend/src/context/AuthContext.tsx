@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { performInitialSetupAPI } from '../services/auth.api';
 import { type Cart, type SelectedStoreListType } from '../types';
+import { type AnchorMap } from './StoreListContext';
 
 declare global {
   interface Window {
@@ -14,6 +15,7 @@ interface AuthContextType {
   anonymousId: string | null;
   initialCart: Cart | null;
   initialStoreList: SelectedStoreListType | null;
+  initialAnchorMap: AnchorMap | null;
   login: (token: string) => void;
   logout: () => void;
 }
@@ -24,6 +26,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const [anonymousId, setAnonymousId] = useState<string | null>(null);
+  const [initialAnchorMap, setInitialAnchorMap] = useState<AnchorMap | null>(null);
   const [initialCart, setInitialCart] = useState<Cart | null>(() => ({
     id: 'local',
     name: 'Shopping Cart',
@@ -74,6 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         setInitialCart(initialData.cart);
         setInitialStoreList(initialData.cart.selected_store_list ?? null);
+        setInitialAnchorMap(initialData.anchor_map ?? null);
 
       } catch (error) {
         console.error('Failed during initial user setup:', error);
@@ -116,7 +120,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, token, anonymousId, initialCart, initialStoreList, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, token, anonymousId, initialCart, initialStoreList, initialAnchorMap, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

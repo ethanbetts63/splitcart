@@ -5,7 +5,7 @@ from products.models import Product
 from ...serializers import ProductSerializer
 from ...utils.get_pricing_stores import get_pricing_stores_map
 
-#@method_decorator(cache_page(60 * 30), name='dispatch')
+@method_decorator(cache_page(60 * 30), name='dispatch')
 class ProductDetailView(RetrieveAPIView):
     """
     API view to retrieve a single product by its ID.

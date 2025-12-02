@@ -33,7 +33,7 @@ interface StoreListContextType {
 const StoreListContext = createContext<StoreListContextType | undefined>(undefined);
 
 // --- Provider Component ---
-export const StoreListProvider = ({ children, initialStoreList }: { children: ReactNode, initialStoreList: SelectedStoreListType | null }) => {
+export const StoreListProvider = ({ children, initialStoreList, initialAnchorMap }: { children: ReactNode, initialStoreList: SelectedStoreListType | null, initialAnchorMap: AnchorMap | null }) => {
   const { token, anonymousId } = useAuth();
 
   // --- State Definitions ---
@@ -59,6 +59,13 @@ export const StoreListProvider = ({ children, initialStoreList }: { children: Re
       setStoreListLoading(false);
     }
   }, [initialStoreList]);
+
+  // Initialize anchor map from initialAnchorMap prop
+  useEffect(() => {
+    if (initialAnchorMap) {
+      setAnchorStoreMap(initialAnchorMap);
+    }
+  }, [initialAnchorMap]);
 
   // --- Context Functions ---
 

@@ -12,7 +12,7 @@ from ...serializers import ProductSerializer
 from ...utils.bargain_utils import calculate_bargains
 
 
-#@method_decorator(cache_page(60 * 60 * 24), name='dispatch')
+@method_decorator(cache_page(60 * 60 * 24), name='dispatch')
 class BargainCarouselView(APIView):
     """
     An optimized view to serve products for the "Bargains" carousel using a hybrid calculation model.

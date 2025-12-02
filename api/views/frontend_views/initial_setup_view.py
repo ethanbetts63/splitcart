@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from users.models import Cart, SelectedStoreList
 from api.serializers import CartSerializer
 from api.permissions import IsAuthenticatedOrAnonymous
+from api.utils.get_pricing_stores import get_pricing_stores_map
 
 from products.models import Price
 
@@ -51,7 +52,7 @@ class InitialSetupView(APIView):
         product_ids = [item.product_id for item in cart.items.all()]
         store_ids = []
         if cart.selected_store_list:
-            store_ids = cart.selected_store_list.stores.values_list('id', flat=True)
+            store_ids = list(cart.selected_store_list.stores.values_list('id', flat=True))
 
         # 2. Fetch all relevant, pre-filtered prices in a single query
         prices_queryset = Price.objects.filter(
@@ -74,8 +75,12 @@ class InitialSetupView(APIView):
         }
         cart_serializer = CartSerializer(cart, context=serializer_context)
 
+        # 5. Get the anchor map for the stores in the store list
+        anchor_map = get_pricing_stores_map(store_ids)
+
         response_data = {
             'cart': cart_serializer.data,
+            'anchor_map': anchor_map,
         }
         if anonymous_id:
             response_data['anonymous_id'] = anonymous_id
