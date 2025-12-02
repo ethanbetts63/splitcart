@@ -83,7 +83,7 @@ class Command(BaseCommand):
 
                 while files_exist_in_inbox():
                     if error_counter >= MAX_RESTARTS:
-                        self.stderr.write(self.command.style.ERROR(
+                        self.stderr.write(self.style.ERROR(
                             f"Update command halted after {MAX_RESTARTS} consecutive restarts due to duplicate barcode errors."
                         ))
                         break
@@ -105,11 +105,11 @@ class Command(BaseCommand):
                             continue # Loop to the next attempt
                         else:
                             # It's a different integrity error, we should not loop.
-                            self.stderr.write(self.command.style.ERROR(f"An unhandled IntegrityError occurred: {e}"))
+                            self.stderr.write(self.style.ERROR(f"An unhandled IntegrityError occurred: {e}"))
                             raise # Re-raise and halt
                     except Exception as e:
                         # Any other exception should also break the loop.
-                        self.stderr.write(self.command.style.ERROR(f"An unexpected error occurred: {e}"))
+                        self.stderr.write(self.style.ERROR(f"An unexpected error occurred: {e}"))
                         raise # Re-raise and halt
 
             self.stdout.write(self.style.SUCCESS('--- Product update from inbox complete ---'))
