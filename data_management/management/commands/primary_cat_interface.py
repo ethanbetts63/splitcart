@@ -41,6 +41,9 @@ secondary categories are added as needed for the categories with a lot of produc
 
 Dairy: "Cheese", "Milk", "Yogurt"
 Meat: "Beef", "Chicken", "Pork", "Lamb"
+Freezer: "Ice-Cream", 
+Sweets: "Chocolate", "Lollies", "Cakes"
+
 """
 
 
