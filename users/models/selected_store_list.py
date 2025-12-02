@@ -14,6 +14,7 @@ class SelectedStoreList(models.Model):
     )
     anonymous_id = models.UUIDField(null=True, blank=True, db_index=True)
     name = models.CharField(max_length=255, default="My Store List")
+    is_user_defined = models.BooleanField(default=False)
     stores = models.ManyToManyField(Store, related_name='store_lists')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -23,16 +23,17 @@ const HomePage = () => {
     105, 458, 549, 504, 562, 4186
   ];
   
-  const { selectedStoreIds, anchorStoreMap } = useStoreList();
+  const { selectedStoreIds, anchorStoreMap, isUserDefinedList } = useStoreList();
   useDocumentHead(
     "SplitCart: Australian Grocery Price Comparison",
     "Every store has a deal — but finding them all takes forever. SplitCart automates that process by comparing prices across Coles, Woolworths, Aldi and IGA and splitting your cart for the cheapest overall shop. One list, multiple stores, maximum savings."
   );
 
-  const isDefaultStores = selectedStoreIds.size === 0;
+  const isDefaultStores = !isUserDefinedList;
 
   const anchorStoreIdsArray = React.useMemo(() => {
-    if (isDefaultStores) {
+    // Use default IDs if the list is not user-defined or if it's empty during initial load.
+    if (isDefaultStores || selectedStoreIds.size === 0) {
       return DEFAULT_ANCHOR_IDS;
     }
     const anchorIds = new Set<number>();

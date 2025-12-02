@@ -19,6 +19,7 @@ interface NavBarProps {
   openDialog: (page: string) => void;
   cartTotal: number;
   selectedStoreIds: Set<number>;
+  isUserDefinedList: boolean;
   isAuthenticated: boolean;
   logout: () => void;
 }
@@ -31,6 +32,7 @@ const NavBar: React.FC<NavBarProps> = ({
   openDialog,
   cartTotal,
   selectedStoreIds,
+  isUserDefinedList,
   isAuthenticated,
   logout,
 }) => {
@@ -91,7 +93,7 @@ const NavBar: React.FC<NavBarProps> = ({
                 <MapPin className="size-10" />
                 <span className="sr-only">Edit Location</span>
               </Button>
-              {selectedStoreIds.size > 0 && (
+              {isUserDefinedList && selectedStoreIds.size > 0 && (
                 <Badge
                   className="absolute -right-1 -top-1 h-5 min-w-5 justify-center rounded-full bg-blue-500 px-1 font-mono tabular-nums text-white"
                 >

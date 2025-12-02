@@ -9,6 +9,9 @@ class SelectedStoreListRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyA
     permission_classes = [IsAuthenticatedOrAnonymous]
     queryset = SelectedStoreList.objects.all()
     def update(self, request, *args, **kwargs):
+        # When a user updates their list, it is by definition user-defined.
+        if 'stores' in request.data:
+            request.data['is_user_defined'] = True
 
         instance = self.get_object()
         if not request.user.is_authenticated and 'name' in request.data:

@@ -50,7 +50,7 @@ const Layout = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  const { selectedStoreIds } = useStoreList();
+  const { selectedStoreIds, isUserDefinedList } = useStoreList();
   const { currentCart } = useCart();
   const items = currentCart ? currentCart.items : [];
   const cartTotal = items.length;
@@ -95,6 +95,7 @@ const Layout = () => {
         openDialog={handleOpenDialog} // Pass the new handler
         cartTotal={cartTotal}
         selectedStoreIds={selectedStoreIds}
+        isUserDefinedList={isUserDefinedList}
         isAuthenticated={isAuthenticated}
         logout={logout}
       />

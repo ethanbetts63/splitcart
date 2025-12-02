@@ -14,6 +14,7 @@ interface StoreListContextType {
   setCurrentStoreListId: React.Dispatch<React.SetStateAction<string | null>>;
   currentStoreListName: string;
   setCurrentStoreListName: React.Dispatch<React.SetStateAction<string>>;
+  isUserDefinedList: boolean;
   userStoreLists: SelectedStoreListType[];
   setUserStoreLists: React.Dispatch<React.SetStateAction<SelectedStoreListType[]>>;
   storeListLoading: boolean;
@@ -42,6 +43,7 @@ export const StoreListProvider = ({ children, initialStoreList, initialAnchorMap
 
   const [currentStoreListId, setCurrentStoreListId] = useState<string | null>(null);
   const [currentStoreListName, setCurrentStoreListName] = useState<string>("");
+  const [isUserDefinedList, setIsUserDefinedList] = useState<boolean>(false);
   const [userStoreLists, setUserStoreLists] = useState<SelectedStoreListType[]>([]);
   const [storeListLoading, setStoreListLoading] = useState<boolean>(true);
   const [storeListError, setStoreListError] = useState<string | null>(null);
@@ -54,7 +56,7 @@ export const StoreListProvider = ({ children, initialStoreList, initialAnchorMap
       setUserStoreLists([initialStoreList]);
       setCurrentStoreListId(initialStoreList.id);
       setCurrentStoreListName(initialStoreList.name);
-
+      setIsUserDefinedList(initialStoreList.is_user_defined);
       setSelectedStoreIds(new Set(initialStoreList.stores));
       setStoreListLoading(false);
     }
@@ -89,6 +91,7 @@ export const StoreListProvider = ({ children, initialStoreList, initialAnchorMap
       setCurrentStoreListId(data.id);
       setCurrentStoreListName(data.name);
       setSelectedStoreIds(new Set(data.stores));
+      setIsUserDefinedList(data.is_user_defined);
     } catch (err: any) {
       setStoreListError(err.message);
     } finally {
@@ -103,6 +106,7 @@ export const StoreListProvider = ({ children, initialStoreList, initialAnchorMap
     try {
       const data = await saveStoreListAPI(currentStoreListId, name, storeIds, token, anonymousId);
       setCurrentStoreListName(data.name);
+      setIsUserDefinedList(data.is_user_defined);
       // Update the specific list in the userStoreLists array
       setUserStoreLists(prev => prev.map(list => list.id === data.id ? data : list));
     } catch (err: any) {
@@ -121,6 +125,7 @@ export const StoreListProvider = ({ children, initialStoreList, initialAnchorMap
       setCurrentStoreListId(data.id);
       setCurrentStoreListName(data.name);
       setSelectedStoreIds(new Set(data.stores));
+      setIsUserDefinedList(data.is_user_defined);
       setUserStoreLists(prevLists => [...prevLists, data]);
     } catch (err: any) {
       setStoreListError(err.message);
@@ -163,6 +168,7 @@ export const StoreListProvider = ({ children, initialStoreList, initialAnchorMap
     setCurrentStoreListId,
     currentStoreListName,
     setCurrentStoreListName,
+    isUserDefinedList,
     userStoreLists,
     setUserStoreLists,
     storeListLoading,
