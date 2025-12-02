@@ -1,11 +1,11 @@
 import React from 'react';
 import { AspectRatio } from '../components/ui/aspect-ratio';
-import confusedShopper from "../assets/confused_shopper.webp"; 
-import confusedShopper320 from "../assets/confused_shopper-320w.webp"; 
-import confusedShopper640 from "../assets/confused_shopper-640w.webp"; 
-import confusedShopper768 from "../assets/confused_shopper-768w.webp"; 
-import confusedShopper1024 from "../assets/confused_shopper-1024w.webp"; 
-import confusedShopper1280 from "../assets/confused_shopper-1280w.webp"; 
+import bargains from "../assets/bargains.webp"; 
+import bargains320 from "../assets/bargains-320w.webp"; 
+import bargains640 from "../assets/bargains-640w.webp"; 
+import bargains768 from "../assets/bargains-768w.webp"; 
+import bargains1024 from "../assets/bargains-1024w.webp"; 
+import bargains1280 from "../assets/bargains-1280w.webp"; 
 import { useDocumentHead } from '@/hooks/useDocumentHead';
 import { useStoreList } from '../context/StoreListContext';
 import { ProductCarousel } from "../components/ProductCarousel";
@@ -24,7 +24,7 @@ const BargainsPage: React.FC = () => {
 
   const hero_title = "Australia's Best Grocery Bargains";
   const introduction_paragraph = "We've scoured the shelves to find the products with the biggest discounts. Here are the top grocery bargains available right now from your selected stores. Happy hunting!";
-  const imageUrl = confusedShopper;
+  const imageUrl = bargains;
 
   const DEFAULT_ANCHOR_IDS = [105, 458, 549, 504, 562, 4186];
   
@@ -71,7 +71,7 @@ const BargainsPage: React.FC = () => {
             <AspectRatio ratio={16 / 9}>
               <img 
                 src={imageUrl} 
-                srcSet={`${confusedShopper320} 320w, ${confusedShopper640} 640w, ${confusedShopper768} 768w, ${confusedShopper1024} 1024w, ${confusedShopper1280} 1280w`}
+                srcSet={`${bargains320} 320w, ${bargains640} 640w, ${bargains768} 768w, ${bargains1024} 1024w, ${bargains1280} 1280w`}
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 alt={hero_title}
                 className="rounded-md object-cover w-full h-full"
@@ -146,8 +146,8 @@ const BargainsPage: React.FC = () => {
             <FAQ
               title="Frequently Asked Questions about Bargains"
               page="bargains"
-              imageSrc={confusedShopper}
-              srcSet={`${confusedShopper320} 320w, ${confusedShopper640} 640w, ${confusedShopper768} 768w, ${confusedShopper1024} 1024w, ${confusedShopper1280} 1280w`}
+              imageSrc={bargains}
+              srcSet={`${bargains320} 320w, ${bargains640} 640w, ${bargains768} 768w, ${bargains1024} 1024w, ${bargains1280} 1280w`}
               sizes="(min-width: 1024px) 50vw, 100vw"
               imageAlt="Confused Shopper"
             />
