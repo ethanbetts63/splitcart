@@ -167,10 +167,10 @@ class Command(BaseCommand):
 
                 self.stdout.write(f"\n------------------------------------------------------------------")
                 parent_names = ", ".join(p.name for p in child_category.parents.all())
-                self.stdout.write(f"Category to Re-Map: [{self.style.SUCCESS(child_category.name)}] from Company: [{self.style.WARNING(company_name)}]")
+                self.stdout.write(f"Category: [{self.style.SUCCESS(child_category.name)}] Company: [{self.style.WARNING(company_name)}]")
                 self.stdout.write(f"(Child of: {parent_names}) (Remaining: {total_children - i})")
 
-                self.stdout.write("\nPrimary Categories:")
+                self.stdout.write("Primary Categories:")
                 for idx, pc in enumerate(PRIMARY_CATEGORIES):
                     self.stdout.write(f"{idx+1}. {pc}")
 
