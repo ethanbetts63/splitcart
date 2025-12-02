@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select"
 
 import { useStoreList } from '../context/StoreListContext';
+import { useDialog } from '../context/DialogContext';
 import LoadingSpinner from './LoadingSpinner';
 
 // Type for the API response, using the shared Product type
@@ -46,7 +47,8 @@ import { useQueryClient } from '@tanstack/react-query';
 const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, bargainCompany }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState('');
-  const { selectedStoreIds } = useStoreList(); // Get selected stores
+  const { selectedStoreIds, isUserDefinedList } = useStoreList(); // Get selected stores
+  const { openDialog } = useDialog();
   const queryClient = useQueryClient();
   const { token, anonymousId } = useAuth();
 
@@ -202,6 +204,19 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
             )}
           </div>
         </div>
+        {!isUserDefinedList && (
+          <div className="text-center mb-4">
+            <span className="text-base text-black px-2 py-2 rounded-md font-bold">
+              Showing example products, please&nbsp;
+              <button 
+                onClick={() => openDialog('Edit Location')} 
+                className="text-blue-600 underline hover:text-blue-800"
+              >
+                select a location.
+              </button>
+            </span>
+          </div>
+        )}
         <ProductGrid 
           products={products} 
           hasResults={totalResults > 0}
@@ -277,4 +292,4 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
       </div>
     );
   };
-export default GridSourcer;
+  export default GridSourcer;   
