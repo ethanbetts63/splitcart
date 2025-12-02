@@ -84,6 +84,9 @@ def run_sanity_checks(file_path: str) -> list:
         
         try:
             data = json.loads(line)
+            if 'metadata' not in data:
+                line_errors.append(f"L{line_number}: Line is missing 'metadata' key.")
+            
             product = data.get('product')
             if not product:
                 line_errors.append(f"L{line_number}: Line is missing 'product' key.")
