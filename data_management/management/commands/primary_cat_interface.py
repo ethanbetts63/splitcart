@@ -19,9 +19,10 @@ PRIMARY_CATEGORIES = [
     "Electronics",
     "Freezer",
     "Fruit",
+    "Garden",
     "Health and Beauty",
     "Health Foods",
-    "Home and Garden",
+    "Home",
     "International",
     "Meat",
     "Miscellaneous",
@@ -31,9 +32,17 @@ PRIMARY_CATEGORIES = [
     "Seafood",
     "Snacks",
     "Spices",
+    "Sauces",
     "Sweets",
     "Veg"
 ]
+"""
+secondary categories are added as needed for the categories with a lot of products
+
+Dairy: "Cheese", "Milk", "Yogurt"
+Meat: "Beef", "Chicken", "Pork", "Lamb"
+"""
+
 
 # --- Output file for mappings ---
 MAPPINGS_FILE = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'category_mappings.py')

@@ -8,9 +8,9 @@ EXCLUSIONS_FILE = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'c
 
 PRIMARY_CATEGORIES = [
     "Alcoholic Drinks", "Baby", "Bakery", "Cleaning", "Clothing", "Dairy", "Deals", "Deli",
-    "Eggs", "Electronics", "Freezer", "Fruit", "Health and Beauty", "Health Foods",
-    "Home and Garden", "International", "Meat", "Miscellaneous", "Non-Alcoholic Drinks",
-    "Pantry", "Pet", "Seafood", "Snacks", "Spices", "Sweets", "Veg"
+    "Eggs", "Electronics", "Freezer", "Garden", "Fruit", "Health and Beauty", "Health Foods",
+    "Home ", "International", "Meat", "Miscellaneous", "Non-Alcoholic Drinks",
+    "Pantry", "Pet", "Seafood", "Snacks", "Spices", "Sauces", "Sweets", "Veg"
 ]
 
 class Command(BaseCommand):
