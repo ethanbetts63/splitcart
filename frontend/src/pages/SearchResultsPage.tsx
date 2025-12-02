@@ -5,6 +5,7 @@ const SearchResultsPage = () => {
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get('q');
   const primaryCategorySlug = searchParams.get('primary_category_slug');
+  const bargainCompany = searchParams.get('bargain_company');
 
   // The logic for 'sourceUrl' can be added here later if needed.
   const sourceUrl = null;
@@ -15,6 +16,7 @@ const SearchResultsPage = () => {
         searchTerm={searchTerm}
         sourceUrl={sourceUrl}
         primaryCategorySlug={primaryCategorySlug}
+        bargainCompany={bargainCompany}
       />
     </div>
   );

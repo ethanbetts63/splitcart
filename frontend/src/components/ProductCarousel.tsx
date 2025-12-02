@@ -18,6 +18,7 @@ interface ProductCarouselProps {
   primaryCategorySlugs?: string[];
   pillarPageLinkSlug?: string;
   companyName?: string; // Add companyName prop
+  isBargainCarousel?: boolean; // New prop for bargain-specific carousels
   onValidation?: (slug: string, isValid: boolean, slot: number) => void;
   slot?: number; // Make slot optional
   dataKey?: string; // Key to access product data in a nested object
@@ -29,7 +30,7 @@ interface ProductCarouselProps {
 import { useApiQuery } from '@/hooks/useApiQuery';
 import { useDialog } from '@/context/DialogContext';
 
-const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, products: initialProducts, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, companyName, onValidation, slot, dataKey, minProducts = 4, ordering, isLoading: isLoadingProp }) => {
+const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, products: initialProducts, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, companyName, isBargainCarousel, onValidation, slot, dataKey, minProducts = 4, ordering, isLoading: isLoadingProp }) => {
   const { openDialog } = useDialog();
 
   const [baseUrl, queryString] = sourceUrl ? sourceUrl.split('?') : ['', ''];
@@ -109,7 +110,9 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
   // --- Unified Header Logic ---
   // This logic is now outside the conditional rendering blocks.
   let seeMoreLink = null;
-  if (primaryCategorySlugs) {
+  if (isBargainCarousel && companyName) {
+    seeMoreLink = `/search?bargain_company=${encodeURIComponent(companyName)}`;
+  } else if (primaryCategorySlugs) {
     if (primaryCategorySlugs.length > 1 && pillarPageLinkSlug) {
       seeMoreLink = `/categories/${encodeURIComponent(pillarPageLinkSlug)}`;
     } else if (primaryCategorySlugs.length === 1) {

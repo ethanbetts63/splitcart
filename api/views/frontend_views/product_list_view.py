@@ -11,6 +11,8 @@ from products.models import Product, Price, ProductPriceSummary
 from data_management.models import SystemSetting
 from companies.models import StoreGroupMembership
 from ...serializers import ProductSerializer
+from ...utils.bargain_utils import calculate_bargains
+
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 20
@@ -128,6 +130,7 @@ class ProductListView(generics.ListAPIView):
         primary_category_slug_param = self.request.query_params.get('primary_category_slug', None)
         primary_category_slugs_param = self.request.query_params.get('primary_category_slugs', None)
         ordering = self.request.query_params.get('ordering', None)
+        bargain_company_name = self.request.query_params.get('bargain_company', None)
 
         store_ids = []
         if store_ids_param:
@@ -136,19 +139,52 @@ class ProductListView(generics.ListAPIView):
             except (ValueError, TypeError):
                 raise ValidationError({'store_ids': 'Invalid format. Must be a comma-separated list of integers.'})
         else:
-            # If no store IDs are provided, fetch the default list from SystemSetting
             default_stores = cache.get('default_anchor_stores')
             if default_stores is None:
                 try:
                     setting = SystemSetting.objects.get(key='default_anchor_stores')
                     default_stores = setting.value
-                    cache.set('default_anchor_stores', default_stores, 60 * 60) # Cache for 1 hour
+                    cache.set('default_anchor_stores', default_stores, 60 * 60)
                 except SystemSetting.DoesNotExist:
                     default_stores = []
             store_ids = default_stores
 
         if not store_ids:
             return Product.objects.none()
+        
+        self.nearby_store_ids = store_ids
+
+        # --- Bargain Company Filter ---
+        if bargain_company_name:
+            candidate_product_ids = list(ProductPriceSummary.objects.filter(
+                best_possible_discount__gte=5,
+                best_possible_discount__lte=70
+            ).filter(
+                Q(company_count__gte=2) | Q(iga_store_count__gte=2)
+            ).order_by('-best_possible_discount').values_list('product_id', flat=True)[:1000])
+
+            if not candidate_product_ids:
+                return Product.objects.none()
+
+            all_bargains = calculate_bargains(candidate_product_ids, store_ids)
+
+            company_bargains = [
+                b for b in all_bargains
+                if b['cheaper_company_name'].lower() == bargain_company_name.lower()
+            ]
+
+            sorted_bargains = sorted(company_bargains, key=lambda b: b['discount'], reverse=True)
+            
+            self.bargain_info_map = {b['product_id']: b for b in sorted_bargains}
+            final_product_ids = list(self.bargain_info_map.keys())
+
+            if not final_product_ids:
+                return Product.objects.none()
+
+            preserved_order = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(final_product_ids)])
+            return Product.objects.filter(pk__in=final_product_ids).order_by(preserved_order).prefetch_related(
+                'prices__store__company', 'skus', 'category__primary_category'
+            )
 
         # --- Carousel Logic: Fast-path for performance ---
         if ordering == 'carousel_default' and (primary_category_slug_param or primary_category_slugs_param):
@@ -224,7 +260,9 @@ class ProductListView(generics.ListAPIView):
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context['nearby_store_ids'] = getattr(self, 'nearby_store_ids', None)
-        # Add the calculated bargain info for the carousel serializer to use
-        if hasattr(self, 'carousel_bargain_map'):
+        # Add the calculated bargain info for the carousel or bargain search to use
+        if hasattr(self, 'bargain_info_map'):
+            context['bargain_info_map'] = self.bargain_info_map
+        elif hasattr(self, 'carousel_bargain_map'):
             context['bargain_info_map'] = self.carousel_bargain_map
         return context

@@ -1,10 +1,7 @@
-from collections import defaultdict
-from django.db import models
-from django.db.models import F
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
-from rest_framework.permissions import AllowAny
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
@@ -12,6 +9,7 @@ from products.models import Product, Price, ProductPriceSummary
 from companies.models import Company
 from data_management.models import SystemSetting
 from ...serializers import ProductSerializer
+from ...utils.bargain_utils import calculate_bargains
 
 
 @method_decorator(cache_page(60 * 60 * 24), name='dispatch')
@@ -71,48 +69,8 @@ class BargainCarouselView(APIView):
         if not candidate_product_ids:
             return Response([])
 
-        # --- Step 2: Fetch Relevant Live Prices ---
-        live_prices = Price.objects.filter(
-            product_id__in=candidate_product_ids,
-            store_id__in=user_store_ids
-        ).select_related('store__company')
-
-        # --- Step 3: Calculate Actual Bargains In-Memory ---
-        products_with_prices = defaultdict(list)
-        for price in live_prices:
-            products_with_prices[price.product_id].append(price)
-
-        calculated_bargains = []
-        for product_id, prices in products_with_prices.items():
-            if len(prices) < 2:
-                continue
-            
-            # Check for cross-company/IGA price difference
-            company_ids = {p.store.company_id for p in prices}
-            is_iga = any(p.store.company.name.lower() == 'iga' for p in prices)
-            iga_stores = {p.store_id for p in prices if p.store.company.name.lower() == 'iga'}
-            
-            if len(company_ids) < 2 and (not is_iga or len(iga_stores) < 2):
-                continue
-
-            min_price_obj = min(prices, key=lambda p: p.price)
-            max_price_obj = max(prices, key=lambda p: p.price)
-
-            if min_price_obj.price == max_price_obj.price:
-                continue
-
-            # Calculate actual discount and check if it's in the valid range
-            actual_discount = int(((max_price_obj.price - min_price_obj.price) / max_price_obj.price) * 100)
-            
-            if not (5 <= actual_discount <= 70):
-                continue
-            
-            calculated_bargains.append({
-                'product_id': product_id,
-                'discount': actual_discount,
-                'cheaper_store_name': min_price_obj.store.store_name,
-                'cheaper_company_name': min_price_obj.store.company.name,
-            })
+        # --- Step 2: Calculate Actual Bargains In-Memory using the utility ---
+        calculated_bargains = calculate_bargains(candidate_product_ids, user_store_ids)
 
         if not calculated_bargains:
             return Response([])

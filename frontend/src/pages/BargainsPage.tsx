@@ -104,6 +104,7 @@ const BargainsPage: React.FC = () => {
               sourceUrl="/api/products/bargain-carousel/"
               storeIds={anchorStoreIdsArray}
               companyName={company.name}
+              isBargainCarousel={true}
               isDefaultStores={isDefaultStores}
               minProducts={1}
             />

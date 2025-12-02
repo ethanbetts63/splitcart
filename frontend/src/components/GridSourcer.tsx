@@ -36,13 +36,14 @@ interface GridSourcerProps {
   sourceUrl: string | null;
   primaryCategorySlug: string | null;
   primaryCategorySlugs?: string | null;
+  bargainCompany?: string | null;
 }
 
 import { useApiQuery } from '../hooks/useApiQuery';
 import { useAuth } from '../context/AuthContext';
 import { useQueryClient } from '@tanstack/react-query';
 
-const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs }) => {
+const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, bargainCompany }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState('');
   const { selectedStoreIds } = useStoreList(); // Get selected stores
@@ -54,7 +55,10 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
     const params = new URLSearchParams();
     let url = '';
 
-    if (sourceUrl) {
+    if (bargainCompany) {
+      url = '/api/products/';
+      params.set('bargain_company', bargainCompany);
+    } else if (sourceUrl) {
       const [baseUrl, queryString] = sourceUrl.split('?');
       url = baseUrl;
       const existingParams = new URLSearchParams(queryString || '');
@@ -82,7 +86,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
     }
 
     return { url, params };
-  }, [searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, selectedStoreIds, currentPage, sortOption]);
+  }, [searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, selectedStoreIds, currentPage, sortOption, bargainCompany]);
 
   const finalUrl = url ? `${url}?${params.toString()}` : null;
 
@@ -147,6 +151,14 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
       <div>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">
+            {bargainCompany && (
+              <>
+                Showing {totalResults} bargains for{" "}
+                <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
+                  "{bargainCompany}"
+                </span>
+              </>
+            )}
             {searchTerm && (
               <>
                 Found {totalResults} results for{" "}
@@ -168,7 +180,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
                 );
               })()
             )}
-            {sourceUrl && !searchTerm && !primaryCategorySlug && (
+            {sourceUrl && !searchTerm && !primaryCategorySlug && !bargainCompany && (
               <>
                 Showing {totalResults} products
               </>
