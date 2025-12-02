@@ -52,6 +52,11 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
   const queryClient = useQueryClient();
   const { token, anonymousId } = useAuth();
 
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [primaryCategorySlug, searchTerm, sourceUrl, primaryCategorySlugs, bargainCompany]);
+
+
   // Determine API endpoint and params
   const { url, params } = React.useMemo(() => {
     const params = new URLSearchParams();

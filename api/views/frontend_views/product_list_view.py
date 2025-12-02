@@ -8,6 +8,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 from products.models import Product, Price, ProductPriceSummary
+from companies.models import PrimaryCategory
 from data_management.models import SystemSetting
 from ...serializers import ProductSerializer
 from ...utils.bargain_utils import calculate_bargains
@@ -209,7 +210,12 @@ class ProductListView(generics.ListAPIView):
             slugs = [slug.strip() for slug in primary_category_slugs_param.split(',')]
             queryset = queryset.filter(category__primary_category__slug__in=slugs)
         elif primary_category_slug_param:
-            queryset = queryset.filter(category__primary_category__slug=primary_category_slug_param)
+            try:
+                primary_category = PrimaryCategory.objects.prefetch_related('sub_categories').get(slug=primary_category_slug_param)
+                all_related_slugs = [primary_category.slug] + [sub.slug for sub in primary_category.sub_categories.all()]
+                queryset = queryset.filter(category__primary_category__slug__in=all_related_slugs)
+            except PrimaryCategory.DoesNotExist:
+                queryset = queryset.none() # Or handle as an error
 
         # Search term filtering
         search_terms = []
