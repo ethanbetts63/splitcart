@@ -2,7 +2,6 @@ from rest_framework import views, response, status
 from rest_framework.throttling import ScopedRateThrottle
 from api.permissions import IsInternalAPIRequest
 from products.models import ProductSubstitution
-from companies.models import CategoryLink
 
 class ImportSemanticDataView(views.APIView):
     """
