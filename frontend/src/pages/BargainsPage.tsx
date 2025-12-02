@@ -16,6 +16,13 @@ import type { PriceComparison } from '../types';
 import PriceComparisonChart from '../components/PriceComparisonChart';
 import LoadingSpinner from '../components/LoadingSpinner';
 
+import snackLineup from "../assets/snack_lineup.webp";
+import snackLineup320 from "../assets/snack_lineup-320w.webp"; 
+import snackLineup640 from "../assets/snack_lineup-640w.webp"; 
+import snackLineup768 from "../assets/snack_lineup-768w.webp"; 
+import snackLineup1024 from "../assets/snack_lineup-1024w.webp"; 
+import snackLineup1280 from "../assets/snack_lineup-1280w.webp";
+
 const BargainsPage: React.FC = () => {
     useDocumentHead(
         "SplitCart: Australia's Best Grocery Bargains",
@@ -23,7 +30,7 @@ const BargainsPage: React.FC = () => {
     );
 
   const hero_title = "Australia's Best Grocery Bargains";
-  const introduction_paragraph = "We've scoured the shelves to find the products with the biggest discounts. Here are the top grocery bargains available right now from your selected stores. Happy hunting!";
+  const introduction_paragraph = "Forget the flashy ‘specials’ — these are the real bargains hiding in plain sight. We’ve compared prices across supermarkets to show you who actually sells each item for less.";
   const imageUrl = bargains;
 
   const DEFAULT_ANCHOR_IDS = [105, 458, 549, 504, 562, 4186];
@@ -74,7 +81,7 @@ const BargainsPage: React.FC = () => {
                 srcSet={`${bargains320} 320w, ${bargains640} 640w, ${bargains768} 768w, ${bargains1024} 1024w, ${bargains1280} 1280w`}
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 alt={hero_title}
-                className="rounded-md object-cover w-full h-full"
+                className="rounded-md object-contain w-full h-full"
                 fetchPriority="high" />
             </AspectRatio>
           </div>
@@ -146,10 +153,10 @@ const BargainsPage: React.FC = () => {
             <FAQ
               title="Frequently Asked Questions about Bargains"
               page="bargains"
-              imageSrc={bargains}
-              srcSet={`${bargains320} 320w, ${bargains640} 640w, ${bargains768} 768w, ${bargains1024} 1024w, ${bargains1280} 1280w`}
+              imageSrc={snackLineup}
+              srcSet={`${snackLineup320} 320w, ${snackLineup640} 640w, ${snackLineup768} 768w, ${snackLineup1024} 1024w, ${snackLineup1280} 1280w`}
               sizes="(min-width: 1024px) 50vw, 100vw"
-              imageAlt="Confused Shopper"
+              imageAlt="Snack Lineup"
             />
           </section>
         </div>
