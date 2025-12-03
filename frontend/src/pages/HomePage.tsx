@@ -142,12 +142,12 @@ const HomePage = () => {
             isDefaultStores={isDefaultStores}
           />
           <ProductCarousel
-            key="eggs-and-dairy"
-            title="Eggs & Dairy"
+            key="dairy"
+            title="Dairy"
             sourceUrl="/api/products/"
             storeIds={anchorStoreIdsArray}
-            primaryCategorySlugs={['eggs', 'dairy']}
-            pillarPageLinkSlug="eggs-and-dairy"
+            primaryCategorySlugs={['dairy']}
+            pillarPageLinkSlug="dairy"
             slot={2}
             isDefaultStores={isDefaultStores}
           />
@@ -196,7 +196,7 @@ const HomePage = () => {
             title="Health, Beauty & Supplements"
             sourceUrl="/api/products/"
             storeIds={anchorStoreIdsArray}
-            primaryCategorySlugs={['health-and-beauty', 'health-foods']}
+            primaryCategorySlugs={['health', 'beauty', 'health-foods']}
             pillarPageLinkSlug="health-beauty-and-supplements"
             slot={5}
             isDefaultStores={isDefaultStores}
