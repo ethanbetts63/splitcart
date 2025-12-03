@@ -90,7 +90,7 @@ python manage.py update --subs # Server
 
 python manage.py generate --primary-cats # Server
 python manage.py generate --bargain-stats
-python manage.py input_pillars
+python manage.py generate --pillars
 python manage.py generate --price-comps
 python manage.py update --faqs
 python manage.py import_postcodes

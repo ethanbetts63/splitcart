@@ -14,13 +14,14 @@ class Command(BaseCommand):
         parser.add_argument('--price-comps', action='store_true', help='Generate price comparison data.')
         parser.add_argument('--bargain-stats', action='store_true', help='Generate company price comparison statistics.')
         parser.add_argument('--store-stats', action='store_true', help='Display statistics about stores and their price data freshness.')
+        parser.add_argument('--pillars', action='store_true', help='Generate pillar pages from JSONL file.')
         parser.add_argument('--archive', action='store_true', help='Archive the database.')
         parser.add_argument('--categorize', action='store_true', help='Run the interactive category analyzer.')
         parser.add_argument('--company', type=str, help='Filter map generation by company name or specify company for categorization.')
         parser.add_argument('--dev', action='store_true', help='Use development server URL.')
 
     def handle(self, *args, **options):
-        run_all = not any(options[key] for key in ['subs', 'cat_links', 'map', 'primary_cats', 'price_summaries', 'default_stores', 'store_groups', 'price_comps', 'archive', 'categorize', 'bargain_stats'])
+        run_all = not any(options[key] for key in ['subs', 'cat_links', 'map', 'primary_cats', 'price_summaries', 'default_stores', 'store_groups', 'price_comps', 'archive', 'categorize', 'bargain_stats', 'pillars'])
         dev = options['dev']
 
         if options['subs'] or run_all:
@@ -75,6 +76,12 @@ class Command(BaseCommand):
             from data_management.utils.generation_utils.bargain_stats_generator import BargainStatsGenerator
             self.stdout.write(self.style.SUCCESS("Generating bargain statistics..."))
             generator = BargainStatsGenerator(self)
+            generator.run()
+        
+        if options['pillars'] or run_all:
+            from data_management.utils.generation_utils.pillars_generator import PillarsGenerator
+            self.stdout.write(self.style.SUCCESS("Generating pillar pages..."))
+            generator = PillarsGenerator(self)
             generator.run()
 
         if options['archive']:
