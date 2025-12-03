@@ -63,7 +63,7 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
     const companyColors: { [key: string]: string } = {
       "Aldi": "bg-blue-300 text-black font-bold",
       "Woolies": "bg-green-500 text-black font-bold",
-      "Coles": "bg-red-500 text-white font-bold",
+      "Coles": "bg-red-700 text-white font-bold",
       "IGA": "bg-black text-white border border-red-600 font-bold",
     };
 
