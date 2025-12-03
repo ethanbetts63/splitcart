@@ -2,7 +2,7 @@ from collections import defaultdict
 from django.db.models import Q, Min, Case, When
 from products.models import Product, Price, ProductPriceSummary
 
-def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=20):
+def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=None):
     """
     Gets a hybrid list of product IDs. It prioritizes bargain products
     and fills the remaining slots with the best unit-price products.
@@ -26,7 +26,9 @@ def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=2
         ).distinct().annotate(
             min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=anchor_store_ids))
         ).order_by('min_unit_price')
-        return list(fallback_queryset.values_list('pk', flat=True)[:limit]), {}
+        if limit is not None:
+            fallback_queryset = fallback_queryset[:limit]
+        return list(fallback_queryset.values_list('pk', flat=True)), {}
 
     # --- Step 2: Calculate "real" bargains for the candidates ---
     live_prices = Price.objects.filter(
@@ -73,9 +75,7 @@ def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=2
     # --- Step 3: Get Filler Products if needed ---
     num_bargains = len(confirmed_bargain_ids)
     filler_product_ids = []
-    if num_bargains < limit:
-        num_to_fill = limit - num_bargains
-        
+    if limit is None or num_bargains < limit:
         filler_queryset = Product.objects.filter(
             prices__store__id__in=anchor_store_ids,
             category__primary_category__slug__in=primary_category_slugs
@@ -85,7 +85,11 @@ def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=2
             min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=anchor_store_ids))
         ).order_by('min_unit_price')
         
-        filler_product_ids = list(filler_queryset.values_list('pk', flat=True)[:num_to_fill])
+        if limit is not None:
+            num_to_fill = limit - num_bargains
+            filler_queryset = filler_queryset[:num_to_fill]
+        
+        filler_product_ids = list(filler_queryset.values_list('pk', flat=True))
 
     # --- Step 4: Combine ---
     final_product_ids = confirmed_bargain_ids + filler_product_ids

@@ -172,7 +172,7 @@ class ProductListView(generics.ListAPIView):
         elif ordering == 'default' and slugs_for_filtering and not search_query:
             # Use the new bargain-first ordering for default category view
             product_ids, bargain_map = get_bargain_first_ordering(
-                anchor_store_ids, slugs_for_filtering, limit=50 
+                anchor_store_ids, slugs_for_filtering
             )
             self.bargain_info_map = bargain_map
             
