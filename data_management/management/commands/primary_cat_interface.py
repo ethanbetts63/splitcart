@@ -84,9 +84,26 @@ class Command(BaseCommand):
             return mappings.get('CATEGORY_MAPPINGS', {})
 
     def _save_mappings(self, mappings):
+        # Preserve the existing hierarchy if it exists
+        hierarchy = {}
+        if os.path.exists(MAPPINGS_FILE):
+            with open(MAPPINGS_FILE, 'r') as f:
+                content = f.read()
+                try:
+                    # Execute content in a scope to get both dictionaries
+                    file_scope = {}
+                    exec(content, {'__builtins__': {}}, file_scope)
+                    if 'PRIMARY_CATEGORY_HIERARCHY' in file_scope:
+                        hierarchy = file_scope['PRIMARY_CATEGORY_HIERARCHY']
+                except Exception as e:
+                    self.stderr.write(self.style.ERROR(f"Could not preserve PRIMARY_CATEGORY_HIERARCHY: {e}"))
+
         with open(MAPPINGS_FILE, 'w') as f:
             f.write("CATEGORY_MAPPINGS = ")
             f.write(pprint.pformat(mappings, indent=4))
+            f.write("\n\n")
+            f.write("PRIMARY_CATEGORY_HIERARCHY = ")
+            f.write(pprint.pformat(hierarchy, indent=4))
 
     def _handle_refine_misc(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('--- Refining "Miscellaneous" Categories ---'))
