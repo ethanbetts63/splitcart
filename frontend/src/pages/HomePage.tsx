@@ -21,7 +21,7 @@ const HomePage = () => {
   const { selectedStoreIds, anchorStoreMap, isUserDefinedList } = useStoreList();
   useDocumentHead(
     "SplitCart: Australian Grocery Price Comparison",
-    "Every store has a deal — but finding them all takes forever. SplitCart automates that process by comparing prices across Coles, Woolworths, Aldi and IGA and splitting your cart for the cheapest overall shop. One list, multiple stores, maximum savings."
+    "Every store has a deal — but finding them all takes forever. SplitCart automates discount hunting by comparing prices across Coles, Woolworths, Aldi and IGA and splitting your cart for the cheapest overall shop. One list, multiple stores, maximum savings."
   );
 
   const isDefaultStores = !isUserDefinedList;
@@ -58,7 +58,7 @@ const HomePage = () => {
               They’ve been optimising for profit. Now it’s your turn.
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Every store has a deal — but finding them all takes forever. SplitCart automates that process by comparing prices across supermarkets and splitting your cart for the cheapest overall shop. <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">One list, multiple stores, maximum savings.</span> Search or browse and add products to your cart to get started! Click "Next" in the bottom right when you're ready!
+              Every store has a deal — but finding them all takes forever. SplitCart automates discount hunting by comparing prices across supermarkets and splitting your cart for the cheapest overall shop. <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">One list, multiple stores, maximum savings.</span> Search or browse and add products to your cart to get started! Click "Next" in the bottom right when you're ready!
             </p>
           </div>
         </div>
