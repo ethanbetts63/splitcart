@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Card,
@@ -11,35 +11,57 @@ import {
 import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
-import placeholderImage from '../assets/placeholder.webp'; // A lightweight placeholder
+import placeholderImage from '../assets/placeholder.webp';
 
 import { Badge } from "./ui/badge";
-import type { Product } from '../types'; // Import shared type
+import type { Product } from '../types';
 
 interface ProductTileProps {
   product: Product;
-  lazyLoad?: boolean;
-  fetchPriority?: 'high' | 'low' | 'auto';
 }
 
-const ProductTile: React.FC<ProductTileProps> = ({ product, lazyLoad = false, fetchPriority = 'auto' }) => {
-  // Set initial image: if not lazy-loading, use the real URL, otherwise use a placeholder.
-  const [imageUrl, setImageUrl] = useState(lazyLoad ? placeholderImage : (product.image_url || fallbackImage));
+const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const tileRef = useRef<HTMLAnchorElement>(null);
 
-  // Effect to update image when product changes, respecting lazy-load logic
   useEffect(() => {
-    setImageUrl(lazyLoad ? placeholderImage : (product.image_url || fallbackImage));
-  }, [product.image_url, lazyLoad]);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Update state only when intersecting and not already visible
+        if (entry.isIntersecting && !isVisible) {
+          setIsVisible(true);
+          observer.unobserve(entry.target); // Clean up by unobserving the now visible element
+        }
+      },
+      {
+        rootMargin: '0px 0px 100px 0px', // Start loading when the tile is 100px away from the bottom of the viewport
+        threshold: 0.01 // Trigger as soon as a tiny part is visible
+      }
+    );
 
-  const handleImageError = () => {
-    if (imageUrl !== fallbackImage) {
-      setImageUrl(fallbackImage);
+    const currentRef = tileRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [isVisible]); // Rerun effect if isVisible changes, though it won't re-observe
+
+  const imageUrl = isVisible ? (product.image_url || fallbackImage) : placeholderImage;
+  
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    if (e.currentTarget.src !== fallbackImage) {
+      e.currentTarget.src = fallbackImage;
     }
   };
-
+  
   const generateSrcSet = (url: string) => {
-    if (!url.includes('cdn.metcash.media') || url === placeholderImage || url === fallbackImage) {
+    if (!isVisible || !url.includes('cdn.metcash.media') || url === placeholderImage || url === fallbackImage) {
       return undefined;
     }
     const sizes = [200, 250, 300, 350, 400, 450, 500];
@@ -48,10 +70,9 @@ const ProductTile: React.FC<ProductTileProps> = ({ product, lazyLoad = false, fe
       .join(', ');
   };
 
-  const srcSet = generateSrcSet(imageUrl);
-  const dataSrcSet = lazyLoad ? generateSrcSet(product.image_url || '') : undefined;
+  const srcSet = generateSrcSet(product.image_url || '');
 
-  const bargainInfo = React.useMemo(() => {
+  const bargainInfo = useMemo(() => {
     if (!product.bargain_info) {
       return null;
     }
@@ -107,7 +128,7 @@ const ProductTile: React.FC<ProductTileProps> = ({ product, lazyLoad = false, fe
   }
 
   return (
-    <Link to={`/product/${product.slug}`} className="group block h-full">
+    <Link to={`/product/${product.slug}`} className="group block h-full" ref={tileRef}>
       <Card className={`flex flex-col h-full overflow-hidden gap-1 pt-0 pb-2 transition-shadow duration-200 ${!isButtonHovered && 'group-hover:shadow-lg'}`}>
         <div className="aspect-square w-full overflow-hidden relative">
           <div className="absolute top-2 right-2 z-20 flex flex-col items-end gap-1">
@@ -129,11 +150,8 @@ const ProductTile: React.FC<ProductTileProps> = ({ product, lazyLoad = false, fe
             sizes="273px"
             onError={handleImageError}
             alt={product.name}
-            className={`h-full w-full object-cover transition-transform duration-200 ${!isButtonHovered && 'group-hover:scale-105'} ${lazyLoad ? 'lazy-load' : ''}`}
-            data-src={lazyLoad ? (product.image_url || fallbackImage) : undefined}
-            data-srcset={lazyLoad ? dataSrcSet : undefined}
-            fetchPriority={fetchPriority}
-            loading={lazyLoad ? 'lazy' : 'eager'}
+            className={`h-full w-full object-cover transition-transform duration-200 ${!isButtonHovered && 'group-hover:scale-105'}`}
+            loading="lazy"
           />
         </div>
         <CardHeader className="p-0 text-center">
