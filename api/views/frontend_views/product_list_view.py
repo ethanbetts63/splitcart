@@ -1,5 +1,4 @@
-from collections import defaultdict
-from django.db.models import F, Q, Case, When, Value, IntegerField, Min, Subquery, OuterRef, Exists
+from django.db.models import F, Q, Case, When, Value, IntegerField, Min
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from django.core.cache import cache
@@ -7,7 +6,7 @@ from rest_framework import generics
 from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
-from products.models import Product, Price, ProductPriceSummary
+from products.models import Product, ProductPriceSummary
 from companies.models import PrimaryCategory
 from data_management.models import SystemSetting
 from ...serializers import ProductSerializer
