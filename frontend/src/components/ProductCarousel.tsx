@@ -47,12 +47,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
     };
   }, []);
 
-  const isWaitingForStores = !storeIds || storeIds.length === 0;
-
   const finalUrl = React.useMemo(() => {
-    if (isWaitingForStores) {
-      return '';
-    }
     const [baseUrl, queryString] = sourceUrl ? sourceUrl.split('?') : ['', ''];
     const params = new URLSearchParams(queryString || '');
     if (storeIds && storeIds.length > 0) {
@@ -75,7 +70,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
       }
     }
     return sourceUrl ? `${baseUrl}?${params.toString()}` : '';
-  }, [sourceUrl, storeIds, primaryCategorySlugs, primaryCategorySlug, companyName, ordering, isWaitingForStores]);
+  }, [sourceUrl, storeIds, primaryCategorySlugs, primaryCategorySlug, companyName, ordering]);
 
   const { data: responseData, isLoading: isFetching, error, isFetched } = useApiQuery<any>(
     ['products', title, finalUrl],
@@ -112,7 +107,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
     }
   }, [isFetched, products, onValidation, primaryCategorySlug, primaryCategorySlugs, slot, minProducts]);
   
-  const isLoading = (isLoadingProp ?? (isWaitingForStores || isFetching)) && !initialProducts;
+  const isLoading = (isLoadingProp ?? isFetching) && !initialProducts;
 
   // If loading is done and there are not enough products to be valid, render nothing.
   if (!isLoading && products.length < minProducts) {

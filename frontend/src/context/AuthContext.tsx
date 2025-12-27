@@ -3,12 +3,6 @@ import { performInitialSetupAPI } from '../services/auth.api';
 import { type Cart, type SelectedStoreListType } from '../types';
 import { type AnchorMap } from './StoreListContext';
 
-declare global {
-  interface Window {
-    __initialDataPromise__?: Promise<any>;
-  }
-}
-
 interface AuthContextType {
   isAuthenticated: boolean;
   token: string | null;
@@ -16,6 +10,7 @@ interface AuthContextType {
   initialCart: Cart | null;
   initialStoreList: SelectedStoreListType | null;
   initialAnchorMap: AnchorMap | null;
+  isLoading: boolean; // New loading state
   login: (token: string) => void;
   logout: () => void;
 }
@@ -27,6 +22,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const [anonymousId, setAnonymousId] = useState<string | null>(null);
   const [initialAnchorMap, setInitialAnchorMap] = useState<AnchorMap | null>(null);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
   const [initialCart, setInitialCart] = useState<Cart | null>(() => ({
     id: 'local',
     name: 'Shopping Cart',
@@ -56,11 +52,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const initializeUser = async () => {
+      setIsLoading(true);
       try {
-        // Use the pre-fetched promise if it exists, otherwise call the API directly.
-        const initialData = window.__initialDataPromise__ 
-            ? await window.__initialDataPromise__ 
-            : await performInitialSetupAPI(null, null); // Pass nulls as the API service will get credentials
+        // Call the API directly, no longer relying on a pre-fetched promise.
+        const initialData = await performInitialSetupAPI(null, null);
 
         if (initialData.error) {
             throw new Error(`Initial data fetch failed with status: ${initialData.status}`);
@@ -83,7 +78,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       } catch (error) {
         console.error('Failed during initial user setup:', error);
-        // Here you might want to set an error state or show a toast
+        // On failure, we still have the initial local state.
+      } finally {
+        setIsLoading(false); // Set loading to false after success or failure
       }
     };
 
@@ -122,7 +119,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, token, anonymousId, initialCart, initialStoreList, initialAnchorMap, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, token, anonymousId, initialCart, initialStoreList, initialAnchorMap, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

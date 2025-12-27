@@ -9,37 +9,6 @@
   </head>
   <body>
     <div id="root"></div>
-    <script>
-      (function() {
-        const token = localStorage.getItem('token');
-        const anonymousId = document.cookie.split('; ').find(row => row.startsWith('anonymousId='))?.split('=')[1] || null;
-
-        const headers = { 'Content-Type': 'application/json' };
-        if (token) {
-          headers['Authorization'] = `Token ${token}`;
-        } else if (anonymousId) {
-          headers['X-Anonymous-ID'] = anonymousId;
-        }
-
-        // Add CSRF token for POST requests
-        const csrfToken = document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1];
-        if (csrfToken) {
-          headers['X-CSRFToken'] = csrfToken;
-        }
-
-        window.__initialDataPromise__ = fetch('/api/initial-setup/', {
-          method: 'POST',
-          headers: headers,
-        }).then(response => {
-          if (!response.ok) {
-            return { error: true, status: response.status };
-          }
-          return response.json();
-        }).catch(error => {
-          return { error: true, message: error.message };
-        });
-      })();
-    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
