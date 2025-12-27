@@ -57,10 +57,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         // Call the API directly, no longer relying on a pre-fetched promise.
         const initialData = await performInitialSetupAPI(null, null);
 
-        if (initialData.error) {
-            throw new Error(`Initial data fetch failed with status: ${initialData.status}`);
-        }
-
         const storedToken = localStorage.getItem('token');
         if (storedToken) {
           setIsAuthenticated(true);
