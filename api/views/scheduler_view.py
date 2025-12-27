@@ -10,8 +10,8 @@ from datetime import timedelta
 class SchedulerView(APIView):
     """
     Provides the next store to be scraped based on a clear priority:
-    1. Stores flagged for a high-priority re-scrape.
-    2. Stores that have never been scraped.
+    1. Stores that have never been scraped.
+    2. Stores flagged for a high-priority re-scrape.
     3. The store that was scraped the longest time ago.
     """
     permission_classes = [IsInternalAPIRequest]
