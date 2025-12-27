@@ -11,32 +11,35 @@ import {
 import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
+import placeholderImage from '../assets/placeholder.webp'; // A lightweight placeholder
 
 import { Badge } from "./ui/badge";
 import type { Product } from '../types'; // Import shared type
 
 interface ProductTileProps {
   product: Product;
+  lazyLoad?: boolean;
+  fetchPriority?: 'high' | 'low' | 'auto';
 }
 
-const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
-  const [imageUrl, setImageUrl] = useState(product.image_url || fallbackImage);
+const ProductTile: React.FC<ProductTileProps> = ({ product, lazyLoad = false, fetchPriority = 'auto' }) => {
+  // Set initial image: if not lazy-loading, use the real URL, otherwise use a placeholder.
+  const [imageUrl, setImageUrl] = useState(lazyLoad ? placeholderImage : (product.image_url || fallbackImage));
   const [isButtonHovered, setIsButtonHovered] = useState(false);
 
-  // Effect to reset the image URL when the product prop changes
+  // Effect to update image when product changes, respecting lazy-load logic
   useEffect(() => {
-    setImageUrl(product.image_url || fallbackImage);
-  }, [product.image_url]);
+    setImageUrl(lazyLoad ? placeholderImage : (product.image_url || fallbackImage));
+  }, [product.image_url, lazyLoad]);
 
   const handleImageError = () => {
-    // Prevent a loop if the fallback image itself is broken
     if (imageUrl !== fallbackImage) {
       setImageUrl(fallbackImage);
     }
   };
 
   const generateSrcSet = (url: string) => {
-    if (!url.includes('cdn.metcash.media')) {
+    if (!url.includes('cdn.metcash.media') || url === placeholderImage || url === fallbackImage) {
       return undefined;
     }
     const sizes = [200, 250, 300, 350, 400, 450, 500];
@@ -46,9 +49,9 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
   };
 
   const srcSet = generateSrcSet(imageUrl);
+  const dataSrcSet = lazyLoad ? generateSrcSet(product.image_url || '') : undefined;
 
   const bargainInfo = React.useMemo(() => {
-    // Use the new pre-calculated bargain_info from the API
     if (!product.bargain_info) {
       return null;
     }
@@ -126,7 +129,11 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
             sizes="273px"
             onError={handleImageError}
             alt={product.name}
-            className={`h-full w-full object-cover transition-transform duration-200 ${!isButtonHovered && 'group-hover:scale-105'}`}
+            className={`h-full w-full object-cover transition-transform duration-200 ${!isButtonHovered && 'group-hover:scale-105'} ${lazyLoad ? 'lazy-load' : ''}`}
+            data-src={lazyLoad ? (product.image_url || fallbackImage) : undefined}
+            data-srcset={lazyLoad ? dataSrcSet : undefined}
+            fetchPriority={fetchPriority}
+            loading={lazyLoad ? 'lazy' : 'eager'}
           />
         </div>
         <CardHeader className="p-0 text-center">

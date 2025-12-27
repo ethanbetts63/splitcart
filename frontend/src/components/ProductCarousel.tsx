@@ -34,6 +34,7 @@ import { useDialog } from '@/context/DialogContext';
 const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, products: initialProducts, storeIds, title, searchQuery, isDefaultStores, isUserDefinedList, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, companyName, isBargainCarousel, onValidation, slot, dataKey, minProducts = 4, ordering, isLoading: isLoadingProp }) => {
   const { openDialog } = useDialog();
   const [isSmallScreen, setIsSmallScreen] = React.useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null); // Ref for the scrolling container
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -82,9 +83,6 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
     { enabled: !!finalUrl && !initialProducts, refetchOnWindowFocus: false, staleTime: 1000 * 60 * 10 } // 10 minutes
   );
 
-  // Ref to prevent calling onValidation multiple times
-  const validationCalled = useRef(false);
-
   // Process the response to get the final list of products
   const products: Product[] = React.useMemo(() => {
     if (initialProducts) return initialProducts;
@@ -101,6 +99,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
     return results;
   }, [initialProducts, responseData, dataKey]);
 
+  const validationCalled = useRef(false);
   useEffect(() => {
     if (isFetched && onValidation && (primaryCategorySlug || primaryCategorySlugs) && !validationCalled.current && slot !== undefined) {
       const identifier = primaryCategorySlugs ? primaryCategorySlugs.join(',') : primaryCategorySlug!;
@@ -111,6 +110,45 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
   }, [isFetched, products, onValidation, primaryCategorySlug, primaryCategorySlugs, slot, minProducts]);
   
   const isLoading = (isLoadingProp ?? isFetching) && !initialProducts;
+
+  // --- Intersection Observer for Lazy Loading ---
+  useEffect(() => {
+    if (isLoading || !carouselRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries, imgObserver) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const lazyImage = entry.target as HTMLImageElement;
+            const src = lazyImage.dataset.src;
+            const srcset = lazyImage.dataset.srcset;
+
+            if (src) {
+              lazyImage.src = src;
+            }
+            if (srcset) {
+              lazyImage.srcset = srcset;
+            }
+            
+            lazyImage.classList.remove('lazy-load');
+            imgObserver.unobserve(lazyImage);
+          }
+        });
+      },
+      {
+        root: carouselRef.current,
+        rootMargin: "0px 400px 0px 0px" // Start loading images 400px before they enter the viewport
+      }
+    );
+
+    const images = carouselRef.current.querySelectorAll('.lazy-load');
+    images.forEach(img => observer.observe(img));
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [isLoading, products]); // Re-run when products change
+
 
   // If loading is done and there are not enough products to be valid, render nothing.
   if (!isLoading && products.length < minProducts) {
@@ -192,9 +230,13 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
       </div>
     ))
   ) : (
-    products?.map((product) => (
+    products?.map((product, index) => (
       <div className="flex-shrink-0 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 pb-2" key={product.id}>
-        <ProductTile product={product} />
+        <ProductTile
+          product={product}
+          lazyLoad={index >= 5} // Eager load the first 5 images
+          fetchPriority={index < 3 ? 'high' : 'auto'} // Prioritize the very first few
+        />
       </div>
     ))
   );
@@ -203,7 +245,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
     <>
       <section className="bg-muted p-4 rounded-lg">
         {headerContent}
-        <div className="overflow-x-auto pb-4">
+        <div className="overflow-x-auto pb-4" ref={carouselRef}>
           <div className="flex">
             {tileContent}
           </div>
