@@ -14,6 +14,7 @@ interface ProductCarouselProps {
   title: string;
   searchQuery?: string;
   isDefaultStores?: boolean;
+  isUserDefinedList?: boolean; // Add new prop
   primaryCategorySlug?: string;
   primaryCategorySlugs?: string[];
   pillarPageLinkSlug?: string;
@@ -30,7 +31,7 @@ interface ProductCarouselProps {
 import { useApiQuery } from '@/hooks/useApiQuery';
 import { useDialog } from '@/context/DialogContext';
 
-const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, products: initialProducts, storeIds, title, searchQuery, isDefaultStores, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, companyName, isBargainCarousel, onValidation, slot, dataKey, minProducts = 4, ordering, isLoading: isLoadingProp }) => {
+const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, products: initialProducts, storeIds, title, searchQuery, isDefaultStores, isUserDefinedList, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, companyName, isBargainCarousel, onValidation, slot, dataKey, minProducts = 4, ordering, isLoading: isLoadingProp }) => {
   const { openDialog } = useDialog();
   const [isSmallScreen, setIsSmallScreen] = React.useState(false);
 
@@ -50,7 +51,9 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
   const finalUrl = React.useMemo(() => {
     const [baseUrl, queryString] = sourceUrl ? sourceUrl.split('?') : ['', ''];
     const params = new URLSearchParams(queryString || '');
-    if (storeIds && storeIds.length > 0) {
+    // Only add store_ids if the list is user-defined. This prevents re-fetching
+    // when the default store list is loaded for a new user.
+    if (isUserDefinedList && storeIds && storeIds.length > 0) {
       params.set('store_ids', storeIds.join(','));
     }
     if (primaryCategorySlugs && primaryCategorySlugs.length > 0) {
@@ -70,7 +73,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
       }
     }
     return sourceUrl ? `${baseUrl}?${params.toString()}` : '';
-  }, [sourceUrl, storeIds, primaryCategorySlugs, primaryCategorySlug, companyName, ordering]);
+  }, [sourceUrl, storeIds, isUserDefinedList, primaryCategorySlugs, primaryCategorySlug, companyName, ordering]);
 
   const { data: responseData, isLoading: isFetching, error, isFetched } = useApiQuery<any>(
     ['products', title, finalUrl],

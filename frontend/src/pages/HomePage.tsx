@@ -72,6 +72,7 @@ const HomePage = () => {
           sourceUrl="/api/products/bargain-carousel/"
           storeIds={anchorStoreIdsArray}
           isDefaultStores={isDefaultStores}
+          isUserDefinedList={isUserDefinedList}
         />
       </div>
 
@@ -86,6 +87,7 @@ const HomePage = () => {
           pillarPageLinkSlug="snacks-and-sweets"
           slot={0}
           isDefaultStores={isDefaultStores}
+          isUserDefinedList={isUserDefinedList}
         />
       </div>
 
@@ -140,6 +142,7 @@ const HomePage = () => {
             pillarPageLinkSlug="meat-and-seafood"
             slot={1}
             isDefaultStores={isDefaultStores}
+          isUserDefinedList={isUserDefinedList}
           />
           <ProductCarousel
             key="dairy"
@@ -150,6 +153,7 @@ const HomePage = () => {
             pillarPageLinkSlug="dairy"
             slot={2}
             isDefaultStores={isDefaultStores}
+          isUserDefinedList={isUserDefinedList}
           />
         </div>
       </div>
@@ -180,6 +184,7 @@ const HomePage = () => {
             pillarPageLinkSlug="fruit-veg-and-spices"
             slot={3}
             isDefaultStores={isDefaultStores}
+          isUserDefinedList={isUserDefinedList}
           />
           <ProductCarousel
             key="pantry-and-international"
@@ -190,6 +195,7 @@ const HomePage = () => {
             pillarPageLinkSlug="pantry-and-international"
             slot={4}
             isDefaultStores={isDefaultStores}
+          isUserDefinedList={isUserDefinedList}
           />
           <ProductCarousel
             key="health-beauty-and-supplements"
@@ -200,6 +206,7 @@ const HomePage = () => {
             pillarPageLinkSlug="health-beauty-and-supplements"
             slot={5}
             isDefaultStores={isDefaultStores}
+          isUserDefinedList={isUserDefinedList}
           />
         </div>
       </div>
