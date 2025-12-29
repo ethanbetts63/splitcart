@@ -1,8 +1,8 @@
 from rest_framework import status
-from api.permissions import IsAuthenticatedOrAnonymous
+from splitcart.permissions import IsAuthenticatedOrAnonymous
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from users.serializers.api import CartSerializer
+from users.serializers.cart_serializer import CartSerializer
 from users.cart_manager import CartManager
 
 cart_manager = CartManager()

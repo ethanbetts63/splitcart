@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from companies.models import Postcode
-from companies.serializers import PostcodeSerializer
+from companies.serializers.postcode_serializer import PostcodeSerializer
 import sys
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
