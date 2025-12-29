@@ -1,6 +1,10 @@
-# API App Migration Plan
+# API App Refactoring and Duplication Plan
 
-This document outlines the plan to dismantle the `api` Django app and merge its components into other applications within the project.
+This document outlines the plan to refactor the `api` Django app by duplicating its components into other applications within the project.
+
+## Important Note on Duplication
+
+**The existing `api` app will remain untouched.** All operations described in this plan are **copy** operations, not move or delete operations. The goal is to create a new, more organized API structure within the other apps, while leaving the original `api` app fully functional for now. This allows for a gradual migration and testing period.
 
 ## Guiding Principles
 
@@ -14,7 +18,7 @@ This document outlines the plan to dismantle the `api` Django app and merge its 
 
 ---
 
-## Migration Plan by Target App
+## Duplication Plan by Target App
 
 ### 1. To `products` app
 
@@ -71,8 +75,8 @@ This document outlines the plan to dismantle the `api` Django app and merge its 
 | `serializers/cart_item_serializer.py`                      | `users/serializers/cart_item_serializer.py`        | New file.                                      |
 | `serializers/cart_substitution_serializer.py`              | `users/serializers/cart_substitution_serializer.py`| New file.                                      |
 | `serializers/selected_store_list_serializer.py`            | `users/serializers/selected_store_list_serializer.py`| New file.                                    |
-| All files in `views/frontend_views/cart_views/`            | `users/views/api/cart_views/`                      | Move files to this new directory.              |
-| All files in `views/frontend_views/store_list_views/`      | `users/views/api/store_list_views/`                | Move store list management with user lists.    |
+| All files in `views/frontend_views/cart_views/`            | `users/views/api/cart_views/`                      | Copy files to this new directory.              |
+| All files in `views/frontend_views/store_list_views/`      | `users/views/api/store_list_views/`                | Copy store list management with user lists.    |
 | `views/frontend_views/cart_optimization_view.py`           | `users/views/api/cart_optimization_view.py`        | New file.                                      |
 | `views/frontend_views/cart_export_view.py`                 | `users/views/api/cart_export_view.py`              | New file.                                      |
 | `views/frontend_views/initial_setup_view.py`               | `users/views/api/initial_setup_view.py`            | New file.                                      |
@@ -122,6 +126,5 @@ This document outlines the plan to dismantle the `api` Django app and merge its 
 
 ## Final Steps
 
-1.  **URL Configuration:** After moving all views, the main `splitcart/urls.py` will need to be updated to include the new API URL patterns from `products/urls.py`, `users/urls.py`, `companies/urls.py`, and `data_management/urls.py`. The `api/urls.py` will be deleted.
-2.  **Settings:** Update `settings.py` to remove the `api` app from `INSTALLED_APPS`. Update the `REST_FRAMEWORK` settings if `exception_handler` path changes.
-3.  **Delete `api` app:** Once all files are moved and the project is tested, the `api` directory can be deleted.
+1.  **URL Configuration:** After copying all views, new URL patterns will need to be created in `products/urls.py`, `users/urls.py`, `companies/urls.py`, and `data_management/urls.py`. These new URL files will need to be included in the main `splitcart/urls.py`. It is recommended to prefix the new URLs (e.g., `/api/v2/...`) to avoid conflicts with the existing `api` app.
+2.  **Coexistence:** The original `api` app and the new API structure will coexist. No changes will be made to `INSTALLED_APPS` at this stage, and the `api` directory will not be deleted.
