@@ -3,11 +3,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
-from api.permissions import IsAuthenticatedOrAnonymous
+from splitcart.permissions import IsAuthenticatedOrAnonymous
 from users.models import Cart, CartItem
 from products.models import Product
 from data_management.utils.cart_optimization.substitute_manager import SubstituteManager
-from users.serializers.api import CartSerializer # Import CartSerializer for response
+from users.serializers.cart_serializer import CartSerializer
 
 class CartSyncView(APIView):
     """

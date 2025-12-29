@@ -1,9 +1,9 @@
 from rest_framework import generics, status
-from api.permissions import IsAuthenticatedOrAnonymous
+from splitcart.permissions import IsAuthenticatedOrAnonymous
 from rest_framework.response import Response
 from users.models import CartItem
 from products.models import Product
-from users.serializers.api import CartItemSerializer
+from users.serializers.cart_item_serializer import CartItemSerializer
 from users.cart_manager import CartManager
 from data_management.utils.cart_optimization.substitute_manager import SubstituteManager
 from products.utils.get_pricing_stores import get_pricing_stores_map

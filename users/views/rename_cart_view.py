@@ -3,7 +3,7 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import Cart
-from users.serializers.api import CartSerializer
+from users.serializers.cart_serializer import CartSerializer
 from users.cart_manager import CartManager
 
 cart_manager = CartManager()

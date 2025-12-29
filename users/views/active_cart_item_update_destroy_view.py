@@ -1,7 +1,7 @@
 from rest_framework import generics
-from api.permissions import IsAuthenticatedOrAnonymous
+from splitcart.permissions import IsAuthenticatedOrAnonymous
 from users.models import CartItem
-from users.serializers.api import CartItemSerializer
+from users.serializers.cart_item_serializer import CartItemSerializer
 from users.cart_manager import CartManager
 
 cart_manager = CartManager()

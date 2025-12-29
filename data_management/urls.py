@@ -1,10 +1,8 @@
 from django.urls import path
-from data_management.views.api import (
-    ProductFileUploadView,
-    CategoryLinksFileUploadView,
-    Gs1FileUploadView,
-    ImportSemanticDataView,
-)
+from data_management.views.product_file_upload_view import ProductFileUploadView
+from data_management.views.category_links_file_upload_view import CategoryLinksFileUploadView
+from data_management.views.gs1_file_upload_view import Gs1FileUploadView
+from data_management.views.import_semantic_data_view import ImportSemanticDataView
 
 urlpatterns = [
     path('upload/products/', ProductFileUploadView.as_view(), name='upload-products'),
