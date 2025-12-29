@@ -2,7 +2,7 @@ from rest_framework.generics import RetrieveAPIView
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from products.models import Product
-from products.serializers import ProductSerializer
+from products.serializers.product_serializer import ProductSerializer
 from products.utils.get_pricing_stores import get_pricing_stores_map
 
 @method_decorator(cache_page(60 * 30), name='dispatch')

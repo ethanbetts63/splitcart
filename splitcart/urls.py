@@ -20,12 +20,10 @@ from django.urls import include, path, re_path
 from django.views.generic.base import TemplateView
 from django.contrib.sitemaps.views import sitemap
 from api.sitemaps import StaticViewSitemap, PillarPageSitemap
-from splitcart.views.api import (
-    FaqListView,
-    PillarPageView,
-    PrimaryCategoryListView,
-)
-from splitcart.views.react_app_view import ReactAppView
+from data_management.views.faq_list_view import FaqListView
+from data_management.views.pillar_page_view import PillarPageView
+from data_management.views.primary_category_list_view import PrimaryCategoryListView
+from data_management.views.react_app_view import ReactAppView
 
 sitemaps = {
     'static': StaticViewSitemap,

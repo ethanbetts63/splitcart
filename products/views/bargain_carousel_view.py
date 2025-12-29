@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from products.models import Product, ProductPriceSummary
 from data_management.models import SystemSetting
-from products.serializers import ProductSerializer
+from products.serializers.product_serializer import ProductSerializer
 from products.utils.bargain_utils import calculate_bargains
 
 

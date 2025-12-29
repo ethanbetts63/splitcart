@@ -1,6 +1,6 @@
 from rest_framework import generics
 from companies.models import PrimaryCategory
-from companies.serializers import PrimaryCategorySerializer
+from companies.serializers.primary_category_serializer import PrimaryCategorySerializer
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 

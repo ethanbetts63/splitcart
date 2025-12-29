@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from products.models import Product
 from products.models.substitution import ProductSubstitution
-from products.serializers import ProductSubstitutionSerializer
+from products.serializers.product_substitution_serializer import ProductSubstitutionSerializer
 
 @method_decorator(cache_page(60 * 60 * 6), name='dispatch')
 class ProductSubstituteListView(APIView):

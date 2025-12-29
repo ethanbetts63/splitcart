@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView
 from companies.models import Company
-from companies.serializers import CompanySerializer
-from api.permissions import IsInternalAPIRequest
+from companies.serializers.company_serializer import CompanySerializer
+from splitcart.permissions import IsInternalAPIRequest
 
 class CompanyListView(ListAPIView):
     """
