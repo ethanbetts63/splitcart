@@ -1,5 +1,4 @@
 from django.contrib import sitemaps
-from django.urls import reverse
 from companies.models import PillarPage
 
 class StaticViewSitemap(sitemaps.Sitemap):
