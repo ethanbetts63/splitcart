@@ -62,6 +62,21 @@ export const StoreListProvider = ({ children, initialStoreList, initialAnchorMap
     }
   }, [initialStoreList]);
 
+  // Autosave store selection
+  useEffect(() => {
+    // Do not save if the list is still loading or if there's no list id
+    if (storeListLoading || !currentStoreListId) {
+      return;
+    }
+
+    // Do not save if the component has just been initialized with an empty set of store IDs
+    if (initialStoreList === null && selectedStoreIds.size === 0) {
+      return;
+    }
+
+    saveStoreList(currentStoreListName, Array.from(selectedStoreIds));
+  }, [selectedStoreIds]);
+
   // Initialize anchor map from initialAnchorMap prop
   useEffect(() => {
     if (initialAnchorMap) {

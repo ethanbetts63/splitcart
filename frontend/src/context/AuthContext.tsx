@@ -54,10 +54,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const initializeUser = async () => {
       setIsLoading(true);
       try {
-        // Call the API directly, no longer relying on a pre-fetched promise.
-        const initialData = await performInitialSetupAPI(null, null);
-
         const storedToken = localStorage.getItem('token');
+        const storedAnonymousId = document.cookie.split('; ').find(row => row.startsWith('anonymousId='))?.split('=')[1] ?? null;
+
+        const initialData = await performInitialSetupAPI(storedToken, storedAnonymousId);
+
         if (storedToken) {
           setIsAuthenticated(true);
           setToken(storedToken);
