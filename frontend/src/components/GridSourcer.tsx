@@ -47,10 +47,23 @@ import { useQueryClient } from '@tanstack/react-query';
 const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, bargainCompany }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState('');
-  const { selectedStoreIds, isUserDefinedList } = useStoreList(); // Get selected stores
+  const { selectedStoreIds, anchorStoreMap, isUserDefinedList } = useStoreList();
   const { openDialog } = useDialog();
   const queryClient = useQueryClient();
   const { token, anonymousId } = useAuth();
+
+  const anchorStoreIdsArray = React.useMemo(() => {
+    const anchorIds = new Set<number>();
+    for (const storeId of selectedStoreIds) {
+      const anchorId = anchorStoreMap[storeId];
+      if (anchorId) {
+        anchorIds.add(anchorId);
+      }
+    }
+    // If anchorIds is empty, it might be because the map is not yet loaded.
+    // In that case, we can fall back to selectedStoreIds to avoid sending an empty list.
+    return anchorIds.size > 0 ? Array.from(anchorIds) : Array.from(selectedStoreIds);
+  }, [selectedStoreIds, anchorStoreMap]);
 
   React.useEffect(() => {
     setCurrentPage(1);
@@ -82,8 +95,8 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
       params.set('primary_category_slug', primaryCategorySlug);
     }
 
-    if (selectedStoreIds && selectedStoreIds.size > 0) {
-      params.set('store_ids', Array.from(selectedStoreIds).join(','));
+    if (anchorStoreIdsArray.length > 0) {
+      params.set('store_ids', anchorStoreIdsArray.join(','));
     }
     params.set('page', currentPage.toString());
     params.set('page_size', '20');
@@ -93,7 +106,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
     }
 
     return { url, params };
-  }, [searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, selectedStoreIds, currentPage, sortOption, bargainCompany]);
+  }, [searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, anchorStoreIdsArray, currentPage, sortOption, bargainCompany]);
 
   const finalUrl = url ? `${url}?${params.toString()}` : null;
 
