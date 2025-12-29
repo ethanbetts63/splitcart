@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from companies.models import Postcode
 from data_management.utils.geospatial_utils import get_nearby_stores
-from companies.serializers import StoreSerializer
+from companies.serializers.store_serializer import StoreSerializer
 from products.utils.get_pricing_stores import get_pricing_stores_map
 
 class StoreListView(APIView):
