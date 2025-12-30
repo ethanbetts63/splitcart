@@ -1,6 +1,5 @@
 import gzip
 import os
-import hmac
 from abc import ABC, abstractmethod
 from django.conf import settings
 from rest_framework.views import APIView

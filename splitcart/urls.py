@@ -5,7 +5,7 @@ from django.contrib.sitemaps.views import sitemap
 from data_management.sitemaps import StaticViewSitemap, PillarPageSitemap # Updated import
 from data_management.views.faq_list_view import FaqListView
 from data_management.views.pillar_page_view import PillarPageView
-from data_management.views.primary_category_list_view import PrimaryCategoryListView
+from products.views.primary_category_list_view import PrimaryCategoryListView
 from data_management.views.react_app_view import ReactAppView
 
 sitemaps = {
