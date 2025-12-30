@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useEffect, useCallback } fr
 import { useAuth } from './AuthContext';
 import { toast } from 'sonner';
 import type { Cart, ApiResponse } from '../types';
+import { getAuthHeaders as getAuthHeaders } from '../lib/utils'; // Import and rename to avoid conflict
 
 // Types
 
@@ -35,43 +36,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [cartLoading, setCartLoading] = useState(true);
   const [isFetchingSubstitutions, setIsFetchingSubstitutions] = useState(false); // Initialize new state
 
-
-  const getCsrfToken = () => {
-    let csrfToken = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, 'csrftoken'.length + 1) === ('csrftoken' + '=')) {
-                csrfToken = decodeURIComponent(cookie.substring('csrftoken'.length + 1));
-                break;
-            }
-        }
-    }
-    return csrfToken;
-  };
-
-  const getAuthHeaders = useCallback(() => {
-    const headers: HeadersInit = { 
-        'Content-Type': 'application/json'
-    };
-    const csrfToken = getCsrfToken();
-    if (csrfToken) {
-        headers['X-CSRFToken'] = csrfToken;
-    }
-
-    if (isAuthenticated && token) {
-      headers['Authorization'] = `Token ${token}`;
-    } else if (anonymousId) {
-      headers['X-Anonymous-ID'] = anonymousId;
-    }
-    return headers;
-  }, [token, anonymousId, isAuthenticated]);
-
   const fetchActiveCart = useCallback(async () => {
     setCartLoading(true);
     try {
-      const response = await fetch('/api/cart/active/, { headers: getAuthHeaders() }');
+      const response = await fetch('/api/cart/active/', { headers: getAuthHeaders(token, anonymousId) });
       // A 404 is acceptable here, means no active cart.
       if (response.status === 404) {
           setCurrentCart(null);
@@ -86,7 +54,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } finally {
       setCartLoading(false);
     }
-  }, [getAuthHeaders]);
+  }, [token, anonymousId]);
 
   // Fetch initial data
   useEffect(() => {
@@ -98,14 +66,14 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchUserCarts = useCallback(async () => {
     if (!isAuthenticated) return;
     try {
-      const response = await fetch('/api/carts/', { headers: getAuthHeaders() });
+      const response = await fetch('/api/carts/', { headers: getAuthHeaders(token, anonymousId) });
       if (!response.ok) throw new Error('Failed to fetch user carts.');
       const data = await response.json();
       setUserCarts(data.results || []);
     } catch (error: any) {
       console.error(error.message);
     }
-  }, [getAuthHeaders, isAuthenticated]);
+  }, [token, anonymousId, isAuthenticated]);
 
   const loadCart = async (cartId: string) => {
     // This will become the active cart on the backend
@@ -116,7 +84,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
         const response = await fetch('/api/carts/', {
             method: 'POST',
-            headers: getAuthHeaders(),
+            headers: getAuthHeaders(token, anonymousId),
             body: JSON.stringify({}),
         });
         if (!response.ok) {
@@ -134,7 +102,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
         const response = await fetch('/api/cart/rename/', {
             method: 'POST',
-            headers: getAuthHeaders(),
+            headers: getAuthHeaders(token, anonymousId),
             body: JSON.stringify({ cart_id: cartId, new_name: newName }),
         });
         if (!response.ok) {
@@ -152,7 +120,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
         const response = await fetch(`/api/carts/${cartId}/`, {
             method: 'DELETE',
-            headers: getAuthHeaders(),
+            headers: getAuthHeaders(token, anonymousId),
         });
         if (!response.ok) throw new Error('Failed to delete cart.');
         // After deleting, fetch the new active cart
@@ -167,7 +135,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
         const response = await fetch('/api/cart/switch-active/', {
             method: 'POST',
-            headers: getAuthHeaders(),
+            headers: getAuthHeaders(token, anonymousId),
             body: JSON.stringify({ cart_id: cartId }),
         });
         if (!response.ok) throw new Error('Failed to switch active cart.');
@@ -187,7 +155,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const response = await fetch('/api/cart/active/items/', {
           method: 'POST',
-          headers: getAuthHeaders(),
+          headers: getAuthHeaders(token, anonymousId),
           body: JSON.stringify({ product: productId, quantity }),
         });
         if (!response.ok) {
@@ -237,7 +205,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const response = await fetch('/api/cart/active/items/', {
         method: 'POST',
-        headers: getAuthHeaders(),
+        headers: getAuthHeaders(token, anonymousId),
         body: JSON.stringify({ product: productId, quantity }),
       });
 
@@ -291,7 +259,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
         const response = await fetch(`/api/cart/active/items/${itemId}/`, {
             method: quantity > 0 ? 'PATCH' : 'DELETE',
-            headers: getAuthHeaders(),
+            headers: getAuthHeaders(token, anonymousId),
             body: quantity > 0 ? JSON.stringify({ quantity }) : undefined,
         });
 
@@ -338,7 +306,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const response = await fetch(`/api/cart-items/${cartItemId}/substitutions/${substitutionId}/`, {
         method: 'PATCH',
-        headers: getAuthHeaders(),
+        headers: getAuthHeaders(token, anonymousId),
         body: JSON.stringify({ is_approved: isApproved, quantity: quantity }),
       });
 
@@ -357,7 +325,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const response = await fetch(`/api/cart-items/${cartItemId}/substitutions/${substitutionId}/`, {
         method: 'DELETE',
-        headers: getAuthHeaders(),
+        headers: getAuthHeaders(token, anonymousId),
       });
       if (!response.ok) throw new Error('Failed to remove cart item substitution.');
       fetchActiveCart(); // Refresh cart
