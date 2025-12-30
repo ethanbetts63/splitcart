@@ -1,13 +1,11 @@
-from rest_framework import viewsets, permissions, status
+from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from users.models import CartItem
-from products.models import Product
 from users.serializers.cart_substitution_serializer import CartSubstitutionSerializer
 from data_management.utils.cart_optimization.substitute_manager import SubstituteManager
 from splitcart.permissions import IsAuthenticatedOrAnonymous
-from data_management.models import CartSubstitution
+from users.models import CartSubstitution
 
 
 class CartSubstitutionViewSet(viewsets.ModelViewSet):
