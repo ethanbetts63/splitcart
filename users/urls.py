@@ -9,8 +9,17 @@ from users.views.cart_substitution_update_destroy_view import CartSubstitutionUp
 from users.views.cart_sync_view import CartSyncView
 from users.views.rename_cart_view import RenameCartView
 from users.views.switch_active_cart_view import SwitchActiveCartView
+from .views.initial_setup_view import InitialSetupView
+from .views.nearby_store_list_view import StoreListView
+from .views.list_create_view import SelectedStoreListCreateView
+from .views.retrieve_update_destroy_view import SelectedStoreListRetrieveUpdateDestroyView
 
 urlpatterns = [
+    path('initial-setup/', InitialSetupView.as_view(), name='initial-setup'),
+    path('stores/nearby/', StoreListView.as_view(), name='store-list'),
+    path('store-lists/', SelectedStoreListCreateView.as_view(), name='store-list-list-create'),
+    path('store-lists/<uuid:pk>/', SelectedStoreListRetrieveUpdateDestroyView.as_view(), name='store-list-retrieve-update-destroy'),
+
     path('cart/optimize/', CartOptimizationView.as_view(), name='cart-optimize'),
     path('cart/active/', ActiveCartDetailView.as_view(), name='active-cart-detail'),
     path('cart/active/items/', ActiveCartItemListCreateView.as_view(), name='active-cart-items'),

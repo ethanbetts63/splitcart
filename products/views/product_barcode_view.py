@@ -1,5 +1,5 @@
 import json
-from splitcart.base_api_view import BaseAPIView
+from data_management.views.base_api_view import BaseAPIView
 from django.http import JsonResponse
 from products.models import Product
 
