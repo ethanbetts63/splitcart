@@ -1,24 +1,8 @@
-from rest_framework import serializers, generics
+from rest_framework import generics
 from products.models import Product
 from rest_framework.throttling import ScopedRateThrottle
 from api.permissions import IsInternalAPIRequest
-
-# A lean serializer for exporting products for local processing
-class ProductExportSerializer(serializers.ModelSerializer):
-    # We need the category IDs for the substitution generators
-    category = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-
-    class Meta:
-        model = Product
-        fields = [
-            'id',
-            'name',
-            'normalized_name_brand_size',
-            'brand_id',
-            'size',
-            'sizes',
-            'category'
-        ]
+from ..serializers.product_export_serializer import ProductExportSerializer
 
 class ExportProductsView(generics.ListAPIView):
     """
