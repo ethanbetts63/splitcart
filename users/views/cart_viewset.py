@@ -4,21 +4,19 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 
-from users.models import Cart, CartItem
+from users.models import Cart, CartItem, SelectedStoreList
 from products.models import Product
 from users.serializers.cart_serializer import CartSerializer
-from users.cart_manager import CartManager
 from splitcart.permissions import IsAuthenticatedOrAnonymous
 from data_management.utils.cart_optimization.substitute_manager import SubstituteManager
+from users.utils.name_generator import generate_unique_name
 
-# It's good practice to instantiate managers once if they are stateless
-cart_manager = CartManager()
 
 class CartViewSet(viewsets.ModelViewSet):
     """
     A unified ViewSet for listing, creating, retrieving, updating,
     and deleting Carts. Also includes custom actions for specific
-    cart-related operations.
+    cart-related operations. All business logic is contained within this ViewSet.
     """
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticatedOrAnonymous]
@@ -37,28 +35,74 @@ class CartViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """
-        Logic from CartListCreateView.
-        Delegates cart creation to the CartManager.
+        Creates a new cart and deactivates any existing active carts for the user.
+        Associates the new cart with the most recent store list.
         """
-        cart = cart_manager.create_cart(self.request)
-        if not cart:
+        user = self.request.user if self.request.user.is_authenticated else None
+        anonymous_id = getattr(self.request, 'anonymous_id', None)
+
+        if not user and not anonymous_id:
             raise permissions.PermissionDenied("Cannot create a cart without being authenticated or having an anonymous ID.")
-        serializer.instance = cart
+
+        # Deactivate other active carts
+        if user:
+            Cart.objects.filter(user=user, is_active=True).update(is_active=False)
+        elif anonymous_id:
+            Cart.objects.filter(anonymous_id=anonymous_id, is_active=True).update(is_active=False)
+
+        owner_filter = {'user': user} if user else {'anonymous_id': anonymous_id}
+        unique_name = generate_unique_name(Cart, owner_filter, "Shopping List")
+        
+        # is_active is True by default for new carts via this method
+        cart = serializer.save(**owner_filter, name=unique_name, is_active=True)
+        
+        # Associate with the most recent store list
+        store_list_owner_filter = {'user': user} if user else {'anonymous_id': anonymous_id}
+        store_list = SelectedStoreList.objects.filter(**store_list_owner_filter).order_by('-last_used_at').first()
+        if store_list:
+            cart.selected_store_list = store_list
+            cart.save()
 
     def perform_destroy(self, instance):
         """
-        Logic from CartRetrieveUpdateDestroyView.
-        Delegates cart deletion to the CartManager.
+        Deletes the cart instance.
         """
-        cart_manager.delete_cart(instance)
+        instance.delete()
 
     @action(detail=False, methods=['get'], url_path='active')
     def active(self, request, *args, **kwargs):
         """
-        Logic from ActiveCartDetailView.
-        Retrieves the currently active cart for the user.
+        Retrieves the currently active cart for the user. If one does not exist,
+        it creates one.
         """
-        cart = cart_manager.get_active_cart(request)
+        cart = None
+        created = False
+        user = request.user
+        
+        if user.is_authenticated:
+            cart, created = Cart.objects.get_or_create(
+                user=user, is_active=True,
+                defaults={'name': f"{user.email}'s Cart"}
+            )
+        elif hasattr(request, 'anonymous_id'):
+            cart, created = Cart.objects.get_or_create(
+                anonymous_id=request.anonymous_id, is_active=True,
+                defaults={'name': 'Anonymous Cart'}
+            )
+        else:
+             return Response({"detail": "Authentication or anonymous ID required."}, status=status.HTTP_403_FORBIDDEN)
+
+        if created:
+            store_list = None
+            if user.is_authenticated:
+                store_list = SelectedStoreList.objects.filter(user=user).order_by('-last_used_at').first()
+            elif hasattr(request, 'anonymous_id'):
+                store_list = SelectedStoreList.objects.filter(anonymous_id=request.anonymous_id).order_by('-last_used_at').first()
+            
+            if store_list:
+                cart.selected_store_list = store_list
+                cart.save()
+
         if cart:
             serializer = self.get_serializer(cart)
             return Response(serializer.data)
@@ -67,7 +111,6 @@ class CartViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'], url_path='rename', permission_classes=[permissions.IsAuthenticated])
     def rename(self, request, *args, **kwargs):
         """
-        Logic from RenameCartView.
         Renames a specific cart.
         """
         cart_id = request.data.get('cart_id')
@@ -76,9 +119,9 @@ class CartViewSet(viewsets.ModelViewSet):
             return Response({'error': 'cart_id and new_name are required'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            # Use the viewset's queryset to ensure permission checking
             cart = self.get_queryset().get(pk=cart_id)
-            cart_manager.rename_cart(cart, new_name)
+            cart.name = new_name
+            cart.save()
             return Response(self.get_serializer(cart).data, status=status.HTTP_200_OK)
         except Cart.DoesNotExist:
             return Response({'error': 'Cart not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -88,15 +131,19 @@ class CartViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'], url_path='switch-active', permission_classes=[permissions.IsAuthenticated])
     def switch_active(self, request, *args, **kwargs):
         """
-        Logic from SwitchActiveCartView.
         Sets a specific cart as the active one for the user.
         """
         cart_id = request.data.get('cart_id')
+        user = request.user
         if not cart_id:
             return Response({'error': 'cart_id is required'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            new_active_cart = cart_manager.switch_active_cart(request.user, cart_id)
+            with transaction.atomic():
+                Cart.objects.filter(user=user, is_active=True).update(is_active=False)
+                new_active_cart = self.get_queryset().get(pk=cart_id)
+                new_active_cart.is_active = True
+                new_active_cart.save()
             return Response(self.get_serializer(new_active_cart).data, status=status.HTTP_200_OK)
         except Cart.DoesNotExist:
             return Response({'error': 'Cart not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -104,7 +151,6 @@ class CartViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'], url_path='sync')
     def sync(self, request, *args, **kwargs):
         """
-        Logic from CartSyncView.
         Synchronizes the entire state of a cart from the client.
         """
         with transaction.atomic():
@@ -117,7 +163,6 @@ class CartViewSet(viewsets.ModelViewSet):
                 raise ValidationError({'items': 'Items must be a list.'})
 
             try:
-                # Use the viewset's queryset to ensure the user owns the cart
                 cart = self.get_queryset().get(id=cart_id)
             except Cart.DoesNotExist:
                 raise ValidationError({'cart_id': 'Cart not found.'})
@@ -125,7 +170,6 @@ class CartViewSet(viewsets.ModelViewSet):
             existing_items_map = {item.product.id: item for item in cart.items.select_related('product')}
             incoming_product_ids = {item_data.get('product_id') for item_data in items_data}
 
-            # 1. Items to Delete
             to_delete_ids = [
                 item.id for product_id, item in existing_items_map.items()
                 if product_id not in incoming_product_ids
@@ -133,14 +177,12 @@ class CartViewSet(viewsets.ModelViewSet):
             if to_delete_ids:
                 CartItem.objects.filter(id__in=to_delete_ids).delete()
 
-            # 2. Items to Create or Update
             to_create = []
             to_update = []
             for item_data in items_data:
                 product_id = item_data.get('product_id')
                 quantity = item_data.get('quantity')
 
-                # Basic validation for each item
                 if not (product_id and isinstance(product_id, int) and isinstance(quantity, int) and quantity > 0):
                     raise ValidationError({'items': f'Invalid data for item: {item_data}'})
 
@@ -161,7 +203,6 @@ class CartViewSet(viewsets.ModelViewSet):
 
             if to_create:
                 created_items = CartItem.objects.bulk_create(to_create)
-                # Handle substitutions for newly created items
                 if cart.selected_store_list:
                     store_ids = list(cart.selected_store_list.stores.values_list('id', flat=True))
                     if store_ids:
