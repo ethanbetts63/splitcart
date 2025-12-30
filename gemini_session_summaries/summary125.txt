@@ -7,7 +7,7 @@ Key actions and resolutions:
 3.  **Import Error Resolution**: A series of `ModuleNotFoundError` and `ImportError` issues were systematically addressed across various apps:
     *   **`splitcart/urls.py`**: Imports for `FaqListView`, `PillarPageView`, `PrimaryCategoryListView`, and `ReactAppView` were updated to correctly point to their new location in `data_management.views`.
     *   **`products/urls.py`**: Corrected imports for `ProductListView`, `ProductDetailView`, `ProductSubstituteListView` (and its usage in URL patterns), `BargainView` (aliased from `BargainCarouselView`), and `BargainStatsView` (corrected name and module path). `ProductSearchView` was removed as it was not found in the codebase.
-    *   **`companies/urls.py`**: Imports for `CompanyListView`, `StoreListView`, and `PostcodeSearchView` (renamed from `PostcodeGeocodeView`) were corrected, and references to views that no longer exist were removed.
+    *   **`companies/urls.py`**: Imports for `CompanyListView`, `NearbyStoreListView`, and `PostcodeSearchView` (renamed from `PostcodeGeocodeView`) were corrected, and references to views that no longer exist were removed.
     *   **`users/urls.py`**: Imports for various cart-related views (e.g., `CartOptimizationView`, `ActiveCartDetailView`) were updated to correctly point to their new individual files within `users.views`.
     *   **`data_management/urls.py`**: Imports for file upload and import views were updated to point to their new individual files within `data_management.views`.
 4.  **Package Restructuring**:

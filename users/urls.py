@@ -6,7 +6,7 @@ from users.views.selected_store_list_viewset import SelectedStoreListViewSet
 from users.views.cart_item_viewset import CartItemViewSet
 from users.views.cart_optimization_view import CartOptimizationView
 from users.views.cart_substitution_update_destroy_view import CartSubstitutionUpdateDestroyView
-from .views.nearby_store_list_view import StoreListView
+from .views.nearby_store_list_view import NearbyStoreListView
 
 # The main router includes the top-level resources
 router = routers.SimpleRouter()
@@ -20,7 +20,7 @@ carts_router.register(r'items', CartItemViewSet, basename='cart-items')
 
 # Start with the URLs that are not being replaced by a ViewSet
 urlpatterns = [
-    path('stores/nearby/', StoreListView.as_view(), name='store-list'),
+    path('stores/nearby/', NearbyStoreListView.as_view(), name='store-list'),
     path('cart/optimize/', CartOptimizationView.as_view(), name='cart-optimize'),
     path('cart-items/<int:cart_item_pk>/substitutions/<int:substitution_pk>/', CartSubstitutionUpdateDestroyView.as_view(), name='cart-substitution-detail'),
 ]
