@@ -1,12 +1,8 @@
-from rest_framework import serializers, generics
+from rest_framework import generics
 from companies.models import CategoryLink
 from rest_framework.throttling import ScopedRateThrottle
 from api.permissions import IsInternalAPIRequest
-
-class CategoryLinkExportSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CategoryLink
-        fields = ['category_a_id', 'category_b_id', 'link_type']
+from ..serializers.category_link_export_serializer import CategoryLinkExportSerializer
 
 class ExportCategoryLinksView(generics.ListAPIView):
     """
