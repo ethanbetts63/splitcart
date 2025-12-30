@@ -23,14 +23,10 @@ carts_router.register(r'items', CartItemViewSet, basename='cart-items')
 cart_items_router = routers.NestedSimpleRouter(carts_router, r'items', lookup='item')
 cart_items_router.register(r'substitutions', CartSubstitutionViewSet, basename='cart-substitution') # Register the new ViewSet
 
-# Start with the URLs that are not being replaced by a ViewSet
 urlpatterns = [
-    path('stores/nearby/', NearbyStoreListView.as_view(), name='store-list'),
-    path('cart/optimize/', CartOptimizationView.as_view(), name='cart-optimize'),
-]
-
-urlpatterns += [
     path('', include(router.urls)),
     path('', include(carts_router.urls)),
     path('', include(cart_items_router.urls)), 
+    path('stores/nearby/', NearbyStoreListView.as_view(), name='store-list'),
+    path('cart/optimize/', CartOptimizationView.as_view(), name='cart-optimize'),
 ]

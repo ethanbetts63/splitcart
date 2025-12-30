@@ -1,0 +1,11 @@
+This session focused on completing the backend refactoring phase, specifically addressing the consolidation of view logic and cleanup of redundant files.
+
+Initially, a list of 11 redundant view files in `users/views/` was presented to the user, which were then confirmed as deleted. These files had been superseded by the new `CartViewSet`, `SelectedStoreListViewSet`, and `CartItemViewSet`.
+
+Following this, the user directed the removal of `users/cart_manager.py`, requesting that its business logic be integrated directly into the `CartViewSet`. This was successfully implemented, eliminating the `CartManager` class and making the `CartViewSet` fully self-contained for cart operations. Consequently, the `users/cart_manager.py` file was deleted.
+
+The discussion then moved to `users/views/cart_substitution_update_destroy_view.py`. The user correctly identified that this view also needed to be refactored into a ViewSet and could no longer rely on the now-deleted `CartManager`. A plan was proposed and approved to create a new `CartSubstitutionViewSet`. This ViewSet was implemented in `users/views/cart_substitution_viewset.py`, designed to handle updates and deletions for cart substitutions as a nested resource. The logic from the old view was adapted to fetch the relevant `CartItem` and `CartSubstitution` based on URL parameters, ensuring correct context without relying on an "active cart" concept.
+
+Finally, `users/urls.py` was updated to register the new `CartSubstitutionViewSet` using `drf-nested-routers`, establishing a three-level nested URL structure: `/api/carts/{cart_pk}/items/{item_pk}/substitutions/`. The old URL pattern and the import for `CartSubstitutionUpdateDestroyView` were removed. After the successful URL update, the redundant `users/views/cart_substitution_update_destroy_view.py` file was deleted.
+
+With these changes, the backend refactoring to a consistent, `ViewSet`-based architecture with nested routing has been completed.
