@@ -166,6 +166,11 @@ CORS_ALLOWED_ORIGINS = [
     "https://splitcart.com.au"
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:8000/"
+]
+
 from corsheaders.defaults import default_headers
 
 CORS_ALLOW_HEADERS = [

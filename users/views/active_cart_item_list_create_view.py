@@ -8,10 +8,13 @@ from users.cart_manager import CartManager
 from data_management.utils.cart_optimization.substitute_manager import SubstituteManager
 from products.utils.get_pricing_stores import get_pricing_stores_map
 
+from rest_framework.authentication import TokenAuthentication
+
 cart_manager = CartManager()
 
 class ActiveCartItemListCreateView(generics.CreateAPIView):
     serializer_class = CartItemSerializer
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticatedOrAnonymous]
 
     def create(self, request, *args, **kwargs):
