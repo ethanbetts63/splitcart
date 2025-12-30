@@ -26,7 +26,7 @@ class ProductManager:
         skus_to_create_tuples = []    # Stores (product_id or norm_string, sku_value)
 
         company_sku_cache = self.caches['products_by_sku'].get(company_obj.name, {})
-        staged_barcodes = {} # New cache for this batch
+        staged_barcodes = {}  
 
         for data in raw_product_data:
             product_dict = data.get('product', {})

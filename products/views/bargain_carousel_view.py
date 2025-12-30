@@ -26,7 +26,7 @@ class BargainCarouselView(APIView):
 
     def get(self, request, *args, **kwargs):
         store_ids_param = self.request.query_params.get('store_ids')
-        company_name = self.request.query_params.get('company_name') # New parameter
+        company_name = self.request.query_params.get('company_name') 
         try:
             limit = int(self.request.query_params.get('limit', 20))
         except (ValueError, TypeError):

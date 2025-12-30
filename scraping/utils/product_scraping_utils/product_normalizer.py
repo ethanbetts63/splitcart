@@ -156,7 +156,6 @@ class ProductNormalizer:
             s = size.lower().replace(" ", "")
             s = s.replace("pack", "pk")
             s = s.replace("each", "ea")
-            # New rule: if the result is '1ea', change it to just 'ea'
             if s == '1ea':
                 s = 'ea'
             initial_standardized_strings.add(s)

@@ -1,7 +1,7 @@
 from companies.models import Postcode
 from data_management.models import SystemSetting
 from data_management.utils.geospatial_utils import get_nearby_stores
-from api.utils.get_pricing_stores import get_pricing_stores_map
+from products.utils.get_pricing_stores import get_pricing_stores_map
 
 class DefaultStoresGenerator:
     """

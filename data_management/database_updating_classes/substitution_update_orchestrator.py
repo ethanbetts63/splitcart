@@ -63,7 +63,7 @@ class SubstitutionUpdater:
                 self.command.stdout.write(f'\r    - Processing substitutions: {i+1}/{total_subs}', ending='')
             self._process_substitution(sub_data, cache, subs_to_create, subs_to_update)
         
-        self.command.stdout.write('\n') # Newline after progress bar
+        self.command.stdout.write('\n')
         
         self._commit_changes(subs_to_create, subs_to_update)
         

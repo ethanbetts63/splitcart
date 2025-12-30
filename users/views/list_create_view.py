@@ -1,7 +1,7 @@
 from rest_framework import generics
 from splitcart.permissions import IsAuthenticatedOrAnonymous
 from users.models import SelectedStoreList
-from api.serializers import SelectedStoreListSerializer
+from users.serializers import SelectedStoreListSerializer
 
 class SelectedStoreListCreateView(generics.ListCreateAPIView):
     serializer_class = SelectedStoreListSerializer

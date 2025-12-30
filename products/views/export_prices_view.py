@@ -1,9 +1,9 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.pagination import CursorPagination
-from datetime import date # New import
-from products.models import Price, Product
-from api.serializers import PriceExportSerializer
+from datetime import date 
+from products.models import Price
+from data_management.serializers.price_export_serializer import PriceExportSerializer
 from splitcart.permissions import IsInternalAPIRequest
 from rest_framework.throttling import ScopedRateThrottle
 
@@ -15,8 +15,7 @@ class ExportPricesView(ListAPIView):
     permission_classes = [IsInternalAPIRequest]
     throttle_classes = [ScopedRateThrottle]
     throttle_scope = 'internal'
-    pagination_class = CursorPagination # New: Use CursorPagination
-
+    pagination_class = CursorPagination
     def get_queryset(self):
         """
         Optionally restricts the returned prices to a given set of stores,

@@ -2,9 +2,9 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from data_management.models import FAQ
-from api.serializers import FaqSerializer
-from django.views.decorators.cache import cache_page # New import
-from django.utils.decorators import method_decorator # New import
+from data_management.serializers.faq_serializer import FaqSerializer
+from django.views.decorators.cache import cache_page 
+from django.utils.decorators import method_decorator 
 
 @method_decorator(cache_page(60 * 60 * 24), name='dispatch') # Apply 24-hour cache
 class FaqListView(ListAPIView):

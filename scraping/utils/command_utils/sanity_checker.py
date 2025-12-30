@@ -91,7 +91,6 @@ def run_sanity_checks(file_path: str) -> list:
             if not product:
                 line_errors.append(f"L{line_number}: Line is missing 'product' key.")
             else:
-                # New check for "donation" in product name
                 if 'donation' in product.get('name', '').lower():
                     line_errors.append(f"L{line_number}: Product name contains 'donation', removing line.")
                 else:

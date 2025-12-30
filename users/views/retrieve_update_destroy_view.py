@@ -2,7 +2,7 @@ from rest_framework import generics
 from rest_framework.exceptions import PermissionDenied
 from users.models import SelectedStoreList
 from splitcart.permissions import IsAuthenticatedOrAnonymous
-from api.serializers import SelectedStoreListSerializer
+from users.serializers import SelectedStoreListSerializer
 
 class SelectedStoreListRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SelectedStoreListSerializer
