@@ -1,6 +1,6 @@
 import { type SelectedStoreListType } from '../types';
-import { getAuthHeaders } from '../lib/utils';
 import { type AnchorMap } from '../context/StoreListContext';
+import { createApiClient } from './apiClient'; // Import ApiClient
 
 // The expected data shape from the new /api/store-lists/active/ endpoint
 export interface ActiveStoreListData {
@@ -9,14 +9,8 @@ export interface ActiveStoreListData {
 }
 
 export const fetchActiveStoreListDataAPI = async (token: string | null, anonymousId: string | null): Promise<ActiveStoreListData> => {
-  const response = await fetch('/api/store-lists/active/', {
-    headers: getAuthHeaders(token, anonymousId),
-  });
-  if (!response.ok) {
-    // Let the caller handle specific status codes like 404
-    throw new Error(`Failed to fetch active store list data. Status: ${response.status}`);
-  }
-  return response.json();
+  const apiClient = createApiClient(token, anonymousId);
+  return apiClient.get<ActiveStoreListData>('/api/store-lists/active/');
 };
 
 export const fetchActiveStoreListAPI = async (token: string | null, anonymousId: string | null): Promise<SelectedStoreListType[]> => {
@@ -29,15 +23,8 @@ export const fetchActiveStoreListAPI = async (token: string | null, anonymousId:
     return Promise.resolve([]);
   }
 
-  const response = await fetch(url, {
-    headers: getAuthHeaders(token, anonymousId),
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch store lists.');
-  }
-
-  const data = await response.json();
+  const apiClient = createApiClient(token, anonymousId);
+  const data = await apiClient.get<SelectedStoreListType[] | { results: SelectedStoreListType[] }>(url);
 
   // Handle Django Rest Framework's paginated response
   if (data && typeof data === 'object' && 'results' in data && Array.isArray(data.results)) {
@@ -55,13 +42,8 @@ export const fetchActiveStoreListAPI = async (token: string | null, anonymousId:
 };
 
 export const loadStoreListAPI = async (storeListId: string, token: string | null, anonymousId: string | null): Promise<SelectedStoreListType> => {
-    const response = await fetch(`/api/store-lists/${storeListId}/`, {
-        headers: getAuthHeaders(token, anonymousId),
-    });
-    if (!response.ok) {
-        throw new Error('Failed to load store list.');
-    }
-    return response.json();
+    const apiClient = createApiClient(token, anonymousId);
+    return apiClient.get<SelectedStoreListType>(`/api/store-lists/${storeListId}/`);
 };
 
 export const saveStoreListAPI = async (
@@ -71,6 +53,7 @@ export const saveStoreListAPI = async (
     token: string | null,
     anonymousId: string | null
 ): Promise<SelectedStoreListType> => {
+    const apiClient = createApiClient(token, anonymousId);
     const method = listId ? 'PUT' : 'POST';
     const url = listId ? `/api/store-lists/${listId}/` : '/api/store-lists/';
     const requestBody: { name?: string; stores: number[] } = { stores: storeIds };
@@ -80,15 +63,11 @@ export const saveStoreListAPI = async (
         requestBody.name = name;
     }
 
-    const response = await fetch(url, {
-        method,
-        headers: getAuthHeaders(token, anonymousId),
-        body: JSON.stringify(requestBody),
-    });
-    if (!response.ok) {
-        throw new Error('Failed to save store list.');
+    if (method === 'PUT') {
+        return apiClient.put<SelectedStoreListType>(url, requestBody);
+    } else {
+        return apiClient.post<SelectedStoreListType>(url, requestBody);
     }
-    return response.json();
 };
 
 export const createNewStoreListAPI = async (
@@ -96,27 +75,14 @@ export const createNewStoreListAPI = async (
     token: string | null,
     anonymousId: string | null
 ): Promise<SelectedStoreListType> => {
-    const response = await fetch('/api/store-lists/', {
-        method: 'POST',
-        headers: getAuthHeaders(token, anonymousId),
-        body: JSON.stringify({ stores: storeIds }),
-    });
-    if (!response.ok) {
-        throw new Error('Failed to create new store list.');
-    }
-    return response.json();
+    const apiClient = createApiClient(token, anonymousId);
+    return apiClient.post<SelectedStoreListType>('/api/store-lists/', { stores: storeIds });
 };
-
 export const deleteStoreListAPI = async (
     storeListId: string,
     token: string | null,
     anonymousId: string | null
 ): Promise<void> => {
-    const response = await fetch(`/api/store-lists/${storeListId}/`, {
-        method: 'DELETE',
-        headers: getAuthHeaders(token, anonymousId),
-    });
-    if (!response.ok) {
-        throw new Error('Failed to delete store list.');
-    }
+    const apiClient = createApiClient(token, anonymousId);
+    await apiClient.delete(`/api/store-lists/${storeListId}/`);
 };

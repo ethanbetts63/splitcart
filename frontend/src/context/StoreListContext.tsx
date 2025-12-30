@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, type ReactNode, useEffect, 
 import { useAuth } from './AuthContext';
 import { type SelectedStoreListType } from '../types';
 import { loadStoreListAPI, saveStoreListAPI, createNewStoreListAPI, deleteStoreListAPI, fetchActiveStoreListDataAPI } from '../services/storeList.api';
+import { ApiError } from '../services/apiClient'; // Import ApiError
 
 // Type for the anchor map
 export type AnchorMap = { [storeId: number]: number };
@@ -72,7 +73,7 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
       } catch (error: any) {
         // If no active list is found (404), it's not a critical error.
         // The user will be prompted to create one or select stores.
-        if (error.message.includes('404')) {
+        if (error instanceof ApiError && error.statusCode === 404) {
           setCurrentStoreListId(null);
           setSelectedStoreIds(new Set());
           setAnchorStoreMap(null);

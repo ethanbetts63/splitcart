@@ -1,8 +1,9 @@
-import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from './AuthContext';
 import { toast } from 'sonner';
 import type { Cart, ApiResponse } from '../types';
-import { getAuthHeaders as getAuthHeaders } from '../lib/utils'; // Import and rename to avoid conflict
+import { getAuthHeaders as getUnifiedAuthHeaders } from '../lib/utils'; // Import and rename to avoid conflict
+import { createApiClient, ApiError } from '../services/apiClient';
 
 // Types
 
@@ -34,27 +35,27 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [userCarts, setUserCarts] = useState<Cart[]>([]);
   const [optimizationResult, setOptimizationResult] = useState<ApiResponse | null>(null);
   const [cartLoading, setCartLoading] = useState(true);
-  const [isFetchingSubstitutions, setIsFetchingSubstitutions] = useState(false); // Initialize new state
-
+    const [isFetchingSubstitutions, setIsFetchingSubstitutions] = useState(false); // Initialize new state
+  
+    const apiClient = useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
+  
   const fetchActiveCart = useCallback(async () => {
     setCartLoading(true);
     try {
-      const response = await fetch('/api/cart/active/', { headers: getAuthHeaders(token, anonymousId) });
-      // A 404 is acceptable here, means no active cart.
-      if (response.status === 404) {
-          setCurrentCart(null);
-          return;
-      }
-      if (!response.ok) throw new Error('Failed to fetch active cart.');
-      const data = await response.json();
+      const data = await apiClient.get<Cart | null>('/api/cart/active/');
       setCurrentCart(data);
     } catch (error: any) {
-      toast.error('Failed to fetch active cart.');
-      setCurrentCart(null); // Ensure cart is null on error
+      if (error instanceof ApiError && error.statusCode === 404) {
+        // A 404 is acceptable here, means no active cart.
+        setCurrentCart(null);
+      } else {
+        toast.error('Failed to fetch active cart.');
+        setCurrentCart(null); // Ensure cart is null on error
+      }
     } finally {
       setCartLoading(false);
     }
-  }, [token, anonymousId]);
+  }, [apiClient]);
 
   // Fetch initial data
   useEffect(() => {
@@ -66,14 +67,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchUserCarts = useCallback(async () => {
     if (!isAuthenticated) return;
     try {
-      const response = await fetch('/api/carts/', { headers: getAuthHeaders(token, anonymousId) });
-      if (!response.ok) throw new Error('Failed to fetch user carts.');
-      const data = await response.json();
+      const data = await apiClient.get<{ results: Cart[] }>('/api/carts/');
       setUserCarts(data.results || []);
     } catch (error: any) {
       console.error(error.message);
+      toast.error('Failed to fetch user carts.');
     }
-  }, [token, anonymousId, isAuthenticated]);
+  }, [apiClient, isAuthenticated]);
 
   const loadCart = async (cartId: string) => {
     // This will become the active cart on the backend
@@ -82,68 +82,40 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const createNewCart = async () => {
     try {
-        const response = await fetch('/api/carts/', {
-            method: 'POST',
-            headers: getAuthHeaders(token, anonymousId),
-            body: JSON.stringify({}),
-        });
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to create new cart.');
-        }
-        const newCart = await response.json();
+        const newCart = await apiClient.post<Cart>('/api/carts/', {});
         setCurrentCart(newCart);
     } catch (error: any) {
-        toast.error(error.message);
+        toast.error(error.message || 'Failed to create new cart.');
     }
   };
 
   const renameCart = async (cartId: string, newName: string) => {
     try {
-        const response = await fetch('/api/cart/rename/', {
-            method: 'POST',
-            headers: getAuthHeaders(token, anonymousId),
-            body: JSON.stringify({ cart_id: cartId, new_name: newName }),
-        });
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to rename cart.');
-        }
-        const updatedCart = await response.json();
+        const updatedCart = await apiClient.post<Cart>('/api/cart/rename/', { cart_id: cartId, new_name: newName });
         setCurrentCart(updatedCart);
     } catch (error: any) {
-        toast.error(error.message);
+        toast.error(error.message || 'Failed to rename cart.');
     }
   };
 
   const deleteCart = async (cartId: string) => {
     try {
-        const response = await fetch(`/api/carts/${cartId}/`, {
-            method: 'DELETE',
-            headers: getAuthHeaders(token, anonymousId),
-        });
-        if (!response.ok) throw new Error('Failed to delete cart.');
+        await apiClient.delete(`/api/carts/${cartId}/`);
         // After deleting, fetch the new active cart
         fetchActiveCart();
         fetchUserCarts();
     } catch (error: any) {
-        toast.error('Failed to delete cart.');
+        toast.error(error.message || 'Failed to delete cart.');
     }
   };
 
   const switchActiveCart = async (cartId: string) => {
     try {
-        const response = await fetch('/api/cart/switch-active/', {
-            method: 'POST',
-            headers: getAuthHeaders(token, anonymousId),
-            body: JSON.stringify({ cart_id: cartId }),
-        });
-        if (!response.ok) throw new Error('Failed to switch active cart.');
-        const newActiveCart = await response.json();
+        const newActiveCart = await apiClient.post<Cart>('/api/cart/switch-active/', { cart_id: cartId });
         setCurrentCart(newActiveCart);
         fetchUserCarts();
     } catch (error: any) {
-        toast.error('Failed to switch active cart.');
+        toast.error(error.message || 'Failed to switch active cart.');
     }
   };
 
@@ -153,18 +125,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!currentCart) {
       setIsFetchingSubstitutions(true);
       try {
-        const response = await fetch('/api/cart/active/items/', {
-          method: 'POST',
-          headers: getAuthHeaders(token, anonymousId),
-          body: JSON.stringify({ product: productId, quantity }),
-        });
-        if (!response.ok) {
-          throw new Error('Failed to add item to cart.');
-        }
+        await apiClient.post('/api/cart/active/items/', { product: productId, quantity });
         // After successfully creating the cart and adding the item, fetch the new active cart.
         await fetchActiveCart();
-      } catch (error) {
-        toast.error('Failed to add item to cart. Please try again.');
+      } catch (error: any) {
+        toast.error(error.message || 'Failed to add item to cart. Please try again.');
       } finally {
         setIsFetchingSubstitutions(false);
       }
@@ -203,17 +168,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     try {
-      const response = await fetch('/api/cart/active/items/', {
-        method: 'POST',
-        headers: getAuthHeaders(token, anonymousId),
-        body: JSON.stringify({ product: productId, quantity }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to add item to cart.');
-      }
-
-      const realCartItem = await response.json();
+      const realCartItem = await apiClient.post<any>('/api/cart/active/items/', { product: productId, quantity });
 
       // Silently update the state with the real item from the server
       setCurrentCart(prevCart => {
@@ -227,7 +182,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
     } catch (error: any) {
-      toast.error('Failed to add item to cart. Please try again.');
+      toast.error(error.message || 'Failed to add item to cart. Please try again.');
       // Revert the optimistic update on failure
       setCurrentCart(originalCart);
     } finally {
@@ -256,23 +211,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     setCurrentCart(newCart);
 
-    try {
-        const response = await fetch(`/api/cart/active/items/${itemId}/`, {
-            method: quantity > 0 ? 'PATCH' : 'DELETE',
-            headers: getAuthHeaders(token, anonymousId),
-            body: quantity > 0 ? JSON.stringify({ quantity }) : undefined,
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to update item quantity.');
-        }
-
-    } catch (error: any) {
-        toast.error('Failed to update item. Please try again.');
-        // Revert the optimistic update on failure
-        setCurrentCart(originalCart);
-    }
-  };
+            try {
+                if (quantity > 0) {
+                    await apiClient.patch(`/api/cart/active/items/${itemId}/`, { quantity });
+                } else {
+                    await apiClient.delete(`/api/cart/active/items/${itemId}/`);
+                }
+            } catch (error: any) {
+                toast.error(error.message || 'Failed to update item. Please try again.');
+                // Revert the optimistic update on failure
+                setCurrentCart(originalCart);
+            }  };
 
   const removeItem = (itemId: string) => {
     // The optimistic logic is now handled by updateItemQuantity
@@ -304,18 +253,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     try {
-      const response = await fetch(`/api/cart-items/${cartItemId}/substitutions/${substitutionId}/`, {
-        method: 'PATCH',
-        headers: getAuthHeaders(token, anonymousId),
-        body: JSON.stringify({ is_approved: isApproved, quantity: quantity }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update cart item substitution.');
-      }
-
+      await apiClient.patch(`/api/cart-items/${cartItemId}/substitutions/${substitutionId}/`, { is_approved: isApproved, quantity: quantity });
     } catch (error: any) {
-      toast.error('Failed to update substitution. Please try again.');
+      toast.error(error.message || 'Failed to update substitution. Please try again.');
       // Revert the optimistic update on failure
       setCurrentCart(originalCart);
     }
@@ -323,14 +263,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const removeCartItemSubstitution = async (cartItemId: string, substitutionId: string) => {
     try {
-      const response = await fetch(`/api/cart-items/${cartItemId}/substitutions/${substitutionId}/`, {
-        method: 'DELETE',
-        headers: getAuthHeaders(token, anonymousId),
-      });
-      if (!response.ok) throw new Error('Failed to remove cart item substitution.');
+      await apiClient.delete(`/api/cart-items/${cartItemId}/substitutions/${substitutionId}/`);
       fetchActiveCart(); // Refresh cart
     } catch (error: any) {
-      toast.error('Failed to remove substitution.');
+      toast.error(error.message || 'Failed to remove substitution.');
     }
   };
 
