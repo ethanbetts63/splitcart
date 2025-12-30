@@ -36,8 +36,30 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isFetchingSubstitutions, setIsFetchingSubstitutions] = useState(false); // Initialize new state
 
 
+  const getCsrfToken = () => {
+    let csrfToken = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, 'csrftoken'.length + 1) === ('csrftoken' + '=')) {
+                csrfToken = decodeURIComponent(cookie.substring('csrftoken'.length + 1));
+                break;
+            }
+        }
+    }
+    return csrfToken;
+  };
+
   const getAuthHeaders = useCallback(() => {
-    const headers: HeadersInit = { 'Content-Type': 'application/json' };
+    const headers: HeadersInit = { 
+        'Content-Type': 'application/json'
+    };
+    const csrfToken = getCsrfToken();
+    if (csrfToken) {
+        headers['X-CSRFToken'] = csrfToken;
+    }
+
     if (isAuthenticated && token) {
       headers['Authorization'] = `Token ${token}`;
     } else if (anonymousId) {
@@ -49,7 +71,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchActiveCart = useCallback(async () => {
     setCartLoading(true);
     try {
-      const response = await fetch('/api/carts/active/', { headers: getAuthHeaders() });
+      const response = await fetch('/api/cart/active/, { headers: getAuthHeaders() }');
       // A 404 is acceptable here, means no active cart.
       if (response.status === 404) {
           setCurrentCart(null);
@@ -110,7 +132,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const renameCart = async (cartId: string, newName: string) => {
     try {
-        const response = await fetch('/api/carts/rename/', {
+        const response = await fetch('/api/cart/rename/', {
             method: 'POST',
             headers: getAuthHeaders(),
             body: JSON.stringify({ cart_id: cartId, new_name: newName }),
@@ -143,7 +165,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const switchActiveCart = async (cartId: string) => {
     try {
-        const response = await fetch('/api/carts/switch-active/', {
+        const response = await fetch('/api/cart/switch-active/', {
             method: 'POST',
             headers: getAuthHeaders(),
             body: JSON.stringify({ cart_id: cartId }),
@@ -163,7 +185,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!currentCart) {
       setIsFetchingSubstitutions(true);
       try {
-        const response = await fetch('/api/carts/active/items/', {
+        const response = await fetch('/api/cart/active/items/', {
           method: 'POST',
           headers: getAuthHeaders(),
           body: JSON.stringify({ product: productId, quantity }),
@@ -213,7 +235,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     try {
-      const response = await fetch('/api/carts/active/items/', {
+      const response = await fetch('/api/cart/active/items/', {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify({ product: productId, quantity }),
@@ -267,7 +289,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCurrentCart(newCart);
 
     try {
-        const response = await fetch(`/api/carts/active/items/${itemId}/`, {
+        const response = await fetch(`/api/cart/active/items/${itemId}/`, {
             method: quantity > 0 ? 'PATCH' : 'DELETE',
             headers: getAuthHeaders(),
             body: quantity > 0 ? JSON.stringify({ quantity }) : undefined,
@@ -314,7 +336,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     try {
-      const response = await fetch(`/api/carts/active/items/${cartItemId}/substitutions/${substitutionId}/`, {
+      const response = await fetch(`/api/cart-items/${cartItemId}/substitutions/${substitutionId}/`, {
         method: 'PATCH',
         headers: getAuthHeaders(),
         body: JSON.stringify({ is_approved: isApproved, quantity: quantity }),
@@ -333,7 +355,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const removeCartItemSubstitution = async (cartItemId: string, substitutionId: string) => {
     try {
-      const response = await fetch(`/api/carts/active/items/${cartItemId}/substitutions/${substitutionId}/`, {
+      const response = await fetch(`/api/cart-items/${cartItemId}/substitutions/${substitutionId}/`, {
         method: 'DELETE',
         headers: getAuthHeaders(),
       });

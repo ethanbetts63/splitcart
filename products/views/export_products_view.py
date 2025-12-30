@@ -1,7 +1,7 @@
 from rest_framework import generics
 from products.models import Product
 from rest_framework.throttling import ScopedRateThrottle
-from api.permissions import IsInternalAPIRequest
+from splitcart.permissions import IsInternalAPIRequest
 from ..serializers.product_export_serializer import ProductExportSerializer
 
 class ExportProductsView(generics.ListAPIView):

@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from companies.models import StoreGroup
-from api.permissions import IsInternalAPIRequest
+from splitcart.permissions import IsInternalAPIRequest
 
 class ExportAnchorStoresView(ListAPIView):
     """

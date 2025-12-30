@@ -1,6 +1,6 @@
 from .base_python_file_view import BasePythonFileView
 from data_management.database_updating_classes.product_updating.translation_table_generators.product_translation_table_generator import ProductTranslationTableGenerator
-from api.permissions import IsInternalAPIRequest
+from splitcart.permissions import IsInternalAPIRequest
 
 class ProductTranslationFileView(BasePythonFileView):
     """

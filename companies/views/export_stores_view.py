@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView
 from companies.models import Store
 from api.serializers import StoreExportSerializer
-from api.permissions import IsInternalAPIRequest
+from splitcart.permissions import IsInternalAPIRequest
 from rest_framework.throttling import ScopedRateThrottle
 
 class ExportStoresView(ListAPIView):

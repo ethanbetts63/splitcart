@@ -1,7 +1,7 @@
 from rest_framework import generics
 from companies.models import CategoryLink
 from rest_framework.throttling import ScopedRateThrottle
-from api.permissions import IsInternalAPIRequest
+from splitcart.permissions import IsInternalAPIRequest
 from companies.serializers.category_link_export_serializer import CategoryLinkExportSerializer
 
 class ExportCategoryLinksView(generics.ListAPIView):

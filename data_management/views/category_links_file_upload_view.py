@@ -1,7 +1,7 @@
 import os
 from django.conf import settings
 from .base_file_upload_view import BaseFileUploadView
-from api.permissions import IsInternalAPIRequest
+from splitcart.permissions import IsInternalAPIRequest
 
 class CategoryLinksFileUploadView(BaseFileUploadView):
     """

@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.throttling import ScopedRateThrottle
-from api.permissions import IsInternalAPIRequest
+from splitcart.permissions import IsInternalAPIRequest
 
 class BaseAPIView(APIView):
     """

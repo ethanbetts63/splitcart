@@ -1,7 +1,7 @@
 from rest_framework import generics
 from companies.models import Category
 from rest_framework.throttling import ScopedRateThrottle
-from api.permissions import IsInternalAPIRequest
+from splitcart.permissions import IsInternalAPIRequest
 from companies.serializers.category_export_serializer import CategoryExportSerializer
 from companies.serializers.category_with_products_export_serializer import CategoryWithProductsExportSerializer
 

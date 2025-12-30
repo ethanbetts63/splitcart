@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     "products.apps.ProductsConfig",
     "data_management.apps.DataManagementConfig",
     "scraping.apps.ScrapingConfig",
-    "api.apps.ApiConfig",
+
     "users.apps.UsersConfig",
     "rest_framework",
     'rest_framework.authtoken',
@@ -147,7 +147,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 500,
-    'EXCEPTION_HANDLER': 'api.exception_handler.custom_exception_handler',
+
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',
         'rest_framework.throttling.UserRateThrottle',

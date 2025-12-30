@@ -1,5 +1,5 @@
 from rest_framework import generics
-from api.permissions import IsAuthenticatedOrAnonymous
+from splitcart.permissions import IsAuthenticatedOrAnonymous
 from users.models import SelectedStoreList
 from api.serializers import SelectedStoreListSerializer
 

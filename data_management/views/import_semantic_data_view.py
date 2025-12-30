@@ -1,6 +1,6 @@
 from rest_framework import views, response, status
 from rest_framework.throttling import ScopedRateThrottle
-from api.permissions import IsInternalAPIRequest
+from splitcart.permissions import IsInternalAPIRequest
 from products.models import ProductSubstitution
 
 class ImportSemanticDataView(views.APIView):
