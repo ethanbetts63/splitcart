@@ -22,14 +22,14 @@ class IsAuthenticatedOrAnonymous(permissions.BasePermission):
     """
 
     def has_permission(self, request, view):
-        # Allow POST requests to proceed, as the InitialSetupView handles session creation.
-        if request.method == 'POST':
-            return True
-
-        # Read permissions are allowed to any request,
-        # so we'll always allow GET, HEAD or OPTIONS requests.
+        # Read permissions (GET, HEAD, OPTIONS) are allowed regardless of authentication
+        # or anonymous status. This allows public listing of data.
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        # For other methods like PUT, PATCH, DELETE, require authentication.
-        return request.user and request.user.is_authenticated or hasattr(request, 'anonymous_id')
+        # For write permissions (POST, PUT, PATCH, DELETE), we require the user to
+        # either be authenticated or have an anonymous ID.
+        is_authenticated = request.user and request.user.is_authenticated
+        is_anonymous_with_id = hasattr(request, 'anonymous_id') and request.anonymous_id is not None
+
+        return is_authenticated or is_anonymous_with_id

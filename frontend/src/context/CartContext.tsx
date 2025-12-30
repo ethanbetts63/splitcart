@@ -27,21 +27,14 @@ export interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Cart | null }> = ({ children, initialCart }) => {
-  const { token, anonymousId, isAuthenticated } = useAuth();
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { token, anonymousId, isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const [currentCart, setCurrentCart] = useState<Cart | null>(null);
   const [userCarts, setUserCarts] = useState<Cart[]>([]);
   const [optimizationResult, setOptimizationResult] = useState<ApiResponse | null>(null);
   const [cartLoading, setCartLoading] = useState(true);
   const [isFetchingSubstitutions, setIsFetchingSubstitutions] = useState(false); // Initialize new state
 
-
-  useEffect(() => {
-    if (initialCart) {
-      setCurrentCart(initialCart);
-      setCartLoading(false);
-    }
-  }, [initialCart]);
 
   const getAuthHeaders = useCallback(() => {
     const headers: HeadersInit = { 'Content-Type': 'application/json' };
@@ -57,15 +50,28 @@ export const CartProvider: React.FC<{ children: React.ReactNode, initialCart: Ca
     setCartLoading(true);
     try {
       const response = await fetch('/api/carts/active/', { headers: getAuthHeaders() });
+      // A 404 is acceptable here, means no active cart.
+      if (response.status === 404) {
+          setCurrentCart(null);
+          return;
+      }
       if (!response.ok) throw new Error('Failed to fetch active cart.');
       const data = await response.json();
       setCurrentCart(data);
     } catch (error: any) {
       toast.error('Failed to fetch active cart.');
+      setCurrentCart(null); // Ensure cart is null on error
     } finally {
       setCartLoading(false);
     }
   }, [getAuthHeaders]);
+
+  // Fetch initial data
+  useEffect(() => {
+    if (!isAuthLoading) {
+      fetchActiveCart();
+    }
+  }, [isAuthLoading, fetchActiveCart]);
 
   const fetchUserCarts = useCallback(async () => {
     if (!isAuthenticated) return;
