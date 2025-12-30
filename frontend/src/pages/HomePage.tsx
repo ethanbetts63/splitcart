@@ -27,6 +27,9 @@ const HomePage = () => {
   const isDefaultStores = !isUserDefinedList;
 
   const anchorStoreIdsArray = React.useMemo(() => {
+    if (!anchorStoreMap) {
+      return Array.from(selectedStoreIds);
+    }
     const anchorIds = new Set<number>();
     for (const storeId of selectedStoreIds) {
       const anchorId = anchorStoreMap[storeId];

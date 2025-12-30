@@ -27,6 +27,9 @@ const PillarPage: React.FC = () => {
   const { selectedStoreIds, anchorStoreMap, isUserDefinedList } = useStoreList();
   
   const anchorStoreIdsArray = React.useMemo(() => {
+    if (!anchorStoreMap) {
+      return Array.from(selectedStoreIds);
+    }
     const anchorIds = new Set<number>();
     for (const storeId of selectedStoreIds) {
       const anchorId = anchorStoreMap[storeId];

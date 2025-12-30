@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext.tsx';
+import { AuthProvider } from './context/AuthContext.tsx';
 import { CartProvider } from './context/CartContext.tsx';
 import { StoreListProvider } from './context/StoreListContext.tsx';
 import { StoreSearchProvider } from './context/StoreSearchContext.tsx';

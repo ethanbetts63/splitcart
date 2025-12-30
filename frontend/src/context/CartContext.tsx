@@ -2,7 +2,6 @@ import React, { createContext, useState, useContext, useEffect, useCallback, use
 import { useAuth } from './AuthContext';
 import { toast } from 'sonner';
 import type { Cart, ApiResponse } from '../types';
-import { getAuthHeaders as getUnifiedAuthHeaders } from '../lib/utils'; // Import and rename to avoid conflict
 import { createApiClient, ApiError } from '../services/apiClient';
 
 // Types

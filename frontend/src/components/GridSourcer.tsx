@@ -53,6 +53,9 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
   const { token, anonymousId } = useAuth();
 
   const anchorStoreIdsArray = React.useMemo(() => {
+    if (!anchorStoreMap) {
+      return Array.from(selectedStoreIds);
+    }
     const anchorIds = new Set<number>();
     for (const storeId of selectedStoreIds) {
       const anchorId = anchorStoreMap[storeId];
