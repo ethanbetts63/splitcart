@@ -158,8 +158,30 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const addItem = async (productId: number, quantity: number, product: any) => {
-    if (!currentCart) return;
+    // If there is no cart, we can't do an optimistic update.
+    // The backend will handle creating a new cart when it receives the request.
+    if (!currentCart) {
+      setIsFetchingSubstitutions(true);
+      try {
+        const response = await fetch('/api/carts/active/items/', {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ product: productId, quantity }),
+        });
+        if (!response.ok) {
+          throw new Error('Failed to add item to cart.');
+        }
+        // After successfully creating the cart and adding the item, fetch the new active cart.
+        await fetchActiveCart();
+      } catch (error) {
+        toast.error('Failed to add item to cart. Please try again.');
+      } finally {
+        setIsFetchingSubstitutions(false);
+      }
+      return;
+    }
 
+    // --- Optimistic Update Logic (if cart exists) ---
     setIsFetchingSubstitutions(true); // Set loading to true
 
     const tempId = `temp-${Date.now()}`;

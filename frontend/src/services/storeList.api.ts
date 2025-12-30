@@ -1,6 +1,23 @@
-
 import { type SelectedStoreListType } from '../types';
 import { getAuthHeaders } from '../lib/utils';
+import { type AnchorMap } from '../context/StoreListContext';
+
+// The expected data shape from the new /api/store-lists/active/ endpoint
+export interface ActiveStoreListData {
+  store_list: SelectedStoreListType;
+  anchor_map: AnchorMap;
+}
+
+export const fetchActiveStoreListDataAPI = async (token: string | null, anonymousId: string | null): Promise<ActiveStoreListData> => {
+  const response = await fetch('/api/store-lists/active/', {
+    headers: getAuthHeaders(token, anonymousId),
+  });
+  if (!response.ok) {
+    // Let the caller handle specific status codes like 404
+    throw new Error(`Failed to fetch active store list data. Status: ${response.status}`);
+  }
+  return response.json();
+};
 
 export const fetchActiveStoreListAPI = async (token: string | null, anonymousId: string | null): Promise<SelectedStoreListType[]> => {
   let url = '';

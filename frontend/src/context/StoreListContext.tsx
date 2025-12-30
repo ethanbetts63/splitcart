@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useState, type ReactNode, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
 import { type SelectedStoreListType } from '../types';
-import { loadStoreListAPI, saveStoreListAPI, createNewStoreListAPI, deleteStoreListAPI } from '../services/storeList.api';
-import { performInitialSetupAPI } from '../services/auth.api';
+import { loadStoreListAPI, saveStoreListAPI, createNewStoreListAPI, deleteStoreListAPI, fetchActiveStoreListDataAPI } from '../services/storeList.api';
 
 // Type for the anchor map
 export type AnchorMap = { [storeId: number]: number };
@@ -58,8 +57,8 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
 
       setStoreListLoading(true);
       try {
-        const initialData = await performInitialSetupAPI(token, anonymousId);
-        const storeList = initialData.cart.selected_store_list;
+        const activeData = await fetchActiveStoreListDataAPI(token, anonymousId);
+        const storeList = activeData.store_list;
         
         if (storeList) {
             setUserStoreLists([storeList]);
@@ -68,11 +67,19 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
             setIsUserDefinedList(storeList.is_user_defined);
             setSelectedStoreIds(new Set(storeList.stores));
         }
-        setAnchorStoreMap(initialData.anchor_map ?? null);
+        setAnchorStoreMap(activeData.anchor_map ?? null);
 
-      } catch (error) {
-        console.error("Failed to fetch initial store list data:", error);
-        setStoreListError("Could not load store list.");
+      } catch (error: any) {
+        // If no active list is found (404), it's not a critical error.
+        // The user will be prompted to create one or select stores.
+        if (error.message.includes('404')) {
+          setCurrentStoreListId(null);
+          setSelectedStoreIds(new Set());
+          setAnchorStoreMap(null);
+        } else {
+          console.error("Failed to fetch initial store list data:", error);
+          setStoreListError("Could not load initial store data.");
+        }
       } finally {
         setStoreListLoading(false);
       }
