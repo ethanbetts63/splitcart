@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, type ReactNode, useEffect, 
 import { useAuth } from './AuthContext';
 import { type SelectedStoreListType } from '../types';
 import { loadStoreListAPI, saveStoreListAPI, createNewStoreListAPI, deleteStoreListAPI } from '../services/storeList.api';
+import { performInitialSetupAPI } from '../services/auth.api';
 
 // Type for the anchor map
 export type AnchorMap = { [storeId: number]: number };
@@ -26,21 +27,20 @@ interface StoreListContextType {
   createNewStoreList: (storeIds: number[]) => Promise<void>;
   deleteStoreList: (storeListId: string) => Promise<void>;
   fetchActiveStoreList: () => Promise<void>;
-  anchorStoreMap: AnchorMap;
-  setAnchorStoreMap: React.Dispatch<React.SetStateAction<AnchorMap>>;
+  anchorStoreMap: AnchorMap | null;
+  setAnchorStoreMap: React.Dispatch<React.SetStateAction<AnchorMap | null>>;
 }
 
 // --- Context Creation ---
 const StoreListContext = createContext<StoreListContextType | undefined>(undefined);
 
 // --- Provider Component ---
-export const StoreListProvider = ({ children, initialStoreList, initialAnchorMap }: { children: ReactNode, initialStoreList: SelectedStoreListType | null, initialAnchorMap: AnchorMap | null }) => {
-  const { token, anonymousId } = useAuth();
+export const StoreListProvider = ({ children }: { children: ReactNode }) => {
+  const { token, anonymousId, isLoading: isAuthLoading } = useAuth();
 
   // --- State Definitions ---
   const [selectedStoreIds, setSelectedStoreIds] = useState<Set<number>>(() => new Set<number>());
-  const [anchorStoreMap, setAnchorStoreMap] = useState<AnchorMap>({});
-
+  const [anchorStoreMap, setAnchorStoreMap] = useState<AnchorMap | null>(null);
   const [currentStoreListId, setCurrentStoreListId] = useState<string | null>(null);
   const [currentStoreListName, setCurrentStoreListName] = useState<string>("");
   const [isUserDefinedList, setIsUserDefinedList] = useState<boolean>(false);
@@ -50,17 +50,37 @@ export const StoreListProvider = ({ children, initialStoreList, initialAnchorMap
 
   // --- Side Effects ---
 
-  // Initialize state from initialStoreList prop
+  // Fetch initial data on mount
   useEffect(() => {
-    if (initialStoreList) {
-      setUserStoreLists([initialStoreList]);
-      setCurrentStoreListId(initialStoreList.id);
-      setCurrentStoreListName(initialStoreList.name);
-      setIsUserDefinedList(initialStoreList.is_user_defined);
-      setSelectedStoreIds(new Set(initialStoreList.stores));
-      setStoreListLoading(false);
-    }
-  }, [initialStoreList]);
+    const fetchInitialData = async () => {
+      // Don't fetch until auth state is resolved
+      if (isAuthLoading) return;
+
+      setStoreListLoading(true);
+      try {
+        const initialData = await performInitialSetupAPI(token, anonymousId);
+        const storeList = initialData.cart.selected_store_list;
+        
+        if (storeList) {
+            setUserStoreLists([storeList]);
+            setCurrentStoreListId(storeList.id);
+            setCurrentStoreListName(storeList.name);
+            setIsUserDefinedList(storeList.is_user_defined);
+            setSelectedStoreIds(new Set(storeList.stores));
+        }
+        setAnchorStoreMap(initialData.anchor_map ?? null);
+
+      } catch (error) {
+        console.error("Failed to fetch initial store list data:", error);
+        setStoreListError("Could not load store list.");
+      } finally {
+        setStoreListLoading(false);
+      }
+    };
+
+    fetchInitialData();
+  }, [token, anonymousId, isAuthLoading]);
+
 
   // Autosave store selection
   useEffect(() => {
@@ -69,20 +89,9 @@ export const StoreListProvider = ({ children, initialStoreList, initialAnchorMap
       return;
     }
 
-    // Do not save if the component has just been initialized with an empty set of store IDs
-    if (initialStoreList === null && selectedStoreIds.size === 0) {
-      return;
-    }
-
     saveStoreList(currentStoreListName, Array.from(selectedStoreIds));
   }, [selectedStoreIds]);
 
-  // Initialize anchor map from initialAnchorMap prop
-  useEffect(() => {
-    if (initialAnchorMap) {
-      setAnchorStoreMap(initialAnchorMap);
-    }
-  }, [initialAnchorMap]);
 
   // --- Context Functions ---
 
@@ -114,23 +123,6 @@ export const StoreListProvider = ({ children, initialStoreList, initialAnchorMap
     }
   }, [token, anonymousId]);
 
-  const saveStoreList = useCallback(async (name: string, storeIds: number[]) => {
-    if (!currentStoreListId) return;
-    setStoreListLoading(true);
-    setStoreListError(null);
-    try {
-      const data = await saveStoreListAPI(currentStoreListId, name, storeIds, token, anonymousId);
-      setCurrentStoreListName(data.name);
-      setIsUserDefinedList(data.is_user_defined);
-      // Update the specific list in the userStoreLists array
-      setUserStoreLists(prev => prev.map(list => list.id === data.id ? data : list));
-    } catch (err: any) {
-      setStoreListError(err.message);
-    } finally {
-      setStoreListLoading(false);
-    }
-  }, [currentStoreListId, token, anonymousId]);
-
   const createNewStoreList = useCallback(async (storeIds: number[]) => {
     setStoreListLoading(true);
     setStoreListError(null);
@@ -148,6 +140,32 @@ export const StoreListProvider = ({ children, initialStoreList, initialAnchorMap
       setStoreListLoading(false);
     }
   }, [token, anonymousId]);
+
+  const saveStoreList = useCallback(async (name: string, storeIds: number[]) => {
+    // If there's no ID, it means we're still in the initial loading phase
+    // or a list hasn't been created yet. The first selection should trigger a create.
+    if (!currentStoreListId) {
+        // Only create if there are stores to add, to avoid creating empty lists on init
+        if (storeIds.length > 0) {
+            await createNewStoreList(storeIds);
+        }
+        return;
+    }
+
+    setStoreListLoading(true);
+    setStoreListError(null);
+    try {
+      const data = await saveStoreListAPI(currentStoreListId, name, storeIds, token, anonymousId);
+      setCurrentStoreListName(data.name);
+      setIsUserDefinedList(data.is_user_defined);
+      // Update the specific list in the userStoreLists array
+      setUserStoreLists(prev => prev.map(list => list.id === data.id ? data : list));
+    } catch (err: any) {
+      setStoreListError(err.message);
+    } finally {
+      setStoreListLoading(false);
+    }
+  }, [currentStoreListId, token, anonymousId, createNewStoreList]);
 
   const deleteStoreList = useCallback(async (storeListId: string) => {
     setStoreListLoading(true);

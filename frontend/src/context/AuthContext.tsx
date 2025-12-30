@@ -8,8 +8,6 @@ interface AuthContextType {
   token: string | null;
   anonymousId: string | null;
   initialCart: Cart | null;
-  initialStoreList: SelectedStoreListType | null;
-  initialAnchorMap: AnchorMap | null;
   isLoading: boolean; // New loading state
   login: (token: string) => void;
   logout: () => void;
@@ -21,34 +19,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const [anonymousId, setAnonymousId] = useState<string | null>(null);
-  const [initialAnchorMap, setInitialAnchorMap] = useState<AnchorMap | null>(null);
   const [isLoading, setIsLoading] = useState(true); // Add loading state
-  const [initialCart, setInitialCart] = useState<Cart | null>(() => ({
-    id: 'local',
-    name: 'Shopping Cart',
-    is_active: true,
-    items: [],
-    selected_store_list: {
-      id: 'local-store-list',
-      name: 'My Stores',
-      stores: [],
-      is_user_defined: false,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      last_used_at: new Date().toISOString(),
-    },
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  }));
-  const [initialStoreList, setInitialStoreList] = useState<SelectedStoreListType | null>(() => ({
-    id: 'local',
-    name: 'My Stores',
-    stores: [],
-    is_user_defined: false,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    last_used_at: new Date().toISOString(),
-  }));
+  const [initialCart, setInitialCart] = useState<Cart | null>(null);
+
 
   useEffect(() => {
     const initializeUser = async () => {
@@ -70,8 +43,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
 
         setInitialCart(initialData.cart);
-        setInitialStoreList(initialData.cart.selected_store_list ?? null);
-        setInitialAnchorMap(initialData.anchor_map ?? null);
 
       } catch (error) {
         console.error('Failed during initial user setup:', error);
@@ -116,7 +87,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, token, anonymousId, initialCart, initialStoreList, initialAnchorMap, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, token, anonymousId, initialCart, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

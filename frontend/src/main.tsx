@@ -13,11 +13,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const queryClient = new QueryClient();
 
 const Root = () => {
-  const { initialCart, initialStoreList, initialAnchorMap } = useAuth();
+  const { initialCart } = useAuth();
 
   return (
     <CartProvider initialCart={initialCart}>
-      <StoreListProvider initialStoreList={initialStoreList} initialAnchorMap={initialAnchorMap}>
+      <StoreListProvider>
         <StoreSearchProvider>
           <App />
         </StoreSearchProvider>
