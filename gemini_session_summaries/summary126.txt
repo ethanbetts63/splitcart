@@ -1,0 +1,26 @@
+This session involved extensive full-stack debugging and refactoring to resolve a series of cascading issues that arose after a major code migration from a monolithic `api` app into separate, domain-focused apps.
+
+**1. Initial Investigation & URL Refactoring:**
+The session began by investigating `403 Forbidden` errors on the frontend. We quickly determined that the root cause was that view files had been moved between Django apps, but the `urls.py` files had not been updated to reflect these new locations. This caused requests to be handled by the wrong views. I performed a major refactoring of the URL configurations for the `users`, `products`, `data_management`, and `companies` apps, correctly mapping all URLs from the old `api/urls.py` to their new view locations.
+
+**2. Frontend Race Condition Debugging:**
+Fixing the URLs revealed a deeper bug: a `TypeError` on the backend when creating a store list for an anonymous user. This led to an in-depth investigation of the frontend React application. We discovered a complex race condition:
+- The `AuthContext` was responsible for fetching initial data (including the user's store list) and passing it as props to the `StoreListContext`.
+- This asynchronous, multi-step initialization process caused an "autosave" feature in the `StoreListContext` to trigger with a stale, hardcoded placeholder ID of `"local"`.
+- This resulted in an incorrect `POST` request to the backend, which the backend view was not equipped to handle for anonymous users.
+
+**3. Frontend Architecture Simplification:**
+We agreed that the best long-term solution was to simplify the frontend architecture to eliminate the race condition.
+- I refactored the `AuthContext` to be solely responsible for authentication.
+- I refactored the `StoreListContext` to be self-sufficient, fetching its own data directly on mount.
+- This decoupling removed the complex data handoff, eliminated the race condition, and allowed us to remove the confusing `"local"` placeholder ID.
+
+**4. Backend `TypeError` Fix:**
+With the frontend now sending correct requests, I fixed the original backend bug. I modified the `SelectedStoreListCreateView` to correctly handle `POST` requests for both authenticated users (by saving the `user` object) and anonymous users (by saving the `anonymous_id`), resolving the `TypeError`.
+
+**5. API Splitting:**
+As a final step, we began aligning the backend architecture with the new, decoupled frontend. I split the monolithic `/api/initial-setup/` endpoint by creating a new, focused `ActiveStoreListView` and URL at `/api/store-lists/active/`. This provides a dedicated endpoint for fetching the active store list and its related data, making the API cleaner and more maintainable.
+
+**6. Miscellaneous Tasks:**
+- Ran a Django management command to resize a frontend image asset for responsive use.
+- Verified and explained the purpose and setup of various Django and React components throughout the debugging process.
