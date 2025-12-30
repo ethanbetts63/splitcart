@@ -2,8 +2,8 @@ from rest_framework import generics
 from companies.models import Category
 from rest_framework.throttling import ScopedRateThrottle
 from api.permissions import IsInternalAPIRequest
-from ..serializers.category_export_serializer import CategoryExportSerializer
-from ..serializers.category_with_products_export_serializer import CategoryWithProductsExportSerializer
+from companies.serializers.category_export_serializer import CategoryExportSerializer
+from companies.serializers.category_with_products_export_serializer import CategoryWithProductsExportSerializer
 
 class ExportCategoriesView(generics.ListAPIView):
     """
