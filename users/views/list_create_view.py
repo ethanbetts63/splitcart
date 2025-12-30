@@ -17,16 +17,21 @@ class SelectedStoreListCreateView(generics.ListCreateAPIView):
             return SelectedStoreList.objects.none()
 
     def perform_create(self, serializer):
-        user = self.request.user
+        if self.request.user.is_authenticated:
+            user = self.request.user
 
-        # Generate a unique name
-        base_name = "List"
-        counter = 1
-        existing_names = SelectedStoreList.objects.filter(user=user).values_list('name', flat=True)
-
-        new_name = f"{base_name} {counter}"
-        while new_name in existing_names:
-            counter += 1
+            # Generate a unique name for the authenticated user
+            base_name = "List"
+            counter = 1
+            existing_names = SelectedStoreList.objects.filter(user=user).values_list('name', flat=True)
             new_name = f"{base_name} {counter}"
+            while new_name in existing_names:
+                counter += 1
+                new_name = f"{base_name} {counter}"
 
-        serializer.save(user=user, name=new_name)
+            serializer.save(user=user, name=new_name)
+        else:
+            # Handle anonymous user
+            anonymous_id = getattr(self.request, 'anonymous_id', None)
+            # For anonymous users, we can use a generic name since they won't see a list of lists.
+            serializer.save(anonymous_id=anonymous_id, name="My Stores")
