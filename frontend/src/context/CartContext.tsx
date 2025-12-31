@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import type { Cart, ApiResponse } from '../types';
 import { createApiClient, ApiError } from '../services/apiClient';
 import { debounce } from '../lib/utils';
+import * as cartApi from '../services/cart.api';
 
 // Types
 
@@ -15,7 +16,7 @@ export interface CartContextType {
   cartLoading: boolean;
   isFetchingSubstitutions: boolean; // New state for substitution loading
 
-  fetchActiveCart: () => void;
+  fetchActiveCart: () => Promise<Cart | null>;
   loadCart: (cartId: string) => void;
   createNewCart: () => void;
   renameCart: (cartId: string, newName: string) => void;
@@ -23,6 +24,7 @@ export interface CartContextType {
   addItem: (productId: number, quantity: number, product: any) => void;
   updateItemQuantity: (itemId: string, quantity: number) => void;
   removeItem: (itemId: string) => void;
+  optimizeCurrentCart: () => Promise<ApiResponse | null>;
   updateCartItemSubstitution: (cartItemId: string, substitutionId: string, isApproved: boolean, quantity: number) => void;
   removeCartItemSubstitution: (cartItemId: string, substitutionId: string) => void;
 }
@@ -42,16 +44,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchActiveCart = useCallback(async (): Promise<Cart | null> => {
     setCartLoading(true);
     try {
-      const data = await apiClient.get<Cart | null>('/api/carts/active/');
+      const data = await cartApi.fetchActiveCart(apiClient);
       setCurrentCart(data);
       return data;
     } catch (error: any) {
       if (error instanceof ApiError && error.statusCode === 404) {
-        // A 404 is acceptable here, means no active cart.
         setCurrentCart(null);
       } else {
         toast.error('Failed to fetch active cart.');
-        setCurrentCart(null); // Ensure cart is null on error
+        setCurrentCart(null);
       }
       return null;
     } finally {
@@ -63,25 +64,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const debouncedSync = useCallback(
     debounce(async (cartToSync: Cart) => {
       try {
-        const updatedCart = await apiClient.post<Cart>('/api/carts/sync/', {
-          cart_id: cartToSync.id,
-          items: cartToSync.items.map(item => ({
-            product_id: item.product.id,
-            quantity: item.quantity,
-          })),
-        });
-        // Silently update the state with the authoritative response from the server.
-        // This ensures our client state matches the saved server state.
+        const updatedCart = await cartApi.syncCart(apiClient, cartToSync);
         setCurrentCart(updatedCart);
       } catch (error) {
         toast.error("Failed to sync cart with server. Attempting to restore.");
-        // If sync fails, the optimistic UI is now out of sync.
-        // The safest recovery is to re-fetch the last known good state from the server.
         fetchActiveCart();
       } finally {
-        setIsFetchingSubstitutions(false); // We can consider the "sync" process to be complete here
+        setIsFetchingSubstitutions(false);
       }
-    }, 1500), // 1.5-second debounce delay
+    }, 1500),
     [apiClient, fetchActiveCart]
   );
 
@@ -96,6 +87,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchUserCarts = useCallback(async () => {
     if (!isAuthenticated) return;
     try {
+      // This is not a cart-specific call, could be moved to a user.api.ts or similar
       const data = await apiClient.get<{ results: Cart[] }>('/api/carts/');
       setUserCarts(data.results || []);
     } catch (error: any) {
@@ -105,13 +97,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [apiClient, isAuthenticated]);
 
   const loadCart = async (cartId: string) => {
-    // This will become the active cart on the backend
     await switchActiveCart(cartId);
   };
 
   const createNewCart = async () => {
     try {
-        const newCart = await apiClient.post<Cart>('/api/carts/', {});
+        const newCart = await cartApi.createNewCart(apiClient);
         setCurrentCart(newCart);
     } catch (error: any) {
         toast.error(error.message || 'Failed to create new cart.');
@@ -120,7 +111,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const renameCart = async (cartId: string, newName: string) => {
     try {
-        const updatedCart = await apiClient.post<Cart>('/api/cart/rename/', { cart_id: cartId, new_name: newName });
+        const updatedCart = await cartApi.renameCart(apiClient, cartId, newName);
         setCurrentCart(updatedCart);
     } catch (error: any) {
         toast.error(error.message || 'Failed to rename cart.');
@@ -129,8 +120,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const deleteCart = async (cartId: string) => {
     try {
-        await apiClient.delete(`/api/carts/${cartId}/`);
-        // After deleting, fetch the new active cart
+        await cartApi.deleteCart(apiClient, cartId);
         fetchActiveCart();
         fetchUserCarts();
     } catch (error: any) {
@@ -140,7 +130,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const switchActiveCart = async (cartId: string) => {
     try {
-        const newActiveCart = await apiClient.post<Cart>('/api/cart/switch-active/', { cart_id: cartId });
+        const newActiveCart = await cartApi.switchActiveCart(apiClient, cartId);
         setCurrentCart(newActiveCart);
         fetchUserCarts();
     } catch (error: any) {
@@ -183,7 +173,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     debouncedSync(optimisticallyUpdatedCart);
   };
 
-  const updateItemQuantity = async (itemId: string, quantity: number) => {
+  const updateItemQuantity = (itemId: string, quantity: number) => {
     if (!currentCart) return;
     setIsFetchingSubstitutions(true);
 
@@ -200,6 +190,21 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const removeItem = (itemId: string) => {
     updateItemQuantity(itemId, 0);
+  };
+
+  const optimizeCurrentCart = async (): Promise<ApiResponse | null> => {
+    if (!currentCart) {
+      toast.error("No active cart to optimize.");
+      return null;
+    }
+    try {
+      const results = await cartApi.optimizeCart(apiClient, currentCart.id);
+      setOptimizationResult(results);
+      return results;
+    } catch (error: any) {
+      toast.error(error.message || "Failed to run optimization.");
+      return null;
+    }
   };
 
   const updateCartItemSubstitution = async (cartItemId: string, substitutionId: string, isApproved: boolean, quantity: number) => {
@@ -248,7 +253,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       <CartContext.Provider value={{
             currentCart, userCarts, optimizationResult, setOptimizationResult, cartLoading, isFetchingSubstitutions,
             fetchActiveCart, loadCart, createNewCart, renameCart, deleteCart,
-            addItem, updateItemQuantity, removeItem, updateCartItemSubstitution, removeCartItemSubstitution
+            addItem, updateItemQuantity, removeItem, optimizeCurrentCart,
+            updateCartItemSubstitution, removeCartItemSubstitution
         }}>
           {children}
         </CartContext.Provider>  );

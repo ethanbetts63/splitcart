@@ -5,7 +5,6 @@ import { useStoreList } from '../context/StoreListContext';
 import ProductTile from '../components/ProductTile';
 import CartItemTile from '../components/CartItemTile';
 import { Button } from '../components/ui/button';
-import { optimizeCartAPI } from '../services/cartOptimization.api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import type { CartSubstitution } from '../types';
 import { Badge } from "../components/ui/badge";
@@ -16,7 +15,7 @@ import useMediaQuery from '../hooks/useMediaQuery';
 
 const SubstitutionPage = () => {
   const navigate = useNavigate();
-  const { currentCart, setOptimizationResult, updateCartItemSubstitution, isFetchingSubstitutions } = useCart();
+  const { currentCart, setOptimizationResult, updateCartItemSubstitution, optimizeCurrentCart, isFetchingSubstitutions } = useCart();
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   useStoreList(); // Call hook to ensure context is available, but don't destructure
 
@@ -76,14 +75,16 @@ const SubstitutionPage = () => {
     setIsLoading(true);
 
     try {
-      // Assuming optimizeCartAPI now takes only cartId
-      const results = await optimizeCartAPI(currentCart.id);
-      setOptimizationResult(results);
-      navigate('/final-cart');
+      const results = await optimizeCurrentCart();
+      if (results) {
+        navigate('/final-cart');
+      } else {
+        // Handle case where optimization fails
+        setIsLoading(false);
+      }
     } catch (error) {
       console.error(error);
-    } finally {
-      // setIsLoading(false); // Removed to prevent flash before navigation
+      setIsLoading(false);
     }
   };
 
@@ -93,13 +94,14 @@ const SubstitutionPage = () => {
     setIsLoading(true);
 
     try {
-      // Assuming optimizeCartAPI now takes only cartId
-      const results = await optimizeCartAPI(currentCart.id);
-      setOptimizationResult(results);
-      navigate('/final-cart');
+      const results = await optimizeCurrentCart();
+      if (results) {
+        navigate('/final-cart');
+      } else {
+        setIsLoading(false);
+      }
     } catch (error) {
       console.error(error);
-    } finally {
       setIsLoading(false);
     }
   };
