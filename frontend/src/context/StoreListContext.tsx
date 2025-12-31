@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, type ReactNode, useEffect, 
 import { useAuth } from './AuthContext';
 import { type SelectedStoreListType } from '../types';
 import * as storeListApi from '../services/storeList.api';
-import { createApiClient, ApiError } from '../services/apiClient';
+import { createApiClient } from '../services/apiClient';
 
 // Type for the anchor map
 export type AnchorMap = { [storeId: number]: number };

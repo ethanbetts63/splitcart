@@ -5,7 +5,7 @@ import { useStoreList } from "./context/StoreListContext";
 import { useCart } from "./context/CartContext";
 import NextButton from "./components/NextButton";
 import LoadingSpinner from "./components/LoadingSpinner";
-const Toaster = React.lazy(() => import("./components/ui/sonner"));
+const Toaster = React.lazy(() => import('./components/ui/sonner').then(module => ({ default: module.Toaster })));
 import { useDialog } from "./context/DialogContext";
 
 import HomePage from "./pages/HomePage";
