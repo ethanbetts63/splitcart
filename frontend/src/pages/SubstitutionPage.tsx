@@ -15,7 +15,7 @@ import useMediaQuery from '../hooks/useMediaQuery';
 
 const SubstitutionPage = () => {
   const navigate = useNavigate();
-  const { currentCart, setOptimizationResult, updateCartItemSubstitution, optimizeCurrentCart, isFetchingSubstitutions } = useCart();
+  const { currentCart, updateCartItemSubstitution, optimizeCurrentCart, isFetchingSubstitutions } = useCart();
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   useStoreList(); // Call hook to ensure context is available, but don't destructure
 

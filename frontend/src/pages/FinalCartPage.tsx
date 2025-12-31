@@ -10,7 +10,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import ResultsDisplay from '../components/ResultsDisplay';
 import { FAQ } from "../components/FAQ";
 import futureTodayImage from "../assets/future_today.webp";
-import { emailCartAPI, downloadCartAPI } from '../services/cartOptimization.api';
+import { emailCart, downloadCart } from '../services/cart.api';
 import type { ExportData } from '../types';
 
 const FinalCartPage = () => {
@@ -43,7 +43,7 @@ const FinalCartPage = () => {
     setError(null);
 
     try {
-        await emailCartAPI(exportData, token);
+        await emailCart(exportData, token);
         
 toast.success("Email Sent!", {
             description: "Your shopping list has been sent to your email.",
@@ -64,7 +64,7 @@ toast.success("Email Sent!", {
     setError(null);
 
     try {
-        const blob = await downloadCartAPI(exportData);
+        const blob = await downloadCart(exportData);
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
