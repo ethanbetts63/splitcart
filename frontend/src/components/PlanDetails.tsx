@@ -48,7 +48,9 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
         {Object.entries(plan).filter(([, store_plan]) => store_plan.items && store_plan.items.length > 0).map(([storeName, store_plan]) => {
             const storeTotal = store_plan.items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
             const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                e.currentTarget.src = fallbackImage;
+                if (e.currentTarget.src !== fallbackImage) {
+                    e.currentTarget.src = fallbackImage;
+                }
             };
             const logo = companyLogos[store_plan.company_name];
 

@@ -61,7 +61,9 @@ const CartItemTile: React.FC<CartItemTileProps> = (props) => {
   const isApproved = cartSubstitution ? cartSubstitution.is_approved : false;
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = fallbackImage;
+    if (e.currentTarget.src !== fallbackImage) {
+      e.currentTarget.src = fallbackImage;
+    }
   };
 
   const handleQuantityChange = (newQuantity: number) => {

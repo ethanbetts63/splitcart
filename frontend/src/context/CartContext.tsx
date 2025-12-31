@@ -24,7 +24,7 @@ export interface CartContextType {
   addItem: (productId: number, quantity: number, product: any) => void;
   updateItemQuantity: (itemId: string, quantity: number) => void;
   removeItem: (itemId: string) => void;
-  optimizeCurrentCart: () => Promise<ApiResponse | null>;
+  optimizeCurrentCart: (storeListId: string) => Promise<ApiResponse | null>;
   emailCurrentCart: (exportData: any) => Promise<void>;
   downloadCurrentCart: (exportData: any) => Promise<Blob | null>;
   updateCartItemSubstitution: (cartItemId: string, substitutionId: string, isApproved: boolean, quantity: number) => void;
@@ -206,13 +206,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     updateItemQuantity(itemId, 0);
   };
 
-  const optimizeCurrentCart = async (): Promise<ApiResponse | null> => {
+  const optimizeCurrentCart = async (storeListId: string): Promise<ApiResponse | null> => {
     if (!currentCart) {
       toast.error("No active cart to optimize.");
       return null;
     }
+    if (!storeListId) {
+      toast.error("No store list selected to optimize with.");
+      return null;
+    }
     try {
-      const results = await cartApi.optimizeCart(apiClient, currentCart.id);
+      const results = await cartApi.optimizeCart(apiClient, currentCart.id, storeListId);
       setOptimizationResult(results);
       return results;
     } catch (error: any) {

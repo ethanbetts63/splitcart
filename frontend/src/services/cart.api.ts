@@ -53,8 +53,8 @@ export const switchActiveCart = (apiClient: ApiClient, cartId: string): Promise<
 /**
  * Runs optimization on a specific cart.
  */
-export const optimizeCart = (apiClient: ApiClient, cartId: string): Promise<ApiResponse> => {
-    return apiClient.post<ApiResponse>(`/api/carts/${cartId}/optimize/`, {});
+export const optimizeCart = (apiClient: ApiClient, cartId: string, storeListId: string): Promise<ApiResponse> => {
+    return apiClient.post<ApiResponse>(`/api/carts/${cartId}/optimize/`, { selected_store_list_id: storeListId });
 };
 
 /**

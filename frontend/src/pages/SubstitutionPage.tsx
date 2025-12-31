@@ -17,7 +17,7 @@ const SubstitutionPage = () => {
   const navigate = useNavigate();
   const { currentCart, updateCartItemSubstitution, optimizeCurrentCart, isFetchingSubstitutions } = useCart();
   const isDesktop = useMediaQuery('(min-width: 1024px)');
-  useStoreList(); // Call hook to ensure context is available, but don't destructure
+  const { currentStoreListId } = useStoreList();
 
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -70,12 +70,12 @@ const SubstitutionPage = () => {
   };
 
   const handleOptimizeAndNavigate = async () => {
-    if (!currentCart) return;
+    if (!currentCart || !currentStoreListId) return;
 
     setIsLoading(true);
 
     try {
-      const results = await optimizeCurrentCart();
+      const results = await optimizeCurrentCart(currentStoreListId);
       if (results) {
         navigate('/final-cart');
       } else {
@@ -89,12 +89,12 @@ const SubstitutionPage = () => {
   };
 
   const handleSkipSubstitutions = async () => {
-    if (!currentCart) return;
+    if (!currentCart || !currentStoreListId) return;
 
     setIsLoading(true);
 
     try {
-      const results = await optimizeCurrentCart();
+      const results = await optimizeCurrentCart(currentStoreListId);
       if (results) {
         navigate('/final-cart');
       } else {

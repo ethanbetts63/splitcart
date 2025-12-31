@@ -20,7 +20,9 @@ const CartSubTile: React.FC<CartSubTileProps> = ({ cartSubstitution, cartItemId 
   }
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = fallbackImage;
+    if (e.currentTarget.src !== fallbackImage) {
+      e.currentTarget.src = fallbackImage;
+    }
   };
 
   const handleQuantityChange = (newQuantity: number) => {
