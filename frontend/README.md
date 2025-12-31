@@ -1,73 +1,67 @@
-# React + TypeScript + Vite
+# SplitCart Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This directory contains the frontend single-page application (SPA) for the SplitCart project.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The application is built using React and TypeScript, bootstrapped with Vite. It provides a modern, interactive user interface for users to manage their shopping lists, find the best prices across different stores, and view optimized shopping plans.
 
-## React Compiler
+## Core Technologies
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Framework**: [React](https://react.dev/) with [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) with [shadcn/ui](https://ui.shadcn.com/) for a utility-first component library.
+- **Routing**: [React Router](https://reactrouter.com/) for client-side routing.
+- **State Management**: [React Context](https://react.dev/learn/passing-data-deeply-with-context) for global application state.
 
-## Expanding the ESLint configuration
+## Project Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+├── components/   # Reusable UI components (e.g., ProductTile, Button)
+├── context/      # Global state providers (AuthContext, CartContext, StoreListContext)
+├── hooks/        # Custom React hooks for reusable stateful logic (e.g., useApiQuery)
+├── lib/          # Utility functions (e.g., cn for classnames, debounce)
+├── pages/        # Top-level components representing application pages
+├── services/     # Centralized modules for backend API communication
+└── types/        # TypeScript type definitions
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Key Architectural Concepts
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### State Management
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+The application's global state is managed via React's Context API, separated by domain:
+
+- **`AuthContext.tsx`**: Manages user authentication state, including JWT tokens and anonymous user IDs.
+- **`CartContext.tsx`**: Manages the state of the user's shopping cart, including all items and substitutions. It also orchestrates all actions related to the cart.
+- **`StoreListContext.tsx`**: Manages the user's selected stores for price comparison.
+
+### API Interaction
+
+API communication is handled through a dedicated service layer, promoting a clean separation of concerns.
+
+- **`services/apiClient.ts`**: A central `ApiClient` class that wraps `fetch`. It's responsible for automatically attaching authentication headers (`Authorization` token or `X-Anonymous-ID`) and standardizing error handling.
+- **`services/*.api.ts`**: Service files (`cart.api.ts`, `storeList.api.ts`) contain functions that encapsulate specific API endpoint calls. These functions use an `ApiClient` instance to perform the request.
+- **Pattern**: React Contexts (like `CartContext`) use these service functions to interact with the backend, keeping the data-fetching logic separate from state management logic.
+
+### Cart Logic: Debounced Sync
+
+To create a responsive user experience and reduce server load, cart modifications (`addItem`, `updateItemQuantity`) do not trigger an API call for every change. Instead, they perform an "optimistic update" to the local UI state and then call a **debounced `sync` function**. This function waits for a period of inactivity (e.g., 1.5 seconds) before sending the entire cart state to the backend in a single `/api/carts/sync/` request.
+
+## Getting Started
+
+1.  **Install Dependencies**:
+    ```bash
+    npm install
+    ```
+2.  **Run the Development Server**:
+    ```bash
+    npm run dev
+    ```
+    The application will be available at `http://localhost:5173`.
+3.  **Build for Production**:
+    ```bash
+    npm run build
+    ```
+    The production-ready assets will be generated in the `dist` directory.

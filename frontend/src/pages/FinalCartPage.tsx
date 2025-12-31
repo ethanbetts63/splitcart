@@ -10,14 +10,12 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import ResultsDisplay from '../components/ResultsDisplay';
 import { FAQ } from "../components/FAQ";
 import futureTodayImage from "../assets/future_today.webp";
-import { emailCart, downloadCart } from '../services/cart.api';
 import type { ExportData } from '../types';
 
 const FinalCartPage = () => {
-  const { optimizationResult, currentCart } = useCart();
+  const { optimizationResult, currentCart, emailCurrentCart, downloadCurrentCart } = useCart();
   useStoreList(); // Call hook to ensure context is available, but don't destructure
-
-  const { isAuthenticated, token } = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const [isLoading] = useState(false); // Optimization is done on previous page
@@ -28,6 +26,7 @@ const FinalCartPage = () => {
 
 
   const handleEmail = async (exportData: ExportData, planName: string) => {
+    // Check authentication status for immediate UI feedback
     if (!isAuthenticated) {
         toast.error("Authentication Required", {
             description: "Please log in to email your shopping list.",
@@ -43,17 +42,10 @@ const FinalCartPage = () => {
     setError(null);
 
     try {
-        await emailCart(exportData, token);
-        
-toast.success("Email Sent!", {
-            description: "Your shopping list has been sent to your email.",
-        });
-
+        await emailCurrentCart(exportData);
     } catch (err: any) {
         setError(err.message);
-        toast.error("Error Sending Email", {
-            description: err.message,
-        });
+        // Toast notifications are now handled in the context
     } finally {
         setExportAction(null);
     }
@@ -64,7 +56,9 @@ toast.success("Email Sent!", {
     setError(null);
 
     try {
-        const blob = await downloadCart(exportData);
+        const blob = await downloadCurrentCart(exportData);
+        if (!blob) return;
+
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -76,9 +70,7 @@ toast.success("Email Sent!", {
 
     } catch (err: any) {
         setError(err.message);
-        toast.error("Error Downloading PDF", {
-            description: err.message,
-        });
+        // Toast notifications are now handled in the context
     } finally {
         setExportAction(null);
     }

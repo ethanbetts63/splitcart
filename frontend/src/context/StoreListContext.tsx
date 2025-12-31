@@ -1,8 +1,8 @@
-import React, { createContext, useContext, useState, type ReactNode, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, type ReactNode, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from './AuthContext';
 import { type SelectedStoreListType } from '../types';
-import { loadStoreListAPI, saveStoreListAPI, createNewStoreListAPI, deleteStoreListAPI, fetchActiveStoreListDataAPI } from '../services/storeList.api';
-import { ApiError } from '../services/apiClient'; // Import ApiError
+import * as storeListApi from '../services/storeList.api';
+import { createApiClient, ApiError } from '../services/apiClient';
 
 // Type for the anchor map
 export type AnchorMap = { [storeId: number]: number };
@@ -58,7 +58,7 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
 
       setStoreListLoading(true);
       try {
-        const activeData = await fetchActiveStoreListDataAPI(apiClient);
+        const activeData = await storeListApi.fetchActiveStoreListDataAPI(apiClient);
         const storeList = activeData.store_list;
         
         if (storeList) {
@@ -119,7 +119,7 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     setStoreListLoading(true);
     setStoreListError(null);
     try {
-      const data = await loadStoreListAPI(apiClient, storeListId);
+      const data = await storeListApi.loadStoreListAPI(apiClient, storeListId);
       setCurrentStoreListId(data.id);
       setCurrentStoreListName(data.name);
       setSelectedStoreIds(new Set(data.stores));
@@ -135,7 +135,7 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     setStoreListLoading(true);
     setStoreListError(null);
     try {
-      const data = await createNewStoreListAPI(apiClient, storeIds);
+      const data = await storeListApi.createNewStoreListAPI(apiClient, storeIds);
       setCurrentStoreListId(data.id);
       setCurrentStoreListName(data.name);
       setSelectedStoreIds(new Set(data.stores));
@@ -159,7 +159,7 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     setStoreListLoading(true);
     setStoreListError(null);
     try {
-      const data = await saveStoreListAPI(apiClient, currentStoreListId, name, storeIds);
+      const data = await storeListApi.saveStoreListAPI(apiClient, currentStoreListId, name, storeIds);
       setCurrentStoreListName(data.name);
       setIsUserDefinedList(data.is_user_defined);
       setUserStoreLists(prev => prev.map(list => list.id === data.id ? data : list));
@@ -174,7 +174,7 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     setStoreListLoading(true);
     setStoreListError(null);
     try {
-      await deleteStoreListAPI(apiClient, storeListId);
+      await storeListApi.deleteStoreListAPI(apiClient, storeListId);
       const remainingLists = userStoreLists.filter(list => list.id !== storeListId);
       setUserStoreLists(remainingLists);
 
