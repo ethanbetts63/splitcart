@@ -25,6 +25,8 @@ export interface CartContextType {
   updateItemQuantity: (itemId: string, quantity: number) => void;
   removeItem: (itemId: string) => void;
   optimizeCurrentCart: () => Promise<ApiResponse | null>;
+  emailCurrentCart: (exportData: any) => Promise<void>;
+  downloadCurrentCart: (exportData: any) => Promise<Blob | null>;
   updateCartItemSubstitution: (cartItemId: string, substitutionId: string, isApproved: boolean, quantity: number) => void;
   removeCartItemSubstitution: (cartItemId: string, substitutionId: string) => void;
 }
@@ -207,6 +209,32 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const emailCurrentCart = async (exportData: any) => {
+    try {
+      await cartApi.emailCart(apiClient, exportData);
+      toast.success("Email Sent!", {
+        description: "Your shopping list has been sent to your email.",
+      });
+    } catch (err: any) {
+      toast.error("Error Sending Email", {
+        description: err.message,
+      });
+      throw err; // Re-throw to be caught in the component
+    }
+  };
+
+  const downloadCurrentCart = async (exportData: any): Promise<Blob | null> => {
+    try {
+      const blob = await cartApi.downloadCart(apiClient, exportData);
+      return blob;
+    } catch (err: any) {
+      toast.error("Error Downloading PDF", {
+        description: err.message,
+      });
+      throw err; // Re-throw to be caught in the component
+    }
+  };
+
   const updateCartItemSubstitution = async (cartItemId: string, substitutionId: string, isApproved: boolean, quantity: number) => {
     if (!currentCart) return;
 
@@ -262,7 +290,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       <CartContext.Provider value={{
             currentCart, userCarts, optimizationResult, setOptimizationResult, cartLoading, isFetchingSubstitutions,
             fetchActiveCart, loadCart, createNewCart, renameCart, deleteCart,
-            addItem, updateItemQuantity, removeItem, optimizeCurrentCart,
+            addItem, updateItemQuantity, removeItem, optimizeCurrentCart, emailCurrentCart, downloadCurrentCart,
             updateCartItemSubstitution, removeCartItemSubstitution
         }}>
           {children}

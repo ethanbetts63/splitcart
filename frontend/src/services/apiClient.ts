@@ -96,6 +96,34 @@ export class ApiClient {
   delete<T>(url: string, signal?: AbortSignal): Promise<T> {
     return this.request<T>(url, { method: 'DELETE', signal });
   }
+
+  async postAndGetBlob(url: string, body: Record<string, any>): Promise<Blob> {
+    const headers = getAuthHeaders(this.token, this.anonymousId);
+    
+    const config: RequestInit = {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(body),
+    };
+
+    const response = await fetch(url, config);
+
+    if (!response.ok) {
+      let errorData: any = null;
+      try {
+        errorData = await response.json();
+      } catch (e) {
+        errorData = { message: response.statusText || 'Unknown error' };
+      }
+      throw new ApiError(
+        response.status,
+        errorData.detail || errorData.error || errorData.message || `API request failed with status ${response.status}`,
+        errorData
+      );
+    }
+
+    return response.blob();
+  }
 }
 
 // Helper to create an API client instance

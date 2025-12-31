@@ -37,6 +37,7 @@ const StoreListContext = createContext<StoreListContextType | undefined>(undefin
 // --- Provider Component ---
 export const StoreListProvider = ({ children }: { children: ReactNode }) => {
   const { token, anonymousId, isLoading: isAuthLoading } = useAuth();
+  const apiClient = useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
 
   // --- State Definitions ---
   const [selectedStoreIds, setSelectedStoreIds] = useState<Set<number>>(() => new Set<number>());
@@ -53,12 +54,11 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
   // Fetch initial data on mount
   useEffect(() => {
     const fetchInitialData = async () => {
-      // Don't fetch until auth state is resolved
       if (isAuthLoading) return;
 
       setStoreListLoading(true);
       try {
-        const activeData = await fetchActiveStoreListDataAPI(token, anonymousId);
+        const activeData = await fetchActiveStoreListDataAPI(apiClient);
         const storeList = activeData.store_list;
         
         if (storeList) {
@@ -71,8 +71,6 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
         setAnchorStoreMap(activeData.anchor_map ?? null);
 
       } catch (error: any) {
-        // If no active list is found (404), it's not a critical error.
-        // The user will be prompted to create one or select stores.
         if (error instanceof ApiError && error.statusCode === 404) {
           setCurrentStoreListId(null);
           setSelectedStoreIds(new Set());
@@ -87,12 +85,14 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     };
 
     fetchInitialData();
-  }, [token, anonymousId, isAuthLoading]);
+  }, [apiClient, isAuthLoading]);
 
 
   // Autosave store selection
   useEffect(() => {
-    // Do not save if the list is still loading or if there's no list id
+    // This effect should ideally be refactored to be more explicit,
+    // perhaps with a "dirty" flag, but for now we keep the logic.
+    // A simple guard against running on initial load or when no list is active.
     if (storeListLoading || !currentStoreListId) {
       return;
     }
@@ -119,7 +119,7 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     setStoreListLoading(true);
     setStoreListError(null);
     try {
-      const data = await loadStoreListAPI(storeListId, token, anonymousId);
+      const data = await loadStoreListAPI(apiClient, storeListId);
       setCurrentStoreListId(data.id);
       setCurrentStoreListName(data.name);
       setSelectedStoreIds(new Set(data.stores));
@@ -129,14 +129,13 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setStoreListLoading(false);
     }
-  }, [token, anonymousId]);
+  }, [apiClient]);
 
   const createNewStoreList = useCallback(async (storeIds: number[]) => {
     setStoreListLoading(true);
     setStoreListError(null);
     try {
-      const data = await createNewStoreListAPI(storeIds, token, anonymousId);
-      // Set the new list as active and add it to the list array
+      const data = await createNewStoreListAPI(apiClient, storeIds);
       setCurrentStoreListId(data.id);
       setCurrentStoreListName(data.name);
       setSelectedStoreIds(new Set(data.stores));
@@ -147,13 +146,10 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setStoreListLoading(false);
     }
-  }, [token, anonymousId]);
+  }, [apiClient]);
 
   const saveStoreList = useCallback(async (name: string, storeIds: number[]) => {
-    // If there's no ID, it means we're still in the initial loading phase
-    // or a list hasn't been created yet. The first selection should trigger a create.
     if (!currentStoreListId) {
-        // Only create if there are stores to add, to avoid creating empty lists on init
         if (storeIds.length > 0) {
             await createNewStoreList(storeIds);
         }
@@ -163,33 +159,30 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     setStoreListLoading(true);
     setStoreListError(null);
     try {
-      const data = await saveStoreListAPI(currentStoreListId, name, storeIds, token, anonymousId);
+      const data = await saveStoreListAPI(apiClient, currentStoreListId, name, storeIds);
       setCurrentStoreListName(data.name);
       setIsUserDefinedList(data.is_user_defined);
-      // Update the specific list in the userStoreLists array
       setUserStoreLists(prev => prev.map(list => list.id === data.id ? data : list));
     } catch (err: any) {
       setStoreListError(err.message);
     } finally {
       setStoreListLoading(false);
     }
-  }, [currentStoreListId, token, anonymousId, createNewStoreList]);
+  }, [apiClient, currentStoreListId, createNewStoreList]);
 
   const deleteStoreList = useCallback(async (storeListId: string) => {
     setStoreListLoading(true);
     setStoreListError(null);
     try {
-      await deleteStoreListAPI(storeListId, token, anonymousId);
+      await deleteStoreListAPI(apiClient, storeListId);
       const remainingLists = userStoreLists.filter(list => list.id !== storeListId);
       setUserStoreLists(remainingLists);
 
-      // If the deleted list was the active one, load the most recent of the remaining lists
       if (currentStoreListId === storeListId) {
         if (remainingLists.length > 0) {
           const nextActiveList = remainingLists.sort((a, b) => new Date(b.last_used_at).getTime() - new Date(a.last_used_at).getTime())[0];
           await loadStoreList(nextActiveList.id);
         } else {
-          // If no lists remain, create a new default one
           await createNewStoreList([]);
         }
       }
@@ -198,7 +191,7 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setStoreListLoading(false);
     }
-  }, [currentStoreListId, token, anonymousId, userStoreLists, loadStoreList, createNewStoreList]);
+  }, [apiClient, currentStoreListId, userStoreLists, loadStoreList, createNewStoreList]);
 
   // The fetchActiveStoreList function is no longer needed in the public context
   const contextValue = {

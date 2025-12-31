@@ -31,7 +31,6 @@ export const createNewCart = (apiClient: ApiClient): Promise<Cart> => {
 
 /**
  * Renames a specific cart.
- * Note: Corrected URL from '/api/cart/rename/' to '/api/carts/rename/'.
  */
 export const renameCart = (apiClient: ApiClient, cartId: string, newName: string): Promise<Cart> => {
     return apiClient.post<Cart>('/api/carts/rename/', { cart_id: cartId, new_name: newName });
@@ -60,54 +59,19 @@ export const optimizeCart = (apiClient: ApiClient, cartId: string): Promise<ApiR
 
 /**
  * Emails the cart/shopping list to the user.
- * Note: This uses raw fetch as it requires specific header handling not in the generic apiClient.
  */
-export const emailCart = async (exportData: ExportData, token: string | null): Promise<any> => {
-  if (!token) {
-    throw new Error("Authentication token is required to email the shopping list.");
+export const emailCart = (apiClient: ApiClient, exportData: ExportData): Promise<any> => {
+  if (!apiClient.isAuthenticated()) {
+    return Promise.reject(new Error("Authentication is required to email the shopping list."));
   }
-
-  const response = await fetch('/api/cart/email-list/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Token ${token}`
-    },
-    body: JSON.stringify(exportData),
-  });
-
-  const resData = await response.json();
-
-  if (!response.ok) {
-    throw new Error(resData.error || `Server returned an unexpected error (${response.status}).`);
-  }
-
-  return resData;
+  // Note: URL is inconsistent, but we are just refactoring the call mechanism for now.
+  return apiClient.post<any>('/api/cart/email-list/', exportData);
 };
 
 /**
  * Generates and downloads a PDF of the cart/shopping list.
- * Note: This uses raw fetch to handle the blob response for the PDF file.
  */
-export const downloadCart = async (exportData: ExportData): Promise<Blob> => {
-  const response = await fetch('/api/cart/download-list/', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(exportData),
-  });
-
-  if (!response.ok) {
-    const contentType = response.headers.get("content-type");
-    let errorMessage = 'Failed to generate PDF.';
-    if (contentType && contentType.indexOf("application/json") !== -1) {
-        const errorData = await response.json();
-        errorMessage = errorData.error || errorMessage;
-    } else {
-        errorMessage = `Server returned an unexpected error (${response.status}).`;
-    }
-    throw new Error(errorMessage);
-  }
-
-  const blob = await response.blob();
-  return blob;
+export const downloadCart = (apiClient: ApiClient, exportData: ExportData): Promise<Blob> => {
+  // Note: URL is inconsistent, but we are just refactoring the call mechanism for now.
+  return apiClient.postAndGetBlob('/api/cart/download-list/', exportData);
 };
