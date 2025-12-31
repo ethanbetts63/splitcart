@@ -1,10 +1,10 @@
 import type { ApiResponse, ExportData } from '../types';
 
 export const optimizeCartAPI = async (cartId: string): Promise<ApiResponse> => {
-  const response = await fetch('/api/cart/split/', {
+  const response = await fetch(`/api/carts/${cartId}/optimize/`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ cart_id: cartId }),
+    body: JSON.stringify({}),
   });
 
   if (!response.ok) {
