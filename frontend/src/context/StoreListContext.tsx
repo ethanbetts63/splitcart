@@ -3,7 +3,6 @@ import { useAuth } from './AuthContext';
 import { type SelectedStoreListType } from '../types';
 import * as storeListApi from '../services/storeList.api';
 import { createApiClient, ApiError } from '../services/apiClient';
-import { useCart } from './CartContext';
 
 // Type for the anchor map
 export type AnchorMap = { [storeId: number]: number };
@@ -39,7 +38,6 @@ const StoreListContext = createContext<StoreListContextType | undefined>(undefin
 export const StoreListProvider = ({ children }: { children: ReactNode }) => {
   const { token, anonymousId, isLoading: isAuthLoading } = useAuth();
   const apiClient = useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
-  const { updateCartStoreList } = useCart();
 
   // --- State Definitions ---
   const [selectedStoreIds, setSelectedStoreIds] = useState<Set<number>>(() => new Set<number>());
@@ -69,7 +67,6 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
             setCurrentStoreListName(storeList.name);
             setIsUserDefinedList(storeList.is_user_defined);
             setSelectedStoreIds(new Set(storeList.stores));
-            updateCartStoreList(storeList.id);
         }
         setAnchorStoreMap(activeData.anchor_map ?? null);
 
@@ -127,13 +124,12 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
       setCurrentStoreListName(data.name);
       setSelectedStoreIds(new Set(data.stores));
       setIsUserDefinedList(data.is_user_defined);
-      updateCartStoreList(data.id);
     } catch (err: any) {
       setStoreListError(err.message);
     } finally {
       setStoreListLoading(false);
     }
-  }, [apiClient, updateCartStoreList]);
+  }, [apiClient]);
 
   const createNewStoreList = useCallback(async (storeIds: number[]) => {
     setStoreListLoading(true);
@@ -145,13 +141,12 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
       setSelectedStoreIds(new Set(data.stores));
       setIsUserDefinedList(data.is_user_defined);
       setUserStoreLists(prevLists => [...prevLists, data]);
-      updateCartStoreList(data.id);
     } catch (err: any) {
       setStoreListError(err.message);
     } finally {
       setStoreListLoading(false);
     }
-  }, [apiClient, updateCartStoreList]);
+  }, [apiClient]);
 
   const saveStoreList = useCallback(async (name: string, storeIds: number[]) => {
     if (!currentStoreListId) {

@@ -149,38 +149,6 @@ class CartViewSet(viewsets.ModelViewSet):
         except Cart.DoesNotExist:
             return Response({'error': 'Cart not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    @action(detail=False, methods=['post'], url_path='set-store-list')
-    def set_store_list(self, request, *args, **kwargs):
-        """
-        Associates a SelectedStoreList with a Cart.
-        """
-        cart_id = request.data.get('cart_id')
-        store_list_id = request.data.get('store_list_id')
-        if not cart_id or not store_list_id:
-            return Response({'error': 'cart_id and store_list_id are required'}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            cart = self.get_queryset().get(pk=cart_id)
-            
-            # Security check: Ensure the store list belongs to the user or is anonymous
-            store_list_qs = SelectedStoreList.objects.all()
-            if request.user.is_authenticated:
-                store_list_qs = store_list_qs.filter(user=request.user)
-            elif hasattr(request, 'anonymous_id'):
-                store_list_qs = store_list_qs.filter(anonymous_id=request.anonymous_id)
-            else:
-                return Response({"detail": "Authentication or anonymous ID required."}, status=status.HTTP_403_FORBIDDEN)
-            
-            store_list = store_list_qs.get(pk=store_list_id)
-
-            cart.selected_store_list = store_list
-            cart.save(update_fields=['selected_store_list'])
-            return Response(self.get_serializer(cart).data, status=status.HTTP_200_OK)
-        except Cart.DoesNotExist:
-            return Response({'error': 'Cart not found'}, status=status.HTTP_404_NOT_FOUND)
-        except SelectedStoreList.DoesNotExist:
-            return Response({'error': 'Store list not found'}, status=status.HTTP_404_NOT_FOUND)
-
     @action(detail=False, methods=['post'], url_path='sync')
     def sync(self, request, *args, **kwargs):
         """
@@ -251,7 +219,26 @@ class CartViewSet(viewsets.ModelViewSet):
     def optimize(self, request, *args, **kwargs):
         """
         Performs optimization on a specific cart by calling the optimization utility.
+        The store list for optimization is passed directly in the request body.
         """
         cart_obj = self.get_object()
+        store_list_id = request.data.get('selected_store_list_id')
+        if not store_list_id:
+            return Response({'error': 'selected_store_list_id is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Security check: Ensure the store list belongs to the user or is anonymous
+            store_list_qs = SelectedStoreList.objects.all()
+            if request.user.is_authenticated:
+                store_list_qs = store_list_qs.filter(user=request.user)
+            elif hasattr(request, 'anonymous_id'):
+                store_list_qs = store_list_qs.filter(anonymous_id=request.anonymous_id)
+            else:
+                return Response({"detail": "Authentication or anonymous ID required."}, status=status.HTTP_403_FORBIDDEN)
+            
+            store_list = store_list_qs.get(pk=store_list_id)
+        except SelectedStoreList.DoesNotExist:
+            return Response({'error': 'Store list not found'}, status=status.HTTP_404_NOT_FOUND)
+
         max_stores_options = request.data.get('max_stores_options', [2, 3, 4])
-        return run_cart_optimization(cart_obj, max_stores_options)
+        return run_cart_optimization(cart_obj, store_list, max_stores_options)

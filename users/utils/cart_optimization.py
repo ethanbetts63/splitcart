@@ -5,16 +5,16 @@ from data_management.utils.cart_optimization import calculate_optimized_cost, ca
 from products.utils.get_pricing_stores import get_pricing_stores_map
 from users.models import Cart
 
-def run_cart_optimization(cart_obj, max_stores_options):
+def run_cart_optimization(cart_obj, store_list, max_stores_options):
     """
     Performs optimization on a specific cart and returns a Response object.
     """
-    if not cart_obj.selected_store_list:
-        return Response({'error': 'Cart has no associated store list.'}, status=status.HTTP_400_BAD_REQUEST)
+    if not store_list:
+        return Response({'error': 'A store list is required for optimization.'}, status=status.HTTP_400_BAD_REQUEST)
 
-    store_ids = list(cart_obj.selected_store_list.stores.values_list('id', flat=True))
+    store_ids = list(store_list.stores.values_list('id', flat=True))
     if not store_ids:
-        return Response({'error': 'No stores selected in the cart\'s store list.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'No stores selected in the provided store list.'}, status=status.HTTP_400_BAD_REQUEST)
 
     # Get the correct stores for pricing, including fallbacks to national anchors
     pricing_map = get_pricing_stores_map(store_ids)
