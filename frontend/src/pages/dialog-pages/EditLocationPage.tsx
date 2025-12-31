@@ -16,16 +16,6 @@ import {
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { PlusCircle, Save, Trash2, Pencil } from 'lucide-react'; // Icons for actions
-import { type AnchorMap } from '../../context/StoreListContext';
-
-// Define the type for a single store from the API
-type ApiStore = {
-  id: number;
-  store_name: string;
-  company_name: string;
-  latitude: number;
-  longitude: number;
-};
 
 import { useStoreSearch } from '../../context/StoreSearchContext';
 import { useStoreList } from '../../context/StoreListContext';
@@ -43,8 +33,11 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
     postcode, setPostcode,
     radius, setRadius,
     selectedCompanies, setSelectedCompanies,
-    mapBounds, setMapBounds,
-    stores, setStores
+    mapBounds,
+    stores,
+    isLoading,
+    error,
+    handleSearch,
   } = useStoreSearch();
 
   const {
@@ -54,12 +47,8 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
     userStoreLists,
     storeListLoading,
     loadStoreList, saveStoreList, createNewStoreList, deleteStoreList,
-    setAnchorStoreMap
   } = useStoreList();
 
-  // State for loading and error, which is local to this page
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [isEditingListName, setIsEditingListName] = useState(false);
 
   useEffect(() => {
@@ -81,60 +70,14 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
     });
   }, [setLocalSelectedStoreIds]);
 
-  // --- API Fetching Logic ---
-  const handleSearch = useCallback(async () => {
-    if (!postcode || postcode.split(',').some(p => !/^\d{4}$/.test(p.trim()))) {
-      setError("Please enter valid 4-digit postcodes.");
-      return;
+  const onSearch = async () => {
+    const fetchedStores = await handleSearch();
+    if (fetchedStores) {
+        // When a new search is performed, update the local state directly
+        setLocalSelectedStoreIds(new Set(fetchedStores.map(store => store.id))); 
+        setHasSearchOccurred(true); // Set the flag here
     }
-    
-    setIsLoading(true);
-    setError(null);
-
-    const params = new URLSearchParams();
-    params.append('postcode', postcode);
-    params.append('radius', radius.toString());
-    if (selectedCompanies.length > 0) {
-      params.append('companies', selectedCompanies.join(','));
-    }
-
-    try {
-      const response = await fetch(`/api/stores/nearby/?${params.toString()}`);
-      if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.error || 'Failed to fetch stores.');
-      }
-      const data: { stores: ApiStore[], anchor_map: AnchorMap } = await response.json();
-      const fetchedStores = data.stores || [];
-      const fetchedAnchorMap = data.anchor_map || {};
-
-      setStores(fetchedStores);
-      setAnchorStoreMap(fetchedAnchorMap);
-
-      // When a new search is performed, update the local state directly
-      setLocalSelectedStoreIds(new Set(fetchedStores.map(store => store.id))); 
-      setHasSearchOccurred(true); // Set the flag here
-
-      // Calculate bounds of all stores to fit them in the map view
-      if (fetchedStores.length > 0) {
-        const bounds = fetchedStores.reduce((acc, store) => {
-          return [
-            [Math.min(acc[0][0], store.latitude), Math.min(acc[0][1], store.longitude)],
-            [Math.max(acc[1][0], store.latitude), Math.max(acc[1][1], store.longitude)],
-          ];
-        }, [[fetchedStores[0].latitude, fetchedStores[0].longitude], [fetchedStores[0].latitude, fetchedStores[0].longitude]]) as [[number, number], [number, number]];
-        setMapBounds(bounds);
-      } else {
-        setMapBounds(null); // Clear bounds if no results
-      }
-
-    } catch (err: any) {
-      setError(err.message);
-      setStores([]); // Set to empty array on error
-    } finally {
-      setIsLoading(false);
-    }
-  }, [postcode, radius, selectedCompanies, setStores, setLocalSelectedStoreIds, setMapBounds, setHasSearchOccurred, setAnchorStoreMap]);
+  }
 
 
 
@@ -254,7 +197,7 @@ const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreI
           selectedCompanies={selectedCompanies}
           onSelectionChange={setSelectedCompanies} 
         />
-        <Button onClick={handleSearch} disabled={isLoading} className="w-full">{isLoading ? 'Searching...' : 'Search'}</Button>
+        <Button onClick={onSearch} disabled={isLoading} className="w-full">{isLoading ? 'Searching...' : 'Search'}</Button>
         {localSelectedStoreIds.size > 0 && (
           <Button onClick={() => onOpenChange(false)} className="w-full bg-green-500 hover:bg-green-600">Done</Button>
         )}

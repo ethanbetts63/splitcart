@@ -1,5 +1,9 @@
-import React, { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, useState, type ReactNode, useEffect, useCallback, useMemo } from 'react';
+import { useAuth } from './AuthContext';
+import { createApiClient } from '../services/apiClient';
+import { searchNearbyStoresAPI } from '../services/store.api';
 import { companyNames } from '../lib/companies';
+import { useStoreList } from './StoreListContext'; // To set anchor map
 
 // --- Type Definitions ---
 type Store = {
@@ -23,6 +27,9 @@ interface StoreSearchContextType {
   setSelectedCompanies: React.Dispatch<React.SetStateAction<string[]>>;
   mapBounds: MapBounds;
   setMapBounds: React.Dispatch<React.SetStateAction<MapBounds>>;
+  isLoading: boolean;
+  error: string | null;
+  handleSearch: () => Promise<Store[] | null>;
 }
 
 // --- Context Creation ---
@@ -30,6 +37,10 @@ const StoreSearchContext = createContext<StoreSearchContextType | undefined>(und
 
 // --- Provider Component ---
 export const StoreSearchProvider = ({ children }: { children: ReactNode }) => {
+  const { token, anonymousId } = useAuth();
+  const { setAnchorStoreMap } = useStoreList();
+  const apiClient = useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
+
   const [stores, setStores] = useState<Store[] | null>(() => {
     const saved = sessionStorage.getItem('stores');
     return saved ? JSON.parse(saved) : null;
@@ -67,6 +78,47 @@ export const StoreSearchProvider = ({ children }: { children: ReactNode }) => {
   }, [selectedCompanies]);
 
   const [mapBounds, setMapBounds] = useState<MapBounds>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSearch = useCallback(async (): Promise<Store[] | null> => {
+    if (!postcode || postcode.split(',').some(p => !/^\d{4}$/.test(p.trim()))) {
+      setError("Please enter valid 4-digit postcodes.");
+      return null;
+    }
+    
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const data = await searchNearbyStoresAPI(apiClient, { postcode, radius, companies: selectedCompanies });
+      const fetchedStores = data.stores || [];
+      const fetchedAnchorMap = data.anchor_map || {};
+
+      setStores(fetchedStores);
+      setAnchorStoreMap(fetchedAnchorMap);
+
+      if (fetchedStores.length > 0) {
+        const bounds = fetchedStores.reduce((acc, store) => {
+          return [
+            [Math.min(acc[0][0], store.latitude), Math.min(acc[0][1], store.longitude)],
+            [Math.max(acc[1][0], store.latitude), Math.max(acc[1][1], store.longitude)],
+          ];
+        }, [[fetchedStores[0].latitude, fetchedStores[0].longitude], [fetchedStores[0].latitude, fetchedStores[0].longitude]]) as [[number, number], [number, number]];
+        setMapBounds(bounds);
+      } else {
+        setMapBounds(null);
+      }
+      return fetchedStores;
+
+    } catch (err: any) {
+      setError(err.message);
+      setStores([]);
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [apiClient, postcode, radius, selectedCompanies, setStores, setAnchorStoreMap, setMapBounds]);
 
   return (
     <StoreSearchContext.Provider value={{
@@ -79,7 +131,10 @@ export const StoreSearchProvider = ({ children }: { children: ReactNode }) => {
       selectedCompanies,
       setSelectedCompanies,
       mapBounds,
-      setMapBounds
+      setMapBounds,
+      isLoading,
+      error,
+      handleSearch
     }}>
       {children}
     </StoreSearchContext.Provider>

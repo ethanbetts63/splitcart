@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -7,6 +7,8 @@ import {
 } from "./ui/accordion";
 import { useAuth } from '../context/AuthContext';
 import { Card, CardContent } from "./ui/card";
+import { createApiClient } from '../services/apiClient';
+import { fetchFaqsAPI } from '../services/faq.api';
 
 interface FaqItem {
   question: string;
@@ -26,23 +28,16 @@ export const FAQ: React.FC<FaqProps> = ({ title, page, imageSrc, imageAlt, srcSe
   const [faqs, setFaqs] = useState<FaqItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { token } = useAuth();
+  const { token, anonymousId } = useAuth();
+
+  const apiClient = useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
 
   useEffect(() => {
     const fetchFaqs = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        const headers: HeadersInit = {};
-        if (token) {
-          headers['Authorization'] = `Token ${token}`;
-        }
-
-        const response = await fetch(`/api/faqs/?page=${page}`, { headers });
-        if (!response.ok) {
-          throw new Error('Failed to fetch FAQs');
-        }
-        const data: FaqItem[] = await response.json();
+        const data = await fetchFaqsAPI(apiClient, page);
         setFaqs(data);
       } catch (err: any) {
         setError(err.message);
@@ -52,7 +47,7 @@ export const FAQ: React.FC<FaqProps> = ({ title, page, imageSrc, imageAlt, srcSe
     };
 
     fetchFaqs();
-  }, [page, token]);
+  }, [page, apiClient]);
 
   const generateJsonLd = () => {
     if (!faqs.length) {
