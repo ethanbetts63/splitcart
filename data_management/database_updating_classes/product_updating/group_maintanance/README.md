@@ -1,22 +1,22 @@
-### Grouping and Maintenance Strategy
+# Grouping and Maintenance Strategy
 
 This document outlines the "bottom-up" strategy for creating and maintaining store groups based on price matching.
 
-#### 1. Core Philosophy & Terminology
+### 1. Core Philosophy & Terminology
 
 The system is designed around a "bottom-up" approach. Every store always belongs to a group, starting in a group of one. Groups are then merged as price matches are confirmed.
 
 *   **Group:** A set of one or more stores confirmed to have matching prices.
-*   **Anchor:** Each `Group` has one `Anchor` store. This store is the single "source of truth" for the group's prices. All comparisons are made against the `Anchor`. The Anchor can never be ejected. 
+*   **Anchor:** Each `Group` has one `Anchor` store. This store is the single "source of truth" for the group's prices. All comparisons are made against the `Anchor`. The Anchor can never be ejected.
 *   **Member:** Any store belonging to a `Group`.
 *   **Current Pricing:** For the purpose of internal group health checks (ejections), price data is considered "Current" if it was scraped within the last 7 days. This is a critical rule to ensure comparisons are "apples-to-apples" before breaking up an established group. This rule does not apply to the merging of different groups.
-*   **Scrape Scheduling: The scrape schedular does not know anything about group merging. It first checks for stores that have never been scraped, then it checks for stores that have been flagged, then if neither of those checks are fruitful it picks the store with the most stale data. 
+*   **Scrape Scheduling:** The scrape scheduler does not know anything about group merging. It first checks for stores that have never been scraped, then it checks for stores that have been flagged, then if neither of those checks are fruitful it picks the store with the most stale data.
 
-#### 2. Initial State: The `cluster_stores` Command
+### 2. Initial State: The `cluster_stores` Command
 
 The system is initialized using a simplified `cluster_stores` command. This command will first delete all existing `StoreGroup` objects. Then, it will iterate through every `Store` in the database and create a new, dedicated `StoreGroup` for each one, setting that store as its own `Anchor`.
 
-#### 3. The Update & Comparison Cycle
+### 3. The Update & Comparison Cycle
 
 The core logic is executed at the end of the `update --products` command, after all new prices for the run have been saved. The process is split into two distinct phases:
 
@@ -37,10 +37,10 @@ This phase ensures that existing groups remain accurate.
 This phase grows the groups by finding new matches.
 
 1.  After the maintenance phase is complete, the system finds all `Groups` whose `Anchor` has any price data at all, regardless of its age.
-2. An **Intergroup Comparison** is performed, comparing every `Anchor` against every other `Anchor` within the same company.
+2.  An **Intergroup Comparison** is performed, comparing every `Anchor` against every other `Anchor` within the same company.
 3.  If two `Anchor`s are found to have matching prices, their `Groups` are merged. The `Group` with fewer members is merged into the one with more members. When this happens, all `Price` objects for all stores in the smaller group are deleted. The old, smaller group is then deactivated.
 
-#### 4. Caching for Performance
+### 4. Caching for Performance
 
 To prevent redundant, expensive price comparisons on every run, the system utilizes two caching mechanisms, both with a 7-day cooldown period.
 
@@ -50,9 +50,10 @@ To prevent redundant, expensive price comparisons on every run, the system utili
 
 *   **In-Memory Price Data Pre-fetching:** To further optimize performance, relevant price data for all stores involved in a comparison pass (for inter-group merging) or within a specific group (for internal health checks) is now fetched into an in-memory cache at the beginning of the process. This eliminates repeated database queries during the comparison loops, allowing the `PriceComparer` to operate on fast, in-memory data.
 
-C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\internal_group_health_checker.py
-C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\group_maintenance_orchestrator.py
-C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\intergroup_comparer.py
-C:\Users\ethan\coding\splitcart\companies\models\store_group.py
-C:\Users\ethan\coding\splitcart\companies\models\store_group_membership.py
-C:\Users\ethan\coding\splitcart\companies\models\store.py
+### Related Files:
+- C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\internal_group_health_checker.py
+- C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\group_maintenance_orchestrator.py
+- C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\intergroup_comparer.py
+- C:\Users\ethan\coding\splitcart\companies\models\store_group.py
+- C:\Users\ethan\coding\splitcart\companies\models\store_group_membership.py
+- C:\Users\ethan\coding\splitcart\companies\models\store.py

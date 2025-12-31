@@ -149,6 +149,38 @@ class CartViewSet(viewsets.ModelViewSet):
         except Cart.DoesNotExist:
             return Response({'error': 'Cart not found'}, status=status.HTTP_404_NOT_FOUND)
 
+    @action(detail=False, methods=['post'], url_path='set-store-list')
+    def set_store_list(self, request, *args, **kwargs):
+        """
+        Associates a SelectedStoreList with a Cart.
+        """
+        cart_id = request.data.get('cart_id')
+        store_list_id = request.data.get('store_list_id')
+        if not cart_id or not store_list_id:
+            return Response({'error': 'cart_id and store_list_id are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            cart = self.get_queryset().get(pk=cart_id)
+            
+            # Security check: Ensure the store list belongs to the user or is anonymous
+            store_list_qs = SelectedStoreList.objects.all()
+            if request.user.is_authenticated:
+                store_list_qs = store_list_qs.filter(user=request.user)
+            elif hasattr(request, 'anonymous_id'):
+                store_list_qs = store_list_qs.filter(anonymous_id=request.anonymous_id)
+            else:
+                return Response({"detail": "Authentication or anonymous ID required."}, status=status.HTTP_403_FORBIDDEN)
+            
+            store_list = store_list_qs.get(pk=store_list_id)
+
+            cart.selected_store_list = store_list
+            cart.save(update_fields=['selected_store_list'])
+            return Response(self.get_serializer(cart).data, status=status.HTTP_200_OK)
+        except Cart.DoesNotExist:
+            return Response({'error': 'Cart not found'}, status=status.HTTP_404_NOT_FOUND)
+        except SelectedStoreList.DoesNotExist:
+            return Response({'error': 'Store list not found'}, status=status.HTTP_404_NOT_FOUND)
+
     @action(detail=False, methods=['post'], url_path='sync')
     def sync(self, request, *args, **kwargs):
         """

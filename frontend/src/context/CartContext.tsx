@@ -29,6 +29,7 @@ export interface CartContextType {
   downloadCurrentCart: (exportData: any) => Promise<Blob | null>;
   updateCartItemSubstitution: (cartItemId: string, substitutionId: string, isApproved: boolean, quantity: number) => void;
   removeCartItemSubstitution: (cartItemId: string, substitutionId: string) => void;
+  updateCartStoreList: (storeListId: string) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -302,12 +303,25 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const updateCartStoreList = async (storeListId: string) => {
+    if (!currentCart) {
+      console.warn("Cannot associate store list because there is no active cart.");
+      return;
+    }
+    try {
+      const updatedCart = await cartApi.updateCartStoreList(apiClient, currentCart.id, storeListId);
+      setCurrentCart(updatedCart);
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to associate store list with cart.');
+    }
+  };
+
   return (
       <CartContext.Provider value={{
             currentCart, userCarts, optimizationResult, setOptimizationResult, cartLoading, isFetchingSubstitutions,
             fetchActiveCart, loadCart, createNewCart, renameCart, deleteCart,
             addItem, updateItemQuantity, removeItem, optimizeCurrentCart, emailCurrentCart, downloadCurrentCart,
-            updateCartItemSubstitution, removeCartItemSubstitution
+            updateCartItemSubstitution, removeCartItemSubstitution, updateCartStoreList
         }}>
           {children}
         </CartContext.Provider>  );

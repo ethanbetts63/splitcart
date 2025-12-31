@@ -1,6 +1,6 @@
-# Product Update V2 - Refactoring Plan (v9)
+# Product Update V2 - Refactoring Plan
 
-This plan is designed around three core goals:
+This document outlines the architecture of the `update --products` process, which is designed around three core goals:
 1.  **Clarity and Simplicity**: Each "Manager" class has a clear, single responsibility for its data domain (e.g., Brands, Products).
 2.  **Speed**: Minimize database lookups through smart, shared caching and use bulk operations for all database writes.
 3.  **Encapsulation**: Each Manager handles its own logic end-to-end, from data processing to database persistence.
@@ -102,4 +102,3 @@ After all inbox files are processed, the `UpdateOrchestrator` executes a series 
 - **Purpose**: This is the final step. It runs a two-phase process to ensure the health of `StoreGroup` entities.
 - **Phase 1 (Internal Health Check)**: Compares member stores to their group's anchor store and ejects any that no longer match.
 - **Phase 2 (Inter-Group Merging)**: Compares the anchors of different groups and merges any groups that are found to be identical.
-

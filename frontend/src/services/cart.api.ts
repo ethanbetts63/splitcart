@@ -51,6 +51,13 @@ export const switchActiveCart = (apiClient: ApiClient, cartId: string): Promise<
 };
 
 /**
+ * Associates a store list with the active cart.
+ */
+export const updateCartStoreList = (apiClient: ApiClient, cartId: string, storeListId: string): Promise<Cart> => {
+  return apiClient.post<Cart>('/api/carts/set-store-list/', { cart_id: cartId, store_list_id: storeListId });
+};
+
+/**
  * Runs optimization on a specific cart.
  */
 export const optimizeCart = (apiClient: ApiClient, cartId: string, storeListId: string): Promise<ApiResponse> => {
