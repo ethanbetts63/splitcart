@@ -72,7 +72,10 @@ class SelectedStoreListViewSet(viewsets.ModelViewSet):
         store_list = self.get_queryset().order_by('-last_used_at').first()
 
         if not store_list:
-            return Response({"detail": "No active store list found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({
+                'store_list': None,
+                'anchor_map': None
+            }, status=status.HTTP_200_OK)
 
         store_ids = list(store_list.stores.values_list('id', flat=True))
         anchor_map = get_pricing_stores_map(store_ids)

@@ -62,23 +62,25 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
         const storeList = activeData.store_list;
         
         if (storeList) {
+            // Case for existing user with an active list
             setUserStoreLists([storeList]);
             setCurrentStoreListId(storeList.id);
             setCurrentStoreListName(storeList.name);
             setIsUserDefinedList(storeList.is_user_defined);
             setSelectedStoreIds(new Set(storeList.stores));
+        } else {
+            // Case for new user with no active list
+            setCurrentStoreListId(null);
+            setSelectedStoreIds(new Set());
+            // userStoreLists is already an empty array, so no need to set
         }
+        
         setAnchorStoreMap(activeData.anchor_map ?? null);
 
       } catch (error: any) {
-        if (error instanceof ApiError && error.statusCode === 404) {
-          setCurrentStoreListId(null);
-          setSelectedStoreIds(new Set());
-          setAnchorStoreMap(null);
-        } else {
-          console.error("Failed to fetch initial store list data:", error);
-          setStoreListError("Could not load initial store data.");
-        }
+        // The 404 case is now handled above, so we only log other, unexpected errors.
+        console.error("Failed to fetch initial store list data:", error);
+        setStoreListError("Could not load initial store data.");
       } finally {
         setStoreListLoading(false);
       }
