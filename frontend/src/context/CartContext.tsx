@@ -232,7 +232,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     try {
-      await apiClient.patch(`/api/cart-items/${cartItemId}/substitutions/${substitutionId}/`, { is_approved: isApproved, quantity: quantity });
+      const url = `/api/carts/${currentCart.id}/items/${cartItemId}/substitutions/${substitutionId}/`;
+      await apiClient.patch(url, { is_approved: isApproved, quantity: quantity });
+      // We don't call debouncedSync here because this is not a cart item quantity change,
+      // but a change to a sub-item. The backend manager handles the logic.
+      // A full fetch might be warranted if the backend logic is complex. For now, we rely on the optimistic update.
     } catch (error: any) {
       toast.error(error.message || 'Failed to update substitution. Please try again.');
       // Revert the optimistic update on failure
@@ -241,9 +245,14 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const removeCartItemSubstitution = async (cartItemId: string, substitutionId: string) => {
+    if (!currentCart) return;
+    
+    // It's safer to just refetch the cart after a deletion for now.
+    // Optimistic deletion can be complex if other logic depends on the item.
     try {
-      await apiClient.delete(`/api/cart-items/${cartItemId}/substitutions/${substitutionId}/`);
-      fetchActiveCart(); // Refresh cart
+      const url = `/api/carts/${currentCart.id}/items/${cartItemId}/substitutions/${substitutionId}/`;
+      await apiClient.delete(url);
+      fetchActiveCart(); // Refresh cart to ensure consistency
     } catch (error: any) {
       toast.error(error.message || 'Failed to remove substitution.');
     }
