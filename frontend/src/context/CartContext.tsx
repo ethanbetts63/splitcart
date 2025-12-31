@@ -3,6 +3,7 @@ import { useAuth } from './AuthContext';
 import { toast } from 'sonner';
 import type { Cart, ApiResponse } from '../types';
 import { createApiClient, ApiError } from '../services/apiClient';
+import { debounce } from '../lib/utils';
 
 // Types
 
@@ -34,9 +35,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [userCarts, setUserCarts] = useState<Cart[]>([]);
   const [optimizationResult, setOptimizationResult] = useState<ApiResponse | null>(null);
   const [cartLoading, setCartLoading] = useState(true);
-    const [isFetchingSubstitutions, setIsFetchingSubstitutions] = useState(false); // Initialize new state
+  const [isFetchingSubstitutions, setIsFetchingSubstitutions] = useState(false); // Initialize new state
   
-    const apiClient = useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
+  const apiClient = useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
   
   const fetchActiveCart = useCallback(async (): Promise<Cart | null> => {
     setCartLoading(true);
@@ -57,6 +58,33 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCartLoading(false);
     }
   }, [apiClient]);
+
+  // Debounced sync function
+  const debouncedSync = useCallback(
+    debounce(async (cartToSync: Cart) => {
+      try {
+        const updatedCart = await apiClient.post<Cart>('/api/carts/sync/', {
+          cart_id: cartToSync.id,
+          items: cartToSync.items.map(item => ({
+            product_id: item.product.id,
+            quantity: item.quantity,
+          })),
+        });
+        // Silently update the state with the authoritative response from the server.
+        // This ensures our client state matches the saved server state.
+        setCurrentCart(updatedCart);
+      } catch (error) {
+        toast.error("Failed to sync cart with server. Attempting to restore.");
+        // If sync fails, the optimistic UI is now out of sync.
+        // The safest recovery is to re-fetch the last known good state from the server.
+        fetchActiveCart();
+      } finally {
+        setIsFetchingSubstitutions(false); // We can consider the "sync" process to be complete here
+      }
+    }, 1500), // 1.5-second debounce delay
+    [apiClient, fetchActiveCart]
+  );
+
 
   // Fetch initial data
   useEffect(() => {
@@ -123,43 +151,27 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const addItem = async (productId: number, quantity: number, product: any) => {
     setIsFetchingSubstitutions(true);
     
-    // Use a variable to hold the cart state we'll be working with.
     let workingCart = currentCart;
-
-    // If there's no cart, fetch/create it first.
     if (!workingCart) {
-      try {
-        workingCart = await fetchActiveCart();
-        if (!workingCart) {
-          toast.error('Could not retrieve or create a cart.');
-          setIsFetchingSubstitutions(false);
-          return;
-        }
-      } catch (error) {
-          toast.error('Failed to get cart. Please try again.');
-          setIsFetchingSubstitutions(false);
-          return;
+      workingCart = await fetchActiveCart();
+      if (!workingCart) {
+        toast.error('Could not retrieve or create a cart.');
+        setIsFetchingSubstitutions(false);
+        return;
       }
     }
     
-    // Now we're sure workingCart is not null.
-    const cartId = workingCart.id;
-    const originalCartState = workingCart; // Save state for rollback.
-
-    // --- Optimistic Update ---
-    const tempId = `temp-${Date.now()}`;
+    // Optimistically update UI
     const existingItemIndex = workingCart.items.findIndex(item => item.product.id === productId);
-    let optimisticallyUpdatedCart;
+    let optimisticallyUpdatedCart: Cart;
 
     if (existingItemIndex > -1) {
-      // Item exists, update quantity
       const newItems = [...workingCart.items];
       newItems[existingItemIndex].quantity += quantity;
       optimisticallyUpdatedCart = { ...workingCart, items: newItems };
     } else {
-      // Item doesn't exist, add it
       const optimisticItem = {
-        id: tempId,
+        id: `temp-${Date.now()}`,
         product: { ...product, id: productId },
         quantity: quantity,
         substitutions: [],
@@ -168,66 +180,25 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     setCurrentCart(optimisticallyUpdatedCart);
-
-    try {
-      // Use the correct URL with the cart ID
-      const realCartItem = await apiClient.post<any>(`/api/carts/${cartId}/items/`, { product: productId, quantity });
-
-      // Replace the temporary item with the real one from the server.
-      setCurrentCart(prevCart => {
-        if (!prevCart) return null;
-        return {
-          ...prevCart,
-          items: prevCart.items.map(item => 
-            item.id === tempId ? realCartItem : item
-          ),
-        };
-      });
-
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to add item to cart. Please try again.');
-      // Revert on failure
-      setCurrentCart(originalCartState);
-    } finally {
-      setIsFetchingSubstitutions(false);
-    }
+    debouncedSync(optimisticallyUpdatedCart);
   };
 
   const updateItemQuantity = async (itemId: string, quantity: number) => {
     if (!currentCart) return;
+    setIsFetchingSubstitutions(true);
 
-    const originalCart = { ...currentCart, items: [...currentCart.items.map(i => ({...i}))] }; // Deep copy for rollback
-    let itemExists = false;
-
-    const newCart = {
+    const optimisticallyUpdatedCart = {
         ...currentCart,
-        items: currentCart.items.map(item => {
-            if (item.id === itemId) {
-                itemExists = true;
-                return { ...item, quantity };
-            }
-            return item;
-        }).filter(item => item.quantity > 0) // Also handle item removal if quantity is 0 or less
+        items: currentCart.items
+            .map(item => (item.id === itemId ? { ...item, quantity } : item))
+            .filter(item => item.quantity > 0)
     };
 
-    if (!itemExists) return; // Don't do anything if the item isn't in the cart
-
-    setCurrentCart(newCart);
-
-            try {
-                if (quantity > 0) {
-                    await apiClient.patch(`/api/carts/active/items/${itemId}/`, { quantity });
-                } else {
-                    await apiClient.delete(`/api/carts/active/items/${itemId}/`);
-                }
-            } catch (error: any) {
-                toast.error(error.message || 'Failed to update item. Please try again.');
-                // Revert the optimistic update on failure
-                setCurrentCart(originalCart);
-            }  };
+    setCurrentCart(optimisticallyUpdatedCart);
+    debouncedSync(optimisticallyUpdatedCart);
+  };
 
   const removeItem = (itemId: string) => {
-    // The optimistic logic is now handled by updateItemQuantity
     updateItemQuantity(itemId, 0);
   };
 
