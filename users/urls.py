@@ -4,8 +4,7 @@ from rest_framework_nested import routers
 from users.views.cart_viewset import CartViewSet
 from users.views.selected_store_list_viewset import SelectedStoreListViewSet
 from users.views.cart_item_viewset import CartItemViewSet
-from users.views.cart_substitution_viewset import CartSubstitutionViewSet 
-from users.views.cart_optimization_view import CartOptimizationView
+from users.views.cart_substitution_viewset import CartSubstitutionViewSet
 from .views.nearby_store_list_view import NearbyStoreListView
 
 # The main router includes the top-level resources
@@ -28,5 +27,4 @@ urlpatterns = [
     path('', include(carts_router.urls)),
     path('', include(cart_items_router.urls)), 
     path('stores/nearby/', NearbyStoreListView.as_view(), name='store-list'),
-    path('cart/optimize/', CartOptimizationView.as_view(), name='cart-optimize'),
 ]

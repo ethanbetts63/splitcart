@@ -10,6 +10,7 @@ from users.serializers.cart_serializer import CartSerializer
 from splitcart.permissions import IsAuthenticatedOrAnonymous
 from data_management.utils.cart_optimization.substitute_manager import SubstituteManager
 from users.utils.name_generator import generate_unique_name
+from users.utils.cart_optimization import run_cart_optimization
 
 
 class CartViewSet(viewsets.ModelViewSet):
@@ -213,3 +214,12 @@ class CartViewSet(viewsets.ModelViewSet):
         cart.refresh_from_db()
         serializer = self.get_serializer(cart)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['post'], url_path='optimize')
+    def optimize(self, request, *args, **kwargs):
+        """
+        Performs optimization on a specific cart by calling the optimization utility.
+        """
+        cart_obj = self.get_object()
+        max_stores_options = request.data.get('max_stores_options', [2, 3, 4])
+        return run_cart_optimization(cart_obj, max_stores_options)
