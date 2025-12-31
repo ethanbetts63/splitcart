@@ -67,7 +67,19 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     debounce(async (cartToSync: Cart) => {
       try {
         const updatedCart = await cartApi.syncCart(apiClient, cartToSync);
-        setCurrentCart(updatedCart);
+        
+        setCurrentCart(prevCart => {
+          // If the cart has not changed since this sync was initiated,
+          // it's safe to update with the server's response.
+          if (JSON.stringify(prevCart) === JSON.stringify(cartToSync)) {
+            return updatedCart;
+          } else {
+            // The local cart has changed. The server's response is outdated.
+            // Discard the server response and keep the current local state.
+            // A new sync will already be in the debounce queue from the user's latest action.
+            return prevCart;
+          }
+        });
       } catch (error) {
         toast.error("Failed to sync cart with server. Attempting to restore.");
         fetchActiveCart();
