@@ -188,7 +188,7 @@ class ProductListView(generics.ListAPIView):
                     score += Case(When(name__icontains=term, then=Value(10)), default=Value(0), output_field=IntegerField())
                     score += Case(When(brand__name__icontains=term, then=Value(5)), default=Value(0), output_field=IntegerField())
                 queryset = queryset.annotate(search_score=score)
-                final_queryset = queryset.order_by('-search_score', F('best_discount').desc(nulls_last=True))
+                final_queryset = queryset.order_by('-search_score')
             else:
                 # Fallback for non-category, non-search views
                 final_queryset = queryset.annotate(
