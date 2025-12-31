@@ -28,6 +28,10 @@ export class ApiClient {
     this.anonymousId = anonymousId;
   }
 
+  public isAuthenticated(): boolean {
+    return this.token !== null;
+  }
+
   private async request<T>(url: string, options: ApiClientOptions = {}): Promise<T> {
     const headers = getAuthHeaders(this.token, this.anonymousId);
     
