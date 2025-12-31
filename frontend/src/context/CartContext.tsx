@@ -38,11 +38,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   
     const apiClient = useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
   
-  const fetchActiveCart = useCallback(async () => {
+  const fetchActiveCart = useCallback(async (): Promise<Cart | null> => {
     setCartLoading(true);
     try {
-      const data = await apiClient.get<Cart | null>('/api/cart/active/');
+      const data = await apiClient.get<Cart | null>('/api/carts/active/');
       setCurrentCart(data);
+      return data;
     } catch (error: any) {
       if (error instanceof ApiError && error.statusCode === 404) {
         // A 404 is acceptable here, means no active cart.
@@ -51,6 +52,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         toast.error('Failed to fetch active cart.');
         setCurrentCart(null); // Ensure cart is null on error
       }
+      return null;
     } finally {
       setCartLoading(false);
     }
@@ -119,57 +121,59 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const addItem = async (productId: number, quantity: number, product: any) => {
-    // If there is no cart, we can't do an optimistic update.
-    // The backend will handle creating a new cart when it receives the request.
-    if (!currentCart) {
-      setIsFetchingSubstitutions(true);
+    setIsFetchingSubstitutions(true);
+    
+    // Use a variable to hold the cart state we'll be working with.
+    let workingCart = currentCart;
+
+    // If there's no cart, fetch/create it first.
+    if (!workingCart) {
       try {
-        await apiClient.post('/api/cart/active/items/', { product: productId, quantity });
-        // After successfully creating the cart and adding the item, fetch the new active cart.
-        await fetchActiveCart();
-      } catch (error: any) {
-        toast.error(error.message || 'Failed to add item to cart. Please try again.');
-      } finally {
-        setIsFetchingSubstitutions(false);
+        workingCart = await fetchActiveCart();
+        if (!workingCart) {
+          toast.error('Could not retrieve or create a cart.');
+          setIsFetchingSubstitutions(false);
+          return;
+        }
+      } catch (error) {
+          toast.error('Failed to get cart. Please try again.');
+          setIsFetchingSubstitutions(false);
+          return;
       }
-      return;
+    }
+    
+    // Now we're sure workingCart is not null.
+    const cartId = workingCart.id;
+    const originalCartState = workingCart; // Save state for rollback.
+
+    // --- Optimistic Update ---
+    const tempId = `temp-${Date.now()}`;
+    const existingItemIndex = workingCart.items.findIndex(item => item.product.id === productId);
+    let optimisticallyUpdatedCart;
+
+    if (existingItemIndex > -1) {
+      // Item exists, update quantity
+      const newItems = [...workingCart.items];
+      newItems[existingItemIndex].quantity += quantity;
+      optimisticallyUpdatedCart = { ...workingCart, items: newItems };
+    } else {
+      // Item doesn't exist, add it
+      const optimisticItem = {
+        id: tempId,
+        product: { ...product, id: productId },
+        quantity: quantity,
+        substitutions: [],
+      };
+      optimisticallyUpdatedCart = { ...workingCart, items: [...workingCart.items, optimisticItem] };
     }
 
-    // --- Optimistic Update Logic (if cart exists) ---
-    setIsFetchingSubstitutions(true); // Set loading to true
-
-    const tempId = `temp-${Date.now()}`;
-    const optimisticItem = {
-      id: tempId,
-      product: { ...product, id: productId },
-      quantity: quantity,
-      substitutions: [],
-    };
-
-    // Storing the original cart state for potential rollback
-    const originalCart = currentCart;
-
-    // Optimistically update the UI
-    setCurrentCart(prevCart => {
-      if (!prevCart) return null;
-      
-      const existingItemIndex = prevCart.items.findIndex(item => item.product.id === productId);
-      
-      if (existingItemIndex > -1) {
-        // Item exists, update quantity
-        const newItems = [...prevCart.items];
-        newItems[existingItemIndex].quantity += quantity;
-        return { ...prevCart, items: newItems };
-      } else {
-        // Item doesn't exist, add it
-        return { ...prevCart, items: [...prevCart.items, optimisticItem] };
-      }
-    });
+    setCurrentCart(optimisticallyUpdatedCart);
 
     try {
-      const realCartItem = await apiClient.post<any>('/api/cart/active/items/', { product: productId, quantity });
+      // Use the correct URL with the cart ID
+      const realCartItem = await apiClient.post<any>(`/api/carts/${cartId}/items/`, { product: productId, quantity });
 
-      // Silently update the state with the real item from the server
+      // Replace the temporary item with the real one from the server.
       setCurrentCart(prevCart => {
         if (!prevCart) return null;
         return {
@@ -182,10 +186,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     } catch (error: any) {
       toast.error(error.message || 'Failed to add item to cart. Please try again.');
-      // Revert the optimistic update on failure
-      setCurrentCart(originalCart);
+      // Revert on failure
+      setCurrentCart(originalCartState);
     } finally {
-      setIsFetchingSubstitutions(false); // Set loading to false in finally block
+      setIsFetchingSubstitutions(false);
     }
   };
 
@@ -212,9 +216,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
             try {
                 if (quantity > 0) {
-                    await apiClient.patch(`/api/cart/active/items/${itemId}/`, { quantity });
+                    await apiClient.patch(`/api/carts/active/items/${itemId}/`, { quantity });
                 } else {
-                    await apiClient.delete(`/api/cart/active/items/${itemId}/`);
+                    await apiClient.delete(`/api/carts/active/items/${itemId}/`);
                 }
             } catch (error: any) {
                 toast.error(error.message || 'Failed to update item. Please try again.');
