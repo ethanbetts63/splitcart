@@ -111,7 +111,9 @@ const Layout = () => {
         onOpenChange={(isOpen) => { if (!isOpen) closeDialog() }}
         defaultPage={dialogPage} 
       />
-      <Toaster />
+      <Suspense fallback={null}>
+        <Toaster />
+      </Suspense>
       {showNextButton && (
         <NextButton className="fixed bottom-8 right-8 z-50 h-16 w-16 rounded-full shadow-lg" />
       )}
