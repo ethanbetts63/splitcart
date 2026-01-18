@@ -1,18 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
-
-
 import { Card, CardContent } from "./ui/card";
-
-interface FaqItem {
-  question: string;
-  answer: string;
-}
+import type { FaqItem } from '@/types';
 
 interface FaqProps {
   title: string;

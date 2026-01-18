@@ -25,6 +25,7 @@ const PillarPage: React.FC = () => {
     const loadFaqs = async () => {
       if (slug) {
         try {
+          // Dynamically import the faq module based on the slug
           const module = await import(`../data/pillar-page-faqs/${slug}.ts`);
           setFaqs(module.faqs);
         } catch (error) {
@@ -35,6 +36,66 @@ const PillarPage: React.FC = () => {
     };
     loadFaqs();
   }, [slug]);
+
+  const { selectedStoreIds, anchorStoreMap, isUserDefinedList } = useStoreList();
+  
+  const anchorStoreIdsArray = React.useMemo(() => {
+    if (!anchorStoreMap) {
+      return Array.from(selectedStoreIds);
+    }
+    const anchorIds = new Set<number>();
+    for (const storeId of selectedStoreIds) {
+      const anchorId = anchorStoreMap[storeId];
+      if (anchorId) {
+        anchorIds.add(anchorId);
+      }
+    }
+    return Array.from(anchorIds);
+  }, [selectedStoreIds, anchorStoreMap]);
+
+  const isDefaultStores = !isUserDefinedList;
+
+
+  const {
+    data: pillarPage,
+    isLoading,
+    isError,
+  } = useApiQuery<PillarPageType>(
+    ['pillarPage', slug],
+    `/api/pillar-pages/${slug}/`,
+    {},
+    { enabled: !!slug }
+  );
+
+  if (isLoading) {
+    return <LoadingSpinner fullScreen />;
+  }
+
+  if (isError || !pillarPage) {
+    return (
+      <div className="text-center py-10">
+        <h2 className="text-2xl font-bold">Page Not Found</h2>
+        <p>The page you are looking for does not exist.</p>
+      </div>
+    );
+  }
+
+  let imageUrl;
+  if (slug === 'meat-and-seafood') {
+    imageUrl = meatImage;
+  } else if (slug === 'fruit-veg-and-spices') {
+    imageUrl = fruitImage;
+  } else if (slug === 'snacks-and-sweets') {
+    imageUrl = snackImage;
+  } else if (slug === 'eggs-and-dairy') {
+    imageUrl = eggImage;
+  } else if (slug === 'health-beauty-and-supplements') {
+    imageUrl = shampooImage;
+  } else if (slug === 'pantry-and-international') {
+    imageUrl = survivalImage;
+  } else {
+    imageUrl = confusedShopper;
+  }
 
 
   return (
@@ -94,20 +155,18 @@ const PillarPage: React.FC = () => {
         ))}
 
         {/* FAQ Section */}
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col gap-8">
-            <section>
-              <FAQ
-                title={`Frequently Asked Questions about ${pillarPage.hero_title}`}
-                page={slug || 'general'} 
-                imageSrc={confusedShopper}
-                srcSet={`${confusedShopper320} 320w, ${confusedShopper640} 640w, ${confusedShopper768} 768w, ${confusedShopper1024} 1024w, ${confusedShopper1280} 1280w`}
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                imageAlt="Confused Shopper"
-              />
-            </section>
+        {faqs && faqs.length > 0 && (
+          <div className="container mx-auto px-4 py-8">
+            <div className="flex flex-col gap-8">
+              <section>
+                <FaqV2
+                  title={`Frequently Asked Questions about ${pillarPage.hero_title}`}
+                  faqs={faqs}
+                />
+              </section>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

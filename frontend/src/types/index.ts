@@ -173,7 +173,7 @@ export interface PrimaryCategory {
   price_comparison_data?: PriceComparisonData;
 }
 
-export interface FAQ {
+export interface FaqItem {
   question: string;
   answer: string;
 }
@@ -185,5 +185,5 @@ export interface PillarPage {
   introduction_paragraph: string;
   image_path: string;
   primary_categories: PrimaryCategory[];
-  faqs: FAQ[];
+  faqs: FaqItem[];
 }

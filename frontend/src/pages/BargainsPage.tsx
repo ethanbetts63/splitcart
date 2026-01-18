@@ -23,6 +23,8 @@ import snackLineup768 from "../assets/snack_lineup-768w.webp";
 import snackLineup1024 from "../assets/snack_lineup-1024w.webp"; 
 import snackLineup1280 from "../assets/snack_lineup-1280w.webp";
 
+import { faqs } from '../data/pillar-page-faqs/bargains';
+
 import Seo from '../components/Seo';
 const BargainsPage: React.FC = () => {
     const title = "SplitCart: Australia's Best Grocery Bargains";
@@ -163,7 +165,7 @@ const BargainsPage: React.FC = () => {
           <section>
             <FAQ
               title="Frequently Asked Questions about Bargains"
-              page="bargains"
+              faqs={faqs}
               imageSrc={snackLineup}
               srcSet={`${snackLineup320} 320w, ${snackLineup640} 640w, ${snackLineup768} 768w, ${snackLineup1024} 1024w, ${snackLineup1280} 1280w`}
               sizes="(min-width: 1024px) 50vw, 100vw"
