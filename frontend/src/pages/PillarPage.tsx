@@ -40,7 +40,7 @@ const PillarPage: React.FC = () => {
     return Array.from(anchorIds);
   }, [selectedStoreIds, anchorStoreMap]);
 
-  const isDefaultStores = !isUserDefinedList; // This is still needed for ProductCarousel prop
+  const isDefaultStores = !isUserDefinedList;
 
 
   const {
@@ -147,7 +147,7 @@ const PillarPage: React.FC = () => {
             <section>
               <FAQ
                 title={`Frequently Asked Questions about ${pillarPage.hero_title}`}
-                page={slug || 'general'} // Use slug for page prop
+                page={slug || 'general'} 
                 imageSrc={confusedShopper}
                 srcSet={`${confusedShopper320} 320w, ${confusedShopper640} 640w, ${confusedShopper768} 768w, ${confusedShopper1024} 1024w, ${confusedShopper1280} 1280w`}
                 sizes="(min-width: 1024px) 50vw, 100vw"
