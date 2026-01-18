@@ -2,8 +2,7 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.generic.base import TemplateView
 from django.contrib.sitemaps.views import sitemap
-from data_management.sitemaps import StaticViewSitemap, PillarPageSitemap # Updated import
-from data_management.views.faq_list_view import FaqListView
+from splitcart.sitemaps import StaticViewSitemap, PillarPageSitemap
 from data_management.views.pillar_page_view import PillarPageView
 from products.views.primary_category_list_view import PrimaryCategoryListView
 from data_management.views.react_app_view import ReactAppView
@@ -23,7 +22,6 @@ urlpatterns = [
     path("api/", include("companies.urls")),
     path("api/", include("users.urls")),
     path("api/", include("data_management.urls")),
-    path('api/faqs/', FaqListView.as_view(), name='faq-list'),
     path('api/pillar-pages/<slug:slug>/', PillarPageView.as_view(), name='pillar-page-detail'),
     path('api/primary-categories/', PrimaryCategoryListView.as_view(), name='primary-category-list'),
 

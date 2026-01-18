@@ -69,10 +69,7 @@ These commands are typically run on the server to create derived data or perform
 
 -   `python manage.py generate --price-comps`
     Generates data for price comparisons between different stores.
-
--   `python manage.py update --faqs`
-    Updates Frequently Asked Questions (FAQs) from a `FAQ.jsonl` file.
-
+    
 -   `python manage.py generate --store-stats`
     Generates and displays a report on data freshness and coverage for all stores.
 

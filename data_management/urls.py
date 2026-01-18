@@ -4,7 +4,6 @@ from .views.gs1_file_upload_view import Gs1FileUploadView
 from .views.store_file_upload_view import StoreFileUploadView
 from .views.category_links_file_upload_view import CategoryLinksFileUploadView
 from .views.scheduler_view import SchedulerView
-from .views.faq_list_view import FaqListView
 from .views.pillar_page_view import PillarPageView
 from .views.product_translation_file_view import ProductTranslationFileView
 from .views.brand_translation_file_view import BrandTranslationFileView
@@ -20,7 +19,6 @@ urlpatterns = [
     path('gs1/unconfirmed-brands/', GS1UnconfirmedBrandsView.as_view(), name='gs1-unconfirmed-brands'),
     path('brands/<int:brand_id>/sample-barcode/', BrandSampleBarcodeView.as_view(), name='brand-sample-barcode'),
     path('pillar-pages/<slug:slug>/', PillarPageView.as_view(), name='pillar-page-detail'),
-    path('faqs/', FaqListView.as_view(), name='faq-list'),
     path('files/product_translations/', ProductTranslationFileView.as_view(), name='product-translation-file'),
     path('files/brand_translations/', BrandTranslationFileView.as_view(), name='brand-translation-file'),
     path('import/semantic_data/', ImportSemanticDataView.as_view(), name='import-semantic-data'),
