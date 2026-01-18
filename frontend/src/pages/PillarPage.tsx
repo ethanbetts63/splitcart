@@ -1,16 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useApiQuery } from '../hooks/useApiQuery';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { ProductCarousel } from '../components/ProductCarousel';
 import PriceComparisonChart from '../components/PriceComparisonChart';
-import { FAQ } from "../components/FAQ"; 
+import { FaqV2 } from "../components/FaqV2"; 
+import type { FaqItem } from '@/types';
 import confusedShopper from "../assets/confused_shopper.webp"; 
-import confusedShopper320 from "../assets/confused_shopper-320w.webp"; 
-import confusedShopper640 from "../assets/confused_shopper-640w.webp"; 
-import confusedShopper768 from "../assets/confused_shopper-768w.webp"; 
-import confusedShopper1024 from "../assets/confused_shopper-1024w.webp"; 
-import confusedShopper1280 from "../assets/confused_shopper-1280w.webp"; 
 import meatImage from '../assets/fish_meat_box.webp';
 import fruitImage from '../assets/fruit_detectives.webp';
 import snackImage from '../assets/snack_lineup.webp';
@@ -23,66 +19,22 @@ import { useStoreList } from '../context/StoreListContext';
 
 const PillarPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
+  const [faqs, setFaqs] = useState<FaqItem[]>([]);
 
-  const { selectedStoreIds, anchorStoreMap, isUserDefinedList } = useStoreList();
-  
-  const anchorStoreIdsArray = React.useMemo(() => {
-    if (!anchorStoreMap) {
-      return Array.from(selectedStoreIds);
-    }
-    const anchorIds = new Set<number>();
-    for (const storeId of selectedStoreIds) {
-      const anchorId = anchorStoreMap[storeId];
-      if (anchorId) {
-        anchorIds.add(anchorId);
+  useEffect(() => {
+    const loadFaqs = async () => {
+      if (slug) {
+        try {
+          const module = await import(`../data/pillar-page-faqs/${slug}.ts`);
+          setFaqs(module.faqs);
+        } catch (error) {
+          console.error(`Failed to load FAQs for slug: ${slug}`, error);
+          setFaqs([]); // Reset or handle error state
+        }
       }
-    }
-    return Array.from(anchorIds);
-  }, [selectedStoreIds, anchorStoreMap]);
-
-  const isDefaultStores = !isUserDefinedList;
-
-
-  const {
-    data: pillarPage,
-    isLoading,
-    isError,
-  } = useApiQuery<PillarPageType>(
-    ['pillarPage', slug],
-    `/api/pillar-pages/${slug}/`,
-    {},
-    { enabled: !!slug }
-  );
-
-  if (isLoading) {
-    return <LoadingSpinner fullScreen />;
-  }
-
-  if (isError || !pillarPage) {
-    return (
-      <div className="text-center py-10">
-        <h2 className="text-2xl font-bold">Page Not Found</h2>
-        <p>The page you are looking for does not exist.</p>
-      </div>
-    );
-  }
-
-  let imageUrl;
-  if (slug === 'meat-and-seafood') {
-    imageUrl = meatImage;
-  } else if (slug === 'fruit-veg-and-spices') {
-    imageUrl = fruitImage;
-  } else if (slug === 'snacks-and-sweets') {
-    imageUrl = snackImage;
-  } else if (slug === 'eggs-and-dairy') {
-    imageUrl = eggImage;
-  } else if (slug === 'health-beauty-and-supplements') {
-    imageUrl = shampooImage;
-  } else if (slug === 'pantry-and-international') {
-    imageUrl = survivalImage;
-  } else {
-    imageUrl = confusedShopper;
-  }
+    };
+    loadFaqs();
+  }, [slug]);
 
 
   return (

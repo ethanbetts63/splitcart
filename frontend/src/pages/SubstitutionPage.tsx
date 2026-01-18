@@ -13,6 +13,14 @@ import { FAQ } from "../components/FAQ";
 import sizeDoesntMatterImage from "../assets/size_doesnt_matter.webp";
 import useMediaQuery from '../hooks/useMediaQuery';
 
+const substitutesFaqs = [
+  {"question": "Should I consider price?", "answer": "Short answer is no. Just pick anything that you would be willing to have \"instead of\" the original. Long answer is very mathematical but suffice to say that the algorithm will often unexpectedly pick very expensive isolated items because it allows it to lower the overall cost in other areas."},
+  {"question": "Why can I adjust the quantity?", "answer": "If you're original item was 1 liter of milk and the substitute we offered you was 500ml of milk, that wouldn't make sense. So that's why you can adjust the quantity to say that yes I would be willing to have two 500ml bottles of milk instead of the liter if it was cheaper."},
+  {"question": "How many substitutes should I pick?", "answer": "As many as possible. The more you pick the more you're likely to save."},
+  {"question": "Can I split without substitutes?", "answer": "Yes, but you're missing out. Even when you split with substitutes we will still show you what you would have saved without using substitutes so you can decide for yourself."},
+  {"question": "No, but does it really matter?", "answer": "Subsitutes are our secret sauce. No other price comaparison website has thought of it. If you were actually in a store you would never just consider one product. You would probably debate between a few items on any shelf. That's what we are replicating and your hard work pays dividends."}
+];
+
 const SubstitutionPage = () => {
   const navigate = useNavigate();
   const { currentCart, updateCartItemSubstitution, optimizeCurrentCart, isFetchingSubstitutions } = useCart();
@@ -208,7 +216,7 @@ const SubstitutionPage = () => {
           <section>
             <FAQ
               title="Why substitution?"
-              page="substitutes"
+              faqs={substitutesFaqs}
               imageSrc={sizeDoesntMatterImage}
               imageAlt="Scale balancing small bottles with many dollar signs against a large bottle with one dollar sign, with text 'Size doesn't matter, value does.'"
             />
