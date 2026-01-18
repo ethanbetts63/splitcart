@@ -9,6 +9,11 @@
       "type": "image/x-icon"
     },
     {
+      "src": "favicon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
       "src": "favicon-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
