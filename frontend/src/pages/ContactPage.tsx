@@ -1,12 +1,12 @@
 import React from 'react';
-import heroImage from '../assets/hero1.webp';
-import { Hero } from '../components/Hero';
+import heroImage from '../assets/contact_v2.webp';
+import { Hero } from '@/components/Hero';
 import ContactDetails from '../components/ContactDetails';
 import OtherSites from '../components/OtherSites';
 import Seo from '@/components/Seo';
 import allbikesLogo from '@/assets/allbikes_logo.webp'; 
-import splitcartLogo from '@/assets/splitcart_logo.png';
 import futureReminderLogo from '@/assets/futurereminder_logo.png';
+import foreverFlowerLogo from '@/assets/foreverflower_logo.png';
 
 const otherSitesData = [
     {
@@ -16,16 +16,16 @@ const otherSitesData = [
         url: "https://www.allbikes.com.au", 
     },
     {
-        name: "Splitcart",
-        logoSrc: splitcartLogo, 
-        description: "Compare grocery prices across major Australian supermarkets.",
-        url: "https://www.splitcart.com.au", 
-    },
-    {
         name: "FutureReminder",
         logoSrc: futureReminderLogo, 
         description: "Distant and important reminder service with an escalating hierachy of notification. Including text message, email, and emergency contacts.",
         url: "https://www.futurereminder.app", 
+    },
+    {
+        name: "Forever Flower",
+        logoSrc: foreverFlowerLogo, 
+        description: "The only annual flower subscription app in existence. Pre arrange flowers to be sent to someone for anniversaries, birthdays, or just because on the same date every year.",
+        url: "https://www.foreverflower.app", 
     },
 ];
 
@@ -38,10 +38,10 @@ const ContactPage: React.FC = () => {
         "@type": "ContactPage",
         "name": "Contact Us",
         "description": description,
-        "url": "https://www.foreverflower.app/contact",
+        "url": "https://www.splitcart.com.au/contact",
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.foreverflower.app/contact"
+            "@id": "https://www.splitcart.com.au/contact"
         },
         "contactPoint": {
             "@type": "ContactPoint",
@@ -54,7 +54,7 @@ const ContactPage: React.FC = () => {
     return (
         <div>
             <Seo
-                title="Contact Us | ForeverFlower"
+                title="Contact Us | SplitCart"
                 description={description}
                 canonicalPath="/contact"
                 structuredData={contactPageSchema}
@@ -73,5 +73,6 @@ const ContactPage: React.FC = () => {
         </div>
     );
 };
+
 
 export default ContactPage;

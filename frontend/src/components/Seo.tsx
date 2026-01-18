@@ -12,7 +12,7 @@ interface SeoProps {
 }
 
 const Seo: React.FC<SeoProps> = ({ title, description, canonicalPath, ogType = 'website', ogImage, noindex, structuredData }) => {
-  const siteUrl = 'https://www.foreverflower.app'; // This should ideally come from an environment variable
+  const siteUrl = 'https://www.splitcart.com.au';
   const canonicalUrl = canonicalPath ? `${siteUrl}${canonicalPath}` : undefined;
   const imageUrl = ogImage ? `${siteUrl}${ogImage}` : `${siteUrl}/static/square-image.jpg`; // Fallback image
 

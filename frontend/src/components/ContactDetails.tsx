@@ -7,12 +7,12 @@ const ContactDetails: React.FC = () => {
             <Card className="bg-white text-black border-0 shadow-md">
                 <CardHeader>
                     <CardTitle className="flex items-center text-2xl">
-                        The ForeverFlower Elavator Pitch:
+                        The Splitcart Elavator Pitch:
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
                     <p className="mb-4">
-                        ForeverFlower fills a few niche gaps in the flower market. There are no annual flower subscriptions, there are no options for upfront payment for subscriptions, there are no options for sending flowers far into the future, there are no flower subscriptions built so that you can pass custody over to the person receiving the gift and all flower subscriptions are regionally based. ForeverFlower can operate in any region where flowers can be delivered. It’s a bouquet organizing middle man but by allowing customers to pay upfront we leverage the time value of money to actually decrease the upfront cost and essentially negate our service fee.
+                        Splitcart is a price comparison tool designed to help Australian shoppers save money on their grocery bills. By comparing prices across major supermarkets like Woolworths, Coles, Aldi, and IGA, Splitcart empowers users not just make more informed decisions, but also leverage algorithms to mathematically deduce the lowest possible price strategy for buying their groceries. Although other grocery comparison sites exist, none have thought to use substitutions, which drastically increases the savings potential.
                     </p>
                 </CardContent>
             </Card>

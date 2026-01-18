@@ -1,25 +1,26 @@
-import React, { useState, Suspense } from "react";
+import React, { useState, Suspense, lazy } from "react";
+import { HelmetProvider } from "react-helmet-async";
 import { Routes, Route, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { SettingsDialog } from "./components/settings-dialog";
 import { useStoreList } from "./context/StoreListContext";
 import { useCart } from "./context/CartContext";
 import NextButton from "./components/NextButton";
 import LoadingSpinner from "./components/LoadingSpinner";
-const Toaster = React.lazy(() => import('./components/ui/sonner').then(module => ({ default: module.Toaster })));
+const Toaster = lazy(() => import('./components/ui/sonner').then(module => ({ default: module.Toaster })));
 import { useDialog } from "./context/DialogContext";
 
 import HomePage from "./pages/HomePage";
 
 // Lazy load page components
-const SearchResultsPage = React.lazy(() => import("./pages/SearchResultsPage"));
-const SubstitutionPage = React.lazy(() => import("./pages/SubstitutionPage"));
-const FinalCartPage = React.lazy(() => import("./pages/FinalCartPage"));
-const LoginPage = React.lazy(() => import("./pages/LoginPage"));
-const SignupPage = React.lazy(() => import("./pages/SignupPage"));
-const ContactPage = React.lazy(() => import("./pages/ContactPage"));
-const PillarPage = React.lazy(() => import("./pages/PillarPage"));
-const ProductPage = React.lazy(() => import("./pages/ProductPage"));
-const BargainsPage = React.lazy(() => import("./pages/BargainsPage"));
+const SearchResultsPage = lazy(() => import("./pages/SearchResultsPage"));
+const SubstitutionPage = lazy(() => import("./pages/SubstitutionPage"));
+const FinalCartPage = lazy(() => import("./pages/FinalCartPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const SignupPage = lazy(() => import("./pages/SignupPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const PillarPage = lazy(() => import("./pages/PillarPage"));
+const ProductPage = lazy(() => import("./pages/ProductPage"));
+const BargainsPage = lazy(() => import("./pages/BargainsPage"));
 
 import { useAuth } from "./context/AuthContext";
 import CategoryBar from "./components/CategoryBar";
@@ -29,20 +30,22 @@ import './App.css';
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route path="search" element={<SearchResultsPage />} />
-        <Route path="substitutions" element={<SubstitutionPage />} />
-        <Route path="final-cart" element={<FinalCartPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/categories/:slug" element={<PillarPage />} />
-        <Route path="/product/:slug" element={<ProductPage />} />
-        <Route path="/bargains" element={<BargainsPage />} />
-      </Route>
-    </Routes>
+    <HelmetProvider>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="search" element={<SearchResultsPage />} />
+          <Route path="substitutions" element={<SubstitutionPage />} />
+          <Route path="final-cart" element={<FinalCartPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/categories/:slug" element={<PillarPage />} />
+          <Route path="/product/:slug" element={<ProductPage />} />
+          <Route path="/bargains" element={<BargainsPage />} />
+        </Route>
+      </Routes>
+    </HelmetProvider>
   );
 };
 
