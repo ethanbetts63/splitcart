@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useRef } from 'react';
 import SkeletonProductTile from "./SkeletonProductTile";
 import ProductTile from "./ProductTile";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import type { Product } from '../types';
 import JsonLdItemList from './JsonLdItemList';
 import { Button } from '@/components/ui/button';
@@ -34,6 +34,7 @@ import { useDialog } from '@/context/DialogContext';
 const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, products: initialProducts, storeIds, title, searchQuery, isDefaultStores, isUserDefinedList, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, companyName, isBargainCarousel, onValidation, slot, dataKey, minProducts = 4, ordering, isLoading: isLoadingProp }) => {
   const { openDialog } = useDialog();
   const [isSmallScreen, setIsSmallScreen] = React.useState(false);
+  const location = useLocation();
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -125,13 +126,13 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
   let seeMoreLink = null;
   if (isBargainCarousel && companyName) {
     seeMoreLink = `/search?bargain_company=${encodeURIComponent(companyName)}`;
-  } else if (primaryCategorySlugs) {
-    if (primaryCategorySlugs.length > 1 && pillarPageLinkSlug) {
-      seeMoreLink = `/categories/${encodeURIComponent(pillarPageLinkSlug)}`;
-    } else if (primaryCategorySlugs.length === 1) {
-      seeMoreLink = `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlugs[0])}`;
+  } else if (pillarPageLinkSlug && location.pathname === '/') {
+    seeMoreLink = `/categories/${encodeURIComponent(pillarPageLinkSlug)}`;
+  } else if (primaryCategorySlugs && primaryCategorySlugs.length > 0) {
+    if (primaryCategorySlugs.length === 1) {
+        seeMoreLink = `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlugs[0])}`;
     } else {
-      seeMoreLink = `/search?primary_category_slugs=${encodeURIComponent(primaryCategorySlugs.join(','))}`;
+        seeMoreLink = `/search?primary_category_slugs=${encodeURIComponent(primaryCategorySlugs.join(','))}`;
     }
   } else if (primaryCategorySlug) {
     seeMoreLink = `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlug)}`;
