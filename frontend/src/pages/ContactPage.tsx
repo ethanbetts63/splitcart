@@ -64,7 +64,7 @@ const ContactPage: React.FC = () => {
                 imageAlt="A pin up board of postnotes with various reminder icons"
             />
             
-            <div style={{ backgroundColor: 'var(--color4)' }}>
+            <div style={{ backgroundColor: 'var(--color1)' }}>
                 <ContactDetails />
                 <OtherSites sites={otherSitesData} />
             </div>
