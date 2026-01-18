@@ -36,7 +36,7 @@ const OtherSites: React.FC<OtherSitesProps> = ({ sites }) => {
                                 <CardDescription className="flex-grow mb-6 text-black">{site.description}</CardDescription>
                                 <div className="mt-auto flex justify-end">
                                     <a href={site.url} target="_blank" rel="noopener noreferrer">
-                                        <Button className="bg-primary text-black font-bold px-4 py-2 text-sm hover:bg-primary/90 flex items-center gap-2">
+                                        <Button className="bg-primary text-white font-bold px-4 py-2 text-sm hover:bg-primary/90 flex items-center gap-2">
                                             Visit Site <ArrowRight className="h-4 w-4" />
                                         </Button>
                                     </a>
