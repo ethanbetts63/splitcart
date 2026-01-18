@@ -17,6 +17,15 @@ import kingKongImage1024 from "../assets/king_kong-1024w.webp";
 import kingKongImage1280 from "../assets/king_kong-1280w.webp";
 
 import Seo from '../components/Seo';
+const homeFaqs = [
+  {"question": "Will I really save 10-15%?", "answer": "Hopefully! Our optimization aims to find the maximum possible savings. But it's restricted by the stores you choose, the items in you select and the substitutes you approve. Some shopping lists have more potential for savings than others, so individual results will vary but we find that 10-15% is a consistant average."},
+  {"question": "What’s a ‘substitute’ and why does it matter?", "answer": "A substitute is a product you would be willing to have \"instead of\" the original product you choose. For example, a different brand of the same type of milk. Including substitutes gives our algorithm a lot more options to play with and is a major factor in the savings you should expect. We know it's an annoying to do but it's also the reason we can save you more than any other comparison site."},
+  {"question": "Is it always cheaper than buying from one store?", "answer": "Splitting your cart is almost always cheaper, almost. Our results will always show you the \"Best Single Store\" option alongside the split-cart options, so you can clearly see if splitting your cart provides a real benefit for your specific shopping list."},
+  {"question": "Which stores can I compare?", "answer": "Right now, SplitCart supports Coles, Woolworths, Aldi, and IGA. We’d love to bring the smaller guys on board too, but their price data is harder to track down — which hurts, because they’re often the real discount heroes."},
+  {"question": "How accurate are the prices?", "answer": "The short answer is: pretty accurate! But not perfect. We pull prices directly from stores websites as often as we can but we can only be as accurate as the stores themselves."},
+  {"question": "How can it be free?", "answer": "Great question!"}
+];
+
 const HomePage = () => {
   const { selectedStoreIds, anchorStoreMap, isUserDefinedList } = useStoreList();
 
@@ -187,7 +196,7 @@ const HomePage = () => {
         <section>
           <FAQ
             title="The Hard Hitting Questions"
-            page="home"
+            faqs={homeFaqs}
             imageSrc={kingKongImage}
             srcSet={`${kingKongImage320} 320w, ${kingKongImage640} 640w, ${kingKongImage768} 768w, ${kingKongImage1024} 1024w, ${kingKongImage1280} 1280w`}
             sizes="(min-width: 1024px) 50vw, calc(100vw - 2rem)"
