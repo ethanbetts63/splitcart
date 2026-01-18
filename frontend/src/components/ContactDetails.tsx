@@ -12,7 +12,7 @@ const ContactDetails: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                     <p className="mb-4">
-                        Splitcart is a price comparison tool designed to help Australian shoppers save money on their grocery bills. By comparing prices across major supermarkets like Woolworths, Coles, Aldi, and IGA, Splitcart empowers users not just make more informed decisions, but also leverage algorithms to mathematically deduce the lowest possible price strategy for buying their groceries. Although other grocery comparison sites exist, none have thought to use substitutions, which drastically increases the savings potential.
+                        Splitcart is an Australian smart grocery price comparison platform that finds the absolute cheapest way to buy your entire shopping list by intelligently splitting it across multiple supermarkets. Instead of just comparing single-store totals, it accounts for real item-level price differences, delivery fees, store availability, distance, and user constraints (like max stores or minimum savings), while also suggesting cheaper substitute products you approve. Under the hood, it cleans and normalizes messy supermarket data, matches equivalent products across brands and stores, and runs an optimization algorithm to surface the best combination—saving users real money without the manual tab-hopping. It’s built for budget-conscious shoppers who want clear, actionable savings, and for scale, it opens the door to insights like national average prices, true discount tracking, and where groceries are genuinely cheaper.
                     </p>
                 </CardContent>
             </Card>

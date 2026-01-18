@@ -6,7 +6,7 @@ import bargains640 from "../assets/bargains-640w.webp";
 import bargains768 from "../assets/bargains-768w.webp"; 
 import bargains1024 from "../assets/bargains-1024w.webp"; 
 import bargains1280 from "../assets/bargains-1280w.webp"; 
-import { useDocumentHead } from '@/hooks/useDocumentHead';
+
 import { useStoreList } from '../context/StoreListContext';
 import { ProductCarousel } from "../components/ProductCarousel";
 import { FAQ } from "../components/FAQ";
@@ -75,6 +75,12 @@ const BargainsPage: React.FC = () => {
 
   return (
     <div>
+      <Seo
+        title={title}
+        description={description}
+        canonicalPath="/bargains"
+        structuredData={webPageSchema}
+      />
       {/* --- Hero Section --- */}
       <div className="container mx-auto px-4 pt-4 pb-1">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
