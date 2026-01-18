@@ -29,7 +29,6 @@ const PillarPage: React.FC = () => {
           const module = await import(`../data/pillar-page-faqs/${slug}.ts`);
           setFaqs(module.faqs);
         } catch (error) {
-          console.error(`Failed to load FAQs for slug: ${slug}`, error);
           setFaqs([]); // Reset or handle error state
         }
       }
