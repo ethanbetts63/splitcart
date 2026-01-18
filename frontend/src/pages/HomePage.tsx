@@ -25,6 +25,10 @@ const HomePage = () => {
     "@type": "WebSite",
     "name": "SplitCart",
     "url": "https://www.splitcart.com.au",
+    "founder": {
+      "@type": "Person",
+      "name": "Ethan Betts"
+    },
     "potentialAction": {
         "@type": "SearchAction",
         "target": {
