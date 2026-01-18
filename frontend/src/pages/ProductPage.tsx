@@ -6,9 +6,8 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import PriceDisplay from '../components/PriceDisplay';
 import AddToCartButton from '../components/AddToCartButton';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
-import { useDocumentHead } from '../hooks/useDocumentHead';
+import Seo from '../components/Seo';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
-import JsonLdProduct from '../components/JsonLdProduct';
 import { ProductCarousel } from '../components/ProductCarousel';
 import { useStoreList } from '../context/StoreListContext';
 
@@ -32,13 +31,40 @@ const ProductPage: React.FC = () => {
     { enabled: !!productId } // Only run query if productId is available
   );
 
-  // Set document head metadata when product data is available
   const pageTitle = product ? `${product.name} - Price Comparison` : 'SplitCart';
   const pageDescription = product
     ? `Compare prices for ${product.name}${product.brand_name ? ` from ${product.brand_name}` : ''} across major Australian supermarkets. Find the best deals with SplitCart.`
     : 'Compare prices across major Australian supermarkets and find the best deals with SplitCart.';
   
-  useDocumentHead(pageTitle, pageDescription);
+  const productSchema = product ? {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    image: product.image_url,
+    description: pageDescription,
+    sku: product.id,
+    brand: product.brand_name ? {
+      '@type': 'Brand',
+      name: product.brand_name,
+    } : undefined,
+    offers: {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'AUD',
+      lowPrice: Math.min(...product.prices.map(p => parseFloat(p.price_display.replace('$', '')))).toFixed(2),
+      highPrice: Math.max(...product.prices.map(p => parseFloat(p.price_display.replace('$', '')))).toFixed(2),
+      offerCount: product.prices.length,
+      offers: product.prices.map(priceInfo => ({
+        '@type': 'Offer',
+        price: parseFloat(priceInfo.price_display.replace('$', '')).toFixed(2),
+        priceCurrency: 'AUD',
+        seller: {
+          '@type': 'Organization',
+          name: priceInfo.company,
+        },
+        url: `https://www.splitcart.com.au/product/${product.slug}`
+      })),
+    },
+  } : null;
 
   if (isLoading) {
     return <LoadingSpinner fullScreen />;
@@ -55,7 +81,12 @@ const ProductPage: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4 md:p-4">
-      {product && <JsonLdProduct product={product} />}
+      <Seo
+        title={pageTitle}
+        description={pageDescription}
+        canonicalPath={`/product/${slug}`}
+        structuredData={productSchema}
+      />
       <div className="max-w-5xl mx-auto">
         <Card className="overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">

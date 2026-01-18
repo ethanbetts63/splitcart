@@ -8,7 +8,7 @@ interface SeoProps {
   ogType?: 'website' | 'article';
   ogImage?: string;
   noindex?: boolean;
-  structuredData?: object;
+  structuredData?: object | any;
 }
 
 const Seo: React.FC<SeoProps> = ({ title, description, canonicalPath, ogType = 'website', ogImage, noindex, structuredData }) => {
