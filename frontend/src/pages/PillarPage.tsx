@@ -64,7 +64,7 @@ const faqsBySlug: Record<string, FaqItem[]> = {
   ],
   'snacks-and-sweets': [
     {
-      question: "Why don't I see a "cheaper at Aldi" section above?",
+      question: "Why don't I see a \"cheaper at Aldi\" section above?",
       answer: "To say that a product is cheaper at Aldi than at Coles or Woolworths, Aldi would need to actually have that product. Aldi stocks somewhere around 1/3 to 1/5 as many products as Coles and Woolworths, and it stocks a very unique range of products. This makes direct comparisons very rare. This is why we have a substitution system. It solves this exact problem to help you take advantage of Aldi's generally cheaper products."
     },
     {

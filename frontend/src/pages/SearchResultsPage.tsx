@@ -1,5 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import GridSourcer from '../components/GridSourcer';
+import Seo from '../components/Seo';
 
 const SearchResultsPage = () => {
   const [searchParams] = useSearchParams();
@@ -12,7 +13,8 @@ const SearchResultsPage = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <GridSourcer 
+      <Seo title="Search - SplitCart" noindex />
+      <GridSourcer
         searchTerm={searchTerm}
         sourceUrl={sourceUrl}
         primaryCategorySlug={primaryCategorySlug}
