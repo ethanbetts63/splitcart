@@ -20,4 +20,4 @@ class PillarPageSitemap(sitemaps.Sitemap):
         return PillarPage.objects.all()
 
     def location(self, obj):
-        return f'/pillar-pages/{obj.slug}/'
+        return f'/categories/{obj.slug}/'

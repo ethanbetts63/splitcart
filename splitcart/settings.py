@@ -65,7 +65,7 @@ MIDDLEWARE = [
     "django.middleware.cache.FetchFromCacheMiddleware",
 ]
 
-INTERNAL_IPS = []
+INTERNAL_IPS = ['127.0.0.1']
 if API_SERVER_HOSTNAME:
     INTERNAL_IPS.append(API_SERVER_HOSTNAME)
 
@@ -146,7 +146,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 500,
+    'PAGE_SIZE': 24,
 
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',
