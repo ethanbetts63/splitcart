@@ -24,7 +24,7 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 
 ## Security
 
-*(To be discussed — see session notes)*
+*(To be discussed)*
 
 ---
 

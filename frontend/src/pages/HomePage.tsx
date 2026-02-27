@@ -17,6 +17,20 @@ import kingKongImage1024 from "../assets/king_kong-1024w.webp";
 import kingKongImage1280 from "../assets/king_kong-1280w.webp";
 
 import Seo from '../components/Seo';
+import { HowItWorksSection } from '../components/HowItWorksSection';
+import snackLineup from "../assets/snack_lineup.webp";
+import snackLineup320 from "../assets/snack_lineup-320w.webp";
+import snackLineup640 from "../assets/snack_lineup-640w.webp";
+import snackLineup768 from "../assets/snack_lineup-768w.webp";
+import snackLineup1024 from "../assets/snack_lineup-1024w.webp";
+import snackLineup1280 from "../assets/snack_lineup-1280w.webp";
+import bargainsImg from "../assets/bargains.webp";
+import bargainsImg320 from "../assets/bargains-320w.webp";
+import bargainsImg640 from "../assets/bargains-640w.webp";
+import bargainsImg768 from "../assets/bargains-768w.webp";
+import bargainsImg1024 from "../assets/bargains-1024w.webp";
+import bargainsImg1280 from "../assets/bargains-1280w.webp";
+
 const homeFaqs = [
   {"question": "Will I really save 10-15%?", "answer": "Hopefully! Our optimization aims to find the maximum possible savings. But it's restricted by the stores you choose, the items in you select and the substitutes you approve. Some shopping lists have more potential for savings than others, so individual results will vary but we find that 10-15% is a consistant average."},
   {"question": "What’s a ‘substitute’ and why does it matter?", "answer": "A substitute is a product you would be willing to have \"instead of\" the original product you choose. For example, a different brand of the same type of milk. Including substitutes gives our algorithm a lot more options to play with and is a major factor in the savings you should expect. We know it's an annoying to do but it's also the reason we can save you more than any other comparison site."},
@@ -49,6 +63,42 @@ const HomePage = () => {
   };
 
   const isDefaultStores = !isUserDefinedList;
+
+  const howItWorksSteps = [
+    {
+      step: 1,
+      title: 'Build Your List.',
+      description: 'Search or browse and add items to your cart. The bigger and more specific your list, the more we can save you.',
+      image: {
+        src: confusedShopper,
+        srcSet: `${confusedShopper320} 320w, ${confusedShopper640} 640w, ${confusedShopper768} 768w, ${confusedShopper1024} 1024w, ${confusedShopper1280} 1280w`,
+        sizes: "(max-width: 767px) 320px, (max-width: 1023px) 50vw, 33vw",
+        alt: 'Shopper building a grocery list',
+      },
+    },
+    {
+      step: 2,
+      title: 'Approve Substitutes.',
+      description: "Tell us which alternatives you'd accept — a different brand of milk, a different cut of meat. More options means more savings.",
+      image: {
+        src: snackLineup,
+        srcSet: `${snackLineup320} 320w, ${snackLineup640} 640w, ${snackLineup768} 768w, ${snackLineup1024} 1024w, ${snackLineup1280} 1280w`,
+        sizes: "(max-width: 767px) 320px, (max-width: 1023px) 50vw, 33vw",
+        alt: 'Lineup of snack products to choose between',
+      },
+    },
+    {
+      step: 3,
+      title: 'See Your Savings.',
+      description: 'We compare prices across Coles, Woolworths, Aldi and IGA and find the cheapest combination. Pick a split that works for you.',
+      image: {
+        src: bargainsImg,
+        srcSet: `${bargainsImg320} 320w, ${bargainsImg640} 640w, ${bargainsImg768} 768w, ${bargainsImg1024} 1024w, ${bargainsImg1280} 1280w`,
+        sizes: "(max-width: 767px) 320px, (max-width: 1023px) 50vw, 33vw",
+        alt: 'Grocery bargains and savings',
+      },
+    },
+  ];
 
   const anchorStoreIdsArray = React.useMemo(() => {
     if (!anchorStoreMap) {
@@ -88,14 +138,17 @@ const HomePage = () => {
           </div>
           <div className="text-left">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-              They’ve been optimising for profit. Now it’s your turn.
+              Find the Cheapest Way to Buy Your Entire Grocery List.
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Every store has a deal — but finding them all takes forever. SplitCart automates discount hunting by comparing prices across supermarkets and splitting your cart for the cheapest overall shop. <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">One list, multiple stores, maximum savings.</span> Search or browse and add products to your cart to get started! Click "Next" in the bottom right when you're ready!
+              Every supermarket has deals — just not on the same items. SplitCart compares prices across Coles, Woolworths, Aldi and IGA and <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">splits your cart for the cheapest possible shop.</span>
             </p>
           </div>
         </div>
       </div>
+
+      {/* --- How It Works Section --- */}
+      <HowItWorksSection steps={howItWorksSteps} />
 
       {/* --- Carousel: Bargains --- */}
       <div className="container mx-auto px-4 py-8">
@@ -205,44 +258,6 @@ const HomePage = () => {
         </section>
       </div>
 
-      {/* --- Carousels: Fruit, Veg, Spices / Pantry, International / Health, Beauty, Supplements --- */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col gap-8">
-          <ProductCarousel
-            key="fruit-veg-and-spices"
-            title="Fruit, Veg & Spices"
-            sourceUrl="/api/products/"
-            storeIds={anchorStoreIdsArray}
-            primaryCategorySlugs={['fruit', 'veg', 'spices']}
-            pillarPageLinkSlug="fruit-veg-and-spices"
-            slot={3}
-            isDefaultStores={isDefaultStores}
-          isUserDefinedList={isUserDefinedList}
-          />
-          <ProductCarousel
-            key="pantry-and-international"
-            title="Pantry & International"
-            sourceUrl="/api/products/"
-            storeIds={anchorStoreIdsArray}
-            primaryCategorySlugs={['pantry', 'international']}
-            pillarPageLinkSlug="pantry-and-international"
-            slot={4}
-            isDefaultStores={isDefaultStores}
-          isUserDefinedList={isUserDefinedList}
-          />
-          <ProductCarousel
-            key="health-beauty-and-supplements"
-            title="Health, Beauty & Supplements"
-            sourceUrl="/api/products/"
-            storeIds={anchorStoreIdsArray}
-            primaryCategorySlugs={['health', 'beauty', 'health-foods']}
-            pillarPageLinkSlug="health-beauty-and-supplements"
-            slot={5}
-            isDefaultStores={isDefaultStores}
-          isUserDefinedList={isUserDefinedList}
-          />
-        </div>
-      </div>
     </div>
   );
 };
