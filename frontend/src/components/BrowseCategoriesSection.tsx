@@ -11,7 +11,7 @@ import healthIcon from '../assets/food_svgs/Water-Bottle-Glass--Streamline-Ultim
 const categories = [
   {
     title: 'Bargains',
-    description: 'The biggest discounts across all stores right now.',
+    description: 'The biggest discounts across all stores/categories right now.',
     href: '/bargains',
     icon: bargainsIcon,
     featured: true,
@@ -58,7 +58,7 @@ export const BrowseCategoriesSection = () => {
   return (
     <div className="container mx-auto px-4 py-10">
       <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-6 text-center">
-        Browse by Category
+        Browse Bargains by Category
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {categories.map((cat) => (
