@@ -18,6 +18,7 @@ import kingKongImage1280 from "../assets/king_kong-1280w.webp";
 
 import Seo from '../components/Seo';
 import { HowItWorksSection } from '../components/HowItWorksSection';
+import { BrowseCategoriesSection } from '../components/BrowseCategoriesSection';
 import snackLineup from "../assets/snack_lineup.webp";
 import snackLineup320 from "../assets/snack_lineup-320w.webp";
 import snackLineup640 from "../assets/snack_lineup-640w.webp";
@@ -150,6 +151,9 @@ const HomePage = () => {
       {/* --- How It Works Section --- */}
       <HowItWorksSection steps={howItWorksSteps} />
 
+      {/* --- Browse by Category --- */}
+      <BrowseCategoriesSection />
+
       {/* --- Carousel: Bargains --- */}
       <div className="container mx-auto px-4 py-8">
         <ProductCarousel
@@ -157,21 +161,6 @@ const HomePage = () => {
           title="Bargains"
           sourceUrl="/api/products/bargain-carousel/"
           storeIds={anchorStoreIdsArray}
-          isDefaultStores={isDefaultStores}
-          isUserDefinedList={isUserDefinedList}
-        />
-      </div>
-
-      {/* --- Carousel: Snacks and Sweets --- */}
-      <div className="container mx-auto px-4 py-8">
-        <ProductCarousel
-          key="snacks-and-sweets"
-          title="Snacks & Sweets"
-          sourceUrl="/api/products/"
-          storeIds={anchorStoreIdsArray}
-          primaryCategorySlugs={['snacks', 'sweets']}
-          pillarPageLinkSlug="snacks-and-sweets"
-          slot={0}
           isDefaultStores={isDefaultStores}
           isUserDefinedList={isUserDefinedList}
         />
@@ -216,34 +205,6 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* --- Carousels: Meat, Seafood / Eggs, Dairy --- */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col gap-8">
-          <ProductCarousel
-            key="meat-and-seafood"
-            title="Meat & Seafood"
-            sourceUrl="/api/products/"
-            storeIds={anchorStoreIdsArray}
-            primaryCategorySlugs={['meat', 'seafood']}
-            pillarPageLinkSlug="meat-and-seafood"
-            slot={1}
-            isDefaultStores={isDefaultStores}
-          isUserDefinedList={isUserDefinedList}
-          />
-          <ProductCarousel
-            key="dairy"
-            title="Dairy"
-            sourceUrl="/api/products/"
-            storeIds={anchorStoreIdsArray}
-            primaryCategorySlugs={['dairy']}
-            pillarPageLinkSlug="dairy"
-            slot={2}
-            isDefaultStores={isDefaultStores}
-          isUserDefinedList={isUserDefinedList}
-          />
-        </div>
-      </div>
-      
       {/* --- FAQ Section --- */}
       <div className="container mx-auto px-4 py-8">
         <section>

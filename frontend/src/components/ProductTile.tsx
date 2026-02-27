@@ -129,7 +129,7 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
 
   return (
     <Link to={`/product/${product.slug}`} className="group block h-full" ref={tileRef}>
-      <Card className={`flex flex-col h-full overflow-hidden gap-1 pt-0 pb-2 transition-shadow duration-200 ${!isButtonHovered && 'group-hover:shadow-lg'}`}>
+      <Card className={`flex flex-col h-full overflow-hidden gap-1 pt-0 pb-2 transition-all duration-200 ${!isButtonHovered && 'group-hover:shadow-lg group-hover:border-yellow-300 group-hover:-translate-y-0.5'}`}>
         <div className="aspect-square w-full overflow-hidden relative">
           <div className="absolute top-2 right-2 z-20 flex flex-col items-end gap-1">
             {bargainInfo && (
