@@ -48,7 +48,23 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 
 ## Complexity / Architecture
 
-*(To be discussed)*
+### Category System
+
+**Issue 1 — Products appearing in wrong primary categories**
+
+Two sub-causes:
+
+**A. Cross-hierarchy contamination via shared category nodes.** Categories are stored uniquely by `(slug, company)`, not by full path. If the same category name appears in two different hierarchy paths (e.g., "Health" under both "Baby & Toddler" and "Health & Beauty"), there is ONE database object with two parents. `PrimaryCategoriesGenerator._get_all_descendants` then traverses the entire subtree of a matched category. When traversal crosses into the wrong parent's branch via a shared node, products from unrelated categories get assigned the wrong primary category (e.g., hair colour products appear on the baby page).
+
+**Proposed fix:** Modify `_get_all_descendants` to stop recursing when it encounters a category whose name has its own explicit entry in the `CATEGORY_MAPPINGS` dict for that company. Parent traversals cover only unmapped gaps; explicitly-mapped categories handle their own subtrees. Small change to the generator.
+
+**B. Incorrect entries in `category_mappings.py`.** Several Woolworths mappings are clearly wrong:
+- `'Antipasto': 'Non-Alcoholic Drinks'` → should be `'Miscellaneous'` or `None`
+- `'Asian Ready Meals': 'Non-Alcoholic Drinks'` → should be `'International'` or `'Deli'`
+- `'Board Games & Puzzles': 'Non-Alcoholic Drinks'` → should be `None`
+- `'Chilled Asian': 'Freezer'` → chilled ≠ frozen, should be `'International'` or `'Deli'`
+
+These need a manual audit pass of the full mapping file to catch others like them.
 
 ---
 

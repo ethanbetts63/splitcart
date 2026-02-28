@@ -104,7 +104,7 @@ class PrimaryCategoriesGenerator:
                             continue
 
                         for store_category in store_categories:
-                            descendants = self._get_all_descendants(store_category, set())
+                            descendants = self._get_all_descendants(store_category, set(), mapped_names=set(mappings.keys()))
                             all_categories_to_process = [store_category] + list(descendants)
                             
                             for category in all_categories_to_process:
@@ -128,15 +128,18 @@ class PrimaryCategoriesGenerator:
                     Category.objects.bulk_update(categories_to_update, ['primary_category'])
                     self.stdout.write(f"  Successfully updated categories for {company.name}.")
 
-    def _get_all_descendants(self, category, visited):
+    def _get_all_descendants(self, category, visited, mapped_names=None):
         descendants = set()
         if category in visited:
             return descendants
         visited.add(category)
-        
+
         children = category.subcategories.all()
         for child in children:
+            # Stop at explicitly-mapped boundaries — the child's own mapping will handle it
+            if mapped_names and child.name in mapped_names:
+                continue
             if child not in descendants:
                 descendants.add(child)
-                descendants.update(self._get_all_descendants(child, visited))
+                descendants.update(self._get_all_descendants(child, visited, mapped_names))
         return descendants
