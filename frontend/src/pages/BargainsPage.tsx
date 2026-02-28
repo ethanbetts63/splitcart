@@ -146,27 +146,29 @@ const BargainsPage: React.FC = () => {
 
       {/* --- Bargain Stats Section --- */}
       <div className="container mx-auto px-4 py-8">
-        <h2 className="text-3xl font-bold text-center mb-8">
-          Which supermarket is the <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">cheapest</span> in Australia?
-        </h2>
-        {isLoadingStats && <LoadingSpinner />}
-        {isErrorStats && <p className="text-center text-red-500">Could not load bargain statistics.</p>}
-        {bargainStats && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {bargainStats.map((comparison, index) => (
-              <PriceComparisonChart key={index} comparison={comparison} categoryName="products" />
-            ))}
-            <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-5 flex flex-col gap-3">
-              <h3 className="font-bold text-gray-900 text-base">How We Compare</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                These statistics are based on the full set of identical products that two companies both sell according to our database.
-              </p>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                You'll notice this number changes for each pairing. Companies like Aldi have a highly unique product range, which results in a smaller overlap and fewer items being compared. For IGA, stores are independently owned and prices vary, so we use the average IGA price for each product to make the comparison fair.
-              </p>
+        <section className="-mx-4 md:mx-0 bg-gray-50 py-8 md:px-5 rounded-none md:rounded-xl">
+          <h2 className="text-3xl font-bold text-center mb-8 px-5 md:px-0">
+            Which supermarket is the <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">cheapest</span> in Australia?
+          </h2>
+          {isLoadingStats && <LoadingSpinner />}
+          {isErrorStats && <p className="text-center text-red-500">Could not load bargain statistics.</p>}
+          {bargainStats && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 md:px-0">
+              {bargainStats.map((comparison, index) => (
+                <PriceComparisonChart key={index} comparison={comparison} categoryName="products" />
+              ))}
+              <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-5 flex flex-col gap-3">
+                <h3 className="font-bold text-gray-900 text-base">How We Compare</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  These statistics are based on the full set of identical products that two companies both sell according to our database.
+                </p>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  You'll notice this number changes for each pairing. Companies like Aldi have a highly unique product range, which results in a smaller overlap and fewer items being compared. For IGA, stores are independently owned and prices vary, so we use the average IGA price for each product to make the comparison fair.
+                </p>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </section>
       </div>
 
       {/* FAQ Section */}
