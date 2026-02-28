@@ -20,7 +20,7 @@ Product/category/sub generation         Product ingestion pipeline
       tables                           /api/files/product_translations/
 ```
 
-**All scraping happens locally.** The local machine generates raw data files (JSONL) and uploads them to the server's inbox directories. Before each scraping run, the local machine fetches the latest translation tables from the server via an authenticated API endpoint with ETag caching — it only downloads a new copy if the file has changed since the last fetch.
+**All scraping happens locally.** The local machine generates raw data files (JSONL) and uploads them to the server's inbox directories. Before each scraping run, the local machine fetches the latest translation tables from the server via an authenticated API endpoint with ETag caching — it only downloads a new copy if the file has changed since the last fetch. It does this becuase scraping is resource intense (expensive on the server/free locally) and because the coles scraper requires a human to solve the captchas. 
 
 **All database writes happen on the server.** Management commands that read inboxes and write to the DB are always server-side.
 
@@ -28,7 +28,7 @@ Product/category/sub generation         Product ingestion pipeline
 
 ## Full Setup Flow
 
-The sequence below is the complete ordered pipeline to initialise or re-initialise the system from scratch.
+The sequence below is the complete ordered pipeline to initialise or re-initialise the system from scratch. Some commands have a --dev arg. This is for development. It means that rather than uploading or fetching from the live server, data will be fetched or uploaded to the local environment. In production all the commands are the same just minus the --dev args. 
 
 ---
 
@@ -69,9 +69,9 @@ The product translation table is also written to `scraping/data/` so future scra
 
 ### Step 4 — Load GS1 Prefix Data
 ```
-python manage.py update --prefixes         # Server
+python manage.py update --gs1              # Server
 ```
-Loads GS1 barcode prefix data, which maps barcode number ranges to brand names. This improves brand matching for products identified by barcode where the brand field from the store is missing or inconsistent.
+Loads GS1 barcode prefix data, which maps barcode number ranges to the registered company name. For brandless products, this creates a direct link to the canonical brand. For products with a mismatched brand, it adds the incorrect brand as a variation on the canonical brand record (feeding the translation table) without force-changing the product's existing brand FK.
 
 ---
 
@@ -146,7 +146,7 @@ Generates aggregated price summary text used on pillar and category pages (e.g. 
 ```
 python manage.py generate --default-stores   # Server
 ```
-Sets the default anchor store list — the stores used as the reference point when a user hasn't selected their own.
+Sets the default anchor store list — the stores used as the reference point when a user hasn't selected their own. This is mainly so that initial load for new visitors to the site already has data cached on the server. Hence faster load speed. 
 
 ```
 python manage.py import_postcodes            # Server

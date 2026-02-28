@@ -9,6 +9,8 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 - **Fix `PAGE_SIZE`**: Dropped from 500 → 24. Massive performance improvement. (`splitcart/settings.py`)
 - **Fix `INTERNAL_IPS`**: Added `127.0.0.1` so Django Debug Toolbar works locally. (`splitcart/settings.py`)
 - **Fix sitemap URLs**: Pillar/category pages were listed as `/pillar-pages/{slug}/` in the sitemap but the actual frontend route is `/categories/{slug}/`. Fixed. (`splitcart/sitemaps.py`)
+- **Fix category traversal boundary**: `_get_all_descendants` now stops recursing at explicitly-mapped category names, preventing cross-hierarchy contamination (e.g. hair colour products appearing on the baby page). (`data_management/utils/generation_utils/primary_categories_generator.py`)
+- **Fix `_clean_value` duplication**: `get_normalized_name_brand_size_string` was reimplementing the bag-of-words clean logic inline instead of calling `_clean_value`. Now uses the shared method — single definition, no drift risk. (`scraping/utils/product_scraping_utils/product_normalizer.py`)
 
 ---
 
