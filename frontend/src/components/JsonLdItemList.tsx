@@ -1,10 +1,5 @@
 import React, { useEffect } from 'react';
-import type { Product } from '../types';
-
-interface JsonLdItemListProps {
-  products: Product[];
-  title: string;
-}
+import type { JsonLdItemListProps } from '../types/JsonLdItemListProps';
 
 const JsonLdItemList: React.FC<JsonLdItemListProps> = ({ products, title }) => {
 

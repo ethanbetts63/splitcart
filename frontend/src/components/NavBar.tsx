@@ -10,19 +10,7 @@ import splitcartLogo640 from "../assets/splitcart_symbol_v6-640w.webp";
 import splitcartLogo768 from "../assets/splitcart_symbol_v6-768w.webp";
 import splitcartLogo1024 from "../assets/splitcart_symbol_v6-1024w.webp";
 import splitcartLogo1280 from "../assets/splitcart_symbol_v6-1280w.webp";
-
-interface NavBarProps {
-  searchTerm: string;
-  setSearchTerm: (term: string) => void;
-  handleSearch: () => void;
-  handleSearchKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-  openDialog: (page: string) => void;
-  cartTotal: number;
-  selectedStoreIds: Set<number>;
-  isUserDefinedList: boolean;
-  isAuthenticated: boolean;
-  logout: () => void;
-}
+import type { NavBarProps } from '../types/NavBarProps';
 
 const NavBar: React.FC<NavBarProps> = ({
   searchTerm,

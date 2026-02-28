@@ -22,6 +22,24 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 
 ---
 
+## UX — Substitution Flow
+
+- [ ] **Jumpable step indicator** — Currently the only way to go back to a previous substitution item is to click Back repeatedly. Add a clickable step indicator (dots or numbered pills) above the progress bar so users can jump directly to any item they've already seen.
+
+- [ ] **"Review all" list view** — The step-by-step flow is clear for small carts but tedious for large ones. Consider a toggle between the current "one at a time" mode and an "all at once" list view where every item and its substitutes are visible on a single scrollable page. Power users would prefer this.
+
+- [ ] **Running cart summary during substitution** — While working through substitutions the user has no reminder of their full list. A small collapsed header or sidebar showing "12 items in cart · 4 substitutions approved" would provide useful context without taking up space.
+
+---
+
+## UX — Results Page
+
+- [ ] **Explicit "Recommended" label** — The highest-saving tab gets a green badge but users still have to interpret it. Add a clear "Recommended" label to the best-saving tab to remove ambiguity.
+
+- [ ] **Show percentage saving in the panel header** — The savings amount is shown in the tab badge and in the panel as a dollar figure, but the percentage isn't visible inside the panel itself. Showing "You saved 14%" prominently alongside the dollar saving in the panel header would be more satisfying and instantly legible.
+
+---
+
 ## Security
 
 *(To be discussed)*

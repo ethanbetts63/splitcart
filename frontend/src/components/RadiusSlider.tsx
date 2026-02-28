@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
 import { Slider } from './ui/slider';
-
-interface RadiusSliderProps {
-  defaultValue?: number;
-  min?: number;
-  max?: number;
-  step?: number;
-  onValueChange?: (value: number) => void;
-}
+import type { RadiusSliderProps } from '../types/RadiusSliderProps';
 
 const RadiusSlider: React.FC<RadiusSliderProps> = ({ 
   defaultValue = 5, 

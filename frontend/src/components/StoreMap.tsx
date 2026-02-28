@@ -4,15 +4,8 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import type { Store } from '../types';
 import { useCompanyLogo } from '../hooks/useCompanyLogo';
-
-type MapBounds = [[number, number], [number, number]] | null;
-
-interface StoreMapProps {
-  bounds: MapBounds;
-  stores: Store[];
-  selectedStoreIds: Set<number>;
-  onStoreSelect: (storeId: number) => void;
-}
+import type { MapBounds } from '../types/MapBounds';
+import type { StoreMapProps } from '../types/StoreMapProps';
 
 // --- Style Definitions ---
 const markerHtmlStyles = `

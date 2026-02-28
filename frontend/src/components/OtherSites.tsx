@@ -2,17 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-
-interface OtherSite {
-    name: string;
-    logoSrc: string;
-    description: string;
-    url: string;
-}
-
-interface OtherSitesProps {
-    sites: OtherSite[];
-}
+import type { OtherSitesProps } from '../types/OtherSitesProps';
 
 const OtherSites: React.FC<OtherSitesProps> = ({ sites }) => {
     return (

@@ -4,11 +4,7 @@ import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
 import placeholderImage from '../assets/placeholder.webp';
-import type { Product } from '../types';
-
-interface ProductTileProps {
-  product: Product;
-}
+import type { ProductTileProps } from '../types/ProductTileProps';
 
 const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
@@ -71,16 +67,8 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
       'Aldi': 'Aldi',
     };
 
-    const companyColors: { [key: string]: string } = {
-      'Aldi': 'bg-blue-300 text-black',
-      'Woolies': 'bg-green-500 text-black',
-      'Coles': 'bg-red-700 text-white',
-      'IGA': 'bg-black text-white border border-red-600',
-    };
-
     const companyName = product.bargain_info.cheapest_company_name;
     const shortName = companyShortNames[companyName] || companyName;
-    const badgeClasses = companyColors[shortName] || 'bg-gray-700 text-white';
 
     return {
       percentage: product.bargain_info.discount_percentage,

@@ -2,13 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Input } from './ui/input';
 import { Badge } from './ui/badge';
 import { cn } from '../lib/utils';
-
-interface MultiplePostcodeInputProps {
-  value: string; // Comma-separated string of postcodes
-  onChange: (postcodes: string) => void;
-  maxPostcodes?: number;
-  className?: string;
-}
+import type { MultiplePostcodeInputProps } from '../types/MultiplePostcodeInputProps';
 
 const MultiplePostcodeInput: React.FC<MultiplePostcodeInputProps> = ({
   value,

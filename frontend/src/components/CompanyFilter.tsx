@@ -3,11 +3,7 @@ import { Checkbox } from "./ui/checkbox";
 import { companyNames } from '../lib/companies';
 import { useCompanyLogo } from '../hooks/useCompanyLogo';
 import { Skeleton } from './ui/skeleton';
-
-interface CompanyFilterProps {
-  selectedCompanies?: string[];
-  onSelectionChange: (selectedCompanies: string[]) => void;
-}
+import type { CompanyFilterProps } from '../types/CompanyFilterProps';
 
 // Internal component to handle the logo loading state
 const CompanyLogo = ({ companyName }: { companyName: string }) => {

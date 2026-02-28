@@ -3,19 +3,7 @@ import { Checkbox } from "./ui/checkbox";
 import { Card, CardContent } from "./ui/card";
 import { useCompanyLogo } from '../hooks/useCompanyLogo';
 import { Skeleton } from './ui/skeleton';
-
-// Define the type for a single store
-type Store = {
-  id: number;
-  store_name: string;
-  company_name: string;
-};
-
-interface StoreListProps {
-  stores: Store[];
-  selectedStoreIds: Set<number>;
-  onStoreSelect: (storeId: number) => void;
-}
+import type { StoreListProps } from '../types/StoreListProps';
 
 // Internal component to handle the logo loading state
 const StoreLogo = ({ companyName }: { companyName: string }) => {

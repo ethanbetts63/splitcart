@@ -23,6 +23,8 @@ import {
 import EditLocationPage from "../pages/dialog-pages/EditLocationPage";
 import CartPage from "../pages/dialog-pages/CartPage";
 import { toast } from "sonner";
+import type { NavItem } from "../types/NavItem";
+import type { SettingsDialogProps } from "../types/SettingsDialogProps";
 
 // Utility function to compare two sets
 function areSetsEqual<T>(a: Set<T>, b: Set<T>): boolean {
@@ -36,13 +38,6 @@ function areSetsEqual<T>(a: Set<T>, b: Set<T>): boolean {
   }
   return true;
 }
-
-// Define a type for our navigation items
-type NavItem = {
-  name: string;
-  icon: React.ElementType;
-  isCloseButton?: boolean; // Add a flag for the close button
-};
 
 const data = {
   nav: [
@@ -86,12 +81,6 @@ const PageContent = ({
       );
   }
 };
-
-interface SettingsDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  defaultPage?: string;
-}
 
 export function SettingsDialog({ open, onOpenChange, defaultPage = 'cart' }: SettingsDialogProps) {
   const [activePage, setActivePage] = React.useState(defaultPage);

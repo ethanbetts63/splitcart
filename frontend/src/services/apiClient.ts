@@ -1,4 +1,5 @@
 import { getAuthHeaders } from '../lib/utils';
+import type { ApiClientOptions } from '../types/ApiClientOptions';
 
 export class ApiError extends Error {
   statusCode: number;
@@ -11,12 +12,6 @@ export class ApiError extends Error {
     this.data = data;
     Object.setPrototypeOf(this, ApiError.prototype);
   }
-}
-
-interface ApiClientOptions {
-  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-  body?: Record<string, any> | FormData;
-  signal?: AbortSignal;
 }
 
 export class ApiClient {

@@ -1,11 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useApiQuery } from '@/hooks/useApiQuery';
-
-// Type for the primary category data fetched from the API
-type PrimaryCategory = {
-  name: string;
-  slug: string;
-};
+import type { PrimaryCategory } from '../types/PrimaryCategory';
 
 // --- Configuration ---
 const PRIORITY_CATEGORIES = ['deals', 'sweets', 'meat'];

@@ -2,11 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { cn } from '../lib/utils';
-
-interface NextButtonProps {
-  onAfterNavigate?: () => void; // Optional callback
-  className?: string;
-}
+import type { NextButtonProps } from '../types/NextButtonProps';
 
 const NextButton: React.FC<NextButtonProps> = ({ onAfterNavigate, className }) => {
   const navigate = useNavigate();

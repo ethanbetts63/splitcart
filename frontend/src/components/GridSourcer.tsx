@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import ProductGrid from './ProductGrid';
-import type { Product } from '../types'; // Import shared type
 
 import {
   Pagination,
@@ -23,23 +22,8 @@ import {
 import { useStoreList } from '../context/StoreListContext';
 import { useDialog } from '../context/DialogContext';
 import LoadingSpinner from './LoadingSpinner';
-
-// Type for the API response, using the shared Product type
-type ApiResponse = {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: Product[];
-};
-
-interface GridSourcerProps {
-  searchTerm: string | null;
-  sourceUrl: string | null;
-  primaryCategorySlug: string | null;
-  primaryCategorySlugs?: string | null;
-  bargainCompany?: string | null;
-}
-
+import type { PaginatedProductResponse } from '../types/PaginatedProductResponse';
+import type { GridSourcerProps } from '../types/GridSourcerProps';
 import { useApiQuery } from '../hooks/useApiQuery';
 import { useAuth } from '../context/AuthContext';
 import { useQueryClient } from '@tanstack/react-query';
@@ -118,7 +102,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
   const { 
     data: apiResponse,
     isLoading,
-  } = useApiQuery<ApiResponse>(
+  } = useApiQuery<PaginatedProductResponse>(
     ['products', finalUrl],
     finalUrl || '',
     {},

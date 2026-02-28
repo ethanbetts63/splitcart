@@ -45,7 +45,7 @@ const homeFaqs = [
   {"question": "Is it always cheaper than buying from one store?", "answer": "Splitting your cart is almost always cheaper, almost. Our results will always show you the \"Best Single Store\" option alongside the split-cart options, so you can clearly see if splitting your cart provides a real benefit for your specific shopping list."},
   {"question": "Which stores can I compare?", "answer": "Right now, SplitCart supports Coles, Woolworths, Aldi, and IGA. We’d love to bring the smaller guys on board too, but their price data is harder to track down — which hurts, because they’re often the real discount heroes."},
   {"question": "How accurate are the prices?", "answer": "The short answer is: pretty accurate! But not perfect. We pull prices directly from stores websites as often as we can but we can only be as accurate as the stores themselves."},
-  {"question": "How can it be free?", "answer": "Great question!"}
+  {"question": "How can it be free?", "answer": "Honestly? We're just getting started. Right now SplitCart has no users to speak of, which means there's no point even thinking about monetisation yet. The focus is entirely on building something genuinely useful. Once there's a real user base, we'll figure out a model that doesn't compromise the product. Until then — enjoy it."}
 ];
 
 const HomePage = () => {

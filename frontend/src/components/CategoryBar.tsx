@@ -3,12 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Badge } from './ui/badge';
 import '../css/CategoryCarousel.css';
 import { useApiQuery } from '../hooks/useApiQuery';
-
-// --- Type Definitions ---
-type Category = {
-  name: string;
-  slug: string;
-};
+import type { Category } from '../types/Category';
 
 const CategoryBar: React.FC = () => {
   const navigate = useNavigate();

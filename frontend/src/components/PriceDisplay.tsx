@@ -1,13 +1,8 @@
 import React from 'react';
-import type { CompanyPriceInfo } from '../types';
 import { useCompanyLogo } from '../hooks/useCompanyLogo';
 import { Skeleton } from './ui/skeleton';
 import { Badge } from './ui/badge';
-
-interface PriceDisplayProps {
-  prices: CompanyPriceInfo[];
-  displayMode?: 'compact' | 'full';
-}
+import type { PriceDisplayProps } from '../types/PriceDisplayProps';
 
 const CompanyLogo = ({ companyName, priceDisplay }: { companyName: string; priceDisplay: string }) => {
   const { objectUrl, isLoading, error } = useCompanyLogo(companyName);

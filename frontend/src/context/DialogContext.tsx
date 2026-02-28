@@ -1,11 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
-
-interface DialogContextType {
-  isDialogOpen: boolean;
-  dialogPage: string;
-  openDialog: (page: string) => void;
-  closeDialog: () => void;
-}
+import type { DialogContextType } from '../types/DialogContextType';
 
 const DialogContext = createContext<DialogContextType | undefined>(undefined);
 

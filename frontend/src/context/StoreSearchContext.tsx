@@ -1,36 +1,12 @@
-import React, { createContext, useContext, useState, type ReactNode, useEffect, useCallback, useMemo } from 'react';
+import { createContext, useContext, useState, type ReactNode, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from './AuthContext';
 import { createApiClient } from '../services/apiClient';
 import { searchNearbyStoresAPI } from '../services/store.api';
 import { companyNames } from '../lib/companies';
-import { useStoreList } from './StoreListContext'; // To set anchor map
-
-// --- Type Definitions ---
-type Store = {
-  id: number;
-  store_name: string;
-  company_name: string;
-  latitude: number;
-  longitude: number;
-};
-
-type MapBounds = [[number, number], [number, number]] | null;
-
-interface StoreSearchContextType {
-  stores: Store[] | null;
-  setStores: React.Dispatch<React.SetStateAction<Store[] | null>>;
-  postcode: string;
-  setPostcode: React.Dispatch<React.SetStateAction<string>>;
-  radius: number;
-  setRadius: React.Dispatch<React.SetStateAction<number>>;
-  selectedCompanies: string[];
-  setSelectedCompanies: React.Dispatch<React.SetStateAction<string[]>>;
-  mapBounds: MapBounds;
-  setMapBounds: React.Dispatch<React.SetStateAction<MapBounds>>;
-  isLoading: boolean;
-  error: string | null;
-  handleSearch: () => Promise<Store[] | null>;
-}
+import { useStoreList } from './StoreListContext';
+import type { Store } from '../types/Store';
+import type { MapBounds } from '../types/MapBounds';
+import type { StoreSearchContextType } from '../types/StoreSearchContextType';
 
 // --- Context Creation ---
 const StoreSearchContext = createContext<StoreSearchContextType | undefined>(undefined);

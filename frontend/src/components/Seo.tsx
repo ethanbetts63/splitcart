@@ -1,15 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-
-interface SeoProps {
-  title: string;
-  description?: string;
-  canonicalPath?: string;
-  ogType?: 'website' | 'article';
-  ogImage?: string;
-  noindex?: boolean;
-  structuredData?: object | any;
-}
+import type { SeoProps } from '../types/SeoProps';
 
 const Seo: React.FC<SeoProps> = ({ title, description, canonicalPath, ogType = 'website', ogImage, noindex, structuredData }) => {
   const siteUrl = 'https://www.splitcart.com.au';

@@ -16,7 +16,7 @@ export const FounderLetterSection = () => {
             If you're like me then SplitCart was built for you. I know this to be a fact because I built SplitCart for me.
           </p>
           <p>
-            The idea is simple. Why not buy each item in my shopping list from the store where it's cheapest? Becuase you don't know the price of every item in every store. Becuase you'd never go to ten stores on one shopping run. Becuase it would be a hassle.
+            The idea is simple. Why not buy each item in my shopping list from the store where it's cheapest? Because you don't know the price of every item in every store. Because you'd never go to ten stores on one shopping run. Because it would be a hassle.
           </p>
         </div>
         <div className="flex flex-col gap-4">

@@ -15,17 +15,11 @@ import {
 } from "../../components/ui/select";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
-import { PlusCircle, Save, Trash2, Pencil } from 'lucide-react'; // Icons for actions
+import { PlusCircle, Save, Trash2, Pencil } from 'lucide-react';
 
 import { useStoreSearch } from '../../context/StoreSearchContext';
 import { useStoreList } from '../../context/StoreListContext';
-
-interface EditLocationPageProps {
-  localSelectedStoreIds: Set<number>;
-  setLocalSelectedStoreIds: React.Dispatch<React.SetStateAction<Set<number>>>;
-  onOpenChange: (open: boolean) => void;
-  setHasSearchOccurred: React.Dispatch<React.SetStateAction<boolean>>; // Add this prop
-}
+import type { EditLocationPageProps } from '../../types/EditLocationPageProps';
 
 const EditLocationPage: React.FC<EditLocationPageProps> = ({ localSelectedStoreIds, setLocalSelectedStoreIds, onOpenChange, setHasSearchOccurred }) => {
   const { isAuthenticated } = useAuth();

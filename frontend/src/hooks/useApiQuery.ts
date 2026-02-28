@@ -1,14 +1,7 @@
 
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useAuth } from '../context/AuthContext';
-
-// --- Type Definitions ---
-
-type ApiOptions = {
-  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-  body?: any;
-  [key: string]: any;
-};
+import type { ApiOptions } from '../types/ApiOptions';
 
 // --- Centralized API Fetch Function ---
 

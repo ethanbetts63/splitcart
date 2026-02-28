@@ -1,10 +1,5 @@
 import React from 'react';
-import type { PriceComparison } from '../types';
-
-interface PriceComparisonChartProps {
-  comparison: PriceComparison;
-  categoryName: string;
-}
+import type { PriceComparisonChartProps } from '../types/PriceComparisonChartProps';
 
 const PriceComparisonChart: React.FC<PriceComparisonChartProps> = ({ comparison, categoryName }) => {
   const {

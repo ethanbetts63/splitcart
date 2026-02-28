@@ -8,12 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { PlusCircle, Save, Trash2, Pencil } from 'lucide-react';
+import type { CartPageProps } from '../../types/CartPageProps';
 
-interface cartPageProps {
-  onOpenChange: (open: boolean) => void;
-}
-
-const CartPage: React.FC<cartPageProps> = ({ onOpenChange }) => {
+const CartPage: React.FC<CartPageProps> = ({ onOpenChange }) => {
   const { 
     currentCart, userCarts, cartLoading,
     loadCart, createNewCart, renameCart, deleteCart 

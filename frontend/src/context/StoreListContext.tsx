@@ -1,35 +1,10 @@
-import React, { createContext, useContext, useState, type ReactNode, useEffect, useCallback, useMemo } from 'react';
+import { createContext, useContext, useState, type ReactNode, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from './AuthContext';
 import { type SelectedStoreListType } from '../types';
+import type { AnchorMap } from '../types/AnchorMap';
+import type { StoreListContextType } from '../types/StoreListContextType';
 import * as storeListApi from '../services/storeList.api';
 import { createApiClient } from '../services/apiClient';
-
-// Type for the anchor map
-export type AnchorMap = { [storeId: number]: number };
-
-interface StoreListContextType {
-  selectedStoreIds: Set<number>;
-  setSelectedStoreIds: React.Dispatch<React.SetStateAction<Set<number>>>;
-  handleStoreSelect: (storeId: number) => void;
-  currentStoreListId: string | null;
-  setCurrentStoreListId: React.Dispatch<React.SetStateAction<string | null>>;
-  currentStoreListName: string;
-  setCurrentStoreListName: React.Dispatch<React.SetStateAction<string>>;
-  isUserDefinedList: boolean;
-  userStoreLists: SelectedStoreListType[];
-  setUserStoreLists: React.Dispatch<React.SetStateAction<SelectedStoreListType[]>>;
-  storeListLoading: boolean;
-  setStoreListLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  storeListError: string | null;
-  setStoreListError: React.Dispatch<React.SetStateAction<string | null>>;
-  loadStoreList: (storeListId: string) => Promise<void>;
-  saveStoreList: (name: string, storeIds: number[]) => Promise<void>;
-  createNewStoreList: (storeIds: number[]) => Promise<void>;
-  deleteStoreList: (storeListId: string) => Promise<void>;
-  fetchActiveStoreList: () => Promise<void>;
-  anchorStoreMap: AnchorMap | null;
-  setAnchorStoreMap: React.Dispatch<React.SetStateAction<AnchorMap | null>>;
-}
 
 // --- Context Creation ---
 const StoreListContext = createContext<StoreListContextType | undefined>(undefined);

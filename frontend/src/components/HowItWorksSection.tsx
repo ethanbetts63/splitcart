@@ -1,18 +1,4 @@
-interface HowItWorksStep {
-  step: number;
-  title: string;
-  description: string;
-  image: {
-    src: string;
-    srcSet: string;
-    sizes: string;
-    alt: string;
-  };
-}
-
-interface HowItWorksSectionProps {
-  steps: HowItWorksStep[];
-}
+import type { HowItWorksSectionProps } from '../types/HowItWorksSectionProps';
 
 export const HowItWorksSection = ({ steps }: HowItWorksSectionProps) => {
   return (

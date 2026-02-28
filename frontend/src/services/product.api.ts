@@ -1,17 +1,10 @@
 import { type ApiClient } from './apiClient';
-import { type Product } from '../types';
-
-type ApiResponse = {
-    count: number;
-    next: string | null;
-    previous: string | null;
-    results: Product[];
-};
+import type { PaginatedProductResponse } from '../types/PaginatedProductResponse';
 
 /**
  * Fetches products from a given URL (which includes search/filter query params).
  * The URL should be a relative API path, e.g., /api/products/?search=...
  */
-export const fetchProductsAPI = (apiClient: ApiClient, url: string): Promise<ApiResponse> => {
-  return apiClient.get<ApiResponse>(url);
+export const fetchProductsAPI = (apiClient: ApiClient, url: string): Promise<PaginatedProductResponse> => {
+  return apiClient.get<PaginatedProductResponse>(url);
 };

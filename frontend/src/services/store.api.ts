@@ -1,24 +1,6 @@
 import { type ApiClient } from './apiClient';
-import { type AnchorMap } from '../context/StoreListContext';
-
-type ApiStore = {
-  id: number;
-  store_name: string;
-  company_name: string;
-  latitude: number;
-  longitude: number;
-};
-
-export interface NearbyStoresResponse {
-    stores: ApiStore[];
-    anchor_map: AnchorMap;
-}
-
-interface SearchParams {
-    postcode: string;
-    radius: number;
-    companies: string[];
-}
+import type { NearbyStoresResponse } from '../types/NearbyStoresResponse';
+import type { SearchParams } from '../types/SearchParams';
 
 export const searchNearbyStoresAPI = (apiClient: ApiClient, { postcode, radius, companies }: SearchParams): Promise<NearbyStoresResponse> => {
     const params = new URLSearchParams();

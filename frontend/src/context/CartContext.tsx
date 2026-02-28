@@ -2,34 +2,10 @@ import React, { createContext, useState, useContext, useEffect, useCallback, use
 import { useAuth } from './AuthContext';
 import { toast } from 'sonner';
 import type { Cart, ApiResponse } from '../types';
+import type { CartContextType } from '../types/CartContextType';
 import { createApiClient, ApiError } from '../services/apiClient';
 import { debounce } from '../lib/utils';
 import * as cartApi from '../services/cart.api';
-
-// Types
-
-export interface CartContextType {
-  currentCart: Cart | null;
-  userCarts: Cart[];
-  optimizationResult: ApiResponse | null;
-  setOptimizationResult: (result: ApiResponse | null) => void;
-  cartLoading: boolean;
-  isFetchingSubstitutions: boolean; // New state for substitution loading
-
-  fetchActiveCart: () => Promise<Cart | null>;
-  loadCart: (cartId: string) => void;
-  createNewCart: () => void;
-  renameCart: (cartId: string, newName: string) => void;
-  deleteCart: (cartId: string) => void;
-  addItem: (productId: number, quantity: number, product: any) => void;
-  updateItemQuantity: (itemId: string, quantity: number) => void;
-  removeItem: (itemId: string) => void;
-  optimizeCurrentCart: (storeListId: string) => Promise<ApiResponse | null>;
-  emailCurrentCart: (exportData: any) => Promise<void>;
-  downloadCurrentCart: (exportData: any) => Promise<Blob | null>;
-  updateCartItemSubstitution: (cartItemId: string, substitutionId: string, isApproved: boolean, quantity: number) => void;
-  removeCartItemSubstitution: (cartItemId: string, substitutionId: string) => void;
-}
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 

@@ -5,13 +5,7 @@ import confusedShopper640 from "../assets/confused_shopper-640w.webp";
 import confusedShopper768 from "../assets/confused_shopper-768w.webp";
 import confusedShopper1024 from "../assets/confused_shopper-1024w.webp";
 import confusedShopper1280 from "../assets/confused_shopper-1280w.webp";
-
-interface HeroProps {
-  title: React.ReactNode;
-  subtitle: React.ReactNode;
-  imageAlt: string;
-  ctaElement?: React.ReactNode;
-}
+import type { HeroProps } from '../types/HeroProps';
 
 export const Hero: React.FC<HeroProps> = ({ title, subtitle, imageAlt, ctaElement }) => {
   const imageSrc = confusedShopper;

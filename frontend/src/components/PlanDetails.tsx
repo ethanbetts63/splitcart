@@ -5,22 +5,7 @@ import aldiLogo from '../assets/ALDI_logo.webp';
 import colesLogo from '../assets/coles_logo.webp';
 import igaLogo from '../assets/iga_logo.webp';
 import woolworthsLogo from '../assets/woolworths_logo.webp';
-
-interface ShoppingPlan {
-  [storeName: string]: {
-    items: {
-      product_name: string;
-      brand: string | null;
-      size: string;
-      quantity: number;
-      price: number;
-      image_url: string | null;
-    }[];
-    company_name: string;
-    store_address: string;
-    total_cost?: number;
-  };
-}
+import type { ShoppingPlan } from '../types/ShoppingPlan';
 
 const companyLogos: { [key: string]: string } = {
   'Aldi': aldiLogo,

@@ -1,13 +1,9 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
-import type { Product } from '../types';
 import { useStoreList } from '../context/StoreListContext';
 import { useDialog } from '../context/DialogContext';
 import { toast } from 'sonner';
-
-interface AddToCartButtonProps {
-  product: Product;
-}
+import type { AddToCartButtonProps } from '../types/AddToCartButtonProps';
 
 const AddToCartButton: React.FC<AddToCartButtonProps> = ({ product }) => {
   const { currentCart, addItem, updateItemQuantity } = useCart();

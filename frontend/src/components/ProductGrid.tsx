@@ -1,11 +1,6 @@
 import React from 'react';
 import ProductTile from './ProductTile';
-import type { Product } from '../types'; // Import shared type
-
-interface ProductGridProps {
-  products: Product[];
-  hasResults: boolean;
-}
+import type { ProductGridProps } from '../types/ProductGridProps';
 
 const ProductGrid: React.FC<ProductGridProps> = ({ 
   products, 

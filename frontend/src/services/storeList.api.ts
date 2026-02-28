@@ -1,12 +1,6 @@
 import { type SelectedStoreListType } from '../types';
-import { type AnchorMap } from '../context/StoreListContext';
+import type { ActiveStoreListData } from '../types/ActiveStoreListData';
 import { type ApiClient } from './apiClient';
-
-// The expected data shape from the new /api/store-lists/active/ endpoint
-export interface ActiveStoreListData {
-  store_list: SelectedStoreListType;
-  anchor_map: AnchorMap;
-}
 
 export const fetchActiveStoreListDataAPI = (apiClient: ApiClient): Promise<ActiveStoreListData> => {
   return apiClient.get<ActiveStoreListData>('/api/store-lists/active/');

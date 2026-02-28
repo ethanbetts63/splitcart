@@ -1,189 +1,71 @@
-//==============================================================================
-//|                                 Shared Types                                 |
-//------------------------------------------------------------------------------
-//| This file contains all shared TypeScript types for the application.        |
-//| It is organized by data model and feature area.                            |
-//==============================================================================
+// Barrel re-export — import from individual files for explicit dependencies,
+// or use this file for convenience when importing multiple shared types.
 
-// --- Core Data Models ---
-
-export type CompanyPriceInfo = {
-  company: string;
-  price_display: string;
-  is_lowest: boolean;
-  image_url?: string;
-  per_unit_price_string?: string;
-};
-
-export type Product = {
-  id: number;
-  name: string;
-  brand_name?: string;
-  size?: string;
-  image_url?: string;
-  prices: CompanyPriceInfo[];
-  quantity?: number; // Often added for cart item context
-  level?: string;
-  level_description?: string;
-  primary_category?: {
-    name: string;
-    slug: string;
-  };
-  min_unit_price?: number | null;
-  slug?: string;
-  bargain_info?: {
-    discount_percentage: number;
-    cheapest_company_name: string;
-  } | null;
-  best_discount?: number;
-  cheaper_store_name?: string;
-  cheaper_company_name?: string;
-};
-
-export type CartSubstitution = {
-  id: string;
-  substituted_product: Product;
-  quantity: number;
-  is_approved: boolean;
-  created_at?: string;
-  updated_at?: string;
-};
-
-export type CartItem = {
-  id: string;
-  product: Product;
-  quantity: number;
-  baseline_price?: number; // Added for store-specific baseline calculation
-  substitutions?: CartSubstitution[];
-  created_at?: string;
-  updated_at?: string;
-};
-
-export type Cart = {
-  id: string;
-  name: string;
-  items: CartItem[];
-  is_active: boolean;
-  selected_store_list?: SelectedStoreListType;
-  created_at?: string;
-  updated_at?: string;
-};
-
-// --- Store & Location Types ---
-
-export type SelectedStoreListType = {
-  id: string;
-  name: string;
-  stores: number[];
-  is_user_defined: boolean;
-  created_at: string;
-  updated_at: string;
-  last_used_at: string;
-};
-
-export type Store = {
-  id: number;
-  company_name: string;
-  store_name: string;
-  latitude: number;
-  longitude: number;
-};
-
-// --- API & Optimization Types ---
-
-export type ShoppingPlan = {
-  [storeName: string]: {
-    items: {
-      product_name: string;
-      brand: string | null;
-      size: string;
-      quantity: number;
-      price: number;
-      image_url: string | null;
-      image_base64?: string; // For PDF generation
-    }[];
-    company_name: string;
-    store_address: string;
-    total_cost?: number;
-    subtotal?: number; // For PDF generation
-  };
-};
-
-export type OptimizationResult = {
-  max_stores: number;
-  optimized_cost: number;
-  savings: number;
-  shopping_plan: ShoppingPlan;
-};
-
-export type BestSingleStore = {
-    max_stores: 1;
-    optimized_cost: number;
-    savings: number;
-    shopping_plan: ShoppingPlan;
-    items_found_count: number;
-    total_items_in_cart: number;
-};
-
-export type OptimizationDataSet = {
-  baseline_cost: number;
-  optimization_results: OptimizationResult[];
-  best_single_store?: BestSingleStore;
-};
-
-export type ApiResponse = OptimizationDataSet & {
-  no_subs_results?: OptimizationDataSet;
-};
-
-export type ExportData = {
-    shopping_plan: ShoppingPlan;
-    baseline_cost: number;
-    optimized_cost: number;
-    savings: number;
-};
-
-// --- Auth & Setup Types ---
-
-export type InitialSetupData = {
-  cart: Cart;
-  anchor_map: { [storeId: number]: number };
-  anonymous_id?: string;
-};
-
-// --- Pillar Page Types ---
-
-export interface PriceComparison {
-  company_a_id: number;
-  company_a_name: string;
-  company_b_id: number;
-  company_b_name: string;
-  overlap_count: number;
-  cheaper_at_a_percentage: number;
-  cheaper_at_b_percentage: number;
-  same_price_percentage: number;
-}
-
-export interface PriceComparisonData {
-  comparisons: PriceComparison[];
-}
-
-export interface PrimaryCategory {
-  name: string;
-  slug: string;
-  price_comparison_data?: PriceComparisonData;
-}
-
-export interface FaqItem {
-  question: string;
-  answer: string;
-}
-
-export interface PillarPage {
-  name: string;
-  slug: string;
-  hero_title: string;
-  introduction_paragraph: string;
-  image_path: string;
-  primary_categories: PrimaryCategory[];
-  faqs: FaqItem[];
-}
+export type { CompanyPriceInfo } from './CompanyPriceInfo';
+export type { Product } from './Product';
+export type { CartSubstitution } from './CartSubstitution';
+export type { CartItem } from './CartItem';
+export type { Cart } from './Cart';
+export type { SelectedStoreListType } from './SelectedStoreListType';
+export type { Store } from './Store';
+export type { ShoppingPlan } from './ShoppingPlan';
+export type { OptimizationResult } from './OptimizationResult';
+export type { BestSingleStore } from './BestSingleStore';
+export type { OptimizationDataSet } from './OptimizationDataSet';
+export type { ApiResponse } from './ApiResponse';
+export type { ExportData } from './ExportData';
+export type { InitialSetupData } from './InitialSetupData';
+export type { PriceComparison } from './PriceComparison';
+export type { PriceComparisonData } from './PriceComparisonData';
+export type { PrimaryCategory } from './PrimaryCategory';
+export type { FaqItem } from './FaqItem';
+export type { PillarPage } from './PillarPage';
+export type { AnchorMap } from './AnchorMap';
+export type { MapBounds } from './MapBounds';
+export type { PaginatedProductResponse } from './PaginatedProductResponse';
+export type { SearchParams } from './SearchParams';
+export type { NearbyStoresResponse } from './NearbyStoresResponse';
+export type { ActiveStoreListData } from './ActiveStoreListData';
+export type { ApiClientOptions } from './ApiClientOptions';
+export type { ApiOptions } from './ApiOptions';
+export type { AuthContextType } from './AuthContextType';
+export type { CartContextType } from './CartContextType';
+export type { DialogContextType } from './DialogContextType';
+export type { StoreListContextType } from './StoreListContextType';
+export type { StoreSearchContextType } from './StoreSearchContextType';
+export type { OnApproveCallback } from './OnApproveCallback';
+export type { OnQuantityChangeCallback } from './OnQuantityChangeCallback';
+export type { BaseCartItemTileProps } from './BaseCartItemTileProps';
+export type { CartContextProps } from './CartContextProps';
+export type { SubstitutionContextProps } from './SubstitutionContextProps';
+export type { CartItemTileProps } from './CartItemTileProps';
+export type { AddToCartButtonProps } from './AddToCartButtonProps';
+export type { CartSubTileProps } from './CartSubTileProps';
+export type { CartPageProps } from './CartPageProps';
+export type { Category } from './Category';
+export type { EditLocationPageProps } from './EditLocationPageProps';
+export type { CompanyFilterProps } from './CompanyFilterProps';
+export type { FaqProps } from './FaqProps';
+export type { FaqV2Props } from './FaqV2Props';
+export type { GridSourcerProps } from './GridSourcerProps';
+export type { HeroProps } from './HeroProps';
+export type { HowItWorksStep } from './HowItWorksStep';
+export type { HowItWorksSectionProps } from './HowItWorksSectionProps';
+export type { JsonLdItemListProps } from './JsonLdItemListProps';
+export type { LoadingSpinnerProps } from './LoadingSpinnerProps';
+export type { MultiplePostcodeInputProps } from './MultiplePostcodeInputProps';
+export type { NavBarProps } from './NavBarProps';
+export type { NavItem } from './NavItem';
+export type { NextButtonProps } from './NextButtonProps';
+export type { OtherSite } from './OtherSite';
+export type { OtherSitesProps } from './OtherSitesProps';
+export type { PriceComparisonChartProps } from './PriceComparisonChartProps';
+export type { PriceDisplayProps } from './PriceDisplayProps';
+export type { ProductCarouselProps } from './ProductCarouselProps';
+export type { ProductGridProps } from './ProductGridProps';
+export type { ProductTileProps } from './ProductTileProps';
+export type { RadiusSliderProps } from './RadiusSliderProps';
+export type { SeoProps } from './SeoProps';
+export type { SettingsDialogProps } from './SettingsDialogProps';
+export type { StoreListProps } from './StoreListProps';
+export type { StoreMapProps } from './StoreMapProps';

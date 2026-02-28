@@ -48,9 +48,7 @@ const loadingMessages = [
   "Calculating the optimal number of stores to annoy...",
 ];
 
-interface LoadingSpinnerProps {
-  fullScreen?: boolean;
-}
+import type { LoadingSpinnerProps } from '../types/LoadingSpinnerProps';
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ fullScreen = true }) => {
   const [loadingMessage, setLoadingMessage] = useState("");

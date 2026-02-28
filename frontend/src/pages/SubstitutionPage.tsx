@@ -4,14 +4,12 @@ import { useCart } from '../context/CartContext';
 import { useStoreList } from '../context/StoreListContext';
 import ProductTile from '../components/ProductTile';
 import CartItemTile from '../components/CartItemTile';
-import { Button } from '../components/ui/button';
 import LoadingSpinner from '../components/LoadingSpinner';
 import type { CartSubstitution } from '../types';
-import { Badge } from "../components/ui/badge";
-import { BadgeCheckIcon } from 'lucide-react';
 import { FAQ } from "../components/FAQ";
 import sizeDoesntMatterImage from "../assets/size_doesnt_matter.webp";
 import useMediaQuery from '../hooks/useMediaQuery';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 const substitutesFaqs = [
   {"question": "Should I consider price?", "answer": "Short answer is no. Just pick anything that you would be willing to have \"instead of\" the original. Long answer is very mathematical but suffice to say that the algorithm will often unexpectedly pick very expensive isolated items because it allows it to lower the overall cost in other areas."},
@@ -37,7 +35,6 @@ const SubstitutionPage = () => {
   const itemsToReview = currentCart?.items.filter(item => item.substitutions && item.substitutions.length > 0) || [];
 
   useEffect(() => {
-    // Automatically navigate if there are no substitutes to review after loading is complete.
     if (!isFetchingSubstitutions && currentCart && itemsToReview.length === 0) {
       handleOptimizeAndNavigate();
     }
@@ -70,8 +67,7 @@ const SubstitutionPage = () => {
   const handleQuantityChange = async (sub: CartSubstitution, newQuantity: number) => {
     if (!currentItem) return;
     if (newQuantity <= 0) {
-      // If quantity goes to 0, set is_approved to false
-      await updateCartItemSubstitution(currentItem.id, sub.id, false, 1); // Set quantity to 1 if unapproved
+      await updateCartItemSubstitution(currentItem.id, sub.id, false, 1);
     } else {
       await updateCartItemSubstitution(currentItem.id, sub.id, sub.is_approved, newQuantity);
     }
@@ -79,15 +75,12 @@ const SubstitutionPage = () => {
 
   const handleOptimizeAndNavigate = async () => {
     if (!currentCart || !currentStoreListId) return;
-
     setIsLoading(true);
-
     try {
       const results = await optimizeCurrentCart(currentStoreListId);
       if (results) {
         navigate('/final-cart');
       } else {
-        // Handle case where optimization fails
         setIsLoading(false);
       }
     } catch (error) {
@@ -98,9 +91,7 @@ const SubstitutionPage = () => {
 
   const handleSkipSubstitutions = async () => {
     if (!currentCart || !currentStoreListId) return;
-
     setIsLoading(true);
-
     try {
       const results = await optimizeCurrentCart(currentStoreListId);
       if (results) {
@@ -116,18 +107,17 @@ const SubstitutionPage = () => {
 
   const handleApproveAllAndNext = async () => {
     if (!currentItem) return;
-    setIsLoading(true); // Set loading for the batch update
+    setIsLoading(true);
     try {
       for (const sub of currentSubstitutes) {
-        if (!sub.is_approved) { // Only update if not already approved
+        if (!sub.is_approved) {
           await updateCartItemSubstitution(currentItem.id, sub.id, true, sub.quantity);
         }
       }
-      // After approving all, move to next or optimize
       if (currentItemIndex < itemsToReview.length - 1) {
         setCurrentItemIndex(currentItemIndex + 1);
       } else {
-        await handleOptimizeAndNavigate(); // Call the simplified optimize
+        await handleOptimizeAndNavigate();
       }
     } catch (error) {
       console.error(error);
@@ -136,93 +126,127 @@ const SubstitutionPage = () => {
     }
   };
 
-  if (isLoading || isFetchingSubstitutions) {
-    return <LoadingSpinner />;
-  }
-
-  // If there are no items to review, we are in the process of navigating away.
-  // Show a loading spinner to avoid rendering the rest of the page with no data.
-  if (itemsToReview.length === 0) {
-    return <LoadingSpinner />;
-  }
+  if (isLoading || isFetchingSubstitutions) return <LoadingSpinner />;
+  if (itemsToReview.length === 0) return <LoadingSpinner />;
 
   const isLastItem = currentItemIndex === itemsToReview.length - 1;
+  const progressPercent = (currentItemIndex / itemsToReview.length) * 100;
+  const approvedCount = currentSubstitutes.filter(s => s.is_approved).length;
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="grid grid-cols-3 items-center mb-4">
-        <div className="justify-self-start flex items-center gap-2">
-          <Button onClick={handleBack} className="bg-red-500 text-white">
-            {currentItemIndex === 0 ? 'Home' : 'Back'}
-          </Button>
-          <Button onClick={handleSkipSubstitutions} variant="outline">
-            Skip Substitutions
-          </Button>
+    <div className="container mx-auto px-4 py-6">
+
+      {/* Primary Nav */}
+      <div className="flex items-center justify-between gap-4 mb-3">
+        <button
+          onClick={handleBack}
+          className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold border border-gray-300 bg-white rounded-lg hover:border-gray-900 hover:text-gray-900 transition-colors duration-150"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          {currentItemIndex === 0 ? 'Home' : 'Back'}
+        </button>
+
+        <div className="text-center">
+          <h1 className="text-xl font-bold text-gray-900">Approve Substitutes</h1>
+          <p className="text-sm text-gray-400">Item {currentItemIndex + 1} of {itemsToReview.length}</p>
         </div>
-        <h1 className="text-2xl font-bold justify-self-center">Product Substitution</h1>
-        <div className="justify-self-end flex items-center gap-2">
-          <Button onClick={handleApproveAllAndNext} variant="outline">
-            Approve All
-          </Button>
-          <Button onClick={handleNext} className="bg-blue-500 text-white">
-            {isLastItem ? 'Split my Cart!' : 'Next'}
-          </Button>
+
+        <button
+          onClick={handleNext}
+          className="flex items-center gap-1.5 px-4 py-2 text-sm font-bold bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500 text-black rounded-lg transition-colors duration-150"
+        >
+          {isLastItem ? 'Split my Cart!' : 'Next'}
+          {!isLastItem && <ArrowRight className="h-4 w-4" />}
+        </button>
+      </div>
+
+      {/* Progress Bar */}
+      <div className="mb-3">
+        <div className="w-full bg-gray-200 rounded-full h-1.5">
+          <div
+            className="bg-yellow-400 h-1.5 rounded-full transition-all duration-300"
+            style={{ width: `${progressPercent}%` }}
+          />
         </div>
       </div>
-      <div className="bg-muted p-6 rounded-lg border">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div>
-          <h2 className="text-xl font-bold mb-4 text-center">
-            <span className="italic bg-yellow-300 px-0.5 py-1 rounded text-black">Original Product</span>
-          </h2>
-          {isDesktop ? (
-            <div className="w-[240px] mx-auto relative">
-              <Badge variant="secondary" className="absolute top-2 left-2 z-10 bg-green-500 text-white dark:bg-green-600">
-                <BadgeCheckIcon className="w-4 h-4 mr-1" />
-                Original Product
-              </Badge>
-              <ProductTile product={currentItem.product} />
-            </div>
-          ) : (
-            <CartItemTile product={currentItem.product} context="cart" hideApprovedSubstitutions={true} />
-          )}
-        </div>
-        <div>
-          <h2 className="text-xl font-bold mb-4 text-center">
-            <span className="italic bg-yellow-300 px-0.5 py-1 rounded text-black">Substitutes</span>
-          </h2>
-          <div className="h-[480px] overflow-y-auto border rounded-md p-4 space-y-4">
-            {currentSubstitutes.map(sub => {
-              // Only render the substitute if it has prices
-              if (sub.substituted_product.prices && sub.substituted_product.prices.length > 0) {
-                return (
-                  <CartItemTile 
-                    key={sub.id} 
-                    cartSubstitution={sub} // Pass the CartSubstitution object directly
-                    onApprove={handleApprove} 
-                    onQuantityChange={handleQuantityChange}
-                    context="substitution"
-                  />
-                )
-              }
-              return null; // Do not render if no prices
-            })}
+
+      {/* Secondary Actions */}
+      <div className="flex items-center justify-between mb-5">
+        <button
+          onClick={handleSkipSubstitutions}
+          className="text-sm text-gray-400 hover:text-gray-700 underline underline-offset-2 transition-colors"
+        >
+          Skip all substitutions
+        </button>
+        <button
+          onClick={handleApproveAllAndNext}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold border border-gray-300 bg-white rounded-lg hover:border-gray-900 hover:text-gray-900 transition-colors duration-150"
+        >
+          Approve All & {isLastItem ? 'Split' : 'Next'}
+        </button>
+      </div>
+
+      {/* Main Panel */}
+      <div className="bg-gray-50 rounded-xl p-5">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          {/* Original Product */}
+          <div>
+            <h2 className="text-base font-bold mb-4 text-center">
+              <span className="italic bg-yellow-300 px-1 py-0.5 rounded text-black">Original Product</span>
+            </h2>
+            {isDesktop ? (
+              <div className="w-[240px] mx-auto">
+                <ProductTile product={currentItem.product} />
+              </div>
+            ) : (
+              <CartItemTile product={currentItem.product} context="cart" hideApprovedSubstitutions={true} />
+            )}
           </div>
+
+          {/* Substitutes */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-base font-bold">
+                <span className="italic bg-yellow-300 px-1 py-0.5 rounded text-black">Substitutes</span>
+              </h2>
+              {approvedCount > 0 && (
+                <span className="text-xs font-semibold text-green-600 bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">
+                  {approvedCount} approved
+                </span>
+              )}
+            </div>
+            <div className="h-[480px] overflow-y-auto rounded-xl border border-gray-200 bg-white p-3 space-y-3">
+              {currentSubstitutes.map(sub => {
+                if (sub.substituted_product.prices && sub.substituted_product.prices.length > 0) {
+                  return (
+                    <CartItemTile
+                      key={sub.id}
+                      cartSubstitution={sub}
+                      onApprove={handleApprove}
+                      onQuantityChange={handleQuantityChange}
+                      context="substitution"
+                    />
+                  );
+                }
+                return null;
+              })}
+            </div>
+          </div>
+
         </div>
       </div>
+
+      {/* FAQ */}
+      <div className="mt-12">
+        <FAQ
+          title="Why substitution?"
+          faqs={substitutesFaqs}
+          imageSrc={sizeDoesntMatterImage}
+          imageAlt="Scale balancing small bottles with many dollar signs against a large bottle with one dollar sign, with text 'Size doesn't matter, value does.'"
+        />
       </div>
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col gap-8">
-          <section>
-            <FAQ
-              title="Why substitution?"
-              faqs={substitutesFaqs}
-              imageSrc={sizeDoesntMatterImage}
-              imageAlt="Scale balancing small bottles with many dollar signs against a large bottle with one dollar sign, with text 'Size doesn't matter, value does.'"
-            />
-          </section>
-        </div>
-      </div>
+
     </div>
   );
 };

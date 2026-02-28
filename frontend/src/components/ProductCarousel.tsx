@@ -2,31 +2,10 @@ import React, { memo, useEffect, useRef } from 'react';
 import SkeletonProductTile from "./SkeletonProductTile";
 import ProductTile from "./ProductTile";
 import { Link, useLocation } from 'react-router-dom';
-import type { Product } from '../types';
 import JsonLdItemList from './JsonLdItemList';
 import { ArrowRight } from 'lucide-react';
-
-interface ProductCarouselProps {
-  sourceUrl?: string;
-  products?: Product[];
-  storeIds?: number[];
-  title: string;
-  searchQuery?: string;
-  isDefaultStores?: boolean;
-  isUserDefinedList?: boolean;
-  primaryCategorySlug?: string;
-  primaryCategorySlugs?: string[];
-  pillarPageLinkSlug?: string;
-  companyName?: string;
-  isBargainCarousel?: boolean;
-  onValidation?: (slug: string, isValid: boolean, slot: number) => void;
-  slot?: number;
-  dataKey?: string;
-  minProducts?: number;
-  ordering?: string;
-  isLoading?: boolean;
-}
-
+import type { ProductCarouselProps } from '../types/ProductCarouselProps';
+import type { Product } from '../types/Product';
 import { useApiQuery } from '@/hooks/useApiQuery';
 import { useDialog } from '@/context/DialogContext';
 

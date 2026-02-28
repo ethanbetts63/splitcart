@@ -6,16 +6,7 @@ import {
   AccordionTrigger,
 } from "./ui/accordion";
 import { Card, CardContent } from "./ui/card";
-import type { FaqItem } from '@/types';
-
-interface FaqProps {
-  title: string;
-  imageSrc: string;
-  imageAlt: string;
-  srcSet?: string;
-  sizes?: string;
-  faqs: FaqItem[];
-}
+import type { FaqProps } from '../types/FaqProps';
 
 export const FAQ: React.FC<FaqProps> = ({ title, imageSrc, imageAlt, srcSet, sizes, faqs }) => {
 

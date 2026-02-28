@@ -3,13 +3,8 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Badge } from "./ui/badge";
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
-import type { CartSubstitution } from '../types';
 import { useCart } from '../context/CartContext';
-
-interface CartSubTileProps {
-  cartSubstitution: CartSubstitution;
-  cartItemId: string;
-}
+import type { CartSubTileProps } from '../types/CartSubTileProps';
 
 const CartSubTile: React.FC<CartSubTileProps> = ({ cartSubstitution, cartItemId }) => {
   const { substituted_product: product, quantity } = cartSubstitution;
