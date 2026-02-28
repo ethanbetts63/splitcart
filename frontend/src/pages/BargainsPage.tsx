@@ -1,11 +1,11 @@
 import React from 'react';
 import { AspectRatio } from '../components/ui/aspect-ratio';
-import bargains from "../assets/bargains.webp"; 
-import bargains320 from "../assets/bargains-320w.webp"; 
-import bargains640 from "../assets/bargains-640w.webp"; 
-import bargains768 from "../assets/bargains-768w.webp"; 
-import bargains1024 from "../assets/bargains-1024w.webp"; 
-import bargains1280 from "../assets/bargains-1280w.webp"; 
+import sizeComparison from "../assets/size_comparison.png";
+import sizeComparison320 from "../assets/size_comparison-320w.webp";
+import sizeComparison640 from "../assets/size_comparison-640w.webp";
+import sizeComparison768 from "../assets/size_comparison-768w.webp";
+import sizeComparison1024 from "../assets/size_comparison-1024w.webp";
+import sizeComparison1280 from "../assets/size_comparison-1280w.webp";
 
 import { useStoreList } from '../context/StoreListContext';
 import { ProductCarousel } from "../components/ProductCarousel";
@@ -61,7 +61,6 @@ const BargainsPage: React.FC = () => {
     };
 
   const hero_title = "Australia's Best Grocery Bargains";
-  const imageUrl = bargains;
 
   const { selectedStoreIds, anchorStoreMap, isUserDefinedList } = useStoreList();
 
@@ -110,9 +109,9 @@ const BargainsPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
             <AspectRatio ratio={16 / 9}>
-              <img 
-                src={imageUrl} 
-                srcSet={`${bargains320} 320w, ${bargains640} 640w, ${bargains768} 768w, ${bargains1024} 1024w, ${bargains1280} 1280w`}
+              <img
+                src={sizeComparison}
+                srcSet={`${sizeComparison320} 320w, ${sizeComparison640} 640w, ${sizeComparison768} 768w, ${sizeComparison1024} 1024w, ${sizeComparison1280} 1280w`}
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 alt={hero_title}
                 className="rounded-md object-contain w-full h-full"
