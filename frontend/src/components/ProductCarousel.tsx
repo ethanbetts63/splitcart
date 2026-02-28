@@ -4,7 +4,6 @@ import ProductTile from "./ProductTile";
 import { Link, useLocation } from 'react-router-dom';
 import type { Product } from '../types';
 import JsonLdItemList from './JsonLdItemList';
-import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 
 interface ProductCarouselProps {
@@ -14,24 +13,43 @@ interface ProductCarouselProps {
   title: string;
   searchQuery?: string;
   isDefaultStores?: boolean;
-  isUserDefinedList?: boolean; // Add new prop
+  isUserDefinedList?: boolean;
   primaryCategorySlug?: string;
   primaryCategorySlugs?: string[];
   pillarPageLinkSlug?: string;
-  companyName?: string; // Add companyName prop
-  isBargainCarousel?: boolean; // New prop for bargain-specific carousels
+  companyName?: string;
+  isBargainCarousel?: boolean;
   onValidation?: (slug: string, isValid: boolean, slot: number) => void;
-  slot?: number; // Make slot optional
-  dataKey?: string; // Key to access product data in a nested object
-  minProducts?: number; // Minimum number of products to render the carousel
-  ordering?: string; // New explicit ordering prop
-  isLoading?: boolean; // Add isLoading prop
+  slot?: number;
+  dataKey?: string;
+  minProducts?: number;
+  ordering?: string;
+  isLoading?: boolean;
 }
 
 import { useApiQuery } from '@/hooks/useApiQuery';
 import { useDialog } from '@/context/DialogContext';
 
-const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, products: initialProducts, storeIds, title, searchQuery, isDefaultStores, isUserDefinedList, primaryCategorySlug, primaryCategorySlugs, pillarPageLinkSlug, companyName, isBargainCarousel, onValidation, slot, dataKey, minProducts = 4, ordering, isLoading: isLoadingProp }) => {
+const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
+  sourceUrl,
+  products: initialProducts,
+  storeIds,
+  title,
+  searchQuery,
+  isDefaultStores,
+  isUserDefinedList,
+  primaryCategorySlug,
+  primaryCategorySlugs,
+  pillarPageLinkSlug,
+  companyName,
+  isBargainCarousel,
+  onValidation,
+  slot,
+  dataKey,
+  minProducts = 4,
+  ordering,
+  isLoading: isLoadingProp,
+}) => {
   const { openDialog } = useDialog();
   const [isSmallScreen, setIsSmallScreen] = React.useState(false);
   const location = useLocation();
@@ -40,20 +58,14 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 750);
     };
-
-    handleResize(); // Set initial value
+    handleResize();
     window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const finalUrl = React.useMemo(() => {
     const [baseUrl, queryString] = sourceUrl ? sourceUrl.split('?') : ['', ''];
     const params = new URLSearchParams(queryString || '');
-    // Only add store_ids if the list is user-defined. This prevents re-fetching
-    // when the default store list is loaded for a new user.
     if (isUserDefinedList && storeIds && storeIds.length > 0) {
       params.set('store_ids', storeIds.join(','));
     }
@@ -80,22 +92,16 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
     ['products', title, finalUrl],
     finalUrl,
     {},
-    { enabled: !!finalUrl && !initialProducts, refetchOnWindowFocus: false, staleTime: 1000 * 60 * 10 } // 10 minutes
+    { enabled: !!finalUrl && !initialProducts, refetchOnWindowFocus: false, staleTime: 1000 * 60 * 10 }
   );
 
-  // Process the response to get the final list of products
   const products: Product[] = React.useMemo(() => {
     if (initialProducts) return initialProducts;
     if (!responseData) return [];
-    
-    // Handle responses that are direct arrays (like substitutes) vs objects with a 'results' key
     const results = Array.isArray(responseData) ? responseData : responseData.results || [];
-
-    // If a dataKey is provided, map over the results to extract the nested product data
     if (dataKey) {
-      return results.map((item: any) => item[dataKey]).filter(Boolean); // filter out null/undefined
+      return results.map((item: any) => item[dataKey]).filter(Boolean);
     }
-
     return results;
   }, [initialProducts, responseData, dataKey]);
 
@@ -108,105 +114,83 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({ sourceUrl, p
       validationCalled.current = true;
     }
   }, [isFetched, products, onValidation, primaryCategorySlug, primaryCategorySlugs, slot, minProducts]);
-  
+
   const isLoading = (isLoadingProp ?? isFetching) && !initialProducts;
 
-  // If loading is done and there are not enough products to be valid, render nothing.
-  if (!isLoading && products.length < minProducts) {
-    return null;
-  }
+  if (!isLoading && products.length < minProducts) return null;
+  if (error) return <div className="text-center p-4 text-red-500">Error: {error.message}</div>;
 
-  // Handle errors after the loading check
-  if (error) {
-    return <div className="text-center p-4 text-red-500">Error: {error.message}</div>;
-  }
-
-  // --- Unified Header Logic ---
-  // This logic is now outside the conditional rendering blocks.
+  // --- See More Link ---
   let seeMoreLink = null;
   if (isBargainCarousel && companyName) {
     seeMoreLink = `/search?bargain_company=${encodeURIComponent(companyName)}`;
   } else if (pillarPageLinkSlug && location.pathname === '/') {
     seeMoreLink = `/categories/${encodeURIComponent(pillarPageLinkSlug)}`;
   } else if (primaryCategorySlugs && primaryCategorySlugs.length > 0) {
-    if (primaryCategorySlugs.length === 1) {
-        seeMoreLink = `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlugs[0])}`;
-    } else {
-        seeMoreLink = `/search?primary_category_slugs=${encodeURIComponent(primaryCategorySlugs.join(','))}`;
-    }
+    seeMoreLink = primaryCategorySlugs.length === 1
+      ? `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlugs[0])}`
+      : `/search?primary_category_slugs=${encodeURIComponent(primaryCategorySlugs.join(','))}`;
   } else if (primaryCategorySlug) {
     seeMoreLink = `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlug)}`;
   } else if (searchQuery) {
     seeMoreLink = `/search?q=${encodeURIComponent(searchQuery)}`;
   }
 
-  const headerContent = (
-    <div className="grid grid-cols-3 items-center mb-4">
-      {/* Left: Title */}
-      <h2 className="text-2xl font-bold">
-        <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">{title}</span>
-      </h2>
-
-      {/* Center: Example Products Text */}
-      <div className="text-center">
-        {isDefaultStores && !isLoading && (
-          <span className="text-base text-black px-2 py-2 rounded-md font-bold">
-            Showing example products, please&nbsp;
-            <button 
-              onClick={() => openDialog('Edit Location')} 
-              className="text-blue-600 underline hover:text-blue-800"
-            >
-              select a location.
-            </button>
-          </span>
-        )}
-      </div>
-
-      {/* Right: Buttons */}
-      <div className="flex items-center gap-2 justify-end">
-        {seeMoreLink && (
-          <Button asChild size="sm">
-            <Link to={seeMoreLink} aria-label={`Explore All Deals in ${title}`}>
-              {isSmallScreen ? 'Explore' : 'Explore All Deals'}
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
-        )}
-        {title === 'Bargains' && !seeMoreLink && (
-          <Button asChild size="sm">
-            <Link to="/bargains" aria-label="Explore More Bargains">
-              {isSmallScreen ? 'Explore' : 'Explore More Bargains'}
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
-        )}
-      </div>
-    </div>
-  );
-
-  const tileContent = isLoading ? (
-    [...Array(5)].map((_, i) => (
-      <div className="flex-shrink-0 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 pb-2" key={i}>
-        <SkeletonProductTile />
-      </div>
-    ))
-  ) : (
-    products?.map((product) => (
-      <div className="flex-shrink-0 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 pb-2" key={product.id}>
-        <ProductTile
-          product={product}
-        />
-      </div>
-    ))
-  );
+  const exploreHref = seeMoreLink ?? (title === 'Bargains' ? '/bargains' : null);
+  const exploreLabel = isBargainCarousel && companyName
+    ? `Explore All ${companyName} Deals`
+    : title === 'Bargains'
+    ? 'Explore More Bargains'
+    : 'Explore All Deals';
 
   return (
     <>
-      <section className="bg-muted p-4 rounded-lg">
-        {headerContent}
-        <div className="overflow-x-auto pb-4">
-          <div className="flex">
-            {tileContent}
+      <section className="bg-gray-50 p-5 rounded-xl">
+        {/* Header */}
+        <div className="flex items-start justify-between gap-4 mb-4 pb-3 border-b border-gray-200">
+          <div>
+            <h2 className="text-2xl font-bold">
+              <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">{title}</span>
+            </h2>
+            {isDefaultStores && !isLoading && (
+              <p className="text-sm text-gray-500 mt-1.5">
+                Showing example products —{' '}
+                <button
+                  onClick={() => openDialog('Edit Location')}
+                  className="text-blue-600 underline hover:text-blue-800"
+                >
+                  select a location
+                </button>
+              </p>
+            )}
+          </div>
+          {exploreHref && (
+            <Link
+              to={exploreHref}
+              aria-label={exploreLabel}
+              className="shrink-0 flex items-center gap-1.5 text-sm font-semibold text-gray-700 border border-gray-300 bg-white hover:border-gray-900 hover:text-gray-900 px-3 py-1.5 rounded-lg transition-colors duration-150"
+            >
+              {isSmallScreen ? 'Explore' : exploreLabel}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          )}
+        </div>
+
+        {/* Tiles */}
+        <div className="overflow-x-auto scrollbar-hide pb-1 pt-2">
+          <div className="flex snap-x snap-mandatory">
+            {isLoading
+              ? [...Array(5)].map((_, i) => (
+                  <div className="flex-shrink-0 snap-start w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-1.5 pb-1" key={i}>
+                    <SkeletonProductTile />
+                  </div>
+                ))
+              : products.map((product) => (
+                  <div className="flex-shrink-0 snap-start w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-1.5 pb-1" key={product.id}>
+                    <ProductTile product={product} />
+                  </div>
+                ))
+            }
           </div>
         </div>
       </section>

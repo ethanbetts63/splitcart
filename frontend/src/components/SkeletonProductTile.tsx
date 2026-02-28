@@ -1,21 +1,22 @@
 import { Skeleton } from "./ui/skeleton";
-import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
 
 const SkeletonProductTile = () => {
   return (
-    <Card className="w-full flex flex-col h-full overflow-hidden">
-      <Skeleton className="aspect-square w-full" />
-      <CardHeader className="p-0 text-center flex flex-col items-center gap-1 pt-2">
-        <Skeleton className="h-12 w-3/4" /> {/* Match h-12 of real title */}
-        <Skeleton className="h-4 w-1/2" /> {/* For the brand description */}
-      </CardHeader>
-      <CardContent className="flex-grow px-3 flex justify-center items-center">
-        <Skeleton className="h-6 w-2/3" /> {/* Represents PriceDisplay */}
-      </CardContent>
-      <CardFooter className="flex justify-center pb-0 px-4">
-        <Skeleton className="h-10 w-full" /> {/* Represents AddToCartButton */}
-      </CardFooter>
-    </Card>
+    <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden w-full h-full">
+      <Skeleton className="aspect-square w-full rounded-none" />
+      <div className="p-3 flex flex-col gap-2">
+        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-3 w-1/2" />
+        <div className="mt-auto pt-2 border-t border-gray-100 flex items-center justify-between">
+          <Skeleton className="h-4 w-1/3" />
+          <div className="flex gap-1">
+            <Skeleton className="h-5 w-5 rounded-sm" />
+            <Skeleton className="h-5 w-5 rounded-sm" />
+          </div>
+        </div>
+        <Skeleton className="h-9 w-full rounded-lg" />
+      </div>
+    </div>
   );
 };
 
