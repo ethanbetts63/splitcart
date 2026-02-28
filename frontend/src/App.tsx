@@ -62,7 +62,14 @@ const Layout = () => {
   // Get dialog state and functions from the new context
   const { isDialogOpen, dialogPage, openDialog, closeDialog } = useDialog();
 
-  const showNextButton = (location.pathname === '/' || location.pathname === '/search') && cartTotal > 0 && !isDialogOpen;
+  const showNextButton = (
+    (location.pathname === '/' ||
+    location.pathname === '/search' ||
+    location.pathname.startsWith('/categories/') ||
+    location.pathname === '/bargains') &&
+    cartTotal > 0 &&
+    !isDialogOpen
+  );
 
   // The problematic useEffect that caused the global click issue has been removed.
 
