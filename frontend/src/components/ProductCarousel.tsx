@@ -181,12 +181,12 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
           <div className="flex snap-x snap-mandatory">
             {isLoading
               ? [...Array(5)].map((_, i) => (
-                  <div className="flex-shrink-0 snap-start w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-1.5 pb-1" key={i}>
+                  <div className="flex-shrink-0 snap-start w-4/5 sm:w-1/3 md:w-1/4 lg:w-1/5 px-1.5 pb-1" key={i}>
                     <SkeletonProductTile />
                   </div>
                 ))
               : products.map((product) => (
-                  <div className="flex-shrink-0 snap-start w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-1.5 pb-1" key={product.id}>
+                  <div className="flex-shrink-0 snap-start w-4/5 sm:w-1/3 md:w-1/4 lg:w-1/5 px-1.5 pb-1" key={product.id}>
                     <ProductTile product={product} />
                   </div>
                 ))
