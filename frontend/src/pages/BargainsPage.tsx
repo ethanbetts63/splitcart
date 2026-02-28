@@ -11,7 +11,6 @@ import { useStoreList } from '../context/StoreListContext';
 import { ProductCarousel } from "../components/ProductCarousel";
 import { FAQ } from "../components/FAQ";
 import { useApiQuery } from '../hooks/useApiQuery';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import type { PriceComparison } from '../types';
 import PriceComparisonChart from '../components/PriceComparisonChart';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -146,37 +145,27 @@ const BargainsPage: React.FC = () => {
       </div>
 
       {/* --- Bargain Stats Section --- */}
-      <div className="container mx-auto px-4 py-2">
-        <h2 className="text-3xl font-bold text-center my-8">
-            Which supermarket is the <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">cheapest</span> in Australia?
+      <div className="container mx-auto px-4 py-8">
+        <h2 className="text-3xl font-bold text-center mb-8">
+          Which supermarket is the <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">cheapest</span> in Australia?
         </h2>
         {isLoadingStats && <LoadingSpinner />}
         {isErrorStats && <p className="text-center text-red-500">Could not load bargain statistics.</p>}
         {bargainStats && (
-            <div className="mt-4 flex flex-wrap -mx-2">
-                {bargainStats.map((comparison, index) => (
-                    <div key={index} className="w-full lg:w-1/2 px-2 mb-4">
-                        <PriceComparisonChart comparison={comparison} categoryName="products" />
-                    </div>
-                ))}
-                <div className="w-full lg:w-1/2 px-2 mb-4">
-                    <Card className="h-full">
-                      <CardHeader>
-                        <CardTitle>How We Compare</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex flex-col gap-2">
-                          <p className="text-sm text-gray-700">
-                            These statistics are based on the full set of identical products that two companies both sell according to our database.
-                          </p>
-                          <p className="text-sm text-gray-700">
-                            You'll notice this number changes for each pairing. Companies like Aldi have a highly unique product range, which results in a smaller overlap and fewer items being compared. For IGA, stores are independently owned and prices vary, so we use the average IGA price for each product to make the comparison fair.
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {bargainStats.map((comparison, index) => (
+              <PriceComparisonChart key={index} comparison={comparison} categoryName="products" />
+            ))}
+            <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-5 flex flex-col gap-3">
+              <h3 className="font-bold text-gray-900 text-base">How We Compare</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                These statistics are based on the full set of identical products that two companies both sell according to our database.
+              </p>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                You'll notice this number changes for each pairing. Companies like Aldi have a highly unique product range, which results in a smaller overlap and fewer items being compared. For IGA, stores are independently owned and prices vary, so we use the average IGA price for each product to make the comparison fair.
+              </p>
             </div>
+          </div>
         )}
       </div>
 
