@@ -1,14 +1,12 @@
 import { Link } from 'react-router-dom';
 
 import bargainsIcon from '../assets/food_svgs/Tools-Kitchen-Scale--Streamline-Ultimate.svg';
-import snacksIcon from '../assets/food_svgs/Fast-Food-French-Fries--Streamline-Ultimate.svg';
-import sweetsIcon from '../assets/food_svgs/Ice-Cream-Cone--Streamline-Ultimate.svg';
+import snacksSweetsIcon from '../assets/food_svgs/Ice-Cream-Cone--Streamline-Ultimate.svg';
 import meatIcon from '../assets/food_svgs/Barbecue-Grill--Streamline-Ultimate.svg';
 import dairyIcon from '../assets/food_svgs/Animal-Products-Egg--Streamline-Ultimate.svg';
 import fruitVegIcon from '../assets/food_svgs/Fruit-Watermelon--Streamline-Ultimate.svg';
-import spiceIcon from '../assets/food_svgs/Seasoning-Food--Streamline-Ultimate.svg';
+import internationalSpiceIcon from '../assets/food_svgs/Seafood-Sushi--Streamline-Ultimate.svg';
 import pantryIcon from '../assets/food_svgs/Pasta-Bowl-Warm--Streamline-Ultimate.svg';
-import internationalIcon from '../assets/food_svgs/Seafood-Sushi--Streamline-Ultimate.svg';
 import bakeryIcon from '../assets/food_svgs/Bread-Loaf--Streamline-Ultimate.svg';
 import drinksIcon from '../assets/food_svgs/Soft-Drinks-Bottle-1--Streamline-Ultimate.svg';
 import healthIcon from '../assets/food_svgs/Water-Bottle-Glass--Streamline-Ultimate.svg';
@@ -25,16 +23,10 @@ const categories = [
     featured: true,
   },
   {
-    title: 'Snacks',
-    description: 'Chips, crackers, and savoury treats.',
-    href: '/categories/snacks',
-    icon: snacksIcon,
-  },
-  {
-    title: 'Sweets & Chocolate',
-    description: 'Chocolate, lollies, and desserts.',
-    href: '/categories/sweets',
-    icon: sweetsIcon,
+    title: 'Snacks & Sweets',
+    description: 'Chips, chocolate, lollies, and biscuits.',
+    href: '/categories/snacks-and-sweets',
+    icon: snacksSweetsIcon,
   },
   {
     title: 'Meat & Seafood',
@@ -55,22 +47,16 @@ const categories = [
     icon: fruitVegIcon,
   },
   {
-    title: 'Herbs & Spices',
-    description: 'Dried herbs, spices, and seasonings.',
-    href: '/categories/spices',
-    icon: spiceIcon,
-  },
-  {
     title: 'Pantry',
     description: 'Staples, sauces, and canned goods.',
     href: '/categories/pantry',
     icon: pantryIcon,
   },
   {
-    title: 'International Foods',
-    description: 'Asian, Indian, and global ingredients.',
-    href: '/categories/international',
-    icon: internationalIcon,
+    title: 'International, Herbs & Spices',
+    description: 'Global foods, seasonings, and spices.',
+    href: '/categories/international-herbs-and-spices',
+    icon: internationalSpiceIcon,
   },
   {
     title: 'Bakery & Deli',
@@ -80,7 +66,7 @@ const categories = [
   },
   {
     title: 'Drinks',
-    description: 'Soft drinks, juices, and water.',
+    description: 'Soft drinks, juice, beer, and wine.',
     href: '/categories/drinks',
     icon: drinksIcon,
   },
