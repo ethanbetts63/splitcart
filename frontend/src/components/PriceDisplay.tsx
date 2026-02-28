@@ -76,11 +76,11 @@ const PriceDisplay: React.FC<PriceDisplayProps> = ({ prices, displayMode = 'comp
 
   return (
     <div className="flex items-center justify-between gap-2">
-      <p className="font-bold text-gray-900 text-base leading-none">
+      <p className="font-bold text-gray-900 leading-none">
         {isRange && (
           <span className="text-xs font-normal text-gray-400 mr-0.5">from </span>
         )}
-        {lowestPriceStr}
+        <span className="text-base">${lowestPriceStr}</span>
       </p>
       <div className="flex items-center gap-1">
         {prices.map((priceInfo) => (

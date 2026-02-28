@@ -155,11 +155,11 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* --- How It Works Section --- */}
-      <HowItWorksSection steps={howItWorksSteps} />
-
       {/* --- Browse by Category --- */}
       <BrowseCategoriesSection />
+
+      {/* --- How It Works Section --- */}
+      <HowItWorksSection steps={howItWorksSteps} />
 
       {/* --- Carousel: Bargains --- */}
       <div className="container mx-auto px-4 py-8">

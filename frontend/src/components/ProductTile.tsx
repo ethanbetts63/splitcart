@@ -85,7 +85,6 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
     return {
       percentage: product.bargain_info.discount_percentage,
       cheapestCompany: shortName,
-      badgeClasses,
     };
   }, [product.bargain_info]);
 
@@ -122,8 +121,9 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
         {/* Image */}
         <div className="relative aspect-square w-full overflow-hidden bg-gray-50">
           {bargainInfo && (
-            <span className={`absolute top-2 left-2 z-20 text-xs font-bold px-2 py-0.5 rounded-full shadow ${bargainInfo.badgeClasses}`}>
-              -{bargainInfo.percentage}% at {bargainInfo.cheapestCompany}
+            <span className="absolute top-2 left-2 z-20 text-xs font-bold px-2.5 py-1 rounded-full shadow-md bg-gray-900/80 backdrop-blur-sm text-white">
+              <span className="text-yellow-300">-{bargainInfo.percentage}%</span>
+              {' '}at {bargainInfo.cheapestCompany}
             </span>
           )}
           <div className="absolute bottom-2 right-2 z-20 flex flex-col items-end gap-1">
