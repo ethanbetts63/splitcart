@@ -21,22 +21,21 @@ class Command(BaseCommand):
         parser.add_argument('--dev', action='store_true', help='Use development server URL.')
 
     def handle(self, *args, **options):
-        run_all = not any(options[key] for key in ['subs', 'cat_links', 'map', 'primary_cats', 'price_summaries', 'default_stores', 'store_groups', 'price_comps', 'archive', 'categorize', 'bargain_stats', 'pillars'])
         dev = options['dev']
 
-        if options['subs'] or run_all:
+        if options['subs']:
             from data_management.utils.generation_utils.substitutions_generator import SubstitutionsGenerator
             self.stdout.write(self.style.SUCCESS("Generating substitutions..."))
             generator = SubstitutionsGenerator(self, dev=dev)
             generator.run()
 
-        if options['cat_links'] or run_all:
+        if options['cat_links']:
             from data_management.utils.generation_utils.category_links_generator import CategoryLinksGenerator
             self.stdout.write(self.style.SUCCESS("Generating category links..."))
             generator = CategoryLinksGenerator(self, dev=dev)
             generator.run()
 
-        if options['map'] or run_all:
+        if options['map']:
             from data_management.utils.generation_utils.map_generator import MapGenerator
             self.stdout.write(self.style.SUCCESS("Generating store location map..."))
             generator = MapGenerator(self, company_name=options['company'], dev=dev)
@@ -48,37 +47,37 @@ class Command(BaseCommand):
             generator = PrimaryCategoriesGenerator(self)
             generator.run()
 
-        if options['price_summaries'] or run_all:
+        if options['price_summaries']:
             from data_management.utils.generation_utils.price_summaries_generator import PriceSummariesGenerator
             self.stdout.write(self.style.SUCCESS("Generating product price summaries..."))
             generator = PriceSummariesGenerator(self)
             generator.run()
 
-        if options['default_stores'] or run_all:
+        if options['default_stores']:
             from data_management.utils.generation_utils.default_stores_generator import DefaultStoresGenerator
             self.stdout.write(self.style.SUCCESS("Generating default store list..."))
             generator = DefaultStoresGenerator(self)
             generator.run()
 
-        if options['store_groups'] or run_all:
+        if options['store_groups']:
             from data_management.utils.generation_utils.store_groups_generator import StoreGroupsGenerator
             self.stdout.write(self.style.SUCCESS("Generating store groups..."))
             generator = StoreGroupsGenerator(self, dev=dev)
             generator.run()
 
-        if options['price_comps'] or run_all:
+        if options['price_comps']:
             from data_management.utils.generation_utils.price_comparisons_generator import PriceComparisonsGenerator
             self.stdout.write(self.style.SUCCESS("Generating price comparisons..."))
             generator = PriceComparisonsGenerator(self)
             generator.run()
 
-        if options['bargain_stats'] or run_all:
+        if options['bargain_stats']:
             from data_management.utils.generation_utils.bargain_stats_generator import BargainStatsGenerator
             self.stdout.write(self.style.SUCCESS("Generating bargain statistics..."))
             generator = BargainStatsGenerator(self)
             generator.run()
         
-        if options['pillars'] or run_all:
+        if options['pillars']:
             from data_management.utils.generation_utils.pillars_generator import PillarsGenerator
             self.stdout.write(self.style.SUCCESS("Generating pillar pages..."))
             generator = PillarsGenerator(self)
