@@ -16,7 +16,7 @@ interface HowItWorksSectionProps {
 
 export const HowItWorksSection = ({ steps }: HowItWorksSectionProps) => {
   return (
-    <div className="bg-gray-50 py-5">
+    <div className="bg-[#f5f0eb] py-5">
       <div className="container mx-auto px-4">
         <div className="text-center mb-6">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">

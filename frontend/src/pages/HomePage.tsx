@@ -20,18 +20,24 @@ import Seo from '../components/Seo';
 import { HowItWorksSection } from '../components/HowItWorksSection';
 import { BrowseCategoriesSection } from '../components/BrowseCategoriesSection';
 import { FounderLetterSection } from '../components/FounderLetterSection';
-import snackLineup from "../assets/snack_lineup.webp";
-import snackLineup320 from "../assets/snack_lineup-320w.webp";
-import snackLineup640 from "../assets/snack_lineup-640w.webp";
-import snackLineup768 from "../assets/snack_lineup-768w.webp";
-import snackLineup1024 from "../assets/snack_lineup-1024w.webp";
-import snackLineup1280 from "../assets/snack_lineup-1280w.webp";
-import bargainsImg from "../assets/bargains.webp";
-import bargainsImg320 from "../assets/bargains-320w.webp";
-import bargainsImg640 from "../assets/bargains-640w.webp";
-import bargainsImg768 from "../assets/bargains-768w.webp";
-import bargainsImg1024 from "../assets/bargains-1024w.webp";
-import bargainsImg1280 from "../assets/bargains-1280w.webp";
+import listImg from "../assets/list.png";
+import listImg320 from "../assets/list-320w.webp";
+import listImg640 from "../assets/list-640w.webp";
+import listImg768 from "../assets/list-768w.webp";
+import listImg1024 from "../assets/list-1024w.webp";
+import listImg1280 from "../assets/list-1280w.webp";
+import sizeComparison from "../assets/size_comparison.png";
+import sizeComparison320 from "../assets/size_comparison-320w.webp";
+import sizeComparison640 from "../assets/size_comparison-640w.webp";
+import sizeComparison768 from "../assets/size_comparison-768w.webp";
+import sizeComparison1024 from "../assets/size_comparison-1024w.webp";
+import sizeComparison1280 from "../assets/size_comparison-1280w.webp";
+import moneyImg from "../assets/money.png";
+import moneyImg320 from "../assets/money-320w.webp";
+import moneyImg640 from "../assets/money-640w.webp";
+import moneyImg768 from "../assets/money-768w.webp";
+import moneyImg1024 from "../assets/money-1024w.webp";
+import moneyImg1280 from "../assets/money-1280w.webp";
 
 const homeFaqs = [
   {"question": "Will I really save 10-15%?", "answer": "Hopefully! Our optimization aims to find the maximum possible savings. But it's restricted by the stores you choose, the items in you select and the substitutes you approve. Some shopping lists have more potential for savings than others, so individual results will vary but we find that 10-15% is a consistant average."},
@@ -72,10 +78,10 @@ const HomePage = () => {
       title: 'Build Your List.',
       description: 'Search or browse and add items to your cart. The bigger and more specific your list, the more we can save you.',
       image: {
-        src: confusedShopper,
-        srcSet: `${confusedShopper320} 320w, ${confusedShopper640} 640w, ${confusedShopper768} 768w, ${confusedShopper1024} 1024w, ${confusedShopper1280} 1280w`,
+        src: listImg,
+        srcSet: `${listImg320} 320w, ${listImg640} 640w, ${listImg768} 768w, ${listImg1024} 1024w, ${listImg1280} 1280w`,
         sizes: "(max-width: 767px) 320px, (max-width: 1023px) 50vw, 33vw",
-        alt: 'Shopper building a grocery list',
+        alt: 'Grocery list with bag of shopping',
       },
     },
     {
@@ -83,10 +89,10 @@ const HomePage = () => {
       title: 'Approve Substitutes.',
       description: "Tell us which alternatives you'd accept — a different brand of milk, a different cut of meat. More options means more savings.",
       image: {
-        src: snackLineup,
-        srcSet: `${snackLineup320} 320w, ${snackLineup640} 640w, ${snackLineup768} 768w, ${snackLineup1024} 1024w, ${snackLineup1280} 1280w`,
+        src: sizeComparison,
+        srcSet: `${sizeComparison320} 320w, ${sizeComparison640} 640w, ${sizeComparison768} 768w, ${sizeComparison1024} 1024w, ${sizeComparison1280} 1280w`,
         sizes: "(max-width: 767px) 320px, (max-width: 1023px) 50vw, 33vw",
-        alt: 'Lineup of snack products to choose between',
+        alt: 'Price comparison between products',
       },
     },
     {
@@ -94,10 +100,10 @@ const HomePage = () => {
       title: 'See Your Savings.',
       description: 'We compare prices across Coles, Woolworths, Aldi and IGA and find the cheapest combination. Pick a split that works for you.',
       image: {
-        src: bargainsImg,
-        srcSet: `${bargainsImg320} 320w, ${bargainsImg640} 640w, ${bargainsImg768} 768w, ${bargainsImg1024} 1024w, ${bargainsImg1280} 1280w`,
+        src: moneyImg,
+        srcSet: `${moneyImg320} 320w, ${moneyImg640} 640w, ${moneyImg768} 768w, ${moneyImg1024} 1024w, ${moneyImg1280} 1280w`,
         sizes: "(max-width: 767px) 320px, (max-width: 1023px) 50vw, 33vw",
-        alt: 'Grocery bargains and savings',
+        alt: 'Money bag representing savings',
       },
     },
   ];
