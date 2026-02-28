@@ -1,19 +1,9 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
 import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
 import placeholderImage from '../assets/placeholder.webp';
-
-import { Badge } from "./ui/badge";
 import type { Product } from '../types';
 
 interface ProductTileProps {
@@ -28,15 +18,14 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // Update state only when intersecting and not already visible
         if (entry.isIntersecting && !isVisible) {
           setIsVisible(true);
-          observer.unobserve(entry.target); // Clean up by unobserving the now visible element
+          observer.unobserve(entry.target);
         }
       },
       {
-        rootMargin: '0px 0px 100px 0px', // Start loading when the tile is 100px away from the bottom of the viewport
-        threshold: 0.01 // Trigger as soon as a tiny part is visible
+        rootMargin: '0px 0px 100px 0px',
+        threshold: 0.01,
       }
     );
 
@@ -50,16 +39,16 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
         observer.unobserve(currentRef);
       }
     };
-  }, [isVisible]); // Rerun effect if isVisible changes, though it won't re-observe
+  }, [isVisible]);
 
   const imageUrl = isVisible ? (product.image_url || fallbackImage) : placeholderImage;
-  
+
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     if (e.currentTarget.src !== fallbackImage) {
       e.currentTarget.src = fallbackImage;
     }
   };
-  
+
   const generateSrcSet = (url: string) => {
     if (!isVisible || !url.includes('cdn.metcash.media') || url === placeholderImage || url === fallbackImage) {
       return undefined;
@@ -73,33 +62,30 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
   const srcSet = generateSrcSet(product.image_url || '');
 
   const bargainInfo = useMemo(() => {
-    if (!product.bargain_info) {
-      return null;
-    }
+    if (!product.bargain_info) return null;
 
     const companyShortNames: { [key: string]: string } = {
-      "Woolworths": "Woolies",
-      "Coles": "Coles",
-      "IGA": "IGA",
-      "Aldi": "Aldi",
+      'Woolworths': 'Woolies',
+      'Coles': 'Coles',
+      'IGA': 'IGA',
+      'Aldi': 'Aldi',
     };
 
     const companyColors: { [key: string]: string } = {
-      "Aldi": "bg-blue-300 text-black font-bold",
-      "Woolies": "bg-green-500 text-black font-bold",
-      "Coles": "bg-red-700 text-white font-bold",
-      "IGA": "bg-black text-white border border-red-600 font-bold",
+      'Aldi': 'bg-blue-300 text-black',
+      'Woolies': 'bg-green-500 text-black',
+      'Coles': 'bg-red-700 text-white',
+      'IGA': 'bg-black text-white border border-red-600',
     };
 
     const companyName = product.bargain_info.cheapest_company_name;
     const shortName = companyShortNames[companyName] || companyName;
-
-    const bargainBadgeClasses = companyColors[shortName] || "bg-gray-700 text-white font-bold";
+    const badgeClasses = companyColors[shortName] || 'bg-gray-700 text-white';
 
     return {
       percentage: product.bargain_info.discount_percentage,
       cheapestCompany: shortName,
-      bargainBadgeClasses: bargainBadgeClasses,
+      badgeClasses,
     };
   }, [product.bargain_info]);
 
@@ -114,34 +100,42 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
         displaySize = sizes[0];
       }
     } catch (e) {
-      // Not valid JSON, so we'll just use the original string.
+      // Not valid JSON, use original string
     }
   }
-  
+
   if (!product.slug) {
-    // Render a non-clickable version or a placeholder if there's no slug
     return (
-      <Card className="flex flex-col h-full overflow-hidden gap-1 pt-0 pb-2 opacity-50">
-        {/* Simplified content for when it's not linkable */}
-      </Card>
+      <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden opacity-50 h-full" />
     );
   }
 
   return (
     <Link to={`/product/${product.slug}`} className="group block h-full" ref={tileRef}>
-      <Card className={`flex flex-col h-full overflow-hidden gap-1 pt-0 pb-2 transition-all duration-200 ${!isButtonHovered && 'group-hover:shadow-lg group-hover:border-yellow-300 group-hover:-translate-y-0.5'}`}>
-        <div className="aspect-square w-full overflow-hidden relative">
-          <div className="absolute top-2 right-2 z-20 flex flex-col items-end gap-1">
-            {bargainInfo && (
-              <Badge className={`${bargainInfo.bargainBadgeClasses} text-sm py-px px-1.5`}>
-                -{bargainInfo.percentage}% at {bargainInfo.cheapestCompany}
-              </Badge>
-            )}
+      <div
+        className={`flex flex-col h-full rounded-xl border bg-white shadow-sm overflow-hidden transition-all duration-200 ${
+          !isButtonHovered
+            ? 'border-gray-200 group-hover:shadow-md group-hover:border-yellow-300 group-hover:-translate-y-0.5'
+            : 'border-gray-200'
+        }`}
+      >
+        {/* Image */}
+        <div className="relative aspect-square w-full overflow-hidden bg-gray-50">
+          {bargainInfo && (
+            <span className={`absolute top-2 left-2 z-20 text-xs font-bold px-2 py-0.5 rounded-full shadow ${bargainInfo.badgeClasses}`}>
+              -{bargainInfo.percentage}% at {bargainInfo.cheapestCompany}
+            </span>
+          )}
+          <div className="absolute bottom-2 right-2 z-20 flex flex-col items-end gap-1">
             {perUnitPriceString && (
-              <Badge>{perUnitPriceString}</Badge>
+              <span className="text-xs bg-white/90 backdrop-blur-sm text-gray-700 font-medium px-1.5 py-0.5 rounded-md shadow-sm">
+                {perUnitPriceString}
+              </span>
             )}
             {displaySize && (
-              <Badge>{displaySize}</Badge>
+              <span className="text-xs bg-white/90 backdrop-blur-sm text-gray-700 font-medium px-1.5 py-0.5 rounded-md shadow-sm">
+                {displaySize}
+              </span>
             )}
           </div>
           <img
@@ -150,27 +144,41 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
             sizes="273px"
             onError={handleImageError}
             alt={product.name}
-            className={`h-full w-full object-cover transition-transform duration-200 ${!isButtonHovered && 'group-hover:scale-105'}`}
+            className={`h-full w-full object-cover transition-transform duration-300 ${!isButtonHovered && 'group-hover:scale-105'}`}
             loading="lazy"
           />
         </div>
-        <CardHeader className="p-0 text-center">
-          <CardTitle className={`h-12 leading-5 text-base font-semibold overflow-hidden text-ellipsis line-clamp-2 ${!isButtonHovered && 'group-hover:underline'}`}>{product.name}</CardTitle>
-          {product.brand_name && <CardDescription className="text-sm text-muted-foreground">{product.brand_name}</CardDescription>}
-        </CardHeader>
-        <CardContent className="flex-grow px-3">
-          <PriceDisplay prices={product.prices} />
-        </CardContent>
-        <CardFooter className="flex justify-center pb-0">
-          <div 
+
+        {/* Content */}
+        <div className="flex flex-col flex-grow p-3 gap-2">
+          {/* Name + Brand */}
+          <div>
+            <h3
+              className={`font-bold text-gray-900 text-sm leading-snug line-clamp-2 ${!isButtonHovered && 'group-hover:underline'}`}
+            >
+              {product.name}
+            </h3>
+            {product.brand_name && (
+              <p className="text-xs text-gray-400 mt-0.5 truncate">{product.brand_name}</p>
+            )}
+          </div>
+
+          {/* Price */}
+          <div className="mt-auto pt-2 border-t border-gray-100">
+            <PriceDisplay prices={product.prices} />
+          </div>
+
+          {/* Add to Cart */}
+          <div
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
             onMouseEnter={() => setIsButtonHovered(true)}
             onMouseLeave={() => setIsButtonHovered(false)}
+            className="[&>button]:w-full [&>*]:w-full"
           >
             <AddToCartButton product={product} />
           </div>
-        </CardFooter>
-      </Card>
+        </div>
+      </div>
     </Link>
   );
 };
