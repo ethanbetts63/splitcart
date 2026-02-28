@@ -12,9 +12,8 @@ import drinksIcon from '../assets/food_svgs/Soft-Drinks-Bottle-1--Streamline-Ult
 import healthIcon from '../assets/food_svgs/Water-Bottle-Glass--Streamline-Ultimate.svg';
 import homeIcon from '../assets/food_svgs/Kitchenware-Spatula-1--Streamline-Ultimate.svg';
 import babyIcon from '../assets/food_svgs/Coffee-Cold--Streamline-Ultimate.svg';
-import petIcon from '../assets/food_svgs/Beer-Opener-1--Streamline-Ultimate.svg';
 
-const categories = [
+const rawCategories = [
   {
     title: 'Bargains',
     description: 'The biggest discounts across all stores.',
@@ -77,9 +76,9 @@ const categories = [
     icon: healthIcon,
   },
   {
-    title: 'Home, Cleaning & Gardening',
-    description: 'Cleaning supplies and home essentials.',
-    href: '/categories/home-cleaning-and-gardening',
+    title: 'Home, Cleaning, Gardening & Pets',
+    description: 'Household goods, pet food, and more.',
+    href: '/categories/home-cleaning-gardening-and-pets',
     icon: homeIcon,
   },
   {
@@ -88,13 +87,14 @@ const categories = [
     href: '/categories/baby',
     icon: babyIcon,
   },
-  {
-    title: 'Pet Supplies',
-    description: 'Food and treats for your furry friends.',
-    href: '/categories/pet',
-    icon: petIcon,
-  },
 ];
+
+const bargains = rawCategories.find(c => c.title === 'Bargains');
+const others = rawCategories
+  .filter(c => c.title !== 'Bargains')
+  .sort((a, b) => a.title.localeCompare(b.title));
+
+const categories = bargains ? [bargains, ...others] : others;
 
 export const BrowseCategoriesSection = () => {
   return (

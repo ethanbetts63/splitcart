@@ -5,6 +5,39 @@ from data_management.utils.cart_optimization import calculate_optimized_cost, ca
 from products.utils.get_pricing_stores import get_pricing_stores_map
 from users.models import Cart
 
+
+def _translate_shopping_plan(shopping_plan, anchor_name_to_original):
+    """
+    Translates anchor store names/addresses in a shopping_plan back to the
+    user's originally selected stores. Each plan entry gains a 'store_options'
+    list of {store_name, store_address} dicts for user-facing display.
+
+    When multiple selected stores share the same anchor (e.g. Coles prices
+    nationally), all of them appear in store_options so the user knows they
+    can shop at any of those locations.
+    """
+    translated = {}
+    for anchor_name, plan_data in shopping_plan.items():
+        originals = anchor_name_to_original.get(anchor_name, [])
+        new_entry = dict(plan_data)
+        if originals:
+            store_options = []
+            for s in originals:
+                addr_parts = [s.address_line_1, s.suburb, s.state, s.postcode]
+                store_options.append({
+                    'store_name': s.store_name,
+                    'store_address': ', '.join(part for part in addr_parts if part),
+                })
+            new_entry['store_options'] = store_options
+            new_entry['store_address'] = store_options[0]['store_address']
+            new_key = store_options[0]['store_name']
+        else:
+            new_entry['store_options'] = []
+            new_key = anchor_name
+        translated[new_key] = new_entry
+    return translated
+
+
 def run_cart_optimization(cart_obj, store_list, max_stores_options):
     """
     Performs optimization on a specific cart and returns a Response object.
@@ -20,6 +53,21 @@ def run_cart_optimization(cart_obj, store_list, max_stores_options):
     pricing_map = get_pricing_stores_map(store_ids)
     pricing_store_ids = list(set(pricing_map.values()))
     stores = Store.objects.filter(id__in=pricing_store_ids)
+
+    # Build reverse map: anchor_store_name -> [originally selected Store objects]
+    # This lets us translate the shopping plan back to the stores the user actually selected.
+    anchor_to_selected_ids = {}
+    for selected_id, anchor_id in pricing_map.items():
+        anchor_to_selected_ids.setdefault(anchor_id, []).append(selected_id)
+    original_store_map = {s.id: s for s in Store.objects.filter(id__in=store_ids)}
+    anchor_name_to_original = {
+        anchor.store_name: [
+            original_store_map[sid]
+            for sid in anchor_to_selected_ids.get(anchor.id, [])
+            if sid in original_store_map
+        ]
+        for anchor in stores
+    }
 
     # Construct the data structures required by the optimization logic
     original_items = []
@@ -66,9 +114,13 @@ def run_cart_optimization(cart_obj, store_list, max_stores_options):
                             'max_stores': max_stores,
                             'optimized_cost': optimized_cost,
                             'savings': savings,
-                            'shopping_plan': shopping_plan,
+                            'shopping_plan': _translate_shopping_plan(shopping_plan, anchor_name_to_original),
                         })
             subs_best_single_store = calculate_best_single_store(subs_price_slots, cart_with_substitutes_slots)
+            if subs_best_single_store:
+                subs_best_single_store['shopping_plan'] = _translate_shopping_plan(
+                    subs_best_single_store['shopping_plan'], anchor_name_to_original
+                )
         else:
             subs_best_single_store = None
 
@@ -90,10 +142,14 @@ def run_cart_optimization(cart_obj, store_list, max_stores_options):
                         'max_stores': max_stores,
                         'optimized_cost': optimized_cost,
                         'savings': savings,
-                        'shopping_plan': shopping_plan,
+                        'shopping_plan': _translate_shopping_plan(shopping_plan, anchor_name_to_original),
                     })
-        
+
         no_subs_best_single_store = calculate_best_single_store(simple_price_slots, simple_cart)
+        if no_subs_best_single_store:
+            no_subs_best_single_store['shopping_plan'] = _translate_shopping_plan(
+                no_subs_best_single_store['shopping_plan'], anchor_name_to_original
+            )
 
         response_data['no_subs_results'] = {
             'baseline_cost': baseline_cost, # Use the same baseline

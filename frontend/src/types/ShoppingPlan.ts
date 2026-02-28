@@ -11,6 +11,7 @@ export type ShoppingPlan = {
     }[];
     company_name: string;
     store_address: string;
+    store_options?: { store_name: string; store_address: string; }[];
     total_cost?: number;
     subtotal?: number;
   };

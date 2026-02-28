@@ -34,8 +34,23 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
                 <img src={logo} alt={store_plan.company_name} className="h-10 w-auto flex-shrink-0" />
               )}
               <div className="flex-grow min-w-0">
-                <h2 className="font-bold text-lg text-gray-900 leading-tight">{storeName}</h2>
-                <p className="text-sm text-gray-400 truncate">{store_plan.store_address}</p>
+                {store_plan.store_options && store_plan.store_options.length > 1 ? (
+                  <>
+                    <h2 className="font-bold text-lg text-gray-900 leading-tight">Buy at any of these stores:</h2>
+                    <ul className="mt-1 space-y-0.5">
+                      {store_plan.store_options.map(opt => (
+                        <li key={opt.store_name} className="text-sm text-gray-700">
+                          {opt.store_name} <span className="text-gray-400">— {opt.store_address}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : (
+                  <>
+                    <h2 className="font-bold text-lg text-gray-900 leading-tight">{storeName}</h2>
+                    <p className="text-sm text-gray-400 truncate">{store_plan.store_address}</p>
+                  </>
+                )}
               </div>
               <div className="flex-shrink-0 text-right">
                 <p className="text-xs text-gray-400 uppercase tracking-wide">Store Total</p>
@@ -90,7 +105,7 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
                 </tbody>
                 <tfoot>
                   <tr className="border-t-2 border-gray-200">
-                    <td colSpan={4} className="pt-3 text-sm text-gray-500 font-medium">Total for {storeName}</td>
+                    <td colSpan={4} className="pt-3 text-sm text-gray-500 font-medium">Total for {store_plan.store_options && store_plan.store_options.length > 1 ? 'any of the above' : storeName}</td>
                     <td className="pt-3 text-right font-bold text-gray-900">${storeTotal.toFixed(2)}</td>
                   </tr>
                 </tfoot>
