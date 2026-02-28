@@ -1,56 +1,112 @@
 import { Link } from 'react-router-dom';
 
 import bargainsIcon from '../assets/food_svgs/Tools-Kitchen-Scale--Streamline-Ultimate.svg';
-import snacksIcon from '../assets/food_svgs/Ice-Cream-Cone--Streamline-Ultimate.svg';
-import meatIcon from '../assets/food_svgs/Seafood-Squid--Streamline-Ultimate.svg';
+import snacksIcon from '../assets/food_svgs/Fast-Food-French-Fries--Streamline-Ultimate.svg';
+import sweetsIcon from '../assets/food_svgs/Ice-Cream-Cone--Streamline-Ultimate.svg';
+import meatIcon from '../assets/food_svgs/Barbecue-Grill--Streamline-Ultimate.svg';
 import dairyIcon from '../assets/food_svgs/Animal-Products-Egg--Streamline-Ultimate.svg';
 import fruitVegIcon from '../assets/food_svgs/Fruit-Watermelon--Streamline-Ultimate.svg';
+import spiceIcon from '../assets/food_svgs/Seasoning-Food--Streamline-Ultimate.svg';
 import pantryIcon from '../assets/food_svgs/Pasta-Bowl-Warm--Streamline-Ultimate.svg';
+import internationalIcon from '../assets/food_svgs/Seafood-Sushi--Streamline-Ultimate.svg';
+import bakeryIcon from '../assets/food_svgs/Bread-Loaf--Streamline-Ultimate.svg';
+import drinksIcon from '../assets/food_svgs/Soft-Drinks-Bottle-1--Streamline-Ultimate.svg';
 import healthIcon from '../assets/food_svgs/Water-Bottle-Glass--Streamline-Ultimate.svg';
+import homeIcon from '../assets/food_svgs/Kitchenware-Spatula-1--Streamline-Ultimate.svg';
+import babyIcon from '../assets/food_svgs/Coffee-Cold--Streamline-Ultimate.svg';
+import petIcon from '../assets/food_svgs/Beer-Opener-1--Streamline-Ultimate.svg';
 
 const categories = [
   {
     title: 'Bargains',
-    description: 'The biggest discounts across all stores/categories right now.',
+    description: 'The biggest discounts across all stores.',
     href: '/bargains',
     icon: bargainsIcon,
     featured: true,
   },
   {
-    title: 'Snacks & Sweets',
-    description: 'Chips, chocolate, biscuits and more.',
-    href: '/categories/snacks-and-sweets',
+    title: 'Snacks',
+    description: 'Chips, crackers, and savoury treats.',
+    href: '/categories/snacks',
     icon: snacksIcon,
   },
   {
+    title: 'Sweets & Chocolate',
+    description: 'Chocolate, lollies, and desserts.',
+    href: '/categories/sweets',
+    icon: sweetsIcon,
+  },
+  {
     title: 'Meat & Seafood',
-    description: 'Fresh cuts and seafood from every store.',
+    description: 'Fresh cuts, poultry, and seafood.',
     href: '/categories/meat-and-seafood',
     icon: meatIcon,
   },
   {
-    title: 'Dairy',
-    description: 'Milk, cheese, yoghurt and eggs.',
-    href: '/categories/dairy',
+    title: 'Dairy & Eggs',
+    description: 'Milk, cheese, eggs, and yoghurt.',
+    href: '/categories/dairy-and-eggs',
     icon: dairyIcon,
   },
   {
-    title: 'Fruit, Veg & Spices',
-    description: 'Fresh produce at the best price.',
-    href: '/categories/fruit-veg-and-spices',
+    title: 'Fruit & Veg',
+    description: 'Fresh produce from every store.',
+    href: '/categories/fruit-and-veg',
     icon: fruitVegIcon,
   },
   {
-    title: 'Pantry & International',
-    description: 'Staples, sauces and world foods.',
-    href: '/categories/pantry-and-international',
+    title: 'Herbs & Spices',
+    description: 'Dried herbs, spices, and seasonings.',
+    href: '/categories/spices',
+    icon: spiceIcon,
+  },
+  {
+    title: 'Pantry',
+    description: 'Staples, sauces, and canned goods.',
+    href: '/categories/pantry',
     icon: pantryIcon,
   },
   {
+    title: 'International Foods',
+    description: 'Asian, Indian, and global ingredients.',
+    href: '/categories/international',
+    icon: internationalIcon,
+  },
+  {
+    title: 'Bakery & Deli',
+    description: 'Bread, pastries, and cured meats.',
+    href: '/categories/bakery-and-deli',
+    icon: bakeryIcon,
+  },
+  {
+    title: 'Drinks',
+    description: 'Soft drinks, juices, and water.',
+    href: '/categories/drinks',
+    icon: drinksIcon,
+  },
+  {
     title: 'Health, Beauty & Supplements',
-    description: 'Vitamins, skincare and personal care.',
+    description: 'Vitamins, skincare, and personal care.',
     href: '/categories/health-beauty-and-supplements',
     icon: healthIcon,
+  },
+  {
+    title: 'Home, Cleaning & Gardening',
+    description: 'Cleaning supplies and home essentials.',
+    href: '/categories/home-cleaning-and-gardening',
+    icon: homeIcon,
+  },
+  {
+    title: 'Baby Essentials',
+    description: 'Nappies, wipes, and baby food.',
+    href: '/categories/baby',
+    icon: babyIcon,
+  },
+  {
+    title: 'Pet Supplies',
+    description: 'Food and treats for your furry friends.',
+    href: '/categories/pet',
+    icon: petIcon,
   },
 ];
 
