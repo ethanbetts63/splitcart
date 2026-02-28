@@ -145,9 +145,9 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
 
   return (
     <>
-      <section className="bg-gray-50 p-5 rounded-xl">
+      <section className="-mx-4 md:mx-0 bg-gray-50 py-5 md:px-5 rounded-none md:rounded-xl">
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 mb-4 pb-3 border-b border-gray-200">
+        <div className="flex items-start justify-between gap-4 mb-4 pb-3 border-b border-gray-200 px-5 md:px-0">
           <div>
             <h2 className="text-2xl font-bold">
               <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">{title}</span>
