@@ -8,7 +8,6 @@ import { FaqV2 } from "../components/FaqV2";
 import type { FaqItem } from '@/types';
 import confusedShopper from "../assets/confused_shopper.webp";
 import meatImage from '../assets/fish_meat_box.webp';
-import fruitImage from '../assets/fruit_detectives.webp';
 import snackImage from '../assets/snack_lineup.webp';
 import eggImage from '../assets/egg_frying.webp';
 import shampooImage from '../assets/shampoo.webp';
@@ -180,6 +179,12 @@ import bakery768 from '../assets/bread_dollar-768w.webp';
 import bakery1024 from '../assets/bread_dollar-1024w.webp';
 import bakery1280 from '../assets/bread_dollar-1280w.webp';
 
+import fruitDollar320 from '../assets/fruit_dollar-320w.webp';
+import fruitDollar640 from '../assets/fruit_dollar-640w.webp';
+import fruitDollar768 from '../assets/fruit_dollar-768w.webp';
+import fruitDollar1024 from '../assets/fruit_dollar-1024w.webp';
+import fruitDollar1280 from '../assets/fruit_dollar-1280w.webp';
+
 const PillarPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const faqs = slug ? (faqsBySlug[slug] ?? []) : [];
@@ -221,7 +226,9 @@ const PillarPage: React.FC = () => {
   if (slug === 'meat-and-seafood') {
     imageUrl = meatImage;
   } else if (slug === 'fruit-and-veg') {
-    imageUrl = fruitImage;
+    imageUrl = fruitDollar1024;
+    srcSet = `${fruitDollar320} 320w, ${fruitDollar640} 640w, ${fruitDollar768} 768w, ${fruitDollar1024} 1024w, ${fruitDollar1280} 1280w`;
+    sizes = "(min-width: 1024px) 50vw, 100vw";
   } else if (slug === 'snacks-and-sweets') {
     imageUrl = snackImage;
   } else if (slug === 'dairy-and-eggs') {
