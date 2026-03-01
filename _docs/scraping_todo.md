@@ -1,11 +1,4 @@
   ---
-  Scraping App — Investigation Report
-
-  Bugs
-
-  ~~1. Aldi unit price double-division — DONE~~
-
-  ~~2. product_uploader.py is defined twice — DONE~~
 
   3. BaseStoreScraper infinite recursion (base_store_scraper.py:60-64)
   except Exception as e:
@@ -14,51 +7,16 @@
       self.run()  # recursive with no limit
   Any persistent error (API change, auth failure) causes infinite recursion and eventual stack overflow. There's no retry counter or bail-out.
 
-  ~~4. GS1 scraper ignores base_url — DONE (base_url now passed from scrape command into Gs1CompanyScraper constructor)~~
-
-  ---
-  Dead Code
-
-  ~~5. save_to_inbox.py — DONE (deleted)~~
-
   6. get_store_specific_categories_coles.py — A GraphQL-based dynamic category fetcher. Has no .pyc, is never imported. The dynamic approach was
   written but never wired in. Meanwhile get_coles_categories.py has a TODO: Implement a more robust way comment. These two files exist in a stalled
   state — the solution exists but was never connected.
 
-  ~~7. atomic_scraping_utils.py — DONE (finalize_scrape inlined into jsonl_writer.py, file deleted)~~
-
-  ~~8. JsonlWriter.finalize() method — DONE (deleted)~~
-
-  ~~9. ProductScraperAldi.post_scrape_enrichment — DONE~~
-
-  ~~10. --woolworths2 flag in find_stores.py — DONE~~
-
-  ~~11. Orphaned shop_scraping_utils/migrations/ — DONE~~
-
   12. Stale .pyc files for deleted sources: __pycache__ contains barcode_scraper_coles.cpython-312.pyc and product_scraper_coles.cpython-312.pyc —
   both V1 scrapers deleted and replaced by V2 — but the compiled bytecode remains.
-
-  ---
-  Architectural / Logic Issues
-
-  ~~13. Brand cache + translation tables rebuilt per category — DONE (removed _build_brand_cache() entirely: it was the only DB query in the scraping app, brand_cache was only used to compute cleaned_brand which was never stored or returned anywhere. Also removed brand_cache param from ProductNormalizer.)~~
-
-  ~~14. Coles worker never fetches translation tables — DONE~~
-
-  ~~15. ColesBarcodeScraperV2 calls super().__init__() from setup() — DONE (file reading moved to __init__(), super().__init__() now called normally from __init__(), setup() reduced to session acquisition + JsonlWriter creation)~~
 
   16. DataCleanerWoolworths defines deep_get / parse_json_field inside _transform_product (DataCleanerWoolworths.py:31-46)
   These inner functions are recreated on every single product (not every category, every product). They should be module-level helpers or class
   methods.
-
-  ~~17. BaseDataCleaner.clean_data() unnecessary two-pass structure — DONE~~
-
-  ~~18. StoreUploader uses __file__-relative paths — DONE~~
-
-  ~~19. scrape --gs1 fetches translation tables unnecessarily — DONE~~
-
-  ---
-  Inconsistencies
 
   20. IGA company name lowercase mismatch (scrape_barcodes.py:25 vs rest of pipeline)
   ColesBarcodeScraperV2 hardcodes self.company = "coles" (lowercase). Every other path gets the company name from store.company.name in the DB (e.g.
@@ -66,51 +24,9 @@
    from the barcode scraper would have "coles" lowercase while regular scrapes write "Coles". The ingestion pipeline may be case-insensitive enough
   that this doesn't break anything, but it's inconsistent.
 
-  21. Aldi/IGA dev attribute stored but unused (product_scraper_aldi.py:19, product_scraper_iga.py:21)
-  Both scrapers store self.dev = dev. Aldi passes it to get_aldi_categories() but that function also stores it without using it. IGA doesn't pass it
-   anywhere. The dev parameter propagated through the Aldi/IGA path is completely inert.
+  ~~21. Aldi/IGA dev attribute stored but unused — DONE~~
 
-  ~~22. base_product_scraper.py uses print() — DONE~~
 
-  23. no change needed. 
 
-  24. PascalCase module filenames (DataCleanerAldi.py, BaseDataCleaner.py, etc.)
-  Python convention is snake_case for module filenames. All other utils in the codebase use lowercase. This is a cosmetic inconsistency but causes
-  slightly awkward imports.
-
-  ~~25. ScraperOutput.update_progress() — manual max logic — DONE~~
-
-  ---
-  Summary Table
-
-  ┌───────┬──────────────────────────────────────────┬──────────┬───────────────┐
-  │   #   │                   File                   │ Severity │     Type      │
-  ├───────┼──────────────────────────────────────────┼──────────┼───────────────┤
-  │ 1     │ DataCleanerAldi.py + price_normalizer.py │ High     │ Bug           │
-  ├───────┼──────────────────────────────────────────┼──────────┼───────────────┤
-  │ 2     │ product_uploader.py                      │ High     │ Bug           │
-  ├───────┼──────────────────────────────────────────┼──────────┼───────────────┤
-  │ 3     │ base_store_scraper.py                    │ High     │ Bug           │
-  ├───────┼──────────────────────────────────────────┼──────────┼───────────────┤
-  │ 4     │ gs1_company_scraper.py                   │ Medium   │ Bug           │
-  ├───────┼──────────────────────────────────────────┼──────────┼───────────────┤
-  │ 5-12  │ Various                                  │ Low      │ Dead code     │
-  ├───────┼──────────────────────────────────────────┼──────────┼───────────────┤
-  │ 13    │ BaseDataCleaner.py                       │ High     │ Performance   │
-  ├───────┼──────────────────────────────────────────┼──────────┼───────────────┤
-  │ 14    │ scrape.py                                │ Medium   │ Logic         │
-  ├───────┼──────────────────────────────────────────┼──────────┼───────────────┤
-  │ 15    │ barcode_scraper_coles_v2.py              │ Medium   │ Architecture  │
-  ├───────┼──────────────────────────────────────────┼──────────┼───────────────┤
-  │ 16    │ DataCleanerWoolworths.py                 │ Low      │ Performance   │
-  ├───────┼──────────────────────────────────────────┼──────────┼───────────────┤
-  │ 17    │ BaseDataCleaner.py                       │ Low      │ Architecture  │
-  ├───────┼──────────────────────────────────────────┼──────────┼───────────────┤
-  │ 18    │ store_uploader.py etc.                   │ Low      │ Inconsistency │
-  ├───────┼──────────────────────────────────────────┼──────────┼───────────────┤
-  │ 19    │ scrape.py                                │ Low      │ Logic         │
-  ├───────┼──────────────────────────────────────────┼──────────┼───────────────┤
-  │ 20-25 │ Various                                  │ Low      │ Inconsistency │
-  └───────┴──────────────────────────────────────────┴──────────┴───────────────┘
 
 

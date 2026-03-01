@@ -1,6 +1,5 @@
 import os
 import json
-import requests
 from bs4 import BeautifulSoup
 from scraping.scrapers.base_product_scraper import BaseProductScraper
 from scraping.utils.product_scraping_utils.jsonl_writer import JsonlWriter

@@ -1,4 +1,3 @@
-
 import requests
 
 def get_store_specific_categories(session):

@@ -13,10 +13,9 @@ class ProductScraperAldi(BaseProductScraper):
     A scraper for ALDI stores.
     """
 
-    def __init__(self, command, company: str, store_id: str, store_name: str, state: str, dev: bool = False):
+    def __init__(self, command, company: str, store_id: str, store_name: str, state: str):
         super().__init__(command, company, store_id, store_name, state)
         self.session = None
-        self.dev = dev
 
     def setup(self):
         """
@@ -36,7 +35,7 @@ class ProductScraperAldi(BaseProductScraper):
         """
         Fetches the list of ALDI categories to scrape.
         """
-        return get_aldi_categories(self.command, self.store_id, self.session, self.dev)
+        return get_aldi_categories(self.command, self.store_id, self.session)
 
     def fetch_data_for_item(self, item) -> list:
         """

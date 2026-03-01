@@ -1,5 +1,4 @@
 import requests
-import json
 from datetime import datetime
 from django.utils.text import slugify
 from scraping.scrapers.base_product_scraper import BaseProductScraper

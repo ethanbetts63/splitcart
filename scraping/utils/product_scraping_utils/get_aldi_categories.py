@@ -27,7 +27,7 @@ def _find_leaf_categories(nodes: list) -> list:
             leaf_categories.extend(_find_leaf_categories(children))
     return leaf_categories
 
-def get_aldi_categories(command, store_id: str, session: requests.Session, dev: bool = False) -> list:
+def get_aldi_categories(command, store_id: str, session: requests.Session) -> list:
     """
     Fetches the category hierarchy for a specific ALDI store and extracts a list
     of all the leaf subcategories to be scraped.
@@ -36,7 +36,6 @@ def get_aldi_categories(command, store_id: str, session: requests.Session, dev: 
         command: The command object for writing output.
         store_id: The unique identifier for the ALDI store (e.g., 'G452').
         session: The requests.Session object to use for the api call.
-        dev (bool): If True, use the development server.
 
     Returns:
         A list of (urlSlugText, key) tuples to scrape, or an empty list if an error occurs.

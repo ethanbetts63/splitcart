@@ -1,4 +1,3 @@
-
 import json
 import hashlib
 from decimal import Decimal
