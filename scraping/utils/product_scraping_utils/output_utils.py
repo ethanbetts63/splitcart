@@ -15,8 +15,8 @@ class ScraperOutput:
     def update_progress(self, new_products=0, duplicate_products=0, categories_scraped=0, total_categories=0):
         self.new_products += new_products
         self.duplicate_products += duplicate_products
-        self.categories_scraped = categories_scraped if categories_scraped > self.categories_scraped else self.categories_scraped
-        self.total_categories = total_categories if total_categories > self.total_categories else self.total_categories
+        self.categories_scraped = max(categories_scraped, self.categories_scraped)
+        self.total_categories = max(total_categories, self.total_categories)
 
         output = (
             f"\r{colorama.Fore.YELLOW}Comp:{colorama.Style.RESET_ALL} {self.company} "

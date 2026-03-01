@@ -12,10 +12,9 @@ class Command(BaseCommand):
         parser.add_argument('--coles', action='store_true', help='Find Coles stores.')
         parser.add_argument('--iga', action='store_true', help='Find IGA stores.')
         parser.add_argument('--woolworths', action='store_true', help='Find Woolworths stores.')
-        parser.add_argument('--woolworths2', action='store_true', help='Find Woolworths stores (alternative method).')
 
     def handle(self, *args, **options):
-        any_specific_store = options['aldi'] or options['coles'] or options['iga'] or options['woolworths'] or options['woolworths2']
+        any_specific_store = options['aldi'] or options['coles'] or options['iga'] or options['woolworths']
 
         if not any_specific_store:
             self.stdout.write(self.style.SUCCESS("--- Starting all store discovery processes ---"))

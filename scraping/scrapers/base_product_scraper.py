@@ -21,7 +21,7 @@ class BaseProductScraper(ABC):
         """The main public method that orchestrates the entire scraping process."""
         scrape_successful = False
         if not self.setup():
-            print("Setup failed, aborting scrape.")
+            self.command.stdout.write(self.command.style.ERROR("Setup failed, aborting scrape."))
             return
 
         try:

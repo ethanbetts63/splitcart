@@ -95,8 +95,3 @@ class ProductScraperAldi(BaseProductScraper):
         )
         return cleaner.clean_data()
 
-    def post_scrape_enrichment(self):
-        """
-        No post-scrape enrichment needed for ALDI at this time.
-        """
-        pass

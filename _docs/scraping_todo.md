@@ -36,11 +36,9 @@
   8. JsonlWriter.finalize() method (jsonl_writer.py:73) — Described as "maintained for backward compatibility" but nothing calls it.
   base_product_scraper.py calls close() + commit() / cleanup() directly. Dead.
 
-  9. ProductScraperAldi.post_scrape_enrichment (product_scraper_aldi.py:98-102) — Overrides the base class method with just pass. The base class
-  default is also pass. The override is pure noise.
+  ~~9. ProductScraperAldi.post_scrape_enrichment — DONE~~
 
-  10. --woolworths2 flag in find_stores.py — The argument is registered (parser.add_argument('--woolworths2', ...)) but the handle() method has no
-  if options['woolworths2'] branch. It does nothing.
+  ~~10. --woolworths2 flag in find_stores.py — DONE~~
 
   ~~11. Orphaned shop_scraping_utils/migrations/ — DONE~~
 
@@ -92,9 +90,7 @@
   Both scrapers store self.dev = dev. Aldi passes it to get_aldi_categories() but that function also stores it without using it. IGA doesn't pass it
    anywhere. The dev parameter propagated through the Aldi/IGA path is completely inert.
 
-  22. base_product_scraper.py uses print() (base_product_scraper.py:24)
-  print("Setup failed, aborting scrape.") — everything else in the file uses self.command.stdout/stderr.write(...). This message would not appear in
-   Django's log output.
+  ~~22. base_product_scraper.py uses print() — DONE~~
 
   23. BargainUploader doesn't archive (inconsistent with Gs1Uploader, StoreUploader)
   Gs1Uploader and StoreUploader move files to an archive directory after upload. BargainUploader and CategoryLinksUploader just delete them.
@@ -104,9 +100,7 @@
   Python convention is snake_case for module filenames. All other utils in the codebase use lowercase. This is a cosmetic inconsistency but causes
   slightly awkward imports.
 
-  25. ScraperOutput.update_progress() — manual max logic (output_utils.py:18-19)
-  self.categories_scraped = categories_scraped if categories_scraped > self.categories_scraped else self.categories_scraped
-  This is just max(). Not wrong, but harder to read than necessary.
+  ~~25. ScraperOutput.update_progress() — manual max logic — DONE~~
 
   ---
   Summary Table
