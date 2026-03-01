@@ -73,7 +73,6 @@ class ProductScraperWoolworths(BaseProductScraper):
                 "isMobile": False, "filters": [{"Key": "SoldBy", "Items": [{"Term": "Woolworths"}]}],
                 "token": "", "gpBoost": 0, "isHideUnavailableProducts": False,
                 "isHideEverydayMarketProducts": True,
-                "isHideUnavailableProducts": True,
                 "isRegisteredRewardCardPromotion": False, "categoryVersion": "v2",
                 "enableAdReRanking": False, "groupEdmVariants": False, "activePersonalizedViewType": "",
                 "storeId": self.store_id

@@ -57,7 +57,7 @@ class DataCleanerIga(BaseDataCleaner):
             size_str = f"{size_value}{size_type}"
         
         sell_by = raw_product.get('sellBy')
-        if sell_by:
+        if sell_by and sell_by != 'Each':
             size_str += f" {sell_by}"
 
         cleaned_product['size'] = size_str.strip()

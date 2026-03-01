@@ -129,3 +129,58 @@
   ├───────┼──────────────────────────────────────────┼──────────┼───────────────┤
   │ 20-25 │ Various                                  │ Low      │ Inconsistency │
   └───────┴──────────────────────────────────────────┴──────────┴───────────────┘
+
+
+  Normalizer — Real Gaps (from looking at actual data)
+
+  1. IGA sellBy contaminates every size field (DataCleanerIga.py:59–62)
+
+  From the raw data, sellBy is "Each" on both products. The cleaner does:
+  size_str = f"{size_value}{size_type}"  # "1l", "200ml"
+  if sell_by:
+      size_str += f" {sell_by}"          # "1l Each", "200ml Each"
+
+  Then _extract_all_sizes() runs on "1l Each" → extracts both "1l" and "ea". So every IGA product gets "ea" added to its sizes list even though it
+  means nothing different from any other product. The "Each" in sellBy means the unit of sale, not a multipack size — it shouldn't be in the size
+  string at all. You could filter sellBy = "Each" from the appended string.
+
+  2. Aldi fractional kg sizes don't match other stores
+
+  From the raw Aldi data: "sellingSize": "0.11 kg" (Goat Cheese), "0.8 kg" (Marinara). The size extractor produces "0.11kg" and "0.8kg". But the
+  same products at Woolworths or Coles would list as "110g" and "800g". If SizeComparer._parse_size doesn't do cross-unit conversion (g ↔ kg), these
+   won't match for deduplication/substitution purposes. The fix would be to standardize fractional kg values to grams in _get_standardized_sizes() —
+   0.11kg → 110g, 0.8kg → 800g.
+
+  3. Unit price boundary edge case (BaseDataCleaner.py:202–213)
+
+  The standardization logic has a gap:
+  if unit == 'g' and quantity != 1000:      → normalized to 1kg ✓
+  # but: unit == 'g' and quantity == 1000  → falls through → "1000g" ✗
+  if unit == 'ml' and quantity != 1000:     → normalized to 1l ✓
+  # but: unit == 'ml' and quantity == 1000 → falls through → "1000ml" ✗
+
+  If any store expresses unit price as "per 1000g" or "per 1000ml", you'd get unit_of_measure = "1000g" from one store and "1kg" from another, even
+  though they're the same. Looking at the actual Aldi data, Aldi quotes "per 100g" (quantity=100) and "per 1kg" (quantity=1) — both handled
+  correctly — so this is an edge case, but it's a real logic gap that could silently produce non-comparable unit prices.
+
+  4. Aldi double-division (already #1 on the todo — just confirming it's real)
+
+  Traced through the actual data: comparison: 168 → DataCleanerAldi divides to 1.68 → PriceNormalizer sees Aldi and divides again to 0.0168 → then
+  standardizes to per-100g → final unit_price = 0.000168 instead of 16.80. Off by 10,000x.
+
+  5. Image URLs are captured for Aldi only (i cant remember why i did this but there was a good reason. i think we don't need it for the other companies for somereason. maybe its like you can contruct theres predicatbly but not with aldi.)
+
+  6. IGA unit price relies on string parsing alone
+
+  IGA_FIELD_MAP has "per_unit_price_value": None. So PriceNormalizer falls back to parsing "$3.35/l" or "$1.75/100ml" via regex. This works, but
+  it's more fragile than having a numeric value. The raw IGA data actually has unitOfMeasure (size and abbreviation) and priceNumeric — you could
+  calculate the unit price directly from those rather than parsing a formatted string.
+
+  ---
+  Priority Order for Fixing
+
+  1. Aldi double-division (#1) — data is wrong right now
+  ~~2. Woolworths duplicate key — DONE (removed duplicate isHideUnavailableProducts: True, keeping False)~~
+  ~~3. IGA sellBy contaminating sizes — DONE (skip appending sellBy when it equals "Each")~~
+  ~~4. Aldi fractional kg → g conversion — DONE (product['sizes'] now uses standardized_sizes instead of raw_sizes)~~
+  5. Unit price 1000g/1000ml boundary — small edge case but real
