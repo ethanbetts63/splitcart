@@ -14,8 +14,9 @@ class Gs1CompanyScraper:
     Scrapes GS1 to find company information for a given barcode.
     This class orchestrates the entire strategic scraping process.
     """
-    def __init__(self, command):
+    def __init__(self, command, base_url):
         self.command = command
+        self.base_url = base_url
         self.driver = None
         self.session = None
         self.form_build_id = None
@@ -26,8 +27,8 @@ class Gs1CompanyScraper:
         a session, and then loop through the top 30 unverified brands.
         """
         self.command.stdout.write(self.command.style.SUCCESS('--- Running GS1 Strategic Scraper to Inbox ---\n'))
-        
-        base_url = "http://127.0.0.1:8000" # Assuming local dev server for scraper
+
+        base_url = self.base_url
         headers = {'X-Internal-API-Key': settings.INTERNAL_API_KEY}
 
         # --- Setup ---

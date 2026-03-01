@@ -14,9 +14,7 @@
       self.run()  # recursive with no limit
   Any persistent error (API change, auth failure) causes infinite recursion and eventual stack overflow. There's no retry counter or bail-out.
 
-  4. GS1 scraper ignores base_url (gs1_company_scraper.py:30)
-  base_url = "http://127.0.0.1:8000" is hardcoded. The parent scrape command computes base_url from --dev and passes nothing to Gs1CompanyScraper.
-  So --gs1 always talks to localhost even in production context. It would just fail silently on a machine without a local server.
+  ~~4. GS1 scraper ignores base_url — DONE (base_url now passed from scrape command into Gs1CompanyScraper constructor)~~
 
   ---
   Dead Code
@@ -45,9 +43,7 @@
 
   ~~13. Brand cache + translation tables rebuilt per category — DONE (removed _build_brand_cache() entirely: it was the only DB query in the scraping app, brand_cache was only used to compute cleaned_brand which was never stored or returned anywhere. Also removed brand_cache param from ProductNormalizer.)~~
 
-  14. Coles worker never fetches translation tables (scrape.py:29-31)
-  The --coles path returns immediately at line 31 before the translation table download that happens at lines 34-39 for the legacy path. If you only
-   ever run --coles, your local translation tables are whatever was last downloaded by a different run.
+  ~~14. Coles worker never fetches translation tables — DONE~~
 
   15. ColesBarcodeScraperV2 calls super().__init__() from setup() (barcode_scraper_coles_v2.py:54)
   The class manually initializes attributes in __init__() and then calls super().__init__() from inside setup(). This is a significant departure
@@ -62,9 +58,7 @@
 
   ~~18. StoreUploader uses __file__-relative paths — DONE~~
 
-  19. scrape --gs1 fetches translation tables unnecessarily (scrape.py:34-39)
-  The --gs1 branch is checked at lines 51-55, after translation tables are downloaded at lines 34-39. GS1 scraping has nothing to do with product
-  translation tables.
+  ~~19. scrape --gs1 fetches translation tables unnecessarily — DONE~~
 
   ---
   Inconsistencies
