@@ -76,7 +76,7 @@ const HomePage = () => {
     {
       step: 1,
       title: 'Build Your List.',
-      description: 'Search or browse and add items to your cart. The bigger and more specific your list, the more we can save you.',
+      description: 'Search or browse and add items to your cart. The bigger your list, the more we can save you.',
       image: {
         src: listImg,
         srcSet: `${listImg320} 320w, ${listImg640} 640w, ${listImg768} 768w, ${listImg1024} 1024w, ${listImg1280} 1280w`,
@@ -87,7 +87,7 @@ const HomePage = () => {
     {
       step: 2,
       title: 'Approve Substitutes.',
-      description: "Tell us which alternatives you'd accept — a different brand of milk, a different cut of meat. More options means more savings.",
+      description: "Optionally tell us which alternatives you'd accept — a different brand of milk, a different cut of meat. More options means more savings.",
       image: {
         src: sizeComparison,
         srcSet: `${sizeComparison320} 320w, ${sizeComparison640} 640w, ${sizeComparison768} 768w, ${sizeComparison1024} 1024w, ${sizeComparison1280} 1280w`,

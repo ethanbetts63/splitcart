@@ -26,7 +26,7 @@
 
 ## How It Works
 **Step 1: Build Your List.**
-Search or browse and add items to your cart. The bigger and more specific your list, the more we can save you.
+Search or browse and add items to your cart. The bigger your list, the more we can save you.
 *Image: Grocery list with bag of shopping (list.png)*
 
 **Step 2: Approve Substitutes.**
