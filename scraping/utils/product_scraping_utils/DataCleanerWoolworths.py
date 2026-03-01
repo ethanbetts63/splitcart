@@ -3,6 +3,25 @@ from datetime import datetime
 from .BaseDataCleaner import BaseDataCleaner
 from .field_maps import WOOLWORTHS_FIELD_MAP
 
+
+def _deep_get(data, keys):
+    for key in keys:
+        if isinstance(data, dict) and key in data:
+            data = data[key]
+        else:
+            return None
+    return data
+
+
+def _parse_json_field(raw_product, field_path):
+    raw_json_str = _deep_get(raw_product, field_path.split('.'))
+    if not raw_json_str or not isinstance(raw_json_str, str):
+        return []
+    try:
+        return json.loads(raw_json_str)
+    except json.JSONDecodeError:
+        return []
+
 class DataCleanerWoolworths(BaseDataCleaner):
     """
     Concrete cleaner class for Woolworths product data.
@@ -28,30 +47,9 @@ class DataCleanerWoolworths(BaseDataCleaner):
         )
         cleaned_product.update(price_info)
 
-        def deep_get(data, keys):
-            for key in keys:
-                if isinstance(data, dict) and key in data:
-                    data = data[key]
-                else:
-                    return None
-            return data
-
-        def parse_json_field(field_path):
-            raw_json_str = deep_get(raw_product, field_path.split('.'))
-            if not raw_json_str or not isinstance(raw_json_str, str):
-                return []
-            try:
-                return json.loads(raw_json_str)
-            except json.JSONDecodeError:
-                return []
-
-        dept_field = 'AdditionalAttributes.piesdepartmentnamesjson'
-        cat_field = 'AdditionalAttributes.piescategorynamesjson'
-        subcat_field = 'AdditionalAttributes.piessubcategorynamesjson'
-
-        departments = parse_json_field(dept_field)
-        categories = parse_json_field(cat_field)
-        subcategories = parse_json_field(subcat_field)
+        departments = _parse_json_field(raw_product, 'AdditionalAttributes.piesdepartmentnamesjson')
+        categories = _parse_json_field(raw_product, 'AdditionalAttributes.piescategorynamesjson')
+        subcategories = _parse_json_field(raw_product, 'AdditionalAttributes.piessubcategorynamesjson')
 
         full_path = []
         seen = set()

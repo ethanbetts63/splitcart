@@ -14,17 +14,12 @@
   12. Stale .pyc files for deleted sources: __pycache__ contains barcode_scraper_coles.cpython-312.pyc and product_scraper_coles.cpython-312.pyc —
   both V1 scrapers deleted and replaced by V2 — but the compiled bytecode remains.
 
-  16. DataCleanerWoolworths defines deep_get / parse_json_field inside _transform_product (DataCleanerWoolworths.py:31-46)
-  These inner functions are recreated on every single product (not every category, every product). They should be module-level helpers or class
-  methods.
-
   20. IGA company name lowercase mismatch (scrape_barcodes.py:25 vs rest of pipeline)
   ColesBarcodeScraperV2 hardcodes self.company = "coles" (lowercase). Every other path gets the company name from store.company.name in the DB (e.g.
    "Coles" with capital). PriceNormalizer does self.company.lower() == 'aldi', so the case doesn't matter there. But metadata written to JSONL files
    from the barcode scraper would have "coles" lowercase while regular scrapes write "Coles". The ingestion pipeline may be case-insensitive enough
   that this doesn't break anything, but it's inconsistent.
 
-  ~~21. Aldi/IGA dev attribute stored but unused — DONE~~
 
 
 

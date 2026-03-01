@@ -1,6 +1,6 @@
-# FutureReminder Testing Strategy
+# Splitcart Testing Strategy
 
-This document outlines the testing strategy for the FutureReminder project.
+This document outlines the testing strategy for the Splitcart project.
 
 ## 1. Core Technology Stack
 
