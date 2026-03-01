@@ -11,7 +11,7 @@ import bakeryIcon from '../assets/food_svgs/Bread-Loaf--Streamline-Ultimate.svg'
 import drinksIcon from '../assets/food_svgs/Champagne-Cooler--Streamline-Ultimate.svg';
 import healthIcon from '../assets/food_svgs/Water-Bottle-Glass--Streamline-Ultimate.svg';
 import homeIcon from '../assets/food_svgs/Kitchenware-Spatula-1--Streamline-Ultimate.svg';
-import babyIcon from '../assets/food_svgs/Pregnancy-Sperm-1--Streamline-Ultimate.svg';
+import babyIcon from '../assets/food_svgs/Coffee-Cold--Streamline-Ultimate.svg';
 
 const rawCategories = [
   {

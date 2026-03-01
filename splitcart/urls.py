@@ -2,14 +2,14 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.generic.base import TemplateView
 from django.contrib.sitemaps.views import sitemap
-from splitcart.sitemaps import StaticViewSitemap, PillarPageSitemap
+from splitcart.sitemaps import StaticViewSitemap, CategoryPageSitemap
 from data_management.views.pillar_page_view import PillarPageView
 from products.views.primary_category_list_view import PrimaryCategoryListView
 from data_management.views.react_app_view import ReactAppView
 
 sitemaps = {
     'static': StaticViewSitemap,
-    'pillar-pages': PillarPageSitemap,
+    'categories': CategoryPageSitemap,
 }
 
 urlpatterns = [

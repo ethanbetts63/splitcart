@@ -1,6 +1,4 @@
 from django.contrib import sitemaps
-from django.urls import reverse
-from companies.models import PillarPage
 
 class StaticViewSitemap(sitemaps.Sitemap):
     priority = 0.5
@@ -12,12 +10,24 @@ class StaticViewSitemap(sitemaps.Sitemap):
     def location(self, item):
         return item
 
-class PillarPageSitemap(sitemaps.Sitemap):
+class CategoryPageSitemap(sitemaps.Sitemap):
     changefreq = "weekly"
     priority = 0.9
 
     def items(self):
-        return PillarPage.objects.all()
+        return [
+            '/categories/baby/',
+            '/categories/bakery-and-deli/',
+            '/categories/dairy-and-eggs/',
+            '/categories/drinks/',
+            '/categories/fruit-and-veg/',
+            '/categories/health-beauty-and-supplements/',
+            '/categories/home-cleaning-gardening-and-pets/',
+            '/categories/international-herbs-and-spices/',
+            '/categories/meat-and-seafood/',
+            '/categories/pantry/',
+            '/categories/snacks-and-sweets/',
+        ]
 
-    def location(self, obj):
-        return f'/categories/{obj.slug}/'
+    def location(self, item):
+        return item
