@@ -8,13 +8,12 @@ class ProductNormalizer:
     This class takes raw product data, processes it through a pipeline of cleaning
     and standardization methods, and provides clean, normalized outputs.
     """
-    def __init__(self, product_data, brand_cache=None, brand_translations=None, product_translations=None):
+    def __init__(self, product_data, brand_translations=None, product_translations=None):
         """
         Initializes the normalizer with raw product data.
 
         Args:
             product_data (dict): A dictionary containing product info like 'name', 'brand', etc.
-            brand_cache (dict): A cache of brand information, including name variations.
             brand_translations (dict): A dictionary mapping brand variations to canonical names.
             product_translations (dict): A dictionary mapping product name variations to canonical names.
         """
@@ -24,17 +23,11 @@ class ProductNormalizer:
         self.size = str(product_data.get('size', ''))
         self.barcode = product_data.get('barcode')
         self.sku = product_data.get('sku')
-        self.brand_cache = brand_cache if brand_cache is not None else {}
         self.brand_translations = brand_translations if brand_translations is not None else {}
         self.product_translations = product_translations if product_translations is not None else {}
 
         # Immediately process the data to populate internal state
         self.normalized_brand_name = self._get_normalized_brand_name(self.brand)
-
-        # Get the human-readable name from the cache using the normalized brand name
-        brand_info = self.brand_cache.get(self.normalized_brand_name, {})
-        # Fallback to the raw brand string if the key is somehow not in the cache
-        self.cleaned_brand = brand_info.get('name', self.brand)
 
         self.raw_sizes = self._extract_all_sizes()
 

@@ -7,7 +7,6 @@ from scraping.utils.product_scraping_utils.product_normalizer import ProductNorm
 from scraping.utils.product_scraping_utils.price_normalizer import PriceNormalizer
 from scraping.utils.product_scraping_utils.price_hasher import generate_price_hash
 from .wrap_cleaned_products import wrap_cleaned_products
-from products.models import ProductBrand
 
 class BaseDataCleaner(ABC):
     """
@@ -22,9 +21,6 @@ class BaseDataCleaner(ABC):
         self.store_id = store_id
         self.state = state
         self.timestamp = timestamp
-        self.cleaned_products = []
-        self.final_products = []
-        self.brand_cache = self._build_brand_cache()
         self.brand_translations, self.product_translations = self._load_translation_tables()
 
     def _load_translation_tables(self):
@@ -59,20 +55,6 @@ class BaseDataCleaner(ABC):
             pass
             
         return brand_translations, product_translations
-
-    def _build_brand_cache(self):
-        """
-        Builds a cache of brand data for the normalizer to use,
-        keyed by the normalized brand name.
-        """
-        brand_cache = {}
-        for brand in ProductBrand.objects.all():
-            # Use the normalized_name as the key
-            brand_cache[brand.normalized_name] = {
-                'name': brand.name,  # Include the human-readable name
-                'name_variations': brand.name_variations
-            }
-        return brand_cache
 
     @property
     @abstractmethod
@@ -112,19 +94,16 @@ class BaseDataCleaner(ABC):
         """
         Main orchestration method.
         """
+        final_products = []
         for raw_product in self.raw_product_list:
             if not self._is_valid_product(raw_product):
                 continue
             cleaned_product = self._transform_product(raw_product)
             if cleaned_product:
-                self.cleaned_products.append(cleaned_product)
-
-        for p in self.cleaned_products:
-            processed_product = self._post_process_product(p)
-            self.final_products.append(processed_product)
+                final_products.append(self._post_process_product(cleaned_product))
 
         return wrap_cleaned_products(
-            products=self.final_products,
+            products=final_products,
             company=self.company,
             store_name=self.store_name,
             store_id=self.store_id,
@@ -145,7 +124,6 @@ class BaseDataCleaner(ABC):
         """
         normalizer = ProductNormalizer(
             product,
-            brand_cache=self.brand_cache,
             brand_translations=self.brand_translations,
             product_translations=self.product_translations
         )

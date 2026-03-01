@@ -43,11 +43,7 @@
   ---
   Architectural / Logic Issues
 
-  13. Brand cache + translation tables rebuilt per category (BaseDataCleaner.py:27-28)
-  BaseDataCleaner.__init__() calls _build_brand_cache() (full DB query: ProductBrand.objects.all()) and _load_translation_tables() (reads +
-  ast.literal_evals two large Python files) on every instantiation. Since a new cleaner is created per category (clean_raw_data() instantiates a new
-   DataCleanerXxx every call), a Woolworths scrape of 80 categories hits the DB 80 times and parses the translation files 80 times, all for the same
-   data.
+  ~~13. Brand cache + translation tables rebuilt per category — DONE (removed _build_brand_cache() entirely: it was the only DB query in the scraping app, brand_cache was only used to compute cleaned_brand which was never stored or returned anywhere. Also removed brand_cache param from ProductNormalizer.)~~
 
   14. Coles worker never fetches translation tables (scrape.py:29-31)
   The --coles path returns immediately at line 31 before the translation table download that happens at lines 34-39 for the legacy path. If you only
@@ -62,9 +58,7 @@
   These inner functions are recreated on every single product (not every category, every product). They should be module-level helpers or class
   methods.
 
-  17. BaseDataCleaner.clean_data() unnecessary two-pass structure (BaseDataCleaner.py:111-133)
-  It loops through all products to build self.cleaned_products, then loops again to build self.final_products. Each product is processed entirely
-  independently — there's no reason for two passes. It doubles the iteration and wastes memory.
+  ~~17. BaseDataCleaner.clean_data() unnecessary two-pass structure — DONE~~
 
   ~~18. StoreUploader uses __file__-relative paths — DONE~~
 
@@ -129,26 +123,3 @@
   └───────┴──────────────────────────────────────────┴──────────┴───────────────┘
 
 
-  Normalizer — Real Gaps (from looking at actual data)
-
-  ~~1. IGA sellBy contaminates every size field — DONE~~
-
-  From the raw data, sellBy is "Each" on both products. The cleaner does:
-  size_str = f"{size_value}{size_type}"  # "1l", "200ml"
-  if sell_by:
-      size_str += f" {sell_by}"          # "1l Each", "200ml Each"
-
-  Then _extract_all_sizes() runs on "1l Each" → extracts both "1l" and "ea". So every IGA product gets "ea" added to its sizes list even though it
-  means nothing different from any other product. The "Each" in sellBy means the unit of sale, not a multipack size — it shouldn't be in the size
-  string at all. You could filter sellBy = "Each" from the appended string.
-
-  ~~6. IGA unit price relies on string parsing alone — DONE (DataCleanerIga now calculates per_unit_price_value and per_unit_price_measure directly from unitOfMeasure + unitOfSize fields. Also removed company param from PriceNormalizer and the erroneous Aldi /100 in get_normalized_unit_price.)~~
-
-  ---
-  Priority Order for Fixing
-
-  ~~1. Aldi double-division (#1) — DONE (removed second /100 from PriceNormalizer; DataCleanerAldi already converts cents→dollars before calling it)~~
-  ~~2. Woolworths duplicate key — DONE (removed duplicate isHideUnavailableProducts: True, keeping False)~~
-  ~~3. IGA sellBy contaminating sizes — DONE (skip appending sellBy when it equals "Each")~~
-  ~~4. Aldi fractional kg → g conversion — DONE (product['sizes'] now uses standardized_sizes instead of raw_sizes)~~
-  5. Unit price 1000g/1000ml boundary — small edge case but real
