@@ -65,7 +65,15 @@ class DataCleanerIga(BaseDataCleaner):
         # Handle availability
         cleaned_product['is_available'] = raw_product.get('available', False)
 
-
+        # Calculate unit price directly from numeric fields rather than parsing the string
+        unit_of_measure = raw_product.get('unitOfMeasure', {})
+        unit_of_size = raw_product.get('unitOfSize', {})
+        measure_size = unit_of_measure.get('size')
+        measure_abbr = unit_of_measure.get('abbreviation')
+        product_size = unit_of_size.get('size')
+        if measure_size and measure_abbr and product_size and current_price:
+            cleaned_product['per_unit_price_value'] = current_price * (measure_size / product_size)
+            cleaned_product['per_unit_price_measure'] = f"{measure_size}{measure_abbr}"
 
         # Standardize unit price
         unit_price_info = self._get_standardized_unit_price_info(cleaned_product)

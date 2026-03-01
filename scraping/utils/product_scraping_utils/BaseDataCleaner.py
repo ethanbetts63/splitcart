@@ -186,7 +186,7 @@ class BaseDataCleaner(ABC):
         Uses the PriceNormalizer to extract and calculate a standardized
         unit price (e.g., price per 1kg or 1L).
         """
-        normalizer = PriceNormalizer(price_data, self.company)
+        normalizer = PriceNormalizer(price_data)
         
         unit_price = normalizer.get_normalized_unit_price()
         measure_info = normalizer.get_normalized_unit_measure()
