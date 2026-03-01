@@ -25,43 +25,50 @@ class BaseStoreScraper(ABC):
     def run(self):
         """The main public method that orchestrates the entire scraping process."""
         self.setup()
-        try:
-            work_items = self.get_work_items()
-            total_steps = len(work_items)
-            completed_steps = self.load_progress()
-            consecutive_failures = 0
-            MAX_FAILURES = 3
+        MAX_RESTARTS = 3
+        restarts = 0
+        while True:
+            try:
+                work_items = self.get_work_items()
+                total_steps = len(work_items)
+                completed_steps = self.load_progress()
+                consecutive_failures = 0
+                MAX_FAILURES = 3
 
-            for i, item in enumerate(work_items[completed_steps:]):
-                self.print_progress(completed_steps + i, total_steps, item)
-                
-                raw_data_list = None
-                try:
-                    raw_data_list = self.fetch_data_for_item(item)
-                    consecutive_failures = 0  # Reset on success
-                except requests.exceptions.RequestException as e:
-                    self.stdout.write(f"\nNetwork error: {e}")
-                    consecutive_failures += 1
-                    self.stdout.write(f"Consecutive network failures: {consecutive_failures}")
-                    if consecutive_failures >= MAX_FAILURES:
-                        self.stdout.write(f"\nStopping scraper due to {MAX_FAILURES} consecutive network failures.")
-                        break  # Exit loop
+                for i, item in enumerate(work_items[completed_steps:]):
+                    self.print_progress(completed_steps + i, total_steps, item)
 
-                self.save_progress(completed_steps + i)
-                
-                if not raw_data_list:
-                    continue
+                    raw_data_list = None
+                    try:
+                        raw_data_list = self.fetch_data_for_item(item)
+                        consecutive_failures = 0  # Reset on success
+                    except requests.exceptions.RequestException as e:
+                        self.stdout.write(f"\nNetwork error: {e}")
+                        consecutive_failures += 1
+                        self.stdout.write(f"Consecutive network failures: {consecutive_failures}")
+                        if consecutive_failures >= MAX_FAILURES:
+                            self.stdout.write(f"\nStopping scraper due to {MAX_FAILURES} consecutive network failures.")
+                            break
 
-                for raw_data in raw_data_list:
-                    cleaned_data = self.clean_raw_data(raw_data)
-                    self.save_store(cleaned_data)
+                    self.save_progress(completed_steps + i)
 
-            self.cleanup()
-        except Exception as e:
-            self.stdout.write(f"A critical error occurred: {e}")
-            self.stdout.write("Restarting scraper in 10 seconds...")
-            time.sleep(10)
-            self.run()
+                    if not raw_data_list:
+                        continue
+
+                    for raw_data in raw_data_list:
+                        cleaned_data = self.clean_raw_data(raw_data)
+                        self.save_store(cleaned_data)
+
+                self.cleanup()
+                break
+            except Exception as e:
+                restarts += 1
+                self.stdout.write(f"A critical error occurred: {e}")
+                if restarts >= MAX_RESTARTS:
+                    self.stdout.write(f"Stopping after {MAX_RESTARTS} critical errors.")
+                    break
+                self.stdout.write(f"Restarting scraper in 10 seconds... (attempt {restarts}/{MAX_RESTARTS})")
+                time.sleep(10)
 
 
     def save_store(self, cleaned_data):

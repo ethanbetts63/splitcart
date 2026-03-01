@@ -62,6 +62,19 @@ These need a manual audit pass of the full mapping file to catch others like the
 
 ---
 
+
+  6. get_store_specific_categories_coles.py — A GraphQL-based dynamic category fetcher. Has no .pyc, is never imported. The dynamic approach was
+  written but never wired in. Meanwhile get_coles_categories.py has a TODO: Implement a more robust way comment. These two files exist in a stalled
+  state — the solution exists but was never connected. hardcoding the categories is an issue. but scraping coles is quite tricky. grabbing the categories will need checking even if we arleady have logic for it i dont know if it works. 
+
+   20. IGA company name lowercase mismatch (scrape_barcodes.py:25 vs rest of pipeline)
+  ColesBarcodeScraperV2 hardcodes self.company = "coles" (lowercase). Every other path gets the company name from store.company.name in the DB (e.g.
+   "Coles" with capital). PriceNormalizer does self.company.lower() == 'aldi', so the case doesn't matter there. But metadata written to JSONL files
+   from the barcode scraper would have "coles" lowercase while regular scrapes write "Coles". The ingestion pipeline may be case-insensitive enough
+  that this doesn't break anything, but it's inconsistent.
+
+
+
 ## Notes
 
 - Product pages (individual products) are intentionally excluded from the sitemap. With hundreds of thousands of products, indexing them all would waste crawl budget and the pages themselves have thin content (name + price). Not worth pursuing.
