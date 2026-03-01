@@ -13,7 +13,7 @@ import { useStoreList } from '../context/StoreListContext';
 
 const ProductPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { selectedStoreIds } = useStoreList();
+  const { selectedStoreIds, isUserDefinedList } = useStoreList();
 
   const storeIdsArray = React.useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
 
@@ -133,6 +133,7 @@ const ProductPage: React.FC = () => {
             title="Similar Products"
             sourceUrl={`/api/products/${product.id}/substitutes/`}
             storeIds={storeIdsArray}
+            isUserDefinedList={isUserDefinedList}
             minProducts={1}
           />
         </div>

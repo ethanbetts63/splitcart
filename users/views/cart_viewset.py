@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 
-from users.models import Cart, CartItem, SelectedStoreList
+from users.models import Cart, CartItem, CartSubstitution, SelectedStoreList
 from products.models import Product
 from users.serializers.cart_serializer import CartSerializer
 from splitcart.permissions import IsAuthenticatedOrAnonymous
@@ -214,22 +214,42 @@ class CartViewSet(viewsets.ModelViewSet):
             if to_update:
                 CartItem.objects.bulk_update(to_update, ['quantity'])
 
+            # Process substitution approval state sent from the client.
+            # Build a map of product_id -> substitutions data for efficient lookup.
+            subs_by_product = {
+                item_data.get('product_id'): item_data.get('substitutions', [])
+                for item_data in items_data
+                if item_data.get('substitutions')
+            }
+            if subs_by_product:
+                current_items_map = {item.product.id: item for item in cart.items.select_related('product')}
+                subs_to_update = []
+                for product_id, substitutions_data in subs_by_product.items():
+                    cart_item = current_items_map.get(product_id)
+                    if not cart_item:
+                        continue
+                    sub_ids = [s.get('id') for s in substitutions_data if s.get('id')]
+                    existing_subs = {str(s.id): s for s in CartSubstitution.objects.filter(
+                        original_cart_item=cart_item, id__in=sub_ids
+                    )}
+                    for sub_data in substitutions_data:
+                        sub = existing_subs.get(str(sub_data.get('id')))
+                        if sub is None:
+                            continue
+                        sub.is_approved = sub_data.get('is_approved', sub.is_approved)
+                        sub.quantity = sub_data.get('quantity', sub.quantity)
+                        subs_to_update.append(sub)
+                if subs_to_update:
+                    CartSubstitution.objects.bulk_update(subs_to_update, ['is_approved', 'quantity'])
+
             if to_create:
                 created_items = CartItem.objects.bulk_create(to_create)
-                print(f"[SYNC] bulk_create'd {len(created_items)} new cart items")
                 if cart.selected_store_list:
                     store_ids = list(cart.selected_store_list.stores.values_list('id', flat=True))
-                    print(f"[SYNC] selected_store_list found, store_ids={store_ids}")
                     if store_ids:
                         for item in created_items:
-                            print(f"[SYNC] running SubstituteManager for product_id={item.product.id}")
                             manager = SubstituteManager(product_id=item.product.id, store_ids=store_ids)
-                            subs = manager.create_cart_substitutions(original_cart_item=item)
-                            print(f"[SYNC] created {len(subs)} cart substitutions for product_id={item.product.id}")
-                    else:
-                        print("[SYNC] store_ids is empty, skipping substitutions")
-                else:
-                    print("[SYNC] no selected_store_list on cart, skipping substitutions")
+                            manager.create_cart_substitutions(original_cart_item=item)
 
         cart = Cart.objects.prefetch_related(
             'items__product__prices__store__company',
@@ -249,23 +269,9 @@ class CartViewSet(viewsets.ModelViewSet):
         The store list for optimization is passed directly in the request body.
         """
         cart_obj = self.get_object()
-        store_list_id = request.data.get('selected_store_list_id')
-        if not store_list_id:
-            return Response({'error': 'selected_store_list_id is required'}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            # Security check: Ensure the store list belongs to the user or is anonymous
-            store_list_qs = SelectedStoreList.objects.all()
-            if request.user.is_authenticated:
-                store_list_qs = store_list_qs.filter(user=request.user)
-            elif hasattr(request, 'anonymous_id'):
-                store_list_qs = store_list_qs.filter(anonymous_id=request.anonymous_id)
-            else:
-                return Response({"detail": "Authentication or anonymous ID required."}, status=status.HTTP_403_FORBIDDEN)
-            
-            store_list = store_list_qs.get(pk=store_list_id)
-        except SelectedStoreList.DoesNotExist:
-            return Response({'error': 'Store list not found'}, status=status.HTTP_404_NOT_FOUND)
+        store_list = cart_obj.selected_store_list
+        if not store_list:
+            return Response({'error': 'No store list linked to this cart.'}, status=status.HTTP_400_BAD_REQUEST)
 
         max_stores_options = request.data.get('max_stores_options', [2, 3, 4])
         return run_cart_optimization(cart_obj, store_list, max_stores_options)

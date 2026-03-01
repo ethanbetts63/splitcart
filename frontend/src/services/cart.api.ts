@@ -15,9 +15,13 @@ export const syncCart = (apiClient: ApiClient, cartToSync: Cart): Promise<Cart> 
     return apiClient.post<Cart>('/api/carts/sync/', {
         cart_id: cartToSync.id,
         items: cartToSync.items.map(item => ({
-            // Ensure we are only sending primitive types if product is a full object
             product_id: typeof item.product === 'object' ? item.product.id : item.product,
             quantity: item.quantity,
+            substitutions: (item.substitutions ?? []).map(sub => ({
+                id: sub.id,
+                is_approved: sub.is_approved,
+                quantity: sub.quantity,
+            })),
         })),
     });
 };
@@ -53,8 +57,8 @@ export const switchActiveCart = (apiClient: ApiClient, cartId: string): Promise<
 /**
  * Runs optimization on a specific cart.
  */
-export const optimizeCart = (apiClient: ApiClient, cartId: string, storeListId: string): Promise<ApiResponse> => {
-    return apiClient.post<ApiResponse>(`/api/carts/${cartId}/optimize/`, { selected_store_list_id: storeListId });
+export const optimizeCart = (apiClient: ApiClient, cartId: string): Promise<ApiResponse> => {
+    return apiClient.post<ApiResponse>(`/api/carts/${cartId}/optimize/`, {});
 };
 
 /**

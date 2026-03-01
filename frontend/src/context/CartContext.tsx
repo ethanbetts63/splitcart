@@ -43,11 +43,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     debounce(async (cartToSync: Cart) => {
       try {
         const updatedCart = await cartApi.syncCart(apiClient, cartToSync);
-        console.log('[CartContext] sync response items:', updatedCart.items.map(i => ({
-          id: i.id,
-          product: typeof i.product === 'object' ? i.product.id : i.product,
-          substitutions: i.substitutions?.length ?? 0,
-        })));
 
         setCurrentCart(prevCart => {
           // If the cart has not changed since this sync was initiated,
@@ -187,17 +182,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     updateItemQuantity(itemId, 0);
   };
 
-  const optimizeCurrentCart = async (storeListId: string): Promise<ApiResponse | null> => {
+  const optimizeCurrentCart = async (): Promise<ApiResponse | null> => {
     if (!currentCart) {
       toast.error("No active cart to optimize.");
       return null;
     }
-    if (!storeListId) {
-      toast.error("No store list selected to optimize with.");
-      return null;
-    }
     try {
-      const results = await cartApi.optimizeCart(apiClient, currentCart.id, storeListId);
+      const results = await cartApi.optimizeCart(apiClient, currentCart.id);
       setOptimizationResult(results);
       return results;
     } catch (error: any) {
@@ -232,55 +223,24 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const updateCartItemSubstitution = async (cartItemId: string, substitutionId: string, isApproved: boolean, quantity: number) => {
+  const updateCartItemSubstitution = (cartItemId: string, substitutionId: string, isApproved: boolean, quantity: number) => {
     if (!currentCart) return;
 
-    const originalCart = JSON.parse(JSON.stringify(currentCart)); // Deep copy for rollback
+    const updatedCart = {
+      ...currentCart,
+      items: currentCart.items.map(item => {
+        if (item.id !== cartItemId) return item;
+        return {
+          ...item,
+          substitutions: (item.substitutions ?? []).map(sub =>
+            sub.id === substitutionId ? { ...sub, is_approved: isApproved, quantity } : sub
+          ),
+        };
+      }),
+    };
 
-    // Optimistically update the UI
-    setCurrentCart(prevCart => {
-      if (!prevCart) return null;
-
-      const updatedItems = prevCart.items.map(item => {
-        if (item.id === cartItemId) {
-          const updatedSubstitutions = item.substitutions
-            ? item.substitutions.map(sub => 
-                sub.id === substitutionId ? { ...sub, is_approved: isApproved, quantity: quantity } : sub
-              )
-            : [];
-          return { ...item, substitutions: updatedSubstitutions };
-        }
-        return item;
-      });
-
-      return { ...prevCart, items: updatedItems };
-    });
-
-    try {
-      const url = `/api/carts/${currentCart.id}/items/${cartItemId}/substitutions/${substitutionId}/`;
-      await apiClient.patch(url, { is_approved: isApproved, quantity: quantity });
-      // We don't call debouncedSync here because this is not a cart item quantity change,
-      // but a change to a sub-item. The backend manager handles the logic.
-      // A full fetch might be warranted if the backend logic is complex. For now, we rely on the optimistic update.
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to update substitution. Please try again.');
-      // Revert the optimistic update on failure
-      setCurrentCart(originalCart);
-    }
-  };
-
-  const removeCartItemSubstitution = async (cartItemId: string, substitutionId: string) => {
-    if (!currentCart) return;
-    
-    // It's safer to just refetch the cart after a deletion for now.
-    // Optimistic deletion can be complex if other logic depends on the item.
-    try {
-      const url = `/api/carts/${currentCart.id}/items/${cartItemId}/substitutions/${substitutionId}/`;
-      await apiClient.delete(url);
-      fetchActiveCart(); // Refresh cart to ensure consistency
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to remove substitution.');
-    }
+    setCurrentCart(updatedCart);
+    debouncedSync(updatedCart);
   };
 
   return (
@@ -288,7 +248,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
             currentCart, userCarts, optimizationResult, setOptimizationResult, cartLoading, isCartSyncing,
             fetchActiveCart, loadCart, createNewCart, renameCart, deleteCart,
             addItem, updateItemQuantity, removeItem, optimizeCurrentCart, emailCurrentCart, downloadCurrentCart,
-            updateCartItemSubstitution, removeCartItemSubstitution
+            updateCartItemSubstitution
         }}>
           {children}
         </CartContext.Provider>  );

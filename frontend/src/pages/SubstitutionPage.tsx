@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { useStoreList } from '../context/StoreListContext';
 import ProductTile from '../components/ProductTile';
 import CartItemTile from '../components/CartItemTile';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -23,7 +22,6 @@ const SubstitutionPage = () => {
   const navigate = useNavigate();
   const { currentCart, updateCartItemSubstitution, optimizeCurrentCart, isCartSyncing } = useCart();
   const isDesktop = useMediaQuery('(min-width: 1024px)');
-  const { currentStoreListId } = useStoreList();
 
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,14 +33,7 @@ const SubstitutionPage = () => {
   const itemsToReview = currentCart?.items.filter(item => item.substitutions && item.substitutions.length > 0) || [];
 
   useEffect(() => {
-    console.log('[SubstitutionPage] skip-check effect fired:', {
-      isCartSyncing,
-      hasCart: !!currentCart,
-      itemsToReview: itemsToReview.length,
-      allItems: currentCart?.items.map(i => ({ id: i.id, subs: i.substitutions?.length ?? 0 })),
-    });
     if (!isCartSyncing && currentCart && itemsToReview.length === 0) {
-      console.log('[SubstitutionPage] skipping to optimize — no items with substitutions');
       handleOptimizeAndNavigate();
     }
   }, [isCartSyncing, currentCart, itemsToReview.length]);
@@ -81,10 +72,10 @@ const SubstitutionPage = () => {
   };
 
   const handleOptimizeAndNavigate = async () => {
-    if (!currentCart || !currentStoreListId) return;
+    if (!currentCart) return;
     setIsLoading(true);
     try {
-      const results = await optimizeCurrentCart(currentStoreListId);
+      const results = await optimizeCurrentCart();
       if (results) {
         navigate('/final-cart');
       } else {
@@ -97,10 +88,10 @@ const SubstitutionPage = () => {
   };
 
   const handleSkipSubstitutions = async () => {
-    if (!currentCart || !currentStoreListId) return;
+    if (!currentCart) return;
     setIsLoading(true);
     try {
-      const results = await optimizeCurrentCart(currentStoreListId);
+      const results = await optimizeCurrentCart();
       if (results) {
         navigate('/final-cart');
       } else {

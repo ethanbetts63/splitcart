@@ -49,19 +49,13 @@ class SubstituteManager:
         pricing_map = get_pricing_stores_map(self.store_ids)
         pricing_store_ids = list(set(pricing_map.values()))
 
-        print(f"[SubstituteManager] find_potential_product_substitutions: product_id={self.product_id}, store_ids={self.store_ids}, pricing_store_ids={pricing_store_ids}")
-
         original_product = self._get_original_product()
         if not original_product:
-            print(f"[SubstituteManager] original product not found for id={self.product_id}")
             return []
 
         substitutions_queryset = ProductSubstitution.objects.filter(
             Q(product_a=original_product) | Q(product_b=original_product)
         ).order_by('level', '-score')
-
-        unfiltered_count = substitutions_queryset.count()
-        print(f"[SubstituteManager] ProductSubstitutions before store filter: {unfiltered_count}")
 
         # Filter by anchor store IDs (the stores that actually hold Price rows)
         substitutions_queryset = substitutions_queryset.filter(
@@ -70,7 +64,6 @@ class SubstituteManager:
         ).distinct()
 
         self._potential_product_substitutions = list(substitutions_queryset[:limit])
-        print(f"[SubstituteManager] after store filter: {len(self._potential_product_substitutions)} substitutions found")
         return self._potential_product_substitutions
 
     def create_cart_substitutions(self, original_cart_item: CartItem) -> list[CartSubstitution]:
@@ -108,42 +101,3 @@ class SubstituteManager:
         
         return created_cart_substitutions
 
-    def update_cart_substitution(self, substitution_id: str, is_approved: bool = None, quantity: int = None) -> CartSubstitution | None:
-        """
-        Updates an existing CartSubstitution instance.
-
-        Args:
-            substitution_id: The ID of the CartSubstitution to update.
-            is_approved: Optional boolean to set the approval status.
-            quantity: Optional integer to set the quantity.
-
-        Returns:
-            The updated CartSubstitution object, or None if not found or removed.
-        """
-        try:
-            cart_sub = CartSubstitution.objects.get(id=substitution_id)
-            if is_approved is not None:
-                cart_sub.is_approved = is_approved
-            if quantity is not None:
-                cart_sub.quantity = quantity
-            cart_sub.save()
-            return cart_sub
-        except CartSubstitution.DoesNotExist:
-            return None
-
-    def remove_cart_substitution(self, substitution_id: str) -> bool:
-        """
-        Removes a CartSubstitution instance.
-
-        Args:
-            substitution_id: The ID of the CartSubstitution to remove.
-
-        Returns:
-            True if the substitution was removed, False otherwise.
-        """
-        try:
-            cart_sub = CartSubstitution.objects.get(id=substitution_id)
-            cart_sub.delete()
-            return True
-        except CartSubstitution.DoesNotExist:
-            return False

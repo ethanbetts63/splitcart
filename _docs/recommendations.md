@@ -5,16 +5,6 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 ---
 
 ## Done
-
-- **Rename `isFetchingSubstitutions` → `isCartSyncing`** — The flag was set on `addItem` and `updateItemQuantity` and cleared in the debounced sync's `finally` block. It tracked whether a cart sync was in flight, not anything substitution-specific. Renamed throughout `CartContext` and all consumer components.
-- **Fix `PAGE_SIZE`**: Dropped from 500 → 24. Massive performance improvement. (`splitcart/settings.py`)
-- **Fix `INTERNAL_IPS`**: Added `127.0.0.1` so Django Debug Toolbar works locally. (`splitcart/settings.py`)
-- **Fix sitemap URLs**: Pillar/category pages were listed as `/pillar-pages/{slug}/` in the sitemap but the actual frontend route is `/categories/{slug}/`. Fixed. (`splitcart/sitemaps.py`)
-- **Fix category traversal boundary**: `_get_all_descendants` now stops recursing at explicitly-mapped category names, preventing cross-hierarchy contamination (e.g. hair colour products appearing on the baby page). (`data_management/utils/generation_utils/primary_categories_generator.py`)
-- **Fix `_clean_value` duplication**: `get_normalized_name_brand_size_string` was reimplementing the bag-of-words clean logic inline instead of calling `_clean_value`. Now uses the shared method — single definition, no drift risk. (`scraping/utils/product_scraping_utils/product_normalizer.py`)
-
----
-
 ## SEO
 
 - [ ] **Add category pages to sitemap** — `/categories/:slug` pages are now in the sitemap (fixed above). Submit the updated sitemap to Google Search Console and request re-indexing.
@@ -53,14 +43,6 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 
 ## Complexity / Architecture
 
-### Cart & Store List
-
-- [ ] **Remove `Cart.selected_store_list` FK** — The FK's only job is to tell the `sync` endpoint which stores to use when generating `CartSubstitution` records. The optimizer never uses it (it receives the store list ID directly in the request). The FK is easy to get out of sync and was the root cause of substitutions silently not being created. The lazy-link added to `sync` is effectively working around a design smell. Proposed fix: remove the FK from `Cart` entirely and have `sync` always look up the user's most-recent `SelectedStoreList` by owner directly. Same behaviour, less state to maintain. **Files:** `users/models/cart.py`, `users/views/cart_viewset.py`, migration.
-
-- [ ] **Consistent optimistic update patterns in `CartContext`** — Three different patterns currently exist for cart mutations: `addItem`/`updateItemQuantity` use optimistic update + debounced sync; `updateCartItemSubstitution` uses optimistic update + immediate PATCH; `removeCartItemSubstitution` uses no optimistic update + immediate DELETE + full cart refetch. The removal in particular is heavy (full refetch on success). Should follow the same pattern as the other mutations — optimistic update with rollback on failure. **File:** `frontend/src/context/CartContext.tsx`.
-
----
-
 ### Category System
 
 **Issue 1 — Products appearing in wrong primary categories**
@@ -75,7 +57,6 @@ Two sub-causes:
 - `'Antipasto': 'Non-Alcoholic Drinks'` → should be `'Miscellaneous'` or `None`
 - `'Asian Ready Meals': 'Non-Alcoholic Drinks'` → should be `'International'` or `'Deli'`
 - `'Board Games & Puzzles': 'Non-Alcoholic Drinks'` → should be `None`
-- `'Chilled Asian': 'Freezer'` → chilled ≠ frozen, should be `'International'` or `'Deli'`
 
 These need a manual audit pass of the full mapping file to catch others like them.
 
