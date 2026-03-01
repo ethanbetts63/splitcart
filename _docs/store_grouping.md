@@ -1,59 +1,63 @@
-# Grouping and Maintenance Strategy
+# Store Grouping
 
-This document outlines the "bottom-up" strategy for creating and maintaining store groups based on price matching.
+Supermarkets like Coles and Woolworths price nationally — every store charges the same. Scraping and storing a separate `Price` row for each physical location would be massively redundant. The grouping system detects this and deduplicates: once stores are confirmed to have matching prices, only the **anchor** store retains `Price` rows. All other members have their prices deleted.
 
-### 1. Core Philosophy & Terminology
+---
 
-The system is designed around a "bottom-up" approach. Every store always belongs to a group, starting in a group of one. Groups are then merged as price matches are confirmed.
+## Key Terms
 
-*   **Group:** A set of one or more stores confirmed to have matching prices.
-*   **Anchor:** Each `Group` has one `Anchor` store. This store is the single "source of truth" for the group's prices. All comparisons are made against the `Anchor`. The Anchor can never be ejected.
-*   **Member:** Any store belonging to a `Group`.
-*   **Current Pricing:** For the purpose of internal group health checks (ejections), price data is considered "Current" if it was scraped within the last 7 days. This is a critical rule to ensure comparisons are "apples-to-apples" before breaking up an established group. This rule does not apply to the merging of different groups.
-*   **Scrape Scheduling:** The scrape scheduler does not know anything about group merging. It first checks for stores that have never been scraped, then it checks for stores that have been flagged, then if neither of those checks are fruitful it picks the store with the most stale data.
+- **Group** — a set of stores confirmed to share identical prices
+- **Anchor** — the single store per group that retains `Price` rows; the source of truth for the group
+- **Member** — any non-anchor store in a group; has no `Price` rows of its own
 
-### 2. Initial State: The `cluster_stores` Command
+---
 
-The system is initialized using a simplified `cluster_stores` command. This command will first delete all existing `StoreGroup` objects. Then, it will iterate through every `Store` in the database and create a new, dedicated `StoreGroup` for each one, setting that store as its own `Anchor`.
+## Lifecycle
 
-### 3. The Update & Comparison Cycle
+```
+python manage.py cluster_stores
+  └─ Deletes all StoreGroups
+  └─ Creates one StoreGroup per Store, each store as its own anchor
 
-The core logic is executed at the end of the `update --products` command, after all new prices for the run have been saved. The process is split into two distinct phases:
+        ▼  (runs at end of every update --products)
 
-**Phase 1: Internal Group Maintenance (Health Checks)**
+GroupMaintenanceOrchestrator
+  │
+  ├─ Phase 1: Internal Health Checks  (existing multi-member groups)
+  │    ├─ Skip group if anchor has no current pricing (flag anchor for re-scrape)
+  │    ├─ Compare each member's prices against the anchor
+  │    │    ├─ Match  → delete member's Price rows (now redundant), cache result 7 days
+  │    │    └─ No match → eject member into its own new group
+  │    └─ (stale non-matches skip comparison, cached 7 days)
+  │
+  └─ Phase 2: Inter-Group Merging  (find new matches across groups)
+       ├─ Compare every anchor against every other anchor (same company)
+       ├─ Match → merge smaller group into larger; delete all Price rows for merged stores
+       └─ No match → cache non-match 7 days, skip on next run
+```
 
-This phase ensures that existing groups remain accurate.
+---
 
-1.  The system identifies all `Groups` with more than one `Member`.
-2.  For each `Group`, it checks if the `Anchor` and at least one other `Member` both have "Current Pricing".
-3.  If they do, an **Internal Comparison** is performed, comparing the `Member`'s prices against the `Anchor`'s prices.
-    *   **If they match:** The `Member` is confirmed as healthy.
-        *   To conserve database space, all `Price` objects for the healthy `Member` are then deleted, as they are now considered redundant copies of the `Anchor`'s prices.
-    *   **If they do not match:** The `Member` is ejected from the `Group` and placed into a new `Group` of one, becoming its own `Anchor`.
-4.  A special case exists for stale data: Before checking any members, the system first verifies if the `Anchor` itself has "Current Pricing". If it does not, the entire group is skipped for the current run, and the `Anchor` store is flagged for a high-priority re-scrape. This prevents any wasteful comparisons against out-of-date anchor data.
+## Querying Prices Correctly
 
-**Phase 2: Inter-Group Merging**
+Because member stores have no `Price` rows, any query for "prices at these stores" must first resolve member IDs to their anchor IDs. This translation is handled automatically by the `Price` manager:
 
-This phase grows the groups by finding new matches.
+```python
+Price.objects.for_stores(store_ids)  # always returns the right prices
+```
 
-1.  After the maintenance phase is complete, the system finds all `Groups` whose `Anchor` has any price data at all, regardless of its age.
-2.  An **Intergroup Comparison** is performed, comparing every `Anchor` against every other `Anchor` within the same company.
-3.  If two `Anchor`s are found to have matching prices, their `Groups` are merged. The `Group` with fewer members is merged into the one with more members. When this happens, all `Price` objects for all stores in the smaller group are deleted. The old, smaller group is then deactivated.
+`for_stores()` calls `get_pricing_stores_map()` internally, which walks each store's `StoreGroupMembership` to find its anchor. The result is cached for 1 hour per company. Callers never need to think about anchors.
 
-### 4. Caching for Performance
+**Never filter prices directly by raw store IDs** — member stores will return nothing.
 
-To prevent redundant, expensive price comparisons on every run, the system utilizes two caching mechanisms, both with a 7-day cooldown period.
+---
 
-*   **Internal Health Check Cache:** When a `Member` store is successfully health-checked against its `Anchor` and confirmed to be a match, it is recorded in a cache. For the next 7 days, the system will automatically skip health checks for this specific member, assuming it remains healthy.
+## Related Files
 
-*   **Inter-Group Comparison Cache:** When two `Anchor` stores are compared and found to **not** be a match, this non-match is recorded in a separate cache. For the next 7 days, the system will automatically skip comparing this specific pair of anchors, focusing only on pairs that have not been recently checked.
-
-*   **In-Memory Price Data Pre-fetching:** To further optimize performance, relevant price data for all stores involved in a comparison pass (for inter-group merging) or within a specific group (for internal health checks) is now fetched into an in-memory cache at the beginning of the process. This eliminates repeated database queries during the comparison loops, allowing the `PriceComparer` to operate on fast, in-memory data.
-
-### Related Files:
-- C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\internal_group_health_checker.py
-- C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\group_maintenance_orchestrator.py
-- C:\Users\ethan\coding\splitcart\data_management\database_updating_classes\intergroup_comparer.py
-- C:\Users\ethan\coding\splitcart\companies\models\store_group.py
-- C:\Users\ethan\coding\splitcart\companies\models\store_group_membership.py
-- C:\Users\ethan\coding\splitcart\companies\models\store.py
+- `products/models/price.py` — `PriceQuerySet.for_stores()`
+- `products/utils/get_pricing_stores.py` — anchor resolution + 1-hour cache
+- `companies/models/store_group.py`
+- `companies/models/store_group_membership.py`
+- `data_management/database_updating_classes/group_maintenance_orchestrator.py`
+- `data_management/database_updating_classes/internal_group_health_checker.py`
+- `data_management/database_updating_classes/intergroup_comparer.py`

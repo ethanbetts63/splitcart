@@ -4,7 +4,7 @@ from rest_framework import status
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from products.models import Product
+from products.models import Product, Price
 from products.models.substitution import ProductSubstitution
 from products.serializers.product_substitution_serializer import ProductSubstitutionSerializer
 
@@ -26,23 +26,19 @@ class ProductSubstituteListView(APIView):
         if store_ids_param:
             try:
                 nearby_store_ids = [int(sid) for sid in store_ids_param.split(',')]
-                
-                # Filter substitutions where the *other* product has prices in the provided stores
+                store_prices = Price.objects.for_stores(nearby_store_ids)
                 substitutions_queryset = substitutions_queryset.filter(
-                    Q(product_a=product, product_b__prices__store__id__in=nearby_store_ids) |
-                    Q(product_b=product, product_a__prices__store__id__in=nearby_store_ids)
+                    Q(product_a=product, product_b__prices__in=store_prices) |
+                    Q(product_b=product, product_a__prices__in=store_prices)
                 ).distinct()
             except (ValueError, TypeError):
-                pass # Invalid store_ids, ignore filtering
+                pass
 
-        # Limit to 5 substitutes after filtering
         substitutions = substitutions_queryset[:5]
 
-        # Pass original product_id and nearby_store_ids in context
         context = {
             'original_product_id': product.id,
             'nearby_store_ids': nearby_store_ids
         }
-        print(context)
         serializer = ProductSubstitutionSerializer(substitutions, many=True, context=context)
         return Response(serializer.data, status=status.HTTP_200_OK)

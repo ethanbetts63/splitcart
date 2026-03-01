@@ -1,6 +1,21 @@
 from django.db import models
 
+
+class PriceQuerySet(models.QuerySet):
+    def for_stores(self, store_ids):
+        """
+        Filters prices to those available at the given stores, automatically
+        resolving member store IDs to their group anchor IDs. Price rows only
+        exist on anchors — member prices are deleted after group confirmation.
+        """
+        from products.utils.get_pricing_stores import get_pricing_stores_map
+        pricing_map = get_pricing_stores_map(store_ids)
+        anchor_ids = list(set(pricing_map.values()))
+        return self.filter(store_id__in=anchor_ids)
+
+
 class Price(models.Model):
+    objects = PriceQuerySet.as_manager()
     """
     Represents the single, most recent price for a Product at a specific Store.
     """
