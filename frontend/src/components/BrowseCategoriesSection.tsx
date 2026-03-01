@@ -2,16 +2,16 @@ import { Link } from 'react-router-dom';
 
 import bargainsIcon from '../assets/food_svgs/Tools-Kitchen-Scale--Streamline-Ultimate.svg';
 import snacksSweetsIcon from '../assets/food_svgs/Ice-Cream-Cone--Streamline-Ultimate.svg';
-import meatIcon from '../assets/food_svgs/Barbecue-Grill--Streamline-Ultimate.svg';
+import meatIcon from '../assets/food_svgs/Seafood-Squid--Streamline-Ultimate.svg';
 import dairyIcon from '../assets/food_svgs/Animal-Products-Egg--Streamline-Ultimate.svg';
 import fruitVegIcon from '../assets/food_svgs/Fruit-Watermelon--Streamline-Ultimate.svg';
 import internationalSpiceIcon from '../assets/food_svgs/Seafood-Sushi--Streamline-Ultimate.svg';
 import pantryIcon from '../assets/food_svgs/Pasta-Bowl-Warm--Streamline-Ultimate.svg';
 import bakeryIcon from '../assets/food_svgs/Bread-Loaf--Streamline-Ultimate.svg';
-import drinksIcon from '../assets/food_svgs/Soft-Drinks-Bottle-1--Streamline-Ultimate.svg';
+import drinksIcon from '../assets/food_svgs/Champagne-Cooler--Streamline-Ultimate.svg';
 import healthIcon from '../assets/food_svgs/Water-Bottle-Glass--Streamline-Ultimate.svg';
 import homeIcon from '../assets/food_svgs/Kitchenware-Spatula-1--Streamline-Ultimate.svg';
-import babyIcon from '../assets/food_svgs/Coffee-Cold--Streamline-Ultimate.svg';
+import babyIcon from '../assets/food_svgs/Pregnancy-Sperm-1--Streamline-Ultimate.svg';
 
 const rawCategories = [
   {
