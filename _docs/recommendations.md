@@ -3,16 +3,6 @@
 A living to-do list of approved improvements. Items are grouped by area and ordered roughly by priority within each group.
 
 ---
-
-## Done
-## SEO
-
-- [ ] **Add category pages to sitemap** — `/categories/:slug` pages are now in the sitemap (fixed above). Submit the updated sitemap to Google Search Console and request re-indexing.
-
-- [ ] **"How It Works" section on the homepage** — Add a numbered steps component (like futureflower's `ProductCarousel` / steps component) to explain the SplitCart concept. The homepage currently drops users straight into product carousels with no onboarding. New visitors don't understand what to do. The section should explain: (1) search/browse and add items, (2) pick your stores, (3) we split your cart and find the cheapest combination. Needs design thinking before implementation — also consider reducing the number of product carousels on the homepage and making the page more explanatory overall.
-
-- [ ] **Migrate FAQs off dynamic imports** — Currently, pillar page FAQs are loaded via a dynamic TypeScript `import()` keyed by slug. This means Google has to execute an async JS import to see the content. The futureflower pattern passes FAQs directly as a prop from the page component, which is cleaner and consistent. Low priority — the FAQ text is good SEO content but the charts and summary sentences already provide most of the value.
-
 ---
 
 ## UX — Substitution Flow
@@ -22,6 +12,8 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 - [ ] **"Review all" list view** — The step-by-step flow is clear for small carts but tedious for large ones. Consider a toggle between the current "one at a time" mode and an "all at once" list view where every item and its substitutes are visible on a single scrollable page. Power users would prefer this.
 
 - [ ] **Running cart summary during substitution** — While working through substitutions the user has no reminder of their full list. A small collapsed header or sidebar showing "12 items in cart · 4 substitutions approved" would provide useful context without taking up space.
+
+- ** progress bar ** this would be easy to implemnt and we could steal it from futureflower. 
 
 ---
 
@@ -46,8 +38,6 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 - [ ] **`last_used_at` on `SelectedStoreList` is semantically wrong** — The field uses `auto_now_add`, so it's set once at creation and never updated. It's effectively `created_at`. The `sync` view and `active` endpoint both order by `-last_used_at` to find the "most recently used" list, but they're actually getting the most recently *created* one. For single-list users this doesn't matter. For authenticated multi-list users it silently uses the wrong list. Fix: either rename to `created_at` to be honest, or change to `auto_now` to track last modification. **File:** `users/models/selected_store_list.py`.
 
 - [ ] **`isCartSyncing` not set during substitution approvals** — `addItem` and `updateItemQuantity` both set `isCartSyncing = true` before calling `debouncedSync`. `updateCartItemSubstitution` calls `debouncedSync` but never sets the flag. No visible UX consequence right now, but inconsistent and could cause subtle bugs if anything guards on that flag in future. **File:** `frontend/src/context/CartContext.tsx`.
-
-- [x] **Anchor resolution centralised on the backend** — All views (`ProductListView`, `BargainCarouselView`) now resolve raw store IDs to anchor IDs via `get_pricing_stores_map()` immediately after parsing the `store_ids` param. `anchorStoreMap` has been removed from the frontend entirely; pages pass `selectedStoreIds` directly. The `active` and nearby-store endpoints no longer return `anchor_map`.
 
 - [ ] **`ProductSubstituteListView` cache is now much less effective** — The endpoint has a 6-hour `cache_page`. Before store filtering was added it cached one entry per product. Now the cache key includes 15+ store IDs, making the hit rate much lower. Consider replacing with a tighter cache on just the unfiltered substitution lookup, or relying on React Query's client-side cache instead. **File:** `products/views/product_substitute_list_view.py`.
 
