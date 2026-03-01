@@ -40,7 +40,7 @@ const faqsBySlug: Record<string, FaqItem[]> = {
       answer: "Our price comparisons are based on all products shared by two companies in our system for a category. This 'product overlap' is why you'll sometimes see more items compared between companies like Coles and Woolworths then stores that have a more unique range, such as IGA or Aldi. Sometimes the range is so unique for a category that there is not enough product overlap to do a fair comparison. In such a case, we will omit the results entirely. Aldi, Coles and Woolworths generally have nationally consistant pricing but for IGA prices differ store to store, therefor we take the average price for IGA stores."
     },
   ],
-  'fruit-veg-and-spices': [
+  'fruit-and-veg': [
     {
       question: "Which australian supermarket has the freshest produce?",
       answer: "Coles and Woolworths stock their produce largely from the same suppliers. Aldi consistently wins Canstar blues fresh product award and is generally regarded online as being the best for customer satisfaction with regards to produce quality. However an honorouble mention would be IGA as IGA's are often locally sourced they can find freshness and quality that the bigger companies cannot compete with."
@@ -80,7 +80,7 @@ const faqsBySlug: Record<string, FaqItem[]> = {
       answer: "Our price comparisons are based on all products shared by two companies in our system for a category. This 'product overlap' is why you'll sometimes see more items compared between companies like Coles and Woolworths then stores that have a more unique range, such as IGA or Aldi. Sometimes the range is so unique for a category that there is not enough product overlap to do a fair comparison. In such a case, we will omit the results entirely. Aldi, Coles and Woolworths generally have nationally consistant pricing but for IGA prices differ store to store, therefor we take the average price for IGA stores."
     },
   ],
-  'eggs-and-dairy': [
+  'dairy-and-eggs': [
     {
       question: "Why have eggs gotten so expensive?",
       answer: "Egg prices have surged primarily due to the ongoing crisis of Highly Pathogenic Avian Influenza (HPAI), or bird flu, which has necessitated the culling of millions of egg-laying hens, severely reducing the national supply. This supply crunch, compounded by persistent general food inflation and higher transportation costs, has driven prices up significantly. The industry also faces a long recovery time, as it takes nearly five months for replacement hens to mature and begin regular production."
@@ -106,7 +106,7 @@ const faqsBySlug: Record<string, FaqItem[]> = {
       answer: "Our price comparisons are based on all products shared by two companies in our system for a category. This 'product overlap' is why you'll sometimes see more items compared between companies like Coles and Woolworths then stores that have a more unique range, such as IGA or Aldi. Sometimes the range is so unique for a category that there is not enough product overlap to do a fair comparison. In such a case, we will omit the results entirely. Aldi, Coles and Woolworths generally have nationally consistant pricing but for IGA prices differ store to store, therefor we take the average price for IGA stores."
     },
   ],
-  'pantry-and-international': [
+  'pantry': [
     {
       question: "How much cheaper is it to make your own granola?",
       answer: "Homemade granola is typically 30–60% cheaper than store-bought versions from Coles, Woolworths, Aldi, or IGA. A simple batch using oats, nuts, seeds, and honey often costs $6–$10 per kilo, compared to packaged granolas that sell for $12–$20+ per kilo. You also control the sweetness, ingredients, and portion size."
@@ -146,7 +146,7 @@ const faqsBySlug: Record<string, FaqItem[]> = {
       answer: "Our price comparisons are based on all products shared by two companies in our system for a category. This 'product overlap' is why you'll sometimes see more items compared between companies like Coles and Woolworths then stores that have a more unique range, such as IGA or Aldi. Sometimes the range is so unique for a category that there is not enough product overlap to do a fair comparison. In such a case, we will omit the results entirely. Aldi, Coles and Woolworths generally have nationally consistant pricing but for IGA prices differ store to store, therefor we take the average price for IGA stores."
     },
   ],
-  'home-cleaning-and-gardening': [
+  'home-cleaning-gardening-and-pets': [
     {
       question: "What is most important for toilet paper per kilo price, price per roll or ply count?",
       answer: "Focusing on ply count alone can be misleading, as lower-ply paper necessitates the use of more sheets per sitting, which quickly negates its lower cost. Conversely, while higher-ply paper is more expensive, its superior absorbency may lead to less consumption. The ideal metric for true value is the price per kilogram, as it accurately standardizes the amount of product purchased, though this figure is rarely provided by retailers. Honestly, if you are asking yourself this question it's probably time for a bidet."
