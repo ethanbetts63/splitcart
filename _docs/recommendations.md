@@ -19,8 +19,6 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 
 - [ ] **Jumpable step indicator** — Currently the only way to go back to a previous substitution item is to click Back repeatedly. Add a clickable step indicator (dots or numbered pills) above the progress bar so users can jump directly to any item they've already seen.
 
-- [ ] **Use store filtering on the product page substitutes endpoint** — `GET /api/products/<id>/substitutes/` returns all known substitutes regardless of the user's selected stores. The cart approval flow only shows substitutes available at the user's stores. A user can see a substitute on a product page, add the product, and then not find that substitute in the approval flow. The endpoint already accepts a `store_ids` query param — the frontend just needs to pass the user's current store IDs when calling it. **File:** `ProductPage.tsx` (or the hook/service it uses for substitutes).
-
 - [ ] **"Review all" list view** — The step-by-step flow is clear for small carts but tedious for large ones. Consider a toggle between the current "one at a time" mode and an "all at once" list view where every item and its substitutes are visible on a single scrollable page. Power users would prefer this.
 
 - [ ] **Running cart summary during substitution** — While working through substitutions the user has no reminder of their full list. A small collapsed header or sidebar showing "12 items in cart · 4 substitutions approved" would provide useful context without taking up space.
@@ -42,6 +40,18 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 ---
 
 ## Complexity / Architecture
+
+### Store List & Cart
+
+- [ ] **`last_used_at` on `SelectedStoreList` is semantically wrong** — The field uses `auto_now_add`, so it's set once at creation and never updated. It's effectively `created_at`. The `sync` view and `active` endpoint both order by `-last_used_at` to find the "most recently used" list, but they're actually getting the most recently *created* one. For single-list users this doesn't matter. For authenticated multi-list users it silently uses the wrong list. Fix: either rename to `created_at` to be honest, or change to `auto_now` to track last modification. **File:** `users/models/selected_store_list.py`.
+
+- [ ] **`isCartSyncing` not set during substitution approvals** — `addItem` and `updateItemQuantity` both set `isCartSyncing = true` before calling `debouncedSync`. `updateCartItemSubstitution` calls `debouncedSync` but never sets the flag. No visible UX consequence right now, but inconsistent and could cause subtle bugs if anything guards on that flag in future. **File:** `frontend/src/context/CartContext.tsx`.
+
+- [ ] **Anchor resolution happens in two different places** — For product browsing (carousels, search, pillar pages), the frontend translates member store IDs to anchor IDs using `anchorStoreMap` before passing `store_ids` to listing APIs. For substitution queries, the backend does the same translation via `Price.objects.for_stores()`. Both are correct, but the split means the anchor concept leaks into the frontend for one code path. Long-term, moving all anchor resolution to the backend (as with substitutions) would remove `anchorStoreMap` from the frontend entirely. Not urgent — no bugs, just an architectural inconsistency.
+
+- [ ] **`ProductSubstituteListView` cache is now much less effective** — The endpoint has a 6-hour `cache_page`. Before store filtering was added it cached one entry per product. Now the cache key includes 15+ store IDs, making the hit rate much lower. Consider replacing with a tighter cache on just the unfiltered substitution lookup, or relying on React Query's client-side cache instead. **File:** `products/views/product_substitute_list_view.py`.
+
+---
 
 ### Category System
 
