@@ -184,21 +184,9 @@ const PillarPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const faqs = slug ? (faqsBySlug[slug] ?? []) : [];
 
-  const { selectedStoreIds, anchorStoreMap, isUserDefinedList } = useStoreList();
+  const { selectedStoreIds, isUserDefinedList } = useStoreList();
 
-  const anchorStoreIdsArray = React.useMemo(() => {
-    if (!anchorStoreMap) {
-      return Array.from(selectedStoreIds);
-    }
-    const anchorIds = new Set<number>();
-    for (const storeId of selectedStoreIds) {
-      const anchorId = anchorStoreMap[storeId];
-      if (anchorId) {
-        anchorIds.add(anchorId);
-      }
-    }
-    return Array.from(anchorIds);
-  }, [selectedStoreIds, anchorStoreMap]);
+  const selectedStoreIdsArray = React.useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
 
   const isDefaultStores = !isUserDefinedList;
 
@@ -290,7 +278,7 @@ const PillarPage: React.FC = () => {
                 sourceUrl="/api/products/"
                 primaryCategorySlugs={[category.slug]}
                 pillarPageLinkSlug={slug}
-                storeIds={anchorStoreIdsArray}
+                storeIds={selectedStoreIdsArray}
                 slot={index}
                 isDefaultStores={isDefaultStores}
             />

@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, type ReactNode, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from './AuthContext';
 import { type SelectedStoreListType } from '../types';
-import type { AnchorMap } from '../types/AnchorMap';
 import type { StoreListContextType } from '../types/StoreListContextType';
 import * as storeListApi from '../services/storeList.api';
 import { createApiClient } from '../services/apiClient';
@@ -16,7 +15,6 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
 
   // --- State Definitions ---
   const [selectedStoreIds, setSelectedStoreIds] = useState<Set<number>>(() => new Set<number>());
-  const [anchorStoreMap, setAnchorStoreMap] = useState<AnchorMap | null>(null);
   const [currentStoreListId, setCurrentStoreListId] = useState<string | null>(null);
   const [currentStoreListName, setCurrentStoreListName] = useState<string>("");
   const [isUserDefinedList, setIsUserDefinedList] = useState<boolean>(false);
@@ -49,8 +47,6 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
             setSelectedStoreIds(new Set());
             // userStoreLists is already an empty array, so no need to set
         }
-        
-        setAnchorStoreMap(activeData.anchor_map ?? null);
 
       } catch (error: any) {
         // The 404 case is now handled above, so we only log other, unexpected errors.
@@ -191,8 +187,6 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
     createNewStoreList,
     deleteStoreList,
     fetchActiveStoreList: async () => { console.warn("fetchActiveStoreList is deprecated"); },
-    anchorStoreMap,
-    setAnchorStoreMap,
   };
 
   return (

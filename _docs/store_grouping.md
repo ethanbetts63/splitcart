@@ -40,13 +40,17 @@ GroupMaintenanceOrchestrator
 
 ## Querying Prices Correctly
 
-Because member stores have no `Price` rows, any query for "prices at these stores" must first resolve member IDs to their anchor IDs. This translation is handled automatically by the `Price` manager:
+Because member stores have no `Price` rows, any query for "prices at these stores" must first resolve member IDs to their anchor IDs. This is handled in two ways:
+
+**In views** (`ProductListView`, `BargainCarouselView`) — raw `store_ids` from the frontend are resolved once at the start of the request using `get_pricing_stores_map()`, then `anchor_store_ids` is used for all ORM queries. The frontend passes `selectedStoreIds` directly and never needs to know about anchors.
+
+**In utility methods** — use the `Price` manager:
 
 ```python
 Price.objects.for_stores(store_ids)  # always returns the right prices
 ```
 
-`for_stores()` calls `get_pricing_stores_map()` internally, which walks each store's `StoreGroupMembership` to find its anchor. The result is cached for 1 hour per company. Callers never need to think about anchors.
+`for_stores()` calls `get_pricing_stores_map()` internally, which walks each store's `StoreGroupMembership` to find its anchor. The result is cached for 1 hour per company.
 
 **Never filter prices directly by raw store IDs** — member stores will return nothing.
 

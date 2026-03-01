@@ -33,26 +33,14 @@ import { fetchProductsAPI } from '../services/product.api';
 const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, bargainCompany }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState('');
-  const { selectedStoreIds, anchorStoreMap, isUserDefinedList } = useStoreList();
+  const { selectedStoreIds, isUserDefinedList } = useStoreList();
   const { openDialog } = useDialog();
   const queryClient = useQueryClient();
   const { token, anonymousId } = useAuth();
-  
+
   const apiClient = React.useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
 
-  const anchorStoreIdsArray = React.useMemo(() => {
-    if (!anchorStoreMap) {
-      return Array.from(selectedStoreIds);
-    }
-    const anchorIds = new Set<number>();
-    for (const storeId of selectedStoreIds) {
-      const anchorId = anchorStoreMap[storeId];
-      if (anchorId) {
-        anchorIds.add(anchorId);
-      }
-    }
-    return anchorIds.size > 0 ? Array.from(anchorIds) : Array.from(selectedStoreIds);
-  }, [selectedStoreIds, anchorStoreMap]);
+  const selectedStoreIdsArray = React.useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
 
   React.useEffect(() => {
     setCurrentPage(1);
@@ -84,8 +72,8 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
       params.set('primary_category_slug', primaryCategorySlug);
     }
 
-    if (anchorStoreIdsArray.length > 0) {
-      params.set('store_ids', anchorStoreIdsArray.join(','));
+    if (selectedStoreIdsArray.length > 0) {
+      params.set('store_ids', selectedStoreIdsArray.join(','));
     }
     params.set('page', currentPage.toString());
     params.set('page_size', '20');
@@ -95,7 +83,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
     }
 
     return { url, params };
-  }, [searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, anchorStoreIdsArray, currentPage, sortOption, bargainCompany]);
+  }, [searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, selectedStoreIdsArray, currentPage, sortOption, bargainCompany]);
 
   const finalUrl = url ? `${url}?${params.toString()}` : null;
 

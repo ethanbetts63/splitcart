@@ -61,23 +61,11 @@ const BargainsPage: React.FC = () => {
 
   const hero_title = "Australia's Best Grocery Bargains";
 
-  const { selectedStoreIds, anchorStoreMap, isUserDefinedList } = useStoreList();
+  const { selectedStoreIds, isUserDefinedList } = useStoreList();
 
-  const anchorStoreIdsArray = React.useMemo(() => {
-    if (!anchorStoreMap) {
-      return Array.from(selectedStoreIds);
-    }
-    const anchorIds = new Set<number>();
-    for (const storeId of selectedStoreIds) {
-      const anchorId = anchorStoreMap[storeId];
-      if (anchorId) {
-        anchorIds.add(anchorId);
-      }
-    }
-    return Array.from(anchorIds);
-  }, [selectedStoreIds, anchorStoreMap]);
-  
-  const isDefaultStores = !isUserDefinedList; // This is still needed for ProductCarousel prop
+  const selectedStoreIdsArray = React.useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
+
+  const isDefaultStores = !isUserDefinedList;
   
   const companies = [
       { name: 'Coles', id: 1 },
@@ -134,7 +122,7 @@ const BargainsPage: React.FC = () => {
               key={company.id}
               title={`${company.name} Bargains`}
               sourceUrl="/api/products/bargain-carousel/"
-              storeIds={anchorStoreIdsArray}
+              storeIds={selectedStoreIdsArray}
               companyName={company.name}
               isBargainCarousel={true}
               isDefaultStores={isDefaultStores}

@@ -6,7 +6,6 @@ from rest_framework.exceptions import PermissionDenied
 from users.models import SelectedStoreList
 from users.serializers import SelectedStoreListSerializer
 from splitcart.permissions import IsAuthenticatedOrAnonymous
-from products.utils.get_pricing_stores import get_pricing_stores_map
 
 class SelectedStoreListViewSet(viewsets.ModelViewSet):
     """
@@ -72,19 +71,7 @@ class SelectedStoreListViewSet(viewsets.ModelViewSet):
         store_list = self.get_queryset().order_by('-last_used_at').first()
 
         if not store_list:
-            return Response({
-                'store_list': None,
-                'anchor_map': None
-            }, status=status.HTTP_200_OK)
+            return Response({'store_list': None}, status=status.HTTP_200_OK)
 
-        store_ids = list(store_list.stores.values_list('id', flat=True))
-        anchor_map = get_pricing_stores_map(store_ids)
-        
         serializer = self.get_serializer(store_list)
-
-        response_data = {
-            'store_list': serializer.data,
-            'anchor_map': anchor_map,
-        }
-
-        return Response(response_data, status=status.HTTP_200_OK)
+        return Response({'store_list': serializer.data}, status=status.HTTP_200_OK)

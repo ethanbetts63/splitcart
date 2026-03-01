@@ -10,6 +10,7 @@ from products.models import Product, ProductPriceSummary
 from data_management.models import SystemSetting
 from products.serializers.product_serializer import ProductSerializer
 from products.utils.bargain_utils import calculate_bargains
+from products.utils.get_pricing_stores import get_pricing_stores_map
 
 
 @method_decorator(cache_page(60 * 60 * 24), name='dispatch')
@@ -56,11 +57,16 @@ class BargainCarouselView(APIView):
             # This can happen if param is empty or setting doesn't exist
             return Response([])
 
+        pricing_map = get_pricing_stores_map(user_store_ids)
+        anchor_store_ids = list(set(pricing_map.values()))
+        if not anchor_store_ids:
+            return Response([])
+
         # --- Step 1: Get Potential Bargain Candidates ---
         # Widen the net when filtering by a specific company
         candidate_limit = 400 if company_name else 200
         candidate_product_ids = list(ProductPriceSummary.objects.filter(
-            product__prices__store__id__in=user_store_ids,
+            product__prices__store__id__in=anchor_store_ids,
             best_possible_discount__gte=5,
             best_possible_discount__lte=70,
         ).filter(
@@ -71,7 +77,7 @@ class BargainCarouselView(APIView):
             return Response([])
 
         # --- Step 2: Calculate Actual Bargains In-Memory using the utility ---
-        calculated_bargains = calculate_bargains(candidate_product_ids, user_store_ids)
+        calculated_bargains = calculate_bargains(candidate_product_ids, anchor_store_ids)
 
         if not calculated_bargains:
             return Response([])
@@ -103,7 +109,7 @@ class BargainCarouselView(APIView):
         # --- Serialize with Context ---
         serializer_context = {
             'request': request,
-            'nearby_store_ids': user_store_ids,
+            'nearby_store_ids': anchor_store_ids,
             'bargain_info_map': final_bargain_data, # Pass our calculated data to the serializer
         }
         

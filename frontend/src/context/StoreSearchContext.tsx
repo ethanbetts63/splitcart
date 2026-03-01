@@ -3,7 +3,6 @@ import { useAuth } from './AuthContext';
 import { createApiClient } from '../services/apiClient';
 import { searchNearbyStoresAPI } from '../services/store.api';
 import { companyNames } from '../lib/companies';
-import { useStoreList } from './StoreListContext';
 import type { Store } from '../types/Store';
 import type { MapBounds } from '../types/MapBounds';
 import type { StoreSearchContextType } from '../types/StoreSearchContextType';
@@ -14,7 +13,6 @@ const StoreSearchContext = createContext<StoreSearchContextType | undefined>(und
 // --- Provider Component ---
 export const StoreSearchProvider = ({ children }: { children: ReactNode }) => {
   const { token, anonymousId } = useAuth();
-  const { setAnchorStoreMap } = useStoreList();
   const apiClient = useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
 
   const [stores, setStores] = useState<Store[] | null>(() => {
@@ -69,10 +67,8 @@ export const StoreSearchProvider = ({ children }: { children: ReactNode }) => {
     try {
       const data = await searchNearbyStoresAPI(apiClient, { postcode, radius, companies: selectedCompanies });
       const fetchedStores = data.stores || [];
-      const fetchedAnchorMap = data.anchor_map || {};
 
       setStores(fetchedStores);
-      setAnchorStoreMap(fetchedAnchorMap);
 
       if (fetchedStores.length > 0) {
         const bounds = fetchedStores.reduce((acc, store) => {
@@ -94,7 +90,7 @@ export const StoreSearchProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [apiClient, postcode, radius, selectedCompanies, setStores, setAnchorStoreMap, setMapBounds]);
+  }, [apiClient, postcode, radius, selectedCompanies, setStores, setMapBounds]);
 
   return (
     <StoreSearchContext.Provider value={{

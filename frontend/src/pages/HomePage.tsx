@@ -49,7 +49,7 @@ const homeFaqs = [
 ];
 
 const HomePage = () => {
-  const { selectedStoreIds, anchorStoreMap, isUserDefinedList } = useStoreList();
+  const { selectedStoreIds, isUserDefinedList } = useStoreList();
 
   const webSiteSchema = {
     "@context": "https://schema.org",
@@ -108,19 +108,7 @@ const HomePage = () => {
     },
   ];
 
-  const anchorStoreIdsArray = React.useMemo(() => {
-    if (!anchorStoreMap) {
-      return Array.from(selectedStoreIds);
-    }
-    const anchorIds = new Set<number>();
-    for (const storeId of selectedStoreIds) {
-      const anchorId = anchorStoreMap[storeId];
-      if (anchorId) {
-        anchorIds.add(anchorId);
-      }
-    }
-    return Array.from(anchorIds);
-  }, [selectedStoreIds, anchorStoreMap]);
+  const selectedStoreIdsArray = React.useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
 
   return (
     <div>
@@ -167,7 +155,7 @@ const HomePage = () => {
           key="bargains"
           title="Bargains"
           sourceUrl="/api/products/bargain-carousel/"
-          storeIds={anchorStoreIdsArray}
+          storeIds={selectedStoreIdsArray}
           isDefaultStores={isDefaultStores}
           isUserDefinedList={isUserDefinedList}
         />

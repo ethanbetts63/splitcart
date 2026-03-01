@@ -12,6 +12,7 @@ from data_management.models import SystemSetting
 from products.serializers.product_serializer import ProductSerializer
 from products.utils.bargain_utils import calculate_bargains
 from products.utils.product_ordering import get_bargain_first_ordering
+from products.utils.get_pricing_stores import get_pricing_stores_map
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -75,8 +76,13 @@ class ProductListView(generics.ListAPIView):
 
         if not store_ids:
             return Product.objects.none()
-        
-        self.nearby_store_ids = store_ids
+
+        pricing_map = get_pricing_stores_map(store_ids)
+        anchor_store_ids = list(set(pricing_map.values()))
+        if not anchor_store_ids:
+            return Product.objects.none()
+
+        self.nearby_store_ids = anchor_store_ids
 
         # --- Bargain Company Filter ---
         if bargain_company_name:
@@ -90,7 +96,7 @@ class ProductListView(generics.ListAPIView):
             if not candidate_product_ids:
                 return Product.objects.none()
 
-            all_bargains = calculate_bargains(candidate_product_ids, store_ids)
+            all_bargains = calculate_bargains(candidate_product_ids, anchor_store_ids)
 
             company_bargains = [
                 b for b in all_bargains
@@ -118,15 +124,13 @@ class ProductListView(generics.ListAPIView):
             elif primary_category_slug_param:
                 slugs = [primary_category_slug_param]
             
-            queryset, stores_for_context = self._get_carousel_queryset(store_ids, slugs)
+            queryset, stores_for_context = self._get_carousel_queryset(anchor_store_ids, slugs)
             self.nearby_store_ids = stores_for_context 
             return queryset.prefetch_related(
                 'prices__store__company', 'skus', 'category__primary_category'
             ).defer('normalized_name_brand_size_variations', 'sizes')
 
         # --- General Search/Filtering Logic ---
-        anchor_store_ids = store_ids
-        self.nearby_store_ids = anchor_store_ids
         queryset = Product.objects.filter(prices__store__id__in=anchor_store_ids).distinct()
 
         # Category filtering

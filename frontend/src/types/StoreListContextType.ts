@@ -1,6 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react';
 import type { SelectedStoreListType } from './SelectedStoreListType';
-import type { AnchorMap } from './AnchorMap';
 
 export interface StoreListContextType {
   selectedStoreIds: Set<number>;
@@ -22,6 +21,4 @@ export interface StoreListContextType {
   createNewStoreList: (storeIds: number[]) => Promise<void>;
   deleteStoreList: (storeListId: string) => Promise<void>;
   fetchActiveStoreList: () => Promise<void>;
-  anchorStoreMap: AnchorMap | null;
-  setAnchorStoreMap: Dispatch<SetStateAction<AnchorMap | null>>;
 }

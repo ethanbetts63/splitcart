@@ -20,7 +20,6 @@ export type { PriceComparisonData } from './PriceComparisonData';
 export type { PrimaryCategory } from './PrimaryCategory';
 export type { FaqItem } from './FaqItem';
 export type { PillarPage } from './PillarPage';
-export type { AnchorMap } from './AnchorMap';
 export type { MapBounds } from './MapBounds';
 export type { PaginatedProductResponse } from './PaginatedProductResponse';
 export type { SearchParams } from './SearchParams';
