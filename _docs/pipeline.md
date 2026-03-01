@@ -83,6 +83,21 @@ Frontend
 
 ---
 
+## Frontend User Journey
+
+The frontend is a React SPA that consumes the generated data through three primary phases:
+
+### Phase 1: Discovery & Configuration
+Users navigate the catalog via the **Homepage** categories, **Search**, or **Pillar Pages** (SEO-optimized landing pages grouping primary categories). During this phase, users select their preferred local stores in the **Settings** dialog to filter pricing and availability.
+
+### Phase 2: Cart & Substitutions
+Products are added to a persistent cart. Before optimization, users go through a **Substitution Approval** flow where they can accept alternative products (e.g., different brands or sizes). This step is critical as it provides the optimizer with more data points to find deeper savings.
+
+### Phase 3: Optimization & Final Plan
+The **Optimizer** calculates the cheapest combination of stores for the approved list. The results are presented as multiple plans (e.g., Best Single Store vs. Best 3-Store Split), showing total savings and a store-by-store breakdown. Users can then export their optimized shopping list as a PDF or via email.
+
+---
+
 ## Design Notes
 
 - **Two product passes**: Products are ingested twice in a full setup (steps 3 and 6) because the GS1 prefix data loaded in step 4 improves brand matching, and the second pass propagates those improvements. the second pass isnt strictly necessary but it doubles the speed at which the system learns. 

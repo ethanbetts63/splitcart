@@ -1,6 +1,7 @@
 from django.db.models import Q
 from products.models import Product
 from products.models.substitution import ProductSubstitution
+from products.utils.get_pricing_stores import get_pricing_stores_map
 from users.models.cart_item import CartItem
 from users.models.cart_substitution import CartSubstitution
 
@@ -43,7 +44,12 @@ class SubstituteManager:
         if self._potential_product_substitutions is not None:
             return self._potential_product_substitutions
 
-        print(f"[SubstituteManager] find_potential_product_substitutions: product_id={self.product_id}, store_ids={self.store_ids}")
+        # Resolve member store IDs to their anchor store IDs, since Price rows only
+        # exist on anchors (member prices are deleted after group confirmation).
+        pricing_map = get_pricing_stores_map(self.store_ids)
+        pricing_store_ids = list(set(pricing_map.values()))
+
+        print(f"[SubstituteManager] find_potential_product_substitutions: product_id={self.product_id}, store_ids={self.store_ids}, pricing_store_ids={pricing_store_ids}")
 
         original_product = self._get_original_product()
         if not original_product:
@@ -57,10 +63,10 @@ class SubstituteManager:
         unfiltered_count = substitutions_queryset.count()
         print(f"[SubstituteManager] ProductSubstitutions before store filter: {unfiltered_count}")
 
-        # Mandatory filtering by store_ids
+        # Filter by anchor store IDs (the stores that actually hold Price rows)
         substitutions_queryset = substitutions_queryset.filter(
-            Q(product_a=original_product, product_b__prices__store__id__in=self.store_ids) |
-            Q(product_b=original_product, product_a__prices__store__id__in=self.store_ids)
+            Q(product_a=original_product, product_b__prices__store__id__in=pricing_store_ids) |
+            Q(product_b=original_product, product_a__prices__store__id__in=pricing_store_ids)
         ).distinct()
 
         self._potential_product_substitutions = list(substitutions_queryset[:limit])

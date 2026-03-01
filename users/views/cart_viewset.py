@@ -168,6 +168,18 @@ class CartViewSet(viewsets.ModelViewSet):
             except Cart.DoesNotExist:
                 raise ValidationError({'cart_id': 'Cart not found.'})
 
+            # Lazy-link the store list if the cart doesn't have one yet.
+            # The store list is saved independently by the frontend; it just may not
+            # have been linked when the cart was first created.
+            if not cart.selected_store_list:
+                user = request.user
+                owner_filter = {'user': user} if user.is_authenticated else {'anonymous_id': getattr(request, 'anonymous_id', None)}
+                if any(v is not None for v in owner_filter.values()):
+                    store_list = SelectedStoreList.objects.filter(**owner_filter).order_by('-last_used_at').first()
+                    if store_list:
+                        cart.selected_store_list = store_list
+                        cart.save(update_fields=['selected_store_list'])
+
             existing_items_map = {item.product.id: item for item in cart.items.select_related('product')}
             incoming_product_ids = {item_data.get('product_id') for item_data in items_data}
 
