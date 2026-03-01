@@ -166,6 +166,13 @@ const faqsBySlug: Record<string, FaqItem[]> = {
   ],
 };
 
+import babyImage from '../assets/baby-1024w.webp';
+import baby320 from '../assets/baby-320w.webp';
+import baby640 from '../assets/baby-640w.webp';
+import baby768 from '../assets/baby-768w.webp';
+import baby1024 from '../assets/baby-1024w.webp';
+import baby1280 from '../assets/baby-1280w.webp';
+
 const PillarPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const faqs = slug ? (faqsBySlug[slug] ?? []) : [];
@@ -213,18 +220,25 @@ const PillarPage: React.FC = () => {
   }
 
   let imageUrl;
+  let srcSet = undefined;
+  let sizes = undefined;
+
   if (slug === 'meat-and-seafood') {
     imageUrl = meatImage;
-  } else if (slug === 'fruit-veg-and-spices') {
+  } else if (slug === 'fruit-and-veg') {
     imageUrl = fruitImage;
   } else if (slug === 'snacks-and-sweets') {
     imageUrl = snackImage;
-  } else if (slug === 'eggs-and-dairy') {
+  } else if (slug === 'dairy-and-eggs') {
     imageUrl = eggImage;
   } else if (slug === 'health-beauty-and-supplements') {
     imageUrl = shampooImage;
-  } else if (slug === 'pantry-and-international') {
+  } else if (slug === 'pantry') {
     imageUrl = survivalImage;
+  } else if (slug === 'baby') {
+    imageUrl = babyImage;
+    srcSet = `${baby320} 320w, ${baby640} 640w, ${baby768} 768w, ${baby1024} 1024w, ${baby1280} 1280w`;
+    sizes = "(min-width: 1024px) 50vw, 100vw";
   } else {
     imageUrl = confusedShopper;
   }
@@ -238,6 +252,8 @@ const PillarPage: React.FC = () => {
             <AspectRatio ratio={16 / 9}>
               <img
                 src={imageUrl}
+                srcSet={srcSet}
+                sizes={sizes}
                 alt={pillarPage.hero_title}
                 className="rounded-md object-cover w-full h-full"
                 fetchPriority="high" />

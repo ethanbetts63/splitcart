@@ -43,13 +43,19 @@ class SubstituteManager:
         if self._potential_product_substitutions is not None:
             return self._potential_product_substitutions
 
+        print(f"[SubstituteManager] find_potential_product_substitutions: product_id={self.product_id}, store_ids={self.store_ids}")
+
         original_product = self._get_original_product()
         if not original_product:
+            print(f"[SubstituteManager] original product not found for id={self.product_id}")
             return []
 
         substitutions_queryset = ProductSubstitution.objects.filter(
             Q(product_a=original_product) | Q(product_b=original_product)
         ).order_by('level', '-score')
+
+        unfiltered_count = substitutions_queryset.count()
+        print(f"[SubstituteManager] ProductSubstitutions before store filter: {unfiltered_count}")
 
         # Mandatory filtering by store_ids
         substitutions_queryset = substitutions_queryset.filter(
@@ -58,7 +64,7 @@ class SubstituteManager:
         ).distinct()
 
         self._potential_product_substitutions = list(substitutions_queryset[:limit])
-        print(f"--- SubstituteManager: Found {len(self._potential_product_substitutions)} potential product substitutions. ---")
+        print(f"[SubstituteManager] after store filter: {len(self._potential_product_substitutions)} substitutions found")
         return self._potential_product_substitutions
 
     def create_cart_substitutions(self, original_cart_item: CartItem) -> list[CartSubstitution]:

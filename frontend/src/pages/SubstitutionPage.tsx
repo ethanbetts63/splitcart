@@ -35,7 +35,14 @@ const SubstitutionPage = () => {
   const itemsToReview = currentCart?.items.filter(item => item.substitutions && item.substitutions.length > 0) || [];
 
   useEffect(() => {
+    console.log('[SubstitutionPage] skip-check effect fired:', {
+      isFetchingSubstitutions,
+      hasCart: !!currentCart,
+      itemsToReview: itemsToReview.length,
+      allItems: currentCart?.items.map(i => ({ id: i.id, subs: i.substitutions?.length ?? 0 })),
+    });
     if (!isFetchingSubstitutions && currentCart && itemsToReview.length === 0) {
+      console.log('[SubstitutionPage] skipping to optimize — no items with substitutions');
       handleOptimizeAndNavigate();
     }
   }, [isFetchingSubstitutions, currentCart, itemsToReview.length]);

@@ -66,6 +66,7 @@ const Layout = () => {
     (location.pathname === '/' ||
     location.pathname === '/search' ||
     location.pathname.startsWith('/categories/') ||
+    location.pathname.startsWith('/product/') ||
     location.pathname === '/bargains') &&
     cartTotal > 0 &&
     !isDialogOpen

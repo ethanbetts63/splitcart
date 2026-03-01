@@ -204,14 +204,29 @@ class CartViewSet(viewsets.ModelViewSet):
 
             if to_create:
                 created_items = CartItem.objects.bulk_create(to_create)
+                print(f"[SYNC] bulk_create'd {len(created_items)} new cart items")
                 if cart.selected_store_list:
                     store_ids = list(cart.selected_store_list.stores.values_list('id', flat=True))
+                    print(f"[SYNC] selected_store_list found, store_ids={store_ids}")
                     if store_ids:
                         for item in created_items:
+                            print(f"[SYNC] running SubstituteManager for product_id={item.product.id}")
                             manager = SubstituteManager(product_id=item.product.id, store_ids=store_ids)
-                            manager.create_cart_substitutions(original_cart_item=item)
+                            subs = manager.create_cart_substitutions(original_cart_item=item)
+                            print(f"[SYNC] created {len(subs)} cart substitutions for product_id={item.product.id}")
+                    else:
+                        print("[SYNC] store_ids is empty, skipping substitutions")
+                else:
+                    print("[SYNC] no selected_store_list on cart, skipping substitutions")
 
-        cart.refresh_from_db()
+        cart = Cart.objects.prefetch_related(
+            'items__product__prices__store__company',
+            'items__product__category__primary_category',
+            'items__product__skus__company',
+            'items__chosen_substitutions__substituted_product__prices__store__company',
+            'items__chosen_substitutions__substituted_product__category__primary_category',
+            'items__chosen_substitutions__substituted_product__skus__company',
+        ).get(pk=cart.pk)
         serializer = self.get_serializer(cart)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

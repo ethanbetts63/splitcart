@@ -2,7 +2,6 @@ from django.core.management.base import BaseCommand, CommandError
 from companies.models import Store
 from products.models import Price
 from data_management.utils.price_comparer import PriceComparer
-from decimal import Decimal # Ensure Decimal is used for prices
 
 class Command(BaseCommand):
     help = 'Compares two stores by their product prices and reports the percentage of true overlap.'

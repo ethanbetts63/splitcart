@@ -43,7 +43,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     debounce(async (cartToSync: Cart) => {
       try {
         const updatedCart = await cartApi.syncCart(apiClient, cartToSync);
-        
+        console.log('[CartContext] sync response items:', updatedCart.items.map(i => ({
+          id: i.id,
+          product: typeof i.product === 'object' ? i.product.id : i.product,
+          substitutions: i.substitutions?.length ?? 0,
+        })));
+
         setCurrentCart(prevCart => {
           // If the cart has not changed since this sync was initiated,
           // it's safe to update with the server's response.
