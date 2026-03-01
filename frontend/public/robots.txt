@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /api/
+Disallow: /substitutions/
+Disallow: /final-cart/
+Disallow: /search
+Disallow: /login
+Disallow: /signup
+Disallow: /product/
+
+Sitemap: https://www.splitcart.com.au/sitemap.xml

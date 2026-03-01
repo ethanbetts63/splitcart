@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.urls import include, path, re_path
-from django.views.generic.base import TemplateView
 from django.contrib.sitemaps.views import sitemap
 from splitcart.sitemaps import StaticViewSitemap, CategoryPageSitemap
 from data_management.views.pillar_page_view import PillarPageView
@@ -26,6 +25,5 @@ urlpatterns = [
     path('api/primary-categories/', PrimaryCategoryListView.as_view(), name='primary-category-list'),
 
     path("sitemap.xml", sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
-    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     re_path(r'^.*', ReactAppView.as_view(), name='react_app'),
 ]
