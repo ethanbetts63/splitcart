@@ -173,6 +173,13 @@ import baby768 from '../assets/baby-768w.webp';
 import baby1024 from '../assets/baby-1024w.webp';
 import baby1280 from '../assets/baby-1280w.webp';
 
+import bakeryImage from '../assets/bread_dollar-1024w.webp';
+import bakery320 from '../assets/bread_dollar-320w.webp';
+import bakery640 from '../assets/bread_dollar-640w.webp';
+import bakery768 from '../assets/bread_dollar-768w.webp';
+import bakery1024 from '../assets/bread_dollar-1024w.webp';
+import bakery1280 from '../assets/bread_dollar-1280w.webp';
+
 const PillarPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const faqs = slug ? (faqsBySlug[slug] ?? []) : [];
@@ -238,6 +245,10 @@ const PillarPage: React.FC = () => {
   } else if (slug === 'baby') {
     imageUrl = babyImage;
     srcSet = `${baby320} 320w, ${baby640} 640w, ${baby768} 768w, ${baby1024} 1024w, ${baby1280} 1280w`;
+    sizes = "(min-width: 1024px) 50vw, 100vw";
+  } else if (slug === 'bakery-and-deli') {
+    imageUrl = bakeryImage;
+    srcSet = `${bakery320} 320w, ${bakery640} 640w, ${bakery768} 768w, ${bakery1024} 1024w, ${bakery1280} 1280w`;
     sizes = "(min-width: 1024px) 50vw, 100vw";
   } else {
     imageUrl = confusedShopper;
