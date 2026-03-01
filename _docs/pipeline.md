@@ -210,6 +210,5 @@ Frontend
 
 ## Known Issues / Design Notes
 
-- **Translation table sync**: The server holds the canonical translation tables. The local scraping environment fetches a copy before each run via an ETag-cached API request. The two copies can appear to differ in size if scraping hasn't run recently — the local copy is simply an older snapshot.
-- **Two product passes**: Products are ingested twice in a full setup (steps 3 and 6) because the GS1 prefix data loaded in step 4 improves brand matching, and the second pass propagates those improvements.
+- **Two product passes**: Products are ingested twice in a full setup (steps 3 and 6) because the GS1 prefix data loaded in step 4 improves brand matching, and the second pass propagates those improvements. the second pass isnt strictly necessary but it doubles the speed at which the system learns. 
 - **Category assignment is manual**: `generate --primary-cats` is not part of `update --products`. It must be run separately whenever the category mapping file is updated or after a large new batch of products is ingested.
