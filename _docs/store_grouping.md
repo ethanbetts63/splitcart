@@ -31,7 +31,7 @@ GroupMaintenanceOrchestrator
   │    └─ (stale non-matches skip comparison, cached 7 days)
   │
   └─ Phase 2: Inter-Group Merging  (find new matches across groups)
-       ├─ Compare every anchor against every other anchor (same company)
+       ├─ Compare every anchor against every other anchor (in same company)
        ├─ Match → merge smaller group into larger; delete all Price rows for merged stores
        └─ No match → cache non-match 7 days, skip on next run
 ```
