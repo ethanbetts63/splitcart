@@ -12,4 +12,6 @@ router.register(r'store-lists', SelectedStoreListViewSet, basename='storelist')
 urlpatterns = [
     path('', include(router.urls)),
     path('stores/nearby/', NearbyStoreListView.as_view(), name='store-list'),
+    path('auth/', include('dj_rest_auth.urls')),
+    path('auth/registration/', include('dj_rest_auth.registration.urls')),
 ]

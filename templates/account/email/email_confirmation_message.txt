@@ -1,8 +1,0 @@
-Hello from SplitCart,
-
-Thank you for registering! To complete your registration and activate your account, please follow this link:
-
-{{ activate_url }}
-
-Thank you,
-The SplitCart Team
