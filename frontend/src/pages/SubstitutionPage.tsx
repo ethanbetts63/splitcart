@@ -21,7 +21,7 @@ const substitutesFaqs = [
 
 const SubstitutionPage = () => {
   const navigate = useNavigate();
-  const { currentCart, updateCartItemSubstitution, optimizeCurrentCart, isFetchingSubstitutions } = useCart();
+  const { currentCart, updateCartItemSubstitution, optimizeCurrentCart, isCartSyncing } = useCart();
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   const { currentStoreListId } = useStoreList();
 
@@ -36,16 +36,16 @@ const SubstitutionPage = () => {
 
   useEffect(() => {
     console.log('[SubstitutionPage] skip-check effect fired:', {
-      isFetchingSubstitutions,
+      isCartSyncing,
       hasCart: !!currentCart,
       itemsToReview: itemsToReview.length,
       allItems: currentCart?.items.map(i => ({ id: i.id, subs: i.substitutions?.length ?? 0 })),
     });
-    if (!isFetchingSubstitutions && currentCart && itemsToReview.length === 0) {
+    if (!isCartSyncing && currentCart && itemsToReview.length === 0) {
       console.log('[SubstitutionPage] skipping to optimize — no items with substitutions');
       handleOptimizeAndNavigate();
     }
-  }, [isFetchingSubstitutions, currentCart, itemsToReview.length]);
+  }, [isCartSyncing, currentCart, itemsToReview.length]);
 
   const currentItem = itemsToReview[currentItemIndex];
   const currentSubstitutes = currentItem?.substitutions || [];
@@ -133,7 +133,7 @@ const SubstitutionPage = () => {
     }
   };
 
-  if (isLoading || isFetchingSubstitutions) return <LoadingSpinner />;
+  if (isLoading || isCartSyncing) return <LoadingSpinner />;
   if (itemsToReview.length === 0) return <LoadingSpinner />;
 
   const isLastItem = currentItemIndex === itemsToReview.length - 1;

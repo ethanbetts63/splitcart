@@ -6,6 +6,7 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 
 ## Done
 
+- **Rename `isFetchingSubstitutions` → `isCartSyncing`** — The flag was set on `addItem` and `updateItemQuantity` and cleared in the debounced sync's `finally` block. It tracked whether a cart sync was in flight, not anything substitution-specific. Renamed throughout `CartContext` and all consumer components.
 - **Fix `PAGE_SIZE`**: Dropped from 500 → 24. Massive performance improvement. (`splitcart/settings.py`)
 - **Fix `INTERNAL_IPS`**: Added `127.0.0.1` so Django Debug Toolbar works locally. (`splitcart/settings.py`)
 - **Fix sitemap URLs**: Pillar/category pages were listed as `/pillar-pages/{slug}/` in the sitemap but the actual frontend route is `/categories/{slug}/`. Fixed. (`splitcart/sitemaps.py`)
@@ -28,6 +29,8 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 
 - [ ] **Jumpable step indicator** — Currently the only way to go back to a previous substitution item is to click Back repeatedly. Add a clickable step indicator (dots or numbered pills) above the progress bar so users can jump directly to any item they've already seen.
 
+- [ ] **Use store filtering on the product page substitutes endpoint** — `GET /api/products/<id>/substitutes/` returns all known substitutes regardless of the user's selected stores. The cart approval flow only shows substitutes available at the user's stores. A user can see a substitute on a product page, add the product, and then not find that substitute in the approval flow. The endpoint already accepts a `store_ids` query param — the frontend just needs to pass the user's current store IDs when calling it. **File:** `ProductPage.tsx` (or the hook/service it uses for substitutes).
+
 - [ ] **"Review all" list view** — The step-by-step flow is clear for small carts but tedious for large ones. Consider a toggle between the current "one at a time" mode and an "all at once" list view where every item and its substitutes are visible on a single scrollable page. Power users would prefer this.
 
 - [ ] **Running cart summary during substitution** — While working through substitutions the user has no reminder of their full list. A small collapsed header or sidebar showing "12 items in cart · 4 substitutions approved" would provide useful context without taking up space.
@@ -49,6 +52,14 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 ---
 
 ## Complexity / Architecture
+
+### Cart & Store List
+
+- [ ] **Remove `Cart.selected_store_list` FK** — The FK's only job is to tell the `sync` endpoint which stores to use when generating `CartSubstitution` records. The optimizer never uses it (it receives the store list ID directly in the request). The FK is easy to get out of sync and was the root cause of substitutions silently not being created. The lazy-link added to `sync` is effectively working around a design smell. Proposed fix: remove the FK from `Cart` entirely and have `sync` always look up the user's most-recent `SelectedStoreList` by owner directly. Same behaviour, less state to maintain. **Files:** `users/models/cart.py`, `users/views/cart_viewset.py`, migration.
+
+- [ ] **Consistent optimistic update patterns in `CartContext`** — Three different patterns currently exist for cart mutations: `addItem`/`updateItemQuantity` use optimistic update + debounced sync; `updateCartItemSubstitution` uses optimistic update + immediate PATCH; `removeCartItemSubstitution` uses no optimistic update + immediate DELETE + full cart refetch. The removal in particular is heavy (full refetch on success). Should follow the same pattern as the other mutations — optimistic update with rollback on failure. **File:** `frontend/src/context/CartContext.tsx`.
+
+---
 
 ### Category System
 

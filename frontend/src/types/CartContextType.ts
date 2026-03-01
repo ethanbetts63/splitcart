@@ -7,7 +7,7 @@ export interface CartContextType {
   optimizationResult: ApiResponse | null;
   setOptimizationResult: (result: ApiResponse | null) => void;
   cartLoading: boolean;
-  isFetchingSubstitutions: boolean;
+  isCartSyncing: boolean;
   fetchActiveCart: () => Promise<Cart | null>;
   loadCart: (cartId: string) => void;
   createNewCart: () => void;

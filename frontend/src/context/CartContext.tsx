@@ -15,7 +15,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [userCarts, setUserCarts] = useState<Cart[]>([]);
   const [optimizationResult, setOptimizationResult] = useState<ApiResponse | null>(null);
   const [cartLoading, setCartLoading] = useState(true);
-  const [isFetchingSubstitutions, setIsFetchingSubstitutions] = useState(false); // Initialize new state
+  const [isCartSyncing, setIsFetchingSubstitutions] = useState(false); // Initialize new state
   
   const apiClient = useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
   
@@ -285,7 +285,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   return (
       <CartContext.Provider value={{
-            currentCart, userCarts, optimizationResult, setOptimizationResult, cartLoading, isFetchingSubstitutions,
+            currentCart, userCarts, optimizationResult, setOptimizationResult, cartLoading, isCartSyncing,
             fetchActiveCart, loadCart, createNewCart, renameCart, deleteCart,
             addItem, updateItemQuantity, removeItem, optimizeCurrentCart, emailCurrentCart, downloadCurrentCart,
             updateCartItemSubstitution, removeCartItemSubstitution
