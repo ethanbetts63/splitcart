@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from scraping.utils.product_scraping_utils.output_utils import ScraperOutput
+from scraping.utils.product_scraping_utils.BaseDataCleaner import BaseDataCleaner
 
 class BaseProductScraper(ABC):
     """
@@ -16,6 +17,7 @@ class BaseProductScraper(ABC):
         self.state = state
         self.jsonl_writer = None
         self.output = ScraperOutput(self.command, self.company, self.store_name)
+        self.brand_translations, self.product_translations = BaseDataCleaner._load_translation_tables()
 
     def run(self):
         """The main public method that orchestrates the entire scraping process."""

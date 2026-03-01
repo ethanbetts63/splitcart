@@ -14,16 +14,21 @@ class BaseDataCleaner(ABC):
     It orchestrates the cleaning process, separating store-specific transformation
     from generic, common normalization.
     """
-    def __init__(self, raw_product_list: list, company: str, store_name: str, store_id: str, state: str, timestamp: datetime):
+    def __init__(self, raw_product_list: list, company: str, store_name: str, store_id: str, state: str, timestamp: datetime, brand_translations: dict = None, product_translations: dict = None):
         self.raw_product_list = raw_product_list or []
         self.company = company
         self.store_name = store_name
         self.store_id = store_id
         self.state = state
         self.timestamp = timestamp
-        self.brand_translations, self.product_translations = self._load_translation_tables()
+        if brand_translations is not None and product_translations is not None:
+            self.brand_translations = brand_translations
+            self.product_translations = product_translations
+        else:
+            self.brand_translations, self.product_translations = BaseDataCleaner._load_translation_tables()
 
-    def _load_translation_tables(self):
+    @staticmethod
+    def _load_translation_tables():
         """
         Loads the brand and product translation tables from the local scraping/data
         directory. Returns empty dictionaries if files are not found.

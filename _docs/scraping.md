@@ -114,7 +114,7 @@ This is the primary de-duplication key used throughout the pipeline.
 
 The bag-of-words approach means `"Coca Cola 375ml Can"` and `"Can Coca-Cola 375ml"` produce the same key, making product identity robust to minor formatting differences between store APIs. 
 
-This a unique field when inputted into the db. Not only does it make data entry more efficient it also creates a self improving system that gets better at matching products at stores that dont provide barcodes over time.
+This a unique field when inputted into the db. Not only does it make data entry more efficient it also creates a self improving system that gets better at matching products over time at stores that dont provide barcodes.
 
 **Barcode cleaning (`barcode`)**
 

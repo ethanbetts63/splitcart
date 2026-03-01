@@ -41,7 +41,7 @@ class ProductScraperWoolworths(BaseProductScraper):
             self.session.get("https://www.woolworths.com.au/", timeout=20)
         except requests.exceptions.RequestException as e:
             self.command.stderr.write(self.command.style.ERROR(f"Failed to initialize session: {e}"))
-            return
+            return False
 
         store_name_slug = f"{slugify(self.store_name)}-{self.store_id}"
         self.jsonl_writer = JsonlWriter(self.company, store_name_slug, self.state)
@@ -100,7 +100,9 @@ class ProductScraperWoolworths(BaseProductScraper):
             store_id=self.store_id,
             store_name=self.store_name,
             state=self.state,
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
+            brand_translations=self.brand_translations,
+            product_translations=self.product_translations,
         )
         cleaned_data = cleaner.clean_data()
         return cleaned_data

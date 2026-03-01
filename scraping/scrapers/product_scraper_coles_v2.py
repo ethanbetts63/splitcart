@@ -124,6 +124,8 @@ class ColesScraperV2(BaseProductScraper):
             store_id=self.store_id,
             store_name=self.store_name,
             state=self.state,
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
+            brand_translations=self.brand_translations,
+            product_translations=self.product_translations,
         )
         return cleaner.clean_data()

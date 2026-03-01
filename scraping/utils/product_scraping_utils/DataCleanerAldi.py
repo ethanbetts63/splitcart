@@ -7,8 +7,8 @@ class DataCleanerAldi(BaseDataCleaner):
     """
     Concrete cleaner class for ALDI product data.
     """
-    def __init__(self, raw_product_list: list, company: str, store_name: str, store_id: str, state: str, timestamp: datetime):
-        super().__init__(raw_product_list, company, store_name, store_id, state, timestamp)
+    def __init__(self, raw_product_list: list, company: str, store_name: str, store_id: str, state: str, timestamp: datetime, brand_translations: dict = None, product_translations: dict = None):
+        super().__init__(raw_product_list, company, store_name, store_id, state, timestamp, brand_translations, product_translations)
 
     @property
     def field_map(self):

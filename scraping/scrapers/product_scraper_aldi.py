@@ -70,7 +70,7 @@ class ProductScraperAldi(BaseProductScraper):
                 all_raw_products.extend(raw_products_on_page)
 
             except (requests.exceptions.RequestException, requests.exceptions.JSONDecodeError) as e:
-                self.output.log_error(f"Error fetching data for category {category_slug}: {e}")
+                self.command.stderr.write(self.command.style.ERROR(f"Error fetching data for category {category_slug}: {e}"))
                 break
 
             time.sleep(random.uniform(0.5, 1.5))
@@ -90,7 +90,9 @@ class ProductScraperAldi(BaseProductScraper):
             store_name=effective_store_name,
             store_id=self.store_id,
             state=self.state,
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
+            brand_translations=self.brand_translations,
+            product_translations=self.product_translations,
         )
         return cleaner.clean_data()
 

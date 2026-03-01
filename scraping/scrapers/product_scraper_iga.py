@@ -24,7 +24,7 @@ class IgaScraper(BaseProductScraper):
         Initializes the requests.Session and the JsonlWriter.
         """
         if not self.retailer_store_id:
-            self.output.log_error("Retailer store ID is missing.")
+            self.command.stderr.write(self.command.style.ERROR("Retailer store ID is missing."))
             return False
 
         self.session = requests.Session()
@@ -37,7 +37,7 @@ class IgaScraper(BaseProductScraper):
         try:
             self.session.get("https://www.igashop.com.au/", timeout=60)
         except requests.exceptions.RequestException as e:
-            self.output.log_error(f"Failed to initialize session: {e}")
+            self.command.stderr.write(self.command.style.ERROR(f"Failed to initialize session: {e}"))
             return False
 
         store_name_slug = slugify(self.store_name.lower().replace('iga', '').replace('fresh', ''))
@@ -85,7 +85,7 @@ class IgaScraper(BaseProductScraper):
                 all_raw_products.extend(raw_products_on_page)
 
             except (requests.exceptions.RequestException, json.JSONDecodeError) as e:
-                self.output.log_error(f"Error fetching data for category {category_identifier}: {e}")
+                self.command.stderr.write(self.command.style.ERROR(f"Error fetching data for category {category_identifier}: {e}"))
                 break
 
             time.sleep(random.uniform(0.5, 1.5))
@@ -103,6 +103,8 @@ class IgaScraper(BaseProductScraper):
             store_id=self.store_id,
             store_name=self.store_name,
             state=self.state,
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
+            brand_translations=self.brand_translations,
+            product_translations=self.product_translations,
         )
         return cleaner.clean_data()
