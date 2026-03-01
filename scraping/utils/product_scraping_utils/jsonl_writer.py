@@ -1,8 +1,8 @@
 import os
 import json
+import shutil
 from datetime import datetime
 from django.conf import settings
-from .atomic_scraping_utils import finalize_scrape
 
 class JsonlWriter:
     def __init__(self, company: str, store_name_slug: str, state: str, final_outbox_path: str = None):
@@ -60,23 +60,13 @@ class JsonlWriter:
     def commit(self):
         """Moves the temporary file to the final inbox directory."""
         if os.path.exists(self.temp_file_path):
-            final_file_name = os.path.basename(self.temp_file_path)
-            finalize_scrape(self.temp_file_path, self.final_outbox_path, final_file_name)
+            os.makedirs(self.final_outbox_path, exist_ok=True)
+            destination_path = os.path.join(self.final_outbox_path, os.path.basename(self.temp_file_path))
+            shutil.move(self.temp_file_path, destination_path)
 
     def cleanup(self):
         """Closes and removes the temporary file."""
-        print(f"--- Cleanup called for {self.temp_file_path} ---")
         self.close()
         if os.path.exists(self.temp_file_path):
             os.remove(self.temp_file_path)
 
-    def finalize(self, scrape_successful: bool):
-        """
-        Finalizes the scrape by moving the file to inbox or deleting it.
-        Maintained for backward compatibility.
-        """
-        if scrape_successful:
-            self.close()
-            self.commit()
-        else:
-            self.cleanup()

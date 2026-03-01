@@ -23,18 +23,15 @@
   ---
   Dead Code
 
-  5. save_to_inbox.py — Has no .pyc file, is not imported anywhere in the codebase. It writes individual UUID-named JSON files to
-  scraping/data/inboxes/product_inbox/, a path that nothing reads. This path doesn't even appear in the pipeline. Completely orphaned.
+  ~~5. save_to_inbox.py — DONE (deleted)~~
 
   6. get_store_specific_categories_coles.py — A GraphQL-based dynamic category fetcher. Has no .pyc, is never imported. The dynamic approach was
   written but never wired in. Meanwhile get_coles_categories.py has a TODO: Implement a more robust way comment. These two files exist in a stalled
   state — the solution exists but was never connected.
 
-  7. atomic_scraping_utils.py::append_to_temp_file — The function at line 6 is dead. The only other function (finalize_scrape) is used by
-  JsonlWriter.commit(). The file itself survives on that one use.
+  ~~7. atomic_scraping_utils.py — DONE (finalize_scrape inlined into jsonl_writer.py, file deleted)~~
 
-  8. JsonlWriter.finalize() method (jsonl_writer.py:73) — Described as "maintained for backward compatibility" but nothing calls it.
-  base_product_scraper.py calls close() + commit() / cleanup() directly. Dead.
+  ~~8. JsonlWriter.finalize() method — DONE (deleted)~~
 
   ~~9. ProductScraperAldi.post_scrape_enrichment — DONE~~
 
@@ -92,9 +89,7 @@
 
   ~~22. base_product_scraper.py uses print() — DONE~~
 
-  23. BargainUploader doesn't archive (inconsistent with Gs1Uploader, StoreUploader)
-  Gs1Uploader and StoreUploader move files to an archive directory after upload. BargainUploader and CategoryLinksUploader just delete them.
-  SubstitutionsUploader also just deletes. No consistent policy.
+  23. no change needed. 
 
   24. PascalCase module filenames (DataCleanerAldi.py, BaseDataCleaner.py, etc.)
   Python convention is snake_case for module filenames. All other utils in the codebase use lowercase. This is a cosmetic inconsistency but causes
