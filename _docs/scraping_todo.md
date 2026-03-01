@@ -45,10 +45,7 @@
 
   ~~14. Coles worker never fetches translation tables — DONE~~
 
-  15. ColesBarcodeScraperV2 calls super().__init__() from setup() (barcode_scraper_coles_v2.py:54)
-  The class manually initializes attributes in __init__() and then calls super().__init__() from inside setup(). This is a significant departure
-  from the expected inheritance contract — self.output is set to None in __init__() (line 23) rather than a valid ScraperOutput, meaning any error
-  logging before setup() completes would crash.
+  ~~15. ColesBarcodeScraperV2 calls super().__init__() from setup() — DONE (file reading moved to __init__(), super().__init__() now called normally from __init__(), setup() reduced to session acquisition + JsonlWriter creation)~~
 
   16. DataCleanerWoolworths defines deep_get / parse_json_field inside _transform_product (DataCleanerWoolworths.py:31-46)
   These inner functions are recreated on every single product (not every category, every product). They should be module-level helpers or class

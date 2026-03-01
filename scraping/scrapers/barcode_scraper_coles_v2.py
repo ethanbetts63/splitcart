@@ -14,49 +14,32 @@ class ColesBarcodeScraperV2(BaseProductScraper):
     """
 
     def __init__(self, command, source_file_path: str, session_manager: ColesSessionManager, dev: bool = False):
-        self.command = command
         self.source_file_path = source_file_path
         self.progress_file_path = source_file_path + ".progress"
-        self.session = None  # Will be set in setup()
         self.session_manager = session_manager
-        self.jsonl_writer = None
-        self.output = None 
+        self.session = None
         self.dev = dev
-        self.company = "coles"
-        self.store_id = None
-        self.store_name = None
-        self.state = None
 
-    def setup(self):
-        """
-        Initializes the scraper by setting up the output, loading metadata,
-        and acquiring a session from the session manager.
-        """
         try:
-            with open(self.source_file_path, 'r') as f:
+            with open(source_file_path, 'r') as f:
                 first_line = f.readline()
                 if not first_line:
                     raise ValueError("Source file is empty.")
                 metadata = json.loads(first_line).get('metadata', {})
-                self.store_id = metadata.get('store_id')
-                self.store_name = metadata.get('store_name')
-                self.state = metadata.get('state')
-                if not all([self.store_id, self.store_name, self.state]):
+                store_id = metadata.get('store_id')
+                store_name = metadata.get('store_name')
+                state = metadata.get('state')
+                if not all([store_id, store_name, state]):
                     raise ValueError("Could not extract required metadata from source file.")
         except (IOError, json.JSONDecodeError, ValueError) as e:
-            self.command.stderr.write(self.command.style.ERROR(f"CRITICAL: Could not read source file or metadata: {e}"))
-            return False
+            raise ValueError(f"Could not read source file or metadata: {e}") from e
 
-        # Acquire the session from the manager using the store_id from the file
+        super().__init__(command, "coles", store_id, store_name, state)
+
+    def setup(self):
         self.session = self.session_manager.get_session(self.store_id)
-
-        # Essential to call super() to initialize self.output
-        super().__init__(self.command, self.company, self.store_id, self.store_name, self.state)
-        
-        # We use a unique name for the output file to avoid clashes
         output_file_name = f"{self.store_name}-{self.store_id.split(':')[-1]}-barcodes"
         self.jsonl_writer = JsonlWriter(self.company, output_file_name, self.state)
-        
         return True
 
     def get_work_items(self) -> list:
