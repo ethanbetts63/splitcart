@@ -2,6 +2,7 @@ import os
 import gzip
 import json
 import requests
+from django.conf import settings
 from .base_uploader import BaseUploader
 from data_management.utils.deduplication_utils.substitution_deduplicator import deduplicate_substitutions
 
@@ -14,7 +15,7 @@ class SubstitutionsUploader(BaseUploader):
         self.file_name = 'substitutions.json'
 
     def run(self):
-        outbox_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', self.outbox_path_name)
+        outbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'outboxes', 'substitutions_outbox')
         file_path = os.path.join(outbox_path, self.file_name)
 
         if not os.path.exists(file_path):

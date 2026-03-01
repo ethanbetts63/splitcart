@@ -1,6 +1,7 @@
 import os
 import gzip
 import requests
+from django.conf import settings
 from .base_uploader import BaseUploader
 
 class CategoryLinksUploader(BaseUploader):
@@ -11,7 +12,7 @@ class CategoryLinksUploader(BaseUploader):
         self.file_name = 'category_links.json'
 
     def run(self):
-        outbox_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', self.outbox_path_name)
+        outbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'outboxes', 'category_links_outbox')
         file_path = os.path.join(outbox_path, self.file_name)
 
         if not os.path.exists(file_path):
