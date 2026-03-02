@@ -4,6 +4,12 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 
 ---
 ---
+# Concepts that need documentation
+- **normalized_name_brand_size** and variations and translation tables. I want to document the flow. that its a self improving loop. The normalizer uses the existing translations to create the normalized name brand size string for a new product. this allows it to be detected as the same as an existing product when database inputting occurs. newly discovered matches are merged. Normally becuase of barcode. and their variation name is recorded and added to the translation table on the next pass. The cycle repeats but this time slightly more efficiently. and if a product without a barcode but that normalizes to one of the discovered variations occurs we will catch it. this is good generally but paramount for scraping companies that don't provide a barcode. The ultimate goal is to split the users cart efficiently. The number one factor for savings is option count. The more identical products we identify between companies. the greater the savings potential to the user. 
+
+- **C:\Users\ethan\coding\splitcart\data_management\models\bargain_stats.py**
+
+
 
 ## UX — Substitution Flow
 

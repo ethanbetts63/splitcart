@@ -1,6 +1,6 @@
 # SplitCart Data Pipeline
 
-This document describes the full lifecycle of product data in SplitCart — from scraping to a live, queryable database — including every management command and the environment it runs in.
+This document describes the full lifecycle of product data in SplitCart — from scraping to a live, queryable database.
 
 ---
 
