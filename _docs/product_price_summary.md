@@ -55,7 +55,7 @@ This keeps the expensive per-user calculation to a small, already-promising cand
 
 ## IGA special-casing
 
-IGA stores are not grouped into anchors the way Coles/Woolworths are — each IGA store is independently priced. A product that appears at two IGA stores at different prices is a genuine bargain opportunity. `iga_store_count` exists specifically to catch this case: a product stocked by only one company (IGA) but at two+ stores with price variance still qualifies for a summary.
+IGA stores are grouped into anchors the same way Coles/Woolworths are — but each IGA store is almost always independently priced. A product that appears at two IGA stores at different prices is a genuine bargain opportunity. `iga_store_count` exists specifically to catch this case: a product stocked by only one company (IGA) but at two+ stores with price variance still qualifies for a summary. If we gave this exception for all companies it would create an explosion in database size required for these summaries. But becuase IGA is almost never actually has any good prices and a low product range comminality, it seems to be okay. 
 
 ---
 
