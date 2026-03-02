@@ -28,37 +28,37 @@ class BaseDataCleaner(ABC):
             self.brand_translations, self.product_translations = BaseDataCleaner._load_translation_tables()
 
     @staticmethod
+    def _load_translation_table(path: str) -> dict:
+        """
+        Loads a single translation table from a Python file containing one dict assignment.
+        Returns an empty dict if the file does not exist (expected on first run).
+        Raises if the file exists but cannot be parsed.
+        """
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                file_content = f.read()
+        except FileNotFoundError:
+            return {}
+
+        if '=' not in file_content:
+            raise ValueError(f"Translation table at {path} contains no assignment.")
+
+        dict_str = file_content.split('=', 1)[1].strip()
+        return ast.literal_eval(dict_str)
+
+    @staticmethod
     def _load_translation_tables():
         """
         Loads the brand and product translation tables from the local scraping/data
-        directory. Returns empty dictionaries if files are not found.
+        directory. Returns empty dictionaries if files are not found (expected on first
+        run). Raises if a file exists but is malformed.
         """
-        brand_translations = {}
-        product_translations = {}
-
         brand_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'brand_translation_table.py')
         product_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'product_normalized_name_brand_size_translation_table.py')
 
-        try:
-            with open(brand_path, 'r', encoding='utf-8') as f:
-                file_content = f.read()
-            # The file is expected to contain a single dictionary assignment
-            if '=' in file_content:
-                dict_str = file_content.split('=', 1)[1].strip()
-                brand_translations = ast.literal_eval(dict_str)
-        except (FileNotFoundError, SyntaxError, ValueError):
-            # Fail silently and proceed with an empty dictionary
-            pass
+        brand_translations = BaseDataCleaner._load_translation_table(brand_path)
+        product_translations = BaseDataCleaner._load_translation_table(product_path)
 
-        try:
-            with open(product_path, 'r', encoding='utf-8') as f:
-                file_content = f.read()
-            if '=' in file_content:
-                dict_str = file_content.split('=', 1)[1].strip()
-                product_translations = ast.literal_eval(dict_str)
-        except (FileNotFoundError, SyntaxError, ValueError):
-            pass
-            
         return brand_translations, product_translations
 
     @property
