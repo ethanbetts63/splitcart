@@ -6,7 +6,9 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 ---
 # Concepts that need documentation
 
-- **GS1 prefix system** 
+ ProductBrand model — The brand system is more complex than it looks. It has confirmed_official_prefix, longest_inferred_prefix, name_variations,
+  normalized_name_variations, and the whole reconciliation logic. It touches GS1, the nnbs system, and the translation tables. There's no doc for it
+   and it's central to everything.
 
 
 

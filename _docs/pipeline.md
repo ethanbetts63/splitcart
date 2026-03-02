@@ -20,9 +20,11 @@ Product/category/sub generation         Product ingestion pipeline
       tables                           /api/files/product_translations/
 ```
 
-**All scraping happens locally.** The local machine generates raw data files (JSONL) and uploads them to the server's inbox directories. Before each scraping run, the local machine fetches the latest translation tables from the server via an authenticated API endpoint with ETag caching — it only downloads a new copy if the file has changed since the last fetch. It does this becuase scraping is resource intense (expensive on the server/free locally) and because the coles scraper requires a human to solve the captchas. 
+**All scraping happens locally.** The local machine generates raw data files (JSONL) and uploads them to the server's inbox directories. Before each scraping run, the local machine fetches the latest translation tables from the server via an authenticated API endpoint with ETag caching — it only downloads a new copy if the file has changed since the last fetch. It does this becuase scraping is resource intense (expensive on the server/free locally) and because the coles scraper requires a human to solve the captchas.
 
 **All database writes happen on the server.** Management commands that read inboxes and write to the DB are always server-side.
+
+**Some generation steps are local-only.** Category link generation (`generate --cat-links`) and substitution generation (`generate --subs`) cannot run on the server. They depend on heavy ML libraries (SentenceTransformer etc.) that are only in `requirements_dev.txt` — the server runs the leaner `requirements.txt` to keep costs down. These steps run locally, produce JSONL output, and upload it like any other file. The tradeoff is complexity: the local machine must download enough DB state to do meaningful work (product lists, category data), which can be a significant payload. The download is well-optimized but worth knowing about when the pipeline feels slow at those steps.
 
 ---
 
