@@ -30,7 +30,30 @@ Product/category/sub generation         Product ingestion pipeline
 
 ## Full Setup Flow
 
-The sequence below is the complete ordered pipeline to initialise or re-initialise the system from scratch. Some commands have a --dev arg. This is for development. It means that rather than uploading or fetching from the live server, data will be fetched or uploaded to the local environment. In production all the commands are the same just minus the --dev args. 
+The sequence below is the complete ordered pipeline to initialise or re-initialise the system from scratch. Commands marked **LOCAL** use heavy ML dependencies and must run on the local machine — they will not work on the server. Commands marked **SERVER** must run on the server where the DB lives. The `--dev` flag redirects uploads/downloads to the local environment instead of the live server; omit it in production.
+
+```
+python manage.py update --archive          # SERVER  — archives stale price data
+python manage.py generate --store-groups   # SERVER  — initialises one group per store
+
+python manage.py upload --product --dev    # LOCAL   — uploads scraped product JSONL
+python manage.py update --products         # SERVER  — ingests products, brands, prices
+
+python manage.py update --prefixes         # SERVER  — processes GS1 prefix inbox
+
+python manage.py generate --cat-links --dev  # LOCAL  — generates category link data (ML-heavy)
+python manage.py upload --cat-links --dev    # LOCAL  — uploads cat-link JSONL
+python manage.py update --cat-links          # SERVER — ingests category links
+
+python manage.py upload --product --dev    # LOCAL   — second product pass (GS1 data now improves brand matching)
+python manage.py update --products         # SERVER  — re-ingests with improved brand translations
+
+python manage.py generate --subs --dev     # LOCAL   — generates substitutions (SentenceTransformer, ML-heavy)
+python manage.py upload --subs --dev       # LOCAL   — uploads substitution JSONL
+python manage.py update --subs             # SERVER  — ingests substitutions
+```
+
+See Design Notes below for why products are ingested twice.
 
 ## Data Flow Summary
 
