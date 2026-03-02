@@ -4,9 +4,39 @@
 
 ## The Smart Grocery Price Comparison Platform
 
-Splitcart is an Australian smart grocery price comparison platform that finds the absolute cheapest way to buy your entire shopping list by intelligently splitting it across multiple supermarkets. Instead of just comparing single-store totals, it accounts for real item-level price differences, delivery fees, store availability, distance, and user constraints (like max stores or minimum savings), while also suggesting cheaper substitute products you approve.
+Splitcart is an Australian grocery price comparison platform that finds the absolute cheapest way to buy your entire shopping list by intelligently splitting it across multiple supermarkets. Instead of just comparing single-store totals, it accounts for real item-level price differences, delivery fees, store availability, distance, and user constraints (like max stores or minimum savings), while also suggesting cheaper substitute products you approve.
 
 Under the hood, it cleans and normalizes messy supermarket data, matches equivalent products across brands and stores, and runs an optimization algorithm to surface the best combination—saving users real money without the manual tab-hopping. It’s built for budget-conscious shoppers who want clear, actionable savings, and for scale, it opens the door to insights like national average prices, true discount tracking, and where groceries are genuinely cheaper.
+
+> **Two most interesting pieces of engineering in this codebase:**
+> - [`_docs/normalized_name_brand_size.md`](_docs/normalized_name_brand_size.md) — A self-improving feedback loop that learns to recognize the same product across different supermarkets, getting smarter with every scrape run.
+> - [`_docs/store_grouping.md`](_docs/store_grouping.md) — A self-organizing clustering system that detects which stores share identical prices and deduplicates the database automatically, converging toward a minimal representation over time.
+
+> **Looking to contribute?** The inferred barcode prefix method in [`_docs/gs1.md`](_docs/gs1.md) is an unsolved problem — a promising idea that hasn't been fully validated or wired in yet.
+
+## Documentation
+
+The `_docs/` directory contains in-depth references for the non-obvious parts of the system. Start here before working in an unfamiliar area.
+
+| Doc | What it covers |
+| [`pipeline.md`](_docs/pipeline.md) | Full data lifecycle — from local scrape to live DB, including the two-environment split |
+| [`normalized_name_brand_size.md`](_docs/normalized_name_brand_size.md) | How products are identified across stores using a self-improving normalized key |
+| [`store_grouping.md`](_docs/store_grouping.md) | How stores with identical pricing are detected and deduplicated at the DB level |
+| [`optimization.md`](_docs/optimization.md) | The LP-based cart splitting algorithm and the factors that determine savings potential |
+| [`gs1.md`](_docs/gs1.md) | How GS1 barcode prefixes are used to normalize brand names authoritatively |
+| [`substitutions.md`](_docs/substitutions.md) | How substitute products are matched and ranked across brands and categories |
+| [`bargains.md`](_docs/bargains.md) | How bargain products are detected and scored |
+| [`product_price_summary.md`](_docs/product_price_summary.md) | Pre-computed price aggregates that make bargain queries fast |
+| [`bargain_stats.md`](_docs/bargain_stats.md) | Pre-computed head-to-head company price comparison stats |
+| [`categories.md`](_docs/categories.md) | The product categorisation hierarchy and how primary categories are assigned |
+| [`scraping.md`](_docs/scraping.md) | How the scraping pipeline works end to end |
+| [`scraper_testing.md`](_docs/scraper_testing.md) | Strategy for testing scrapers and normalization |
+| [`TESTING.md`](_docs/TESTING.md) | Testing philosophy, stack (pytest/factory_boy), and fixture conventions |
+| [`savings_calc.md`](_docs/savings_calc.md) | How savings figures are calculated and presented |
+| [`home.md`](_docs/home.md) | Home page and featured content logic |
+| [`recommendations.md`](_docs/recommendations.md) | Essentially a to do list|
+
+---
 
 ## Project Structure
 
