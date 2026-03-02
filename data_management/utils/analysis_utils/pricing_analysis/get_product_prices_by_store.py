@@ -1,6 +1,6 @@
 
 from collections import defaultdict
-from products.models import Product, Price
+from products.models import Price
 from companies.models import Company, Store
 from django.db.models import OuterRef, Subquery
 

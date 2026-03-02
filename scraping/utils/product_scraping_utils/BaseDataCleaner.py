@@ -182,16 +182,16 @@ class BaseDataCleaner(ABC):
         final_measure = f"{quantity}{unit}"
 
         # Standardize to per 1kg or 1L
-        if unit == 'g' and quantity != 1000:
+        if unit == 'g':
             final_price = (unit_price / quantity) * 1000
             final_measure = "1kg"
-        elif unit == 'ml' and quantity != 1000:
+        elif unit == 'ml':
             final_price = (unit_price / quantity) * 1000
             final_measure = "1l"
-        elif unit == 'kg' and quantity != 1:
+        elif unit == 'kg':
             final_price = unit_price / quantity
             final_measure = "1kg"
-        elif unit == 'l' and quantity != 1:
+        elif unit == 'l':
             final_price = unit_price / quantity
             final_measure = "1l"
 
