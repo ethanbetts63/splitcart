@@ -65,7 +65,10 @@ class DataCleanerIga(BaseDataCleaner):
         # Handle availability
         cleaned_product['is_available'] = raw_product.get('available', False)
 
-        # Calculate unit price directly from numeric fields rather than parsing the string
+        # Calculate unit price directly from numeric fields rather than parsing the string.
+        # This assumes unitOfMeasure and unitOfSize always use the same unit (e.g. both ml,
+        # both g) — verified on available sample data. If they ever differ, the division
+        # would produce a wrong result silently.
         unit_of_measure = raw_product.get('unitOfMeasure', {})
         unit_of_size = raw_product.get('unitOfSize', {})
         measure_size = unit_of_measure.get('size')
