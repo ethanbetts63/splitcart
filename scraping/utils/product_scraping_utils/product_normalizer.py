@@ -2,6 +2,26 @@ import re
 import unicodedata
 from .size_parser import parse_size
 
+_UNITS = {
+    'g': ['g', 'gram', 'grams'],
+    'kg': ['kg', 'kilogram', 'kilograms'],
+    'ml': ['ml', 'millilitre', 'millilitres'],
+    'l': ['l', 'litre', 'litres'],
+    'pk': ['pk', 'pack', 'packs'],
+    'ea': ['each', 'ea'],
+}
+_UNIT_MAP = {variation: standard for standard, variations in _UNITS.items() for variation in variations}
+_ALL_UNIT_VARIATIONS = list(_UNIT_MAP.keys())
+
+_SEP = r'\s*[/]?\s*'
+_UNITS_RE = '|'.join(_ALL_UNIT_VARIATIONS)
+
+_RANGE_PATTERN = re.compile(r'(\d+\.?\d*)' + _SEP + r'-\s*(\d+\.?\d*)' + _SEP + r'(' + _UNITS_RE + r')\b')
+_MULTIPACK_PATTERN_1 = re.compile(r'(\d+)\s*[xX]' + _SEP + r'(\d+\.?\d*)' + _SEP + r'(' + _UNITS_RE + r')\b')
+_MULTIPACK_PATTERN_2 = re.compile(r'(\d+\.?\d*)' + _SEP + r'(' + _UNITS_RE + r')\s*[xX]\s*(\d+)')
+_NUMBER_UNIT_PATTERN = re.compile(r'(\d+\.?\d*)' + _SEP + r'(' + _UNITS_RE + r')\b')
+_STANDALONE_UNIT_PATTERN = re.compile(r'\b(' + '|'.join([u for u in _ALL_UNIT_VARIATIONS if len(u) > 1] + ['ea']) + r')\b')
+
 class ProductNormalizer:
     """
     A class to encapsulate all product normalization logic.
@@ -58,52 +78,31 @@ class ProductNormalizer:
             if processed_text.startswith(prefix):
                 processed_text = processed_text[len(prefix):]
 
-        units = {
-            'g': ['g', 'gram', 'grams'],
-            'kg': ['kg', 'kilogram', 'kilograms'],
-            'ml': ['ml', 'millilitre', 'millilitres'],
-            'l': ['l', 'litre', 'litres'],
-            'pk': ['pk', 'pack', 'packs'],
-            'ea': ['each', 'ea'],
-        }
-        
-        unit_map = {variation: standard for standard, variations in units.items() for variation in variations}
-        all_unit_variations = list(unit_map.keys())
-
-        # Updated regex part to handle optional slash
-        separator_pattern = r'\s*[/]?\s*'
-
-        range_pattern = r'(\d+\.?\d*)' + separator_pattern + r'-\s*(\d+\.?\d*)' + separator_pattern + r'(' + '|'.join(all_unit_variations) + r')\b'
-        for match in re.finditer(range_pattern, processed_text):
-            unit = unit_map[match.group(3)]
+        for match in _RANGE_PATTERN.finditer(processed_text):
+            unit = _UNIT_MAP[match.group(3)]
             sizes.add(f"{match.group(1)}{unit}")
             sizes.add(f"{match.group(2)}{unit}")
-        processed_text = re.sub(range_pattern, '', processed_text)
+        processed_text = _RANGE_PATTERN.sub('', processed_text)
 
-        multipack_pattern_1 = r'(\d+)\s*[xX]' + separator_pattern + r'(\d+\.?\d*)' + separator_pattern + r'(' + '|'.join(all_unit_variations) + r')\b'
-        for match in re.finditer(multipack_pattern_1, processed_text):
-            unit = unit_map[match.group(3)]
+        for match in _MULTIPACK_PATTERN_1.finditer(processed_text):
+            unit = _UNIT_MAP[match.group(3)]
             sizes.add(f"{match.group(1)}pk")
             sizes.add(f"{match.group(2)}{unit}")
-        processed_text = re.sub(multipack_pattern_1, '', processed_text)
+        processed_text = _MULTIPACK_PATTERN_1.sub('', processed_text)
 
-        multipack_pattern_2 = r'(\d+\.?\d*)' + separator_pattern + r'(' + '|'.join(all_unit_variations) + r')\s*[xX]\s*(\d+)'
-        for match in re.finditer(multipack_pattern_2, processed_text):
-            unit = unit_map[match.group(2)]
+        for match in _MULTIPACK_PATTERN_2.finditer(processed_text):
+            unit = _UNIT_MAP[match.group(2)]
             sizes.add(f"{match.group(1)}{unit}")
             sizes.add(f"{match.group(3)}pk")
-        processed_text = re.sub(multipack_pattern_2, '', processed_text)
+        processed_text = _MULTIPACK_PATTERN_2.sub('', processed_text)
 
-        number_unit_pattern = r'(\d+\.?\d*)' + separator_pattern + r'(' + '|'.join(all_unit_variations) + r')\b'
-        for match in re.finditer(number_unit_pattern, processed_text):
-            unit = unit_map[match.group(2)]
+        for match in _NUMBER_UNIT_PATTERN.finditer(processed_text):
+            unit = _UNIT_MAP[match.group(2)]
             sizes.add(f"{match.group(1)}{unit}")
-        processed_text = re.sub(number_unit_pattern, '', processed_text)
-        
-        standalone_units = [u for u in all_unit_variations if len(u) > 1] + ['ea']
-        standalone_unit_pattern = r'\b(' + '|'.join(standalone_units) + r')\b'
-        for match in re.finditer(standalone_unit_pattern, processed_text):
-            unit = unit_map[match.group(1)]
+        processed_text = _NUMBER_UNIT_PATTERN.sub('', processed_text)
+
+        for match in _STANDALONE_UNIT_PATTERN.finditer(processed_text):
+            unit = _UNIT_MAP[match.group(1)]
             sizes.add(unit)
 
         return list(sizes)
