@@ -37,23 +37,4 @@ splitcart/
 Each Django app has its own `README.md` — worth a quick read before working in an unfamiliar app.
 
 ---
-
-## _docs Directory
-
-These files explain how specific features and subsystems work. Read the relevant one before making changes in that area. **Treat them as a guide, not ground truth — they may be out of date.**
-
-| File | What it covers |
-|---|---|
-| `TESTING.md` | Testing philosophy, stack (pytest/factory_boy), directory structure, conftest fixtures |
-| `scraping.md` | How the scraping pipeline works end to end |
-| `scraper_testing.md` | Strategy for testing scrapers and normalization (E2E + drift detection) |
-| `pipeline.md` | The full data pipeline from raw scrape to DB |
-| `bargains.md` | Bargain detection logic |
-| `categories.md` | Product categorisation system |
-| `home.md` | Home page / featured content logic |
-| `recommendations.md` | Product recommendation system |
-| `savings_calc.md` | How savings are calculated |
-| `store_grouping.md` | How stores are grouped for comparison |
-| `substitutions.md` | Product substitution matching logic |
-
----
+always read C:\Users\ethan\coding\splitcart\README.md as the first thing you do. 

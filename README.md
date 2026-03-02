@@ -32,7 +32,6 @@ The `_docs/` directory contains in-depth references for the non-obvious parts of
 | [`scraping.md`](_docs/scraping.md) | How the scraping pipeline works end to end |
 | [`scraper_testing.md`](_docs/scraper_testing.md) | Strategy for testing scrapers and normalization |
 | [`TESTING.md`](_docs/TESTING.md) | Testing philosophy, stack (pytest/factory_boy), and fixture conventions |
-| [`savings_calc.md`](_docs/savings_calc.md) | How savings figures are calculated and presented |
 | [`home.md`](_docs/home.md) | Home page and featured content logic |
 | [`recommendations.md`](_docs/recommendations.md) | Essentially a to do list|
 
