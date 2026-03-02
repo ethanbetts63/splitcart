@@ -6,7 +6,6 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 ---
 # Concepts that need documentation
 
-- **C:\Users\ethan\coding\splitcart\data_management\models\bargain_stats.py**
 - **GS1 prefix system** 
 
 
@@ -119,7 +118,4 @@ These need a manual audit pass of the full mapping file to catch others like the
    — fine. But if it's 50.6% / 50.6% / ~-1.2%, you get percent_same = -1. The result is stored directly in JSON and served to the frontend. Should
   round the raw float for same_price and derive the percentages from the raw counts, not by subtraction.
 
-  3. BargainStatsSerializer is dead code
-
-  products/serializers/bargain_stats_serializer.py exists and defines a ModelSerializer. BargainStatsView never imports or uses it — it returns
-  stats_object.data directly. The serializer does nothing.
+  3. ~~BargainStatsSerializer is dead code~~ — deleted.

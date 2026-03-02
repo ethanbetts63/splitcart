@@ -56,7 +56,7 @@ The IGA check (`if name == 'Iga':`) uses titlecase. Every other IGA check in the
 
 **File:** `products/views/bargain_stats_view.py`
 
-`GET /api/bargain-stats/` — returns `stats_object.data` directly (the JSON list). The view has a **24-hour `cache_page`**. There is a `BargainStatsSerializer` defined in `products/serializers/bargain_stats_serializer.py` but it is not used by this view.
+`GET /api/bargain-stats/` — returns `stats_object.data` directly (the JSON list). The view has a **24-hour `cache_page`**. No serializer is needed — `data` is already a plain Python list (Django deserializes JSONField on access) and DRF's `Response` renders it directly.
 
 ---
 
