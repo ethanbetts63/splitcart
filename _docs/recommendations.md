@@ -7,9 +7,6 @@ A living to-do list of approved improvements. Items are grouped by area and orde
 # Concepts that need documentation
 
 - **C:\Users\ethan\coding\splitcart\data_management\models\bargain_stats.py**
-- **C:\Users\ethan\coding\splitcart\products\models\product_price_summary.py**
-
-
 - **GS1 prefix system** 
 
 
@@ -98,3 +95,31 @@ These need a manual audit pass of the full mapping file to catch others like the
   in the tests (required transaction=True).
 
   It should be a POST. The scraper asks "give me the next store" and confirms it received it — that's a state change, which is what POST is for.
+
+
+
+  - The 1ea → ea normalization in _get_standardized_sizes is a one-liner special case that suggests the regex patterns upstream aren't handling the
+  1× multipack correctly. Worth a unit test for "1ea" → "ea" to pin the behaviour.
+
+  ProductEnricher.enrich_canonical_product() mutates the passed canonical_product object in-place, then returns a boolean. ProductManager uses the
+  boolean to decide whether to add it to the bulk_update list. If an exception is thrown between enrich and bulk_update, the in-memory object is
+  dirty but the DB is unchanged. In normal operation this is harmless because the whole run restarts. But it's a fragility worth knowing about.
+
+  1. IGA name check is wrong in BargainStatsGenerator
+
+  bargain_stats_generator.py:32 checks if name == 'Iga': — titlecase. Every other IGA check in the codebase uses .lower() == 'iga'. If the company
+  is stored as 'IGA' (which is likely given title-casing conventions elsewhere), this condition never fires. IGA prices would be treated as min()
+  instead of avg(), which is wrong for store-by-store pricing. This is a silent logic error — no exception, just incorrect stats.
+
+  2. percent_same can go negative or exceed 100
+
+  bargain_stats_generator.py:78:
+  percent_same = 100 - percent_a - percent_b
+  Both percent_a and percent_b are independently rounded. If the true split is 50.4% / 49.6% / 0%, rounding gives 50 + 50 = 100, so percent_same = 0
+   — fine. But if it's 50.6% / 50.6% / ~-1.2%, you get percent_same = -1. The result is stored directly in JSON and served to the frontend. Should
+  round the raw float for same_price and derive the percentages from the raw counts, not by subtraction.
+
+  3. BargainStatsSerializer is dead code
+
+  products/serializers/bargain_stats_serializer.py exists and defines a ModelSerializer. BargainStatsView never imports or uses it — it returns
+  stats_object.data directly. The serializer does nothing.

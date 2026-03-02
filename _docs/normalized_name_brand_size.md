@@ -1,5 +1,7 @@
 # `normalized_name_brand_size`
 
+**Generate key → ingest → record mismatches as variations → regenerate translation table → next scrape is smarter**
+
 A deterministic/unique string key derived from a product's name, brand, and size. It is the secondary mechanism for recognizing the same product across different supermarkets.
 
 **Model:** `Product.normalized_name_brand_size` — `unique`, `db_index`, `max_length=255`.
