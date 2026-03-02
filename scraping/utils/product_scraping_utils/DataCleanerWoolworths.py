@@ -26,8 +26,6 @@ class DataCleanerWoolworths(BaseDataCleaner):
     """
     Concrete cleaner class for Woolworths product data.
     """
-    INVALID_CATEGORIES = {"Footy Finals Kiosk"}
-
     def __init__(self, raw_product_list: list, company: str, store_name: str, store_id: str, state: str, timestamp: datetime, brand_translations: dict = None, product_translations: dict = None):
         super().__init__(raw_product_list, company, store_name, store_id, state, timestamp, brand_translations, product_translations)
 
@@ -58,10 +56,7 @@ class DataCleanerWoolworths(BaseDataCleaner):
                 seen.add(item)
                 full_path.append(item)
         
-        # THE NEW CHANGE: Filter out invalid categories
-        final_path = [item for item in full_path if item not in self.INVALID_CATEGORIES]
-
-        cleaned_product['category_path'] = self._clean_category_path(final_path)
+        cleaned_product['category_path'] = self._clean_category_path(full_path)
 
         stockcode = cleaned_product.get('sku')
         slug = cleaned_product.get('url')

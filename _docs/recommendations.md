@@ -79,3 +79,9 @@ These need a manual audit pass of the full mapping file to catch others like the
 
 - Product pages (individual products) are intentionally excluded from the sitemap. With hundreds of thousands of products, indexing them all would waste crawl budget and the pages themselves have thin content (name + price). Not worth pursuing.
 - The `PriceComparisonChart` component already renders text summaries ("X% of Fruit tested were cheaper at Woolworths than Coles") in plain HTML — Google can read these. No changes needed there.
+
+  2. Silent failures in several critical paths
+
+  _load_translation_tables swallows SyntaxError and ValueError silently with pass. If a translation table file is corrupt you proceed with empty
+  dicts — meaning all cross-store product matching is silently broken for the entire run. Should at minimum log a warning. Same pattern in
+  _extract_sizes_from_string — the regex failures produce empty results without any indication something went wrong. at a larger level this is actually a task about standardizing a logging strategy and going through the whole project and verifying loggging logic is how we want. 

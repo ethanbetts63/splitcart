@@ -47,14 +47,11 @@ class DataCleanerColes(BaseDataCleaner):
         category_path = []
         if online_heirs and isinstance(online_heirs, list) and online_heirs[0]:
             heir_list = online_heirs[0]
-            if isinstance(heir_list, list):
-                category_path = [heir.get('name') for heir in heir_list if heir.get('name')]
-            elif isinstance(heir_list, dict):
-                 category_path = [
-                    heir_list.get('subCategory'),
-                    heir_list.get('category'),
-                    heir_list.get('aisle')
-                ]
+            category_path = [
+                heir_list.get('subCategory'),
+                heir_list.get('category'),
+                heir_list.get('aisle')
+            ]
 
         cleaned_product['category_path'] = self._clean_category_path(category_path)
 
