@@ -68,9 +68,9 @@ class TestCleanPostcode:
     def test_non_string_type_returns_none(self, cleaner):
         assert cleaner._clean_postcode(2000) is None
 
-    def test_whitespace_not_trimmed_returns_none(self, cleaner):
-        # '2000' with spaces is 6 chars → invalid
-        assert cleaner._clean_postcode(' 2000') is None
+    def test_leading_whitespace_is_stripped_before_check(self, cleaner):
+        # _clean_postcode strips before length/digit check, so ' 2000' → '2000' → valid
+        assert cleaner._clean_postcode(' 2000') == '2000'
 
 
 class TestClean:

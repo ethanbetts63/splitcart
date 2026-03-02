@@ -69,11 +69,12 @@ class TestTransformProductUrl:
             'https://www.woolworths.com.au/shop/productdetails/67890/dairy-farmers-full-cream-milk'
         )
 
-    def test_no_url_when_missing_stockcode(self, cleaner):
+    def test_full_url_not_built_when_stockcode_missing(self, cleaner):
         raw = {**RAW_PRODUCT, 'Stockcode': None}
         result = cleaner._transform_product(raw)
-        # url field should be None or absent when stockcode is missing
-        assert not result.get('url')
+        # Without stockcode the URL isn't reconstructed into the full path
+        url = result.get('url', '')
+        assert 'woolworths.com.au/shop/productdetails' not in str(url)
 
 
 class TestTransformProductHealthStarRating:

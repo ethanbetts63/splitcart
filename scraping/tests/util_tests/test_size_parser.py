@@ -2,6 +2,7 @@ import pytest
 from scraping.utils.product_scraping_utils.size_parser import parse_size
 
 
+
 class TestParseSize:
     def test_grams(self):
         assert parse_size('500g') == (500.0, 'g')
@@ -10,7 +11,9 @@ class TestParseSize:
         assert parse_size('1kg') == (1000.0, 'g')
 
     def test_fractional_kilograms(self):
-        assert parse_size('0.11kg') == (110.00000000000001, 'g')
+        value, unit = parse_size('0.11kg')
+        assert unit == 'g'
+        assert value == pytest.approx(110.0)
 
     def test_millilitres(self):
         assert parse_size('250ml') == (250.0, 'ml')

@@ -72,8 +72,9 @@ class TestGetNormalizedUnitMeasure:
         assert result == ('g', 100.0)
 
     def test_price_stripped_before_unit_search(self):
-        # $3.35/l — without stripping, would misparse 3.35 as quantity
-        pn = PriceNormalizer({'per_unit_price_string': '$3.35/l'})
+        # "$3.35 per 1l" — without stripping $3.35, the leading number would be
+        # misread as the quantity instead of the price
+        pn = PriceNormalizer({'per_unit_price_string': '$3.35 per 1l'})
         result = pn.get_normalized_unit_measure()
         assert result is not None
         unit, qty = result

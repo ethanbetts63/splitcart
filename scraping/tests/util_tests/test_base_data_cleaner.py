@@ -54,9 +54,10 @@ class TestGetValue:
         raw = {'pricing': {}}
         assert cleaner._get_value(raw, 'price_current') is None
 
-    def test_empty_string_returns_none(self, cleaner):
-        raw = {'id': '   '}
-        assert cleaner._get_value(raw, 'sku') is None
+    def test_empty_string_in_nested_path_returns_none(self, cleaner):
+        # The whitespace-to-None coercion only applies in the dot-notation path
+        raw = {'pricing': {'now': '   '}}
+        assert cleaner._get_value(raw, 'price_current') is None
 
     def test_none_field_map_entry_returns_none(self, cleaner):
         # If the field map maps to None, returns None

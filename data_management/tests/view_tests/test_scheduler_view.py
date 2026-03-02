@@ -15,7 +15,7 @@ def api_client(monkeypatch):
     client.credentials(HTTP_X_INTERNAL_API_KEY=API_KEY)
     return client
 
-@pytest.mark.django_db(transaction=True)
+@pytest.mark.django_db
 class TestSchedulerView:
     def test_priority_1_unscraped_store_is_selected(self, api_client):
         """
