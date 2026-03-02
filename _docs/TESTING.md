@@ -87,4 +87,4 @@ This fixture handles the complexity of creating a valid request object, ensuring
 
 
 ### Notes for AI ###
-* In the event of a failing test. You should read all relevant files and assess. If you think that the test is at fault then fix the test. If you think that the project code is at fault. Relay your find to the dev but do not touch any code without approval.
+* In the event of a failing test. You should read all relevant files and assess. If you think that the test is at fault then fix the test. If you think that the project code is at fault. Relay your find to the dev but do not touch any code without approval. If you discover that a file is dead code. this is also worth noting to the user. 
