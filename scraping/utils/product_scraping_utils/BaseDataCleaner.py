@@ -139,7 +139,6 @@ class BaseDataCleaner(ABC):
         if product.get('barcode') is not None:
              product['barcode'] = normalizer.get_cleaned_barcode()
 
-        product['scraped_date'] = self.timestamp.date().isoformat()
 
         # Convert all empty string fields to None to ensure consistency
         for key, value in product.items():

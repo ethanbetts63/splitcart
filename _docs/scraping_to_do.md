@@ -1,22 +1,4 @@
 
-  11. Woolworths category_path field map entry is a no-op
-  DataCleanerWoolworths.py / field_maps.py:78
-
-  The field map maps category_path to AdditionalAttributes.piesdepartmentnamesjson (a JSON string). But _transform_product immediately overwrites
-  cleaned_product['category_path'] by reparsing all three JSON fields separately and combining them. The field map entry is never actually used for
-  its mapped value. It only ensures the key exists in cleaned_product. This is a silent inconsistency — the field map suggests category_path comes
-  from one field, but it actually comes from three.
-
-  ---
-  Minor Issues
-
-  12. Duplicate 'ea' in standalone_units
-  product_normalizer.py:102
-
-  standalone_units = [u for u in all_unit_variations if len(u) > 1] + ['ea']
-
-  'ea' already has length 2, so it's already included in the first part. The + ['ea'] adds it twice. Harmless but redundant.
-
   13. Unparseable size deduplication uses .values() lookup
   product_normalizer.py:172
 

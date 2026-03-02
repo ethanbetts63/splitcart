@@ -166,9 +166,8 @@ class ProductNormalizer:
                     canonical_sizes[parsed_tuple] = f"{int(value) if value.is_integer() else value}{unit}"
             else:
                 # If the size string can't be parsed, keep it as is.
-                # Use the string itself as a key to avoid duplicates.
-                if size_str not in canonical_sizes.values():
-                    canonical_sizes[('str', size_str)] = size_str
+                # The key ('str', size_str) naturally deduplicates unparseable strings.
+                canonical_sizes[('str', size_str)] = size_str
 
         return sorted(list(canonical_sizes.values()))
 
