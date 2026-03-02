@@ -1,6 +1,8 @@
 # Store Grouping
 
-Supermarkets like Coles and Woolworths price nationally — every store charges the same. Scraping and storing a separate `Price` row for each physical location would be massively redundant. The grouping system detects this and deduplicates: once stores are confirmed to have matching prices, only the **anchor** store retains `Price` rows. All other members have their prices deleted.
+Supermarkets like Coles, Aldi and Woolworths generally price nationally — every store charges the same. Scraping and storing a separate `Price` row for each physical location would be massively redundant. The grouping system detects this and deduplicates: once stores are confirmed to have matching prices, only the **anchor** store retains `Price` rows. All other members have their prices deleted. In this way companies like IGA, or one offs like Coles Metro, will have full data fidelity but the vast majority of duplication is removed. 
+
+For two groups to be merged their anchors need to have 98% of their product range be the same products at the same price. The 2% is more often than not a data gathering issue anyway so its more than acceptable data loss for the massive reduction in database size and faster db queries. 
 
 ---
 
@@ -9,7 +11,6 @@ Supermarkets like Coles and Woolworths price nationally — every store charges 
 - **Group** — a set of stores confirmed to share identical prices
 - **Anchor** — the single store per group that retains `Price` rows; the source of truth for the group
 - **Member** — any non-anchor store in a group; has no `Price` rows of its own
-
 ---
 
 ## Lifecycle
@@ -36,6 +37,7 @@ GroupMaintenanceOrchestrator
        └─ No match → cache non-match 7 days, skip on next run
 ```
 
+The whole system becomes improves with each life cycle. The end state is that supermarkets with generally national pricing converge to 1 or 2 main groups and a couple outliers. And supermarkets with store by store pricing see very little convergance.
 ---
 
 ## Querying Prices Correctly
