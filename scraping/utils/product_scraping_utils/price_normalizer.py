@@ -21,8 +21,8 @@ class PriceNormalizer:
 
         # Data for the per-unit normalization
         self.unit_value_raw = price_data.get('per_unit_price_value')
-        self.unit_measure_raw = str(price_data.get('per_unit_price_measure', ''))
-        self.unit_string_raw = str(price_data.get('per_unit_price_string', ''))
+        self.unit_measure_raw = str(price_data.get('per_unit_price_measure') or '')
+        self.unit_string_raw = str(price_data.get('per_unit_price_string') or '')
         
         # Unit definitions borrowed from ProductNormalizer
         self.UNITS = {
@@ -78,6 +78,10 @@ class PriceNormalizer:
         for text_to_search in [self.unit_measure_raw, self.unit_string_raw]:
             if not text_to_search:
                 continue
+
+            # Strip any price value (e.g. "$3.35") before searching for the unit/quantity.
+            # Without this, "$3.35/l" would be misread as quantity=3.35, unit=l.
+            text_to_search = re.sub(r'\$\d+\.?\d*', '', text_to_search).strip()
 
             match = re.search(pattern, text_to_search, re.IGNORECASE)
             

@@ -9,7 +9,6 @@ from data_management.analysers.store_pricing_heatmap import generate_store_prici
 from data_management.analysers.internal_company_product_crossover import generate_internal_company_product_crossover_report
 from data_management.utils.analysis_utils.category_tree import generate_category_tree
 from data_management.utils.analysis_utils.substitution_analysis import generate_substitution_analysis_report
-from data_management.utils.analysis_utils.savings_benchmark import run_savings_benchmark
 from data_management.utils.analysis_utils.substitution_overlap import calculate_strict_substitution_overlap_matrix, generate_substitution_heatmap_image
 from companies.models import Company, Category
 
@@ -22,7 +21,7 @@ class Command(BaseCommand):
             type=str,
             required=True,
             help='Specifies which type of analysis or report to generate.',
-            choices=['store_product_counts', 'company_heatmap', 'store_heatmap', 'pricing_heatmap', 'category_heatmap', 'category_tree', 'subs', 'savings', 'sub_heatmap', 'internal_crossover', 'category_product_counts', 'super_cats']
+            choices=['store_product_counts', 'company_heatmap', 'store_heatmap', 'pricing_heatmap', 'category_heatmap', 'category_tree', 'subs', 'sub_heatmap', 'internal_crossover', 'category_product_counts', 'super_cats']
         )
         parser.add_argument(
             '--company-name',
@@ -122,17 +121,6 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(f"\nSuccessfully wrote analysis report to: {file_path}"))
             except IOError as e:
                 self.stderr.write(self.style.ERROR(f"Error writing to file: {e}"))
-
-        elif report_type == 'savings':
-            self.stdout.write(self.style.SUCCESS("Running savings benchmark..."))
-            output_dir = os.path.join('data_management', 'data', 'analysis', 'savings')
-            os.makedirs(output_dir, exist_ok=True)
-            
-            file_name = f"{datetime.date.today()}-savings.txt"
-            file_path = os.path.join(output_dir, file_name)
-
-            run_savings_benchmark(file_path)
-            self.stdout.write(self.style.SUCCESS(f"Successfully wrote benchmark report to: {file_path}"))
 
         elif report_type == 'internal_crossover':
             if not company_name:

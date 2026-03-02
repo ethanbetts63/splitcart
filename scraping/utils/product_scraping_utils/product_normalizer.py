@@ -1,5 +1,6 @@
 import re
 import unicodedata
+from .size_parser import parse_size
 
 class ProductNormalizer:
     """
@@ -136,7 +137,6 @@ class ProductNormalizer:
 
 
     def _get_standardized_sizes(self) -> list:
-        from data_management.utils.size_comparer import SizeComparer
         """
         Performs a multi-pass standardization of raw size strings.
         1. Standardizes text variations (e.g., 'pack' -> 'pk', '1ea' -> 'ea').
@@ -154,12 +154,10 @@ class ProductNormalizer:
             initial_standardized_strings.add(s)
 
         # --- Pass 2: Canonical numerical conversion and de-duplication ---
-        size_comparer = SizeComparer()
         canonical_sizes = {} # Use a dict to de-duplicate while preserving a preferred string
 
         for size_str in initial_standardized_strings:
-            # Use the parser from SizeComparer
-            parsed_tuple = size_comparer._parse_size(size_str)
+            parsed_tuple = parse_size(size_str)
             if parsed_tuple:
                 value, unit = parsed_tuple
                 # Use the canonical tuple as a key to handle de-duplication
@@ -202,11 +200,6 @@ class ProductNormalizer:
         if found_12_digit:
             return found_12_digit
 
-        for b in barcodes:
-            if len(b) < 12:
-                if self.sku and b == str(self.sku):
-                    return None
-        
         return None
 
     def get_raw_sizes(self) -> list:

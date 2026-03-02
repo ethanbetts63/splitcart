@@ -28,7 +28,7 @@ class JsonlWriter:
 
     def open(self):
         """Opens the  JSONL file for writing."""
-        self.temp_file_handle = open(self.temp_file_path, 'a', encoding='utf-8')
+        self.temp_file_handle = open(self.temp_file_path, 'w', encoding='utf-8')
 
     def write_product(self, product_data: dict, metadata: dict) -> bool:
         """
@@ -59,6 +59,7 @@ class JsonlWriter:
 
     def commit(self):
         """Moves the temporary file to the final inbox directory."""
+        self.close()
         if os.path.exists(self.temp_file_path):
             os.makedirs(self.final_outbox_path, exist_ok=True)
             destination_path = os.path.join(self.final_outbox_path, os.path.basename(self.temp_file_path))
