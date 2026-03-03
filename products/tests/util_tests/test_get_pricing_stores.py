@@ -93,6 +93,11 @@ class TestGetPricingStoresMap:
         solo_group = StoreGroup.objects.create(company=company, anchor=self_anchored)
         StoreGroupMembership.objects.create(store=self_anchored, group=solo_group)
 
+        # Give self_anchored a price so it is not treated as unpriced and does not
+        # fall back to the company's default anchor (the bigger group's anchor).
+        product = ProductFactory()
+        PriceFactory(product=product, store=self_anchored)
+
         result = get_pricing_stores_map([member.id, self_anchored.id])
 
         assert result[member.id] == anchor.id
