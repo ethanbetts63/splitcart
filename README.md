@@ -18,22 +18,22 @@ Under the hood, it cleans and normalizes messy supermarket data, matches equival
 
 The `_docs/` directory contains in-depth references for the non-obvious parts of the system. Start here before working in an unfamiliar area.
 
-| Doc | What it covers |
-| [`pipeline.md`](_docs/pipeline.md) | Full data lifecycle — from local scrape to live DB, including the two-environment split |
-| [`normalized_name_brand_size.md`](_docs/normalized_name_brand_size.md) | How products are identified across stores using a self-improving normalized key |
-| [`store_grouping.md`](_docs/store_grouping.md) | How stores with identical pricing are detected and deduplicated at the DB level |
-| [`optimization.md`](_docs/optimization.md) | The LP-based cart splitting algorithm and the factors that determine savings potential |
-| [`gs1.md`](_docs/gs1.md) | How GS1 barcode prefixes are used to normalize brand names authoritatively |
-| [`substitutions.md`](_docs/substitutions.md) | How substitute products are matched and ranked across brands and categories |
-| [`bargains.md`](_docs/bargains.md) | How bargain products are detected and scored |
-| [`product_price_summary.md`](_docs/product_price_summary.md) | Pre-computed price aggregates that make bargain queries fast |
-| [`bargain_stats.md`](_docs/bargain_stats.md) | Pre-computed head-to-head company price comparison stats |
-| [`categories.md`](_docs/categories.md) | The product categorisation hierarchy and how primary categories are assigned |
-| [`scraping.md`](_docs/scraping.md) | How the scraping pipeline works end to end |
-| [`scraper_testing.md`](_docs/scraper_testing.md) | Strategy for testing scrapers and normalization |
-| [`TESTING.md`](_docs/TESTING.md) | Testing philosophy, stack (pytest/factory_boy), and fixture conventions |
-| [`home.md`](_docs/home.md) | Home page and featured content logic |
-| [`recommendations.md`](_docs/recommendations.md) | Essentially a to do list|
+- [`pipeline.md`](_docs/pipeline.md) — Full data lifecycle — from local scrape to live DB, including the two-environment split
+- [`normalized_name_brand_size.md`](_docs/normalized_name_brand_size.md) — How products are identified across stores using a self-improving normalized key
+- [`store_grouping.md`](_docs/store_grouping.md) — How stores with identical pricing are detected and deduplicated at the DB level
+- [`optimization.md`](_docs/optimization.md) — The LP-based cart splitting algorithm and the factors that determine savings potential
+- [`gs1.md`](_docs/gs1.md) — How GS1 barcode prefixes are used to normalize brand names authoritatively
+- [`product_brand.md`](_docs/product_brand.md) — `ProductBrand` model — fields, variation accumulation, brand translation table, and the GS1→reconciler loop
+- [`substitutions.md`](_docs/substitutions.md) — How substitute products are matched and ranked across brands and categories
+- [`bargains.md`](_docs/bargains.md) — How bargain products are detected and scored
+- [`product_price_summary.md`](_docs/product_price_summary.md) — Pre-computed price aggregates that make bargain queries fast
+- [`bargain_stats.md`](_docs/bargain_stats.md) — Pre-computed head-to-head company price comparison stats
+- [`categories.md`](_docs/categories.md) — The product categorisation hierarchy and how primary categories are assigned
+- [`scraping.md`](_docs/scraping.md) — How the scraping pipeline works end to end
+- [`scraper_testing.md`](_docs/scraper_testing.md) — Strategy for testing scrapers and normalization
+- [`TESTING.md`](_docs/TESTING.md) — Testing philosophy, stack (pytest/factory_boy), and fixture conventions
+- [`home.md`](_docs/home.md) — Home page and featured content logic
+- [`recommendations.md`](_docs/recommendations.md) — Essentially a to do list
 
 ---
 
