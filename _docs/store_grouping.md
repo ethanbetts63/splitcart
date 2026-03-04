@@ -57,7 +57,10 @@ Price.objects.for_stores(store_ids)  # always returns the right prices
 **Never filter prices directly by raw store IDs** — member stores will return nothing.
 
 
-**Additional thoughts** — The 98% rule is completely arbitrary. I picked it after playing around with the values and seeing the results but over time more thorough analysis is needed. For example if a company runs a set of sales on less than 2% of their products that would not be caught by our system. A real concern. My current justification is that the 98% rule is simple, database size conservative and becuase we ensure no partial scrapes make it to the database, reasonably accurate.  
+**Additional thoughts** — 
+The 98% rule is completely arbitrary. I picked it after playing around with the values and seeing the results but over time more thorough analysis is needed. For example if a company runs a set of sales on less than 2% of their products that would not be caught by our system. A real concern. My current justification is that the 98% rule is simple, database size conservative and becuase we ensure no partial scrapes make it to the database, reasonably accurate.  
+
+This system does not support historical pricing (other than a was_price). This project began with full historical pricing on products but I found that it is essentially irrelvant to the user, it takes up the vast majority of db space, and of course slows down queries. Therefor this is an intentional limitation in the grouping design. 
 ---
 
 ## Related Files
