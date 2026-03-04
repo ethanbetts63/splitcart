@@ -56,6 +56,8 @@ Price.objects.for_stores(store_ids)  # always returns the right prices
 
 **Never filter prices directly by raw store IDs** — member stores will return nothing.
 
+
+**Additional thoughts** — The 98% rule is completely arbitrary. I picked it after playing around with the values and seeing the results but over time more thorough analysis is needed. For example if a company runs a set of sales on less than 2% of their products that would not be caught by our system. A real concern. My current justification is that the 98% rule is simple, database size conservative and becuase we ensure no partial scrapes make it to the database, reasonably accurate.  
 ---
 
 ## Related Files
