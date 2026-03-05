@@ -22,11 +22,16 @@ class TestExportAnchorStoresView:
 
     def test_returns_anchor_store_id_when_anchor_has_prices(self, client, monkeypatch):
         from products.tests.factories import PriceFactory, ProductFactory
+        from products.models import Price
         monkeypatch.setenv('INTERNAL_API_KEY', 'test-key')
         company = CompanyFactory()
         anchor_store = StoreFactory(company=company)
         StoreGroup.objects.create(company=company, anchor=anchor_store)
         PriceFactory(store=anchor_store, product=ProductFactory())
+
+        # Verify data was created correctly before hitting the view
+        assert anchor_store.prices.count() == 1, f"Expected 1 price, got {anchor_store.prices.count()}"
+        assert StoreGroup.objects.filter(anchor=anchor_store).count() == 1
 
         response = client.get(reverse('export-anchor-stores'), HTTP_X_INTERNAL_API_KEY='test-key')
         data = response.json()
