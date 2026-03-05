@@ -11,6 +11,8 @@ class PillarsGenerator:
         pillar_pages_file_path = settings.BASE_DIR / 'data_management' / 'data' / 'pillar_pages.jsonl'
         self.command.stdout.write(f"Importing Pillar Pages from {pillar_pages_file_path}...")
 
+        seen_slugs = []
+
         with open(pillar_pages_file_path, 'r', encoding='utf-8') as f:
             for line in f:
                 try:
@@ -27,6 +29,8 @@ class PillarsGenerator:
                                 'introduction_paragraph': data['introduction_paragraph'],
                             }
                         )
+
+                        seen_slugs.append(slug)
 
                         if created:
                             self.command.stdout.write(self.command.style.SUCCESS(f"Created Pillar Page: {pillar_page.name}"))
@@ -49,5 +53,9 @@ class PillarsGenerator:
                     self.command.stderr.write(self.command.style.ERROR(f"Skipping invalid line: {line.strip()}"))
                 except KeyError as e:
                     self.command.stderr.write(self.command.style.ERROR(f"Skipping line with missing key {e}: {line.strip()}"))
+
+        deleted_count, _ = PillarPage.objects.exclude(slug__in=seen_slugs).delete()
+        if deleted_count:
+            self.command.stdout.write(self.command.style.WARNING(f"Deleted {deleted_count} stale Pillar Page(s) not present in JSONL."))
 
         self.command.stdout.write(self.command.style.SUCCESS("Pillar Page import complete."))

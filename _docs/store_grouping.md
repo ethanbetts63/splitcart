@@ -49,7 +49,7 @@ Because member stores have no `Price` rows, any query for "prices at these store
 **In utility methods** — use the `Price` manager:
 
 ```python
-Price.objects.for_stores(store_ids)  # always returns the right prices
+Price.objects.for_stores(store_ids)
 ```
 
 `for_stores()` calls `get_pricing_stores_map()` internally, which walks each store's `StoreGroupMembership` to find its anchor. The result is cached for 1 hour per company.
