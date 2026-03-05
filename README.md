@@ -103,7 +103,7 @@ The project is configured for deployment on PythonAnywhere. The following steps 
     python manage.py collectstatic --noinput
     ```
 6.  **Create the `.env` file:**
-    Create a `.env` file in the root of the project with the following structure. **Do not use these exact values in production.**
+    Create a `.env` file in the root of the project with the following structure. 
 
     ```
     API_SERVER_URL="http://www.your-domain.com/"
@@ -118,7 +118,7 @@ The project is configured for deployment on PythonAnywhere. The following steps 
     PORT=3306
     ```
 7.  **Configure the WSGI file:**
-    Update your WSGI file on PythonAnywhere with the following configuration:
+    SplitCart is deployed to python anywhere. This is a set up that works there:
     ```python
     import os
     import sys
