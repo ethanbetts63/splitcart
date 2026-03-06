@@ -28,6 +28,7 @@ class ColesSessionManager:
 
         try:
             options = webdriver.ChromeOptions()
+            options.add_experimental_option("excludeSwitches", ["enable-logging"])
             # This user-agent is critical for Coles not to block us immediately
             options.add_argument("user-agent=SplitCartScraper/1.0 (Contact: admin@splitcart.com.au)")
             
@@ -41,6 +42,7 @@ class ColesSessionManager:
             # Set the initial store
             self.driver.delete_all_cookies()
             self.driver.add_cookie({"name": "fulfillmentStoreId", "value": str(numeric_store_id)})
+            self.driver.add_cookie({"name": "shopping-method", "value": "clickAndCollect"})
             self.driver.refresh()
 
             self.command.stdout.write(self.command.style.WARNING("ACTION REQUIRED: Please solve any CAPTCHA in the browser."))
@@ -89,6 +91,7 @@ class ColesSessionManager:
         
         # Update the cookie in the live browser and refresh
         self.driver.add_cookie({"name": "fulfillmentStoreId", "value": str(numeric_store_id)})
+        self.driver.add_cookie({"name": "shopping-method", "value": "clickAndCollect"})
         self.driver.refresh()
         
         # We should wait a bit for the page to reload and register the change

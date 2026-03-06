@@ -28,6 +28,7 @@ class ColesBrowserSession:
         self.command.stdout.write(self.command.style.SUCCESS("--- Starting Coles browser session ---"))
 
         options = webdriver.ChromeOptions()
+        options.add_experimental_option("excludeSwitches", ["enable-logging"])
         self.driver = webdriver.Chrome(
             service=ChromeService(ChromeDriverManager().install()),
             options=options,
@@ -44,6 +45,7 @@ class ColesBrowserSession:
         self.driver.get("https://www.coles.com.au")
         self.driver.delete_all_cookies()
         self.driver.add_cookie({"name": "fulfillmentStoreId", "value": numeric_id})
+        self.driver.add_cookie({"name": "shopping-method", "value": "clickAndCollect"})
         self.driver.refresh()
 
         self.command.stdout.write(self.command.style.WARNING(
@@ -61,6 +63,7 @@ class ColesBrowserSession:
         numeric_id = self._numeric(store_id)
         self.command.stdout.write(f"--- Switching Coles store to {store_id} ---")
         self.driver.add_cookie({"name": "fulfillmentStoreId", "value": numeric_id})
+        self.driver.add_cookie({"name": "shopping-method", "value": "clickAndCollect"})
         self.driver.get("https://www.coles.com.au")
         self._wait_for_ready(60)
         self.current_store_id = store_id
