@@ -7,6 +7,6 @@ class CompanyListView(ListAPIView):
     """
     Provides a list of all companies.
     """
-    queryset = Company.objects.all()
+    queryset = Company.objects.all().order_by('pk')
     serializer_class = CompanySerializer
     permission_classes = [IsInternalAPIRequest]

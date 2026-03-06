@@ -8,7 +8,7 @@ class ExportStoresView(ListAPIView):
     """
     A view to export all store data.
     """
-    queryset = Store.objects.all().select_related('company', 'division')
+    queryset = Store.objects.all().select_related('company', 'division').order_by('pk')
     serializer_class = StoreExportSerializer
     permission_classes = [IsInternalAPIRequest]
     throttle_classes = [ScopedRateThrottle]
