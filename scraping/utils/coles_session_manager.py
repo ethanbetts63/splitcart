@@ -57,7 +57,7 @@ class ColesSessionManager:
             self.session.headers.update({"User-Agent": "SplitCartScraper/1.0 (Contact: admin@splitcart.com.au)"})
             for cookie in self.driver.get_cookies():
                 self.session.cookies.set(cookie['name'], cookie['value'])
-            
+
             self.current_store_id = store_id
 
             self.command.stdout.write("Session ready. Minimizing browser window until next CAPTCHA is needed.")
