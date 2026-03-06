@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(./venv/Scripts/python:*)"
+      "Bash(./venv/Scripts/python:*)",
+      "Bash(xargs grep:*)"
     ]
   }
 }
