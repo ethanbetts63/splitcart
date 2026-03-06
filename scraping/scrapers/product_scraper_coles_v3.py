@@ -69,7 +69,7 @@ class ColesScraperV3(BaseProductScraper):
             if page_num == 1:
                 numeric_id = self.store_id.split(':')[-1] if ':' in self.store_id else self.store_id
                 actual_store_id = page_props.get("initStoreId")
-                if str(actual_store_id) != str(numeric_id):
+                if int(actual_store_id) != int(numeric_id):
                     self.command.stderr.write(self.command.style.ERROR(
                         f"Store ID mismatch: expected {numeric_id}, got {actual_store_id}."
                     ))

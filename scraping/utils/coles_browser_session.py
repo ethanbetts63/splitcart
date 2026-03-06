@@ -33,6 +33,14 @@ class ColesBrowserSession:
             options=options,
         )
 
+        self.driver.execute_cdp_cmd("Network.enable", {})
+        self.driver.execute_cdp_cmd("Network.setBlockedURLs", {"urls": [
+            "*.jpg", "*.jpeg", "*.png", "*.gif", "*.webp", "*.svg", "*.ico",
+            "*.woff", "*.woff2", "*.ttf",
+            "*google-analytics*", "*googletagmanager*", "*doubleclick*",
+            "*facebook*", "*analytics*", "*segment.io*",
+        ]})
+
         self.driver.get("https://www.coles.com.au")
         self.driver.delete_all_cookies()
         self.driver.add_cookie({"name": "fulfillmentStoreId", "value": numeric_id})
