@@ -5,8 +5,11 @@ from django.db.models import Q
 from rest_framework.throttling import ScopedRateThrottle
 from splitcart.permissions import IsInternalAPIRequest
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 from datetime import timedelta
 
+@method_decorator(never_cache, name='dispatch')
 class SchedulerView(APIView):
     """
     Provides the next store to be scraped based on a clear priority:
