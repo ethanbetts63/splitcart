@@ -24,7 +24,7 @@ export const FounderLetterSection = () => {
             I've collected the prices. I've mathematically calculated the best two, three, or four store combinations, and I've removed as much hassle as humanly possible.
           </p>
           <p>
-            So, welcome aboard fellow bargain hunter. I hope SplitCart can be as useful to you as it is to me. <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">Expect to save 10-15%</span> on your grocery bill!
+            So, welcome aboard fellow bargain hunter. I hope SplitCart can be as useful to you as it is to me. <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">Expect to save 10-35%</span> on your grocery bill!
           </p>
           <p>
             If you have questions, suggestions or anything else I'd love to hear from you.

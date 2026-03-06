@@ -54,7 +54,7 @@ The idea is simple. Why not buy each item in my shopping list from the store whe
 
 I've collected the prices. I've mathematically calculated the best two, three, or four store combinations, and I've removed as much hassle as humanly possible.
 
-So, welcome aboard fellow bargain hunter. I hope SplitCart can be as useful to you as it is to me. **Expect to save 10-15%** on your grocery bill!
+So, welcome aboard fellow bargain hunter. I hope SplitCart can be as useful to you as it is to me. **Expect to save 10-35%** on your grocery bill!
 
 If you have questions, suggestions or anything else I'd love to hear from you.
 
@@ -66,8 +66,8 @@ Happy hunting,
 **Title:** The Hard Hitting Questions
 *Image: King Kong swatting at discount planes (king_kong.webp)*
 
-### Will I really save 10-15%?
-Hopefully! Our optimization aims to find the maximum possible savings. But it's restricted by the stores you choose, the items in you select and the substitutes you approve. Some shopping lists have more potential for savings than others, so individual results will vary but we find that 10-15% is a consistant average.
+### Will I really save 10-35%?
+Hopefully! Our optimization aims to find the maximum possible savings. But it's restricted by the stores you choose, the items in you select and the substitutes you approve. Some shopping lists have more potential for savings than others, so individual results will vary but we find that 10-35% is a consistant average.
 
 ### What’s a ‘substitute’ and why does it matter?
 A substitute is a product you would be willing to have "instead of" the original product you choose. For example, a different brand of the same type of milk. Including substitutes gives our algorithm a lot more options to play with and is a major factor in the savings you should expect. We know it's an annoying to do but it's also the reason we can save you more than any other comparison site.
