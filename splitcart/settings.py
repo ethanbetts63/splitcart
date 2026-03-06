@@ -189,7 +189,7 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_EMAIL_HTML_EMAIL = True
 DEFAULT_FROM_EMAIL = 'ethan.betts.dev@gmail.com'
 EMAIL_HOST = 'smtp.gmail.com'

@@ -1,46 +1,47 @@
-import math
 import os
+import json
+import math
+import requests
+from bs4 import BeautifulSoup
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from django.conf import settings
 from django.utils.text import slugify
 from scraping.scrapers.base_product_scraper import BaseProductScraper
 from scraping.utils.product_scraping_utils.DataCleanerColes import DataCleanerColes
+from scraping.utils.coles_session_manager import ColesSessionManager
 from scraping.utils.product_scraping_utils.jsonl_writer import JsonlWriter
-from scraping.utils.coles_browser_session import ColesBrowserSession
 
 
 class ColesScraperV3(BaseProductScraper):
     """
-    Coles scraper that makes all HTTP requests through the browser's native fetch() API.
-
-    Avoids the TLS fingerprint mismatch that causes Imperva to block a
-    requests.Session mid-run. The browser that solved the CAPTCHA handles every
-    fetch, so the session stays valid across many stores.
+    Same as v2 but fetches all categories in parallel using threads.
+    All 15 categories are fetched concurrently, then cleaned and written
+    sequentially. Faster than v2 by roughly the number of parallel workers.
     """
 
-    def __init__(self, command, company: str, store_id: str, store_name: str,
-                 state: str, categories_to_fetch: list, browser_session: ColesBrowserSession):
+    MAX_WORKERS = 5
+
+    def __init__(self, command, company: str, store_id: str, store_name: str, state: str,
+                 categories_to_fetch: list, session: requests.Session, session_manager: ColesSessionManager):
         super().__init__(command, company, store_id, store_name, state)
         self.categories_to_fetch = categories_to_fetch
-        self.browser_session = browser_session
+        self.session = session
+        self.session_manager = session_manager
 
     def setup(self):
-        numeric_id = self.store_id.split(':')[-1] if ':' in self.store_id else self.store_id
-        store_name_slug = f"{slugify(self.store_name)}-{numeric_id}"
+        numeric_store_id = self.store_id.split(':')[-1] if self.store_id and ':' in self.store_id else self.store_id
+        store_name_slug = f"{slugify(self.store_name)}-{numeric_store_id}"
 
-        barcode_inbox_path = os.path.join(
-            settings.BASE_DIR, 'scraping', 'data', 'inboxes', 'barcode_scraper_inbox'
-        )
+        barcode_inbox_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'inboxes', 'barcode_scraper_inbox')
         os.makedirs(barcode_inbox_path, exist_ok=True)
 
         self.jsonl_writer = JsonlWriter(
             self.company,
             store_name_slug,
             self.state,
-            final_outbox_path=barcode_inbox_path,
+            final_outbox_path=barcode_inbox_path
         )
-
-        self.browser_session.switch_store(self.store_id)
         return True
 
     def get_work_items(self) -> list:
@@ -56,41 +57,113 @@ class ColesScraperV3(BaseProductScraper):
             if page_num > total_pages and total_pages > 1:
                 break
 
-            url = f"https://www.coles.com.au/browse/{category_slug}?page={page_num}"
-            full_data = self.browser_session.fetch_browse_page(url)
+            browse_url = f"https://www.coles.com.au/browse/{category_slug}?page={page_num}"
 
-            if full_data is None:
-                raise InterruptedError(
-                    f"Browser fetch returned None for {category_slug} page {page_num}."
-                )
+            try:
+                response = self.session.get(browse_url, timeout=30)
 
-            page_props = full_data.get("props", {}).get("pageProps", {})
+                if self.session_manager.is_blocked(response.text):
+                    raise InterruptedError("Session appears to be blocked by CAPTCHA.")
 
-            if page_num == 1:
-                numeric_id = self.store_id.split(':')[-1] if ':' in self.store_id else self.store_id
-                actual_store_id = page_props.get("initStoreId")
-                if int(actual_store_id) != int(numeric_id):
-                    self.command.stderr.write(self.command.style.ERROR(
-                        f"Store ID mismatch: expected {numeric_id}, got {actual_store_id}."
-                    ))
+                response.raise_for_status()
+
+                soup = BeautifulSoup(response.text, 'html.parser')
+                json_element = soup.find('script', {'id': '__NEXT_DATA__'})
+
+                if not json_element:
                     break
 
-            search_results = page_props.get("searchResults", {})
-            raw_product_list = search_results.get("results", [])
+                full_data = json.loads(json_element.string)
 
-            if not raw_product_list:
+                if page_num == 1:
+                    numeric_store_id = self.store_id.split(':')[-1]
+                    actual_store_id = full_data.get("props", {}).get("pageProps", {}).get("initStoreId")
+                    if str(actual_store_id) != str(numeric_store_id):
+                        self.command.stderr.write(self.command.style.ERROR(
+                            f"Store ID mismatch! Expected {numeric_store_id}, found {actual_store_id}."
+                        ))
+                        break
+
+                search_results = full_data.get("props", {}).get("pageProps", {}).get("searchResults", {})
+                raw_product_list = search_results.get("results", [])
+
+                if not raw_product_list:
+                    break
+
+                if page_num == 1:
+                    total_results = search_results.get("noOfResults", 0)
+                    page_size = search_results.get("pageSize", 48)
+                    if total_results > 0 and page_size > 0:
+                        total_pages = math.ceil(total_results / page_size)
+
+                all_raw_products.extend(raw_product_list)
+
+            except requests.exceptions.RequestException as e:
+                self.command.stderr.write(self.command.style.ERROR(f"Request failed for {category_slug}: {e}"))
                 break
 
-            if page_num == 1:
-                total_results = search_results.get("noOfResults", 0)
-                page_size = search_results.get("pageSize", 48)
-                if total_results > 0 and page_size > 0:
-                    total_pages = math.ceil(total_results / page_size)
-
-            all_raw_products.extend(raw_product_list)
             page_num += 1
 
         return all_raw_products
+
+    def run(self):
+        """
+        Overrides the base run() to fetch all categories in parallel, then
+        clean and write results sequentially.
+        """
+        scrape_successful = False
+        if not self.setup():
+            self.command.stdout.write(self.command.style.ERROR("Setup failed, aborting scrape."))
+            return
+
+        try:
+            self.jsonl_writer.open()
+            work_items = self.get_work_items()
+            self.output.update_progress(total_categories=len(work_items))
+
+            # Fetch all categories concurrently
+            results = {}
+            fetched = 0
+            self.command.stdout.write(f"Fetching {len(work_items)} categories with {self.MAX_WORKERS} threads...")
+            with ThreadPoolExecutor(max_workers=self.MAX_WORKERS) as executor:
+                future_to_item = {executor.submit(self.fetch_data_for_item, item): item for item in work_items}
+                for future in as_completed(future_to_item):
+                    item = future_to_item[future]
+                    data = future.result()  # re-raises InterruptedError if a thread hit a block
+                    results[item] = data
+                    fetched += 1
+                    self.command.stdout.write(f"  [{fetched}/{len(work_items)}] {item}: {len(data)} products")
+
+            # Clean and write sequentially in original category order
+            for i, item in enumerate(work_items):
+                self.output.update_progress(categories_scraped=i + 1)
+                raw_data_list = results.get(item, [])
+
+                if not raw_data_list:
+                    continue
+
+                try:
+                    cleaned_data_packet = self.clean_raw_data(raw_data_list)
+                    if cleaned_data_packet and cleaned_data_packet.get('products'):
+                        self.write_data(cleaned_data_packet)
+                except Exception as e:
+                    self.command.stderr.write(self.command.style.ERROR(f"Error cleaning data for {item}: {e}"))
+                    import traceback
+                    self.command.stderr.write(traceback.format_exc())
+                    break
+
+            if self.output.new_products > 0 or self.output.duplicate_products > 0:
+                scrape_successful = True
+
+        finally:
+            if self.jsonl_writer:
+                self.jsonl_writer.close()
+                if scrape_successful:
+                    self.post_scrape_enrichment()
+                    self.jsonl_writer.commit()
+                else:
+                    self.jsonl_writer.cleanup()
+            self.output.finalize()
 
     def clean_raw_data(self, raw_data: list) -> dict:
         cleaner = DataCleanerColes(

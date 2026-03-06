@@ -84,26 +84,16 @@ class ColesSessionManager:
 
     def switch_store(self, store_id: str):
         """
-        Attempts to switch the store context on the existing session.
+        Switches the store context by updating the fulfillmentStoreId cookie
+        directly in the requests.Session. No browser interaction needed — the
+        browser is only used for the initial warm-up.
         """
         self.command.stdout.write(f"--- Switching Coles store to {store_id} ---")
         numeric_store_id = store_id.split(':')[-1] if store_id and ':' in store_id else store_id
-        
-        # Update the cookie in the live browser and refresh
-        self.driver.add_cookie({"name": "fulfillmentStoreId", "value": str(numeric_store_id)})
-        self.driver.add_cookie({"name": "shopping-method", "value": "clickAndCollect"})
-        self.driver.refresh()
-        
-        # We should wait a bit for the page to reload and register the change
-        WebDriverWait(self.driver, 60).until(
-            EC.presence_of_element_located((By.ID, "__NEXT_DATA__"))
-        )
 
-        # Re-sync cookies with the requests.Session to ensure it's up-to-date
-        self.session.cookies.clear()
-        for cookie in self.driver.get_cookies():
-            self.session.cookies.set(cookie['name'], cookie['value'])
-        
+        self.session.cookies.set('fulfillmentStoreId', str(numeric_store_id))
+        self.session.cookies.set('shopping-method', 'clickAndCollect')
+
         self.current_store_id = store_id
         self.command.stdout.write(f"Store switched successfully.")
 

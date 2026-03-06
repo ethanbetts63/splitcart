@@ -1,5 +1,5 @@
 import { Button } from "./button"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import {
   Card,
   CardContent,
@@ -15,6 +15,7 @@ import {
 } from "./field"
 import { Input } from "./input"
 import { useState } from "react"
+import { useAuth } from "../../context/AuthContext"
 import { Spinner } from "./spinner"
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
@@ -24,7 +25,8 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [errors, setErrors] = useState<Record<string, string[]>>({})
   const [isLoading, setIsLoading] = useState(false)
-  const [registrationComplete, setRegistrationComplete] = useState(false)
+  const { login } = useAuth()
+  const navigate = useNavigate()
 
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -54,8 +56,9 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       )
 
       if (response.ok) {
-        // On successful registration, show a confirmation message
-        setRegistrationComplete(true)
+        const data = await response.json()
+        login(data.key)
+        navigate("/")
       } else {
         const errorData = await response.json()
         setErrors(errorData)
@@ -67,25 +70,6 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     } finally {
       setIsLoading(false)
     }
-  }
-
-  if (registrationComplete) {
-    return (
-      <Card {...props}>
-        <CardHeader>
-          <CardTitle>Registration Successful</CardTitle>
-          <CardDescription>
-            Please check your email to complete the registration process.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>
-            We have sent a confirmation link to your email address. Please click
-            the link to activate your account.
-          </p>
-        </CardContent>
-      </Card>
-    )
   }
 
   return (

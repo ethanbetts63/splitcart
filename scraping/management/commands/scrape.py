@@ -28,10 +28,10 @@ class Command(BaseCommand):
         parser.add_argument('--store-pk', type=int, help='Scrape a specific store by its database primary key.')
         parser.add_argument('--gs1', action='store_true', help='Run the GS1 company prefix scraper.')
         parser.add_argument('--woolworths', action='store_true', help='Limit the scheduler worker to Woolworths stores.')
-        parser.add_argument('--coles', action='store_true', help='Run the session-persistent Coles scraper across all Coles stores.')
+        parser.add_argument('--coles', action='store_true', help='Run the session-persistent Coles v2 scraper across all Coles stores.')
+        parser.add_argument('--coles-v3', action='store_true', help='Same as --coles but fetches categories in parallel (threaded).')
         parser.add_argument('--aldi', action='store_true', help='Limit the scheduler worker to Aldi stores.')
         parser.add_argument('--iga', action='store_true', help='Limit the scheduler worker to IGA stores.')
-        parser.add_argument('--coles-v3', action='store_true', help='Run the scheduler-driven Coles v3 scraper using browser-native fetch.')
         parser.add_argument('--dev', action='store_true', help='Use the local dev server instead of the production server.')
 
     def handle(self, *args, **options):
@@ -48,11 +48,11 @@ class Command(BaseCommand):
         self._fetch_translation_tables(base_url)
 
         if options['coles']:
-            self._run_coles_scraper(base_url)
+            self._run_coles_scraper(base_url, scraper_version='v2')
             return
 
         if options['coles_v3']:
-            self._run_coles_v3_scraper(base_url)
+            self._run_coles_scraper(base_url, scraper_version='v3')
             return
 
         if options.get('store_pk'):
@@ -69,15 +69,21 @@ class Command(BaseCommand):
         fetch_python_file('brand_translations', brand_table_path, self, base_url)
         self.stdout.write(self.style.SUCCESS('Translation tables are up to date.'))
 
-    def _run_coles_scraper(self, base_url):
+    def _run_coles_scraper(self, base_url, scraper_version='v2'):
         """
         Phase 1 of the Coles scraping workflow. Visits category/list pages for all
         Coles stores and writes JSONL files to the barcode_scraper_inbox. Run
         scrape_barcodes afterwards to complete phase 2 (individual product pages).
 
         Maintains a single Selenium session across stores to minimise CAPTCHA solves.
+        scraper_version: 'v2' (sequential) or 'v3' (parallel category fetching).
         """
-        self.stdout.write(self.style.SUCCESS("--- Starting Coles Scraper ---"))
+        if scraper_version == 'v3':
+            from scraping.scrapers.product_scraper_coles_v3 import ColesScraperV3 as ScraperClass
+        else:
+            ScraperClass = ColesScraperV2
+
+        self.stdout.write(self.style.SUCCESS(f"--- Starting Coles Scraper ({scraper_version}) ---"))
 
         stores = Store.objects.filter(company__name="Coles").order_by('store_id')
         if not stores:
@@ -87,6 +93,9 @@ class Command(BaseCommand):
         session_manager = ColesSessionManager(self)
 
         for store in stores:
+            if store.store_name == 'N/A':
+                self.stdout.write(self.style.WARNING(f"Skipping store with N/A name (PK: {store.pk})"))
+                continue
             self.stdout.write(self.style.SUCCESS(f"-- Scraping: {store.store_name} (Coles) [PK: {store.pk}]"))
             try:
                 session = session_manager.get_session(store.store_id)
@@ -96,7 +105,7 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.ERROR('Could not fetch Coles categories. Skipping store.'))
                     continue
 
-                scraper = ColesScraperV2(
+                scraper = ScraperClass(
                     command=self,
                     company="Coles",
                     store_id=store.store_id,
@@ -106,7 +115,9 @@ class Command(BaseCommand):
                     session=session,
                     session_manager=session_manager
                 )
+                t_start = time.time()
                 scraper.run()
+                self.stdout.write(self.style.SUCCESS(f"Store scraped in {time.time() - t_start:.0f}s"))
 
             except InterruptedError:
                 self.stdout.write(self.style.ERROR("Session blocked by CAPTCHA. Creating new session for next store."))
@@ -121,91 +132,6 @@ class Command(BaseCommand):
 
         session_manager.close()
         self.stdout.write(self.style.SUCCESS("--- Coles Scraper Complete ---"))
-
-    def _run_coles_v3_scraper(self, base_url):
-        """
-        Scheduler-driven Coles scraper using browser-native fetch().
-        Maintains a single browser session across all stores so CAPTCHA only
-        needs to be solved once (or when Imperva explicitly challenges again).
-        """
-        from scraping.utils.coles_browser_session import ColesBrowserSession
-        from scraping.scrapers.product_scraper_coles_v3 import ColesScraperV3
-        from scraping.utils.product_scraping_utils.get_coles_categories import get_coles_categories
-
-        self.stdout.write(self.style.SUCCESS("--- Starting Coles V3 Scheduler Worker ---"))
-        self.stdout.write(self.style.SUCCESS("Create a 'stop.txt' file in the 'scraping' directory to gracefully stop the worker."))
-
-        categories = get_coles_categories()
-        browser_session = ColesBrowserSession(self)
-        scrape_counter = 0
-
-        try:
-            while True:
-                if os.path.exists(os.path.join('scraping', 'stop.txt')):
-                    self.stdout.write(self.style.WARNING("Stop signal detected. Shutting down worker."))
-                    break
-
-                if scrape_counter > 0 and scrape_counter % 5 == 0:
-                    self.stdout.write(self.style.SUCCESS(f'Scraped {scrape_counter} stores. Refreshing translation tables...'))
-                    self._fetch_translation_tables(base_url)
-                    scrape_counter = 0
-
-                self.stdout.write(self.style.HTTP_INFO("\nRequesting next Coles candidate from scheduler..."))
-                try:
-                    response = requests.get(
-                        f"{base_url}/api/scheduler/next-candidate/",
-                        params={'company': ['Coles']},
-                        headers={'X-Internal-API-Key': settings.INTERNAL_API_KEY},
-                        timeout=30,
-                    )
-                    response.raise_for_status()
-
-                    if response.status_code == 204:
-                        self.stdout.write(self.style.WARNING("No Coles stores available. Waiting 30 seconds..."))
-                        time.sleep(30)
-                        continue
-
-                    store_data = response.json()
-                except requests.exceptions.RequestException as e:
-                    self.stdout.write(self.style.ERROR(f"Failed to get next store: {e}. Retrying in 60 seconds..."))
-                    time.sleep(60)
-                    continue
-
-                store_pk = store_data['pk']
-                try:
-                    store = Store.objects.select_related('company').get(pk=store_pk)
-                except Store.DoesNotExist:
-                    self.stdout.write(self.style.ERROR(f"Store PK {store_pk} not found."))
-                    continue
-
-                self.stdout.write(self.style.SUCCESS(f"-- Scraping: {store.store_name} (Coles) [PK: {store_pk}]"))
-
-                if not browser_session.driver:
-                    browser_session.start(store.store_id)
-
-                try:
-                    scraper = ColesScraperV3(
-                        command=self,
-                        company=store.company.name,
-                        store_id=store.store_id,
-                        store_name=store.store_name,
-                        state=store.state,
-                        categories_to_fetch=categories,
-                        browser_session=browser_session,
-                    )
-                    t_start = time.time()
-                    scraper.run()
-                    self.stdout.write(self.style.SUCCESS(f"Store scraped in {time.time() - t_start:.0f}s"))
-                    scrape_counter += 1
-                except InterruptedError:
-                    browser_session.wait_for_recaptcha()
-                    # Reset current_store_id so the next store forces a switch_store reload
-                    browser_session.current_store_id = None
-                except Exception as e:
-                    self.stdout.write(self.style.ERROR(f"Unexpected error for {store.store_name}: {e}"))
-        finally:
-            browser_session.close()
-            self.stdout.write(self.style.SUCCESS("--- Coles V3 Worker stopped ---"))
 
     def _run_scheduler_worker(self, options, base_url):
         """

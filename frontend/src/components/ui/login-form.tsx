@@ -45,15 +45,9 @@ export function LoginForm({
         navigate("/")
       } else {
         const errorData = await response.json()
-        if (errorData.non_field_errors && errorData.non_field_errors.includes("E-mail is not verified.")) {
-          toast.error("Login Failed", {
-            description: "Your email address has not been verified. Please check your inbox for a verification email.",
-          })
-        } else {
-          toast.error("Login Failed", {
-            description: errorData.non_field_errors ? errorData.non_field_errors[0] : "An unexpected error occurred. Please try again.",
-          })
-        }
+        toast.error("Login Failed", {
+          description: errorData.non_field_errors ? errorData.non_field_errors[0] : "An unexpected error occurred. Please try again.",
+        })
       }
     } catch (error) {
       console.error("An error occurred during login:", error)
