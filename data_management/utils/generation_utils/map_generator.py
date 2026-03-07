@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from data_management.utils.analysis_utils.map_generator import generate_store_map
+from data_management.utils.analysis_utils.store_location_plotter import generate_store_map
 
 class MapGenerator:
     def __init__(self, command, company_name=None, dev=False):

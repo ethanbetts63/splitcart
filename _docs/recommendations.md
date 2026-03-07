@@ -112,14 +112,6 @@ These need a manual audit pass of the full mapping file to catch others like the
   is stored as 'IGA' (which is likely given title-casing conventions elsewhere), this condition never fires. IGA prices would be treated as min()
   instead of avg(), which is wrong for store-by-store pricing. This is a silent logic error — no exception, just incorrect stats.
 
-  2. percent_same can go negative or exceed 100
-
-  bargain_stats_generator.py:78:
-  percent_same = 100 - percent_a - percent_b
-  Both percent_a and percent_b are independently rounded. If the true split is 50.4% / 49.6% / 0%, rounding gives 50 + 50 = 100, so percent_same = 0
-   — fine. But if it's 50.6% / 50.6% / ~-1.2%, you get percent_same = -1. The result is stored directly in JSON and served to the frontend. Should
-  round the raw float for same_price and derive the percentages from the raw counts, not by subtraction.
-
   1. Hardcoded division IDs in get_nearby_stores
   excluded_division_ids = [2, 3, 5, 7]
   These are raw DB PKs. If the DB is ever reset or re-seeded those IDs will be wrong silently. Worth filtering by division name instead.

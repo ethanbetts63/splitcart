@@ -73,9 +73,10 @@ class BargainStatsGenerator:
                 wins_a = wins_for_b_in_pair
                 wins_b = wins_for_a_in_pair
 
+            same_price = pair_stats.get('same_price', 0)
             percent_a = round((wins_a / overlap_count) * 100) if overlap_count > 0 else 0
             percent_b = round((wins_b / overlap_count) * 100) if overlap_count > 0 else 0
-            percent_same = 100 - percent_a - percent_b
+            percent_same = round((same_price / overlap_count) * 100) if overlap_count > 0 else 0
             
             final_stats.append({
                 'company_a_name': company_a_name,
