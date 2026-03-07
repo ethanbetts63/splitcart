@@ -1,7 +1,7 @@
 import os
 from django.db import transaction
 from products.models import Product, ProductBrand
-import ast
+from scraping.utils.product_scraping_utils.BaseDataCleaner import BaseDataCleaner
 
 TRANSLATION_TABLE_PATH = os.path.abspath(os.path.join(
     os.path.dirname(__file__),
@@ -24,13 +24,8 @@ class BrandReconciler:
     def _load_translation_table(self):
         """Safely loads the translation dictionary from the .py file."""
         try:
-            with open(self.translation_table_path, 'r', encoding='utf-8') as f:
-                file_content = f.read()
-            if '=' in file_content:
-                dict_str = file_content.split('=', 1)[1].strip()
-                return ast.literal_eval(dict_str)
-            return {}
-        except (FileNotFoundError, SyntaxError, ValueError) as e:
+            return BaseDataCleaner._load_translation_table(self.translation_table_path)
+        except (SyntaxError, ValueError) as e:
             self.command.stderr.write(self.command.style.ERROR(f"Error loading brand translation table: {e}"))
             return {}
 

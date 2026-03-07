@@ -129,26 +129,17 @@ These need a manual audit pass of the full mapping file to catch others like the
   pre-filter. As the dataset grows this will get slow — a simple lat/lon bounding box WHERE clause before the Python loop would cut down the set
   significantly.
 
-  5. Two map_generator.py files
-  utils/analysis_utils/map_generator.py
-  utils/generation_utils/map_generator.py
-  One of these is likely dead code or a forgotten duplicate. Worth checking which is actually imported anywhere.
-
   6. CategoryCycleManager prefetch that doesn't fully help
   prefetch_related('parents') is called on the initial queryset, but inside _prune_cycles_recursive there are further current_node.parents.all()
   calls on nodes that weren't in that initial queryset (they're travers
 
 
   
-  1. The two reconcilers share nearly identical structure
-
-  BrandReconciler and ProductReconciler both have the same _load_translation_table pattern — open a .py file, split on =, ast.literal_eval. This is
-  duplicated verbatim. A shared base class with _load_translation_table(path) would halve that code.
 
   2. ComparisonCacheManager and HealthCheckCacheManager are also almost identical
 
   Same file-based cache pattern, same _load_and_prune, same _write_cache_file, same should_skip. They differ only in the variable name
-  (COMPARISON_CACHE vs HEALTH_CHECK_CACHE) and the key type (pair of group IDs vs single store ID). These could easily be one parameterised class.
+  (COMPARISON_CACHE vs HEALTH_CHECK_CACHE) and the key type (pair of group IDs vs single store ID). These could easily be one parameterised class. honestly the best move here is to update to use json instead of .py
 
   3. The IntergroupComparer.run() loop is hard to reason about
 
