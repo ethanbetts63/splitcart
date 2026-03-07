@@ -145,3 +145,31 @@ These need a manual audit pass of the full mapping file to catch others like the
   6. CategoryCycleManager prefetch that doesn't fully help
   prefetch_related('parents') is called on the initial queryset, but inside _prune_cycles_recursive there are further current_node.parents.all()
   calls on nodes that weren't in that initial queryset (they're travers
+
+
+  
+  1. The two reconcilers share nearly identical structure
+
+  BrandReconciler and ProductReconciler both have the same _load_translation_table pattern — open a .py file, split on =, ast.literal_eval. This is
+  duplicated verbatim. A shared base class with _load_translation_table(path) would halve that code.
+
+  2. ComparisonCacheManager and HealthCheckCacheManager are also almost identical
+
+  Same file-based cache pattern, same _load_and_prune, same _write_cache_file, same should_skip. They differ only in the variable name
+  (COMPARISON_CACHE vs HEALTH_CHECK_CACHE) and the key type (pair of group IDs vs single store ID). These could easily be one parameterised class.
+
+  3. The IntergroupComparer.run() loop is hard to reason about
+
+  The while True re-evaluation loop (re-runs until no merges happened in a full pass) is correct but complex. The merged_group_ids_this_pass guard
+  prevents double-merging within a pass, but if a group gets merged and its ID stays in the set, a subsequent pass could still compare it — the
+  group is deleted so it's safe, but it's fragile logic that relies on Django not recycling PKs within a transaction.
+
+  4. _eject_member doesn't check if the member already has its own group
+
+  If somehow a store ends up with two memberships (data corruption), _eject_member would create a third group without cleaning up the second
+  membership. Worth a defensive check.
+
+  5. The translation table file format is fragile
+
+  Both reconcilers do file_content.split('=', 1)[1].strip() and ast.literal_eval. If the variable name in the file ever changes or a comment is
+  added before the =, this silently returns {}. A simple JSON file would be more robust.
