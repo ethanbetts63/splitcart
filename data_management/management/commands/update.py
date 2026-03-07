@@ -36,10 +36,6 @@ class Command(BaseCommand):
         relaxed_staleness = options['relaxed_staleness']
         post_process_only = options['post_process_only']
 
-        if not any([run_stores_discovery, run_products_processed, run_gs1, run_category_links, run_substitutions]):
-            run_stores_discovery = True
-            run_products_processed = True
-
         if run_substitutions:
             orchestrator = SubstitutionUpdateOrchestrator(self)
             orchestrator.run()

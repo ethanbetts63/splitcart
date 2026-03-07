@@ -31,6 +31,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
 }) => {
   const { openDialog } = useDialog();
   const [isSmallScreen, setIsSmallScreen] = React.useState(false);
+  const [scrollContainer, setScrollContainer] = React.useState<HTMLDivElement | null>(null);
   const location = useLocation();
 
   React.useEffect(() => {
@@ -156,7 +157,10 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
         </div>
 
         {/* Tiles */}
-        <div className="overflow-x-auto scrollbar-hide pb-1 pt-2">
+        <div 
+          className="overflow-x-auto scrollbar-hide pb-1 pt-2"
+          ref={setScrollContainer}
+        >
           <div className="flex snap-x snap-mandatory">
             {isLoading
               ? [...Array(5)].map((_, i) => (
@@ -166,7 +170,11 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
                 ))
               : products.map((product) => (
                   <div className="flex-shrink-0 snap-start w-4/5 sm:w-1/3 md:w-1/4 lg:w-1/5 px-1.5 pb-1" key={product.id}>
-                    <ProductTile product={product} />
+                    <ProductTile 
+                      product={product} 
+                      root={scrollContainer}
+                      rootMargin="0px 200px 0px 200px"
+                    />
                   </div>
                 ))
             }

@@ -17,22 +17,19 @@ class Command(BaseCommand):
         parser.add_argument('--dev', action='store_true', help='Use development server URL.')
 
     def handle(self, *args, **options):
-        # Correctly determine if any task-specific flag was set
-        task_flags = ['products', 'gs1', 'stores', 'cat_links', 'subs']
-        run_all = not any(options[task] for task in task_flags)
         dev = options['dev']
 
-        if options['products'] or run_all:
+        if options['products']:
             self.stdout.write(self.style.SUCCESS("Uploading product data..."))
             uploader = ProductUploader(self, dev=dev)
             uploader.run()
-        
-        if options['gs1'] or run_all:
+
+        if options['gs1']:
             self.stdout.write(self.style.SUCCESS("Uploading GS1 data..."))
             uploader = Gs1Uploader(self, dev=dev)
             uploader.run()
 
-        if options['stores'] or run_all:
+        if options['stores']:
             self.stdout.write(self.style.SUCCESS("Uploading store data..."))
             uploader = StoreUploader(self, dev=dev)
             uploader.run()

@@ -6,12 +6,21 @@ import fallbackImage from '../assets/splitcart_symbol_v6.webp';
 import placeholderImage from '../assets/placeholder.webp';
 import type { ProductTileProps } from '../types/ProductTileProps';
 
-const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
+const ProductTile: React.FC<ProductTileProps> = ({ 
+  product, 
+  root = null, 
+  rootMargin = '200px 0px 200px 0px' 
+}) => {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const tileRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
+    // If a custom root is provided (like in a carousel), we need to ensure it's actually mounted.
+    // However, the IntersectionObserver API handles 'null' as the viewport correctly.
+    // The issue is if 'root' is passed as a ref.current that might be null initially.
+    // But since we are passing 'root' as a prop, the parent component handles that.
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !isVisible) {
@@ -20,7 +29,8 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
         }
       },
       {
-        rootMargin: '0px 0px 100px 0px',
+        root: root,
+        rootMargin: rootMargin,
         threshold: 0.01,
       }
     );
@@ -35,7 +45,7 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
         observer.unobserve(currentRef);
       }
     };
-  }, [isVisible]);
+  }, [isVisible, root, rootMargin]);
 
   const imageUrl = isVisible ? (product.image_url || fallbackImage) : placeholderImage;
 
@@ -133,7 +143,7 @@ const ProductTile: React.FC<ProductTileProps> = ({ product }) => {
             onError={handleImageError}
             alt={product.name}
             className={`h-full w-full object-cover transition-transform duration-300 ${!isButtonHovered && 'group-hover:scale-105'}`}
-            loading="lazy"
+            loading={isVisible ? "eager" : "lazy"}
           />
         </div>
 
