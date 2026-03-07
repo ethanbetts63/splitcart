@@ -9,7 +9,7 @@ TRANSLATION_TABLE_PATH = os.path.abspath(os.path.join(
     '..',
     '..',
     'data',
-    'product_normalized_name_brand_size_translation_table.py'
+    'product_normalized_name_brand_size_translation_table.json'
 ))
 
 class ProductTranslationTableGenerator(BaseTranslationTableGenerator):
@@ -20,10 +20,7 @@ class ProductTranslationTableGenerator(BaseTranslationTableGenerator):
         """
         Initializes the generator for product name translations.
         """
-        super().__init__(
-            output_path=TRANSLATION_TABLE_PATH,
-            variable_name="PRODUCT_NAME_TRANSLATIONS"
-        )
+        super().__init__(output_path=TRANSLATION_TABLE_PATH)
 
     def generate_translation_dict(self) -> dict:
         """

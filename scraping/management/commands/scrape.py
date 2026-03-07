@@ -63,8 +63,8 @@ class Command(BaseCommand):
 
     def _fetch_translation_tables(self, base_url):
         self.stdout.write(self.style.SUCCESS('Updating translation tables...'))
-        product_table_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'product_normalized_name_brand_size_translation_table.py')
-        brand_table_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'brand_translation_table.py')
+        product_table_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'product_normalized_name_brand_size_translation_table.json')
+        brand_table_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'brand_translation_table.json')
         fetch_python_file('product_translations', product_table_path, self, base_url)
         fetch_python_file('brand_translations', brand_table_path, self, base_url)
         self.stdout.write(self.style.SUCCESS('Translation tables are up to date.'))

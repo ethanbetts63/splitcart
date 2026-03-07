@@ -4,8 +4,7 @@ from splitcart.permissions import IsInternalAPIRequest
 
 class BrandTranslationFileView(BasePythonFileView):
     """
-    Serves the brand name translation table as a Python file.
+    Serves the brand name translation table as a JSON file.
     """
     permission_classes = [IsInternalAPIRequest]
     generator_class = BrandTranslationTableGenerator
-    variable_name = "BRAND_NAME_TRANSLATIONS"

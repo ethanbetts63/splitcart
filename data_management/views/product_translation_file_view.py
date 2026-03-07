@@ -4,8 +4,7 @@ from splitcart.permissions import IsInternalAPIRequest
 
 class ProductTranslationFileView(BasePythonFileView):
     """
-    Serves the product name translation table as a Python file.
+    Serves the product name translation table as a JSON file.
     """
     permission_classes = [IsInternalAPIRequest]
     generator_class = ProductTranslationTableGenerator
-    variable_name = "PRODUCT_NAME_TRANSLATIONS"

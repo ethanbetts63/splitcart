@@ -9,7 +9,7 @@ TRANSLATION_TABLE_PATH = os.path.abspath(os.path.join(
     '..',
     '..',
     'data',
-    'brand_translation_table.py'
+    'brand_translation_table.json'
 ))
 
 class BrandReconciler:

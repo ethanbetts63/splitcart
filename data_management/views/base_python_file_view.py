@@ -38,6 +38,6 @@ class BasePythonFileView(APIView):
             return HttpResponse(status=304)
 
         # 4. Create and return the response
-        response = HttpResponse(file_bytes, content_type='text/plain')
+        response = HttpResponse(file_bytes, content_type='application/json')
         response['ETag'] = etag
         return response

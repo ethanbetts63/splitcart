@@ -1,4 +1,5 @@
 import os
+import json
 import pytest
 from products.tests.factories import ProductFactory, ProductBrandFactory
 from data_management.database_updating_classes.product_updating.translation_table_generators.base_translation_table_generator import BaseTranslationTableGenerator
@@ -10,7 +11,7 @@ from data_management.database_updating_classes.product_updating.translation_tabl
 
 class StubGenerator(BaseTranslationTableGenerator):
     def __init__(self, output_path):
-        super().__init__(output_path=output_path, variable_name='MY_TRANSLATIONS')
+        super().__init__(output_path=output_path)
 
     def generate_translation_dict(self):
         return {'variation': 'canonical'}
@@ -19,29 +20,20 @@ class StubGenerator(BaseTranslationTableGenerator):
 # ── BaseTranslationTableGenerator ────────────────────────────────────────────
 
 class TestBaseTranslationTableGeneratorWriteToFile:
-    def test_creates_file_with_correct_variable_name(self, tmp_path):
-        path = str(tmp_path / 'output.py')
-        gen = StubGenerator(path)
-        gen.write_to_file({'a': 'b'})
-        content = open(path).read()
-        assert 'MY_TRANSLATIONS' in content
-
-    def test_written_content_is_valid_python(self, tmp_path):
-        path = str(tmp_path / 'output.py')
+    def test_written_content_is_valid_json(self, tmp_path):
+        path = str(tmp_path / 'output.json')
         gen = StubGenerator(path)
         gen.write_to_file({'key': 'value'})
-        ns = {}
-        exec(open(path).read(), ns)
-        assert ns['MY_TRANSLATIONS'] == {'key': 'value'}
+        with open(path) as f:
+            assert json.load(f) == {'key': 'value'}
 
     def test_run_calls_generate_and_writes_file(self, tmp_path):
-        path = str(tmp_path / 'output.py')
+        path = str(tmp_path / 'output.json')
         gen = StubGenerator(path)
         gen.run()
         assert os.path.exists(path)
-        ns = {}
-        exec(open(path).read(), ns)
-        assert ns['MY_TRANSLATIONS'] == {'variation': 'canonical'}
+        with open(path) as f:
+            assert json.load(f) == {'variation': 'canonical'}
 
 
 # ── ProductTranslationTableGenerator ─────────────────────────────────────────
@@ -50,13 +42,13 @@ class TestBaseTranslationTableGeneratorWriteToFile:
 class TestProductTranslationTableGenerator:
     def test_empty_database_returns_empty_dict(self, tmp_path):
         gen = ProductTranslationTableGenerator()
-        gen.output_path = str(tmp_path / 'out.py')
+        gen.output_path = str(tmp_path / 'out.json')
         assert gen.generate_translation_dict() == {}
 
     def test_product_with_no_variations_excluded(self, tmp_path):
         ProductFactory(normalized_name_brand_size='canonical', normalized_name_brand_size_variations=[])
         gen = ProductTranslationTableGenerator()
-        gen.output_path = str(tmp_path / 'out.py')
+        gen.output_path = str(tmp_path / 'out.json')
         result = gen.generate_translation_dict()
         assert result == {}
 
@@ -66,7 +58,7 @@ class TestProductTranslationTableGenerator:
             normalized_name_brand_size_variations=['variant-a'],
         )
         gen = ProductTranslationTableGenerator()
-        gen.output_path = str(tmp_path / 'out.py')
+        gen.output_path = str(tmp_path / 'out.json')
         result = gen.generate_translation_dict()
         assert result.get('variant-a') == 'canonical'
 
@@ -77,7 +69,7 @@ class TestProductTranslationTableGenerator:
             normalized_name_brand_size_variations=['CANONICAL'],
         )
         gen = ProductTranslationTableGenerator()
-        gen.output_path = str(tmp_path / 'out.py')
+        gen.output_path = str(tmp_path / 'out.json')
         result = gen.generate_translation_dict()
         assert 'CANONICAL' not in result
 
@@ -87,7 +79,7 @@ class TestProductTranslationTableGenerator:
             normalized_name_brand_size_variations=['var-a', 'var-b'],
         )
         gen = ProductTranslationTableGenerator()
-        gen.output_path = str(tmp_path / 'out.py')
+        gen.output_path = str(tmp_path / 'out.json')
         result = gen.generate_translation_dict()
         assert result['var-a'] == 'canonical'
         assert result['var-b'] == 'canonical'
@@ -99,13 +91,13 @@ class TestProductTranslationTableGenerator:
 class TestBrandTranslationTableGenerator:
     def test_empty_database_returns_empty_dict(self, tmp_path):
         gen = BrandTranslationTableGenerator()
-        gen.output_path = str(tmp_path / 'out.py')
+        gen.output_path = str(tmp_path / 'out.json')
         assert gen.generate_translation_dict() == {}
 
     def test_brand_with_no_variations_excluded(self, tmp_path):
         ProductBrandFactory(normalized_name='my-brand', normalized_name_variations=[])
         gen = BrandTranslationTableGenerator()
-        gen.output_path = str(tmp_path / 'out.py')
+        gen.output_path = str(tmp_path / 'out.json')
         result = gen.generate_translation_dict()
         assert result == {}
 
@@ -115,7 +107,7 @@ class TestBrandTranslationTableGenerator:
             normalized_name_variations=['alias-brand'],
         )
         gen = BrandTranslationTableGenerator()
-        gen.output_path = str(tmp_path / 'out.py')
+        gen.output_path = str(tmp_path / 'out.json')
         result = gen.generate_translation_dict()
         assert result.get('alias-brand') == 'canon-brand'
 
@@ -125,7 +117,7 @@ class TestBrandTranslationTableGenerator:
             normalized_name_variations=['my-brand'],
         )
         gen = BrandTranslationTableGenerator()
-        gen.output_path = str(tmp_path / 'out.py')
+        gen.output_path = str(tmp_path / 'out.json')
         result = gen.generate_translation_dict()
         assert 'my-brand' not in result
 
@@ -139,7 +131,7 @@ class TestBrandTranslationTableGeneratorResolveConflict:
         brand_no_prefix = ProductBrandFactory(normalized_name='brand-no-prefix')
 
         gen = BrandTranslationTableGenerator()
-        gen.output_path = str(tmp_path / 'out.py')
+        gen.output_path = str(tmp_path / 'out.json')
         winner, loser = gen._resolve_conflict(brand_with_prefix, brand_no_prefix)
         assert winner == brand_with_prefix
         assert loser == brand_no_prefix
@@ -153,7 +145,7 @@ class TestBrandTranslationTableGeneratorResolveConflict:
         ProductFactory(brand=brand_b)
 
         gen = BrandTranslationTableGenerator()
-        gen.output_path = str(tmp_path / 'out.py')
+        gen.output_path = str(tmp_path / 'out.json')
         winner, loser = gen._resolve_conflict(brand_a, brand_b)
         assert winner == brand_a
 
@@ -162,6 +154,6 @@ class TestBrandTranslationTableGeneratorResolveConflict:
         brand_z = ProductBrandFactory(normalized_name='zebra', name='Zebra Brand')
 
         gen = BrandTranslationTableGenerator()
-        gen.output_path = str(tmp_path / 'out.py')
+        gen.output_path = str(tmp_path / 'out.json')
         winner, loser = gen._resolve_conflict(brand_a, brand_z)
         assert winner == brand_a

@@ -7,7 +7,7 @@ from scraping.utils.python_file_downloader import fetch_python_file
 
 @pytest.fixture
 def dest_path(tmp_path):
-    return str(tmp_path / 'output' / 'test_file.py')
+    return str(tmp_path / 'output' / 'test_file.json')
 
 
 class TestFetchPythonFile:
@@ -19,7 +19,7 @@ class TestFetchPythonFile:
     def test_saves_file_on_200_response(self, dest_path):
         mock_resp = MagicMock()
         mock_resp.status_code = 200
-        mock_resp.text = 'translations = {}'
+        mock_resp.text = '{}'
         mock_resp.headers.get.return_value = None
         mock_resp.raise_for_status.return_value = None
 
@@ -29,12 +29,12 @@ class TestFetchPythonFile:
 
         assert os.path.exists(dest_path)
         with open(dest_path) as f:
-            assert f.read() == 'translations = {}'
+            assert f.read() == '{}'
 
     def test_saves_etag_when_present(self, dest_path):
         mock_resp = MagicMock()
         mock_resp.status_code = 200
-        mock_resp.text = 'data = {}'
+        mock_resp.text = '{}'
         mock_resp.headers.get.return_value = '"etag-abc123"'
         mock_resp.raise_for_status.return_value = None
 

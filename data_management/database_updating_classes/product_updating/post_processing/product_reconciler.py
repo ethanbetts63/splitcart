@@ -11,7 +11,7 @@ TRANSLATION_TABLE_PATH = os.path.abspath(os.path.join(
     '..',
     '..',
     'data',
-    'product_normalized_name_brand_size_translation_table.py'
+    'product_normalized_name_brand_size_translation_table.json'
 ))
 
 class ProductReconciler:

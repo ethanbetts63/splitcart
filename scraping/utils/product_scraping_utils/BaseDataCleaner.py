@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from django.conf import settings
 import os
-import ast
+import json
 from scraping.utils.product_scraping_utils.product_normalizer import ProductNormalizer
 from scraping.utils.product_scraping_utils.price_normalizer import PriceNormalizer
 from scraping.utils.product_scraping_utils.price_hasher import generate_price_hash
@@ -30,21 +30,17 @@ class BaseDataCleaner(ABC):
     @staticmethod
     def _load_translation_table(path: str) -> dict:
         """
-        Loads a single translation table from a Python file containing one dict assignment.
+        Loads a single translation table from a JSON file.
         Returns an empty dict if the file does not exist (expected on first run).
         Raises if the file exists but cannot be parsed.
         """
         try:
             with open(path, 'r', encoding='utf-8') as f:
-                file_content = f.read()
+                return json.load(f)
         except FileNotFoundError:
             return {}
-
-        if '=' not in file_content:
-            raise ValueError(f"Translation table at {path} contains no assignment.")
-
-        dict_str = file_content.split('=', 1)[1].strip()
-        return ast.literal_eval(dict_str)
+        except json.JSONDecodeError as e:
+            raise ValueError(f"Translation table at {path} is not valid JSON: {e}") from e
 
     @staticmethod
     def _load_translation_tables():
@@ -53,8 +49,8 @@ class BaseDataCleaner(ABC):
         directory. Returns empty dictionaries if files are not found (expected on first
         run). Raises if a file exists but is malformed.
         """
-        brand_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'brand_translation_table.py')
-        product_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'product_normalized_name_brand_size_translation_table.py')
+        brand_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'brand_translation_table.json')
+        product_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'product_normalized_name_brand_size_translation_table.json')
 
         brand_translations = BaseDataCleaner._load_translation_table(brand_path)
         product_translations = BaseDataCleaner._load_translation_table(product_path)

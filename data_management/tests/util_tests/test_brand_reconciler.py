@@ -7,14 +7,15 @@ from data_management.database_updating_classes.product_updating.post_processing.
 
 
 def _write_translation_table(path, mapping: dict):
+    import json
     with open(path, 'w', encoding='utf-8') as f:
-        f.write(f"BRAND_TRANSLATIONS = {repr(mapping)}\n")
+        json.dump(mapping, f)
 
 
 @pytest.fixture
 def reconciler(mock_command, tmp_path):
     """Returns a BrandReconciler pointed at a temp translation table file."""
-    table_path = str(tmp_path / 'brand_translation_table.py')
+    table_path = str(tmp_path / 'brand_translation_table.json')
     r = BrandReconciler(mock_command)
     r.translation_table_path = table_path
     return r, table_path
@@ -24,18 +25,18 @@ def reconciler(mock_command, tmp_path):
 class TestBrandReconcilerLoadTranslationTable:
     def test_missing_file_returns_empty_dict(self, mock_command):
         r = BrandReconciler(mock_command)
-        r.translation_table_path = '/nonexistent/path/brand_table.py'
+        r.translation_table_path = '/nonexistent/path/brand_table.json'
         assert r._load_translation_table() == {}
 
     def test_empty_file_returns_empty_dict(self, mock_command, tmp_path):
-        table_path = str(tmp_path / 'brand_translation_table.py')
+        table_path = str(tmp_path / 'brand_translation_table.json')
         open(table_path, 'w').close()
         r = BrandReconciler(mock_command)
         r.translation_table_path = table_path
         assert r._load_translation_table() == {}
 
     def test_valid_file_returns_correct_mapping(self, mock_command, tmp_path):
-        table_path = str(tmp_path / 'brand_translation_table.py')
+        table_path = str(tmp_path / 'brand_translation_table.json')
         _write_translation_table(table_path, {'dupe-brand': 'canonical-brand'})
         r = BrandReconciler(mock_command)
         r.translation_table_path = table_path
