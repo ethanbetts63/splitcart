@@ -120,4 +120,28 @@ These need a manual audit pass of the full mapping file to catch others like the
    — fine. But if it's 50.6% / 50.6% / ~-1.2%, you get percent_same = -1. The result is stored directly in JSON and served to the frontend. Should
   round the raw float for same_price and derive the percentages from the raw counts, not by subtraction.
 
-  3. ~~BargainStatsSerializer is dead code~~ — deleted.
+  1. Hardcoded division IDs in get_nearby_stores
+  excluded_division_ids = [2, 3, 5, 7]
+  These are raw DB PKs. If the DB is ever reset or re-seeded those IDs will be wrong silently. Worth filtering by division name instead.
+
+  2. print() calls in build_price_slots
+  The rest of the codebase passes command through for logging. build_price_slots uses bare print() — these won't show up in any log aggregation and
+  can't be suppressed in tests.
+
+  3. calculate_best_single_store has an unfinished savings calculation
+  'savings': 0,  # Savings calculation is complex here, maybe compare to baseline?
+  This field is in the response contract but is always 0. Worth either wiring it up or removing it from the return value so callers aren't misled.
+
+  4. get_nearby_postcodes and get_nearby_stores load everything into Python
+  Both fetch every postcode/store from the DB and filter in Python with the Haversine formula. Fine for current scale, but there's no bounding box
+  pre-filter. As the dataset grows this will get slow — a simple lat/lon bounding box WHERE clause before the Python loop would cut down the set
+  significantly.
+
+  5. Two map_generator.py files
+  utils/analysis_utils/map_generator.py
+  utils/generation_utils/map_generator.py
+  One of these is likely dead code or a forgotten duplicate. Worth checking which is actually imported anywhere.
+
+  6. CategoryCycleManager prefetch that doesn't fully help
+  prefetch_related('parents') is called on the initial queryset, but inside _prune_cycles_recursive there are further current_node.parents.all()
+  calls on nodes that weren't in that initial queryset (they're travers
