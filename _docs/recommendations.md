@@ -173,3 +173,17 @@ These need a manual audit pass of the full mapping file to catch others like the
 
   Both reconcilers do file_content.split('=', 1)[1].strip() and ast.literal_eval. If the variable name in the file ever changes or a comment is
   added before the =, this silently returns {}. A simple JSON file would be more robust.
+
+
+  
+  UpdateOrchestrator is doing too much. It owns cache-building, file validation, SKU JIT loading, price cache prep, per-file pipeline orchestration,
+   and post-processing. At ~300 lines it's readable, but one more feature and it becomes hard to test in isolation. The inner methods
+  (_is_file_valid, _deduplicate_product_data_for_pricing) are fine units — extracting them into their own class would make the orchestrator thinner.
+
+  The two-level price cache is clever but fragile. hash_to_pk + product_id_to_pk are manually constructed in tests and must be kept in sync. The
+  fact that a bug hid in the gap between them (hash tracks old identity, pk tracks product identity) is a sign the invariant isn't enforced
+  anywhere. Worth a comment at minimum.
+
+  GS1UpdateOrchestrator._process_record has side-effects that compound. It creates brands, sets prefixes, records name variations, and reassigns
+  products all in one method. If the brand-creation step succeeds but the variation-recording step fails midway, you get partial state. Wrapping the
+   whole record in transaction.atomic() would make it all-or-nothing.

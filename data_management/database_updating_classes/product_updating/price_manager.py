@@ -117,9 +117,11 @@ class PriceManager:
                 price_obj.save_amount = None
 
         # Identify prices to delete (delisted products)
+        # Exclude PKs that are already being updated to avoid deleting then failing to update
+        pks_being_updated = {p.pk for p in prices_to_update}
         initial_hashes_in_db = set(hash_to_pk_cache.keys())
         hashes_to_delete = initial_hashes_in_db - seen_hashes
-        pks_to_delete = [hash_to_pk_cache[h] for h in hashes_to_delete]
+        pks_to_delete = [hash_to_pk_cache[h] for h in hashes_to_delete if hash_to_pk_cache[h] not in pks_being_updated]
 
         if not prices_to_create and not prices_to_update and not pks_to_delete:
             self.command.stdout.write("    - No price changes to persist.")
