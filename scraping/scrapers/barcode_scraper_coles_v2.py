@@ -94,12 +94,23 @@ class ColesBarcodeScraperV2(BaseProductScraper):
             return []
 
         response = self.session.get(url, timeout=30)
-        
+
         if self.session_manager.is_blocked(response.text):
             self.command.stderr.write(self.command.style.ERROR("High-level block detected. Ending session."))
             raise InterruptedError("Session appears to be blocked by CAPTCHA.")
 
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except Exception as e:
+            self.command.stdout.write(self.command.style.WARNING(f"  - HTTP error for {url}: {e}. Skipping barcode."))
+            product_data['barcode'] = None
+            product_data['has_no_coles_barcode'] = True
+            item['product'] = product_data
+            self.jsonl_writer.write_product(product_data, item.get('metadata', {}))
+            with open(self.progress_file_path, 'a') as progress_f:
+                progress_f.write(json.dumps(item) + '\n')
+            return []
+
         return [{'html': response.text, 'original_item': item}]
 
     def clean_raw_data(self, raw_data_list: list) -> dict:
