@@ -22,7 +22,7 @@ class BrandReconciler:
         self.translation_table_path = TRANSLATION_TABLE_PATH
 
     def _load_translation_table(self):
-        """Safely loads the translation dictionary from the .py file."""
+        """Safely loads the translation dictionary from the JSON file."""
         try:
             return BaseDataCleaner._load_translation_table(self.translation_table_path)
         except (SyntaxError, ValueError) as e:
