@@ -1,6 +1,7 @@
 import os
 import json
 from django.conf import settings
+from django.db import transaction
 from products.models import ProductBrand, Product
 from scraping.utils.product_scraping_utils.product_normalizer import ProductNormalizer
 from data_management.database_updating_classes.product_updating.translation_table_generators.brand_translation_table_generator import BrandTranslationTableGenerator
@@ -49,6 +50,7 @@ class GS1UpdateOrchestrator:
 
         self.command.stdout.write(self.command.style.SUCCESS("--- GS1 Database Updater finished ---"))
 
+    @transaction.atomic
     def _process_record(self, data: dict):
         confirmed_key = data.get('confirmed_license_key')
         confirmed_name = data.get('confirmed_company_name')
