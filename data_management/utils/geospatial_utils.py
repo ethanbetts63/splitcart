@@ -51,9 +51,9 @@ def get_nearby_stores(ref_postcode_obj: Postcode, radius_km: float, companies: l
     Optionally filters by a list of company names.
     """
     nearby_stores = []
-    # Exclude specific divisions
-    excluded_division_ids = [2, 3, 5, 7]
-    all_stores = Store.objects.exclude(division_id__in=excluded_division_ids)
+    # Exclude non-grocery divisions (liquor, petrol/convenience)
+    excluded_division_names = ['Liquorland', 'Vintage Cellars', 'AMPOL', 'EG']
+    all_stores = Store.objects.exclude(division__name__in=excluded_division_names)
 
     # Only include IGA stores that have been scraped at least once
     all_stores = all_stores.filter(

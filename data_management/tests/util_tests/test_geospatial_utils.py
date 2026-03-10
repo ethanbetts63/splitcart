@@ -1,6 +1,6 @@
 import pytest
 from data_management.utils.geospatial_utils import haversine_distance, get_nearby_postcodes, get_nearby_stores
-from companies.tests.factories import PostcodeFactory, StoreFactory, CompanyFactory
+from companies.tests.factories import PostcodeFactory, StoreFactory, CompanyFactory, DivisionFactory
 
 
 class TestHaversineDistance:
@@ -89,3 +89,12 @@ class TestGetNearbyStores:
         iga_store = StoreFactory(company=iga, latitude=-33.8700, longitude=151.2090, last_scraped=None)
         result = get_nearby_stores(ref, radius_km=5)
         assert iga_store not in result
+
+    def test_excludes_non_grocery_divisions(self):
+        ref = PostcodeFactory(postcode='2700', latitude=-33.8688, longitude=151.2093)
+        coles = CompanyFactory(name='Coles')
+        for division_name in ['Liquorland', 'Vintage Cellars', 'AMPOL', 'EG']:
+            division = DivisionFactory(name=division_name, company=coles)
+            excluded_store = StoreFactory(company=coles, division=division, latitude=-33.8700, longitude=151.2090)
+            result = get_nearby_stores(ref, radius_km=5)
+            assert excluded_store not in result, f"Store with division '{division_name}' should be excluded"

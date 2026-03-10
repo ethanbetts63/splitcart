@@ -112,9 +112,7 @@ These need a manual audit pass of the full mapping file to catch others like the
   is stored as 'IGA' (which is likely given title-casing conventions elsewhere), this condition never fires. IGA prices would be treated as min()
   instead of avg(), which is wrong for store-by-store pricing. This is a silent logic error — no exception, just incorrect stats.
 
-  1. Hardcoded division IDs in get_nearby_stores
-  excluded_division_ids = [2, 3, 5, 7]
-  These are raw DB PKs. If the DB is ever reset or re-seeded those IDs will be wrong silently. Worth filtering by division name instead.
+
 
   2. print() calls in build_price_slots
   The rest of the codebase passes command through for logging. build_price_slots uses bare print() — these won't show up in any log aggregation and
