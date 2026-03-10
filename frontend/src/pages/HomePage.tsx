@@ -119,7 +119,7 @@ const HomePage = () => {
         structuredData={webSiteSchema}
       />
       {/* --- Hero Section --- */}
-      <div className="container mx-auto px-4 pt-4 pb-1">
+      <div className="container mx-auto px-0 sm:px-4 pt-4 pb-1">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
             <AspectRatio ratio={16 / 9}>
@@ -128,11 +128,11 @@ const HomePage = () => {
                 srcSet={`${confusedShopper320} 320w, ${confusedShopper640} 640w, ${confusedShopper768} 768w, ${confusedShopper1024} 1024w, ${confusedShopper1280} 1280w`}
                 sizes="(min-width: 1024px) 50vw, calc(100vw - 2rem)"
                 alt="Confused Shopper" 
-                className="rounded-md object-cover w-full h-full"
+                className="sm:rounded-md object-cover w-full h-full"
                 fetchPriority="high" />
             </AspectRatio>
           </div>
-          <div className="text-left">
+          <div className="text-left px-4 sm:px-0">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
               Find the Cheapest Way to Buy Your Entire Grocery List.
             </h1>
