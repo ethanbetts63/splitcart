@@ -29,7 +29,7 @@ class BargainStatsGenerator:
             # Use average for IGA, min for others.
             comparison_prices = {}
             for name, price_list in prices_by_company.items():
-                if name == 'Iga':
+                if name.lower() == 'iga':
                     comparison_prices[name] = sum(price_list) / len(price_list)
                 else:
                     comparison_prices[name] = min(price_list)

@@ -74,20 +74,6 @@ These need a manual audit pass of the full mapping file to catch others like the
   written but never wired in. Meanwhile get_coles_categories.py has a TODO: Implement a more robust way comment. These two files exist in a stalled
   state — the solution exists but was never connected. hardcoding the categories is an issue. but scraping coles is quite tricky. grabbing the categories will need checking even if we arleady have logic for it i dont know if it works. 
 
-   20. IGA company name lowercase mismatch (scrape_barcodes.py:25 vs rest of pipeline)
-  ColesBarcodeScraperV2 hardcodes self.company = "coles" (lowercase). Every other path gets the company name from store.company.name in the DB (e.g.
-   "Coles" with capital). PriceNormalizer does self.company.lower() == 'aldi', so the case doesn't matter there. But metadata written to JSONL files
-   from the barcode scraper would have "coles" lowercase while regular scrapes write "Coles". The ingestion pipeline may be case-insensitive enough
-  that this doesn't break anything, but it's inconsistent.
-
-
-
-## Notes
-
-- Product pages (individual products) are intentionally excluded from the sitemap. With hundreds of thousands of products, indexing them all would waste crawl budget and the pages themselves have thin content (name + price). Not worth pursuing.
-- The `PriceComparisonChart` component already renders text summaries ("X% of Fruit tested were cheaper at Woolworths than Coles") in plain HTML — Google can read these. No changes needed there.
-
-    ---
   2. SchedulerView does a write inside a GET
 
   store.save(update_fields=['needs_rescraping', 'scheduled_at'])
@@ -106,11 +92,7 @@ These need a manual audit pass of the full mapping file to catch others like the
   boolean to decide whether to add it to the bulk_update list. If an exception is thrown between enrich and bulk_update, the in-memory object is
   dirty but the DB is unchanged. In normal operation this is harmless because the whole run restarts. But it's a fragility worth knowing about.
 
-  1. IGA name check is wrong in BargainStatsGenerator
 
-  bargain_stats_generator.py:32 checks if name == 'Iga': — titlecase. Every other IGA check in the codebase uses .lower() == 'iga'. If the company
-  is stored as 'IGA' (which is likely given title-casing conventions elsewhere), this condition never fires. IGA prices would be treated as min()
-  instead of avg(), which is wrong for store-by-store pricing. This is a silent logic error — no exception, just incorrect stats.
 
 
 
