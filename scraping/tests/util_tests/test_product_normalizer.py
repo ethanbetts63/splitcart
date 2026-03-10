@@ -95,9 +95,16 @@ class TestStandardizedSizes:
         normalizer = ProductNormalizer({'name': 'Drink 1l', 'brand': '', 'size': ''})
         assert '1000ml' in normalizer.standardized_sizes
 
-    def test_1ea_simplified_to_ea(self):
+    def test_1each_simplified_to_ea(self):
         normalizer = ProductNormalizer({'name': '', 'brand': '', 'size': '1each'})
         assert 'ea' in normalizer.standardized_sizes
+        assert '1ea' not in normalizer.standardized_sizes
+
+    def test_1ea_simplified_to_ea(self):
+        # '1ea' is produced directly when the size field already uses 'ea' instead of 'each'
+        normalizer = ProductNormalizer({'name': '', 'brand': '', 'size': '1ea'})
+        assert 'ea' in normalizer.standardized_sizes
+        assert '1ea' not in normalizer.standardized_sizes
 
 
 class TestGetNormalizedBrandName:
