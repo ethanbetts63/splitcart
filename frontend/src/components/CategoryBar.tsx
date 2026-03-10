@@ -63,7 +63,7 @@ const CategoryBar: React.FC = () => {
   const categoriesWithRandom = [...categories, randomCategory];
 
   return (
-    <div className="sticky top-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-40 border-b">
+    <div className="sticky top-[116px] sm:top-16 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-40 border-b">
       <div 
         ref={carouselRef} 
         className="category-carousel overflow-x-auto pb-0"
