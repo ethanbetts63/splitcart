@@ -21,8 +21,9 @@ def api_client(monkeypatch):
 class TestSchedulerView:
     """
     Uses transaction=True + reset_sequences=True so each test gets a fully
-    flushed database with pk sequences reset to 1, preventing any cross-test
-    contamination from the scheduler view's store.save() call.
+    flushed database with pk sequences reset to 1, preventing cross-test
+    contamination from the store.save() call (sets scheduled_at, which is used
+    to exclude recently-scheduled stores from subsequent requests).
     """
 
     def test_priority_1_unscraped_store_is_selected(self, api_client):
@@ -30,7 +31,7 @@ class TestSchedulerView:
         unscraped_store = StoreFactory(last_scraped=None)
 
         url = reverse('scheduler-next-candidate')
-        response = api_client.get(url)
+        response = api_client.post(url)
 
         assert response.status_code == 200
         assert response.data['pk'] == unscraped_store.pk
@@ -44,7 +45,7 @@ class TestSchedulerView:
         )
 
         url = reverse('scheduler-next-candidate')
-        response = api_client.get(url)
+        response = api_client.post(url)
 
         assert response.status_code == 200
         assert response.data['pk'] == priority_store.pk
@@ -58,7 +59,7 @@ class TestSchedulerView:
         unscraped_store = StoreFactory(last_scraped=None)
 
         url = reverse('scheduler-next-candidate')
-        response = api_client.get(url)
+        response = api_client.post(url)
 
         assert response.status_code == 200
         assert response.data['pk'] == unscraped_store.pk
@@ -70,7 +71,7 @@ class TestSchedulerView:
         middle_scraped = StoreFactory(last_scraped=timezone.now() - timedelta(days=5))
 
         url = reverse('scheduler-next-candidate')
-        response = api_client.get(url)
+        response = api_client.post(url)
 
         assert response.status_code == 200
         assert response.data['pk'] == oldest_scraped.pk

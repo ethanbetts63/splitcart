@@ -21,7 +21,7 @@ class SchedulerView(APIView):
     throttle_classes = [ScopedRateThrottle]
     throttle_scope = 'internal'
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         companies_to_scrape = request.query_params.getlist('company')
         company_filter = Q()
         if companies_to_scrape:

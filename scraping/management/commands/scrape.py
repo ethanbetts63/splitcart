@@ -163,7 +163,7 @@ class Command(BaseCommand):
 
             self.stdout.write(self.style.HTTP_INFO("\nRequesting next candidate from scheduler API..."))
             try:
-                response = requests.get(
+                response = requests.post(
                     f"{base_url}/api/scheduler/next-candidate/",
                     params={'company': companies_to_scrape},
                     headers={'X-Internal-API-Key': settings.INTERNAL_API_KEY},

@@ -85,17 +85,6 @@ These need a manual audit pass of the full mapping file to catch others like the
 
 
 
-  - The 1ea → ea normalization in _get_standardized_sizes is a one-liner special case that suggests the regex patterns upstream aren't handling the
-  1× multipack correctly. Worth a unit test for "1ea" → "ea" to pin the behaviour.
-
-  ProductEnricher.enrich_canonical_product() mutates the passed canonical_product object in-place, then returns a boolean. ProductManager uses the
-  boolean to decide whether to add it to the bulk_update list. If an exception is thrown between enrich and bulk_update, the in-memory object is
-  dirty but the DB is unchanged. In normal operation this is harmless because the whole run restarts. But it's a fragility worth knowing about.
-
-
-
-
-
   2. print() calls in build_price_slots
   The rest of the codebase passes command through for logging. build_price_slots uses bare print() — these won't show up in any log aggregation and
   can't be suppressed in tests.
