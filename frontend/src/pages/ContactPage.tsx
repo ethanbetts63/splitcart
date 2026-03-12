@@ -9,10 +9,10 @@ import foreverFlowerLogo from '@/assets/foreverflower_logo.png';
 
 const otherSitesData = [
     {
-        name: "Allbikes",
+        name: "AllBikes & Scooters",
         logoSrc: allbikesLogo, 
         description: "Your one-stop shop for motorcycle and scooter servicing and parts in Perth, Western Australia.",
-        url: "https://www.allbikes.com.au", 
+        url: "https://www.scootershop.com.au", 
     },
     {
         name: "FutureReminder",

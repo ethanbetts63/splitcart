@@ -74,15 +74,6 @@ These need a manual audit pass of the full mapping file to catch others like the
   written but never wired in. Meanwhile get_coles_categories.py has a TODO: Implement a more robust way comment. These two files exist in a stalled
   state — the solution exists but was never connected. hardcoding the categories is an issue. but scraping coles is quite tricky. grabbing the categories will need checking even if we arleady have logic for it i dont know if it works. 
 
-  2. SchedulerView does a write inside a GET
-
-  store.save(update_fields=['needs_rescraping', 'scheduled_at'])
-
-  GET requests are supposed to be idempotent — no side effects. HTTP clients retry GETs. Load balancers replay them. You saw this bite you directly
-  in the tests (required transaction=True).
-
-  It should be a POST. The scraper asks "give me the next store" and confirms it received it — that's a state change, which is what POST is for.
-
 
 
   2. print() calls in build_price_slots
