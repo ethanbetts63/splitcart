@@ -1,5 +1,7 @@
+"use client";
+
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'next/navigation';
 import { useApiQuery } from '@/hooks/useApiQuery';
 import type { Product } from '../types';
 import LoadingSpinner from '../components/LoadingSpinner';

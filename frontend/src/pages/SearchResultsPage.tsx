@@ -1,9 +1,11 @@
-import { useSearchParams } from 'react-router-dom';
+"use client";
+
+import { useSearchParams } from 'next/navigation';
 import GridSourcer from '../components/GridSourcer';
 import Seo from '../components/Seo';
 
 const SearchResultsPage = () => {
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const searchTerm = searchParams.get('q');
   const primaryCategorySlug = searchParams.get('primary_category_slug');
   const bargainCompany = searchParams.get('bargain_company');

@@ -1,0 +1,14 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/bargains/page": "app/bargains/page.js",
+  "/categories/[slug]/page": "app/categories/[slug]/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/final-cart/page": "app/final-cart/page.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js",
+  "/product/[slug]/page": "app/product/[slug]/page.js",
+  "/search/page": "app/search/page.js",
+  "/signup/page": "app/signup/page.js",
+  "/substitutions/page": "app/substitutions/page.js"
+}

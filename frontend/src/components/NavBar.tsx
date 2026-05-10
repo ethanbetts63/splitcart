@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { MapPin, ShoppingCart, Search } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -120,7 +120,7 @@ const NavBar: React.FC<NavBarProps> = ({
           {isAuthenticated ? (
             <Button variant="outline" size="sm" onClick={logout}>Logout</Button>
           ) : (
-            <Link to="/login">
+            <Link href="/login">
               <Button variant="outline" size="sm">Login</Button>
             </Link>
           )}

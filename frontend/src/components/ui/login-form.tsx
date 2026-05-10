@@ -1,6 +1,9 @@
+"use client";
+
 import { cn } from "../../lib/utils"
 import priceDestroyerImage from "../../assets/price_destroyer.webp"
-import { Link, useNavigate } from "react-router-dom"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Button } from "./button"
 import { Card, CardContent } from "./card"
 import {
@@ -23,7 +26,7 @@ export function LoginForm({
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const { login, anonymousId } = useAuth()
-  const navigate = useNavigate()
+  const router = useRouter()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -42,7 +45,7 @@ export function LoginForm({
         const data = await response.json()
         login(data.key)
         console.log("Login successful, token saved:", data.key)
-        navigate("/")
+        router.push("/")
       } else {
         const errorData = await response.json()
         toast.error("Login Failed", {
@@ -110,7 +113,7 @@ export function LoginForm({
 
               <FieldDescription className="text-center">
                 Don&apos;t have an account?{" "}
-                <Link to="/signup" className="underline">
+                <Link href="/signup" className="underline">
                   Sign up
                 </Link>
               </FieldDescription>

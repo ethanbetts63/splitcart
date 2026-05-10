@@ -1,7 +1,8 @@
 import React, { memo, useEffect, useRef } from 'react';
 import SkeletonProductTile from "./SkeletonProductTile";
 import ProductTile from "./ProductTile";
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import JsonLdItemList from './JsonLdItemList';
 import { ArrowRight } from 'lucide-react';
 import type { ProductCarouselProps } from '../types/ProductCarouselProps';
@@ -32,7 +33,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
   const { openDialog } = useDialog();
   const [isSmallScreen, setIsSmallScreen] = React.useState(false);
   const [scrollContainer, setScrollContainer] = React.useState<HTMLDivElement | null>(null);
-  const location = useLocation();
+  const pathname = usePathname();
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -104,7 +105,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
   let seeMoreLink = null;
   if (isBargainCarousel && companyName) {
     seeMoreLink = `/search?bargain_company=${encodeURIComponent(companyName)}`;
-  } else if (pillarPageLinkSlug && location.pathname === '/') {
+  } else if (pillarPageLinkSlug && pathname === '/') {
     seeMoreLink = `/categories/${encodeURIComponent(pillarPageLinkSlug)}`;
   } else if (primaryCategorySlugs && primaryCategorySlugs.length > 0) {
     seeMoreLink = primaryCategorySlugs.length === 1
@@ -146,7 +147,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
           </div>
           {exploreHref && (
             <Link
-              to={exploreHref}
+              href={exploreHref}
               aria-label={exploreLabel}
               className="shrink-0 flex items-center gap-1.5 text-sm font-semibold text-gray-700 border border-gray-300 bg-white hover:border-gray-900 hover:text-gray-900 px-3 py-1.5 rounded-lg transition-colors duration-150"
             >

@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 import { useStoreList } from '../context/StoreListContext';
 import { useAuth } from '../context/AuthContext';
@@ -22,7 +24,7 @@ const FinalCartPage = () => {
   const { optimizationResult, currentCart, emailCurrentCart, downloadCurrentCart } = useCart();
   useStoreList();
   const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const [isLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +35,7 @@ const FinalCartPage = () => {
     if (!isAuthenticated) {
       toast.error("Authentication Required", {
         description: "Please log in to email your shopping list.",
-        action: { label: "Login", onClick: () => navigate("/login") },
+        action: { label: "Login", onClick: () => router.push("/login") },
       });
       return;
     }

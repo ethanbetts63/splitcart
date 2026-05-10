@@ -1,5 +1,7 @@
+"use client";
+
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 import ProductTile from '../components/ProductTile';
 import CartItemTile from '../components/CartItemTile';
@@ -19,7 +21,7 @@ const substitutesFaqs = [
 ];
 
 const SubstitutionPage = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { currentCart, updateCartItemSubstitution, optimizeCurrentCart, isCartSyncing } = useCart();
   const isDesktop = useMediaQuery('(min-width: 1024px)');
 
@@ -53,7 +55,7 @@ const SubstitutionPage = () => {
     if (currentItemIndex > 0) {
       setCurrentItemIndex(currentItemIndex - 1);
     } else {
-      navigate('/');
+      router.push('/');
     }
   };
 
@@ -77,7 +79,7 @@ const SubstitutionPage = () => {
     try {
       const results = await optimizeCurrentCart();
       if (results) {
-        navigate('/final-cart');
+        router.push('/final-cart');
       } else {
         setIsLoading(false);
       }
@@ -93,7 +95,7 @@ const SubstitutionPage = () => {
     try {
       const results = await optimizeCurrentCart();
       if (results) {
-        navigate('/final-cart');
+        router.push('/final-cart');
       } else {
         setIsLoading(false);
       }

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Badge } from './ui/badge';
-import '../css/CategoryCarousel.css';
 import { useApiQuery } from '../hooks/useApiQuery';
 import type { Category } from '../types/Category';
 
 const CategoryBar: React.FC = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { data: categories = [], isLoading } = useApiQuery<Category[]>(
     ['primaryCategories'],
     '/categories/primary/',
@@ -51,7 +51,7 @@ const CategoryBar: React.FC = () => {
     if (categories.length > 0) {
       const randomIndex = Math.floor(Math.random() * categories.length);
       const randomCategory = categories[randomIndex];
-      navigate(`/search?primary_category_slug=${randomCategory.slug}`);
+      router.push(`/search?primary_category_slug=${randomCategory.slug}`);
     }
   };
 
@@ -82,7 +82,7 @@ const CategoryBar: React.FC = () => {
                   {category.name}
                 </Badge>
               ) : (
-                <Link to={`/search?primary_category_slug=${category.slug}`}>
+                <Link href={`/search?primary_category_slug=${category.slug}`}>
                   <Badge variant="secondary" className="text-sm px-2 whitespace-nowrap hover:bg-transparent hover:text-foreground hover:border-foreground">
                     {category.name}
                   </Badge>

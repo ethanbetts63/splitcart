@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { AspectRatio } from '../components/ui/aspect-ratio';
 import sizeComparison from "../assets/size_comparison.png";

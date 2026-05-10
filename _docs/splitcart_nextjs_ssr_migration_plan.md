@@ -2,6 +2,24 @@
 
 This document is an investigation and migration plan only. It does not migrate SplitCart today.
 
+## Migration progress log
+
+### 2026-05-10 - Migration started
+
+Branch: `splitcart-nextjs-ssr-plan`
+
+Starting point:
+
+- `_docs/splitcart_nextjs_ssr_migration_plan.md` and `_docs/nextjs_migration.md` were committed by the user in commit `e24db08a` with message `chreckpoint`.
+- The working tree showed `_docs/nextjs_migration.md` as deleted before implementation work began. This was not reverted because it was an existing user/worktree change.
+- Implementation will follow this document in phases, beginning with a Next.js App Router shell and preserving behavior before deeper SSR conversion.
+
+Progress notes for future agents:
+
+- Keep this section updated after each meaningful migration phase.
+- Record build/typecheck failures here when they reveal migration-specific constraints.
+- Do not silently change crawler policy. Product pages are still treated as blocked/noindex unless the user explicitly changes that decision.
+
 The goal is to apply the useful parts of the AllBikes Vite -> Next.js migration to SplitCart, with a narrower focus: frontend indexable pages and the SEO/performance benefit of rendering meaningful HTML on the server.
 
 ## Executive summary

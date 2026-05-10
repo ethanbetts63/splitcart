@@ -1,0 +1,13 @@
+var R=require("../chunks/ssr/[turbopack]_runtime.js")("server/pages/BargainsPage.js")
+R.c("server/chunks/ssr/[root-of-the-server]__04lrba2._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0g3o88u._.js")
+R.c("server/chunks/ssr/_07pwmcv._.js")
+R.c("server/chunks/ssr/node_modules_next_dist_0020syh._.js")
+R.c("server/chunks/ssr/node_modules_next_06v_cid._.js")
+R.c("server/chunks/ssr/node_modules_next_0zfzn3i._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__11xqb4c._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0yulaao._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0rcvyw3._.js")
+R.c("server/chunks/ssr/node_modules_next_12i4inu._.js")
+R.m(54478)
+module.exports=R.m(54478).exports

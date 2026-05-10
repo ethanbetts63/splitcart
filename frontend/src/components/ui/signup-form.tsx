@@ -1,5 +1,8 @@
+"use client";
+
 import { Button } from "./button"
-import { Link, useNavigate } from "react-router-dom"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 import {
   Card,
   CardContent,
@@ -26,7 +29,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [errors, setErrors] = useState<Record<string, string[]>>({})
   const [isLoading, setIsLoading] = useState(false)
   const { login } = useAuth()
-  const navigate = useNavigate()
+  const router = useRouter()
 
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -58,7 +61,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       if (response.ok) {
         const data = await response.json()
         login(data.key)
-        navigate("/")
+        router.push("/")
       } else {
         const errorData = await response.json()
         setErrors(errorData)
@@ -170,7 +173,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 </Button>
                 <FieldDescription className="px-6 text-center">
                   Already have an account?{" "}
-                  <Link to="/login" className="underline">
+                  <Link href="/login" className="underline">
                     Sign in
                   </Link>
                 </FieldDescription>

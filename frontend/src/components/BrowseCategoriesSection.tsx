@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 import bargainsIcon from '../assets/food_svgs/Tools-Kitchen-Scale--Streamline-Ultimate.svg';
 import snacksSweetsIcon from '../assets/food_svgs/Ice-Cream-Cone--Streamline-Ultimate.svg';
@@ -106,7 +106,7 @@ export const BrowseCategoriesSection = () => {
         {categories.map((cat) => (
           <Link
             key={cat.href}
-            to={cat.href}
+            href={cat.href}
             className={`group flex flex-col items-center text-center rounded-xl p-5 shadow-sm border transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${
               cat.featured
                 ? 'bg-yellow-300 border-yellow-400 hover:bg-yellow-200'

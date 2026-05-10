@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
@@ -108,7 +108,7 @@ const ProductTile: React.FC<ProductTileProps> = ({
   }
 
   return (
-    <Link to={`/product/${product.slug}`} className="group block h-full" ref={tileRef}>
+    <Link href={`/product/${product.slug}`} className="group block h-full" ref={tileRef}>
       <div
         className={`flex flex-col h-full rounded-xl border bg-white shadow-sm overflow-hidden transition-all duration-200 ${
           !isButtonHovered
