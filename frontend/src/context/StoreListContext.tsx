@@ -32,7 +32,7 @@ export const StoreListProvider = ({ children }: { children: ReactNode }) => {
       setStoreListLoading(true);
       try {
         const activeData = await storeListApi.fetchActiveStoreListDataAPI(apiClient);
-        const storeList = activeData.store_list;
+        const storeList = activeData?.store_list ?? null;
         
         if (storeList) {
             // Case for existing user with an active list

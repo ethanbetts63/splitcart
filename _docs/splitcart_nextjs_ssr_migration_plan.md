@@ -143,6 +143,28 @@ Source-control notes:
 - `frontend/src/pages/**` was replaced by `frontend/src/page_components/**` so Next does not treat old route component files as Pages Router entries. Stage this as a rename/add-delete set when committing.
 - Do not restore `frontend/public/robots.txt`; App Router now owns robots output through `frontend/src/app/robots.ts`.
 
+### 2026-05-11 - Visual parity bugfixes
+
+Issue found during browser testing:
+
+- The app looked like mostly raw HTML in Next dev because Tailwind was only configured through the old Vite plugin (`@tailwindcss/vite`). Next does not run `vite.config.ts`, so Tailwind utilities were not being compiled through the Next CSS pipeline.
+- `StoreListContext` crashed on startup when `/api/store-lists/active/` returned no JSON body or an otherwise empty response. The provider assumed `activeData.store_list` always existed.
+
+Fixes:
+
+- Installed `@tailwindcss/postcss` and added `frontend/postcss.config.mjs` so Next compiles Tailwind v4 styles.
+- Made the active store-list read null-safe with `activeData?.store_list ?? null`, preserving the existing "new user/no active list" branch.
+
+Verification:
+
+- `npm run typecheck` passed.
+- `npm run build` passed.
+- Production build emitted a large CSS chunk again (`.next/static/chunks/0-qmiqfx.42b_.css`, about 100 KB), which confirms Tailwind utilities are being generated.
+
+Dev note:
+
+- Because `postcss.config.mjs` is a new build config file, an already-running `next dev` process may need to be restarted before the styling fix appears in the browser.
+
 The goal is to apply the useful parts of the AllBikes Vite -> Next.js migration to SplitCart, with a narrower focus: frontend indexable pages and the SEO/performance benefit of rendering meaningful HTML on the server.
 
 ## Executive summary
