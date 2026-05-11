@@ -8,6 +8,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./
 import CartSubTile from './CartSubTile';
 import { CheckCircle2 } from 'lucide-react';
 import type { CartItemTileProps } from '../types/CartItemTileProps';
+import { assetSrc } from '@/lib/assets';
 
 const QuantityStepper = ({ value, onDecrement, onIncrement }: { value: number; onDecrement: () => void; onIncrement: () => void }) => (
   <div className="flex items-center rounded-lg overflow-hidden border border-gray-200 bg-gray-100">
@@ -47,7 +48,7 @@ const CartItemTile: React.FC<CartItemTileProps> = (props) => {
   const isApproved = cartSubstitution ? cartSubstitution.is_approved : false;
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    if (e.currentTarget.src !== fallbackImage) e.currentTarget.src = fallbackImage;
+    if (e.currentTarget.src !== assetSrc(fallbackImage)) e.currentTarget.src = assetSrc(fallbackImage);
   };
 
   const handleQuantityChange = (newQuantity: number) => {
@@ -59,7 +60,7 @@ const CartItemTile: React.FC<CartItemTileProps> = (props) => {
     }
   };
 
-  const imageUrl = product.image_url || fallbackImage;
+  const imageUrl = product.image_url || assetSrc(fallbackImage);
 
   return (
     <div className={`rounded-xl border bg-white shadow-sm overflow-hidden ${isApproved ? 'border-green-300' : 'border-gray-200'}`}>

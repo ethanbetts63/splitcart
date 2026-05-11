@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { assetSrc } from '@/lib/assets';
 
 import bargainsIcon from '../assets/food_svgs/Tools-Kitchen-Scale--Streamline-Ultimate.svg';
 import snacksSweetsIcon from '../assets/food_svgs/Ice-Cream-Cone--Streamline-Ultimate.svg';
@@ -114,7 +115,7 @@ export const BrowseCategoriesSection = () => {
             }`}
           >
             <img
-              src={cat.icon}
+              src={assetSrc(cat.icon)}
               alt=""
               aria-hidden="true"
               className="w-14 h-14 mb-3"

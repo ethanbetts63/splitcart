@@ -69,15 +69,17 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
     return sourceUrl ? `${baseUrl}?${params.toString()}` : '';
   }, [sourceUrl, storeIds, isUserDefinedList, primaryCategorySlugs, primaryCategorySlug, companyName, ordering]);
 
+  const shouldFetch = !!finalUrl && (!initialProducts || isUserDefinedList);
+
   const { data: responseData, isLoading: isFetching, error, isFetched } = useApiQuery<any>(
     ['products', title, finalUrl],
     finalUrl,
     {},
-    { enabled: !!finalUrl && !initialProducts, refetchOnWindowFocus: false, staleTime: 1000 * 60 * 10 }
+    { enabled: shouldFetch, refetchOnWindowFocus: false, staleTime: 1000 * 60 * 10 }
   );
 
   const products: Product[] = React.useMemo(() => {
-    if (initialProducts) return initialProducts;
+    if (initialProducts && !responseData) return initialProducts;
     if (!responseData) return [];
     const results = Array.isArray(responseData) ? responseData : responseData.results || [];
     if (dataKey) {

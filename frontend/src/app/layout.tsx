@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "../index.css";
 import "../css/CategoryCarousel.css";
+import "leaflet/dist/leaflet.css";
 import { AppProviders } from "./providers";
 import { AppShell } from "./shell";
 

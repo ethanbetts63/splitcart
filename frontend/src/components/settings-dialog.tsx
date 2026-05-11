@@ -20,8 +20,8 @@ import {
   SidebarMenuItem,
   SidebarProvider,
 } from "./ui/sidebar"
-import EditLocationPage from "../pages/dialog-pages/EditLocationPage";
-import CartPage from "../pages/dialog-pages/CartPage";
+import EditLocationPage from "../page_components/dialog-pages/EditLocationPage";
+import CartPage from "../page_components/dialog-pages/CartPage";
 import { toast } from "sonner";
 import type { NavItem } from "../types/NavItem";
 import type { SettingsDialogProps } from "../types/SettingsDialogProps";

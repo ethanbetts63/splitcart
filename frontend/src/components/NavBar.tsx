@@ -11,6 +11,7 @@ import splitcartLogo768 from "../assets/splitcart_symbol_v6-768w.webp";
 import splitcartLogo1024 from "../assets/splitcart_symbol_v6-1024w.webp";
 import splitcartLogo1280 from "../assets/splitcart_symbol_v6-1280w.webp";
 import type { NavBarProps } from '../types/NavBarProps';
+import { assetSrc, assetSrcSet } from '@/lib/assets';
 
 const SearchBar = ({
   searchTerm,
@@ -68,8 +69,14 @@ const NavBar: React.FC<NavBarProps> = ({
         {/* Logo */}
         <a href="/" className="flex items-center space-x-2 flex-shrink-0">
           <img
-            src={splitcartLogo}
-            srcSet={`${splitcartLogo320} 320w, ${splitcartLogo640} 640w, ${splitcartLogo768} 768w, ${splitcartLogo1024} 1024w, ${splitcartLogo1280} 1280w`}
+            src={assetSrc(splitcartLogo)}
+            srcSet={assetSrcSet([
+              [splitcartLogo320, 320],
+              [splitcartLogo640, 640],
+              [splitcartLogo768, 768],
+              [splitcartLogo1024, 1024],
+              [splitcartLogo1280, 1280],
+            ])}
             sizes="48px"
             alt="SplitCart Logo"
             className="h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0"

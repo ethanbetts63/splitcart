@@ -1,6 +1,6 @@
 # SplitCart Next.js SSR Migration Plan
 
-This document is an investigation and migration plan only. It does not migrate SplitCart today.
+This document began as the investigation and migration plan. It now also records the live Next.js SSR migration work completed on the `splitcart-nextjs-ssr-plan` branch.
 
 ## Migration progress log
 
@@ -19,6 +19,129 @@ Progress notes for future agents:
 - Keep this section updated after each meaningful migration phase.
 - Record build/typecheck failures here when they reveal migration-specific constraints.
 - Do not silently change crawler policy. Product pages are still treated as blocked/noindex unless the user explicitly changes that decision.
+
+### 2026-05-10 - Phase 1 parity shell complete
+
+Implemented:
+
+- Installed `next@16.2.6`.
+- Changed frontend scripts from Vite to Next:
+  - `npm run dev` -> `next dev`
+  - `npm run build` -> `next build`
+  - added `npm run start`
+  - added `npm run typecheck`
+- Added `frontend/next.config.ts` with `/api/:path*` rewrites to `DJANGO_API_URL` or `http://localhost:8000`.
+- Added `images.disableStaticImages = true` so existing Vite-style image imports remain URL strings. This avoided a broad `.src` rewrite across imported PNG/WebP assets.
+- Added `frontend/src/app/` App Router files.
+- Added client `AppProviders` and `AppShell` to preserve the old provider/layout behavior.
+- Converted active route imports from React Router to Next navigation/link equivalents.
+- Renamed `frontend/src/pages/` to `frontend/src/page_components/`. This is required because Next treats `src/pages` as a legacy Pages Router directory and tried to prerender dialog/helper pages.
+- Kept the old Vite `src/App.tsx` and `src/main.tsx` out of typechecking through `tsconfig.json` excludes. They are now reference/legacy entry files, not active Next entrypoints.
+- Replaced `react-helmet-async` behavior in `components/Seo.tsx` with a structured-data-only bridge. App Router metadata now owns titles, descriptions, canonicals, and noindex rules.
+- Added SSR guards to `StoreSearchContext` for `sessionStorage` reads.
+- Dynamically imported `StoreMap` with `ssr: false` because Leaflet/react-leaflet touch `window`.
+- Moved global CSS imports into `app/layout.tsx`, including `leaflet/dist/leaflet.css` and the category carousel CSS.
+
+Verification:
+
+- `npm run typecheck` passed after the App Router shell changes.
+- `npm run build` passed once the `src/pages` directory was renamed, Helmet was removed from active metadata handling, `sessionStorage` was guarded, and Leaflet was made client-only.
+
+Build-specific notes:
+
+- Turbopack could not resolve `@import "tw-animate-css"` through the package style export. The CSS import was changed to `@import "../node_modules/tw-animate-css/dist/tw-animate.css";`.
+- Next automatically adjusted `frontend/tsconfig.json` during build by adding `.next/dev/types/**/*.ts` and setting `jsx` to `react-jsx`.
+
+### 2026-05-10 - Phase 2 metadata/crawler controls started
+
+Implemented:
+
+- Added `frontend/src/lib/seo.ts` with shared metadata helpers.
+- Added `frontend/src/app/robots.ts`, preserving the existing robots policy:
+  - `/product/` remains disallowed.
+  - `/search`, `/login`, `/signup`, `/substitutions`, and `/final-cart` remain disallowed.
+- Added `frontend/src/app/sitemap.ts`.
+- Added `/bargains` to the Next sitemap.
+- Added static metadata for `/`, `/contact`, and `/bargains`.
+- Added noindex metadata for `/search`, `/product/[slug]`, `/substitutions`, `/final-cart`, `/login`, and `/signup`.
+- Added `generateMetadata` for `/categories/[slug]`, fetching `PillarPage` data from Django with 24-hour revalidation.
+
+Still pending:
+
+- Redirects for old `/pillar-pages/:slug/` paths have not yet been added to Next config.
+- The visible content for `/`, `/contact`, `/categories/[slug]`, and `/bargains` is still mostly parity-mode client rendering. SSR data passing is the next phase.
+
+Update: old `/pillar-pages/.../` redirects were added to `frontend/next.config.ts` after this note:
+
+- `/pillar-pages/eggs-and-dairy/` -> `/categories/dairy-and-eggs/`
+- `/pillar-pages/eggs/` -> `/categories/dairy-and-eggs/`
+- `/pillar-pages/pet-and-baby/` -> `/categories/baby/`
+- `/pillar-pages/fruit-veg-and-spices/` -> `/categories/fruit-and-veg/`
+
+### 2026-05-10 - Phase 3 initial SSR data pass
+
+Implemented:
+
+- `/` now fetches the default bargain carousel on the server in `app/page.tsx` and passes `initialBargainProducts` into `HomePage`.
+- `/bargains` now fetches bargain stats and the first company bargain carousels on the server in `app/bargains/page.tsx`.
+- `/categories/[slug]` now fetches the pillar page and initial product carousel data per primary category on the server in `app/categories/[slug]/page.tsx`.
+- `ProductCarousel` now supports a server-provided `products` prop while still refetching client-side when the user has a custom store selection (`isUserDefinedList`). This preserves default SSR content without freezing user-specific carousels.
+
+Current SSR scope:
+
+- Homepage static copy and default bargain carousel are present in server-rendered output.
+- Bargains page hero/copy/stats/default company carousels are server-data-backed.
+- Category pages are server-data-backed for pillar content and initial category carousels.
+- `/contact` is still rendered through a client page component, but because it is static/copy-heavy and has no API dependency, the parity shell already prerenders it as static content.
+
+Still intentionally not done:
+
+- Product pages remain noindex/disallowed and were not added to sitemap.
+- `/search` remains noindex/disallowed.
+- Product detail SSR can be added later for speed, but it should not become indexable without an explicit product SEO decision.
+- The old Vite files still exist as excluded reference files (`src/App.tsx`, `src/main.tsx`) and should be removed in a cleanup phase once Next parity is accepted.
+
+Verification:
+
+- `npm run typecheck` passed after SSR prop wiring.
+- `npm run build` passed.
+- Next build output showed:
+  - `/` static with 10 minute revalidation.
+  - `/bargains` static with 1 day revalidation.
+  - `/categories/[slug]` dynamic server-rendered on demand.
+  - `/robots.txt` and `/sitemap.xml` generated by App Router.
+
+Build-specific note:
+
+- Next route segment config requires literal values. `export const revalidate = 60 * 10` was rejected; it was changed to `export const revalidate = 600`. `/bargains` uses `86400`.
+- The repo had `frontend/.next` and `frontend/tsconfig.tsbuildinfo` tracked. Running `next build` created a very large generated diff, so these generated artifacts were removed from Git tracking with `git rm -r --cached frontend/.next frontend/tsconfig.tsbuildinfo`, and `frontend/.gitignore` now ignores `.next` and `*.tsbuildinfo`.
+- `public/robots.txt` conflicted with `app/robots.ts` and caused `/robots.txt` to return a 500 in dev. The old public file was deleted so App Router owns robots output.
+- Next still returned imported static assets as objects at runtime, even with `images.disableStaticImages`. Added `frontend/src/lib/assets.ts` and normalized active image imports with `assetSrc` / `assetSrcSet`. This fixed `[object Object]` in homepage/contact HTML.
+
+Local dev check:
+
+- A Next dev server was started on `http://127.0.0.1:3001` because port 3000 was already serving a different app.
+- `http://127.0.0.1:3001/` returned 200.
+- `http://127.0.0.1:3001/robots.txt` returned the SplitCart robots policy.
+- Homepage and contact HTML were checked for `[object Object]`; none remained in those responses after the asset normalization pass.
+
+### 2026-05-11 - Verification checkpoint
+
+Verification rerun after context compaction:
+
+- `npm run typecheck` passed.
+- `npm run build` passed with Next.js `16.2.6`.
+- Build output still shows the intended route split:
+  - `/` prerendered static with 10 minute revalidation.
+  - `/bargains` prerendered static with 1 day revalidation.
+  - `/categories/[slug]`, `/product/[slug]`, and `/search` server-rendered on demand.
+  - `/robots.txt` and `/sitemap.xml` generated by App Router.
+
+Source-control notes:
+
+- `frontend/.next/**` and `frontend/tsconfig.tsbuildinfo` are staged as deletions from Git tracking. This is intentional generated-artifact cleanup, not an app deletion. The files can continue to exist locally after builds because `frontend/.gitignore` now ignores them.
+- `frontend/src/pages/**` was replaced by `frontend/src/page_components/**` so Next does not treat old route component files as Pages Router entries. Stage this as a rename/add-delete set when committing.
+- Do not restore `frontend/public/robots.txt`; App Router now owns robots output through `frontend/src/app/robots.ts`.
 
 The goal is to apply the useful parts of the AllBikes Vite -> Next.js migration to SplitCart, with a narrower focus: frontend indexable pages and the SEO/performance benefit of rendering meaningful HTML on the server.
 

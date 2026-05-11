@@ -5,6 +5,7 @@ import { Badge } from "./ui/badge";
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
 import { useCart } from '../context/CartContext';
 import type { CartSubTileProps } from '../types/CartSubTileProps';
+import { assetSrc } from '@/lib/assets';
 
 const CartSubTile: React.FC<CartSubTileProps> = ({ cartSubstitution, cartItemId }) => {
   const { substituted_product: product, quantity } = cartSubstitution;
@@ -15,8 +16,8 @@ const CartSubTile: React.FC<CartSubTileProps> = ({ cartSubstitution, cartItemId 
   }
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    if (e.currentTarget.src !== fallbackImage) {
-      e.currentTarget.src = fallbackImage;
+    if (e.currentTarget.src !== assetSrc(fallbackImage)) {
+      e.currentTarget.src = assetSrc(fallbackImage);
     }
   };
 
@@ -30,7 +31,7 @@ const CartSubTile: React.FC<CartSubTileProps> = ({ cartSubstitution, cartItemId 
     }
   };
 
-  const imageUrl = product.image_url || fallbackImage;
+  const imageUrl = product.image_url || assetSrc(fallbackImage);
 
   return (
     <div className="p-2 flex items-center gap-2 border-t">

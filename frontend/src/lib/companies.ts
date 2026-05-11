@@ -2,12 +2,13 @@ import aldiLogo from '@/assets/ALDI_logo.webp';
 import colesLogo from '@/assets/coles_logo.webp';
 import igaLogo from '@/assets/iga_logo.webp';
 import woolworthsLogo from '@/assets/woolworths_logo.webp';
+import { assetSrc } from './assets';
 
 export const companyLogos: { [key: string]: string } = {
-  'Aldi': aldiLogo,
-  'Coles': colesLogo,
-  'Iga': igaLogo,
-  'Woolworths': woolworthsLogo,
+  'Aldi': assetSrc(aldiLogo),
+  'Coles': assetSrc(colesLogo),
+  'Iga': assetSrc(igaLogo),
+  'Woolworths': assetSrc(woolworthsLogo),
 };
 
 export const companyNames = Object.keys(companyLogos);

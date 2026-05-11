@@ -17,6 +17,7 @@ import { useState } from "react"
 import { useAuth } from "../../context/AuthContext"
 import { toast } from "sonner"
 import { Spinner } from "./spinner"
+import { assetSrc } from "@/lib/assets"
 
 export function LoginForm({
   className,
@@ -121,7 +122,7 @@ export function LoginForm({
           </form>
           <div className="relative hidden md:block">
             <img
-              src={priceDestroyerImage}
+              src={assetSrc(priceDestroyerImage)}
               alt="Image"
               className="absolute inset-0 h-full w-full object-contain dark:brightness-[0.2] dark:grayscale"
             />

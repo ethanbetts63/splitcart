@@ -6,10 +6,11 @@ import confusedShopper768 from "../assets/confused_shopper-768w.webp";
 import confusedShopper1024 from "../assets/confused_shopper-1024w.webp";
 import confusedShopper1280 from "../assets/confused_shopper-1280w.webp";
 import type { HeroProps } from '../types/HeroProps';
+import { assetSrc, assetSrcSet } from '@/lib/assets';
 
 export const Hero: React.FC<HeroProps> = ({ title, subtitle, imageAlt, ctaElement }) => {
-  const imageSrc = confusedShopper;
-  const srcSet = `${confusedShopper320} 320w, ${confusedShopper640} 640w, ${confusedShopper768} 768w, ${confusedShopper1024} 1024w, ${confusedShopper1280} 1280w`;
+  const imageSrc = assetSrc(confusedShopper);
+  const srcSet = assetSrcSet([[confusedShopper320, 320], [confusedShopper640, 640], [confusedShopper768, 768], [confusedShopper1024, 1024], [confusedShopper1280, 1280]]);
 
   return (
     <section className="pt-4 pb-8 lg:py-0">

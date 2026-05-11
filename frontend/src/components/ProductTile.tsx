@@ -5,6 +5,7 @@ import PriceDisplay from './PriceDisplay';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
 import placeholderImage from '../assets/placeholder.webp';
 import type { ProductTileProps } from '../types/ProductTileProps';
+import { assetSrc } from '@/lib/assets';
 
 const ProductTile: React.FC<ProductTileProps> = ({ 
   product, 
@@ -47,16 +48,18 @@ const ProductTile: React.FC<ProductTileProps> = ({
     };
   }, [isVisible, root, rootMargin]);
 
-  const imageUrl = isVisible ? (product.image_url || fallbackImage) : placeholderImage;
+  const fallbackImageUrl = assetSrc(fallbackImage);
+  const placeholderImageUrl = assetSrc(placeholderImage);
+  const imageUrl = isVisible ? (product.image_url || fallbackImageUrl) : placeholderImageUrl;
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    if (e.currentTarget.src !== fallbackImage) {
-      e.currentTarget.src = fallbackImage;
+    if (e.currentTarget.src !== fallbackImageUrl) {
+      e.currentTarget.src = fallbackImageUrl;
     }
   };
 
   const generateSrcSet = (url: string) => {
-    if (!isVisible || !url.includes('cdn.metcash.media') || url === placeholderImage || url === fallbackImage) {
+    if (!isVisible || !url.includes('cdn.metcash.media') || url === placeholderImageUrl || url === fallbackImageUrl) {
       return undefined;
     }
     const sizes = [200, 250, 300, 350, 400, 450, 500];

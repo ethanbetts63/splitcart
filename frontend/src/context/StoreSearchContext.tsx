@@ -16,6 +16,7 @@ export const StoreSearchProvider = ({ children }: { children: ReactNode }) => {
   const apiClient = useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
 
   const [stores, setStores] = useState<Store[] | null>(() => {
+    if (typeof window === 'undefined') return null;
     const saved = sessionStorage.getItem('stores');
     return saved ? JSON.parse(saved) : null;
   });
@@ -27,6 +28,7 @@ export const StoreSearchProvider = ({ children }: { children: ReactNode }) => {
   }, [stores]);
 
   const [postcode, setPostcode] = useState(() => {
+    if (typeof window === 'undefined') return '';
     return sessionStorage.getItem('postcode') || '';
   });
 
@@ -35,6 +37,7 @@ export const StoreSearchProvider = ({ children }: { children: ReactNode }) => {
   }, [postcode]);
 
   const [radius, setRadius] = useState(() => {
+    if (typeof window === 'undefined') return 5;
     const saved = sessionStorage.getItem('radius');
     return saved ? JSON.parse(saved) : 5;
   });

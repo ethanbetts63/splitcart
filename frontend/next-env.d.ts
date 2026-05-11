@@ -1,5 +1,4 @@
 /// <reference types="next" />
-/// <reference types="next/navigation-types/compat/navigation" />
 import "./.next/types/routes.d.ts";
 
 // NOTE: This file should not be edited

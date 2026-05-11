@@ -6,12 +6,13 @@ import colesLogo from '../assets/coles_logo.webp';
 import igaLogo from '../assets/iga_logo.webp';
 import woolworthsLogo from '../assets/woolworths_logo.webp';
 import type { ShoppingPlan } from '../types/ShoppingPlan';
+import { assetSrc } from '@/lib/assets';
 
 const companyLogos: { [key: string]: string } = {
-  'Aldi': aldiLogo,
-  'Coles': colesLogo,
-  'Iga': igaLogo,
-  'Woolworths': woolworthsLogo,
+  'Aldi': assetSrc(aldiLogo),
+  'Coles': assetSrc(colesLogo),
+  'Iga': assetSrc(igaLogo),
+  'Woolworths': assetSrc(woolworthsLogo),
 };
 
 const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
@@ -23,7 +24,7 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
         const logo = companyLogos[store_plan.company_name];
 
         const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-          if (e.currentTarget.src !== fallbackImage) e.currentTarget.src = fallbackImage;
+          if (e.currentTarget.src !== assetSrc(fallbackImage)) e.currentTarget.src = assetSrc(fallbackImage);
         };
 
         return (
@@ -75,7 +76,7 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
                     <tr key={index} className="group">
                       <td className="py-3 pr-3">
                         <img
-                          src={item.image_url || fallbackImage}
+                          src={item.image_url || assetSrc(fallbackImage)}
                           alt={item.product_name}
                           className="w-12 h-12 object-cover rounded-lg border border-gray-100"
                           onError={handleImageError}
