@@ -40,7 +40,6 @@ import moneyImg640 from "../assets/money-640w.webp";
 import moneyImg768 from "../assets/money-768w.webp";
 import moneyImg1024 from "../assets/money-1024w.webp";
 import moneyImg1280 from "../assets/money-1280w.webp";
-import type { Product } from "@/types";
 import { assetSrc, assetSrcSet } from "@/lib/assets";
 
 const homeFaqs = [
@@ -52,11 +51,7 @@ const homeFaqs = [
   {"question": "How can it be free?", "answer": "Honestly? We're just getting started. Right now SplitCart has no users to speak of, which means there's no point even thinking about monetisation yet. The focus is entirely on building something genuinely useful. Once there's a real user base, we'll figure out a model that doesn't compromise the product. Until then — enjoy it."}
 ];
 
-type HomePageProps = {
-  initialBargainProducts?: Product[];
-};
-
-const HomePage = ({ initialBargainProducts }: HomePageProps) => {
+const HomePage = () => {
   const { selectedStoreIds, isUserDefinedList } = useStoreList();
 
   const webSiteSchema = {
@@ -163,7 +158,6 @@ const HomePage = ({ initialBargainProducts }: HomePageProps) => {
           key="bargains"
           title="Bargains"
           sourceUrl="/api/products/bargain-carousel/"
-          products={initialBargainProducts}
           storeIds={selectedStoreIdsArray}
           isDefaultStores={isDefaultStores}
           isUserDefinedList={isUserDefinedList}

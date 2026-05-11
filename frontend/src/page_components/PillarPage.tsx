@@ -15,7 +15,7 @@ import eggImage from '../assets/egg_frying.webp';
 import shampooImage from '../assets/shampoo.webp';
 import survivalImage from '../assets/survival.webp';
 import { AspectRatio } from '../components/ui/aspect-ratio';
-import type { PrimaryCategory, PillarPage as PillarPageType, Product } from '../types';
+import type { PrimaryCategory, PillarPage as PillarPageType } from '../types';
 import { useStoreList } from '../context/StoreListContext';
 import { assetSrc, assetSrcSet, type ImageAsset } from '@/lib/assets';
 
@@ -190,12 +190,10 @@ import fruitDollar1280 from '../assets/fruit_dollar-1280w.webp';
 
 type PillarPageProps = {
   initialPillarPage?: PillarPageType | null;
-  initialCarouselProducts?: Record<string, Product[]>;
 };
 
 const PillarPage: React.FC<PillarPageProps> = ({
   initialPillarPage,
-  initialCarouselProducts = {},
 }) => {
   const params = useParams<{ slug: string }>();
   const slug = params?.slug;
@@ -224,7 +222,7 @@ const PillarPage: React.FC<PillarPageProps> = ({
     return <LoadingSpinner fullScreen />;
   }
 
-  if (isError || !pillarPage) {
+  if (!pillarPage || (isError && !initialPillarPage)) {
     return (
       <div className="text-center py-10">
         <h2 className="text-2xl font-bold">Page Not Found</h2>
@@ -297,7 +295,6 @@ const PillarPage: React.FC<PillarPageProps> = ({
             <ProductCarousel
                 title={category.name}
                 sourceUrl="/api/products/"
-                products={initialCarouselProducts[category.slug]}
                 primaryCategorySlugs={[category.slug]}
                 pillarPageLinkSlug={slug}
                 storeIds={selectedStoreIdsArray}

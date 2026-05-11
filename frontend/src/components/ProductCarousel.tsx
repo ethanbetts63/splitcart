@@ -69,7 +69,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
     return sourceUrl ? `${baseUrl}?${params.toString()}` : '';
   }, [sourceUrl, storeIds, isUserDefinedList, primaryCategorySlugs, primaryCategorySlug, companyName, ordering]);
 
-  const shouldFetch = !!finalUrl && (!initialProducts || isUserDefinedList);
+  const shouldFetch = !!finalUrl;
 
   const { data: responseData, isLoading: isFetching, error, isFetched } = useApiQuery<any>(
     ['products', title, finalUrl],
