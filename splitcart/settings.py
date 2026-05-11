@@ -11,7 +11,14 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['localhost', 'ethanbetts.pythonanywhere.com', 'splitcart.com.au', 'www.splitcart.com.au', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'ethanbetts.pythonanywhere.com',
+    'splitcart.com.au',
+    'www.splitcart.com.au',
+    'api.splitcart.com.au',
+]
 
 
 INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY")
@@ -156,14 +163,26 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
     "https://ethanbetts63.pythonanywhere.com", 
     "https://www.splitcart.com.au",
-    "https://splitcart.com.au"
+    "https://splitcart.com.au",
+    "https://api.splitcart.com.au",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
-    "http://127.0.0.1:8000/"
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
+    "http://127.0.0.1:8000",
+    "https://www.splitcart.com.au",
+    "https://splitcart.com.au",
+    "https://api.splitcart.com.au",
 ]
 
 from corsheaders.defaults import default_headers
