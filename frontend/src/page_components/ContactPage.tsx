@@ -6,7 +6,6 @@ import ContactDetails from '../components/ContactDetails';
 import OtherSites from '../components/OtherSites';
 import Seo from '@/components/Seo';
 import allbikesLogo from '@/assets/allbikes_logo.webp'; 
-import futureReminderLogo from '@/assets/futurereminder_logo.png';
 import foreverFlowerLogo from '@/assets/foreverflower_logo.png';
 import { assetSrc } from '@/lib/assets';
 
@@ -16,12 +15,6 @@ const otherSitesData = [
         logoSrc: assetSrc(allbikesLogo), 
         description: "Your one-stop shop for motorcycle and scooter servicing and parts in Perth, Western Australia.",
         url: "https://www.scootershop.com.au", 
-    },
-    {
-        name: "FutureReminder",
-        logoSrc: assetSrc(futureReminderLogo), 
-        description: "Distant and important reminder service with an escalating hierachy of notification. Including text message, email, and emergency contacts.",
-        url: "https://www.futurereminder.app", 
     },
     {
         name: "FutureFlower",
