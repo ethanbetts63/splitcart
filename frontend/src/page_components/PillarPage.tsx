@@ -213,7 +213,7 @@ const PillarPage: React.FC<PillarPageProps> = ({
     ['pillarPage', slug],
     `/api/pillar-pages/${slug}/`,
     {},
-    { enabled: !!slug }
+    { enabled: !!slug && !initialPillarPage }
   );
 
   const pillarPage = fetchedPillarPage ?? initialPillarPage;
