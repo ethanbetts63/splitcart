@@ -1,5 +1,4 @@
 import React, { useState, Suspense, lazy } from "react";
-import { HelmetProvider } from "react-helmet-async";
 import { Routes, Route, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { SettingsDialog } from "./components/settings-dialog";
 import { useStoreList } from "./context/StoreListContext";
@@ -30,22 +29,20 @@ import './App.css';
 
 const App = () => {
   return (
-    <HelmetProvider>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
-          <Route path="search" element={<SearchResultsPage />} />
-          <Route path="substitutions" element={<SubstitutionPage />} />
-          <Route path="final-cart" element={<FinalCartPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/categories/:slug" element={<PillarPage />} />
-          <Route path="/product/:slug" element={<ProductPage />} />
-          <Route path="/bargains" element={<BargainsPage />} />
-        </Route>
-      </Routes>
-    </HelmetProvider>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="search" element={<SearchResultsPage />} />
+        <Route path="substitutions" element={<SubstitutionPage />} />
+        <Route path="final-cart" element={<FinalCartPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/categories/:slug" element={<PillarPage />} />
+        <Route path="/product/:slug" element={<ProductPage />} />
+        <Route path="/bargains" element={<BargainsPage />} />
+      </Route>
+    </Routes>
   );
 };
 
