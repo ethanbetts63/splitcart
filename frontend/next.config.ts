@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const apiUrl = process.env.DJANGO_API_URL ?? "http://localhost:8000";
 
 const nextConfig: NextConfig = {
+  skipTrailingSlashRedirect: true,
   images: {
     disableStaticImages: true,
   },
