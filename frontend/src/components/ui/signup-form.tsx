@@ -20,6 +20,7 @@ import { Input } from "./input"
 import { useState } from "react"
 import { useAuth } from "../../context/AuthContext"
 import { Spinner } from "./spinner"
+import { getApiUrl } from "@/lib/apiUrl"
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [fullName, setFullName] = useState("")
@@ -44,7 +45,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     }
 
     try {
-      const response = await fetch("/api/auth/registration/", {
+      const response = await fetch(getApiUrl("/api/auth/registration/"), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

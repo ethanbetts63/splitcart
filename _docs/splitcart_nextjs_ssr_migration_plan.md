@@ -165,6 +165,36 @@ Dev note:
 
 - Because `postcss.config.mjs` is a new build config file, an already-running `next dev` process may need to be restarted before the styling fix appears in the browser.
 
+### 2026-05-11 - Production product API targeting fix
+
+Issue found in production:
+
+- Next App Router navigation requests such as `/search?primary_category_slug=baby&_rsc=...` are normal React Server Component payload requests and should remain on `www.splitcart.com.au`.
+- The actual broken requests were browser API calls to `/api/...` on `www.splitcart.com.au`.
+- Direct checks showed `https://www.splitcart.com.au/api/products/?primary_category_slug=baby&page=1&page_size=20` returned the old Vite/Django shell HTML (`<div id="root"></div>`) with `Content-Type: text/html`.
+- The same endpoint on `https://api.splitcart.com.au/api/products/?primary_category_slug=baby&page=1&page_size=20` returned DRF JSON correctly.
+- This explained why no products rendered: React Query received a `200` response but the body was HTML, not product JSON.
+
+Decision:
+
+- User-specific product results should stay client-side because selected stores make results effectively unique per user.
+- Browser API calls should target the API origin directly instead of depending on the `www /api` rewrite for product/cart/store/auth flows.
+
+Implemented:
+
+- Added `frontend/src/lib/apiUrl.ts` with `getApiUrl(endpoint)`.
+- `getApiUrl` preserves absolute URLs, normalizes relative API paths to `/api/...`, and prefixes them with `NEXT_PUBLIC_DJANGO_API_URL` when set.
+- Added a production browser fallback to `https://api.splitcart.com.au` when running on `www.splitcart.com.au`, so the live site does not silently fall back to the broken `www /api` path if the public env var is missing.
+- Routed `useApiQuery`, `ApiClient`, login, and signup fetches through `getApiUrl`.
+- Updated local `frontend/.env.local` to include `NEXT_PUBLIC_DJANGO_API_URL=https://api.splitcart.com.au`.
+- Updated `AuthContext` to create and persist an `anonymousId` cookie on `www` when none exists. This matters because direct `api.splitcart.com.au` calls cannot rely on Django setting a readable cookie on the `www` origin, while the backend already accepts `X-Anonymous-ID`.
+
+Deployment note:
+
+- Keep `DJANGO_API_URL=https://api.splitcart.com.au` for server-side Next fetches and rewrites.
+- Add `NEXT_PUBLIC_DJANGO_API_URL=https://api.splitcart.com.au` in Vercel for client-side fetches, then redeploy.
+- After deployment, product requests in browser DevTools should show `https://api.splitcart.com.au/api/products/...` for carousels/search grids.
+
 The goal is to apply the useful parts of the AllBikes Vite -> Next.js migration to SplitCart, with a narrower focus: frontend indexable pages and the SEO/performance benefit of rendering meaningful HTML on the server.
 
 ## Executive summary

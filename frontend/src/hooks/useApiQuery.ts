@@ -2,6 +2,7 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useAuth } from '../context/AuthContext';
 import type { ApiOptions } from '../types/ApiOptions';
+import { getApiUrl } from '@/lib/apiUrl';
 
 // --- Centralized API Fetch Function ---
 
@@ -34,8 +35,7 @@ const apiFetch = async <T>(
     config.body = JSON.stringify(body);
   }
 
-  // Prepend /api if it's not already there
-  const finalEndpoint = endpoint.startsWith('/api') ? endpoint : `/api${endpoint}`;
+  const finalEndpoint = getApiUrl(endpoint);
 
   const response = await fetch(finalEndpoint, config);
 

@@ -18,6 +18,7 @@ import { useAuth } from "../../context/AuthContext"
 import { toast } from "sonner"
 import { Spinner } from "./spinner"
 import { assetSrc } from "@/lib/assets"
+import { getApiUrl } from "@/lib/apiUrl"
 
 export function LoginForm({
   className,
@@ -34,7 +35,7 @@ export function LoginForm({
     setIsLoading(true)
     // this is a hardcoded URL for local development; in production, this should point to the actual backend server
     try {
-      const response = await fetch("/api/auth/login/", {
+      const response = await fetch(getApiUrl("/api/auth/login/"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

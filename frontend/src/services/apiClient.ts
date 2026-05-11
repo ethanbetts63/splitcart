@@ -1,5 +1,6 @@
 import { getAuthHeaders } from '../lib/utils';
 import type { ApiClientOptions } from '../types/ApiClientOptions';
+import { getApiUrl } from '@/lib/apiUrl';
 
 export class ApiError extends Error {
   statusCode: number;
@@ -47,7 +48,7 @@ export class ApiClient {
       }
     }
 
-    const response = await fetch(url, config);
+    const response = await fetch(getApiUrl(url), config);
 
     if (!response.ok) {
       let errorData: any = null;
@@ -101,7 +102,7 @@ export class ApiClient {
       body: JSON.stringify(body),
     };
 
-    const response = await fetch(url, config);
+    const response = await fetch(getApiUrl(url), config);
 
     if (!response.ok) {
       let errorData: any = null;

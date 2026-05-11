@@ -3,6 +3,18 @@ import type { AuthContextType } from '../types/AuthContextType';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const createAnonymousId = () => {
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return crypto.randomUUID();
+  }
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+};
+
+const persistAnonymousId = (anonymousId: string) => {
+  const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+  document.cookie = `anonymousId=${encodeURIComponent(anonymousId)}; max-age=31536000; path=/; SameSite=Lax${secure}`;
+};
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState<string | null>(null);
@@ -25,9 +37,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setIsAuthenticated(false);
           setToken(null);
           setAnonymousId(storedAnonymousId);
+        } else {
+          const newAnonymousId = createAnonymousId();
+          persistAnonymousId(newAnonymousId);
+          setIsAuthenticated(false);
+          setToken(null);
+          setAnonymousId(newAnonymousId);
         }
-        // If neither exists, the backend will set the anonymousId cookie on the first response.
-        // A subsequent page load or context re-render will then pick it up.
       } catch (error) {
         console.error('Failed during auth state initialization:', error);
       } finally {
