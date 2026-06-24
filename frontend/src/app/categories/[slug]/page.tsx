@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import PillarPage from "@/page_components/PillarPage";
 import { createMetadata } from "@/lib/seo";
 import type { PillarPage as PillarPageType } from "@/types";
@@ -9,10 +10,30 @@ type PageProps = {
 
 const apiUrl = process.env.DJANGO_API_URL ?? "http://localhost:8000";
 
+const KNOWN_SLUGS = [
+  "snacks-and-sweets",
+  "meat-and-seafood",
+  "dairy-and-eggs",
+  "fruit-and-veg",
+  "pantry",
+  "international-herbs-and-spices",
+  "bakery-and-deli",
+  "drinks",
+  "health-beauty-and-supplements",
+  "home-cleaning-gardening-and-pets",
+  "baby",
+];
+
+export function generateStaticParams() {
+  return KNOWN_SLUGS.map((slug) => ({ slug }));
+}
+
+export const revalidate = 86400;
+
 async function getPillarPage(slug: string): Promise<PillarPageType | null> {
   try {
     const response = await fetch(`${apiUrl}/api/pillar-pages/${slug}/`, {
-      next: { revalidate: 60 * 60 * 24 },
+      next: { revalidate },
     });
     if (!response.ok) return null;
     return response.json();
@@ -44,7 +65,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function Page({ params }: PageProps) {
   const { slug } = await params;
-  const initialPillarPage = await getPillarPage(slug);
+  const pillarPage = await getPillarPage(slug);
 
-  return <PillarPage initialPillarPage={initialPillarPage} />;
+  if (!pillarPage) notFound();
+
+  return <PillarPage pillarPage={pillarPage} slug={slug} />;
 }

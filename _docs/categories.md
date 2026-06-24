@@ -75,6 +75,12 @@ Run via `python manage.py generate --primary-cats`. It:
 
 ---
 
+## Category Links
+
+`generate --cat-links` creates cross-company raw category links used by LVL4 substitutions. It now only emits `MATCH` links from semantic category-name similarity; the old product-overlap `CLOSE`/`DISTANT` path was removed because it produced almost no links and added complexity without useful signal.
+
+---
+
 ## Data Flow Summary
 
 ```

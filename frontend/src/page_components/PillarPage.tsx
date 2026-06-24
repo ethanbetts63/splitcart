@@ -1,9 +1,3 @@
-"use client";
-
-import React from 'react';
-import { useParams } from 'next/navigation';
-import { useApiQuery } from '../hooks/useApiQuery';
-import LoadingSpinner from '../components/LoadingSpinner';
 import { ProductCarousel } from '../components/ProductCarousel';
 import PriceComparisonChart from '../components/PriceComparisonChart';
 import { FaqV2 } from "../components/FaqV2";
@@ -188,41 +182,12 @@ import fruitDollar1024 from '../assets/fruit_dollar-1024w.webp';
 import fruitDollar1280 from '../assets/fruit_dollar-1280w.webp';
 
 type PillarPageProps = {
-  initialPillarPage?: PillarPageType | null;
+  pillarPage: PillarPageType;
+  slug: string;
 };
 
-const PillarPage: React.FC<PillarPageProps> = ({
-  initialPillarPage,
-}) => {
-  const params = useParams<{ slug: string }>();
-  const slug = params?.slug;
-  const faqs = slug ? (faqsBySlug[slug] ?? []) : [];
-
-  const {
-    data: fetchedPillarPage,
-    isLoading,
-    isError,
-  } = useApiQuery<PillarPageType>(
-    ['pillarPage', slug],
-    `/api/pillar-pages/${slug}/`,
-    {},
-    { enabled: !!slug && !initialPillarPage }
-  );
-
-  const pillarPage = fetchedPillarPage ?? initialPillarPage;
-
-  if (isLoading && !initialPillarPage) {
-    return <LoadingSpinner fullScreen />;
-  }
-
-  if (!pillarPage || (isError && !initialPillarPage)) {
-    return (
-      <div className="text-center py-10">
-        <h2 className="text-2xl font-bold">Page Not Found</h2>
-        <p>The page you are looking for does not exist.</p>
-      </div>
-    );
-  }
+const PillarPage = ({ pillarPage, slug }: PillarPageProps) => {
+  const faqs = faqsBySlug[slug] ?? [];
 
   let imageUrl: ImageAsset;
   let srcSet = undefined;

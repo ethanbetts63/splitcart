@@ -1,5 +1,3 @@
-"use client";
-
 import { AspectRatio } from '../components/ui/aspect-ratio';
 import sizeComparison from "../assets/size_comparison.png";
 import sizeComparison320 from "../assets/size_comparison-320w.webp";
@@ -10,10 +8,8 @@ import sizeComparison1280 from "../assets/size_comparison-1280w.webp";
 
 import { ProductCarousel } from "../components/ProductCarousel";
 import { FAQ } from "../components/FAQ";
-import { useApiQuery } from '../hooks/useApiQuery';
 import type { PriceComparison } from '../types';
 import PriceComparisonChart from '../components/PriceComparisonChart';
-import LoadingSpinner from '../components/LoadingSpinner';
 
 import snackLineup from "../assets/snack_lineup.webp";
 import snackLineup320 from "../assets/snack_lineup-320w.webp"; 
@@ -78,18 +74,6 @@ const BargainsPage: React.FC<BargainsPageProps> = ({
       { name: 'Iga', id: 4 }
   ];
 
-  const {
-    data: bargainStats,
-    isLoading: isLoadingStats,
-    isError: isErrorStats,
-  } = useApiQuery<PriceComparison[]>(
-    ['bargainStats'],
-    '/api/stats/bargains/',
-  );
-
-  const bargainStatsForDisplay = bargainStats ?? initialBargainStats;
-  const showStatsLoading = isLoadingStats && !initialBargainStats;
-
   return (
     <div>
       <Seo
@@ -144,11 +128,9 @@ const BargainsPage: React.FC<BargainsPageProps> = ({
           <h2 className="text-3xl font-bold text-center mb-8 px-5 md:px-0">
             Which supermarket is the <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">cheapest</span> in Australia?
           </h2>
-          {showStatsLoading && <LoadingSpinner />}
-          {isErrorStats && <p className="text-center text-red-500">Could not load bargain statistics.</p>}
-          {bargainStatsForDisplay && (
+          {initialBargainStats && initialBargainStats.length > 0 && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 md:px-0">
-              {bargainStatsForDisplay.map((comparison, index) => (
+              {initialBargainStats.map((comparison, index) => (
                 <PriceComparisonChart key={index} comparison={comparison} categoryName="products" />
               ))}
               <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-5 flex flex-col gap-3">

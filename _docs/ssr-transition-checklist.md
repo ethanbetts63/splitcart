@@ -78,15 +78,14 @@ Blocked on the ProductCarousel refactor above.
 self-contained the only remaining hooks are `useStoreList()` and the `useApiQuery` for
 bargainStats (which has an `initialBargainStats` fallback).
 
-- [ ] (ProductCarousel self-contained — see critical enabler)
-- [ ] Remove `useStoreList()` from `BargainsPage` 
-- [ ] Remove `useApiQuery` for bargainStats — `initialBargainStats` is always provided by the
-      server route; the client fetch is redundant (check `src/app/bargains/page.tsx` to confirm)
-- [ ] Remove `"use client"` from `BargainsPage`
-- [ ] `PriceComparisonChart` — already confirmed as a pure display component, no hooks; confirm
-      and remove `"use client"` if it has one
-- [ ] `FAQ` component — check for hooks; likely pure display, remove `"use client"` if present
-- [ ] Build passes, stats and hero render in initial HTML, carousels still work
+- [x] (ProductCarousel self-contained — see critical enabler)
+- [x] Remove `useStoreList()` from `BargainsPage` 
+- [x] Remove `useApiQuery` for bargainStats — `initialBargainStats` is always provided by the
+      server route; the client fetch is redundant
+- [x] Remove `"use client"` from `BargainsPage`
+- [x] `PriceComparisonChart` — pure display component, no hooks
+- [x] `FAQ` component — pure display, no hooks (Accordion handles its own client boundary)
+- [x] Build passes, stats and hero render in initial HTML, carousels still work
 
 ### `/categories/[slug]` — PillarPage
 
@@ -98,13 +97,11 @@ the slug, `useStoreList()` for the carousels, and `useApiQuery` to fetch pillarP
 - [ ] Update `PillarPage` signature to accept `slug: string` prop instead of calling `useParams()`
 - [ ] Update `src/app/categories/[slug]/page.tsx` to pass `slug` prop down to `PillarPage`
 - [ ] Remove `useStoreList()` from `PillarPage`
-- [ ] Remove `useApiQuery` for pillarPage — `initialPillarPage` is always provided by the server
-      route (add `if (!pillarPage) notFound()` guard in the route file to match current error state)
-- [ ] Remove `"use client"` from `PillarPage`
-- [ ] `FaqV2` component — check for hooks; likely pure display, remove `"use client"` if present
-- [ ] Add `generateStaticParams` to `src/app/categories/[slug]/page.tsx` for the 11 known slugs
-      (fetch from `/api/categories/primary/` or hardcode the list)
-- [ ] Build passes, hero + FAQ + comparison charts render in initial HTML
+- [x] Remove `useApiQuery` for pillarPage — route calls `notFound()` on null; `pillarPage` prop is always non-null
+- [x] Remove `"use client"` from `PillarPage`
+- [x] `FaqV2` component — uses `useState`; added `"use client"` directive
+- [x] Add `generateStaticParams` to `src/app/categories/[slug]/page.tsx` for the 11 known slugs
+- [x] Build passes, hero + FAQ + comparison charts render in initial HTML (all 11 slugs SSG)
 
 ---
 
