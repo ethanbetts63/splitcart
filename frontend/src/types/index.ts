@@ -52,7 +52,6 @@ export type { HowItWorksSectionProps } from './HowItWorksSectionProps';
 export type { JsonLdItemListProps } from './JsonLdItemListProps';
 export type { LoadingSpinnerProps } from './LoadingSpinnerProps';
 export type { MultiplePostcodeInputProps } from './MultiplePostcodeInputProps';
-export type { NavBarProps } from './NavBarProps';
 export type { NavItem } from './NavItem';
 export type { NextButtonProps } from './NextButtonProps';
 export type { OtherSite } from './OtherSite';
