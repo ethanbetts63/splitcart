@@ -1,4 +1,5 @@
-import React from 'react';
+"use client";
+
 import { useCompanyLogo } from '../hooks/useCompanyLogo';
 import { Skeleton } from './ui/skeleton';
 import { Badge } from './ui/badge';
@@ -27,7 +28,7 @@ const CompanyLogo = ({ companyName, priceDisplay }: { companyName: string; price
   );
 };
 
-const PriceDisplay: React.FC<PriceDisplayProps> = ({ prices, displayMode = 'compact' }) => {
+const PriceDisplay = ({ prices, displayMode = 'compact' }: PriceDisplayProps) => {
   if (!prices || prices.length === 0) {
     return <p className="text-sm text-gray-400">No price available</p>;
   }

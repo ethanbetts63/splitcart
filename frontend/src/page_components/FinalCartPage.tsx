@@ -10,7 +10,7 @@ import { Switch } from "../components/ui/switch"
 import { Label } from "../components/ui/label"
 import LoadingSpinner from '../components/LoadingSpinner';
 import ResultsDisplay from '../components/ResultsDisplay';
-import { FAQ } from "../components/FAQ";
+import { FaqSection } from "../components/FaqSection";
 import listImage from "../assets/list-768w.webp";
 import type { ExportData } from '../types';
 import { assetSrc } from '@/lib/assets';
@@ -107,12 +107,7 @@ const FinalCartPage = () => {
       }
 
       <div className="mt-16">
-        <FAQ
-          title="Helpful Information"
-          faqs={finalCartFaqs}
-          imageSrc={assetSrc(listImage)}
-          imageAlt="A grocery list"
-        />
+        <FaqSection title="Helpful Information" faqData={finalCartFaqs} />
       </div>
     </div>
   );

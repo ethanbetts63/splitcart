@@ -1,11 +1,12 @@
-import React from 'react';
+"use client";
+
 import { useCart } from '../context/CartContext';
 import { useStoreList } from '../context/StoreListContext';
 import { useDialog } from '../context/DialogContext';
 import { toast } from 'sonner';
 import type { AddToCartButtonProps } from '../types/AddToCartButtonProps';
 
-const AddToCartButton: React.FC<AddToCartButtonProps> = ({ product }) => {
+const AddToCartButton = ({ product }: AddToCartButtonProps) => {
   const { currentCart, addItem, updateItemQuantity } = useCart();
   const { selectedStoreIds } = useStoreList();
   const { openDialog } = useDialog();

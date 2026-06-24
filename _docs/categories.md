@@ -14,6 +14,10 @@ The SplitCart category system normalises messy, store-specific product data into
 2. Creates parent-child links between adjacent nodes in the path (so "Hair Care" knows its parent is "Personal Care").
 3. Links the product to its **leaf** category (the last item in the path — "Hair Colour" in the example above).
 
+**Woolworths note:** Woolworths now uses the canonical path from the category-tree scrape work item. The old merge of `piesdepartmentnamesjson`, `piescategorynamesjson`, and `piessubcategorynamesjson` was removed because those fields include merchandising facets like Dinner, Breakfast, and Lunch Box, not just taxonomy. Existing bad category rows are expected to disappear on the next DB reset/rebuild.
+
+**Coles note:** Coles `onlineHeirs` paths are ordered, but products can appear under normal, seasonal, and promotional hierarchies. The current cleaner uses the first `onlineHeirs` entry, so paths such as Christmas, Down Down, and Bonus Credit Products can override the real grocery taxonomy. Prefer non-promotional grocery paths, ideally matched to the browse category context.
+
 **Important: categories are unique by `(slug, company)`.** If the same category name appears in two different paths — e.g. `["Baby & Toddler", "Health"]` and `["Health & Beauty", "Health"]` — there is only ONE `Category` object for "Health" for that company, and it ends up with two parents. This is a known design limitation; see the Known Issues section below.
 
 **Key fields on `Category`:**

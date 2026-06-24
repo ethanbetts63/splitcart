@@ -1,8 +1,3 @@
-"use client";
-
-import React from 'react';
-import { useParams } from 'next/navigation';
-import { useApiQuery } from '@/hooks/useApiQuery';
 import type { Product } from '../types';
 import LoadingSpinner from '../components/LoadingSpinner';
 import PriceDisplay from '../components/PriceDisplay';
@@ -10,46 +5,27 @@ import AddToCartButton from '../components/AddToCartButton';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import { ProductCarousel } from '../components/ProductCarousel';
-import { useStoreList } from '../context/StoreListContext';
 import { assetSrc } from '@/lib/assets';
+import { notFound } from 'next/navigation';
 
-const ProductPage: React.FC = () => {
-  const params = useParams<{ slug: string }>();
-  const slug = params?.slug;
-  const { selectedStoreIds, isUserDefinedList } = useStoreList();
+type ProductPageProps = {
+  product: Product | null;
+  slug: string;
+};
 
-  const storeIdsArray = React.useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
+const ProductPage = ({ product, slug }: ProductPageProps) => {
+  if (!product) notFound();
 
-  // Extract the ID from the slug
-  const productId = slug ? slug.split('-').pop() : undefined;
+  const pageDescription = `Compare prices for ${product.name}${product.brand_name ? ` from ${product.brand_name}` : ''} across major Australian supermarkets. Find the best deals with SplitCart.`;
 
-  // Construct the API URL with store_ids query parameter
-  const storeIdsQuery = storeIdsArray.length > 0 ? `?store_ids=${storeIdsArray.join(',')}` : '';
-  const apiUrl = `/api/products/${productId}/${storeIdsQuery}`;
-
-  const { data: product, isLoading, error } = useApiQuery<Product>(
-    ['product', productId, storeIdsArray.join(',')], // Add storeIds to query key for reactive updates
-    apiUrl,
-    {},
-    { enabled: !!productId } // Only run query if productId is available
-  );
-
-  const pageTitle = product ? `${product.name} - Price Comparison` : 'SplitCart';
-  const pageDescription = product
-    ? `Compare prices for ${product.name}${product.brand_name ? ` from ${product.brand_name}` : ''} across major Australian supermarkets. Find the best deals with SplitCart.`
-    : 'Compare prices across major Australian supermarkets and find the best deals with SplitCart.';
-  
-  const productSchema = product ? {
+  const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
     image: product.image_url,
     description: pageDescription,
     sku: product.id,
-    brand: product.brand_name ? {
-      '@type': 'Brand',
-      name: product.brand_name,
-    } : undefined,
+    brand: product.brand_name ? { '@type': 'Brand', name: product.brand_name } : undefined,
     offers: {
       '@type': 'AggregateOffer',
       priceCurrency: 'AUD',
@@ -60,42 +36,26 @@ const ProductPage: React.FC = () => {
         '@type': 'Offer',
         price: parseFloat(priceInfo.price_display.replace('$', '')).toFixed(2),
         priceCurrency: 'AUD',
-        seller: {
-          '@type': 'Organization',
-          name: priceInfo.company,
-        },
-        url: `https://www.splitcart.com.au/product/${product.slug}`
+        seller: { '@type': 'Organization', name: priceInfo.company },
+        url: `https://www.splitcart.com.au/product/${slug}`,
       })),
     },
-  } : null;
+  };
 
-  if (isLoading) {
-    return <LoadingSpinner fullScreen />;
-  }
-
-  if (error) {
-    return <div className="text-center p-4 text-red-500">Error: Could not load product details.</div>;
-  }
-
-  if (!product) {
-    return <div className="text-center p-4">Product not found.</div>;
-  }
   const imageUrl = product.image_url || assetSrc(fallbackImage);
 
   return (
     <div className="container mx-auto p-4 md:p-4">
-      {productSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
-        />
-      )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
       <div className="max-w-5xl mx-auto">
         <Card className="overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
             {/* Image Column */}
             <div className="aspect-square w-full overflow-hidden">
-               <img
+              <img
                 src={imageUrl}
                 alt={product.name}
                 className="h-full w-full object-cover"
@@ -111,7 +71,7 @@ const ProductPage: React.FC = () => {
                     {product.brand_name}
                   </CardDescription>
                 )}
-                 {product.size && (
+                {product.size && (
                   <CardDescription className="text-lg text-muted-foreground pt-1">
                     {product.size}
                   </CardDescription>

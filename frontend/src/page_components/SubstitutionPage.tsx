@@ -7,7 +7,7 @@ import ProductTile from '../components/ProductTile';
 import CartItemTile from '../components/CartItemTile';
 import LoadingSpinner from '../components/LoadingSpinner';
 import type { CartSubstitution } from '../types';
-import { FAQ } from "../components/FAQ";
+import { FaqSection } from "../components/FaqSection";
 import sizeDoesntMatterImage from "../assets/size_doesnt_matter.webp";
 import useMediaQuery from '../hooks/useMediaQuery';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
@@ -240,12 +240,7 @@ const SubstitutionPage = () => {
 
       {/* FAQ */}
       <div className="mt-12">
-        <FAQ
-          title="Why substitution?"
-          faqs={substitutesFaqs}
-          imageSrc={assetSrc(sizeDoesntMatterImage)}
-          imageAlt="Scale balancing small bottles with many dollar signs against a large bottle with one dollar sign, with text 'Size doesn't matter, value does.'"
-        />
+        <FaqSection title="Why substitution?" faqData={substitutesFaqs} />
       </div>
 
     </div>
