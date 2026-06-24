@@ -1,3 +1,5 @@
+"use client";
+
 import React, { memo, useEffect, useRef } from 'react';
 import SkeletonProductTile from "./SkeletonProductTile";
 import ProductTile from "./ProductTile";
@@ -9,15 +11,13 @@ import type { ProductCarouselProps } from '../types/ProductCarouselProps';
 import type { Product } from '../types/Product';
 import { useApiQuery } from '@/hooks/useApiQuery';
 import { useDialog } from '@/context/DialogContext';
+import { useStoreList } from '@/context/StoreListContext';
 
 const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
   sourceUrl,
   products: initialProducts,
-  storeIds,
   title,
   searchQuery,
-  isDefaultStores,
-  isUserDefinedList,
   primaryCategorySlug,
   primaryCategorySlugs,
   pillarPageLinkSlug,
@@ -31,6 +31,9 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
   isLoading: isLoadingProp,
 }) => {
   const { openDialog } = useDialog();
+  const { selectedStoreIds, isUserDefinedList } = useStoreList();
+  const storeIds = React.useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
+  const isDefaultStores = !isUserDefinedList;
   const [isSmallScreen, setIsSmallScreen] = React.useState(false);
   const [scrollContainer, setScrollContainer] = React.useState<HTMLDivElement | null>(null);
   const pathname = usePathname();

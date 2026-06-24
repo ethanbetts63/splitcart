@@ -1,9 +1,5 @@
-"use client";
-
-import React from 'react'; 
 import { ProductCarousel } from "../components/ProductCarousel";
 import { FAQ } from "../components/FAQ";
-import { useStoreList } from "../context/StoreListContext";
 import { AspectRatio } from "../components/ui/aspect-ratio";
 import confusedShopper from "../assets/confused_shopper.webp";
 import confusedShopper320 from "../assets/confused_shopper-320w.webp";
@@ -52,8 +48,6 @@ const homeFaqs = [
 ];
 
 const HomePage = () => {
-  const { selectedStoreIds, isUserDefinedList } = useStoreList();
-
   const webSiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -72,8 +66,6 @@ const HomePage = () => {
         "query-input": "required name=search_term_string"
     }
   };
-
-  const isDefaultStores = !isUserDefinedList;
 
   const howItWorksSteps = [
     {
@@ -110,8 +102,6 @@ const HomePage = () => {
       },
     },
   ];
-
-  const selectedStoreIdsArray = React.useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
 
   return (
     <div>
@@ -158,9 +148,6 @@ const HomePage = () => {
           key="bargains"
           title="Bargains"
           sourceUrl="/api/products/bargain-carousel/"
-          storeIds={selectedStoreIdsArray}
-          isDefaultStores={isDefaultStores}
-          isUserDefinedList={isUserDefinedList}
         />
       </div>
 

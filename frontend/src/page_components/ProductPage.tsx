@@ -136,8 +136,6 @@ const ProductPage: React.FC = () => {
             key={`substitutes-for-${product.id}`}
             title="Similar Products"
             sourceUrl={`/api/products/${product.id}/substitutes/`}
-            storeIds={storeIdsArray}
-            isUserDefinedList={isUserDefinedList}
             minProducts={1}
           />
         </div>

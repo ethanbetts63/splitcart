@@ -16,7 +16,6 @@ import shampooImage from '../assets/shampoo.webp';
 import survivalImage from '../assets/survival.webp';
 import { AspectRatio } from '../components/ui/aspect-ratio';
 import type { PrimaryCategory, PillarPage as PillarPageType } from '../types';
-import { useStoreList } from '../context/StoreListContext';
 import { assetSrc, assetSrcSet, type ImageAsset } from '@/lib/assets';
 
 const faqsBySlug: Record<string, FaqItem[]> = {
@@ -199,12 +198,6 @@ const PillarPage: React.FC<PillarPageProps> = ({
   const slug = params?.slug;
   const faqs = slug ? (faqsBySlug[slug] ?? []) : [];
 
-  const { selectedStoreIds, isUserDefinedList } = useStoreList();
-
-  const selectedStoreIdsArray = React.useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
-
-  const isDefaultStores = !isUserDefinedList;
-
   const {
     data: fetchedPillarPage,
     isLoading,
@@ -297,9 +290,7 @@ const PillarPage: React.FC<PillarPageProps> = ({
                 sourceUrl="/api/products/"
                 primaryCategorySlugs={[category.slug]}
                 pillarPageLinkSlug={slug}
-                storeIds={selectedStoreIdsArray}
                 slot={index}
-                isDefaultStores={isDefaultStores}
             />
             {category.price_comparison_data && category.price_comparison_data.comparisons && category.price_comparison_data.comparisons.length > 0 && (
               <>

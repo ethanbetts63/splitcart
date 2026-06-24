@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import AddToCartButton from './AddToCartButton';

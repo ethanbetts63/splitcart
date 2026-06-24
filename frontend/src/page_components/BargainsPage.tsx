@@ -1,6 +1,5 @@
 "use client";
 
-import React from 'react';
 import { AspectRatio } from '../components/ui/aspect-ratio';
 import sizeComparison from "../assets/size_comparison.png";
 import sizeComparison320 from "../assets/size_comparison-320w.webp";
@@ -9,7 +8,6 @@ import sizeComparison768 from "../assets/size_comparison-768w.webp";
 import sizeComparison1024 from "../assets/size_comparison-1024w.webp";
 import sizeComparison1280 from "../assets/size_comparison-1280w.webp";
 
-import { useStoreList } from '../context/StoreListContext';
 import { ProductCarousel } from "../components/ProductCarousel";
 import { FAQ } from "../components/FAQ";
 import { useApiQuery } from '../hooks/useApiQuery';
@@ -73,12 +71,6 @@ const BargainsPage: React.FC<BargainsPageProps> = ({
 
   const hero_title = "Australia's Best Grocery Bargains";
 
-  const { selectedStoreIds, isUserDefinedList } = useStoreList();
-
-  const selectedStoreIdsArray = React.useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
-
-  const isDefaultStores = !isUserDefinedList;
-  
   const companies = [
       { name: 'Coles', id: 1 },
       { name: 'Woolworths', id: 2 },
@@ -138,10 +130,8 @@ const BargainsPage: React.FC<BargainsPageProps> = ({
               title={`${company.name} Bargains`}
               sourceUrl="/api/products/bargain-carousel/"
               products={initialCompanyProducts[company.name]}
-              storeIds={selectedStoreIdsArray}
               companyName={company.name}
               isBargainCarousel={true}
-              isDefaultStores={isDefaultStores}
               minProducts={1}
             />
           ))}

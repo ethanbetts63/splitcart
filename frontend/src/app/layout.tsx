@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   },
   description:
     "Compare grocery prices across Coles, Woolworths, Aldi and IGA, then split your cart for the cheapest overall shop.",
+  verification: {
+    google: "r5nGZauPlmuoFz7oRepvHlQq5AWr7zYuHrD_1jTSms8",
+  },
 };
 
 export default function RootLayout({
