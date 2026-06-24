@@ -40,9 +40,17 @@ Product
     },
     ...
   ]
+  primary_category_slugs = ["milk", "dairy"]
 ```
 
 This keeps the design closer to the product-name variation system: collect observed variants, normalize/canonicalize them, and store the generated result on the product. The tradeoff is queryability: product filtering and stats will need JSON-aware querying or generated helper fields/indexes. If that becomes painful, the same shape can later be promoted into a separate path table.
+
+Each `category_paths` entry must carry `company`. `Product` is canonical across companies, so a category path without company context is ambiguous and unsafe.
+
+The product should keep two category outputs:
+
+1. `category_paths` — detailed evidence and canonicalization data for each observed company/path.
+2. `primary_category_slugs` — a small denormalized list used for fast browsing, filtering, stats, and frontend category pages.
 
 Suggested product field shape:
 
@@ -75,8 +83,7 @@ This means the current `Category` model can probably be retired. `PrimaryCategor
    - `brand_collection`
    - `merchandising`
    - `unknown`
-3. Exclude or down-rank non-canonical paths for browsing and substitutions.
-4. Generate a path-aware canonical category mapping:
+3. Generate a path-aware canonical category mapping:
 
 ```python
 "coles|Dairy, Eggs & Fridge/Milk/Full Cream Milk": "dairy/milk/full-cream"
@@ -84,20 +91,22 @@ This means the current `Category` model can probably be retired. `PrimaryCategor
 "iga|Grocery/Dairy, Eggs And Fridge/Milk And Cream/Full Cream Milk": "dairy/milk/full-cream"
 ```
 
-5. Assign `PrimaryCategory` from canonical category keys, not from raw leaf node names.
+4. Write the generated mapping to `data_management/data/category_path_mappings.py` or an equivalent generated JSONL artifact. It should include raw company path, path type, canonical key, primary category slug, confidence, and source/reason.
+5. Assign `primary_category_slugs` from canonical category keys, not from raw leaf node names.
 6. Generate substitutions from canonical category assignments:
    - LVL3 equivalent: products sharing the same canonical category.
    - LVL4 equivalent: products in related canonical categories.
 
-The generated mapping should be inspectable and reproducible, similar to product name translation tables. It can start with deterministic rules and embedding similarity, then use an AI pipeline for ambiguous path-level decisions.
+The downstream system should mostly consume canonical outputs, not raw path types directly. Non-canonical paths can stay in `category_paths` as evidence, but product browsing, stats, and substitutions should use `primary_category_slugs` / canonical category keys. The generated mapping should be inspectable and reproducible, similar to product name translation tables. It can start with deterministic rules and embedding similarity, then use an AI pipeline for ambiguous path-level decisions.
 
 ### Refactor TODO
 
 - [ ] Scrapers: make every company emit full scrape-context paths where possible. Woolworths already does this. Coles should prefer a menu/browse-context full path over `onlineHeirs[0]`. Aldi and IGA category-tree helpers should keep full paths instead of leaf identifiers only.
 - [ ] Cleaners: allow `category_paths` as a list of full paths, not only one `category_path`. Product metadata paths can remain as fallback/debug evidence but should not blindly override scrape-context paths.
 - [ ] Product ingest: replace `CategoryManager` with product-level path aggregation. It should merge evidence for the same product/company/path into `Product.category_paths` instead of creating node graphs.
-- [ ] Models: add `Product.category_paths` as a JSON field, similar in spirit to `normalized_name_brand_size_variations`. Decide whether helper/generated fields are needed for fast filtering by primary category.
+- [ ] Models: add `Product.category_paths` as a JSON field, similar in spirit to `normalized_name_brand_size_variations`. Add `Product.primary_category_slugs` as the fast downstream/filtering field.
 - [ ] Primary categories: replace `CATEGORY_MAPPINGS` from raw category-name mapping with path/canonical-key mapping. `PrimaryCategoriesGenerator` should write canonical keys / primary category slugs into product category path entries, not node descendants.
+- [ ] Category path mappings: create `data_management/data/category_path_mappings.py` or equivalent generated JSONL artifact to store path type, canonical key, primary category slug, confidence, and reason/source.
 - [ ] Category links: remove `CategoryLink` as raw node-to-node matching. Replace with generated canonical category mappings and related-canonical-category edges.
 - [ ] Substitutions: update `ProductExportSerializer`, `SubstitutionsGenerator`, `Lvl3SubGenerator`, and `Lvl4SubGenerator` to consume canonical category IDs/keys instead of `Product.category` raw node IDs.
 - [ ] Product list filtering: replace queries like `category__primary_category__slug__in` with filtering over `Product.category_paths`. If JSON querying is too slow, add a denormalized/indexed helper field such as `primary_category_slugs`.
