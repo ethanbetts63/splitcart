@@ -1,10 +1,9 @@
-import React from 'react';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import type { OtherSitesProps } from '../types/OtherSitesProps';
 
-const OtherSites: React.FC<OtherSitesProps> = ({ sites }) => {
+const OtherSites = ({ sites }: OtherSitesProps) => {
     return (
         <div className="container mx-auto py-6">
             <h2 className="text-3xl font-bold text-center text-black mb-8">

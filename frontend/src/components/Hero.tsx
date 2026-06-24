@@ -1,4 +1,3 @@
-import React from 'react';
 import confusedShopper from "../assets/confused_shopper.webp";
 import confusedShopper320 from "../assets/confused_shopper-320w.webp";
 import confusedShopper640 from "../assets/confused_shopper-640w.webp";
@@ -8,7 +7,7 @@ import confusedShopper1280 from "../assets/confused_shopper-1280w.webp";
 import type { HeroProps } from '../types/HeroProps';
 import { assetSrc, assetSrcSet } from '@/lib/assets';
 
-export const Hero: React.FC<HeroProps> = ({ title, subtitle, imageAlt, ctaElement }) => {
+export const Hero = ({ title, subtitle, imageAlt, ctaElement }: HeroProps) => {
   const imageSrc = assetSrc(confusedShopper);
   const srcSet = assetSrcSet([[confusedShopper320, 320], [confusedShopper640, 640], [confusedShopper768, 768], [confusedShopper1024, 1024], [confusedShopper1280, 1280]]);
 

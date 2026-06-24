@@ -15,8 +15,24 @@ class ProductScraperWoolworths(BaseProductScraper):
         self.session = None
         self.EXCLUDED_CATEGORY_SLUGS = ["everyday-market", "cigarettes-tobacco"]
         self.categories_to_fetch = [
-            cat for cat in categories_to_fetch if cat[0] not in self.EXCLUDED_CATEGORY_SLUGS
+            cat for cat in categories_to_fetch
+            if self._category_slug(cat) not in self.EXCLUDED_CATEGORY_SLUGS
         ]
+
+    def _category_slug(self, item):
+        if isinstance(item, dict):
+            return item.get('slug')
+        return item[0]
+
+    def _category_node_id(self, item):
+        if isinstance(item, dict):
+            return item.get('node_id')
+        return item[1]
+
+    def _category_path(self, item):
+        if isinstance(item, dict):
+            return item.get('category_path') or []
+        return []
 
     def setup(self):
         """
@@ -57,7 +73,9 @@ class ProductScraperWoolworths(BaseProductScraper):
         """
         Fetches the raw product data for a single Woolworths category.
         """
-        category_slug, category_id = item
+        category_slug = self._category_slug(item)
+        category_id = self._category_node_id(item)
+        category_path = self._category_path(item)
         all_raw_products = []
         page_num = 1
 
@@ -81,10 +99,18 @@ class ProductScraperWoolworths(BaseProductScraper):
             response.raise_for_status()
             data = response.json()
             
-            raw_products_on_page = [p for bundle in data.get("Bundles", []) if bundle and bundle.get("Products") for p in bundle["Products"]]
+            raw_products_on_page = [
+                p
+                for bundle in data.get("Bundles", [])
+                if bundle and bundle.get("Products")
+                for p in bundle["Products"]
+            ]
             
             if not raw_products_on_page:
                 break
+
+            for product in raw_products_on_page:
+                product['category_path'] = category_path
 
             all_raw_products.extend(raw_products_on_page)
             page_num += 1

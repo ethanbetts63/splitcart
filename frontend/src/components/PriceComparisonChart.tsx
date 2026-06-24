@@ -1,7 +1,6 @@
-import React from 'react';
 import type { PriceComparisonChartProps } from '../types/PriceComparisonChartProps';
 
-const PriceComparisonChart: React.FC<PriceComparisonChartProps> = ({ comparison, categoryName }) => {
+const PriceComparisonChart = ({ comparison, categoryName }: PriceComparisonChartProps) => {
   const {
     company_a_name,
     company_b_name,

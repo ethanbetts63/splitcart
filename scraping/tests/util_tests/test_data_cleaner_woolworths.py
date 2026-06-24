@@ -32,14 +32,15 @@ RAW_PRODUCT = {
     'CupMeasure': '1L',
     'Rating': {'Average': 4.5, 'ReviewCount': 120},
     'AdditionalAttributes': {
-        'piesdepartmentnamesjson': json.dumps(['Dairy, Eggs & Fridge']),
-        'piescategorynamesjson': json.dumps(['Milk']),
-        'piessubcategorynamesjson': json.dumps(['Full Cream Milk']),
+        'piesdepartmentnamesjson': json.dumps(['Dinner', 'Dairy, Eggs & Fridge']),
+        'piescategorynamesjson': json.dumps(['Breakfast', 'Milk']),
+        'piessubcategorynamesjson': json.dumps(['Health Shots & Drinks', 'Full Cream Milk']),
         'healthstarrating': '4.0',
         'ingredients': 'Milk',
         'allergystatement': 'Contains milk',
         'countryoforigin': 'Australia',
     },
+    'category_path': ['Dairy, Eggs & Fridge', 'Milk', 'Full Cream Milk'],
     'IsAvailable': True,
 }
 
@@ -96,24 +97,28 @@ class TestTransformProductHealthStarRating:
 
 
 class TestTransformProductCategoryPath:
-    def test_category_path_built_from_json_fields(self, cleaner):
+    def test_category_path_uses_scrape_context_path(self, cleaner):
         result = cleaner._transform_product(RAW_PRODUCT)
-        assert len(result['category_path']) >= 1
-        assert 'Dairy, Eggs & Fridge' in result['category_path']
-        assert 'Milk' in result['category_path']
+        assert result['category_path'] == ['Dairy, Eggs & Fridge', 'Milk', 'Full Cream Milk']
 
-    def test_duplicate_categories_deduplicated(self, cleaner):
+    def test_pies_fields_do_not_pollute_category_path(self, cleaner):
+        result = cleaner._transform_product(RAW_PRODUCT)
+        assert 'Dinner' not in result['category_path']
+        assert 'Breakfast' not in result['category_path']
+        assert 'Health Shots & Drinks' not in result['category_path']
+
+    def test_context_path_categories_deduplicated(self, cleaner):
         raw = {
             **RAW_PRODUCT,
-            'AdditionalAttributes': {
-                **RAW_PRODUCT['AdditionalAttributes'],
-                'piesdepartmentnamesjson': json.dumps(['Dairy']),
-                'piescategorynamesjson': json.dumps(['Dairy']),  # duplicate
-                'piessubcategorynamesjson': json.dumps(['Milk']),
-            }
+            'category_path': ['Dairy', 'Dairy', 'Milk'],
         }
         result = cleaner._transform_product(raw)
         assert result['category_path'].count('Dairy') == 1
+
+    def test_missing_context_path_gives_empty_path(self, cleaner):
+        raw = {k: v for k, v in RAW_PRODUCT.items() if k != 'category_path'}
+        result = cleaner._transform_product(raw)
+        assert result['category_path'] == []
 
 
 class TestTransformProductAvailability:

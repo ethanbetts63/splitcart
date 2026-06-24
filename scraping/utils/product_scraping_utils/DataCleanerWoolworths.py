@@ -1,26 +1,7 @@
-import json
 from datetime import datetime
 from .BaseDataCleaner import BaseDataCleaner
 from .field_maps import WOOLWORTHS_FIELD_MAP
 
-
-def _deep_get(data, keys):
-    for key in keys:
-        if isinstance(data, dict) and key in data:
-            data = data[key]
-        else:
-            return None
-    return data
-
-
-def _parse_json_field(raw_product, field_path):
-    raw_json_str = _deep_get(raw_product, field_path.split('.'))
-    if not raw_json_str or not isinstance(raw_json_str, str):
-        return []
-    try:
-        return json.loads(raw_json_str)
-    except json.JSONDecodeError:
-        return []
 
 class DataCleanerWoolworths(BaseDataCleaner):
     """
@@ -32,6 +13,16 @@ class DataCleanerWoolworths(BaseDataCleaner):
     @property
     def field_map(self):
         return WOOLWORTHS_FIELD_MAP
+
+    def _clean_context_category_path(self, category_path):
+        cleaned_path = self._clean_category_path(category_path)
+        deduped_path = []
+        seen = set()
+        for item in cleaned_path:
+            if item not in seen:
+                seen.add(item)
+                deduped_path.append(item)
+        return deduped_path
 
     def _transform_product(self, raw_product: dict) -> dict:
         cleaned_product = {
@@ -45,18 +36,7 @@ class DataCleanerWoolworths(BaseDataCleaner):
         )
         cleaned_product.update(price_info)
 
-        departments = _parse_json_field(raw_product, 'AdditionalAttributes.piesdepartmentnamesjson')
-        categories = _parse_json_field(raw_product, 'AdditionalAttributes.piescategorynamesjson')
-        subcategories = _parse_json_field(raw_product, 'AdditionalAttributes.piessubcategorynamesjson')
-
-        full_path = []
-        seen = set()
-        for item in departments + categories + subcategories:
-            if item and item not in seen:
-                seen.add(item)
-                full_path.append(item)
-        
-        cleaned_product['category_path'] = self._clean_category_path(full_path)
+        cleaned_product['category_path'] = self._clean_context_category_path(raw_product.get('category_path', []))
 
         stockcode = cleaned_product.get('sku')
         slug = cleaned_product.get('url')

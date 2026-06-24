@@ -1,4 +1,3 @@
-import React from 'react';
 import { Hero } from '@/components/Hero';
 import ContactDetails from '../components/ContactDetails';
 import OtherSites from '../components/OtherSites';
@@ -21,7 +20,7 @@ const otherSitesData = [
     },
 ];
 
-const ContactPage: React.FC = () => {
+const ContactPage = () => {
     const description = "Have questions, suggestions, or feedback? Get in touch with us. I'd love to hear from you. This is a very new site and I know that there is room for improvement! ethanbetts63@gmail.com";
 
     return (

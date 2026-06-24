@@ -1,6 +1,6 @@
 import { ProductCarousel } from '../components/ProductCarousel';
 import PriceComparisonChart from '../components/PriceComparisonChart';
-import { FaqV2 } from "../components/FaqV2";
+import { FaqSection } from "../components/FaqSection";
 import { faqsBySlug } from '@/data/pillar-faqs';
 import confusedShopper from "../assets/confused_shopper.webp";
 import meatImage from '../assets/fish_meat_box.webp';
@@ -130,9 +130,9 @@ const PillarPage = ({ pillarPage, slug }: PillarPageProps) => {
           <div className="container mx-auto px-4 py-8">
             <div className="flex flex-col gap-8">
               <section>
-                <FaqV2
+                <FaqSection
                   title={`Frequently Asked Questions about ${pillarPage.hero_title}`}
-                  faqs={faqs}
+                  faqData={faqs}
                 />
               </section>
             </div>

@@ -1,5 +1,5 @@
 import { ProductCarousel } from "../components/ProductCarousel";
-import { FAQ } from "../components/FAQ";
+import { FaqSection } from "../components/FaqSection";
 import { AspectRatio } from "../components/ui/aspect-ratio";
 import confusedShopper from "../assets/confused_shopper.webp";
 import confusedShopper320 from "../assets/confused_shopper-320w.webp";
@@ -7,12 +7,6 @@ import confusedShopper640 from "../assets/confused_shopper-640w.webp";
 import confusedShopper768 from "../assets/confused_shopper-768w.webp";
 import confusedShopper1024 from "../assets/confused_shopper-1024w.webp";
 import confusedShopper1280 from "../assets/confused_shopper-1280w.webp";
-import kingKongImage from "../assets/king_kong.webp";
-import kingKongImage320 from "../assets/king_kong-320w.webp";
-import kingKongImage640 from "../assets/king_kong-640w.webp";
-import kingKongImage768 from "../assets/king_kong-768w.webp";
-import kingKongImage1024 from "../assets/king_kong-1024w.webp";
-import kingKongImage1280 from "../assets/king_kong-1280w.webp";
 
 import { HowItWorksSection } from '../components/HowItWorksSection';
 import { BrowseCategoriesSection } from '../components/BrowseCategoriesSection';
@@ -129,18 +123,7 @@ const HomePage = () => {
       <FounderLetterSection />
 
       {/* --- FAQ Section --- */}
-      <div className="container mx-auto px-4 py-8">
-        <section>
-          <FAQ
-            title="The Hard Hitting Questions"
-            faqs={homeFaqs}
-            imageSrc={assetSrc(kingKongImage)}
-            srcSet={assetSrcSet([[kingKongImage320, 320], [kingKongImage640, 640], [kingKongImage768, 768], [kingKongImage1024, 1024], [kingKongImage1280, 1280]])}
-            sizes="(min-width: 1024px) 50vw, calc(100vw - 2rem)"
-            imageAlt="King Kong swatting at discount planes"
-          />
-        </section>
-      </div>
+      <FaqSection title="The Hard Hitting Questions" faqData={homeFaqs} />
 
     </div>
   );

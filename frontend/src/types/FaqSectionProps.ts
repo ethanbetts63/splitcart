@@ -1,6 +1,6 @@
 import type { FaqItem } from './FaqItem';
 
-export interface FaqV2Props {
+export interface FaqSectionProps {
   title: string;
-  faqs: FaqItem[];
+  faqData: FaqItem[];
 }

@@ -1,7 +1,6 @@
-import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const ContactDetails: React.FC = () => {
+const ContactDetails = () => {
     return (
         <div className="container mx-auto px-4 py-8 ">
             <Card className="bg-white text-black border-0 shadow-md">

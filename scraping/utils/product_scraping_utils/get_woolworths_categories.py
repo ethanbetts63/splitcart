@@ -1,8 +1,58 @@
 import requests
 
+EXCLUDED_ROOT_SLUGS = {
+    'specials',
+    'everyday-market',
+    'big-night-in',
+    'dinner',
+    'lunch-box',
+    'front-of-store',
+}
+
+
+def _node_name(node):
+    return node.get('Description') or node.get('DisplayName') or node.get('Name')
+
+
+def _is_special_node(node):
+    slug = node.get('UrlFriendlyName') or ''
+    node_id = node.get('NodeId') or ''
+    return slug.endswith('-specials') or node_id.endswith('_SPECIALS')
+
+
+def _find_leaf_categories(nodes, path=None):
+    path = path or []
+    leaf_categories = []
+
+    for node in nodes:
+        if _is_special_node(node):
+            continue
+
+        name = _node_name(node)
+        slug = node.get('UrlFriendlyName')
+        node_id = node.get('NodeId')
+        if not name or not slug or not node_id:
+            continue
+
+        category_path = path + [name]
+        children = node.get('Children', [])
+
+        if children:
+            leaf_categories.extend(_find_leaf_categories(children, category_path))
+        else:
+            leaf_categories.append({
+                'slug': slug,
+                'node_id': node_id,
+                'category_path': category_path,
+            })
+
+    return leaf_categories
+
+
 def get_woolworths_categories(command):
     """
-    Fetches the category hierarchy from Woolworths' api and extracts a flattened list of categories.
+    Fetches the category hierarchy from Woolworths' api and extracts leaf categories
+    with their canonical category paths.
     """
     api_url = "https://www.woolworths.com.au/apis/ui/PiesCategoriesWithSpecials"
     headers = {
@@ -30,10 +80,8 @@ def get_woolworths_categories(command):
         command.stdout.write("ERROR: Failed to decode JSON when fetching categories.\n")
         return []
 
-    categories = []
-    # The actual categories are not under 'Specials' but are siblings
-    for category in data.get('Categories', [])[1:]:
-        for child in category.get('Children', []):
-            categories.append((child.get('UrlFriendlyName'), child.get('NodeId')))
-
-    return categories
+    roots = [
+        category for category in data.get('Categories', [])
+        if category.get('UrlFriendlyName') not in EXCLUDED_ROOT_SLUGS
+    ]
+    return _find_leaf_categories(roots)

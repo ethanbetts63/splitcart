@@ -75,7 +75,7 @@ WOOLWORTHS_FIELD_MAP = {
     "country_of_origin": "AdditionalAttributes.countryoforigin",
     "size": "PackageSize",
     "url": "UrlFriendlyName",
-    "category_path": "AdditionalAttributes.piesdepartmentnamesjson",
+    "category_path": "category_path",
     "price_current": "Price",
     "price_was": "WasPrice",
     "per_unit_price_string": "CupString",

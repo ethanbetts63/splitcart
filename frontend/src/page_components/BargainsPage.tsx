@@ -7,16 +7,9 @@ import sizeComparison1024 from "../assets/size_comparison-1024w.webp";
 import sizeComparison1280 from "../assets/size_comparison-1280w.webp";
 
 import { ProductCarousel } from "../components/ProductCarousel";
-import { FAQ } from "../components/FAQ";
+import { FaqSection } from "../components/FaqSection";
 import type { PriceComparison } from '../types';
 import PriceComparisonChart from '../components/PriceComparisonChart';
-
-import snackLineup from "../assets/snack_lineup.webp";
-import snackLineup320 from "../assets/snack_lineup-320w.webp"; 
-import snackLineup640 from "../assets/snack_lineup-640w.webp"; 
-import snackLineup768 from "../assets/snack_lineup-768w.webp"; 
-import snackLineup1024 from "../assets/snack_lineup-1024w.webp"; 
-import snackLineup1280 from "../assets/snack_lineup-1280w.webp";
 
 import type { Product } from '@/types';
 import { assetSrc, assetSrcSet } from '@/lib/assets';
@@ -49,10 +42,10 @@ type BargainsPageProps = {
   initialCompanyProducts?: Record<string, Product[]>;
 };
 
-const BargainsPage: React.FC<BargainsPageProps> = ({
+const BargainsPage = ({
   initialBargainStats,
   initialCompanyProducts = {},
-}) => {
+}: BargainsPageProps) => {
   const hero_title = "Australia's Best Grocery Bargains";
 
   const companies = [
@@ -133,14 +126,7 @@ const BargainsPage: React.FC<BargainsPageProps> = ({
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
           <section>
-            <FAQ
-              title="Frequently Asked Questions about Bargains"
-              faqs={bargainsFaqs}
-              imageSrc={assetSrc(snackLineup)}
-              srcSet={assetSrcSet([[snackLineup320, 320], [snackLineup640, 640], [snackLineup768, 768], [snackLineup1024, 1024], [snackLineup1280, 1280]])}
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              imageAlt="Snack Lineup"
-            />
+            <FaqSection title="Frequently Asked Questions about Bargains" faqData={bargainsFaqs} />
           </section>
         </div>
       </div>
