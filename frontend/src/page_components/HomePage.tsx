@@ -95,7 +95,7 @@ const HomePage = () => {
           </div>
           <div className="text-left px-4 sm:px-0">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-              Find the Cheapest Way to Buy Your Entire Grocery List.
+              The Cheapest Way to Buy Groceries
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
               Every supermarket has deals — just not on the same items. SplitCart compares prices across Coles, Woolworths, Aldi and IGA and <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">splits your cart for the cheapest possible shop.</span>
