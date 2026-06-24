@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+"use client";
+
+import { useEffect, useState } from 'react';
 import { Spinner } from "@/components/ui/spinner";
 
 const loadingMessages = [
@@ -50,7 +52,7 @@ const loadingMessages = [
 
 import type { LoadingSpinnerProps } from '../types/LoadingSpinnerProps';
 
-const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ fullScreen = true }) => {
+const LoadingSpinner = ({ fullScreen = true }: LoadingSpinnerProps) => {
   const [loadingMessage, setLoadingMessage] = useState("");
 
   const selectRandomMessage = () => {

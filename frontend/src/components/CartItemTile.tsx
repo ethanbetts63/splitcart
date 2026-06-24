@@ -1,4 +1,6 @@
-import React from 'react';
+"use client";
+
+import type { SyntheticEvent } from 'react';
 import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
@@ -30,7 +32,7 @@ const QuantityStepper = ({ value, onDecrement, onIncrement }: { value: number; o
   </div>
 );
 
-const CartItemTile: React.FC<CartItemTileProps> = (props) => {
+const CartItemTile = (props: CartItemTileProps) => {
   const { context, hideApprovedSubstitutions } = props;
 
   const product = context === 'cart' ? props.product : props.cartSubstitution.substituted_product;
@@ -47,7 +49,7 @@ const CartItemTile: React.FC<CartItemTileProps> = (props) => {
   const displayQuantity = cartSubstitution ? cartSubstitution.quantity : (cartItem ? cartItem.quantity : 0);
   const isApproved = cartSubstitution ? cartSubstitution.is_approved : false;
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handleImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     if (e.currentTarget.src !== assetSrc(fallbackImage)) e.currentTarget.src = assetSrc(fallbackImage);
   };
 

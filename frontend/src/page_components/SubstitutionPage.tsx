@@ -8,10 +8,8 @@ import CartItemTile from '../components/CartItemTile';
 import LoadingSpinner from '../components/LoadingSpinner';
 import type { CartSubstitution } from '../types';
 import { FaqSection } from "../components/FaqSection";
-import sizeDoesntMatterImage from "../assets/size_doesnt_matter.webp";
 import useMediaQuery from '../hooks/useMediaQuery';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { assetSrc } from '@/lib/assets';
 
 const substitutesFaqs = [
   {"question": "Should I consider price?", "answer": "Short answer is no. Just pick anything that you would be willing to have \"instead of\" the original. Long answer is very mathematical but suffice to say that the algorithm will often unexpectedly pick very expensive isolated items because it allows it to lower the overall cost in other areas."},

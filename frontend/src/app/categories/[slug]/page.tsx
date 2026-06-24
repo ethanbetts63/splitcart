@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import PillarPage from "@/page_components/PillarPage";
 import { createMetadata } from "@/lib/seo";
 import type { PillarPage as PillarPageType } from "@/types";
+import { CATEGORY_SLUGS } from "@/data/categories";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -10,22 +11,8 @@ type PageProps = {
 
 const apiUrl = process.env.DJANGO_API_URL ?? "http://localhost:8000";
 
-const KNOWN_SLUGS = [
-  "snacks-and-sweets",
-  "meat-and-seafood",
-  "dairy-and-eggs",
-  "fruit-and-veg",
-  "pantry",
-  "international-herbs-and-spices",
-  "bakery-and-deli",
-  "drinks",
-  "health-beauty-and-supplements",
-  "home-cleaning-gardening-and-pets",
-  "baby",
-];
-
 export function generateStaticParams() {
-  return KNOWN_SLUGS.map((slug) => ({ slug }));
+  return CATEGORY_SLUGS.map((slug) => ({ slug }));
 }
 
 export const revalidate = 86400;

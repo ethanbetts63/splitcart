@@ -1,10 +1,7 @@
-import React from 'react';
 import ProductTile from './ProductTile';
 import type { ProductGridProps } from '../types/ProductGridProps';
 
-const ProductGrid: React.FC<ProductGridProps> = ({ 
-  products, 
-}) => {
+const ProductGrid = ({ products }: ProductGridProps) => {
   return (
     <div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">

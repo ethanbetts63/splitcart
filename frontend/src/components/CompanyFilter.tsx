@@ -1,4 +1,5 @@
-import React from 'react';
+"use client";
+
 import { Checkbox } from "./ui/checkbox";
 import { companyNames } from '../lib/companies';
 import { useCompanyLogo } from '../hooks/useCompanyLogo';
@@ -20,7 +21,7 @@ const CompanyLogo = ({ companyName }: { companyName: string }) => {
   return <img src={objectUrl} alt={`${companyName} logo`} className="h-5 w-5" />;
 };
 
-const CompanyFilter: React.FC<CompanyFilterProps> = ({ selectedCompanies = [], onSelectionChange }) => {
+const CompanyFilter = ({ selectedCompanies = [], onSelectionChange }: CompanyFilterProps) => {
 
   const handleCheckboxChange = (companyName: string, checked: boolean) => {
     if (checked) {

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+"use client";
+
+import { useState, useMemo, useEffect } from 'react';
 import ProductGrid from './ProductGrid';
 
 import {
@@ -30,7 +32,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { createApiClient } from '../services/apiClient';
 import { fetchProductsAPI } from '../services/product.api';
 
-const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, bargainCompany }) => {
+const GridSourcer = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, bargainCompany }: GridSourcerProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState('');
   const { selectedStoreIds, isUserDefinedList } = useStoreList();
@@ -38,17 +40,17 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
   const queryClient = useQueryClient();
   const { token, anonymousId } = useAuth();
 
-  const apiClient = React.useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
+  const apiClient = useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
 
-  const selectedStoreIdsArray = React.useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
+  const selectedStoreIdsArray = useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setCurrentPage(1);
   }, [primaryCategorySlug, searchTerm, sourceUrl, primaryCategorySlugs, bargainCompany]);
 
 
   // Determine API endpoint and params
-  const { url, params } = React.useMemo(() => {
+  const { url, params } = useMemo(() => {
     const params = new URLSearchParams();
     let url = '';
 
@@ -98,7 +100,7 @@ const GridSourcer: React.FC<GridSourcerProps> = ({ searchTerm, sourceUrl, primar
   );
 
   // Prefetch the next page
-  React.useEffect(() => {
+  useEffect(() => {
     if (apiResponse?.next) {
       const nextPage = currentPage + 1;
       const nextParams = new URLSearchParams(params);

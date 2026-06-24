@@ -1,4 +1,6 @@
-import React from 'react';
+"use client";
+
+import { memo } from 'react';
 import { Checkbox } from "./ui/checkbox";
 import { Card, CardContent } from "./ui/card";
 import { useCompanyLogo } from '../hooks/useCompanyLogo';
@@ -20,7 +22,7 @@ const StoreLogo = ({ companyName }: { companyName: string }) => {
   return <img src={objectUrl} alt={companyName} className="h-4 w-auto" />;
 };
 
-const StoreList: React.FC<StoreListProps> = ({ stores, selectedStoreIds, onStoreSelect }) => {
+const StoreList = ({ stores, selectedStoreIds, onStoreSelect }: StoreListProps) => {
   return (
     <div className="flex flex-col gap-2">
       {stores.map(store => {
@@ -50,4 +52,4 @@ const StoreList: React.FC<StoreListProps> = ({ stores, selectedStoreIds, onStore
   );
 };
 
-export default React.memo(StoreList);
+export default memo(StoreList);

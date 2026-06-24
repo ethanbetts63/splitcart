@@ -11,9 +11,7 @@ import { Label } from "../components/ui/label"
 import LoadingSpinner from '../components/LoadingSpinner';
 import ResultsDisplay from '../components/ResultsDisplay';
 import { FaqSection } from "../components/FaqSection";
-import listImage from "../assets/list-768w.webp";
 import type { ExportData } from '../types';
-import { assetSrc } from '@/lib/assets';
 
 const finalCartFaqs = [
   {"question": "How is baseline cost calculated?", "answer": "By taking each item in your list, finding the average price across all available stores, and then summing up these average prices for all items. We use this method, not because it shows the highest savings, but because we believe it is realistic, transparent and honest."},

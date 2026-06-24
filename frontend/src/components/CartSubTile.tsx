@@ -1,4 +1,6 @@
-import React from 'react';
+"use client";
+
+import type { SyntheticEvent } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Badge } from "./ui/badge";
@@ -7,7 +9,7 @@ import { useCart } from '../context/CartContext';
 import type { CartSubTileProps } from '../types/CartSubTileProps';
 import { assetSrc } from '@/lib/assets';
 
-const CartSubTile: React.FC<CartSubTileProps> = ({ cartSubstitution, cartItemId }) => {
+const CartSubTile = ({ cartSubstitution, cartItemId }: CartSubTileProps) => {
   const { substituted_product: product, quantity } = cartSubstitution;
   const { updateCartItemSubstitution } = useCart();
 
@@ -15,7 +17,7 @@ const CartSubTile: React.FC<CartSubTileProps> = ({ cartSubstitution, cartItemId 
     return null; // Don't render if there is no product data
   }
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handleImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     if (e.currentTarget.src !== assetSrc(fallbackImage)) {
       e.currentTarget.src = assetSrc(fallbackImage);
     }

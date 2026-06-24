@@ -18,6 +18,134 @@ The SplitCart category system normalises messy, store-specific product data into
 
 **Coles note:** Coles `onlineHeirs` paths are ordered, but products can appear under normal, seasonal, and promotional hierarchies. The current cleaner uses the first `onlineHeirs` entry, so paths such as Christmas, Down Down, and Bonus Credit Products can override the real grocery taxonomy. Prefer non-promotional grocery paths, ideally matched to the browse category context.
 
+**Aldi/IGA note:** Aldi and IGA already fetch category trees but currently keep only leaf identifiers for scraping. Aldi product category paths are mostly coherent, but seasonal/merchandising roots such as Christmas, Limited Time Only, and Front Of Store appear in the data. IGA paths are the cleanest observed: they consistently sit under Grocery with low multi-path ambiguity. Both would still be safer if their scrape work items carried full category paths, matching the Woolworths approach.
+
+---
+
+## Proposed Path-Aware Refactor
+
+The current `Category` model stores one node per `(slug, company)` and links products to the leaf node. That loses the full path identity. It also cannot represent the important fact that the same product can be found under multiple full paths within the same company.
+
+Preferred replacement: store full category paths directly on `Product`, modelled after `normalized_name_brand_size_variations`.
+
+```text
+Product
+  category_paths = [
+    {
+      "company": "Coles",
+      "path": ["Dairy, Eggs & Fridge", "Milk", "Full Cream Milk"],
+      "path_type": "canonical_taxonomy",
+      "canonical_key": "dairy/milk/full-cream",
+      "primary_category_slug": "milk"
+    },
+    ...
+  ]
+```
+
+This keeps the design closer to the product-name variation system: collect observed variants, normalize/canonicalize them, and store the generated result on the product. The tradeoff is queryability: product filtering and stats will need JSON-aware querying or generated helper fields/indexes. If that becomes painful, the same shape can later be promoted into a separate path table.
+
+Suggested product field shape:
+
+```python
+Product.category_paths = [
+  {
+    "company": "Woolworths",
+    "path": ["Dairy, Eggs & Fridge", "Yoghurt", "Kefir"],
+    "path_key": "woolworths|dairy-eggs-fridge/yoghurt/kefir",
+    "root_name": "Dairy, Eggs & Fridge",
+    "leaf_name": "Kefir",
+    "path_type": "canonical_taxonomy",
+    "canonical_key": "dairy/yoghurt/kefir",
+    "primary_category_slug": "yogurt",
+    "evidence_count": 12,
+  }
+]
+```
+
+This means the current `Category` model can probably be retired. `PrimaryCategory` should stay as the public browsing layer. `CategoryLink` should be replaced by generated path-aware canonical category mappings, not linked raw node IDs.
+
+### Downstream Category Pipeline
+
+1. Collect every unique full category path seen for a product/company.
+2. Classify each path:
+   - `canonical_taxonomy`
+   - `dietary`
+   - `seasonal`
+   - `promotion`
+   - `brand_collection`
+   - `merchandising`
+   - `unknown`
+3. Exclude or down-rank non-canonical paths for browsing and substitutions.
+4. Generate a path-aware canonical category mapping:
+
+```python
+"coles|Dairy, Eggs & Fridge/Milk/Full Cream Milk": "dairy/milk/full-cream"
+"woolworths|Dairy, Eggs & Fridge/Milk/Full Cream Milk": "dairy/milk/full-cream"
+"iga|Grocery/Dairy, Eggs And Fridge/Milk And Cream/Full Cream Milk": "dairy/milk/full-cream"
+```
+
+5. Assign `PrimaryCategory` from canonical category keys, not from raw leaf node names.
+6. Generate substitutions from canonical category assignments:
+   - LVL3 equivalent: products sharing the same canonical category.
+   - LVL4 equivalent: products in related canonical categories.
+
+The generated mapping should be inspectable and reproducible, similar to product name translation tables. It can start with deterministic rules and embedding similarity, then use an AI pipeline for ambiguous path-level decisions.
+
+### Refactor TODO
+
+- [ ] Scrapers: make every company emit full scrape-context paths where possible. Woolworths already does this. Coles should prefer a menu/browse-context full path over `onlineHeirs[0]`. Aldi and IGA category-tree helpers should keep full paths instead of leaf identifiers only.
+- [ ] Cleaners: allow `category_paths` as a list of full paths, not only one `category_path`. Product metadata paths can remain as fallback/debug evidence but should not blindly override scrape-context paths.
+- [ ] Product ingest: replace `CategoryManager` with product-level path aggregation. It should merge evidence for the same product/company/path into `Product.category_paths` instead of creating node graphs.
+- [ ] Models: add `Product.category_paths` as a JSON field, similar in spirit to `normalized_name_brand_size_variations`. Decide whether helper/generated fields are needed for fast filtering by primary category.
+- [ ] Primary categories: replace `CATEGORY_MAPPINGS` from raw category-name mapping with path/canonical-key mapping. `PrimaryCategoriesGenerator` should write canonical keys / primary category slugs into product category path entries, not node descendants.
+- [ ] Category links: remove `CategoryLink` as raw node-to-node matching. Replace with generated canonical category mappings and related-canonical-category edges.
+- [ ] Substitutions: update `ProductExportSerializer`, `SubstitutionsGenerator`, `Lvl3SubGenerator`, and `Lvl4SubGenerator` to consume canonical category IDs/keys instead of `Product.category` raw node IDs.
+- [ ] Product list filtering: replace queries like `category__primary_category__slug__in` with filtering over `Product.category_paths`. If JSON querying is too slow, add a denormalized/indexed helper field such as `primary_category_slugs`.
+- [ ] Bargain/category ordering: update `products/utils/product_ordering.py`, `companies/management/commands/category_stats.py`, and `price_comparisons_generator.py` to use primary categories assigned through paths.
+- [ ] API exports: replace `/api/export/categories/`, `/api/export/categories-with-products/`, and `/api/export/category_links/` with path/canonical-category exports.
+- [ ] Serializers/frontend: keep `PrimaryCategory` output stable for the frontend, but update product serialization/prefetches that currently expect `category__primary_category`.
+- [ ] Cleanup: remove `CategoryCycleManager`, parent/child category graph traversal, category exclusions tied to node names, old category-link upload/update flows, and raw node review commands if they no longer apply.
+- [ ] Tests: rewrite category manager tests around full path identity, multi-path product assignment, path classification, primary category assignment, and substitution grouping.
+
+### Current Code Touchpoints
+
+- Models:
+  - `companies/models/category.py` — raw node model to replace.
+  - `companies/models/category_link.py` — raw category link model to replace.
+  - `products/models/product.py` — `Product.category` M2M currently points to raw `Category`.
+  - `companies/models/primary_category.py` — should stay, but product membership should come from `Product.category_paths` or a denormalized helper field.
+- Ingest:
+  - `data_management/database_updating_classes/product_updating/category_manager.py` — creates raw nodes, parent links, and product-leaf links. This becomes the path ingest manager.
+  - `data_management/database_updating_classes/product_updating/update_orchestrator.py` — builds category cache, calls `CategoryManager`, and runs `CategoryCycleManager`.
+  - `data_management/database_updating_classes/product_updating/post_processing/category_cycle_manager.py` — should disappear with node graph removal.
+- Scraping:
+  - `scraping/utils/product_scraping_utils/get_woolworths_categories.py` and `scraping/scrapers/product_scraper_woolworths.py` — already moving toward scrape-context paths.
+  - `scraping/utils/product_scraping_utils/get_coles_categories.py`, `get_store_specific_categories_coles.py`, `product_scraper_coles_v2.py`, `product_scraper_coles_v3.py`, `DataCleanerColes.py` — need path-aware Coles work items and non-promotional path selection.
+  - `get_aldi_categories.py`, `product_scraper_aldi.py`, `DataCleanerAldi.py` — need full path work items.
+  - `get_iga_categories.py`, `product_scraper_iga.py`, `DataCleanerIga.py` — need full path work items.
+- Primary category generation:
+  - `data_management/data/category_mappings.py` — should move from raw name mapping to path/canonical-key mapping.
+  - `data_management/data/category_exclusions.py` — likely replaced by path classification rules.
+  - `data_management/utils/generation_utils/primary_categories_generator.py` — currently traverses raw category descendants.
+- Category-link generation and upload:
+  - `data_management/utils/generation_utils/category_links_generator.py`
+  - `data_management/database_updating_classes/category_link_update_orchestrator.py`
+  - `scraping/utils/command_utils/category_links_uploader.py`
+  - `products/views/export_category_links_view.py`
+- Substitution generation:
+  - `products/serializers/product_export_serializer.py` exports raw category IDs.
+  - `companies/serializers/category_export_serializer.py` and `category_with_products_export_serializer.py` export raw categories.
+  - `data_management/utils/generation_utils/substitutions_generator.py`
+  - `data_management/utils/substitution_generators/lvl3_sub_generator.py`
+  - `data_management/utils/substitution_generators/lvl4_sub_generator.py`
+- Product browsing and stats:
+  - `products/views/product_list_view.py`
+  - `products/utils/product_ordering.py`
+  - `products/views/bargain_carousel_view.py`
+  - `data_management/utils/generation_utils/price_comparisons_generator.py`
+  - `companies/management/commands/category_stats.py`
+  - `companies/management/commands/primary_cat_stats.py`
+
 **Important: categories are unique by `(slug, company)`.** If the same category name appears in two different paths — e.g. `["Baby & Toddler", "Health"]` and `["Health & Beauty", "Health"]` — there is only ONE `Category` object for "Health" for that company, and it ends up with two parents. This is a known design limitation; see the Known Issues section below.
 
 **Key fields on `Category`:**
