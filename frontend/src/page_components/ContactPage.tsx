@@ -2,8 +2,7 @@ import React from 'react';
 import { Hero } from '@/components/Hero';
 import ContactDetails from '../components/ContactDetails';
 import OtherSites from '../components/OtherSites';
-import Seo from '@/components/Seo';
-import allbikesLogo from '@/assets/allbikes_logo.webp'; 
+import allbikesLogo from '@/assets/allbikes_logo.webp';
 import foreverFlowerLogo from '@/assets/foreverflower_logo.png';
 import { assetSrc } from '@/lib/assets';
 
@@ -24,34 +23,9 @@ const otherSitesData = [
 
 const ContactPage: React.FC = () => {
     const description = "Have questions, suggestions, or feedback? Get in touch with us. I'd love to hear from you. This is a very new site and I know that there is room for improvement! ethanbetts63@gmail.com";
-    const email = "ethanbetts63@gmail.com";
-
-    const contactPageSchema = {
-        "@context": "https://schema.org",
-        "@type": "ContactPage",
-        "name": "Contact Us",
-        "description": description,
-        "url": "https://www.splitcart.com.au/contact",
-        "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "https://www.splitcart.com.au/contact"
-        },
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "email": email,
-            "contactType": "Customer Support",
-            "availableLanguage": "English"
-        }
-    };
 
     return (
         <div>
-            <Seo
-                title="Contact Us | SplitCart"
-                description={description}
-                canonicalPath="/contact"
-                structuredData={contactPageSchema}
-            />
             <Hero
                 title="Contact Us"
                 subtitle={description}

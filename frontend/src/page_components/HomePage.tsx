@@ -14,7 +14,6 @@ import kingKongImage768 from "../assets/king_kong-768w.webp";
 import kingKongImage1024 from "../assets/king_kong-1024w.webp";
 import kingKongImage1280 from "../assets/king_kong-1280w.webp";
 
-import Seo from '../components/Seo';
 import { HowItWorksSection } from '../components/HowItWorksSection';
 import { BrowseCategoriesSection } from '../components/BrowseCategoriesSection';
 import { FounderLetterSection } from '../components/FounderLetterSection';
@@ -48,25 +47,6 @@ const homeFaqs = [
 ];
 
 const HomePage = () => {
-  const webSiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "SplitCart",
-    "url": "https://www.splitcart.com.au",
-    "founder": {
-      "@type": "Person",
-      "name": "Ethan Betts"
-    },
-    "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-            "@type": "EntryPoint",
-            "urlTemplate": "https://www.splitcart.com.au/search?q={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
-    }
-  };
-
   const howItWorksSteps = [
     {
       step: 1,
@@ -105,12 +85,6 @@ const HomePage = () => {
 
   return (
     <div>
-      <Seo
-        title="SplitCart: Australian Grocery Price Comparison"
-        description="Every store has a deal — but finding them all takes forever. SplitCart automates discount hunting by comparing prices across Coles, Woolworths, Aldi and IGA and splitting your cart for the cheapest overall shop. One list, multiple stores, maximum savings."
-        canonicalPath="/"
-        structuredData={webSiteSchema}
-      />
       {/* --- Hero Section --- */}
       <div className="container mx-auto px-0 sm:px-4 pt-4 pb-1">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">

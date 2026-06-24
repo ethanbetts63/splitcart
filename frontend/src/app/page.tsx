@@ -10,6 +10,30 @@ export const metadata = createMetadata({
   canonicalPath: "/",
 });
 
+const webSiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "SplitCart",
+  url: "https://www.splitcart.com.au",
+  founder: { "@type": "Person", name: "Ethan Betts" },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: "https://www.splitcart.com.au/search?q={search_term_string}",
+    },
+    "query-input": "required name=search_term_string",
+  },
+};
+
 export default function Page() {
-  return <HomePage />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
+      />
+      <HomePage />
+    </>
+  );
 }

@@ -13,6 +13,15 @@ export const metadata = createMetadata({
   canonicalPath: "/bargains",
 });
 
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "SplitCart: Australia's Best Grocery Bargains",
+  description:
+    "Find the best grocery bargains in Australia. SplitCart compares prices across Coles, Woolworths, Aldi, and IGA to find you the biggest discounts.",
+  url: "https://www.splitcart.com.au/bargains",
+};
+
 export default async function Page() {
   const [initialBargainStats, initialCompanyProducts] = await Promise.all([
     getBargainStats(),
@@ -20,10 +29,16 @@ export default async function Page() {
   ]);
 
   return (
-    <BargainsPage
-      initialBargainStats={initialBargainStats}
-      initialCompanyProducts={initialCompanyProducts}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      />
+      <BargainsPage
+        initialBargainStats={initialBargainStats}
+        initialCompanyProducts={initialCompanyProducts}
+      />
+    </>
   );
 }
 

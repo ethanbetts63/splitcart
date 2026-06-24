@@ -18,7 +18,6 @@ import snackLineup768 from "../assets/snack_lineup-768w.webp";
 import snackLineup1024 from "../assets/snack_lineup-1024w.webp"; 
 import snackLineup1280 from "../assets/snack_lineup-1280w.webp";
 
-import Seo from '../components/Seo';
 import type { Product } from '@/types';
 import { assetSrc, assetSrcSet } from '@/lib/assets';
 
@@ -54,17 +53,6 @@ const BargainsPage: React.FC<BargainsPageProps> = ({
   initialBargainStats,
   initialCompanyProducts = {},
 }) => {
-    const title = "SplitCart: Australia's Best Grocery Bargains";
-    const description = "Find the best grocery bargains in Australia. SplitCart compares prices across Coles, Woolworths, Aldi, and IGA to find you the biggest discounts.";
-
-    const webPageSchema = {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": title,
-        "description": description,
-        "url": "https://www.splitcart.com.au/bargains",
-    };
-
   const hero_title = "Australia's Best Grocery Bargains";
 
   const companies = [
@@ -76,12 +64,6 @@ const BargainsPage: React.FC<BargainsPageProps> = ({
 
   return (
     <div>
-      <Seo
-        title={title}
-        description={description}
-        canonicalPath="/bargains"
-        structuredData={webPageSchema}
-      />
       {/* --- Hero Section --- */}
       <div className="container mx-auto px-4 pt-4 pb-1">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">

@@ -2,7 +2,6 @@
 
 import { useSearchParams } from 'next/navigation';
 import GridSourcer from '../components/GridSourcer';
-import Seo from '../components/Seo';
 
 const SearchResultsPage = () => {
   const searchParams = useSearchParams();
@@ -15,7 +14,6 @@ const SearchResultsPage = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <Seo title="Search - SplitCart" noindex />
       <GridSourcer
         searchTerm={searchTerm}
         sourceUrl={sourceUrl}

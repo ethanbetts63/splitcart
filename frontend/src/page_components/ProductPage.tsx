@@ -8,7 +8,6 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import PriceDisplay from '../components/PriceDisplay';
 import AddToCartButton from '../components/AddToCartButton';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
-import Seo from '../components/Seo';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import { ProductCarousel } from '../components/ProductCarousel';
 import { useStoreList } from '../context/StoreListContext';
@@ -85,12 +84,12 @@ const ProductPage: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4 md:p-4">
-      <Seo
-        title={pageTitle}
-        description={pageDescription}
-        canonicalPath={`/product/${slug}`}
-        structuredData={productSchema}
-      />
+      {productSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+        />
+      )}
       <div className="max-w-5xl mx-auto">
         <Card className="overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
