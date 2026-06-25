@@ -1,13 +1,13 @@
 from collections import defaultdict
 import torch
 
+
 class Lvl3SubGenerator:
     def __init__(self, command):
         self.command = command
         self.model = self._load_model()
 
     def _load_model(self):
-        """Loads the SentenceTransformer model, handling potential import errors."""
         try:
             from sentence_transformers import SentenceTransformer
             self.command.stdout.write("  - Loading sentence transformer model (all-MiniLM-L6-v2)...")
@@ -18,58 +18,54 @@ class Lvl3SubGenerator:
             self.command.stderr.write("Lvl3 requires 'torch' and 'sentence-transformers'. Please install them.")
             return None
 
-    def generate(self, products, categories):
-        """Generates Level 3 substitutions using sentence similarity."""
+    def generate(self, products):
+        """
+        Generates Level 3 substitutions using sentence similarity.
+
+        Groups products by primary_category_slug (cross-company). Products sharing
+        a slug are compared by name embedding cosine similarity.
+        """
         if not self.model:
             return []
-            
+
         from sentence_transformers import util
         self.command.stdout.write("--- Generating Level 3 Subs ---")
 
-        # Step 1: Group products by category
-        products_by_cat = defaultdict(list)
+        # Group products by each primary_category_slug they carry
+        products_by_slug = defaultdict(list)
         for p in products:
-            for cat_id in p.get('category', []):
-                products_by_cat[cat_id].append(p)
+            for slug in p.get('primary_category_slugs') or []:
+                products_by_slug[slug].append(p)
 
-        # Step 2: Create a flat list of unique products to be encoded
-        unique_products = {p['id']: p for cat_id in products_by_cat for p in products_by_cat[cat_id]}
-        product_list = list(unique_products.values())
-        product_map = {p['id']: p for p in product_list}
-        corpus_names = [p['name'] for p in product_list]
-
-        if not corpus_names:
-            self.command.stdout.write("  - No products found to process.")
+        if not products_by_slug:
+            self.command.stdout.write("  - No products with primary_category_slugs found.")
             return []
 
-        # Step 3: Batch encode all product names at once for efficiency
+        # Encode all unique products once
+        unique_products = {p['id']: p for slug_products in products_by_slug.values() for p in slug_products}
+        product_list = list(unique_products.values())
+        corpus_names = [p['name'] for p in product_list]
+
         self.command.stdout.write(f"  - Encoding {len(corpus_names)} product names...")
         corpus_embeddings = self.model.encode(corpus_names, convert_to_tensor=True)
-        
-        # Create a mapping from product ID to its embedding
         embedding_map = {product_list[i]['id']: corpus_embeddings[i] for i in range(len(product_list))}
 
-        # Step 4: Process each category to find similar pairs
         subs = []
-        total_cats = len(categories)
-        self.command.stdout.write(f"  - Comparing products in {total_cats} categories...")
+        total_slugs = len(products_by_slug)
+        self.command.stdout.write(f"  - Comparing products across {total_slugs} primary category slugs...")
 
-        for i, cat in enumerate(categories):
-            progress_msg = f"  - Processing categories: {i + 1}/{total_cats}"
+        for i, (slug, products_in_cat) in enumerate(products_by_slug.items()):
+            progress_msg = f"  - Processing slug {i + 1}/{total_slugs}: {slug}"
             self.command.stdout.write(progress_msg, ending='\r')
 
-            products_in_cat = products_by_cat.get(cat['id'], [])
             if len(products_in_cat) < 2:
                 continue
 
-            # Gather the pre-computed embeddings for this category
             cat_embeddings = [embedding_map[p['id']] for p in products_in_cat if p['id'] in embedding_map]
             if len(cat_embeddings) < 2:
                 continue
-            
-            cat_corpus_tensor = torch.stack(cat_embeddings)
 
-            # Compute cosine similarity for the current category
+            cat_corpus_tensor = torch.stack(cat_embeddings)
             cosine_scores = util.cos_sim(cat_corpus_tensor, cat_corpus_tensor)
             indices_rows, indices_cols = torch.where(cosine_scores > 0.75)
 
@@ -82,10 +78,9 @@ class Lvl3SubGenerator:
                     'product_a': prod_a['id'],
                     'product_b': prod_b['id'],
                     'level': 'LVL3',
-                    'score': cosine_scores[r, c].item()
+                    'score': cosine_scores[r, c].item(),
                 })
-        
-        # Clear the progress line
+
         self.command.stdout.write(" " * (len(progress_msg) + 5), ending='\r')
-        self.command.stdout.write(self.command.style.SUCCESS(f"  Generated {len(subs)} Lvl3 subs from {total_cats} categories."))
+        self.command.stdout.write(self.command.style.SUCCESS(f"  Generated {len(subs)} Lvl3 subs from {total_slugs} primary categories."))
         return subs

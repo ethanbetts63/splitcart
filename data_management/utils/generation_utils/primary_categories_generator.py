@@ -1,38 +1,36 @@
-import os
-import pprint
 from django.db import transaction
-from companies.models import Category, Company, PrimaryCategory
+from companies.models import PrimaryCategory
+from products.models import Product
 from data_management.data.category_mappings import CATEGORY_MAPPINGS, PRIMARY_CATEGORY_HIERARCHY
 
-EXCLUSIONS_FILE = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'category_exclusions.py')
+
+_CANONICAL_PATH_TYPES = frozenset({'canonical_taxonomy'})
+_FALLBACK_PATH_TYPES = frozenset({'canonical_taxonomy', 'dietary'})
+
 
 class PrimaryCategoriesGenerator:
+    """
+    Generates PrimaryCategory objects and populates Product.primary_category_slugs.
+
+    Replaces the old graph-traversal approach. Now reads Product.category_paths,
+    which are already classified by PathClassifier (path_type, primary_category_slug).
+
+    Steps:
+    1. Delete and recreate PrimaryCategory objects from CATEGORY_MAPPINGS names.
+    2. Set up PRIMARY_CATEGORY_HIERARCHY links.
+    3. Populate Product.primary_category_slugs from category_paths.
+    """
+
     def __init__(self, command):
         self.command = command
         self.stdout = command.stdout
         self.style = command.style
-        self.exclusions = self._load_exclusions()
-
-    def _load_exclusions(self):
-        if not os.path.exists(EXCLUSIONS_FILE):
-            return {}
-        
-        with open(EXCLUSIONS_FILE, 'r') as f:
-            content = f.read()
-            exclusions = {}
-            try:
-                exec(content, {'__builtins__': {}}, exclusions)
-            except Exception as e:
-                # Use command's stderr and style
-                self.stdout.write(self.style.ERROR(f"Error loading exclusions file: {e}"))
-                return {}
-            return exclusions.get('CATEGORY_EXCLUSIONS', {})
 
     def run(self):
         self._delete_existing_primary_categories()
         self._create_primary_categories()
         self._assign_sub_categories()
-        self._assign_primary_categories()
+        self._populate_product_primary_category_slugs()
         self.stdout.write(self.style.SUCCESS("Successfully generated primary categories."))
 
     def _delete_existing_primary_categories(self):
@@ -42,104 +40,83 @@ class PrimaryCategoriesGenerator:
 
     def _create_primary_categories(self):
         self.stdout.write("Creating primary category objects...")
-        primary_category_names = set()
+        names = set()
         for store_mappings in CATEGORY_MAPPINGS.values():
-            primary_category_names.update(store_mappings.values())
-
-        # Also include categories from the hierarchy definition
+            names.update(v for v in store_mappings.values() if v is not None)
         for parent, children in PRIMARY_CATEGORY_HIERARCHY.items():
-            primary_category_names.add(parent)
-            primary_category_names.update(children)
+            names.add(parent)
+            names.update(children)
 
-        # Filter out None values before creating objects
-        valid_primary_category_names = {name for name in primary_category_names if name is not None}
-
-        for name in valid_primary_category_names:
+        for name in names:
             PrimaryCategory.objects.get_or_create(name=name)
-        self.stdout.write(f"Found {len(valid_primary_category_names)} unique primary categories to create.")
+        self.stdout.write(f"Created {len(names)} unique primary categories.")
 
     def _assign_sub_categories(self):
         self.stdout.write("Assigning sub-categories to primary categories...")
         for parent_name, child_names in PRIMARY_CATEGORY_HIERARCHY.items():
             try:
-                parent_category = PrimaryCategory.objects.get(name=parent_name)
-                for child_name in child_names:
-                    try:
-                        child_category = PrimaryCategory.objects.get(name=child_name)
-                        parent_category.sub_categories.add(child_category)
-                    except PrimaryCategory.DoesNotExist:
-                        self.stdout.write(self.style.WARNING(f"Child category '{child_name}' not found for parent '{parent_name}'. Skipping."))
-                self.stdout.write(f"Assigned sub-categories for '{parent_name}'.")
+                parent_cat = PrimaryCategory.objects.get(name=parent_name)
             except PrimaryCategory.DoesNotExist:
-                self.stdout.write(self.style.WARNING(f"Parent category '{parent_name}' not found. Skipping."))
-
-    def _assign_primary_categories(self):
-        self.stdout.write("Assigning primary categories to categories...")
-        for company_name, mappings in CATEGORY_MAPPINGS.items():
-            try:
-                company = Company.objects.get(name=company_name)
-            except Company.DoesNotExist:
-                self.stdout.write(self.style.WARNING(f"Company '{company_name}' not found. Skipping."))
+                self.stdout.write(self.style.WARNING(f"Parent '{parent_name}' not found. Skipping."))
                 continue
+            for child_name in child_names:
+                try:
+                    child_cat = PrimaryCategory.objects.get(name=child_name)
+                    parent_cat.sub_categories.add(child_cat)
+                except PrimaryCategory.DoesNotExist:
+                    self.stdout.write(self.style.WARNING(f"Child '{child_name}' not found. Skipping."))
 
-            self.stdout.write(f"Processing company: {company.name}")
-            
-            categories_to_update = []
-            
+    def _populate_product_primary_category_slugs(self):
+        """
+        For each product, derive primary_category_slugs from category_paths entries
+        that have a path_type of canonical_taxonomy. Falls back to including dietary
+        paths if no canonical paths yield a slug.
+        """
+        self.stdout.write("Populating Product.primary_category_slugs from category_paths...")
+
+        # Build set of valid slugs from known PrimaryCategory names
+        valid_slugs = set(PrimaryCategory.objects.values_list('slug', flat=True))
+
+        products = list(
+            Product.objects.exclude(category_paths=[]).only('id', 'category_paths', 'primary_category_slugs')
+        )
+
+        to_update = []
+        for product in products:
+            slugs = _derive_primary_slugs(product.category_paths, valid_slugs)
+            if slugs != set(product.primary_category_slugs or []):
+                product.primary_category_slugs = sorted(slugs)
+                to_update.append(product)
+
+        if to_update:
             with transaction.atomic():
-                for i, (store_category_name, primary_category_name) in enumerate(mappings.items()):
-                    self.stdout.write(f"  Processing mapping {i+1}/{len(mappings)}: '{store_category_name}' -> '{primary_category_name}'")
-                    
-                    if primary_category_name is None:
-                        continue
+                Product.objects.bulk_update(to_update, ['primary_category_slugs'])
+        self.stdout.write(f"Updated primary_category_slugs for {len(to_update)} products.")
 
-                    try:
-                        primary_category = PrimaryCategory.objects.get(name=primary_category_name)
-                        exclusions_for_primary_cat = self.exclusions.get(primary_category.name, [])
 
-                        store_categories = Category.objects.filter(name=store_category_name, company=company)
-                        
-                        if not store_categories.exists():
-                            self.stdout.write(self.style.WARNING(f"    Category '{store_category_name}' not found for {company.name}. Skipping."))
-                            continue
+def _derive_primary_slugs(category_paths: list, valid_slugs: set) -> set:
+    """
+    Return the set of primary_category_slugs for a product from its category_paths.
+    Uses canonical_taxonomy paths first; falls back to including dietary if empty.
+    """
+    slugs = _collect_slugs(category_paths, _CANONICAL_PATH_TYPES, valid_slugs)
+    if not slugs:
+        slugs = _collect_slugs(category_paths, _FALLBACK_PATH_TYPES, valid_slugs)
+    if not slugs:
+        # Last resort: any path with a primary_category_slug
+        slugs = {
+            e['primary_category_slug']
+            for e in category_paths
+            if e.get('primary_category_slug') and e['primary_category_slug'] in valid_slugs
+        }
+    return slugs
 
-                        for store_category in store_categories:
-                            descendants = self._get_all_descendants(store_category, set(), mapped_names=set(mappings.keys()))
-                            all_categories_to_process = [store_category] + list(descendants)
-                            
-                            for category in all_categories_to_process:
-                                category_identifier = f"{category.name} ({category.company.name})"
-                                
-                                # Check against exclusion list
-                                if category_identifier in exclusions_for_primary_cat:
-                                    self.stdout.write(f"    Skipping excluded category: '{category_identifier}' for '{primary_category.name}'")
-                                    continue
 
-                                if category.primary_category != primary_category:
-                                    category.primary_category = primary_category
-                                    categories_to_update.append(category)
-
-                    except PrimaryCategory.DoesNotExist:
-                        self.stdout.write(self.style.ERROR(f"    Primary category '{primary_category_name}' not found. This should not happen. Skipping."))
-                        continue
-                
-                if categories_to_update:
-                    self.stdout.write(f"  Bulk updating {len(categories_to_update)} categories for {company.name}...")
-                    Category.objects.bulk_update(categories_to_update, ['primary_category'])
-                    self.stdout.write(f"  Successfully updated categories for {company.name}.")
-
-    def _get_all_descendants(self, category, visited, mapped_names=None):
-        descendants = set()
-        if category in visited:
-            return descendants
-        visited.add(category)
-
-        children = category.subcategories.all()
-        for child in children:
-            # Stop at explicitly-mapped boundaries — the child's own mapping will handle it
-            if mapped_names and child.name in mapped_names:
-                continue
-            if child not in descendants:
-                descendants.add(child)
-                descendants.update(self._get_all_descendants(child, visited, mapped_names))
-        return descendants
+def _collect_slugs(category_paths: list, allowed_types: frozenset, valid_slugs: set) -> set:
+    return {
+        e['primary_category_slug']
+        for e in category_paths
+        if e.get('path_type') in allowed_types
+        and e.get('primary_category_slug')
+        and e['primary_category_slug'] in valid_slugs
+    }

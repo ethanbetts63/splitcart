@@ -11,7 +11,7 @@ from companies.models import PrimaryCategory
 from data_management.models import SystemSetting
 from products.serializers.product_serializer import ProductSerializer
 from products.utils.bargain_utils import calculate_bargains
-from products.utils.product_ordering import get_bargain_first_ordering
+from products.utils.product_ordering import get_bargain_first_ordering, _primary_category_slug_filter
 from products.utils.get_pricing_stores import get_pricing_stores_map
 
 
@@ -113,7 +113,7 @@ class ProductListView(generics.ListAPIView):
 
             preserved_order = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(final_product_ids)])
             return Product.objects.filter(pk__in=final_product_ids).order_by(preserved_order).prefetch_related(
-                'prices__store__company', 'skus', 'category__primary_category'
+                'prices__store__company', 'skus'
             )
 
         # --- Carousel Logic: Fast-path for performance ---
@@ -127,7 +127,7 @@ class ProductListView(generics.ListAPIView):
             queryset, stores_for_context = self._get_carousel_queryset(anchor_store_ids, slugs)
             self.nearby_store_ids = stores_for_context 
             return queryset.prefetch_related(
-                'prices__store__company', 'skus', 'category__primary_category'
+                'prices__store__company', 'skus'
             ).defer('normalized_name_brand_size_variations', 'sizes')
 
         # --- General Search/Filtering Logic ---
@@ -145,7 +145,7 @@ class ProductListView(generics.ListAPIView):
                 return queryset.none()
         
         if slugs_for_filtering:
-            queryset = queryset.filter(category__primary_category__slug__in=slugs_for_filtering)
+            queryset = queryset.filter(_primary_category_slug_filter(slugs_for_filtering))
 
 
         # Search term filtering
@@ -200,7 +200,7 @@ class ProductListView(generics.ListAPIView):
                 ).order_by(F('min_unit_price').asc(nulls_last=True))
 
         return final_queryset.prefetch_related(
-            'prices__store__company', 'skus', 'category__primary_category'
+            'prices__store__company', 'skus'
         ).defer('normalized_name_brand_size_variations', 'sizes')
 
     def get_serializer_context(self):

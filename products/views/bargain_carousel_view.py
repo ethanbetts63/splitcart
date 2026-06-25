@@ -99,7 +99,7 @@ class BargainCarouselView(APIView):
 
         # Fetch the product objects and preserve the sorted order
         products = Product.objects.filter(id__in=final_product_ids).prefetch_related(
-            'prices__store__company', 'skus', 'category__primary_category'
+            'prices__store__company', 'skus'
         )
         product_map = {p.id: p for p in products}
         

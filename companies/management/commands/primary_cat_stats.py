@@ -1,29 +1,25 @@
 from django.core.management.base import BaseCommand
-from django.db.models import Count
-from companies.models import PrimaryCategory, Category
+from companies.models import PrimaryCategory
+from products.models import Product
+
 
 class Command(BaseCommand):
-    help = 'Reports on the number of Category objects attached to each PrimaryCategory and unassigned categories.'
+    help = 'Reports on product counts per PrimaryCategory using primary_category_slugs.'
 
     def handle(self, *args, **options):
-        self.stdout.write(self.style.SUCCESS('--- Primary Category Assignment Statistics ---'))
+        self.stdout.write(self.style.SUCCESS('--- Primary Category Product Statistics ---'))
 
-        # 1. Report for each PrimaryCategory
-        primary_categories = PrimaryCategory.objects.annotate(
-            category_count=Count('categories')
-        ).order_by('name')
-
-        self.stdout.write("\nCategories attached per Primary Category:")
-        if primary_categories.exists():
-            for primary_category in primary_categories:
-                self.stdout.write(f"- '{primary_category.name}': {primary_category.category_count} categories")
-        else:
+        primary_categories = PrimaryCategory.objects.order_by('name')
+        if not primary_categories.exists():
             self.stdout.write("  No Primary Categories found.")
+            return
 
-        # 2. Report for categories not attached to any PrimaryCategory
-        unassigned_categories_count = Category.objects.filter(primary_category__isnull=True).count()
+        self.stdout.write("\nProducts per Primary Category (via primary_category_slugs):")
+        for pc in primary_categories:
+            count = Product.objects.filter(primary_category_slugs__contains=[pc.slug]).count()
+            self.stdout.write(f"  '{pc.name}' ({pc.slug}): {count} products")
 
-        self.stdout.write("\nCategories not attached to any Primary Category:")
-        self.stdout.write(f"- {unassigned_categories_count} categories")
-        
+        no_category_count = Product.objects.filter(primary_category_slugs=[]).count()
+        self.stdout.write(f"\n  Products with no primary category: {no_category_count}")
+
         self.stdout.write(self.style.SUCCESS('\n--- Statistics Complete ---'))

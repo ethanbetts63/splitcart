@@ -2,6 +2,18 @@ from collections import defaultdict
 from django.db.models import Q, Min, Case, When
 from products.models import Product, Price, ProductPriceSummary
 
+
+def _primary_category_slug_filter(slugs: list) -> Q:
+    """
+    Build an OR query that matches products whose primary_category_slugs JSON
+    array contains any of the given slugs.
+    """
+    q = Q()
+    for slug in slugs:
+        q |= Q(primary_category_slugs__contains=[slug])
+    return q
+
+
 def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=None):
     """
     Gets a hybrid list of product IDs. It prioritizes bargain products
@@ -12,17 +24,18 @@ def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=N
     if not anchor_store_ids:
         return [], {}
 
+    slug_filter = _primary_category_slug_filter(primary_category_slugs)
+
     # --- Step 1: Identify potential candidates ---
     candidate_product_ids = list(ProductPriceSummary.objects.filter(
-        product__category__primary_category__slug__in=primary_category_slugs,
-        product__prices__store__id__in=anchor_store_ids
+        slug_filter,
+        product__prices__store__id__in=anchor_store_ids,
     ).distinct().order_by('-best_possible_discount').values_list('product_id', flat=True)[:200])
 
     if not candidate_product_ids:
-        # Fallback to simple unit price ordering if no candidates found
         fallback_queryset = Product.objects.filter(
-            category__primary_category__slug__in=primary_category_slugs,
-            prices__store__id__in=anchor_store_ids
+            slug_filter,
+            prices__store__id__in=anchor_store_ids,
         ).distinct().annotate(
             min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=anchor_store_ids))
         ).order_by('min_unit_price')
@@ -33,7 +46,7 @@ def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=N
     # --- Step 2: Calculate "real" bargains for the candidates ---
     live_prices = Price.objects.filter(
         product_id__in=candidate_product_ids,
-        store_id__in=anchor_store_ids
+        store_id__in=anchor_store_ids,
     ).select_related('store__company')
 
     products_with_prices = defaultdict(list)
@@ -44,7 +57,7 @@ def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=N
     for product_id, prices in products_with_prices.items():
         if len(prices) < 2:
             continue
-        
+
         company_ids = {p.store.company_id for p in prices}
         is_iga = any(p.store.company.name.lower() == 'iga' for p in prices)
         iga_stores = {p.store_id for p in prices if p.store.company.name.lower() == 'iga'}
@@ -60,15 +73,15 @@ def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=N
         actual_discount = int(((max_price_obj.price - min_price_obj.price) / max_price_obj.price) * 100)
         if not (5 <= actual_discount <= 70):
             continue
-        
+
         calculated_bargains.append({
-            'product_id': product_id, 'discount': actual_discount,
+            'product_id': product_id,
+            'discount': actual_discount,
             'cheaper_store_name': min_price_obj.store.store_name,
             'cheaper_company_name': min_price_obj.store.company.name,
         })
-    
+
     sorted_bargains = sorted(calculated_bargains, key=lambda b: b['discount'], reverse=True)
-    
     bargain_map = {b['product_id']: b for b in sorted_bargains}
     confirmed_bargain_ids = [b['product_id'] for b in sorted_bargains]
 
@@ -77,21 +90,17 @@ def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=N
     filler_product_ids = []
     if limit is None or num_bargains < limit:
         filler_queryset = Product.objects.filter(
+            slug_filter,
             prices__store__id__in=anchor_store_ids,
-            category__primary_category__slug__in=primary_category_slugs
         ).exclude(
-            pk__in=confirmed_bargain_ids
+            pk__in=confirmed_bargain_ids,
         ).annotate(
             min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=anchor_store_ids))
         ).order_by('min_unit_price')
-        
+
         if limit is not None:
-            num_to_fill = limit - num_bargains
-            filler_queryset = filler_queryset[:num_to_fill]
-        
+            filler_queryset = filler_queryset[:limit - num_bargains]
+
         filler_product_ids = list(filler_queryset.values_list('pk', flat=True))
 
-    # --- Step 4: Combine ---
-    final_product_ids = confirmed_bargain_ids + filler_product_ids
-
-    return final_product_ids, bargain_map
+    return confirmed_bargain_ids + filler_product_ids, bargain_map

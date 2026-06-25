@@ -4,18 +4,17 @@ from django.utils import timezone
 from django.db.models import Max
 from django.conf import settings
 from products.models import Product, ProductBrand, Price
-from companies.models import Store, Category, Company
+from companies.models import Store, Company
 from products.models import SKU
 from .file_reader import FileReader
 from .brand_manager import BrandManager
 from .product_manager import ProductManager
 from .price_manager import PriceManager
-from .category_manager import CategoryManager
+from .path_manager import PathManager
 from .translation_table_generators.brand_translation_table_generator import BrandTranslationTableGenerator
 from .translation_table_generators.product_translation_table_generator import ProductTranslationTableGenerator
 from .post_processing.brand_reconciler import BrandReconciler
 from .post_processing.product_reconciler import ProductReconciler
-from .post_processing.category_cycle_manager import CategoryCycleManager
 from .post_processing.orphan_product_cleaner import OrphanProductCleaner
 from .group_maintanance.group_maintenance_orchestrator import GroupMaintenanceOrchestrator
 
@@ -37,7 +36,7 @@ class UpdateOrchestrator:
         self.brand_manager = BrandManager(self.command, self.caches, self.update_cache, self.brand_translation_cache)
         self.product_manager = ProductManager(self.command, self.caches, self.update_cache, self.discovered_brand_pairs)
         self.price_manager = PriceManager(self.command, self.caches, self.update_cache)
-        self.category_manager = CategoryManager(self.command, self.caches, self.update_cache)
+        self.path_manager = PathManager(self.command, self.caches, self.update_cache)
 
     def _build_global_caches(self):
         """
@@ -82,11 +81,6 @@ class UpdateOrchestrator:
         # SKU Cache - Will be loaded Just-in-Time for each company
         self.caches['products_by_sku'] = {}
         self.command.stdout.write("  - Initialized empty container for SKU cache (will be loaded JIT).")
-
-        # Category Cache (Company-Aware, no change needed)
-        all_categories = Category.objects.select_related('company').all()
-        self.caches['categories'] = {(c.name, c.company_id): c for c in all_categories}
-        self.command.stdout.write(f"  - Cached {len(self.caches['categories'])} categories.")
 
         # Price Cache Container
         self.caches['prices_by_store'] = {}
@@ -257,8 +251,8 @@ class UpdateOrchestrator:
                 # 4. Process Prices
                 self.price_manager.process(final_list_for_pricing, store)
 
-                # 5. Process Categories
-                self.category_manager.process(raw_product_data, store.company)
+                # 5. Process Category Paths
+                self.path_manager.process(raw_product_data, store.company)
 
                 # 6. Cleanup
                 try:
@@ -281,21 +275,16 @@ class UpdateOrchestrator:
         BrandReconciler(self.command).run()
         ProductReconciler(self.command).run()
 
-        # 3. Prune Category Cycles
-        self.command.stdout.write(self.command.style.SUCCESS("\n--- Pruning Category Cycles ---"))
-        for company in Company.objects.all():
-            CategoryCycleManager(self.command, company).prune_cycles()
-
-        # 4. Run Group Maintenance
+        # 3. Run Group Maintenance
         self.command.stdout.write(self.command.style.SUCCESS("\n--- Running Group Maintenance ---"))
         GroupMaintenanceOrchestrator(self.command, relaxed_staleness=self.relaxed_staleness).run()
 
-        # 5. Regenerate Translation Tables after reconciliation
+        # 4. Regenerate Translation Tables after reconciliation
         self.command.stdout.write(self.command.style.SUCCESS("\n--- Generating Translation Tables ---"))
         BrandTranslationTableGenerator().run()
         ProductTranslationTableGenerator().run()
 
-        # 6. Final Cleanup: Remove products with no prices
+        # 5. Final Cleanup: Remove products with no prices
         self.command.stdout.write(self.command.style.SUCCESS("\n--- Cleaning Orphan Products ---"))
         OrphanProductCleaner(self.command).run()
 

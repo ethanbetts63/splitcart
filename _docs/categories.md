@@ -261,3 +261,76 @@ Frontend
 The traversal boundary fix mitigates this: traversal stops at any child that has its own explicit mapping entry. This prevents contamination in the vast majority of cases, but unmapped descendants of a collided node can still inherit the wrong primary category if neither of their ancestor chains has an explicit boundary in the mapping file. The correct long-term fix would be path-aware category uniqueness (store categories by full path, not just name).
 
 **Mapping file maintenance.** `CATEGORY_MAPPINGS` is maintained manually. New categories added by supermarkets during scraping will silently have no primary category until the file is updated. The generator logs a warning for any mapping entry whose category name isn't found in the database, but it does not warn about categories in the database that have no mapping.
+
+---
+
+## Implementation Plan
+
+Fresh DB assumed — no backfill needed. No feature flags. Phases are sequential; check off as done. Note dead code and issues inline.
+
+### Phase 1 — Add new fields to Product (non-destructive)
+- [x] Add `Product.category_paths` JSONField (default list) — stores full per-company path evidence
+- [x] Add `Product.primary_category_slugs` JSONField (default list) — fast denormalized filter field
+- [x] Create and run migration
+
+### Phase 2 — Scraper path improvements
+- [x] **Woolworths** — already emits full scrape-context paths, no change needed
+- [x] **Coles** — `DataCleanerColes._pick_canonical_heir`: scans all `onlineHeirs`, picks first non-promotional root; falls back to `[0]` if all promotional. Promotional roots: christmas, down down, bonus credit products, specials, front of store, seasonal, everyday market, big night in.
+- [x] **Aldi** — `get_aldi_categories._find_leaf_categories`: skips subtrees whose root name is in `_ALDI_PROMOTIONAL_ROOTS`; returns same `(urlSlugText, key)` tuples for backward compat
+- [x] **IGA** — `get_iga_categories._find_leaf_categories`: skips promotional root subtrees; IGA paths are cleanest so minimal real-world impact
+
+### Phase 3 — PathManager replaces CategoryManager
+- [x] Write `PathManager` (`path_manager.py`) — merges incoming paths into `Product.category_paths` (no node creation, no parent links); increments `evidence_count` on re-seen paths
+- [x] Wire `PathManager` into `update_orchestrator.py` (replaced `CategoryManager` call; removed `Category` cache build)
+- [x] Removed `CategoryCycleManager` from post-processing in orchestrator
+- [x] Removed `Category` and `CategoryCycleManager` imports from orchestrator
+- [ ] Keep `Category` M2M on Product temporarily — remove in Phase 8
+
+### Phase 4 — Path classifier + canonical key mapping
+- [x] Inspected real path data across all four companies (sampled JSONL files)
+- [x] `data_management/utils/path_classifier.py` — `classify_path(company, path)` returns `path_type`, `canonical_key`, `primary_category_slug`. Path type classified from root node against frozensets (seasonal, promotional, dietary, brand_collection, merchandising, canonical_taxonomy). `primary_category_slug` derived by scanning path leaf→root through existing `CATEGORY_MAPPINGS`.
+- [x] Classification wired into `PathManager` — happens at ingest time, no separate generation step needed
+- [x] `CATEGORY_MAPPINGS` is REUSED (not replaced) as the lookup source for `primary_category_slug` — the classifier wraps it path-aware
+- [x] `category_exclusions.py` is SUPERSEDED by path classification rules (promotional/seasonal paths never get a primary category slug) — kept as file for now, removed in Phase 8
+
+### Phase 5 — PrimaryCategoriesGenerator refactor
+- [x] Rewrote `PrimaryCategoriesGenerator` — reads `Product.category_paths` to populate `Product.primary_category_slugs`; no graph traversal
+- [x] Kept `PrimaryCategory` model, `_create_primary_categories`, `_assign_sub_categories`, `PRIMARY_CATEGORY_HIERARCHY` — same as before
+- [x] Removed `_assign_primary_categories` graph traversal and `_get_all_descendants`
+- [x] `_populate_product_primary_category_slugs`: collects slugs from canonical_taxonomy paths first; falls back to dietary, then any path, if empty
+
+### Phase 6 — Substitutions + stats update
+- [x] Update `SubstitutionsGenerator` — removed `categories` and `category_links` API fetches; only fetches products now
+- [x] Update `Lvl3SubGenerator` — groups products by each `primary_category_slug` from `p.get('primary_category_slugs', [])`; encodes all unique products once and reuses embeddings
+- [x] Update `Lvl4SubGenerator` — replaced `CategoryLink` connected-components with `PRIMARY_CATEGORY_HIERARCHY` super-groups; slug dedup prevents Lvl4 for same-primary-category pairs (those are Lvl3)
+- [x] Update `price_comparisons_generator.py` — switched from `product__category__primary_category_id` grouping to `Product.primary_category_slugs`; Python-level grouping per slug
+- [x] Update `product_ordering.py` — replaced `product__category__primary_category__slug__in` with `_primary_category_slug_filter()` (JSON contains OR per slug)
+- [x] Update `category_stats.py` — switched to `primary_category_slugs__contains=[slug]` filter
+- [x] Update `primary_cat_stats.py` — rewrote to report product counts per PrimaryCategory via `primary_category_slugs` instead of raw Category counts
+
+### Phase 7 — API filtering switch
+- [x] Update `ProductListView` — replaced `category__primary_category__slug__in` with `_primary_category_slug_filter()`; removed all `category__primary_category` prefetches (3 occurrences)
+- [x] Update `ProductExportSerializer` — replaced `category` (raw M2M PKs) with `primary_category_slugs` JSONField
+- [x] Update `bargain_carousel_view.py` — removed `category__primary_category` from prefetch_related
+- [ ] Update API export endpoints — replace `/api/export/categories/`, `/api/export/categories-with-products/`, `/api/export/category_links/` with path/canonical-category exports (deferred to Phase 8)
+- [x] Frontend `?primary_category_slug=` parameter unchanged — API surface stable
+
+### Phase 8 — Cleanup
+- [ ] Remove `Category` model (`companies/models/category.py`) + migration
+- [ ] Remove `CategoryLink` model (`companies/models/category_link.py`) + migration
+- [ ] Remove `Product.category` M2M field + migration
+- [ ] Remove `CategoryManager` (`data_management/database_updating_classes/product_updating/category_manager.py`)
+- [ ] Remove `CategoryCycleManager` (`post_processing/category_cycle_manager.py`)
+- [ ] Remove `category_links_generator.py`, `category_link_update_orchestrator.py`, `category_links_uploader.py`
+- [ ] Remove old API export views for raw categories/links
+- [ ] Remove `CATEGORY_MAPPINGS` / `category_exclusions.py`
+- [ ] Run full test suite; rewrite category-related tests around path identity
+
+### Issues / Dead Code Noted
+- `category_exclusions.py` is a parallel exclusion list alongside `CATEGORY_MAPPINGS` — likely redundant even now; worth auditing before Phase 4
+- Coles `onlineHeirs[0]` selection is the biggest correctness risk — Christmas/promotional paths can silently override real taxonomy
+- `CategoryCycleManager` exists because the node graph can produce cycles; it disappears entirely with the path model
+- `PRIMARY_CATEGORY_HIERARCHY` in `category_mappings.py` (parent-child between primary cats) is separate from the raw Category graph and should survive into the new system
+- MySQL `JSON_CONTAINS` on `primary_category_slugs` — keep an eye on query performance at scale; a junction table is the escape hatch if needed
+- `users/views/cart_viewset.py` lines 256/259 still prefetch `items__product__category__primary_category` — dead weight now, remove in Phase 8
+- Old export endpoints `ExportCategoriesView` / `ExportCategoriesWithProductsView` / `ExportCategoryLinksView` still exist and are referenced in `products/urls.py` — remove in Phase 8

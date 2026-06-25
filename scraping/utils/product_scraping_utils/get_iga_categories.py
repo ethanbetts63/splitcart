@@ -1,7 +1,16 @@
 import requests
 import json
 
-def _find_leaf_categories(nodes: list) -> list:
+_IGA_PROMOTIONAL_ROOTS = frozenset({
+    'christmas',
+    'seasonal',
+    'specials',
+    'promotions',
+    'weekly specials',
+})
+
+
+def _find_leaf_categories(nodes: list, path: list = None) -> list:
     """
     A recursive helper function to traverse the category tree and find all 
     nodes that have no children (the "leaf" nodes).
@@ -13,19 +22,22 @@ def _find_leaf_categories(nodes: list) -> list:
         A flat list of dictionaries, where each dictionary contains the 
         'displayName' and 'identifier' of each leaf category.
     """
+    path = path or []
     leaf_categories = []
     for node in nodes:
+        name = node.get('displayName') or ''
+        if not path and name.lower() in _IGA_PROMOTIONAL_ROOTS:
+            continue
         children = node.get('children', [])
+        current_path = path + [name]
         if not children:
-            # This is a leaf node, add its name and identifier to our list
             if 'displayName' in node and 'identifier' in node:
                 leaf_categories.append({
                     'displayName': node['displayName'],
-                    'identifier': node['identifier']
+                    'identifier': node['identifier'],
                 })
         else:
-            # This is not a leaf node, so we go deeper
-            leaf_categories.extend(_find_leaf_categories(children))
+            leaf_categories.extend(_find_leaf_categories(children, current_path))
     return leaf_categories
 
 def get_iga_categories(command, retailer_store_id: str, session: requests.Session) -> list:

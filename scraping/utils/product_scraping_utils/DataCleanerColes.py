@@ -3,6 +3,18 @@ from django.utils.text import slugify
 from .BaseDataCleaner import BaseDataCleaner
 from .field_maps import COLES_FIELD_MAP
 
+_COLES_PROMOTIONAL_ROOTS = frozenset({
+    'christmas',
+    'down down',
+    'bonus credit products',
+    'specials',
+    'front of store',
+    'seasonal',
+    'everyday market',
+    'big night in',
+})
+
+
 class DataCleanerColes(BaseDataCleaner):
     """
     Concrete cleaner class for Coles product data.
@@ -13,6 +25,16 @@ class DataCleanerColes(BaseDataCleaner):
     @property
     def field_map(self):
         return COLES_FIELD_MAP
+
+    def _pick_canonical_heir(self, online_heirs: list) -> dict | None:
+        """Return the first non-promotional heir, falling back to the first heir."""
+        if not online_heirs:
+            return None
+        for heir in online_heirs:
+            root = (heir.get('subCategory') or '').lower().strip()
+            if root not in _COLES_PROMOTIONAL_ROOTS:
+                return heir
+        return online_heirs[0]
 
     def _is_valid_product(self, raw_product: dict) -> bool:
         # Coles search results include non-product tiles we need to filter out.
@@ -43,15 +65,18 @@ class DataCleanerColes(BaseDataCleaner):
         cleaned_product.update(price_info)
 
         # Category path needs to be extracted from the 'onlineHeirs' field.
+        # Each heir has subCategory (root/dept), category (mid), aisle (leaf).
+        # Prefer the first heir whose root is not a known promotional category.
         online_heirs = cleaned_product.get('category_path')
         category_path = []
-        if online_heirs and isinstance(online_heirs, list) and online_heirs[0]:
-            heir_list = online_heirs[0]
-            category_path = [
-                heir_list.get('subCategory'),
-                heir_list.get('category'),
-                heir_list.get('aisle')
-            ]
+        if online_heirs and isinstance(online_heirs, list):
+            heir_list = self._pick_canonical_heir(online_heirs)
+            if heir_list:
+                category_path = [
+                    heir_list.get('subCategory'),
+                    heir_list.get('category'),
+                    heir_list.get('aisle'),
+                ]
 
         cleaned_product['category_path'] = self._clean_category_path(category_path)
 

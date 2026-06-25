@@ -52,6 +52,21 @@ class Product(models.Model):
         related_name="products",
         help_text="The categories this product belongs to."
     )
+    category_paths = models.JSONField(
+        default=list,
+        blank=True,
+        help_text=(
+            "Full category paths observed per company. Each entry: "
+            "{'company': str, 'path': [str], 'path_key': str, 'root_name': str, "
+            "'leaf_name': str, 'path_type': str, 'canonical_key': str, "
+            "'primary_category_slug': str, 'evidence_count': int}."
+        ),
+    )
+    primary_category_slugs = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="Denormalized list of primary category slugs for fast filtering.",
+    )
     barcode = models.CharField(
         max_length=50,
         unique=True,
