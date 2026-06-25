@@ -24,7 +24,7 @@ Product/category/sub generation         Product ingestion pipeline
 
 **All database writes happen on the server.** Management commands that read inboxes and write to the DB are always server-side.
 
-**Some generation steps are local-only.** Category link generation (`generate --cat-links`) and substitution generation (`generate --subs`) cannot run on the server. They depend on heavy ML libraries (SentenceTransformer etc.) that are only in `requirements_dev.txt` — the server runs the leaner `requirements.txt` to keep costs down. These steps run locally, produce JSONL output, and upload it like any other file. The tradeoff is complexity: the local machine must download enough DB state to do meaningful work (product lists, category data), which can be a significant payload. The download is well-optimized but worth knowing about when the pipeline feels slow at those steps.
+**Some generation steps are local-only.** Substitution generation (`generate --subs`) cannot run on the server. It depends on heavy ML libraries (SentenceTransformer etc.) that are only in `requirements_dev.txt` — the server runs the leaner `requirements.txt` to keep costs down. This step runs locally, produces JSONL output, and uploads it like any other file. The local machine must download the full product list from the server to do meaningful work, which can be a significant payload. The download is well-optimized but worth knowing about when the pipeline feels slow at that step.
 
 ---
 
@@ -37,16 +37,15 @@ python manage.py update --archive          # SERVER  — archives stale price da
 python manage.py generate --store-groups   # SERVER  — initialises one group per store
 
 python manage.py upload --product --dev    # LOCAL   — uploads scraped product JSONL
-python manage.py update --products         # SERVER  — ingests products, brands, prices
+python manage.py update --products         # SERVER  — ingests products, brands, prices, category paths
 
 python manage.py update --prefixes         # SERVER  — processes GS1 prefix inbox
 
-python manage.py generate --cat-links --dev  # LOCAL  — generates category link data (ML-heavy)
-python manage.py upload --cat-links --dev    # LOCAL  — uploads cat-link JSONL
-python manage.py update --cat-links          # SERVER — ingests category links
-
 python manage.py upload --product --dev    # LOCAL   — second product pass (GS1 data now improves brand matching)
 python manage.py update --products         # SERVER  — re-ingests with improved brand translations
+
+python manage.py generate --primary-cats   # SERVER  — assigns primary categories from category_paths
+python manage.py generate --pillars        # SERVER  — creates pillar pages
 
 python manage.py generate --subs --dev     # LOCAL   — generates substitutions (SentenceTransformer, ML-heavy)
 python manage.py upload --subs --dev       # LOCAL   — uploads substitution JSONL
@@ -79,18 +78,17 @@ UpdateOrchestrator (update --products)
   ├─ ProductManager     → creates/updates Product + SKU objects
   ├─ BrandManager       → links products to brands, records variations
   ├─ PriceManager       → creates/updates/deletes Price objects
-  ├─ CategoryManager    → creates Category objects + hierarchy + product links
+  ├─ PathManager        → merges category_path evidence into Product.category_paths
   └─ Post-processing
        ├─ TranslationTableGenerators  → writes brand + product .py tables
        ├─ BrandReconciler             → merges duplicate brands
        ├─ ProductReconciler           → merges duplicate products
-       ├─ CategoryCycleManager        → prunes circular category links
        ├─ GroupMaintenanceOrchestrator→ maintains store group integrity
        ├─ TranslationTableGenerators  → regenerates tables post-reconciliation
        └─ OrphanProductCleaner        → removes products with no prices
        │
        ▼
-generate --primary-cats     → assigns primary categories to raw categories
+generate --primary-cats     → derives primary_category_slugs from Product.category_paths
 generate --pillars          → groups primary categories into pillar pages
 generate --bargain-stats
 generate --price-comps
@@ -100,7 +98,7 @@ generate --default-stores
        │
        ▼
 Frontend
-  ├─ Product list → filters by primary_category__slug, store, price
+  ├─ Product list → filters by primary_category_slugs (JSON contains), store, price
   ├─ Pillar pages → SEO landing pages grouping primary categories
   ├─ Price charts → powered by price-comp and price-summary data
   └─ Cart splitter → uses substitutions + prices to find cheapest combination
@@ -125,5 +123,7 @@ The **Optimizer** calculates the cheapest combination of stores for the approved
 
 ## Design Notes
 
-- **Two product passes**: Products are ingested twice in a full setup (steps 3 and 6) because the GS1 prefix data loaded in step 4 improves brand matching, and the second pass propagates those improvements. the second pass isnt strictly necessary but it doubles the speed at which the system learns. 
-- **Category assignment is manual**: `generate --primary-cats` is not part of `update --products`. It must be run separately whenever the category mapping file is updated or after a large new batch of products is ingested.
+- **Two product passes**: Products are ingested twice in a full setup because the GS1 prefix data loaded between passes improves brand matching. The second pass propagates those improvements. It isn't strictly necessary but doubles the speed at which the system learns.
+- **Category paths are incremental**: `PathManager` merges path evidence into `Product.category_paths` on every ingest — it increments `evidence_count` for paths already seen and appends new ones. The `canonical_key` for each path improves over time as cross-company node equivalences are confirmed via the agent classification workflow (see `_docs/categories.md`).
+- **Primary category assignment is manual**: `generate --primary-cats` must be run separately after ingesting a large new batch of products or after updating `CATEGORY_MAPPINGS`. It reads `Product.category_paths` and writes `Product.primary_category_slugs` — no graph traversal, no raw Category objects.
+- **Substitution generation no longer needs category data**: `generate --subs` fetches only the product list from the server. Lvl3 groups by `primary_category_slugs`; Lvl4 uses `PRIMARY_CATEGORY_HIERARCHY` parent-child groups. No category or category-link API endpoints are fetched.

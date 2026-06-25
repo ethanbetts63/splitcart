@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PillarPage from "@/page_components/PillarPage";
 import { createMetadata } from "@/lib/seo";
+import { createBreadcrumbSchema, JsonLdScript } from "@/lib/schema";
 import type { PillarPage as PillarPageType } from "@/types";
 import { CATEGORY_SLUGS } from "@/data/categories";
 
@@ -56,5 +57,16 @@ export default async function Page({ params }: PageProps) {
 
   if (!pillarPage) notFound();
 
-  return <PillarPage pillarPage={pillarPage} slug={slug} />;
+  const title = pillarPage.hero_title ?? "Category";
+  const breadcrumbSchema = createBreadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: title, path: `/categories/${slug}` },
+  ]);
+
+  return (
+    <>
+      <JsonLdScript data={breadcrumbSchema} />
+      <PillarPage pillarPage={pillarPage} slug={slug} />
+    </>
+  );
 }

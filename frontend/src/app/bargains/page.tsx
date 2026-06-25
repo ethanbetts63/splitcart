@@ -1,5 +1,6 @@
 import BargainsPage from "@/page_components/BargainsPage";
 import { createMetadata } from "@/lib/seo";
+import { createBreadcrumbSchema, JsonLdScript } from "@/lib/schema";
 import type { PriceComparison, Product } from "@/types";
 
 export const revalidate = 86400;
@@ -22,6 +23,11 @@ const webPageSchema = {
   url: "https://www.splitcart.com.au/bargains",
 };
 
+const breadcrumbSchema = createBreadcrumbSchema([
+  { name: "Home", path: "/" },
+  { name: "Bargains", path: "/bargains" },
+]);
+
 export default async function Page() {
   const [initialBargainStats, initialCompanyProducts] = await Promise.all([
     getBargainStats(),
@@ -30,10 +36,8 @@ export default async function Page() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
-      />
+      <JsonLdScript data={webPageSchema} />
+      <JsonLdScript data={breadcrumbSchema} />
       <BargainsPage
         initialBargainStats={initialBargainStats}
         initialCompanyProducts={initialCompanyProducts}

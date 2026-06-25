@@ -23,10 +23,3 @@ class TestProductBrandModel:
         brand = ProductBrandFactory()
         assert brand.normalized_name_variations == []
 
-    def test_confirmed_official_prefix_nullable(self):
-        brand = ProductBrandFactory()
-        assert brand.confirmed_official_prefix is None
-
-    def test_longest_inferred_prefix_nullable(self):
-        brand = ProductBrandFactory()
-        assert brand.longest_inferred_prefix is None

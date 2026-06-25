@@ -25,11 +25,6 @@ class TestUpdateCommandDispatch:
         call_command('update', cat_links=True)
         MockOrch.return_value.run.assert_called_once()
 
-    @patch(f'{BASE}.GS1UpdateOrchestrator')
-    def test_gs1_flag_runs_gs1_orchestrator(self, MockOrch):
-        call_command('update', gs1=True)
-        MockOrch.return_value.run.assert_called_once()
-
     @patch(f'{BASE}.DiscoveryUpdateOrchestrator')
     def test_stores_flag_runs_discovery_orchestrator(self, MockOrch):
         call_command('update', stores=True)

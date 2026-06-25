@@ -4,7 +4,6 @@ import requests
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from companies.models.store import Store
-from scraping.scrapers.gs1_company_scraper import Gs1CompanyScraper
 from scraping.scrapers.product_scraper_coles_v2 import ColesScraperV2
 from scraping.scrapers.product_scraper_woolworths import ProductScraperWoolworths
 from scraping.scrapers.product_scraper_aldi import ProductScraperAldi
@@ -20,13 +19,11 @@ class Command(BaseCommand):
         'Scrapes product data. '
         '--coles: session-persistent scraper for all Coles stores (phase 1 of 2; run scrape_barcodes after). '
         '--woolworths/--aldi/--iga: scheduler-driven worker that polls the server for the next store to scrape. '
-        '--gs1: one-off GS1 company prefix scraper. '
         '--store-pk: scrape a single store by DB primary key.'
     )
 
     def add_arguments(self, parser):
         parser.add_argument('--store-pk', type=int, help='Scrape a specific store by its database primary key.')
-        parser.add_argument('--gs1', action='store_true', help='Run the GS1 company prefix scraper.')
         parser.add_argument('--woolworths', action='store_true', help='Limit the scheduler worker to Woolworths stores.')
         parser.add_argument('--coles', action='store_true', help='Run the session-persistent Coles v2 scraper across all Coles stores.')
         parser.add_argument('--coles-v3', action='store_true', help='Same as --coles but fetches categories in parallel (threaded).')
@@ -36,13 +33,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         base_url = "http://127.0.0.1:8000" if options['dev'] else settings.API_SERVER_URL
-
-        # GS1 talks to the API but does not use translation tables
-        if options['gs1']:
-            self.stdout.write(self.style.SUCCESS('Running GS1 scraper...'))
-            Gs1CompanyScraper(self, base_url).run()
-            self.stdout.write(self.style.SUCCESS('GS1 scraping complete.'))
-            return
 
         # All product scraping paths need up-to-date translation tables
         self._fetch_translation_tables(base_url)

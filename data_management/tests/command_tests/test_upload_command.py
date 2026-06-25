@@ -11,11 +11,6 @@ class TestUploadCommandDispatch:
         call_command('upload', products=True)
         MockUp.return_value.run.assert_called_once()
 
-    @patch(f'{BASE}.Gs1Uploader')
-    def test_gs1_flag_runs_gs1_uploader(self, MockUp):
-        call_command('upload', gs1=True)
-        MockUp.return_value.run.assert_called_once()
-
     @patch(f'{BASE}.StoreUploader')
     def test_stores_flag_runs_store_uploader(self, MockUp):
         call_command('upload', stores=True)
@@ -32,13 +27,12 @@ class TestUploadCommandDispatch:
         MockUp.return_value.run.assert_called_once()
 
     @patch(f'{BASE}.ProductUploader')
-    @patch(f'{BASE}.Gs1Uploader')
     @patch(f'{BASE}.StoreUploader')
     @patch(f'{BASE}.CategoryLinksUploader')
     @patch(f'{BASE}.SubstitutionsUploader')
-    def test_no_flags_runs_nothing(self, MockSubs, MockCats, MockStores, MockGs1, MockProds):
+    def test_no_flags_runs_nothing(self, MockSubs, MockCats, MockStores, MockProds):
         call_command('upload')
-        for MockUp in [MockProds, MockGs1, MockStores, MockCats, MockSubs]:
+        for MockUp in [MockProds, MockStores, MockCats, MockSubs]:
             MockUp.return_value.run.assert_not_called()
 
     @patch(f'{BASE}.ProductUploader')

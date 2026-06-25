@@ -125,7 +125,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
   const exploreHref = seeMoreLink ?? (title === 'Bargains' ? '/bargains' : null);
   const exploreLabel = isBargainCarousel && companyName
     ? `Explore All ${companyName} Deals`
-    : title === 'Bargains'
+    : title === 'Highlighted Bargains'
     ? 'Explore More Bargains'
     : 'Explore All Deals';
 

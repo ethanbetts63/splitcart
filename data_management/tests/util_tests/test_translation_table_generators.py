@@ -124,18 +124,6 @@ class TestBrandTranslationTableGenerator:
 
 @pytest.mark.django_db
 class TestBrandTranslationTableGeneratorResolveConflict:
-    def test_brand_with_confirmed_prefix_wins(self, tmp_path):
-        brand_with_prefix = ProductBrandFactory(normalized_name='brand-prefix')
-        brand_with_prefix.confirmed_official_prefix = '0123456'
-        brand_with_prefix.save()
-        brand_no_prefix = ProductBrandFactory(normalized_name='brand-no-prefix')
-
-        gen = BrandTranslationTableGenerator()
-        gen.output_path = str(tmp_path / 'out.json')
-        winner, loser = gen._resolve_conflict(brand_with_prefix, brand_no_prefix)
-        assert winner == brand_with_prefix
-        assert loser == brand_no_prefix
-
     def test_brand_with_more_products_wins_on_tie(self, tmp_path):
         from products.tests.factories import ProductFactory
         brand_a = ProductBrandFactory(normalized_name='brand-a')

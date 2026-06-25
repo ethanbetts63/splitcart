@@ -1,5 +1,6 @@
 import ContactPage from "@/page_components/ContactPage";
 import { createMetadata } from "@/lib/seo";
+import { createBreadcrumbSchema, JsonLdScript } from "@/lib/schema";
 
 export const metadata = createMetadata({
   title: "Contact Us",
@@ -26,13 +27,16 @@ const contactPageSchema = {
   },
 };
 
+const breadcrumbSchema = createBreadcrumbSchema([
+  { name: "Home", path: "/" },
+  { name: "Contact", path: "/contact" },
+]);
+
 export default function Page() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageSchema) }}
-      />
+      <JsonLdScript data={contactPageSchema} />
+      <JsonLdScript data={breadcrumbSchema} />
       <ContactPage />
     </>
   );

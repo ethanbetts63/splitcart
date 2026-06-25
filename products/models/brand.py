@@ -21,10 +21,6 @@ class ProductBrand(models.Model):
         blank=True,
         help_text="A list of normalized names from the name_variations list for faster lookups."
     )
-    # Fields from the former BrandPrefix model
-    longest_inferred_prefix = models.CharField(max_length=12, null=True, blank=True, db_index=True)
-    confirmed_official_prefix = models.CharField(max_length=12, null=True, blank=True, db_index=True)
-
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 

@@ -91,16 +91,7 @@ class BrandTranslationTableGenerator(BaseTranslationTableGenerator):
         Resolves a conflict between two brands that have a circular dependency.
         Returns a tuple of (winner, loser).
         """
-        # Tie-breaker 1: Confirmed Prefix (from GS1 data)
-        b1_has_prefix = bool(brand1.confirmed_official_prefix)
-        b2_has_prefix = bool(brand2.confirmed_official_prefix)
-        if b1_has_prefix and not b2_has_prefix:
-            return brand1, brand2
-        if b2_has_prefix and not b1_has_prefix:
-            return brand2, brand1
-
-        # Tie-breaker 2: Product Count
-        # Note: This can be slow if run for many conflicts.
+        # Tie-breaker 1: Product Count
         b1_products = Product.objects.filter(brand=brand1).count()
         b2_products = Product.objects.filter(brand=brand2).count()
         if b1_products > b2_products:
@@ -108,7 +99,7 @@ class BrandTranslationTableGenerator(BaseTranslationTableGenerator):
         if b2_products > b1_products:
             return brand2, brand1
 
-        # Tie-breaker 3: Variation Count
+        # Tie-breaker 2: Variation Count
         b1_variations = len(brand1.name_variations) if brand1.name_variations else 0
         b2_variations = len(brand2.name_variations) if brand2.name_variations else 0
         if b1_variations > b2_variations:
@@ -116,7 +107,7 @@ class BrandTranslationTableGenerator(BaseTranslationTableGenerator):
         if b2_variations > b1_variations:
             return brand2, brand1
 
-        # Tie-breaker 4: Alphabetical by name
+        # Tie-breaker 3: Alphabetical by name
         if brand1.name < brand2.name:
             return brand1, brand2
         else:

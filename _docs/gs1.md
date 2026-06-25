@@ -102,3 +102,11 @@ Reads all `ProductBrand.normalized_name_variations` and writes a `variation → 
 | `data_management/management/commands/infer_and_reconcile_brands.py` | LCP-based prefix inference for unscraped brands |
 | `data_management/.../brand_translation_table_generator.py` | Builds `variation → canonical` brand map from recorded variations |
 | `data_management/management/commands/prefix_report.py` | Diagnostic: writes brand discrepancy report to file |
+
+---
+
+## Removed (2026-06-25)
+
+The entire GS1 system was removed. The core brand normalization pipeline doesn't need it — brand variations are collected from product ingest directly, and `BrandReconciler` links synonyms via `name_variations` without requiring barcode prefix lookups. The GS1 system added significant complexity (Selenium dependency, manual cookie consent, 30-brand/day API limit, multi-step scrape → upload → update → regenerate cycle) for marginal benefit at the current scale. The `infer_and_reconcile_brands.py` LCP inference path was also never wired into the pipeline and untested.
+
+What was removed: `gs1_company_scraper.py`, `gs1_uploader.py`, `gs1_file_upload_view.py`, `gs1_views.py`, `gs1_update_orchestrator.py`, `infer_and_reconcile_brands.py`, `prefix_report.py`, the `confirmed_official_prefix` and `longest_inferred_prefix` fields from `ProductBrand`, the `--gs1` flags from `scrape`, `upload`, and `update` commands, and the GS1 URL routes. The brand conflict tiebreaker that previously preferred brands with a confirmed prefix was simplified to product count → variation count → alphabetical.

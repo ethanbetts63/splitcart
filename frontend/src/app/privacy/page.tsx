@@ -1,4 +1,5 @@
 import { createMetadata } from "@/lib/seo";
+import { createBreadcrumbSchema, JsonLdScript } from "@/lib/schema";
 
 export const metadata = createMetadata({
   title: "Privacy Policy",
@@ -7,9 +8,15 @@ export const metadata = createMetadata({
   canonicalPath: "/privacy",
 });
 
+const breadcrumbSchema = createBreadcrumbSchema([
+  { name: "Home", path: "/" },
+  { name: "Privacy Policy", path: "/privacy" },
+]);
+
 export default function PrivacyPage() {
   return (
     <main className="bg-white">
+      <JsonLdScript data={breadcrumbSchema} />
       <div className="container mx-auto max-w-3xl px-6 py-12">
         <h1 className="text-4xl font-bold text-gray-950">Privacy Policy</h1>
         <p className="mt-3 text-sm text-gray-500">Last updated: May 11, 2026</p>
