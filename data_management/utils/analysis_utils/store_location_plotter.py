@@ -96,7 +96,6 @@ class CompanyMapGenerator(BaseMapGenerator):
             'Woolworths': '#00A651',
             'Coles': '#E4002B',
             'Aldi': '#007bff',
-            'Iga': '#ffc107'
         }
         default_color = '#6c757d'
 

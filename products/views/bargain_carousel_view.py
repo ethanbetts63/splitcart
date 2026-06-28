@@ -70,7 +70,7 @@ class BargainCarouselView(APIView):
             best_possible_discount__gte=5,
             best_possible_discount__lte=70,
         ).filter(
-            models.Q(company_count__gte=2) | models.Q(iga_store_count__gte=2)
+            company_count__gte=2
         ).distinct().order_by('-best_possible_discount').values_list('product_id', flat=True)[:candidate_limit])
 
         if not candidate_product_ids:

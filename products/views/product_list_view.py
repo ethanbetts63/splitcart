@@ -90,7 +90,7 @@ class ProductListView(generics.ListAPIView):
                 best_possible_discount__gte=5,
                 best_possible_discount__lte=70
             ).filter(
-                Q(company_count__gte=2) | Q(iga_store_count__gte=2)
+                company_count__gte=2
             ).order_by('-best_possible_discount').values_list('product_id', flat=True)[:1000])
 
             if not candidate_product_ids:

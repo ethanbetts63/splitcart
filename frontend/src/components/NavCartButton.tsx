@@ -5,26 +5,16 @@ import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { useCart } from "@/context/CartContext";
 import { useDialog } from "@/context/DialogContext";
-import { useStoreList } from "@/context/StoreListContext";
 
 export function NavCartButton() {
   const { currentCart } = useCart();
   const { openDialog } = useDialog();
-  const { selectedStoreIds } = useStoreList();
 
   const cartTotal = currentCart?.items.length ?? 0;
 
-  const handleClick = () => {
-    if (selectedStoreIds.size === 0) {
-      openDialog("Edit Location");
-    } else {
-      openDialog("cart");
-    }
-  };
-
   return (
     <div className="relative">
-      <Button variant="ghost" size="icon" className="h-10 w-10 sm:h-12 sm:w-12" onClick={handleClick}>
+      <Button variant="ghost" size="icon" className="h-10 w-10 sm:h-12 sm:w-12" onClick={() => openDialog("cart")}>
         <ShoppingCart className="size-6 sm:size-7" />
         <span className="sr-only">Open cart</span>
       </Button>

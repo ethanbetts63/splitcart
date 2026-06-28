@@ -7,9 +7,9 @@ from companies.tests.factories import CompanyFactory, StoreFactory
 @pytest.mark.django_db
 class TestStoreModel:
     def test_str_returns_name_and_company(self):
-        company = CompanyFactory(name='IGA')
-        store = StoreFactory(store_name='IGA Cannington', company=company)
-        assert str(store) == 'IGA Cannington (IGA)'
+        company = CompanyFactory(name='Woolworths')
+        store = StoreFactory(store_name='Woolworths Cannington', company=company)
+        assert str(store) == 'Woolworths Cannington (Woolworths)'
 
     def test_unique_together_company_store_id(self):
         company = CompanyFactory()

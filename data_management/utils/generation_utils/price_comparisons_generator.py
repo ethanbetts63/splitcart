@@ -14,7 +14,7 @@ class PriceComparisonsGenerator:
     def run(self):
         self.stdout.write(self.style.SUCCESS("Starting price comparison update..."))
 
-        company_names = ["Coles", "Woolworths", "IGA", "Aldi"]
+        company_names = ["Coles", "Woolworths", "Aldi"]
         companies = {c.id: c for c in Company.objects.filter(name__in=company_names)}
 
         if len(companies) < 2:

@@ -10,7 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('Calculating primary category statistics...'))
 
-        company_names = ["Coles", "Woolworths", "IGA", "Aldi"]
+        company_names = ["Coles", "Woolworths", "Aldi"]
         num_major_companies = len(company_names)
 
         major_companies = list(Company.objects.filter(name__in=company_names))

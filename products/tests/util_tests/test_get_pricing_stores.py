@@ -47,7 +47,7 @@ class TestGetPricingStoresMap:
 
         assert result == {anchor.id: anchor.id}
 
-    def test_unpriced_non_iga_store_falls_back_to_company_default_anchor(self, make_anchored_store):
+    def test_unpriced_store_falls_back_to_company_default_anchor(self, make_anchored_store):
         # Use a unique name to avoid cross-test company cache collisions
         company = CompanyFactory(name='Woolworths-fallback-test')
 

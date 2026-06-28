@@ -7,7 +7,6 @@ import splitcartLogo1280 from "../assets/splitcart_symbol_v6-1280w.webp";
 import { assetSrc, assetSrcSet } from "@/lib/assets";
 import { NavSearchBar } from "./NavSearchBar";
 import { NavCartButton } from "./NavCartButton";
-import { NavLocationButton } from "./NavLocationButton";
 import { NavAuthButton } from "./NavAuthButton";
 
 const NavBar = () => {
@@ -45,7 +44,6 @@ const NavBar = () => {
         {/* Icons */}
         <div className="flex items-center gap-1 flex-shrink-0">
           <NavCartButton />
-          <NavLocationButton />
           <NavAuthButton />
         </div>
       </div>

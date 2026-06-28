@@ -102,16 +102,16 @@ class TestDiscoveryStoreUpdaterRun:
         """Flat format may use 'address' instead of 'address_line_1'."""
         path = str(tmp_path / 'data.json')
         _write_json(path, {
-            'company': 'IGA',
-            'store_id': 'iga-001',
-            'name': 'IGA Local',
+            'company': 'Coles',
+            'store_id': 'coles-flat-001',
+            'name': 'Coles Local',
             'address': '123 Main St',
             'state': 'WA',
         })
         updater = DiscoveryStoreUpdater(mock_command, path)
         updater.run()
 
-        store = Store.objects.get(store_id='iga-001')
+        store = Store.objects.get(store_id='coles-flat-001')
         assert store.address_line_1 == '123 Main St'
 
     def test_none_values_not_overwritten_on_update(self, mock_command, tmp_path):

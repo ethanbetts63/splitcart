@@ -17,7 +17,7 @@ class Command(BaseCommand):
     help = (
         'Scrapes product data. '
         '--coles: session-persistent scraper for all Coles stores (phase 1 of 2; run scrape_barcodes after). '
-        '--woolworths/--aldi/--iga: scheduler-driven worker that polls the server for the next store to scrape. '
+        '--woolworths/--aldi: scheduler-driven worker that polls the server for the next store to scrape. '
         '--store-pk: scrape a single store by DB primary key.'
     )
 

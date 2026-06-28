@@ -3,7 +3,7 @@ from django.db import models
 class Company(models.Model):
     """
     Represents a parent company or brand that owns one or more stores.
-    e.g., 'IGA', 'Coles Group'.
+    e.g., 'Coles Group', 'Woolworths Group'.
     """
     name = models.CharField(
         max_length=100,

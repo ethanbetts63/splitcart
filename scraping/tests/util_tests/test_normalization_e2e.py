@@ -255,22 +255,6 @@ class TestCrossStoreNormalizedKey:
         'onlineHeirs': [],
     }
 
-    _IGA_MILK = {
-        'productId': 'P1',
-        'name': 'Full Cream Milk',
-        'brand': 'Dairy Farmers',
-        'barcode': None,
-        'priceNumeric': 3.20,
-        'wasWholePrice': None,
-        'tprPrice': [],
-        'pricePerUnit': None,
-        'unitOfSize': {'size': 2, 'abbreviation': 'l'},
-        'unitOfMeasure': {'size': 1, 'abbreviation': 'l'},
-        'sellBy': 'Each',
-        'available': True,
-        'defaultCategory': [{'categoryBreadcrumb': ''}],
-    }
-
     _ALDI_MILK = {
         'sku': 'A1',
         'name': 'Full Cream Milk',

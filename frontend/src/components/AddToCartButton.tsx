@@ -1,27 +1,13 @@
 "use client";
 
 import { useCart } from '../context/CartContext';
-import { useStoreList } from '../context/StoreListContext';
-import { useDialog } from '../context/DialogContext';
-import { toast } from 'sonner';
 import type { AddToCartButtonProps } from '../types/AddToCartButtonProps';
 
 const AddToCartButton = ({ product }: AddToCartButtonProps) => {
   const { currentCart, addItem, updateItemQuantity } = useCart();
-  const { selectedStoreIds } = useStoreList();
-  const { openDialog } = useDialog();
 
   const items = currentCart?.items || [];
   const existingItem = items.find(item => item.product.id === product.id);
-
-  const handleAdd = () => {
-    if (selectedStoreIds.size === 0) {
-      openDialog('Edit Location');
-      toast.info('Please select your stores before adding to your cart.');
-      return;
-    }
-    addItem(product.id, 1, product);
-  };
 
   const handleQuantityChange = (newQuantity: number) => {
     if (existingItem) {
@@ -55,7 +41,7 @@ const AddToCartButton = ({ product }: AddToCartButtonProps) => {
 
   return (
     <button
-      onClick={handleAdd}
+      onClick={() => addItem(product.id, 1, product)}
       className="w-full h-9 bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500 text-black font-bold text-sm rounded-lg transition-colors duration-150"
     >
       Add to Cart

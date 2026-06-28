@@ -10,10 +10,9 @@ class Store(models.Model):
     # Common fields for all stores
     store_name = models.CharField(
         max_length=255,
-        help_text="The specific name of the store, e.g., 'IGA Cannington' or 'Coles National'."
+        help_text="The specific name of the store, e.g., 'Woolworths Cannington' or 'Coles National'."
         # Coles: name
         # Aldi: name
-        # IGA: storeName
         # Woolworths: Name
     )
     company = models.ForeignKey(
@@ -36,7 +35,6 @@ class Store(models.Model):
         help_text="The unique identifier for the store from the company's own system."
         # Coles: id
         # Aldi: id
-        # IGA: storeId
         # Woolworths: StoreNo
     )
 
@@ -47,7 +45,6 @@ class Store(models.Model):
         help_text="The first line of the store's address."
         # Coles: address.addressLine
         # Aldi: address.address1
-        # IGA: address
         # Woolworths: AddressLine1
     )
     suburb = models.CharField(
@@ -58,7 +55,6 @@ class Store(models.Model):
         help_text="The suburb where the store is located."
         # Coles: address.suburb
         # Aldi: address.city
-        # IGA: suburb
         # Woolworths: Suburb
     )
     state = models.CharField(
@@ -69,7 +65,6 @@ class Store(models.Model):
         help_text="The state or territory of the store."
         # Coles: address.state
         # Aldi: address.regionName
-        # IGA: state
         # Woolworths: State
     )
     postcode = models.CharField(
@@ -79,7 +74,6 @@ class Store(models.Model):
         help_text="The postcode of the store."
         # Coles: address.postcode
         # Aldi: address.zipCode
-        # IGA: postcode
         # Woolworths: Postcode
     )
     latitude = models.DecimalField(
@@ -90,7 +84,6 @@ class Store(models.Model):
         help_text="The latitude of the store's location."
         # Coles: position.latitude
         # Aldi: address.latitude
-        # IGA: latitude
         # Woolworths: Latitude
     )
     longitude = models.DecimalField(
@@ -101,7 +94,6 @@ class Store(models.Model):
         help_text="The longitude of the store's location."
         # Coles: position.longitude
         # Aldi: address.longitude
-        # IGA: longitude
         # Woolworths: Longitude
     )
 
