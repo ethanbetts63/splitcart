@@ -46,7 +46,7 @@ See git history for all removed code.
 
 - `products/models/price.py` — removed `PriceQuerySet` class (contained `for_stores()` which called `get_pricing_stores_map`); Price now uses default manager
 - `data_management/utils/cart_optimization/substitute_manager.py` — replaced `Price.objects.for_stores(store_ids)` with direct `store_id__in` filter
-- `data_management/utils/generation_utils/default_stores_generator.py` — was postcode-based geospatial search for anchor stores; simplified to `Price.objects.values_list('store_id').distinct()`
+- `data_management/utils/generation_utils/default_stores_generator.py` — was geospatial search for anchor stores; simplified to `Price.objects.values_list('store_id').distinct()`
 - `data_management/utils/generation_utils/store_stats_generator.py` — removed anchor-based queries; uses direct `Price.objects.filter(store__company=company)` queries
 - `data_management/database_updating_classes/product_updating/update_orchestrator.py` — removed `GroupMaintenanceOrchestrator` import and call from post-processing
 - `data_management/management/commands/generate.py` — removed `--store-groups` argument and handler
@@ -61,7 +61,7 @@ See git history for all removed code.
 ---
 ---
 
-# Removed: Store & Division Models
+# Removed: Store Model
 
 With national pricing (one price per company across Australia), the Store model became an unnecessary
 indirection between Price and Company. The entire store-discovery and scheduling infrastructure existed
@@ -75,14 +75,11 @@ See git history for all removed code.
 ## companies/ — models, serializers, views, tests
 
 - `companies/models/store.py` — Store model with address, lat/long, scraping schedule fields (last_scraped, needs_rescraping, scheduled_at), and external store_id for API calls
-- `companies/models/division.py` — Division model: subdivision of a company (e.g. "Coles Supermarkets"), used by SchedulerView to filter eligible stores
 - `companies/serializers/store_serializer.py` — basic Store serializer
 - `companies/serializers/store_export_serializer.py` — Store export serializer for internal API
 - `companies/views/export_stores_view.py` — internal API view to export all store records
 - `companies/tests/factories/store_factory.py` — Factory Boy factory for Store
-- `companies/tests/factories/division_factory.py` — Factory Boy factory for Division
 - `companies/tests/model_tests/test_store_model.py` — Store model tests
-- `companies/tests/model_tests/test_division_model.py` — Division model tests
 - `companies/tests/serializer_tests/test_store_serializer.py` — Store serializer tests
 - `companies/tests/serializer_tests/test_store_export_serializer.py` — Store export serializer tests
 - `companies/tests/view_tests/test_export_stores_view.py` — export stores view tests

@@ -84,11 +84,6 @@ These need a manual audit pass of the full mapping file to catch others like the
   'savings': 0,  # Savings calculation is complex here, maybe compare to baseline?
   This field is in the response contract but is always 0. Worth either wiring it up or removing it from the return value so callers aren't misled.
 
-  4. get_nearby_postcodes and get_nearby_stores load everything into Python
-  Both fetch every postcode/store from the DB and filter in Python with the Haversine formula. Fine for current scale, but there's no bounding box
-  pre-filter. As the dataset grows this will get slow — a simple lat/lon bounding box WHERE clause before the Python loop would cut down the set
-  significantly.
-
   6. CategoryCycleManager prefetch that doesn't fully help
   prefetch_related('parents') is called on the initial queryset, but inside _prune_cycles_recursive there are further current_node.parents.all()
   calls on nodes that weren't in that initial queryset (they're travers

@@ -79,10 +79,3 @@ The `users` app provides several API endpoints for the frontend to interact with
 
 -   **View:** `SelectedStoreListViewSet`
 -   **Description:** Provides full RESTful CRUD operations for managing a user's `SelectedStoreList` objects.
-
-### Nearby Stores (`/api/users/stores/nearby/`)
-
--   **View:** `NearbyStoreListView`
--   **Description:** Finds stores within a specified radius of a postcode.
--   **URL:** `/api/users/stores/nearby/?postcode=<postcode>&radius=<km>&companies=<company_slugs>`
--   **Action:** Returns a list of `Store` objects and a mapping of which "anchor" stores are used for pricing.

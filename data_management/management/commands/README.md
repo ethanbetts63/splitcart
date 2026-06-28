@@ -78,8 +78,3 @@ These commands are typically run on the server to create derived data or perform
 
 -   `python manage.py generate --default-stores`
     Sets a default list of "anchor stores" that are used for site-wide comparisons.
-
-### Miscellaneous Commands
-
--   `python manage.py import_postcodes`
-    Populates the `Postcode` model from a `postcodes.json` file. This is typically a one-time setup command.

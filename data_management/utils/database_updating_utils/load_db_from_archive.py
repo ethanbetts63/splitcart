@@ -6,13 +6,8 @@ def load_db_from_latest_archive(command):
     base_archive_dir = os.path.join('data_management', 'data', 'archive', 'db_backups')
     load_order = [
         'companies.company.json',
-        'companies.division.json',
-        'companies.store.json',
-        'companies.postcode.json',
         'companies.primarycategory.json',
         'companies.category.json',
-        'companies.storegroup.json',
-        'companies.storegroupmembership.json',
         'products.productbrand.json',
         'products.product.json',
         'products.price.json',

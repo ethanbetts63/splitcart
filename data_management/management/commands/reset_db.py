@@ -36,7 +36,6 @@ APPS_WITH_MIGRATIONS = [
 # python manage.py generate --store-stats                  # server
 # python manage.py generate --price-summaries              # server
 # python manage.py generate --default-stores               # server
-# python manage.py import_postcodes                        # server
 # python manage.py analyze --report company_heatmap        # server
 # python manage.py analyze --report subs                   # server
 # python manage.py analyze --report savings                # server

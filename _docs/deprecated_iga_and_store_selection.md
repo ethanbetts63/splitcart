@@ -46,7 +46,7 @@ See git history for all removed code.
 
 - `users/models/selected_store_list.py` — SelectedStoreList model: user's named list of Store IDs (M2M), supports both authenticated and anonymous users
 - `users/views/selected_store_list_viewset.py` — CRUD viewset for store lists; `active` action returned most-recently-used list
-- `users/views/nearby_store_list_view.py` — searched stores near one or more postcodes within a radius, filtered by company
+- `users/views/nearby_store_list_view.py` — searched nearby stores within a radius, filtered by company
 - `users/serializers/selected_store_list_serializer.py` — serializer for SelectedStoreList with stores as PK list
 - `users/utils/session_merger.py` — merged anonymous session store list and cart into a newly registered user's account
 - `users/utils/cart_optimization.py` — `run_cart_optimization()`: resolved store IDs via `get_pricing_stores_map`, built price slots, ran PuLP optimizer, translated anchor store names back to user-selected stores
@@ -62,13 +62,13 @@ See git history for all removed code.
 ## Store Selection — Frontend deleted files
 
 - `frontend/src/context/StoreListContext.tsx` — React context managing the active store list: fetching, saving, creating, deleting, and toggling individual stores
-- `frontend/src/context/StoreSearchContext.tsx` — React context managing nearby-store search state: postcode, radius, company filter, map bounds, search handler
+- `frontend/src/context/StoreSearchContext.tsx` — React context managing nearby-store search state: radius, company filter, map bounds, search handler
 - `frontend/src/services/storeList.api.ts` — API calls for store list CRUD (fetch active, list, load, save, create, delete)
-- `frontend/src/services/store.api.ts` — API call to search nearby stores by postcode/radius/companies
+- `frontend/src/services/store.api.ts` — API call to search nearby stores by radius/companies
 - `frontend/src/components/NavLocationButton.tsx` — nav bar pin icon showing selected store count badge
 - `frontend/src/components/StoreList.tsx` — checkbox list of stores with company logo
 - `frontend/src/components/StoreMap.tsx` — Leaflet map showing store markers with company logo icons
-- `frontend/src/page_components/dialog-pages/EditLocationPage.tsx` — full store picker dialog: postcode input, radius slider, company filter, store list, map
+- `frontend/src/page_components/dialog-pages/EditLocationPage.tsx` — full store picker dialog with radius slider, company filter, store list, map
 - `frontend/src/types/SelectedStoreListType.ts`
 - `frontend/src/types/ActiveStoreListData.ts`
 - `frontend/src/types/StoreListContextType.ts`
