@@ -10,8 +10,6 @@ import { ArrowRight } from 'lucide-react';
 import type { ProductCarouselProps } from '../types/ProductCarouselProps';
 import type { Product } from '../types/Product';
 import { useApiQuery } from '@/hooks/useApiQuery';
-import { useDialog } from '@/context/DialogContext';
-import { useStoreList } from '@/context/StoreListContext';
 
 const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
   sourceUrl,
@@ -30,10 +28,6 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
   ordering,
   isLoading: isLoadingProp,
 }) => {
-  const { openDialog } = useDialog();
-  const { selectedStoreIds, isUserDefinedList } = useStoreList();
-  const storeIds = React.useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
-  const isDefaultStores = !isUserDefinedList;
   const [isSmallScreen, setIsSmallScreen] = React.useState(false);
   const [scrollContainer, setScrollContainer] = React.useState<HTMLDivElement | null>(null);
   const pathname = usePathname();
@@ -50,9 +44,6 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
   const finalUrl = React.useMemo(() => {
     const [baseUrl, queryString] = sourceUrl ? sourceUrl.split('?') : ['', ''];
     const params = new URLSearchParams(queryString || '');
-    if (isUserDefinedList && storeIds && storeIds.length > 0) {
-      params.set('store_ids', storeIds.join(','));
-    }
     if (primaryCategorySlugs && primaryCategorySlugs.length > 0) {
       params.set('primary_category_slugs', primaryCategorySlugs.join(','));
     } else if (primaryCategorySlug) {
@@ -70,7 +61,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
       }
     }
     return sourceUrl ? `${baseUrl}?${params.toString()}` : '';
-  }, [sourceUrl, storeIds, isUserDefinedList, primaryCategorySlugs, primaryCategorySlug, companyName, ordering]);
+  }, [sourceUrl, primaryCategorySlugs, primaryCategorySlug, companyName, ordering]);
 
   const shouldFetch = !!finalUrl;
 
@@ -138,17 +129,6 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
             <h2 className="text-2xl font-bold">
               <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">{title}</span>
             </h2>
-            {isDefaultStores && !isLoading && (
-              <p className="text-sm text-gray-500 mt-1.5">
-                Showing example products —{' '}
-                <button
-                  onClick={() => openDialog('Edit Location')}
-                  className="text-blue-600 underline hover:text-blue-800"
-                >
-                  select a location
-                </button>
-              </p>
-            )}
           </div>
           {exploreHref && (
             <Link

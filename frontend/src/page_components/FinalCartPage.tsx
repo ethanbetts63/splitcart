@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
-import { useStoreList } from '../context/StoreListContext';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import { Switch } from "../components/ui/switch"
@@ -21,7 +20,6 @@ const finalCartFaqs = [
 
 const FinalCartPage = () => {
   const { optimizationResult, currentCart, emailCurrentCart, downloadCurrentCart } = useCart();
-  useStoreList();
   const { isAuthenticated } = useAuth();
   const router = useRouter();
 

@@ -12,7 +12,6 @@ from data_management.models import SystemSetting
 from products.serializers.product_serializer import ProductSerializer
 from products.utils.bargain_utils import calculate_bargains
 from products.utils.product_ordering import get_bargain_first_ordering, _primary_category_slug_filter
-from products.utils.get_pricing_stores import get_pricing_stores_map
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -77,11 +76,7 @@ class ProductListView(generics.ListAPIView):
         if not store_ids:
             return Product.objects.none()
 
-        pricing_map = get_pricing_stores_map(store_ids)
-        anchor_store_ids = list(set(pricing_map.values()))
-        if not anchor_store_ids:
-            return Product.objects.none()
-
+        anchor_store_ids = store_ids
         self.nearby_store_ids = anchor_store_ids
 
         # --- Bargain Company Filter ---

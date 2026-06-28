@@ -10,7 +10,6 @@ class Command(BaseCommand):
         parser.add_argument('--primary-cats', action='store_true', help='Generate primary categories.')
         parser.add_argument('--price-summaries', action='store_true', help='Generate product price summaries.')
         parser.add_argument('--default-stores', action='store_true', help='Generate and set the default anchor store list.')
-        parser.add_argument('--store-groups', action='store_true', help='Generate store groups.')
         parser.add_argument('--price-comps', action='store_true', help='Generate price comparison data.')
         parser.add_argument('--bargain-stats', action='store_true', help='Generate company price comparison statistics.')
         parser.add_argument('--store-stats', action='store_true', help='Display statistics about stores and their price data freshness.')
@@ -57,12 +56,6 @@ class Command(BaseCommand):
             from data_management.utils.generation_utils.default_stores_generator import DefaultStoresGenerator
             self.stdout.write(self.style.SUCCESS("Generating default store list..."))
             generator = DefaultStoresGenerator(self)
-            generator.run()
-
-        if options['store_groups']:
-            from data_management.utils.generation_utils.store_groups_generator import StoreGroupsGenerator
-            self.stdout.write(self.style.SUCCESS("Generating store groups..."))
-            generator = StoreGroupsGenerator(self, dev=dev)
             generator.run()
 
         if options['price_comps']:

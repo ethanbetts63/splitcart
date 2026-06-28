@@ -3,7 +3,7 @@
 Preserved before removal. IGA was removed because it uses per-store pricing (not national),
 which required special-casing throughout the codebase and drove the need for store selection.
 Store selection was removed because without IGA all remaining companies (Coles, Woolworths, Aldi)
-price nationally — no store picker needed.
+price nationally — no store picker needed. IGA is also consistantly more expensive than aldi coles and woolworths so the value add wasnt actually that big for all the complexity. 
 
 ---
 

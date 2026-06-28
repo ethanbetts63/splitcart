@@ -3,8 +3,6 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from products.models import Product
 from products.serializers.product_serializer import ProductSerializer
-from products.utils.get_pricing_stores import get_pricing_stores_map
-
 @method_decorator(cache_page(60 * 30), name='dispatch')
 class ProductDetailView(RetrieveAPIView):
     """
@@ -24,12 +22,8 @@ class ProductDetailView(RetrieveAPIView):
         if store_ids_param:
             try:
                 store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
-                # Use the helper to get the final list of stores for pricing
-                # get_pricing_stores_map returns {original_id: anchor_id}, so we need its values
-                pricing_map = get_pricing_stores_map(store_ids)
-                context['nearby_store_ids'] = list(set(pricing_map.values()))
+                context['nearby_store_ids'] = store_ids
             except (ValueError, TypeError):
-                # Fail gracefully if store_ids are invalid
                 context['nearby_store_ids'] = []
         else:
             context['nearby_store_ids'] = []

@@ -4,7 +4,5 @@ from .store import Store
 from .category import Category
 from .primary_category import PrimaryCategory
 from .category_link import CategoryLink
-from .store_group import StoreGroup
-from .store_group_membership import StoreGroupMembership
 from .postcode import Postcode
 from .pillar_page import PillarPage

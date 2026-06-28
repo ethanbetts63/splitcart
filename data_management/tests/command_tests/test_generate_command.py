@@ -42,11 +42,6 @@ class TestGenerateCommandDispatch:
         call_command('generate', default_stores=True)
         MockGen.return_value.run.assert_called_once()
 
-    @patch(f'{GEN}.store_groups_generator.StoreGroupsGenerator')
-    def test_store_groups_flag(self, MockGen):
-        call_command('generate', store_groups=True)
-        MockGen.return_value.run.assert_called_once()
-
     @patch(f'{GEN}.price_comparisons_generator.PriceComparisonsGenerator')
     def test_price_comps_flag(self, MockGen):
         call_command('generate', price_comps=True)

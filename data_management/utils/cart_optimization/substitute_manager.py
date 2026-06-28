@@ -1,5 +1,5 @@
 from django.db.models import Q
-from products.models import Product, Price
+from products.models import Product
 from products.models.substitution import ProductSubstitution
 from users.models.cart_item import CartItem
 from users.models.cart_substitution import CartSubstitution
@@ -47,13 +47,11 @@ class SubstituteManager:
         if not original_product:
             return []
 
-        store_prices = Price.objects.for_stores(self.store_ids)
-
         substitutions_queryset = ProductSubstitution.objects.filter(
             Q(product_a=original_product) | Q(product_b=original_product)
         ).order_by('level', '-score').filter(
-            Q(product_a=original_product, product_b__prices__in=store_prices) |
-            Q(product_b=original_product, product_a__prices__in=store_prices)
+            Q(product_a=original_product, product_b__prices__store_id__in=self.store_ids) |
+            Q(product_b=original_product, product_a__prices__store_id__in=self.store_ids)
         ).distinct()
 
         self._potential_product_substitutions = list(substitutions_queryset[:limit])

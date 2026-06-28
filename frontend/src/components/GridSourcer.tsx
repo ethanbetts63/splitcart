@@ -21,8 +21,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-import { useStoreList } from '../context/StoreListContext';
-import { useDialog } from '../context/DialogContext';
 import LoadingSpinner from './LoadingSpinner';
 import type { PaginatedProductResponse } from '../types/PaginatedProductResponse';
 import type { GridSourcerProps } from '../types/GridSourcerProps';
@@ -35,14 +33,10 @@ import { fetchProductsAPI } from '../services/product.api';
 const GridSourcer = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, bargainCompany }: GridSourcerProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState('');
-  const { selectedStoreIds, isUserDefinedList } = useStoreList();
-  const { openDialog } = useDialog();
   const queryClient = useQueryClient();
   const { token, anonymousId } = useAuth();
 
   const apiClient = useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
-
-  const selectedStoreIdsArray = useMemo(() => Array.from(selectedStoreIds), [selectedStoreIds]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -74,9 +68,6 @@ const GridSourcer = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCatego
       params.set('primary_category_slug', primaryCategorySlug);
     }
 
-    if (selectedStoreIdsArray.length > 0) {
-      params.set('store_ids', selectedStoreIdsArray.join(','));
-    }
     params.set('page', currentPage.toString());
     params.set('page_size', '20');
 
@@ -85,7 +76,7 @@ const GridSourcer = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCatego
     }
 
     return { url, params };
-  }, [searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, selectedStoreIdsArray, currentPage, sortOption, bargainCompany]);
+  }, [searchTerm, sourceUrl, primaryCategorySlug, primaryCategorySlugs, currentPage, sortOption, bargainCompany]);
 
   const finalUrl = url ? `${url}?${params.toString()}` : null;
 
@@ -184,19 +175,6 @@ const GridSourcer = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCatego
             )}
           </div>
         </div>
-        {!isUserDefinedList && (
-          <div className="text-center mb-4">
-            <span className="text-base text-black px-2 py-2 rounded-md font-bold">
-              Showing example products, please&nbsp;
-              <button 
-                onClick={() => openDialog('Edit Location')} 
-                className="text-blue-600 underline hover:text-blue-800"
-              >
-                select a location.
-              </button>
-            </span>
-          </div>
-        )}
         <ProductGrid 
           products={products} 
           hasResults={totalResults > 0}

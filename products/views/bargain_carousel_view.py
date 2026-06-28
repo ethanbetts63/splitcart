@@ -10,7 +10,6 @@ from products.models import Product, ProductPriceSummary
 from data_management.models import SystemSetting
 from products.serializers.product_serializer import ProductSerializer
 from products.utils.bargain_utils import calculate_bargains
-from products.utils.get_pricing_stores import get_pricing_stores_map
 
 
 @method_decorator(cache_page(60 * 60 * 24), name='dispatch')
@@ -57,10 +56,7 @@ class BargainCarouselView(APIView):
             # This can happen if param is empty or setting doesn't exist
             return Response([])
 
-        pricing_map = get_pricing_stores_map(user_store_ids)
-        anchor_store_ids = list(set(pricing_map.values()))
-        if not anchor_store_ids:
-            return Response([])
+        anchor_store_ids = user_store_ids
 
         # --- Step 1: Get Potential Bargain Candidates ---
         # Widen the net when filtering by a specific company

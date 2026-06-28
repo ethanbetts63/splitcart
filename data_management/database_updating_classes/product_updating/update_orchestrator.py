@@ -16,7 +16,6 @@ from .translation_table_generators.product_translation_table_generator import Pr
 from .post_processing.brand_reconciler import BrandReconciler
 from .post_processing.product_reconciler import ProductReconciler
 from .post_processing.orphan_product_cleaner import OrphanProductCleaner
-from .group_maintanance.group_maintenance_orchestrator import GroupMaintenanceOrchestrator
 
 class UpdateOrchestrator:
     """
@@ -275,16 +274,12 @@ class UpdateOrchestrator:
         BrandReconciler(self.command).run()
         ProductReconciler(self.command).run()
 
-        # 3. Run Group Maintenance
-        self.command.stdout.write(self.command.style.SUCCESS("\n--- Running Group Maintenance ---"))
-        GroupMaintenanceOrchestrator(self.command, relaxed_staleness=self.relaxed_staleness).run()
-
-        # 4. Regenerate Translation Tables after reconciliation
+        # 3. Regenerate Translation Tables after reconciliation
         self.command.stdout.write(self.command.style.SUCCESS("\n--- Generating Translation Tables ---"))
         BrandTranslationTableGenerator().run()
         ProductTranslationTableGenerator().run()
 
-        # 5. Final Cleanup: Remove products with no prices
+        # 4. Final Cleanup: Remove products with no prices
         self.command.stdout.write(self.command.style.SUCCESS("\n--- Cleaning Orphan Products ---"))
         OrphanProductCleaner(self.command).run()
 

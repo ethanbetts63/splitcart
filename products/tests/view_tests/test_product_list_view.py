@@ -1,6 +1,7 @@
 import pytest
 from django.urls import reverse
 from products.tests.factories import ProductFactory, PriceFactory
+from companies.tests.factories import StoreFactory
 
 
 @pytest.fixture(autouse=True)
@@ -20,8 +21,8 @@ class TestProductListView:
         data = response.json()
         assert data['count'] == 0
 
-    def test_returns_products_at_requested_store(self, client, make_anchored_store):
-        store = make_anchored_store()
+    def test_returns_products_at_requested_store(self, client):
+        store = StoreFactory()
         product = ProductFactory()
         PriceFactory(product=product, store=store)
 
@@ -30,8 +31,8 @@ class TestProductListView:
 
         assert data['count'] == 1
 
-    def test_search_filters_results_by_name(self, client, make_anchored_store):
-        store = make_anchored_store()
+    def test_search_filters_results_by_name(self, client):
+        store = StoreFactory()
         weetbix = ProductFactory(name='Weet-Bix', normalized_name_brand_size='weetbix-view-test')
         cornflakes = ProductFactory(name='Corn Flakes', normalized_name_brand_size='cornflakes-view-test')
         PriceFactory(product=weetbix, store=store)
@@ -44,8 +45,8 @@ class TestProductListView:
         assert 'Weet-Bix' in names
         assert 'Corn Flakes' not in names
 
-    def test_default_page_size_is_20(self, client, make_anchored_store):
-        store = make_anchored_store()
+    def test_default_page_size_is_20(self, client):
+        store = StoreFactory()
         products = ProductFactory.create_batch(25)
         for product in products:
             PriceFactory(product=product, store=store)

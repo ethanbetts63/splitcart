@@ -26,10 +26,9 @@ class ProductSubstituteListView(APIView):
         if store_ids_param:
             try:
                 nearby_store_ids = [int(sid) for sid in store_ids_param.split(',')]
-                store_prices = Price.objects.for_stores(nearby_store_ids)
                 substitutions_queryset = substitutions_queryset.filter(
-                    Q(product_a=product, product_b__prices__in=store_prices) |
-                    Q(product_b=product, product_a__prices__in=store_prices)
+                    Q(product_a=product, product_b__prices__store_id__in=nearby_store_ids) |
+                    Q(product_b=product, product_a__prices__store_id__in=nearby_store_ids)
                 ).distinct()
             except (ValueError, TypeError):
                 pass
