@@ -75,7 +75,6 @@ def get_bargain_first_ordering(company_ids, primary_category_slugs, limit=None):
         calculated_bargains.append({
             'product_id': product_id,
             'discount': actual_discount,
-            'cheaper_store_name': min_price_obj.company.name,
             'cheaper_company_name': min_price_obj.company.name,
         })
 

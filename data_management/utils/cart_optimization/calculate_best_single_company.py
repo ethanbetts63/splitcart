@@ -1,4 +1,4 @@
-def calculate_best_single_store(slots, original_cart):
+def calculate_best_single_company(slots, original_cart):
     """
     Calculates the best single company to shop at based on the following criteria:
     1. The company with the maximum number of unique products found.

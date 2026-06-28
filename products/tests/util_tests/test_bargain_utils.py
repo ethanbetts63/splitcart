@@ -90,7 +90,6 @@ class TestCalculateBargains:
 
         result = calculate_bargains([product.id], [woolworths.id, coles.id])
 
-        assert result[0]['cheaper_store_name'] == 'Coles'
         assert result[0]['cheaper_company_name'] == 'Coles'
 
     def test_only_products_in_product_ids_are_checked(self):

@@ -241,9 +241,6 @@ class CartViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'], url_path='optimize')
     def optimize(self, request, *args, **kwargs):
         cart_obj = self.get_object()
-        max_company_options = request.data.get(
-            'max_companies_options',
-            request.data.get('max_stores_options', [2, 3, 4])
-        )
+        max_company_options = request.data.get('max_companies_options', [2, 3, 4])
         return run_cart_optimization(cart_obj, max_company_options)
 

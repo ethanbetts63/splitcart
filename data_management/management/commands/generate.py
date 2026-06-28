@@ -45,7 +45,7 @@ class Command(BaseCommand):
             generator.run()
 
         if options['default_companies']:
-            from data_management.utils.generation_utils.default_stores_generator import DefaultCompaniesGenerator
+            from data_management.utils.generation_utils.default_companies_generator import DefaultCompaniesGenerator
             self.stdout.write(self.style.SUCCESS("Generating default company list..."))
             generator = DefaultCompaniesGenerator(self)
             generator.run()

@@ -12,7 +12,7 @@ def calculate_bargains(product_ids, company_ids):
     Returns:
         list[dict]: A list of dictionaries, where each dictionary represents a
                     bargain and contains 'product_id', 'discount', 
-                    'cheaper_store_name', and 'cheaper_company_name'.
+                    'cheaper_company_name'.
     """
     if not product_ids or not company_ids:
         return []
@@ -58,7 +58,6 @@ def calculate_bargains(product_ids, company_ids):
         calculated_bargains.append({
             'product_id': product_id,
             'discount': actual_discount,
-            'cheaper_store_name': min_price_obj.company.name,
             'cheaper_company_name': min_price_obj.company.name,
         })
 

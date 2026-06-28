@@ -3,7 +3,7 @@ from rest_framework import status
 from companies.models import Company
 from data_management.utils.cart_optimization import (
     calculate_optimized_cost, calculate_baseline_cost,
-    build_price_slots, calculate_best_single_store
+    build_price_slots, calculate_best_single_company
 )
 from products.utils.default_companies import get_default_company_ids
 
@@ -66,7 +66,7 @@ def run_cart_optimization(cart_obj, max_company_options):
                 baseline_cost,
                 max_company_options
             )
-            subs_best_single_company = calculate_best_single_store(subs_price_slots, cart_with_substitutes_slots)
+            subs_best_single_company = calculate_best_single_company(subs_price_slots, cart_with_substitutes_slots)
         else:
             subs_best_single_company = None
 
@@ -75,7 +75,7 @@ def run_cart_optimization(cart_obj, max_company_options):
             baseline_cost,
             max_company_options
         )
-        no_subs_best_single_company = calculate_best_single_store(simple_price_slots, simple_cart)
+        no_subs_best_single_company = calculate_best_single_company(simple_price_slots, simple_cart)
 
         return Response({
             'baseline_cost': baseline_cost,

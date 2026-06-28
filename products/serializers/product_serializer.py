@@ -15,13 +15,12 @@ class ProductSerializer(serializers.ModelSerializer):
 
     # Keep debug fields, but convert to SerializerMethodFields to use context data
     best_discount = serializers.SerializerMethodField()
-    cheaper_store_name = serializers.SerializerMethodField()
     cheaper_company_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
         fields = ('id', 'name', 'brand_name', 'size', 'image_url', 'prices', 'primary_category', 'min_unit_price', 'slug', 'bargain_info',
-                  'best_discount', 'cheaper_store_name', 'cheaper_company_name')
+                  'best_discount', 'cheaper_company_name')
 
     def _get_filtered_prices(self, obj):
         """
@@ -80,13 +79,6 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_best_discount(self, obj):
         bargain_info = self.get_bargain_info(obj)
         return bargain_info.get('discount_percentage') if bargain_info else None
-
-    def get_cheaper_store_name(self, obj):
-        # The new view logic provides company name, not store name, for the top-level bargain.
-        # This can be adjusted if store-level detail is needed again.
-        bargain_info_map = self.context.get('bargain_info_map', {})
-        bargain_data = bargain_info_map.get(obj.id)
-        return bargain_data.get('cheaper_store_name') if bargain_data else None
 
     def get_cheaper_company_name(self, obj):
         bargain_info = self.get_bargain_info(obj)

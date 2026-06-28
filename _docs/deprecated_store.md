@@ -123,7 +123,7 @@ See git history for all removed code.
 ## Files replaced or significantly changed
 
 - `products/utils/default_stores.py` → replaced by `products/utils/default_companies.py`; same cache pattern, returns company IDs instead of store IDs; SystemSetting key changed from `default_pricing_stores` to `default_pricing_companies`
-- `data_management/utils/generation_utils/default_stores_generator.py` → updated to query by company and write `default_pricing_companies` SystemSetting key
+- `data_management/utils/generation_utils/default_companies_generator.py` → updated to query by company and write `default_pricing_companies` SystemSetting key
 - `scraping/management/commands/scrape.py` — simplified from a multi-store scheduler loop (querying hundreds of Store records) to hardcoded single API store_id per company; no longer imports Store model
 - `data_management/database_updating_classes/product_updating/update_orchestrator.py` — store resolution (`Store.objects.get(store_id=...)`) replaced with company resolution (`Company.objects.get(name=...)`) from JSONL metadata
 

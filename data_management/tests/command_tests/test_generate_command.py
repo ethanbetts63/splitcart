@@ -26,7 +26,7 @@ class TestGenerateCommandDispatch:
         call_command('generate', price_summaries=True)
         MockGen.return_value.run.assert_called_once()
 
-    @patch(f'{GEN}.default_stores_generator.DefaultCompaniesGenerator')
+    @patch(f'{GEN}.default_companies_generator.DefaultCompaniesGenerator')
     def test_default_companies_flag(self, MockGen):
         call_command('generate', default_companies=True)
         MockGen.return_value.run.assert_called_once()
