@@ -80,12 +80,63 @@ No `Category` objects are created. No parent-child graph is built.
 
 Run via `python manage.py generate --primary-cats`. Steps:
 
-1. Deletes and recreates all `PrimaryCategory` objects from the unique values in `CATEGORY_MAPPINGS`.
+1. Deletes and recreates all `PrimaryCategory` objects from the unique values in `CATEGORY_MAPPINGS` and `PRIMARY_CATEGORY_HIERARCHY`.
 2. Sets up `PRIMARY_CATEGORY_HIERARCHY` sub-category links (e.g. Dairy → [Cheese, Milk, Yogurt]).
 3. For each product with `category_paths`, collects `primary_category_slug` values — preferring `canonical_taxonomy` paths, falling back to `dietary`, then any path type.
 4. Writes the resulting list to `Product.primary_category_slugs` via `bulk_update`.
 
 `PRIMARY_CATEGORY_HIERARCHY` (defined in `category_mappings.py`) also drives the `ProductListView`: browsing "Dairy" automatically includes products tagged Cheese, Milk, and Yogurt.
+
+---
+
+## AI node assignment workflow
+
+`PathClassifier._find_primary_category_slug` now checks `canonical_category_assignments.json` first before falling back to `CATEGORY_MAPPINGS`. This file is the AI-maintained source of truth: a flat JSON dict of `canonical_slug → primary_category_slug` (null = explicitly excluded).
+
+**Running the workflow**
+
+```bash
+# Step 1 — establish cross-company equivalences (see "Cross-company canonical keys" above)
+python manage.py generate_category_suspects
+# → agent classifies suspects via classify_suspect
+python manage.py apply_category_decisions
+# → writes category_node_equivalences.json (PathClassifier uses this to normalize node names)
+
+# Step 2 — generate candidates for primary category assignment
+python manage.py generate_node_candidates
+# → writes node_assignment_candidates.jsonl (undecided canonical slugs, sorted by evidence)
+# → skips anything already in node_assignment_decisions.jsonl
+
+# Step 3 — agent assigns primary categories
+# Give the agent: node_category_assignment_agent_prompt.md + node_assignment_candidates.jsonl
+# The agent calls for each entry:
+python manage.py assign_node_category <canonical_slug> <primary_category_slug|none> [--note "..."]
+# → removes from candidates, appends to node_assignment_decisions.jsonl (permanent archive)
+
+# Step 4 — apply decisions
+python manage.py apply_node_category_assignments
+# → reads node_assignment_decisions.jsonl
+# → writes canonical_category_assignments.json
+# → PathClassifier picks this up automatically on next restart
+
+# Step 5 — propagate to products
+python manage.py generate --primary-cats
+```
+
+**File roles**
+
+| File | Role |
+|------|------|
+| `node_assignment_candidates.jsonl` | Unclassified nodes; regenerated each run |
+| `node_assignment_decisions.jsonl` | Permanent archive of all agent decisions |
+| `canonical_category_assignments.json` | Live lookup file read by PathClassifier |
+
+**Precedence in PathClassifier**
+
+1. `canonical_category_assignments.json` — if the canonical slug is present, use its value (null = excluded, stop)
+2. `CATEGORY_MAPPINGS` — legacy per-company fallback for nodes not yet classified by the agent
+
+Over time, as the agent classifies more nodes, `CATEGORY_MAPPINGS` becomes redundant and can be removed.
 
 ---
 

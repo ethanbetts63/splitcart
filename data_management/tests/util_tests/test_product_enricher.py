@@ -84,14 +84,28 @@ class TestProductEnricher:
         canon = _product(
             normalized_name_brand_size='product-canonical',
             normalized_name_brand_size_variations=['variant-a'],
+            sizes=['250g'],
         )
         dupe = _product(
             normalized_name_brand_size='variant-b',
             normalized_name_brand_size_variations=['variant-c'],
+            sizes=['250g'],
         )
         ProductEnricher.enrich_canonical_product(canon, dupe)
         assert 'variant-b' in canon.normalized_name_brand_size_variations
         assert 'variant-c' in canon.normalized_name_brand_size_variations
+
+    def test_skips_variations_when_either_product_has_no_sizes(self):
+        canon = _product(normalized_name_brand_size='250g peas snow', sizes=['250g'])
+        dupe = _product(normalized_name_brand_size='peas snow', sizes=[])
+        ProductEnricher.enrich_canonical_product(canon, dupe)
+        assert 'peas snow' not in (canon.normalized_name_brand_size_variations or [])
+
+    def test_skips_variations_when_both_products_have_no_sizes(self):
+        canon = _product(normalized_name_brand_size='peas snow', sizes=[])
+        dupe = _product(normalized_name_brand_size='snow peas', sizes=[])
+        ProductEnricher.enrich_canonical_product(canon, dupe)
+        assert 'snow peas' not in (canon.normalized_name_brand_size_variations or [])
 
     def test_canonical_name_not_added_to_variations(self):
         canon = _product(normalized_name_brand_size='canonical')

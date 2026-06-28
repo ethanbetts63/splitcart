@@ -27,7 +27,9 @@ from django.utils.text import slugify
 from data_management.data.category_mappings import CATEGORY_MAPPINGS
 
 _EQUIVALENCES_PATH = 'data_management/data/category_node_equivalences.json'
+_ASSIGNMENTS_PATH = 'data_management/data/canonical_category_assignments.json'
 _equivalences: dict | None = None
+_assignments: dict | None = None
 
 
 def _load_equivalences() -> dict:
@@ -40,6 +42,18 @@ def _load_equivalences() -> dict:
     else:
         _equivalences = {}
     return _equivalences
+
+
+def _load_assignments() -> dict:
+    global _assignments
+    if _assignments is not None:
+        return _assignments
+    if os.path.exists(_ASSIGNMENTS_PATH):
+        with open(_ASSIGNMENTS_PATH, 'r', encoding='utf-8') as f:
+            _assignments = json.load(f)
+    else:
+        _assignments = {}
+    return _assignments
 
 
 def _normalize_node(company_name: str, node: str, depth_from_leaf: int) -> str:
@@ -183,19 +197,29 @@ def _classify_path_type(path: list) -> str:
 
 def _find_primary_category_slug(company_name: str, path: list) -> str:
     """
-    Walk the path from leaf to root, returning the slug of the first
-    non-None mapping found in CATEGORY_MAPPINGS. Returns '' if no match.
+    Walk the path from leaf to root, returning the first matching primary category slug.
+
+    Checks canonical_category_assignments.json first (AI-assigned, canonical slugs).
+    A null value in the assignments file means explicitly excluded — stop and return ''.
+    Falls back to CATEGORY_MAPPINGS for nodes not yet in the assignments file.
     """
+    assignments = _load_assignments()
+
+    if assignments:
+        depth_count = len(path)
+        for i, node in enumerate(reversed(path)):
+            depth_from_leaf = i
+            canonical = _normalize_node(company_name, node, depth_from_leaf)
+            if canonical in assignments:
+                return assignments[canonical] or ''  # null → explicitly excluded
+
+    # Fallback: CATEGORY_MAPPINGS (legacy per-company mappings)
     company_key = _COMPANY_KEY_MAP.get(company_name.lower(), '')
     mappings = CATEGORY_MAPPINGS.get(company_key, {})
-    if not mappings:
-        return ''
-
     for node in reversed(path):
         mapped = mappings.get(node)
-        if mapped is not None:  # None = explicitly excluded
+        if mapped is not None:
             return slugify(mapped)
-        # also check with node as-is (titles can vary in casing)
 
     return ''
 
