@@ -3,10 +3,10 @@ import colorama
 colorama.init()
 
 class ScraperOutput:
-    def __init__(self, command, company, store_name):
+    def __init__(self, command, company, company_name=None):
         self.command = command
         self.company = company
-        self.store_name = store_name
+        self.company_name = company_name or company
         self.new_products = 0
         self.duplicate_products = 0
         self.categories_scraped = 0
@@ -20,7 +20,7 @@ class ScraperOutput:
 
         output = (
             f"\r{colorama.Fore.YELLOW}Comp:{colorama.Style.RESET_ALL} {self.company} "
-            f"{colorama.Fore.CYAN}Store:{colorama.Style.RESET_ALL} {self.store_name} "
+            f"{colorama.Fore.CYAN}Company:{colorama.Style.RESET_ALL} {self.company_name} "
             f"{colorama.Fore.GREEN}New:{colorama.Style.RESET_ALL} {self.new_products} "
             f"{colorama.Fore.RED}Duplicate:{colorama.Style.RESET_ALL} {self.duplicate_products} "
             f"{colorama.Fore.MAGENTA}Cat:{colorama.Style.RESET_ALL} {self.categories_scraped}/{self.total_categories}"

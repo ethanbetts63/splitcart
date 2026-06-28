@@ -6,26 +6,26 @@ from decimal import Decimal
 
 class PriceManager:
     """
-    Manages the creation, updating, and deletion of Price objects for a specific store.
+    Manages the creation, updating, and deletion of Price objects for a specific company.
     """
     def __init__(self, command, caches, cache_updater):
         self.command = command
         self.caches = caches
         self.cache_updater = cache_updater
 
-    def process(self, raw_product_data, store):
+    def process(self, raw_product_data, company):
         """
-        Processes raw product data to create, update, or delete Price objects for the given store.
+        Processes raw product data to create, update, or delete Price objects for the given company.
         """
-        self.command.stdout.write(f"  - PriceManager: Processing prices for store {store.store_name}...")
+        self.command.stdout.write(f"  - PriceManager: Processing prices for company {company.name}...")
 
-        # Step 1: Reset was_price for all prices in this store
-        self.command.stdout.write(f"    - Resetting was_price for all existing prices in store {store.store_name}...")
-        Price.objects.filter(store=store).update(was_price=None)
+        # Step 1: Reset was_price for all prices in this company
+        self.command.stdout.write(f"    - Resetting was_price for all existing prices in company {company.name}...")
+        Price.objects.filter(company=company).update(was_price=None)
 
-        store_price_cache = self.caches['prices_by_store'].get(store.id, {})
-        hash_to_pk_cache = store_price_cache.get('hash_to_pk', {})
-        product_id_to_pk_cache = store_price_cache.get('product_id_to_pk', {})
+        company_price_cache = self.caches['prices_by_company'].get(company.id, {})
+        hash_to_pk_cache = company_price_cache.get('hash_to_pk', {})
+        product_id_to_pk_cache = company_price_cache.get('product_id_to_pk', {})
 
         prices_to_create = []
         prices_to_update = []
@@ -74,7 +74,7 @@ class PriceManager:
 
             price_data = {
                 'product_id': product_id,
-                'store': store,
+                'company': company,
                 'scraped_date': scraped_date,
                 'price': Decimal(str(price_current_val)),
                 'unit_price': Decimal(str(unit_price_val)) if unit_price_val is not None else None,
@@ -147,10 +147,6 @@ class PriceManager:
                     ]
                     Price.objects.bulk_update(prices_to_update, update_fields, batch_size=500)
             
-            # Update store's last_scraped date
-            store.last_scraped = scraped_datetime
-            store.save(update_fields=['last_scraped'])
-
         except Exception as e:
             self.command.stderr.write(self.command.style.ERROR(f"    - Error processing prices: {e}"))
             raise

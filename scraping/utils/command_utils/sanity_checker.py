@@ -123,8 +123,8 @@ def run_sanity_checks(file_path: str) -> list:
         # Metadata consistency
         if first_metadata is None and metadata:
             first_metadata = metadata
-        elif metadata and (metadata.get('store_id') != first_metadata.get('store_id') or metadata.get('company') != first_metadata.get('company')):
-            all_errors.append(f"L{line_number}: Metadata mismatch. Inconsistent 'store_id' or 'company'.")
+        elif metadata and metadata.get('company_name') != first_metadata.get('company_name'):
+            all_errors.append(f"L{line_number}: Metadata mismatch. Inconsistent 'company_name'.")
             is_line_still_valid = False
 
         # Uniqueness check for normalized_name_brand_size ONLY

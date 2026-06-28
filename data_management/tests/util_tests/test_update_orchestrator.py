@@ -3,7 +3,7 @@ import pytest
 from decimal import Decimal
 from unittest.mock import MagicMock
 from products.tests.factories import ProductFactory, PriceFactory
-from companies.tests.factories import StoreFactory
+from companies.tests.factories import CompanyFactory
 from data_management.database_updating_classes.product_updating.update_orchestrator import UpdateOrchestrator
 
 
@@ -62,87 +62,87 @@ class TestDeduplicateProductDataForPricing:
 @pytest.mark.django_db
 class TestIsFileValid:
     def test_empty_metadata_returns_false(self, orchestrator):
-        valid, store = orchestrator._is_file_valid(None, [{'product': {}}])
+        valid, company = orchestrator._is_file_valid(None, [{'product': {}}])
         assert valid is False
-        assert store is None
+        assert company is None
 
     def test_empty_raw_data_returns_false(self, orchestrator):
-        valid, store = orchestrator._is_file_valid({'store_id': 'x', 'scraped_date': '2025-01-01T00:00:00'}, [])
+        valid, company = orchestrator._is_file_valid({'company_name': 'Coles', 'scraped_date': '2025-01-01T00:00:00'}, [])
         assert valid is False
-        assert store is None
+        assert company is None
 
-    def test_unknown_store_returns_false(self, orchestrator):
-        valid, store = orchestrator._is_file_valid(
-            {'store_id': 'nonexistent-store', 'scraped_date': '2025-01-01T00:00:00'},
+    def test_unknown_company_returns_false(self, orchestrator):
+        valid, company = orchestrator._is_file_valid(
+            {'company_name': 'Nonexistent', 'scraped_date': '2025-01-01T00:00:00'},
             [{'product': {}}]
         )
         assert valid is False
-        assert store is None
+        assert company is None
 
     def test_missing_scraped_date_returns_false(self, orchestrator):
-        db_store = StoreFactory()
-        valid, store = orchestrator._is_file_valid(
-            {'store_id': db_store.store_id},
+        db_company = CompanyFactory()
+        valid, company = orchestrator._is_file_valid(
+            {'company_name': db_company.name},
             [{'product': {}}]
         )
         assert valid is False
 
     def test_invalid_scraped_date_returns_false(self, orchestrator):
-        db_store = StoreFactory()
-        valid, store = orchestrator._is_file_valid(
-            {'store_id': db_store.store_id, 'scraped_date': 'not-a-date'},
+        db_company = CompanyFactory()
+        valid, company = orchestrator._is_file_valid(
+            {'company_name': db_company.name, 'scraped_date': 'not-a-date'},
             [{'product': {}}]
         )
         assert valid is False
 
     def test_stale_date_returns_false(self, orchestrator):
         product = ProductFactory()
-        db_store = StoreFactory()
+        db_company = CompanyFactory()
         PriceFactory(
-            product=product, store=db_store,
+            product=product, company=db_company,
             scraped_date=datetime.date(2025, 6, 1),
         )
         # Incoming date is older than the latest DB price
-        valid, store = orchestrator._is_file_valid(
-            {'store_id': db_store.store_id, 'scraped_date': '2025-01-01T00:00:00'},
+        valid, company = orchestrator._is_file_valid(
+            {'company_name': db_company.name, 'scraped_date': '2025-01-01T00:00:00'},
             [{'product': {}}]
         )
         assert valid is False
 
     def test_partial_scrape_returns_false(self, orchestrator):
         product = ProductFactory()
-        db_store = StoreFactory()
+        db_company = CompanyFactory()
         # Fill DB with 10 prices
         for _ in range(10):
             p = ProductFactory()
-            PriceFactory(product=p, store=db_store, scraped_date=datetime.date(2024, 1, 1))
+            PriceFactory(product=p, company=db_company, scraped_date=datetime.date(2024, 1, 1))
 
         # File has only 1 product — less than 90% of 10
-        valid, store = orchestrator._is_file_valid(
-            {'store_id': db_store.store_id, 'scraped_date': '2025-06-01T00:00:00'},
+        valid, company = orchestrator._is_file_valid(
+            {'company_name': db_company.name, 'scraped_date': '2025-06-01T00:00:00'},
             [{'product': {}}]
         )
         assert valid is False
 
-    def test_valid_file_returns_true_and_store(self, orchestrator):
-        db_store = StoreFactory()
-        valid, store = orchestrator._is_file_valid(
-            {'store_id': db_store.store_id, 'scraped_date': '2025-06-01T00:00:00'},
+    def test_valid_file_returns_true_and_company(self, orchestrator):
+        db_company = CompanyFactory()
+        valid, company = orchestrator._is_file_valid(
+            {'company_name': db_company.name, 'scraped_date': '2025-06-01T00:00:00'},
             [{'product': {}}]
         )
         assert valid is True
-        assert store.pk == db_store.pk
+        assert company.pk == db_company.pk
 
     def test_valid_file_with_existing_prices_passes_count_check(self, orchestrator):
-        db_store = StoreFactory()
+        db_company = CompanyFactory()
         # 5 prices in DB, file has 5 items — exactly 100%
         products = [ProductFactory() for _ in range(5)]
         for p in products:
-            PriceFactory(product=p, store=db_store, scraped_date=datetime.date(2024, 1, 1))
+            PriceFactory(product=p, company=db_company, scraped_date=datetime.date(2024, 1, 1))
 
         raw = [{'product': {}} for _ in range(5)]
-        valid, store = orchestrator._is_file_valid(
-            {'store_id': db_store.store_id, 'scraped_date': '2025-06-01T00:00:00'},
+        valid, company = orchestrator._is_file_valid(
+            {'company_name': db_company.name, 'scraped_date': '2025-06-01T00:00:00'},
             raw
         )
         assert valid is True

@@ -1,16 +1,14 @@
 from django.db.models import F, Q, Case, When, Value, IntegerField, Min
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
-from django.core.cache import cache
 from rest_framework import generics
-from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 from products.models import Product, ProductPriceSummary
 from companies.models import PrimaryCategory
-from data_management.models import SystemSetting
 from products.serializers.product_serializer import ProductSerializer
 from products.utils.bargain_utils import calculate_bargains
+from products.utils.default_companies import get_default_company_ids
 from products.utils.product_ordering import get_bargain_first_ordering, _primary_category_slug_filter
 
 
@@ -28,7 +26,7 @@ class ProductListView(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
-    def _get_carousel_queryset(self, anchor_store_ids, primary_category_slugs):
+    def _get_carousel_queryset(self, company_ids, primary_category_slugs):
         """
         Gets a hybrid queryset for carousels using the bargain-first ordering logic.
         """
@@ -36,48 +34,28 @@ class ProductListView(generics.ListAPIView):
         self.carousel_bargain_map = {} # Reset map for each request
 
         final_product_ids, bargain_map = get_bargain_first_ordering(
-            anchor_store_ids, primary_category_slugs, limit=CAROUSEL_SIZE
+            company_ids, primary_category_slugs, limit=CAROUSEL_SIZE
         )
         self.carousel_bargain_map = bargain_map
-        
+
         if not final_product_ids:
             return Product.objects.none(), []
 
         preserved_order = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(final_product_ids)])
         final_queryset = Product.objects.filter(pk__in=final_product_ids).order_by(preserved_order)
-        
-        return final_queryset, anchor_store_ids
+
+        return final_queryset, company_ids
 
     def get_queryset(self):
-        store_ids_param = self.request.query_params.get('store_ids')
         search_query = self.request.query_params.get('search', None)
         primary_category_slug_param = self.request.query_params.get('primary_category_slug', None)
         primary_category_slugs_param = self.request.query_params.get('primary_category_slugs', None)
-        ordering = self.request.query_params.get('ordering', 'default') # Default to 'default'
+        ordering = self.request.query_params.get('ordering', 'default')
         bargain_company_name = self.request.query_params.get('bargain_company', None)
 
-        store_ids = []
-        if store_ids_param:
-            try:
-                store_ids = [int(s_id) for s_id in store_ids_param.split(',')]
-            except (ValueError, TypeError):
-                raise ValidationError({'store_ids': 'Invalid format. Must be a comma-separated list of integers.'})
-        else:
-            default_stores = cache.get('default_anchor_stores')
-            if default_stores is None:
-                try:
-                    setting = SystemSetting.objects.get(key='default_anchor_stores')
-                    default_stores = setting.value
-                    cache.set('default_anchor_stores', default_stores, 60 * 60)
-                except SystemSetting.DoesNotExist:
-                    default_stores = []
-            store_ids = default_stores
-
-        if not store_ids:
+        company_ids = get_default_company_ids()
+        if not company_ids:
             return Product.objects.none()
-
-        anchor_store_ids = store_ids
-        self.nearby_store_ids = anchor_store_ids
 
         # --- Bargain Company Filter ---
         if bargain_company_name:
@@ -91,7 +69,7 @@ class ProductListView(generics.ListAPIView):
             if not candidate_product_ids:
                 return Product.objects.none()
 
-            all_bargains = calculate_bargains(candidate_product_ids, anchor_store_ids)
+            all_bargains = calculate_bargains(candidate_product_ids, company_ids)
 
             company_bargains = [
                 b for b in all_bargains
@@ -99,7 +77,7 @@ class ProductListView(generics.ListAPIView):
             ]
 
             sorted_bargains = sorted(company_bargains, key=lambda b: b['discount'], reverse=True)
-            
+
             self.bargain_info_map = {b['product_id']: b for b in sorted_bargains}
             final_product_ids = list(self.bargain_info_map.keys())
 
@@ -108,7 +86,7 @@ class ProductListView(generics.ListAPIView):
 
             preserved_order = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(final_product_ids)])
             return Product.objects.filter(pk__in=final_product_ids).order_by(preserved_order).prefetch_related(
-                'prices__store__company', 'skus'
+                'prices__company', 'skus'
             )
 
         # --- Carousel Logic: Fast-path for performance ---
@@ -118,15 +96,14 @@ class ProductListView(generics.ListAPIView):
                 slugs = [slug.strip() for slug in primary_category_slugs_param.split(',')]
             elif primary_category_slug_param:
                 slugs = [primary_category_slug_param]
-            
-            queryset, stores_for_context = self._get_carousel_queryset(anchor_store_ids, slugs)
-            self.nearby_store_ids = stores_for_context 
+
+            queryset, _companies_for_context = self._get_carousel_queryset(company_ids, slugs)
             return queryset.prefetch_related(
-                'prices__store__company', 'skus'
+                'prices__company', 'skus'
             ).defer('normalized_name_brand_size_variations', 'sizes')
 
         # --- General Search/Filtering Logic ---
-        queryset = Product.objects.filter(prices__store__id__in=anchor_store_ids).distinct()
+        queryset = Product.objects.filter(prices__company__id__in=company_ids).distinct()
 
         # Category filtering
         slugs_for_filtering = []
@@ -157,20 +134,19 @@ class ProductListView(generics.ListAPIView):
         # Final Ordering
         if ordering == 'price_asc':
             final_queryset = queryset.annotate(
-                min_price=Min('prices__price', filter=Q(prices__store__id__in=anchor_store_ids))
+                min_price=Min('prices__price', filter=Q(prices__company__id__in=company_ids))
             ).order_by('min_price')
         elif ordering == 'price_desc':
             final_queryset = queryset.annotate(
-                min_price=Min('prices__price', filter=Q(prices__store__id__in=anchor_store_ids))
+                min_price=Min('prices__price', filter=Q(prices__company__id__in=company_ids))
             ).order_by('-min_price')
         elif ordering == 'unit_price_asc':
              final_queryset = queryset.annotate(
-                min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=anchor_store_ids))
+                min_unit_price=Min('prices__unit_price', filter=Q(prices__company__id__in=company_ids))
             ).order_by(F('min_unit_price').asc(nulls_last=True))
         elif ordering == 'default' and slugs_for_filtering and not search_query:
-            # Use the new bargain-first ordering for default category view
             product_ids, bargain_map = get_bargain_first_ordering(
-                anchor_store_ids, slugs_for_filtering
+                company_ids, slugs_for_filtering
             )
             self.bargain_info_map = bargain_map
             
@@ -191,16 +167,15 @@ class ProductListView(generics.ListAPIView):
             else:
                 # Fallback for non-category, non-search views
                 final_queryset = queryset.annotate(
-                    min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=anchor_store_ids))
+                    min_unit_price=Min('prices__unit_price', filter=Q(prices__company__id__in=company_ids))
                 ).order_by(F('min_unit_price').asc(nulls_last=True))
 
         return final_queryset.prefetch_related(
-            'prices__store__company', 'skus'
+            'prices__company', 'skus'
         ).defer('normalized_name_brand_size_variations', 'sizes')
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        context['nearby_store_ids'] = getattr(self, 'nearby_store_ids', None)
         # Add the calculated bargain info for the carousel or bargain search to use
         if hasattr(self, 'bargain_info_map'):
             context['bargain_info_map'] = self.bargain_info_map

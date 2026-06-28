@@ -16,17 +16,6 @@ class TestGenerateCommandDispatch:
         call_command('generate', cat_links=True)
         MockGen.return_value.run.assert_called_once()
 
-    @patch(f'{GEN}.map_generator.MapGenerator')
-    def test_map_flag_runs_map_generator(self, MockGen):
-        call_command('generate', map=True)
-        MockGen.return_value.run.assert_called_once()
-
-    @patch(f'{GEN}.map_generator.MapGenerator')
-    def test_map_flag_passes_company_name(self, MockGen):
-        call_command('generate', map=True, company='Coles')
-        _, kwargs = MockGen.call_args
-        assert kwargs.get('company_name') == 'Coles'
-
     @patch(f'{GEN}.primary_categories_generator.PrimaryCategoriesGenerator')
     def test_primary_cats_flag(self, MockGen):
         call_command('generate', primary_cats=True)
@@ -37,9 +26,9 @@ class TestGenerateCommandDispatch:
         call_command('generate', price_summaries=True)
         MockGen.return_value.run.assert_called_once()
 
-    @patch(f'{GEN}.default_stores_generator.DefaultStoresGenerator')
-    def test_default_stores_flag(self, MockGen):
-        call_command('generate', default_stores=True)
+    @patch(f'{GEN}.default_stores_generator.DefaultCompaniesGenerator')
+    def test_default_companies_flag(self, MockGen):
+        call_command('generate', default_companies=True)
         MockGen.return_value.run.assert_called_once()
 
     @patch(f'{GEN}.price_comparisons_generator.PriceComparisonsGenerator')
@@ -60,11 +49,6 @@ class TestGenerateCommandDispatch:
     @patch(f'{GEN}.archive_generator.ArchiveGenerator')
     def test_archive_flag(self, MockGen):
         call_command('generate', archive=True)
-        MockGen.return_value.run.assert_called_once()
-
-    @patch(f'{GEN}.store_stats_generator.StoreStatsGenerator')
-    def test_store_stats_flag(self, MockGen):
-        call_command('generate', store_stats=True)
         MockGen.return_value.run.assert_called_once()
 
     @patch(f'{GEN}.substitutions_generator.SubstitutionsGenerator')

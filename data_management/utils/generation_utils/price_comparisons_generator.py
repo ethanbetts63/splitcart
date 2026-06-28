@@ -32,15 +32,15 @@ class PriceComparisonsGenerator:
         self.stdout.write(self.style.HTTP_INFO("Step 2/4: Fetching average prices per product/company..."))
         price_data_qs = Price.objects.filter(
             product_id__in=list(product_slug_map.keys()),
-            store__company_id__in=companies.keys(),
-        ).values('product_id', 'store__company_id').annotate(avg_price=Avg('price'))
+            company_id__in=companies.keys(),
+        ).values('product_id', 'company_id').annotate(avg_price=Avg('price'))
 
         self.stdout.write(self.style.HTTP_INFO("Step 3/4: Building per-category price index..."))
         # slug -> product_id -> company_id -> avg_price
         all_prices_by_slug: dict = defaultdict(lambda: defaultdict(dict))
         for price_data in price_data_qs:
             prod_id = price_data['product_id']
-            comp_id = price_data['store__company_id']
+            comp_id = price_data['company_id']
             avg_price = price_data['avg_price']
             for slug in product_slug_map.get(prod_id) or []:
                 all_prices_by_slug[slug][prod_id][comp_id] = avg_price

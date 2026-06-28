@@ -33,18 +33,7 @@ class ProductSerializer(serializers.ModelSerializer):
         if hasattr(obj, '_filtered_prices_cache'):
             return obj._filtered_prices_cache
 
-        prices_map = self.context.get('prices_map')
-        nearby_store_ids = self.context.get('nearby_store_ids')
-
-        if prices_map is not None:
-            prices_queryset = prices_map.get(obj.id, [])
-        else:
-            # Access the prefetched data; no DB hit occurs here.
-            all_prices = obj.prices.all()
-            if nearby_store_ids:
-                prices_queryset = [p for p in all_prices if p.store_id in nearby_store_ids]
-            else:
-                prices_queryset = list(all_prices)
+        prices_queryset = list(obj.prices.all())
         
         # Cache the result on the object instance for this serialization run
         obj._filtered_prices_cache = prices_queryset
@@ -160,11 +149,10 @@ class ProductSerializer(serializers.ModelSerializer):
         prices_queryset = self._get_filtered_prices(obj)
 
         for price in prices_queryset:
-            if price.store and price.store.company:
-                company = price.store.company
-                image_url = self._get_image_url_for_company(obj, company.name, company_obj=company)
-                if image_url:
-                    return image_url # Return the first valid URL we find
+            company = price.company
+            image_url = self._get_image_url_for_company(obj, company.name, company_obj=company)
+            if image_url:
+                return image_url # Return the first valid URL we find
             
         return None # Return None if no valid URL could be generated
 
@@ -185,7 +173,7 @@ class ProductSerializer(serializers.ModelSerializer):
         overall_min_price = None
 
         for price_obj in prices_queryset:
-            company_name = price_obj.store.company.name
+            company_name = price_obj.company.name
             current_price = price_obj.price
 
             if company_name not in company_prices:
@@ -217,7 +205,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
             # Find the original price object to get the per_unit_price_string
             # This is not perfectly efficient but necessary for now
-            original_price_obj = next((p for p in prices_queryset if p.store.company.name == company_name), None)
+            original_price_obj = next((p for p in prices_queryset if p.company.name == company_name), None)
             per_unit_price_string = original_price_obj.per_unit_price_string if original_price_obj and original_price_obj.per_unit_price_string else None
 
 

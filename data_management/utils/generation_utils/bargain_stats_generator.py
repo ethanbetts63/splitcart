@@ -12,7 +12,7 @@ class BargainStatsGenerator:
         self.command.stdout.write("Starting price comparison stats calculation...")
 
         product_count = Product.objects.count()
-        products_iterator = Product.objects.prefetch_related('prices__store__company').iterator(chunk_size=5000)
+        products_iterator = Product.objects.prefetch_related('prices__company').iterator(chunk_size=5000)
         
         stats = defaultdict(lambda: defaultdict(int))
 
@@ -24,7 +24,7 @@ class BargainStatsGenerator:
 
             prices_by_company = defaultdict(list)
             for p in product.prices.all():
-                prices_by_company[p.store.company.name].append(p.price)
+                prices_by_company[p.company.name].append(p.price)
 
             comparison_prices = {name: min(price_list) for name, price_list in prices_by_company.items()}
 

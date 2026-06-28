@@ -37,7 +37,7 @@ class ProductUploader(BaseUploader):
 
         # --- Stage 1: Scan files ---
         self.command.stdout.write("Scanning files...")
-        latest_files_per_store = {}
+        latest_files_per_company = {}
         files_with_scan_error = set()
         files_skipped_during_scan = set()
 
@@ -51,17 +51,17 @@ class ProductUploader(BaseUploader):
                         continue
                     data = json.loads(first_line)
                 
-                store_id = data.get('metadata', {}).get('store_id')
+                company_name = data.get('metadata', {}).get('company_name')
                 scraped_date_str = data.get('metadata', {}).get('scraped_date')
 
-                if not store_id or not scraped_date_str:
+                if not company_name or not scraped_date_str:
                     files_skipped_during_scan.add(file_name)
                     continue
                 
                 scraped_date = datetime.strptime(scraped_date_str, '%Y-%m-%d').date()
 
-                if store_id not in latest_files_per_store or scraped_date > latest_files_per_store[store_id]['scraped_date']:
-                    latest_files_per_store[store_id] = {
+                if company_name not in latest_files_per_company or scraped_date > latest_files_per_company[company_name]['scraped_date']:
+                    latest_files_per_company[company_name] = {
                         'file_name': file_name,
                         'scraped_date': scraped_date
                     }
@@ -69,7 +69,7 @@ class ProductUploader(BaseUploader):
                 files_with_scan_error.add(file_name)
                 continue
 
-        files_to_upload = {details['file_name'] for details in latest_files_per_store.values()}
+        files_to_upload = {details['file_name'] for details in latest_files_per_company.values()}
         files_to_upload_count = len(files_to_upload)
         self.command.stdout.write(f"Scan complete. Found {files_to_upload_count} files to upload.")
 

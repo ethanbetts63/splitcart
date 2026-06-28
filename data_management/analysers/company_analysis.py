@@ -5,11 +5,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from django.db.models import Count
 from django.utils.text import slugify
-from companies.models import Company, Store
+from companies.models import Company
 
-def generate_store_product_counts_chart(company_name: str):
+
+def generate_company_product_counts_chart(company_name: str):
     """
-    Generates a bar chart showing the total number of products for each store
+    Generates a bar chart showing the total number of priced products for a company
     of a specified company and saves it as a PNG.
 
     Args:
@@ -22,28 +23,25 @@ def generate_store_product_counts_chart(company_name: str):
         print(f"Company '{company_name}' not found.")
         return
 
-    # Get all stores for the company, annotated with the count of their products (price entries)
-    stores_with_counts = Store.objects.filter(company=company) \
-                                      .annotate(product_count=Count('prices')) \
-                                      .filter(product_count__gt=0) \
-                                      .exclude(name='N/A') \
-                                      .order_by('-product_count')
+    company_with_count = Company.objects.filter(pk=company.pk) \
+                                        .annotate(product_count=Count('prices')) \
+                                        .first()
 
-    if not stores_with_counts.exists():
-        print(f"No stores found for company '{company_name}'.")
+    if not company_with_count or company_with_count.product_count == 0:
+        print(f"No prices found for company '{company_name}'.")
         return
 
     # Prepare data for plotting
-    store_names = [store.store_name for store in stores_with_counts]
-    product_counts = [store.product_count for store in stores_with_counts]
+    company_names = [company.name]
+    product_counts = [company_with_count.product_count]
 
     # Create the plot
     plt.figure(figsize=(12, 8))
-    sns.barplot(x=product_counts, y=store_names, hue=store_names, palette='viridis', legend=False)
+    sns.barplot(x=product_counts, y=company_names, hue=company_names, palette='viridis', legend=False)
     
     plt.xlabel('Total Number of Products')
-    plt.ylabel('Store')
-    plt.title(f'Total Products per Store for {company.name}')
+    plt.ylabel('Company')
+    plt.title(f'Total Products for {company.name}')
     plt.tight_layout()
 
     # Define output directories and create them if they don't exist
@@ -54,8 +52,7 @@ def generate_store_product_counts_chart(company_name: str):
     os.makedirs(heatmap_output_dir, exist_ok=True)
 
     # Save the plot
-    output_filename = f"{slugify(company.name)}_store_product_counts.png"
+    output_filename = f"{slugify(company.name)}_company_product_counts.png"
     output_path = os.path.join(heatmap_output_dir, output_filename)
     plt.savefig(output_path)
     print(f"Chart saved as '{output_path}'")
-

@@ -8,16 +8,16 @@ class SubstituteManager:
     """
     Manages finding potential product substitutes and creating CartSubstitution instances.
     """
-    def __init__(self, product_id: int, store_ids: list[int]):
+    def __init__(self, product_id: int, company_ids: list[int]):
         if not isinstance(product_id, int):
             raise TypeError("product_id must be an integer.")
-        if not isinstance(store_ids, list) or not all(isinstance(sid, int) for sid in store_ids):
-            raise TypeError("store_ids must be a list of integers.")
-        if not store_ids:
-            raise ValueError("store_ids cannot be an empty list.")
+        if not isinstance(company_ids, list) or not all(isinstance(cid, int) for cid in company_ids):
+            raise TypeError("company_ids must be a list of integers.")
+        if not company_ids:
+            raise ValueError("company_ids cannot be an empty list.")
 
         self.product_id = product_id
-        self.store_ids = store_ids
+        self.company_ids = company_ids
         self._original_product = None
         self._potential_product_substitutions = None
 
@@ -31,7 +31,7 @@ class SubstituteManager:
 
     def find_potential_product_substitutions(self, limit: int = 5) -> list[ProductSubstitution]:
         """
-        Finds potential ProductSubstitution objects for the initialized product and stores.
+        Finds potential ProductSubstitution objects for the initialized product and companies.
 
         Args:
             limit: The maximum number of ProductSubstitution objects to return.
@@ -50,8 +50,8 @@ class SubstituteManager:
         substitutions_queryset = ProductSubstitution.objects.filter(
             Q(product_a=original_product) | Q(product_b=original_product)
         ).order_by('level', '-score').filter(
-            Q(product_a=original_product, product_b__prices__store_id__in=self.store_ids) |
-            Q(product_b=original_product, product_a__prices__store_id__in=self.store_ids)
+            Q(product_a=original_product, product_b__prices__company_id__in=self.company_ids) |
+            Q(product_b=original_product, product_a__prices__company_id__in=self.company_ids)
         ).distinct()
 
         self._potential_product_substitutions = list(substitutions_queryset[:limit])
@@ -91,4 +91,3 @@ class SubstituteManager:
 
         
         return created_cart_substitutions
-

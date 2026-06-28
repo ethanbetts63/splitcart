@@ -16,7 +16,7 @@ class BaseProductScraper(ABC):
         self.store_name = store_name
         self.state = state
         self.jsonl_writer = None
-        self.output = ScraperOutput(self.command, self.company, self.store_name)
+        self.output = ScraperOutput(self.command, self.company)
         self.brand_translations, self.product_translations = BaseDataCleaner._load_translation_tables()
 
     def run(self):

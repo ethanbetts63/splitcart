@@ -1,6 +1,6 @@
 from products.models import Product, Price
 
-def build_price_slots(cart, stores):    
+def build_price_slots(cart, companies):
     # Step 1: Gather all unique product IDs from the entire cart (originals and substitutes).
     all_slots = []
     product_ids = list(set(item['product_id'] for slot in cart for item in slot))
@@ -9,8 +9,8 @@ def build_price_slots(cart, stores):
     products = Product.objects.in_bulk(product_ids)
     prices = Price.objects.filter(
         product_id__in=product_ids,
-        store__in=stores
-    ).select_related('store', 'product__brand')
+        company__in=companies
+    ).select_related('company', 'product__brand')
 
     # Step 3: Organize the fetched prices into a dictionary for quick lookups by product ID.
     prices_by_product = {}
@@ -42,7 +42,7 @@ def build_price_slots(cart, stores):
             # Step 6: Look up the prices for the current product ID.
             product_prices = prices_by_product.get(product_id, [])
             if not product_prices:
-                print(f"    - No prices found for product ID {product_id} in the selected stores.")
+                print(f"    - No prices found for product ID {product_id} in the selected companies.")
 
             # Step 7: Create the detailed 'option' dictionaries for each available price.
             for k, price_obj in enumerate(product_prices):
@@ -53,8 +53,8 @@ def build_price_slots(cart, stores):
 
                 # Construct the image URL based on the company
                 image_url = None
-                company = price_obj.store.company
-                company_name = price_obj.store.company.name
+                company = price_obj.company
+                company_name = company.name
                 
                 if company_name.lower() == 'aldi':
                     image_url = product_obj.aldi_image_url
@@ -70,24 +70,13 @@ def build_price_slots(cart, stores):
                             # Use the correct placeholder name for all other companies
                             image_url = company.image_url_template.format(sku=sku)
 
-                # Construct the store address
-                address_parts = [
-                    price_obj.store.address_line_1,
-                    price_obj.store.suburb,
-                    price_obj.store.state,
-                    price_obj.store.postcode
-                ]
-                store_address = ", ".join(part for part in address_parts if part)
-
                 current_slot.append({
                     "product_id": product_id,
                     "product_name": product_obj.name,
                     "brand": product_obj.brand.name if product_obj.brand else None,
                     "size": product_obj.size,
-                    "store_id": price_obj.store.id,
-                    "store_name": price_obj.store.store_name,
+                    "company_id": price_obj.company_id,
                     "company_name": company_name,
-                    "store_address": store_address,
                     "price": total_price,
                     "unit_price": unit_price,
                     "quantity": quantity,

@@ -1,27 +1,27 @@
 from collections import defaultdict
 from products.models import Price
 
-def calculate_bargains(product_ids, store_ids):
+def calculate_bargains(product_ids, company_ids):
     """
-    Calculates bargain information for a given set of products and stores.
+    Calculates bargain information for a given set of products and companies.
 
     Args:
         product_ids (list[int]): A list of product IDs to check for bargains.
-        store_ids (list[int]): A list of store IDs to use for price comparisons.
+        company_ids (list[int]): A list of company IDs to use for price comparisons.
 
     Returns:
         list[dict]: A list of dictionaries, where each dictionary represents a
                     bargain and contains 'product_id', 'discount', 
                     'cheaper_store_name', and 'cheaper_company_name'.
     """
-    if not product_ids or not store_ids:
+    if not product_ids or not company_ids:
         return []
 
     # Fetch all relevant prices in a single query
     live_prices = Price.objects.filter(
         product_id__in=product_ids,
-        store_id__in=store_ids
-    ).select_related('store__company')
+        company_id__in=company_ids
+    ).select_related('company')
 
     # Group prices by product_id
     products_with_prices = defaultdict(list)
@@ -34,8 +34,8 @@ def calculate_bargains(product_ids, store_ids):
         if len(prices) < 2:
             continue
         
-        company_ids = {p.store.company_id for p in prices}
-        if len(company_ids) < 2:
+        price_company_ids = {p.company_id for p in prices}
+        if len(price_company_ids) < 2:
             continue
 
         min_price_obj = min(prices, key=lambda p: p.price)
@@ -58,8 +58,8 @@ def calculate_bargains(product_ids, store_ids):
         calculated_bargains.append({
             'product_id': product_id,
             'discount': actual_discount,
-            'cheaper_store_name': min_price_obj.store.store_name,
-            'cheaper_company_name': min_price_obj.store.company.name,
+            'cheaper_store_name': min_price_obj.company.name,
+            'cheaper_company_name': min_price_obj.company.name,
         })
 
     return calculated_bargains

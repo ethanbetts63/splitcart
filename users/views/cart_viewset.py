@@ -8,6 +8,9 @@ from users.models import Cart, CartItem, CartSubstitution
 from products.models import Product
 from users.serializers.cart_serializer import CartSerializer
 from splitcart.permissions import IsAuthenticatedOrAnonymous
+from data_management.utils.cart_optimization.substitute_manager import SubstituteManager
+from products.utils.default_companies import get_default_company_ids
+from users.utils.cart_optimization import run_cart_optimization
 from users.utils.name_generator import generate_unique_name
 
 
@@ -35,7 +38,6 @@ class CartViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """
         Creates a new cart and deactivates any existing active carts for the user.
-        Associates the new cart with the most recent store list.
         """
         user = self.request.user if self.request.user.is_authenticated else None
         anonymous_id = getattr(self.request, 'anonymous_id', None)
@@ -212,15 +214,36 @@ class CartViewSet(viewsets.ModelViewSet):
 
             if to_create:
                 CartItem.objects.bulk_create(to_create)
+                company_ids = get_default_company_ids()
+                if company_ids:
+                    created_product_ids = [item.product_id for item in to_create]
+                    created_items = CartItem.objects.filter(
+                        cart=cart,
+                        product_id__in=created_product_ids
+                    )
+                    for cart_item in created_items:
+                        SubstituteManager(
+                            product_id=cart_item.product_id,
+                            company_ids=company_ids
+                        ).create_cart_substitutions(cart_item)
 
         cart = Cart.objects.prefetch_related(
-            'items__product__prices__store__company',
+            'items__product__prices__company',
             'items__product__category__primary_category',
             'items__product__skus__company',
-            'items__chosen_substitutions__substituted_product__prices__store__company',
+            'items__chosen_substitutions__substituted_product__prices__company',
             'items__chosen_substitutions__substituted_product__category__primary_category',
             'items__chosen_substitutions__substituted_product__skus__company',
         ).get(pk=cart.pk)
         serializer = self.get_serializer(cart)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['post'], url_path='optimize')
+    def optimize(self, request, *args, **kwargs):
+        cart_obj = self.get_object()
+        max_company_options = request.data.get(
+            'max_companies_options',
+            request.data.get('max_stores_options', [2, 3, 4])
+        )
+        return run_cart_optimization(cart_obj, max_company_options)
 

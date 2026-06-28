@@ -14,12 +14,12 @@ def command():
     return cmd
 
 
-def _make_jsonl_line(store_id, date_str):
-    return json.dumps({'metadata': {'store_id': store_id, 'scraped_date': date_str}}) + '\n'
+def _make_jsonl_line(company_name, date_str):
+    return json.dumps({'metadata': {'company_name': company_name, 'scraped_date': date_str}}) + '\n'
 
 
 class TestProductUploaderLatestFileScan:
-    """Tests that the scanner correctly identifies the latest file per store."""
+    """Tests that the scanner correctly identifies the latest file per company."""
 
     def test_no_files_exits_early(self, command, tmp_path):
         # ProductUploader.run() reads settings.BASE_DIR, so the patch must wrap run()
@@ -31,7 +31,7 @@ class TestProductUploaderLatestFileScan:
                     uploader.run()
         command.stdout.write.assert_any_call('No files to process.')
 
-    def test_latest_file_selected_per_store(self, command, tmp_path):
+    def test_latest_file_selected_per_company(self, command, tmp_path):
         """Only the most recent file per store should be uploaded; older ones archived."""
         # run() uses: settings.BASE_DIR / 'data_management' / 'data' / 'outboxes' / 'product_outbox'
         outbox = tmp_path / 'data_management' / 'data' / 'outboxes' / 'product_outbox'
@@ -40,10 +40,10 @@ class TestProductUploaderLatestFileScan:
         archive.mkdir(parents=True)
 
         # Two files for same store — newer should be uploaded
-        old_file = outbox / 'store1-2024-01-01.jsonl'
-        new_file = outbox / 'store1-2024-06-01.jsonl'
-        old_file.write_text(_make_jsonl_line('STORE1', '2024-01-01'))
-        new_file.write_text(_make_jsonl_line('STORE1', '2024-06-01'))
+        old_file = outbox / 'coles-2024-01-01.jsonl'
+        new_file = outbox / 'coles-2024-06-01.jsonl'
+        old_file.write_text(_make_jsonl_line('Coles', '2024-01-01'))
+        new_file.write_text(_make_jsonl_line('Coles', '2024-06-01'))
 
         uploaded_files = []
 

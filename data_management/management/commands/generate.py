@@ -6,17 +6,15 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--subs', action='store_true', help='Generate product substitutions.')
         parser.add_argument('--cat-links', action='store_true', help='Generate category links.')
-        parser.add_argument('--map', action='store_true', help='Generate store location map.')
         parser.add_argument('--primary-cats', action='store_true', help='Generate primary categories.')
         parser.add_argument('--price-summaries', action='store_true', help='Generate product price summaries.')
-        parser.add_argument('--default-stores', action='store_true', help='Generate and set the default anchor store list.')
+        parser.add_argument('--default-companies', action='store_true', help='Generate and set the default pricing company list.')
         parser.add_argument('--price-comps', action='store_true', help='Generate price comparison data.')
         parser.add_argument('--bargain-stats', action='store_true', help='Generate company price comparison statistics.')
-        parser.add_argument('--store-stats', action='store_true', help='Display statistics about stores and their price data freshness.')
         parser.add_argument('--pillars', action='store_true', help='Generate pillar pages from JSONL file.')
         parser.add_argument('--archive', action='store_true', help='Archive the database.')
         parser.add_argument('--categorize', action='store_true', help='Run the interactive category analyzer.')
-        parser.add_argument('--company', type=str, help='Filter map generation by company name or specify company for categorization.')
+        parser.add_argument('--company', type=str, help='Specify company for categorization.')
         parser.add_argument('--dev', action='store_true', help='Use development server URL.')
 
     def handle(self, *args, **options):
@@ -34,12 +32,6 @@ class Command(BaseCommand):
             generator = CategoryLinksGenerator(self, dev=dev)
             generator.run()
 
-        if options['map']:
-            from data_management.utils.generation_utils.map_generator import MapGenerator
-            self.stdout.write(self.style.SUCCESS("Generating store location map..."))
-            generator = MapGenerator(self, company_name=options['company'], dev=dev)
-            generator.run()
-
         if options['primary_cats']:
             from data_management.utils.generation_utils.primary_categories_generator import PrimaryCategoriesGenerator
             self.stdout.write(self.style.SUCCESS("Generating primary categories..."))
@@ -52,10 +44,10 @@ class Command(BaseCommand):
             generator = PriceSummariesGenerator(self)
             generator.run()
 
-        if options['default_stores']:
-            from data_management.utils.generation_utils.default_stores_generator import DefaultStoresGenerator
-            self.stdout.write(self.style.SUCCESS("Generating default store list..."))
-            generator = DefaultStoresGenerator(self)
+        if options['default_companies']:
+            from data_management.utils.generation_utils.default_stores_generator import DefaultCompaniesGenerator
+            self.stdout.write(self.style.SUCCESS("Generating default company list..."))
+            generator = DefaultCompaniesGenerator(self)
             generator.run()
 
         if options['price_comps']:
@@ -82,10 +74,3 @@ class Command(BaseCommand):
             generator = ArchiveGenerator(self)
             generator.run()
 
-        if options['store_stats']:
-            from data_management.utils.generation_utils.store_stats_generator import StoreStatsGenerator
-            self.stdout.write(self.style.SUCCESS("Generating store statistics report..."))
-            generator = StoreStatsGenerator(self)
-            generator.run()
-
-        

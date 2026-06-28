@@ -1,10 +1,8 @@
 import os
 import datetime
 from django.core.management.base import BaseCommand
-from data_management.analysers.company_analysis import generate_store_product_counts_chart
+from data_management.analysers.company_analysis import generate_company_product_counts_chart
 from data_management.analysers.company_product_overlap import generate_company_product_overlap_heatmap
-from data_management.analysers.store_product_overlap import generate_store_product_overlap_heatmap
-from data_management.analysers.store_pricing_heatmap import generate_store_pricing_heatmap
 
 from data_management.analysers.internal_company_product_crossover import generate_internal_company_product_crossover_report
 from data_management.utils.analysis_utils.category_tree import generate_category_tree
@@ -21,7 +19,7 @@ class Command(BaseCommand):
             type=str,
             required=True,
             help='Specifies which type of analysis or report to generate.',
-            choices=['store_product_counts', 'company_heatmap', 'store_heatmap', 'pricing_heatmap', 'category_heatmap', 'category_tree', 'subs', 'sub_heatmap', 'internal_crossover', 'category_product_counts', 'super_cats']
+            choices=['company_product_counts', 'company_heatmap', 'category_heatmap', 'category_tree', 'subs', 'sub_heatmap', 'internal_crossover', 'category_product_counts', 'super_cats']
         )
         parser.add_argument(
             '--company-name',
@@ -36,7 +34,7 @@ class Command(BaseCommand):
         parser.add_argument(
             '--state',
             type=str,
-            help='The state to generate the report for (optional, for store-level reports).'
+            help='The state to generate the report for.'
         )
         parser.add_argument(
             '--alphabetical',
@@ -63,31 +61,17 @@ class Command(BaseCommand):
         strict = options['strict']
         condensed = options['condensed']
 
-        if report_type == 'store_product_counts':
+        if report_type == 'company_product_counts':
             if not company_name:
                 self.stdout.write(self.style.ERROR(
-                    'The --company-name argument is required for the store_product_counts report.'))
+                    'The --company-name argument is required for the company_product_counts report.'))
                 return
             self.stdout.write(self.style.SUCCESS(
-                f"Generating store product counts chart for '{company_name}'..."))
-            generate_store_product_counts_chart(company_name)
+                f"Generating company product counts chart for '{company_name}'..."))
+            generate_company_product_counts_chart(company_name)
         
         elif report_type == 'company_heatmap':
             generate_company_product_overlap_heatmap()
-
-        elif report_type == 'store_heatmap':
-            if not company_name:
-                self.stdout.write(self.style.ERROR(
-                    'The --company-name argument is required for the store_heatmap report.'))
-                return
-            generate_store_product_overlap_heatmap(company_name, state)
-
-        elif report_type == 'pricing_heatmap':
-            if not company_name:
-                self.stdout.write(self.style.ERROR(
-                    'The --company-name argument is required for the pricing_heatmap report.'))
-                return
-            generate_store_pricing_heatmap(company_name, state)
 
         elif report_type == 'sub_heatmap':
             self.stdout.write(self.style.SUCCESS("Generating strict substitution overlap heatmap for companies..."))

@@ -18,14 +18,14 @@ class ExportPricesView(ListAPIView):
     pagination_class = CursorPagination
     def get_queryset(self):
         """
-        Optionally restricts the returned prices to a given set of stores,
-        by filtering against a `store_ids` query parameter in the URL.
+        Optionally restricts the returned prices to a given set of companies,
+        by filtering against a `company_ids` query parameter in the URL.
         """
         queryset = Price.objects.order_by('id') # Explicitly order by ID for pagination
-        store_ids_str = self.request.query_params.get('store_ids', None)
-        if store_ids_str:
-            store_ids = [int(sid) for sid in store_ids_str.split(',')]
-            queryset = queryset.filter(store_id__in=store_ids)
+        company_ids_str = self.request.query_params.get('company_ids', None)
+        if company_ids_str:
+            company_ids = [int(cid) for cid in company_ids_str.split(',')]
+            queryset = queryset.filter(company_id__in=company_ids)
 
         scraped_date_gte_str = self.request.query_params.get('scraped_date_gte', None)
         if scraped_date_gte_str:
@@ -56,7 +56,7 @@ class ExportPricesView(ListAPIView):
 
         # Directly get values, bypassing the serializer for performance.
         # The fields selected here must match what the client-side script expects.
-        values_queryset = queryset.values('product_id', 'store_id', 'price', 'id', 'store__company_id')
+        values_queryset = queryset.values('product_id', 'company_id', 'price', 'id')
 
         # Manually configure and paginate
         paginator = self.pagination_class()

@@ -33,7 +33,7 @@ class PriceSummariesGenerator:
 
         for product in products_to_summarize.iterator():
             total_processed += 1
-            prices = product.prices.select_related('store__company').all()
+            prices = product.prices.select_related('company').all()
 
             if len(prices) < 2:
                 continue
@@ -45,7 +45,7 @@ class PriceSummariesGenerator:
             if min_price == max_price:
                 continue
 
-            company_ids = {p.store.company.id for p in prices}
+            company_ids = {p.company_id for p in prices}
             company_count = len(company_ids)
 
             if company_count < 2:

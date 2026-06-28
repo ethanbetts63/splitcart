@@ -5,7 +5,6 @@ from django.core.management.base import BaseCommand
 from django.db import IntegrityError
 from data_management.utils.database_updating_utils.load_db_from_archive import load_db_from_latest_archive      
 from data_management.database_updating_classes.product_updating.update_orchestrator import UpdateOrchestrator
-from data_management.database_updating_classes.discovery_update_orchestrator import DiscoveryUpdateOrchestrator
 from data_management.database_updating_classes.category_link_update_orchestrator import CategoryLinkUpdateOrchestrator                  
 from data_management.database_updating_classes.substitution_update_orchestrator import SubstitutionUpdateOrchestrator
 
@@ -13,7 +12,6 @@ class Command(BaseCommand):
     help = 'Updates the database with data from various sources.'
 
     def add_arguments(self, parser):
-        parser.add_argument('--stores', action='store_true', help='Update stores from the store_inbox directory.')
         parser.add_argument('--products', action='store_true', help='Update products from the product_inbox directory.')
         parser.add_argument('--post-process-only', action='store_true', help='Skip file processing and run only the post-processing steps for products.')
         parser.add_argument('--cat-links', action='store_true', help='Update category links from the category_links_inbox directory.')
@@ -26,7 +24,6 @@ class Command(BaseCommand):
             load_db_from_latest_archive(self)
             return
         
-        run_stores_discovery = options['stores']
         run_products_processed = options['products']
         run_category_links = options['cat_links']
         run_substitutions = options['subs']
@@ -39,10 +36,6 @@ class Command(BaseCommand):
 
         if run_category_links:
             orchestrator = CategoryLinkUpdateOrchestrator(self)
-            orchestrator.run()
-
-        if run_stores_discovery:
-            orchestrator = DiscoveryUpdateOrchestrator(self)
             orchestrator.run()
 
         if run_products_processed:

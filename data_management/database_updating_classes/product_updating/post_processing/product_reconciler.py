@@ -98,14 +98,14 @@ class ProductReconciler:
                             Q(product_id=canon_id) | Q(product_id__in=dupe_ids)
                         ))
 
-                        prices_by_store = {}
+                        prices_by_company = {}
                         for p in involved_prices:
-                            prices_by_store.setdefault(p.store_id, []).append(p)
+                            prices_by_company.setdefault(p.company_id, []).append(p)
 
                         prices_to_delete_pks = []
                         prices_to_update_pks = []
 
-                        for store_id, price_group in prices_by_store.items():
+                        for company_id, price_group in prices_by_company.items():
                             if len(price_group) == 1:
                                 price = price_group[0]
                                 if price.product_id in dupe_ids:

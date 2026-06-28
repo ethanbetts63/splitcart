@@ -3,7 +3,7 @@ import pytest
 from decimal import Decimal
 from products.models import Product, Price
 from products.tests.factories import ProductFactory, PriceFactory
-from companies.tests.factories import StoreFactory
+from companies.tests.factories import CompanyFactory
 from data_management.database_updating_classes.product_updating.post_processing.product_reconciler import ProductReconciler
 
 
@@ -69,10 +69,10 @@ class TestProductReconcilerRun:
 
     def test_reassigns_dupe_price_to_canonical(self, reconciler):
         r, table_path = reconciler
-        store = StoreFactory()
+        company = CompanyFactory()
         canonical = ProductFactory(normalized_name_brand_size='canonical-product')
         dupe = ProductFactory(normalized_name_brand_size='dupe-product')
-        dupe_price = PriceFactory(product=dupe, store=store, price=Decimal('3.00'))
+        dupe_price = PriceFactory(product=dupe, company=company, price=Decimal('3.00'))
         _write_translation_table(table_path, {'dupe-product': 'canonical-product'})
 
         r.run()
@@ -80,17 +80,17 @@ class TestProductReconcilerRun:
         # The price should now point at the canonical product
         assert Price.objects.filter(pk=dupe_price.pk, product=canonical).exists()
 
-    def test_keeps_most_recent_price_when_both_have_same_store(self, reconciler):
+    def test_keeps_most_recent_price_when_both_have_same_company(self, reconciler):
         r, table_path = reconciler
-        store = StoreFactory()
+        company = CompanyFactory()
         canonical = ProductFactory(normalized_name_brand_size='canonical-product')
         dupe = ProductFactory(normalized_name_brand_size='dupe-product')
 
         old_date = datetime.date.today() - datetime.timedelta(days=10)
         new_date = datetime.date.today()
 
-        canonical_price = PriceFactory(product=canonical, store=store, price=Decimal('5.00'), scraped_date=new_date)
-        dupe_price = PriceFactory(product=dupe, store=store, price=Decimal('3.00'), scraped_date=old_date)
+        canonical_price = PriceFactory(product=canonical, company=company, price=Decimal('5.00'), scraped_date=new_date)
+        dupe_price = PriceFactory(product=dupe, company=company, price=Decimal('3.00'), scraped_date=old_date)
         _write_translation_table(table_path, {'dupe-product': 'canonical-product'})
 
         r.run()

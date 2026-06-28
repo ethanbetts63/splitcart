@@ -14,14 +14,14 @@ def _primary_category_slug_filter(slugs: list) -> Q:
     return q
 
 
-def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=None):
+def get_bargain_first_ordering(company_ids, primary_category_slugs, limit=None):
     """
     Gets a hybrid list of product IDs. It prioritizes bargain products
     and fills the remaining slots with the best unit-price products.
     """
     bargain_map = {}
 
-    if not anchor_store_ids:
+    if not company_ids:
         return [], {}
 
     slug_filter = _primary_category_slug_filter(primary_category_slugs)
@@ -29,15 +29,15 @@ def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=N
     # --- Step 1: Identify potential candidates ---
     candidate_product_ids = list(ProductPriceSummary.objects.filter(
         slug_filter,
-        product__prices__store__id__in=anchor_store_ids,
+        product__prices__company__id__in=company_ids,
     ).distinct().order_by('-best_possible_discount').values_list('product_id', flat=True)[:200])
 
     if not candidate_product_ids:
         fallback_queryset = Product.objects.filter(
             slug_filter,
-            prices__store__id__in=anchor_store_ids,
+            prices__company__id__in=company_ids,
         ).distinct().annotate(
-            min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=anchor_store_ids))
+            min_unit_price=Min('prices__unit_price', filter=Q(prices__company__id__in=company_ids))
         ).order_by('min_unit_price')
         if limit is not None:
             fallback_queryset = fallback_queryset[:limit]
@@ -46,8 +46,8 @@ def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=N
     # --- Step 2: Calculate "real" bargains for the candidates ---
     live_prices = Price.objects.filter(
         product_id__in=candidate_product_ids,
-        store_id__in=anchor_store_ids,
-    ).select_related('store__company')
+        company_id__in=company_ids,
+    ).select_related('company')
 
     products_with_prices = defaultdict(list)
     for price in live_prices:
@@ -58,8 +58,8 @@ def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=N
         if len(prices) < 2:
             continue
 
-        company_ids = {p.store.company_id for p in prices}
-        if len(company_ids) < 2:
+        price_company_ids = {p.company_id for p in prices}
+        if len(price_company_ids) < 2:
             continue
 
         min_price_obj = min(prices, key=lambda p: p.price)
@@ -75,8 +75,8 @@ def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=N
         calculated_bargains.append({
             'product_id': product_id,
             'discount': actual_discount,
-            'cheaper_store_name': min_price_obj.store.store_name,
-            'cheaper_company_name': min_price_obj.store.company.name,
+            'cheaper_store_name': min_price_obj.company.name,
+            'cheaper_company_name': min_price_obj.company.name,
         })
 
     sorted_bargains = sorted(calculated_bargains, key=lambda b: b['discount'], reverse=True)
@@ -89,11 +89,11 @@ def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=N
     if limit is None or num_bargains < limit:
         filler_queryset = Product.objects.filter(
             slug_filter,
-            prices__store__id__in=anchor_store_ids,
+            prices__company__id__in=company_ids,
         ).exclude(
             pk__in=confirmed_bargain_ids,
         ).annotate(
-            min_unit_price=Min('prices__unit_price', filter=Q(prices__store__id__in=anchor_store_ids))
+            min_unit_price=Min('prices__unit_price', filter=Q(prices__company__id__in=company_ids))
         ).order_by('min_unit_price')
 
         if limit is not None:

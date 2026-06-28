@@ -64,7 +64,7 @@ class TestJsonlWriterWriteProduct:
             writer = JsonlWriter('test', 'test-store', 'nsw', final_outbox_path=str(outbox))
             writer.open()
         try:
-            writer.write_product({'normalized_name_brand_size': 'milk', 'price_current': 2.50}, {'store_id': 'S001'})
+            writer.write_product({'normalized_name_brand_size': 'milk', 'price_current': 2.50}, {'company_name': 'Coles'})
         finally:
             writer.close()
 
@@ -72,7 +72,7 @@ class TestJsonlWriterWriteProduct:
             line = f.readline()
         data = json.loads(line)
         assert data['product']['normalized_name_brand_size'] == 'milk'
-        assert data['metadata']['store_id'] == 'S001'
+        assert data['metadata']['company_name'] == 'Coles'
 
 
 class TestJsonlWriterCommit:

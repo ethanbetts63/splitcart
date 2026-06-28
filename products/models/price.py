@@ -3,15 +3,15 @@ from django.db import models
 
 class Price(models.Model):
     """
-    Represents the single, most recent price for a Product at a specific Store.
+    Represents the single, most recent price for a Product at a company.
     """
     product = models.ForeignKey(
         'products.Product',
         on_delete=models.CASCADE,
         related_name="prices"
     )
-    store = models.ForeignKey(
-        'companies.Store',
+    company = models.ForeignKey(
+        'companies.Company',
         on_delete=models.CASCADE,
         related_name="prices"
     )
@@ -47,11 +47,11 @@ class Price(models.Model):
     price_hash = models.CharField(max_length=64, null=True, blank=True, db_index=True)
 
     class Meta:
-        unique_together = ('product', 'store')
+        unique_together = ('product', 'company')
         ordering = ['product__name']
         indexes = [
-            models.Index(fields=['store', 'product']),
+            models.Index(fields=['company', 'product']),
         ]
 
     def __str__(self):
-        return f"{self.product.name} at {self.store.store_name} - ${self.price}"
+        return f"{self.product.name} at {self.company.name} - ${self.price}"

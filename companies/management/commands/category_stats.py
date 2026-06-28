@@ -14,8 +14,6 @@ class Command(BaseCommand):
         num_major_companies = len(company_names)
 
         major_companies = list(Company.objects.filter(name__in=company_names))
-        company_ids = [c.id for c in major_companies]
-
         primary_categories = PrimaryCategory.objects.all().order_by('name')
 
         for category in primary_categories:
@@ -26,14 +24,14 @@ class Command(BaseCommand):
 
             # Companies with at least one product in this category
             num_companies_with_products = Company.objects.filter(
-                stores__prices__product__primary_category_slugs__contains=[slug]
+                prices__product__primary_category_slugs__contains=[slug]
             ).distinct().count()
 
             # Products in the category sold by all major companies
             products_in_all = products_in_cat.annotate(
                 num_major_companies=Count(
-                    'prices__store__company',
-                    filter=Q(prices__store__company__name__in=company_names),
+                    'prices__company',
+                    filter=Q(prices__company__name__in=company_names),
                     distinct=True,
                 )
             ).filter(num_major_companies=num_major_companies).count()

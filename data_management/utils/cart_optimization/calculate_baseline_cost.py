@@ -1,5 +1,5 @@
 def calculate_baseline_cost(slots):
-    """Calculates the baseline cost by summing the average price of each item across all stores."""
+    """Calculates the baseline cost by summing the average price of each item across all companies."""
     if not slots:
         return 0
 

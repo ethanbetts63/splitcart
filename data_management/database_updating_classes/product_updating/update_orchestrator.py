@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.db.models import Max
 from django.conf import settings
 from products.models import Product, ProductBrand, Price
-from companies.models import Store, Company
+from companies.models import Company
 from products.models import SKU
 from .file_reader import FileReader
 from .brand_manager import BrandManager
@@ -82,7 +82,7 @@ class UpdateOrchestrator:
         self.command.stdout.write("  - Initialized empty container for SKU cache (will be loaded JIT).")
 
         # Price Cache Container
-        self.caches['prices_by_store'] = {}
+        self.caches['prices_by_company'] = {}
         self.command.stdout.write("  - Initialized empty container for price caches.")
 
     def _prepare_sku_cache_for_company(self, company):
@@ -104,19 +104,19 @@ class UpdateOrchestrator:
         
         self.command.stdout.write(f"  - Cached {len(all_skus)} product IDs by SKU for {company.name}.")
 
-    def _prepare_price_cache_for_store(self, store):
-        """Builds a lightweight, two-level price cache for a specific store."""
-        self.command.stdout.write(f"    - Preparing price cache for store: {store.store_name} ({store.store_id})")
-        price_data = Price.objects.filter(store=store).values('price_hash', 'pk', 'product_id')
+    def _prepare_price_cache_for_company(self, company):
+        """Builds a lightweight, two-level price cache for a specific company."""
+        self.command.stdout.write(f"    - Preparing price cache for company: {company.name}")
+        price_data = Price.objects.filter(company=company).values('price_hash', 'pk', 'product_id')
         
         hash_to_pk_cache = {p['price_hash']: p['pk'] for p in price_data if p['price_hash']}
         product_id_to_pk_cache = {p['product_id']: p['pk'] for p in price_data}
 
-        self.caches['prices_by_store'][store.id] = {
+        self.caches['prices_by_company'][company.id] = {
             'hash_to_pk': hash_to_pk_cache,
             'product_id_to_pk': product_id_to_pk_cache
         }
-        self.command.stdout.write(f"      - Cached {len(hash_to_pk_cache)} price hashes for store.")
+        self.command.stdout.write(f"      - Cached {len(hash_to_pk_cache)} price hashes for company.")
 
     def _is_file_valid(self, metadata, raw_product_data):
         """Performs all validation checks on a file before processing."""
@@ -125,12 +125,12 @@ class UpdateOrchestrator:
             return False, None
 
         try:
-            store = Store.objects.get(store_id=metadata['store_id'])
-        except Store.DoesNotExist:
-            self.command.stderr.write(self.command.style.ERROR(f"  - Store with ID {metadata['store_id']} not found in database. Skipping file."))
+            company = Company.objects.get(name=metadata['company_name'])
+        except (KeyError, Company.DoesNotExist):
+            self.command.stderr.write(self.command.style.ERROR(f"  - Company '{metadata.get('company_name')}' not found in database. Skipping file."))
             return False, None
 
-        # 1. Scrape date must be newer than the latest price date in DB for this store
+        # 1. Scrape date must be newer than the latest price date in DB for this company
         incoming_scraped_date_str = metadata.get('scraped_date')
         if not incoming_scraped_date_str:
             self.command.stderr.write(self.command.style.ERROR("  - 'scraped_date' not found in metadata. Skipping file."))
@@ -144,7 +144,7 @@ class UpdateOrchestrator:
             self.command.stderr.write(self.command.style.ERROR(f"  - Could not parse 'scraped_date': {incoming_scraped_date_str}. Skipping file."))
             return False, None
 
-        latest_db_scraped_date = Price.objects.filter(store=store).aggregate(Max('scraped_date'))['scraped_date__max']
+        latest_db_scraped_date = Price.objects.filter(company=company).aggregate(Max('scraped_date'))['scraped_date__max']
 
         if latest_db_scraped_date and incoming_scraped_date.date() <= latest_db_scraped_date:
             self.command.stdout.write(self.command.style.WARNING(
@@ -153,16 +153,16 @@ class UpdateOrchestrator:
             return False, None
 
         # 2. Product count must be at least 90% of the DB count (full sync check)
-        db_price_count = Price.objects.filter(store=store).count()
+        db_price_count = Price.objects.filter(company=company).count()
         file_product_count = len(raw_product_data)
         
         if db_price_count > 0 and (file_product_count / db_price_count) < 0.9:
             self.command.stderr.write(self.command.style.ERROR(
-                f"  - Partial scrape detected for {store.store_name} (file count: {file_product_count} vs. DB count: {db_price_count}). Skipping file to prevent data loss."
+                f"  - Partial scrape detected for {company.name} (file count: {file_product_count} vs. DB count: {db_price_count}). Skipping file to prevent data loss."
             ))
             return False, None
         
-        return True, store
+        return True, company
 
     def update_cache(self, cache_name, key, value):
         """A centralized method for managers to update the shared cache."""
@@ -220,7 +220,7 @@ class UpdateOrchestrator:
                 file_reader = FileReader(file_path)
                 metadata, raw_product_data = file_reader.read_and_consolidate()
 
-                is_valid, store_or_reason = self._is_file_valid(metadata, raw_product_data)
+                is_valid, company_or_reason = self._is_file_valid(metadata, raw_product_data)
                 if not is_valid:
                     try:
                         os.remove(file_path)
@@ -228,15 +228,15 @@ class UpdateOrchestrator:
                         pass  # File is already gone, which is fine.
                     continue
                 
-                store = store_or_reason
+                company = company_or_reason
 
                 # JIT Caching for SKUs
-                if store.company.id != current_company_id_in_cache:
-                    self._prepare_sku_cache_for_company(store.company)
-                    current_company_id_in_cache = store.company.id
+                if company.id != current_company_id_in_cache:
+                    self._prepare_sku_cache_for_company(company)
+                    current_company_id_in_cache = company.id
 
                 # 1. Process Products (runs first to discover brand pairs)
-                self.product_manager.process(raw_product_data, store.company)
+                self.product_manager.process(raw_product_data, company)
 
                 # 1.5. De-duplicate the product list before pricing to prevent unique constraint errors
                 final_list_for_pricing = self._deduplicate_product_data_for_pricing(raw_product_data)
@@ -244,14 +244,14 @@ class UpdateOrchestrator:
                 # 2. Process Brands
                 self.brand_manager.process(raw_product_data, self.discovered_brand_pairs)
 
-                # 3. Prepare Price Cache for the current store
-                self._prepare_price_cache_for_store(store)
+                # 3. Prepare Price Cache for the current company
+                self._prepare_price_cache_for_company(company)
 
                 # 4. Process Prices
-                self.price_manager.process(final_list_for_pricing, store)
+                self.price_manager.process(final_list_for_pricing, company)
 
                 # 5. Process Category Paths
-                self.path_manager.process(raw_product_data, store.company)
+                self.path_manager.process(raw_product_data, company)
 
                 # 6. Cleanup
                 try:

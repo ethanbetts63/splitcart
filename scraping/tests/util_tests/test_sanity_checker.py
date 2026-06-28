@@ -14,7 +14,7 @@ def _make_valid_product(name='Full Cream Milk', price=2.50, nnbs='cream full mil
 
 def _make_jsonl_line(product, metadata=None):
     if metadata is None:
-        metadata = {'store_id': 'STORE001', 'company': 'woolworths'}
+        metadata = {'company_name': 'Woolworths'}
     return json.dumps({'product': product, 'metadata': metadata}) + '\n'
 
 
@@ -134,8 +134,8 @@ class TestRunSanityChecks:
 
     def test_metadata_mismatch_line_removed(self, tmp_path):
         file_path = tmp_path / 'products.jsonl'
-        meta1 = {'store_id': 'STORE001', 'company': 'woolworths'}
-        meta2 = {'store_id': 'STORE002', 'company': 'coles'}  # mismatch
+        meta1 = {'company_name': 'Woolworths'}
+        meta2 = {'company_name': 'Coles'}  # mismatch
         p1 = _make_valid_product(name='Milk A', nnbs='milk a')
         p2 = _make_valid_product(name='Milk B', nnbs='milk b')
         content = _make_jsonl_line(p1, meta1) + _make_jsonl_line(p2, meta2)

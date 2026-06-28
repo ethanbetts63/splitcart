@@ -9,11 +9,8 @@ BASE = 'data_management.management.commands.update'
 class TestUpdateCommandDispatch:
     @patch(f'{BASE}.load_db_from_latest_archive')
     def test_archive_flag_calls_load_and_returns(self, mock_load):
-        with patch(f'{BASE}.DiscoveryUpdateOrchestrator') as MockDisc:
-            call_command('update', archive=True)
+        call_command('update', archive=True)
         mock_load.assert_called_once()
-        # --archive exits early; discovery orchestrator should not run
-        MockDisc.assert_not_called()
 
     @patch(f'{BASE}.SubstitutionUpdateOrchestrator')
     def test_subs_flag_runs_substitution_orchestrator(self, MockOrch):
@@ -23,11 +20,6 @@ class TestUpdateCommandDispatch:
     @patch(f'{BASE}.CategoryLinkUpdateOrchestrator')
     def test_cat_links_flag_runs_category_link_orchestrator(self, MockOrch):
         call_command('update', cat_links=True)
-        MockOrch.return_value.run.assert_called_once()
-
-    @patch(f'{BASE}.DiscoveryUpdateOrchestrator')
-    def test_stores_flag_runs_discovery_orchestrator(self, MockOrch):
-        call_command('update', stores=True)
         MockOrch.return_value.run.assert_called_once()
 
     @patch(f'{BASE}.UpdateOrchestrator')
@@ -63,9 +55,7 @@ class TestUpdateCommandDispatch:
         call_command('update', products=True)
         MockOrch.return_value.run.assert_called_once()
 
-    @patch(f'{BASE}.DiscoveryUpdateOrchestrator')
     @patch(f'{BASE}.UpdateOrchestrator')
-    def test_no_flags_runs_nothing(self, MockUpdate, MockDisc):
+    def test_no_flags_runs_nothing(self, MockUpdate):
         call_command('update')
-        MockDisc.assert_not_called()
         MockUpdate.assert_not_called()

@@ -18,7 +18,7 @@ def generate_substitution_breakdown_report():
         report_lines.append(f"\n--- Analysis for: {company.name} ---")
         
         # Get all unique products for this company
-        company_products = Product.objects.filter(prices__store__company=company).distinct()
+        company_products = Product.objects.filter(prices__company=company).distinct()
         num_products = company_products.count()
 
         if num_products == 0:
