@@ -83,13 +83,6 @@ class TestGetNearbyStores:
         assert coles_store in result
         assert woolies_store not in result
 
-    def test_excludes_iga_store_never_scraped(self):
-        ref = PostcodeFactory(postcode='2600', latitude=-33.8688, longitude=151.2093)
-        iga = CompanyFactory(name='IGA')
-        iga_store = StoreFactory(company=iga, latitude=-33.8700, longitude=151.2090, last_scraped=None)
-        result = get_nearby_stores(ref, radius_km=5)
-        assert iga_store not in result
-
     def test_excludes_non_grocery_divisions(self):
         ref = PostcodeFactory(postcode='2700', latitude=-33.8688, longitude=151.2093)
         coles = CompanyFactory(name='Coles')

@@ -3,7 +3,6 @@ import pytest
 from datetime import datetime
 from scraping.utils.product_scraping_utils.DataCleanerWoolworths import DataCleanerWoolworths
 from scraping.utils.product_scraping_utils.DataCleanerColes import DataCleanerColes
-from scraping.utils.product_scraping_utils.DataCleanerIga import DataCleanerIga
 from scraping.utils.product_scraping_utils.DataCleanerAldi import DataCleanerAldi
 
 _TIMESTAMP = datetime(2024, 6, 15)
@@ -163,58 +162,6 @@ class TestColesNormalization:
 
 
 # ---------------------------------------------------------------------------
-# IGA
-# ---------------------------------------------------------------------------
-
-_IGA_BASE = {
-    'productId': 'P001',
-    'name': 'Full Cream Milk',
-    'brand': 'Dairy Farmers',
-    'barcode': '9310088000010',
-    'priceNumeric': 3.20,
-    'wasWholePrice': None,
-    'tprPrice': [],
-    'pricePerUnit': '$1.60 per 1L',
-    'unitOfSize': {'size': 2, 'abbreviation': 'l'},
-    'unitOfMeasure': {'size': 1, 'abbreviation': 'l'},
-    'sellBy': 'Each',
-    'available': True,
-    'defaultCategory': [{'categoryBreadcrumb': 'Dairy/Milk/Full Cream'}],
-}
-
-
-class TestIgaNormalization:
-    def test_size_l_converted_to_ml(self):
-        product = _first_product(_make_cleaner(DataCleanerIga, [_IGA_BASE]))
-        assert '2000ml' in product['sizes']
-
-    def test_grams_size_kept_as_grams(self):
-        raw = {
-            **_IGA_BASE,
-            'unitOfSize': {'size': 200, 'abbreviation': 'g'},
-            'unitOfMeasure': {'size': 100, 'abbreviation': 'g'},
-        }
-        product = _first_product(_make_cleaner(DataCleanerIga, [raw]))
-        assert '200g' in product['sizes']
-
-    def test_normalized_brand_is_cleaned_lowercase(self):
-        product = _first_product(_make_cleaner(DataCleanerIga, [_IGA_BASE]))
-        assert product['normalized_brand'] == 'dairy farmers'
-
-    def test_normalized_name_brand_size_is_sorted_bag_of_words(self):
-        product = _first_product(_make_cleaner(DataCleanerIga, [_IGA_BASE]))
-        assert product['normalized_name_brand_size'] == '2000ml cream dairy farmers full milk'
-
-    def test_valid_barcode_preserved(self):
-        product = _first_product(_make_cleaner(DataCleanerIga, [_IGA_BASE]))
-        assert product['barcode'] == '9310088000010'
-
-    def test_price_hash_is_present_and_is_string(self):
-        product = _first_product(_make_cleaner(DataCleanerIga, [_IGA_BASE]))
-        assert isinstance(product.get('price_hash'), str)
-
-
-# ---------------------------------------------------------------------------
 # Aldi
 # ---------------------------------------------------------------------------
 
@@ -348,13 +295,8 @@ class TestCrossStoreNormalizedKey:
         assert self._get_key(DataCleanerWoolworths, self._WOW_MILK) == \
                self._get_key(DataCleanerColes, self._COLES_MILK)
 
-    def test_woolworths_and_iga_produce_same_key(self):
-        assert self._get_key(DataCleanerWoolworths, self._WOW_MILK) == \
-               self._get_key(DataCleanerIga, self._IGA_MILK)
-
-    def test_all_four_stores_produce_same_key(self):
+    def test_all_three_stores_produce_same_key(self):
         wow = self._get_key(DataCleanerWoolworths, self._WOW_MILK)
         col = self._get_key(DataCleanerColes, self._COLES_MILK)
-        iga = self._get_key(DataCleanerIga, self._IGA_MILK)
         aldi = self._get_key(DataCleanerAldi, self._ALDI_MILK)
-        assert wow == col == iga == aldi
+        assert wow == col == aldi

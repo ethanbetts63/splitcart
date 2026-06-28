@@ -41,7 +41,6 @@ class SchedulerView(APIView):
         response_data = {
             'pk': store_to_scrape.pk,
             'store_id': store_to_scrape.store_id,
-            'retailer_store_id': store_to_scrape.retailer_store_id,
             'store_name': store_to_scrape.store_name,
             'company_name': store_to_scrape.company.name,
             'state': store_to_scrape.state,

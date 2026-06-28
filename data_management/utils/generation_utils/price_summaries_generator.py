@@ -45,16 +45,10 @@ class PriceSummariesGenerator:
             if min_price == max_price:
                 continue
 
-            company_ids = set()
-            iga_store_count = 0
-            for p in prices:
-                company_ids.add(p.store.company.id)
-                if p.store.company.name.lower() == 'iga':
-                    iga_store_count += 1
-            
+            company_ids = {p.store.company.id for p in prices}
             company_count = len(company_ids)
 
-            if company_count < 2 and iga_store_count < 2:
+            if company_count < 2:
                 continue
 
             best_possible_discount = 0
@@ -67,7 +61,7 @@ class PriceSummariesGenerator:
             summaries_to_create.append(
                 ProductPriceSummary(
                     product=product, min_price=min_price, max_price=max_price,
-                    company_count=company_count, iga_store_count=iga_store_count,
+                    company_count=company_count,
                     best_possible_discount=best_possible_discount
                 )
             )

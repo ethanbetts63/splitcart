@@ -122,12 +122,7 @@ def generate_internal_company_product_crossover_report(company_name, command=Non
         average_percentage_shared = np.mean(average_percentage_matrix.to_numpy()[iu]) if iu[0].size > 0 else 0
 
         print("    Analyzing categories...")
-        if company.name.lower() == 'iga':
-            level_name = "Tier 1"
-            tier_0_categories_qs = Category.objects.filter(company=company, parents__isnull=True)
-            start_categories = Category.objects.filter(parents__in=tier_0_categories_qs).distinct()
-        else:
-            start_categories = Category.objects.filter(company=company, parents__isnull=True)
+        start_categories = Category.objects.filter(company=company, parents__isnull=True)
 
         for category in start_categories:
             if command:

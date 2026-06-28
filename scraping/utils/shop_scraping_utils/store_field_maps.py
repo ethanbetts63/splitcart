@@ -57,7 +57,6 @@ WOOLWORTHS_STORE_MAP_API1 = {
 # For the api at https://www.woolworths.com.au/api/v3/ui/fulfilment/stores
 WOOLWORTHS_STORE_MAP_API2 = {
     "store_id": "FulfilmentStoreId",
-    "retailer_store_id": "FulfilmentStoreId",
     "store_name": "Description",
     "address_line_1": "Street1",
     "address_line_2": "Street2",
@@ -96,25 +95,3 @@ COLES_STORE_MAP = {
     "is_trading": "isTrading",
 }
 
-IGA_STORE_MAP = {
-    "store_id": "storeId",
-    "retailer_store_id": "tag",
-    "store_name": "storeName",
-    "email": "email",
-    "phone_number": "phone",
-    "address_line_1": "address",
-    "suburb": "suburb",
-    "state": "state",
-    "postcode": "postcode",
-    "latitude": "latitude",
-    "longitude": "longitude",
-    "trading_hours": "hours",
-    "online_shop_url": "onlineShopUrl",
-    "store_url": "storeUrl",
-    "ecommerce_url": "ecommerceUrl",
-    "record_id": "id",
-    "status": "status",
-    "store_type": "type",
-    "site_id": "siteId",
-    "shopping_modes": "shoppingModes",
-}

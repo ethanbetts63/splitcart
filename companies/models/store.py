@@ -124,16 +124,6 @@ class Store(models.Model):
         help_text="The date and time when the store was last scheduled for scraping."
     )
 
-    # Company-specific fields
-    
-    # IGA
-    retailer_store_id = models.CharField(
-        max_length=50,
-        blank=True,
-        null=True,
-        help_text="The retailer-specific identifier for the store, if available."
-        # IGA: retailerStoreId
-    )
     class Meta:
         unique_together = ('company', 'store_id')
         verbose_name = "Store"

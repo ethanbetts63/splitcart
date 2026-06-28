@@ -65,21 +65,6 @@ class TestGetPricingStoresMap:
 
         assert result[unpriced_store.id] == bigger_anchor.id
 
-    def test_unpriced_iga_store_stays_as_itself(self, make_anchored_store):
-        iga = CompanyFactory(name='IGA')
-        unpriced_iga_store = make_anchored_store(company=iga)
-
-        # Even with a default anchor available, IGA stores are exempt from fallback
-        other_anchor = StoreFactory(company=iga)
-        extra_member = StoreFactory(company=iga)
-        group = StoreGroup.objects.create(company=iga, anchor=other_anchor)
-        StoreGroupMembership.objects.create(store=other_anchor, group=group)
-        StoreGroupMembership.objects.create(store=extra_member, group=group)
-
-        result = get_pricing_stores_map([unpriced_iga_store.id])
-
-        assert result[unpriced_iga_store.id] == unpriced_iga_store.id
-
     def test_multiple_stores_resolved_independently(self):
         company = CompanyFactory()
         anchor = StoreFactory(company=company)

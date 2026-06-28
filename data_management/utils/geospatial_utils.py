@@ -1,5 +1,4 @@
 import math
-from django.db.models import Q
 from companies.models import Postcode, Store
 
 # Radius of Earth in kilometers
@@ -54,12 +53,6 @@ def get_nearby_stores(ref_postcode_obj: Postcode, radius_km: float, companies: l
     # Exclude non-grocery divisions (liquor, petrol/convenience)
     excluded_division_names = ['Liquorland', 'Vintage Cellars', 'AMPOL', 'EG']
     all_stores = Store.objects.exclude(division__name__in=excluded_division_names)
-
-    # Only include IGA stores that have been scraped at least once
-    all_stores = all_stores.filter(
-        Q(company__name__iexact='IGA', last_scraped__isnull=False) | 
-        ~Q(company__name__iexact='IGA')
-    )
 
     # Filter by company if a list of company names is provided
     if companies:

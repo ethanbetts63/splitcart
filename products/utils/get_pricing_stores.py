@@ -62,10 +62,6 @@ def get_pricing_stores_map(requested_store_ids):
         if not store:
             continue
 
-        # For IGA, do nothing. Accept that it has no prices.
-        if store.company.name.lower() == 'iga':
-            continue
-        
         # For other companies, find the default anchor for their company
         default_anchor_id = get_default_anchor_for_company(store.company.id)
         if default_anchor_id:

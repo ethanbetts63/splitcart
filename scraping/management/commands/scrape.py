@@ -7,7 +7,6 @@ from companies.models.store import Store
 from scraping.scrapers.product_scraper_coles_v2 import ColesScraperV2
 from scraping.scrapers.product_scraper_woolworths import ProductScraperWoolworths
 from scraping.scrapers.product_scraper_aldi import ProductScraperAldi
-from scraping.scrapers.product_scraper_iga import IgaScraper as ProductScraperIga
 from scraping.utils.coles_session_manager import ColesSessionManager
 from scraping.utils.product_scraping_utils.get_woolworths_categories import get_woolworths_categories
 from scraping.utils.product_scraping_utils.get_coles_categories import get_coles_categories
@@ -28,7 +27,6 @@ class Command(BaseCommand):
         parser.add_argument('--coles', action='store_true', help='Run the session-persistent Coles v2 scraper across all Coles stores.')
         parser.add_argument('--coles-v3', action='store_true', help='Same as --coles but fetches categories in parallel (threaded).')
         parser.add_argument('--aldi', action='store_true', help='Limit the scheduler worker to Aldi stores.')
-        parser.add_argument('--iga', action='store_true', help='Limit the scheduler worker to IGA stores.')
         parser.add_argument('--dev', action='store_true', help='Use the local dev server instead of the production server.')
 
     def handle(self, *args, **options):
@@ -132,7 +130,6 @@ class Command(BaseCommand):
         companies_to_scrape = []
         if options['woolworths']: companies_to_scrape.append('Woolworths')
         if options['aldi']: companies_to_scrape.append('Aldi')
-        if options['iga']: companies_to_scrape.append('Iga')
 
         scope = f" for {', '.join(companies_to_scrape)}" if companies_to_scrape else " for all non-Coles companies"
         self.stdout.write(self.style.SUCCESS(f"Starting scheduler worker{scope}..."))
@@ -203,11 +200,6 @@ class Command(BaseCommand):
                 scraper = ProductScraperAldi(
                     command=self, company=store.company.name, store_id=store.store_id,
                     store_name=store.store_name, state=store.state
-                )
-            elif company_name == "Iga":
-                scraper = ProductScraperIga(
-                    command=self, company=store.company.name, store_id=store.store_id,
-                    retailer_store_id=store.retailer_store_id, store_name=store.store_name, state=store.state
                 )
             else:
                 self.stdout.write(self.style.ERROR(f"No scraper implemented for company '{company_name}'."))

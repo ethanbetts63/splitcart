@@ -16,9 +16,6 @@ class ProductPriceSummary(models.Model):
     # The number of different companies that stock this product.
     company_count = models.PositiveIntegerField(default=0, db_index=True)
 
-    # The number of different IGA stores that stock this product.
-    iga_store_count = models.PositiveIntegerField(default=0)
-    
     # The maximum possible discount percentage for this product globally.
     # Calculated as: ((max_price - min_price) / max_price) * 100
     best_possible_discount = models.IntegerField(db_index=True, null=True)

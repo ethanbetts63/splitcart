@@ -59,9 +59,7 @@ def get_bargain_first_ordering(anchor_store_ids, primary_category_slugs, limit=N
             continue
 
         company_ids = {p.store.company_id for p in prices}
-        is_iga = any(p.store.company.name.lower() == 'iga' for p in prices)
-        iga_stores = {p.store_id for p in prices if p.store.company.name.lower() == 'iga'}
-        if len(company_ids) < 2 and (not is_iga or len(iga_stores) < 2):
+        if len(company_ids) < 2:
             continue
 
         min_price_obj = min(prices, key=lambda p: p.price)

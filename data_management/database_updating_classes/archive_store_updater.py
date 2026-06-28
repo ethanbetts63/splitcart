@@ -100,7 +100,6 @@ class ArchiveStoreUpdater:
             'postcode': store_data.get('postcode'),
             'latitude': store_data.get('latitude'),
             'longitude': store_data.get('longitude'),
-            'retailer_store_id': store_data.get('retailer_store_id')
         }
 
         store, created = Store.objects.get_or_create(

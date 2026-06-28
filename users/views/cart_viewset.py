@@ -4,13 +4,11 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 
-from users.models import Cart, CartItem, CartSubstitution, SelectedStoreList
+from users.models import Cart, CartItem, CartSubstitution
 from products.models import Product
 from users.serializers.cart_serializer import CartSerializer
 from splitcart.permissions import IsAuthenticatedOrAnonymous
-from data_management.utils.cart_optimization.substitute_manager import SubstituteManager
 from users.utils.name_generator import generate_unique_name
-from users.utils.cart_optimization import run_cart_optimization
 
 
 class CartViewSet(viewsets.ModelViewSet):
@@ -55,14 +53,7 @@ class CartViewSet(viewsets.ModelViewSet):
         unique_name = generate_unique_name(Cart, owner_filter, "Shopping List")
         
         # is_active is True by default for new carts via this method
-        cart = serializer.save(**owner_filter, name=unique_name, is_active=True)
-        
-        # Associate with the most recent store list
-        store_list_owner_filter = {'user': user} if user else {'anonymous_id': anonymous_id}
-        store_list = SelectedStoreList.objects.filter(**store_list_owner_filter).order_by('-last_used_at').first()
-        if store_list:
-            cart.selected_store_list = store_list
-            cart.save()
+        serializer.save(**owner_filter, name=unique_name, is_active=True)
 
     def perform_destroy(self, instance):
         """
@@ -92,17 +83,6 @@ class CartViewSet(viewsets.ModelViewSet):
             )
         else:
              return Response({"detail": "Authentication or anonymous ID required."}, status=status.HTTP_403_FORBIDDEN)
-
-        if created:
-            store_list = None
-            if user.is_authenticated:
-                store_list = SelectedStoreList.objects.filter(user=user).order_by('-last_used_at').first()
-            elif hasattr(request, 'anonymous_id'):
-                store_list = SelectedStoreList.objects.filter(anonymous_id=request.anonymous_id).order_by('-last_used_at').first()
-            
-            if store_list:
-                cart.selected_store_list = store_list
-                cart.save()
 
         if cart:
             serializer = self.get_serializer(cart)
@@ -168,18 +148,6 @@ class CartViewSet(viewsets.ModelViewSet):
             except Cart.DoesNotExist:
                 raise ValidationError({'cart_id': 'Cart not found.'})
 
-            # Lazy-link the store list if the cart doesn't have one yet.
-            # The store list is saved independently by the frontend; it just may not
-            # have been linked when the cart was first created.
-            if not cart.selected_store_list:
-                user = request.user
-                owner_filter = {'user': user} if user.is_authenticated else {'anonymous_id': getattr(request, 'anonymous_id', None)}
-                if any(v is not None for v in owner_filter.values()):
-                    store_list = SelectedStoreList.objects.filter(**owner_filter).order_by('-last_used_at').first()
-                    if store_list:
-                        cart.selected_store_list = store_list
-                        cart.save(update_fields=['selected_store_list'])
-
             existing_items_map = {item.product.id: item for item in cart.items.select_related('product')}
             incoming_product_ids = {item_data.get('product_id') for item_data in items_data}
 
@@ -243,13 +211,7 @@ class CartViewSet(viewsets.ModelViewSet):
                     CartSubstitution.objects.bulk_update(subs_to_update, ['is_approved', 'quantity'])
 
             if to_create:
-                created_items = CartItem.objects.bulk_create(to_create)
-                if cart.selected_store_list:
-                    store_ids = list(cart.selected_store_list.stores.values_list('id', flat=True))
-                    if store_ids:
-                        for item in created_items:
-                            manager = SubstituteManager(product_id=item.product.id, store_ids=store_ids)
-                            manager.create_cart_substitutions(original_cart_item=item)
+                CartItem.objects.bulk_create(to_create)
 
         cart = Cart.objects.prefetch_related(
             'items__product__prices__store__company',
@@ -262,16 +224,3 @@ class CartViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(cart)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @action(detail=True, methods=['post'], url_path='optimize')
-    def optimize(self, request, *args, **kwargs):
-        """
-        Performs optimization on a specific cart by calling the optimization utility.
-        The store list for optimization is passed directly in the request body.
-        """
-        cart_obj = self.get_object()
-        store_list = cart_obj.selected_store_list
-        if not store_list:
-            return Response({'error': 'No store list linked to this cart.'}, status=status.HTTP_400_BAD_REQUEST)
-
-        max_stores_options = request.data.get('max_stores_options', [2, 3, 4])
-        return run_cart_optimization(cart_obj, store_list, max_stores_options)

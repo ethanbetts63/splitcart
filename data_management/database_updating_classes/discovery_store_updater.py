@@ -61,7 +61,6 @@ class DiscoveryStoreUpdater:
             'postcode': store_data.get('postcode'),
             'latitude': store_data.get('latitude'),
             'longitude': store_data.get('longitude'),
-            'retailer_store_id': store_data.get('retailer_store_id')
         }
 
         # Remove None values so we don't overwrite existing data with nulls during an update

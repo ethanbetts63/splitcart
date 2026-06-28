@@ -24,6 +24,4 @@ class StoreFactory(DjangoModelFactory):
     last_scraped = None
     needs_rescraping = False
     scheduled_at = None
-    
-    retailer_store_id = factory.Sequence(lambda n: f"retailer_{n}")
 

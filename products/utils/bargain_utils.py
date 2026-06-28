@@ -34,12 +34,8 @@ def calculate_bargains(product_ids, store_ids):
         if len(prices) < 2:
             continue
         
-        # A bargain must be between different companies or between different IGA stores
         company_ids = {p.store.company_id for p in prices}
-        is_iga = any(p.store.company.name.lower() == 'iga' for p in prices)
-        iga_stores = {p.store_id for p in prices if p.store.company.name.lower() == 'iga'}
-        
-        if len(company_ids) < 2 and (not is_iga or len(iga_stores) < 2):
+        if len(company_ids) < 2:
             continue
 
         min_price_obj = min(prices, key=lambda p: p.price)

@@ -161,7 +161,6 @@ _COMPANY_KEY_MAP = {
     'coles': 'Coles',
     'woolworths': 'Woolworths',
     'aldi': 'Aldi',
-    'iga': 'Iga',
 }
 
 

@@ -86,28 +86,6 @@ WOOLWORTHS_FIELD_MAP = {
     "health_star_rating": "AdditionalAttributes.healthstarrating",
 }
 
-IGA_FIELD_MAP = {
-    "sku": "productId",
-    "name": "name",
-    "brand": "brand",
-    "barcode": "barcode",
-    "description": "description",
-    "ingredients": None,
-    "allergens": None,
-    "country_of_origin": None,
-    "size": "unitOfSize.size",
-    "url": None,
-    "category_path": "defaultCategory.0.categoryBreadcrumb",
-    "price_current": "priceNumeric",
-    "price_was": None,
-    "per_unit_price_string": "pricePerUnit",
-    "per_unit_price_value": None,
-    "per_unit_price_measure": None,
-    "average_user_rating": None,
-    "rating_count": None,
-    "health_star_rating": None,
-}
-
 ALDI_FIELD_MAP = {
     "sku": "sku",
     "name": "name",

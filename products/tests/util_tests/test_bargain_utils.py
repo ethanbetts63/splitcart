@@ -84,18 +84,6 @@ class TestCalculateBargains:
 
         assert result == []
 
-    def test_two_iga_stores_with_different_prices_is_a_bargain(self):
-        iga = CompanyFactory(name='IGA')
-        product = ProductFactory()
-        store1 = StoreFactory(company=iga)
-        store2 = StoreFactory(company=iga)
-        PriceFactory(product=product, store=store1, price=Decimal('10.00'))
-        PriceFactory(product=product, store=store2, price=Decimal('7.00'))
-
-        result = calculate_bargains([product.id], [store1.id, store2.id])
-
-        assert len(result) == 1
-
     def test_returns_correct_cheaper_store_name_and_company(self):
         product = ProductFactory()
         woolworths = CompanyFactory(name='Woolworths')

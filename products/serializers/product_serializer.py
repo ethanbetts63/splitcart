@@ -142,10 +142,6 @@ class ProductSerializer(serializers.ModelSerializer):
         if company_name_lower == 'woolworths':
             return base_url.replace("/large/", "/medium/")
 
-        # --- Handle IGA (resize by changing URL parameters) ---
-        if company_name_lower == 'iga':
-            return base_url.replace("w_500", "w_280").replace("h_500", "h_280")
-            
         # For any other company, return the formatted template URL as is
         return base_url
 

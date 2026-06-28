@@ -1,7 +1,6 @@
 import uuid
 from django.db import models
 from django.conf import settings
-from users.models.selected_store_list import SelectedStoreList
 
 class Cart(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -15,13 +14,6 @@ class Cart(models.Model):
     anonymous_id = models.CharField(max_length=255, null=True, blank=True, db_index=True)
     name = models.CharField(max_length=255, default="Unnamed Cart")
     is_active = models.BooleanField(default=False)
-    selected_store_list = models.ForeignKey(
-        SelectedStoreList,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='carts'
-    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
