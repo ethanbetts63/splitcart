@@ -19,7 +19,7 @@ class Command(BaseCommand):
     help = (
         'Scrapes product data. '
         '--coles: session-persistent Coles scraper using a hardcoded API store ID. '
-        '--woolworths/--aldi: single-company scraper using hardcoded API store IDs.'
+        '--woolworths/--aldi: single-company scraper using hardcoded API fulfilment IDs.'
     )
 
     def add_arguments(self, parser):

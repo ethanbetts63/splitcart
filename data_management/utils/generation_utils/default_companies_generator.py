@@ -1,10 +1,11 @@
 from data_management.models import SystemSetting
 from products.models import Price
 
+
 class DefaultCompaniesGenerator:
     """
-    Generates and saves the system-wide default store list.
-    Saves all store IDs that have any Price rows — one per company in practice.
+    Generates and saves the system-wide default company list.
+    Saves all company IDs that have any Price rows.
     """
     SETTING_KEY = 'default_pricing_companies'
 
