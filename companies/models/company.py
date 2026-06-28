@@ -2,8 +2,8 @@ from django.db import models
 
 class Company(models.Model):
     """
-    Represents a parent company or brand that owns one or more stores.
-    e.g., 'Coles Group', 'Woolworths Group'.
+    Represents a retailer or brand used for product pricing.
+    e.g., 'Coles', 'Woolworths'.
     """
     name = models.CharField(
         max_length=100,

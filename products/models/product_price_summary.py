@@ -7,7 +7,7 @@ class ProductPriceSummary(models.Model):
     """
     product = models.OneToOneField('products.Product', on_delete=models.CASCADE, primary_key=True, related_name='price_summary')
 
-    # The absolute lowest price available for this product, across all stores.
+    # The absolute lowest price available for this product, across all companies.
     min_price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
 
     # The absolute highest price available.

@@ -16,7 +16,6 @@ APPS_WITH_MIGRATIONS = [
 # Preserved here for reference until this command is extended to handle data loading.
 #
 # python manage.py update --archive                        # server
-# python manage.py generate --store-groups                 # server
 # python manage.py upload --product --dev                  # local
 # python manage.py update --products                       # server
 # python manage.py update --prefixes                       # server
@@ -33,9 +32,7 @@ APPS_WITH_MIGRATIONS = [
 # python manage.py generate --pillars                      # server
 # python manage.py generate --price-comps                  # server
 # python manage.py update --faqs                           # server
-# python manage.py generate --store-stats                  # server
 # python manage.py generate --price-summaries              # server
-# python manage.py generate --default-stores               # server
 # python manage.py analyze --report company_heatmap        # server
 # python manage.py analyze --report subs                   # server
 # python manage.py analyze --report savings                # server

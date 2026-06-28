@@ -1,5 +1,5 @@
 export type ShoppingPlan = {
-  [storeName: string]: {
+  [companyName: string]: {
     items: {
       product_name: string;
       brand: string | null;
@@ -10,8 +10,6 @@ export type ShoppingPlan = {
       image_base64?: string;
     }[];
     company_name: string;
-    store_address: string;
-    store_options?: { store_name: string; store_address: string; }[];
     total_cost?: number;
     subtotal?: number;
   };

@@ -17,7 +17,6 @@ class Command(BaseCommand):
         parser.add_argument('--cat-links', action='store_true', help='Update category links from the category_links_inbox directory.')
         parser.add_argument('--subs', action='store_true', help='Update substitutions from the substitutions_inbox directory.')
         parser.add_argument('--archive', action='store_true', help='Flush DB and load data from the most recent archive.')
-        parser.add_argument('--relaxed-staleness', action='store_true', help='Use a relative 7-day window for store group comparisons, based on the latest scrape date in the DB.')
 
     def handle(self, *args, **options):
         if options['archive']:
@@ -27,7 +26,6 @@ class Command(BaseCommand):
         run_products_processed = options['products']
         run_category_links = options['cat_links']
         run_substitutions = options['subs']
-        relaxed_staleness = options['relaxed_staleness']
         post_process_only = options['post_process_only']
 
         if run_substitutions:
@@ -41,7 +39,7 @@ class Command(BaseCommand):
         if run_products_processed:
             if post_process_only:
                 self.stdout.write(self.style.SUCCESS('--- Running only product post-processing tasks ---'))
-                orchestrator = UpdateOrchestrator(self, relaxed_staleness=relaxed_staleness, post_process_only=True)
+                orchestrator = UpdateOrchestrator(self, post_process_only=True)
                 orchestrator.run()
             else:
                 inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'product_inbox')
@@ -66,7 +64,7 @@ class Command(BaseCommand):
                     
                     try:
                         self.stdout.write(self.style.SUCCESS('Starting update orchestrator...'))
-                        orchestrator = UpdateOrchestrator(self, relaxed_staleness=relaxed_staleness)
+                        orchestrator = UpdateOrchestrator(self)
                         orchestrator.run()
                         # A successful run resets the counter
                         error_counter = 0

@@ -31,12 +31,6 @@ class TestUpdateCommandDispatch:
         MockOrch.return_value.run.assert_called_once()
 
     @patch(f'{BASE}.UpdateOrchestrator')
-    def test_relaxed_staleness_flag_passed_to_orchestrator(self, MockOrch):
-        call_command('update', products=True, post_process_only=True, relaxed_staleness=True)
-        _, kwargs = MockOrch.call_args
-        assert kwargs.get('relaxed_staleness') is True
-
-    @patch(f'{BASE}.UpdateOrchestrator')
     @patch(f'{BASE}.os.path.exists', return_value=False)
     def test_products_with_empty_inbox_does_not_run_orchestrator(self, mock_exists, MockOrch):
         call_command('update', products=True)

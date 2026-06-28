@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 from django.conf import settings
 
-def generate_heatmap_image(overlap_matrix, percent_of_row_matrix, percent_of_col_matrix, average_percentage_matrix, entity_type, company_name=None, state=None):
+def generate_heatmap_image(overlap_matrix, percent_of_row_matrix, percent_of_col_matrix, average_percentage_matrix, entity_type='company'):
     """
     Generates and saves a heatmap image from overlap matrices.
 
@@ -13,10 +13,11 @@ def generate_heatmap_image(overlap_matrix, percent_of_row_matrix, percent_of_col
         percent_of_row_matrix (pd.DataFrame): DataFrame with percentage of row overlap.
         percent_of_col_matrix (pd.DataFrame): DataFrame with percentage of column overlap.
         average_percentage_matrix (pd.DataFrame): DataFrame with average percentage overlap.
-        entity_type (str): 'company' or 'store'.
-        company_name (str, optional): If entity_type is 'store', the name of the company.
-        state (str, optional): If entity_type is 'store', the state to filter stores by.
+        entity_type (str): Only 'company' is supported.
     """
+    if entity_type != 'company':
+        raise ValueError("Only company heatmaps are supported.")
+
     print("    Generating heatmap image...")
 
     # Custom annotation function for heatmap
@@ -42,16 +43,8 @@ def generate_heatmap_image(overlap_matrix, percent_of_row_matrix, percent_of_col
                 xticklabels=True, yticklabels=True, 
                 annot_kws={"fontsize":8})
 
-    if entity_type == 'company':
-        title = 'Product Overlap Between Companies (Average Percentage)'
-        filename_suffix = 'company-heatmap'
-    else:
-        if state:
-            title = f'Product Overlap Between Stores for {company_name} in {state} (Average Percentage)'
-            filename_suffix = f'{company_name.lower()}-{state.lower()}-store-heatmap'
-        else:
-            title = f'Product Overlap Between Stores for {company_name} (Average Percentage)'
-            filename_suffix = f'{company_name.lower()}-store-heatmap'
+    title = 'Product Overlap Between Companies (Average Percentage)'
+    filename_suffix = 'company-heatmap'
 
     plt.title(title)
     plt.xlabel(entity_type.capitalize())

@@ -14,7 +14,7 @@ import type { ExportData } from '../types';
 
 const finalCartFaqs = [
   {"question": "How is baseline cost calculated?", "answer": "By taking each item in your list, finding the average price across all available stores, and then summing up these average prices for all items. We use this method, not because it shows the highest savings, but because we believe it is realistic, transparent and honest."},
-  {"question": "What is the \"Best Single Store\" option?", "answer": "The cheapest total price if you bought everything at just one store. We find the single store that has the most items on your list for the lowest price, giving you a clear benchmark for your savings."},
+  {"question": "What is the \"Best Single Company\" option?", "answer": "The cheapest total price if you bought everything from just one company. We find the single company that has the most items on your list for the lowest price, giving you a clear benchmark for your savings."},
   {"question": "How can I maximize my savings with SplitCart?", "answer": "Approve more substitutes and/or approve more stores. For example, consider adding stores near your work or on your way home not just close to home."}
 ];
 

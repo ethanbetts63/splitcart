@@ -22,9 +22,8 @@ class UpdateOrchestrator:
     The main entry point for the V2 product update process.
     Initializes the global caches and orchestrates the pipeline for each file.
     """
-    def __init__(self, command, relaxed_staleness=False, post_process_only=False):
+    def __init__(self, command, post_process_only=False):
         self.command = command
-        self.relaxed_staleness = relaxed_staleness
         self.post_process_only = post_process_only
         self.inbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'product_inbox')
         self.caches = {}

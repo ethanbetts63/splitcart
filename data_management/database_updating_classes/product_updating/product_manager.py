@@ -22,7 +22,7 @@ class ProductManager:
         """
         self.command.stdout.write("    - Resolving products and SKUs (create vs. update)...")
         products_to_create_data = []
-        products_to_update_data = []  # Now stores (product_id, data)
+        products_to_update_data = []  # Stores (product_id, data)
         skus_to_create_tuples = []    # Stores (product_id or norm_string, sku_value)
 
         company_sku_cache = self.caches['products_by_sku'].get(company_obj.name, {})

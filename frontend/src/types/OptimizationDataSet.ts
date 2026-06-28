@@ -1,8 +1,8 @@
 import type { OptimizationResult } from './OptimizationResult';
-import type { BestSingleStore } from './BestSingleStore';
+import type { BestSingleCompany } from './BestSingleCompany';
 
 export type OptimizationDataSet = {
   baseline_cost: number;
   optimization_results: OptimizationResult[];
-  best_single_store?: BestSingleStore;
+  best_single_company?: BestSingleCompany;
 };

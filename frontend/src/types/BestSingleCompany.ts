@@ -1,7 +1,7 @@
 import type { ShoppingPlan } from './ShoppingPlan';
 
-export type BestSingleStore = {
-  max_stores: 1;
+export type BestSingleCompany = {
+  max_companies: 1;
   optimized_cost: number;
   savings: number;
   shopping_plan: ShoppingPlan;

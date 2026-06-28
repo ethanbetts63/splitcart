@@ -8,18 +8,17 @@ This app is responsible for consuming data from the various "inbox" directories,
 
 1.  **Data Consumption and Processing**:
     -   The app's primary entry point is the `update` management command, which orchestrates the entire data update process.
-    -   It processes product data from the `product_inbox`, store data from the `store_inbox`, and other data types from their respective inboxes.
+    -   It processes product data from the `product_inbox` and other data types from their respective inboxes.
     -   A sophisticated, multi-stage pipeline handles the creation and updating of `Products`, `Prices`, `Categories`, `Brands`, and their complex relationships. This pipeline is designed for speed and clarity, using in-memory caches and bulk database operations to minimize overhead. For a detailed explanation of this workflow, see the `database_updating_classes/product_updating/README.md` file.
 
 2.  **Data Generation and Analysis**:
     -   Beyond simple data ingestion, this app is responsible for generating derived data and performing analysis.
-    -   The `generate` command can create supplementary data like `StoreGroups`, `PrimaryCategories`, and `ProductPriceSummary` statistics.
-    -   It also includes tools for analyzing data freshness (`--store-stats`) and generating content for the site, such as pillar pages.
+    -   The `generate` command can create supplementary data like `PrimaryCategories`, default pricing companies, and `ProductPriceSummary` statistics.
+    -   It also includes tools for generating content for the site, such as pillar pages.
 
 3.  **Data Integrity and Maintenance**:
     -   The app includes post-processing steps to ensure data integrity, such as reconciling duplicate products and brands.
     -   It contains logic to detect and fix issues in the category hierarchy, such as circular dependencies.
-    -   The `GroupMaintenanceOrchestrator` ensures that `StoreGroup` entities remain healthy and accurate over time.
 
 ## Key Components
 

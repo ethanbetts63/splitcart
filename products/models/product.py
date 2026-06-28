@@ -2,13 +2,12 @@ from django.db import models
 
 class Product(models.Model):
     """
-    Represents a specific product sold at a specific store.
-    This record connects the what (the product details) with the where (the store).
+    Represents a specific product sold by one or more companies.
     """
     name = models.CharField(
         max_length=255,
         db_index=True,
-        help_text="The full name of the product as seen in the store."
+        help_text="The full name of the product as seen on the retailer site."
     )
 
     brand = models.ForeignKey(

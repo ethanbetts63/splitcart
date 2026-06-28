@@ -20,7 +20,7 @@ class Category(models.Model):
         max_length=50,
         null=True,
         blank=True,
-        help_text="The category ID from the store's website, if available."
+        help_text="The category ID from the retailer website, if available."
     )
     parents = models.ManyToManyField(
         'self',

@@ -9,57 +9,41 @@ import type { ShoppingPlan } from '../types/ShoppingPlan';
 import { assetSrc } from '@/lib/assets';
 
 const companyLogos: { [key: string]: string } = {
-  'Aldi': assetSrc(aldiLogo),
-  'Coles': assetSrc(colesLogo),
-  'Iga': assetSrc(igaLogo),
-  'Woolworths': assetSrc(woolworthsLogo),
+  Aldi: assetSrc(aldiLogo),
+  Coles: assetSrc(colesLogo),
+  Iga: assetSrc(igaLogo),
+  Woolworths: assetSrc(woolworthsLogo),
 };
 
 const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
   <div className="divide-y divide-gray-100">
     {Object.entries(plan)
-      .filter(([, store_plan]) => store_plan.items && store_plan.items.length > 0)
-      .map(([storeName, store_plan]) => {
-        const storeTotal = store_plan.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-        const logo = companyLogos[store_plan.company_name];
+      .filter(([, companyPlan]) => companyPlan.items && companyPlan.items.length > 0)
+      .map(([companyName, companyPlan]) => {
+        const companyTotal = companyPlan.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+        const logo = companyLogos[companyPlan.company_name];
 
         const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-          if (e.currentTarget.src !== assetSrc(fallbackImage)) e.currentTarget.src = assetSrc(fallbackImage);
+          if (e.currentTarget.src !== assetSrc(fallbackImage)) {
+            e.currentTarget.src = assetSrc(fallbackImage);
+          }
         };
 
         return (
-          <div key={storeName} className="p-5">
-            {/* Store Header */}
+          <div key={companyName} className="p-5">
             <div className="flex items-center gap-4 mb-5">
               {logo && (
-                <img src={logo} alt={store_plan.company_name} className="h-10 w-auto flex-shrink-0" />
+                <img src={logo} alt={companyPlan.company_name} className="h-10 w-auto flex-shrink-0" />
               )}
               <div className="flex-grow min-w-0">
-                {store_plan.store_options && store_plan.store_options.length > 1 ? (
-                  <>
-                    <h2 className="font-bold text-lg text-gray-900 leading-tight">Buy at any of these stores:</h2>
-                    <ul className="mt-1 space-y-0.5">
-                      {store_plan.store_options.map(opt => (
-                        <li key={opt.store_name} className="text-sm text-gray-700">
-                          {opt.store_name} <span className="text-gray-400">— {opt.store_address}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                ) : (
-                  <>
-                    <h2 className="font-bold text-lg text-gray-900 leading-tight">{storeName}</h2>
-                    <p className="text-sm text-gray-400 truncate">{store_plan.store_address}</p>
-                  </>
-                )}
+                <h2 className="font-bold text-lg text-gray-900 leading-tight">{companyName}</h2>
               </div>
               <div className="flex-shrink-0 text-right">
-                <p className="text-xs text-gray-400 uppercase tracking-wide">Store Total</p>
-                <p className="font-bold text-lg text-gray-900">${storeTotal.toFixed(2)}</p>
+                <p className="text-xs text-gray-400 uppercase tracking-wide">Company Total</p>
+                <p className="font-bold text-lg text-gray-900">${companyTotal.toFixed(2)}</p>
               </div>
             </div>
 
-            {/* Items */}
             <div className="overflow-x-auto -mx-5 px-5">
               <table className="w-full min-w-[480px] text-sm">
                 <thead>
@@ -72,7 +56,7 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
-                  {store_plan.items.map((item, index) => (
+                  {companyPlan.items.map((item, index) => (
                     <tr key={index} className="group">
                       <td className="py-3 pr-3">
                         <img
@@ -90,7 +74,7 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
                               <span className="text-xs text-gray-400">{item.brand}</span>
                             )}
                             {item.brand && item.brand !== 'N/A' && item.size && (
-                              <span className="text-gray-200">·</span>
+                              <span className="text-gray-200">.</span>
                             )}
                             {item.size && (
                               <Badge variant="outline" className="text-xs px-1.5 py-0">{item.size}</Badge>
@@ -106,8 +90,8 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
                 </tbody>
                 <tfoot>
                   <tr className="border-t-2 border-gray-200">
-                    <td colSpan={4} className="pt-3 text-sm text-gray-500 font-medium">Total for {store_plan.store_options && store_plan.store_options.length > 1 ? 'any of the above' : storeName}</td>
-                    <td className="pt-3 text-right font-bold text-gray-900">${storeTotal.toFixed(2)}</td>
+                    <td colSpan={4} className="pt-3 text-sm text-gray-500 font-medium">Total for {companyName}</td>
+                    <td className="pt-3 text-right font-bold text-gray-900">${companyTotal.toFixed(2)}</td>
                   </tr>
                 </tfoot>
               </table>

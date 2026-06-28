@@ -8,7 +8,7 @@ Below is a detailed explanation of the available commands and their workflows.
 
 ### Data Update Workflow
 
-The core workflow for updating product and store data involves three main stages: uploading raw data, processing it on the server, and then running post-processing tasks.
+The core workflow for updating product data involves three main stages: uploading raw data, processing it on the server, and then running post-processing tasks.
 
 #### 1. Uploading Data (Local)
 
@@ -55,9 +55,6 @@ These commands generate supplementary data, statistics, and content required by 
 
 These commands are typically run on the server to create derived data or perform analysis.
 
--   `python manage.py generate --store-groups`
-    Analyzes stores and their product offerings to group them into logical clusters for comparison.
-
 -   `python manage.py generate --primary-cats`
     Generates primary categories based on the existing category hierarchy.
 
@@ -68,13 +65,7 @@ These commands are typically run on the server to create derived data or perform
     Generates "pillar pages," which are landing pages for primary product categories.
 
 -   `python manage.py generate --price-comps`
-    Generates data for price comparisons between different stores.
-    
--   `python manage.py generate --store-stats`
-    Generates and displays a report on data freshness and coverage for all stores.
+    Generates data for price comparisons between different companies.
 
 -   `python manage.py generate --price-summaries`
     Aggregates price data to create summary views, improving performance for product listings.
-
--   `python manage.py generate --default-stores`
-    Sets a default list of "anchor stores" that are used for site-wide comparisons.
