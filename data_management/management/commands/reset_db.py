@@ -1,3 +1,4 @@
+import json
 import shutil
 
 from django.conf import settings
@@ -75,4 +76,24 @@ class Command(BaseCommand):
         self.stdout.write("\nRunning migrate...")
         call_command("migrate")
 
+        self._reset_scraping_data()
+
         self.stdout.write(self.style.SUCCESS("\nDatabase reset complete."))
+
+    def _reset_scraping_data(self):
+        scraping_data = settings.BASE_DIR / 'scraping' / 'data'
+
+        # Reset translation tables to empty dicts so the scraper doesn't crash
+        for name in (
+            'brand_translation_table.json',
+            'product_normalized_name_brand_size_translation_table.json',
+        ):
+            path = scraping_data / name
+            path.write_text('{}', encoding='utf-8')
+            self.stdout.write(f"  Reset: scraping/data/{name}")
+
+        # Remove stale etag and progress files
+        for pattern in ('*.etag', '*.progress'):
+            for f in scraping_data.glob(pattern):
+                f.unlink()
+                self.stdout.write(f"  Removed: scraping/data/{f.name}")
