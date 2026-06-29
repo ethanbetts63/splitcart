@@ -1,6 +1,6 @@
 from .base_python_file_view import BasePythonFileView
 from data_management.database_updating_classes.product_updating.translation_table_generators.brand_translation_table_generator import BrandTranslationTableGenerator
-from splitcart.permissions import IsInternalAPIRequest
+from config.permissions import IsInternalAPIRequest
 
 class BrandTranslationFileView(BasePythonFileView):
     """

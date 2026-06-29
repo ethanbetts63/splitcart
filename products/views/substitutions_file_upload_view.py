@@ -4,7 +4,7 @@ from django.conf import settings
 from rest_framework.response import Response
 from rest_framework import status
 from data_management.views.base_file_upload_view import BaseFileUploadView
-from splitcart.permissions import IsInternalAPIRequest
+from config.permissions import IsInternalAPIRequest
 
 class SubstitutionsFileUploadView(BaseFileUploadView):
     """

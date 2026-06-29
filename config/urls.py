@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from django.contrib.sitemaps.views import sitemap
 from django.http import HttpResponsePermanentRedirect
-from splitcart.sitemaps import StaticViewSitemap, CategoryPageSitemap
+from config.sitemaps import StaticViewSitemap, CategoryPageSitemap
 from data_management.views.react_app_view import ReactAppView
 
 sitemaps = {

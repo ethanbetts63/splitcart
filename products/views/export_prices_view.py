@@ -4,7 +4,7 @@ from rest_framework.pagination import CursorPagination
 from datetime import date 
 from products.models import Price
 from data_management.serializers.price_export_serializer import PriceExportSerializer
-from splitcart.permissions import IsInternalAPIRequest
+from config.permissions import IsInternalAPIRequest
 from rest_framework.throttling import ScopedRateThrottle
 
 class ExportPricesView(ListAPIView):
