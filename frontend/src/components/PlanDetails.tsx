@@ -3,7 +3,6 @@ import { Badge } from "./ui/badge";
 import fallbackImage from '@/assets/splitcart_symbol_v6.webp';
 import aldiLogo from '../assets/ALDI_logo.webp';
 import colesLogo from '../assets/coles_logo.webp';
-import igaLogo from '../assets/iga_logo.webp';
 import woolworthsLogo from '../assets/woolworths_logo.webp';
 import type { ShoppingPlan } from '../types/ShoppingPlan';
 import { assetSrc } from '@/lib/assets';
@@ -11,7 +10,6 @@ import { assetSrc } from '@/lib/assets';
 const companyLogos: { [key: string]: string } = {
   Aldi: assetSrc(aldiLogo),
   Coles: assetSrc(colesLogo),
-  Iga: assetSrc(igaLogo),
   Woolworths: assetSrc(woolworthsLogo),
 };
 

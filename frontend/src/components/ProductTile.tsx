@@ -78,7 +78,6 @@ const ProductTile: React.FC<ProductTileProps> = ({
     const companyShortNames: { [key: string]: string } = {
       'Woolworths': 'Woolies',
       'Coles': 'Coles',
-      'IGA': 'IGA',
       'Aldi': 'Aldi',
     };
 

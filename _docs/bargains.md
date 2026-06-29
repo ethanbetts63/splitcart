@@ -2,7 +2,7 @@
 
 ## SEO Information
 *   **Title:** SplitCart: Australia's Best Grocery Bargains
-*   **Description:** Find the best grocery bargains in Australia. SplitCart compares prices across Coles, Woolworths, Aldi, and IGA to find you the biggest discounts.
+*   **Description:** Find the best grocery bargains in Australia. SplitCart compares prices across Coles, Woolworths, and Aldi to find you the biggest discounts.
 *   **Canonical Path:** /bargains
 
 ## Hero Section
@@ -15,7 +15,6 @@ The page displays a bargain carousel for each of the following stores:
 *   Coles Bargains
 *   Woolworths Bargains
 *   Aldi Bargains
-*   Iga Bargains
 
 ## Bargain Stats Section
 **Title:** Which supermarket is the **cheapest** in Australia?
@@ -27,26 +26,12 @@ The page displays a bargain carousel for each of the following stores:
 *   **Same Price:** 2%
 *   **Coles:** 30%
 
-### Are products cheaper at Aldi or Iga?
-**98%** of products tested were cheaper at Aldi than Iga.
-*47 common products compared*
-*   **Aldi:** 98%
-*   **Same Price:** 0%
-*   **Iga:** 2%
-
 ### Are products cheaper at Aldi or Woolworths?
 **53%** of products tested were cheaper at Aldi than Woolworths.
 *49 common products compared*
 *   **Aldi:** 53%
 *   **Same Price:** 2%
 *   **Woolworths:** 45%
-
-### Are products cheaper at Coles or Iga?
-**89%** of products tested were cheaper at Coles than Iga.
-*8718 common products compared*
-*   **Coles:** 89%
-*   **Same Price:** 0%
-*   **Iga:** 11%
 
 ### Are products cheaper at Coles or Woolworths?
 **32%** of products tested were cheaper at Woolworths than Coles.
@@ -55,17 +40,10 @@ The page displays a bargain carousel for each of the following stores:
 *   **Same Price:** 55%
 *   **Woolworths:** 32%
 
-### Are products cheaper at Iga or Woolworths?
-**94%** of products tested were cheaper at Woolworths than Iga.
-*9672 common products compared*
-*   **Iga:** 6%
-*   **Same Price:** 0%
-*   **Woolworths:** 94%
-
 ### How We Compare
 These statistics are based on the full set of identical products that two companies both sell according to our database.
 
-You'll notice this number changes for each pairing. Companies like Aldi have a highly unique product range, which results in a smaller overlap and fewer items being compared. For IGA, stores are independently owned and prices vary, so we use the average IGA price for each product to make the comparison fair.
+You'll notice this number changes for each pairing. Companies like Aldi have a highly unique product range, which results in a smaller overlap and fewer items being compared.
 
 ## Frequently Asked Questions
 **Title:** Frequently Asked Questions about Bargains
@@ -83,5 +61,3 @@ The final and most significant markdowns at Coles often appear between 7:00 PM a
 ### When do expiring products get discounted at Woolworths?
 Woolworths generally uses a progressive markdown schedule, with the deepest discounts occurring in the late afternoon and evening. The best time to hunt for the maximum reduction (often 50% to 80% off on meat, chilled meals, and dairy) is typically after 6:00 PM and up to one hour before closing. Earlier in the day (around 2:00 PM to 4:00 PM) you will find initial, smaller markdowns (20% to 40% off), but the staff perform the final, aggressive reduction sweep in the evening to clear items expiring that day.
 
-### When do expiring products get discounted at IGA?
-Since IGA stores are independently owned, there is no single markdown schedule. Discounts are highly dependent on the local store manager and the volume of stock. Some stores follow the evening trend, marking down items after 5:00 PM, while others apply reductions first thing in the morning. To find the best deals, you should check if your local IGA uses markdown apps like FoodHero or Gander, or simply ask a staff member when their department typically applies the 'Reduced to Clear' stickers.

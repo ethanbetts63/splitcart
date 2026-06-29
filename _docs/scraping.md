@@ -20,7 +20,7 @@ scrape (management command)
   │                              └─ prefill known barcodes from DB API
   │                                   └─ scrape individual product pages for GTINs
   │
-  └─ [--woolworths/--aldi/--iga]  scheduler worker
+  └─ [--woolworths/--aldi]  scheduler worker
        └─ polls /api/scheduler/next-candidate/ in a loop
             └─ BaseProductScraper
                  ├─ get categories (live API call per store)
@@ -70,7 +70,7 @@ Phase 2 (`scrape_barcodes`) also uses a `.progress` sidecar file (one JSON line 
 
 ### Store-specific category fetching
 
-Woolworths and Coles use the same category list for every store. Aldi and IGA fetch a category tree per store from their API and use only leaf nodes (recursive traversal). IGA also has an extra pagination guard: if the current page returns the same SKU set as the previous page, it stops (their API repeats the last page instead of returning empty).
+Woolworths and Coles use the same category list for every store. Aldi fetches a category tree per store from its API and uses only leaf nodes (recursive traversal).
 
 ### JsonlWriter commit/cleanup
 
@@ -154,7 +154,7 @@ On the server, when a price record is being updated, the server compares the inc
 
 ### Store discovery
 
-Store scrapers (`find_stores`) use a separate base class (`BaseStoreScraper`) and write one JSON file per store to `store_outbox`. Woolworths and Aldi use a coordinate grid covering Australia with a random step size (overlap is deduplicated by an in-memory store ID set). IGA enumerates integer store IDs 1–23,001 via a third-party JSONP endpoint. Coles uses Selenium to make GraphQL calls from inside the browser (cookies are needed; the session isn't copied to `requests`).
+Store scrapers (`find_stores`) use a separate base class (`BaseStoreScraper`) and write one JSON file per store to `store_outbox`. Woolworths and Aldi use a coordinate grid covering Australia with a random step size (overlap is deduplicated by an in-memory store ID set). Coles uses Selenium to make GraphQL calls from inside the browser (cookies are needed; the session isn't copied to `requests`).
 
 ### Key ideas
 
@@ -167,6 +167,5 @@ Store scrapers (`find_stores`) use a separate base class (`BaseStoreScraper`) an
 **Two-phase Coles scraping** — separates the fast part (category browse, ~1 request per page) from the slow part (individual product pages for barcodes). Phase 1 can be completed entirely before committing to phase 2. Phase 2 skips products where barcodes are already known from the DB.
 
 **Price hash** — a deterministic MD5 over the price fields lets the server skip DB writes for prices that haven't changed since the last scrape, making re-scraping cheap when prices are stable.
-
 
 

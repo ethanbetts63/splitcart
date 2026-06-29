@@ -1,7 +1,7 @@
 {
   "name": "SplitCart",
   "short_name": "SplitCart",
-  "description": "Every store has a deal — but finding them all takes forever. SplitCart automates discount hunting by comparing prices across Coles, Woolworths, Aldi and IGA and splitting your cart for the cheapest overall shop. One list, multiple stores, maximum savings.",
+  "description": "Every store has a deal — but finding them all takes forever. SplitCart automates discount hunting by comparing prices across Coles, Woolworths and Aldi and splitting your cart for the cheapest overall shop. One list, multiple stores, maximum savings.",
   "icons": [
     {
       "src": "favicon.ico",

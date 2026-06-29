@@ -10,7 +10,6 @@ A pre-computed, one-to-one snapshot of aggregated price metrics for a single pro
 | `min_price` | Decimal | Cheapest current price across all stores |
 | `max_price` | Decimal | Most expensive current price across all stores |
 | `company_count` | PositiveInt (indexed) | Number of distinct companies that stock this product |
-| `iga_store_count` | PositiveInt | Number of distinct IGA stores that stock it |
 | `best_possible_discount` | Int (indexed) | `((max − min) / max) × 100`, rounded down |
 
 ---
@@ -30,7 +29,7 @@ The generator fully rebuilds all summaries on each run (delete then recreate in 
 
 1. The product has **≥ 2 prices** in the DB
 2. `min_price ≠ max_price` (there is actually a price difference)
-3. The product is stocked by **≥ 2 companies**, OR by **≥ 2 IGA stores** (IGA is store-by-store priced, so two IGA stores count as meaningful variance)
+3. The product is stocked by **≥ 2 companies**
 4. `best_possible_discount` is between **5% and 70%** (filters out noise below 5% and implausibly large gaps above 70%)
 
 ---
@@ -50,12 +49,6 @@ This keeps the expensive per-user calculation to a small, already-promising cand
 **Files using this pattern:**
 - `products/views/bargain_carousel_view.py` — homepage bargain carousel
 - `products/utils/product_ordering.py` — `get_bargain_first_ordering()` for product list pages
-
----
-
-## IGA special-casing
-
-IGA stores are grouped into anchors the same way Coles/Woolworths are — but each IGA store is almost always independently priced. A product that appears at two IGA stores at different prices is a genuine bargain opportunity. `iga_store_count` exists specifically to catch this case: a product stocked by only one company (IGA) but at two+ stores with price variance still qualifies for a summary. If we gave this exception for all companies it would create an explosion in database size required for these summaries. But becuase IGA is almost never actually has any good prices and a low product range comminality, it seems to be okay. 
 
 ---
 

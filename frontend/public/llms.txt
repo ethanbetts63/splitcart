@@ -1,9 +1,9 @@
 # SplitCart
-> SplitCart is an Australian grocery price comparison service that compares prices across Coles, Woolworths, Aldi and IGA, then helps shoppers find the cheapest way to buy a grocery list.
+> SplitCart is an Australian grocery price comparison service that compares prices across Coles, Woolworths, and Aldi, then helps shoppers find the cheapest way to buy a grocery list.
 
 ## Core Pages
 - [Home](https://www.splitcart.com.au/): Overview of SplitCart, how grocery list comparison works, supported supermarkets, and the cart-splitting approach.
-- [Bargains](https://www.splitcart.com.au/bargains): Current grocery bargains and supermarket price comparison data across Coles, Woolworths, Aldi and IGA.
+- [Bargains](https://www.splitcart.com.au/bargains): Current grocery bargains and supermarket price comparison data across Coles, Woolworths, and Aldi.
 - [Fruit & Vegetables](https://www.splitcart.com.au/categories/fruit-and-veg): Fruit and vegetable price comparisons across major Australian supermarkets.
 - [Dairy & Eggs](https://www.splitcart.com.au/categories/dairy-and-eggs): Dairy, milk, cheese, yoghurt and egg price comparisons.
 - [Drinks](https://www.splitcart.com.au/categories/drinks): Alcoholic and non-alcoholic drink price comparisons.
@@ -14,7 +14,7 @@
 - [Privacy Policy](https://www.splitcart.com.au/privacy): Information about SplitCart data collection and privacy practices.
 
 ## Key Facts
-- SplitCart compares grocery prices across Coles, Woolworths, Aldi and IGA in Australia.
+- SplitCart compares grocery prices across Coles, Woolworths, and Aldi in Australia.
 - SplitCart can split a shopping list across multiple supermarkets to find a lower overall price.
 - SplitCart supports substitute products, which lets shoppers approve acceptable alternatives before comparing total cart cost.
 - SplitCart is built for Australian shoppers who want to compare grocery prices, find bargains, and reduce supermarket spending.

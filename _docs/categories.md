@@ -240,4 +240,4 @@ generate_category_suspects → agent classifies → apply_category_decisions
 
 - **MySQL JSON filtering**: `primary_category_slugs__contains=[slug]` runs a `JSON_CONTAINS` per slug, ORed together. Fast enough now; if it becomes a bottleneck at scale, a junction table is the escape hatch — the migration is just materializing the existing denormalized list.
 - **CATEGORY_MAPPINGS maintenance**: new supermarket categories added during scraping silently get no `primary_category_slug` until the mapping file is updated. An `unknown` path_type in logs is the signal.
-- **Promotional/seasonal path filtering**: scrapers for Coles, Aldi, and IGA already skip promotional root subtrees during category tree traversal. Coles `DataCleanerColes._pick_canonical_heir` scans all `onlineHeirs` and picks the first non-promotional root before the path reaches PathManager.
+- **Promotional/seasonal path filtering**: scrapers for Coles and Aldi already skip promotional root subtrees during category tree traversal. Coles `DataCleanerColes._pick_canonical_heir` scans all `onlineHeirs` and picks the first non-promotional root before the path reaches PathManager.

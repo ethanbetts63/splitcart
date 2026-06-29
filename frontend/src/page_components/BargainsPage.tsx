@@ -31,10 +31,6 @@ const bargainsFaqs = [
     question: "When do expiring products get discounted at Woolworths?",
     answer: "Woolworths generally uses a progressive markdown schedule, with the deepest discounts occurring in the late afternoon and evening. The best time to hunt for the maximum reduction (often 50% to 80% off on meat, chilled meals, and dairy) is typically after 6:00 PM and up to one hour before closing. Earlier in the day (around 2:00 PM to 4:00 PM) you will find initial, smaller markdowns (20% to 40% off), but the staff perform the final, aggressive reduction sweep in the evening to clear items expiring that day."
   },
-  {
-    question: "When do expiring products get discounted at IGA?",
-    answer: "Since IGA stores are independently owned, there is no single markdown schedule. Discounts are highly dependent on the local store manager and the volume of stock. Some stores follow the evening trend, marking down items after 5:00 PM, while others apply reductions first thing in the morning. To find the best deals, you should check if your local IGA uses markdown apps like FoodHero or Gander, or simply ask a staff member when their department typically applies the 'Reduced to Clear' stickers."
-  },
 ];
 
 type BargainsPageProps = {
@@ -52,7 +48,6 @@ const BargainsPage = ({
       { name: 'Coles', id: 1 },
       { name: 'Woolworths', id: 2 },
       { name: 'Aldi', id: 3 },
-      { name: 'Iga', id: 4 }
   ];
 
   return (
@@ -114,7 +109,7 @@ const BargainsPage = ({
                   These statistics are based on the full set of identical products that two companies both sell according to our database.
                 </p>
                 <p className="text-sm text-gray-600 leading-relaxed">
-                  You'll notice this number changes for each pairing. Companies like Aldi have a highly unique product range, which results in a smaller overlap and fewer items being compared. For IGA, stores are independently owned and prices vary, so we use the average IGA price for each product to make the comparison fair.
+                  You'll notice this number changes for each pairing. Companies like Aldi have a highly unique product range, which results in a smaller overlap and fewer items being compared.
                 </p>
               </div>
             </div>

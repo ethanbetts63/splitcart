@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     template: "%s | SplitCart",
   },
   description:
-    "Compare grocery prices across Coles, Woolworths, Aldi and IGA, then split your cart for the cheapest overall shop.",
+    "Compare grocery prices across Coles, Woolworths, and Aldi, then split your cart for the cheapest overall shop.",
   verification: {
     google: "r5nGZauPlmuoFz7oRepvHlQq5AWr7zYuHrD_1jTSms8",
   },

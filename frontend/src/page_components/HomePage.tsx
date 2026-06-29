@@ -35,7 +35,7 @@ const homeFaqs = [
   {"question": "Will I really save 10-35%?", "answer": "Hopefully! Our optimization aims to find the maximum possible savings. But it's restricted by the stores you choose, the items in you select and the substitutes you approve. Some shopping lists have more potential for savings than others, so individual results will vary but we find that 10-35% is a consistant average."},
   {"question": "What’s a ‘substitute’ and why does it matter?", "answer": "A substitute is a product you would be willing to have \"instead of\" the original product you choose. For example, a different brand of the same type of milk. Including substitutes gives our algorithm a lot more options to play with and is a major factor in the savings you should expect. We know it's an annoying to do but it's also the reason we can save you more than any other comparison site."},
   {"question": "Is it always cheaper than buying from one company?", "answer": "Splitting your cart is almost always cheaper, almost. Our results will always show you the \"Best Single Company\" option alongside the split-cart options, so you can clearly see if splitting your cart provides a real benefit for your specific shopping list."},
-  {"question": "Which stores can I compare?", "answer": "Right now, SplitCart supports Coles, Woolworths, Aldi, and IGA. We’d love to bring the smaller guys on board too, but their price data is harder to track down — which hurts, because they’re often the real discount heroes."},
+  {"question": "Which stores can I compare?", "answer": "Right now, SplitCart supports Coles, Woolworths, and Aldi. We’d love to bring more stores on board too, but their price data is harder to track down — which hurts, because they’re often the real discount heroes."},
   {"question": "How accurate are the prices?", "answer": "The short answer is: pretty accurate! But not perfect. We pull prices directly from stores websites as often as we can but we can only be as accurate as the stores themselves."},
   {"question": "How can it be free?", "answer": "Honestly? We're just getting started. Right now SplitCart has no users to speak of, which means there's no point even thinking about monetisation yet. The focus is entirely on building something genuinely useful. Once there's a real user base, we'll figure out a model that doesn't compromise the product. Until then — enjoy it."}
 ];
@@ -67,7 +67,7 @@ const HomePage = () => {
     {
       step: 3,
       title: 'See Your Savings.',
-      description: 'We compare prices across Coles, Woolworths, Aldi and IGA and find the cheapest combination. Pick a split that works for you.',
+      description: 'We compare prices across Coles, Woolworths, and Aldi and find the cheapest combination. Pick a split that works for you.',
       image: {
         src: assetSrc(moneyImg),
         srcSet: assetSrcSet([[moneyImg320, 320], [moneyImg640, 640], [moneyImg768, 768], [moneyImg1024, 1024], [moneyImg1280, 1280]]),
@@ -98,7 +98,7 @@ const HomePage = () => {
               The Cheapest Way to Buy Groceries
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Every supermarket has deals — just not on the same items. SplitCart compares prices across Coles, Woolworths, Aldi and IGA and <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">splits your cart for the cheapest possible shop.</span>
+              Every supermarket has deals — just not on the same items. SplitCart compares prices across Coles, Woolworths, and Aldi and <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">splits your cart for the cheapest possible shop.</span>
             </p>
           </div>
         </div>

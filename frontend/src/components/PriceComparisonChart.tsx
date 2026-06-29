@@ -14,7 +14,6 @@ const PriceComparisonChart = ({ comparison, categoryName }: PriceComparisonChart
     'Woolworths': 'bg-green-500',
     'Coles': 'bg-red-500',
     'Aldi': 'bg-blue-500',
-    'IGA': 'bg-gray-900',
   };
 
   const titleVerb = categoryName.endsWith('s') ? 'Are' : 'Is';

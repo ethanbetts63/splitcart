@@ -10,7 +10,7 @@ const apiUrl = process.env.DJANGO_API_URL ?? "http://localhost:8000";
 export const metadata = createMetadata({
   title: "SplitCart: Australia's Best Grocery Bargains",
   description:
-    "Find the best grocery bargains in Australia. SplitCart compares prices across Coles, Woolworths, Aldi, and IGA to find you the biggest discounts.",
+    "Find the best grocery bargains in Australia. SplitCart compares prices across Coles, Woolworths, and Aldi to find you the biggest discounts.",
   canonicalPath: "/bargains",
 });
 
@@ -19,7 +19,7 @@ const webPageSchema = {
   "@type": "WebPage",
   name: "SplitCart: Australia's Best Grocery Bargains",
   description:
-    "Find the best grocery bargains in Australia. SplitCart compares prices across Coles, Woolworths, Aldi, and IGA to find you the biggest discounts.",
+    "Find the best grocery bargains in Australia. SplitCart compares prices across Coles, Woolworths, and Aldi to find you the biggest discounts.",
   url: "https://www.splitcart.com.au/bargains",
 };
 
@@ -59,7 +59,7 @@ async function getBargainStats(): Promise<PriceComparison[]> {
 }
 
 async function getCompanyProducts(): Promise<Record<string, Product[]>> {
-  const companies = ["Coles", "Woolworths", "Aldi", "Iga"];
+  const companies = ["Coles", "Woolworths", "Aldi"];
   const entries = await Promise.all(
     companies.map(async (company) => {
       try {

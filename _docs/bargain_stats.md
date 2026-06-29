@@ -42,15 +42,9 @@ One entry per company pair. `overlap_count` is the number of products stocked by
 ### How it is calculated
 
 1. Iterate all products with prices, prefetching store/company relations.
-2. For each product, group prices by company. For IGA (per-store pricing), use the **average** price across IGA stores. For all others, use the **minimum** price.
+2. For each product, group prices by company and use the **minimum** price for each company.
 3. For every company pair that both stock the product, increment `overlap_count` and award a "win" to whichever company is cheaper (or `same_price` if equal).
 4. After all products are processed, convert raw win counts to percentages and write the result with `update_or_create` on key `'company_bargain_comparison'`.
-
-### Known issue
-
-The IGA check (`if name == 'Iga':`) uses titlecase. Every other IGA check in the codebase uses `.lower() == 'iga'`. If the company is stored as `'IGA'`, this condition never fires and IGA prices are treated as `min()` instead of `avg()`, producing incorrect stats. See recommendations.md.
-
----
 
 ## How it is served
 
