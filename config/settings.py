@@ -65,7 +65,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "splitcart.middleware.AnonymousUserMiddleware",
+    "config.middleware.AnonymousUserMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
@@ -76,7 +76,7 @@ INTERNAL_IPS = ['127.0.0.1']
 if API_SERVER_HOSTNAME:
     INTERNAL_IPS.append(API_SERVER_HOSTNAME)
 
-ROOT_URLCONF = "splitcart.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
@@ -94,7 +94,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "splitcart.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     'default': {

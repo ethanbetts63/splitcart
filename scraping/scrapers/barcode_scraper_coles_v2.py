@@ -37,7 +37,8 @@ class ColesBarcodeScraperV2(BaseProductScraper):
 
     def setup(self):
         self.session = self.session_manager.get_session(self.store_id)
-        output_file_name = f"{self.store_name}-{self.store_id.split(':')[-1]}-barcodes"
+        safe_store_name = self.store_name.replace('/', '-').replace('\\', '-')
+        output_file_name = f"{safe_store_name}-{self.store_id.split(':')[-1]}-barcodes"
         self.jsonl_writer = JsonlWriter(self.company, output_file_name, self.state)
         return True
 
