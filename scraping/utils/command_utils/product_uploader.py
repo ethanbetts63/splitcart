@@ -51,8 +51,9 @@ class ProductUploader(BaseUploader):
                         continue
                     data = json.loads(first_line)
                 
-                company_name = data.get('metadata', {}).get('company_name')
-                scraped_date_str = data.get('metadata', {}).get('scraped_date')
+                metadata = data.get('metadata', {})
+                company_name = metadata.get('company') or metadata.get('company_name')
+                scraped_date_str = metadata.get('scraped_date')
 
                 if not company_name or not scraped_date_str:
                     files_skipped_during_scan.add(file_name)

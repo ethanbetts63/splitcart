@@ -123,10 +123,11 @@ class UpdateOrchestrator:
             self.command.stdout.write("  - File is empty or metadata is missing, skipping.")
             return False, None
 
+        company_name = metadata.get('company') or metadata.get('company_name')
         try:
-            company = Company.objects.get(name=metadata['company_name'])
-        except (KeyError, Company.DoesNotExist):
-            self.command.stderr.write(self.command.style.ERROR(f"  - Company '{metadata.get('company_name')}' not found in database. Skipping file."))
+            company = Company.objects.get(name__iexact=company_name)
+        except (Company.DoesNotExist, Company.MultipleObjectsReturned):
+            self.command.stderr.write(self.command.style.ERROR(f"  - Company '{company_name}' not found in database. Skipping file."))
             return False, None
 
         # 1. Scrape date must be newer than the latest price date in DB for this company

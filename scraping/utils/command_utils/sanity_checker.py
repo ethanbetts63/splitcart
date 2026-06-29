@@ -3,6 +3,9 @@ import os
 import re
 from decimal import Decimal, InvalidOperation
 
+def _metadata_company(metadata: dict):
+    return metadata.get('company') or metadata.get('company_name')
+
 def _validate_product_fields(product: dict, line_number: int) -> list:
     """Helper function to validate fields within a single product dictionary."""
     errors = []
@@ -123,8 +126,8 @@ def run_sanity_checks(file_path: str) -> list:
         # Metadata consistency
         if first_metadata is None and metadata:
             first_metadata = metadata
-        elif metadata and metadata.get('company_name') != first_metadata.get('company_name'):
-            all_errors.append(f"L{line_number}: Metadata mismatch. Inconsistent 'company_name'.")
+        elif metadata and _metadata_company(metadata) != _metadata_company(first_metadata):
+            all_errors.append(f"L{line_number}: Metadata mismatch. Inconsistent 'company'.")
             is_line_still_valid = False
 
         # Uniqueness check for normalized_name_brand_size ONLY

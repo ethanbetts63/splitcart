@@ -26,19 +26,12 @@ class TestWrapCleanedProducts:
     def test_company_is_stripped(self, products, timestamp):
         result = wrap_cleaned_products(products, '  Woolworths  ', 'Woolworths Sydney', 'WOW123', 'nsw', timestamp)
         assert result['metadata']['company'] == 'woolworths'
-        assert result['metadata']['company_name'] == 'Woolworths'
 
-    def test_store_name_is_lowercased(self, products, timestamp):
-        result = wrap_cleaned_products(products, 'Woolworths', 'WOOLWORTHS SYDNEY', 'WOW123', 'nsw', timestamp)
-        assert result['metadata']['store_name'] == 'woolworths sydney'
-
-    def test_state_is_lowercased(self, products, timestamp):
-        result = wrap_cleaned_products(products, 'Woolworths', 'Woolworths Sydney', 'WOW123', 'NSW', timestamp)
-        assert result['metadata']['state'] == 'nsw'
-
-    def test_store_id_is_not_written_to_metadata(self, products, timestamp):
+    def test_store_fields_are_not_written_to_metadata(self, products, timestamp):
         result = wrap_cleaned_products(products, 'Woolworths', 'Woolworths Sydney', '  WOW123  ', 'nsw', timestamp)
         assert 'store_id' not in result['metadata']
+        assert 'store_name' not in result['metadata']
+        assert 'state' not in result['metadata']
 
     def test_scraped_date_is_iso_format(self, products, timestamp):
         result = wrap_cleaned_products(products, 'Woolworths', 'Woolworths Sydney', 'WOW123', 'nsw', timestamp)

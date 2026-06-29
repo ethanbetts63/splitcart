@@ -7,6 +7,8 @@ from scraping.utils.product_scraping_utils.product_normalizer import ProductNorm
 from data_management.utils.database_updating_utils.prefill_barcodes import prefill_barcodes_from_api
 from scraping.utils.coles_session_manager import ColesSessionManager
 
+DEFAULT_COLES_STORE_ID = "COL:401"
+
 class ColesBarcodeScraperV2(BaseProductScraper):
     """
     Refactored version of the barcode scraper that uses an external session manager.
@@ -25,20 +27,24 @@ class ColesBarcodeScraperV2(BaseProductScraper):
                 if not first_line:
                     raise ValueError("Source file is empty.")
                 metadata = json.loads(first_line).get('metadata', {})
-                store_id = metadata.get('store_id')
-                store_name = metadata.get('store_name')
-                state = metadata.get('state')
-                if not all([store_id, store_name, state]):
+                company = metadata.get('company')
+                scraped_date = metadata.get('scraped_date')
+                if not all([company, scraped_date]):
                     raise ValueError("Could not extract required metadata from source file.")
         except (IOError, json.JSONDecodeError, ValueError) as e:
             raise ValueError(f"Could not read source file or metadata: {e}") from e
 
-        super().__init__(command, "coles", store_id, store_name, state)
+        super().__init__(command, company, DEFAULT_COLES_STORE_ID, company, "")
+
+    def _output_metadata(self, metadata: dict) -> dict:
+        return {
+            "company": metadata.get("company"),
+            "scraped_date": metadata.get("scraped_date"),
+        }
 
     def setup(self):
         self.session = self.session_manager.get_session(self.store_id)
-        safe_store_name = self.store_name.replace('/', '-').replace('\\', '-')
-        output_file_name = f"{safe_store_name}-{self.store_id.split(':')[-1]}-barcodes"
+        output_file_name = f"{self.company}-barcodes"
         self.jsonl_writer = JsonlWriter(self.company, output_file_name, self.state)
         return True
 
@@ -74,11 +80,11 @@ class ColesBarcodeScraperV2(BaseProductScraper):
             sku = product_info.get('sku')
 
             if sku in found_products:
-                self.jsonl_writer.write_product(found_products[sku]['product'], found_products[sku].get('metadata', {}))
+                self.jsonl_writer.write_product(found_products[sku]['product'], self._output_metadata(found_products[sku].get('metadata', {})))
                 continue
 
             if product_info.get('barcode') or not product_info.get('url') or product_info.get('has_no_coles_barcode'):
-                self.jsonl_writer.write_product(product_info, line_data.get('metadata', {}))
+                self.jsonl_writer.write_product(product_info, self._output_metadata(line_data.get('metadata', {})))
                 with open(self.progress_file_path, 'a') as progress_f:
                     progress_f.write(json.dumps(line_data) + '\n')
                 continue
@@ -107,7 +113,7 @@ class ColesBarcodeScraperV2(BaseProductScraper):
             product_data['barcode'] = None
             product_data['has_no_coles_barcode'] = True
             item['product'] = product_data
-            self.jsonl_writer.write_product(product_data, item.get('metadata', {}))
+            self.jsonl_writer.write_product(product_data, self._output_metadata(item.get('metadata', {})))
             with open(self.progress_file_path, 'a') as progress_f:
                 progress_f.write(json.dumps(item) + '\n')
             return []
@@ -163,7 +169,7 @@ class ColesBarcodeScraperV2(BaseProductScraper):
         with open(self.progress_file_path, 'a') as progress_f:
             progress_f.write(json.dumps(original_item) + '\n')
             
-        return {'products': [original_item['product']], 'metadata': original_item.get('metadata')}
+        return {'products': [original_item['product']], 'metadata': self._output_metadata(original_item.get('metadata', {}))}
 
     def run(self):
         """
