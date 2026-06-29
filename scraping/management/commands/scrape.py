@@ -10,9 +10,9 @@ from scraping.utils.product_scraping_utils.get_woolworths_categories import get_
 from scraping.utils.product_scraping_utils.get_coles_categories import get_coles_categories
 from scraping.utils.python_file_downloader import fetch_python_file
 
-COLES_STORE_ID = 'COL:001'
+COLES_STORE_ID = 'COL:401'
 WOOLWORTHS_STORE_ID = '1147'
-ALDI_STORE_ID = 'ALDI001'
+ALDI_STORE_ID = 'G102'
 
 
 class Command(BaseCommand):
