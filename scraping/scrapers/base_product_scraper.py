@@ -9,7 +9,7 @@ class BaseProductScraper(ABC):
     This class defines the overall scraping workflow and provides common
     functionality, while leaving company-specific implementation details to subclasses.
     """
-    def __init__(self, command, company: str, store_id: str, store_name: str, state: str):
+    def __init__(self, command, company: str, store_id: str, store_name: str, state: str, load_translation_tables: bool = True):
         self.command = command
         self.company = company
         self.store_id = store_id
@@ -17,7 +17,11 @@ class BaseProductScraper(ABC):
         self.state = state
         self.jsonl_writer = None
         self.output = ScraperOutput(self.command, self.company)
-        self.brand_translations, self.product_translations = BaseDataCleaner._load_translation_tables()
+        if load_translation_tables:
+            self.brand_translations, self.product_translations = BaseDataCleaner._load_translation_tables()
+        else:
+            self.brand_translations = {}
+            self.product_translations = {}
 
     def run(self):
         """The main public method that orchestrates the entire scraping process."""

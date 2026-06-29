@@ -4,8 +4,7 @@ from django.conf import settings
 
 def fetch_python_file(file_name: str, destination_path: str, command=None, base_url=None):
     """
-    Fetches a Python file from the server API and saves it to the specified path,
-    using a local ETag to avoid unnecessary downloads.
+    Fetches a file from the server API and saves it to the specified path.
 
     Args:
         file_name (str): The name of the file to fetch (e.g., 'product_translations').
@@ -27,32 +26,12 @@ def fetch_python_file(file_name: str, destination_path: str, command=None, base_
         'X-Internal-API-Key': api_key,
     }
 
-    etag_path = destination_path + '.etag'
-
-    # Check for a cached ETag and add it to the request headers
-    if os.path.exists(etag_path):
-        with open(etag_path, 'r') as f:
-            etag = f.read().strip()
-            headers['If-None-Match'] = etag
-
     try:
         if command:
-            command.stdout.write(f"Checking for updated '{os.path.basename(destination_path)}' file...")
+            command.stdout.write(f"Fetching '{os.path.basename(destination_path)}' file...")
         
         response = requests.get(url, headers=headers, timeout=30)
-
-        if response.status_code == 304:
-            if command:
-                command.stdout.write(command.style.SUCCESS(f"- '{os.path.basename(destination_path)}' is up to date."))
-            return
-
         response.raise_for_status()
-
-        # Save the new ETag
-        new_etag = response.headers.get('ETag')
-        if new_etag:
-            with open(etag_path, 'w') as f:
-                f.write(new_etag)
 
         # Save the new file content
         with open(destination_path, 'w', encoding='utf-8') as f:

@@ -34,7 +34,7 @@ class ColesBarcodeScraperV2(BaseProductScraper):
         except (IOError, json.JSONDecodeError, ValueError) as e:
             raise ValueError(f"Could not read source file or metadata: {e}") from e
 
-        super().__init__(command, company, DEFAULT_COLES_STORE_ID, company, "")
+        super().__init__(command, company, DEFAULT_COLES_STORE_ID, company, "", load_translation_tables=False)
 
     def _output_metadata(self, metadata: dict) -> dict:
         return {

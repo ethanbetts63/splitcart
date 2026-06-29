@@ -31,7 +31,7 @@ class TestFetchPythonFile:
         with open(dest_path) as f:
             assert f.read() == '{}'
 
-    def test_saves_etag_when_present(self, dest_path):
+    def test_ignores_etag_when_present(self, dest_path):
         mock_resp = MagicMock()
         mock_resp.status_code = 200
         mock_resp.text = '{}'
@@ -43,13 +43,12 @@ class TestFetchPythonFile:
                 fetch_python_file('product_translations', dest_path)
 
         etag_path = dest_path + '.etag'
-        assert os.path.exists(etag_path)
-        with open(etag_path) as f:
-            assert f.read() == '"etag-abc123"'
+        assert not os.path.exists(etag_path)
 
-    def test_skips_write_on_304(self, dest_path):
+    def test_raises_for_304(self, dest_path):
         mock_resp = MagicMock()
         mock_resp.status_code = 304
+        mock_resp.raise_for_status.side_effect = requests.exceptions.HTTPError('not modified')
 
         with self._patch_settings():
             with patch('scraping.utils.python_file_downloader.requests.get', return_value=mock_resp):
@@ -57,20 +56,22 @@ class TestFetchPythonFile:
 
         assert not os.path.exists(dest_path)
 
-    def test_sends_etag_header_if_cached(self, dest_path, tmp_path):
+    def test_does_not_send_etag_header_if_cached(self, dest_path, tmp_path):
         etag_path = dest_path + '.etag'
         os.makedirs(os.path.dirname(dest_path), exist_ok=True)
         with open(etag_path, 'w') as f:
             f.write('"cached-etag"')
 
         mock_resp = MagicMock()
-        mock_resp.status_code = 304
+        mock_resp.status_code = 200
+        mock_resp.text = '{}'
+        mock_resp.raise_for_status.return_value = None
 
         with self._patch_settings():
             with patch('scraping.utils.python_file_downloader.requests.get', return_value=mock_resp) as mock_get:
                 fetch_python_file('product_translations', dest_path)
                 call_headers = mock_get.call_args[1]['headers']
-                assert call_headers.get('If-None-Match') == '"cached-etag"'
+                assert 'If-None-Match' not in call_headers
 
     def test_returns_early_when_no_api_key(self, dest_path):
         with patch('scraping.utils.python_file_downloader.settings',
