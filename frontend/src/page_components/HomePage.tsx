@@ -30,6 +30,7 @@ import moneyImg768 from "../assets/money-768w.webp";
 import moneyImg1024 from "../assets/money-1024w.webp";
 import moneyImg1280 from "../assets/money-1280w.webp";
 import { assetSrc, assetSrcSet } from "@/lib/assets";
+import type { Product } from "@/types";
 
 const homeFaqs = [
   {"question": "Will I really save 10-35%?", "answer": "Hopefully! Our optimization aims to find the maximum possible savings. But it's restricted by the stores you choose, the items in you select and the substitutes you approve. Some shopping lists have more potential for savings than others, so individual results will vary but we find that 10-35% is a consistant average."},
@@ -40,7 +41,11 @@ const homeFaqs = [
   {"question": "How can it be free?", "answer": "Honestly? We're just getting started. Right now SplitCart has no users to speak of, which means there's no point even thinking about monetisation yet. The focus is entirely on building something genuinely useful. Once there's a real user base, we'll figure out a model that doesn't compromise the product. Until then — enjoy it."}
 ];
 
-const HomePage = () => {
+type HomePageProps = {
+  initialBargainProducts?: Product[];
+};
+
+const HomePage = ({ initialBargainProducts = [] }: HomePageProps) => {
   const howItWorksSteps = [
     {
       step: 1,
@@ -116,6 +121,7 @@ const HomePage = () => {
           key="bargains"
           title="Bargains"
           sourceUrl="/api/products/bargain-carousel/"
+          products={initialBargainProducts}
         />
       </div>
 

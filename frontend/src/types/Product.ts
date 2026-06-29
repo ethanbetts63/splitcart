@@ -20,6 +20,4 @@ export type Product = {
     discount_percentage: number;
     cheapest_company_name: string;
   } | null;
-  best_discount?: number;
-  cheaper_company_name?: string;
 };

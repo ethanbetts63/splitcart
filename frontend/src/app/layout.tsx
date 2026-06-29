@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "../index.css";
-import "leaflet/dist/leaflet.css";
 import { Analytics } from "@vercel/analytics/next";
 import { AppProviders } from "./providers";
 import { AppShell } from "./shell";

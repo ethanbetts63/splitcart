@@ -1,24 +1,19 @@
 "use client";
 
-import { useCompanyLogo } from '../hooks/useCompanyLogo';
-import { Skeleton } from './ui/skeleton';
 import { Badge } from './ui/badge';
 import type { PriceDisplayProps } from '../types/PriceDisplayProps';
+import { companyLogos } from '@/lib/companies';
 
 const CompanyLogo = ({ companyName, priceDisplay }: { companyName: string; priceDisplay: string }) => {
-  const { objectUrl, isLoading, error } = useCompanyLogo(companyName);
+  const logoSrc = companyLogos[companyName];
 
-  if (isLoading) {
-    return <Skeleton className="h-5 w-5 rounded-sm" />;
-  }
-
-  if (error || !objectUrl) {
+  if (!logoSrc) {
     return <div className="h-5 w-5 rounded-sm bg-gray-200" />;
   }
 
   return (
     <img
-      src={objectUrl}
+      src={logoSrc}
       alt={companyName}
       className="h-5 w-5 rounded-sm object-contain"
       width="20"

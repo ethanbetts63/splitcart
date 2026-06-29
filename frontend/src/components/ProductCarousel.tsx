@@ -63,7 +63,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
     return sourceUrl ? `${baseUrl}?${params.toString()}` : '';
   }, [sourceUrl, primaryCategorySlugs, primaryCategorySlug, companyName, ordering]);
 
-  const shouldFetch = !!finalUrl;
+  const shouldFetch = !!finalUrl && !initialProducts;
 
   const { data: responseData, isLoading: isFetching, error, isFetched } = useApiQuery<any>(
     ['products', title, finalUrl],
@@ -73,7 +73,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
   );
 
   const products: Product[] = React.useMemo(() => {
-    if (initialProducts && !responseData) return initialProducts;
+    if (initialProducts) return initialProducts;
     if (!responseData) return [];
     const results = Array.isArray(responseData) ? responseData : responseData.results || [];
     if (dataKey) {
@@ -84,13 +84,13 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
 
   const validationCalled = useRef(false);
   useEffect(() => {
-    if (isFetched && onValidation && (primaryCategorySlug || primaryCategorySlugs) && !validationCalled.current && slot !== undefined) {
+    if ((isFetched || initialProducts) && onValidation && (primaryCategorySlug || primaryCategorySlugs) && !validationCalled.current && slot !== undefined) {
       const identifier = primaryCategorySlugs ? primaryCategorySlugs.join(',') : primaryCategorySlug!;
       const isValid = products.length >= minProducts;
       onValidation(identifier, isValid, slot);
       validationCalled.current = true;
     }
-  }, [isFetched, products, onValidation, primaryCategorySlug, primaryCategorySlugs, slot, minProducts]);
+  }, [isFetched, initialProducts, products, onValidation, primaryCategorySlug, primaryCategorySlugs, slot, minProducts]);
 
   const isLoading = (isLoadingProp ?? isFetching) && !initialProducts;
 

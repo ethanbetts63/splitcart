@@ -4,6 +4,7 @@ import { createBreadcrumbSchema, JsonLdScript } from "@/lib/schema";
 import type { Product } from "@/types";
 
 export const metadata = noindexMetadata;
+export const revalidate = 1800;
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -12,7 +13,9 @@ const apiUrl = process.env.DJANGO_API_URL ?? "http://localhost:8000";
 async function getProduct(slug: string): Promise<Product | null> {
   const productId = slug.split('-').pop();
   try {
-    const res = await fetch(`${apiUrl}/api/products/${productId}/`, { cache: "no-store" });
+    const res = await fetch(`${apiUrl}/api/products/${productId}/`, {
+      next: { revalidate },
+    });
     if (!res.ok) return null;
     return res.json();
   } catch {

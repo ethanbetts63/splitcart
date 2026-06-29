@@ -32,7 +32,6 @@ export type { CartItemTileProps } from './CartItemTileProps';
 export type { AddToCartButtonProps } from './AddToCartButtonProps';
 export type { CartSubTileProps } from './CartSubTileProps';
 export type { CartPageProps } from './CartPageProps';
-export type { CompanyFilterProps } from './CompanyFilterProps';
 export type { FaqSectionProps } from './FaqSectionProps';
 export type { GridSourcerProps } from './GridSourcerProps';
 export type { HeroProps } from './HeroProps';
