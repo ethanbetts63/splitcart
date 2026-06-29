@@ -9,7 +9,7 @@ import eggImage from '../assets/egg_frying.webp';
 import shampooImage from '../assets/shampoo.webp';
 import survivalImage from '../assets/survival.webp';
 import { AspectRatio } from '../components/ui/aspect-ratio';
-import type { PrimaryCategory, PillarPage as PillarPageType } from '../types';
+import type { PrimaryCategory, PillarPage as PillarPageType, Product } from '../types';
 import { assetSrc, assetSrcSet, type ImageAsset } from '@/lib/assets';
 
 import babyImage from '../assets/baby-1024w.webp';
@@ -64,9 +64,10 @@ const SLUG_IMAGES: Record<string, SlugImageConfig> = {
 type PillarPageProps = {
   pillarPage: PillarPageType;
   slug: string;
+  categoryProducts?: Record<string, Product[]>;
 };
 
-const PillarPage = ({ pillarPage, slug }: PillarPageProps) => {
+const PillarPage = ({ pillarPage, slug, categoryProducts = {} }: PillarPageProps) => {
   const faqs = faqsBySlug[slug] ?? [];
   const { asset: imageUrl, srcSet, sizes } = SLUG_IMAGES[slug] ?? { asset: confusedShopper };
 
@@ -104,6 +105,7 @@ const PillarPage = ({ pillarPage, slug }: PillarPageProps) => {
             <ProductCarousel
                 title={category.name}
                 sourceUrl="/api/products/"
+                products={categoryProducts[category.slug]}
                 primaryCategorySlugs={[category.slug]}
                 pillarPageLinkSlug={slug}
                 slot={index}

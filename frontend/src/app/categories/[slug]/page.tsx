@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import PillarPage from "@/page_components/PillarPage";
 import { createMetadata } from "@/lib/seo";
 import { createBreadcrumbSchema, JsonLdScript } from "@/lib/schema";
-import type { PillarPage as PillarPageType } from "@/types";
+import type { PillarPage as PillarPageType, Product } from "@/types";
 import { CATEGORY_SLUGS } from "@/data/categories";
 
 type PageProps = {
@@ -51,11 +51,37 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   });
 }
 
+async function getCategoryProducts(slugs: string[]): Promise<Record<string, Product[]>> {
+  const entries = await Promise.all(
+    slugs.map(async (categorySlug) => {
+      try {
+        const params = new URLSearchParams({
+          primary_category_slugs: categorySlug,
+          limit: "20",
+          ordering: "carousel_default",
+        });
+        const response = await fetch(`${apiUrl}/api/products/?${params.toString()}`, {
+          next: { revalidate },
+        });
+        if (!response.ok) return [categorySlug, []] as const;
+        const data = await response.json();
+        return [categorySlug, data.results ?? []] as const;
+      } catch {
+        return [categorySlug, []] as const;
+      }
+    })
+  );
+  return Object.fromEntries(entries);
+}
+
 export default async function Page({ params }: PageProps) {
   const { slug } = await params;
   const pillarPage = await getPillarPage(slug);
 
   if (!pillarPage) notFound();
+
+  const categorySlugs = pillarPage.primary_categories.map((c) => c.slug);
+  const categoryProducts = await getCategoryProducts(categorySlugs);
 
   const title = pillarPage.hero_title ?? "Category";
   const breadcrumbSchema = createBreadcrumbSchema([
@@ -66,7 +92,7 @@ export default async function Page({ params }: PageProps) {
   return (
     <>
       <JsonLdScript data={breadcrumbSchema} />
-      <PillarPage pillarPage={pillarPage} slug={slug} />
+      <PillarPage pillarPage={pillarPage} slug={slug} categoryProducts={categoryProducts} />
     </>
   );
 }
