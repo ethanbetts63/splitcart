@@ -1,4 +1,3 @@
-import json
 import shutil
 
 from django.conf import settings
@@ -6,23 +5,16 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.db import connection
 
-APPS_WITH_MIGRATIONS = [
-    "companies",
-    "pipeline",
-    "products",
-    "users",
-]
-
 # Full pipeline sequence (local = run on dev machine, server = run on PythonAnywhere)
 # Preserved here for reference until this command is extended to handle data loading.
 #
-# python manage.py upload --product --dev                  # local
+# python manage.py upload --products --dev                 # local
 # python manage.py update --products                       # server
 # python manage.py update --prefixes                       # server
 # python manage.py generate --cat-links --dev              # local
 # python manage.py upload --cat-links --dev                # local
 # python manage.py update --cat-links                      # server
-# python manage.py upload --product --dev                  # local
+# python manage.py upload --products --dev                 # local
 # python manage.py update --products                       # server
 # python manage.py generate --subs --dev                   # local
 # python manage.py upload --subs --dev                     # local
@@ -41,10 +33,11 @@ APPS_WITH_MIGRATIONS = [
 
 
 class Command(BaseCommand):
-    help = "Drop all tables, wipe migrations, rebuild schema"
+    help = "Drop all tables, rebuild schema, and restore from private product archive"
 
     def handle(self, *args, **options):
-        base_dir = settings.BASE_DIR
+        self.stdout.write("Pulling private archive...")
+        call_command("archive", pull=True)
 
         self.stdout.write("Dropping all tables...")
         with connection.cursor() as cursor:
@@ -55,27 +48,27 @@ class Command(BaseCommand):
                 self.stdout.write(f"  Dropped: {table}")
             cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
 
-        self.stdout.write("Deleting migration files...")
-        for app in APPS_WITH_MIGRATIONS:
-            migrations_dir = base_dir / app / "migrations"
-            for f in migrations_dir.glob("*.py"):
-                if f.name != "__init__.py":
-                    f.unlink()
-                    self.stdout.write(f"  Deleted: {app}/migrations/{f.name}")
-
         self.stdout.write("Clearing __pycache__...")
-        for cache_dir in base_dir.rglob("__pycache__"):
+        for cache_dir in settings.BASE_DIR.rglob("__pycache__"):
             if "venv" in cache_dir.parts:
                 continue
             shutil.rmtree(cache_dir)
-
-        self.stdout.write("\nRunning makemigrations...")
-        call_command("makemigrations")
 
         self.stdout.write("\nRunning migrate...")
         call_command("migrate")
 
         self._reset_scraping_data()
+
+        self.stdout.write("\nRestoring products from private archive...")
+        call_command("update", products=True, archive=True)
+
+        self.stdout.write("\nRegenerating derived data...")
+        call_command("generate", primary_cats=True)
+        call_command("generate", pillars=True)
+        call_command("generate", bargain_stats=True)
+        call_command("generate", price_comps=True)
+        call_command("generate", price_summaries=True)
+        call_command("generate", default_companies=True)
 
         self.stdout.write(self.style.SUCCESS("\nDatabase reset complete."))
 

@@ -42,6 +42,20 @@ class TestUpdateCommandDispatch:
         ]
         call_command('update', products=True)
         MockOrch.return_value.run.assert_called_once()
+        _, kwargs = MockOrch.call_args
+        assert kwargs.get('preserve_source_files') is False
+
+    @patch(f'{BASE}.time.sleep')
+    @patch(f'{BASE}.UpdateOrchestrator')
+    @patch(f'{BASE}.os.walk')
+    @patch(f'{BASE}.os.path.exists', return_value=True)
+    def test_products_archive_reads_private_archive_and_preserves_files(self, mock_exists, mock_walk, MockOrch, mock_sleep):
+        mock_walk.return_value = [('root', [], ['data.jsonl'])]
+        call_command('update', products=True, archive=True)
+        MockOrch.return_value.run.assert_called_once()
+        _, kwargs = MockOrch.call_args
+        assert kwargs.get('preserve_source_files') is True
+        assert str(kwargs.get('source_path')).endswith('pipeline\\private_data\\product_archive')
 
     @patch(f'{BASE}.UpdateOrchestrator')
     def test_no_flags_runs_nothing(self, MockUpdate):

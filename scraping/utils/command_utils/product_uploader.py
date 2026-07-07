@@ -15,7 +15,7 @@ class ProductUploader(BaseUploader):
 
     def run(self):
         outbox_path = os.fspath(settings.PIPELINE_DATA_DIR / 'outboxes' / self.outbox_path_name)
-        archive_path = os.fspath(settings.PIPELINE_PRIVATE_DATA_DIR / 'outboxes' / self.outbox_path_name)
+        archive_path = os.fspath(settings.PIPELINE_PRIVATE_DATA_DIR / 'product_archive')
         os.makedirs(outbox_path, exist_ok=True)
         os.makedirs(archive_path, exist_ok=True)
 
@@ -99,6 +99,7 @@ class ProductUploader(BaseUploader):
                 
                 compressed_file_path = file_path + '.gz'
                 has_error = False
+                uploaded_successfully = False
 
                 try:
                     with open(file_path, 'rb') as f_in, gzip.open(compressed_file_path, 'wb') as f_out:
@@ -114,13 +115,15 @@ class ProductUploader(BaseUploader):
                             response = requests.post(upload_url, headers=headers, files=files, timeout=120)
                             response.raise_for_status()
                         uploaded_count += 1
+                        uploaded_successfully = True
                     except requests.exceptions.RequestException:
                         error_count += 1
                 
-                os.replace(file_path, archive_file_path)
-                archived_count += 1
                 if os.path.exists(compressed_file_path):
                     os.remove(compressed_file_path)
+                if uploaded_successfully:
+                    os.replace(file_path, archive_file_path)
+                    archived_count += 1
 
             else: # Archive outdated files
                 os.replace(file_path, archive_file_path)

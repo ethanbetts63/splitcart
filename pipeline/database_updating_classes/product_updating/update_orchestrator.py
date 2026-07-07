@@ -22,10 +22,11 @@ class UpdateOrchestrator:
     The main entry point for the V2 product update process.
     Initializes the global caches and orchestrates the pipeline for each file.
     """
-    def __init__(self, command, post_process_only=False):
+    def __init__(self, command, post_process_only=False, source_path=None, preserve_source_files=False):
         self.command = command
         self.post_process_only = post_process_only
-        self.inbox_path = os.fspath(settings.PIPELINE_DATA_DIR / 'inboxes' / 'product_inbox')
+        self.inbox_path = os.fspath(source_path or settings.PIPELINE_DATA_DIR / 'inboxes' / 'product_inbox')
+        self.preserve_source_files = preserve_source_files
         self.caches = {}
         self.brand_translation_cache = {}
         self.discovered_brand_pairs = set()
@@ -222,10 +223,11 @@ class UpdateOrchestrator:
 
                 is_valid, company_or_reason = self._is_file_valid(metadata, raw_product_data)
                 if not is_valid:
-                    try:
-                        os.remove(file_path)
-                    except FileNotFoundError:
-                        pass  # File is already gone, which is fine.
+                    if not self.preserve_source_files:
+                        try:
+                            os.remove(file_path)
+                        except FileNotFoundError:
+                            pass  # File is already gone, which is fine.
                     continue
                 
                 company = company_or_reason
@@ -254,11 +256,14 @@ class UpdateOrchestrator:
                 self.path_manager.process(raw_product_data, company)
 
                 # 6. Cleanup
-                try:
-                    os.remove(file_path)
-                    self.command.stdout.write(f"  - Successfully processed and deleted file: {os.path.basename(file_path)}")
-                except FileNotFoundError:
-                    self.command.stdout.write(f"  - File already removed, skipping deletion: {os.path.basename(file_path)}")
+                if self.preserve_source_files:
+                    self.command.stdout.write(f"  - Successfully processed archive file: {os.path.basename(file_path)}")
+                else:
+                    try:
+                        os.remove(file_path)
+                        self.command.stdout.write(f"  - Successfully processed and deleted file: {os.path.basename(file_path)}")
+                    except FileNotFoundError:
+                        self.command.stdout.write(f"  - File already removed, skipping deletion: {os.path.basename(file_path)}")
 
 
         # --- Post-Processing Section ---

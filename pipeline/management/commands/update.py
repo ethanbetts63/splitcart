@@ -15,12 +15,14 @@ class Command(BaseCommand):
         parser.add_argument('--post-process-only', action='store_true', help='Skip file processing and run only the post-processing steps for products.')
         parser.add_argument('--cat-links', action='store_true', help='Update category links from the category_links_inbox directory.')
         parser.add_argument('--subs', action='store_true', help='Update substitutions from the substitutions_inbox directory.')
+        parser.add_argument('--archive', action='store_true', help='For products, read from the private product archive.')
 
     def handle(self, *args, **options):
         run_products_processed = options['products']
         run_category_links = options['cat_links']
         run_substitutions = options['subs']
         post_process_only = options['post_process_only']
+        archive = options['archive']
 
         if run_substitutions:
             orchestrator = SubstitutionUpdateOrchestrator(self)
@@ -36,18 +38,36 @@ class Command(BaseCommand):
                 orchestrator = UpdateOrchestrator(self, post_process_only=True)
                 orchestrator.run()
             else:
-                inbox_path = settings.PIPELINE_DATA_DIR / 'inboxes' / 'product_inbox'
+                source_path = (
+                    settings.PIPELINE_PRIVATE_DATA_DIR / 'product_archive'
+                    if archive
+                    else settings.PIPELINE_DATA_DIR / 'inboxes' / 'product_inbox'
+                )
 
                 def files_exist_in_inbox():
-                    if not os.path.exists(inbox_path):
+                    if not os.path.exists(source_path):
                         return False
-                    for _, _, files in os.walk(inbox_path):
+                    for _, _, files in os.walk(source_path):
                         if any(f.endswith('.jsonl') for f in files):
                             return True
                     return False
 
                 error_counter = 0
                 MAX_RESTARTS = 10
+
+                if archive:
+                    if files_exist_in_inbox():
+                        self.stdout.write(self.style.SUCCESS('Starting archived product update...'))
+                        orchestrator = UpdateOrchestrator(
+                            self,
+                            source_path=source_path,
+                            preserve_source_files=True,
+                        )
+                        orchestrator.run()
+                    else:
+                        self.stdout.write(self.style.WARNING('No product archive files found.'))
+                    self.stdout.write(self.style.SUCCESS('--- Product update from archive complete ---'))
+                    return
 
                 while files_exist_in_inbox():
                     if error_counter >= MAX_RESTARTS:
@@ -58,7 +78,11 @@ class Command(BaseCommand):
                     
                     try:
                         self.stdout.write(self.style.SUCCESS('Starting update orchestrator...'))
-                        orchestrator = UpdateOrchestrator(self)
+                        orchestrator = UpdateOrchestrator(
+                            self,
+                            source_path=source_path,
+                            preserve_source_files=archive,
+                        )
                         orchestrator.run()
                         # A successful run resets the counter
                         error_counter = 0

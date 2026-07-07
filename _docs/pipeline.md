@@ -30,29 +30,50 @@ Product/category/sub generation         Product ingestion pipeline
 
 ## Full Setup Flow
 
-The sequence below is the complete ordered pipeline to initialise or re-initialise the system from scratch. Commands marked **LOCAL** use heavy ML dependencies and must run on the local machine — they will not work on the server. Commands marked **SERVER** must run on the server where the DB lives. The `--dev` flag redirects uploads/downloads to the local environment instead of the live server; omit it in production.
+`reset_db` is the local rebuild entrypoint. It pulls the private data repo, resets the schema using existing migrations, replays archived product JSONL files, then regenerates derived database state.
 
 ```
-python manage.py generate --store-groups   # SERVER  — initialises one group per store
-
-python manage.py upload --product --dev    # LOCAL   — uploads scraped product JSONL
-python manage.py update --products         # SERVER  — ingests products, brands, prices, category paths
-
-python manage.py update --prefixes         # SERVER  — processes GS1 prefix inbox
-
-python manage.py upload --product --dev    # LOCAL   — second product pass (GS1 data now improves brand matching)
-python manage.py update --products         # SERVER  — re-ingests with improved brand translations
-
-python manage.py generate --primary-cats   # SERVER  — assigns primary categories from category_paths
-python manage.py generate --pillars        # SERVER  — creates pillar pages
-
-python manage.py generate --subs --dev     # LOCAL   — generates substitutions (SentenceTransformer, ML-heavy)
-python manage.py upload --subs --dev       # LOCAL   — uploads substitution JSONL
-python manage.py update --subs             # SERVER  — ingests substitutions
+python manage.py reset_db                  # LOCAL - pull private archive, reset DB, replay products, regenerate derived state
 ```
 
-See Design Notes below for why products are ingested twice.
+The normal local/server update flow remains:
 
+```
+python manage.py upload --products --dev   # LOCAL  - uploads product JSONL and archives a private copy
+python manage.py update --products         # SERVER - ingests products, brands, prices, category paths
+
+python manage.py generate --cat-links --dev # LOCAL - generates category links
+python manage.py upload --cat-links --dev   # LOCAL - uploads category links
+python manage.py update --cat-links         # SERVER - ingests category links
+
+python manage.py generate --subs --dev     # LOCAL  - generates substitutions
+python manage.py upload --subs --dev       # LOCAL  - uploads substitutions
+python manage.py update --subs             # SERVER - ingests substitutions
+
+python manage.py generate --primary-cats   # SERVER - assigns primary categories from category_paths
+python manage.py generate --pillars        # SERVER - creates pillar pages
+python manage.py generate --bargain-stats  # SERVER - computes bargain comparison stats
+python manage.py generate --price-comps    # SERVER - computes category price comparisons
+python manage.py generate --price-summaries # SERVER - computes product price summaries
+python manage.py generate --default-companies # SERVER - stores default pricing companies
+```
+
+## Product Archive
+
+Product JSONL files are archived privately after upload:
+
+```text
+pipeline/private_data/product_archive/
+```
+
+Use these commands to manually sync the private repo:
+
+```
+python manage.py archive --pull
+python manage.py archive --push
+```
+
+`reset_db` calls `archive --pull` automatically but never pushes. `update --products --archive` reads product JSONL files from `pipeline/private_data/product_archive/` and preserves those files after ingest. Normal `update --products` still reads from `pipeline/data/inboxes/product_inbox/`.
 ## Data Flow Summary
 
 ```
@@ -70,7 +91,7 @@ BaseDataCleaner (store-specific subclass)
        │
        ▼
 JSONL file (one line per product, with metadata)
-  └─ uploaded via: upload --product
+  └─ uploaded via: upload --products
        │
        ▼ (server)
 UpdateOrchestrator (update --products)

@@ -1,5 +1,6 @@
 import pytest
 import json
+from requests.exceptions import RequestException
 from unittest.mock import MagicMock, patch
 from scraping.utils.command_utils.product_uploader import ProductUploader
 
@@ -38,7 +39,7 @@ class TestProductUploaderLatestFileScan:
         # run() uses: settings.BASE_DIR / 'pipeline' / 'data' / 'outboxes' / 'product_outbox'
         outbox = tmp_path / 'pipeline' / 'data' / 'outboxes' / 'product_outbox'
         outbox.mkdir(parents=True)
-        archive = tmp_path / 'pipeline' / 'private_data' / 'outboxes' / 'product_outbox'
+        archive = tmp_path / 'pipeline' / 'private_data' / 'product_archive'
         archive.mkdir(parents=True)
 
         # Two files for same store — newer should be uploaded
@@ -69,3 +70,27 @@ class TestProductUploaderLatestFileScan:
         # Only one file should have been uploaded (the newer one's .gz)
         assert len(uploaded_files) == 1
         assert '2024-06-01' in uploaded_files[0]
+        assert (archive / old_file.name).exists()
+        assert (archive / new_file.name).exists()
+
+    def test_failed_latest_upload_stays_in_outbox(self, command, tmp_path):
+        outbox = tmp_path / 'pipeline' / 'data' / 'outboxes' / 'product_outbox'
+        outbox.mkdir(parents=True)
+        archive = tmp_path / 'pipeline' / 'private_data' / 'product_archive'
+        archive.mkdir(parents=True)
+        product_file = outbox / 'coles-2024-06-01.jsonl'
+        product_file.write_text(_make_jsonl_line('Coles', '2024-06-01'))
+
+        uploader = ProductUploader(command)
+        with patch('scraping.utils.command_utils.product_uploader.settings') as ms:
+            ms.BASE_DIR = str(tmp_path)
+            ms.PIPELINE_DATA_DIR = tmp_path / 'pipeline' / 'data'
+            ms.PIPELINE_PRIVATE_DATA_DIR = tmp_path / 'pipeline' / 'private_data'
+            with patch.object(uploader, 'get_server_url', return_value='http://test.com'):
+                with patch.object(uploader, 'get_api_key', return_value='key'):
+                    with patch('scraping.utils.command_utils.product_uploader.requests.post', side_effect=RequestException):
+                        with patch('scraping.utils.command_utils.product_uploader.run_sanity_checks', return_value=[]):
+                            uploader.run()
+
+        assert product_file.exists()
+        assert not (archive / product_file.name).exists()
