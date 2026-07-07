@@ -70,7 +70,7 @@ Each cycle is slightly more efficient. Every discovered variation becomes a tran
 | `scraping/utils/product_scraping_utils/product_normalizer.py` | Generates the nnbs string |
 | `scraping/utils/product_scraping_utils/BaseDataCleaner.py` | Calls normalizer; loads translation tables |
 | `scraping/utils/command_utils/sanity_checker.py` | Validates nnbs present, ≤255 chars, unique per JSONL |
-| `data_management/.../product_manager.py` | Tier 3 lookup during ingestion |
-| `data_management/.../product_enricher.py` | Records variation strings on canonical product |
-| `data_management/.../product_reconciler.py` | Merges duplicate Product rows post-ingestion |
-| `data_management/.../product_translation_table_generator.py` | Writes variation→canonical mapping to disk |
+| `pipeline/.../product_manager.py` | Tier 3 lookup during ingestion |
+| `pipeline/.../product_enricher.py` | Records variation strings on canonical product |
+| `pipeline/.../product_reconciler.py` | Merges duplicate Product rows post-ingestion |
+| `pipeline/.../product_translation_table_generator.py` | Writes variation→canonical mapping to disk |

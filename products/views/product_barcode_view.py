@@ -1,5 +1,5 @@
 import json
-from data_management.views.base_api_view import BaseAPIView
+from pipeline.views.base_api_view import BaseAPIView
 from django.http import JsonResponse
 from products.models import SKU
 

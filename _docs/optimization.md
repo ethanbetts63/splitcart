@@ -6,7 +6,7 @@ The optimizer finds the cheapest way to split a user's shopping list across mult
 
 ## Algorithm
 
-**File:** `data_management/utils/cart_optimization/calculate_optimized_cost.py`
+**File:** `pipeline/utils/cart_optimization/calculate_optimized_cost.py`
 
 The solver uses **linear programming (PuLP / CBC)**. It models the cart as a set of "slots" — one per cart item — each with a list of purchasable options across stores.
 
@@ -28,7 +28,7 @@ The optimizer is run separately for each `max_stores` value, and in parallel for
 
 ## Input: Price Slots
 
-**File:** `data_management/utils/cart_optimization/build_price_slots.py`
+**File:** `pipeline/utils/cart_optimization/build_price_slots.py`
 
 A slot is a list of all purchasable options for one cart item. If the user has approved substitutes for an item, those substitutes *replace* the original in the slot entirely — the original product is dropped.
 
@@ -38,7 +38,7 @@ Prices are queried only for the user's selected stores. Because national chains 
 
 ## Baseline & Savings
 
-**File:** `data_management/utils/cart_optimization/calculate_baseline_cost.py`
+**File:** `pipeline/utils/cart_optimization/calculate_baseline_cost.py`
 
 Baseline = average price per slot across all available stores, summed over all slots. It represents the cost of picking randomly rather than optimally.
 
@@ -52,7 +52,7 @@ The baseline is the same for both the with-substitutes and without-substitutes p
 
 ## Substitutions
 
-**Files:** `data_management/utils/cart_optimization/substitute_manager.py`, `products/models/substitution.py`
+**Files:** `pipeline/utils/cart_optimization/substitute_manager.py`, `products/models/substitution.py`
 
 Substitutes expand the solution space. More options per slot = more flexibility for the optimizer to route each item to the cheapest store.
 
@@ -98,11 +98,11 @@ These are the factors that determine how much a user can actually save:
 
 | File | Role |
 |---|---|
-| `data_management/utils/cart_optimization/calculate_optimized_cost.py` | LP solver — core algorithm |
-| `data_management/utils/cart_optimization/build_price_slots.py` | Converts cart + prices into optimizer input |
-| `data_management/utils/cart_optimization/calculate_baseline_cost.py` | Average-price baseline |
-| `data_management/utils/cart_optimization/calculate_best_single_store.py` | Best single-store fallback |
-| `data_management/utils/cart_optimization/substitute_manager.py` | Finds substitutes for cart items |
+| `pipeline/utils/cart_optimization/calculate_optimized_cost.py` | LP solver — core algorithm |
+| `pipeline/utils/cart_optimization/build_price_slots.py` | Converts cart + prices into optimizer input |
+| `pipeline/utils/cart_optimization/calculate_baseline_cost.py` | Average-price baseline |
+| `pipeline/utils/cart_optimization/calculate_best_single_store.py` | Best single-store fallback |
+| `pipeline/utils/cart_optimization/substitute_manager.py` | Finds substitutes for cart items |
 | `users/utils/cart_optimization.py` | Orchestrates both optimization paths |
 | `products/models/substitution.py` | `ProductSubstitution` model |
 | `users/models/cart_substitution.py` | Per-user approved substitutes |

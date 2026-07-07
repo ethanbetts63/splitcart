@@ -10,7 +10,7 @@ class BargainUploader(BaseUploader):
     """
     def __init__(self, command, dev=False):
         super().__init__(command, dev)
-        self.source_dir = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'outboxes', 'bargains_outbox')
+        self.source_dir = os.fspath(settings.PIPELINE_DATA_DIR / 'outboxes' / 'bargains_outbox')
         self.upload_url_path = '/api/upload/bargains/'
 
     def run(self):

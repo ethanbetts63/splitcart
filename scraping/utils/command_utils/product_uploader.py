@@ -11,12 +11,11 @@ class ProductUploader(BaseUploader):
     def __init__(self, command, dev=False):
         super().__init__(command, dev)
         self.outbox_path_name = 'product_outbox'
-        self.archive_path_name = 'temp_jsonl_product_storage'
         self.upload_url_path = '/api/upload/products/'
 
     def run(self):
-        outbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'outboxes', self.outbox_path_name)
-        archive_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', self.archive_path_name)
+        outbox_path = os.fspath(settings.PIPELINE_DATA_DIR / 'outboxes' / self.outbox_path_name)
+        archive_path = os.fspath(settings.PIPELINE_PRIVATE_DATA_DIR / 'outboxes' / self.outbox_path_name)
         os.makedirs(outbox_path, exist_ok=True)
         os.makedirs(archive_path, exist_ok=True)
 

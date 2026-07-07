@@ -8,7 +8,7 @@ from users.models import Cart, CartItem, CartSubstitution
 from products.models import Product
 from users.serializers.cart_serializer import CartSerializer
 from config.permissions import IsAuthenticatedOrAnonymous
-from data_management.utils.cart_optimization.substitute_manager import SubstituteManager
+from pipeline.utils.cart_optimization.substitute_manager import SubstituteManager
 from products.utils.default_companies import get_default_company_ids
 from users.utils.cart_optimization import run_cart_optimization
 from users.utils.name_generator import generate_unique_name

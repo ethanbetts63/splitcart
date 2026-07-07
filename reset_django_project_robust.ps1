@@ -6,7 +6,7 @@ cd .\coding\splitcart\
 $apps = @(
     "products",
     "companies",
-    "data_management",
+    "pipeline",
     "users"
 )
 
@@ -67,8 +67,6 @@ Write-Host "✅ Django Project Reset Complete!" -ForegroundColor Green
 git add .
 git commit -m "reset django project robust.ps1"
 git push
-
-python manage.py update --archive # Server
 
 python manage.py generate --store-groups # Server
 

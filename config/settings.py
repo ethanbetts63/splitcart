@@ -6,6 +6,8 @@ from urllib.parse import urlparse
 load_dotenv() # Load environment variables from .env file
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+PIPELINE_DATA_DIR = BASE_DIR / "pipeline" / "data"
+PIPELINE_PRIVATE_DATA_DIR = BASE_DIR / "pipeline" / "private_data"
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
@@ -39,7 +41,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     "companies.apps.CompaniesConfig",
     "products.apps.ProductsConfig",
-    "data_management.apps.DataManagementConfig",
+    "pipeline.apps.PipelineConfig",
     "scraping.apps.ScrapingConfig",
 
     "users.apps.UsersConfig",

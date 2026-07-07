@@ -4,18 +4,18 @@ import json
 import requests
 from django.conf import settings
 from .base_uploader import BaseUploader
-from data_management.utils.deduplication_utils.substitution_deduplicator import deduplicate_substitutions
+from pipeline.utils.deduplication_utils.substitution_deduplicator import deduplicate_substitutions
 
 
 class SubstitutionsUploader(BaseUploader):
     def __init__(self, command, dev=False):
         super().__init__(command, dev)
-        self.outbox_path_name = 'data_management/data/outboxes/substitutions_outbox'
+        self.outbox_path_name = 'pipeline/data/outboxes/substitutions_outbox'
         self.upload_url_path = '/api/upload/substitutions/'
         self.file_name = 'substitutions.json'
 
     def run(self):
-        outbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'outboxes', 'substitutions_outbox')
+        outbox_path = os.fspath(settings.PIPELINE_DATA_DIR / 'outboxes' / 'substitutions_outbox')
         file_path = os.path.join(outbox_path, self.file_name)
 
         if not os.path.exists(file_path):

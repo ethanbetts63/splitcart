@@ -3,7 +3,7 @@ import gzip
 from django.conf import settings
 from rest_framework.response import Response
 from rest_framework import status
-from data_management.views.base_file_upload_view import BaseFileUploadView
+from pipeline.views.base_file_upload_view import BaseFileUploadView
 from config.permissions import IsInternalAPIRequest
 
 class SubstitutionsFileUploadView(BaseFileUploadView):
@@ -17,7 +17,7 @@ class SubstitutionsFileUploadView(BaseFileUploadView):
         """
         Returns the destination directory for the decompressed substitutions files.
         """
-        return os.path.join(settings.BASE_DIR, 'data_management', 'data', 'inboxes', 'substitutions_inbox')
+        return os.fspath(settings.PIPELINE_DATA_DIR / 'inboxes' / 'substitutions_inbox')
 
     def post(self, request, *args, **kwargs):
         if 'file' not in request.FILES:

@@ -35,7 +35,7 @@ SubstitutionsGenerator.run()
   ├─ Lvl3SubGenerator   → same primary category, cosine similarity > 0.75 (score: similarity)
   └─ Lvl4SubGenerator   → linked categories (via CategoryLinks graph), cosine similarity > 0.75
   │
-  └─ Writes combined list → data_management/data/outboxes/substitutions_outbox/substitutions.json
+  └─ Writes combined list → pipeline/data/outboxes/substitutions_outbox/substitutions.json
 ```
 
 LVL3 and LVL4 use a `SentenceTransformer` (`all-MiniLM-L6-v2`) to encode product names into embeddings and compute cosine similarity. LVL4 uses a DFS traversal over the `CategoryLinks` graph to build "super-groups" of related categories, then cross-matches products between them (excluding pairs that already qualify as LVL3).

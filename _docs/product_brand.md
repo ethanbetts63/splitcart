@@ -38,7 +38,7 @@ This handles cases where a synonym-brand was created as a real brand row before 
 
 ## The brand translation table
 
-**File:** `data_management/.../brand_translation_table_generator.py` → writes `data/brand_translation_table.py`
+**File:** `pipeline/.../brand_translation_table_generator.py` → writes `data/brand_translation_table.py`
 
 The generator reads every `ProductBrand.normalized_name_variations` and produces a flat dict:
 
@@ -81,8 +81,8 @@ Each cycle reduces the number of spurious brand rows and improves `nnbs` accurac
 | File | Role |
 |---|---|
 | `products/models/brand.py` | Model definition |
-| `data_management/database_updating_classes/gs1_update_orchestrator.py` | Records variations from GS1 prefix matches |
-| `data_management/.../brand_reconciler.py` | Merges duplicate brand DB rows post-ingestion |
-| `data_management/.../brand_translation_table_generator.py` | Builds `variation → canonical` map; resolves conflicts |
+| `pipeline/database_updating_classes/gs1_update_orchestrator.py` | Records variations from GS1 prefix matches |
+| `pipeline/.../brand_reconciler.py` | Merges duplicate brand DB rows post-ingestion |
+| `pipeline/.../brand_translation_table_generator.py` | Builds `variation → canonical` map; resolves conflicts |
 | `scraping/utils/product_scraping_utils/product_normalizer.py` | Applies brand translation table at scrape time |
-| `data_management/management/commands/infer_and_reconcile_brands.py` | LCP-based prefix inference (standalone, not yet in pipeline) |
+| `pipeline/management/commands/infer_and_reconcile_brands.py` | LCP-based prefix inference (standalone, not yet in pipeline) |

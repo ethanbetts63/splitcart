@@ -21,7 +21,7 @@ This matters because brand names are inconsistent across stores. Woolworths migh
 
 ### 1. Confirmed — GS1 website scrape (authoritative)
 
-**Files:** `scraping/scrapers/gs1_company_scraper.py`, `data_management/views/gs1_views.py`
+**Files:** `scraping/scrapers/gs1_company_scraper.py`, `pipeline/views/gs1_views.py`
 
 The scraper runs locally. It targets brands that have no `confirmed_official_prefix` yet, prioritized by product count (most products first, top 30 per run).
 
@@ -31,7 +31,7 @@ For each brand: fetch a sample barcode from the server (`GET /api/brands/{id}/sa
 
 ### 2. Inferred — Longest Common Prefix analysis
 
-**File:** `data_management/management/commands/infer_and_reconcile_brands.py`
+**File:** `pipeline/management/commands/infer_and_reconcile_brands.py`
 
 > **Not currently wired into the pipeline.** This command exists and runs standalone but is not called by any orchestrator or scheduled step. I have yet to properly test my idea. I think their system works like a subnet mask in the sense that companies buy a certain range of "barcodes" (addresses) so that they can have unique identifiers for all their products. But if wrong I'll pollute the db so I've left this for now. If im right on the other hand it could actually be a really powerful way to normalize brand names. Even though its only 30 brands a day, we start with the brands with the most products, and it all adds up.
 
@@ -72,7 +72,7 @@ Local machine
 
 ## Brand translation table
 
-**File:** `data_management/.../translation_table_generators/brand_translation_table_generator.py`
+**File:** `pipeline/.../translation_table_generators/brand_translation_table_generator.py`
 
 Reads all `ProductBrand.normalized_name_variations` and writes a `variation → canonical` mapping to `brand_translation_table.py`. This is the file `ProductNormalizer` uses at scrape time to resolve raw brand strings to their canonical normalized key before generating `normalized_name_brand_size`.
 
@@ -95,13 +95,13 @@ Reads all `ProductBrand.normalized_name_variations` and writes a `variation → 
 | File | Role |
 |---|---|
 | `scraping/scrapers/gs1_company_scraper.py` | Scrapes GS1 Verified-by-GS1 for license keys |
-| `data_management/views/gs1_views.py` | `unconfirmed-brands` + `sample-barcode` API endpoints |
+| `pipeline/views/gs1_views.py` | `unconfirmed-brands` + `sample-barcode` API endpoints |
 | `scraping/utils/command_utils/gs1_uploader.py` | Compresses and uploads outbox JSONL to server |
-| `data_management/views/gs1_file_upload_view.py` | Receives and decompresses uploaded GS1 files |
-| `data_management/database_updating_classes/gs1_update_orchestrator.py` | Processes inbox — sets prefixes, records variations, links orphans |
-| `data_management/management/commands/infer_and_reconcile_brands.py` | LCP-based prefix inference for unscraped brands |
-| `data_management/.../brand_translation_table_generator.py` | Builds `variation → canonical` brand map from recorded variations |
-| `data_management/management/commands/prefix_report.py` | Diagnostic: writes brand discrepancy report to file |
+| `pipeline/views/gs1_file_upload_view.py` | Receives and decompresses uploaded GS1 files |
+| `pipeline/database_updating_classes/gs1_update_orchestrator.py` | Processes inbox — sets prefixes, records variations, links orphans |
+| `pipeline/management/commands/infer_and_reconcile_brands.py` | LCP-based prefix inference for unscraped brands |
+| `pipeline/.../brand_translation_table_generator.py` | Builds `variation → canonical` brand map from recorded variations |
+| `pipeline/management/commands/prefix_report.py` | Diagnostic: writes brand discrepancy report to file |
 
 ---
 

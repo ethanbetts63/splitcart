@@ -8,7 +8,7 @@ The category system converts messy, company-specific product hierarchies into a 
 
 **`PrimaryCategory`** — the public browsing layer. Cross-company, human-readable category labels (Milk, Cheese, Yogurt, etc.). Lives in `companies/models/primary_category.py`. These are what the frontend filters on.
 
-**`PillarPage`** — groups multiple primary categories into SEO landing pages (e.g. "Dairy" groups Milk, Cheese, Yogurt). Lives in `companies/models/pillar_page.py`, defined in `data_management/data/pillar_pages.jsonl`.
+**`PillarPage`** — groups multiple primary categories into SEO landing pages (e.g. "Dairy" groups Milk, Cheese, Yogurt). Lives in `companies/models/pillar_page.py`, defined in `pipeline/data/pillar_pages.jsonl`.
 
 The old raw `Category` node-graph model and `CategoryLink` model are being phased out (Phase 8 cleanup). Primary category assignment now comes entirely from `Product.category_paths`.
 
@@ -39,7 +39,7 @@ Each `Product` carries two category fields:
 
 ## Path ingest — PathManager
 
-`data_management/database_updating_classes/product_updating/path_manager.py`
+`pipeline/database_updating_classes/product_updating/path_manager.py`
 
 Runs during `update --products` (via `UpdateOrchestrator`). Replaces the old `CategoryManager`. For each incoming product with a `category_path`:
 
@@ -55,7 +55,7 @@ No `Category` objects are created. No parent-child graph is built.
 
 ## Path classification — PathClassifier
 
-`data_management/utils/path_classifier.py`
+`pipeline/utils/path_classifier.py`
 
 `classify_path(company_name, path)` returns `path_type`, `canonical_key`, and `primary_category_slug`.
 
@@ -76,7 +76,7 @@ No `Category` objects are created. No parent-child graph is built.
 
 ## Primary category assignment — PrimaryCategoriesGenerator
 
-`data_management/utils/generation_utils/primary_categories_generator.py`
+`pipeline/utils/generation_utils/primary_categories_generator.py`
 
 Run via `python manage.py generate --primary-cats`. Steps:
 
@@ -157,7 +157,7 @@ depth 1:         "Yoghurt"            ↔  "Yoghurt"
 depth 2 (root):  "Dairy, Eggs & Fridge" ↔  "Dairy & Fridge"
 ```
 
-Each unique cross-company node pair becomes one entry in `data_management/data/category_suspects.jsonl`, with `evidence_count` (how many products produced this pairing), `name_similarity` (0–1 string ratio), and `depth_from_leaf`.
+Each unique cross-company node pair becomes one entry in `pipeline/data/category_suspects.jsonl`, with `evidence_count` (how many products produced this pairing), `name_similarity` (0–1 string ratio), and `depth_from_leaf`.
 
 **Running the workflow**
 
@@ -196,7 +196,7 @@ High evidence + high name similarity → confident match. Promotional/seasonal n
 
 ## Pillar pages
 
-`PillarsGenerator` runs via `python manage.py generate --pillars`. Reads `data_management/data/pillar_pages.jsonl` and creates `PillarPage` objects linked to the specified `PrimaryCategory` slugs. Used for the homepage browse section and SEO landing pages.
+`PillarsGenerator` runs via `python manage.py generate --pillars`. Reads `pipeline/data/pillar_pages.jsonl` and creates `PillarPage` objects linked to the specified `PrimaryCategory` slugs. Used for the homepage browse section and SEO landing pages.
 
 ---
 

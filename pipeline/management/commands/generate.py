@@ -1,0 +1,69 @@
+from django.core.management.base import BaseCommand
+
+class Command(BaseCommand):
+    help = 'Generates data for the application.'
+
+    def add_arguments(self, parser):
+        parser.add_argument('--subs', action='store_true', help='Generate product substitutions.')
+        parser.add_argument('--cat-links', action='store_true', help='Generate category links.')
+        parser.add_argument('--primary-cats', action='store_true', help='Generate primary categories.')
+        parser.add_argument('--price-summaries', action='store_true', help='Generate product price summaries.')
+        parser.add_argument('--default-companies', action='store_true', help='Generate and set the default pricing company list.')
+        parser.add_argument('--price-comps', action='store_true', help='Generate price comparison data.')
+        parser.add_argument('--bargain-stats', action='store_true', help='Generate company price comparison statistics.')
+        parser.add_argument('--pillars', action='store_true', help='Generate pillar pages from JSONL file.')
+        parser.add_argument('--categorize', action='store_true', help='Run the interactive category analyzer.')
+        parser.add_argument('--company', type=str, help='Specify company for categorization.')
+        parser.add_argument('--dev', action='store_true', help='Use development server URL.')
+
+    def handle(self, *args, **options):
+        dev = options['dev']
+
+        if options['subs']:
+            from pipeline.utils.generation_utils.substitutions_generator import SubstitutionsGenerator
+            self.stdout.write(self.style.SUCCESS("Generating substitutions..."))
+            generator = SubstitutionsGenerator(self, dev=dev)
+            generator.run()
+
+        if options['cat_links']:
+            from pipeline.utils.generation_utils.category_links_generator import CategoryLinksGenerator
+            self.stdout.write(self.style.SUCCESS("Generating category links..."))
+            generator = CategoryLinksGenerator(self, dev=dev)
+            generator.run()
+
+        if options['primary_cats']:
+            from pipeline.utils.generation_utils.primary_categories_generator import PrimaryCategoriesGenerator
+            self.stdout.write(self.style.SUCCESS("Generating primary categories..."))
+            generator = PrimaryCategoriesGenerator(self)
+            generator.run()
+
+        if options['price_summaries']:
+            from pipeline.utils.generation_utils.price_summaries_generator import PriceSummariesGenerator
+            self.stdout.write(self.style.SUCCESS("Generating product price summaries..."))
+            generator = PriceSummariesGenerator(self)
+            generator.run()
+
+        if options['default_companies']:
+            from pipeline.utils.generation_utils.default_companies_generator import DefaultCompaniesGenerator
+            self.stdout.write(self.style.SUCCESS("Generating default company list..."))
+            generator = DefaultCompaniesGenerator(self)
+            generator.run()
+
+        if options['price_comps']:
+            from pipeline.utils.generation_utils.price_comparisons_generator import PriceComparisonsGenerator
+            self.stdout.write(self.style.SUCCESS("Generating price comparisons..."))
+            generator = PriceComparisonsGenerator(self)
+            generator.run()
+
+        if options['bargain_stats']:
+            from pipeline.utils.generation_utils.bargain_stats_generator import BargainStatsGenerator
+            self.stdout.write(self.style.SUCCESS("Generating bargain statistics..."))
+            generator = BargainStatsGenerator(self)
+            generator.run()
+        
+        if options['pillars']:
+            from pipeline.utils.generation_utils.pillars_generator import PillarsGenerator
+            self.stdout.write(self.style.SUCCESS("Generating pillar pages..."))
+            generator = PillarsGenerator(self)
+            generator.run()
+

@@ -2,7 +2,7 @@ import pytest
 from django.urls import reverse
 from products.tests.factories import ProductFactory, PriceFactory
 from companies.tests.factories import CompanyFactory
-from data_management.models import SystemSetting
+from pipeline.models import SystemSetting
 from products.utils.default_companies import CACHE_KEY
 
 

@@ -22,7 +22,7 @@ class JsonlWriter:
         if final_outbox_path:
             self.final_outbox_path = final_outbox_path
         else:
-            self.final_outbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'outboxes', 'product_outbox')
+            self.final_outbox_path = os.fspath(settings.PIPELINE_DATA_DIR / 'outboxes' / 'product_outbox')
         self.temp_file_handle = None
         self.seen_product_keys = set()
 

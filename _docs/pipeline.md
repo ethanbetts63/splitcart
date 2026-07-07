@@ -33,7 +33,6 @@ Product/category/sub generation         Product ingestion pipeline
 The sequence below is the complete ordered pipeline to initialise or re-initialise the system from scratch. Commands marked **LOCAL** use heavy ML dependencies and must run on the local machine — they will not work on the server. Commands marked **SERVER** must run on the server where the DB lives. The `--dev` flag redirects uploads/downloads to the local environment instead of the live server; omit it in production.
 
 ```
-python manage.py update --archive          # SERVER  — archives stale price data
 python manage.py generate --store-groups   # SERVER  — initialises one group per store
 
 python manage.py upload --product --dev    # LOCAL   — uploads scraped product JSONL

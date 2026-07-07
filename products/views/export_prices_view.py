@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.pagination import CursorPagination
 from datetime import date 
 from products.models import Price
-from data_management.serializers.price_export_serializer import PriceExportSerializer
+from pipeline.serializers.price_export_serializer import PriceExportSerializer
 from config.permissions import IsInternalAPIRequest
 from rest_framework.throttling import ScopedRateThrottle
 

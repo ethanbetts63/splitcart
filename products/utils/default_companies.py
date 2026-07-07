@@ -1,5 +1,5 @@
 from django.core.cache import cache
-from data_management.models import SystemSetting
+from pipeline.models import SystemSetting
 
 CACHE_KEY = 'default_pricing_companies'
 

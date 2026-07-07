@@ -48,7 +48,7 @@ The backend is a Django application responsible for data scraping, processing, a
 -   **`products`**: Manages all product-related data, including models for products, brands, prices, and substitutions. It also provides the primary API endpoints for the frontend. See the [products/README.md](products/README.md) for more details.
 -   **`companies`**: Defines the core data models for companies, stores, geographic data, and product taxonomies. See the [companies/README.md](companies/README.md) for more details.
 -   **`scraping`**: A dedicated, model-free app responsible for orchestrating the collection of product and store data from external grocery store websites. See the [scraping/README.md](scraping/README.md) for more details.
--   **`data_management`**: The central hub for processing, cleaning, and updating all data within the ecosystem. It acts as the bridge between the raw, scraped data and the structured, queryable data. See the [data_management/README.md](data_management/README.md) for more details.
+-   **`pipeline`**: The central hub for processing, cleaning, and updating all data within the ecosystem. It acts as the bridge between the raw, scraped data and the structured, queryable data. See the [pipeline/README.md](pipeline/README.md) for more details.
 -   **`users`**: Manages users, authentication, and user-specific data like shopping carts and saved store lists. It contains the business logic for cart price optimization and user session management. See the [users/README.md](users/README.md) for more details.
 
 ### Frontend

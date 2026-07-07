@@ -14,7 +14,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('--- Starting Barcode Scraper Worker ---'))
         
         barcode_inbox_path = os.path.join(settings.BASE_DIR, 'scraping', 'data', 'inboxes', 'barcode_scraper_inbox')
-        product_outbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'outboxes', 'product_outbox')
+        product_outbox_path = os.fspath(settings.PIPELINE_DATA_DIR / 'outboxes' / 'product_outbox')
 
         if not os.path.exists(barcode_inbox_path):
             self.stdout.write(self.style.WARNING('Barcode scraper inbox does not exist. Nothing to do.'))

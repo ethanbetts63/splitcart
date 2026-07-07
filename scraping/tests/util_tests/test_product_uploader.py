@@ -26,6 +26,8 @@ class TestProductUploaderLatestFileScan:
         uploader = ProductUploader(command)
         with patch('scraping.utils.command_utils.product_uploader.settings') as ms:
             ms.BASE_DIR = str(tmp_path)
+            ms.PIPELINE_DATA_DIR = tmp_path / 'pipeline' / 'data'
+            ms.PIPELINE_PRIVATE_DATA_DIR = tmp_path / 'pipeline' / 'private_data'
             with patch.object(uploader, 'get_server_url', return_value='http://test.com'):
                 with patch.object(uploader, 'get_api_key', return_value='key'):
                     uploader.run()
@@ -33,10 +35,10 @@ class TestProductUploaderLatestFileScan:
 
     def test_latest_file_selected_per_company(self, command, tmp_path):
         """Only the most recent file per store should be uploaded; older ones archived."""
-        # run() uses: settings.BASE_DIR / 'data_management' / 'data' / 'outboxes' / 'product_outbox'
-        outbox = tmp_path / 'data_management' / 'data' / 'outboxes' / 'product_outbox'
+        # run() uses: settings.BASE_DIR / 'pipeline' / 'data' / 'outboxes' / 'product_outbox'
+        outbox = tmp_path / 'pipeline' / 'data' / 'outboxes' / 'product_outbox'
         outbox.mkdir(parents=True)
-        archive = tmp_path / 'data_management' / 'data' / 'inboxes' / 'temp_jsonl_product_storage'
+        archive = tmp_path / 'pipeline' / 'private_data' / 'outboxes' / 'product_outbox'
         archive.mkdir(parents=True)
 
         # Two files for same store — newer should be uploaded
@@ -56,6 +58,8 @@ class TestProductUploaderLatestFileScan:
         uploader = ProductUploader(command)
         with patch('scraping.utils.command_utils.product_uploader.settings') as ms:
             ms.BASE_DIR = str(tmp_path)
+            ms.PIPELINE_DATA_DIR = tmp_path / 'pipeline' / 'data'
+            ms.PIPELINE_PRIVATE_DATA_DIR = tmp_path / 'pipeline' / 'private_data'
             with patch.object(uploader, 'get_server_url', return_value='http://test.com'):
                 with patch.object(uploader, 'get_api_key', return_value='key'):
                     with patch('scraping.utils.command_utils.product_uploader.requests.post', side_effect=mock_post):

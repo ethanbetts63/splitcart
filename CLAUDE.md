@@ -27,7 +27,7 @@ splitcart/
 ├── companies/          # Store, company, and geography models
 ├── products/           # Product, price, substitution models + primary API
 ├── scraping/           # Model-free app: scrapes raw data from supermarket APIs
-├── data_management/    # Processes raw scraped data into the DB
+├── pipeline/    # Processes raw scraped data into the DB
 ├── users/              # Auth, shopping carts, price optimisation logic
 ├── frontend/           # React/TypeScript frontend (Vite)
 ├── splitcart/          # Django settings and root URL config

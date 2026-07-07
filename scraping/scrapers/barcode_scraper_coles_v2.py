@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from scraping.scrapers.base_product_scraper import BaseProductScraper
 from scraping.utils.product_scraping_utils.jsonl_writer import JsonlWriter
 from scraping.utils.product_scraping_utils.product_normalizer import ProductNormalizer
-from data_management.utils.database_updating_utils.prefill_barcodes import prefill_barcodes_from_api
+from pipeline.utils.database_updating_utils.prefill_barcodes import prefill_barcodes_from_api
 from scraping.utils.coles_session_manager import ColesSessionManager
 
 DEFAULT_COLES_STORE_ID = "COL:401"

@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework import status
 from companies.models import Company
-from data_management.utils.cart_optimization import (
+from pipeline.utils.cart_optimization import (
     calculate_optimized_cost, calculate_baseline_cost,
     build_price_slots, calculate_best_single_company
 )

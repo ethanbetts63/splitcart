@@ -22,7 +22,7 @@ Bargain queries need to sort thousands of products by cross-store price variance
 
 ## How it is generated
 
-**File:** `data_management/utils/generation_utils/price_summaries_generator.py`
+**File:** `pipeline/utils/generation_utils/price_summaries_generator.py`
 **Trigger:** `generate --price-summaries` (run after each product ingestion)
 
 The generator fully rebuilds all summaries on each run (delete then recreate in 5000-row chunks). A summary is only created for a product if **all** of these are true:
@@ -57,6 +57,6 @@ This keeps the expensive per-user calculation to a small, already-promising cand
 | File | Role |
 |---|---|
 | `products/models/product_price_summary.py` | Model definition |
-| `data_management/utils/generation_utils/price_summaries_generator.py` | Builds all summaries |
+| `pipeline/utils/generation_utils/price_summaries_generator.py` | Builds all summaries |
 | `products/views/bargain_carousel_view.py` | Homepage bargain carousel (24h cached) |
 | `products/utils/product_ordering.py` | Bargain-first ordering for product list pages |

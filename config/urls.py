@@ -3,7 +3,7 @@ from django.urls import include, path, re_path
 from django.contrib.sitemaps.views import sitemap
 from django.http import HttpResponsePermanentRedirect
 from config.sitemaps import StaticViewSitemap, CategoryPageSitemap
-from data_management.views.react_app_view import ReactAppView
+from pipeline.views.react_app_view import ReactAppView
 
 sitemaps = {
     'static': StaticViewSitemap,
@@ -28,7 +28,7 @@ urlpatterns = [
     path("api/", include("products.urls")),
     path("api/", include("companies.urls")),
     path("api/", include("users.urls")),
-    path("api/", include("data_management.urls")),
+    path("api/", include("pipeline.urls")),
     path("sitemap.xml", sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path("pillar-pages/<slug:slug>/", pillar_page_redirect),
     re_path(r'^.*', ReactAppView.as_view(), name='react_app'),

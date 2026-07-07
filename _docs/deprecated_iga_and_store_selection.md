@@ -26,19 +26,19 @@ See git history for all removed code.
 - `scraping/utils/product_scraping_utils/field_maps.py` — removed `IGA_FIELD_MAP` entry
 - `scraping/management/commands/scrape.py` — removed `--iga` argument, IgaScraper import, and elif branch in `_scrape_single_store`
 - `scraping/management/commands/find_stores.py` — removed `--iga` argument and `find_iga_stores` call
-- `data_management/utils/path_classifier.py` — removed `'iga': 'Iga'` from `_COMPANY_KEY_MAP`
+- `pipeline/utils/path_classifier.py` — removed `'iga': 'Iga'` from `_COMPANY_KEY_MAP`
 - `products/models/product_price_summary.py` — removed `iga_store_count` field
 - `products/utils/bargain_utils.py` — removed IGA two-store bargain special case; simplified to `if len(company_ids) < 2: continue`
 - `products/utils/product_ordering.py` — same IGA bargain exception removed
 - `products/serializers/product_serializer.py` — removed IGA image resize block
-- `data_management/utils/generation_utils/price_summaries_generator.py` — removed `iga_store_count` tracking; simplified company_count guard
-- `data_management/utils/generation_utils/bargain_stats_generator.py` — removed IGA average-price logic; all companies now use min price
-- `data_management/utils/geospatial_utils.py` — removed IGA never-scraped store exclusion filter
-- `data_management/analysers/internal_company_product_crossover.py` — removed IGA Tier 1 start category special case
+- `pipeline/utils/generation_utils/price_summaries_generator.py` — removed `iga_store_count` tracking; simplified company_count guard
+- `pipeline/utils/generation_utils/bargain_stats_generator.py` — removed IGA average-price logic; all companies now use min price
+- `pipeline/utils/geospatial_utils.py` — removed IGA never-scraped store exclusion filter
+- `pipeline/analysers/internal_company_product_crossover.py` — removed IGA Tier 1 start category special case
 - `companies/models/store.py` — removed `retailer_store_id` field (IGA-only)
 - `scraping/tests/util_tests/test_normalization_e2e.py` — removed IGA cross-check tests
 - `products/tests/util_tests/test_bargain_utils.py` — removed IGA two-store bargain test
-- `data_management/tests/util_tests/test_geospatial_utils.py` — removed IGA never-scraped exclusion test
+- `pipeline/tests/util_tests/test_geospatial_utils.py` — removed IGA never-scraped exclusion test
 
 ---
 

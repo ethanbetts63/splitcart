@@ -19,11 +19,12 @@ class TestCategoryLinksUploaderRun:
         # settings.BASE_DIR is read inside run(), so patch must cover the run() call
         with patch('scraping.utils.command_utils.category_links_uploader.settings') as ms:
             ms.BASE_DIR = str(tmp_path)
+            ms.PIPELINE_DATA_DIR = tmp_path / 'pipeline' / 'data'
             uploader.run()
         command.stdout.write.assert_called()
 
     def test_successful_upload_deletes_file(self, command, tmp_path):
-        outbox = tmp_path / 'data_management' / 'data' / 'outboxes' / 'category_links_outbox'
+        outbox = tmp_path / 'pipeline' / 'data' / 'outboxes' / 'category_links_outbox'
         outbox.mkdir(parents=True)
         cat_file = outbox / 'category_links.json'
         cat_file.write_text('[{"slug": "dairy"}]')
@@ -34,6 +35,7 @@ class TestCategoryLinksUploaderRun:
         uploader = CategoryLinksUploader(command)
         with patch('scraping.utils.command_utils.category_links_uploader.settings') as ms:
             ms.BASE_DIR = str(tmp_path)
+            ms.PIPELINE_DATA_DIR = tmp_path / 'pipeline' / 'data'
             with patch.object(uploader, 'get_server_url', return_value='http://test.com'):
                 with patch.object(uploader, 'get_api_key', return_value='key'):
                     with patch('scraping.utils.command_utils.category_links_uploader.requests.post', return_value=mock_resp):

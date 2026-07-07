@@ -24,39 +24,39 @@ See git history for all removed code.
 - `products/tests/factories/store_group_factory.py` — products-app copy of StoreGroup/StoreGroupMembership factories
 - `products/tests/conftest.py` — contained only the `make_anchored_store` fixture
 - `products/tests/util_tests/test_get_pricing_stores.py` — tests for anchor resolution logic
-- `data_management/database_updating_classes/product_updating/group_maintanance/` (directory):
+- `pipeline/database_updating_classes/product_updating/group_maintanance/` (directory):
   - `group_maintenance_orchestrator.py` — ran InternalGroupHealthChecker then IntergroupComparer in sequence
   - `internal_group_health_checker.py` — compared each member's prices against the anchor; ejected mismatches, deleted redundant prices for matches
   - `intergroup_comparer.py` — compared anchor-to-anchor across groups; merged groups with ≥98% price overlap
-- `data_management/management/commands/inspect_store_groups.py` — management command reporting store/group counts per company
-- `data_management/utils/generation_utils/store_groups_generator.py` — reset all StoreGroups and created one per Store
-- `data_management/analysers/store_grouping.py` — entry point for price-correlation-based group analysis
-- `data_management/utils/analysis_utils/store_grouping_utils/` (directory):
+- `pipeline/management/commands/inspect_store_groups.py` — management command reporting store/group counts per company
+- `pipeline/utils/generation_utils/store_groups_generator.py` — reset all StoreGroups and created one per Store
+- `pipeline/analysers/store_grouping.py` — entry point for price-correlation-based group analysis
+- `pipeline/utils/analysis_utils/store_grouping_utils/` (directory):
   - `data_fetching.py` — fetched per-store price dicts for correlation analysis
   - `graph_construction.py` — built adjacency graph of stores with ≥threshold% price overlap
   - `grouping.py` — connected-components traversal on the correlation graph
-- `data_management/tests/util_tests/test_intergroup_comparer.py`
-- `data_management/tests/util_tests/test_internal_group_health_checker.py`
-- `data_management/tests/util_tests/test_grouping.py`
-- `data_management/tests/util_tests/test_graph_construction.py`
-- `data_management/utils/geospatial_utils.py` — haversine distance + nearby-store query; used by DefaultStoresGenerator pre-simplification
-- `data_management/tests/util_tests/test_geospatial_utils.py`
+- `pipeline/tests/util_tests/test_intergroup_comparer.py`
+- `pipeline/tests/util_tests/test_internal_group_health_checker.py`
+- `pipeline/tests/util_tests/test_grouping.py`
+- `pipeline/tests/util_tests/test_graph_construction.py`
+- `pipeline/utils/geospatial_utils.py` — haversine distance + nearby-store query; used by DefaultStoresGenerator pre-simplification
+- `pipeline/tests/util_tests/test_geospatial_utils.py`
 
 ## Modified files
 
 - `products/models/price.py` — removed `PriceQuerySet` class (contained `for_stores()` which called `get_pricing_stores_map`); Price now uses default manager
-- `data_management/utils/cart_optimization/substitute_manager.py` — replaced `Price.objects.for_stores(store_ids)` with direct `store_id__in` filter
-- `data_management/utils/generation_utils/default_stores_generator.py` — was geospatial search for anchor stores; simplified to `Price.objects.values_list('store_id').distinct()`
-- `data_management/utils/generation_utils/store_stats_generator.py` — removed anchor-based queries; uses direct `Price.objects.filter(store__company=company)` queries
-- `data_management/database_updating_classes/product_updating/update_orchestrator.py` — removed `GroupMaintenanceOrchestrator` import and call from post-processing
-- `data_management/management/commands/generate.py` — removed `--store-groups` argument and handler
+- `pipeline/utils/cart_optimization/substitute_manager.py` — replaced `Price.objects.for_stores(store_ids)` with direct `store_id__in` filter
+- `pipeline/utils/generation_utils/default_stores_generator.py` — was geospatial search for anchor stores; simplified to `Price.objects.values_list('store_id').distinct()`
+- `pipeline/utils/generation_utils/store_stats_generator.py` — removed anchor-based queries; uses direct `Price.objects.filter(store__company=company)` queries
+- `pipeline/database_updating_classes/product_updating/update_orchestrator.py` — removed `GroupMaintenanceOrchestrator` import and call from post-processing
+- `pipeline/management/commands/generate.py` — removed `--store-groups` argument and handler
 - `companies/models/__init__.py` — removed `StoreGroup`, `StoreGroupMembership` exports
 - `companies/admin.py` — removed `StoreGroupAdmin`
 - `companies/urls.py` — removed `export/anchor-stores/` URL
 - `companies/tests/factories/__init__.py` — removed `StoreGroupFactory`, `StoreGroupMembershipFactory`
 - `products/tests/factories/__init__.py` — removed `StoreGroupFactory`, `StoreGroupMembershipFactory` import
 - `products/tests/model_tests/test_price_model.py` — removed 3 tests using `Price.objects.for_stores()` and `make_anchored_store`
-- `data_management/tests/command_tests/test_generate_command.py` — removed `test_store_groups_flag`
+- `pipeline/tests/command_tests/test_generate_command.py` — removed `test_store_groups_flag`
 
 ---
 ---
@@ -104,25 +104,25 @@ See git history for all removed code.
 - `scraping/tests/util_tests/test_store_cleaner_woolworths.py`
 - `scraping/tests/util_tests/test_store_uploader.py`
 
-## data_management/ — scheduling, store updating, analysis
+## pipeline/ — scheduling, store updating, analysis
 
-- `data_management/views/scheduler_view.py` — internal API endpoint returning the next store to scrape, with priority logic: never-scraped → needs_rescraping flag → oldest last_scraped
-- `data_management/database_updating_classes/archive_store_updater.py` — updated Store records from archived store data files
-- `data_management/database_updating_classes/discovery_store_updater.py` — created/updated Store records from freshly scraped store discovery data
-- `data_management/database_updating_classes/discovery_update_orchestrator.py` — orchestrated processing of store discovery inbox files via DiscoveryStoreUpdater
-- `data_management/management/commands/compare_stores.py` — management command to compare product overlap between two stores by PK
-- `data_management/management/commands/inspect_stores.py` — management command to display store info and price counts per company
-- `data_management/utils/analysis_utils/pricing_analysis/get_product_prices_by_store.py` — fetched per-store price breakdowns for a product
-- `data_management/analysers/store_pricing_heatmap.py` — generated a heatmap of price coverage across stores
-- `data_management/analysers/store_product_overlap.py` — analysed product catalog overlap between stores
-- `data_management/utils/generation_utils/store_stats_generator.py` — per-store health report showing how many stores had fresh price data per company; replaced with company-level report
+- `pipeline/views/scheduler_view.py` — internal API endpoint returning the next store to scrape, with priority logic: never-scraped → needs_rescraping flag → oldest last_scraped
+- `pipeline/database_updating_classes/archive_store_updater.py` — updated Store records from archived store data files
+- `pipeline/database_updating_classes/discovery_store_updater.py` — created/updated Store records from freshly scraped store discovery data
+- `pipeline/database_updating_classes/discovery_update_orchestrator.py` — orchestrated processing of store discovery inbox files via DiscoveryStoreUpdater
+- `pipeline/management/commands/compare_stores.py` — management command to compare product overlap between two stores by PK
+- `pipeline/management/commands/inspect_stores.py` — management command to display store info and price counts per company
+- `pipeline/utils/analysis_utils/pricing_analysis/get_product_prices_by_store.py` — fetched per-store price breakdowns for a product
+- `pipeline/analysers/store_pricing_heatmap.py` — generated a heatmap of price coverage across stores
+- `pipeline/analysers/store_product_overlap.py` — analysed product catalog overlap between stores
+- `pipeline/utils/generation_utils/store_stats_generator.py` — per-store health report showing how many stores had fresh price data per company; replaced with company-level report
 
 ## Files replaced or significantly changed
 
 - `products/utils/default_stores.py` → replaced by `products/utils/default_companies.py`; same cache pattern, returns company IDs instead of store IDs; SystemSetting key changed from `default_pricing_stores` to `default_pricing_companies`
-- `data_management/utils/generation_utils/default_companies_generator.py` → updated to query by company and write `default_pricing_companies` SystemSetting key
+- `pipeline/utils/generation_utils/default_companies_generator.py` → updated to query by company and write `default_pricing_companies` SystemSetting key
 - `scraping/management/commands/scrape.py` — simplified from a multi-store scheduler loop (querying hundreds of Store records) to hardcoded single API store_id per company; no longer imports Store model
-- `data_management/database_updating_classes/product_updating/update_orchestrator.py` — store resolution (`Store.objects.get(store_id=...)`) replaced with company resolution (`Company.objects.get(name=...)`) from JSONL metadata
+- `pipeline/database_updating_classes/product_updating/update_orchestrator.py` — store resolution (`Store.objects.get(store_id=...)`) replaced with company resolution (`Company.objects.get(name=...)`) from JSONL metadata
 
 ## Architectural changes
 

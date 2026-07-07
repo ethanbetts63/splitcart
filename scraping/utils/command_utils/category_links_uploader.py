@@ -7,12 +7,12 @@ from .base_uploader import BaseUploader
 class CategoryLinksUploader(BaseUploader):
     def __init__(self, command, dev=False):
         super().__init__(command, dev)
-        self.outbox_path_name = 'data_management/data/outboxes/category_links_outbox'
+        self.outbox_path_name = 'pipeline/data/outboxes/category_links_outbox'
         self.upload_url_path = '/api/upload/category-links/'
         self.file_name = 'category_links.json'
 
     def run(self):
-        outbox_path = os.path.join(settings.BASE_DIR, 'data_management', 'data', 'outboxes', 'category_links_outbox')
+        outbox_path = os.fspath(settings.PIPELINE_DATA_DIR / 'outboxes' / 'category_links_outbox')
         file_path = os.path.join(outbox_path, self.file_name)
 
         if not os.path.exists(file_path):
