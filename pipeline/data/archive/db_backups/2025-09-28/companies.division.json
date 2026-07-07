@@ -1,0 +1,72 @@
+[
+{
+  "model": "companies.division",
+  "pk": 1,
+  "fields": {
+    "external_id": null,
+    "name": "Coles Supermarkets",
+    "company": 2,
+    "store_finder_id": null
+  }
+},
+{
+  "model": "companies.division",
+  "pk": 2,
+  "fields": {
+    "external_id": null,
+    "name": "Liquorland",
+    "company": 2,
+    "store_finder_id": null
+  }
+},
+{
+  "model": "companies.division",
+  "pk": 3,
+  "fields": {
+    "external_id": null,
+    "name": "Vintage Cellars",
+    "company": 2,
+    "store_finder_id": null
+  }
+},
+{
+  "model": "companies.division",
+  "pk": 4,
+  "fields": {
+    "external_id": null,
+    "name": "No Division",
+    "company": 2,
+    "store_finder_id": null
+  }
+},
+{
+  "model": "companies.division",
+  "pk": 5,
+  "fields": {
+    "external_id": null,
+    "name": "AMPOL",
+    "company": 4,
+    "store_finder_id": null
+  }
+},
+{
+  "model": "companies.division",
+  "pk": 6,
+  "fields": {
+    "external_id": null,
+    "name": "SUPERMARKETS",
+    "company": 4,
+    "store_finder_id": null
+  }
+},
+{
+  "model": "companies.division",
+  "pk": 7,
+  "fields": {
+    "external_id": null,
+    "name": "EG",
+    "company": 4,
+    "store_finder_id": null
+  }
+}
+]

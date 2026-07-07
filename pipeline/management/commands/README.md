@@ -66,11 +66,3 @@ These commands are typically run on the server to create derived data or perform
 
 -   `python manage.py generate --price-summaries`
     Aggregates price data to create summary views, improving performance for product listings.
-
-### Private Data Sync
-
--   `python manage.py archive --pull`
-    Pulls the latest private data repo into `pipeline/private_data`.
-
--   `python manage.py archive --push`
-    Commits and pushes changes from `pipeline/private_data`.

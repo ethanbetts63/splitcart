@@ -55,7 +55,7 @@ class TestUpdateCommandDispatch:
         MockOrch.return_value.run.assert_called_once()
         _, kwargs = MockOrch.call_args
         assert kwargs.get('preserve_source_files') is True
-        assert str(kwargs.get('source_path')).endswith('pipeline\\private_data\\product_archive')
+        assert str(kwargs.get('source_path')).endswith('pipeline\\data\\archive\\product_archive')
 
     @patch(f'{BASE}.UpdateOrchestrator')
     def test_no_flags_runs_nothing(self, MockUpdate):

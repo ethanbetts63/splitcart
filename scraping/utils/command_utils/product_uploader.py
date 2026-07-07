@@ -15,7 +15,7 @@ class ProductUploader(BaseUploader):
 
     def run(self):
         outbox_path = os.fspath(settings.PIPELINE_DATA_DIR / 'outboxes' / self.outbox_path_name)
-        archive_path = os.fspath(settings.PIPELINE_PRIVATE_DATA_DIR / 'product_archive')
+        archive_path = os.fspath(settings.PIPELINE_DATA_DIR / 'archive' / 'product_archive')
         os.makedirs(outbox_path, exist_ok=True)
         os.makedirs(archive_path, exist_ok=True)
 

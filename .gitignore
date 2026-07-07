@@ -55,8 +55,12 @@ coverage.xml
 .idea/
 .vscode/
 
-/pipeline/data/
-/pipeline/private_data/
+/pipeline/data/*
+!/pipeline/data/archive/
+!/pipeline/data/archive/product_archive/
+!/pipeline/data/archive/product_archive/**
+!/pipeline/data/archive/db_backups/
+!/pipeline/data/archive/db_backups/**
 db.sqlite3
 db.sqlite3-shm
 db.sqlite3-wal

@@ -15,7 +15,7 @@ class Command(BaseCommand):
         parser.add_argument('--post-process-only', action='store_true', help='Skip file processing and run only the post-processing steps for products.')
         parser.add_argument('--cat-links', action='store_true', help='Update category links from the category_links_inbox directory.')
         parser.add_argument('--subs', action='store_true', help='Update substitutions from the substitutions_inbox directory.')
-        parser.add_argument('--archive', action='store_true', help='For products, read from the private product archive.')
+        parser.add_argument('--archive', action='store_true', help='For products, read from the product archive.')
 
     def handle(self, *args, **options):
         run_products_processed = options['products']
@@ -39,7 +39,7 @@ class Command(BaseCommand):
                 orchestrator.run()
             else:
                 source_path = (
-                    settings.PIPELINE_PRIVATE_DATA_DIR / 'product_archive'
+                    settings.PIPELINE_DATA_DIR / 'archive' / 'product_archive'
                     if archive
                     else settings.PIPELINE_DATA_DIR / 'inboxes' / 'product_inbox'
                 )

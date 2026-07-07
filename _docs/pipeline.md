@@ -30,16 +30,16 @@ Product/category/sub generation         Product ingestion pipeline
 
 ## Full Setup Flow
 
-`reset_db` is the local rebuild entrypoint. It pulls the private data repo, resets the schema using existing migrations, replays archived product JSONL files, then regenerates derived database state.
+`reset_db` is the local rebuild entrypoint. It resets the schema using existing migrations, replays archived product JSONL files, then regenerates derived database state.
 
 ```
-python manage.py reset_db                  # LOCAL - pull private archive, reset DB, replay products, regenerate derived state
+python manage.py reset_db                  # LOCAL - reset DB, replay products, regenerate derived state
 ```
 
 The normal local/server update flow remains:
 
 ```
-python manage.py upload --products --dev   # LOCAL  - uploads product JSONL and archives a private copy
+python manage.py upload --products --dev   # LOCAL  - uploads product JSONL and archives a tracked copy
 python manage.py update --products         # SERVER - ingests products, brands, prices, category paths
 
 python manage.py generate --cat-links --dev # LOCAL - generates category links
@@ -60,20 +60,13 @@ python manage.py generate --default-companies # SERVER - stores default pricing 
 
 ## Product Archive
 
-Product JSONL files are archived privately after upload:
+Product JSONL files are archived after upload:
 
 ```text
-pipeline/private_data/product_archive/
+pipeline/data/archive/product_archive/
 ```
 
-Use these commands to manually sync the private repo:
-
-```
-python manage.py archive --pull
-python manage.py archive --push
-```
-
-`reset_db` calls `archive --pull` automatically but never pushes. `update --products --archive` reads product JSONL files from `pipeline/private_data/product_archive/` and preserves those files after ingest. Normal `update --products` still reads from `pipeline/data/inboxes/product_inbox/`.
+`update --products --archive` reads product JSONL files from `pipeline/data/archive/product_archive/` and preserves those files after ingest. Normal `update --products` still reads from `pipeline/data/inboxes/product_inbox/`.
 ## Data Flow Summary
 
 ```

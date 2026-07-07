@@ -33,12 +33,9 @@ from django.db import connection
 
 
 class Command(BaseCommand):
-    help = "Drop all tables, rebuild schema, and restore from private product archive"
+    help = "Drop all tables, rebuild schema, and restore from product archive"
 
     def handle(self, *args, **options):
-        self.stdout.write("Pulling private archive...")
-        call_command("archive", pull=True)
-
         self.stdout.write("Dropping all tables...")
         with connection.cursor() as cursor:
             cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
@@ -59,7 +56,7 @@ class Command(BaseCommand):
 
         self._reset_scraping_data()
 
-        self.stdout.write("\nRestoring products from private archive...")
+        self.stdout.write("\nRestoring products from archive...")
         call_command("update", products=True, archive=True)
 
         self.stdout.write("\nRegenerating derived data...")

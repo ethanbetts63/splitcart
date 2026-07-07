@@ -7,7 +7,6 @@ load_dotenv() # Load environment variables from .env file
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 PIPELINE_DATA_DIR = BASE_DIR / "pipeline" / "data"
-PIPELINE_PRIVATE_DATA_DIR = BASE_DIR / "pipeline" / "private_data"
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
