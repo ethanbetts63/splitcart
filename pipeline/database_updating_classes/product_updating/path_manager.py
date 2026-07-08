@@ -2,6 +2,8 @@ from django.utils.text import slugify
 from products.models import Product
 from pipeline.utils.path_classifier import classify_path
 
+BATCH_SIZE = 500
+
 
 def _make_path_key(company_name: str, path: list) -> str:
     return f"{company_name.lower()}|{'/'.join(slugify(p) for p in path)}"
@@ -52,15 +54,21 @@ class PathManager:
             self.command.stdout.write("    - No category paths found in file.")
             return
 
+        self.command.stdout.write(f"    - Found category paths for {len(product_id_to_path)} products.")
+
         # Fetch current category_paths for all affected products in one query
         product_ids = list(product_id_to_path.keys())
+        self.command.stdout.write(f"    - Fetching {len(product_ids)} products for category path update...")
         products = {
             p.id: p
             for p in Product.objects.filter(id__in=product_ids).only('id', 'category_paths')
         }
+        self.command.stdout.write(f"    - Fetched {len(products)} products.")
 
         company_name = company_obj.name
         to_update = []
+        classification_cache = {}
+        processed_count = 0
 
         for product_id, path in product_id_to_path.items():
             product = products.get(product_id)
@@ -75,7 +83,10 @@ class PathManager:
             if matched:
                 matched['evidence_count'] = matched.get('evidence_count', 1) + 1
             else:
-                classification = classify_path(company_name, path)
+                classification = classification_cache.get(path_key)
+                if classification is None:
+                    classification = classify_path(company_name, path)
+                    classification_cache[path_key] = classification
                 existing_paths.append({
                     'company': company_name,
                     'path': path,
@@ -90,7 +101,14 @@ class PathManager:
 
             product.category_paths = existing_paths
             to_update.append(product)
+            processed_count += 1
+
+            if processed_count % 5000 == 0:
+                self.command.stdout.write(f"    - Prepared category_paths for {processed_count} products...")
 
         if to_update:
-            Product.objects.bulk_update(to_update, ['category_paths'])
+            self.command.stdout.write(
+                f"    - Writing category_paths for {len(to_update)} products in batches of {BATCH_SIZE}..."
+            )
+            Product.objects.bulk_update(to_update, ['category_paths'], batch_size=BATCH_SIZE)
             self.command.stdout.write(f"    - Updated category_paths for {len(to_update)} products.")
