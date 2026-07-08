@@ -1,8 +1,9 @@
 import shutil
+import subprocess
 
 from django.conf import settings
 from django.core.management import call_command
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 from django.db import connection
 
 # Full pipeline sequence (local = run on dev machine, server = run on PythonAnywhere)
@@ -33,9 +34,22 @@ from django.db import connection
 
 
 class Command(BaseCommand):
-    help = "Drop all tables, rebuild schema, and restore from product archive"
+    help = "Drop all tables, rebuild schema, and restore from archive"
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--server",
+            action="store_true",
+            help="Pull latest code before reset and skip local-only scraper cleanup.",
+        )
 
     def handle(self, *args, **options):
+        server = options["server"]
+
+        if server:
+            self.stdout.write("Pulling latest code...")
+            self._run_git_pull()
+
         self.stdout.write("Dropping all tables...")
         with connection.cursor() as cursor:
             cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
@@ -45,16 +59,17 @@ class Command(BaseCommand):
                 self.stdout.write(f"  Dropped: {table}")
             cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
 
-        self.stdout.write("Clearing __pycache__...")
-        for cache_dir in settings.BASE_DIR.rglob("__pycache__"):
-            if "venv" in cache_dir.parts:
-                continue
-            shutil.rmtree(cache_dir)
+        if not server:
+            self._clear_pycache()
 
         self.stdout.write("\nRunning migrate...")
         call_command("migrate")
 
-        self._reset_scraping_data()
+        if not server:
+            self._reset_scraping_data()
+
+        self.stdout.write("\nRestoring companies from archive...")
+        call_command("update", companies=True, archive=True)
 
         self.stdout.write("\nRestoring products from archive...")
         call_command("update", products=True, archive=True)
@@ -68,6 +83,28 @@ class Command(BaseCommand):
         call_command("generate", default_companies=True)
 
         self.stdout.write(self.style.SUCCESS("\nDatabase reset complete."))
+
+    def _run_git_pull(self):
+        result = subprocess.run(
+            ["git", "pull"],
+            cwd=settings.BASE_DIR,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if result.stdout:
+            self.stdout.write(result.stdout.strip())
+        if result.stderr:
+            self.stderr.write(result.stderr.strip())
+        if result.returncode != 0:
+            raise CommandError("git pull failed; aborting reset.")
+
+    def _clear_pycache(self):
+        self.stdout.write("Clearing __pycache__...")
+        for cache_dir in settings.BASE_DIR.rglob("__pycache__"):
+            if "venv" in cache_dir.parts:
+                continue
+            shutil.rmtree(cache_dir)
 
     def _reset_scraping_data(self):
         scraping_data = settings.BASE_DIR / 'scraping' / 'data'

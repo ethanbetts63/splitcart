@@ -57,6 +57,8 @@ coverage.xml
 
 /pipeline/data/*
 !/pipeline/data/archive/
+!/pipeline/data/archive/company_archive/
+!/pipeline/data/archive/company_archive/**
 !/pipeline/data/archive/product_archive/
 !/pipeline/data/archive/product_archive/**
 !/pipeline/data/archive/db_backups/

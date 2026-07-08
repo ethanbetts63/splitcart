@@ -30,10 +30,11 @@ Product/category/sub generation         Product ingestion pipeline
 
 ## Full Setup Flow
 
-`reset_db` is the local rebuild entrypoint. It resets the schema using existing migrations, replays archived product JSONL files, then regenerates derived database state.
+`reset_db` is the rebuild entrypoint. It resets the schema using existing migrations, replays archived company and product data, then regenerates derived database state.
 
 ```
-python manage.py reset_db                  # LOCAL - reset DB, replay products, regenerate derived state
+python manage.py reset_db                  # LOCAL  - reset DB, replay archive, regenerate derived state
+python manage.py reset_db --server         # SERVER - git pull, migrate, replay archive, regenerate derived state
 ```
 
 The normal local/server update flow remains:
@@ -59,6 +60,14 @@ python manage.py generate --default-companies # SERVER - stores default pricing 
 ```
 
 ## Product Archive
+
+Base company data is stored as a tracked archive seed:
+
+```text
+pipeline/data/archive/company_archive/companies.json
+```
+
+`update --companies --archive` upserts those company rows and must run before archived product replay.
 
 Product JSONL files are archived after upload:
 

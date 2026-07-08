@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Aldi",
+    "image_url_template": null
+  },
+  {
+    "name": "Coles",
+    "image_url_template": "https://productimages.coles.com.au/productimages/{sku}.jpg"
+  },
+  {
+    "name": "Iga",
+    "image_url_template": "https://cdn.metcash.media/image/upload/w_1500,h_1500,c_pad,b_auto/igashop/images/{sku}.jpg"
+  },
+  {
+    "name": "Woolworths",
+    "image_url_template": "https://cdn1.woolworths.media/content/wowproductimages/large/{sku}.jpg"
+  }
+]

@@ -1,5 +1,11 @@
 from unittest.mock import patch
+import json
+
+import pytest
 from django.core.management import call_command
+from django.core.management.base import CommandError
+from django.test import override_settings
+from companies.models import Company
 
 
 BASE = 'pipeline.management.commands.update'
@@ -56,6 +62,27 @@ class TestUpdateCommandDispatch:
         _, kwargs = MockOrch.call_args
         assert kwargs.get('preserve_source_files') is True
         assert str(kwargs.get('source_path')).endswith('pipeline\\data\\archive\\product_archive')
+
+    @pytest.mark.django_db
+    def test_companies_archive_upserts_companies(self, tmp_path):
+        archive_dir = tmp_path / 'archive' / 'company_archive'
+        archive_dir.mkdir(parents=True)
+        (archive_dir / 'companies.json').write_text(json.dumps([
+            {'name': 'Aldi', 'image_url_template': None},
+            {'name': 'Woolworths', 'image_url_template': 'https://example.com/{sku}.jpg'},
+        ]), encoding='utf-8')
+        Company.objects.create(name='woolworths')
+
+        with override_settings(PIPELINE_DATA_DIR=tmp_path):
+            call_command('update', companies=True, archive=True)
+
+        assert Company.objects.filter(name='Aldi').exists()
+        woolworths = Company.objects.get(name='Woolworths')
+        assert woolworths.image_url_template == 'https://example.com/{sku}.jpg'
+
+    def test_companies_without_archive_errors(self):
+        with pytest.raises(CommandError):
+            call_command('update', companies=True)
 
     @patch(f'{BASE}.UpdateOrchestrator')
     def test_no_flags_runs_nothing(self, MockUpdate):
