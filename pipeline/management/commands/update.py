@@ -5,9 +5,6 @@ from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.db import IntegrityError
 from companies.models import Company
-from pipeline.database_updating_classes.product_updating.update_orchestrator import UpdateOrchestrator
-from pipeline.database_updating_classes.category_link_update_orchestrator import CategoryLinkUpdateOrchestrator                  
-from pipeline.database_updating_classes.substitution_update_orchestrator import SubstitutionUpdateOrchestrator
 
 class Command(BaseCommand):
     help = 'Updates the database with data from various sources.'
@@ -34,14 +31,20 @@ class Command(BaseCommand):
             self._update_companies_from_archive()
 
         if run_substitutions:
+            from pipeline.database_updating_classes.substitution_update_orchestrator import SubstitutionUpdateOrchestrator
+
             orchestrator = SubstitutionUpdateOrchestrator(self)
             orchestrator.run()
 
         if run_category_links:
+            from pipeline.database_updating_classes.category_link_update_orchestrator import CategoryLinkUpdateOrchestrator
+
             orchestrator = CategoryLinkUpdateOrchestrator(self)
             orchestrator.run()
 
         if run_products_processed:
+            from pipeline.database_updating_classes.product_updating.update_orchestrator import UpdateOrchestrator
+
             if post_process_only:
                 self.stdout.write(self.style.SUCCESS('--- Running only product post-processing tasks ---'))
                 orchestrator = UpdateOrchestrator(self, post_process_only=True)

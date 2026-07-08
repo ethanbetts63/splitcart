@@ -56,6 +56,11 @@ coverage.xml
 .vscode/
 
 /pipeline/data/*
+!/pipeline/data/category_exclusions.py
+!/pipeline/data/category_mappings.py
+!/pipeline/data/category_suspects_agent_prompt.md
+!/pipeline/data/node_category_assignment_agent_prompt.md
+!/pipeline/data/pillar_pages.jsonl
 !/pipeline/data/archive/
 !/pipeline/data/archive/company_archive/
 !/pipeline/data/archive/company_archive/**
