@@ -12,8 +12,8 @@ of one frontend row, and a manual step nobody with a keyboard can do.
 
 ## Work
 
-| #    | Work                                                                                                                                                                                                                                                                             | Acceptance                                                |
-| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| #    | Work                                                                                                                                                                                                                                                                                                                           | Acceptance                                                        |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
 | TS-9 | The `check:sitemap` half landed with [`seo.md`](seo.md) — 15 routes, all resolving. The login/signup form-versus-serializer contract check did not. It is the same script [`forms.md`](forms.md) FM-8 owns, so it lands there rather than being written twice; this row is the note that the testing side of it is still owed. | `npm run check:forms` exists, exits 0, and is in `npm run check`. |
 
 ## Outstanding, and not an agent's to do
@@ -36,19 +36,18 @@ Recorded here because the plans that would own them —
 [`security.md`](security.md) and [`dead-code.md`](dead-code.md) — have closed.
 Each is described in full where it was found.
 
-**Django's whole-site cache is enabled for the entire API, and it has no idea
-who is asking.** `config.settings` installs `UpdateCacheMiddleware` and
-`FetchFromCacheMiddleware`, which store any 200 answering a GET under a key
-built from the URL and the response's `Vary` headers. Token authentication
-never touches the session, so no `Vary: Cookie` is ever added, and every caller
-computes the same key. Three live consequences were found and closed at the
-view with `never_cache`: one shopper's cart served to everyone
-(`/api/carts/active/`, `/api/carts/`), one account's email address served to
-everyone (`/api/auth/user/`), and a regenerated translation table withheld from
-the scraper for ten minutes (`/api/files/*`). **The middleware is still
-installed, and will do this again to the next per-caller GET anyone adds.**
-Removing it and caching deliberately per view is a `config/settings.py` change
-this plan did not have the scope to make.
+**Django's whole-site cache served one caller's data to another. Fixed.**
+`UpdateCacheMiddleware` and `FetchFromCacheMiddleware` stored any 200 answering
+a GET under a key built from the URL and the response's `Vary` headers. Token
+authentication never touches the session, so no `Vary: Cookie` was ever added
+and every caller computed the same key. Three live consequences were found: one
+shopper's cart served to everyone (`/api/carts/active/`, `/api/carts/`), one
+account's email address served to everyone (`/api/auth/user/`), and a
+regenerated translation table withheld from the scraper for ten minutes
+(`/api/files/*`). Each was closed at the view with `never_cache`, and the
+middleware itself has since been removed so the next per-caller GET is safe by
+default. Nothing was lost: the public read-only endpoints already carry their
+own `@cache_page`. `config/tests/test_caching.py` keeps it removed.
 
 **`POST /api/auth/password/reset/` answers 500.** Live, unauthenticated, and
 throttled, but the email builder reverses `password_reset_confirm` and nothing
@@ -58,7 +57,7 @@ the detail and an `xfail(strict=True)` assertion of what is owed.
 
 **Registering with an email that already has an account answered 500.** Fixed,
 because the fix was unambiguous: dj-rest-auth's uniqueness check asks whether
-the address is *verified*, and `ACCOUNT_EMAIL_VERIFICATION` is `'none'`, so it
+the address is _verified_, and `ACCOUNT_EMAIL_VERIFICATION` is `'none'`, so it
 never fired and the INSERT hit the unique constraint.
 `CustomRegisterSerializer.validate_email` now checks the user table.
 
@@ -71,15 +70,8 @@ Product decision, not a defect in the merge — and directly relevant to
 lives on. The behaviour itself is pinned independently in
 `users/tests/util_tests/test_session_merger.py`.
 
-**Two units are dead and broken, and should be deleted with their routes.**
-`products/serializers/price_serializer.py` raises on first use and nothing
-imports it. `pipeline/views/import_semantic_data_view.py` passes `source=` to a
-model field that is commented out, so every import is reported as a 400, and
-nothing calls it — substitutions reach the server through
-`/api/upload/substitutions/`. Both carry an `xfail(strict=True)` test asserting
-what they owe. Removing a routed URL is a compatibility decision.
-
-**`/api/carts/` paginates an unordered queryset.** `Cart` declares no
-`Meta.ordering`, so DRF warns on every list request and a second page may
-repeat or drop rows. Harmless at current cart counts; the fix is an ordering
-decision somebody should make rather than one a test should guess.
+**`/api/carts/` paginated an unordered queryset. Fixed.** `Cart` declared no
+`Meta.ordering`, so DRF warned on every list request and a second page could
+repeat or drop rows. It now orders by `['-updated_at', 'id']` — most recently
+touched first, which is the order a cart list is read in, with `id` as the
+tiebreaker because `updated_at` alone is not unique.

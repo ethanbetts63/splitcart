@@ -26,18 +26,18 @@ None of that is unusual for a repo brought in late, and most of it is cheap.
 
 ## The plans
 
-| Plan                                     | Owns                                                                                  |
-| ---------------------------------------- | ------------------------------------------------------------------------------------- |
-| [`dead-code.md`](dead-code.md)           | Vite-era residue, including a catch-all route that turns 404s into 500s               |
+| Plan                                     | Owns                                                                                                   |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| [`dead-code.md`](dead-code.md)           | Vite-era residue, including a catch-all route that turns 404s into 500s                                |
 | [`security.md`](security.md)             | Configuration and boundary defects — admin exposure, transport settings, throttles, unvalidated writes |
-| [`tooling.md`](tooling.md)               | Prettier, stylelint, eslint, tsconfig, the dependency baseline, `npm run check`       |
-| [`docs-hygiene.md`](docs-hygiene.md)     | `AGENTS.md`, the factually wrong README, broken links, the conformance ledger          |
-| [`seo.md`](seo.md)                       | The page registry, sitemap, robots, and four uncoordinated JSON-LD emitters           |
-| [`tokens.md`](tokens.md)                 | The semantic token vocabulary, the nine text rungs, and the sweep onto them           |
-| [`testing.md`](testing.md)               | The missing `users/` test suite and the frontend check pipeline                        |
-| [`forms.md`](forms.md)                   | Three forms, their schemas, and the field bounds table                                |
-| [`registry.md`](registry.md)             | Becoming a registry consumer, gated on tokens                                         |
-| [`auth-migration.md`](auth-migration.md) | The session model — the one large item, sequenced last and held back deliberately     |
+| [`tooling.md`](tooling.md)               | Prettier, stylelint, eslint, tsconfig, the dependency baseline, `npm run check`                        |
+| [`docs-hygiene.md`](docs-hygiene.md)     | `AGENTS.md`, the factually wrong README, broken links, the conformance ledger                          |
+| [`seo.md`](seo.md)                       | The page registry, sitemap, robots, and four uncoordinated JSON-LD emitters                            |
+| [`tokens.md`](tokens.md)                 | The semantic token vocabulary, the nine text rungs, and the sweep onto them                            |
+| [`testing.md`](testing.md)               | The missing `users/` test suite and the frontend check pipeline                                        |
+| [`forms.md`](forms.md)                   | Three forms, their schemas, and the field bounds table                                                 |
+| [`registry.md`](registry.md)             | Becoming a registry consumer, gated on tokens                                                          |
+| [`auth-migration.md`](auth-migration.md) | The session model — the one large item, sequenced last and held back deliberately                      |
 
 ## Sequence
 
@@ -57,21 +57,23 @@ every social share of every page.
 `registry.md`. A registry component may name only tokens that exist, and
 splitcart currently declares none of them.
 
-**Wave 4 — blocked on tests.**
-`auth-migration.md`. See that document for why it is last and why
-`testing.md` TS-3 is a hard prerequisite rather than a nicety.
+**Wave 4 — blocked on tests, which have now landed.**
+`auth-migration.md`. Its prerequisite was coverage of `users/`, and that
+arrived with `testing.md`: 171 tests where there were none, and the
+anonymous-cart merge pinned independently of the serializer the migration
+deletes. See that document for why it is still last.
 
 ## Three things worth knowing before reading further
 
 **Django is API-only, and does not know it.** `config/urls.py` ends in a
 catch-all rendering a template that does not exist, from a `frontend/dist`
-directory that does not exist. Every unrouted request returns 500 instead of
-404. This is dead code with a live effect.
+directory that does not exist. Every unrouted request returns 500 instead of 404. This is dead code with a live effect.
 
-**`users/` has no tests.** Not thin ones — no `tests/` directory. That app owns
+**`users/` had no tests, and closing that found a data leak.** The app owns
 authentication, the nine-action `CartViewSet` including its cross-user
-permission boundaries, and the money-adjacent cart optimisation. It is also
-where the unserialized `rename` write lives.
+permission boundaries, and the money-adjacent cart optimisation. Writing the
+171 tests it now has turned up Django's whole-site cache serving one shopper's
+cart, and one account's email address, to whoever asked next.
 
 **The backend is in better shape than everything around it.** Models, views and
 serializers are already packages per concern. Test determinism is clean. No
