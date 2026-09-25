@@ -100,7 +100,7 @@ const ProductTile: React.FC<ProductTileProps> = ({
       if (Array.isArray(sizes) && sizes.length > 0) {
         displaySize = sizes[0];
       }
-    } catch (e) {
+    } catch {
       // Not valid JSON, use original string
     }
   }

@@ -1,42 +1,25 @@
 import ContactPage from "@/page_components/ContactPage";
-import { createMetadata } from "@/lib/seo";
-import { createBreadcrumbSchema, JsonLdScript } from "@/lib/schema";
+import { buildStaticPageGraph, metadataFor } from "@/lib/seo";
+import StructuredDataScript from "@/lib/schema";
 
-export const metadata = createMetadata({
-  title: "Contact Us",
-  description:
-    "Have questions, suggestions, or feedback? Get in touch with SplitCart.",
-  canonicalPath: "/contact",
-});
+export const metadata = metadataFor("/contact");
 
-const contactPageSchema = {
-  "@context": "https://schema.org",
-  "@type": "ContactPage",
-  name: "Contact Us",
-  description: "Have questions, suggestions, or feedback? Get in touch with us.",
-  url: "https://www.splitcart.com.au/contact",
-  mainEntityOfPage: {
-    "@type": "WebPage",
-    "@id": "https://www.splitcart.com.au/contact",
-  },
-  contactPoint: {
-    "@type": "ContactPoint",
-    email: "ethanbetts63@gmail.com",
-    contactType: "Customer Support",
-    availableLanguage: "English",
-  },
-};
-
-const breadcrumbSchema = createBreadcrumbSchema([
-  { name: "Home", path: "/" },
-  { name: "Contact", path: "/contact" },
-]);
-
+/**
+ * `ContactPage` is a `WebPage` subtype, so it replaces the generic `WebPage`
+ * node rather than sitting alongside a second copy of it.
+ *
+ * The `ContactPoint` itself moved onto the `Organization` node in `lib/seo.ts`,
+ * where schema.org defines it and where the rest of the graph can reference it.
+ * This page used to mint its own — a `ContactPage` with an inline
+ * `contactPoint` and a `mainEntityOfPage` pointing at a bare URL string instead
+ * of an `@id`, so nothing in the graph joined up.
+ */
 export default function Page() {
   return (
     <>
-      <JsonLdScript data={contactPageSchema} />
-      <JsonLdScript data={breadcrumbSchema} />
+      <StructuredDataScript
+        structuredData={buildStaticPageGraph("/contact", [], "ContactPage")}
+      />
       <ContactPage />
     </>
   );

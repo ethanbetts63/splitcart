@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useCart } from '../../context/CartContext';
 import type { Cart } from '../../types';
 import CartItemTile from '../../components/CartItemTile';
@@ -19,11 +19,14 @@ const CartPage: React.FC<CartPageProps> = ({ onOpenChange }) => {
   const [isEditingCartName, setIsEditingCartName] = useState(false);
   const [newCartName, setNewCartName] = useState(currentCart?.name || '');
 
-  useEffect(() => {
-    if (currentCart) {
-      setNewCartName(currentCart.name);
-    }
-  }, [currentCart]);
+  // The rename field follows the active cart. Adjusted during render rather
+  // than in an effect so the field never paints the previous cart's name and
+  // then swap - see React's "adjusting state when a prop changes".
+  const [lastCart, setLastCart] = useState<Cart | null>(currentCart);
+  if (lastCart !== currentCart) {
+    setLastCart(currentCart);
+    if (currentCart) setNewCartName(currentCart.name);
+  }
 
   const cartTotal = currentCart?.items.length || 0;
 

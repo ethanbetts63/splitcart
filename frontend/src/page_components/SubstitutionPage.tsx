@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 import ProductTile from '../components/ProductTile';
@@ -33,11 +33,37 @@ const SubstitutionPage = () => {
 
   const itemsToReview = currentCart?.items.filter(item => item.substitutions && item.substitutions.length > 0) || [];
 
-  useEffect(() => {
-    if (!isCartSyncing && currentCart && itemsToReview.length === 0) {
-      handleOptimizeAndNavigate();
+  // Declared above the effect that calls it. "Skip substitutes" runs the same
+  // path, so there is one function rather than the two identical copies that
+  // were here.
+  const handleOptimizeAndNavigate = useCallback(async () => {
+    if (!currentCart) return;
+    setIsLoading(true);
+    try {
+      const results = await optimizeCurrentCart();
+      if (results) {
+        router.push('/final-cart');
+      } else {
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
     }
-  }, [isCartSyncing, currentCart, itemsToReview.length]);
+  }, [currentCart, optimizeCurrentCart, router]);
+
+  // A cart whose items have no substitutes to review has nothing for this page
+  // to show, so it optimises and moves on by itself. The ref makes that happen
+  // once: `optimizeCurrentCart` and `router` are new objects on every render of
+  // the provider above, so the effect re-runs freely and must not re-fire the
+  // request each time.
+  const autoOptimiseStarted = useRef(false);
+  const nothingToReview = !isCartSyncing && !!currentCart && itemsToReview.length === 0;
+  useEffect(() => {
+    if (!nothingToReview || autoOptimiseStarted.current) return;
+    autoOptimiseStarted.current = true;
+    void handleOptimizeAndNavigate();
+  }, [nothingToReview, handleOptimizeAndNavigate]);
 
   const currentItem = itemsToReview[currentItemIndex];
   const currentSubstitutes = currentItem?.substitutions || [];
@@ -69,38 +95,6 @@ const SubstitutionPage = () => {
       await updateCartItemSubstitution(currentItem.id, sub.id, false, 1);
     } else {
       await updateCartItemSubstitution(currentItem.id, sub.id, sub.is_approved, newQuantity);
-    }
-  };
-
-  const handleOptimizeAndNavigate = async () => {
-    if (!currentCart) return;
-    setIsLoading(true);
-    try {
-      const results = await optimizeCurrentCart();
-      if (results) {
-        router.push('/final-cart');
-      } else {
-        setIsLoading(false);
-      }
-    } catch (error) {
-      console.error(error);
-      setIsLoading(false);
-    }
-  };
-
-  const handleSkipSubstitutions = async () => {
-    if (!currentCart) return;
-    setIsLoading(true);
-    try {
-      const results = await optimizeCurrentCart();
-      if (results) {
-        router.push('/final-cart');
-      } else {
-        setIsLoading(false);
-      }
-    } catch (error) {
-      console.error(error);
-      setIsLoading(false);
     }
   };
 
@@ -172,7 +166,7 @@ const SubstitutionPage = () => {
       {/* Secondary Actions */}
       <div className="flex items-center justify-between mb-5">
         <button
-          onClick={handleSkipSubstitutions}
+          onClick={handleOptimizeAndNavigate}
           className="text-sm text-gray-400 hover:text-gray-700 underline underline-offset-2 transition-colors"
         >
           Skip all substitutions

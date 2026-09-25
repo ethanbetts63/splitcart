@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
 import "../index.css";
 import { Analytics } from "@vercel/analytics/next";
+import { SITE_NAME, SITE_URL } from "@/lib/siteConfig";
 import { AppProviders } from "./providers";
 import { AppShell } from "./shell";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.splitcart.com.au"),
+  // The origin is declared once, in `lib/siteConfig.ts`. This was the fourth
+  // independent copy of it.
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "SplitCart",
-    template: "%s | SplitCart",
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
   },
   description:
     "Compare grocery prices across Coles, Woolworths, and Aldi, then split your cart for the cheapest overall shop.",

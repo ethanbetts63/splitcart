@@ -1,22 +1,12 @@
-import { createMetadata } from "@/lib/seo";
-import { createBreadcrumbSchema, JsonLdScript } from "@/lib/schema";
+import { buildStaticPageGraph, metadataFor } from "@/lib/seo";
+import StructuredDataScript from "@/lib/schema";
 
-export const metadata = createMetadata({
-  title: "Privacy Policy",
-  description:
-    "Read the SplitCart privacy policy, including what information is collected and how it is used.",
-  canonicalPath: "/privacy",
-});
-
-const breadcrumbSchema = createBreadcrumbSchema([
-  { name: "Home", path: "/" },
-  { name: "Privacy Policy", path: "/privacy" },
-]);
+export const metadata = metadataFor("/privacy");
 
 export default function PrivacyPage() {
   return (
     <main className="bg-white">
-      <JsonLdScript data={breadcrumbSchema} />
+      <StructuredDataScript structuredData={buildStaticPageGraph("/privacy")} />
       <div className="container mx-auto max-w-3xl px-6 py-12">
         <h1 className="text-4xl font-bold text-gray-950">Privacy Policy</h1>
         <p className="mt-3 text-sm text-gray-500">Last updated: May 11, 2026</p>

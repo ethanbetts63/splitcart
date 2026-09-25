@@ -71,7 +71,7 @@ const BargainsPage = ({
               {hero_title}
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Forget the flashy ‘specials’ — these are the real bargains hiding in plain sight. We’ve compared prices across supermarkets to show you who actually sells each item for less. <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">Interested in the stats?</span> We've graphed the trends below so you can see which supermarket comes out on top overall.
+              Forget the flashy ‘specials’ — these are the real bargains hiding in plain sight. We’ve compared prices across supermarkets to show you who actually sells each item for less. <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">Interested in the stats?</span> We&apos;ve graphed the trends below so you can see which supermarket comes out on top overall.
             </p>
           </div>
         </div>
@@ -109,7 +109,7 @@ const BargainsPage = ({
                   These statistics are based on the full set of identical products that two companies both sell according to our database.
                 </p>
                 <p className="text-sm text-gray-600 leading-relaxed">
-                  You'll notice this number changes for each pairing. Companies like Aldi have a highly unique product range, which results in a smaller overlap and fewer items being compared.
+                  You&apos;ll notice this number changes for each pairing. Companies like Aldi have a highly unique product range, which results in a smaller overlap and fewer items being compared.
                 </p>
               </div>
             </div>

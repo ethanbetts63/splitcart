@@ -1,5 +1,4 @@
-
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, type QueryKey } from '@tanstack/react-query';
 import { useAuth } from '../context/AuthContext';
 import type { ApiOptions } from '../types/ApiOptions';
 import { getApiUrl } from '@/lib/apiUrl';
@@ -10,7 +9,7 @@ const apiFetch = async <T>(
   endpoint: string,
   token: string | null,
   anonymousId: string | null,
-  options: ApiOptions = {}
+  options: ApiOptions = {},
 ): Promise<T> => {
   const { method = 'GET', body, ...restOptions } = options;
 
@@ -46,9 +45,12 @@ const apiFetch = async <T>(
     }
     let errorMessage = `API Error: ${response.status} ${response.statusText}`;
     try {
-      const errorData = await response.json();
-      errorMessage = errorData.detail || errorData.error || errorMessage;
-    } catch (e) {
+      const errorData: unknown = await response.json();
+      if (typeof errorData === 'object' && errorData !== null) {
+        const { detail, error } = errorData as { detail?: string; error?: string };
+        errorMessage = detail ?? error ?? errorMessage;
+      }
+    } catch {
       // Response was not JSON, stick with the status text
     }
     throw new Error(errorMessage);
@@ -64,14 +66,14 @@ const apiFetch = async <T>(
 // --- Custom Hook for Queries (GET requests) ---
 
 export const useApiQuery = <T>(
-  queryKey: any[],
+  queryKey: QueryKey,
   endpoint: string,
   options: Omit<ApiOptions, 'body' | 'method'> = {},
   reactQueryOptions: {
     enabled?: boolean;
     refetchOnWindowFocus?: boolean;
     staleTime?: number;
-  } = {}
+  } = {},
 ) => {
   const { token, anonymousId } = useAuth();
 
@@ -87,7 +89,7 @@ export const useApiQuery = <T>(
 export const useApiMutation = <T, U>(
   // Endpoint can be a function of variables
   endpoint: string | ((variables: U) => string),
-  method: 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+  method: 'POST' | 'PUT' | 'PATCH' | 'DELETE',
 ) => {
   const { token, anonymousId } = useAuth();
 

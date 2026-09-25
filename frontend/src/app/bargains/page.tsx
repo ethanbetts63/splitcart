@@ -1,32 +1,19 @@
 import BargainsPage from "@/page_components/BargainsPage";
-import { createMetadata } from "@/lib/seo";
-import { createBreadcrumbSchema, JsonLdScript } from "@/lib/schema";
+import {
+  buildProductItemListSchema,
+  buildRetailerSchemas,
+  buildStaticPageGraph,
+  companiesIn,
+  metadataFor,
+} from "@/lib/seo";
+import StructuredDataScript from "@/lib/schema";
 import type { PriceComparison, Product } from "@/types";
 
 export const revalidate = 86400;
 
 const apiUrl = process.env.DJANGO_API_URL ?? "http://localhost:8000";
 
-export const metadata = createMetadata({
-  title: "SplitCart: Australia's Best Grocery Bargains",
-  description:
-    "Find the best grocery bargains in Australia. SplitCart compares prices across Coles, Woolworths, and Aldi to find you the biggest discounts.",
-  canonicalPath: "/bargains",
-});
-
-const webPageSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  name: "SplitCart: Australia's Best Grocery Bargains",
-  description:
-    "Find the best grocery bargains in Australia. SplitCart compares prices across Coles, Woolworths, and Aldi to find you the biggest discounts.",
-  url: "https://www.splitcart.com.au/bargains",
-};
-
-const breadcrumbSchema = createBreadcrumbSchema([
-  { name: "Home", path: "/" },
-  { name: "Bargains", path: "/bargains" },
-]);
+export const metadata = metadataFor("/bargains");
 
 export default async function Page() {
   const [initialBargainStats, initialCompanyProducts] = await Promise.all([
@@ -34,10 +21,28 @@ export default async function Page() {
     getCompanyProducts(),
   ]);
 
+  /**
+   * One `ItemList` per company carousel, built server-side from the products
+   * this page has already fetched, plus one canonical `Organization` node per
+   * supermarket for the offers' `seller` to point at.
+   */
+  const allProducts = Object.values(initialCompanyProducts).flat();
+  const itemLists = Object.entries(initialCompanyProducts)
+    .map(([company, products]) =>
+      buildProductItemListSchema(products, `Grocery bargains at ${company}`),
+    )
+    .filter((list) => list !== null);
+
+  const graph = buildStaticPageGraph(
+    "/bargains",
+    itemLists.length
+      ? [...itemLists, ...buildRetailerSchemas(companiesIn(allProducts))]
+      : [],
+  );
+
   return (
     <>
-      <JsonLdScript data={webPageSchema} />
-      <JsonLdScript data={breadcrumbSchema} />
+      <StructuredDataScript structuredData={graph} />
       <BargainsPage
         initialBargainStats={initialBargainStats}
         initialCompanyProducts={initialCompanyProducts}
@@ -69,14 +74,14 @@ async function getCompanyProducts(): Promise<Record<string, Product[]>> {
         });
         const response = await fetch(
           `${apiUrl}/api/products/bargain-carousel/?${params.toString()}`,
-          { next: { revalidate } }
+          { next: { revalidate } },
         );
         if (!response.ok) return [company, []] as const;
         return [company, await response.json()] as const;
       } catch {
         return [company, []] as const;
       }
-    })
+    }),
   );
 
   return Object.fromEntries(entries);

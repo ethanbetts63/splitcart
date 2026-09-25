@@ -1,5 +1,4 @@
 import type { Product } from '../types';
-import LoadingSpinner from '../components/LoadingSpinner';
 import PriceDisplay from '../components/PriceDisplay';
 import AddToCartButton from '../components/AddToCartButton';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';

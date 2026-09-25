@@ -4,12 +4,55 @@ import { Spinner } from "./ui/spinner";
 import PlanDetails from './PlanDetails';
 import * as types from '../types';
 
+/**
+ * Hoisted to module scope on purpose: a component declared inside another
+ * component's body is a new component type on every render, so React unmounts
+ * and remounts its subtree instead of updating it (react-hooks/static-components).
+ * `exportAction` therefore arrives as a prop rather than a closure.
+ */
+const ExportButtons = ({
+onEmail,
+onDownload,
+planKey,
+exportAction,
+}: {
+onEmail: () => void;
+onDownload: () => void;
+planKey: string;
+exportAction: types.ExportAction | null;
+}) => (
+  <div className="flex items-center gap-2">
+    <button
+      onClick={onEmail}
+      disabled={exportAction?.type === 'email' && exportAction?.plan === planKey}
+      className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold border border-gray-300 bg-white rounded-lg hover:border-gray-900 hover:text-gray-900 transition-colors duration-150 disabled:opacity-50"
+    >
+      {exportAction?.type === 'email' && exportAction?.plan === planKey
+        ? <Spinner className="h-4 w-4 animate-spin" />
+        : <Mail className="h-4 w-4" />
+      }
+      Email
+    </button>
+    <button
+      onClick={onDownload}
+      disabled={exportAction?.type === 'download' && exportAction?.plan === planKey}
+      className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold border border-gray-300 bg-white rounded-lg hover:border-gray-900 hover:text-gray-900 transition-colors duration-150 disabled:opacity-50"
+    >
+      {exportAction?.type === 'download' && exportAction?.plan === planKey
+        ? <Spinner className="h-4 w-4 animate-spin" />
+        : <Download className="h-4 w-4" />
+      }
+      Download
+    </button>
+  </div>
+);
+
 const ResultsDisplay = ({ cart, data, handleDownload, handleEmail, exportAction }: {
   cart: types.Cart;
   data: types.OptimizationDataSet;
   handleDownload: (exportData: types.ExportData, planName: string) => Promise<void>;
   handleEmail: (exportData: types.ExportData, planName: string) => Promise<void>;
-  exportAction: { type: 'email' | 'download'; plan: string } | null;
+  exportAction: types.ExportAction | null;
 }) => {
   if (!data || (!data.best_single_company && (!data.optimization_results || data.optimization_results.length === 0))) {
     return <p className="mt-4 text-gray-500">No optimization results available for this selection.</p>;
@@ -46,33 +89,6 @@ const ResultsDisplay = ({ cart, data, handleDownload, handleEmail, exportAction 
     if (!max || current.savings > max.savings) return current;
     return max;
   }, null as types.OptimizationResult | null);
-
-  const ExportButtons = ({ onEmail, onDownload, planKey }: { onEmail: () => void; onDownload: () => void; planKey: string }) => (
-    <div className="flex items-center gap-2">
-      <button
-        onClick={onEmail}
-        disabled={exportAction?.type === 'email' && exportAction?.plan === planKey}
-        className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold border border-gray-300 bg-white rounded-lg hover:border-gray-900 hover:text-gray-900 transition-colors duration-150 disabled:opacity-50"
-      >
-        {exportAction?.type === 'email' && exportAction?.plan === planKey
-          ? <Spinner className="h-4 w-4 animate-spin" />
-          : <Mail className="h-4 w-4" />
-        }
-        Email
-      </button>
-      <button
-        onClick={onDownload}
-        disabled={exportAction?.type === 'download' && exportAction?.plan === planKey}
-        className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold border border-gray-300 bg-white rounded-lg hover:border-gray-900 hover:text-gray-900 transition-colors duration-150 disabled:opacity-50"
-      >
-        {exportAction?.type === 'download' && exportAction?.plan === planKey
-          ? <Spinner className="h-4 w-4 animate-spin" />
-          : <Download className="h-4 w-4" />
-        }
-        Download
-      </button>
-    </div>
-  );
 
   return (
     <div className="space-y-6">
@@ -130,6 +146,7 @@ const ResultsDisplay = ({ cart, data, handleDownload, handleEmail, exportAction 
                 </div>
                 <div className="flex flex-col gap-1">
                   <ExportButtons
+                    exportAction={exportAction}
                     planKey="best-single-company"
                     onEmail={() => handleEmail({
                       shopping_plan: data.best_single_company!.shopping_plan,
@@ -167,6 +184,7 @@ const ResultsDisplay = ({ cart, data, handleDownload, handleEmail, exportAction 
                   </div>
                 </div>
                 <ExportButtons
+                  exportAction={exportAction}
                   planKey={`companies-${result.max_companies}`}
                   onEmail={() => handleEmail({
                     shopping_plan: result.shopping_plan,

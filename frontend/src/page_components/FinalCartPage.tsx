@@ -10,7 +10,8 @@ import { Label } from "../components/ui/label"
 import LoadingSpinner from '../components/LoadingSpinner';
 import ResultsDisplay from '../components/ResultsDisplay';
 import { FaqSection } from "../components/FaqSection";
-import type { ExportData } from '../types';
+import type { ExportAction, ExportData } from '../types';
+import { apiErrorMessage } from '../services/apiClient';
 
 const finalCartFaqs = [
   {"question": "How is baseline cost calculated?", "answer": "By taking each item in your list, finding the average price across all available stores, and then summing up these average prices for all items. We use this method, not because it shows the highest savings, but because we believe it is realistic, transparent and honest."},
@@ -26,7 +27,7 @@ const FinalCartPage = () => {
   const [isLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [viewWithSubstitutes, setViewWithSubstitutes] = useState(true);
-  const [exportAction, setExportAction] = useState<{type: 'email' | 'download', plan: string} | null>(null);
+  const [exportAction, setExportAction] = useState<ExportAction | null>(null);
 
   const handleEmail = async (exportData: ExportData, planName: string) => {
     if (!isAuthenticated) {
@@ -40,8 +41,8 @@ const FinalCartPage = () => {
     setError(null);
     try {
       await emailCurrentCart(exportData);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(apiErrorMessage(err, 'The shopping list could not be sent.'));
     } finally {
       setExportAction(null);
     }
@@ -61,8 +62,8 @@ const FinalCartPage = () => {
       a.click();
       window.URL.revokeObjectURL(url);
       a.remove();
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(apiErrorMessage(err, 'The shopping list could not be downloaded.'));
     } finally {
       setExportAction(null);
     }
@@ -80,7 +81,7 @@ const FinalCartPage = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Your Optimised Cart</h1>
-          <p className="text-gray-500 mt-1">Here's the cheapest way to buy your list.</p>
+          <p className="text-gray-500 mt-1">Here&apos;s the cheapest way to buy your list.</p>
         </div>
         {optimizationResult.no_subs_results && (
           <div className="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 self-start sm:self-auto">

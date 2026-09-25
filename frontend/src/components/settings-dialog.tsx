@@ -47,9 +47,15 @@ const PageContent = ({ activePage, onOpenChange }: { activePage: string, onOpenC
 export function SettingsDialog({ open, onOpenChange, defaultPage = 'cart' }: SettingsDialogProps) {
   const [activePage, setActivePage] = React.useState(defaultPage);
 
-  React.useEffect(() => {
+  // Reopening the dialog on a different page resets which page is showing.
+  // Adjusted during render rather than in an effect: React re-runs this
+  // component before touching the DOM, so nobody ever sees the stale page,
+  // whereas an effect would paint it first and then replace it.
+  const [lastDefaultPage, setLastDefaultPage] = React.useState(defaultPage);
+  if (lastDefaultPage !== defaultPage) {
+    setLastDefaultPage(defaultPage);
     setActivePage(defaultPage);
-  }, [defaultPage]);
+  }
 
   const handleNavClick = (pageName: string) => {
     setActivePage(pageName);

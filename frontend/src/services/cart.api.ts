@@ -12,64 +12,72 @@ export const fetchActiveCart = (apiClient: ApiClient): Promise<Cart | null> => {
  * Syncs the entire cart state with the backend.
  */
 export const syncCart = (apiClient: ApiClient, cartToSync: Cart): Promise<Cart> => {
-    return apiClient.post<Cart>('/api/carts/sync/', {
-        cart_id: cartToSync.id,
-        items: cartToSync.items.map(item => ({
-            product_id: typeof item.product === 'object' ? item.product.id : item.product,
-            quantity: item.quantity,
-            substitutions: (item.substitutions ?? []).map(sub => ({
-                id: sub.id,
-                is_approved: sub.is_approved,
-                quantity: sub.quantity,
-            })),
-        })),
-    });
+  return apiClient.post<Cart>('/api/carts/sync/', {
+    cart_id: cartToSync.id,
+    items: cartToSync.items.map((item) => ({
+      product_id: typeof item.product === 'object' ? item.product.id : item.product,
+      quantity: item.quantity,
+      substitutions: (item.substitutions ?? []).map((sub) => ({
+        id: sub.id,
+        is_approved: sub.is_approved,
+        quantity: sub.quantity,
+      })),
+    })),
+  });
 };
 
 /**
  * Creates a new, empty cart.
  */
 export const createNewCart = (apiClient: ApiClient): Promise<Cart> => {
-    return apiClient.post<Cart>('/api/carts/', {});
+  return apiClient.post<Cart>('/api/carts/', {});
 };
 
 /**
  * Renames a specific cart.
  */
-export const renameCart = (apiClient: ApiClient, cartId: string, newName: string): Promise<Cart> => {
-    return apiClient.post<Cart>('/api/carts/rename/', { cart_id: cartId, new_name: newName });
+export const renameCart = (
+  apiClient: ApiClient,
+  cartId: string,
+  newName: string,
+): Promise<Cart> => {
+  return apiClient.post<Cart>('/api/carts/rename/', { cart_id: cartId, new_name: newName });
 };
 
 /**
  * Deletes a specific cart.
  */
 export const deleteCart = (apiClient: ApiClient, cartId: string): Promise<void> => {
-    return apiClient.delete(`/api/carts/${cartId}/`);
+  return apiClient.delete(`/api/carts/${cartId}/`);
 };
 
 /**
  * Switches the active cart to the one specified by cartId.
  */
 export const switchActiveCart = (apiClient: ApiClient, cartId: string): Promise<Cart> => {
-    return apiClient.post<Cart>('/api/carts/switch-active/', { cart_id: cartId });
+  return apiClient.post<Cart>('/api/carts/switch-active/', { cart_id: cartId });
 };
 
 /**
  * Runs optimization on a specific cart.
  */
 export const optimizeCart = (apiClient: ApiClient, cartId: string): Promise<ApiResponse> => {
-    return apiClient.post<ApiResponse>(`/api/carts/${cartId}/optimize/`, {});
+  return apiClient.post<ApiResponse>(`/api/carts/${cartId}/optimize/`, {});
 };
 
 /**
  * Emails the cart/shopping list to the user.
+ *
+ * The endpoint answers with an acknowledgement body that no caller reads - the
+ * outcome that matters is whether it rejected - so the result is `void` rather
+ * than a shape nothing depends on.
  */
-export const emailCart = (apiClient: ApiClient, exportData: ExportData): Promise<any> => {
+export const emailCart = (apiClient: ApiClient, exportData: ExportData): Promise<void> => {
   if (!apiClient.isAuthenticated()) {
-    return Promise.reject(new Error("Authentication is required to email the shopping list."));
+    return Promise.reject(new Error('Authentication is required to email the shopping list.'));
   }
   // Note: URL is inconsistent, but we are just refactoring the call mechanism for now.
-  return apiClient.post<any>('/api/cart/email-list/', exportData);
+  return apiClient.post<void>('/api/cart/email-list/', exportData);
 };
 
 /**

@@ -61,6 +61,16 @@ const LoadingSpinner = ({ fullScreen = true }: LoadingSpinnerProps) => {
   };
 
   useEffect(() => {
+    /*
+     * The first message must be chosen on the client and only on the client.
+     * Choosing it during render would make the server HTML and the client's
+     * first render disagree, which is a hydration error, and a random value
+     * read during render is impure besides. React's own guidance for a
+     * client-only value is exactly this shape: render a stable placeholder,
+     * then set it once mounted. The cascading render the rule objects to is
+     * one extra render, once, on a spinner.
+     */
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     selectRandomMessage(); // Select a random message on initial load
     const interval = setInterval(() => {
       selectRandomMessage();

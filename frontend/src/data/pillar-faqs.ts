@@ -1,5 +1,21 @@
 import type { FaqItem } from "@/types";
 
+/**
+ * FAQ copy for the category pillar pages. This is also structured data: it is
+ * emitted as a `FAQPage` node, so every sentence here is a published claim.
+ *
+ * No dated or point-in-time price figures. The three "what is the cheapest X
+ * per kilo" answers used to name exact prices ("$3.45 per kg ... as of 2026"),
+ * which a reader and an answer engine both take as SplitCart's current,
+ * authoritative number. Nothing re-derived them, nothing flagged them when they
+ * went stale, and a scraped price is stale in days. Only true facts get
+ * published (seo-standard.md section 0), so the rankings stay — they are
+ * durable and they are the actual answer — and the figures come from the live
+ * comparison on the page instead.
+ *
+ * Structural claims that do not go stale are fine: percentages, "roughly a
+ * third is bone", ingredient-cost ranges for something you make at home.
+ */
 export const faqsBySlug: Record<string, FaqItem[]> = {
   'meat-and-seafood': [
     {
@@ -12,7 +28,7 @@ export const faqsBySlug: Record<string, FaqItem[]> = {
     },
     {
       question: "What is the cheapest meat per kilo in Australia?",
-      answer: "As of 2026 the cheapest per kilo price on meat was $3.45 per kg for chicken drumsticks in a bulk pack at aldi. Various other chicken pieces and a whole chicken can be as low as 4.20 - 4.50 per kg. Cheap Pork or beef sausages can be found for as little as $5.50 - $ per kilo. Cooking bacon can be found at 9 per kilo. Followed by corn beef silver side at 9.50 per kg. These two being the cheapest options for unprocessed boneless meat. Even factoring in that whole chickens and drumsticks are around 25 - 32% bone they are still significantly cheaper than any other option."
+      answer: "Chicken, and it isn't close. Bulk packs of drumsticks are usually the single cheapest line, with whole chickens and other bone-in pieces just behind them. Budget pork and beef sausages come next, then cooking bacon and corned silverside — those two being the cheapest unprocessed, boneless options. Even allowing for the fact that a whole chicken and drumsticks are roughly a quarter to a third bone, they stay well ahead of everything else. We deliberately don't quote a per-kilo figure here: meat pricing moves week to week, and a number written into a page once is wrong for most of the time it is on screen. The comparison above is priced from the current scrape."
     },
     {
       question: "Is meat expensive in Australia?",
@@ -34,11 +50,11 @@ export const faqsBySlug: Record<string, FaqItem[]> = {
     },
     {
       question: "What is the cheapest fruit per kilo in Australia?",
-      answer: "Watermelon is consistently the most affordable fruit in Australia, with an average price of $2.63 per kg. While costs can range between $1.99 and $3.99 per kg depending on the retailer and season, it remains significantly cheaper than other popular staples. As a comparison, Oranges are the next most budget-friendly option ($3.32 per kg), followed by Bananas ($4.16 per kg), making Watermelon the clear choice for bulk value."
+      answer: "Watermelon, consistently. Oranges are the next most budget-friendly, followed by bananas. All three move with the season and watermelon swings the hardest, which is why we don't print a per-kilo figure here — the price we could write down today would be wrong for most of the time this page is read. The fruit and veg comparison above is priced from the current scrape."
     },
     {
       question: "What is the cheapest vegetable in Australia per kilo?",
-      answer: "Carrots rank as the cheapest vegetable in Australia, averaging just $1.47 per kg. They offer incredible value for money, with prices recorded as low as $0.79 per kg in some stores. They are followed by Potatoes ($2.00 per kg) and Onions ($2.42 per kg), confirming that root vegetables are generally the most economical fresh produce options available to Australian shoppers"
+      answer: "Carrots, followed by potatoes and onions. Root vegetables are the most economical fresh produce available to Australian shoppers generally: they store well, travel well, and are grown at scale year round, so they are far less seasonal than most of the produce aisle. Prices still move between retailers and across the year, so the comparison above is the number worth trusting rather than a figure quoted in an answer."
     },
     {
       question: "How do you compare prices?",

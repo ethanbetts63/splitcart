@@ -12,7 +12,6 @@ export interface ProductCarouselProps {
   isBargainCarousel?: boolean;
   onValidation?: (slug: string, isValid: boolean, slot: number) => void;
   slot?: number;
-  dataKey?: string;
   minProducts?: number;
   ordering?: string;
   isLoading?: boolean;

@@ -5,7 +5,6 @@ import SkeletonProductTile from "./SkeletonProductTile";
 import ProductTile from "./ProductTile";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import JsonLdItemList from './JsonLdItemList';
 import { ArrowRight } from 'lucide-react';
 import type { ProductCarouselProps } from '../types/ProductCarouselProps';
 import type { Product } from '../types/Product';
@@ -23,7 +22,6 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
   isBargainCarousel,
   onValidation,
   slot,
-  dataKey,
   minProducts = 4,
   ordering,
   isLoading: isLoadingProp,
@@ -65,7 +63,9 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
 
   const shouldFetch = !!finalUrl && !initialProducts;
 
-  const { data: responseData, isLoading: isFetching, error, isFetched } = useApiQuery<any>(
+  const { data: responseData, isLoading: isFetching, error, isFetched } = useApiQuery<
+    Product[] | { results?: Product[] }
+  >(
     ['products', title, finalUrl],
     finalUrl,
     {},
@@ -75,12 +75,8 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
   const products: Product[] = React.useMemo(() => {
     if (initialProducts) return initialProducts;
     if (!responseData) return [];
-    const results = Array.isArray(responseData) ? responseData : responseData.results || [];
-    if (dataKey) {
-      return results.map((item: any) => item[dataKey]).filter(Boolean);
-    }
-    return results;
-  }, [initialProducts, responseData, dataKey]);
+    return Array.isArray(responseData) ? responseData : (responseData.results ?? []);
+  }, [initialProducts, responseData]);
 
   const validationCalled = useRef(false);
   useEffect(() => {
@@ -167,7 +163,6 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
           </div>
         </div>
       </section>
-      {!isLoading && products.length > 0 && <JsonLdItemList products={products} title={title} />}
     </>
   );
 };

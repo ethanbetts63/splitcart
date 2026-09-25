@@ -1,3 +1,4 @@
+import Link from "next/link";
 import splitcartLogo from "../assets/splitcart_symbol_v6.webp";
 import splitcartLogo320 from "../assets/splitcart_symbol_v6-320w.webp";
 import splitcartLogo640 from "../assets/splitcart_symbol_v6-640w.webp";
@@ -17,7 +18,7 @@ const NavBar = () => {
       <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 gap-4">
 
         {/* Logo */}
-        <a href="/" className="flex items-center space-x-2 flex-shrink-0">
+        <Link href="/" className="flex items-center space-x-2 flex-shrink-0">
           <img
             src={assetSrc(splitcartLogo)}
             srcSet={assetSrcSet([
@@ -34,7 +35,7 @@ const NavBar = () => {
           <span className="font-bold text-2xl hidden md:block bg-yellow-300 px-0.5 py-1 rounded italic text-black">
             SplitCart
           </span>
-        </a>
+        </Link>
 
         {/* Search — desktop */}
         <div className="hidden sm:flex flex-1 items-center justify-center">

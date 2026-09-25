@@ -1,92 +1,45 @@
 import type { MetadataRoute } from "next";
 
-const baseUrl = "https://www.splitcart.com.au";
+import { CATEGORY_SLUGS } from "@/data/categories";
+import { CATEGORY_PAGE_UPDATED, STATIC_PAGES } from "@/lib/pages";
+import { absoluteUrl } from "@/lib/seo";
+
+/**
+ * Every registry route, plus the eleven category pillar pages.
+ *
+ * This file used to be fourteen hardcoded objects, all fourteen carrying the
+ * same literal `lastModified: "2026-06-29"` — the day the file was written and
+ * never touched since. A permanently stale date is worse than build time, which
+ * at least changes; both teach Google to ignore every date in the file. The
+ * dates now come from the registry's `updated`, which is a required field and a
+ * maintenance obligation: change a page, bump it in the same commit.
+ *
+ * No `changeFrequency` and no `priority`. Google has ignored both for years.
+ *
+ * URLs come from `absoluteUrl`, the same helper the canonical tag uses, so the
+ * sitemap and the `<head>` cannot spell a route two ways. They did: the
+ * category entries here carried a trailing slash while the pages' own
+ * canonicals did not.
+ *
+ * Perth time (+08:00) rather than UTC, so a date does not read as the previous
+ * evening.
+ */
+const asDate = (updated: string) => new Date(`${updated}T00:00:00+08:00`);
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: `${baseUrl}/`,
-      lastModified: "2026-06-29",
-      changeFrequency: "daily",
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: "2026-06-29",
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/bargains`,
-      lastModified: "2026-06-29",
-      changeFrequency: "daily",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/categories/baby/`,
-      lastModified: "2026-06-29",
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/categories/bakery-and-deli/`,
-      lastModified: "2026-06-29",
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/categories/dairy-and-eggs/`,
-      lastModified: "2026-06-29",
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/categories/drinks/`,
-      lastModified: "2026-06-29",
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/categories/fruit-and-veg/`,
-      lastModified: "2026-06-29",
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/categories/health-beauty-and-supplements/`,
-      lastModified: "2026-06-29",
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/categories/home-cleaning-gardening-and-pets/`,
-      lastModified: "2026-06-29",
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/categories/international-herbs-and-spices/`,
-      lastModified: "2026-06-29",
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/categories/meat-and-seafood/`,
-      lastModified: "2026-06-29",
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/categories/pantry/`,
-      lastModified: "2026-06-29",
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/categories/snacks-and-sweets/`,
-      lastModified: "2026-06-29",
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-  ];
+  const staticPages = Object.entries(STATIC_PAGES).map(
+    ([path, page]): MetadataRoute.Sitemap[number] => ({
+      url: absoluteUrl(path),
+      lastModified: asDate(page.updated),
+    }),
+  );
+
+  const categoryPages = CATEGORY_SLUGS.map(
+    (slug): MetadataRoute.Sitemap[number] => ({
+      url: absoluteUrl(`/categories/${slug}`),
+      lastModified: asDate(CATEGORY_PAGE_UPDATED[slug]),
+    }),
+  );
+
+  return [...staticPages, ...categoryPages];
 }

@@ -1,5 +1,7 @@
 import type { Cart } from './Cart';
 import type { ApiResponse } from './ApiResponse';
+import type { ExportData } from './ExportData';
+import type { Product } from './Product';
 
 export interface CartContextType {
   currentCart: Cart | null;
@@ -13,11 +15,16 @@ export interface CartContextType {
   createNewCart: () => void;
   renameCart: (cartId: string, newName: string) => void;
   deleteCart: (cartId: string) => void;
-  addItem: (productId: number, quantity: number, product: any) => void;
+  addItem: (productId: number, quantity: number, product: Product) => void;
   updateItemQuantity: (itemId: string, quantity: number) => void;
   removeItem: (itemId: string) => void;
   optimizeCurrentCart: () => Promise<ApiResponse | null>;
-  emailCurrentCart: (exportData: any) => Promise<void>;
-  downloadCurrentCart: (exportData: any) => Promise<Blob | null>;
-  updateCartItemSubstitution: (cartItemId: string, substitutionId: string, isApproved: boolean, quantity: number) => void;
+  emailCurrentCart: (exportData: ExportData) => Promise<void>;
+  downloadCurrentCart: (exportData: ExportData) => Promise<Blob | null>;
+  updateCartItemSubstitution: (
+    cartItemId: string,
+    substitutionId: string,
+    isApproved: boolean,
+    quantity: number,
+  ) => void;
 }

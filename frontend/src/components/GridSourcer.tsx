@@ -38,9 +38,21 @@ const GridSourcer = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCatego
 
   const apiClient = useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
 
-  useEffect(() => {
+  // Changing what is being listed puts you back on page one. Adjusted during
+  // render rather than in an effect: an effect would paint page 7 of the new
+  // result set first and then reset, which is both a flash and a wasted fetch.
+  const listingKey = JSON.stringify([
+    primaryCategorySlug,
+    searchTerm,
+    sourceUrl,
+    primaryCategorySlugs,
+    bargainCompany,
+  ]);
+  const [lastListingKey, setLastListingKey] = useState(listingKey);
+  if (lastListingKey !== listingKey) {
+    setLastListingKey(listingKey);
     setCurrentPage(1);
-  }, [primaryCategorySlug, searchTerm, sourceUrl, primaryCategorySlugs, bargainCompany]);
+  }
 
 
   // Determine API endpoint and params
@@ -128,7 +140,7 @@ const GridSourcer = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCatego
               <>
                 Showing {totalResults} bargains for{" "}
                 <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
-                  "{bargainCompany}"
+                  &quot;{bargainCompany}&quot;
                 </span>
               </>
             )}
@@ -136,7 +148,7 @@ const GridSourcer = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCatego
               <>
                 Found {totalResults} results for{" "}
                 <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
-                  "{searchTerm}"
+                  &quot;{searchTerm}&quot;
                 </span>
               </>
             )}
@@ -147,7 +159,7 @@ const GridSourcer = ({ searchTerm, sourceUrl, primaryCategorySlug, primaryCatego
                   <>
                     Showing {totalResults} products in{" "}
                     <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
-                      "{formattedSlug}"
+                      &quot;{formattedSlug}&quot;
                     </span>
                   </>
                 );

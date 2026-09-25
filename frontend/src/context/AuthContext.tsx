@@ -1,4 +1,11 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from 'react';
 import type { AuthContextType } from '../types/AuthContextType';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,6 +27,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const [anonymousId, setAnonymousId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Declared above the effect that subscribes to `unauthorized`, because the
+  // effect calls it: a function read before its `const` is initialised works
+  // only by accident of when the effect runs, and stops updating when the
+  // value changes.
+  const logout = useCallback(() => {
+    localStorage.removeItem('token');
+    sessionStorage.clear(); // Clear all session storage for a cleaner logout
+    setIsAuthenticated(false);
+    setToken(null);
+    // The backend will assign a new anonymousId on the next request after reload.
+    document.cookie = 'anonymousId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    setAnonymousId(null);
+    window.location.reload(); // Force a full page reload to reset all state.
+  }, []);
 
   useEffect(() => {
     const initializeAuth = () => {
@@ -61,7 +83,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       window.removeEventListener('unauthorized', handleUnauthorized);
     };
-  }, []);
+  }, [logout]);
 
   const login = (newToken: string) => {
     localStorage.setItem('token', newToken);
@@ -70,17 +92,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAuthenticated(true);
     setToken(newToken);
     setAnonymousId(null);
-  };
-
-  const logout = () => {
-    localStorage.removeItem('token');
-    sessionStorage.clear(); // Clear all session storage for a cleaner logout
-    setIsAuthenticated(false);
-    setToken(null);
-    // The backend will assign a new anonymousId on the next request after reload.
-    document.cookie = 'anonymousId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    setAnonymousId(null);
-    window.location.reload(); // Force a full page reload to reset all state.
   };
 
   return (

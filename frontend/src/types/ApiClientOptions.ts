@@ -1,5 +1,7 @@
+import type { JsonBody } from './JsonBody';
+
 export interface ApiClientOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-  body?: Record<string, any> | FormData;
+  body?: JsonBody | FormData;
   signal?: AbortSignal;
 }

@@ -1,8 +1,16 @@
 import SearchResultsPage from "@/page_components/SearchResultsPage";
-import { noindexMetadata } from "@/lib/seo";
+
+/**
+ * Search is state 4 — robots-disallowed — and nothing else.
+ *
+ * Every distinct `?q=` is a new URL, so this is an unbounded query surface and
+ * the right instrument is the disallow, declared once in
+ * `app/robots.txt/route.ts`. The `noindex` this page used to export alongside
+ * it was inert: a disallowed page is never fetched, so the directive on it is
+ * never read. seo-standard.md section 2 forbids declaring both states.
+ */
 
 export const dynamic = "force-dynamic";
-export const metadata = noindexMetadata;
 
 export default function Page() {
   return <SearchResultsPage />;

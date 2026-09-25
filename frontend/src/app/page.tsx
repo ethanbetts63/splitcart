@@ -1,33 +1,19 @@
 import HomePage from "@/page_components/HomePage";
-import { createMetadata } from "@/lib/seo";
+import {
+  buildProductItemListSchema,
+  buildRetailerSchemas,
+  buildStaticPageGraph,
+  companiesIn,
+  metadataFor,
+} from "@/lib/seo";
+import StructuredDataScript from "@/lib/schema";
 import type { Product } from "@/types";
 
 export const revalidate = 600;
 
 const apiUrl = process.env.DJANGO_API_URL ?? "http://localhost:8000";
 
-export const metadata = createMetadata({
-  title: "SplitCart: Australian Grocery Price Comparison",
-  description:
-    "Every store has a deal, but finding them all takes forever. SplitCart compares prices across Coles, Woolworths, and Aldi and splits your cart for the cheapest overall shop.",
-  canonicalPath: "/",
-});
-
-const webSiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "SplitCart",
-  url: "https://www.splitcart.com.au",
-  founder: { "@type": "Person", name: "Ethan Betts" },
-  potentialAction: {
-    "@type": "SearchAction",
-    target: {
-      "@type": "EntryPoint",
-      urlTemplate: "https://www.splitcart.com.au/search?q={search_term_string}",
-    },
-    "query-input": "required name=search_term_string",
-  },
-};
+export const metadata = metadataFor("/");
 
 async function getBargainProducts(): Promise<Product[]> {
   try {
@@ -46,12 +32,31 @@ async function getBargainProducts(): Promise<Product[]> {
 export default async function Page() {
   const initialBargainProducts = await getBargainProducts();
 
+  /**
+   * The whole graph for this page in one document: the business entity every
+   * other node points at, the site, this page, its trail, and the products the
+   * bargain carousel shows.
+   *
+   * The `ItemList` is built here, server-side, from the products this page has
+   * already fetched. It used to be assembled in a `useEffect` inside
+   * `JsonLdItemList` and appended to `document.head` after hydration, which
+   * means the initial HTML a crawler reads never contained it.
+   */
+  const itemList = buildProductItemListSchema(
+    initialBargainProducts,
+    "Grocery bargains across Coles, Woolworths and Aldi"
+  );
+
+  const graph = buildStaticPageGraph(
+    "/",
+    itemList
+      ? [itemList, ...buildRetailerSchemas(companiesIn(initialBargainProducts))]
+      : []
+  );
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
-      />
+      <StructuredDataScript structuredData={graph} />
       <HomePage initialBargainProducts={initialBargainProducts} />
     </>
   );

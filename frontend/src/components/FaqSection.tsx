@@ -1,28 +1,19 @@
 import { Card, CardContent } from "./ui/card";
 import { ChevronDown } from 'lucide-react';
 import type { FaqSectionProps } from '@/types/FaqSectionProps';
+import { buildFaqSchema } from '@/lib/seo';
+import StructuredDataScript from '@/lib/schema';
 
 export const FaqSection = ({ title, faqData }: FaqSectionProps) => {
-  const jsonLd = faqData.length > 0
-    ? {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: faqData.map((faq) => ({
-          "@type": "Question",
-          name: faq.question,
-          acceptedAnswer: { "@type": "Answer", text: faq.answer },
-        })),
-      }
-    : null;
+  // All JSON-LD goes through the one escaped emitter. This component used to
+  // build its own `<script>` with a bare `JSON.stringify`, one of four such
+  // paths in the repo and none of them escaping `<`. See seo-standard.md
+  // section 3 (SEO-7).
+  const faqSchema = buildFaqSchema(faqData);
 
   return (
     <>
-      {jsonLd && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      )}
+      <StructuredDataScript structuredData={faqSchema} />
       <div className="py-8 bg-background">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center text-[var(--text-light-primary)] mb-8">{title}</h2>
