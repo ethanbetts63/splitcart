@@ -10,7 +10,8 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-from users.tests.factories import UserFactory
+from users.models import Cart, CartItem
+from users.tests.factories import CartFactory, CartItemFactory, UserFactory
 
 from users.serializers.custom_register_serializer import (
     EMAIL_MAX_LENGTH,
@@ -205,3 +206,90 @@ class TestRegistrationBehaviour:
             email='new-person@example.com'
         ).count() == 1
 
+
+ANONYMOUS_ID = 'c31b0e44-0000-4000-8000-000000000009'
+
+
+@pytest.mark.django_db
+class TestRegistrationAdoptsTheAnonymousCart:
+    """Signing up used to lose the cart; signing in kept it.
+
+    The merge lives in `users/utils/session_merger.py` and had exactly one
+    caller: `CustomLoginSerializer.validate()`. Registration goes through
+    dj-rest-auth's own serializer, which takes no `anonymous_id`, so a shopper
+    who filled a cart signed out and then created an account lost it -- while
+    the same shopper signing in kept it. `save()` now calls the same merger.
+    """
+
+    def test_the_signed_out_cart_follows_the_new_account(self, api_client):
+        anon_cart = CartFactory(
+            user=None, anonymous_id=ANONYMOUS_ID, is_active=True, name='Anonymous Cart'
+        )
+        item = CartItemFactory(cart=anon_cart, quantity=3)
+
+        response = api_client.post(
+            reverse('rest_register'),
+            _payload(anonymous_id=ANONYMOUS_ID),
+            format='json',
+        )
+
+        assert response.status_code == 201, response.content
+        user = get_user_model().objects.get(email='new-person@example.com')
+        merged = Cart.objects.get(user=user, is_active=True)
+        assert [(i.product_id, i.quantity) for i in merged.items.all()] == [
+            (item.product_id, 3)
+        ]
+        assert not Cart.objects.filter(pk=anon_cart.pk).exists()
+
+    def test_registering_without_an_anonymous_id_creates_no_cart(self, api_client):
+        CartFactory(user=None, anonymous_id=ANONYMOUS_ID, is_active=True)
+
+        response = api_client.post(reverse('rest_register'), _payload(), format='json')
+
+        assert response.status_code == 201, response.content
+        user = get_user_model().objects.get(email='new-person@example.com')
+        assert not Cart.objects.filter(user=user).exists()
+
+    def test_an_unknown_anonymous_id_does_not_block_the_registration(self, api_client):
+        response = api_client.post(
+            reverse('rest_register'),
+            _payload(anonymous_id=ANONYMOUS_ID),
+            format='json',
+        )
+
+        assert response.status_code == 201, response.content
+
+    def test_a_null_anonymous_id_is_accepted(self, api_client):
+        """The frontend sends `null` when the browser has no stored ID."""
+        response = api_client.post(
+            reverse('rest_register'), _payload(anonymous_id=None), format='json'
+        )
+
+        assert response.status_code == 201, response.content
+
+    def test_a_malformed_anonymous_id_is_a_400_not_a_500(self, api_client):
+        """Declared as a `UUIDField` so the merger is never handed a raw string."""
+        response = api_client.post(
+            reverse('rest_register'),
+            _payload(anonymous_id='not-a-uuid'),
+            format='json',
+        )
+
+        assert response.status_code == 400
+        assert 'anonymous_id' in response.json()
+
+    def test_a_rejected_registration_does_not_hand_over_the_cart(self, api_client):
+        """The merge happens in `save()`, which a failed validation never reaches."""
+        anon_cart = CartFactory(user=None, anonymous_id=ANONYMOUS_ID, is_active=True)
+        CartItemFactory(cart=anon_cart)
+
+        response = api_client.post(
+            reverse('rest_register'),
+            _payload(anonymous_id=ANONYMOUS_ID, password2='something-else-entirely'),
+            format='json',
+        )
+
+        assert response.status_code == 400
+        anon_cart.refresh_from_db()
+        assert anon_cart.is_active is True
+        assert CartItem.objects.filter(cart=anon_cart).count() == 1
