@@ -6,14 +6,25 @@ holds the things that would otherwise be copied into each app's own
 serializer context, cache hygiene between tests, and a guard against a
 half-built test database.
 
-There is no test-run lock here, unlike freethedesk's. It exists there because
-every pytest process in that repository shares one MySQL test database, so a
-second run's DROP/CREATE pulls the tables out from under the first. splitcart's
-test database is in-memory SQLite (see `settings_test`), created inside the
-process that uses it, so concurrent runs cannot reach each other's tables. A
-lock would serialise runs for nothing. Running with `SPLITCART_TEST_DB=mysql`
-does reintroduce the shared database, and a lock with it -- when someone has
-the grant to do that, this is where it goes.
+Two of freethedesk's fixtures are deliberately absent, for the same reason.
+
+freethedesk holds an OS lock for the length of a run, because every pytest
+process in that repository shares one MySQL test database and a second run's
+DROP/CREATE pulls the tables out from under the first. It also refuses to start
+against a test database missing tables, because a cancelled run leaves one
+behind and the next run inherits it.
+
+Both failure modes need a database that outlives the process. splitcart's is
+in-memory SQLite, built inside the process that uses it and gone when it exits
+(see `settings_test`), so concurrent runs cannot reach each other's tables and
+there is nothing to inherit. A lock would serialise runs for nothing, and a
+schema guard would have to be switched off to let `pytest <a file with no
+database tests>` run at all -- pytest-django builds no database for a session
+whose collected tests never ask for one.
+
+Running with `SPLITCART_TEST_DB=mysql` reintroduces the shared database and
+both failure modes with it. When someone has the grant to do that, this is
+where freethedesk's two fixtures belong.
 """
 
 import pytest
@@ -69,32 +80,3 @@ def drf_request_factory():
         return request
 
     return _build
-
-
-@pytest.fixture(scope='session', autouse=True)
-def _complete_test_schema(django_db_setup, django_db_blocker):
-    """Refuse to run against a half-built test database.
-
-    A run cancelled partway through creation leaves one behind, and the next run
-    inherits it: single tests pass because they touch the few tables that exist,
-    while the suite fails in hundreds of places that all read like a code
-    regression. This turns that into one sentence naming the cause.
-    """
-    from django.apps import apps
-    from django.db import connection
-
-    with django_db_blocker.unblock():
-        existing = set(connection.introspection.table_names())
-
-    missing = sorted(
-        model._meta.db_table
-        for model in apps.get_models()
-        if model._meta.managed and model._meta.db_table not in existing
-    )
-    if missing:
-        pytest.exit(
-            f'The test database is missing {len(missing)} table(s), starting with '
-            f'{missing[0]}. It was most likely left half-built by a cancelled or '
-            'concurrent run. Re-run with --create-db.',
-            returncode=1,
-        )
