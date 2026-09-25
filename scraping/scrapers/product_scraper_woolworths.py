@@ -1,3 +1,5 @@
+import time
+
 import requests
 from datetime import datetime
 from django.utils.text import slugify
@@ -69,6 +71,50 @@ class ProductScraperWoolworths(BaseProductScraper):
         """
         return self.categories_to_fetch
 
+    # Transient network failure used to cost the entire run. `fetch_data_for_item`
+    # is called outside the base loop's try/except, so a single read timeout at
+    # category 200 of 300 propagated all the way out and left `scrape_successful`
+    # False -- at which point the `finally` block calls `jsonl_writer.cleanup()`
+    # and deletes the partial file. Hours of scraping, discarded for one blip.
+    #
+    # Discarding a partial scrape is right and stays: `update --products` runs an
+    # orphan cleaner, so ingesting half a Woolworths catalogue would read the
+    # missing half as delisted and delete thousands of live products. The fix is
+    # therefore to stop transient failures from counting as failures at all,
+    # rather than to salvage a partial file.
+    #
+    # Only the retryable things are retried. A timeout, a dropped connection or a
+    # 5xx is the server having a moment; a 4xx is this code asking the wrong
+    # question, and repeating it just asks it wrong again more slowly.
+    RETRY_ATTEMPTS = 4
+    RETRY_BACKOFF_SECONDS = 3
+
+    def _post_with_retry(self, api_url, payload, category_slug, page_num):
+        last_error = None
+
+        for attempt in range(1, self.RETRY_ATTEMPTS + 1):
+            try:
+                response = self.session.post(api_url, json=payload, timeout=20)
+                response.raise_for_status()
+                return response.json()
+            except requests.exceptions.HTTPError as e:
+                status = e.response.status_code if e.response is not None else None
+                if status is not None and 400 <= status < 500:
+                    raise
+                last_error = e
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
+                last_error = e
+
+            if attempt < self.RETRY_ATTEMPTS:
+                delay = self.RETRY_BACKOFF_SECONDS * (2 ** (attempt - 1))
+                self.command.stdout.write(
+                    f"\n  {category_slug} p{page_num}: {type(last_error).__name__}, "
+                    f"retrying in {delay}s ({attempt}/{self.RETRY_ATTEMPTS - 1})"
+                )
+                time.sleep(delay)
+
+        raise last_error
+
     def fetch_data_for_item(self, item) -> list:
         """
         Fetches the raw product data for a single Woolworths category.
@@ -95,9 +141,7 @@ class ProductScraperWoolworths(BaseProductScraper):
                 "storeId": self.store_id
             }
 
-            response = self.session.post(api_url, json=payload, timeout=20)
-            response.raise_for_status()
-            data = response.json()
+            data = self._post_with_retry(api_url, payload, category_slug, page_num)
             
             raw_products_on_page = [
                 p
