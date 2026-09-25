@@ -6,6 +6,12 @@ from products.tests.factories import ProductFactory, PriceFactory
 from companies.tests.factories import CompanyFactory
 from pipeline.database_updating_classes.product_updating.post_processing.product_reconciler import ProductReconciler
 
+# Which price survives a merge is decided by comparing two `scraped_date`s, so
+# the only thing these tests need from a date is the ordering between them.
+# Reading `date.today()` would make the fixture depend on when it runs, which is
+# the one input a test cannot control.
+FIXED_SCRAPE_DATE = datetime.date(2025, 6, 15)
+
 
 def _write_translation_table(path, mapping: dict):
     import json
@@ -86,8 +92,8 @@ class TestProductReconcilerRun:
         canonical = ProductFactory(normalized_name_brand_size='canonical-product')
         dupe = ProductFactory(normalized_name_brand_size='dupe-product')
 
-        old_date = datetime.date.today() - datetime.timedelta(days=10)
-        new_date = datetime.date.today()
+        old_date = FIXED_SCRAPE_DATE - datetime.timedelta(days=10)
+        new_date = FIXED_SCRAPE_DATE
 
         canonical_price = PriceFactory(product=canonical, company=company, price=Decimal('5.00'), scraped_date=new_date)
         dupe_price = PriceFactory(product=dupe, company=company, price=Decimal('3.00'), scraped_date=old_date)
