@@ -2,7 +2,7 @@ import { Card, CardContent } from './ui/card';
 import { ChevronDown } from 'lucide-react';
 import type { FaqSectionProps } from '@/types/FaqSectionProps';
 import { buildFaqSchema } from '@/lib/seo';
-import StructuredDataScript from '@/lib/schema';
+import StructuredDataScript from '@/components/seo/StructuredDataScript';
 
 export const FaqSection = ({ title, faqData }: FaqSectionProps) => {
   // All JSON-LD goes through the one escaped emitter. This component used to

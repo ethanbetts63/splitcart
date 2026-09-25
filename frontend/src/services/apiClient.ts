@@ -1,4 +1,4 @@
-import { getAuthHeaders } from '../lib/utils';
+import { getAuthHeaders } from '../lib/authHeaders';
 import type { ApiClientOptions } from '../types/ApiClientOptions';
 import type { ApiErrorBody } from '../types/ApiErrorBody';
 import type { JsonBody } from '../types/JsonBody';

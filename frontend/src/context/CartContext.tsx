@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import type { Cart, ApiResponse, ExportData, Product } from '../types';
 import type { CartContextType } from '../types/CartContextType';
 import { createApiClient, ApiError, apiErrorMessage } from '../services/apiClient';
-import { debounce } from '../lib/utils';
+import { debounce } from '../lib/debounce';
 import * as cartApi from '../services/cart.api';
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
