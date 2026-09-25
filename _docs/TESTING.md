@@ -38,7 +38,14 @@ it are the reason, and neither is needed to run the suite:
 | `mysqlclient`                                         | C extension. No wheel for Python 3.14; building it needs the MSVC build tools. The suite does not use MySQL — see below.       |
 | `torch`, `transformers`, `sentence-transformers`, … | The ML half of substitution generation. No wheels for Python 3.14, and roughly 2.5 GB when there are. Only `generate --subs` needs them. |
 
-Everything else installs from the pinned versions. Without the ML half, four
+Everything else installs from the pinned versions, with one caveat: the
+analysis packages (`numpy`, `pandas`, `matplotlib`) have no wheels for Python
+3.14 at the versions the lockfile pins either, so the venv here carries newer
+ones. They are imported only by `pipeline/analysers/`, which has no tests. On
+the Python 3.12 the lockfile was resolved for -- the version PythonAnywhere
+runs -- the pins install as written.
+
+Without the ML half, four
 tests in `pipeline/tests/command_tests/test_generate_command.py` fail: they
 patch `pipeline.utils.generation_utils.substitutions_generator`, and the module
 cannot be imported without `torch`. The patch target is correct and the tests
