@@ -1,18 +1,26 @@
-"use client";
+'use client';
 
 import type { SyntheticEvent } from 'react';
 import AddToCartButton from './AddToCartButton';
 import PriceDisplay from './PriceDisplay';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
 import { useCart } from '../context/CartContext';
-import { Badge } from "./ui/badge";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
+import { Badge } from './ui/badge';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import CartSubTile from './CartSubTile';
 import { CheckCircle2 } from 'lucide-react';
 import type { CartItemTileProps } from '../types/CartItemTileProps';
 import { assetSrc } from '@/lib/assets';
 
-const QuantityStepper = ({ value, onDecrement, onIncrement }: { value: number; onDecrement: () => void; onIncrement: () => void }) => (
+const QuantityStepper = ({
+  value,
+  onDecrement,
+  onIncrement,
+}: {
+  value: number;
+  onDecrement: () => void;
+  onIncrement: () => void;
+}) => (
   <div className="flex items-center rounded-lg overflow-hidden border border-gray-200 bg-gray-100">
     <button
       onClick={onDecrement}
@@ -42,15 +50,20 @@ const CartItemTile = (props: CartItemTileProps) => {
 
   const { currentCart, updateItemQuantity, removeItem } = useCart();
   const items = currentCart?.items || [];
-  const cartItem = context === 'cart' ? items.find(item => item.product.id === product.id) : null;
+  const cartItem = context === 'cart' ? items.find((item) => item.product.id === product.id) : null;
 
   if (context === 'cart' && !cartItem) return null;
 
-  const displayQuantity = cartSubstitution ? cartSubstitution.quantity : (cartItem ? cartItem.quantity : 0);
+  const displayQuantity = cartSubstitution
+    ? cartSubstitution.quantity
+    : cartItem
+      ? cartItem.quantity
+      : 0;
   const isApproved = cartSubstitution ? cartSubstitution.is_approved : false;
 
   const handleImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
-    if (e.currentTarget.src !== assetSrc(fallbackImage)) e.currentTarget.src = assetSrc(fallbackImage);
+    if (e.currentTarget.src !== assetSrc(fallbackImage))
+      e.currentTarget.src = assetSrc(fallbackImage);
   };
 
   const handleQuantityChange = (newQuantity: number) => {
@@ -65,7 +78,9 @@ const CartItemTile = (props: CartItemTileProps) => {
   const imageUrl = product.image_url || assetSrc(fallbackImage);
 
   return (
-    <div className={`rounded-xl border bg-white shadow-sm overflow-hidden ${isApproved ? 'border-green-300' : 'border-gray-200'}`}>
+    <div
+      className={`rounded-xl border bg-white shadow-sm overflow-hidden ${isApproved ? 'border-green-300' : 'border-gray-200'}`}
+    >
       <div className="flex items-center gap-3 p-3">
         {/* Image */}
         <div className="flex-shrink-0 w-16 h-16">
@@ -79,11 +94,15 @@ const CartItemTile = (props: CartItemTileProps) => {
 
         {/* Info */}
         <div className="flex-grow min-w-0">
-          <p className={`font-semibold text-gray-900 text-sm leading-snug ${context === 'substitution' ? 'line-clamp-2' : 'line-clamp-1'}`}>
+          <p
+            className={`font-semibold text-gray-900 text-sm leading-snug ${context === 'substitution' ? 'line-clamp-2' : 'line-clamp-1'}`}
+          >
             {product.name}
           </p>
           {product.size && (
-            <Badge variant="outline" className="text-xs px-1.5 py-0 mt-0.5">{product.size}</Badge>
+            <Badge variant="outline" className="text-xs px-1.5 py-0 mt-0.5">
+              {product.size}
+            </Badge>
           )}
           <div className="mt-1">
             <PriceDisplay prices={product.prices} />
@@ -128,20 +147,27 @@ const CartItemTile = (props: CartItemTileProps) => {
       )}
 
       {/* Cart context: approved substitutions accordion */}
-      {context === 'cart' && !hideApprovedSubstitutions && cartItem && cartItem.substitutions && cartItem.substitutions.filter(sub => sub.is_approved).length > 0 && (
-        <Accordion type="single" collapsible className="w-full border-t border-gray-100">
-          <AccordionItem value="item-1" className="border-0">
-            <AccordionTrigger className="w-full flex justify-center px-3 py-2 text-sm text-gray-400 hover:text-gray-600">
-              Show {cartItem.substitutions.filter(sub => sub.is_approved).length} Approved Substitution(s)
-            </AccordionTrigger>
-            <AccordionContent className="pb-0">
-              {cartItem.substitutions.filter(sub => sub.is_approved).map(sub => (
-                <CartSubTile key={sub.id} cartSubstitution={sub} cartItemId={cartItem.id} />
-              ))}
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      )}
+      {context === 'cart' &&
+        !hideApprovedSubstitutions &&
+        cartItem &&
+        cartItem.substitutions &&
+        cartItem.substitutions.filter((sub) => sub.is_approved).length > 0 && (
+          <Accordion type="single" collapsible className="w-full border-t border-gray-100">
+            <AccordionItem value="item-1" className="border-0">
+              <AccordionTrigger className="w-full flex justify-center px-3 py-2 text-sm text-gray-400 hover:text-gray-600">
+                Show {cartItem.substitutions.filter((sub) => sub.is_approved).length} Approved
+                Substitution(s)
+              </AccordionTrigger>
+              <AccordionContent className="pb-0">
+                {cartItem.substitutions
+                  .filter((sub) => sub.is_approved)
+                  .map((sub) => (
+                    <CartSubTile key={sub.id} cartSubstitution={sub} cartItemId={cartItem.id} />
+                  ))}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        )}
     </div>
   );
 };

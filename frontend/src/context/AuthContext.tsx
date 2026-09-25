@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useState,
-  useEffect,
-  type ReactNode,
-} from 'react';
+import { createContext, useCallback, useContext, useState, useEffect, type ReactNode } from 'react';
 import type { AuthContextType } from '../types/AuthContextType';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -49,7 +42,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       try {
         const storedToken = localStorage.getItem('token');
         // Read the anonymousId from the cookie set by the backend.
-        const storedAnonymousId = document.cookie.split('; ').find(row => row.startsWith('anonymousId='))?.split('=')[1] ?? null;
+        const storedAnonymousId =
+          document.cookie
+            .split('; ')
+            .find((row) => row.startsWith('anonymousId='))
+            ?.split('=')[1] ?? null;
 
         if (storedToken) {
           setIsAuthenticated(true);

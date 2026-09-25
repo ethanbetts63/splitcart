@@ -1,13 +1,13 @@
 import { AspectRatio } from '../components/ui/aspect-ratio';
-import sizeComparison from "../assets/size_comparison.png";
-import sizeComparison320 from "../assets/size_comparison-320w.webp";
-import sizeComparison640 from "../assets/size_comparison-640w.webp";
-import sizeComparison768 from "../assets/size_comparison-768w.webp";
-import sizeComparison1024 from "../assets/size_comparison-1024w.webp";
-import sizeComparison1280 from "../assets/size_comparison-1280w.webp";
+import sizeComparison from '../assets/size_comparison.png';
+import sizeComparison320 from '../assets/size_comparison-320w.webp';
+import sizeComparison640 from '../assets/size_comparison-640w.webp';
+import sizeComparison768 from '../assets/size_comparison-768w.webp';
+import sizeComparison1024 from '../assets/size_comparison-1024w.webp';
+import sizeComparison1280 from '../assets/size_comparison-1280w.webp';
 
-import { ProductCarousel } from "../components/ProductCarousel";
-import { FaqSection } from "../components/FaqSection";
+import { ProductCarousel } from '../components/ProductCarousel';
+import { FaqSection } from '../components/FaqSection';
 import type { PriceComparison } from '../types';
 import PriceComparisonChart from '../components/PriceComparisonChart';
 
@@ -16,20 +16,24 @@ import { assetSrc, assetSrcSet } from '@/lib/assets';
 
 const bargainsFaqs = [
   {
-    question: "Coles vs Woolworths vs Aldi: Who has the best discounts?",
-    answer: "Aldi is generally cheaper upfront, so it doesn't need the heavy, frequent discounting you see elsewhere. It does run some discounts on food items, but they're smaller, less frequent, and not tied to big-brand promotions. One of the main reasons is that Aldi's range is mostly private-label and unique, so it doesn't participate in the same supplier-funded discount system that drives specials at Coles and Woolworths. Coles and Woolworths work on predictable 4–8 week discount cycles, where major branded products regularly drop to half price. These specials are usually subsidised by the brands, who pay for catalogue placement and fund much of the price reduction in exchange for higher volume. Because both supermarkets rely on the same suppliers, their specials end up looking almost identical each week. So overall, Aldi offers lower everyday prices with light discounting, while Coles and Woolworths offer the biggest promotions—but largely because brands are paying for them, not the supermarkets themselves."
+    question: 'Coles vs Woolworths vs Aldi: Who has the best discounts?',
+    answer:
+      "Aldi is generally cheaper upfront, so it doesn't need the heavy, frequent discounting you see elsewhere. It does run some discounts on food items, but they're smaller, less frequent, and not tied to big-brand promotions. One of the main reasons is that Aldi's range is mostly private-label and unique, so it doesn't participate in the same supplier-funded discount system that drives specials at Coles and Woolworths. Coles and Woolworths work on predictable 4–8 week discount cycles, where major branded products regularly drop to half price. These specials are usually subsidised by the brands, who pay for catalogue placement and fund much of the price reduction in exchange for higher volume. Because both supermarkets rely on the same suppliers, their specials end up looking almost identical each week. So overall, Aldi offers lower everyday prices with light discounting, while Coles and Woolworths offer the biggest promotions—but largely because brands are paying for them, not the supermarkets themselves.",
   },
   {
-    question: "When do expiring products get discounted at Aldi?",
-    answer: "ALDI's clearance process is different, focusing on earlier, fixed-rate markdowns rather than a late-night final sweep. An official policy is that most fresh food—including meat, dairy, and ready meals—is marked down by 20% two days before its expiry date, with most markdowns typically completed before 6:00 PM. ALDI bakery goods are often prioritized for donation. Your best strategy is to look for the red sticker items around 5-6pm but markdown strategies can vary widely store to store as per the managers discretion."
+    question: 'When do expiring products get discounted at Aldi?',
+    answer:
+      "ALDI's clearance process is different, focusing on earlier, fixed-rate markdowns rather than a late-night final sweep. An official policy is that most fresh food—including meat, dairy, and ready meals—is marked down by 20% two days before its expiry date, with most markdowns typically completed before 6:00 PM. ALDI bakery goods are often prioritized for donation. Your best strategy is to look for the red sticker items around 5-6pm but markdown strategies can vary widely store to store as per the managers discretion.",
   },
   {
-    question: "When do expiring products get discounted at Coles?",
-    answer: "The final and most significant markdowns at Coles often appear between 7:00 PM and 8:00 PM, particularly at stores with a 9:00 PM closing time. Coles staff tend to perform a large reduction sweep in the hours immediately before the store closes to ensure minimal waste, focusing on high-value items like meat, deli goods, and hot roast chickens (which are reduced 4 hours after cooking). The specific final time can vary, so shoppers should check their local store's schedule or look for staff clearing items with a trolley in the late evening."
+    question: 'When do expiring products get discounted at Coles?',
+    answer:
+      "The final and most significant markdowns at Coles often appear between 7:00 PM and 8:00 PM, particularly at stores with a 9:00 PM closing time. Coles staff tend to perform a large reduction sweep in the hours immediately before the store closes to ensure minimal waste, focusing on high-value items like meat, deli goods, and hot roast chickens (which are reduced 4 hours after cooking). The specific final time can vary, so shoppers should check their local store's schedule or look for staff clearing items with a trolley in the late evening.",
   },
   {
-    question: "When do expiring products get discounted at Woolworths?",
-    answer: "Woolworths generally uses a progressive markdown schedule, with the deepest discounts occurring in the late afternoon and evening. The best time to hunt for the maximum reduction (often 50% to 80% off on meat, chilled meals, and dairy) is typically after 6:00 PM and up to one hour before closing. Earlier in the day (around 2:00 PM to 4:00 PM) you will find initial, smaller markdowns (20% to 40% off), but the staff perform the final, aggressive reduction sweep in the evening to clear items expiring that day."
+    question: 'When do expiring products get discounted at Woolworths?',
+    answer:
+      'Woolworths generally uses a progressive markdown schedule, with the deepest discounts occurring in the late afternoon and evening. The best time to hunt for the maximum reduction (often 50% to 80% off on meat, chilled meals, and dairy) is typically after 6:00 PM and up to one hour before closing. Earlier in the day (around 2:00 PM to 4:00 PM) you will find initial, smaller markdowns (20% to 40% off), but the staff perform the final, aggressive reduction sweep in the evening to clear items expiring that day.',
   },
 ];
 
@@ -38,16 +42,13 @@ type BargainsPageProps = {
   initialCompanyProducts?: Record<string, Product[]>;
 };
 
-const BargainsPage = ({
-  initialBargainStats,
-  initialCompanyProducts = {},
-}: BargainsPageProps) => {
+const BargainsPage = ({ initialBargainStats, initialCompanyProducts = {} }: BargainsPageProps) => {
   const hero_title = "Australia's Best Grocery Bargains";
 
   const companies = [
-      { name: 'Coles', id: 1 },
-      { name: 'Woolworths', id: 2 },
-      { name: 'Aldi', id: 3 },
+    { name: 'Coles', id: 1 },
+    { name: 'Woolworths', id: 2 },
+    { name: 'Aldi', id: 3 },
   ];
 
   return (
@@ -59,11 +60,18 @@ const BargainsPage = ({
             <AspectRatio ratio={16 / 9}>
               <img
                 src={assetSrc(sizeComparison)}
-                srcSet={assetSrcSet([[sizeComparison320, 320], [sizeComparison640, 640], [sizeComparison768, 768], [sizeComparison1024, 1024], [sizeComparison1280, 1280]])}
+                srcSet={assetSrcSet([
+                  [sizeComparison320, 320],
+                  [sizeComparison640, 640],
+                  [sizeComparison768, 768],
+                  [sizeComparison1024, 1024],
+                  [sizeComparison1280, 1280],
+                ])}
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 alt={hero_title}
                 className="rounded-md object-contain w-full h-full"
-                fetchPriority="high" />
+                fetchPriority="high"
+              />
             </AspectRatio>
           </div>
           <div className="text-left">
@@ -71,14 +79,21 @@ const BargainsPage = ({
               {hero_title}
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Forget the flashy ‘specials’ — these are the real bargains hiding in plain sight. We’ve compared prices across supermarkets to show you who actually sells each item for less. <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">Interested in the stats?</span> We&apos;ve graphed the trends below so you can see which supermarket comes out on top overall.
+              Forget the flashy ‘specials’ — these are the real bargains hiding in plain sight.
+              We’ve compared prices across supermarkets to show you who actually sells each item for
+              less.{' '}
+              <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
+                Interested in the stats?
+              </span>{' '}
+              We&apos;ve graphed the trends below so you can see which supermarket comes out on top
+              overall.
             </p>
           </div>
         </div>
       </div>
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-8">
-          {companies.map(company => (
+          {companies.map((company) => (
             <ProductCarousel
               key={company.id}
               title={`${company.name} Bargains`}
@@ -96,7 +111,9 @@ const BargainsPage = ({
       <div className="container mx-auto px-4 py-8">
         <section className="-mx-4 md:mx-0 bg-gray-50 py-8 md:px-5 rounded-none md:rounded-xl">
           <h2 className="text-3xl font-bold text-center mb-8 px-5 md:px-0">
-            Which supermarket is the <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">cheapest</span> in Australia?
+            Which supermarket is the{' '}
+            <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">cheapest</span> in
+            Australia?
           </h2>
           {initialBargainStats && initialBargainStats.length > 0 && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 md:px-0">
@@ -106,10 +123,13 @@ const BargainsPage = ({
               <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-5 flex flex-col gap-3">
                 <h3 className="font-bold text-gray-900 text-base">How We Compare</h3>
                 <p className="text-sm text-gray-600 leading-relaxed">
-                  These statistics are based on the full set of identical products that two companies both sell according to our database.
+                  These statistics are based on the full set of identical products that two
+                  companies both sell according to our database.
                 </p>
                 <p className="text-sm text-gray-600 leading-relaxed">
-                  You&apos;ll notice this number changes for each pairing. Companies like Aldi have a highly unique product range, which results in a smaller overlap and fewer items being compared.
+                  You&apos;ll notice this number changes for each pairing. Companies like Aldi have
+                  a highly unique product range, which results in a smaller overlap and fewer items
+                  being compared.
                 </p>
               </div>
             </div>

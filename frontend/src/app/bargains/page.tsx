@@ -1,19 +1,19 @@
-import BargainsPage from "@/page_components/BargainsPage";
+import BargainsPage from '@/page_components/BargainsPage';
 import {
   buildProductItemListSchema,
   buildRetailerSchemas,
   buildStaticPageGraph,
   companiesIn,
   metadataFor,
-} from "@/lib/seo";
-import StructuredDataScript from "@/lib/schema";
-import type { PriceComparison, Product } from "@/types";
+} from '@/lib/seo';
+import StructuredDataScript from '@/lib/schema';
+import type { PriceComparison, Product } from '@/types';
 
 export const revalidate = 86400;
 
-const apiUrl = process.env.DJANGO_API_URL ?? "http://localhost:8000";
+const apiUrl = process.env.DJANGO_API_URL ?? 'http://localhost:8000';
 
-export const metadata = metadataFor("/bargains");
+export const metadata = metadataFor('/bargains');
 
 export default async function Page() {
   const [initialBargainStats, initialCompanyProducts] = await Promise.all([
@@ -34,10 +34,8 @@ export default async function Page() {
     .filter((list) => list !== null);
 
   const graph = buildStaticPageGraph(
-    "/bargains",
-    itemLists.length
-      ? [...itemLists, ...buildRetailerSchemas(companiesIn(allProducts))]
-      : [],
+    '/bargains',
+    itemLists.length ? [...itemLists, ...buildRetailerSchemas(companiesIn(allProducts))] : [],
   );
 
   return (
@@ -64,13 +62,13 @@ async function getBargainStats(): Promise<PriceComparison[]> {
 }
 
 async function getCompanyProducts(): Promise<Record<string, Product[]>> {
-  const companies = ["Coles", "Woolworths", "Aldi"];
+  const companies = ['Coles', 'Woolworths', 'Aldi'];
   const entries = await Promise.all(
     companies.map(async (company) => {
       try {
         const params = new URLSearchParams({
           company_name: company,
-          limit: "20",
+          limit: '20',
         });
         const response = await fetch(
           `${apiUrl}/api/products/bargain-carousel/?${params.toString()}`,

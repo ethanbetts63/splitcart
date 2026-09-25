@@ -1,10 +1,10 @@
-import { Suspense, type ReactNode } from "react";
-import NavBar from "@/components/NavBar";
-import Footer from "@/components/Footer";
-import LoadingSpinner from "@/components/LoadingSpinner";
-import { SettingsDialogWrapper } from "@/components/SettingsDialogWrapper";
-import { FloatingNextButton } from "@/components/FloatingNextButton";
-import { Toaster } from "@/components/ui/sonner";
+import { Suspense, type ReactNode } from 'react';
+import NavBar from '@/components/NavBar';
+import Footer from '@/components/Footer';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import { SettingsDialogWrapper } from '@/components/SettingsDialogWrapper';
+import { FloatingNextButton } from '@/components/FloatingNextButton';
+import { Toaster } from '@/components/ui/sonner';
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (

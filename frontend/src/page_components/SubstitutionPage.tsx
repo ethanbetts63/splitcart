@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -7,16 +7,35 @@ import ProductTile from '../components/ProductTile';
 import CartItemTile from '../components/CartItemTile';
 import LoadingSpinner from '../components/LoadingSpinner';
 import type { CartSubstitution } from '../types';
-import { FaqSection } from "../components/FaqSection";
+import { FaqSection } from '../components/FaqSection';
 import useMediaQuery from '../hooks/useMediaQuery';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 const substitutesFaqs = [
-  {"question": "Should I consider price?", "answer": "Short answer is no. Just pick anything that you would be willing to have \"instead of\" the original. Long answer is very mathematical but suffice to say that the algorithm will often unexpectedly pick very expensive isolated items because it allows it to lower the overall cost in other areas."},
-  {"question": "Why can I adjust the quantity?", "answer": "If you're original item was 1 liter of milk and the substitute we offered you was 500ml of milk, that wouldn't make sense. So that's why you can adjust the quantity to say that yes I would be willing to have two 500ml bottles of milk instead of the liter if it was cheaper."},
-  {"question": "How many substitutes should I pick?", "answer": "As many as possible. The more you pick the more you're likely to save."},
-  {"question": "Can I split without substitutes?", "answer": "Yes, but you're missing out. Even when you split with substitutes we will still show you what you would have saved without using substitutes so you can decide for yourself."},
-  {"question": "No, but does it really matter?", "answer": "Subsitutes are our secret sauce. No other price comaparison website has thought of it. If you were actually in a store you would never just consider one product. You would probably debate between a few items on any shelf. That's what we are replicating and your hard work pays dividends."}
+  {
+    question: 'Should I consider price?',
+    answer:
+      'Short answer is no. Just pick anything that you would be willing to have "instead of" the original. Long answer is very mathematical but suffice to say that the algorithm will often unexpectedly pick very expensive isolated items because it allows it to lower the overall cost in other areas.',
+  },
+  {
+    question: 'Why can I adjust the quantity?',
+    answer:
+      "If you're original item was 1 liter of milk and the substitute we offered you was 500ml of milk, that wouldn't make sense. So that's why you can adjust the quantity to say that yes I would be willing to have two 500ml bottles of milk instead of the liter if it was cheaper.",
+  },
+  {
+    question: 'How many substitutes should I pick?',
+    answer: "As many as possible. The more you pick the more you're likely to save.",
+  },
+  {
+    question: 'Can I split without substitutes?',
+    answer:
+      "Yes, but you're missing out. Even when you split with substitutes we will still show you what you would have saved without using substitutes so you can decide for yourself.",
+  },
+  {
+    question: 'No, but does it really matter?',
+    answer:
+      "Subsitutes are our secret sauce. No other price comaparison website has thought of it. If you were actually in a store you would never just consider one product. You would probably debate between a few items on any shelf. That's what we are replicating and your hard work pays dividends.",
+  },
 ];
 
 const SubstitutionPage = () => {
@@ -31,7 +50,8 @@ const SubstitutionPage = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const itemsToReview = currentCart?.items.filter(item => item.substitutions && item.substitutions.length > 0) || [];
+  const itemsToReview =
+    currentCart?.items.filter((item) => item.substitutions && item.substitutions.length > 0) || [];
 
   // Declared above the effect that calls it. "Skip substitutes" runs the same
   // path, so there is one function rather than the two identical copies that
@@ -124,11 +144,10 @@ const SubstitutionPage = () => {
 
   const isLastItem = currentItemIndex === itemsToReview.length - 1;
   const progressPercent = (currentItemIndex / itemsToReview.length) * 100;
-  const approvedCount = currentSubstitutes.filter(s => s.is_approved).length;
+  const approvedCount = currentSubstitutes.filter((s) => s.is_approved).length;
 
   return (
     <div className="container mx-auto px-4 py-6">
-
       {/* Primary Nav */}
       <div className="flex items-center justify-between gap-4 mb-3">
         <button
@@ -141,7 +160,9 @@ const SubstitutionPage = () => {
 
         <div className="text-center">
           <h1 className="text-xl font-bold text-gray-900">Approve Substitutes</h1>
-          <p className="text-sm text-gray-400">Item {currentItemIndex + 1} of {itemsToReview.length}</p>
+          <p className="text-sm text-gray-400">
+            Item {currentItemIndex + 1} of {itemsToReview.length}
+          </p>
         </div>
 
         <button
@@ -182,18 +203,23 @@ const SubstitutionPage = () => {
       {/* Main Panel */}
       <div className="bg-gray-50 rounded-xl p-5">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
           {/* Original Product */}
           <div>
             <h2 className="text-base font-bold mb-4 text-center">
-              <span className="italic bg-yellow-300 px-1 py-0.5 rounded text-black">Original Product</span>
+              <span className="italic bg-yellow-300 px-1 py-0.5 rounded text-black">
+                Original Product
+              </span>
             </h2>
             {isDesktop ? (
               <div className="w-[240px] mx-auto">
                 <ProductTile product={currentItem.product} />
               </div>
             ) : (
-              <CartItemTile product={currentItem.product} context="cart" hideApprovedSubstitutions={true} />
+              <CartItemTile
+                product={currentItem.product}
+                context="cart"
+                hideApprovedSubstitutions={true}
+              />
             )}
           </div>
 
@@ -201,7 +227,9 @@ const SubstitutionPage = () => {
           <div>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-base font-bold">
-                <span className="italic bg-yellow-300 px-1 py-0.5 rounded text-black">Substitutes</span>
+                <span className="italic bg-yellow-300 px-1 py-0.5 rounded text-black">
+                  Substitutes
+                </span>
               </h2>
               {approvedCount > 0 && (
                 <span className="text-xs font-semibold text-green-600 bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">
@@ -210,7 +238,7 @@ const SubstitutionPage = () => {
               )}
             </div>
             <div className="h-[480px] overflow-y-auto rounded-xl border border-gray-200 bg-white p-3 space-y-3">
-              {currentSubstitutes.map(sub => {
+              {currentSubstitutes.map((sub) => {
                 if (sub.substituted_product.prices && sub.substituted_product.prices.length > 0) {
                   return (
                     <CartItemTile
@@ -226,7 +254,6 @@ const SubstitutionPage = () => {
               })}
             </div>
           </div>
-
         </div>
       </div>
 
@@ -234,7 +261,6 @@ const SubstitutionPage = () => {
       <div className="mt-12">
         <FaqSection title="Why substitution?" faqData={substitutesFaqs} />
       </div>
-
     </div>
   );
 };

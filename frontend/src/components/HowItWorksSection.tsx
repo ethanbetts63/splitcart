@@ -31,9 +31,7 @@ export const HowItWorksSection = ({ steps }: HowItWorksSectionProps) => {
               </div>
 
               <div className="pt-9 pb-7 px-6 text-center">
-                <h3 className="text-xl md:text-2xl font-bold text-gray-900">
-                  {step.title}
-                </h3>
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900">{step.title}</h3>
                 <p className="mt-3 text-sm md:text-base text-gray-600 leading-relaxed">
                   {step.description}
                 </p>

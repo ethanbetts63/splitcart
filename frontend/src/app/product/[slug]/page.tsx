@@ -1,5 +1,5 @@
-import ProductPage from "@/page_components/ProductPage";
-import type { Product } from "@/types";
+import ProductPage from '@/page_components/ProductPage';
+import type { Product } from '@/types';
 
 /**
  * Product pages are state 4 — robots-disallowed — and nothing else.
@@ -21,10 +21,10 @@ export const revalidate = 1800;
 
 type PageProps = { params: Promise<{ slug: string }> };
 
-const apiUrl = process.env.DJANGO_API_URL ?? "http://localhost:8000";
+const apiUrl = process.env.DJANGO_API_URL ?? 'http://localhost:8000';
 
 async function getProduct(slug: string): Promise<Product | null> {
-  const productId = slug.split("-").pop();
+  const productId = slug.split('-').pop();
   try {
     const res = await fetch(`${apiUrl}/api/products/${productId}/`, {
       next: { revalidate },

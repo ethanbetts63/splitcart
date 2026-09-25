@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
@@ -9,10 +9,10 @@ import placeholderImage from '../assets/placeholder.webp';
 import type { ProductTileProps } from '../types/ProductTileProps';
 import { assetSrc } from '@/lib/assets';
 
-const ProductTile: React.FC<ProductTileProps> = ({ 
-  product, 
-  root = null, 
-  rootMargin = '200px 0px 200px 0px' 
+const ProductTile: React.FC<ProductTileProps> = ({
+  product,
+  root = null,
+  rootMargin = '200px 0px 200px 0px',
 }) => {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -35,7 +35,7 @@ const ProductTile: React.FC<ProductTileProps> = ({
         root: root,
         rootMargin: rootMargin,
         threshold: 0.01,
-      }
+      },
     );
 
     const currentRef = tileRef.current;
@@ -52,7 +52,7 @@ const ProductTile: React.FC<ProductTileProps> = ({
 
   const fallbackImageUrl = assetSrc(fallbackImage);
   const placeholderImageUrl = assetSrc(placeholderImage);
-  const imageUrl = isVisible ? (product.image_url || fallbackImageUrl) : placeholderImageUrl;
+  const imageUrl = isVisible ? product.image_url || fallbackImageUrl : placeholderImageUrl;
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     if (e.currentTarget.src !== fallbackImageUrl) {
@@ -61,12 +61,17 @@ const ProductTile: React.FC<ProductTileProps> = ({
   };
 
   const generateSrcSet = (url: string) => {
-    if (!isVisible || !url.includes('cdn.metcash.media') || url === placeholderImageUrl || url === fallbackImageUrl) {
+    if (
+      !isVisible ||
+      !url.includes('cdn.metcash.media') ||
+      url === placeholderImageUrl ||
+      url === fallbackImageUrl
+    ) {
       return undefined;
     }
     const sizes = [200, 250, 300, 350, 400, 450, 500];
     return sizes
-      .map(size => `${url.replace('w_1500,h_1500', `w_${size},h_${size},f_auto`)} ${size}w`)
+      .map((size) => `${url.replace('w_1500,h_1500', `w_${size},h_${size},f_auto`)} ${size}w`)
       .join(', ');
   };
 
@@ -76,9 +81,9 @@ const ProductTile: React.FC<ProductTileProps> = ({
     if (!product.bargain_info) return null;
 
     const companyShortNames: { [key: string]: string } = {
-      'Woolworths': 'Woolies',
-      'Coles': 'Coles',
-      'Aldi': 'Aldi',
+      Woolworths: 'Woolies',
+      Coles: 'Coles',
+      Aldi: 'Aldi',
     };
 
     const companyName = product.bargain_info.cheapest_company_name;
@@ -124,8 +129,8 @@ const ProductTile: React.FC<ProductTileProps> = ({
         <div className="relative aspect-square w-full overflow-hidden bg-gray-50">
           {bargainInfo && (
             <span className="absolute top-2 left-2 z-20 text-xs font-bold px-2.5 py-1 rounded-full shadow-md bg-gray-900/80 backdrop-blur-sm text-white">
-              <span className="text-yellow-300">-{bargainInfo.percentage}%</span>
-              {' '}at {bargainInfo.cheapestCompany}
+              <span className="text-yellow-300">-{bargainInfo.percentage}%</span> at{' '}
+              {bargainInfo.cheapestCompany}
             </span>
           )}
           <div className="absolute bottom-2 right-2 z-20 flex flex-col items-end gap-1">
@@ -147,7 +152,7 @@ const ProductTile: React.FC<ProductTileProps> = ({
             onError={handleImageError}
             alt={product.name}
             className={`h-full w-full object-cover transition-transform duration-300 ${!isButtonHovered && 'group-hover:scale-105'}`}
-            loading={isVisible ? "eager" : "lazy"}
+            loading={isVisible ? 'eager' : 'lazy'}
           />
         </div>
 
@@ -172,7 +177,10 @@ const ProductTile: React.FC<ProductTileProps> = ({
 
           {/* Add to Cart */}
           <div
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
             onMouseEnter={() => setIsButtonHovered(true)}
             onMouseLeave={() => setIsButtonHovered(false)}
             className="[&>button]:w-full [&>*]:w-full"

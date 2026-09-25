@@ -113,7 +113,7 @@ const ALL_CATEGORIES: CategoryEntry[] = [
 
 const bargains = ALL_CATEGORIES.find((c) => c.featured);
 const others = ALL_CATEGORIES.filter((c) => !c.featured).sort((a, b) =>
-  a.title.localeCompare(b.title)
+  a.title.localeCompare(b.title),
 );
 
 export const CATEGORIES = bargains ? [bargains, ...others] : others;

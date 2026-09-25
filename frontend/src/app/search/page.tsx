@@ -1,4 +1,4 @@
-import SearchResultsPage from "@/page_components/SearchResultsPage";
+import SearchResultsPage from '@/page_components/SearchResultsPage';
 
 /**
  * Search is state 4 — robots-disallowed — and nothing else.
@@ -10,7 +10,7 @@ import SearchResultsPage from "@/page_components/SearchResultsPage";
  * never read. seo-standard.md section 2 forbids declaring both states.
  */
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 export default function Page() {
   return <SearchResultsPage />;

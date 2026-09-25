@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
 import React, { memo, useEffect, useRef } from 'react';
-import SkeletonProductTile from "./SkeletonProductTile";
-import ProductTile from "./ProductTile";
+import SkeletonProductTile from './SkeletonProductTile';
+import ProductTile from './ProductTile';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
@@ -63,13 +63,16 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
 
   const shouldFetch = !!finalUrl && !initialProducts;
 
-  const { data: responseData, isLoading: isFetching, error, isFetched } = useApiQuery<
-    Product[] | { results?: Product[] }
-  >(
+  const {
+    data: responseData,
+    isLoading: isFetching,
+    error,
+    isFetched,
+  } = useApiQuery<Product[] | { results?: Product[] }>(
     ['products', title, finalUrl],
     finalUrl,
     {},
-    { enabled: shouldFetch, refetchOnWindowFocus: false, staleTime: 1000 * 60 * 10 }
+    { enabled: shouldFetch, refetchOnWindowFocus: false, staleTime: 1000 * 60 * 10 },
   );
 
   const products: Product[] = React.useMemo(() => {
@@ -80,13 +83,30 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
 
   const validationCalled = useRef(false);
   useEffect(() => {
-    if ((isFetched || initialProducts) && onValidation && (primaryCategorySlug || primaryCategorySlugs) && !validationCalled.current && slot !== undefined) {
-      const identifier = primaryCategorySlugs ? primaryCategorySlugs.join(',') : primaryCategorySlug!;
+    if (
+      (isFetched || initialProducts) &&
+      onValidation &&
+      (primaryCategorySlug || primaryCategorySlugs) &&
+      !validationCalled.current &&
+      slot !== undefined
+    ) {
+      const identifier = primaryCategorySlugs
+        ? primaryCategorySlugs.join(',')
+        : primaryCategorySlug!;
       const isValid = products.length >= minProducts;
       onValidation(identifier, isValid, slot);
       validationCalled.current = true;
     }
-  }, [isFetched, initialProducts, products, onValidation, primaryCategorySlug, primaryCategorySlugs, slot, minProducts]);
+  }, [
+    isFetched,
+    initialProducts,
+    products,
+    onValidation,
+    primaryCategorySlug,
+    primaryCategorySlugs,
+    slot,
+    minProducts,
+  ]);
 
   const isLoading = (isLoadingProp ?? isFetching) && !initialProducts;
 
@@ -100,9 +120,10 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
   } else if (pillarPageLinkSlug && pathname === '/') {
     seeMoreLink = `/categories/${encodeURIComponent(pillarPageLinkSlug)}`;
   } else if (primaryCategorySlugs && primaryCategorySlugs.length > 0) {
-    seeMoreLink = primaryCategorySlugs.length === 1
-      ? `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlugs[0])}`
-      : `/search?primary_category_slugs=${encodeURIComponent(primaryCategorySlugs.join(','))}`;
+    seeMoreLink =
+      primaryCategorySlugs.length === 1
+        ? `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlugs[0])}`
+        : `/search?primary_category_slugs=${encodeURIComponent(primaryCategorySlugs.join(','))}`;
   } else if (primaryCategorySlug) {
     seeMoreLink = `/search?primary_category_slug=${encodeURIComponent(primaryCategorySlug)}`;
   } else if (searchQuery) {
@@ -110,11 +131,12 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
   }
 
   const exploreHref = seeMoreLink ?? (title === 'Bargains' ? '/bargains' : null);
-  const exploreLabel = isBargainCarousel && companyName
-    ? `Explore All ${companyName} Deals`
-    : title === 'Highlighted Bargains'
-    ? 'Explore More Bargains'
-    : 'Explore All Deals';
+  const exploreLabel =
+    isBargainCarousel && companyName
+      ? `Explore All ${companyName} Deals`
+      : title === 'Highlighted Bargains'
+        ? 'Explore More Bargains'
+        : 'Explore All Deals';
 
   return (
     <>
@@ -139,27 +161,29 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
         </div>
 
         {/* Tiles */}
-        <div 
-          className="overflow-x-auto scrollbar-hide pb-1 pt-2"
-          ref={setScrollContainer}
-        >
+        <div className="overflow-x-auto scrollbar-hide pb-1 pt-2" ref={setScrollContainer}>
           <div className="flex snap-x snap-mandatory">
             {isLoading
               ? [...Array(5)].map((_, i) => (
-                  <div className="flex-shrink-0 snap-start w-4/5 sm:w-1/3 md:w-1/4 lg:w-1/5 px-1.5 pb-1" key={i}>
+                  <div
+                    className="flex-shrink-0 snap-start w-4/5 sm:w-1/3 md:w-1/4 lg:w-1/5 px-1.5 pb-1"
+                    key={i}
+                  >
                     <SkeletonProductTile />
                   </div>
                 ))
               : products.map((product) => (
-                  <div className="flex-shrink-0 snap-start w-4/5 sm:w-1/3 md:w-1/4 lg:w-1/5 px-1.5 pb-1" key={product.id}>
-                    <ProductTile 
-                      product={product} 
+                  <div
+                    className="flex-shrink-0 snap-start w-4/5 sm:w-1/3 md:w-1/4 lg:w-1/5 px-1.5 pb-1"
+                    key={product.id}
+                  >
+                    <ProductTile
+                      product={product}
                       root={scrollContainer}
                       rootMargin="0px 200px 0px 200px"
                     />
                   </div>
-                ))
-            }
+                ))}
           </div>
         </div>
       </section>

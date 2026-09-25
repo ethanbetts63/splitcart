@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { ShoppingCart } from "lucide-react";
-import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
-import { useCart } from "@/context/CartContext";
-import { useDialog } from "@/context/DialogContext";
+import { ShoppingCart } from 'lucide-react';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { useCart } from '@/context/CartContext';
+import { useDialog } from '@/context/DialogContext';
 
 export function NavCartButton() {
   const { currentCart } = useCart();
@@ -14,7 +14,12 @@ export function NavCartButton() {
 
   return (
     <div className="relative">
-      <Button variant="ghost" size="icon" className="h-10 w-10 sm:h-12 sm:w-12" onClick={() => openDialog("cart")}>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="h-10 w-10 sm:h-12 sm:w-12"
+        onClick={() => openDialog('cart')}
+      >
         <ShoppingCart className="size-6 sm:size-7" />
         <span className="sr-only">Open cart</span>
       </Button>

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useSearchParams } from 'next/navigation';
 import GridSourcer from '../components/GridSourcer';

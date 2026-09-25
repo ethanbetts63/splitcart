@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Search } from "lucide-react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Search } from 'lucide-react';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
 
-export function NavSearchBar({ className = "" }: { className?: string }) {
-  const [searchTerm, setSearchTerm] = useState("");
+export function NavSearchBar({ className = '' }: { className?: string }) {
+  const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
 
   const handleSearch = () => {
@@ -23,7 +23,7 @@ export function NavSearchBar({ className = "" }: { className?: string }) {
         placeholder="Search products, stores, and more..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         className="h-10 text-base pr-12 rounded-full"
       />
       <Button

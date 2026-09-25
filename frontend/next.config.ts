@@ -1,6 +1,6 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
-const apiUrl = process.env.DJANGO_API_URL ?? "http://localhost:8000";
+const apiUrl = process.env.DJANGO_API_URL ?? 'http://localhost:8000';
 
 const nextConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
@@ -10,23 +10,23 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/pillar-pages/eggs-and-dairy/",
-        destination: "/categories/dairy-and-eggs/",
+        source: '/pillar-pages/eggs-and-dairy/',
+        destination: '/categories/dairy-and-eggs/',
         permanent: true,
       },
       {
-        source: "/pillar-pages/eggs/",
-        destination: "/categories/dairy-and-eggs/",
+        source: '/pillar-pages/eggs/',
+        destination: '/categories/dairy-and-eggs/',
         permanent: true,
       },
       {
-        source: "/pillar-pages/pet-and-baby/",
-        destination: "/categories/baby/",
+        source: '/pillar-pages/pet-and-baby/',
+        destination: '/categories/baby/',
         permanent: true,
       },
       {
-        source: "/pillar-pages/fruit-veg-and-spices/",
-        destination: "/categories/fruit-and-veg/",
+        source: '/pillar-pages/fruit-veg-and-spices/',
+        destination: '/categories/fruit-and-veg/',
         permanent: true,
       },
     ];
@@ -34,7 +34,7 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/:path*",
+        source: '/api/:path*',
         destination: `${apiUrl}/api/:path*`,
       },
     ];

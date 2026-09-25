@@ -28,10 +28,14 @@ const ProductPage = ({ product, slug }: ProductPageProps) => {
     offers: {
       '@type': 'AggregateOffer',
       priceCurrency: 'AUD',
-      lowPrice: Math.min(...product.prices.map(p => parseFloat(p.price_display.replace('$', '')))).toFixed(2),
-      highPrice: Math.max(...product.prices.map(p => parseFloat(p.price_display.replace('$', '')))).toFixed(2),
+      lowPrice: Math.min(
+        ...product.prices.map((p) => parseFloat(p.price_display.replace('$', ''))),
+      ).toFixed(2),
+      highPrice: Math.max(
+        ...product.prices.map((p) => parseFloat(p.price_display.replace('$', ''))),
+      ).toFixed(2),
       offerCount: product.prices.length,
-      offers: product.prices.map(priceInfo => ({
+      offers: product.prices.map((priceInfo) => ({
         '@type': 'Offer',
         price: parseFloat(priceInfo.price_display.replace('$', '')).toFixed(2),
         priceCurrency: 'AUD',
@@ -54,11 +58,7 @@ const ProductPage = ({ product, slug }: ProductPageProps) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
             {/* Image Column */}
             <div className="aspect-square w-full overflow-hidden">
-              <img
-                src={imageUrl}
-                alt={product.name}
-                className="h-full w-full object-cover"
-              />
+              <img src={imageUrl} alt={product.name} className="h-full w-full object-cover" />
             </div>
 
             {/* Details Column */}

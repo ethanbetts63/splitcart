@@ -1,4 +1,4 @@
-import type { JsonLdNode } from "./seo";
+import type { JsonLdNode } from './seo';
 
 interface StructuredDataScriptProps {
   structuredData?: JsonLdNode | JsonLdNode[] | null;
@@ -33,16 +33,11 @@ interface StructuredDataScriptProps {
  * reads as correct and does nothing.
  */
 function toJsonLd(structuredData: JsonLdNode | JsonLdNode[]): string {
-  return JSON.stringify(structuredData).replace(/</g, "\\u003c");
+  return JSON.stringify(structuredData).replace(/</g, '\\u003c');
 }
 
-export default function StructuredDataScript({
-  structuredData,
-}: StructuredDataScriptProps) {
-  if (
-    !structuredData ||
-    (Array.isArray(structuredData) && structuredData.length === 0)
-  ) {
+export default function StructuredDataScript({ structuredData }: StructuredDataScriptProps) {
+  if (!structuredData || (Array.isArray(structuredData) && structuredData.length === 0)) {
     return null;
   }
 

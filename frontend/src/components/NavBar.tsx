@@ -1,22 +1,20 @@
-import Link from "next/link";
-import splitcartLogo from "../assets/splitcart_symbol_v6.webp";
-import splitcartLogo320 from "../assets/splitcart_symbol_v6-320w.webp";
-import splitcartLogo640 from "../assets/splitcart_symbol_v6-640w.webp";
-import splitcartLogo768 from "../assets/splitcart_symbol_v6-768w.webp";
-import splitcartLogo1024 from "../assets/splitcart_symbol_v6-1024w.webp";
-import splitcartLogo1280 from "../assets/splitcart_symbol_v6-1280w.webp";
-import { assetSrc, assetSrcSet } from "@/lib/assets";
-import { NavSearchBar } from "./NavSearchBar";
-import { NavCartButton } from "./NavCartButton";
-import { NavAuthButton } from "./NavAuthButton";
+import Link from 'next/link';
+import splitcartLogo from '../assets/splitcart_symbol_v6.webp';
+import splitcartLogo320 from '../assets/splitcart_symbol_v6-320w.webp';
+import splitcartLogo640 from '../assets/splitcart_symbol_v6-640w.webp';
+import splitcartLogo768 from '../assets/splitcart_symbol_v6-768w.webp';
+import splitcartLogo1024 from '../assets/splitcart_symbol_v6-1024w.webp';
+import splitcartLogo1280 from '../assets/splitcart_symbol_v6-1280w.webp';
+import { assetSrc, assetSrcSet } from '@/lib/assets';
+import { NavSearchBar } from './NavSearchBar';
+import { NavCartButton } from './NavCartButton';
+import { NavAuthButton } from './NavAuthButton';
 
 const NavBar = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white">
-
       {/* ── Main row ── */}
       <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 gap-4">
-
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2 flex-shrink-0">
           <img
@@ -53,7 +51,6 @@ const NavBar = () => {
       <div className="sm:hidden px-4 pb-3">
         <NavSearchBar />
       </div>
-
     </header>
   );
 };

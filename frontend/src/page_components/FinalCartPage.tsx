@@ -1,22 +1,34 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
-import { Switch } from "../components/ui/switch"
-import { Label } from "../components/ui/label"
+import { Switch } from '../components/ui/switch';
+import { Label } from '../components/ui/label';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ResultsDisplay from '../components/ResultsDisplay';
-import { FaqSection } from "../components/FaqSection";
+import { FaqSection } from '../components/FaqSection';
 import type { ExportAction, ExportData } from '../types';
 import { apiErrorMessage } from '../services/apiClient';
 
 const finalCartFaqs = [
-  {"question": "How is baseline cost calculated?", "answer": "By taking each item in your list, finding the average price across all available stores, and then summing up these average prices for all items. We use this method, not because it shows the highest savings, but because we believe it is realistic, transparent and honest."},
-  {"question": "What is the \"Best Single Company\" option?", "answer": "The cheapest total price if you bought everything from just one company. We find the single company that has the most items on your list for the lowest price, giving you a clear benchmark for your savings."},
-  {"question": "How can I maximize my savings with SplitCart?", "answer": "Approve more substitutes and/or approve more stores. For example, consider adding stores near your work or on your way home not just close to home."}
+  {
+    question: 'How is baseline cost calculated?',
+    answer:
+      'By taking each item in your list, finding the average price across all available stores, and then summing up these average prices for all items. We use this method, not because it shows the highest savings, but because we believe it is realistic, transparent and honest.',
+  },
+  {
+    question: 'What is the "Best Single Company" option?',
+    answer:
+      'The cheapest total price if you bought everything from just one company. We find the single company that has the most items on your list for the lowest price, giving you a clear benchmark for your savings.',
+  },
+  {
+    question: 'How can I maximize my savings with SplitCart?',
+    answer:
+      'Approve more substitutes and/or approve more stores. For example, consider adding stores near your work or on your way home not just close to home.',
+  },
 ];
 
 const FinalCartPage = () => {
@@ -31,13 +43,13 @@ const FinalCartPage = () => {
 
   const handleEmail = async (exportData: ExportData, planName: string) => {
     if (!isAuthenticated) {
-      toast.error("Authentication Required", {
-        description: "Please log in to email your shopping list.",
-        action: { label: "Login", onClick: () => router.push("/login") },
+      toast.error('Authentication Required', {
+        description: 'Please log in to email your shopping list.',
+        action: { label: 'Login', onClick: () => router.push('/login') },
       });
       return;
     }
-    setExportAction({type: 'email', plan: planName});
+    setExportAction({ type: 'email', plan: planName });
     setError(null);
     try {
       await emailCurrentCart(exportData);
@@ -49,7 +61,7 @@ const FinalCartPage = () => {
   };
 
   const handleDownload = async (exportData: ExportData, planName: string) => {
-    setExportAction({type: 'download', plan: planName});
+    setExportAction({ type: 'download', plan: planName });
     setError(null);
     try {
       const blob = await downloadCurrentCart(exportData);
@@ -71,9 +83,16 @@ const FinalCartPage = () => {
 
   if (isLoading) return <LoadingSpinner />;
   if (error && !exportAction) return <div className="container mx-auto p-4">Error: {error}</div>;
-  if (!optimizationResult) return <div className="container mx-auto p-4">No optimization data available. Please go through the substitution process.</div>;
+  if (!optimizationResult)
+    return (
+      <div className="container mx-auto p-4">
+        No optimization data available. Please go through the substitution process.
+      </div>
+    );
 
-  const resultsToShow = viewWithSubstitutes ? optimizationResult : optimizationResult.no_subs_results;
+  const resultsToShow = viewWithSubstitutes
+    ? optimizationResult
+    : optimizationResult.no_subs_results;
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -98,10 +117,17 @@ const FinalCartPage = () => {
         )}
       </div>
 
-      {resultsToShow && currentCart
-        ? <ResultsDisplay cart={currentCart} data={resultsToShow} handleDownload={handleDownload} handleEmail={handleEmail} exportAction={exportAction} />
-        : <p className="text-gray-500">No results to display for this option.</p>
-      }
+      {resultsToShow && currentCart ? (
+        <ResultsDisplay
+          cart={currentCart}
+          data={resultsToShow}
+          handleDownload={handleDownload}
+          handleEmail={handleEmail}
+          exportAction={exportAction}
+        />
+      ) : (
+        <p className="text-gray-500">No results to display for this option.</p>
+      )}
 
       <div className="mt-16">
         <FaqSection title="Helpful Information" faqData={finalCartFaqs} />

@@ -7,13 +7,13 @@ const PriceComparisonChart = ({ comparison, categoryName }: PriceComparisonChart
     cheaper_at_a_percentage,
     cheaper_at_b_percentage,
     same_price_percentage,
-    overlap_count
+    overlap_count,
   } = comparison;
 
   const companyColorMap: { [key: string]: string } = {
-    'Woolworths': 'bg-green-500',
-    'Coles': 'bg-red-500',
-    'Aldi': 'bg-blue-500',
+    Woolworths: 'bg-green-500',
+    Coles: 'bg-red-500',
+    Aldi: 'bg-blue-500',
   };
 
   const titleVerb = categoryName.endsWith('s') ? 'Are' : 'Is';
@@ -24,19 +24,24 @@ const PriceComparisonChart = ({ comparison, categoryName }: PriceComparisonChart
   if (cheaper_at_a_percentage > cheaper_at_b_percentage) {
     summarySentence = (
       <>
-        <span className="font-bold bg-yellow-300 px-0.5 rounded">{cheaper_at_a_percentage}%</span> of {categoryName} tested {sentenceVerb} cheaper at <span className="font-bold">{company_a_name}</span> than {company_b_name}.
+        <span className="font-bold bg-yellow-300 px-0.5 rounded">{cheaper_at_a_percentage}%</span>{' '}
+        of {categoryName} tested {sentenceVerb} cheaper at{' '}
+        <span className="font-bold">{company_a_name}</span> than {company_b_name}.
       </>
     );
   } else if (cheaper_at_b_percentage > cheaper_at_a_percentage) {
     summarySentence = (
       <>
-        <span className="font-bold bg-yellow-300 px-0.5 rounded">{cheaper_at_b_percentage}%</span> of {categoryName} tested {sentenceVerb} cheaper at <span className="font-bold">{company_b_name}</span> than {company_a_name}.
+        <span className="font-bold bg-yellow-300 px-0.5 rounded">{cheaper_at_b_percentage}%</span>{' '}
+        of {categoryName} tested {sentenceVerb} cheaper at{' '}
+        <span className="font-bold">{company_b_name}</span> than {company_a_name}.
       </>
     );
   } else {
     summarySentence = (
       <>
-        Prices for <span className="font-bold">{categoryName}</span> were competitive between {company_a_name} and {company_b_name}.
+        Prices for <span className="font-bold">{categoryName}</span> were competitive between{' '}
+        {company_a_name} and {company_b_name}.
       </>
     );
   }
@@ -87,7 +92,7 @@ const PriceComparisonChart = ({ comparison, categoryName }: PriceComparisonChart
                 </span>
               )}
             </div>
-          ) : null
+          ) : null,
         )}
       </div>
 
@@ -95,7 +100,9 @@ const PriceComparisonChart = ({ comparison, categoryName }: PriceComparisonChart
       <div className="flex flex-wrap gap-x-4 gap-y-2">
         {segments.map((segment, index) => (
           <div key={index} className="flex items-center gap-1.5 text-sm">
-            <span className={`h-2.5 w-2.5 rounded-full flex-shrink-0 ${segment.color} border border-gray-200`} />
+            <span
+              className={`h-2.5 w-2.5 rounded-full flex-shrink-0 ${segment.color} border border-gray-200`}
+            />
             <span className="text-gray-500">{segment.label}</span>
             <span className="font-bold text-gray-900">{segment.percentage}%</span>
           </div>

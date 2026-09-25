@@ -1,8 +1,8 @@
-import type { MetadataRoute } from "next";
+import type { MetadataRoute } from 'next';
 
-import { CATEGORY_SLUGS } from "@/data/categories";
-import { CATEGORY_PAGE_UPDATED, STATIC_PAGES } from "@/lib/pages";
-import { absoluteUrl } from "@/lib/seo";
+import { CATEGORY_SLUGS } from '@/data/categories';
+import { CATEGORY_PAGE_UPDATED, STATIC_PAGES } from '@/lib/pages';
+import { absoluteUrl } from '@/lib/seo';
 
 /**
  * Every registry route, plus the eleven category pillar pages.
@@ -34,12 +34,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   );
 
-  const categoryPages = CATEGORY_SLUGS.map(
-    (slug): MetadataRoute.Sitemap[number] => ({
-      url: absoluteUrl(`/categories/${slug}`),
-      lastModified: asDate(CATEGORY_PAGE_UPDATED[slug]),
-    }),
-  );
+  const categoryPages = CATEGORY_SLUGS.map((slug): MetadataRoute.Sitemap[number] => ({
+    url: absoluteUrl(`/categories/${slug}`),
+    lastModified: asDate(CATEGORY_PAGE_UPDATED[slug]),
+  }));
 
   return [...staticPages, ...categoryPages];
 }

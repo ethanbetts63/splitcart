@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
 import type { SyntheticEvent } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { Badge } from "./ui/badge";
+import { Badge } from './ui/badge';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
 import { useCart } from '../context/CartContext';
 import type { CartSubTileProps } from '../types/CartSubTileProps';
@@ -51,12 +51,18 @@ const CartSubTile = ({ cartSubstitution, cartItemId }: CartSubTileProps) => {
       <div className="flex-grow grid grid-cols-3 items-center">
         <p className="font-semibold line-clamp-1 col-span-1">{product.name}</p>
         <p className="text-sm text-muted-foreground col-span-1">{product.brand_name}</p>
-        {product.size && <Badge variant="outline" className="w-fit col-span-1">{product.size}</Badge>}
+        {product.size && (
+          <Badge variant="outline" className="w-fit col-span-1">
+            {product.size}
+          </Badge>
+        )}
       </div>
 
       {/* Right Section: Quantity Controls */}
       <div className="flex-shrink-0 flex items-center gap-2">
-        <Button size="icon" className="h-6 w-6" onClick={() => handleQuantityChange(quantity - 1)}>-</Button>
+        <Button size="icon" className="h-6 w-6" onClick={() => handleQuantityChange(quantity - 1)}>
+          -
+        </Button>
         <Input
           type="number"
           readOnly
@@ -64,7 +70,9 @@ const CartSubTile = ({ cartSubstitution, cartItemId }: CartSubTileProps) => {
           value={quantity}
           min="0"
         />
-        <Button size="icon" className="h-6 w-6" onClick={() => handleQuantityChange(quantity + 1)}>+</Button>
+        <Button size="icon" className="h-6 w-6" onClick={() => handleQuantityChange(quantity + 1)}>
+          +
+        </Button>
       </div>
     </div>
   );

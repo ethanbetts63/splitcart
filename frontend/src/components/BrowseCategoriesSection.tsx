@@ -19,12 +19,7 @@ export const BrowseCategoriesSection = () => {
                 : 'bg-white border-gray-200 hover:border-yellow-300'
             }`}
           >
-            <img
-              src={assetSrc(cat.icon)}
-              alt=""
-              aria-hidden="true"
-              className="w-14 h-14 mb-3"
-            />
+            <img src={assetSrc(cat.icon)} alt="" aria-hidden="true" className="w-14 h-14 mb-3" />
             <h3 className="font-bold text-gray-900 text-sm md:text-base leading-tight">
               {cat.title}
             </h3>

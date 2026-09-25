@@ -1,8 +1,8 @@
-import ContactPage from "@/page_components/ContactPage";
-import { buildStaticPageGraph, metadataFor } from "@/lib/seo";
-import StructuredDataScript from "@/lib/schema";
+import ContactPage from '@/page_components/ContactPage';
+import { buildStaticPageGraph, metadataFor } from '@/lib/seo';
+import StructuredDataScript from '@/lib/schema';
 
-export const metadata = metadataFor("/contact");
+export const metadata = metadataFor('/contact');
 
 /**
  * `ContactPage` is a `WebPage` subtype, so it replaces the generic `WebPage`
@@ -17,9 +17,7 @@ export const metadata = metadataFor("/contact");
 export default function Page() {
   return (
     <>
-      <StructuredDataScript
-        structuredData={buildStaticPageGraph("/contact", [], "ContactPage")}
-      />
+      <StructuredDataScript structuredData={buildStaticPageGraph('/contact', [], 'ContactPage')} />
       <ContactPage />
     </>
   );

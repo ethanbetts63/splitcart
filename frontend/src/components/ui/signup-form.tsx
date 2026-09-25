@@ -1,87 +1,74 @@
-"use client";
+'use client';
 
-import { Button } from "./button"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "./card"
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from "./field"
-import { Input } from "./input"
-import { useState } from "react"
-import { useAuth } from "../../context/AuthContext"
-import { Spinner } from "./spinner"
-import { getApiUrl } from "@/lib/apiUrl"
+import { Button } from './button';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './card';
+import { Field, FieldDescription, FieldGroup, FieldLabel } from './field';
+import { Input } from './input';
+import { useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
+import { Spinner } from './spinner';
+import { getApiUrl } from '@/lib/apiUrl';
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
-  const [fullName, setFullName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [errors, setErrors] = useState<Record<string, string[]>>({})
-  const [isLoading, setIsLoading] = useState(false)
-  const { login } = useAuth()
-  const router = useRouter()
-
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setErrors({})
-    setIsLoading(true)
+    event.preventDefault();
+    setErrors({});
+    setIsLoading(true);
 
     if (password !== confirmPassword) {
-      setErrors({ password2: ["Passwords do not match!"] })
-      setIsLoading(false)
-      return
+      setErrors({ password2: ['Passwords do not match!'] });
+      setIsLoading(false);
+      return;
     }
 
     try {
-      const response = await fetch(getApiUrl("/api/auth/registration/"), {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            full_name: fullName,
-            email,
-            password1: password,
-            password2: confirmPassword,
-          }),
-        }
-      )
+      const response = await fetch(getApiUrl('/api/auth/registration/'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          full_name: fullName,
+          email,
+          password1: password,
+          password2: confirmPassword,
+        }),
+      });
 
       if (response.ok) {
-        const data = await response.json()
-        login(data.key)
-        router.push("/")
+        const data = await response.json();
+        login(data.key);
+        router.push('/');
       } else {
-        const errorData = await response.json()
-        setErrors(errorData)
-        console.error("Registration failed:", errorData)
+        const errorData = await response.json();
+        setErrors(errorData);
+        console.error('Registration failed:', errorData);
       }
     } catch (error) {
-      console.error("An error occurred during registration:", error)
-      setErrors({ non_field_errors: ["An unexpected error occurred."] })
+      console.error('An error occurred during registration:', error);
+      setErrors({ non_field_errors: ['An unexpected error occurred.'] });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <Card {...props}>
       <CardHeader>
         <CardTitle>Create an account</CardTitle>
         <CardDescription>
-          Enter your information below to create your account. We take 
+          Enter your information below to create your account. We take
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -105,9 +92,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 onChange={(e) => setFullName(e.target.value)}
               />
               {errors.full_name && (
-                <FieldDescription className="text-red-500">
-                  {errors.full_name[0]}
-                </FieldDescription>
+                <FieldDescription className="text-red-500">{errors.full_name[0]}</FieldDescription>
               )}
             </Field>
             <Field>
@@ -121,13 +106,10 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 onChange={(e) => setEmail(e.target.value)}
               />
               {errors.email ? (
-                <FieldDescription className="text-red-500">
-                  {errors.email[0]}
-                </FieldDescription>
+                <FieldDescription className="text-red-500">{errors.email[0]}</FieldDescription>
               ) : (
                 <FieldDescription>
-                  We&apos;ll use this to contact you. We will not share your
-                  email with anyone else.
+                  We&apos;ll use this to contact you. We will not share your email with anyone else.
                 </FieldDescription>
               )}
             </Field>
@@ -142,18 +124,14 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               />
               {errors.password1 ? (
                 <FieldDescription className="text-red-500">
-                  {errors.password1.join(" ")}
+                  {errors.password1.join(' ')}
                 </FieldDescription>
               ) : (
-                <FieldDescription>
-                  Must be at least 8 characters long.
-                </FieldDescription>
+                <FieldDescription>Must be at least 8 characters long.</FieldDescription>
               )}
             </Field>
             <Field>
-              <FieldLabel htmlFor="confirm-password">
-                Confirm Password
-              </FieldLabel>
+              <FieldLabel htmlFor="confirm-password">Confirm Password</FieldLabel>
               <Input
                 id="confirm-password"
                 type="password"
@@ -163,17 +141,17 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               />
               {errors.password2 && (
                 <FieldDescription className="text-red-500">
-                  {errors.password2.join(" ")}
+                  {errors.password2.join(' ')}
                 </FieldDescription>
               )}
             </Field>
             <FieldGroup>
               <Field>
                 <Button type="submit" disabled={isLoading}>
-                  {isLoading ? <Spinner /> : "Create Account"}
+                  {isLoading ? <Spinner /> : 'Create Account'}
                 </Button>
                 <FieldDescription className="px-6 text-center">
-                  Already have an account?{" "}
+                  Already have an account?{' '}
                   <Link href="/login" className="underline">
                     Sign in
                   </Link>
@@ -184,5 +162,5 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
         </form>
       </CardContent>
     </Card>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useRouter } from 'next/navigation';
 import { Button } from './ui/button';
@@ -18,7 +18,7 @@ const NextButton = ({ onAfterNavigate, className }: NextButtonProps) => {
   };
 
   return (
-    <Button onClick={handleNextClick} className={cn("bg-green-500 hover:bg-green-600", className)}>
+    <Button onClick={handleNextClick} className={cn('bg-green-500 hover:bg-green-600', className)}>
       Next
     </Button>
   );

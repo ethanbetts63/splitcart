@@ -1,10 +1,16 @@
-"use client";
+'use client';
 
 import { Badge } from './ui/badge';
 import type { PriceDisplayProps } from '../types/PriceDisplayProps';
 import { companyLogos } from '@/lib/companies';
 
-const CompanyLogo = ({ companyName, priceDisplay }: { companyName: string; priceDisplay: string }) => {
+const CompanyLogo = ({
+  companyName,
+  priceDisplay,
+}: {
+  companyName: string;
+  priceDisplay: string;
+}) => {
   const logoSrc = companyLogos[companyName];
 
   if (!logoSrc) {
@@ -39,16 +45,25 @@ const PriceDisplay = ({ prices, displayMode = 'compact' }: PriceDisplayProps) =>
           >
             <div className="flex justify-center items-center gap-4">
               <div className="flex items-center gap-3">
-                <CompanyLogo companyName={priceInfo.company} priceDisplay={priceInfo.price_display} />
-                <span className={`text-lg ${priceInfo.is_lowest ? 'font-bold text-gray-800' : 'text-gray-600'}`}>
+                <CompanyLogo
+                  companyName={priceInfo.company}
+                  priceDisplay={priceInfo.price_display}
+                />
+                <span
+                  className={`text-lg ${priceInfo.is_lowest ? 'font-bold text-gray-800' : 'text-gray-600'}`}
+                >
                   {priceInfo.company}
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 {priceInfo.is_lowest && (
-                  <Badge variant="secondary" className="bg-green-100 text-green-800">Lowest</Badge>
+                  <Badge variant="secondary" className="bg-green-100 text-green-800">
+                    Lowest
+                  </Badge>
                 )}
-                <span className={`text-xl font-semibold ${priceInfo.is_lowest ? 'text-green-700' : 'text-gray-800'}`}>
+                <span
+                  className={`text-xl font-semibold ${priceInfo.is_lowest ? 'text-green-700' : 'text-gray-800'}`}
+                >
                   {priceInfo.price_display}
                 </span>
               </div>
@@ -68,9 +83,7 @@ const PriceDisplay = ({ prices, displayMode = 'compact' }: PriceDisplayProps) =>
   return (
     <div className="flex items-center justify-between gap-2">
       <p className="font-bold text-gray-900 leading-none">
-        {isRange && (
-          <span className="text-xs font-normal text-gray-400 mr-0.5">from </span>
-        )}
+        {isRange && <span className="text-xs font-normal text-gray-400 mr-0.5">from </span>}
         <span className="text-base">${lowestPriceStr}</span>
       </p>
       <div className="flex items-center gap-1">

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useCart } from '../context/CartContext';
 import type { AddToCartButtonProps } from '../types/AddToCartButtonProps';
@@ -7,7 +7,7 @@ const AddToCartButton = ({ product }: AddToCartButtonProps) => {
   const { currentCart, addItem, updateItemQuantity } = useCart();
 
   const items = currentCart?.items || [];
-  const existingItem = items.find(item => item.product.id === product.id);
+  const existingItem = items.find((item) => item.product.id === product.id);
 
   const handleQuantityChange = (newQuantity: number) => {
     if (existingItem) {

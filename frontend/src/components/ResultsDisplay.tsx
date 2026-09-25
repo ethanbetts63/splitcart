@@ -1,6 +1,6 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { Download, Mail } from "lucide-react";
-import { Spinner } from "./ui/spinner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Download, Mail } from 'lucide-react';
+import { Spinner } from './ui/spinner';
 import PlanDetails from './PlanDetails';
 import * as types from '../types';
 
@@ -11,15 +11,15 @@ import * as types from '../types';
  * `exportAction` therefore arrives as a prop rather than a closure.
  */
 const ExportButtons = ({
-onEmail,
-onDownload,
-planKey,
-exportAction,
+  onEmail,
+  onDownload,
+  planKey,
+  exportAction,
 }: {
-onEmail: () => void;
-onDownload: () => void;
-planKey: string;
-exportAction: types.ExportAction | null;
+  onEmail: () => void;
+  onDownload: () => void;
+  planKey: string;
+  exportAction: types.ExportAction | null;
 }) => (
   <div className="flex items-center gap-2">
     <button
@@ -27,10 +27,11 @@ exportAction: types.ExportAction | null;
       disabled={exportAction?.type === 'email' && exportAction?.plan === planKey}
       className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold border border-gray-300 bg-white rounded-lg hover:border-gray-900 hover:text-gray-900 transition-colors duration-150 disabled:opacity-50"
     >
-      {exportAction?.type === 'email' && exportAction?.plan === planKey
-        ? <Spinner className="h-4 w-4 animate-spin" />
-        : <Mail className="h-4 w-4" />
-      }
+      {exportAction?.type === 'email' && exportAction?.plan === planKey ? (
+        <Spinner className="h-4 w-4 animate-spin" />
+      ) : (
+        <Mail className="h-4 w-4" />
+      )}
       Email
     </button>
     <button
@@ -38,24 +39,37 @@ exportAction: types.ExportAction | null;
       disabled={exportAction?.type === 'download' && exportAction?.plan === planKey}
       className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold border border-gray-300 bg-white rounded-lg hover:border-gray-900 hover:text-gray-900 transition-colors duration-150 disabled:opacity-50"
     >
-      {exportAction?.type === 'download' && exportAction?.plan === planKey
-        ? <Spinner className="h-4 w-4 animate-spin" />
-        : <Download className="h-4 w-4" />
-      }
+      {exportAction?.type === 'download' && exportAction?.plan === planKey ? (
+        <Spinner className="h-4 w-4 animate-spin" />
+      ) : (
+        <Download className="h-4 w-4" />
+      )}
       Download
     </button>
   </div>
 );
 
-const ResultsDisplay = ({ cart, data, handleDownload, handleEmail, exportAction }: {
+const ResultsDisplay = ({
+  cart,
+  data,
+  handleDownload,
+  handleEmail,
+  exportAction,
+}: {
   cart: types.Cart;
   data: types.OptimizationDataSet;
   handleDownload: (exportData: types.ExportData, planName: string) => Promise<void>;
   handleEmail: (exportData: types.ExportData, planName: string) => Promise<void>;
   exportAction: types.ExportAction | null;
 }) => {
-  if (!data || (!data.best_single_company && (!data.optimization_results || data.optimization_results.length === 0))) {
-    return <p className="mt-4 text-gray-500">No optimization results available for this selection.</p>;
+  if (
+    !data ||
+    (!data.best_single_company &&
+      (!data.optimization_results || data.optimization_results.length === 0))
+  ) {
+    return (
+      <p className="mt-4 text-gray-500">No optimization results available for this selection.</p>
+    );
   }
 
   let singleCompanyBaselineCost = 0;
@@ -65,30 +79,38 @@ const ResultsDisplay = ({ cart, data, handleDownload, handleEmail, exportAction 
     const singleCompanyProducts = new Set<string>();
     const plan = data.best_single_company.shopping_plan;
     for (const companyName in plan) {
-      plan[companyName].items.forEach(item => {
-        singleCompanyProducts.add(`${item.product_name}|${item.brand || 'null'}|${item.size || ''}`);
+      plan[companyName].items.forEach((item) => {
+        singleCompanyProducts.add(
+          `${item.product_name}|${item.brand || 'null'}|${item.size || ''}`,
+        );
       });
     }
     singleCompanyBaselineCost = cart.items.reduce((total, cartItem) => {
       const id = `${cartItem.product.name}|${cartItem.product.brand_name || 'null'}|${cartItem.product.size || ''}`;
       if (singleCompanyProducts.has(id) && cartItem.baseline_price) {
-        return total + (cartItem.baseline_price * cartItem.quantity);
+        return total + cartItem.baseline_price * cartItem.quantity;
       }
       return total;
     }, 0);
-    singleCompanySavings = singleCompanyBaselineCost > 0
-      ? singleCompanyBaselineCost - data.best_single_company.optimized_cost
-      : 0;
+    singleCompanySavings =
+      singleCompanyBaselineCost > 0
+        ? singleCompanyBaselineCost - data.best_single_company.optimized_cost
+        : 0;
   }
 
   const defaultTab = data.best_single_company
-    ? "tab-1"
-    : (data.optimization_results.length > 0 ? `tab-${data.optimization_results[0].max_companies}` : "");
+    ? 'tab-1'
+    : data.optimization_results.length > 0
+      ? `tab-${data.optimization_results[0].max_companies}`
+      : '';
 
-  const highestSavingResult = data.optimization_results.reduce((max, current) => {
-    if (!max || current.savings > max.savings) return current;
-    return max;
-  }, null as types.OptimizationResult | null);
+  const highestSavingResult = data.optimization_results.reduce(
+    (max, current) => {
+      if (!max || current.savings > max.savings) return current;
+      return max;
+    },
+    null as types.OptimizationResult | null,
+  );
 
   return (
     <div className="space-y-6">
@@ -106,13 +128,16 @@ const ResultsDisplay = ({ cart, data, handleDownload, handleEmail, exportAction 
             >
               <span>Best Single Company</span>
               <span className="text-xs font-normal opacity-70">
-                {data.best_single_company.items_found_count}/{data.best_single_company.total_items_in_cart} items
+                {data.best_single_company.items_found_count}/
+                {data.best_single_company.total_items_in_cart} items
               </span>
             </TabsTrigger>
           )}
-          {data.optimization_results.map(result => {
-            const percentage = data.baseline_cost > 0 ? Math.round((result.savings / data.baseline_cost) * 100) : 0;
-            const isHighestSaving = highestSavingResult && result.max_companies === highestSavingResult.max_companies;
+          {data.optimization_results.map((result) => {
+            const percentage =
+              data.baseline_cost > 0 ? Math.round((result.savings / data.baseline_cost) * 100) : 0;
+            const isHighestSaving =
+              highestSavingResult && result.max_companies === highestSavingResult.max_companies;
             return (
               <TabsTrigger
                 key={result.max_companies}
@@ -124,7 +149,9 @@ const ResultsDisplay = ({ cart, data, handleDownload, handleEmail, exportAction 
                 }`}
               >
                 <span>{result.max_companies} Companies</span>
-                <span className="text-xs font-bold">{percentage > 0 ? `Save ${percentage}%` : '-'}</span>
+                <span className="text-xs font-bold">
+                  {percentage > 0 ? `Save ${percentage}%` : '-'}
+                </span>
               </TabsTrigger>
             );
           })}
@@ -136,32 +163,51 @@ const ResultsDisplay = ({ cart, data, handleDownload, handleEmail, exportAction 
               <div className="p-5 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-8">
                   <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">Total Cost</p>
-                    <p className="text-2xl font-bold text-gray-900">${data.best_single_company.optimized_cost.toFixed(2)}</p>
+                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">
+                      Total Cost
+                    </p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      ${data.best_single_company.optimized_cost.toFixed(2)}
+                    </p>
                   </div>
                   <div>
                     <p className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">You Save</p>
-                    <p className="text-2xl font-bold text-green-600">${singleCompanySavings.toFixed(2)}</p>
+                    <p className="text-2xl font-bold text-green-600">
+                      ${singleCompanySavings.toFixed(2)}
+                    </p>
                   </div>
                 </div>
                 <div className="flex flex-col gap-1">
                   <ExportButtons
                     exportAction={exportAction}
                     planKey="best-single-company"
-                    onEmail={() => handleEmail({
-                      shopping_plan: data.best_single_company!.shopping_plan,
-                      baseline_cost: singleCompanyBaselineCost,
-                      optimized_cost: data.best_single_company!.optimized_cost,
-                      savings: singleCompanySavings,
-                    }, 'best-single-company')}
-                    onDownload={() => handleDownload({
-                      shopping_plan: data.best_single_company!.shopping_plan,
-                      baseline_cost: singleCompanyBaselineCost,
-                      optimized_cost: data.best_single_company!.optimized_cost,
-                      savings: singleCompanySavings,
-                    }, 'best-single-company')}
+                    onEmail={() =>
+                      handleEmail(
+                        {
+                          shopping_plan: data.best_single_company!.shopping_plan,
+                          baseline_cost: singleCompanyBaselineCost,
+                          optimized_cost: data.best_single_company!.optimized_cost,
+                          savings: singleCompanySavings,
+                        },
+                        'best-single-company',
+                      )
+                    }
+                    onDownload={() =>
+                      handleDownload(
+                        {
+                          shopping_plan: data.best_single_company!.shopping_plan,
+                          baseline_cost: singleCompanyBaselineCost,
+                          optimized_cost: data.best_single_company!.optimized_cost,
+                          savings: singleCompanySavings,
+                        },
+                        'best-single-company',
+                      )
+                    }
                   />
-                  <p className="text-xs text-gray-400">Found {data.best_single_company.items_found_count} of {data.best_single_company.total_items_in_cart} items</p>
+                  <p className="text-xs text-gray-400">
+                    Found {data.best_single_company.items_found_count} of{' '}
+                    {data.best_single_company.total_items_in_cart} items
+                  </p>
                 </div>
               </div>
               <PlanDetails plan={data.best_single_company.shopping_plan} />
@@ -169,35 +215,55 @@ const ResultsDisplay = ({ cart, data, handleDownload, handleEmail, exportAction 
           </TabsContent>
         )}
 
-        {data.optimization_results.map(result => (
-          <TabsContent key={result.max_companies} value={`tab-${result.max_companies}`} className="mt-4">
+        {data.optimization_results.map((result) => (
+          <TabsContent
+            key={result.max_companies}
+            value={`tab-${result.max_companies}`}
+            className="mt-4"
+          >
             <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
               <div className="p-5 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-8">
                   <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">Total Cost</p>
-                    <p className="text-2xl font-bold text-gray-900">${result.optimized_cost.toFixed(2)}</p>
+                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">
+                      Total Cost
+                    </p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      ${result.optimized_cost.toFixed(2)}
+                    </p>
                   </div>
                   <div>
                     <p className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">You Save</p>
-                    <p className="text-2xl font-bold text-green-600">${result.savings.toFixed(2)}</p>
+                    <p className="text-2xl font-bold text-green-600">
+                      ${result.savings.toFixed(2)}
+                    </p>
                   </div>
                 </div>
                 <ExportButtons
                   exportAction={exportAction}
                   planKey={`companies-${result.max_companies}`}
-                  onEmail={() => handleEmail({
-                    shopping_plan: result.shopping_plan,
-                    baseline_cost: data.baseline_cost,
-                    optimized_cost: result.optimized_cost,
-                    savings: result.savings,
-                  }, `companies-${result.max_companies}`)}
-                  onDownload={() => handleDownload({
-                    shopping_plan: result.shopping_plan,
-                    baseline_cost: data.baseline_cost,
-                    optimized_cost: result.optimized_cost,
-                    savings: result.savings,
-                  }, `companies-${result.max_companies}`)}
+                  onEmail={() =>
+                    handleEmail(
+                      {
+                        shopping_plan: result.shopping_plan,
+                        baseline_cost: data.baseline_cost,
+                        optimized_cost: result.optimized_cost,
+                        savings: result.savings,
+                      },
+                      `companies-${result.max_companies}`,
+                    )
+                  }
+                  onDownload={() =>
+                    handleDownload(
+                      {
+                        shopping_plan: result.shopping_plan,
+                        baseline_cost: data.baseline_cost,
+                        optimized_cost: result.optimized_cost,
+                        savings: result.savings,
+                      },
+                      `companies-${result.max_companies}`,
+                    )
+                  }
                 />
               </div>
               <PlanDetails plan={result.shopping_plan} />

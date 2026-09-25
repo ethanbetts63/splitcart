@@ -23,11 +23,7 @@ export const DialogProvider = ({ children }: { children: ReactNode }) => {
     closeDialog,
   };
 
-  return (
-    <DialogContext.Provider value={contextValue}>
-      {children}
-    </DialogContext.Provider>
-  );
+  return <DialogContext.Provider value={contextValue}>{children}</DialogContext.Provider>;
 };
 
 export const useDialog = () => {

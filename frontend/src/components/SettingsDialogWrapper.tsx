@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useDialog } from "@/context/DialogContext";
-import { SettingsDialog } from "@/components/settings-dialog";
+import { useDialog } from '@/context/DialogContext';
+import { SettingsDialog } from '@/components/settings-dialog';
 
 export function SettingsDialogWrapper() {
   const { isDialogOpen, dialogPage, closeDialog } = useDialog();
@@ -9,7 +9,9 @@ export function SettingsDialogWrapper() {
   return (
     <SettingsDialog
       open={isDialogOpen}
-      onOpenChange={(isOpen) => { if (!isOpen) closeDialog(); }}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) closeDialog();
+      }}
       defaultPage={dialogPage}
     />
   );
