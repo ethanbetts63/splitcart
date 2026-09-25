@@ -5,15 +5,13 @@
 ownership rule in
 [`freetheplatform/_docs/README.md`](../../../freetheplatform/_docs/README.md).
 
-DH-1 through DH-7 and DH-9 landed on 2026-09-25. What is left is one row that
-belongs to another plan, and a boundary decision that is a record rather than a
-task.
+**Every row landed on 2026-09-25.** DH-1 through DH-7 and DH-9 here; DH-8, the
+three `deprecated_*` documents, in [`dead-code.md`](dead-code.md) DC-10, which
+owned it.
 
-## Work
-
-| #    | Work                                                                                                                                                | Acceptance |
-| ---- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| DH-8 | Delete the three `deprecated_*` documents. Owned by [`dead-code.md`](dead-code.md) DC-10; listed here so the docs picture is complete in one place. | Gone.      |
+What is left in this file is not work. It is a boundary decision other plans
+lean on, and four findings the rows did not carry. Delete it once
+[`README.md`](README.md) and [`testing.md`](testing.md) stop linking here.
 
 ## What the survey did not anticipate
 
