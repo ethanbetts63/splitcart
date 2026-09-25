@@ -53,8 +53,15 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 
+# No whole-site cache middleware. UpdateCacheMiddleware/FetchFromCacheMiddleware
+# key a cached 200 on the URL plus the response's Vary headers -- and token
+# authentication never touches the session, so no Vary: Cookie is ever added and
+# every caller computes the same key. That served one shopper's cart, and another
+# account's email address, to everyone who asked. The public read-only views that
+# actually benefit from caching carry their own @cache_page, which keys the same
+# way but is applied deliberately, to a view whose answer does not depend on who
+# is asking. Per-caller endpoints additionally carry never_cache.
 MIDDLEWARE = [
-    "django.middleware.cache.UpdateCacheMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.gzip.GZipMiddleware",
@@ -66,7 +73,6 @@ MIDDLEWARE = [
     "config.middleware.AnonymousUserMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django.middleware.cache.FetchFromCacheMiddleware",
 ]
 
 # Development-only tooling. Both were previously installed unconditionally while
@@ -76,12 +82,9 @@ MIDDLEWARE = [
 # here makes the production dependency set and the production URLconf agree.
 if DEBUG:
     INSTALLED_APPS += ["django_extensions", "debug_toolbar"]
-    # The toolbar wraps the response, so it goes after everything that writes to
-    # one and before the cache middleware that would store the wrapped copy.
-    MIDDLEWARE.insert(
-        MIDDLEWARE.index("django.middleware.cache.FetchFromCacheMiddleware"),
-        "debug_toolbar.middleware.DebugToolbarMiddleware",
-    )
+    # The toolbar wraps the response, so it goes last, after everything that
+    # writes to one.
+    MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
 
 INTERNAL_IPS = ['127.0.0.1']
 if API_SERVER_HOSTNAME:
@@ -277,6 +280,8 @@ REST_AUTH = {
 
 # Caching configuration
 CACHES = {
+    # Backs the per-view @cache_page decorators on the public read-only
+    # endpoints. Nothing per-caller is stored here.
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'unique-snowflake', # A unique string for this cache instance
@@ -286,7 +291,7 @@ CACHES = {
         }
     },
     # Separate cache for throttle counters. The default cache above backs the
-    # whole-site page cache and caps out at 1000 entries, so without this a
+    # per-view page caches and caps out at 1000 entries, so without this a
     # burst of page traffic would evict an attacker's attempt count.
     'throttling': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',

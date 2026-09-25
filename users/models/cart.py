@@ -20,6 +20,12 @@ class Cart(models.Model):
     class Meta:
         verbose_name = "Cart"
         verbose_name_plural = "Carts"
+        # Most recently touched first, which is the order a cart list is read in.
+        # `id` is the tiebreaker rather than decoration: without a total order
+        # the paginator can repeat a row on page 2 or skip one entirely, and
+        # `updated_at` alone is not unique -- two carts saved in the same tick
+        # sort arbitrarily, and differently on each query.
+        ordering = ['-updated_at', 'id']
         constraints = [
             models.UniqueConstraint(fields=['user', 'name'], name='unique_user_cart_name'),
             models.UniqueConstraint(fields=['user'], condition=models.Q(is_active=True, user__isnull=False), name='unique_active_user_cart'),

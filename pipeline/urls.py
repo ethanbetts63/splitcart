@@ -4,7 +4,6 @@ from .views.category_links_file_upload_view import CategoryLinksFileUploadView
 from .views.pillar_page_view import PillarPageView
 from .views.product_translation_file_view import ProductTranslationFileView
 from .views.brand_translation_file_view import BrandTranslationFileView
-from .views.import_semantic_data_view import ImportSemanticDataView
 
 urlpatterns = [
     path('upload/products/', ProductFileUploadView.as_view(), name='product-file-upload'),
@@ -12,5 +11,4 @@ urlpatterns = [
     path('pillar-pages/<slug:slug>/', PillarPageView.as_view(), name='pillar-page-detail'),
     path('files/product_translations/', ProductTranslationFileView.as_view(), name='product-translation-file'),
     path('files/brand_translations/', BrandTranslationFileView.as_view(), name='brand-translation-file'),
-    path('import/semantic_data/', ImportSemanticDataView.as_view(), name='import-semantic-data'),
 ]
