@@ -9,14 +9,15 @@ import { stylelintBaseConfig } from '../../freetheplatform/frontend/lint/styleli
  * about what a token is for (LINT-10). What a site adds locally is its own
  * `ignoreFiles` and any rule that guards its own foundation.
  *
- * splitcart adds neither yet, and that is the honest state rather than an
- * oversight. src/index.css is still unmodified `shadcn init` output: a
- * palette with no semantic layer on top of it, so there is no vocabulary for
- * a local rule to protect. `npm run lint:css` is red today for exactly that
- * reason, and the findings are the work in
- * _docs/convergence/tokens.md -- they belong to that plan, not to this
- * config. Weakening a rule here to make the count zero would hide the thing
- * the plan exists to fix.
+ * splitcart adds neither, and that is now a settled state rather than a gap.
+ * The 125 findings this config reported when it arrived were all in
+ * src/index.css, then unmodified `shadcn init` output with no semantic layer
+ * for a local rule to protect. The token conversion in
+ * _docs/convergence/tokens.md moved that vocabulary into src/styles/tokens.css
+ * and `npm run lint:css` has been green since; it is part of `npm run check`.
+ *
+ * If a finding count ever comes back, the fix is in the stylesheet. Weakening
+ * a rule here to make the count zero would hide the thing the rule is for.
  */
 export default {
   ...stylelintBaseConfig,
