@@ -38,8 +38,12 @@ instead, set `DJANGO_API_URL` and `NEXT_PUBLIC_DJANGO_API_URL` in
 | `npm run build`     | Production build                           |
 | `npm run start`     | Serve a production build                   |
 | `npm run check`     | Static checks — run this before committing |
+| `npm run format`    | Prettier, writing                          |
 | `npm run lint`      | ESLint over `src`                          |
 | `npm run typecheck` | `tsc --noEmit`                             |
+
+`check` is the umbrella: formatting, lint, typecheck and the structural
+checks. The individual scripts are there for iterating.
 
 ## Structure
 
