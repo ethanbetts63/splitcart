@@ -106,7 +106,21 @@ stop a password guess is account lockout, which does not exist yet — see
 ## Tests
 
 `users/tests/` follows the layout in
-[`_docs/TESTING.md`](../_docs/TESTING.md): `factories/`, `serializer_tests/`
-and `view_tests/`, with an `auth_client` fixture in `conftest.py` that
-authenticates the way the live frontend does. Coverage today is the validation
-and throttling regressions described above, not the whole app.
+[`_docs/TESTING.md`](../_docs/TESTING.md): `factories/`, `model_tests/`,
+`serializer_tests/`, `util_tests/` and `view_tests/`, with `auth_client` and
+`anonymous_client` fixtures in `conftest.py` that authenticate the way the live
+frontend and a signed-out browser do.
+
+Two things in here are worth knowing before changing a test:
+
+- **Every cart route is asked who may reach it.** One account against another's
+  rows, a signed-out browser against an account's, and two signed-out browsers
+  against each other's. The queryset is the only thing keeping them apart, and
+  `CartViewSet` carries `never_cache` because the whole-site cache middleware in
+  `config/settings.py` was handing one shopper's cart to the next caller.
+- **The anonymous-cart merge is pinned twice.** `util_tests/test_session_merger.py`
+  covers the behaviour — fill a cart signed out, log in, keep the cart — and
+  `serializer_tests/test_custom_login_serializer.py` covers only the wiring to
+  `CustomLoginSerializer`. That split is deliberate:
+  [`_docs/convergence/auth-migration.md`](../_docs/convergence/auth-migration.md)
+  deletes that class, and whatever replaces it has to keep the behaviour.
