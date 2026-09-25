@@ -12,7 +12,7 @@ import {
   buildWebSiteSchema,
   companiesIn,
 } from '@/lib/seo';
-import StructuredDataScript from '@/lib/schema';
+import StructuredDataScript from '@/components/seo/StructuredDataScript';
 import { CATEGORY_PAGE_UPDATED } from '@/lib/pages';
 import type { PillarPage as PillarPageType, Product } from '@/types';
 import { CATEGORY_SLUGS, type CategorySlug } from '@/data/categories';

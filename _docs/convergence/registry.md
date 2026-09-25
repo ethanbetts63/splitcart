@@ -27,9 +27,10 @@ Two things this made true that are worth knowing:
 - `lib/utils.ts` had to be split first. The registry's version is `cn()` and
   nothing else. `getCsrfToken`/`getAuthHeaders` are now `lib/authHeaders.ts`
   and `debounce` is `lib/debounce.ts`.
-- `lib/schema.tsx` is a one-line forward to the registry path, because the
-  five route files that import `@/lib/schema` are outside this plan's reach.
-  There is still exactly one emitter.
+- `lib/schema.tsx` is gone. It was a one-line forward kept alive only by the
+  five route files that imported `@/lib/schema`; those now import
+  `@/components/seo/StructuredDataScript` directly (2026-09-25). There is still
+  exactly one emitter, and now only one path to it.
 
 ## Work still open
 
@@ -37,7 +38,6 @@ Two things this made true that are worth knowing:
 | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
 | RG-7  | Adopt the eleven shadcn primitives. **This is a reconciliation, not a byte-copy** — all ten that exist locally have diverged from the registry's, 170 changed lines in total (measured 2026-09-25): `button` 56, `select` 26, `input` 19, `badge` 18, `checkbox` 14, `table` 9, and `alert`, `card`, `label`, `spinner` 7 each. Every hunk needs a verdict: the registry's version wins, or splitcart's is the improvement and goes upstream instead. Needs the directory move below, plus three tokens the registry's copies name and splitcart does not declare: `--color-link` and `--color-link-hover` (`button.tsx`'s `link` variant) and `--shadow-s` (`select.tsx`'s popover); all three confirmed absent from `tokens.css`. `textarea.tsx` is the eleventh and would arrive with no importer, so it needs one or its own `SCOPED` row. | the move; three tokens in `src/styles/tokens.css`           |
 | RG-9  | Move the shadcn family from `src/components/ui/` to `src/components/common/`, the registry's path for it. **25 files import from `ui/`, not the nine this row used to claim** — counted 2026-09-25 — and most are in `src/components/`, not the `src/app/` and `src/page_components/` the old text sent you to. `components/ui/` also holds five files that are splitcart's own and not registry primitives (`login-form.tsx`, `signup-form.tsx`, the two `*.schema.ts` beside them, and `settings-dialog.tsx`); they are not part of the shadcn family and do not follow it into `common/`. Until then `sync.mjs` scopes all eleven primitives away from splitcart.                                                                                                                | —                                                           |
-| RG-10 | Delete `src/lib/schema.tsx` and repoint `app/page.tsx`, `app/bargains/page.tsx`, `app/categories/[slug]/page.tsx`, `app/contact/page.tsx` and `app/privacy/page.tsx` at `@/components/seo/StructuredDataScript`.                                                                                                                                                                            | —                                                           |
 | RG-11 | Adopt `marketing/FaqSection.tsx`, `marketing/renderFaqAnswer.tsx` and `common/eyebrow.tsx`, replacing the local `components/FaqSection.tsx`.                                                                                                                                                                                                                                                | [`tokens.md`](tokens.md) TK-15, plus a `font-weight-*` ramp |
 
 ### Why RG-9 is a directory move and not a `sync.mjs` option

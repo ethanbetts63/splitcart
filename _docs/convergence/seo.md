@@ -68,8 +68,3 @@ claimed an outcome that no longer exists.
 - The FAQ copy in `page_components/HomePage.tsx`, `BargainsPage.tsx` and
   `SubstitutionPage.tsx` is also emitted as `FAQPage` structured data and was
   not audited for the dated-price problem SEO-N fixed in `data/pillar-faqs.ts`.
-- `StructuredDataScript` lives in `lib/schema.tsx` rather than
-  `components/seo/`. It moves when splitcart becomes a component-registry
-  consumer ([`registry.md`](registry.md)); the four engine files under
-  `frontend/scripts/seo/` are local copies for the same reason, each marked with
-  its provenance.

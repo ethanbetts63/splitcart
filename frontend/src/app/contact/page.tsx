@@ -1,6 +1,6 @@
 import ContactPage from '@/page_components/ContactPage';
 import { buildStaticPageGraph, metadataFor } from '@/lib/seo';
-import StructuredDataScript from '@/lib/schema';
+import StructuredDataScript from '@/components/seo/StructuredDataScript';
 
 export const metadata = metadataFor('/contact');
 

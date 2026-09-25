@@ -6,7 +6,7 @@ import {
   companiesIn,
   metadataFor,
 } from '@/lib/seo';
-import StructuredDataScript from '@/lib/schema';
+import StructuredDataScript from '@/components/seo/StructuredDataScript';
 import type { Product } from '@/types';
 
 export const revalidate = 600;
