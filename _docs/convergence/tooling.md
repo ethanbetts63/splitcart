@@ -9,25 +9,20 @@ Evidence: `scratchpad/gap-tooling.md` (survey of 2026-09-25).
 
 ## Where this stands
 
-TL-1 through TL-10 landed on 2026-09-25. splitcart is the fourth consumer in
+TL-1 through TL-10 landed on 2026-09-25, and `lint:css` joined
+`npm run check` when the token conversion turned it green. splitcart is the fourth consumer in
 `baseline-drift.mjs`, all twenty pinned packages agree across the four repos,
 and `npm run check` runs `format:check`, `lint`, `typecheck` and
 `check:baseline` green.
 
-| Check            | Result                                         |
-| ---------------- | ---------------------------------------------- |
-| `format:check`   | clean                                          |
-| `lint`           | 0 errors, 0 warnings                           |
-| `typecheck`      | clean, under the levelled `tsconfig.json`      |
-| `check:baseline` | 20 pinned packages agree across 4 repos        |
-| `build`          | compiles and prerenders 23 routes              |
-| `lint:css`       | **125 errors** — the one row still open, below |
-
-## Work
-
-| #    | Work                                                                                                                                                                                                                                                                                                                                | Acceptance                                             |
-| ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| TL-5 | `lint:css` exists and is wired to the shared stylelint base, but is **not** in `npm run check`. It cannot be until [`tokens.md`](tokens.md) lands: 125 findings, every one of them in `src/index.css`, which is still unmodified `shadcn init` output. Add `&& npm run lint:css` to `check` in the same change that turns it green. | `npm run check` includes `lint:css` and still exits 0. |
+| Check            | Result                                    |
+| ---------------- | ----------------------------------------- |
+| `format:check`   | clean                                     |
+| `lint`           | 0 errors, 0 warnings                      |
+| `typecheck`      | clean, under the levelled `tsconfig.json` |
+| `check:baseline` | 20 pinned packages agree across 4 repos   |
+| `build`          | compiles and prerenders 23 routes         |
+| `lint:css`       | clean, and inside `npm run check`         |
 
 ## What landed, and the two decisions inside it
 
