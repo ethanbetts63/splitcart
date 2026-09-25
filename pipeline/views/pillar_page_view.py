@@ -11,6 +11,7 @@ class PillarPageView(RetrieveAPIView):
     """
     API view to retrieve a Pillar Page by its slug.
     """
+    throttle_scope = 'public'
     queryset = PillarPage.objects.prefetch_related('primary_categories').all()
     serializer_class = PillarPageSerializer
     lookup_field = 'slug'

@@ -1,0 +1,38 @@
+# Runtime intent for the server: the Django API at api.splitcart.com.au and the
+# pipeline management commands that write to the database.
+#
+# This file records why each package is here. `requirements.txt` is the
+# lockfile the server installs, and adds the transitive closure of everything
+# below. Regenerate with:
+#
+#     pip-compile requirements.in --output-file requirements.txt
+#
+# Scraping, substitution generation and the analysis commands run on a local
+# machine only and are in requirements-dev.in. See AGENTS.md ("Boundaries") for
+# which half of the pipeline a command belongs to.
+#
+# Python 3.12 -- the version the PythonAnywhere virtualenv is built on. A
+# lockfile resolved on another version can pin releases that will not install
+# there.
+
+# --- the framework ---
+Django==5.2.4
+djangorestframework==3.15.1
+mysqlclient==2.2.7  # MySQL is the only engine; there is no SQLite fallback.
+python-dotenv==1.1.1  # config/settings.py reads .env at import.
+
+# --- authentication ---
+# The current session model: a DRF authtoken issued by dj-rest-auth over
+# allauth's account layer. Being replaced; see _docs/convergence/auth-migration.md.
+django-allauth==0.61.1
+dj-rest-auth==7.0.1
+
+# The browser calls the API host directly instead of through the frontend's
+# /api/* rewrite, which is the only reason this is here. It goes when the
+# same-origin proxy does.
+django-cors-headers==4.3.1
+
+# --- product features ---
+PuLP==3.2.1  # The LP solver behind the cart split; reached by /api/carts/<id>/optimize/.
+pillow==11.3.0  # manage.py resize_images.
+requests==2.32.4  # Server-side HTTP in the pipeline's barcode prefill.

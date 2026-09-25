@@ -12,6 +12,7 @@ from products.utils.default_companies import get_default_company_ids
 @method_decorator(cache_page(60 * 60 * 24), name='dispatch')
 class BargainCarouselView(APIView):
     permission_classes = [AllowAny]
+    throttle_scope = 'public'
 
     def get(self, request, *args, **kwargs):
         company_name = self.request.query_params.get('company_name')

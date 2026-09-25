@@ -1,110 +1,62 @@
-arabic-reshaper==3.0.0
+#
+# Lockfile for the server. Do not edit by hand.
+#
+#     pip-compile requirements.in --output-file requirements.txt
+#
+# Resolved for Python 3.12, the version the PythonAnywhere virtualenv is built
+# on. Every entry is either named in requirements.in with a reason or pulled in
+# by one that is; the comment on each transitive line says which.
+#
+# `pip install -r` does not remove anything. A package dropped from this file
+# stays in an existing virtualenv until pip-sync or a rebuild.
+#
 asgiref==3.9.1
-asn1crypto==1.5.1
-attrs==25.3.0
-# beautifulsoup4==4.13.4
-# Cartopy==0.25.0
+    # via django, django-cors-headers
 certifi==2025.7.14
+    # via requests
 cffi==1.17.1
+    # via cryptography
 charset-normalizer==3.4.2
-# colorama==0.4.6
-# contourpy==1.3.3
+    # via requests
 cryptography==46.0.0
-cssselect2==0.8.0
-# cycler==0.12.1
+    # via django-allauth (pyjwt[crypto])
 defusedxml==0.7.1
+    # via python3-openid
 dj-rest-auth==7.0.1
-Django==5.2.4
+    # via -r requirements.in
+django==5.2.4
+    # via -r requirements.in
 django-allauth==0.61.1
+    # via -r requirements.in
 django-cors-headers==4.3.1
-# django-debug-toolbar==4.3.0
-# django-extensions==3.2.3
-django-vite==3.1.0
+    # via -r requirements.in
 djangorestframework==3.15.1
-# factory_boy==3.3.3
-# fake-useragent==2.2.0
-# Faker==37.5.3
-# filelock==3.19.1
-# fonttools==4.59.1
-# freetype-py==2.5.1
-# fsspec==2025.9.0
-# geopandas==1.1.1
-# graphviz==0.21
-# h11==0.16.0
-html5lib==1.1
-# huggingface-hub==0.34.4
+    # via -r requirements.in
 idna==3.10
-ijson==3.4.0.post0
-Jinja2==3.1.6
-# joblib==1.5.2
-# kiwisolver==1.4.9
-# lxml==6.0.2
-MarkupSafe==3.0.2
-# matplotlib==3.10.5
-# mpmath==1.3.0
+    # via requests
 mysqlclient==2.2.7
-# networkx==3.5
-# numpy==2.3.2
+    # via -r requirements.in
 oauthlib==3.3.1
-# oscrypto==1.3.0
-# outcome==1.3.0.post0
-packaging==25.0
-# pandas==2.3.1
+    # via requests-oauthlib
 pillow==11.3.0
-# PuLP==3.2.1
-pycairo==1.28.0
+    # via -r requirements.in
+pulp==3.2.1
+    # via -r requirements.in
 pycparser==2.22
-# pyHanko==0.31.0
-# pyhanko-certvalidator==0.29.0
-PyJWT==2.10.1
-# pyogrio==0.11.1
-# pyparsing==3.2.3
-pypdf==6.1.2
-# pyproj==3.7.2
-# pyshp==2.3.1
-# PySocks==1.7.1
-python-bidi==0.6.6
-# python-dateutil==2.9.0.post0
-# python-dotenv==1.1.1
+    # via cffi
+pyjwt==2.10.1
+    # via django-allauth
+python-dotenv==1.1.1
+    # via -r requirements.in
 python3-openid==3.2.0
-pytz==2025.2
-# PyYAML==6.0.2
-# RapidFuzz==3.13.0
-# regex==2025.9.1
-reportlab==4.4.4
+    # via django-allauth
 requests==2.32.4
+    # via -r requirements.in, django-allauth, requests-oauthlib
 requests-oauthlib==2.0.0
-rlPyCairo==0.4.0
-# safetensors==0.6.2
-# scikit-learn==1.5.0
-# seaborn==0.13.2
-setuptools==80.9.0
-# shapely==2.1.1
-six==1.17.0
-# sniffio==1.3.1
-# sortedcontainers==2.4.0
-# soupsieve==2.7
+    # via django-allauth
 sqlparse==0.5.3
-svglib==1.6.0
-# sympy==1.14.0
-# thefuzz==0.22.1
-# threadpoolctl==3.6.0
-tinycss2==1.4.0
-# tokenizers==0.22.1
-# tqdm==4.67.1
-# trio==0.30.0
-# trio-websocket==0.12.2
-typing_extensions==4.14.1
+    # via django
 tzdata==2025.2
-# tzlocal==5.3.1
-# undetected-chromedriver==3.5.5
-# uritools==5.0.0
+    # via django
 urllib3==2.5.0
-# webdriver-manager==4.0.2
-webencodings==0.5.1
-# websocket-client==1.8.0
-# websockets==15.0.1
-# wsproto==1.2.0
-xhtml2pdf==0.2.17
-
-drf-nested-routers
+    # via requests

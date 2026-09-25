@@ -10,6 +10,8 @@ class BargainStatsView(APIView):
     """
     API view to retrieve pre-calculated bargain statistics.
     """
+    throttle_scope = 'public'
+
     def get(self, request, *args, **kwargs):
         try:
             # We are fetching a specific, single object

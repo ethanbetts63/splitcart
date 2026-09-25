@@ -24,3 +24,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local environment files. Not covered by the root .gitignore, which names a
+# bare `.env`; until now these were untracked only because `*.local` above
+# happens to match, which is luck rather than a rule.
+.env*.local

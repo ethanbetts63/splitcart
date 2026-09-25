@@ -1,14 +1,7 @@
+from django.conf import settings
 from django.contrib import admin
-from django.urls import include, path, re_path
-from django.contrib.sitemaps.views import sitemap
+from django.urls import include, path
 from django.http import HttpResponsePermanentRedirect
-from config.sitemaps import StaticViewSitemap, CategoryPageSitemap
-from pipeline.views.react_app_view import ReactAppView
-
-sitemaps = {
-    'static': StaticViewSitemap,
-    'categories': CategoryPageSitemap,
-}
 
 # Map old pillar-page slugs that differ from current /categories/ slugs
 _PILLAR_SLUG_MAP = {
@@ -22,14 +15,24 @@ def pillar_page_redirect(request, slug):
     new_slug = _PILLAR_SLUG_MAP.get(slug, slug)
     return HttpResponsePermanentRedirect(f'/categories/{new_slug}/')
 
+# Django here is an API and nothing else. There is no catch-all serving a React
+# shell: the template it named was never migrated out of frontend/dist, so every
+# unrouted path -- every typo, every crawler probe -- raised TemplateDoesNotExist
+# and answered 500 where it should have answered 404.
 urlpatterns = [
-    path("__debug__/", include("debug_toolbar.urls")),
-    path("admin/", admin.site.urls),
     path("api/", include("products.urls")),
     path("api/", include("companies.urls")),
     path("api/", include("users.urls")),
     path("api/", include("pipeline.urls")),
-    path("sitemap.xml", sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path("pillar-pages/<slug:slug>/", pillar_page_redirect),
-    re_path(r'^.*', ReactAppView.as_view(), name='react_app'),
 ]
+
+# Development-only routes. The admin reaches every record through the ORM and
+# its login is a plain Django view that no DRF throttle touches, so the surface
+# is removed in production rather than hardened; staff work is done from a
+# manage.py shell. The toolbar's route follows the app that serves it.
+if settings.DEBUG:
+    urlpatterns += [
+        path("__debug__/", include("debug_toolbar.urls")),
+        path("admin/", admin.site.urls),
+    ]

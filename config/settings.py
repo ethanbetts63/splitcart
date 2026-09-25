@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'django.contrib.sites',
-    'django.contrib.sitemaps',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -48,8 +47,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'dj_rest_auth',
     'dj_rest_auth.registration',
-    "django_extensions",
-    "debug_toolbar",
     'corsheaders',
 ]
 
@@ -69,9 +66,22 @@ MIDDLEWARE = [
     "config.middleware.AnonymousUserMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.cache.FetchFromCacheMiddleware",
 ]
+
+# Development-only tooling. Both were previously installed unconditionally while
+# being commented out of requirements.txt, so a clean install could not boot at
+# all and the deployed environment was serving whatever an older venv still had
+# on disk -- including the debug toolbar and its `__debug__/` route. Gating them
+# here makes the production dependency set and the production URLconf agree.
+if DEBUG:
+    INSTALLED_APPS += ["django_extensions", "debug_toolbar"]
+    # The toolbar wraps the response, so it goes after everything that writes to
+    # one and before the cache middleware that would store the wrapped copy.
+    MIDDLEWARE.insert(
+        MIDDLEWARE.index("django.middleware.cache.FetchFromCacheMiddleware"),
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    )
 
 INTERNAL_IPS = ['127.0.0.1']
 if API_SERVER_HOSTNAME:
@@ -82,7 +92,10 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "frontend" / "dist", BASE_DIR / "templates"],
+        # No frontend/dist entry: the Vite build directory it named has not
+        # existed since the Next migration, and nothing here renders a template
+        # from it. Django is API-only.
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -133,10 +146,9 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend', 'dist'),
-]
-
+# No STATICFILES_DIRS: it pointed at frontend/dist, the Vite output directory,
+# which the Next migration removed. The only static files Django still serves
+# are the admin's and DRF's, which APP_DIRS finders already find.
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
@@ -151,19 +163,57 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 24,
 
+    # Applies whatever scope a view declares, and nothing at all when a view
+    # declares none. The catch-all `anon`/`user` rates it replaces were not rate
+    # limiting: 5000/day anon is one attempt every seventeen seconds, forever,
+    # against an endpoint with no account lockout behind it.
     'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle',
+        'config.throttling.ScopedRequestThrottle',
     ],
+    # Named for what each number protects, not for who is calling.
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '5000/day',
-        'user': '20000/day',
+        # Credential guessing. There is no account lockout yet -- that arrives
+        # with the session migration -- so for now these are the only thing
+        # standing between a script and this site's passwords.
+        'login': '5/minute',
+        'register': '5/hour',
+        'password_reset': '5/hour',
+        'password_change': '10/hour',
+        # dj_rest_auth stamps this scope on its own views. Every one of them is
+        # shadowed by a scoped subclass in users/urls.py, but a rate has to
+        # exist regardless: ScopedRateThrottle raises ImproperlyConfigured --
+        # a 500, on first call -- for a scope with no rate, so a route added by
+        # a library upgrade must land on a number rather than on an exception.
+        'dj_rest_auth': '5/minute',
+        # Cost and load. `cart-sync` writes rows in bulk and `cart-optimize`
+        # runs an LP solve, so both are bounded well below ordinary reads.
+        'session': '600/hour',
+        'cart': '600/hour',
+        'cart-sync': '300/hour',
+        'cart-optimize': '60/hour',
+        # Public reads. Not a security control -- who may call these is settled
+        # by the permission class -- so set where a runaway client stops and a
+        # person browsing normally never notices.
+        'public': '600/hour',
+        # Server-to-server, already gated by IsInternalAPIRequest. The throttle
+        # bounds call volume between trusted services, not an attack surface.
         'internal': '1000000/day',
     }
 }
 
+# The ceiling on the request body itself, which is the only bound that applies
+# before anything is parsed: a serializer's per-field maximums are checked after
+# the body has already been read into memory. Django's own defaults, stated
+# rather than inherited, so that raising one is a visible decision.
+#
+# Neither figure caps the pipeline's gzipped .jsonl uploads: those arrive as
+# multipart files, stream to disk, and are governed by FILE_UPLOAD_MAX_MEMORY_SIZE.
+DATA_UPLOAD_MAX_MEMORY_SIZE = 2621440  # 2.5 MiB
+# Parsing is quadratic in the number of form fields, so an unbounded count is a
+# cheap denial of service.
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000
+
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
     "http://localhost:3000",
     "http://localhost:3001",
     "http://127.0.0.1:3000",
@@ -175,7 +225,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
     "http://localhost:3000",
     "http://localhost:3001",
     "http://127.0.0.1:3000",
@@ -235,5 +284,52 @@ CACHES = {
         'OPTIONS': {
             'MAX_ENTRIES': 1000 # Maximum number of entries in the cache
         }
-    }
+    },
+    # Separate cache for throttle counters. The default cache above backs the
+    # whole-site page cache and caps out at 1000 entries, so without this a
+    # burst of page traffic would evict an attacker's attempt count.
+    'throttling': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'throttling',
+        'OPTIONS': {
+            'MAX_ENTRIES': 10000,  # Generous -- eviction is what this cache exists to avoid.
+        },
+    },
 }
+
+# Transport and cookie hardening. Every one of these was absent, so the site was
+# deployed with no HSTS, no SSL redirect and no Secure flag on the session or
+# CSRF cookie that Django's admin login uses.
+#
+# The transport half is under DEBUG=False only, because an SSL redirect and an
+# HSTS header make a plain-HTTP development server unreachable. The rest holds
+# in every environment -- there is no environment in which this API wants to be
+# framed or sniffed.
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+# DENY, not Django's SAMEORIGIN default. Nothing here is meant to be framed.
+X_FRAME_OPTIONS = "DENY"
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "Lax"
+
+if not DEBUG:
+    # PythonAnywhere terminates TLS in front of Django, so without this
+    # request.is_secure() is False for every request and the redirect below
+    # would loop.
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 63072000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+# One `check --deploy` warning is a decision, not an oversight. It is silenced by
+# name so the gate reads as pass/fail: a gate that always prints a warning is one
+# people stop reading, and then the real one arrives unnoticed.
+SILENCED_SYSTEM_CHECKS = [
+    # SECURE_HSTS_PRELOAD. Preload is a one-way commitment binding every present
+    # and future subdomain to HTTPS, and it takes a manual submission to
+    # hstspreload.org that nothing here performs. No sibling site sets it.
+    "security.W021",
+]

@@ -10,6 +10,8 @@ from products.serializers.product_substitution_serializer import ProductSubstitu
 
 @method_decorator(cache_page(60 * 60 * 6), name='dispatch')
 class ProductSubstituteListView(APIView):
+    throttle_scope = 'public'
+
     def get(self, request, product_id, *args, **kwargs):
         try:
             product = Product.objects.get(id=product_id)

@@ -1,0 +1,47 @@
+# Development and local-machine intent. A superset of the runtime set, so a
+# developer and the server cannot disagree about a version.
+#
+# Regenerate the lockfile with:
+#
+#     pip-compile requirements-dev.in --output-file requirements_dev.txt
+#
+# Python 3.12, matching requirements.in.
+
+-r requirements.in
+
+# --- the test stack ---
+pytest==9.0.2
+pytest-django==4.11.1
+factory_boy==3.3.3
+Faker==37.5.3
+
+# --- local development tooling ---
+# Both are gated on DEBUG in config/settings.py, so neither is installed on the
+# server and neither has a route there.
+django-debug-toolbar==4.3.0
+django-extensions==3.2.3
+
+# --- scraping, which runs on a local machine only ---
+beautifulsoup4==4.13.4
+lxml==6.0.2
+selenium==4.34.2
+undetected-chromedriver==3.5.5
+webdriver-manager==4.0.2
+fake-useragent==2.2.0
+colorama==0.4.6  # Scraper console output.
+
+# --- substitution generation (`manage.py generate --subs`) ---
+# The ML half of the pipeline. It cannot run on the server at all, which is the
+# reason this split exists rather than a preference.
+sentence-transformers==3.0.1
+transformers==4.56.1
+torch==2.8.0
+thefuzz==0.22.1
+RapidFuzz==3.13.0
+scikit-learn==1.5.0
+
+# --- analysis commands (`manage.py analyze`) ---
+numpy==2.3.2
+pandas==2.3.1
+matplotlib==3.10.5
+seaborn==0.13.2

@@ -7,11 +7,41 @@ from rest_framework.exceptions import ValidationError
 from users.models import Cart, CartItem, CartSubstitution
 from products.models import Product
 from users.serializers.cart_serializer import CartSerializer
+from users.serializers.cart_action_serializers import (
+    CartOptimizeSerializer,
+    CartRenameSerializer,
+    CartSwitchActiveSerializer,
+    CartSyncSerializer,
+)
 from config.permissions import IsAuthenticatedOrAnonymous
 from pipeline.utils.cart_optimization.substitute_manager import SubstituteManager
 from products.utils.default_companies import get_default_company_ids
 from users.utils.cart_optimization import run_cart_optimization
 from users.utils.name_generator import generate_unique_name
+
+
+def _validated(serializer_class, data):
+    """Validate a request body, or raise with the body shape callers already read.
+
+    These actions answered a bad request with `{'error': '<message>'}` long
+    before they validated anything, and the frontend's error reader looks for
+    `detail`, then `error`, then `message`. Keeping that key means adding real
+    validation does not silently turn every field error into "API request
+    failed with status 400"; `errors` carries the per-field detail alongside it.
+    """
+    serializer = serializer_class(data=data)
+    if serializer.is_valid():
+        return serializer.validated_data
+
+    errors = serializer.errors
+    first_field = next(iter(errors))
+    first_message = errors[first_field]
+    while isinstance(first_message, (list, tuple, dict)) and first_message:
+        first_message = (
+            next(iter(first_message.values())) if isinstance(first_message, dict)
+            else first_message[0]
+        )
+    raise ValidationError({'error': str(first_message), 'errors': errors})
 
 
 class CartViewSet(viewsets.ModelViewSet):
@@ -23,6 +53,9 @@ class CartViewSet(viewsets.ModelViewSet):
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticatedOrAnonymous]
     lookup_field = 'pk'
+    # Declared on the class so per-action overrides below are accepted as
+    # initkwargs, and so no route here falls through to no throttle at all.
+    throttle_scope = 'cart'
 
     def get_queryset(self):
         """
@@ -53,7 +86,7 @@ class CartViewSet(viewsets.ModelViewSet):
 
         owner_filter = {'user': user} if user else {'anonymous_id': anonymous_id}
         unique_name = generate_unique_name(Cart, owner_filter, "Shopping List")
-        
+
         # is_active is True by default for new carts via this method
         serializer.save(**owner_filter, name=unique_name, is_active=True)
 
@@ -72,7 +105,7 @@ class CartViewSet(viewsets.ModelViewSet):
         cart = None
         created = False
         user = request.user
-        
+
         if user.is_authenticated:
             cart, created = Cart.objects.get_or_create(
                 user=user, is_active=True,
@@ -96,14 +129,11 @@ class CartViewSet(viewsets.ModelViewSet):
         """
         Renames a specific cart.
         """
-        cart_id = request.data.get('cart_id')
-        new_name = request.data.get('new_name')
-        if not cart_id or not new_name:
-            return Response({'error': 'cart_id and new_name are required'}, status=status.HTTP_400_BAD_REQUEST)
+        data = _validated(CartRenameSerializer, request.data)
 
         try:
-            cart = self.get_queryset().get(pk=cart_id)
-            cart.name = new_name
+            cart = self.get_queryset().get(pk=data['cart_id'])
+            cart.name = data['new_name']
             cart.save()
             return Response(self.get_serializer(cart).data, status=status.HTTP_200_OK)
         except Cart.DoesNotExist:
@@ -116,42 +146,36 @@ class CartViewSet(viewsets.ModelViewSet):
         """
         Sets a specific cart as the active one for the user.
         """
-        cart_id = request.data.get('cart_id')
+        data = _validated(CartSwitchActiveSerializer, request.data)
         user = request.user
-        if not cart_id:
-            return Response({'error': 'cart_id is required'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             with transaction.atomic():
                 Cart.objects.filter(user=user, is_active=True).update(is_active=False)
-                new_active_cart = self.get_queryset().get(pk=cart_id)
+                new_active_cart = self.get_queryset().get(pk=data['cart_id'])
                 new_active_cart.is_active = True
                 new_active_cart.save()
             return Response(self.get_serializer(new_active_cart).data, status=status.HTTP_200_OK)
         except Cart.DoesNotExist:
             return Response({'error': 'Cart not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    @action(detail=False, methods=['post'], url_path='sync')
+    @action(detail=False, methods=['post'], url_path='sync', throttle_scope='cart-sync')
     def sync(self, request, *args, **kwargs):
         """
         Synchronizes the entire state of a cart from the client.
         """
+        data = _validated(CartSyncSerializer, request.data)
+        cart_id = data['cart_id']
+        items_data = data['items']
+
         with transaction.atomic():
-            cart_id = request.data.get('cart_id')
-            items_data = request.data.get('items')
-
-            if not cart_id:
-                raise ValidationError({'cart_id': 'Cart ID is required.'})
-            if not isinstance(items_data, list):
-                raise ValidationError({'items': 'Items must be a list.'})
-
             try:
                 cart = self.get_queryset().get(id=cart_id)
             except Cart.DoesNotExist:
                 raise ValidationError({'cart_id': 'Cart not found.'})
 
             existing_items_map = {item.product.id: item for item in cart.items.select_related('product')}
-            incoming_product_ids = {item_data.get('product_id') for item_data in items_data}
+            incoming_product_ids = {item_data['product_id'] for item_data in items_data}
 
             to_delete_ids = [
                 item.id for product_id, item in existing_items_map.items()
@@ -163,11 +187,8 @@ class CartViewSet(viewsets.ModelViewSet):
             to_create = []
             to_update = []
             for item_data in items_data:
-                product_id = item_data.get('product_id')
-                quantity = item_data.get('quantity')
-
-                if not (product_id and isinstance(product_id, int) and isinstance(quantity, int) and quantity > 0):
-                    raise ValidationError({'items': f'Invalid data for item: {item_data}'})
+                product_id = item_data['product_id']
+                quantity = item_data['quantity']
 
                 if product_id in existing_items_map:
                     existing_item = existing_items_map[product_id]
@@ -187,7 +208,7 @@ class CartViewSet(viewsets.ModelViewSet):
             # Process substitution approval state sent from the client.
             # Build a map of product_id -> substitutions data for efficient lookup.
             subs_by_product = {
-                item_data.get('product_id'): item_data.get('substitutions', [])
+                item_data['product_id']: item_data['substitutions']
                 for item_data in items_data
                 if item_data.get('substitutions')
             }
@@ -198,12 +219,12 @@ class CartViewSet(viewsets.ModelViewSet):
                     cart_item = current_items_map.get(product_id)
                     if not cart_item:
                         continue
-                    sub_ids = [s.get('id') for s in substitutions_data if s.get('id')]
+                    sub_ids = [s['id'] for s in substitutions_data]
                     existing_subs = {str(s.id): s for s in CartSubstitution.objects.filter(
                         original_cart_item=cart_item, id__in=sub_ids
                     )}
                     for sub_data in substitutions_data:
-                        sub = existing_subs.get(str(sub_data.get('id')))
+                        sub = existing_subs.get(str(sub_data['id']))
                         if sub is None:
                             continue
                         sub.is_approved = sub_data.get('is_approved', sub.is_approved)
@@ -238,9 +259,8 @@ class CartViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(cart)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @action(detail=True, methods=['post'], url_path='optimize')
+    @action(detail=True, methods=['post'], url_path='optimize', throttle_scope='cart-optimize')
     def optimize(self, request, *args, **kwargs):
         cart_obj = self.get_object()
-        max_company_options = request.data.get('max_companies_options', [2, 3, 4])
-        return run_cart_optimization(cart_obj, max_company_options)
-
+        data = _validated(CartOptimizeSerializer, request.data)
+        return run_cart_optimization(cart_obj, data['max_companies_options'])

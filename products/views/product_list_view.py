@@ -20,6 +20,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 @method_decorator(cache_page(60 * 60 * 2), name='dispatch')
 class ProductListView(generics.ListAPIView):
     permission_classes = [AllowAny]
+    throttle_scope = 'public'
     serializer_class = ProductSerializer
     pagination_class = StandardResultsSetPagination
 

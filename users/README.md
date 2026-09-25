@@ -69,3 +69,44 @@ The `users` app provides several API endpoints for the frontend to interact with
     -   `GET /api/carts/active/`: Retrieves the user's currently active cart (or creates one). This is the primary endpoint for initializing cart state.
     -   `POST /api/carts/sync/`: Efficiently synchronizes the entire state of a cart's items from the client.
     -   `POST /api/carts/{pk}/optimize/`: Triggers the cart optimization service.
+
+### Request validation
+
+Every write on `CartViewSet` validates through a serializer in
+`users/serializers/cart_action_serializers.py` before anything reaches the
+database. `rename` used to assign `cart.name` from `request.data.get('new_name')`
+with no check of any kind, and a `cart_id` that was not a UUID reached the ORM
+as a raw string; `sync` read nested item and substitution data the same way,
+with no bound on how many rows one request could ask for.
+
+The bounds are the model column where one exists (`Cart.name`'s 255) and
+otherwise a ceiling on work per request: 300 items, 50 substitutions an item,
+999 of anything, 10 optimiser options. A rejected request answers 400 with the
+`error` key callers already read, plus an `errors` object carrying the
+per-field detail.
+
+`CustomRegisterSerializer` bounds `password1`/`password2` at 128 characters and
+`email` at 150. Registration is unauthenticated and hashing is deliberately
+expensive, so an unbounded password field is an unbounded amount of CPU per
+request; 150 sits below `auth.User.username`'s width, which is what an address
+is truncated into.
+
+### Throttling
+
+`users/views/auth_views.py` subclasses dj_rest_auth's views for one reason: to
+give each a throttle scope, since they are routed from an include and there is
+nowhere else to declare one. Login is `5/minute`, registration and password
+reset `5/hour`. `config/urls.py`'s rates and the reasoning behind them are in
+`config/settings.py`.
+
+Rate limiting here is a cost control, not a credential control. What should
+stop a password guess is account lockout, which does not exist yet — see
+[`_docs/convergence/auth-migration.md`](../_docs/convergence/auth-migration.md).
+
+## Tests
+
+`users/tests/` follows the layout in
+[`_docs/TESTING.md`](../_docs/TESTING.md): `factories/`, `serializer_tests/`
+and `view_tests/`, with an `auth_client` fixture in `conftest.py` that
+authenticates the way the live frontend does. Coverage today is the validation
+and throttling regressions described above, not the whole app.

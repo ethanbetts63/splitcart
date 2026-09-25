@@ -6,6 +6,7 @@ from django.views.decorators.cache import cache_page
 
 @method_decorator(cache_page(60 * 60 * 24), name='dispatch')
 class PrimaryCategoryListView(generics.ListAPIView):
+    throttle_scope = 'public'
     serializer_class = PrimaryCategorySerializer
     pagination_class = None
 

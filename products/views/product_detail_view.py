@@ -6,6 +6,7 @@ from products.serializers.product_serializer import ProductSerializer
 
 @method_decorator(cache_page(60 * 30), name='dispatch')
 class ProductDetailView(RetrieveAPIView):
+    throttle_scope = 'public'
     queryset = Product.objects.prefetch_related('prices__company', 'skus')
     serializer_class = ProductSerializer
     lookup_field = 'pk'
