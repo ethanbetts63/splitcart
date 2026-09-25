@@ -9,50 +9,36 @@ import { notFound } from 'next/navigation';
 
 type ProductPageProps = {
   product: Product | null;
-  slug: string;
 };
 
-const ProductPage = ({ product, slug }: ProductPageProps) => {
+/**
+ * No structured data here, deliberately.
+ *
+ * `/product` is robots-disallowed -- see `app/product/[slug]/page.tsx` and
+ * `DISALLOWED_ROUTES` in `app/robots.txt/route.ts`. A disallowed page is never
+ * fetched, so JSON-LD on it is never parsed, and the block that used to sit
+ * here was inert in exactly the way that route's own comment describes.
+ *
+ * It was not harmlessly inert. It was a raw <script type="application/ld+json">
+ * built with plain JSON.stringify over scraped supermarket product names, so a
+ * name containing </script would have closed the element early and handed what
+ * followed to the browser as markup. It also published SplitCart's Django
+ * primary key as `sku`, minted a fresh anonymous Organization per price instead
+ * of referencing the canonical retailer nodes, and hard-coded a second spelling
+ * of the site origin beside `lib/siteConfig.ts`.
+ *
+ * If `/product` is ever removed from the disallow list, build the graph with
+ * `buildProductItemListSchema`/`buildRetailerSchemas` from `lib/seo.ts` and
+ * emit it through `StructuredDataScript`, which escapes `<`. Do not restore
+ * what was here.
+ */
+const ProductPage = ({ product }: ProductPageProps) => {
   if (!product) notFound();
-
-  const pageDescription = `Compare prices for ${product.name}${product.brand_name ? ` from ${product.brand_name}` : ''} across major Australian supermarkets. Find the best deals with SplitCart.`;
-
-  const productSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: product.name,
-    image: product.image_url,
-    description: pageDescription,
-    sku: product.id,
-    brand: product.brand_name ? { '@type': 'Brand', name: product.brand_name } : undefined,
-    offers: {
-      '@type': 'AggregateOffer',
-      priceCurrency: 'AUD',
-      lowPrice: Math.min(
-        ...product.prices.map((p) => parseFloat(p.price_display.replace('$', ''))),
-      ).toFixed(2),
-      highPrice: Math.max(
-        ...product.prices.map((p) => parseFloat(p.price_display.replace('$', ''))),
-      ).toFixed(2),
-      offerCount: product.prices.length,
-      offers: product.prices.map((priceInfo) => ({
-        '@type': 'Offer',
-        price: parseFloat(priceInfo.price_display.replace('$', '')).toFixed(2),
-        priceCurrency: 'AUD',
-        seller: { '@type': 'Organization', name: priceInfo.company },
-        url: `https://www.splitcart.com.au/product/${slug}`,
-      })),
-    },
-  };
 
   const imageUrl = product.image_url || assetSrc(fallbackImage);
 
   return (
     <div className="site-shell py-4">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
-      />
       <div className="max-w-5xl mx-auto">
         <Card className="overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">

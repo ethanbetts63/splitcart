@@ -40,5 +40,5 @@ export default async function Page({ params }: PageProps) {
   const { slug } = await params;
   const product = await getProduct(slug);
 
-  return <ProductPage product={product} slug={slug} />;
+  return <ProductPage product={product} />;
 }
