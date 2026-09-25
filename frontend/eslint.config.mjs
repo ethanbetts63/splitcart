@@ -1,7 +1,10 @@
 import { defineConfig, globalIgnores } from 'eslint/config';
 import nextVitals from 'eslint-config-next/core-web-vitals';
 import nextTypeScript from 'eslint-config-next/typescript';
-import { cssModuleBoundaryImports } from '../../freetheplatform/frontend/lint/design-system-eslint.mjs';
+import {
+  cssModuleBoundaryImports,
+  designSystemNoRestrictedSyntax,
+} from '../../freetheplatform/frontend/lint/design-system-eslint.mjs';
 
 export default defineConfig([
   ...nextVitals,
@@ -41,21 +44,22 @@ export default defineConfig([
       '@next/next/no-img-element': 'off',
     },
   },
-  // NOT YET HERE: the design-system block the other three repos run,
-  //
-  //   rules: { 'no-restricted-syntax': designSystemNoRestrictedSyntax() }
-  //
-  // from the same shared module. It is the ESLint half of the token rules, and
-  // splitcart's markup is still unmodified shadcn - raw palette rungs
-  // (bg-white, text-gray-500) and raw type sizes (text-2xl) throughout - so
-  // turning it on today reports several hundred findings that are all one
-  // piece of work. That work is _docs/convergence/tokens.md, and this block
-  // arrives with it. Adding it here first would only mean a permanently red
-  // `npm run lint`, which is a lint nobody reads (LINT-9).
-  //
-  // When it lands: one config object, one rule key, one array. ESLint flat
-  // config REPLACES a rule's options rather than merging them, so splitting
-  // the design-system rules across several blocks silently disables all but
-  // the last - allbikes learned that expensively.
+  {
+    // The design-system rules the other three repos run: raw palette rungs,
+    // raw Tailwind type sizes, retired rungs, status hues, the rail, dynamic
+    // class fragments and arbitrary scale values. Imported from the same
+    // shared module rather than restated (LINT-10).
+    //
+    // ONE config object, ONE rule key, ONE array. ESLint flat config REPLACES
+    // a rule's options rather than merging them across matching objects, so
+    // splitting these across several blocks silently disables all but the
+    // last - allbikes learned that expensively. Anything that needs adding
+    // goes into this array, never into a second `no-restricted-syntax`.
+    name: 'splitcart/design-system',
+    files: ['src/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-syntax': designSystemNoRestrictedSyntax(),
+    },
+  },
   globalIgnores(['.next/**', 'out/**', 'build/**', 'node_modules/**', 'next-env.d.ts']),
 ]);
