@@ -1,17 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
-import { toast } from 'sonner';
 import { Switch } from '../components/ui/switch';
 import { Label } from '../components/ui/label';
-import LoadingSpinner from '../components/LoadingSpinner';
 import ResultsDisplay from '../components/ResultsDisplay';
 import { FaqSection } from '../components/FaqSection';
-import type { ExportAction, ExportData } from '../types';
-import { apiErrorMessage } from '../services/apiClient';
 
 const finalCartFaqs = [
   {
@@ -32,57 +26,10 @@ const finalCartFaqs = [
 ];
 
 const FinalCartPage = () => {
-  const { optimizationResult, currentCart, emailCurrentCart, downloadCurrentCart } = useCart();
-  const { isAuthenticated } = useAuth();
-  const router = useRouter();
+  const { optimizationResult, currentCart } = useCart();
 
-  const [isLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [viewWithSubstitutes, setViewWithSubstitutes] = useState(true);
-  const [exportAction, setExportAction] = useState<ExportAction | null>(null);
 
-  const handleEmail = async (exportData: ExportData, planName: string) => {
-    if (!isAuthenticated) {
-      toast.error('Authentication Required', {
-        description: 'Please log in to email your shopping list.',
-        action: { label: 'Login', onClick: () => router.push('/login') },
-      });
-      return;
-    }
-    setExportAction({ type: 'email', plan: planName });
-    setError(null);
-    try {
-      await emailCurrentCart(exportData);
-    } catch (err) {
-      setError(apiErrorMessage(err, 'The shopping list could not be sent.'));
-    } finally {
-      setExportAction(null);
-    }
-  };
-
-  const handleDownload = async (exportData: ExportData, planName: string) => {
-    setExportAction({ type: 'download', plan: planName });
-    setError(null);
-    try {
-      const blob = await downloadCurrentCart(exportData);
-      if (!blob) return;
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `splitcart-plan-${planName}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      a.remove();
-    } catch (err) {
-      setError(apiErrorMessage(err, 'The shopping list could not be downloaded.'));
-    } finally {
-      setExportAction(null);
-    }
-  };
-
-  if (isLoading) return <LoadingSpinner />;
-  if (error && !exportAction) return <div className="site-shell py-4">Error: {error}</div>;
   if (!optimizationResult)
     return (
       <div className="site-shell py-4">
@@ -118,13 +65,7 @@ const FinalCartPage = () => {
       </div>
 
       {resultsToShow && currentCart ? (
-        <ResultsDisplay
-          cart={currentCart}
-          data={resultsToShow}
-          handleDownload={handleDownload}
-          handleEmail={handleEmail}
-          exportAction={exportAction}
-        />
+        <ResultsDisplay cart={currentCart} data={resultsToShow} />
       ) : (
         <p className="text-text-muted">No results to display for this option.</p>
       )}

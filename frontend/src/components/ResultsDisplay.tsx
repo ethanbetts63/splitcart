@@ -1,55 +1,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Download, Mail } from 'lucide-react';
-import { Spinner } from './ui/spinner';
 import PlanDetails from './PlanDetails';
 import { cva } from 'class-variance-authority';
 
 import * as types from '../types';
-
-/**
- * Hoisted to module scope on purpose: a component declared inside another
- * component's body is a new component type on every render, so React unmounts
- * and remounts its subtree instead of updating it (react-hooks/static-components).
- * `exportAction` therefore arrives as a prop rather than a closure.
- */
-const ExportButtons = ({
-  onEmail,
-  onDownload,
-  planKey,
-  exportAction,
-}: {
-  onEmail: () => void;
-  onDownload: () => void;
-  planKey: string;
-  exportAction: types.ExportAction | null;
-}) => (
-  <div className="flex items-center gap-2">
-    <button
-      onClick={onEmail}
-      disabled={exportAction?.type === 'email' && exportAction?.plan === planKey}
-      className="flex items-center gap-1.5 px-3 py-1.5 text-body font-semibold border border-border-strong bg-surface-page rounded-lg hover:border-border-strong-hover hover:text-text-primary transition-colors duration-150 disabled:opacity-50"
-    >
-      {exportAction?.type === 'email' && exportAction?.plan === planKey ? (
-        <Spinner className="h-4 w-4 animate-spin" />
-      ) : (
-        <Mail className="h-4 w-4" />
-      )}
-      Email
-    </button>
-    <button
-      onClick={onDownload}
-      disabled={exportAction?.type === 'download' && exportAction?.plan === planKey}
-      className="flex items-center gap-1.5 px-3 py-1.5 text-body font-semibold border border-border-strong bg-surface-page rounded-lg hover:border-border-strong-hover hover:text-text-primary transition-colors duration-150 disabled:opacity-50"
-    >
-      {exportAction?.type === 'download' && exportAction?.plan === planKey ? (
-        <Spinner className="h-4 w-4 animate-spin" />
-      ) : (
-        <Download className="h-4 w-4" />
-      )}
-      Download
-    </button>
-  </div>
-);
 
 /**
  * The plan tabs: three states (resting, active, and "this is the biggest
@@ -71,19 +24,7 @@ const planTabVariants = cva(
   },
 );
 
-const ResultsDisplay = ({
-  cart,
-  data,
-  handleDownload,
-  handleEmail,
-  exportAction,
-}: {
-  cart: types.Cart;
-  data: types.OptimizationDataSet;
-  handleDownload: (exportData: types.ExportData, planName: string) => Promise<void>;
-  handleEmail: (exportData: types.ExportData, planName: string) => Promise<void>;
-  exportAction: types.ExportAction | null;
-}) => {
+const ResultsDisplay = ({ cart, data }: { cart: types.Cart; data: types.OptimizationDataSet }) => {
   if (
     !data ||
     (!data.best_single_company &&
@@ -199,38 +140,10 @@ const ResultsDisplay = ({
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <ExportButtons
-                    exportAction={exportAction}
-                    planKey="best-single-company"
-                    onEmail={() =>
-                      handleEmail(
-                        {
-                          shopping_plan: data.best_single_company!.shopping_plan,
-                          baseline_cost: singleCompanyBaselineCost,
-                          optimized_cost: data.best_single_company!.optimized_cost,
-                          savings: singleCompanySavings,
-                        },
-                        'best-single-company',
-                      )
-                    }
-                    onDownload={() =>
-                      handleDownload(
-                        {
-                          shopping_plan: data.best_single_company!.shopping_plan,
-                          baseline_cost: singleCompanyBaselineCost,
-                          optimized_cost: data.best_single_company!.optimized_cost,
-                          savings: singleCompanySavings,
-                        },
-                        'best-single-company',
-                      )
-                    }
-                  />
-                  <p className="text-caption text-text-subtle">
-                    Found {data.best_single_company.items_found_count} of{' '}
-                    {data.best_single_company.total_items_in_cart} items
-                  </p>
-                </div>
+                <p className="text-caption text-text-subtle">
+                  Found {data.best_single_company.items_found_count} of{' '}
+                  {data.best_single_company.total_items_in_cart} items
+                </p>
               </div>
               <PlanDetails plan={data.best_single_company.shopping_plan} />
             </div>
@@ -244,51 +157,23 @@ const ResultsDisplay = ({
             className="mt-4"
           >
             <div className="rounded-xl border border-border-default bg-surface-page shadow-sm overflow-hidden">
-              <div className="p-5 border-b border-border-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-8">
-                  <div>
-                    <p className="text-label text-text-subtle uppercase tracking-wide mb-0.5">
-                      Total Cost
-                    </p>
-                    <p className="text-title-sm font-bold text-text-primary">
-                      ${result.optimized_cost.toFixed(2)}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-label text-text-subtle uppercase tracking-wide mb-0.5">
-                      You Save
-                    </p>
-                    <p className="text-title-sm font-bold text-text-success">
-                      ${result.savings.toFixed(2)}
-                    </p>
-                  </div>
+              <div className="p-5 border-b border-border-subtle flex items-center gap-8">
+                <div>
+                  <p className="text-label text-text-subtle uppercase tracking-wide mb-0.5">
+                    Total Cost
+                  </p>
+                  <p className="text-title-sm font-bold text-text-primary">
+                    ${result.optimized_cost.toFixed(2)}
+                  </p>
                 </div>
-                <ExportButtons
-                  exportAction={exportAction}
-                  planKey={`companies-${result.max_companies}`}
-                  onEmail={() =>
-                    handleEmail(
-                      {
-                        shopping_plan: result.shopping_plan,
-                        baseline_cost: data.baseline_cost,
-                        optimized_cost: result.optimized_cost,
-                        savings: result.savings,
-                      },
-                      `companies-${result.max_companies}`,
-                    )
-                  }
-                  onDownload={() =>
-                    handleDownload(
-                      {
-                        shopping_plan: result.shopping_plan,
-                        baseline_cost: data.baseline_cost,
-                        optimized_cost: result.optimized_cost,
-                        savings: result.savings,
-                      },
-                      `companies-${result.max_companies}`,
-                    )
-                  }
-                />
+                <div>
+                  <p className="text-label text-text-subtle uppercase tracking-wide mb-0.5">
+                    You Save
+                  </p>
+                  <p className="text-title-sm font-bold text-text-success">
+                    ${result.savings.toFixed(2)}
+                  </p>
+                </div>
               </div>
               <PlanDetails plan={result.shopping_plan} />
             </div>

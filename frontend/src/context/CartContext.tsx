@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from './AuthContext';
 import { toast } from 'sonner';
-import type { Cart, ApiResponse, ExportData, Product } from '../types';
+import type { Cart, ApiResponse, Product } from '../types';
 import type { CartContextType } from '../types/CartContextType';
 import { createApiClient, ApiError, apiErrorMessage } from '../services/apiClient';
 import { debounce } from '../lib/debounce';
@@ -213,32 +213,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const emailCurrentCart = async (exportData: ExportData) => {
-    try {
-      await cartApi.emailCart(apiClient, exportData);
-      toast.success('Email Sent!', {
-        description: 'Your shopping list has been sent to your email.',
-      });
-    } catch (err) {
-      toast.error('Error Sending Email', {
-        description: apiErrorMessage(err, 'The shopping list could not be sent.'),
-      });
-      throw err; // Re-throw to be caught in the component
-    }
-  };
-
-  const downloadCurrentCart = async (exportData: ExportData): Promise<Blob | null> => {
-    try {
-      const blob = await cartApi.downloadCart(apiClient, exportData);
-      return blob;
-    } catch (err) {
-      toast.error('Error Downloading PDF', {
-        description: apiErrorMessage(err, 'The shopping list could not be downloaded.'),
-      });
-      throw err; // Re-throw to be caught in the component
-    }
-  };
-
   const updateCartItemSubstitution = (
     cartItemId: string,
     substitutionId: string,
@@ -282,8 +256,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         updateItemQuantity,
         removeItem,
         optimizeCurrentCart,
-        emailCurrentCart,
-        downloadCurrentCart,
         updateCartItemSubstitution,
       }}
     >

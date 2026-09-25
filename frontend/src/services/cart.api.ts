@@ -1,5 +1,5 @@
 import { ApiClient } from './apiClient';
-import type { Cart, ApiResponse, ExportData } from '../types';
+import type { Cart, ApiResponse } from '../types';
 
 /**
  * Fetches the currently active cart.
@@ -63,27 +63,4 @@ export const switchActiveCart = (apiClient: ApiClient, cartId: string): Promise<
  */
 export const optimizeCart = (apiClient: ApiClient, cartId: string): Promise<ApiResponse> => {
   return apiClient.post<ApiResponse>(`/api/carts/${cartId}/optimize/`, {});
-};
-
-/**
- * Emails the cart/shopping list to the user.
- *
- * The endpoint answers with an acknowledgement body that no caller reads - the
- * outcome that matters is whether it rejected - so the result is `void` rather
- * than a shape nothing depends on.
- */
-export const emailCart = (apiClient: ApiClient, exportData: ExportData): Promise<void> => {
-  if (!apiClient.isAuthenticated()) {
-    return Promise.reject(new Error('Authentication is required to email the shopping list.'));
-  }
-  // Note: URL is inconsistent, but we are just refactoring the call mechanism for now.
-  return apiClient.post<void>('/api/cart/email-list/', exportData);
-};
-
-/**
- * Generates and downloads a PDF of the cart/shopping list.
- */
-export const downloadCart = (apiClient: ApiClient, exportData: ExportData): Promise<Blob> => {
-  // Note: URL is inconsistent, but we are just refactoring the call mechanism for now.
-  return apiClient.postAndGetBlob('/api/cart/download-list/', exportData);
 };

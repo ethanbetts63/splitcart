@@ -11,8 +11,6 @@ export type { OptimizationResult } from './OptimizationResult';
 export type { BestSingleCompany } from './BestSingleCompany';
 export type { OptimizationDataSet } from './OptimizationDataSet';
 export type { ApiResponse } from './ApiResponse';
-export type { ExportAction } from './ExportAction';
-export type { ExportData } from './ExportData';
 export type { PriceComparison } from './PriceComparison';
 export type { PriceComparisonData } from './PriceComparisonData';
 export type { PrimaryCategory } from './PrimaryCategory';

@@ -13,29 +13,8 @@ check. Verdicts are in
 `npm run check:form-contract` followed as the twelfth, closing
 [`testing.md`](testing.md)'s TS-9: each of the three forms is held against the
 serializer it posts to, so a field cannot leave one side without the other
-saying so. One row is left, and two facts are worth keeping until the work that
-closes them lands.
-
-## Work
-
-| #    | Work                                                                                                                                                                                                                                              | Acceptance                                 |
-| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| FM-2 | Delete the two dead cart-export call sites. They POST to `/api/cart/email-list/` and `/api/cart/download-list/`, neither of which is routed anywhere in Django — verified again on 2026-09-25 against `config/urls.py` and every app's `urls.py`. | No client code calls an unrouted endpoint. |
-
-**The decision is delete, not implement.** `email-list` would need a template
-and a send; `download-list` would need a PDF library, and `requirements.txt`
-has none — nothing in this repository renders a document. That is a feature to
-build if the product wants it, not a route to restore, and it should not be
-built by a plan whose subject is forms.
-
-**What blocked it.** The deletion is not local to `FinalCartPage.tsx`. It runs
-through `components/ResultsDisplay.tsx` (the `ExportButtons` component and
-three required props), `context/CartContext.tsx`, `services/cart.api.ts`,
-`ApiClient.postAndGetBlob`, and the `ExportData`/`ExportAction` types. The
-component half sits in the file range a concurrent registry-adoption agent held
-exclusively on 2026-09-25, so it was left rather than raced. It needs one pass
-over all six files, which is also why it is listed as a single row in
-[`dead-code.md`](dead-code.md) DC-7 rather than split.
+saying so. No rows are left, and two facts are worth keeping until the work
+that closes them lands.
 
 ## Two things that are true until the session model changes
 

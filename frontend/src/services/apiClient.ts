@@ -61,10 +61,6 @@ export class ApiClient {
     this.anonymousId = anonymousId;
   }
 
-  public isAuthenticated(): boolean {
-    return this.token !== null;
-  }
-
   private async request<T>(url: string, options: ApiClientOptions = {}): Promise<T> {
     const headers = getAuthHeaders(this.token, this.anonymousId);
 
@@ -118,25 +114,6 @@ export class ApiClient {
 
   delete<T>(url: string, signal?: AbortSignal): Promise<T> {
     return this.request<T>(url, { method: 'DELETE', signal });
-  }
-
-  async postAndGetBlob(url: string, body: JsonBody): Promise<Blob> {
-    const headers = getAuthHeaders(this.token, this.anonymousId);
-
-    const config: RequestInit = {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(body),
-    };
-
-    const response = await fetch(getApiUrl(url), config);
-
-    if (!response.ok) {
-      const errorData = await readErrorBody(response);
-      throw new ApiError(response.status, errorMessage(errorData, response.status), errorData);
-    }
-
-    return response.blob();
   }
 }
 

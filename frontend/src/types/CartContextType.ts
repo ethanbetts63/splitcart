@@ -1,6 +1,5 @@
 import type { Cart } from './Cart';
 import type { ApiResponse } from './ApiResponse';
-import type { ExportData } from './ExportData';
 import type { Product } from './Product';
 
 export interface CartContextType {
@@ -19,8 +18,6 @@ export interface CartContextType {
   updateItemQuantity: (itemId: string, quantity: number) => void;
   removeItem: (itemId: string) => void;
   optimizeCurrentCart: () => Promise<ApiResponse | null>;
-  emailCurrentCart: (exportData: ExportData) => Promise<void>;
-  downloadCurrentCart: (exportData: ExportData) => Promise<Blob | null>;
   updateCartItemSubstitution: (
     cartItemId: string,
     substitutionId: string,
