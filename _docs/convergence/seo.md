@@ -6,13 +6,9 @@ Read its §0 sourcing rule before touching any schema row here.
 
 Evidence: `scratchpad/gap-seo.md` (survey of 2026-09-25).
 
-SEO-A through SEO-N landed on 2026-09-25. What is left is one wiring step.
-
-## Work
-
-| #     | Work                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Acceptance                                |
-| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| SEO-O | Append the three SEO checks to `npm run check`: `"check:og-images": "node scripts/check-og-images.mjs"`, `"check:sitemap": "node scripts/check-sitemap-routes.mjs"`, `"check:seo-ledger": "node scripts/check-indexation-ledger.mjs"`. The scripts and their engines exist under `frontend/scripts/` and each exits 0 when run directly; only the `package.json` entries are missing, because that file belonged to another session when the rest landed. | The three names run from `npm run check`. |
+SEO-A through SEO-O landed on 2026-09-25. No rows remain; what follows is the
+record of the decisions taken, kept because each is one a later reader would
+otherwise re-litigate.
 
 ## Decisions taken while the rest landed
 
