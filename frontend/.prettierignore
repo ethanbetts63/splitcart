@@ -1,0 +1,21 @@
+.next
+node_modules
+public
+package-lock.json
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+*.log
+
+# Next rewrites tsconfig.json on every `next dev`/`next build`, with the
+# platform's line endings -- CRLF on Windows. .gitattributes normalises that
+# away for Git, so the file reads as clean, but Prettier checks the working
+# tree and failed on it after every dev-server start. It is machine-managed;
+# nobody formats it by hand.
+tsconfig.json
+
+# Next regenerates this on every dev/build. Machine-managed; nobody formats it.
+next-env.d.ts
+
+# Synced byte-for-byte from freetheplatform/frontend/registry/. Formatting a
+# copy here would show up as registry drift on the next sync check.
+scripts/baseline/
