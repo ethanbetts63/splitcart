@@ -51,16 +51,22 @@ const PINNED = [
   'stylelint-config-standard',
   'stylelint-declaration-strict-value',
   'typescript',
-  // Two packages every founding repo has and splitcart does not yet. Scoped
+  // A four-repo row since splitcart's forms conversion declared it
+  // (splitcart/_docs/convergence/forms.md FM-3). It sat scoped to the three
+  // founding repos until then, and the stray detection below is what made the
+  // widening happen rather than be remembered. It carries the family's caret
+  // rather than an exact pin for the same reason the Radix rows do: BASE-5
+  // wants exact, BASE-1 wants identical, and levelling a caret to a pin is a
+  // family-wide change (BASE-2), not something one repo joining a row can do.
+  'zod',
+  // The one package every founding repo has and splitcart does not yet. Scoped
   // rather than widened so the check stays meaningful in all four repos: a
   // bare row would fail everywhere for a gap splitcart is scheduled to close,
   // and a permanently red check is a check nobody reads. The stray detection
-  // below is what closes the loop — the day splitcart declares either one, the
-  // row goes stale loudly and gets widened.
+  // below is what closes the loop — the day splitcart declares it, the row
+  // goes stale loudly and gets widened.
   //   @freetheplatform/web-security — splitcart/_docs/convergence/auth-migration.md
-  //   zod                           — splitcart/_docs/convergence/forms.md
   { name: '@freetheplatform/web-security', repos: ['allbikes', 'bloomprint', 'freethedesk'] },
-  { name: 'zod', repos: ['allbikes', 'bloomprint', 'freethedesk'] },
   { name: 'lucide-react', repos: ['allbikes', 'bloomprint', 'splitcart'] },
   { name: 'marked', repos: ['allbikes', 'freethedesk'] },
   { name: 'tw-animate-css', repos: ['allbikes', 'bloomprint', 'splitcart'] },

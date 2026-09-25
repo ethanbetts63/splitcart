@@ -12,6 +12,7 @@ import pytest
 from django.urls import reverse
 
 from users.models import Cart, CartItem
+from users.serializers.bounds import FIELD_MAX
 from users.tests.factories import CartFactory, CartItemFactory, TEST_PASSWORD
 
 ANONYMOUS_ID = 'c31b0e44-0000-4000-8000-000000000003'
@@ -130,3 +131,65 @@ class TestAnonymousCartMergeOnLogin:
         response = _login(api_client, user, anonymous_id=None)
 
         assert response.status_code == 200, response.content
+
+
+@pytest.mark.django_db
+class TestLoginBounds:
+    """`/api/auth/login/` is unauthenticated and runs the hasher on request.
+
+    dj-rest-auth leaves `email`, `username` and `password` unbounded, so before
+    these ceilings a single anonymous request could hand PBKDF2 a megabyte.
+    The bounds come from a field kind, not a number -- see
+    `users/serializers/bounds.py`.
+    """
+
+    def test_a_password_at_the_ceiling_still_reaches_the_authenticator(
+        self, api_client, user
+    ):
+        """At the limit the request is processed and merely fails to match.
+
+        A 400 naming `password` would mean the bound itself rejected it.
+        """
+        response = api_client.post(
+            reverse('rest_login'),
+            {'email': user.email, 'password': 'x' * FIELD_MAX['password']},
+            format='json',
+        )
+
+        assert response.status_code == 400
+        assert 'password' not in response.json()
+        assert 'non_field_errors' in response.json()
+
+    def test_a_password_over_the_ceiling_is_refused_before_hashing(
+        self, api_client, user
+    ):
+        response = api_client.post(
+            reverse('rest_login'),
+            {'email': user.email, 'password': 'x' * (FIELD_MAX['password'] + 1)},
+            format='json',
+        )
+
+        assert response.status_code == 400
+        assert 'password' in response.json()
+
+    def test_an_over_long_email_is_refused(self, api_client):
+        local_part = 'e' * (FIELD_MAX['email'] + 1 - len('@example.com'))
+        response = api_client.post(
+            reverse('rest_login'),
+            {'email': f'{local_part}@example.com', 'password': TEST_PASSWORD},
+            format='json',
+        )
+
+        assert response.status_code == 400
+        assert 'email' in response.json()
+
+    def test_an_over_long_username_is_refused(self, api_client):
+        """dj-rest-auth's other spelling of the same identifier."""
+        response = api_client.post(
+            reverse('rest_login'),
+            {'username': 'u' * (FIELD_MAX['email'] + 1), 'password': TEST_PASSWORD},
+            format='json',
+        )
+
+        assert response.status_code == 400
+        assert 'username' in response.json()

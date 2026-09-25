@@ -5,17 +5,26 @@ model field or a bulk write. `rename` in particular assigned `cart.name` with no
 validation at all, so an oversized name was either a truncated row (MySQL in
 non-strict mode) or a 500, and a malformed `cart_id` was a 500 either way.
 
-Bounds here are the model column where one exists, and otherwise a ceiling on
-how much work one request may ask for.
+String bounds here come from a field kind in `bounds.py`, so the Zod schema
+beside the form and the serializer bound the same field from opposite ends.
+The rest are ceilings on how much work one request may ask for.
 """
 
 from rest_framework import serializers
 
 from users.models import Cart
+from users.serializers.bounds import max_length
 
-# Cart.name's column width. Stated rather than inherited so a bound wider than
-# the column -- which is a failed INSERT, not a looser rule -- cannot drift in.
-CART_NAME_MAX_LENGTH = Cart._meta.get_field("name").max_length
+# A cart's name is a label a shopper types on one line, so it is the `line`
+# kind -- the same ceiling `frontend/src/lib/fieldMax.ts` gives the rename
+# form, which is what makes the two ends bound the same field. The column is
+# 255 as well, and the assertion below keeps it that way: a bound wider than
+# the column is not a looser rule, it is a failed INSERT.
+CART_NAME_MAX_LENGTH = max_length("line")
+assert CART_NAME_MAX_LENGTH <= Cart._meta.get_field("name").max_length, (
+    "FIELD_MAX['line'] is wider than users_cart.name; widen the column or the "
+    "rename endpoint will validate a write that then fails."
+)
 
 # A shopping list, not a bulk import. Each newly created item also runs a
 # substitute search, so the list length is a CPU bound as much as a row count.

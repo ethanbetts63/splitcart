@@ -14,6 +14,7 @@ from users.tests.factories import UserFactory
 
 from users.serializers.custom_register_serializer import (
     EMAIL_MAX_LENGTH,
+    FULL_NAME_MAX_LENGTH,
     PASSWORD_MAX_LENGTH,
     CustomRegisterSerializer,
 )
@@ -58,6 +59,21 @@ class TestCustomRegisterSerializerBounds:
         serializer = CustomRegisterSerializer(data=_payload(email=email))
         assert not serializer.is_valid()
         assert 'email' in serializer.errors
+
+    def test_full_name_at_the_limit_is_accepted(self):
+        serializer = CustomRegisterSerializer(
+            data=_payload(full_name='N' * FULL_NAME_MAX_LENGTH)
+        )
+        assert serializer.is_valid(), serializer.errors
+
+    def test_full_name_over_the_limit_is_rejected(self):
+        """The ceiling is the `name` kind, which is tighter than the 255-wide
+        column -- FORMS-7 asks for the right kind, not a number that fits."""
+        serializer = CustomRegisterSerializer(
+            data=_payload(full_name='N' * (FULL_NAME_MAX_LENGTH + 1))
+        )
+        assert not serializer.is_valid()
+        assert 'full_name' in serializer.errors
 
     def test_full_name_is_still_required(self):
         data = _payload()
@@ -188,3 +204,4 @@ class TestRegistrationBehaviour:
         assert get_user_model().objects.filter(
             email='new-person@example.com'
         ).count() == 1
+

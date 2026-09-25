@@ -2,17 +2,18 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-# What the hasher may be asked to chew through. dj_rest_auth declares password1
-# and password2 as plain write-only CharFields with no maximum, on an endpoint
-# that by definition accepts unauthenticated callers -- so an unbounded field is
-# an unbounded amount of CPU per request. 128 is the shared family ceiling.
-PASSWORD_MAX_LENGTH = 128
-# Below auth.User.username's 150-character width, which every site here
-# truncates an address into. Two addresses agreeing on their first 150
-# characters would collide on the unique constraint, and the second person to
-# sign up would be told they already have an account with no way forward.
-EMAIL_MAX_LENGTH = 150
-FULL_NAME_MAX_LENGTH = 255  # users.User.full_name's column width.
+from users.serializers.bounds import max_length
+
+# Ceilings by kind, not by number. `bounds.py` says why the table is mirrored
+# here rather than imported from the shared package, and what each kind is for:
+# a password bound is what the hasher may be asked to chew through, an email
+# bound sits below the width every site here truncates an address into, and a
+# person's name is a `name` -- not the 255 the column happens to be wide.
+PASSWORD_MAX_LENGTH = max_length("password")
+EMAIL_MAX_LENGTH = max_length("email")
+# `users.User.full_name`'s column is 255, so this is tighter than the write can
+# fail at. The kind is the rule; the column only has to be wide enough for it.
+FULL_NAME_MAX_LENGTH = max_length("name")
 
 
 class CustomRegisterSerializer(RegisterSerializer):
