@@ -64,9 +64,11 @@ claimed an outcome that no longer exists.
   `types/index.ts` are dead now that `JsonLdItemList` is gone. They belonged to
   another session's scope when the component was removed.
 - `next.config.ts` still redirects `/pillar-pages/*` to trailing-slash category
-  URLs (`/categories/dairy-and-eggs/`), which 308 again to the canonical
-  slashless form. One extra hop on four legacy URLs; worth collapsing when that
-  file is next opened.
+  URLs (`/categories/dairy-and-eggs/`). `skipTrailingSlashRedirect` is on, so
+  Next serves that path rather than redirecting again — but the page it serves
+  declares the slashless form as its canonical, so four legacy URLs permanently
+  redirect to a non-canonical spelling. Point the four destinations at the
+  slashless form when that file is next opened.
 - The FAQ copy in `page_components/HomePage.tsx`, `BargainsPage.tsx` and
   `SubstitutionPage.tsx` is also emitted as `FAQPage` structured data and was
   not audited for the dated-price problem SEO-N fixed in `data/pillar-faqs.ts`.
