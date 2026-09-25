@@ -29,7 +29,7 @@ class Command(BaseCommand):
         parser.add_argument('--dev', action='store_true', help='Use the local dev server instead of the production server.')
 
     def handle(self, *args, **options):
-        base_url = "http://127.0.0.1:8000" if options['dev'] else settings.API_SERVER_URL
+        base_url = settings.DEV_API_SERVER_URL if options['dev'] else settings.API_SERVER_URL
 
         # All product scraping paths need up-to-date translation tables
         self._fetch_translation_tables(base_url)

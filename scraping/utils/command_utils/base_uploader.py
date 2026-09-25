@@ -7,7 +7,7 @@ class BaseUploader:
 
     def get_server_url(self):
         if self.dev:
-            return 'http://127.0.0.1:8000'
+            return settings.DEV_API_SERVER_URL
         
         try:
             server_url = settings.API_SERVER_URL

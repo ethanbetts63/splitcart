@@ -27,7 +27,7 @@ class SubstitutionsGenerator:
 
     def run(self):
         if self.dev:
-            server_url = "http://127.0.0.1:8000"
+            server_url = settings.DEV_API_SERVER_URL
             api_key = settings.INTERNAL_API_KEY
         else:
             try:

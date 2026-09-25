@@ -33,7 +33,7 @@ def prefill_barcodes_from_api(product_list: list, command=None, dev: bool = Fals
         return product_list
 
     # Step 2: Call the API to get barcode info for the collected SKUs.
-    server_url = "http://127.0.0.1:8000" if dev else settings.API_SERVER_URL
+    server_url = settings.DEV_API_SERVER_URL if dev else settings.API_SERVER_URL
     api_key = settings.INTERNAL_API_KEY
     if not server_url or not api_key:
         if command:

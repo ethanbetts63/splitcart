@@ -26,6 +26,14 @@ INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY")
 API_SERVER_URL = os.getenv("API_SERVER_URL")
 API_SERVER_HOSTNAME = urlparse(API_SERVER_URL).hostname if API_SERVER_URL else None
 
+# Where the --dev flag points. This used to be the literal string
+# "http://127.0.0.1:8000" written out in five separate modules, which meant the
+# local half of the pipeline could only ever talk to port 8000 -- and when
+# another project in this family holds that port, --dev silently uploads one
+# site's scraped catalogue into another site's inbox. A wrong answer, delivered
+# confidently, with the API key accepted at the other end.
+DEV_API_SERVER_URL = os.getenv("DEV_API_SERVER_URL", "http://127.0.0.1:8000")
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
