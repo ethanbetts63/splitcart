@@ -11,8 +11,7 @@ Evidence for every claim below:
 
 This plan has two halves and they are not the same kind of work.
 
-**Half A — configuration and boundary defects.** Landed, except for the one row
-below, which is Django's.
+**Half A — configuration and boundary defects.** Landed.
 
 **Half B — the session model.** splitcart authenticates with a
 non-expiring DRF `authtoken` held in `localStorage`. The standard (§3) requires
@@ -22,11 +21,7 @@ other artifact built from that repository, not this one. This is a real migratio
 planned separately in [`auth-migration.md`](auth-migration.md). Nothing in Half A
 depends on it.
 
-## Half A — land now
-
-| #      | Work                                                                                                                                                          | Acceptance                                                                                                         |
-| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| SC-11b | Decide where `Cache-Control: no-store` for API responses belongs here, and put it there. The frontend cannot carry it, and a blanket rule is the wrong shape. | Every response holding one caller's data says `no-store`; no public catalogue response loses its deliberate cache. |
+## Half A — landed
 
 The header set and the CSP landed on 2026-09-25. `frontend/next.config.ts`
 builds them with `securityHeaders()` from `@freetheplatform/web-security`,
@@ -38,45 +33,23 @@ Django's half of the header set was already in place: `SECURE_HSTS_SECONDS` is
 `63072000` with `INCLUDE_SUBDOMAINS` and matches the frontend's `max-age`, and
 `X_FRAME_OPTIONS` is `DENY`.
 
-### Why SC-11b is still open
+§7's `Cache-Control` clause landed on 2026-09-26 as
+`config.middleware.NoCacheApiMiddleware`, which gives an `/api/` response
+`no-store, private` only when it carries no `Cache-Control` of its own. It could
+not be the frontend's: Next 16 returns an externally-rewritten response byte for
+byte, so neither a `headers()` rule nor a `proxy.ts` header survives — and in
+production `lib/apiUrl.ts` builds an absolute URL to `api.splitcart.com.au`, so
+the browser never uses the rewrite at all. The reason is recorded in
+`next.config.ts`, where somebody would go to add the rule that does nothing.
 
-The original row said "add `Cache-Control: no-store` on `/api/*`" alongside the
-header set, on the assumption that the frontend could emit it. It cannot, and
-a blanket rule would be wrong here even if it could. Two findings, both checked
-rather than reasoned about:
-
-- **Next cannot put a header on an externally-rewritten response.** Every
-  `/api/*` path is rewritten to another origin, and Next 16 returns the
-  upstream response byte for byte. Neither a `headers()` rule nor a `proxy.ts`
-  `NextResponse.next()` header survives it — `curl -D -` against
-  `next start` shows only Django's own headers. Both were tried. A rule in
-  `next.config.ts` would look like the control and do nothing, so there is not
-  one; the reason is written where somebody would go to add it.
-
-  This is moot in production anyway. `lib/apiUrl.ts` builds an absolute URL to
-  `api.splitcart.com.au`, so the browser never uses the rewrite and Next never
-  sees an API response to put a header on.
-
-- **A blanket `no-store` would delete a deliberate cache.** SEC §7 assumes every
-  `/api/` response is one caller's data. splitcart's API is mostly a public
-  price catalogue: six views carry `@cache_page` for two to twenty-four hours
-  precisely because their answer does not depend on who is asking, and
-  `config/tests/test_caching.py` records why that is the right shape. The
-  per-caller views — auth, the cart viewset, the internal file exports —
-  already carry `never_cache`, which emits `no-store` among the rest.
-
-So the substance of §7 is met today, by the endpoints it exists to protect. What
-is missing is §7's actual argument for a middleware over per-view decoration:
-_"Per-view would mean the one view somebody forgot is the one that leaks."_
-Nothing here enumerates per-caller views, so a new one that forgets `never_cache`
-is cached by whatever sits in front of it and nobody is told.
-
-The shape that fits both: a Django middleware that sets `no-store` only on a
-response that has no explicit `Cache-Control` of its own. `@cache_page` and
-`never_cache` both set one, so it changes nothing that already decided, and
-makes forgetting safe by default instead of silent. It needs a test, and it is
-Django's to carry rather than the frontend's — which is why it is a row here
-rather than something the SC-11 work quietly did on its way past.
+It could not be a blanket rule either. splitcart's API is mostly a public price
+catalogue and six views carry `@cache_page` for two to twenty-four hours, which
+an unconditional overwrite — the shape allbikes and bloomprint use — would
+delete. Deferring to a response that already decided keeps those, leaves the
+`never_cache` views exactly as they are, and still answers §7's actual argument
+for a middleware: the view somebody forgets now says `no-store` instead of being
+cached by whatever sits in front of it while nobody is told. Both directions are
+tested in `config/tests/test_caching.py`.
 
 ## Carried out of Half A
 

@@ -72,6 +72,11 @@ SITE_ID = 1
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    # Near the top, so it runs last on the way out: by then @cache_page and
+    # never_cache have both written their Cache-Control, and it can see that a
+    # response already decided and leave it alone. Below this, and a view's own
+    # header would land after it and the check would read an empty response.
+    "config.middleware.NoCacheApiMiddleware",
     "django.middleware.gzip.GZipMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "allauth.account.middleware.AccountMiddleware",
