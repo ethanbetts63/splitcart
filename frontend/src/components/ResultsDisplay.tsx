@@ -2,6 +2,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Download, Mail } from 'lucide-react';
 import { Spinner } from './ui/spinner';
 import PlanDetails from './PlanDetails';
+import { cva } from 'class-variance-authority';
+
 import * as types from '../types';
 
 /**
@@ -25,7 +27,7 @@ const ExportButtons = ({
     <button
       onClick={onEmail}
       disabled={exportAction?.type === 'email' && exportAction?.plan === planKey}
-      className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold border border-gray-300 bg-white rounded-lg hover:border-gray-900 hover:text-gray-900 transition-colors duration-150 disabled:opacity-50"
+      className="flex items-center gap-1.5 px-3 py-1.5 text-body font-semibold border border-border-strong bg-surface-page rounded-lg hover:border-border-strong-hover hover:text-text-primary transition-colors duration-150 disabled:opacity-50"
     >
       {exportAction?.type === 'email' && exportAction?.plan === planKey ? (
         <Spinner className="h-4 w-4 animate-spin" />
@@ -37,7 +39,7 @@ const ExportButtons = ({
     <button
       onClick={onDownload}
       disabled={exportAction?.type === 'download' && exportAction?.plan === planKey}
-      className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold border border-gray-300 bg-white rounded-lg hover:border-gray-900 hover:text-gray-900 transition-colors duration-150 disabled:opacity-50"
+      className="flex items-center gap-1.5 px-3 py-1.5 text-body font-semibold border border-border-strong bg-surface-page rounded-lg hover:border-border-strong-hover hover:text-text-primary transition-colors duration-150 disabled:opacity-50"
     >
       {exportAction?.type === 'download' && exportAction?.plan === planKey ? (
         <Spinner className="h-4 w-4 animate-spin" />
@@ -47,6 +49,26 @@ const ExportButtons = ({
       Download
     </button>
   </div>
+);
+
+/**
+ * The plan tabs: three states (resting, active, and "this is the biggest
+ * saving") across two palettes, previously a multi-branch ternary inside a
+ * template literal. Variants are semantic -- `saving`, not `green`.
+ */
+const planTabVariants = cva(
+  'flex-1 flex flex-col items-center gap-0.5 rounded-xl border px-3 py-2.5 text-body font-semibold shadow-sm transition-all data-[state=active]:shadow-none',
+  {
+    variants: {
+      emphasis: {
+        saving:
+          'border-border-success bg-surface-success text-text-success data-[state=active]:border-fill-success data-[state=active]:bg-fill-success data-[state=active]:text-text-on-dark',
+        standard:
+          'border-border-default bg-surface-page text-text-secondary data-[state=active]:border-action-primary-hover data-[state=active]:bg-action-primary data-[state=active]:text-text-on-brand',
+      },
+    },
+    defaultVariants: { emphasis: 'standard' },
+  },
 );
 
 const ResultsDisplay = ({
@@ -68,7 +90,7 @@ const ResultsDisplay = ({
       (!data.optimization_results || data.optimization_results.length === 0))
   ) {
     return (
-      <p className="mt-4 text-gray-500">No optimization results available for this selection.</p>
+      <p className="mt-4 text-text-muted">No optimization results available for this selection.</p>
     );
   }
 
@@ -114,20 +136,19 @@ const ResultsDisplay = ({
 
   return (
     <div className="space-y-6">
-      <div className="rounded-xl border border-gray-200 bg-gray-50 px-5 py-4 flex flex-wrap items-center gap-x-6 gap-y-1">
-        <span className="text-sm text-gray-500">Baseline cost (average across companies)</span>
-        <span className="font-bold text-gray-900 text-lg">${data.baseline_cost.toFixed(2)}</span>
+      <div className="rounded-xl border border-border-default bg-surface-muted px-5 py-4 flex flex-wrap items-center gap-x-6 gap-y-1">
+        <span className="text-body text-text-muted">Baseline cost (average across companies)</span>
+        <span className="font-bold text-text-primary text-lead">
+          ${data.baseline_cost.toFixed(2)}
+        </span>
       </div>
 
       <Tabs defaultValue={defaultTab} className="w-full">
         <TabsList className="flex h-auto w-full gap-1.5 bg-transparent p-0 flex-wrap">
           {data.best_single_company && (
-            <TabsTrigger
-              value="tab-1"
-              className="flex-1 min-w-[120px] flex flex-col items-center gap-0.5 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-600 shadow-sm transition-all data-[state=active]:border-yellow-400 data-[state=active]:bg-yellow-300 data-[state=active]:text-black data-[state=active]:shadow-none"
-            >
+            <TabsTrigger value="tab-1" className={planTabVariants({ className: 'min-w-[120px]' })}>
               <span>Best Single Company</span>
-              <span className="text-xs font-normal opacity-70">
+              <span className="text-caption font-normal opacity-70">
                 {data.best_single_company.items_found_count}/
                 {data.best_single_company.total_items_in_cart} items
               </span>
@@ -142,14 +163,13 @@ const ResultsDisplay = ({
               <TabsTrigger
                 key={result.max_companies}
                 value={`tab-${result.max_companies}`}
-                className={`flex-1 min-w-[100px] flex flex-col items-center gap-0.5 rounded-xl border px-3 py-2.5 text-sm font-semibold shadow-sm transition-all data-[state=active]:shadow-none ${
-                  isHighestSaving
-                    ? 'border-green-300 bg-green-50 text-green-800 data-[state=active]:border-green-500 data-[state=active]:bg-green-500 data-[state=active]:text-white'
-                    : 'border-gray-200 bg-white text-gray-600 data-[state=active]:border-yellow-400 data-[state=active]:bg-yellow-300 data-[state=active]:text-black'
-                }`}
+                className={planTabVariants({
+                  emphasis: isHighestSaving ? 'saving' : 'standard',
+                  className: 'min-w-[100px]',
+                })}
               >
                 <span>{result.max_companies} Companies</span>
-                <span className="text-xs font-bold">
+                <span className="text-label font-bold">
                   {percentage > 0 ? `Save ${percentage}%` : '-'}
                 </span>
               </TabsTrigger>
@@ -159,20 +179,22 @@ const ResultsDisplay = ({
 
         {data.best_single_company && (
           <TabsContent value="tab-1" className="mt-4">
-            <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
-              <div className="p-5 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="rounded-xl border border-border-default bg-surface-page shadow-sm overflow-hidden">
+              <div className="p-5 border-b border-border-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-8">
                   <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">
+                    <p className="text-label text-text-subtle uppercase tracking-wide mb-0.5">
                       Total Cost
                     </p>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-title-sm font-bold text-text-primary">
                       ${data.best_single_company.optimized_cost.toFixed(2)}
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">You Save</p>
-                    <p className="text-2xl font-bold text-green-600">
+                    <p className="text-label text-text-subtle uppercase tracking-wide mb-0.5">
+                      You Save
+                    </p>
+                    <p className="text-title-sm font-bold text-text-success">
                       ${singleCompanySavings.toFixed(2)}
                     </p>
                   </div>
@@ -204,7 +226,7 @@ const ResultsDisplay = ({
                       )
                     }
                   />
-                  <p className="text-xs text-gray-400">
+                  <p className="text-caption text-text-subtle">
                     Found {data.best_single_company.items_found_count} of{' '}
                     {data.best_single_company.total_items_in_cart} items
                   </p>
@@ -221,20 +243,22 @@ const ResultsDisplay = ({
             value={`tab-${result.max_companies}`}
             className="mt-4"
           >
-            <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
-              <div className="p-5 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="rounded-xl border border-border-default bg-surface-page shadow-sm overflow-hidden">
+              <div className="p-5 border-b border-border-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-8">
                   <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">
+                    <p className="text-label text-text-subtle uppercase tracking-wide mb-0.5">
                       Total Cost
                     </p>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-title-sm font-bold text-text-primary">
                       ${result.optimized_cost.toFixed(2)}
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">You Save</p>
-                    <p className="text-2xl font-bold text-green-600">
+                    <p className="text-label text-text-subtle uppercase tracking-wide mb-0.5">
+                      You Save
+                    </p>
+                    <p className="text-title-sm font-bold text-text-success">
                       ${result.savings.toFixed(2)}
                     </p>
                   </div>

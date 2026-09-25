@@ -92,7 +92,7 @@ const PillarPage = ({ pillarPage, slug, categoryProducts = {} }: PillarPageProps
   return (
     <div>
       {/* --- Hero Section --- */}
-      <div className="container mx-auto px-4 pt-4 pb-1">
+      <div className="site-shell pt-4 pb-1">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
             <AspectRatio ratio={16 / 9}>
@@ -107,17 +107,17 @@ const PillarPage = ({ pillarPage, slug, categoryProducts = {} }: PillarPageProps
             </AspectRatio>
           </div>
           <div className="text-left">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
+            <h1 className="text-display font-bold tracking-tight text-text-primary">
               {pillarPage.hero_title}
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
+            <p className="mt-6 text-lead leading-8 text-text-secondary">
               {pillarPage.introduction_paragraph}
             </p>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="site-shell py-section">
         {/* Product Carousels and Price Comparisons */}
         {pillarPage.primary_categories.map((category: PrimaryCategory, index: number) => (
           <div key={category.slug} className="mb-8">
@@ -133,9 +133,9 @@ const PillarPage = ({ pillarPage, slug, categoryProducts = {} }: PillarPageProps
               category.price_comparison_data.comparisons &&
               category.price_comparison_data.comparisons.length > 0 && (
                 <>
-                  <h2 className="text-3xl font-bold text-center my-8">
+                  <h2 className="text-title font-bold text-center my-8">
                     Where to buy{' '}
-                    <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
+                    <span className="font-bold bg-action-primary px-0.5 py-1 rounded italic text-text-on-brand">
                       cheap
                     </span>{' '}
                     {category.name} in Australia?
@@ -157,7 +157,7 @@ const PillarPage = ({ pillarPage, slug, categoryProducts = {} }: PillarPageProps
 
         {/* FAQ Section */}
         {faqs.length > 0 && (
-          <div className="container mx-auto px-4 py-8">
+          <div className="site-shell py-section">
             <div className="flex flex-col gap-8">
               <section>
                 <FaqSection

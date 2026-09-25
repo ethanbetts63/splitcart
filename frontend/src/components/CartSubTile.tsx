@@ -50,7 +50,7 @@ const CartSubTile = ({ cartSubstitution, cartItemId }: CartSubTileProps) => {
       {/* Middle Section: Info */}
       <div className="flex-grow grid grid-cols-3 items-center">
         <p className="font-semibold line-clamp-1 col-span-1">{product.name}</p>
-        <p className="text-sm text-muted-foreground col-span-1">{product.brand_name}</p>
+        <p className="text-body text-text-muted col-span-1">{product.brand_name}</p>
         {product.size && (
           <Badge variant="outline" className="w-fit col-span-1">
             {product.size}
@@ -66,7 +66,7 @@ const CartSubTile = ({ cartSubstitution, cartItemId }: CartSubTileProps) => {
         <Input
           type="number"
           readOnly
-          className="h-6 w-10 text-center no-spinner"
+          className="h-6 w-10 text-center [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
           value={quantity}
           min="0"
         />

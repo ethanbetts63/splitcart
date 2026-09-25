@@ -1,8 +1,47 @@
 'use client';
 
+import { cva } from 'class-variance-authority';
+
 import { Badge } from './ui/badge';
 import type { PriceDisplayProps } from '../types/PriceDisplayProps';
 import { companyLogos } from '@/lib/companies';
+
+/**
+ * One boolean, `is_lowest`, decided three separate class strings here, each
+ * written as its own ternary inside its own template literal. That is the
+ * copied-class-bundle shape LINT-3 names: nothing holds the three answers
+ * together, so a change to what "cheapest" looks like has to be made three
+ * times and can be made twice. One variant set, three slots.
+ */
+const priceRowVariants = cva('p-2 rounded-md', {
+  variants: {
+    emphasis: {
+      lowest: 'bg-surface-success border border-border-success',
+      standard: 'bg-surface-muted',
+    },
+  },
+  defaultVariants: { emphasis: 'standard' },
+});
+
+const priceCompanyVariants = cva('text-lead', {
+  variants: {
+    emphasis: {
+      lowest: 'font-bold text-text-primary',
+      standard: 'text-text-secondary',
+    },
+  },
+  defaultVariants: { emphasis: 'standard' },
+});
+
+const priceAmountVariants = cva('text-lead font-semibold', {
+  variants: {
+    emphasis: {
+      lowest: 'text-text-success',
+      standard: 'text-text-primary',
+    },
+  },
+  defaultVariants: { emphasis: 'standard' },
+});
 
 const CompanyLogo = ({
   companyName,
@@ -14,7 +53,7 @@ const CompanyLogo = ({
   const logoSrc = companyLogos[companyName];
 
   if (!logoSrc) {
-    return <div className="h-5 w-5 rounded-sm bg-gray-200" />;
+    return <div className="h-5 w-5 rounded-sm bg-surface-sunken-strong" />;
   }
 
   return (
@@ -31,45 +70,42 @@ const CompanyLogo = ({
 
 const PriceDisplay = ({ prices, displayMode = 'compact' }: PriceDisplayProps) => {
   if (!prices || prices.length === 0) {
-    return <p className="text-sm text-gray-400">No price available</p>;
+    return <p className="text-body text-text-subtle">No price available</p>;
   }
 
-  // Full display mode — product page, unchanged
+  // Full display mode — product page
   if (displayMode === 'full') {
     return (
       <div className="grid gap-2">
-        {prices.map((priceInfo) => (
-          <div
-            key={priceInfo.company}
-            className={`p-2 rounded-md ${priceInfo.is_lowest ? 'bg-green-50 border border-green-200' : 'bg-gray-50'}`}
-          >
-            <div className="flex justify-center items-center gap-4">
-              <div className="flex items-center gap-3">
-                <CompanyLogo
-                  companyName={priceInfo.company}
-                  priceDisplay={priceInfo.price_display}
-                />
-                <span
-                  className={`text-lg ${priceInfo.is_lowest ? 'font-bold text-gray-800' : 'text-gray-600'}`}
-                >
-                  {priceInfo.company}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                {priceInfo.is_lowest && (
-                  <Badge variant="secondary" className="bg-green-100 text-green-800">
-                    Lowest
-                  </Badge>
-                )}
-                <span
-                  className={`text-xl font-semibold ${priceInfo.is_lowest ? 'text-green-700' : 'text-gray-800'}`}
-                >
-                  {priceInfo.price_display}
-                </span>
+        {prices.map((priceInfo) => {
+          const emphasis = priceInfo.is_lowest ? 'lowest' : 'standard';
+          return (
+            <div key={priceInfo.company} className={priceRowVariants({ emphasis })}>
+              <div className="flex justify-center items-center gap-4">
+                <div className="flex items-center gap-3">
+                  <CompanyLogo
+                    companyName={priceInfo.company}
+                    priceDisplay={priceInfo.price_display}
+                  />
+                  <span className={priceCompanyVariants({ emphasis })}>{priceInfo.company}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {priceInfo.is_lowest && (
+                    <Badge
+                      variant="secondary"
+                      className="bg-surface-success-strong text-text-success"
+                    >
+                      Lowest
+                    </Badge>
+                  )}
+                  <span className={priceAmountVariants({ emphasis })}>
+                    {priceInfo.price_display}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     );
   }
@@ -82,9 +118,9 @@ const PriceDisplay = ({ prices, displayMode = 'compact' }: PriceDisplayProps) =>
 
   return (
     <div className="flex items-center justify-between gap-2">
-      <p className="font-bold text-gray-900 leading-none">
-        {isRange && <span className="text-xs font-normal text-gray-400 mr-0.5">from </span>}
-        <span className="text-base">${lowestPriceStr}</span>
+      <p className="font-bold text-text-primary leading-none">
+        {isRange && <span className="text-caption font-normal text-text-subtle mr-0.5">from </span>}
+        <span className="text-body">${lowestPriceStr}</span>
       </p>
       <div className="flex items-center gap-1">
         {prices.map((priceInfo) => (

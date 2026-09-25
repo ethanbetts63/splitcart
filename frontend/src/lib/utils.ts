@@ -1,5 +1,26 @@
 import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { extendTailwindMerge } from 'tailwind-merge';
+
+import { TEXT_SIZES } from './text-sizes.generated';
+
+/**
+ * tailwind-merge only knows Tailwind's stock sizes, so without this list it
+ * misreads a custom name like `text-body-sm` as a *colour* and drops whatever
+ * real colour it is merged with -- silently, at runtime, with no build error.
+ * `cn()` existed here already and registered nothing, which is why a rung
+ * utility and a stock size utility did not deduplicate.
+ *
+ * Names come straight out of tokens.css's `@theme inline` block via
+ * `text-sizes.generated.ts`, so nothing here needs keeping in step by hand;
+ * `npm run check:text-scale` fails when that file is stale.
+ */
+const twMerge = extendTailwindMerge({
+  extend: {
+    classGroups: {
+      'font-size': [{ text: [...TEXT_SIZES] }],
+    },
+  },
+});
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

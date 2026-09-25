@@ -147,27 +147,27 @@ const SubstitutionPage = () => {
   const approvedCount = currentSubstitutes.filter((s) => s.is_approved).length;
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="site-shell py-6">
       {/* Primary Nav */}
       <div className="flex items-center justify-between gap-4 mb-3">
         <button
           onClick={handleBack}
-          className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold border border-gray-300 bg-white rounded-lg hover:border-gray-900 hover:text-gray-900 transition-colors duration-150"
+          className="flex items-center gap-1.5 px-4 py-2 text-body font-semibold border border-border-strong bg-surface-page rounded-lg hover:border-border-strong-hover hover:text-text-primary transition-colors duration-150"
         >
           <ArrowLeft className="h-4 w-4" />
           {currentItemIndex === 0 ? 'Home' : 'Back'}
         </button>
 
         <div className="text-center">
-          <h1 className="text-xl font-bold text-gray-900">Approve Substitutes</h1>
-          <p className="text-sm text-gray-400">
+          <h1 className="text-lead font-bold text-text-primary">Approve Substitutes</h1>
+          <p className="text-body text-text-subtle">
             Item {currentItemIndex + 1} of {itemsToReview.length}
           </p>
         </div>
 
         <button
           onClick={handleNext}
-          className="flex items-center gap-1.5 px-4 py-2 text-sm font-bold bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500 text-black rounded-lg transition-colors duration-150"
+          className="flex items-center gap-1.5 px-4 py-2 text-body font-bold bg-action-primary hover:bg-action-primary-hover active:bg-action-primary-active text-text-on-brand rounded-lg transition-colors duration-150"
         >
           {isLastItem ? 'Split my Cart!' : 'Next'}
           {!isLastItem && <ArrowRight className="h-4 w-4" />}
@@ -176,9 +176,9 @@ const SubstitutionPage = () => {
 
       {/* Progress Bar */}
       <div className="mb-3">
-        <div className="w-full bg-gray-200 rounded-full h-1.5">
+        <div className="w-full bg-surface-sunken-strong rounded-full h-1.5">
           <div
-            className="bg-yellow-400 h-1.5 rounded-full transition-all duration-300"
+            className="bg-action-primary-hover h-1.5 rounded-full transition-all duration-300"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
@@ -188,25 +188,25 @@ const SubstitutionPage = () => {
       <div className="flex items-center justify-between mb-5">
         <button
           onClick={handleOptimizeAndNavigate}
-          className="text-sm text-gray-400 hover:text-gray-700 underline underline-offset-2 transition-colors"
+          className="text-body text-text-subtle hover:text-text-control underline underline-offset-2 transition-colors"
         >
           Skip all substitutions
         </button>
         <button
           onClick={handleApproveAllAndNext}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold border border-gray-300 bg-white rounded-lg hover:border-gray-900 hover:text-gray-900 transition-colors duration-150"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-body font-semibold border border-border-strong bg-surface-page rounded-lg hover:border-border-strong-hover hover:text-text-primary transition-colors duration-150"
         >
           Approve All & {isLastItem ? 'Split' : 'Next'}
         </button>
       </div>
 
       {/* Main Panel */}
-      <div className="bg-gray-50 rounded-xl p-5">
+      <div className="bg-surface-muted rounded-xl p-5">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Original Product */}
           <div>
-            <h2 className="text-base font-bold mb-4 text-center">
-              <span className="italic bg-yellow-300 px-1 py-0.5 rounded text-black">
+            <h2 className="text-body font-bold mb-4 text-center">
+              <span className="italic bg-action-primary px-1 py-0.5 rounded text-text-on-brand">
                 Original Product
               </span>
             </h2>
@@ -226,18 +226,18 @@ const SubstitutionPage = () => {
           {/* Substitutes */}
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-base font-bold">
-                <span className="italic bg-yellow-300 px-1 py-0.5 rounded text-black">
+              <h2 className="text-body font-bold">
+                <span className="italic bg-action-primary px-1 py-0.5 rounded text-text-on-brand">
                   Substitutes
                 </span>
               </h2>
               {approvedCount > 0 && (
-                <span className="text-xs font-semibold text-green-600 bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">
+                <span className="text-label font-semibold text-text-success bg-surface-success border border-border-success px-2 py-0.5 rounded-full">
                   {approvedCount} approved
                 </span>
               )}
             </div>
-            <div className="h-[480px] overflow-y-auto rounded-xl border border-gray-200 bg-white p-3 space-y-3">
+            <div className="h-[480px] overflow-y-auto rounded-xl border border-border-default bg-surface-page p-3 space-y-3">
               {currentSubstitutes.map((sub) => {
                 if (sub.substituted_product.prices && sub.substituted_product.prices.length > 0) {
                   return (

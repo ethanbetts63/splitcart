@@ -111,7 +111,7 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
   const isLoading = (isLoadingProp ?? isFetching) && !initialProducts;
 
   if (!isLoading && products.length < minProducts) return null;
-  if (error) return <div className="text-center p-4 text-red-500">Error: {error.message}</div>;
+  if (error) return <div className="text-center p-4 text-text-danger">Error: {error.message}</div>;
 
   // --- See More Link ---
   let seeMoreLink = null;
@@ -140,19 +140,21 @@ const ProductCarouselComponent: React.FC<ProductCarouselProps> = ({
 
   return (
     <>
-      <section className="-mx-4 md:mx-0 bg-gray-50 py-5 md:px-5 rounded-none md:rounded-xl">
+      <section className="-mx-4 md:mx-0 bg-surface-muted py-5 md:px-5 rounded-none md:rounded-xl">
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 mb-4 pb-3 border-b border-gray-200 px-5 md:px-0">
+        <div className="flex items-start justify-between gap-4 mb-4 pb-3 border-b border-border-default px-5 md:px-0">
           <div>
-            <h2 className="text-2xl font-bold">
-              <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">{title}</span>
+            <h2 className="text-title-sm font-bold">
+              <span className="bg-action-primary px-0.5 py-1 rounded italic text-text-on-brand">
+                {title}
+              </span>
             </h2>
           </div>
           {exploreHref && (
             <Link
               href={exploreHref}
               aria-label={exploreLabel}
-              className="shrink-0 flex items-center gap-1.5 text-sm font-semibold text-gray-700 border border-gray-300 bg-white hover:border-gray-900 hover:text-gray-900 px-3 py-1.5 rounded-lg transition-colors duration-150"
+              className="shrink-0 flex items-center gap-1.5 text-body font-semibold text-text-control border border-border-strong bg-surface-page hover:border-border-strong-hover hover:text-text-primary px-3 py-1.5 rounded-lg transition-colors duration-150"
             >
               {isSmallScreen ? 'Explore' : exploreLabel}
               <ArrowRight className="h-4 w-4" />

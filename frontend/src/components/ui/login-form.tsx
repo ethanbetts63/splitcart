@@ -66,10 +66,8 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
           <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">Welcome back!</h1>
-                <p className="text-muted-foreground text-balance">
-                  Login to start hunting bargains!
-                </p>
+                <h1 className="text-title-sm font-bold">Welcome back!</h1>
+                <p className="text-text-muted text-balance">Login to start hunting bargains!</p>
               </div>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -86,7 +84,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a href="#" className="ml-auto text-sm underline-offset-2 hover:underline">
+                  <a href="#" className="ml-auto text-body underline-offset-2 hover:underline">
                     Forgot your password?
                   </a>
                 </div>
@@ -117,7 +115,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
             <img
               src={assetSrc(priceDestroyerImage)}
               alt="Image"
-              className="absolute inset-0 h-full w-full object-contain dark:brightness-[0.2] dark:grayscale"
+              className="absolute inset-0 h-full w-full object-contain"
             />
           </div>
         </CardContent>

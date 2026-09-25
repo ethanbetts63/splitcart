@@ -1,0 +1,12 @@
+/* Document-level defaults. Tailwind's Preflight supplies the cross-browser
+   reset and is the only reset in this app. */
+@layer base {
+  * {
+    @apply border-border-default outline-focus-ring/50;
+  }
+
+  body {
+    background: var(--surface-page);
+    color: var(--text-primary);
+  }
+}

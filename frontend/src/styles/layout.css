@@ -1,0 +1,18 @@
+/* The shared page rail. Components decide their internal layout; pages should
+   not redefine the gutter or the content width.
+
+   This replaced 26 hand-written `container mx-auto px-4` strings. Two things
+   changed with it, both deliberate. The cap is a single fluid --content-max
+   rather than Tailwind's five quantised `container` steps, so content is wider
+   between breakpoints and narrower above 1536px. And the four call sites that
+   had no horizontal padding at all now get the gutter, which they wanted on a
+   phone. A page that genuinely needs a different inset still says so with a
+   `px-*` utility beside the class -- utilities win over @layer components. */
+@layer components {
+  .site-shell {
+    margin-inline: auto;
+    max-width: var(--content-max);
+    padding-inline: var(--gutter);
+    width: 100%;
+  }
+}

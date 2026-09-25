@@ -143,11 +143,11 @@ const GridSourcer = ({
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">
+        <h2 className="text-title-sm font-bold">
           {bargainCompany && (
             <>
               Showing {totalResults} bargains for{' '}
-              <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
+              <span className="font-bold bg-action-primary px-0.5 py-1 rounded italic text-text-on-brand">
                 &quot;{bargainCompany}&quot;
               </span>
             </>
@@ -155,7 +155,7 @@ const GridSourcer = ({
           {searchTerm && (
             <>
               Found {totalResults} results for{' '}
-              <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
+              <span className="font-bold bg-action-primary px-0.5 py-1 rounded italic text-text-on-brand">
                 &quot;{searchTerm}&quot;
               </span>
             </>
@@ -169,7 +169,7 @@ const GridSourcer = ({
               return (
                 <>
                   Showing {totalResults} products in{' '}
-                  <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
+                  <span className="font-bold bg-action-primary px-0.5 py-1 rounded italic text-text-on-brand">
                     &quot;{formattedSlug}&quot;
                   </span>
                 </>

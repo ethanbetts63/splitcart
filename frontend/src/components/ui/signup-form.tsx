@@ -75,7 +75,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
         <form onSubmit={handleSubmit}>
           <FieldGroup>
             {errors.non_field_errors && (
-              <div className="rounded-md border border-red-500 bg-red-50 p-4 text-sm text-red-700">
+              <div className="rounded-md border border-fill-danger bg-surface-danger p-4 text-body text-text-danger">
                 {errors.non_field_errors.map((error, index) => (
                   <p key={index}>{error}</p>
                 ))}
@@ -92,7 +92,9 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 onChange={(e) => setFullName(e.target.value)}
               />
               {errors.full_name && (
-                <FieldDescription className="text-red-500">{errors.full_name[0]}</FieldDescription>
+                <FieldDescription className="text-text-danger">
+                  {errors.full_name[0]}
+                </FieldDescription>
               )}
             </Field>
             <Field>
@@ -106,7 +108,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 onChange={(e) => setEmail(e.target.value)}
               />
               {errors.email ? (
-                <FieldDescription className="text-red-500">{errors.email[0]}</FieldDescription>
+                <FieldDescription className="text-text-danger">{errors.email[0]}</FieldDescription>
               ) : (
                 <FieldDescription>
                   We&apos;ll use this to contact you. We will not share your email with anyone else.
@@ -123,7 +125,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 onChange={(e) => setPassword(e.target.value)}
               />
               {errors.password1 ? (
-                <FieldDescription className="text-red-500">
+                <FieldDescription className="text-text-danger">
                   {errors.password1.join(' ')}
                 </FieldDescription>
               ) : (
@@ -140,7 +142,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
               {errors.password2 && (
-                <FieldDescription className="text-red-500">
+                <FieldDescription className="text-text-danger">
                   {errors.password2.join(' ')}
                 </FieldDescription>
               )}

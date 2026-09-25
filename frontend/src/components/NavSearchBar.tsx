@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Search } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
+import { cn } from '@/lib/utils';
 
 export function NavSearchBar({ className = '' }: { className?: string }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -17,14 +18,14 @@ export function NavSearchBar({ className = '' }: { className?: string }) {
   };
 
   return (
-    <div className={`relative w-full ${className}`}>
+    <div className={cn('relative w-full', className)}>
       <Input
         type="search"
         placeholder="Search products, stores, and more..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-        className="h-10 text-base pr-12 rounded-full"
+        className="h-10 text-body pr-12 rounded-full"
       />
       <Button
         type="submit"

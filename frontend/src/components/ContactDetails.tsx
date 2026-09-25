@@ -2,10 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const ContactDetails = () => {
   return (
-    <div className="container mx-auto px-4 py-8 ">
-      <Card className="bg-white text-black border-0 shadow-md">
+    <div className="site-shell py-section">
+      <Card className="bg-surface-page text-text-primary border-0 shadow-md">
         <CardHeader>
-          <CardTitle className="flex items-center text-2xl">
+          <CardTitle className="flex items-center text-title-sm">
             The Splitcart Elavator Pitch:
           </CardTitle>
         </CardHeader>

@@ -13,7 +13,7 @@ const SearchResultsPage = () => {
   const sourceUrl = null;
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="site-shell py-4">
       <GridSourcer
         searchTerm={searchTerm}
         sourceUrl={sourceUrl}

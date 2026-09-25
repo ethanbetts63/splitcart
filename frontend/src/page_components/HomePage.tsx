@@ -130,7 +130,7 @@ const HomePage = ({ initialBargainProducts = [] }: HomePageProps) => {
   return (
     <div>
       {/* --- Hero Section --- */}
-      <div className="container mx-auto px-0 sm:px-4 pt-4 pb-1">
+      <div className="site-shell px-0 sm:px-4 pt-4 pb-1">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
             <AspectRatio ratio={16 / 9}>
@@ -151,13 +151,13 @@ const HomePage = ({ initialBargainProducts = [] }: HomePageProps) => {
             </AspectRatio>
           </div>
           <div className="text-left px-4 sm:px-0">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
+            <h1 className="text-display font-bold tracking-tight text-text-primary">
               The Cheapest Way to Buy Groceries
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
+            <p className="mt-6 text-lead leading-8 text-text-secondary">
               Every supermarket has deals — just not on the same items. SplitCart compares prices
               across Coles, Woolworths, and Aldi and{' '}
-              <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
+              <span className="font-bold bg-action-primary px-0.5 py-1 rounded italic text-text-on-brand">
                 splits your cart for the cheapest possible shop.
               </span>
             </p>
@@ -172,7 +172,7 @@ const HomePage = ({ initialBargainProducts = [] }: HomePageProps) => {
       <HowItWorksSection steps={howItWorksSteps} />
 
       {/* --- Carousel: Bargains --- */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="site-shell py-section">
         <ProductCarousel
           key="bargains"
           title="Bargains"

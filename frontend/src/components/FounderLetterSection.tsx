@@ -1,21 +1,21 @@
 export const FounderLetterSection = () => {
   return (
-    <div className="container mx-auto px-4 md:px-16 pt-1 pb-1">
+    <div className="site-shell md:px-16 pt-1 pb-1">
       <div className="text-center mb-8">
-        <h2 className="text-5xl font-bold tracking-tight text-gray-900 max-w-2xl mx-auto">
+        <h2 className="text-display font-bold tracking-tight text-text-primary max-w-2xl mx-auto">
           What percentage of a whole chicken is bone weight?
         </h2>
-        <p className="text-xl mt-4">
+        <p className="text-lead mt-4">
           Short answer: <span className="font-bold">25-32%</span>. Most common answer:{' '}
-          <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
+          <span className="font-bold bg-action-primary px-0.5 py-1 rounded italic text-text-on-brand">
             Who cares?
           </span>
         </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12 text-lg ">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12 text-lead">
         <div className="flex flex-col gap-4">
           <p>
-            <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
+            <span className="font-bold bg-action-primary px-0.5 py-1 rounded italic text-text-on-brand">
               I care.
             </span>{' '}
             And if you&apos;re like me then you care too. If you&apos;re like me, you&apos;ve
@@ -41,7 +41,7 @@ export const FounderLetterSection = () => {
           <p>
             So, welcome aboard fellow bargain hunter. I hope SplitCart can be as useful to you as it
             is to me.{' '}
-            <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
+            <span className="font-bold bg-action-primary px-0.5 py-1 rounded italic text-text-on-brand">
               Expect to save 10-35%
             </span>{' '}
             on your grocery bill!
@@ -50,15 +50,15 @@ export const FounderLetterSection = () => {
           <div>
             <p>Happy hunting,</p>
             <p className="font-bold">
-              <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
+              <span className="font-bold bg-action-primary px-0.5 py-1 rounded italic text-text-on-brand">
                 Ethan Betts
               </span>
               ,{' '}
-              <a href="mailto:ethanbetts63@gmail.com" className="text-blue-600 hover:underline">
+              <a href="mailto:ethanbetts63@gmail.com" className="text-text-action hover:underline">
                 ethanbetts63@gmail.com
               </a>
             </p>
-            <p className="italic text-sm text-gray-600">Founder and Developer</p>
+            <p className="italic text-body text-text-secondary">Founder and Developer</p>
           </div>
         </div>
       </div>

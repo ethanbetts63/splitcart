@@ -32,9 +32,9 @@ export const Hero = ({ title, subtitle, imageAlt, ctaElement }: HeroProps) => {
             fetchPriority="high"
           />
         </div>
-        <div className="text-left text-black px-4 lg:px-8 flex flex-col justify-center lg:py-8">
-          <h1 className="font-bold tracking-tight sm:text-5xl md:text-6xl">{title}</h1>
-          <p className="mt-6 text-lg leading-8">{subtitle}</p>
+        <div className="text-left text-text-primary px-4 lg:px-8 flex flex-col justify-center lg:py-8">
+          <h1 className="text-display font-bold tracking-tight">{title}</h1>
+          <p className="mt-6 text-lead leading-8">{subtitle}</p>
           {ctaElement && <div className="mt-6 flex justify-center">{ctaElement}</div>}
         </div>
       </div>

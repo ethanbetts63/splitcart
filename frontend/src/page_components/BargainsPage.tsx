@@ -54,7 +54,7 @@ const BargainsPage = ({ initialBargainStats, initialCompanyProducts = {} }: Barg
   return (
     <div>
       {/* --- Hero Section --- */}
-      <div className="container mx-auto px-4 pt-4 pb-1">
+      <div className="site-shell pt-4 pb-1">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
             <AspectRatio ratio={16 / 9}>
@@ -75,14 +75,14 @@ const BargainsPage = ({ initialBargainStats, initialCompanyProducts = {} }: Barg
             </AspectRatio>
           </div>
           <div className="text-left">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
+            <h1 className="text-display font-bold tracking-tight text-text-primary">
               {hero_title}
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
+            <p className="mt-6 text-lead leading-8 text-text-secondary">
               Forget the flashy ‘specials’ — these are the real bargains hiding in plain sight.
               We’ve compared prices across supermarkets to show you who actually sells each item for
               less.{' '}
-              <span className="font-bold bg-yellow-300 px-0.5 py-1 rounded italic text-black">
+              <span className="font-bold bg-action-primary px-0.5 py-1 rounded italic text-text-on-brand">
                 Interested in the stats?
               </span>{' '}
               We&apos;ve graphed the trends below so you can see which supermarket comes out on top
@@ -91,7 +91,7 @@ const BargainsPage = ({ initialBargainStats, initialCompanyProducts = {} }: Barg
           </div>
         </div>
       </div>
-      <div className="container mx-auto px-4 py-8">
+      <div className="site-shell py-section">
         <div className="flex flex-col gap-8">
           {companies.map((company) => (
             <ProductCarousel
@@ -108,25 +108,27 @@ const BargainsPage = ({ initialBargainStats, initialCompanyProducts = {} }: Barg
       </div>
 
       {/* --- Bargain Stats Section --- */}
-      <div className="container mx-auto px-4 py-8">
-        <section className="-mx-4 md:mx-0 bg-gray-50 py-8 md:px-5 rounded-none md:rounded-xl">
-          <h2 className="text-3xl font-bold text-center mb-8 px-5 md:px-0">
+      <div className="site-shell py-section">
+        <section className="-mx-4 md:mx-0 bg-surface-muted py-8 md:px-5 rounded-none md:rounded-xl">
+          <h2 className="text-title font-bold text-center mb-8 px-5 md:px-0">
             Which supermarket is the{' '}
-            <span className="bg-yellow-300 px-0.5 py-1 rounded italic text-black">cheapest</span> in
-            Australia?
+            <span className="bg-action-primary px-0.5 py-1 rounded italic text-text-on-brand">
+              cheapest
+            </span>{' '}
+            in Australia?
           </h2>
           {initialBargainStats && initialBargainStats.length > 0 && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 md:px-0">
               {initialBargainStats.map((comparison, index) => (
                 <PriceComparisonChart key={index} comparison={comparison} categoryName="products" />
               ))}
-              <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-5 flex flex-col gap-3">
-                <h3 className="font-bold text-gray-900 text-base">How We Compare</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+              <div className="rounded-xl border border-border-default bg-surface-page shadow-sm p-5 flex flex-col gap-3">
+                <h3 className="font-bold text-text-primary text-body">How We Compare</h3>
+                <p className="text-body text-text-secondary leading-relaxed">
                   These statistics are based on the full set of identical products that two
                   companies both sell according to our database.
                 </p>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-body text-text-secondary leading-relaxed">
                   You&apos;ll notice this number changes for each pairing. Companies like Aldi have
                   a highly unique product range, which results in a smaller overlap and fewer items
                   being compared.
@@ -138,7 +140,7 @@ const BargainsPage = ({ initialBargainStats, initialCompanyProducts = {} }: Barg
       </div>
 
       {/* FAQ Section */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="site-shell py-section">
         <div className="flex flex-col gap-8">
           <section>
             <FaqSection title="Frequently Asked Questions about Bargains" faqData={bargainsFaqs} />

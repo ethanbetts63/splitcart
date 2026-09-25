@@ -1,0 +1,408 @@
+/* Design tokens. Palette ramps live here and nowhere else; components consume
+   the semantic aliases below, which say what a colour is FOR rather than which
+   shade it is (freetheplatform/_docs/token-contract.md, TOKEN-1/TOKEN-2).
+
+   The names in this file are the shared vocabulary allbikes, bloomprint and
+   freethedesk already use. The values are splitcart's, and with three stated
+   exceptions they are the values the site already rendered: this file replaced
+   unmodified `shadcn init` output, and the point of that swap was to name what
+   was there, not to restyle it. The exceptions are called out at their token:
+   --fill-success, --text-success and --text-danger were all below WCAG AA at
+   the contrast their call sites used them at.
+
+   See _docs/convergence/tokens.md for what has and has not been converted. */
+
+@theme inline {
+  /* ------------------------------------------------------------------
+     Colour. Every alias below is also a Tailwind utility: `bg-surface-page`,
+     `text-text-primary`, `border-border-default`. The doubled word in
+     `text-text-primary` is deliberate -- the operation, then the
+     property-first token name.
+     ------------------------------------------------------------------ */
+  --color-surface-page: var(--surface-page);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-sunken-strong: var(--surface-sunken-strong);
+  --color-surface-tint: var(--surface-tint);
+  --color-surface-inverse: var(--surface-inverse);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-control: var(--text-control);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+  --color-text-on-dark: var(--text-on-dark);
+  --color-text-on-brand: var(--text-on-brand);
+  --color-text-action: var(--text-action);
+
+  --color-border-default: var(--border-default);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+  --color-border-strong-hover: var(--border-strong-hover);
+  --color-border-focus: var(--border-focus);
+
+  --color-action-primary: var(--action-primary);
+  --color-action-primary-hover: var(--action-primary-hover);
+  --color-action-primary-active: var(--action-primary-active);
+  --color-accent: var(--accent);
+  --color-accent-on-dark: var(--accent-on-dark);
+
+  /* Focus, as `outline-focus-ring` and `focus-visible:shadow-focus`. Two
+     tokens, two draw methods -- see the pair in :root. */
+  --color-focus-ring: var(--focus-ring);
+  --shadow-focus: var(--ring-field);
+
+  --color-surface-success: var(--surface-success);
+  --color-surface-success-strong: var(--surface-success-strong);
+  --color-border-success: var(--border-success);
+  --color-fill-success: var(--fill-success);
+  --color-fill-success-hover: var(--fill-success-hover);
+  --color-text-success: var(--text-success);
+  --color-surface-danger: var(--surface-danger);
+  --color-surface-danger-strong: var(--surface-danger-strong);
+  --color-border-danger: var(--border-danger);
+  --color-fill-danger: var(--fill-danger);
+  --color-text-danger: var(--text-danger);
+  --color-surface-warning: var(--surface-warning);
+  --color-border-warning: var(--border-warning);
+  --color-fill-warning: var(--fill-warning);
+  --color-text-warning: var(--text-warning);
+  --color-surface-info: var(--surface-info);
+  --color-border-info: var(--border-info);
+  --color-fill-info: var(--fill-info);
+  --color-text-info: var(--text-info);
+
+  --color-category-woolworths: var(--category-woolworths);
+  --color-category-coles: var(--category-coles);
+  --color-category-aldi: var(--category-aldi);
+  --color-category-other: var(--category-other);
+  --color-category-neutral: var(--category-neutral);
+
+  /* ------------------------------------------------------------------
+     The whole radius ramp, not four of its seven rungs. shadcn's generated
+     block named sm/md/lg/xl as arithmetic on a single --radius, which meant
+     `rounded-[4px]` was the only way to reach the bottom of the scale -- and a
+     bracket around a token reads as an escape from the scale when it is the
+     opposite. These deliberately shadow Tailwind's stock `rounded-*` values:
+     there is one radius vocabulary here.
+     ------------------------------------------------------------------ */
+  --radius-2xs: var(--radius-2xs);
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-s);
+  --radius-md: var(--radius-m);
+  --radius-lg: var(--radius-l);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+  --radius-pill: var(--radius-pill);
+  --radius-circle: var(--radius-circle);
+
+  /* ------------------------------------------------------------------
+     Page-level vertical rhythm, as `py-section`.
+
+     This is the ONLY --spacing-* rung splitcart declares, and the omission is
+     deliberate. The namespace also feeds max-w/w/min-w/basis, and on a name
+     collision spacing SILENTLY BEATS Tailwind's container scale -- allbikes'
+     `max-w-xl` meant 40px rather than 576px for months because of it. splitcart
+     still sizes its panels with `max-w-lg`, `max-w-2xl`, `max-w-3xl` and
+     `max-w-5xl`, so declaring an `xs`/`s`/`m`/`l`/`xl` space ramp here would
+     quietly redefine four of them. When those call sites move to a role-named
+     width scale, the space ramp can follow. `scripts/check-tokens.mjs` fails
+     the build if the two ever do collide.
+     ------------------------------------------------------------------ */
+  --spacing-section: var(--space-section);
+
+  /* ------------------------------------------------------------------
+     The nine type rungs. Every name is a ROLE (caption, label, body, lead,
+     title, display, hero), optionally plus an explicit step; no name is a bare
+     magnitude. Fixed below body copy, fluid at and above it -- a table header
+     should not grow 25% on a large monitor, a page heading should.
+
+     The values are shared verbatim with allbikes, bloomprint and freethedesk:
+     one ladder, so a component moved between the four repos renders the same
+     size (token-contract.md TOKEN-6). Do not retune a rung here alone.
+
+     `src/lib/text-sizes.generated.ts` is generated from THIS block by
+     `npm run tokens:text-scale`, because tailwind-merge reads an unrecognised
+     `text-*` as a colour and silently drops the real colour beside it.
+     ------------------------------------------------------------------ */
+  --text-caption: 0.66rem;
+  --text-label: 0.72rem;
+  --text-body-sm: 0.78rem;
+  --text-body: var(--step-body);
+  --text-lead: var(--step-lead);
+  --text-title-sm: var(--step-2);
+  --text-title: var(--step-3);
+  --text-display: var(--display-2);
+  --text-hero: var(--display-hero);
+}
+
+:root {
+  /* ---------------------------------------------------------------
+     THE PALETTE. Two ramps plus the two hues that are not ours.
+     Everything below this block is a semantic alias pointing at a ramp
+     step, so a colour is defined once and components reference intent.
+
+       --brand-*    SplitCart yellow: the action button and the highlighter
+       --neutral-*  the greys: text, borders, wells and panels
+       --green-*    "cheaper", "approved", "saved"
+       --red-*      destructive and error
+
+     Rung names and numbering match Tailwind's, because that is what these
+     values already were before the semantic layer existed; keeping the
+     numbers made the conversion checkable line by line.
+     --------------------------------------------------------------- */
+  --brand-50: #fefce8;
+  --brand-100: #fef9c3;
+  --brand-200: #fef08a;
+  --brand-300: #fde047;
+  --brand-400: #facc15;
+  --brand-500: #eab308;
+  --brand-700: #a16207;
+
+  --neutral-50: #f9fafb;
+  --neutral-100: #f3f4f6;
+  --neutral-200: #e5e7eb;
+  --neutral-300: #d1d5db;
+  --neutral-400: #9ca3af;
+  --neutral-500: #6b7280;
+  --neutral-600: #4b5563;
+  --neutral-700: #374151;
+  --neutral-800: #1f2937;
+  --neutral-900: #111827;
+
+  --green-50: #f0fdf4;
+  --green-100: #dcfce7;
+  --green-200: #bbf7d0;
+  --green-500: #22c55e;
+  --green-700: #15803d;
+  --green-800: #166534;
+
+  --red-50: #fef2f2;
+  --red-100: #fee2e2;
+  --red-200: #fecaca;
+  --red-500: #ef4444;
+  --red-600: #dc2626;
+  --red-800: #991b1b;
+
+  --amber-50: #fffbeb;
+  --amber-300: #fcd34d;
+  --amber-500: #f59e0b;
+  --amber-900: #78350f;
+
+  --blue-50: #f0f9ff;
+  --blue-200: #bae6fd;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #0369a1;
+  --blue-900: #0c4a6e;
+
+  /* ---------------------------------------------------------------
+     SEMANTIC ALIASES -- use these in components, not the ramp steps.
+     Named property-first (--surface-*, --text-*, --border-*, --fill-*) so the
+     prefix says which CSS property the token belongs in and the whole family
+     sorts together. The same names carry across every site in the platform;
+     only the values differ.
+     --------------------------------------------------------------- */
+
+  /* Surfaces, from the page outward. --surface-sunken is the filled track a
+     control sits in (the quantity stepper); --surface-sunken-strong is that
+     track's hover step. */
+  --surface-page: #fff;
+  --surface-muted: var(--neutral-50);
+  --surface-sunken: var(--neutral-100);
+  --surface-sunken-strong: var(--neutral-200);
+  /* The one warm band on the site -- "How It Works" on the home page, and the
+     block behind the contact details. Those were two near-identical washes
+     (#f5f0eb and hsl(353 100% 98%)) written at their call sites, which is two
+     answers to one question; they are this token now. Warm rather than a tint
+     of --brand-300: full-bleed yellow at this size reads as a warning. */
+  --surface-tint: #f5f0eb;
+  /* The scrim behind a badge laid over a product photograph. */
+  --surface-inverse: var(--neutral-900);
+
+  /* Text. Four rungs of emphasis on a light surface, plus the two "on a fill"
+     roles. --text-on-dark and --text-on-brand are separate contracts even
+     where they are opposite ends of the same axis: one tracks the dark
+     surfaces, the other the yellow action fill, and either can move alone. */
+  --text-primary: var(--neutral-900);
+  --text-secondary: var(--neutral-600);
+  /* Data and control text: table cells, chips, the outline buttons' labels.
+     freethedesk names the same role the same way. */
+  --text-control: var(--neutral-700);
+  --text-muted: var(--neutral-500);
+  --text-subtle: var(--neutral-400);
+  --text-on-dark: #fff;
+  --text-on-brand: #000;
+  /* The one action-coloured *word* on the site: the founder letter's mailto
+     link. The brand yellow cannot do this job -- #fde047 on white is 1.3:1. */
+  --text-action: var(--blue-600);
+
+  /* Borders. --border-strong-hover is deliberately much darker than
+     --border-strong rather than one rung down: splitcart's outline buttons
+     answer a hover by going to near-black, and that is the designed step. */
+  --border-default: var(--neutral-200);
+  --border-subtle: var(--neutral-100);
+  --border-strong: var(--neutral-300);
+  --border-strong-hover: var(--neutral-900);
+  --border-focus: var(--focus-ring);
+
+  /* The interactive colour: the Add to Cart button, the quantity stepper's
+     plus, the primary "Next". Black on #fde047 is 14.3:1. */
+  --action-primary: var(--brand-300);
+  --action-primary-hover: var(--brand-400);
+  /* The pressed step. Not a rung either reference repo has, because neither
+     site draws one; splitcart does, at ~20 call sites, and a repeated value
+     belongs in the scale rather than at every one of them (TOKEN-9). */
+  --action-primary-active: var(--brand-500);
+
+  /* Decorative only. Same value as --action-primary today and a different
+     contract: this is the highlighter drawn behind a phrase in running copy,
+     and nothing wearing it is clickable (TOKEN-3). */
+  --accent: var(--brand-300);
+  /* The same accent read on --surface-inverse: the discount figure inside the
+     bargain badge over a photograph. */
+  --accent-on-dark: var(--brand-300);
+
+  /* FOCUS -- two tokens, two draw methods (TOKEN-4).
+
+     --focus-ring is an OUTLINE colour, for a control that is a box: a button,
+     a button-like link, a tab. 2px outline at 2px offset, so it cannot collide
+     with the control's own shadow or be clipped by a rounded background.
+
+     --ring-field is a BOX-SHADOW, for a control that owns a border and says
+     "focus" by lighting it: the text fields.
+
+     Both read --brand-700 rather than the brand yellow itself. A focus
+     indicator has to clear 3:1 against what is behind it (WCAG 2.2 SC 1.4.11)
+     and #fde047 on white is 1.3:1; #a16207 is 4.4:1 and still unmistakably the
+     brand hue. What this replaced was five different spellings inherited from
+     the shadcn scaffold -- ring-[3px], ring-2, ring-4, outline-1 beside a
+     ring, and a global outline-ring/50 -- over a neutral grey that said
+     nothing, and on two controls, nothing at all. */
+  --focus-ring: var(--brand-700);
+  --ring-field: 0 0 0 3px color-mix(in srgb, var(--focus-ring) 25%, transparent);
+
+  /* ---------------------------------------------------------------
+     FEEDBACK. Four meanings, four roles each, so a banner, its border, its
+     badge and its text always come from the same place:
+       --surface-*  pale background      --border-*  border on that surface
+       --fill-*     solid badge or rule  --text-*    text on that surface
+
+     warning and info have no consumer in splitcart today. They are declared
+     anyway, and that is the point of the family: the fifth meaning should
+     arrive as a token rather than as the first raw amber somebody reaches for.
+     Their values are allbikes', so the two sites already agree when it does.
+     --------------------------------------------------------------- */
+  --surface-success: var(--green-50);
+  --surface-success-strong: var(--green-100);
+  --border-success: var(--green-200);
+  /* Darker than the --green-500 the tabs and switches used. White on #22c55e
+     is 2.3:1 and fails AA outright; on #15803d it is 4.9:1. */
+  --fill-success: var(--green-700);
+  /* The hover step for --fill-success. It exists because the one control that
+     uses the success fill as a button -- "Next" -- had --green-500 resting and
+     --green-600 hovering, and both of those land on --fill-success now. An
+     action state belongs in the scale, not as an opacity suffix at the call
+     site (lint-rules.md, "Action state"). */
+  --fill-success-hover: var(--green-800);
+  /* Likewise: the savings figure and the "N approved" chip were --green-600,
+     which is 3.0:1 on white -- under AA for anything that is not large text,
+     and the chip is 0.75rem. */
+  --text-success: var(--green-800);
+
+  --surface-danger: var(--red-50);
+  --surface-danger-strong: var(--red-100);
+  --border-danger: var(--red-200);
+  --fill-danger: var(--red-600);
+  /* Was --red-500 at three call sites, 3.7:1 on white. */
+  --text-danger: var(--red-800);
+
+  --surface-warning: var(--amber-50);
+  --border-warning: var(--amber-300);
+  --fill-warning: var(--amber-500);
+  --text-warning: var(--amber-900);
+
+  --surface-info: var(--blue-50);
+  --border-info: var(--blue-200);
+  --fill-info: var(--blue-700);
+  --text-info: var(--blue-900);
+
+  /* ---------------------------------------------------------------
+     CATEGORY. Genuinely categorical: which of several, with no good/bad axis,
+     so these must not borrow a status colour even though two of them are a
+     green and a red (TOKEN-3, TOKEN-11).
+
+     Named rather than numbered, which is where splitcart departs from
+     allbikes' --category-1/--category-2. These are three real supermarkets'
+     own brand colours, they appear on every price-comparison bar on the site,
+     and "which one is --category-2" has no answer anybody could remember.
+     They are not ours to restyle.
+     --------------------------------------------------------------- */
+  --category-woolworths: var(--green-500);
+  --category-coles: var(--red-500);
+  --category-aldi: var(--blue-500);
+  /* A chain we hold no brand colour for. */
+  --category-other: var(--neutral-700);
+  /* "Same price at both" -- not a company, so not a company colour. */
+  --category-neutral: var(--neutral-200);
+
+  /* ---------------------------------------------------------------
+     PAGE RAIL. The single source of truth for horizontal edge spacing and the
+     centred content width; both are consumed by .site-shell in layout.css and
+     pages should not redefine either.
+
+     --content-max is 1280px, Tailwind's `container` step for an xl viewport
+     and the width most of splitcart's pages already sat at. The rail is now a
+     fluid cap rather than the five quantised steps `container` gave: content
+     is wider between breakpoints and narrower above 1536px.
+     --------------------------------------------------------------- */
+  --gutter: 1rem;
+  --content-max: 1280px;
+
+  /* Page-level vertical rhythm, for the bands between sections. Floor is the
+     32px those bands were written as; it opens up slightly on a wide screen
+     rather than holding a phone's spacing at 1536px. */
+  --space-section: clamp(2rem, 3vw, 2.75rem);
+
+  /* ---------------------------------------------------------------
+     RESPONSIVE FOUNDATION
+
+     THIS CODEBASE IS MOBILE-FIRST. Base rules describe the phone. Every media
+     query is `min-width` and only ever ADDS capability as the screen grows.
+     The canonical breakpoints are Tailwind's stock set, shared across the
+     platform: 640 / 768 / 1024 / 1280 / 1536. Reuse these for any new query.
+
+     CSS cannot use custom properties inside @media, so breakpoints are written
+     literally in layout.css. Keep new ones to those five values.
+
+     Two rules that prevent the bugs this replaced:
+       - Never write a bare `1fr` grid track. Use `minmax(0, 1fr)`; a bare 1fr
+         is minmax(auto, 1fr), cannot shrink below its content, and overflows.
+       - Never hand-roll a clamp(). Pick a step. If no step fits, the scale is
+         wrong -- fix it here, not in the component.
+     --------------------------------------------------------------- */
+
+  /* Type scale. Fluid between a 320px and a 1240px viewport. Body copy barely
+     moves; only display type travels far. Shared verbatim with the other three
+     repos -- see the @theme inline block above. */
+  --step-body: clamp(0.875rem, 0.832rem + 0.217vw, 1rem);
+  --step-lead: clamp(1.0625rem, 0.99728rem + 0.32609vw, 1.25rem);
+  --step-2: clamp(1.375rem, 1.201rem + 0.87vw, 1.875rem);
+  --step-3: clamp(1.75rem, 1.489rem + 1.304vw, 2.5rem);
+  --display-2: clamp(2.25rem, 1.728rem + 2.609vw, 3.75rem);
+  --display-hero: clamp(2.625rem, 12vw, 4.5rem);
+
+  /* Corner radii. Small radii are perceptually sensitive -- 2px and 4px do not
+     read the same -- so the bottom of the ramp is deliberately dense. The
+     middle rungs are exactly what shadcn's calc() on a 0.625rem --radius
+     resolved to, so adopting the ramp changed nothing on screen. */
+  --radius-2xs: 2px;
+  --radius-xs: 4px;
+  --radius-s: 6px;
+  --radius-m: 8px;
+  --radius-l: 10px;
+  --radius-xl: 14px;
+  --radius-2xl: 16px;
+  --radius-pill: 999px;
+  --radius-circle: 50%;
+}

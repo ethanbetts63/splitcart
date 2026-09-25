@@ -18,7 +18,10 @@ const NextButton = ({ onAfterNavigate, className }: NextButtonProps) => {
   };
 
   return (
-    <Button onClick={handleNextClick} className={cn('bg-green-500 hover:bg-green-600', className)}>
+    <Button
+      onClick={handleNextClick}
+      className={cn('bg-fill-success hover:bg-fill-success-hover', className)}
+    >
       Next
     </Button>
   );

@@ -48,7 +48,7 @@ const ProductPage = ({ product, slug }: ProductPageProps) => {
   const imageUrl = product.image_url || assetSrc(fallbackImage);
 
   return (
-    <div className="container mx-auto p-4 md:p-4">
+    <div className="site-shell py-4">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
@@ -64,21 +64,21 @@ const ProductPage = ({ product, slug }: ProductPageProps) => {
             {/* Details Column */}
             <div className="flex flex-col p-2">
               <CardHeader className="p-0">
-                <CardTitle className="text-2xl lg:text-3xl font-bold">{product.name}</CardTitle>
+                <CardTitle className="text-title-sm font-bold">{product.name}</CardTitle>
                 {product.brand_name && (
-                  <CardDescription className="text-xl lg:text-2xl text-muted-foreground pt-2">
+                  <CardDescription className="text-lead text-text-muted pt-2">
                     {product.brand_name}
                   </CardDescription>
                 )}
                 {product.size && (
-                  <CardDescription className="text-lg text-muted-foreground pt-1">
+                  <CardDescription className="text-lead text-text-muted pt-1">
                     {product.size}
                   </CardDescription>
                 )}
               </CardHeader>
 
               <CardContent className="flex-grow p-0 mt-6 w-full">
-                <h3 className="text-lg font-semibold mb-4 text-center">Price Comparison</h3>
+                <h3 className="text-lead font-semibold mb-4 text-center">Price Comparison</h3>
                 <PriceDisplay prices={product.prices} displayMode="full" />
               </CardContent>
 

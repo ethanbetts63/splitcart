@@ -52,7 +52,7 @@ const CartPage: React.FC<CartPageProps> = ({ onOpenChange }) => {
   return (
     <div className="flex flex-col h-full">
       <div className="p-4 border-b flex justify-between items-center">
-        <h3 className="text-lg font-semibold">My Cart ({cartTotal} items)</h3>
+        <h3 className="text-lead font-semibold">My Cart ({cartTotal} items)</h3>
         {currentCart && currentCart.items.length > 0 && (
           <NextButton onAfterNavigate={() => onOpenChange(false)} />
         )}
@@ -108,7 +108,9 @@ const CartPage: React.FC<CartPageProps> = ({ onOpenChange }) => {
                 }
               }}
               disabled={cartLoading || !currentCart}
-              className={isEditingCartName ? 'bg-green-500 text-white hover:bg-green-600' : ''}
+              className={
+                isEditingCartName ? 'bg-fill-success text-text-on-dark hover:bg-fill-success' : ''
+              }
             >
               {isEditingCartName ? <Save className="h-4 w-4" /> : <Pencil className="h-4 w-4" />}
             </Button>
@@ -134,7 +136,7 @@ const CartPage: React.FC<CartPageProps> = ({ onOpenChange }) => {
             ))}
           </div>
         ) : (
-          <div className="text-center text-muted-foreground pt-8">
+          <div className="text-center text-text-muted pt-8">
             <p>Your cart is empty.</p>
           </div>
         )}

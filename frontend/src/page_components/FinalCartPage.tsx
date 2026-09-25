@@ -82,10 +82,10 @@ const FinalCartPage = () => {
   };
 
   if (isLoading) return <LoadingSpinner />;
-  if (error && !exportAction) return <div className="container mx-auto p-4">Error: {error}</div>;
+  if (error && !exportAction) return <div className="site-shell py-4">Error: {error}</div>;
   if (!optimizationResult)
     return (
-      <div className="container mx-auto p-4">
+      <div className="site-shell py-4">
         No optimization data available. Please go through the substitution process.
       </div>
     );
@@ -95,20 +95,20 @@ const FinalCartPage = () => {
     : optimizationResult.no_subs_results;
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="site-shell py-6">
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Your Optimised Cart</h1>
-          <p className="text-gray-500 mt-1">Here&apos;s the cheapest way to buy your list.</p>
+          <h1 className="text-title font-bold text-text-primary">Your Optimised Cart</h1>
+          <p className="text-text-muted mt-1">Here&apos;s the cheapest way to buy your list.</p>
         </div>
         {optimizationResult.no_subs_results && (
-          <div className="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 self-start sm:self-auto">
+          <div className="flex items-center gap-3 bg-surface-muted border border-border-default rounded-xl px-4 py-3 self-start sm:self-auto">
             <Switch
               id="substitutes-switch"
               checked={viewWithSubstitutes}
               onCheckedChange={setViewWithSubstitutes}
-              className={viewWithSubstitutes ? 'data-[state=checked]:bg-green-500' : ''}
+              className={viewWithSubstitutes ? 'data-[state=checked]:bg-fill-success' : ''}
             />
             <Label htmlFor="substitutes-switch" className="font-medium cursor-pointer select-none">
               Include Substitutes
@@ -126,7 +126,7 @@ const FinalCartPage = () => {
           exportAction={exportAction}
         />
       ) : (
-        <p className="text-gray-500">No results to display for this option.</p>
+        <p className="text-text-muted">No results to display for this option.</p>
       )}
 
       <div className="mt-16">

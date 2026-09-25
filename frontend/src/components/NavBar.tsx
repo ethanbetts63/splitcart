@@ -12,7 +12,7 @@ import { NavAuthButton } from './NavAuthButton';
 
 const NavBar = () => {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white">
+    <header className="sticky top-0 z-50 w-full border-b bg-surface-page">
       {/* ── Main row ── */}
       <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 gap-4">
         {/* Logo */}
@@ -30,7 +30,7 @@ const NavBar = () => {
             alt="SplitCart Logo"
             className="h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0"
           />
-          <span className="font-bold text-2xl hidden md:block bg-yellow-300 px-0.5 py-1 rounded italic text-black">
+          <span className="font-bold text-title-sm hidden md:block bg-action-primary px-0.5 py-1 rounded italic text-text-on-brand">
             SplitCart
           </span>
         </Link>

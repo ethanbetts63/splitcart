@@ -17,20 +17,20 @@ const AddToCartButton = ({ product }: AddToCartButtonProps) => {
 
   if (existingItem) {
     return (
-      <div className="flex items-center w-full rounded-lg overflow-hidden border border-gray-200 bg-gray-100">
+      <div className="flex items-center w-full rounded-lg overflow-hidden border border-border-default bg-surface-sunken">
         <button
           onClick={() => handleQuantityChange(existingItem.quantity - 1)}
-          className="flex-none w-9 h-9 flex items-center justify-center text-gray-600 hover:bg-gray-200 font-bold text-lg transition-colors duration-150"
+          className="flex-none w-9 h-9 flex items-center justify-center text-text-secondary hover:bg-surface-sunken-strong font-bold text-lead transition-colors duration-150"
           aria-label="Decrease quantity"
         >
           −
         </button>
-        <span className="flex-grow text-center font-bold text-sm text-gray-900 select-none">
+        <span className="flex-grow text-center font-bold text-body text-text-primary select-none">
           {existingItem.quantity}
         </span>
         <button
           onClick={() => handleQuantityChange(existingItem.quantity + 1)}
-          className="flex-none w-9 h-9 flex items-center justify-center bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500 font-bold text-black text-lg transition-colors duration-150"
+          className="flex-none w-9 h-9 flex items-center justify-center bg-action-primary hover:bg-action-primary-hover active:bg-action-primary-active font-bold text-text-on-brand text-lead transition-colors duration-150"
           aria-label="Increase quantity"
         >
           +
@@ -42,7 +42,7 @@ const AddToCartButton = ({ product }: AddToCartButtonProps) => {
   return (
     <button
       onClick={() => addItem(product.id, 1, product)}
-      className="w-full h-9 bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500 text-black font-bold text-sm rounded-lg transition-colors duration-150"
+      className="w-full h-9 bg-action-primary hover:bg-action-primary-hover active:bg-action-primary-active text-text-on-brand font-bold text-body rounded-lg transition-colors duration-150"
     >
       Add to Cart
     </button>

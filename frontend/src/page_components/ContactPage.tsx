@@ -34,7 +34,7 @@ const ContactPage = () => {
         imageAlt="A pin up board of postnotes with various reminder icons"
       />
 
-      <div style={{ backgroundColor: 'var(--color1)' }}>
+      <div className="bg-surface-tint">
         <ContactDetails />
         <OtherSites sites={otherSitesData} />
       </div>

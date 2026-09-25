@@ -14,7 +14,7 @@ const companyLogos: { [key: string]: string } = {
 };
 
 const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
-  <div className="divide-y divide-gray-100">
+  <div className="divide-y divide-border-subtle">
     {Object.entries(plan)
       .filter(([, companyPlan]) => companyPlan.items && companyPlan.items.length > 0)
       .map(([companyName, companyPlan]) => {
@@ -41,72 +41,76 @@ const PlanDetails = ({ plan }: { plan: ShoppingPlan }) => (
                 />
               )}
               <div className="flex-grow min-w-0">
-                <h2 className="font-bold text-lg text-gray-900 leading-tight">{companyName}</h2>
+                <h2 className="font-bold text-lead text-text-primary leading-tight">
+                  {companyName}
+                </h2>
               </div>
               <div className="flex-shrink-0 text-right">
-                <p className="text-xs text-gray-400 uppercase tracking-wide">Company Total</p>
-                <p className="font-bold text-lg text-gray-900">${companyTotal.toFixed(2)}</p>
+                <p className="text-label text-text-subtle uppercase tracking-wide">Company Total</p>
+                <p className="font-bold text-lead text-text-primary">${companyTotal.toFixed(2)}</p>
               </div>
             </div>
 
             <div className="overflow-x-auto -mx-5 px-5">
-              <table className="w-full min-w-[480px] text-sm">
+              <table className="w-full min-w-[480px] text-body-sm">
                 <thead>
-                  <tr className="border-b border-gray-100">
+                  <tr className="border-b border-border-subtle">
                     <th className="pb-2 w-14" />
-                    <th className="pb-2 text-left font-semibold text-gray-500">Product</th>
-                    <th className="pb-2 text-center font-semibold text-gray-500 w-16">Qty</th>
-                    <th className="pb-2 text-right font-semibold text-gray-500 w-24">Unit</th>
-                    <th className="pb-2 text-right font-semibold text-gray-500 w-24">Total</th>
+                    <th className="pb-2 text-left font-semibold text-text-muted">Product</th>
+                    <th className="pb-2 text-center font-semibold text-text-muted w-16">Qty</th>
+                    <th className="pb-2 text-right font-semibold text-text-muted w-24">Unit</th>
+                    <th className="pb-2 text-right font-semibold text-text-muted w-24">Total</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody className="divide-y divide-border-subtle">
                   {companyPlan.items.map((item, index) => (
                     <tr key={index} className="group">
                       <td className="py-3 pr-3">
                         <img
                           src={item.image_url || assetSrc(fallbackImage)}
                           alt={item.product_name}
-                          className="w-12 h-12 object-cover rounded-lg border border-gray-100"
+                          className="w-12 h-12 object-cover rounded-lg border border-border-subtle"
                           onError={handleImageError}
                         />
                       </td>
                       <td className="py-3 pr-3">
-                        <p className="font-medium text-gray-900 leading-snug">
+                        <p className="font-medium text-text-primary leading-snug">
                           {item.product_name}
                         </p>
                         {((item.brand && item.brand !== 'N/A') || item.size) && (
                           <div className="flex items-center gap-1.5 mt-0.5">
                             {item.brand && item.brand !== 'N/A' && (
-                              <span className="text-xs text-gray-400">{item.brand}</span>
+                              <span className="text-caption text-text-subtle">{item.brand}</span>
                             )}
                             {item.brand && item.brand !== 'N/A' && item.size && (
-                              <span className="text-gray-200">.</span>
+                              <span className="text-text-subtle">.</span>
                             )}
                             {item.size && (
-                              <Badge variant="outline" className="text-xs px-1.5 py-0">
+                              <Badge variant="outline" className="px-1.5 py-0">
                                 {item.size}
                               </Badge>
                             )}
                           </div>
                         )}
                       </td>
-                      <td className="py-3 text-center text-gray-700 font-medium">
+                      <td className="py-3 text-center text-text-control font-medium">
                         {item.quantity}
                       </td>
-                      <td className="py-3 text-right text-gray-700">${item.price.toFixed(2)}</td>
-                      <td className="py-3 text-right font-semibold text-gray-900">
+                      <td className="py-3 text-right text-text-control">
+                        ${item.price.toFixed(2)}
+                      </td>
+                      <td className="py-3 text-right font-semibold text-text-primary">
                         ${(item.price * item.quantity).toFixed(2)}
                       </td>
                     </tr>
                   ))}
                 </tbody>
                 <tfoot>
-                  <tr className="border-t-2 border-gray-200">
-                    <td colSpan={4} className="pt-3 text-sm text-gray-500 font-medium">
+                  <tr className="border-t-2 border-border-default">
+                    <td colSpan={4} className="pt-3 text-body-sm text-text-muted font-medium">
                       Total for {companyName}
                     </td>
-                    <td className="pt-3 text-right font-bold text-gray-900">
+                    <td className="pt-3 text-right font-bold text-text-primary">
                       ${companyTotal.toFixed(2)}
                     </td>
                   </tr>

@@ -1,4 +1,5 @@
 import type { PriceComparisonChartProps } from '../types/PriceComparisonChartProps';
+import { cn } from '@/lib/utils';
 
 const PriceComparisonChart = ({ comparison, categoryName }: PriceComparisonChartProps) => {
   const {
@@ -10,10 +11,14 @@ const PriceComparisonChart = ({ comparison, categoryName }: PriceComparisonChart
     overlap_count,
   } = comparison;
 
+  // Complete class strings keyed by company, never assembled from fragments:
+  // Tailwind reads source as text and generates nothing for `bg-${x}`.
+  // These are the three chains' own brand colours and carry no good/bad axis,
+  // so they come from the --category-* family rather than the feedback one.
   const companyColorMap: { [key: string]: string } = {
-    Woolworths: 'bg-green-500',
-    Coles: 'bg-red-500',
-    Aldi: 'bg-blue-500',
+    Woolworths: 'bg-category-woolworths',
+    Coles: 'bg-category-coles',
+    Aldi: 'bg-category-aldi',
   };
 
   const titleVerb = categoryName.endsWith('s') ? 'Are' : 'Is';
@@ -24,7 +29,9 @@ const PriceComparisonChart = ({ comparison, categoryName }: PriceComparisonChart
   if (cheaper_at_a_percentage > cheaper_at_b_percentage) {
     summarySentence = (
       <>
-        <span className="font-bold bg-yellow-300 px-0.5 rounded">{cheaper_at_a_percentage}%</span>{' '}
+        <span className="font-bold bg-action-primary px-0.5 rounded">
+          {cheaper_at_a_percentage}%
+        </span>{' '}
         of {categoryName} tested {sentenceVerb} cheaper at{' '}
         <span className="font-bold">{company_a_name}</span> than {company_b_name}.
       </>
@@ -32,7 +39,9 @@ const PriceComparisonChart = ({ comparison, categoryName }: PriceComparisonChart
   } else if (cheaper_at_b_percentage > cheaper_at_a_percentage) {
     summarySentence = (
       <>
-        <span className="font-bold bg-yellow-300 px-0.5 rounded">{cheaper_at_b_percentage}%</span>{' '}
+        <span className="font-bold bg-action-primary px-0.5 rounded">
+          {cheaper_at_b_percentage}%
+        </span>{' '}
         of {categoryName} tested {sentenceVerb} cheaper at{' '}
         <span className="font-bold">{company_b_name}</span> than {company_a_name}.
       </>
@@ -49,45 +58,50 @@ const PriceComparisonChart = ({ comparison, categoryName }: PriceComparisonChart
   const segments = [
     {
       percentage: cheaper_at_a_percentage,
-      color: companyColorMap[company_a_name] || 'bg-gray-700',
-      textColor: 'text-white',
+      color: companyColorMap[company_a_name] || 'bg-category-other',
+      textColor: 'text-text-on-dark',
       label: company_a_name,
     },
     {
       percentage: same_price_percentage,
-      color: 'bg-gray-200',
-      textColor: 'text-gray-500',
+      color: 'bg-category-neutral',
+      textColor: 'text-text-muted',
       label: 'Same Price',
     },
     {
       percentage: cheaper_at_b_percentage,
-      color: companyColorMap[company_b_name] || 'bg-gray-800',
-      textColor: 'text-white',
+      color: companyColorMap[company_b_name] || 'bg-category-other',
+      textColor: 'text-text-on-dark',
       label: company_b_name,
     },
   ];
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-5 w-full h-full flex flex-col gap-4">
+    <div className="rounded-xl border border-border-default bg-surface-page shadow-sm p-5 w-full h-full flex flex-col gap-4">
       {/* Header */}
       <div>
-        <h3 className="font-bold text-gray-900 text-base leading-snug">{title}</h3>
-        <p className="text-sm text-gray-600 mt-2 leading-snug">{summarySentence}</p>
-        <p className="text-xs text-gray-400 mt-1.5">{overlap_count} common products compared</p>
+        <h3 className="font-bold text-text-primary text-body leading-snug">{title}</h3>
+        <p className="text-body text-text-secondary mt-2 leading-snug">{summarySentence}</p>
+        <p className="text-caption text-text-subtle mt-1.5">
+          {overlap_count} common products compared
+        </p>
       </div>
 
       {/* Bar */}
-      <div className="h-10 w-full rounded-xl overflow-hidden flex bg-gray-100">
+      <div className="h-10 w-full rounded-xl overflow-hidden flex bg-surface-sunken">
         {segments.map((segment, index) =>
           segment.percentage > 0 ? (
             <div
               key={index}
-              className={`${segment.color} flex items-center justify-center transition-all duration-500`}
+              className={cn(
+                segment.color,
+                'flex items-center justify-center transition-all duration-500',
+              )}
               style={{ width: `${segment.percentage}%` }}
               title={`${segment.label}: ${segment.percentage}%`}
             >
               {segment.percentage >= 10 && (
-                <span className={`text-xs font-bold select-none ${segment.textColor}`}>
+                <span className={cn('text-label font-bold select-none', segment.textColor)}>
                   {segment.percentage}%
                 </span>
               )}
@@ -99,12 +113,15 @@ const PriceComparisonChart = ({ comparison, categoryName }: PriceComparisonChart
       {/* Legend */}
       <div className="flex flex-wrap gap-x-4 gap-y-2">
         {segments.map((segment, index) => (
-          <div key={index} className="flex items-center gap-1.5 text-sm">
+          <div key={index} className="flex items-center gap-1.5 text-body">
             <span
-              className={`h-2.5 w-2.5 rounded-full flex-shrink-0 ${segment.color} border border-gray-200`}
+              className={cn(
+                'h-2.5 w-2.5 rounded-full flex-shrink-0 border border-border-default',
+                segment.color,
+              )}
             />
-            <span className="text-gray-500">{segment.label}</span>
-            <span className="font-bold text-gray-900">{segment.percentage}%</span>
+            <span className="text-text-muted">{segment.label}</span>
+            <span className="font-bold text-text-primary">{segment.percentage}%</span>
           </div>
         ))}
       </div>

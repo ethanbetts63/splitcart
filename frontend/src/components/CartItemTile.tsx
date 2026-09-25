@@ -11,6 +11,7 @@ import CartSubTile from './CartSubTile';
 import { CheckCircle2 } from 'lucide-react';
 import type { CartItemTileProps } from '../types/CartItemTileProps';
 import { assetSrc } from '@/lib/assets';
+import { cn } from '@/lib/utils';
 
 const QuantityStepper = ({
   value,
@@ -21,18 +22,20 @@ const QuantityStepper = ({
   onDecrement: () => void;
   onIncrement: () => void;
 }) => (
-  <div className="flex items-center rounded-lg overflow-hidden border border-gray-200 bg-gray-100">
+  <div className="flex items-center rounded-lg overflow-hidden border border-border-default bg-surface-sunken">
     <button
       onClick={onDecrement}
-      className="w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-200 font-bold text-base transition-colors"
+      className="w-8 h-8 flex items-center justify-center text-text-secondary hover:bg-surface-sunken-strong font-bold text-body transition-colors"
       aria-label="Decrease quantity"
     >
       −
     </button>
-    <span className="w-8 text-center font-bold text-sm text-gray-900 select-none">{value}</span>
+    <span className="w-8 text-center font-bold text-body text-text-primary select-none">
+      {value}
+    </span>
     <button
       onClick={onIncrement}
-      className="w-8 h-8 flex items-center justify-center bg-yellow-300 hover:bg-yellow-400 font-bold text-black text-base transition-colors"
+      className="w-8 h-8 flex items-center justify-center bg-action-primary hover:bg-action-primary-hover font-bold text-text-on-brand text-body transition-colors"
       aria-label="Increase quantity"
     >
       +
@@ -79,7 +82,10 @@ const CartItemTile = (props: CartItemTileProps) => {
 
   return (
     <div
-      className={`rounded-xl border bg-white shadow-sm overflow-hidden ${isApproved ? 'border-green-300' : 'border-gray-200'}`}
+      className={cn(
+        'rounded-xl border bg-surface-page shadow-sm overflow-hidden',
+        isApproved ? 'border-border-success' : 'border-border-default',
+      )}
     >
       <div className="flex items-center gap-3 p-3">
         {/* Image */}
@@ -88,19 +94,22 @@ const CartItemTile = (props: CartItemTileProps) => {
             src={imageUrl}
             onError={handleImageError}
             alt={product.name}
-            className="w-full h-full object-cover rounded-lg border border-gray-100"
+            className="w-full h-full object-cover rounded-lg border border-border-subtle"
           />
         </div>
 
         {/* Info */}
         <div className="flex-grow min-w-0">
           <p
-            className={`font-semibold text-gray-900 text-sm leading-snug ${context === 'substitution' ? 'line-clamp-2' : 'line-clamp-1'}`}
+            className={cn(
+              'font-semibold text-text-primary text-body leading-snug',
+              context === 'substitution' ? 'line-clamp-2' : 'line-clamp-1',
+            )}
           >
             {product.name}
           </p>
           {product.size && (
-            <Badge variant="outline" className="text-xs px-1.5 py-0 mt-0.5">
+            <Badge variant="outline" className="px-1.5 py-0 mt-0.5">
               {product.size}
             </Badge>
           )}
@@ -127,7 +136,7 @@ const CartItemTile = (props: CartItemTileProps) => {
             ) : (
               <button
                 onClick={() => onApprove && onApprove(cartSubstitution)}
-                className="px-3 py-1.5 text-sm font-bold bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500 text-black rounded-lg transition-colors duration-150"
+                className="px-3 py-1.5 text-body font-bold bg-action-primary hover:bg-action-primary-hover active:bg-action-primary-active text-text-on-brand rounded-lg transition-colors duration-150"
               >
                 Approve
               </button>
@@ -140,9 +149,9 @@ const CartItemTile = (props: CartItemTileProps) => {
 
       {/* Approved indicator strip */}
       {context === 'substitution' && isApproved && (
-        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-green-50 border-t border-green-200">
-          <CheckCircle2 className="h-3.5 w-3.5 text-green-500 flex-shrink-0" />
-          <span className="text-xs font-semibold text-green-700">Approved as substitute</span>
+        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-surface-success border-t border-border-success">
+          <CheckCircle2 className="h-3.5 w-3.5 text-fill-success flex-shrink-0" />
+          <span className="text-label font-semibold text-text-success">Approved as substitute</span>
         </div>
       )}
 
@@ -152,9 +161,9 @@ const CartItemTile = (props: CartItemTileProps) => {
         cartItem &&
         cartItem.substitutions &&
         cartItem.substitutions.filter((sub) => sub.is_approved).length > 0 && (
-          <Accordion type="single" collapsible className="w-full border-t border-gray-100">
+          <Accordion type="single" collapsible className="w-full border-t border-border-subtle">
             <AccordionItem value="item-1" className="border-0">
-              <AccordionTrigger className="w-full flex justify-center px-3 py-2 text-sm text-gray-400 hover:text-gray-600">
+              <AccordionTrigger className="w-full flex justify-center px-3 py-2 text-body text-text-subtle hover:text-text-secondary">
                 Show {cartItem.substitutions.filter((sub) => sub.is_approved).length} Approved
                 Substitution(s)
               </AccordionTrigger>

@@ -4,23 +4,17 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-100 dark:bg-gray-800 mt-auto">
-      <div className="container mx-auto px-6 py-8">
+    <footer className="bg-surface-sunken mt-auto">
+      <div className="site-shell px-6 py-section">
         <div className="flex flex-col items-center sm:flex-row sm:justify-between">
-          <p className="text-sm text-black dark:text-black">
+          <p className="text-body text-text-primary">
             © {currentYear} SplitCart. All Rights Reserved.
           </p>
           <div className="flex mt-4 sm:m-0">
-            <Link
-              href="/privacy"
-              className="px-4 text-sm text-black hover:underline dark:text-black"
-            >
+            <Link href="/privacy" className="px-4 text-body text-text-primary hover:underline">
               Privacy Policy
             </Link>
-            <Link
-              href="/contact"
-              className="px-4 text-sm text-black hover:underline dark:text-black"
-            >
+            <Link href="/contact" className="px-4 text-body text-text-primary hover:underline">
               Contact
             </Link>
           </div>
