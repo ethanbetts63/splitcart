@@ -15,6 +15,11 @@ strings and the five undeclared-token reads are gone; and `npm run check`
 runs `lint`, `lint:css`, `check:tokens` and `check:text-scale` green with the
 shared design-system ESLint block switched on.
 
+TK-14 landed the same day, in the shared repo rather than here: `FAMILY` in
+`freetheplatform/frontend/lint/token-drift.mjs` now names splitcart, so
+`check:tokens` in any of the four repos resolves and compares all four
+ladders. They agreed on the first run, character for character.
+
 | Check              | Result                                            |
 | ------------------ | ------------------------------------------------- |
 | `lint`             | 0 errors, 0 warnings, design-system rules enabled |
@@ -25,10 +30,9 @@ shared design-system ESLint block switched on.
 
 ## Work still open
 
-| #     | Work                                                                                                                                                                                                                                                                                                                                                                                                                                 | Acceptance                                                                                 |
-| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| TK-14 | Add splitcart to `FAMILY` in `freetheplatform/frontend/lint/token-drift.mjs`. The one-ladder comparison (TOKEN-6) covers allbikes, bloomprint and freethedesk; splitcart's rungs were matched against them by hand and nothing holds them there. This is a change to the shared module, so it belongs to whoever owns that repo, not to a splitcart commit.                                                                          | `npm run check:tokens` in any of the four repos fails when splitcart's nine rungs diverge. |
-| TK-15 | Declare the rest of the `--space-*` ramp. Only `--spacing-section` exists today, deliberately: the `--spacing-*` namespace silently overrides Tailwind's container scale, and splitcart still sizes panels with `max-w-lg`, `max-w-2xl`, `max-w-3xl` and `max-w-5xl`. Those call sites move to a role-named `--container-*` scale first; then the space rungs can arrive. `scripts/check-tokens.mjs` already fails on the collision. | `gap-m` and `p-l` exist, and no width class names a spacing rung.                          |
+| #     | Work                                                                                                                                                                                                                                                                                                                                                                                                                                 | Acceptance                                                        |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| TK-15 | Declare the rest of the `--space-*` ramp. Only `--spacing-section` exists today, deliberately: the `--spacing-*` namespace silently overrides Tailwind's container scale, and splitcart still sizes panels with `max-w-lg`, `max-w-2xl`, `max-w-3xl` and `max-w-5xl`. Those call sites move to a role-named `--container-*` scale first; then the space rungs can arrive. `scripts/check-tokens.mjs` already fails on the collision. | `gap-m` and `p-l` exist, and no width class names a spacing rung. |
 
 ## Judgement calls this conversion made
 
