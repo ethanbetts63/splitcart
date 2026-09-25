@@ -125,3 +125,40 @@ class TestCartDeletion:
         user.delete()
 
         assert Cart.objects.count() == 0
+
+
+@pytest.mark.django_db
+class TestCartOrdering:
+    """`Meta.ordering` exists so the paginator has a total order to page over.
+
+    `/api/carts/` is paginated. Without a deterministic order MySQL is free to
+    return rows in a different sequence for each query, so a row seen on page 1
+    can appear again on page 2, or never appear at all. DRF warns about exactly
+    this. `updated_at` alone is not enough: two carts saved in the same tick tie,
+    and a tie is where the non-determinism gets back in.
+    """
+
+    def test_carts_come_back_most_recently_updated_first(self, user):
+        older = CartFactory(user=user, name='Older')
+        newer = CartFactory(user=user, name='Newer')
+
+        # auto_now makes save() the clock; save the older one first so the
+        # timestamps genuinely differ rather than relying on creation order.
+        older.save()
+        newer.save()
+
+        assert list(Cart.objects.filter(user=user)) == [newer, older]
+
+    def test_carts_updated_in_the_same_tick_still_have_one_fixed_order(self, user):
+        carts = [CartFactory(user=user, name=f'Cart {i}') for i in range(5)]
+        stamp = carts[0].updated_at
+        Cart.objects.filter(pk__in=[c.pk for c in carts]).update(updated_at=stamp)
+
+        ordered = list(Cart.objects.filter(user=user).values_list('pk', flat=True))
+
+        assert ordered == sorted(c.pk for c in carts), (
+            'With updated_at tied, id is the tiebreaker that makes the order total.'
+        )
+        # The same query twice returns the same sequence -- the property the
+        # paginator actually depends on.
+        assert ordered == list(Cart.objects.filter(user=user).values_list('pk', flat=True))
