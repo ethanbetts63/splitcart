@@ -28,17 +28,17 @@ python manage.py update --subs           # server: reads inbox, writes to DB
 ```
 SubstitutionsGenerator.run()
   │
-  ├─ Fetches products, categories, category_links from server API
+  ├─ Fetches the product list from /api/export/products/ (nothing else)
   │
   ├─ Lvl1SubGenerator   → same brand + name, different size (score: 1.0)
   ├─ Lvl2SubGenerator   → same brand, fuzzy name match (token_set_ratio > 90), same size (score: 0.95)
   ├─ Lvl3SubGenerator   → same primary category, cosine similarity > 0.75 (score: similarity)
-  └─ Lvl4SubGenerator   → linked categories (via CategoryLinks graph), cosine similarity > 0.75
+  └─ Lvl4SubGenerator   → sibling slugs within a PRIMARY_CATEGORY_HIERARCHY super-group, cosine similarity > 0.75
   │
   └─ Writes combined list → pipeline/data/outboxes/substitutions_outbox/substitutions.json
 ```
 
-LVL3 and LVL4 use a `SentenceTransformer` (`all-MiniLM-L6-v2`) to encode product names into embeddings and compute cosine similarity. LVL4 uses a DFS traversal over the `CategoryLinks` graph to build "super-groups" of related categories, then cross-matches products between them (excluding pairs that already qualify as LVL3).
+LVL3 and LVL4 use a `SentenceTransformer` (`all-MiniLM-L6-v2`) to encode product names into embeddings and compute cosine similarity. LVL4 builds its "super-groups" from `PRIMARY_CATEGORY_HIERARCHY` via `_build_slug_super_groups()` — a parent's children are one group — then cross-matches products between them, excluding pairs that already qualify as LVL3. It used to traverse the `CategoryLink` graph; that approach was replaced, and the generator's own docstring says so.
 
 ### DB Load
 
@@ -75,23 +75,19 @@ User adds product to cart
   ▼
 POST /api/carts/sync/
   ├─ Creates new CartItems (bulk_create)
-  ├─ Resolves cart.selected_store_list (lazy-links from user's active list if not set)
   └─ For each new CartItem:
        │
        ▼
-       SubstituteManager(product_id, store_ids)
-         ├─ get_pricing_stores_map(store_ids)  → translates member IDs to anchor IDs
-         │   (Price rows only exist on anchor stores; member store prices are deleted
-         │    after group confirmation — see group_maintenance/README.md)
-         ├─ Finds up to 5 ProductSubstitution rows where substitute has prices at
-         │   the resolved anchor stores
+       SubstituteManager(product_id, company_ids=get_default_company_ids())
+         ├─ Finds up to 5 ProductSubstitution rows where the substitute has
+         │   prices at one of those companies
          └─ Creates CartSubstitution for each (is_approved=False, quantity=1)
   │
   ▼
 Cart response includes items[].substitutions[]
 ```
 
-The product page also exposes substitutes directly via `GET /api/products/<id>/substitutes/` (6-hour cache). That endpoint does not filter by store — it shows all known substitutes for discovery purposes.
+The product page also exposes substitutes directly via `GET /api/products/<id>/substitutes/` (6-hour cache). That endpoint applies no company filter at all — it shows every known substitute, for discovery rather than for pricing.
 
 ---
 
@@ -133,7 +129,7 @@ Substitution approval is an optimistic update — the UI reflects the change imm
 
 ## Design Notes
 
-- **Why anchors matter for substitution filtering**: The group system deletes `Price` rows from member stores once confirmed as matching the anchor. `SubstituteManager` must call `get_pricing_stores_map()` to resolve the user's selected stores to their anchor IDs before querying; otherwise the store filter returns zero results.
+- **The company filter is global, not per user**: `SubstituteManager` is constructed with `get_default_company_ids()`. `Cart` carries no store or company selection field, and there is no per-user store list — Coles, Woolworths and Aldi all price nationally, so there is nothing for a user to pick.
 - **Approved substitutes replace, not supplement**: In the optimizer, if any substitute is approved for a cart item, the original product is dropped from that slot entirely. The optimizer only sees the approved substitutes for that item.
 - **Quantity matters**: A user can approve a substitute at a different quantity (e.g. approving 2×500mL when the original was 1×1L). This quantity is what the optimizer uses.
 - **LVL1 and LVL2 require the same brand** — they cover size and naming variants within a brand. LVL3 and LVL4 cross brand boundaries using semantic similarity.

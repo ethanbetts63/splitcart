@@ -1,0 +1,20 @@
+# Git for Windows ships core.autocrlf=true in its system config, which rewrites
+# LF to CRLF on checkout. The committed blobs here are already pure LF, so
+# nothing in history is wrong -- but Prettier checks the *working tree* and
+# defaults to endOfLine:lf, so every file Git converted on the way out failed
+# `format:check` while being perfectly fine in the repo. That made the check
+# useless as a signal: real formatting errors sat inside a wall of false ones.
+#
+# eol=lf pins the working tree to match the repo, for every clone, without
+# anyone having to set core.autocrlf on their machine.
+* text=auto eol=lf
+
+# Detection is good but not perfect, and a single misdetected binary is a
+# corrupted file rather than a noisy diff. These are declared outright.
+*.webp binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.pdf  binary

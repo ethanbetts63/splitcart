@@ -1,90 +1,106 @@
-# SplitCart Frontend
+# SplitCart frontend
 
-This directory contains the frontend single-page application (SPA) for the SplitCart project.
+The public SplitCart site: product search and browsing, the cart, substitution
+approval, and the optimised shopping plan. It is a **Next.js 16 App Router**
+application deployed to Vercel at https://www.splitcart.com.au/, talking to the
+Django API at `api.splitcart.com.au`.
 
-## Overview
+Agents should read [`AGENTS.md`](AGENTS.md) alongside this file.
 
-The application is built using React and TypeScript, bootstrapped with Vite. It provides a modern, interactive user interface for users to manage their shopping lists, find the best prices across different stores, and view optimized shopping plans.
+## Stack
 
-## Core Technologies
+| Piece        | What                                                                          |
+| ------------ | ----------------------------------------------------------------------------- |
+| Framework    | Next.js 16, App Router, React 19                                              |
+| Language     | TypeScript                                                                    |
+| Styling      | Tailwind CSS v4 via `@tailwindcss/postcss`, one stylesheet at `src/index.css` |
+| Components   | Radix primitives under `src/components/ui/`, originally from `shadcn`         |
+| Server state | TanStack Query, provided in `src/app/providers.tsx`                           |
+| Client state | React context: `AuthContext`, `CartContext`, `DialogContext`                  |
+| Analytics    | `@vercel/analytics`                                                           |
 
-- **Framework**: [React](https://react.dev/) with [TypeScript](https://www.typescriptlang.org/)
-- **Build Tool**: [Vite](https://vitejs.dev/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) with [shadcn/ui](https://ui.shadcn.com/) for a utility-first component library.
-- **Routing**: [React Router](https://reactrouter.com/) for client-side routing.
-- **State Management**: [React Context](https://react.dev/learn/passing-data-deeply-with-context) for global application state.
+## Run it
 
-## Project Structure
+```powershell
+npm install
+npm run dev
+```
+
+The app runs at `http://localhost:3000`. `next.config.ts` rewrites `/api/:path*`
+to `DJANGO_API_URL`, which defaults to `http://localhost:8000` — so a local
+Django server is picked up with no configuration. To point at the deployed API
+instead, set `DJANGO_API_URL` and `NEXT_PUBLIC_DJANGO_API_URL` in
+`.env.local`.
+
+| Script              | Does                                       |
+| ------------------- | ------------------------------------------ |
+| `npm run dev`       | Development server                         |
+| `npm run build`     | Production build                           |
+| `npm run start`     | Serve a production build                   |
+| `npm run check`     | Static checks — run this before committing |
+| `npm run lint`      | ESLint over `src`                          |
+| `npm run typecheck` | `tsc --noEmit`                             |
+
+## Structure
 
 ```
 src/
-├── components/   # Reusable UI components (e.g., ProductTile, Button)
-├── context/      # Global state providers (AuthContext, CartContext, StoreListContext)
-├── hooks/        # Custom React hooks for reusable stateful logic (e.g., useApiQuery)
-├── lib/          # Utility functions (e.g., cn for classnames, debounce)
-├── pages/        # Top-level components representing application pages
-├── services/     # Centralized modules for backend API communication
-└── types/        # TypeScript type definitions
+├── app/               # Routes. layout, providers, shell, sitemap.ts, robots.ts,
+│                      # and one folder per route
+├── page_components/   # The body of each page; page.tsx files stay thin
+├── components/        # Shared components
+│   └── ui/            # Primitives (button, dialog, select, ...)
+├── context/           # AuthContext, CartContext, DialogContext
+├── services/          # apiClient.ts and one *.api.ts per endpoint family
+├── hooks/             # useApiQuery, useMediaQuery, use-mobile
+├── lib/               # apiUrl, seo, schema, companies, assets, utils
+├── data/              # Static content: category icons and copy, pillar FAQs
+├── types/             # One type per file, re-exported from index.ts
+├── assets/            # SVG and image assets
+└── index.css          # The only stylesheet
 ```
 
-## Key Architectural Concepts
+## How it talks to the API
 
-### State Management
+`services/apiClient.ts` is the only place that calls `fetch` against Django.
+`ApiClient` attaches `Authorization: Token <token>` when the user is signed in
+and `X-Anonymous-ID` when they are not, so an anonymous visitor keeps a cart
+across page loads and that cart is merged into their account on login.
 
-The application's global state is managed via React's Context API, separated by domain:
+Endpoint families get a `*.api.ts` module (`cart.api.ts`, `product.api.ts`)
+that takes an `ApiClient`. Components call those through a context or a
+TanStack Query hook — never `fetch` directly.
 
-- **`AuthContext.tsx`**: Manages user authentication state, including JWT tokens and anonymous user IDs.
-- **`CartContext.tsx`**: Manages the state of the user's shopping cart, including all items and substitutions. It also orchestrates all actions related to the cart.
-- **`StoreListContext.tsx`**: Manages the user's selected stores for price comparison.
+## The cart, and why it debounces
 
-### API Interaction
+Cart edits are optimistic: `addItem` and `updateItemQuantity` update local
+state immediately and schedule a debounced `POST /api/carts/sync/` that sends
+the whole cart after a pause in activity. One request per burst of clicking
+rather than one per click.
 
-API communication is handled through a dedicated service layer, promoting a clean separation of concerns.
+Sync returns the substitutions the backend found for the cart's items. The user
+approves or rejects those, then `POST /api/carts/{id}/optimize/` returns the
+plans — a best single company and a split across two, three or four — which
+`FinalCartPage` renders, with PDF and email export.
 
-- **`services/apiClient.ts`**: A central `ApiClient` class that wraps `fetch`. It's responsible for automatically attaching authentication headers (`Authorization` token or `X-Anonymous-ID`) and standardizing error handling.
-- **`services/*.api.ts`**: Service files (`cart.api.ts`, `storeList.api.ts`) contain functions that encapsulate specific API endpoint calls. These functions use an `ApiClient` instance to perform the request.
-- **Pattern**: React Contexts (like `CartContext`) use these service functions to interact with the backend, keeping the data-fetching logic separate from state management logic.
+The optimisation itself is backend work; see
+[`../_docs/optimization.md`](../_docs/optimization.md) for the algorithm and
+[`../_docs/substitutions.md`](../_docs/substitutions.md) for how substitutes
+are matched.
 
-### Cart Logic: Debounced Sync
+## Ordering and bargains
 
-To create a responsive user experience and reduce server load, cart modifications (`addItem`, `updateItemQuantity`) do not trigger an API call for every change. Instead, they perform an "optimistic update" to the local UI state and then call a **debounced `sync` function**. This function waits for a period of inactivity (e.g., 1.5 seconds) before sending the entire cart state to the backend in a single `/api/carts/sync/` request.
+Product lists support several orderings, all resolved server-side:
 
-## Search and Ordering Logic
+- **Bargain-first** — the default on category pages. `ProductPriceSummary`
+  supplies pre-computed candidates cheaply, then the backend recomputes the
+  real discount for that shortlist against current prices and sorts by it.
+  Products with no live discount fall back to unit price.
+- **Relevance** — the default for text search. Scored on how well name, brand
+  and size match the query. Bargain scoring is not applied to search results.
+- **Price** ascending or descending, and **unit price** ascending.
 
-The application provides several options for sorting product lists, with a sophisticated "Bargain-First" system as the default.
-
-### Ordering Options
-
-- **Bargain-First (Default)**: This is the default sorting for category pages. It's a hybrid system designed to surface the best deals in real-time. It works in two main stages:
-    1.  **Candidate Identification**: The backend first quickly identifies a list of potential bargain products. It uses a pre-calculated `ProductPriceSummary` table for this, which contains aggregated data like the best possible discount for a product across all stores.
-    2.  **On-the-Fly Calculation**: For this smaller list of candidates, the backend performs a live, on-the-fly calculation. It fetches the current prices from the user's selected stores and calculates the *actual* discount percentage. Products with a real discount are shown first, sorted from highest to lowest discount. Products with no discount are then sorted by their best unit price.
-- **Search (Default)**: When using the text search bar, results are sorted by a relevance score based on how well the product's name, brand, and size match the search term. Bargain calculations are not applied to search results.
-- **Price (Asc/Desc)**: Sorts products by the lowest available price from the user's selected stores.
-- **Unit Price (Asc)**: Sorts products by the lowest available unit price (e.g., price per 100g) from the user's selected stores.
-
-### Generating Price Summaries
-
-The first step of the "Bargain-First" logic relies on pre-calculated data. This data is generated by a management command:
-
-```bash
-python manage.py generate --price-summaries
-```
-
-This command populates the `ProductPriceSummary` table in the database. It iterates through all products and calculates aggregate metrics (like minimum price, maximum price, and the best *possible* discount), which enables the backend to quickly identify potential bargain candidates without having to scan the entire price database for every request.
-
-## Getting Started
-
-1.  **Install Dependencies**:
-    ```bash
-    npm install
-    ```
-2.  **Run the Development Server**:
-    ```bash
-    npm run dev
-    ```
-    The application will be available at `http://localhost:5173`.
-3.  **Build for Production**:
-    ```bash
-    npm run build
-    ```
-    The production-ready assets will be generated in the `dist` directory.
+The summary table behind bargain-first is rebuilt by
+`python manage.py generate --price-summaries` on the server. See
+[`../_docs/product_price_summary.md`](../_docs/product_price_summary.md) and
+[`../_docs/bargains.md`](../_docs/bargains.md).

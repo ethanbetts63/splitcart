@@ -20,7 +20,9 @@ Product/category/sub generation         Product ingestion pipeline
       tables                           /api/files/product_translations/
 ```
 
-**All scraping happens locally.** The local machine generates raw data files (JSONL) and uploads them to the server's inbox directories. Before each scraping run, the local machine fetches the latest translation tables from the server via an authenticated API endpoint with ETag caching — it only downloads a new copy if the file has changed since the last fetch. It does this becuase scraping is resource intense (expensive on the server/free locally) and because the coles scraper requires a human to solve the captchas.
+**All scraping happens locally.** The local machine generates raw data files (JSONL) and uploads them to the server's inbox directories. Before each scraping run, the local machine fetches the latest translation tables from the server via an authenticated API endpoint. It works this way because scraping is resource intense (expensive on the server, free locally) and because the Coles scraper needs a human to solve the captchas.
+
+The tables are re-downloaded in full every run. The server sets an `ETag`, but `fetch_python_file` never sends `If-None-Match` and never persists one — `test_ignores_etag_when_present` and `test_does_not_send_etag_header_if_cached` in `scraping/tests/util_tests/test_python_file_downloader.py` pin that deliberately. Any document claiming the fetch is ETag-cached is describing an intention, not the code.
 
 **All database writes happen on the server.** Management commands that read inboxes and write to the DB are always server-side.
 
@@ -76,17 +78,21 @@ pipeline/data/archive/product_archive/
 ```
 
 `update --products --archive` reads product JSONL files from `pipeline/data/archive/product_archive/` and preserves those files after ingest. Normal `update --products` still reads from `pipeline/data/inboxes/product_inbox/`.
+
 ## Data Flow Summary
 
 ```
 Local scraper
-  └─ Raw store API data
+  └─ Raw supermarket API data
        │
        ▼
-BaseDataCleaner (store-specific subclass)
+scrape._fetch_translation_tables()
+  ├─ downloads brand_translation_table.json
+  └─ downloads product_normalized_name_brand_size_translation_table.json
+       │
+       ▼
+BaseDataCleaner (per-company subclass, loads both tables from disk)
   └─ ProductNormalizer
-       ├─ Fetches brand_translation_table from server (ETag-cached)
-       ├─ Fetches product_translation_table from server (ETag-cached)
        ├─ Normalizes brand (bag-of-words → translation lookup)
        ├─ Extracts and standardizes sizes
        └─ Generates normalized_name_brand_size (bag-of-words → translation lookup)
@@ -102,10 +108,9 @@ UpdateOrchestrator (update --products)
   ├─ PriceManager       → creates/updates/deletes Price objects
   ├─ PathManager        → merges category_path evidence into Product.category_paths
   └─ Post-processing
-       ├─ TranslationTableGenerators  → writes brand + product .py tables
+       ├─ TranslationTableGenerators  → writes brand + product .json tables
        ├─ BrandReconciler             → merges duplicate brands
        ├─ ProductReconciler           → merges duplicate products
-       ├─ GroupMaintenanceOrchestrator→ maintains store group integrity
        ├─ TranslationTableGenerators  → regenerates tables post-reconciliation
        └─ OrphanProductCleaner        → removes products with no prices
        │
@@ -115,12 +120,11 @@ generate --pillars          → groups primary categories into pillar pages
 generate --bargain-stats
 generate --price-comps
 generate --price-summaries
-generate --store-stats
-generate --default-stores
+generate --default-companies
        │
        ▼
 Frontend
-  ├─ Product list → filters by primary_category_slugs (JSON contains), store, price
+  ├─ Product list → filters by primary_category_slugs (JSON contains), company, price
   ├─ Pillar pages → SEO landing pages grouping primary categories
   ├─ Price charts → powered by price-comp and price-summary data
   └─ Cart splitter → uses substitutions + prices to find cheapest combination
@@ -130,22 +134,24 @@ Frontend
 
 ## Frontend User Journey
 
-The frontend is a React SPA that consumes the generated data through three primary phases:
+The frontend is a Next.js App Router application that consumes the generated data through three primary phases:
 
 ### Phase 1: Discovery & Configuration
-Users navigate the catalog via the **Homepage** categories, **Search**, or **Pillar Pages** (SEO-optimized landing pages grouping primary categories). During this phase, users select their preferred local stores in the **Settings** dialog to filter pricing and availability.
+
+Users navigate the catalog via the **Homepage** categories, **Search**, or **Pillar Pages** (SEO-optimized landing pages grouping primary categories). There is nothing to configure: the pricing company set is global, read from `get_default_company_ids()`, because Coles, Woolworths and Aldi all price nationally.
 
 ### Phase 2: Cart & Substitutions
+
 Products are added to a persistent cart. Before optimization, users go through a **Substitution Approval** flow where they can accept alternative products (e.g., different brands or sizes). This step is critical as it provides the optimizer with more data points to find deeper savings.
 
 ### Phase 3: Optimization & Final Plan
-The **Optimizer** calculates the cheapest combination of stores for the approved list. The results are presented as multiple plans (e.g., Best Single Store vs. Best 3-Store Split), showing total savings and a store-by-store breakdown. Users can then export their optimized shopping list as a PDF or via email.
+
+The **Optimizer** calculates the cheapest combination of companies for the approved list. The results are presented as multiple plans (e.g. best single company vs. a three-company split), showing total savings and a company-by-company breakdown. Users can then export their optimized shopping list as a PDF or via email.
 
 ---
 
 ## Design Notes
 
-- **Two product passes**: Products are ingested twice in a full setup because the GS1 prefix data loaded between passes improves brand matching. The second pass propagates those improvements. It isn't strictly necessary but doubles the speed at which the system learns.
 - **Category paths are incremental**: `PathManager` merges path evidence into `Product.category_paths` on every ingest — it increments `evidence_count` for paths already seen and appends new ones. The `canonical_key` for each path improves over time as cross-company node equivalences are confirmed via the agent classification workflow (see `_docs/categories.md`).
 - **Primary category assignment is manual**: `generate --primary-cats` must be run separately after ingesting a large new batch of products or after updating `CATEGORY_MAPPINGS`. It reads `Product.category_paths` and writes `Product.primary_category_slugs` — no graph traversal, no raw Category objects.
 - **Substitution generation no longer needs category data**: `generate --subs` fetches only the product list from the server. Lvl3 groups by `primary_category_slugs`; Lvl4 uses `PRIMARY_CATEGORY_HIERARCHY` parent-child groups. No category or category-link API endpoints are fetched.

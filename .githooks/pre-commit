@@ -1,0 +1,65 @@
+#!/bin/sh
+#
+# Pre-commit gate. Fast on purpose.
+#
+# A hook that takes minutes is a hook people bypass, and a rule that gets
+# bypassed once stops being a rule. So this runs the checks that are cheap and
+# catch the common breakages, and nothing else. The full suites --
+# `./venv/Scripts/python -m pytest` and the frontend `npm run check` -- stay
+# where AGENTS.md puts them: run when you have changed that area, by the person
+# or agent who changed it.
+#
+# Installed by `git config core.hooksPath .githooks`, once per clone. It is not
+# automatic: .git/ is never committed, so a fresh clone has no hooks at all and
+# says nothing about it.
+
+set -e
+
+repo_root=$(git rev-parse --show-toplevel)
+cd "$repo_root"
+
+staged=$(git diff --cached --name-only --diff-filter=ACMR)
+[ -z "$staged" ] && exit 0
+
+fail() {
+    echo ""
+    echo "pre-commit: $1"
+    echo "            Fix it, or run 'git commit --no-verify' if you are certain."
+    exit 1
+}
+
+# --- Frontend ------------------------------------------------------------
+#
+# Only when something under frontend/ is staged. Typecheck is whole-project
+# because types are a graph -- a change here can break a file nobody touched.
+#
+# Deliberately NOT here: eslint and the full `npm run check`. Those belong to
+# the Verification table in AGENTS.md, which already requires them for frontend
+# work and which takes considerably longer than a commit should.
+if echo "$staged" | grep -q '^frontend/'; then
+    if [ -x frontend/node_modules/.bin/tsc ]; then
+        echo "pre-commit: frontend typecheck"
+        (cd frontend && ./node_modules/.bin/tsc --noEmit) \
+            || fail "TypeScript reported an error."
+    else
+        echo "pre-commit: skipping typecheck -- run 'npm install' in frontend/."
+    fi
+fi
+
+# --- Formatting ----------------------------------------------------------
+#
+# Prettier is installed as a frontend devDependency; there is no separate root
+# install. It reads frontend/.prettierrc.json for files under frontend/ and the
+# root .prettierrc for everything else, resolving from each file's own
+# directory. --ignore-unknown so a staged image, lockfile or .py is skipped
+# rather than failing.
+if [ -x frontend/node_modules/.bin/prettier ]; then
+    echo "pre-commit: formatting"
+    # shellcheck disable=SC2086
+    ./frontend/node_modules/.bin/prettier --check --ignore-unknown $staged \
+        || fail "Prettier would reformat a staged file. Run 'npm run format' in frontend/."
+else
+    echo "pre-commit: skipping format check -- prettier is not installed."
+fi
+
+exit 0

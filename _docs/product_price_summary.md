@@ -4,19 +4,19 @@ A pre-computed, one-to-one snapshot of aggregated price metrics for a single pro
 
 **Model:** `products/models/product_price_summary.py`
 
-| Field | Type | Description |
-|---|---|---|
-| `product` | OneToOneField (PK) | The product this summary belongs to |
-| `min_price` | Decimal | Cheapest current price across all stores |
-| `max_price` | Decimal | Most expensive current price across all stores |
-| `company_count` | PositiveInt (indexed) | Number of distinct companies that stock this product |
-| `best_possible_discount` | Int (indexed) | `((max − min) / max) × 100`, rounded down |
+| Field                    | Type                  | Description                                          |
+| ------------------------ | --------------------- | ---------------------------------------------------- |
+| `product`                | OneToOneField (PK)    | The product this summary belongs to                  |
+| `min_price`              | Decimal               | Cheapest current price across all companies          |
+| `max_price`              | Decimal               | Most expensive current price across all companies    |
+| `company_count`          | PositiveInt (indexed) | Number of distinct companies that stock this product |
+| `best_possible_discount` | Int (indexed)         | `((max − min) / max) × 100`, rounded down            |
 
 ---
 
 ## Why it exists
 
-Bargain queries need to sort thousands of products by cross-store price variance. Doing that live — joining `Product → Price → Store → Company` and aggregating on the fly — is too expensive at request time. `ProductPriceSummary` pre-computes those aggregates so the bargain carousel can do a single indexed scan to find candidates, then verify a small shortlist against live prices.
+Bargain queries need to sort thousands of products by cross-company price variance. Doing that live — joining `Product → Price → Company` and aggregating on the fly — is too expensive at request time. `ProductPriceSummary` pre-computes those aggregates so the bargain carousel can do a single indexed scan to find candidates, then verify a small shortlist against live prices.
 
 ---
 
@@ -36,17 +36,18 @@ The generator fully rebuilds all summaries on each run (delete then recreate in 
 
 ## The two-step bargain query pattern
 
-`ProductPriceSummary` is not the final answer — it is a pre-filter. Because it is computed globally (all stores), it can surface products that look like bargains globally but aren't relevant to *this* user's selected stores. The query pattern used throughout the codebase is:
+`ProductPriceSummary` is not the final answer — it is a pre-filter. It is computed across every company that has a price, which is a superset of the default pricing set a request actually reads, and its `best_possible_discount` is a _possible_ discount rather than one that is live right now. The query pattern used throughout the codebase is:
 
 **Step 1 — Cheap indexed scan on summaries (candidate selection)**
-Filter `ProductPriceSummary` by `best_possible_discount`, `company_count`, and whether the product has prices at the user's anchor stores. Take the top ~200 candidates ordered by `-best_possible_discount`.
+Filter `ProductPriceSummary` by `best_possible_discount`, `company_count`, and `product__prices__company__id__in=get_default_company_ids()`. Take the top ~200 candidates ordered by `-best_possible_discount`.
 
 **Step 2 — Live verification in memory**
-Fetch actual `Price` rows for just those candidates, restricted to the user's anchor stores. Recalculate the real discount for the user's specific store set. Sort and return.
+Fetch actual `Price` rows for just those candidates, restricted to the same default company set, via `calculate_bargains()` in `products/utils/bargain_utils.py`. Recalculate the discount that is actually available today. Sort and return.
 
 This keeps the expensive per-user calculation to a small, already-promising candidate pool.
 
 **Files using this pattern:**
+
 - `products/views/bargain_carousel_view.py` — homepage bargain carousel
 - `products/utils/product_ordering.py` — `get_bargain_first_ordering()` for product list pages
 
@@ -54,9 +55,9 @@ This keeps the expensive per-user calculation to a small, already-promising cand
 
 ## Key files
 
-| File | Role |
-|---|---|
-| `products/models/product_price_summary.py` | Model definition |
-| `pipeline/utils/generation_utils/price_summaries_generator.py` | Builds all summaries |
-| `products/views/bargain_carousel_view.py` | Homepage bargain carousel (24h cached) |
-| `products/utils/product_ordering.py` | Bargain-first ordering for product list pages |
+| File                                                           | Role                                          |
+| -------------------------------------------------------------- | --------------------------------------------- |
+| `products/models/product_price_summary.py`                     | Model definition                              |
+| `pipeline/utils/generation_utils/price_summaries_generator.py` | Builds all summaries                          |
+| `products/views/bargain_carousel_view.py`                      | Homepage bargain carousel (24h cached)        |
+| `products/utils/product_ordering.py`                           | Bargain-first ordering for product list pages |

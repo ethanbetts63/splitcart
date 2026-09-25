@@ -19,6 +19,7 @@ The old raw `Category` node-graph model and `CategoryLink` model are being phase
 Each `Product` carries two category fields:
 
 **`category_paths`** — a JSON list of every category path seen for this product, per company. Each entry:
+
 ```python
 {
     "company": "Woolworths",
@@ -60,6 +61,7 @@ No `Category` objects are created. No parent-child graph is built.
 `classify_path(company_name, path)` returns `path_type`, `canonical_key`, and `primary_category_slug`.
 
 **path_type** is determined by the root node against frozensets:
+
 - `canonical_taxonomy` — real grocery browse hierarchy (default)
 - `seasonal` — christmas, easter, limited time only, special buys, etc.
 - `promotion` — down down, bonus credit products, everyday market, big night in, specials, etc.
@@ -125,11 +127,11 @@ python manage.py generate --primary-cats
 
 **File roles**
 
-| File | Role |
-|------|------|
-| `node_assignment_candidates.jsonl` | Unclassified nodes; regenerated each run |
-| `node_assignment_decisions.jsonl` | Permanent archive of all agent decisions |
-| `canonical_category_assignments.json` | Live lookup file read by PathClassifier |
+| File                                  | Role                                     |
+| ------------------------------------- | ---------------------------------------- |
+| `node_assignment_candidates.jsonl`    | Unclassified nodes; regenerated each run |
+| `node_assignment_decisions.jsonl`     | Permanent archive of all agent decisions |
+| `canonical_category_assignments.json` | Live lookup file read by PathClassifier  |
 
 **Precedence in PathClassifier**
 
