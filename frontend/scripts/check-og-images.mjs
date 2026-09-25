@@ -9,5 +9,5 @@ import { checkOgImages } from './seo/og-images.mjs';
 
 checkOgImages({
   root: join(dirname(fileURLToPath(import.meta.url)), '..'),
-  sources: ['src/lib/seo.ts'],
+  sources: ['src/lib/seo.ts', 'src/lib/siteConfig.ts', 'src/lib/pages.ts'],
 });

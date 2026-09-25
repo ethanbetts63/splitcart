@@ -1,12 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
-import type { Product } from "@/types/Product";
-import {
-  breadcrumbItemsFor,
-  STATIC_PAGES,
-  type PagePath,
-  type StaticPage,
-} from "./pages";
+import type { Product } from '@/types/Product';
+import { breadcrumbItemsFor, STATIC_PAGES, type PagePath, type StaticPage } from './pages';
 import {
   CONTACT_EMAIL,
   DEFAULT_OG_HEIGHT,
@@ -17,7 +12,7 @@ import {
   SITE_NAME,
   SITE_URL,
   WEBSITE_ID,
-} from "./siteConfig";
+} from './siteConfig';
 
 /**
  * Metadata and structured data for SplitCart.
@@ -36,13 +31,22 @@ export type JsonLdNode = Record<string, unknown>;
 
 /**
  * One URL spelling per route, shared by the canonical tag, the OG url, the
- * sitemap and every `@id`. The homepage is `{SITE_URL}/` with the trailing
- * slash in all of them, because the question is answered here once instead of
- * separately in each caller — which is how the sitemap came to advertise
- * `/categories/baby/` while the page's own canonical said `/categories/baby`.
+ * sitemap and every `@id`. Answered here once instead of separately in each
+ * caller — which is how the sitemap came to advertise `/categories/baby/`
+ * while the page's own canonical said `/categories/baby`.
+ *
+ * No trailing slash, the homepage included. Next's metadata layer normalises
+ * `alternates.canonical` and `openGraph.url` against the `trailingSlash`
+ * setting in `next.config.ts` — which is the default, `false` — so it strips a
+ * trailing slash whatever this returns. Emitting `{SITE_URL}/` in the sitemap
+ * while the `<head>` says `{SITE_URL}` is the exact disagreement this helper
+ * exists to prevent, so the helper matches what actually ships rather than the
+ * other way round. If `trailingSlash` is ever turned on, this is the one place
+ * that has to change.
  */
 export function absoluteUrl(path: string): string {
-  return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
+  const normalised = path.startsWith('/') ? path : `/${path}`;
+  return normalised === '/' ? SITE_URL : `${SITE_URL}${normalised.replace(/\/$/, '')}`;
 }
 
 interface MetadataOptions {
@@ -73,8 +77,8 @@ export function buildMetadata({
       description,
       url: canonical,
       siteName: SITE_NAME,
-      type: "website",
-      locale: "en_AU",
+      type: 'website',
+      locale: 'en_AU',
       images: [
         {
           url: DEFAULT_OG_IMAGE,
@@ -85,7 +89,7 @@ export function buildMetadata({
       ],
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title,
       description,
       images: [DEFAULT_OG_IMAGE],
@@ -111,7 +115,7 @@ export function metadataFor(path: PagePath): Metadata {
 
 /** Wrap top-level nodes as one document. `@graph` is what lets the @ids link. */
 export function buildGraph(nodes: JsonLdNode[]): JsonLdNode {
-  return { "@context": "https://schema.org", "@graph": nodes };
+  return { '@context': 'https://schema.org', '@graph': nodes };
 }
 
 /**
@@ -127,21 +131,21 @@ export function buildGraph(nodes: JsonLdNode[]): JsonLdNode {
  */
 export function buildOrganizationSchema(): JsonLdNode {
   return {
-    "@type": "Organization",
-    "@id": ORGANIZATION_ID,
+    '@type': 'Organization',
+    '@id': ORGANIZATION_ID,
     name: SITE_NAME,
-    url: absoluteUrl("/"),
+    url: absoluteUrl('/'),
     logo: absoluteUrl(ORGANIZATION_LOGO),
     email: CONTACT_EMAIL,
     description:
-      "SplitCart compares grocery prices across Coles, Woolworths and Aldi and finds the cheapest way to split a shopping list across them.",
-    founder: { "@type": "Person", name: "Ethan Betts" },
-    areaServed: { "@type": "Country", name: "Australia" },
+      'SplitCart compares grocery prices across Coles, Woolworths and Aldi and finds the cheapest way to split a shopping list across them.',
+    founder: { '@type': 'Person', name: 'Ethan Betts' },
+    areaServed: { '@type': 'Country', name: 'Australia' },
     contactPoint: {
-      "@type": "ContactPoint",
+      '@type': 'ContactPoint',
       email: CONTACT_EMAIL,
-      contactType: "customer support",
-      availableLanguage: "English",
+      contactType: 'customer support',
+      availableLanguage: 'English',
     },
   };
 }
@@ -156,12 +160,12 @@ export function buildOrganizationSchema(): JsonLdNode {
  */
 export function buildWebSiteSchema(): JsonLdNode {
   return {
-    "@type": "WebSite",
-    "@id": WEBSITE_ID,
+    '@type': 'WebSite',
+    '@id': WEBSITE_ID,
     name: SITE_NAME,
-    url: absoluteUrl("/"),
-    inLanguage: "en-AU",
-    publisher: { "@id": ORGANIZATION_ID },
+    url: absoluteUrl('/'),
+    inLanguage: 'en-AU',
+    publisher: { '@id': ORGANIZATION_ID },
   };
 }
 
@@ -193,21 +197,21 @@ export function buildWebPageSchema({
   name,
   description,
   updated,
-  type = "WebPage",
+  type = 'WebPage',
   hasBreadcrumb = true,
 }: WebPageOptions): JsonLdNode {
   const node: JsonLdNode = {
-    "@type": type,
-    "@id": webPageId(path),
+    '@type': type,
+    '@id': webPageId(path),
     url: absoluteUrl(path),
     name,
     description,
-    inLanguage: "en-AU",
-    isPartOf: { "@id": WEBSITE_ID },
-    publisher: { "@id": ORGANIZATION_ID },
+    inLanguage: 'en-AU',
+    isPartOf: { '@id': WEBSITE_ID },
+    publisher: { '@id': ORGANIZATION_ID },
   };
   if (updated) node.dateModified = updated;
-  if (hasBreadcrumb) node.breadcrumb = { "@id": breadcrumbId(path) };
+  if (hasBreadcrumb) node.breadcrumb = { '@id': breadcrumbId(path) };
   return node;
 }
 
@@ -216,15 +220,12 @@ export interface BreadcrumbItem {
   path: string;
 }
 
-export function buildBreadcrumbSchema(
-  items: BreadcrumbItem[],
-  path: string,
-): JsonLdNode {
+export function buildBreadcrumbSchema(items: BreadcrumbItem[], path: string): JsonLdNode {
   return {
-    "@type": "BreadcrumbList",
-    "@id": breadcrumbId(path),
+    '@type': 'BreadcrumbList',
+    '@id': breadcrumbId(path),
     itemListElement: items.map((item, index) => ({
-      "@type": "ListItem",
+      '@type': 'ListItem',
       position: index + 1,
       name: item.name,
       item: absoluteUrl(item.path),
@@ -279,11 +280,11 @@ export interface FaqEntry {
 export function buildFaqSchema(faqs: FaqEntry[]): JsonLdNode | null {
   if (faqs.length === 0) return null;
   return {
-    "@type": "FAQPage",
+    '@type': 'FAQPage',
     mainEntity: faqs.map((faq) => ({
-      "@type": "Question",
+      '@type': 'Question',
       name: faq.question,
-      acceptedAnswer: { "@type": "Answer", text: faq.answer },
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
     })),
   };
 }
@@ -301,21 +302,21 @@ export function buildFaqSchema(faqs: FaqEntry[]): JsonLdNode | null {
  * the only claim being made about them here.
  */
 const RETAILER_URLS: Record<string, string> = {
-  Coles: "https://www.coles.com.au",
-  Woolworths: "https://www.woolworths.com.au",
-  Aldi: "https://www.aldi.com.au",
-  IGA: "https://www.iga.com.au",
+  Coles: 'https://www.coles.com.au',
+  Woolworths: 'https://www.woolworths.com.au',
+  Aldi: 'https://www.aldi.com.au',
+  IGA: 'https://www.iga.com.au',
 };
 
 export function retailerId(company: string): string {
-  return `${SITE_URL}/#retailer-${company.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+  return `${SITE_URL}#retailer-${company.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 }
 
 export function buildRetailerSchemas(companies: string[]): JsonLdNode[] {
   return [...new Set(companies)].sort().map((company) => {
     const node: JsonLdNode = {
-      "@type": "Organization",
-      "@id": retailerId(company),
+      '@type': 'Organization',
+      '@id': retailerId(company),
       name: company,
     };
     const url = RETAILER_URLS[company];
@@ -327,7 +328,7 @@ export function buildRetailerSchemas(companies: string[]): JsonLdNode[] {
 /** `"$3.45"` → `3.45`. Returns null for anything that is not a clean number. */
 function parsePrice(display: string | undefined): number | null {
   if (!display) return null;
-  const value = Number.parseFloat(display.replace(/[^0-9.]/g, ""));
+  const value = Number.parseFloat(display.replace(/[^0-9.]/g, ''));
   return Number.isFinite(value) ? value : null;
 }
 
@@ -350,69 +351,63 @@ function parsePrice(display: string | undefined): number | null {
  * No `Product.url` either: product pages are robots-disallowed, so linking one
  * from schema points a crawler at a URL it is told not to fetch.
  */
-export function buildProductItemListSchema(
-  products: Product[],
-  name: string,
-): JsonLdNode | null {
+export function buildProductItemListSchema(products: Product[], name: string): JsonLdNode | null {
   const items = products
-    .map((product, index) => {
+    .map((product) => {
       const offers = product.prices
         .map((priceInfo) => ({
           company: priceInfo.company,
           price: parsePrice(priceInfo.price_display),
         }))
-        .filter(
-          (offer): offer is { company: string; price: number } =>
-            offer.price !== null,
-        );
+        .filter((offer): offer is { company: string; price: number } => offer.price !== null);
 
       if (offers.length === 0) return null;
 
       const prices = offers.map((offer) => offer.price);
       const item: JsonLdNode = {
-        "@type": "Product",
+        '@type': 'Product',
         name: product.name,
         offers: {
-          "@type": "AggregateOffer",
-          priceCurrency: "AUD",
+          '@type': 'AggregateOffer',
+          priceCurrency: 'AUD',
           lowPrice: Math.min(...prices).toFixed(2),
           highPrice: Math.max(...prices).toFixed(2),
           offerCount: offers.length,
           offers: offers.map((offer) => ({
-            "@type": "Offer",
+            '@type': 'Offer',
             price: offer.price.toFixed(2),
-            priceCurrency: "AUD",
-            seller: { "@id": retailerId(offer.company) },
+            priceCurrency: 'AUD',
+            seller: { '@id': retailerId(offer.company) },
           })),
         },
       };
       if (product.image_url) item.image = product.image_url;
       if (product.brand_name) {
-        item.brand = { "@type": "Brand", name: product.brand_name };
+        item.brand = { '@type': 'Brand', name: product.brand_name };
       }
 
-      const listItem: JsonLdNode = {
-        "@type": "ListItem",
-        position: index + 1,
-        item,
-      };
-      return listItem;
+      return item;
     })
     .filter((entry): entry is JsonLdNode => entry !== null);
 
   if (items.length === 0) return null;
 
   return {
-    "@type": "ItemList",
+    '@type': 'ItemList',
     name,
     numberOfItems: items.length,
-    itemListElement: items,
+    // Positions are assigned after the filter, not from the source index: a
+    // product with no parseable price is dropped, and a list that starts at
+    // position 2 is a malformed list.
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item,
+    })),
   };
 }
 
 /** Every company named across a set of products, for `buildRetailerSchemas`. */
 export function companiesIn(products: Product[]): string[] {
-  return products.flatMap((product) =>
-    product.prices.map((priceInfo) => priceInfo.company),
-  );
+  return products.flatMap((product) => product.prices.map((priceInfo) => priceInfo.company));
 }

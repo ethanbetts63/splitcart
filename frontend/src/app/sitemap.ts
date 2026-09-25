@@ -21,22 +21,23 @@ import { absoluteUrl } from '@/lib/seo';
  * category entries here carried a trailing slash while the pages' own
  * canonicals did not.
  *
- * Perth time (+08:00) rather than UTC, so a date does not read as the previous
- * evening.
+ * `updated` goes into `<lastmod>` as the bare `YYYY-MM-DD` it already is, not
+ * via `new Date()`. A W3C date is a legal `<lastmod>` value, and converting to
+ * a timestamp first would emit Perth midnight as `…T16:00:00.000Z` — the
+ * previous calendar day in UTC, so the file would say 28 June for a page the
+ * registry says changed on the 29th. One date, spelled the same in both places.
  */
-const asDate = (updated: string) => new Date(`${updated}T00:00:00+08:00`);
-
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = Object.entries(STATIC_PAGES).map(
     ([path, page]): MetadataRoute.Sitemap[number] => ({
       url: absoluteUrl(path),
-      lastModified: asDate(page.updated),
+      lastModified: page.updated,
     }),
   );
 
   const categoryPages = CATEGORY_SLUGS.map((slug): MetadataRoute.Sitemap[number] => ({
     url: absoluteUrl(`/categories/${slug}`),
-    lastModified: asDate(CATEGORY_PAGE_UPDATED[slug]),
+    lastModified: CATEGORY_PAGE_UPDATED[slug],
   }));
 
   return [...staticPages, ...categoryPages];
