@@ -1,4 +1,6 @@
 from django.db import IntegrityError, transaction
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -44,6 +46,14 @@ def _validated(serializer_class, data):
     raise ValidationError({'error': str(first_message), 'errors': errors})
 
 
+# Every response here is one shopper's cart. `config.settings` installs Django's
+# whole-site cache middleware, which stores any 200 to a GET under a key built
+# from the URL alone -- no `Vary` distinguishes one caller from another, because
+# token authentication never touches the session and so never adds
+# `Vary: Cookie`. Without this, the first person to load `/api/carts/active/`
+# had their cart and its contents served to everyone who asked for the next ten
+# minutes. See `users/tests/view_tests/test_cart_viewset.py`.
+@method_decorator(never_cache, name='dispatch')
 class CartViewSet(viewsets.ModelViewSet):
     """
     A unified ViewSet for listing, creating, retrieving, updating,

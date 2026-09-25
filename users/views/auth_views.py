@@ -10,6 +10,8 @@ them with no limit at all.
 Behaviour is unchanged: each class adds a scope and nothing else.
 """
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 from dj_rest_auth.registration.views import (
     RegisterView,
     ResendEmailVerificationView,
@@ -49,6 +51,13 @@ class ThrottledLogoutView(LogoutView):
     throttle_scope = 'session'
 
 
+# `GET /api/auth/user/` answers with whoever is asking. The whole-site cache
+# middleware in `config.settings` keys a cached 200 on the URL alone, and token
+# authentication adds no `Vary` to separate one caller from another, so without
+# this the first person to load it had their email address handed to every
+# subsequent caller. Same defect as `CartViewSet`'s; same reason it is fixed at
+# the view rather than by turning the cache off for the whole API.
+@method_decorator(never_cache, name='dispatch')
 class ThrottledUserDetailsView(UserDetailsView):
     throttle_scope = 'session'
 

@@ -7,7 +7,10 @@ these bounds existed a single request could hand the hasher a megabyte.
 """
 
 import pytest
+from django.contrib.auth import get_user_model
 from django.urls import reverse
+
+from users.tests.factories import UserFactory
 
 from users.serializers.custom_register_serializer import (
     EMAIL_MAX_LENGTH,
@@ -83,3 +86,105 @@ class TestRegistrationEndpointBounds:
             reverse('rest_register'), _payload(), format='json'
         )
         assert response.status_code == 201, response.content
+
+
+@pytest.mark.django_db
+class TestRegistrationBehaviour:
+    """What signing up does, beyond staying inside its bounds."""
+
+    def test_a_new_account_is_created_and_signed_in(self, api_client):
+        response = api_client.post(
+            reverse('rest_register'), _payload(), format='json'
+        )
+
+        assert response.status_code == 201, response.content
+        assert response.json()['key']
+
+    def test_the_full_name_is_stored_on_the_account(self, api_client):
+        """`full_name` is this project's addition to dj-rest-auth's serializer,
+        and `save()` is the only thing that writes it."""
+        api_client.post(
+            reverse('rest_register'),
+            _payload(full_name='Sam Rivers'),
+            format='json',
+        )
+
+        assert (
+            get_user_model().objects.get(email='new-person@example.com').full_name
+            == 'Sam Rivers'
+        )
+
+    def test_an_email_already_in_use_is_rejected(self, api_client):
+        UserFactory(email='new-person@example.com')
+
+        response = api_client.post(
+            reverse('rest_register'), _payload(), format='json'
+        )
+
+        assert response.status_code == 400
+        assert 'email' in response.json()
+
+    def test_mismatched_passwords_are_rejected(self, api_client):
+        response = api_client.post(
+            reverse('rest_register'),
+            _payload(password2='something-else-entirely'),
+            format='json',
+        )
+
+        assert response.status_code == 400
+        assert not get_user_model().objects.filter(
+            email='new-person@example.com'
+        ).exists()
+
+    def test_a_password_too_weak_for_the_validators_is_rejected(self, api_client):
+        """`AUTH_PASSWORD_VALIDATORS` is configured; this proves registration
+        actually runs them rather than only checking the length bound."""
+        response = api_client.post(
+            reverse('rest_register'),
+            _payload(password1='password', password2='password'),
+            format='json',
+        )
+
+        assert response.status_code == 400
+        assert not get_user_model().objects.filter(
+            email='new-person@example.com'
+        ).exists()
+
+    def test_the_stored_password_is_hashed(self, api_client):
+        api_client.post(reverse('rest_register'), _payload(), format='json')
+
+        user = get_user_model().objects.get(email='new-person@example.com')
+        assert user.password != VALID_PASSWORD
+        assert user.check_password(VALID_PASSWORD)
+
+    def test_the_same_email_in_a_different_case_is_rejected(self, api_client):
+        """MySQL's collation is case-insensitive, so `Sam@` and `sam@` are one
+        row as far as the unique constraint is concerned."""
+        UserFactory(email='new-person@example.com')
+
+        response = api_client.post(
+            reverse('rest_register'),
+            _payload(email='NEW-PERSON@example.com'),
+            format='json',
+        )
+
+        assert response.status_code == 400
+        assert 'email' in response.json()
+
+    def test_registering_twice_through_the_endpoint_is_a_400(self, api_client):
+        """The path a person actually takes: sign up, forget, sign up again.
+
+        The first registration leaves an unverified `EmailAddress` row, and
+        dj-rest-auth's own uniqueness check only looks at verified ones -- which
+        under `ACCOUNT_EMAIL_VERIFICATION = 'none'` is never any of them.
+        """
+        first = api_client.post(reverse('rest_register'), _payload(), format='json')
+        assert first.status_code == 201, first.content
+
+        second = api_client.post(reverse('rest_register'), _payload(), format='json')
+
+        assert second.status_code == 400
+        assert 'email' in second.json()
+        assert get_user_model().objects.filter(
+            email='new-person@example.com'
+        ).count() == 1
