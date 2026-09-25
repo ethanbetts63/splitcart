@@ -1,9 +1,9 @@
 'use client';
 
 import type { SyntheticEvent } from 'react';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Badge } from './ui/badge';
+import { Button } from './common/button';
+import { Input } from './common/input';
+import { Badge } from './common/badge';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
 import { useCart } from '../context/CartContext';
 import type { CartSubTileProps } from '../types/CartSubTileProps';

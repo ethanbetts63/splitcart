@@ -2,7 +2,13 @@ import type { Product } from '../types';
 import PriceDisplay from '../components/PriceDisplay';
 import AddToCartButton from '../components/AddToCartButton';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '../components/common/card';
 import { ProductCarousel } from '../components/ProductCarousel';
 import { assetSrc } from '@/lib/assets';
 import { notFound } from 'next/navigation';

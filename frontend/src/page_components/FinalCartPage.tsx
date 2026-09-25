@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { useCart } from '../context/CartContext';
-import { Switch } from '../components/ui/switch';
-import { Label } from '../components/ui/label';
+import { Switch } from '../components/common/switch';
+import { Label } from '../components/common/label';
 import ResultsDisplay from '../components/ResultsDisplay';
 import { FaqSection } from '../components/FaqSection';
 

@@ -8,7 +8,7 @@ import snackImage from '../assets/snack_lineup.webp';
 import eggImage from '../assets/egg_frying.webp';
 import shampooImage from '../assets/shampoo.webp';
 import survivalImage from '../assets/survival.webp';
-import { AspectRatio } from '../components/ui/aspect-ratio';
+import { AspectRatio } from '../components/common/aspect-ratio';
 import type { PrimaryCategory, PillarPage as PillarPageType, Product } from '../types';
 import { assetSrc, assetSrcSet, type ImageAsset } from '@/lib/assets';
 

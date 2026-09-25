@@ -2,7 +2,7 @@
 
 import { cva } from 'class-variance-authority';
 
-import { Badge } from './ui/badge';
+import { Badge } from './common/badge';
 import type { PriceDisplayProps } from '../types/PriceDisplayProps';
 import { companyLogos } from '@/lib/companies';
 

@@ -1,4 +1,4 @@
-import { Skeleton } from './ui/skeleton';
+import { Skeleton } from './common/skeleton';
 
 const SkeletonProductTile = () => {
   return (

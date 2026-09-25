@@ -17,19 +17,20 @@ does not.
 
 ## Layout
 
-| Path                   | Holds                                                                                                               |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `src/app/`             | Routes. `layout.tsx`, `page.tsx`, `providers.tsx`, `shell.tsx`, `sitemap.ts`, `robots.ts`, and one folder per route |
-| `src/page_components/` | The body of each page, imported by the thin `page.tsx` in the matching route                                        |
-| `src/components/`      | Shared components                                                                                                   |
-| `src/components/ui/`   | Primitives originally copied in by `npx shadcn add`, since maintained here                                          |
-| `src/context/`         | `AuthContext`, `CartContext`, `DialogContext` — composed in `app/providers.tsx`                                     |
-| `src/services/`        | `apiClient.ts` plus one `*.api.ts` module per endpoint family                                                       |
-| `src/hooks/`           | `useApiQuery`, `useMediaQuery`, `use-mobile`                                                                        |
-| `src/lib/`             | `apiUrl`, `seo`, `schema`, `companies`, `assets`, `utils`                                                           |
-| `src/types/`           | One exported type per file, re-exported from `index.ts`                                                             |
-| `src/data/`            | Static content: category icons and copy, pillar-page FAQs                                                           |
-| `src/index.css`        | The only stylesheet. Tailwind import, `@theme inline`, and the token block                                          |
+| Path                     | Holds                                                                                                               |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `src/app/`               | Routes. `layout.tsx`, `page.tsx`, `providers.tsx`, `shell.tsx`, `sitemap.ts`, `robots.ts`, and one folder per route |
+| `src/page_components/`   | The body of each page, imported by the thin `page.tsx` in the matching route                                        |
+| `src/components/`        | Shared components                                                                                                   |
+| `src/components/common/` | The shadcn/Radix primitives. Seven are registry copies, the rest are local                                          |
+| `src/components/forms/`  | `login-form` and `signup-form`, each beside its Zod schema                                                          |
+| `src/context/`           | `AuthContext`, `CartContext`, `DialogContext` — composed in `app/providers.tsx`                                     |
+| `src/services/`          | `apiClient.ts` plus one `*.api.ts` module per endpoint family                                                       |
+| `src/hooks/`             | `useApiQuery`, `useMediaQuery`, `use-mobile`                                                                        |
+| `src/lib/`               | `apiUrl`, `seo`, `companies`, `assets`, `utils`, `controlState`                                                     |
+| `src/types/`             | One exported type per file, re-exported from `index.ts`                                                             |
+| `src/data/`              | Static content: category icons and copy, pillar-page FAQs                                                           |
+| `src/index.css`          | The only stylesheet. Tailwind import, `@theme inline`, and the token block                                          |
 
 ## The API boundary
 

@@ -1,4 +1,4 @@
-import { AspectRatio } from '../components/ui/aspect-ratio';
+import { AspectRatio } from '../components/common/aspect-ratio';
 import sizeComparison from '../assets/size_comparison.png';
 import sizeComparison320 from '../assets/size_comparison-320w.webp';
 import sizeComparison640 from '../assets/size_comparison-640w.webp';

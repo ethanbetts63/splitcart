@@ -11,7 +11,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from './ui/pagination';
+} from './common/pagination';
 
 import {
   Select,
@@ -19,7 +19,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@/components/common/select';
 
 import LoadingSpinner from './LoadingSpinner';
 import type { PaginatedProductResponse } from '../types/PaginatedProductResponse';

@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { SettingsDialogWrapper } from '@/components/SettingsDialogWrapper';
 import { FloatingNextButton } from '@/components/FloatingNextButton';
-import { Toaster } from '@/components/ui/sonner';
+import { Toaster } from '@/components/common/sonner';
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (

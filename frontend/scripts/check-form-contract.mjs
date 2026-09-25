@@ -28,8 +28,8 @@ await checkSerializerContract({
   pairs: [
     {
       endpoint: 'POST /api/auth/login/',
-      form: 'components/ui/login-form.tsx',
-      schema: { module: 'components/ui/login-form.schema.ts', export: 'loginSchema' },
+      form: 'components/forms/login-form.tsx',
+      schema: { module: 'components/forms/login-form.schema.ts', export: 'loginSchema' },
       serializer: 'users.serializers.custom_login_serializer.CustomLoginSerializer',
       alsoPosts: [
         {
@@ -46,8 +46,8 @@ await checkSerializerContract({
     },
     {
       endpoint: 'POST /api/auth/registration/',
-      form: 'components/ui/signup-form.tsx',
-      schema: { module: 'components/ui/signup-form.schema.ts', export: 'signupSchema' },
+      form: 'components/forms/signup-form.tsx',
+      schema: { module: 'components/forms/signup-form.schema.ts', export: 'signupSchema' },
       serializer: 'users.serializers.custom_register_serializer.CustomRegisterSerializer',
       alsoPosts: [
         {

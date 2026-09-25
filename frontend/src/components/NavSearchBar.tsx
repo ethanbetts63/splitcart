@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search } from 'lucide-react';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
+import { Button } from './common/button';
+import { Input } from './common/input';
 import { cn } from '@/lib/utils';
 
 /**

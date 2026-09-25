@@ -14,7 +14,7 @@ contract with it. `test_custom_login_serializer.py` covers the wiring; this file
 covers the behaviour.
 
 One thing this hook does *not* cover, and nothing else does either: registering.
-`frontend/src/components/ui/signup-form.tsx` posts to
+`frontend/src/components/forms/signup-form.tsx` posts to
 `/api/auth/registration/` and stores the returned token directly -- it never
 calls `/api/auth/login/`, and the registration serializer takes no
 `anonymous_id`. So a shopper who fills a cart while signed out and then creates

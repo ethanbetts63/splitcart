@@ -1,4 +1,4 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './common/tabs';
 import PlanDetails from './PlanDetails';
 import { cva } from 'class-variance-authority';
 

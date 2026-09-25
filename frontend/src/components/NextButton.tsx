@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Button } from './ui/button';
+import { Button } from './common/button';
 import { cn } from '../lib/utils';
 import type { NextButtonPlacement, NextButtonProps } from '../types/NextButtonProps';
 

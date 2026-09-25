@@ -41,8 +41,8 @@ checkFormLedger({
     // the form. A *client* action, not a Server Action: splitcart holds a DRF
     // token in `localStorage` and attaches it from the browser, so there is no
     // session for a Next server to forward. Each form says so at its top.
-    { file: 'components/ui/login-form.tsx', track: 'B' },
-    { file: 'components/ui/signup-form.tsx', track: 'B' },
+    { file: 'components/forms/login-form.tsx', track: 'B' },
+    { file: 'components/forms/signup-form.tsx', track: 'B' },
     { file: 'page_components/dialog-pages/CartPage.tsx', track: 'B' },
   ],
 });

@@ -11,9 +11,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../../components/ui/select';
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
+} from '../../components/common/select';
+import { Button } from '../../components/common/button';
+import { Input } from '../../components/common/input';
 import { PlusCircle, Save, Trash2, Pencil } from 'lucide-react';
 import { FIELD_MAX } from '@/lib/fieldMax';
 import type { CartPageProps } from '../../types/CartPageProps';

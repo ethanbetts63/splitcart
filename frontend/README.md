@@ -14,7 +14,7 @@ Agents should read [`AGENTS.md`](AGENTS.md) alongside this file.
 | Framework    | Next.js 16, App Router, React 19                                              |
 | Language     | TypeScript                                                                    |
 | Styling      | Tailwind CSS v4 via `@tailwindcss/postcss`, one stylesheet at `src/index.css` |
-| Components   | Radix primitives under `src/components/ui/`, originally from `shadcn`         |
+| Components   | Radix primitives under `src/components/common/`, originally from `shadcn`     |
 | Server state | TanStack Query, provided in `src/app/providers.tsx`                           |
 | Client state | React context: `AuthContext`, `CartContext`, `DialogContext`                  |
 | Analytics    | `@vercel/analytics`                                                           |

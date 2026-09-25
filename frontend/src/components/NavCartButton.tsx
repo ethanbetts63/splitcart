@@ -1,8 +1,8 @@
 'use client';
 
 import { ShoppingCart } from 'lucide-react';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
+import { Button } from './common/button';
+import { Badge } from './common/badge';
 import { useCart } from '@/context/CartContext';
 import { useDialog } from '@/context/DialogContext';
 

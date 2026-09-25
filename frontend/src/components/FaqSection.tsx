@@ -1,4 +1,4 @@
-import { Card, CardContent } from './ui/card';
+import { Card, CardContent } from './common/card';
 import { ChevronDown } from 'lucide-react';
 import type { FaqSectionProps } from '@/types/FaqSectionProps';
 import { buildFaqSchema } from '@/lib/seo';

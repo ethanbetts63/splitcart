@@ -48,6 +48,15 @@ Recorded because they are not re-derivable from the diff.
   at 3.0:1 on white, used on a 0.75rem chip; `--text-danger` was `red-500` at
   3.7:1. All three failed WCAG AA at the contrast their call sites used them
   at. Everything else in the file is the value the site already rendered.
+- **`--link`/`--link-hover` and `--shadow-s` arrived for the registry, not for
+  a redesign.** The shared `button.tsx` names `text-link`/`hover:text-link-hover`
+  and the shared `select.tsx` names `shadow-s`, so adopting them (registry.md
+  RG-7) needed all three declared here. `--link` is `var(--text-action)` rather
+  than a second blue: one value, two names, so a rebrand cannot separate them.
+  `--link-hover` is `--neutral-900` (17.7:1) rather than a darker blue, matching
+  the step `--border-strong-hover` already takes. `--shadow-s` is Tailwind's
+  stock `shadow-md` geometry over the neutral ramp, which is what the select
+  popover already drew, so naming it changed nothing on screen.
 - **`--focus-ring` is `--brand-700`, not the brand yellow.** A focus indicator
   has to clear 3:1 against what is behind it; `#fde047` on white is 1.3:1.
 - **`warning` and `info` are declared with no consumer.** The quad is the point
@@ -60,10 +69,14 @@ Recorded because they are not re-derivable from the diff.
 
 ## Adjacent things this conversion found and did not fix
 
-- Nine `components/ui/*` primitives have no importer anywhere:
-  `alert`, `breadcrumb`, `checkbox`, `input-otp`, `navigation-menu`, `slider`,
-  `table`, `toggle`, `toggle-group`. They were swept rather than deleted
-  because [`registry.md`](registry.md) may replace some of them outright.
+- Six `components/common/*` primitives have no importer anywhere:
+  `breadcrumb`, `input-otp`, `navigation-menu`, `slider`, `toggle`,
+  `toggle-group`. This was nine; `alert`, `checkbox` and `table` were the three
+  the registry also ships, and [`registry.md`](registry.md) resolved them on
+  2026-09-25 by deleting them here and scoping them away in `sync.mjs` rather
+  than adopting a copy nothing calls. The remaining six are not registry files,
+  so nothing upstream is waiting on them — they are
+  [`dead-code.md`](dead-code.md)'s to remove.
 - `scrollbar-hide` is used in two components and generates nothing:
   `tailwind-scrollbar-hide` is a dependency but `@plugin` never registers it.
   Adding the plugin would change how those two carousels look, so it is a

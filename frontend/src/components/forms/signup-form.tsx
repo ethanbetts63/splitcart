@@ -1,16 +1,16 @@
 'use client';
 
-import { Button } from './button';
+import { Button } from '../common/button';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './card';
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from './field';
-import { Input } from './input';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../common/card';
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '../common/field';
+import { Input } from '../common/input';
 import { useActionState, useEffect, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
 import { z } from 'zod';
 import { useAuth } from '../../context/AuthContext';
-import { Spinner } from './spinner';
+import { Spinner } from '../common/spinner';
 import { getApiUrl } from '@/lib/apiUrl';
 import { FIELD_MAX } from '@/lib/fieldMax';
 import { MINIMUM_PASSWORD_LENGTH, signupSchema } from './signup-form.schema';

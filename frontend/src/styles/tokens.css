@@ -34,6 +34,10 @@
   --color-text-on-dark: var(--text-on-dark);
   --color-text-on-brand: var(--text-on-brand);
   --color-text-action: var(--text-action);
+  /* `text-link` / `hover:text-link-hover`, the pair the registry's button
+     `link` variant names. Same blue as --color-text-action; see :root. */
+  --color-link: var(--link);
+  --color-link-hover: var(--link-hover);
 
   --color-border-default: var(--border-default);
   --color-border-subtle: var(--border-subtle);
@@ -51,6 +55,9 @@
      tokens, two draw methods -- see the pair in :root. */
   --color-focus-ring: var(--focus-ring);
   --shadow-focus: var(--ring-field);
+  /* The one raised rung, as `shadow-s`. The other three repos spell it the
+     same way and the registry's select.tsx reads it. */
+  --shadow-s: var(--elevation-s);
 
   --color-surface-success: var(--surface-success);
   --color-surface-success-strong: var(--surface-success-strong);
@@ -236,6 +243,17 @@
   /* The one action-coloured *word* on the site: the founder letter's mailto
      link. The brand yellow cannot do this job -- #fde047 on white is 1.3:1. */
   --text-action: var(--blue-600);
+  /* The same blue under the registry's name for it. --text-action is the
+     property-first spelling this file has used since the conversion; --link is
+     what the shared button's `link` variant reads, and the two are one value
+     rather than two blues a rebrand could separate. #2563eb is 5.2:1 on
+     --surface-page, 4.9:1 on --surface-muted, 4.7:1 on --surface-sunken and
+     4.6:1 on --surface-tint, so it clears AA on every surface a link lands on
+     here. Hover goes to --neutral-900 (17.7:1) rather than a darker blue: that
+     is the step --border-strong-hover already takes on this site, and the
+     underline the variant adds is what carries the state change. */
+  --link: var(--text-action);
+  --link-hover: var(--neutral-900);
 
   /* Borders. --border-strong-hover is deliberately much darker than
      --border-strong rather than one rung down: splitcart's outline buttons
@@ -281,6 +299,18 @@
      nothing, and on two controls, nothing at all. */
   --focus-ring: var(--brand-700);
   --ring-field: 0 0 0 3px color-mix(in srgb, var(--focus-ring) 25%, transparent);
+
+  /* ELEVATION. One rung, because splitcart lifts exactly one thing off the
+     page: the select popover. The geometry is Tailwind's stock `shadow-md`,
+     which is what that popover already drew, so naming it changed nothing on
+     screen. The colour comes from the neutral ramp rather than a raw black at
+     an opacity -- the same spelling bloomprint and freethedesk use, and the
+     reason a raised surface is one class instead of `shadow-md shadow-black/10`
+     compositing whatever sits behind it. `--shadow-s` in the @theme block above
+     is the utility; this is the value. */
+  --elevation-s:
+    0 4px 6px -1px color-mix(in srgb, var(--neutral-900) 10%, transparent),
+    0 2px 4px -2px color-mix(in srgb, var(--neutral-900) 10%, transparent);
 
   /* ---------------------------------------------------------------
      FEEDBACK. Four meanings, four roles each, so a banner, its border, its

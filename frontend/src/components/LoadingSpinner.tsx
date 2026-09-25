@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Spinner } from '@/components/ui/spinner';
+import { Spinner } from '@/components/common/spinner';
 
 const loadingMessages = [
   'Making the cart go Split...',

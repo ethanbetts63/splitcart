@@ -1,5 +1,5 @@
 import React from 'react';
-import { Badge } from './ui/badge';
+import { Badge } from './common/badge';
 import fallbackImage from '@/assets/splitcart_symbol_v6.webp';
 import aldiLogo from '../assets/ALDI_logo.webp';
 import colesLogo from '../assets/coles_logo.webp';

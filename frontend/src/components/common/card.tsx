@@ -1,13 +1,16 @@
+/* Component registry: freetheplatform/frontend/registry/src/components/common/card.tsx
+   Copied, not imported. Edit the registry and re-sync; a deliberate local
+   change here must be marked. See _docs/component-registry.md. */
 import * as React from 'react';
 
-import { cn } from '../../lib/utils';
+import { cn } from '@/lib/utils';
 
 function Card({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="card"
       className={cn(
-        'bg-surface-page text-text-primary flex flex-col gap-6 rounded-xl border py-6 shadow-sm',
+        'bg-surface-page text-text-primary flex flex-col gap-6 rounded-xl border py-6 shadow-xs',
         className,
       )}
       {...props}

@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Home, ShoppingCart, X } from 'lucide-react';
 
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from './ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from './common/dialog';
 import {
   Sidebar,
   SidebarContent,
@@ -13,7 +13,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-} from './ui/sidebar';
+} from './common/sidebar';
 import CartPage from '../page_components/dialog-pages/CartPage';
 import type { NavItem } from '../types/NavItem';
 import type { SettingsDialogProps } from '../types/SettingsDialogProps';

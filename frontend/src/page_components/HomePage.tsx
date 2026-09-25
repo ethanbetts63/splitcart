@@ -1,6 +1,6 @@
 import { ProductCarousel } from '../components/ProductCarousel';
 import { FaqSection } from '../components/FaqSection';
-import { AspectRatio } from '../components/ui/aspect-ratio';
+import { AspectRatio } from '../components/common/aspect-ratio';
 import confusedShopper from '../assets/confused_shopper.webp';
 import confusedShopper320 from '../assets/confused_shopper-320w.webp';
 import confusedShopper640 from '../assets/confused_shopper-640w.webp';

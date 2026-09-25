@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Button } from './ui/button';
+import { Button } from './common/button';
 import { useAuth } from '@/context/AuthContext';
 
 export function NavAuthButton() {

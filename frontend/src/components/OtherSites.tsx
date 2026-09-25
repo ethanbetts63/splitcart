@@ -1,5 +1,5 @@
-import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardTitle } from '@/components/common/card';
+import { Button } from '@/components/common/button';
 import { ArrowRight } from 'lucide-react';
 import type { OtherSitesProps } from '../types/OtherSitesProps';
 
