@@ -10,8 +10,11 @@ The conversion landed on 2026-09-25. Three forms, three schemas, a `FIELD_MAX`
 mirror on both sides of the wire, and `npm run check:forms` as the eleventh
 check. Verdicts are in
 [`../../../freetheplatform/_docs/conformance/splitcart.md`](../../../freetheplatform/_docs/conformance/splitcart.md).
-One row is left, and two facts are worth keeping until the work that closes
-them lands.
+`npm run check:form-contract` followed as the twelfth, closing
+[`testing.md`](testing.md)'s TS-9: each of the three forms is held against the
+serializer it posts to, so a field cannot leave one side without the other
+saying so. One row is left, and two facts are worth keeping until the work that
+closes them lands.
 
 ## Work
 
@@ -73,3 +76,12 @@ missing file rather than report FORMS-10/11 as `n/a`. splitcart's copy makes
 `sessionCookies` optional and says so at the top; the registry's own sync
 exclusions carry the same reason. When the wrapper exists, pass the cookies and
 take the byte-identical copy.
+
+`serializer-contract.mjs` is a fourth file in the same directory with no
+registry counterpart, and should not acquire one. The other three repositories
+have no Django in the same tree; this one does, and the check spends that. It
+runs `venv/Scripts/python` under `settings_test` and reads
+`serializer().fields` rather than parsing the `.py` files, because that is the
+only way to see a field the class _inherits_ — `username` is declared by
+neither custom serializer, arrives from dj-rest-auth, and is a field both auth
+endpoints accept.

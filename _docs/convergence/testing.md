@@ -6,15 +6,17 @@
 [`testing-standard-frontend.md`](../../../freetheplatform/_docs/testing-standard-frontend.md)
 (TESTF-1..5).
 
-TS-1 through TS-8 have landed. The backend suite runs from a clean clone, the
-`users/` hole is closed, and `npm run check` is green. What is left is one half
-of one frontend row, and a manual step nobody with a keyboard can do.
+Every row has landed. The backend suite runs from a clean clone, the `users/`
+hole is closed, and `npm run check` is green with twelve checks in it. What is
+left is a manual step nobody with a keyboard can do.
 
-## Work
-
-| #    | Work                                                                                                                                                                                                                                                                                                                           | Acceptance                                                        |
-| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
-| TS-9 | The `check:sitemap` half landed with [`seo.md`](seo.md) — 15 routes, all resolving. The login/signup form-versus-serializer contract check did not. It is the same script [`forms.md`](forms.md) FM-8 owns, so it lands there rather than being written twice; this row is the note that the testing side of it is still owed. | `npm run check:forms` exists, exits 0, and is in `npm run check`. |
+TS-9 closed last: the form-versus-serializer contract check
+(`npm run check:form-contract`) now holds all three Track B forms against the
+DRF serializers they post to. It is a separate command from `check:forms`
+rather than part of it, because it runs `venv/Scripts/python` to import the
+serializers — and `check:forms` is a name
+[`forms-standard.md`](../../../freetheplatform/_docs/forms-standard.md) gives
+the same four Node-only checks in every repository.
 
 ## Outstanding, and not an agent's to do
 
