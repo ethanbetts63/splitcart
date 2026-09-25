@@ -20,9 +20,10 @@ that closes them lands.
 
 **FORMS-8 is `n/a`, and the mirror is what stands in for it.** The rule is a
 test in `freetheplatform`'s own suite comparing its `security.bounds` to
-`@freetheplatform/web-security`. splitcart installs neither, and
-[`../../AGENTS.md`](../../AGENTS.md) says adding one applies `strategy.md`'s
-tests first — a larger question than bounding three forms. So the table is
+`@freetheplatform/web-security`. splitcart now installs the npm half, for the
+CSP builder, but the test that holds the two tables together lives in
+`freetheplatform`'s own suite and runs against `security.bounds` — the Python
+distribution, which is still absent. So the table is
 mirrored kind for kind and value for value in `users/serializers/bounds.py` and
 `frontend/src/lib/fieldMax.ts`, and `users/tests/serializer_tests/test_bounds.py`
 pins both against one literal copy, the TypeScript one read off disk. What no

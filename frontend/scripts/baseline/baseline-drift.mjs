@@ -44,6 +44,13 @@ const CONSUMERS = ['allbikes', 'bloomprint', 'freethedesk', 'splitcart'];
  * failure: that is the row gone stale, so widen it.
  */
 const PINNED = [
+  // A four-repo row since splitcart's `headers()` block declared it
+  // (splitcart/_docs/convergence/security.md SC-11). It sat scoped to the
+  // three founding repos while splitcart had no use for the package, and the
+  // stray detection below is what made the widening happen the day it did
+  // rather than be remembered: splitcart declaring an unrowed pinned package
+  // fails this check in all four repos until the row catches up.
+  '@freetheplatform/web-security',
   '@vercel/analytics',
   'class-variance-authority',
   'clsx',
@@ -59,14 +66,6 @@ const PINNED = [
   // wants exact, BASE-1 wants identical, and levelling a caret to a pin is a
   // family-wide change (BASE-2), not something one repo joining a row can do.
   'zod',
-  // The one package every founding repo has and splitcart does not yet. Scoped
-  // rather than widened so the check stays meaningful in all four repos: a
-  // bare row would fail everywhere for a gap splitcart is scheduled to close,
-  // and a permanently red check is a check nobody reads. The stray detection
-  // below is what closes the loop — the day splitcart declares it, the row
-  // goes stale loudly and gets widened.
-  //   @freetheplatform/web-security — splitcart/_docs/convergence/auth-migration.md
-  { name: '@freetheplatform/web-security', repos: ['allbikes', 'bloomprint', 'freethedesk'] },
   { name: 'lucide-react', repos: ['allbikes', 'bloomprint', 'splitcart'] },
   { name: 'marked', repos: ['allbikes', 'freethedesk'] },
   { name: 'tw-animate-css', repos: ['allbikes', 'bloomprint', 'splitcart'] },

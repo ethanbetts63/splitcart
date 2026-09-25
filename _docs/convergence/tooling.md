@@ -54,11 +54,10 @@ strings rather than in CSS.
 
 - The `check:*` structural scripts for SEO, forms and tokens are specified in
   their own plans. This plan owns only the `check` composition they append to.
-- `@freetheplatform/web-security` is a PINNED package splitcart lacks, but
-  adding it is a dependency decision that belongs to
-  [`auth-migration.md`](auth-migration.md), not a tooling row. Until then the
-  row in `baseline-drift.mjs` is scoped to the three repos that have it, and
-  will fail loudly the day splitcart declares it — which is the prompt to
-  widen it.
+- `@freetheplatform/web-security` was a PINNED package splitcart lacked. It
+  arrived with [`security.md`](security.md)'s header work on 2026-09-25, and
+  the scoped row in `baseline-drift.mjs` did exactly what it was built to do:
+  declaring the package failed the check in all four repos until the row was
+  widened to name splitcart too. It is a plain four-repo row now.
 - `zod` is the same shape, and arrives with [`forms.md`](forms.md). `marked`
   has no consumer here and should stay absent.

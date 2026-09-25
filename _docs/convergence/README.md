@@ -13,9 +13,10 @@ Surveyed 2026-09-25 against the standards as they stood that day.
 
 ## The one-paragraph summary
 
-splitcart was never on these policies — it is not drifting from them. It is
-outside the shared-package graph entirely, depending on neither the
-`freetheplatform` Python package nor any `@freetheplatform/*` npm package. Its
+splitcart was never on these policies — it is not drifting from them. It sat
+outside the shared-package graph entirely until 2026-09-25, when the header work
+brought in `@freetheplatform/web-security`; the Python side is still untouched,
+so that is one npm package rather than a shared session model. Its
 frontend completed a Vite-to-Next migration that never reached its
 documentation, its configuration, or its dead routes. Its design tokens are
 unmodified `shadcn init` output. It has no formatter, no CSS lint, no structural

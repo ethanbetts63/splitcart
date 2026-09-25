@@ -48,10 +48,10 @@ documentation defect: a 10MB table is re-downloaded on every scrape run.
 
 ## The strategy boundary
 
-splitcart depends on neither the `freetheplatform` Python package nor any
-`@freetheplatform/*` npm package. It is entirely outside the shared-package
-graph, and that is the root of several gaps in the other plans rather than a
-separate problem.
+splitcart depends on `@freetheplatform/web-security` and on nothing else from
+that repository — in particular not the `freetheplatform` Python package. Being
+almost entirely outside the shared-package graph is the root of several gaps in
+the other plans rather than a separate problem.
 
 Verdicts on each shared capability, applying strategy.md's tests:
 

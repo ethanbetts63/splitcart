@@ -13,11 +13,13 @@ PythonAnywhere at `api.splitcart.com.au`, the frontend to Vercel at
 `www.splitcart.com.au`.
 
 The sibling `../freetheplatform` repository holds reusable Django capabilities
-and the canonical cross-project engineering policies. **splitcart does not
-consume it today** — neither the `freetheplatform` Python package nor any
-`@freetheplatform/*` npm package appears in `requirements.txt`,
-`requirements_dev.txt` or `frontend/package.json`. Bringing splitcart onto
-those policies is in progress; see
+and the canonical cross-project engineering policies. **splitcart consumes one
+thing from it: `@freetheplatform/web-security`**, declared in
+`frontend/package.json` and used by `next.config.ts` to build the response
+header set. Nothing on the Python side — the `freetheplatform` distribution
+appears in neither `requirements.txt` nor `requirements_dev.txt`, so the
+session model, throttling and the §19 system checks are all still local.
+Bringing splitcart onto those policies is in progress; see
 [`_docs/convergence/README.md`](_docs/convergence/README.md) for what has and
 has not landed, and
 [`../freetheplatform/_docs/conformance/splitcart.md`](../freetheplatform/_docs/conformance/splitcart.md)
@@ -59,10 +61,13 @@ directory.
 
 - Scraping targets, normalisation heuristics, the optimisation algorithm, the
   category taxonomy, and SplitCart wording stay local.
-- There is no shared FreeThePlatform capability in use here. Do not add
-  `freetheplatform` (PyPI/git) or `@freetheplatform/*` (npm) without applying
-  the tests in `../freetheplatform/_docs/strategy.md` first and recording the
-  decision.
+- `@freetheplatform/web-security` is the only shared capability in use, and it
+  arrived with the header work recorded in
+  [`_docs/convergence/security.md`](_docs/convergence/security.md). Adding any
+  further `freetheplatform` (PyPI/git) or `@freetheplatform/*` (npm) dependency
+  applies the tests in `../freetheplatform/_docs/strategy.md` first, and records
+  the decision. A pinned tag, never a branch: two deploys of one lockfile must
+  not install different code.
 - Scraping runs locally; database writes run on the server. A management
   command that reads an inbox and writes to the database is server-side, and
   `generate --subs` cannot run on the server at all because its ML

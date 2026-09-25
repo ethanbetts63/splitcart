@@ -74,8 +74,10 @@ standard's position is that a correctly-shaped frontend needs no CORS at all.
 Every other plan in this directory is independently landable, independently
 testable, and independently valuable. This one:
 
-- adds a cross-repo dependency splitcart has never had, which is a
-  strategy-level decision rather than a code change;
+- migrates the backend onto the `freetheplatform` Python distribution, a
+  dependency splitcart has never had and a strategy-level decision rather than
+  a code change — the npm half is already in, which settles the pinning
+  convention but none of this;
 - rewrites the login path of a live site, where a mistake logs out every user
   or, worse, fails open;
 - has no staging environment in evidence to rehearse against;
@@ -90,17 +92,24 @@ losing carts in production.
 
 ## Sequence
 
-| #    | Work                                                                                                                 | Blocked on                              |
-| ---- | -------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| AU-0 | Cover `users/` — auth, the nine `CartViewSet` actions, and the anonymous-cart-merge behaviour — with the tests that will prove the migration preserved behaviour. | —                                       |
-| AU-1 | Decide and record the `freetheplatform` dependency: pinned tag, not branch.                                          | —                                       |
-| AU-2 | Adopt `@freetheplatform/web-security` for the CSP builder, replacing the local `headers()` block from [`security.md`](security.md) SC-11. | AU-1                                    |
-| AU-3 | Migrate the backend session model; re-home the cart-merge hook explicitly, with its own test.                        | AU-0, AU-1                              |
-| AU-4 | Migrate the frontend onto `createAuthedFetch` and the same-origin rewrite.                                           | AU-3                                    |
-| AU-5 | Add `proxy.ts` edge route protection.                                                                                | AU-4                                    |
-| AU-6 | Remove CORS entirely.                                                                                                | AU-4                                    |
-| AU-7 | FORMS-9/10/11 become applicable; implement `lib/serverApi.ts` forwarding `splitcart_access` and `splitcart_refresh` as a literal list, never the jar. | AU-4, [`forms.md`](forms.md)            |
-| AU-8 | The §19 check suite (`ftp_security.*`, `ftp_auth.*`) arrives with the package; wire it into the verification table.   | AU-3                                    |
+AU-1 and AU-2 are gone: they landed on 2026-09-25, out of order, because
+[`security.md`](security.md)'s header row needed the CSP builder and there was
+no reason to hand-write a policy while waiting for the session work. The
+dependency is `@freetheplatform/web-security` at `github:ethanbetts63/freetheplatform#v0.19.0`
+— a pinned tag, the same one allbikes, bloomprint and freethedesk are on. That
+answers "pinned tag, not branch" for everything below; what it does not answer
+is whether the Python distribution should arrive, which is AU-3's question and
+a much larger one.
+
+| #    | Work                                                                                                                                                              | Blocked on                   |
+| ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| AU-0 | Cover `users/` — auth, the nine `CartViewSet` actions, and the anonymous-cart-merge behaviour — with the tests that will prove the migration preserved behaviour. | —                            |
+| AU-3 | Migrate the backend session model; re-home the cart-merge hook explicitly, with its own test.                                                                     | AU-0                         |
+| AU-4 | Migrate the frontend onto `createAuthedFetch` and the same-origin rewrite.                                                                                        | AU-3                         |
+| AU-5 | Add `proxy.ts` edge route protection.                                                                                                                             | AU-4                         |
+| AU-6 | Remove CORS entirely.                                                                                                                                             | AU-4                         |
+| AU-7 | FORMS-9/10/11 become applicable; implement `lib/serverApi.ts` forwarding `splitcart_access` and `splitcart_refresh` as a literal list, never the jar.             | AU-4, [`forms.md`](forms.md) |
+| AU-8 | The §19 check suite (`ftp_security.*`, `ftp_auth.*`) arrives with the package; wire it into the verification table.                                               | AU-3                         |
 
 ## What lands without it
 
