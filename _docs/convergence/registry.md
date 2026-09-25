@@ -4,78 +4,83 @@
 [`component-registry.md`](../../../freetheplatform/_docs/component-registry.md)
 (REG-1..7).
 
-Evidence: `scratchpad/gap-registry.md` (survey of 2026-09-25).
+## Status: a narrow consumer
 
-## Status: not a consumer
+splitcart joined `CONSUMERS` in
+`freetheplatform/frontend/registry/scripts/sync.mjs` on 2026-09-25 and takes
+four files, each carrying the `/* Component registry: … */` banner and held
+byte-identical by `sync.mjs --check`:
 
-splitcart has no `CONSUMERS` entry in `sync.mjs` and no
-`/* Component registry: ... */` banner anywhere in `src/`. It takes no registry
-copies today, so REG-1 and REG-2 are vacuously satisfied and mean nothing.
-Becoming a consumer is the work.
+| File                                      | What it brought                                            |
+| ----------------------------------------- | ---------------------------------------------------------- |
+| `lib/utils.ts`                            | `cn()` taught the nine type rungs, maintained in one place |
+| `lib/controlState.ts`                     | The three focus treatments and the two disabled reasons    |
+| `types/FaqItem.ts`                        | The FAQ item, with its optional in-answer links            |
+| `components/seo/StructuredDataScript.tsx` | The JSON-LD emitter that escapes `<`                       |
 
-## shadcn and the registry coexist — this matters
+Everything else in the registry has a `SCOPED` row in `sync.mjs` giving the
+reason it would be dead code here today (REG-5). Those reasons are the record
+of how splitcart differs; read them there rather than restating them.
 
-The survey settled a question that decides the whole shape of this plan.
-`sync.mjs`'s `SHADCN = ['allbikes', 'bloomprint']` list *is* the shadcn
-primitives, synced into those repos at `components/common/`. freethedesk
-deliberately has none and runs its own non-shadcn `ui/` family;
-`component-convergence.md` names that gap explicitly.
+Two things this made true that are worth knowing:
 
-So splitcart's stock shadcn install is not something to rip out. It is
-reconciled file by file:
+- `lib/utils.ts` had to be split first. The registry's version is `cn()` and
+  nothing else. `getCsrfToken`/`getAuthHeaders` are now `lib/authHeaders.ts`
+  and `debounce` is `lib/debounce.ts`.
+- `lib/schema.tsx` is a one-line forward to the registry path, because the
+  five route files that import `@/lib/schema` are outside this plan's reach.
+  There is still exactly one emitter.
 
-- **12 primitives overlap** the registry's shadcn set — these become registry
-  copies once tokens land.
-- **17 extra shadcn files** have no registry counterpart and stay local.
-- **One path mismatch**: splitcart keeps shadcn at `components/ui/`, the
-  registry assumes `components/common/`. `sync.mjs` has no per-repo path
-  override today. Either add one, or move splitcart's directory. That decision
-  belongs in freetheplatform and blocks the primitive adoption row.
+## Work still open
 
-## What splitcart should take, and when
+| #     | Work                                                                                                                                                                                                                                                                                                                                                                                        | Blocked on                                                  |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| RG-7  | Adopt the eleven shadcn primitives. Needs the directory move below, plus three tokens the registry's copies name and splitcart does not declare: `--color-link` and `--color-link-hover` (`button.tsx`'s `link` variant) and `--shadow-s` (`select.tsx`'s popover). Ten of the eleven are already here; `textarea.tsx` would arrive with no importer and needs one or its own `SCOPED` row. | the move; three tokens in `src/styles/tokens.css`           |
+| RG-9  | Move `src/components/ui/` to `src/components/common/`, the registry's path for the shadcn family. Nine files under `src/app/` and `src/page_components/` import from `ui/` and have to move with it. Until then `sync.mjs` scopes all eleven primitives away from splitcart.                                                                                                                | —                                                           |
+| RG-10 | Delete `src/lib/schema.tsx` and repoint `app/page.tsx`, `app/bargains/page.tsx`, `app/categories/[slug]/page.tsx`, `app/contact/page.tsx` and `app/privacy/page.tsx` at `@/components/seo/StructuredDataScript`.                                                                                                                                                                            | —                                                           |
+| RG-11 | Adopt `marketing/FaqSection.tsx`, `marketing/renderFaqAnswer.tsx` and `common/eyebrow.tsx`, replacing the local `components/FaqSection.tsx`.                                                                                                                                                                                                                                                | [`tokens.md`](tokens.md) TK-15, plus a `font-weight-*` ramp |
+| RG-12 | Add splitcart to the `.githooks/pre-commit` presence guard in freetheplatform. It tests for allbikes, bloomprint and freethedesk only, so a clone without splitcart beside it now runs `sync.mjs --check` against a repo that is not there and fails the commit.                                                                                                                            | —                                                           |
 
-| Registry file                                              | splitcart today                                              | Verdict                                                                 |
-| ---------------------------------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------- |
-| `seo/StructuredDataScript.tsx`                             | `lib/schema.tsx` `JsonLdScript` + `JsonLdItemList.tsx`       | **Adopt — zero prerequisites.** Both local copies skip `</script>` escaping; the registry closes a real injection hole. Lands with [`seo.md`](seo.md) SEO-J. |
-| `types/FaqItem.ts`                                         | `types/FaqSectionProps.ts`                                   | **Adopt — zero prerequisites.** Shape already matches.                  |
-| `marketing/FaqSection.tsx`                                 | `components/FaqSection.tsx`                                  | Adopt after tokens. Same job, near-identical `{question, answer}` props. |
-| 11 shadcn primitives                                       | 12 of `components/ui/*`                                      | Adopt after tokens **and** the path decision.                           |
-| `lib/utils.ts` (cn + text-scale)                           | `lib/utils.ts` (cn + CSRF/auth/debounce, mixed together)     | Blocked — splitcart's file must be split first.                         |
-| `layout/SiteHeader.tsx`, `SiteFooter.tsx`, `Breadcrumbs.tsx`, nav family | `NavBar.tsx`, `Footer.tsx`, ad-hoc breadcrumbs  | **Stays local.** Genuinely different shells, not skins. Out of scope for a first copy. |
-| `SignaturePad`, `ClarityAnalytics`, `GoogleAnalytics`, `articles.ts`, `author.ts`, `serverCookies.ts`, `status-chip.tsx` | none | Not needed — no signing flow, no analytics plumbing, no blog, and no cookie relay to serve. |
+### Why RG-9 is a directory move and not a `sync.mjs` option
 
-## REG-4 is the gate
+The obvious fix is a per-repo destination override in `sync.mjs` — land
+`components/common/*` at `components/ui/*` for splitcart alone. It was
+considered and rejected.
 
-A registry component may name only tokens that exist in every repo. splitcart's
-`index.css` is stock shadcn and declares **zero** of the registry's required
-surface / border / text / action / type-scale / spacing / layout tokens.
+`sync.mjs` is a literal file copy with no path rewriting, and that is
+load-bearing rather than incidental: registry files import each other by
+absolute alias, `@/components/common/eyebrow` and
+`@/components/seo/StructuredDataScript` among them. An override would have to
+rewrite import specifiers as well as destinations, which turns a byte copy into
+a transform and takes REG-1's drift check from a plain `diff` to a comparison
+that has to know what the transform was. That is a permanent cost on tooling
+three other repositories depend on, paid to avoid a one-off rename in the repo
+that is out of step. The rename is the cheaper side.
 
-`FaqSection.tsx` already demonstrates the failure mode: it reads
-`var(--text-light-primary)` and four siblings that are declared nowhere and
-resolve to nothing. That is a live rendering bug today, and it is exactly what
-adopting a registry component onto an absent token vocabulary produces at scale.
+## REG-4 after a fourth consumer
 
-[`tokens.md`](tokens.md) TK-2 through TK-7 is therefore a hard prerequisite for
-every row above except the first two.
+REG-4 says a registry component may name only tokens that exist in every repo
+it lands in, and a fourth consumer narrows that set. The four files splitcart
+takes name no colour, spacing or weight tokens at all except `--focus-ring` and
+`--ring-field`, which it declares, so nothing already in the registry had to
+change. The files it does not take are mostly not taken _because_ of REG-4 —
+the marketing band names `gap-m`, `py-l`, `mb-l`, `gap-split` and `font-strong`,
+and splitcart declares one `--spacing-*` rung and no weight ramp.
 
-## Sequence
+That is the rule working rather than a gap: `components/FaqSection.tsx` in this
+repo used to read `var(--text-light-primary)` and four siblings declared
+nowhere, which is what adopting a component onto an absent vocabulary produces.
 
-| #    | Work                                                                                                                                                                | Blocked on                       |
-| ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| RG-1 | Add splitcart to `CONSUMERS` in `freetheplatform/frontend/registry/sync.mjs` (same commit as [`tooling.md`](tooling.md) TL-1's `baseline-drift.mjs` edit).           | —                                |
-| RG-2 | Adopt `StructuredDataScript.tsx` and `types/FaqItem.ts` — the two zero-prerequisite copies.                                                                          | —                                |
-| RG-3 | Split `lib/utils.ts`: move CSRF, auth and debounce helpers out so the file can become a registry copy.                                                              | —                                |
-| RG-4 | Fix the two `className`-passthrough drift sites: `NavSearchBar.tsx:9,20` and `NextButton.tsx:8,21`. The latter is used by `FloatingNextButton.tsx:27` to fully reposition and resize the button — textbook drift wearing a prop's clothes (REG-6). Replace with closed appearance props carrying identity-level reasons. | —                                |
-| RG-5 | Add `lib/controlState.ts` and retrofit the three named focus treatments (REG-7).                                                                                     | [`tokens.md`](tokens.md) TK-7    |
-| RG-6 | Decide the `ui/` vs `common/` path mismatch in `sync.mjs` — per-repo override, or move splitcart's directory.                                                        | —                                |
-| RG-7 | Adopt `FaqSection.tsx` and the 11 shadcn primitives.                                                                                                                 | TK-2..TK-7, RG-6                 |
-| RG-8 | Write the `SCOPED` rows with real, non-aspirational reasons (REG-5): exclude `SignaturePad`, `serverCookies.ts`, `articles.ts`/`prose.css`, `author.ts`, `status-chip.tsx`, both analytics components, `breadcrumbs.ts`, `routePolicy.ts`. | RG-7                             |
+## REG-7, and two defects it does not cover
 
-## A note on REG-7
+`lib/controlState.ts` is in place and its three treatments are retrofitted
+across fifteen `components/ui/*` primitives, so splitcart is on the outline
+system rather than merely absent from it. One `outline-hidden` survives, at
+`components/ui/select.tsx:103`, and it is not the bug REG-7 bans: that is a
+menu item which says "focused" with a background rather than an outline, so
+there is no outline for it to cancel.
 
-splitcart's 20 `outline-none` / `outline-hidden` occurrences are all in
-unmodified `components/ui/*`, and none currently hits the outline-cancels-outline
-bug REG-7 bans — only because splitcart is not on the outline system at all.
-That is not compliance, it is absence. Two of them — `input.tsx:11` and
-`navigation-menu.tsx:94` — remove the focus ring and put nothing back, which is
-an accessibility defect independent of any registry work.
+Two accessibility defects the tokens sweep found and fixed on their own merits
+are recorded in [`tokens.md`](tokens.md): `input.tsx` and
+`navigation-menu.tsx` each removed the browser's focus ring and put nothing
+back.
