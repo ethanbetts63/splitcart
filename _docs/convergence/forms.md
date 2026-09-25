@@ -6,60 +6,70 @@
 
 Evidence: `scratchpad/gap-forms.md` (survey of 2026-09-25).
 
-## The inventory
-
-The survey searched exhaustively. splitcart has far fewer forms than its
-component names suggest — most of the obvious candidates turn out not to be
-forms at all.
-
-| File                                            | Renders `<form>` | Submits to                          | Track                                           | Validation today                     |
-| ----------------------------------------------- | ---------------- | ----------------------------------- | ----------------------------------------------- | ------------------------------------ |
-| `components/ui/login-form.tsx`                  | yes              | `POST /api/auth/login/`             | B                                               | none — HTML `required` only          |
-| `components/ui/signup-form.tsx`                  | yes              | `POST /api/auth/registration/`      | B — confirm-password is not a cross-field rule under the standard's own carve-out | manual password-match check          |
-| `page_components/dialog-pages/CartPage.tsx`     | **no**           | `POST /api/carts/rename/`           | B, once it has a `<form>`                       | none, client or server               |
-| `components/NavSearchBar.tsx`                   | no               | client-side navigation only         | excluded — no network write                     | n/a                                  |
-| `components/settings-dialog.tsx`                | no               | nothing                             | not a form                                      | n/a                                  |
-| `page_components/ContactPage.tsx`, `ContactDetails.tsx` | no       | nothing — static copy, email in prose | **there is no contact form in this app**        | n/a                                  |
-| `page_components/FinalCartPage.tsx` buttons     | no               | `POST /api/cart/email-list/`, `/download-list/` | — | **dead endpoints: no matching Django route exists; these 404 in production** |
-
-Three real forms. That is the whole conversion.
-
-## What is missing entirely
-
-`zod`, `react-hook-form` and `@freetheplatform/web-security` are all absent from
-`frontend/package.json`. There are zero `*.schema.ts` files and zero `z.object(`
-occurrences. There is no `FIELD_MAX` table on either side of the wire.
-
-## FORMS-9/10/11 are n/a today, and saying so is the point
-
-Those three rules govern Server Actions, the `lib/serverApi.ts` wrapper, and the
-session cookies that wrapper forwards. splitcart has no Server Actions
-(`'use server'` appears nowhere), no `serverApi.ts`, and no session cookies — it
-authenticates with a bearer token in `localStorage` plus a plain JS-readable
-`anonymousId` cookie.
-
-So these are not unimplemented rules, they are rules whose preconditions do not
-exist. They become applicable only when [`auth-migration.md`](auth-migration.md)
-lands and the app has `splitcart_access` / `splitcart_refresh` cookies to
-forward. The conformance ledger records them as `n/a` with that reason, not as
-`fail`, and not as `pass`.
+The conversion landed on 2026-09-25. Three forms, three schemas, a `FIELD_MAX`
+mirror on both sides of the wire, and `npm run check:forms` as the eleventh
+check. Verdicts are in
+[`../../../freetheplatform/_docs/conformance/splitcart.md`](../../../freetheplatform/_docs/conformance/splitcart.md).
+One row is left, and two facts are worth keeping until the work that closes
+them lands.
 
 ## Work
 
-| #    | Work                                                                                                                                                                                       | Acceptance                                                                    |
-| ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| FM-1 | Fix the unvalidated cart-rename endpoint. `users/views/cart_viewset.py` reads `request.data.get('new_name')` and writes it to the model with no serializer and no bound. This is a live defect and does not wait for the forms conversion — it is also [`security.md`](security.md) SC-8. | The action validates through a serializer; a regression test covers the over-long input. |
-| FM-2 | Delete the two dead cart-export endpoints' call sites in `FinalCartPage.tsx`, or implement the routes. They POST to `/api/cart/email-list/` and `/api/cart/download-list/`, neither of which is routed anywhere in Django. Decide which, then make the code tell the truth. | No client code calls an unrouted endpoint.                                    |
-| FM-3 | Add `zod` to the frontend.                                                                                                                                                                 | Declared and exact-pinned per BASE-5.                                         |
-| FM-4 | Decide splitcart's relationship to `freetheplatform.security.bounds`. FORMS-8 requires `FIELD_MAX` and the Python `bounds` module to declare the same kinds at the same values — but splitcart does not depend on the `freetheplatform` package at all (`requirements.txt` has no entry). Either onboard the dependency, or declare a local `FIELD_MAX` that mirrors the shared kinds exactly and record in the ledger that FORMS-8's cross-repo test cannot run yet. Do not silently invent a third vocabulary. | The decision is written down and the values match the shared table.           |
-| FM-5 | Add `FIELD_MAX` to the frontend and bound the server side to match. Server-side today: `full_name` 255, `email` ~254 default, `password` 128 — none expressed as a `FIELD_MAX`-style kind. Ceilings use the right kind, not a number that happens to fit (FORMS-6, FORMS-7). | Every string field carries a `.max()` sourced from `FIELD_MAX`.               |
-| FM-6 | Wrap the cart-rename input in a real `<form>` so it is a form rather than a bare `<Input>` firing a handler.                                                                                | Submits through form semantics; keyboard Enter works.                         |
-| FM-7 | Convert all three forms to Track B with a colocated `*.schema.ts` beside each (FORMS-5). `z.object(` appears nowhere else without an exception row.                                        | Three schema files; three converted forms.                                    |
-| FM-8 | Ship `check-forms.mjs` plus `scripts/forms/{form-ledger,form-hygiene,walk}.mjs`, adapted from freethedesk, and write the initial ledger. Every file rendering a `<form>` gets a row, and every row points at a file that renders one (FORMS-1). Rows that are not A or B carry a written reason (FORMS-2). | `npm run check:forms` exits 0; appended to `npm run check`.                   |
+| #    | Work                                                                                                                                                                                                                                              | Acceptance                                 |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| FM-2 | Delete the two dead cart-export call sites. They POST to `/api/cart/email-list/` and `/api/cart/download-list/`, neither of which is routed anywhere in Django — verified again on 2026-09-25 against `config/urls.py` and every app's `urls.py`. | No client code calls an unrouted endpoint. |
 
-## Ledger rows to seed
+**The decision is delete, not implement.** `email-list` would need a template
+and a send; `download-list` would need a PDF library, and `requirements.txt`
+has none — nothing in this repository renders a document. That is a feature to
+build if the product wants it, not a route to restore, and it should not be
+built by a plan whose subject is forms.
 
-Three `B` rows for the converted forms. Exclusion rows, each with its real
-reason, for `NavSearchBar.tsx` (client-side navigation, no network write) and
-`settings-dialog.tsx` (renders controls, submits nothing). `ContactPage.tsx` gets
-no row at all — it is not a form and never was.
+**What blocked it.** The deletion is not local to `FinalCartPage.tsx`. It runs
+through `components/ResultsDisplay.tsx` (the `ExportButtons` component and
+three required props), `context/CartContext.tsx`, `services/cart.api.ts`,
+`ApiClient.postAndGetBlob`, and the `ExportData`/`ExportAction` types. The
+component half sits in the file range a concurrent registry-adoption agent held
+exclusively on 2026-09-25, so it was left rather than raced. It needs one pass
+over all six files, which is also why it is listed as a single row in
+[`dead-code.md`](dead-code.md) DC-7 rather than split.
+
+## Two things that are true until the session model changes
+
+**FORMS-8 is `n/a`, and the mirror is what stands in for it.** The rule is a
+test in `freetheplatform`'s own suite comparing its `security.bounds` to
+`@freetheplatform/web-security`. splitcart installs neither, and
+[`../../AGENTS.md`](../../AGENTS.md) says adding one applies `strategy.md`'s
+tests first — a larger question than bounding three forms. So the table is
+mirrored kind for kind and value for value in `users/serializers/bounds.py` and
+`frontend/src/lib/fieldMax.ts`, and `users/tests/serializer_tests/test_bounds.py`
+pins both against one literal copy, the TypeScript one read off disk. What no
+test here can see is the shared table moving. Both files name what to delete
+when the dependency arrives.
+
+**FORMS-10 and FORMS-11 are `n/a`; FORMS-9 is `fail`.** The first two have no
+subject: no `serverApiFetch` to import, no session cookies to forward — auth is
+a DRF token in `localStorage` that client JavaScript attaches. That is also why
+the three converted forms run `useActionState` over a _client_ action rather
+than a Server Action; every other part of Track B is the standard's shape
+verbatim, and each form says so at the top.
+
+FORMS-9 is different, and the original survey called it wrong. Four route files
+(`app/page.tsx`, `app/bargains/page.tsx`, `app/categories/[slug]/page.tsx`,
+`app/product/[slug]/page.tsx`) do read a server-side `DJANGO_API_URL` inline,
+each with its own `localhost` fallback — which is exactly the split the rule
+exists to prevent. There is no owning module: `lib/apiUrl.ts` owns
+`NEXT_PUBLIC_DJANGO_API_URL`, a different variable for the browser.
+`check-forms.mjs` carries the four as exception rows with that reason, so the
+consolidation has a list to work from. The owner is the `lib/serverApi.ts` that
+[`auth-migration.md`](auth-migration.md) creates.
+
+## One engine is adapted, not copied
+
+`scripts/forms/form-ledger.mjs` and `walk.mjs` are byte-identical to the shared
+registry copies. `form-hygiene.mjs` is not: its fourth check reads
+`src/lib/serverApi.ts` unconditionally, so the shared copy would crash on a
+missing file rather than report FORMS-10/11 as `n/a`. splitcart's copy makes
+`sessionCookies` optional and says so at the top; the registry's own sync
+exclusions carry the same reason. When the wrapper exists, pass the cookies and
+take the byte-identical copy.
