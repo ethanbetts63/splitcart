@@ -23,5 +23,5 @@ export function FloatingNextButton() {
 
   if (!shouldShow) return null;
 
-  return <NextButton className="fixed bottom-8 right-8 z-50 h-16 w-16 rounded-full shadow-lg" />;
+  return <NextButton placement="floating" />;
 }

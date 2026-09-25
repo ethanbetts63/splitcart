@@ -7,7 +7,27 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { cn } from '@/lib/utils';
 
-export function NavSearchBar({ className = '' }: { className?: string }) {
+/**
+ * How wide the bar is allowed to get. Two values, because the header draws it
+ * twice and the difference is structural rather than decorative: on the main
+ * row it shares the line with the logo and the cart and auth buttons, so it is
+ * capped or it swallows them; on the phone row below it is the only thing
+ * there and runs the full width.
+ *
+ * This replaced an open `className` passthrough, which is the shape
+ * `component-registry.md` REG-6 rules out — a caller could reposition or
+ * restyle the bar from outside and nothing named what it was allowed to
+ * change.
+ */
+export type NavSearchBarWidth = 'full' | 'capped';
+
+/** Complete class strings: Tailwind generates nothing for a name it cannot find whole. */
+const WIDTH: Record<NavSearchBarWidth, string> = {
+  full: 'w-full',
+  capped: 'w-full max-w-md',
+};
+
+export function NavSearchBar({ width = 'full' }: { width?: NavSearchBarWidth }) {
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
 
@@ -18,7 +38,7 @@ export function NavSearchBar({ className = '' }: { className?: string }) {
   };
 
   return (
-    <div className={cn('relative w-full', className)}>
+    <div className={cn('relative', WIDTH[width])}>
       <Input
         type="search"
         placeholder="Search products, stores, and more..."

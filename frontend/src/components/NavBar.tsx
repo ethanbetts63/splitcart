@@ -37,7 +37,7 @@ const NavBar = () => {
 
         {/* Search — desktop */}
         <div className="hidden sm:flex flex-1 items-center justify-center">
-          <NavSearchBar className="max-w-md" />
+          <NavSearchBar width="capped" />
         </div>
 
         {/* Icons */}
