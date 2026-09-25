@@ -224,27 +224,44 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 2621440  # 2.5 MiB
 # cheap denial of service.
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:3001",
-    "https://ethanbetts63.pythonanywhere.com", 
-    "https://www.splitcart.com.au",
-    "https://splitcart.com.au",
-    "https://api.splitcart.com.au",
+# Dev frontend origins, written as ports rather than eight spelled-out strings.
+# Each port needs both a `localhost` and a `127.0.0.1` spelling, because a
+# browser treats those as different origins -- and getting only one of them
+# right produces a frontend that server-renders perfectly and has every
+# client-side write refused, which reads as a broken cart rather than as CORS.
+#
+# 3021 is in the default because another project in this family holds 3000, so
+# running on a second port is the normal case here, not the exception. The list
+# is env-overridable so the next port does not need a code change: the failure
+# it prevents is silent enough that nobody thinks to look here.
+DEV_FRONTEND_PORTS = [
+    port.strip()
+    for port in os.getenv("DEV_FRONTEND_PORTS", "3000,3001,3021").split(",")
+    if port.strip()
+]
+DEV_FRONTEND_ORIGINS = [
+    f"http://{host}:{port}"
+    for port in DEV_FRONTEND_PORTS
+    for host in ("localhost", "127.0.0.1")
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:3001",
-    "http://127.0.0.1:8000",
+# The dev origins are added only under DEBUG. They used to be unconditional,
+# which meant the live API trusted `http://localhost:3000` -- a page on any
+# developer's machine, or anyone else's, making cross-origin calls to
+# production. Nothing needs that: the deployed frontend is served from the
+# origins below.
+CORS_ALLOWED_ORIGINS = [
+    "https://ethanbetts63.pythonanywhere.com",
     "https://www.splitcart.com.au",
     "https://splitcart.com.au",
     "https://api.splitcart.com.au",
-]
+] + (DEV_FRONTEND_ORIGINS if DEBUG else [])
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://www.splitcart.com.au",
+    "https://splitcart.com.au",
+    "https://api.splitcart.com.au",
+] + (DEV_FRONTEND_ORIGINS + [DEV_API_SERVER_URL] if DEBUG else [])
 
 from corsheaders.defaults import default_headers
 
