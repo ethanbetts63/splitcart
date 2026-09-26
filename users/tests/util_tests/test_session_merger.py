@@ -13,14 +13,15 @@ against the endpoint would be deleted along with the endpoint, taking the
 contract with it. `test_custom_login_serializer.py` covers the wiring; this file
 covers the behaviour.
 
-One thing this hook does *not* cover, and nothing else does either: registering.
-`frontend/src/components/forms/signup-form.tsx` posts to
-`/api/auth/registration/` and stores the returned token directly -- it never
-calls `/api/auth/login/`, and the registration serializer takes no
-`anonymous_id`. So a shopper who fills a cart while signed out and then creates
-an account loses it, while the same shopper logging in keeps it. That is a
-product gap rather than a defect in this function, and it is recorded here
-because this is the file someone reads when they come to move the hook.
+This function now has two callers, not one. `CustomRegisterSerializer.save()`
+calls it too, because `frontend/src/components/forms/signup-form.tsx` posts to
+`/api/auth/registration/` and never touches `/api/auth/login/` -- so for a while
+a shopper who filled a cart signed out and then created an account lost it,
+while the same shopper signing in kept it. That the two doors can drift apart is
+the failure mode of this design, and
+`view_tests/test_anonymous_cart_at_both_doors.py` drives both through the URL to
+hold them together. It is also where the one remaining disagreement between them
+is recorded.
 """
 
 import pytest
@@ -203,3 +204,47 @@ class TestAnonymousCartMergeDoesNothing:
 
         assert Cart.objects.filter(user=user).count() == 1
         assert CartItem.objects.filter(cart__user=user).count() == 1
+
+
+@pytest.mark.django_db
+class TestAMergeThatCannotFinish:
+    """The merge is four writes with no transaction around them.
+
+    In order: stand the user's own active cart down, create the replacement,
+    move the items across, delete the anonymous cart. The first of those is
+    destructive and the rest can fail, so an interruption anywhere after step
+    one leaves the shopper with no active cart and the list they had before
+    switched off -- from their side, the cart vanished on sign-in.
+
+    Only `Cart.DoesNotExist` is caught, so the exception itself reaches the
+    caller as a 500. That part is visible. The deactivation is not.
+    """
+
+    @pytest.mark.xfail(
+        strict=True,
+        reason=(
+            'merge_anonymous_session() is not wrapped in transaction.atomic(), '
+            'so the user\'s own active cart is already stood down when a later '
+            'step fails and nothing puts it back.'
+        ),
+    )
+    def test_a_merge_that_cannot_finish_leaves_the_shopper_the_cart_they_had(
+        self, user, monkeypatch
+    ):
+        theirs = CartFactory(user=user, name='Weekly shop', is_active=True)
+        CartFactory(
+            user=None, anonymous_id=ANONYMOUS_ID, is_active=True, name='Anonymous Cart'
+        )
+
+        def fails(*args, **kwargs):
+            raise RuntimeError('the database went away mid-merge')
+
+        monkeypatch.setattr(Cart.objects, 'create', fails)
+
+        with pytest.raises(RuntimeError):
+            merge_anonymous_session(user, ANONYMOUS_ID)
+
+        monkeypatch.undo()
+        theirs.refresh_from_db()
+        assert theirs.is_active is True
+        assert Cart.objects.filter(user=user, is_active=True).count() == 1
