@@ -45,7 +45,7 @@ const ProductPage = ({ product }: ProductPageProps) => {
 
   return (
     <div className="site-shell py-4">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-shell mx-auto">
         <Card className="overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
             {/* Image Column */}

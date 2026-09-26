@@ -2,7 +2,7 @@ export const FounderLetterSection = () => {
   return (
     <div className="site-shell md:px-16 pt-1 pb-1">
       <div className="text-center mb-8">
-        <h2 className="text-display font-bold tracking-tight text-text-primary max-w-2xl mx-auto">
+        <h2 className="text-display font-bold tracking-tight text-text-primary max-w-measure mx-auto">
           What percentage of a whole chicken is bone weight?
         </h2>
         <p className="text-lead mt-4">

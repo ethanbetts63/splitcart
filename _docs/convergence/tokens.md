@@ -20,6 +20,16 @@ TK-14 landed the same day, in the shared repo rather than here: `FAMILY` in
 `check:tokens` in any of the four repos resolves and compares all four
 ladders. They agreed on the first run, character for character.
 
+TK-15 landed on 2026-09-26 and closed the plan. The eleven `--space-*` rungs
+and the thirteen role-named `--container-*` widths are declared at allbikes'
+and bloomprint's names and values, so `gap-m` and `p-l` exist here and mean
+what they mean there; the eight t-shirt width call sites moved to the role
+scale first, because four of the space rung names shadow a Tailwind container
+width. Every width resolved to the same pixel value after the move as before
+it, verified in the browser at 390px and 1440px: 448, 512, 672, 768, 800 and
+1024. `check:tokens` invariant 3 was proven to have teeth by reintroducing
+`max-w-2xl` on the product panel, which failed the check by name.
+
 | Check              | Result                                            |
 | ------------------ | ------------------------------------------------- |
 | `lint`             | 0 errors, 0 warnings, design-system rules enabled |
@@ -30,9 +40,7 @@ ladders. They agreed on the first run, character for character.
 
 ## Work still open
 
-| #     | Work                                                                                                                                                                                                                                                                                                                                                                                                                                 | Acceptance                                                        |
-| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
-| TK-15 | Declare the rest of the `--space-*` ramp. Only `--spacing-section` exists today, deliberately: the `--spacing-*` namespace silently overrides Tailwind's container scale, and splitcart still sizes panels with `max-w-lg`, `max-w-2xl`, `max-w-3xl` and `max-w-5xl`. Those call sites move to a role-named `--container-*` scale first; then the space rungs can arrive. `scripts/check-tokens.mjs` already fails on the collision. | `gap-m` and `p-l` exist, and no width class names a spacing rung. |
+None. TK-15 landed on 2026-09-26 and was the last row.
 
 ## Judgement calls this conversion made
 

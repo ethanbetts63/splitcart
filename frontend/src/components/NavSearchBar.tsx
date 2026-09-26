@@ -24,7 +24,7 @@ export type NavSearchBarWidth = 'full' | 'capped';
 /** Complete class strings: Tailwind generates nothing for a name it cannot find whole. */
 const WIDTH: Record<NavSearchBarWidth, string> = {
   full: 'w-full',
-  capped: 'w-full max-w-md',
+  capped: 'w-full max-w-panel',
 };
 
 export function NavSearchBar({ width = 'full' }: { width?: NavSearchBarWidth }) {

@@ -41,9 +41,9 @@ Two things this made true that are worth knowing:
 
 ## Work still open
 
-| #     | Work                                                                                                                                         | Blocked on                                                  |
-| ----- | -------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| RG-11 | Adopt `marketing/FaqSection.tsx`, `marketing/renderFaqAnswer.tsx` and `common/eyebrow.tsx`, replacing the local `components/FaqSection.tsx`. | [`tokens.md`](tokens.md) TK-15, plus a `font-weight-*` ramp |
+| #     | Work                                                                                                                                         | Blocked on                                                   |
+| ----- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| RG-11 | Adopt `marketing/FaqSection.tsx`, `marketing/renderFaqAnswer.tsx` and `common/eyebrow.tsx`, replacing the local `components/FaqSection.tsx`. | A `font-weight-*` ramp; `tokens.md` TK-15 cleared 2026-09-26 |
 
 ### What RG-7 and RG-9 cost, kept so they are not re-litigated
 

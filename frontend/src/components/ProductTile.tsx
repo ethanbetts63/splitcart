@@ -61,23 +61,6 @@ const ProductTile: React.FC<ProductTileProps> = ({
     }
   };
 
-  const generateSrcSet = (url: string) => {
-    if (
-      !isVisible ||
-      !url.includes('cdn.metcash.media') ||
-      url === placeholderImageUrl ||
-      url === fallbackImageUrl
-    ) {
-      return undefined;
-    }
-    const sizes = [200, 250, 300, 350, 400, 450, 500];
-    return sizes
-      .map((size) => `${url.replace('w_1500,h_1500', `w_${size},h_${size},f_auto`)} ${size}w`)
-      .join(', ');
-  };
-
-  const srcSet = generateSrcSet(product.image_url || '');
-
   const bargainInfo = useMemo(() => {
     if (!product.bargain_info) return null;
 
@@ -148,8 +131,6 @@ const ProductTile: React.FC<ProductTileProps> = ({
           </div>
           <img
             src={imageUrl}
-            srcSet={srcSet}
-            sizes="273px"
             onError={handleImageError}
             alt={product.name}
             className={cn(

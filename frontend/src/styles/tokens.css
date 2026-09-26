@@ -105,18 +105,62 @@
 
   /* ------------------------------------------------------------------
      Page-level vertical rhythm, as `py-section`.
-
-     This is the ONLY --spacing-* rung splitcart declares, and the omission is
-     deliberate. The namespace also feeds max-w/w/min-w/basis, and on a name
-     collision spacing SILENTLY BEATS Tailwind's container scale -- allbikes'
-     `max-w-xl` meant 40px rather than 576px for months because of it. splitcart
-     still sizes its panels with `max-w-lg`, `max-w-2xl`, `max-w-3xl` and
-     `max-w-5xl`, so declaring an `xs`/`s`/`m`/`l`/`xl` space ramp here would
-     quietly redefine four of them. When those call sites move to a role-named
-     width scale, the space ramp can follow. `scripts/check-tokens.mjs` fails
-     the build if the two ever do collide.
      ------------------------------------------------------------------ */
   --spacing-section: var(--space-section);
+
+  /* Named rungs of the shared space scale, so `gap-m` and `p-l` mean here what
+     they already mean in allbikes, bloomprint and freethedesk.
+
+     WARNING: this namespace also feeds the max-w, w, min-w and basis families,
+     and on a name collision spacing SILENTLY BEATS Tailwind's container scale.
+     Four rungs below -- xs, xl, 2xl, 3xl -- are also Tailwind container names,
+     so `max-w-2xl` now resolves to 42px rather than 42rem. That is exactly why
+     this ramp could not be declared until the seven t-shirt width call sites
+     moved: `max-w-2xl` on the founder letter and the login form and
+     `max-w-3xl` on the privacy page would have collapsed to a spacing value
+     the day this block landed, with no error anywhere. Size a width with the
+     role-named --container-* scale below, never with a name from this block.
+     `npm run check:tokens` fails the build if one ever does.
+     ------------------------------------------------------------------ */
+  --spacing-4xs: var(--space-4xs);
+  --spacing-3xs: var(--space-3xs);
+  --spacing-2xs: var(--space-2xs);
+  --spacing-xs: var(--space-xs);
+  --spacing-s: var(--space-s);
+  --spacing-m: var(--space-m);
+  --spacing-ml: var(--space-ml);
+  --spacing-l: var(--space-l);
+  --spacing-xl: var(--space-xl);
+  --spacing-2xl: var(--space-2xl);
+  --spacing-3xl: var(--space-3xl);
+
+  /* ------------------------------------------------------------------
+     Role-named width scale, as `max-w-measure` and `max-w-shell`. These
+     replace Tailwind's t-shirt container sizes at every splitcart call site:
+     the t-shirt names are unusable now that the ramp above shadows four of
+     them, and a role name says what the constraint is FOR, which `max-w-2xl`
+     never did. Values preserve exactly what the class each one replaced
+     resolved to, so the rename is visually inert.
+
+     The names and the values are allbikes' and bloomprint's, character for
+     character, rather than a fourth vocabulary for the same thirteen widths
+     (token-contract.md TOKEN-6's one-ladder reasoning). splitcart uses six of
+     them today; the other seven are declared so the next panel reaches for a
+     rung that already exists instead of inventing a parallel one.
+     ------------------------------------------------------------------ */
+  --container-cap: var(--measure-cap);
+  --container-cap-wide: var(--measure-cap-wide);
+  --container-card: var(--measure-card);
+  --container-panel: var(--measure-panel);
+  --container-panel-wide: var(--measure-panel-wide);
+  --container-measure-tight: var(--measure-tight);
+  --container-measure: var(--measure-base);
+  --container-measure-wide: var(--measure-wide);
+  --container-shell-narrow: var(--shell-narrow);
+  --container-shell: var(--shell-base);
+  --container-shell-wide: var(--shell-wide);
+  --container-shell-full: var(--shell-full);
+  --container-shell-max: var(--shell-max);
 
   /* ------------------------------------------------------------------
      The nine type rungs. Every name is a ROLE (caption, label, body, lead,
@@ -393,6 +437,53 @@
      32px those bands were written as; it opens up slightly on a wide screen
      rather than holding a phone's spacing at 1536px. */
   --space-section: clamp(2rem, 3vw, 2.75rem);
+
+  /* ---------------------------------------------------------------
+     SPACE. The same eleven rung names and the same eleven values the other
+     three repos carry, so a component moved between them keeps its internal
+     spacing. The fixed steps below --space-xl are what component internals
+     reach for; the three clamped rungs at the top are layout. Tailwind's
+     numeric scale still works for genuinely one-off geometry -- use a named
+     rung for anything repeated (TOKEN-9).
+     --------------------------------------------------------------- */
+  --space-4xs: 2px;
+  --space-3xs: 4px;
+  --space-2xs: 6px;
+  --space-xs: 8px;
+  --space-s: 12px;
+  --space-m: 16px;
+  --space-ml: 20px;
+  --space-l: 24px;
+  --space-xl: clamp(28px, 4vw, 40px);
+  --space-2xl: clamp(36px, 6vw, 64px);
+  --space-3xl: clamp(48px, 8vw, 96px);
+
+  /* ---------------------------------------------------------------
+     WIDTH, named by the role the constraint serves rather than by size. The
+     --spacing-* ramp above shadows xs/xl/2xl/3xl, so Tailwind's t-shirt
+     container names are not available as width rungs at all; word-names cannot
+     collide with a space rung, and they say what the cap is for.
+
+     Every value is exactly what the Tailwind class it replaced resolved to,
+     so adopting them changed nothing on screen. splitcart's six live rungs are
+     marked; the rest are the shared scale, declared so the seventh panel picks
+     an existing rung rather than an eighth number.
+     --------------------------------------------------------------- */
+  --measure-cap: 16rem; /* a truncating table cell or diagram callout */
+  --measure-cap-wide: 17.5rem;
+  --measure-card: 24rem; /* a card's own text, inside a grid track */
+  --measure-panel: 28rem; /* a form or dialog body -- the nav search bar */
+  --measure-panel-wide: 32rem; /* the signup form */
+  --measure-tight: 36rem; /* prose sitting directly under a heading */
+  --measure-base: 42rem; /* default body-copy column -- the founder letter's
+                            standfirst, and the login form */
+  --measure-wide: 48rem; /* article column -- the privacy policy */
+  --shell-narrow: 56rem; /* page shells: the frame, not the copy inside it */
+  --shell-base: 64rem; /* the how-it-works rail, the other-sites grid and the
+                          product panel, all inside .site-shell's 1280px */
+  --shell-wide: 72rem;
+  --shell-full: 80rem;
+  --shell-max: 90rem;
 
   /* ---------------------------------------------------------------
      RESPONSIVE FOUNDATION

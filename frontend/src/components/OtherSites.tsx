@@ -10,7 +10,7 @@ const OtherSites = ({ sites }: OtherSitesProps) => {
         Liked this site? Check out some of my others!
       </h2>
       <div className="flex justify-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-shell mx-auto">
           {sites.map((site, index) => (
             <Card key={index} className="bg-surface-page border-0 shadow-md">
               <CardContent className="p-6 flex flex-col h-full">

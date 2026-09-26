@@ -8,7 +8,7 @@ export const HowItWorksSection = ({ steps }: HowItWorksSectionProps) => {
           <h2 className="text-title font-bold tracking-tight text-text-primary">How It Works</h2>
         </div>
 
-        <div className="flex gap-6 lg:gap-8 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide max-w-5xl mx-auto">
+        <div className="flex gap-6 lg:gap-8 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide max-w-shell mx-auto">
           {steps.map((step) => (
             <div
               key={step.step}

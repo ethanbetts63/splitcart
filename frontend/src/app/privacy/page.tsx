@@ -7,7 +7,7 @@ export default function PrivacyPage() {
   return (
     <main className="bg-surface-page">
       <StructuredDataScript structuredData={buildStaticPageGraph('/privacy')} />
-      <div className="site-shell max-w-3xl px-6 py-12">
+      <div className="site-shell max-w-measure-wide px-6 py-12">
         <h1 className="text-display font-bold text-text-primary">Privacy Policy</h1>
         <p className="mt-3 text-body text-text-muted">Last updated: May 11, 2026</p>
 
