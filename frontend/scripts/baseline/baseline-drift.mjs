@@ -70,6 +70,15 @@ const PINNED = [
   { name: 'marked', repos: ['allbikes', 'freethedesk'] },
   { name: 'tw-animate-css', repos: ['allbikes', 'bloomprint', 'splitcart'] },
   { name: 'sonner', repos: ['bloomprint', 'splitcart'] },
+  // Replaced `isomorphic-dompurify`, which sat in BASELINE drifting between
+  // ^4.1.0 and ^4.2.0. It arrives leveled in one change, so it is pinned from
+  // the start rather than warned about: it is the HTML sanitiser, and a repo
+  // rendering author content through a different version of it is the exact
+  // silent divergence frontend-baseline.md exists to stop. Scoped to the three
+  // repos with a call site — splitcart carried the old package without ever
+  // importing the sanitiser, and the stray detection above will say so if that
+  // changes.
+  { name: 'sanitize-html', repos: ['allbikes', 'bloomprint', 'freethedesk'] },
   // The Radix primitives more than one repo builds on. Before splitcart joined
   // these were a two-repo dependency with no row at all — structurally the
   // same blind spot that let lucide-react drift a major version (BASE-4).
@@ -100,7 +109,6 @@ const BASELINE = [
   '@types/react-dom',
   'eslint',
   'eslint-config-next',
-  'isomorphic-dompurify',
   'next',
   'prettier',
   'react',
