@@ -8,16 +8,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { disabledUnavailableClassName, focusRingClassName } from '@/lib/controlState';
 import { cn } from '@/lib/utils';
 
-/**
- * The application button: compact, neutral, and the default everywhere inside
- * the dashboard, in dialogs, and for secondary controls on public pages.
- *
- * It is not the customer-facing primary action — that is each site's marketing
- * CTA (allbikes' `marketing/PrimaryCta`, freethedesk's `CtaButton`), which is
- * wide, uppercase and deliberately loud. Keep the boundary at intent rather
- * than at location: a public page may use both, but only one of them should be
- * the page's main action.
- */
+/** The compact, neutral application button (dashboard, dialogs, secondary controls). Not the customer-facing primary action, which is each site's marketing CTA. */
 const buttonVariants = cva(
   [
     "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-body font-medium transition-all [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 aria-invalid:border-border-danger",
@@ -28,19 +19,12 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: 'bg-action-primary text-text-on-brand hover:bg-action-primary-hover',
-        // `text-on-dark`, not `text-on-brand`: the danger fill is not the brand,
-        // and the two tokens are the same white here only by coincidence. In a
-        // repo whose brand is a light colour -- splitcart's yellow -- the brand
-        // text role is black, and black on --fill-danger is 4.3:1, under AA.
+        // `text-on-dark`, not `text-on-brand`: where the brand is light (splitcart's yellow) black on --fill-danger is 4.3:1, under AA.
         destructive: 'bg-fill-danger text-text-on-dark hover:bg-fill-danger/90',
         outline: 'border bg-surface-page shadow-xs hover:bg-surface-sunken hover:text-text-primary',
         secondary: 'bg-surface-tint text-text-primary hover:bg-surface-tint/80',
         ghost: 'hover:bg-surface-sunken hover:text-text-primary',
-        // Was `text-primary`, which resolved to #000 -- the same colour as body
-        // text. At rest this variant was indistinguishable from the words around
-        // it, and only the hover underline ever said it was interactive. It is
-        // now the link colour, which is also the only rung of the accent that
-        // clears 4.5:1 on a light surface.
+        // The link colour, the only accent rung that clears 4.5:1 on a light surface.
         link: 'text-link underline-offset-4 hover:underline hover:text-link-hover',
       },
       size: {
@@ -64,11 +48,6 @@ export type ButtonProps = React.ComponentProps<'button'> &
     asChild?: boolean;
   };
 
-/**
- * No `forwardRef`: React 19 passes `ref` through as an ordinary prop, so the
- * wrapper was ceremony around a plain function -- and it was the only one left
- * in the three repositories.
- */
 function Button({
   className,
   variant = 'default',

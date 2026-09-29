@@ -7,15 +7,8 @@ import { extendTailwindMerge } from 'tailwind-merge';
 import { TEXT_SIZES } from './text-sizes.generated';
 
 /**
- * tailwind-merge only knows Tailwind's stock sizes, so without this list it
- * misreads a custom name like `text-body-sm` as a *colour* and drops whatever
- * real colour it is merged with — silently, at runtime, with no build error.
- * This is how allbikes' `PrimaryCta size="large"` once rendered black text on
- * its green background.
- *
- * Names come straight out of tokens.css's `@theme inline` block via
- * `text-sizes.generated.ts`, so nothing here needs keeping in step by hand;
- * `npm run check:text-scale` fails when that file is stale.
+ * tailwind-merge only knows stock sizes, so it would read `text-body-sm` as a colour and silently drop the real colour.
+ * The names are generated from tokens.css's `@theme inline`; `npm run check:text-scale` fails when that file is stale.
  */
 const twMerge = extendTailwindMerge({
   extend: {

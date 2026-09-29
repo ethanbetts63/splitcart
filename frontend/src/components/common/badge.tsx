@@ -11,18 +11,13 @@ import { cn } from '@/lib/utils';
 const badgeVariants = cva(
   [
     'inline-flex items-center justify-center rounded-full border px-2 py-0.5 text-label font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none aria-invalid:ring-fill-danger/20 aria-invalid:border-border-danger transition-[color,box-shadow] overflow-hidden',
-    // A badge renders as an anchor often enough to carry `[a&]:hover:` states,
-    // and a focusable anchor with no focus treatment falls back to the
-    // browser's ring -- the defect REG-7 exists to stop. Inert on a <span>.
+    // For badges rendered as anchors (REG-7); inert on a <span>.
     focusRingClassName,
   ],
   {
     variants: {
       variant: {
         default:
-          // `/90` rather than the hover token composited 10% of whatever the
-          // badge sat on through a black fill, so the same badge was a
-          // different colour on the page, on a card and on a tinted panel.
           'border-transparent bg-action-primary text-text-on-brand [a&]:hover:bg-action-primary-hover',
         secondary:
           'border-transparent bg-surface-tint text-text-primary [a&]:hover:bg-surface-tint/90',

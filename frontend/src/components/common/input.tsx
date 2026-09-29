@@ -6,13 +6,8 @@ import * as React from 'react';
 import { disabledUnavailableClassName, focusFieldClassName } from '@/lib/controlState';
 import { cn } from '@/lib/utils';
 
-/* The 1rem floor is an iOS Safari threshold rather than a type decision: a
-   focused control whose text is under 16px zooms the viewport in and never
-   zooms back out, stranding the rest of the form off-screen. `--text-body` is
-   fluid and resolves to ~14px at phone widths, so every field in all three
-   repos tripped it. Written as a property rather than a `text-*` utility so it
-   cannot be read as a colour by Tailwind Merge, and it is a no-op at >=1240px
-   where the rung is already 1rem. */
+/* The 1rem floor is an iOS Safari threshold: a focused control under 16px zooms the viewport and never zooms back.
+   `--text-body` is ~14px at phone widths. A property, not a `text-*` utility, so Tailwind Merge cannot read it as a colour. */
 function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
   return (
     <input
