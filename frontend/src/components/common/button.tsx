@@ -20,9 +20,9 @@ const buttonVariants = cva(
       variant: {
         default: 'bg-action-primary text-text-on-brand hover:bg-action-primary-hover',
         // `text-on-dark`, not `text-on-brand`: where the brand is light (splitcart's yellow) black on --fill-danger is 4.3:1, under AA.
-        destructive: 'bg-fill-danger text-text-on-dark hover:bg-fill-danger/90',
+        destructive: 'bg-fill-danger text-text-on-dark hover:bg-fill-danger-hover',
         outline: 'border bg-surface-page shadow-xs hover:bg-surface-sunken hover:text-text-primary',
-        secondary: 'bg-surface-tint text-text-primary hover:bg-surface-tint/80',
+        secondary: 'bg-surface-tint text-text-primary hover:bg-surface-tint-strong',
         ghost: 'hover:bg-surface-sunken hover:text-text-primary',
         // The link colour, the only accent rung that clears 4.5:1 on a light surface.
         link: 'text-link underline-offset-4 hover:underline hover:text-link-hover',

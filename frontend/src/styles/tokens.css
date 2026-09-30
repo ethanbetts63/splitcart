@@ -24,6 +24,7 @@
   --color-surface-sunken: var(--surface-sunken);
   --color-surface-sunken-strong: var(--surface-sunken-strong);
   --color-surface-tint: var(--surface-tint);
+  --color-surface-tint-strong: var(--surface-tint-strong);
   --color-surface-inverse: var(--surface-inverse);
 
   --color-text-primary: var(--text-primary);
@@ -69,6 +70,7 @@
   --color-surface-danger-strong: var(--surface-danger-strong);
   --color-border-danger: var(--border-danger);
   --color-fill-danger: var(--fill-danger);
+  --color-fill-danger-hover: var(--fill-danger-hover);
   --color-text-danger: var(--text-danger);
   --color-surface-warning: var(--surface-warning);
   --color-border-warning: var(--border-warning);
@@ -233,6 +235,7 @@
   --red-200: #fecaca;
   --red-500: #ef4444;
   --red-600: #dc2626;
+  --red-700: #b91c1c;
   --red-800: #991b1b;
 
   --amber-50: #fffbeb;
@@ -268,6 +271,10 @@
      answers to one question; they are this token now. Warm rather than a tint
      of --brand-300: full-bleed yellow at this size reads as a warning. */
   --surface-tint: #f5f0eb;
+  /* The tint's darker step: what a secondary button on it hovers to, rather
+     than `surface-tint/80`. Part of the surface set every registry component
+     may assume (component-registry.md). */
+  --surface-tint-strong: #ebe4dc;
   /* The scrim behind a badge laid over a product photograph. */
   --surface-inverse: var(--neutral-900);
 
@@ -388,6 +395,8 @@
   --surface-danger-strong: var(--red-100);
   --border-danger: var(--red-200);
   --fill-danger: var(--red-600);
+  /* The darkened rung a destructive button hovers to, rather than `/90`. */
+  --fill-danger-hover: var(--red-700);
   /* Was --red-500 at three call sites, 3.7:1 on white. */
   --text-danger: var(--red-800);
 

@@ -61,15 +61,11 @@ const PINNED = [
   // A four-repo row since splitcart's forms conversion declared it
   // (splitcart/_docs/convergence/forms.md FM-3). It sat scoped to the three
   // founding repos until then, and the stray detection below is what made the
-  // widening happen rather than be remembered. It carries the family's caret
-  // rather than an exact pin for the same reason the Radix rows do: BASE-5
-  // wants exact, BASE-1 wants identical, and levelling a caret to a pin is a
-  // family-wide change (BASE-2), not something one repo joining a row can do.
+  // widening happen rather than be remembered.
   'zod',
   { name: 'lucide-react', repos: ['allbikes', 'bloomprint', 'splitcart'] },
   { name: 'marked', repos: ['allbikes', 'freethedesk'] },
   { name: 'tw-animate-css', repos: ['allbikes', 'bloomprint', 'splitcart'] },
-  { name: 'sonner', repos: ['bloomprint', 'splitcart'] },
   // Replaced `isomorphic-dompurify`, which sat in BASELINE drifting between
   // ^4.1.0 and ^4.2.0. It arrives leveled in one change, so it is pinned from
   // the start rather than warned about: it is the HTML sanitiser, and a repo
@@ -82,9 +78,7 @@ const PINNED = [
   // The Radix primitives more than one repo builds on. Before splitcart joined
   // these were a two-repo dependency with no row at all — structurally the
   // same blind spot that let lucide-react drift a major version (BASE-4).
-  // They carry the family's caret, not an exact pin: BASE-5 wants exact, but
-  // BASE-1 wants identical, and levelling a caret to a pin is a family-wide
-  // change (BASE-2) rather than something a single repo joining can do.
+  // Their exact pins are enforced below like every other PINNED row.
   { name: '@radix-ui/react-checkbox', repos: ['allbikes', 'bloomprint', 'splitcart'] },
   { name: '@radix-ui/react-dialog', repos: ['allbikes', 'splitcart'] },
   { name: '@radix-ui/react-label', repos: ['allbikes', 'bloomprint', 'splitcart'] },
@@ -152,6 +146,7 @@ const rowsOf = (list) =>
 const versionsOf = (name, repos = CONSUMERS) =>
   repos.map((repo) => declared.get(repo)[name] ?? '—');
 const agrees = (versions) => new Set(versions).size === 1 && !versions.includes('—');
+const isExact = (version) => !version.startsWith('^') && !version.startsWith('~');
 /** A scoped row's package declared by a repo the row does not name. */
 const straysOf = ({ name, repos }) =>
   CONSUMERS.filter((repo) => !repos.includes(repo) && name in declared.get(repo));
@@ -185,13 +180,16 @@ if (process.argv.includes('--report')) {
 
 const failures = rowsOf(PINNED)
   .map((row) => ({ ...row, versions: versionsOf(row.name, row.repos), strays: straysOf(row) }))
-  .filter(({ versions, strays }) => !agrees(versions) || strays.length);
+  .filter(
+    ({ versions, strays }) =>
+      !agrees(versions) || versions.some((version) => !isExact(version)) || strays.length,
+  );
 const drifting = rowsOf(BASELINE)
   .map(({ name, repos }) => versionsOf(name, repos))
   .filter((versions) => !agrees(versions));
 
 if (failures.length) {
-  console.error('baseline-drift: pinned packages disagree.\n');
+  console.error('baseline-drift: pinned packages disagree or use an inexact range.\n');
   for (const { name, repos, versions, strays } of failures) {
     console.error(`  ${name}`);
     repos.forEach((repo, i) => console.error(`      ${repo.padEnd(12)} ${versions[i]}`));
