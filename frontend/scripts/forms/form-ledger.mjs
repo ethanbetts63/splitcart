@@ -74,9 +74,7 @@ export function checkFormLedger({ root, ledger }) {
     console.error('check-forms: the ledger and the tree disagree.\n');
     console.error(problems.join('\n'));
     console.error(
-      '\nThe ledger is this file. The rules are\n' +
-        'freetheplatform/_docs/forms-standard.md, and what is outstanding is\n' +
-        '_docs/forms-migration.md.',
+      '\nThe ledger is this file. The rules are\n' + 'freetheplatform/_docs/forms-standard.md.',
     );
     process.exit(1);
   }
