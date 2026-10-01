@@ -24,7 +24,7 @@
     "check": "npm run format:check && npm run lint && npm run lint:css && npm run typecheck && npm run check:baseline && npm run check:og-images && npm run check:sitemap && npm run check:seo-ledger && npm run check:tokens && npm run check:text-scale && npm run check:forms && npm run check:form-contract"
   },
   "dependencies": {
-    "@freetheplatform/web-security": "github:ethanbetts63/freetheplatform#v0.26.0",
+    "@freetheplatform/web-security": "github:ethanbetts63/freetheplatform#v0.31.0",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-aspect-ratio": "^1.1.7",
     "@radix-ui/react-checkbox": "^1.3.3",
