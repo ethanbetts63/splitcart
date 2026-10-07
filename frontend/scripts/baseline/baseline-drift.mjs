@@ -63,7 +63,7 @@ const PINNED = [
   // founding repos until then, and the stray detection below is what made the
   // widening happen rather than be remembered.
   'zod',
-  { name: 'lucide-react', repos: ['allbikes', 'bloomprint', 'splitcart'] },
+  { name: 'lucide-react', repos: ['allbikes', 'bloomprint', 'freethedesk', 'splitcart'] },
   { name: 'marked', repos: ['allbikes', 'freethedesk'] },
   { name: 'tw-animate-css', repos: ['allbikes', 'bloomprint', 'splitcart'] },
   // Replaced `isomorphic-dompurify`, which sat in BASELINE drifting between
