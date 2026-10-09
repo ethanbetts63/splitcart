@@ -1,5 +1,9 @@
 # Agent instructions
 
+Shorthand: FTD = freethedesk, FTP = freetheplatform.
+
+`_docs/to_do.md` holds open tasks. Append any you find; delete one once you know it's done.
+
 ## Repository role
 
 `splitcart` is the SplitCart grocery price-comparison product
