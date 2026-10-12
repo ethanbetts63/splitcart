@@ -5,7 +5,8 @@ model field or a bulk write. `rename` in particular assigned `cart.name` with no
 validation at all, so an oversized name was either a truncated row (MySQL in
 non-strict mode) or a 500, and a malformed `cart_id` was a 500 either way.
 
-String bounds here come from a field kind in `bounds.py`, so the Zod schema
+String bounds here come from a field kind in `freetheplatform.security.bounds`,
+so the Zod schema
 beside the form and the serializer bound the same field from opposite ends.
 The rest are ceilings on how much work one request may ask for.
 """
@@ -13,10 +14,10 @@ The rest are ceilings on how much work one request may ask for.
 from rest_framework import serializers
 
 from users.models import Cart
-from users.serializers.bounds import max_length
+from freetheplatform.security.bounds import max_length
 
 # A cart's name is a label a shopper types on one line, so it is the `line`
-# kind -- the same ceiling `frontend/src/lib/fieldMax.ts` gives the rename
+# kind -- the same ceiling `@freetheplatform/web-security` gives the rename
 # form, which is what makes the two ends bound the same field. The column is
 # 255 as well, and the assertion below keeps it that way: a bound wider than
 # the column is not a looser rule, it is a failed INSERT.

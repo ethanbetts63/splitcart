@@ -10,3 +10,6 @@ class CompanyListView(ListAPIView):
     queryset = Company.objects.all().order_by('pk')
     serializer_class = CompanySerializer
     permission_classes = [IsInternalAPIRequest]
+    # The pipeline's own scope, like every other internal export. Unscoped, it
+    # answered with no limit at all until ftp_security.E006 found it.
+    throttle_scope = 'internal'

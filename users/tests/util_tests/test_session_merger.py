@@ -2,26 +2,18 @@
 
 Someone fills a cart while signed out, then creates an account or logs in. What
 they put in the cart has to still be there afterwards. That is the whole of this
-behaviour, and it is worth saying plainly because of where it currently lives:
-it is triggered from `CustomLoginSerializer.validate()`, a class
-`_docs/convergence/auth-migration.md` deletes when the session model changes.
+behaviour.
 
-These tests deliberately exercise `merge_anonymous_session` directly rather than
-through the login endpoint. Whatever replaces dj-rest-auth's login serializer
-has to keep calling something that behaves like this, and a test written only
-against the endpoint would be deleted along with the endpoint, taking the
-contract with it. `test_custom_login_serializer.py` covers the wiring; this file
-covers the behaviour.
+These tests exercise `merge_anonymous_session` directly rather than through an
+endpoint, because the endpoints have been replaced once already -- dj-rest-auth's
+serializers were the callers before `users/views/auth_views.py` -- and a test
+written only against an endpoint is deleted along with it, taking the contract
+with it.
 
-This function now has two callers, not one. `CustomRegisterSerializer.save()`
-calls it too, because `frontend/src/components/forms/signup-form.tsx` posts to
-`/api/auth/registration/` and never touches `/api/auth/login/` -- so for a while
-a shopper who filled a cart signed out and then created an account lost it,
-while the same shopper signing in kept it. That the two doors can drift apart is
-the failure mode of this design, and
+The function has two callers, login and registration. That the two doors can
+drift apart is the failure mode of this design, and
 `view_tests/test_anonymous_cart_at_both_doors.py` drives both through the URL to
-hold them together. It is also where the one remaining disagreement between them
-is recorded.
+hold them together.
 """
 
 import pytest
@@ -208,26 +200,15 @@ class TestAnonymousCartMergeDoesNothing:
 
 @pytest.mark.django_db
 class TestAMergeThatCannotFinish:
-    """The merge is four writes with no transaction around them.
+    """The merge is four writes, and the first is destructive.
 
     In order: stand the user's own active cart down, create the replacement,
-    move the items across, delete the anonymous cart. The first of those is
-    destructive and the rest can fail, so an interruption anywhere after step
-    one leaves the shopper with no active cart and the list they had before
-    switched off -- from their side, the cart vanished on sign-in.
-
-    Only `Cart.DoesNotExist` is caught, so the exception itself reaches the
-    caller as a 500. That part is visible. The deactivation is not.
+    move the items across, delete the anonymous cart. Without a transaction an
+    interruption anywhere after step one left the shopper with no active cart
+    and the list they had before switched off -- from their side, the cart
+    vanished on sign-in.
     """
 
-    @pytest.mark.xfail(
-        strict=True,
-        reason=(
-            'merge_anonymous_session() is not wrapped in transaction.atomic(), '
-            'so the user\'s own active cart is already stood down when a later '
-            'step fails and nothing puts it back.'
-        ),
-    )
     def test_a_merge_that_cannot_finish_leaves_the_shopper_the_cart_they_had(
         self, user, monkeypatch
     ):

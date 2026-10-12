@@ -16,21 +16,23 @@
 # there.
 
 # --- the framework ---
-Django==5.2.4
-djangorestframework==3.15.1
+# Capped below 6.1, which raised Django's minimum MySQL to 8.4; PythonAnywhere
+# serves 8.0. The floor is freetheplatform's: it requires 6.0.
+Django>=6.0,<6.1
+djangorestframework==3.18.0
 mysqlclient==2.2.7  # MySQL is the only engine; there is no SQLite fallback.
 python-dotenv==1.1.1  # config/settings.py reads .env at import.
 
-# --- authentication ---
-# The current session model: a DRF authtoken issued by dj-rest-auth over
-# allauth's account layer. Being replaced; see _docs/convergence/auth-migration.md.
-django-allauth==0.61.1
-dj-rest-auth==7.0.1
-
-# The browser calls the API host directly instead of through the frontend's
-# /api/* rewrite, which is the only reason this is here. It goes when the
-# same-origin proxy does.
-django-cors-headers==4.3.1
+# --- shared capabilities ---
+# Sessions, lockout and password reset (freetheplatform.auth), the shared field
+# bounds, the throttle class and the deployment checks. Pinned to a tag: a
+# security fix in the package means a new tag and a bump here the same day. See
+# ../freetheplatform/_docs/strategy.md and _docs/convergence/auth-migration.md.
+#
+# The repository is private, so the server installs it with a token; see
+# ../freetheplatform/_docs/deployment-standard.md.
+freetheplatform @ git+https://github.com/ethanbetts63/freetheplatform@v0.35.0
+djangorestframework-simplejwt==5.5.1  # freetheplatform.auth's tokens; pinned here so they move visibly.
 
 # --- product features ---
 PuLP==3.2.1  # The LP solver behind the cart split; reached by /api/carts/<id>/optimize/.

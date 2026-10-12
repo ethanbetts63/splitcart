@@ -4,5 +4,4 @@ from .cart_action_serializers import (
     CartSwitchActiveSerializer,
     CartSyncSerializer,
 )
-from .custom_login_serializer import CustomLoginSerializer
-from .custom_register_serializer import CustomRegisterSerializer
+from .auth_serializers import LoginRequestSerializer, RegisterSerializer

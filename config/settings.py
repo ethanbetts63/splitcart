@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 from urllib.parse import urlparse
 
+from freetheplatform.auth import conf as ftp_auth_conf
+
 load_dotenv() # Load environment variables from .env file
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,10 +43,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
     "companies.apps.CompaniesConfig",
     "products.apps.ProductsConfig",
     "pipeline.apps.PipelineConfig",
@@ -52,13 +50,13 @@ INSTALLED_APPS = [
 
     "users.apps.UsersConfig",
     "rest_framework",
-    'rest_framework.authtoken',
-    'dj_rest_auth',
-    'dj_rest_auth.registration',
-    'corsheaders',
+    # Required by freetheplatform.auth: logout and a password change revoke by
+    # blacklisting, and without this app there is nothing to revoke into.
+    "rest_framework_simplejwt.token_blacklist",
+    # Sessions, lockout and password reset. Installing it also registers the
+    # deployment checks in freetheplatform.security.
+    "freetheplatform.auth",
 ]
-
-SITE_ID = 1
 
 
 # No whole-site cache middleware. UpdateCacheMiddleware/FetchFromCacheMiddleware
@@ -70,8 +68,11 @@ SITE_ID = 1
 # way but is applied deliberately, to a view whose answer does not depend on who
 # is asking. Per-caller endpoints additionally carry never_cache.
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    # First after SecurityMiddleware, so every later reader -- DRF's throttle
+    # key, the lockout's log lines -- sees the visitor's address rather than
+    # Vercel's on a call from the frontend's server. See FTP_SECURITY below.
+    "freetheplatform.security.proxy.ForwardedClientMiddleware",
     # Near the top, so it runs last on the way out: by then @cache_page and
     # never_cache have both written their Cache-Control, and it can see that a
     # response already decided and leave it alone. Below this, and a view's own
@@ -79,7 +80,6 @@ MIDDLEWARE = [
     "config.middleware.NoCacheApiMiddleware",
     "django.middleware.gzip.GZipMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "allauth.account.middleware.AccountMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -173,37 +173,34 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = 'users.User'
 
 REST_FRAMEWORK = {
+    # Cookie-JWT is the only authentication path. The access token lives in an
+    # HttpOnly cookie no script can read, and the class enforces CSRF itself on
+    # every unsafe method it authenticates.
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+        'freetheplatform.auth.authentication.CookieJWTAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 24,
 
     # Applies whatever scope a view declares, and nothing at all when a view
-    # declares none. The catch-all `anon`/`user` rates it replaces were not rate
-    # limiting: 5000/day anon is one attempt every seventeen seconds, forever,
-    # against an endpoint with no account lockout behind it.
+    # declares none -- which ftp_security.E006 refuses to let happen, so a scope
+    # is mandatory and enforced at startup. Counts into the `throttling` cache.
     'DEFAULT_THROTTLE_CLASSES': [
-        'config.throttling.ScopedRequestThrottle',
+        'freetheplatform.auth.throttling.ScopedRequestThrottle',
     ],
     # Named for what each number protects, not for who is calling.
     'DEFAULT_THROTTLE_RATES': {
-        # Credential guessing. There is no account lockout yet -- that arrives
-        # with the session migration -- so for now these are the only thing
-        # standing between a script and this site's passwords.
+        # Credentials. Low, and deliberately so: nobody signs in five times a
+        # minute, and lockout -- not this -- is what actually stops guessing.
         'login': '5/minute',
         'register': '5/hour',
         'password_reset': '5/hour',
         'password_change': '10/hour',
-        # dj_rest_auth stamps this scope on its own views. Every one of them is
-        # shadowed by a scoped subclass in users/urls.py, but a rate has to
-        # exist regardless: ScopedRateThrottle raises ImproperlyConfigured --
-        # a 500, on first call -- for a scope with no rate, so a route added by
-        # a library upgrade must land on a number rather than on an exception.
-        'dj_rest_auth': '5/minute',
+        # Session upkeep: refresh, logout and `me/`. Every page load asks `me/`
+        # once, and an expired access token adds a refresh.
+        'session': '600/hour',
         # Cost and load. `cart-sync` writes rows in bulk and `cart-optimize`
         # runs an LP solve, so both are bounded well below ordinary reads.
-        'session': '600/hour',
         'cart': '600/hour',
         'cart-sync': '300/hour',
         'cart-optimize': '60/hour',
@@ -214,8 +211,42 @@ REST_FRAMEWORK = {
         # Server-to-server, already gated by IsInternalAPIRequest. The throttle
         # bounds call volume between trusted services, not an attack surface.
         'internal': '1000000/day',
-    }
+    },
+    # DRF keys a throttle bucket on the client address and resolves it from
+    # X-Forwarded-For. Unset, the header is taken at face value and a caller can
+    # pad it to mint a fresh bucket per request. One proxy: PythonAnywhere's.
+    'NUM_PROXIES': 1,
 }
+
+# Cookies are splitcart_access and splitcart_refresh. Everything not named here
+# has a safe default; `manage.py ftp_auth_config` prints what is in force.
+FTP_AUTH = {
+    "COOKIE_PREFIX": "splitcart",
+    "PRINCIPAL": "users.principal.principal",
+    "CREDENTIAL_RESOLVER": "users.credentials.email_credentials",
+    "LOCKOUT_NOTIFIER": "users.notifications.notify_account_security",
+    "PASSWORD_RESET_NOTIFIER": "users.notifications.send_password_reset",
+}
+
+# A reset link is a password for as long as it lives. Django's token generator
+# reads this directly, which is why it is not inside FTP_AUTH. Three days, the
+# family setting.
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 24 * 3
+
+# Derived from FTP_AUTH rather than written out again, so the token lifetimes
+# and the cookie max-ages cannot drift apart.
+SIMPLE_JWT = ftp_auth_conf.simple_jwt(FTP_AUTH)
+
+# The secret the frontend's server sends beside the visitor's address on a
+# server-side fetch -- login, signup and the reset forms all reach Django from
+# Vercel. Without it the per-IP login rate is one bucket shared by every
+# visitor. The same value is FTP_PROXY_SECRET on Vercel, server-only. See
+# ../freetheplatform/_docs/security-standard.md section 6.
+FTP_SECURITY = {"PROXY_SECRET": os.environ.get("FTP_PROXY_SECRET")}
+
+# Where a reset link points, and who hears about an account under attack.
+SITE_URL = os.getenv("SITE_URL", "https://www.splitcart.com.au")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "ethan.betts.dev@gmail.com")
 
 # The ceiling on the request body itself, which is the only bound that applies
 # before anything is parsed: a serializer's per-field maximums are checked after
@@ -231,9 +262,10 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000
 
 # Dev frontend origins, written as ports rather than eight spelled-out strings.
 # Each port needs both a `localhost` and a `127.0.0.1` spelling, because a
-# browser treats those as different origins -- and getting only one of them
-# right produces a frontend that server-renders perfectly and has every
-# client-side write refused, which reads as a broken cart rather than as CORS.
+# browser treats those as different origins. A write through the `/api/*`
+# rewrite reaches Django still carrying the frontend's `Origin`, and Django's
+# CSRF check refuses one it does not trust -- every cart write fails while every
+# page renders, which reads as a broken cart rather than as CSRF.
 #
 # 3021 is in the default because another project in this family holds 3000, so
 # running on a second port is the normal case here, not the exception. The list
@@ -250,63 +282,24 @@ DEV_FRONTEND_ORIGINS = [
     for host in ("localhost", "127.0.0.1")
 ]
 
-# The dev origins are added only under DEBUG. They used to be unconditional,
-# which meant the live API trusted `http://localhost:3000` -- a page on any
-# developer's machine, or anyone else's, making cross-origin calls to
-# production. Nothing needs that: the deployed frontend is served from the
-# origins below.
-CORS_ALLOWED_ORIGINS = [
-    "https://ethanbetts63.pythonanywhere.com",
-    "https://www.splitcart.com.au",
-    "https://splitcart.com.au",
-    "https://api.splitcart.com.au",
-] + (DEV_FRONTEND_ORIGINS if DEBUG else [])
-
+# No CORS. The browser reaches Django only through the frontend's same-origin
+# `/api/*` rewrite, and the frontend's server calls it server to server, so no
+# request this API should answer is cross-origin. The writes those carry still
+# name the frontend in `Origin`, which is what this list is for.
 CSRF_TRUSTED_ORIGINS = [
     "https://www.splitcart.com.au",
     "https://splitcart.com.au",
     "https://api.splitcart.com.au",
 ] + (DEV_FRONTEND_ORIGINS + [DEV_API_SERVER_URL] if DEBUG else [])
 
-from corsheaders.defaults import default_headers
-
-CORS_ALLOW_HEADERS = [
-    *default_headers,
-    "X-Anonymous-ID",
-]
-
-# Custom Account Adapter
-ACCOUNT_ADAPTER = 'users.adapter.CustomAccountAdapter'
-
-# Email Authentication Settings
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-
-ACCOUNT_EMAIL_REQUIRED = True
-
-ACCOUNT_UNIQUE_EMAIL = True
-
-ACCOUNT_USERNAME_REQUIRED = False
-
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
-ACCOUNT_EMAIL_HTML_EMAIL = True
 DEFAULT_FROM_EMAIL = 'ethan.betts.dev@gmail.com'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'ethan.betts.dev@gmail.com'
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-
-# Custom Serializer for Registration
-
-REST_AUTH = {
-    'LOGIN_SERIALIZER': 'users.serializers.CustomLoginSerializer',
-    'REGISTER_SERIALIZER': 'users.serializers.CustomRegisterSerializer',
-
-}
 
 # Caching configuration
 CACHES = {
@@ -367,4 +360,8 @@ SILENCED_SYSTEM_CHECKS = [
     # and future subdomain to HTTPS, and it takes a manual submission to
     # hstspreload.org that nothing here performs. No sibling site sets it.
     "security.W021",
+    # PASSWORD_SET_NOTIFIER tells an owner that staff set their password, which
+    # only freetheplatform.auth.staff.urls can do. splitcart does not route
+    # them: there is no staff dashboard, and staff work is a manage.py shell.
+    "ftp_auth.W006",
 ]

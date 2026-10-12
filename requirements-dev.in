@@ -18,8 +18,8 @@ Faker==37.5.3
 # --- local development tooling ---
 # Both are gated on DEBUG in config/settings.py, so neither is installed on the
 # server and neither has a route there.
-django-debug-toolbar==4.3.0
-django-extensions==3.2.3
+django-debug-toolbar==8.0.0
+django-extensions==4.1
 
 # --- scraping, which runs on a local machine only ---
 beautifulsoup4==4.13.4

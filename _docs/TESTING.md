@@ -33,9 +33,9 @@ MySQL backend on import and `mysqlclient` is not installed — see below.
 a machine without a C compiler and a Python it has wheels for. Two packages in
 it are the reason, and neither is needed to run the suite:
 
-| Package                                               | Why it is skipped                                                                                                              |
-| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `mysqlclient`                                         | C extension. No wheel for Python 3.14; building it needs the MSVC build tools. The suite does not use MySQL — see below.       |
+| Package                                             | Why it is skipped                                                                                                                        |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `mysqlclient`                                       | C extension. No wheel for Python 3.14; building it needs the MSVC build tools. The suite does not use MySQL — see below.                 |
 | `torch`, `transformers`, `sentence-transformers`, … | The ML half of substitution generation. No wheels for Python 3.14, and roughly 2.5 GB when there are. Only `generate --subs` needs them. |
 
 Everything else installs from the pinned versions, with one caveat: the
@@ -124,14 +124,14 @@ To keep our tests organized and scalable, we follow a consistent directory struc
 
 Not every app has every layer. What exists today:
 
-| App         | Test layers present                                                                                                                                  |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `companies` | `factories/`, `model_tests/`, `serializer_tests/`, `view_tests/`                                                                                     |
-| `config`    | `tests/` — one module, for the root URLconf. The project package has no models or serializers to mirror.                                              |
-| `products`  | `factories/`, `model_tests/`, `serializer_tests/`, `util_tests/`, `view_tests/`                                                                      |
-| `pipeline`  | `command_tests/`, `model_tests/`, `serializer_tests/`, `util_tests/`, `view_tests/`, plus a `conftest.py`                                             |
+| App         | Test layers present                                                                                                                                       |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `companies` | `factories/`, `model_tests/`, `serializer_tests/`, `view_tests/`                                                                                          |
+| `config`    | `tests/` — one module, for the root URLconf. The project package has no models or serializers to mirror.                                                  |
+| `products`  | `factories/`, `model_tests/`, `serializer_tests/`, `util_tests/`, `view_tests/`                                                                           |
+| `pipeline`  | `command_tests/`, `model_tests/`, `serializer_tests/`, `util_tests/`, `view_tests/`, plus a `conftest.py`                                                 |
 | `scraping`  | `util_tests/` only — the app is model-free, so there is nothing else to test. The scraper classes are tested here too rather than in a `scrapers/` layer. |
-| `users`     | `factories/`, `model_tests/`, `serializer_tests/`, `util_tests/`, `view_tests/`, plus a `conftest.py`                                                 |
+| `users`     | `factories/`, `model_tests/`, `serializer_tests/`, `util_tests/`, `view_tests/`, plus a `conftest.py`                                                     |
 
 ### Rationale for this structure:
 
@@ -153,11 +153,11 @@ app's own adds to it.
 
 ### Root `conftest.py` — every app
 
-| Fixture               | What it is for                                                                                                   |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `api_client`          | A DRF `APIClient`. pytest-django's built-in `client` speaks sessions, and every authenticated route here is token auth. |
+| Fixture               | What it is for                                                                                                              |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `api_client`          | A DRF `APIClient`. pytest-django's built-in `client` speaks sessions, and every authenticated route here is token auth.     |
 | `drf_request_factory` | Builds an authenticated `rest_framework.request.Request`, for serializers that resolve the current user from their context. |
-| `empty_caches`        | Autouse. Clears the throttle cache and the page cache between tests, so no test inherits another's rate-limit history. |
+| `empty_caches`        | Autouse. Clears the throttle cache and the page cache between tests, so no test inherits another's rate-limit history.      |
 
 ```python
 def test_my_serializer(drf_request_factory):
@@ -184,17 +184,17 @@ their place.
 
 ### `users/tests/conftest.py`
 
-| Fixture            | What it is for                                                                                   |
-| ------------------ | -------------------------------------------------------------------------------------------------- |
-| `user`             | An ordinary account, from `UserFactory`.                                                         |
-| `auth_client`      | An `APIClient` carrying `user`'s DRF token — the way the live frontend authenticates.            |
-| `other_user`       | A second account, for the cross-user boundary tests. Named for what it is for.                   |
-| `anonymous_id`     | The ID a signed-out browser carries.                                                             |
-| `anonymous_client` | A signed-out `APIClient` that keeps one `anonymous_id` across requests.                          |
+| Fixture            | What it is for                                                                        |
+| ------------------ | ------------------------------------------------------------------------------------- |
+| `user`             | An ordinary account, from `UserFactory`.                                              |
+| `auth_client`      | An `APIClient` carrying `user`'s DRF token — the way the live frontend authenticates. |
+| `other_user`       | A second account, for the cross-user boundary tests. Named for what it is for.        |
+| `anonymous_id`     | The ID a signed-out browser carries.                                                  |
+| `anonymous_client` | A signed-out `APIClient` that keeps one `anonymous_id` across requests.               |
 
 `anonymous_client` exists because `config.middleware.AnonymousUserMiddleware`
 mints a fresh ID for any request that arrives without one. A plain `api_client`
-is therefore a *different* signed-out shopper on every request, which is useful
+is therefore a _different_ signed-out shopper on every request, which is useful
 in its own right — it is how the tests prove two browsers cannot see each
 other's carts.
 
@@ -225,18 +225,9 @@ be dead code is worth saying out loud rather than leaving in place.
 
 ### Tests that are expected to fail
 
-Three modules carry a `pytest.mark.xfail(strict=True)` on a single test. Each
-one records a defect that was found while writing tests and not fixed, because
-fixing it is a product or compatibility decision rather than a testing one:
-
-| Module                                                     | What it records                                                                                            |
-| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `users/tests/view_tests/test_password_reset.py`            | `POST /api/auth/password/reset/` answers 500 — the reset link reverses a URL nothing routes, and there is no frontend page for it to land on. |
-| `pipeline/tests/view_tests/test_import_semantic_data_view.py` | `POST /api/import/semantic_data/` cannot import anything: it passes `source=` to a model field that is commented out. Nothing calls the endpoint. |
-| `products/tests/serializer_tests/test_price_serializer.py` | `PriceSerializer` raises on first use (`source='price'` on a field named `price`). Nothing imports it.     |
-
-Each asserts the behaviour that is owed, not the behaviour that happens.
-`strict=True` means the run fails if one of them starts passing, which is the
-alarm for "this was fixed — delete the marker, or delete the module along with
-the code it describes." Do not add a fourth without the same justification:
-`xfail` is a record of a reported defect, not a way to park a failing test.
+None, today. A `pytest.mark.xfail(strict=True)` on a single test is how a defect
+found while writing tests, and not fixed because fixing it is a product or
+compatibility decision, is recorded: the test asserts the behaviour that is
+owed, and `strict=True` fails the run the day it starts passing, which is the
+alarm to delete the marker. `xfail` is a record of a reported defect, not a way
+to park a failing test.

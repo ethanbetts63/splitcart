@@ -46,6 +46,16 @@ if echo "$staged" | grep -q '^frontend/'; then
     fi
 fi
 
+# --- Deployment and security checks ------------------------------------
+#
+# Only when Python is staged. Seconds, and no database: a route that answers
+# with no throttle scope, a cookie that lost its Secure flag, or an auth class
+# that slipped back in are all invisible under DEBUG and all caught here.
+if echo "$staged" | grep -q '\.py$'; then
+    echo "pre-commit: deployment checks"
+    sh scripts/check-security.sh || fail "manage.py check --deploy reported a finding."
+fi
+
 # --- Formatting ----------------------------------------------------------
 #
 # Prettier is installed as a frontend devDependency; there is no separate root

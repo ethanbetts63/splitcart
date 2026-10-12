@@ -1,24 +1,21 @@
 """The cart survives signing in -- by either door, through the URL only.
 
 There are two ways into an account and both have to keep the cart the browser
-already filled. Today one is `CustomLoginSerializer.validate()` and the other
-is `CustomRegisterSerializer.save()`; both classes are on
-[`_docs/convergence/auth-migration.md`](../../../_docs/convergence/auth-migration.md)'s
-delete list, and the merge has already been lost once by exactly this route --
-it hung off login alone, so signing up silently dropped the cart.
+already filled: `users.views.auth_views.LoginView`, in front of the shared
+package's login, and `RegisterView`. The merge has already been lost once by
+exactly this route -- it hung off login alone, so signing up silently dropped
+the cart -- and it survived the move off dj-rest-auth because this file names
+no serializer, method or module.
 
-`test_custom_login_serializer.py` and `test_custom_register_serializer.py` cover
-each door against the serializer that currently implements it.
-`util_tests/test_session_merger.py` covers the merge as a function. What
-neither layer can say is that **the two doors agree**, which is the property
-that failed last time. So this file drives both through `reverse()` and asserts
-against the HTTP answer and the database -- nothing here names a serializer, a
-method or a module, and nothing here has to be rewritten when AU-3 replaces
-both.
+`view_tests/test_login.py` and `serializer_tests/test_register_serializer.py`
+cover each door. `util_tests/test_session_merger.py` covers the merge as a
+function. What neither layer can say is that **the two doors agree**, which is
+the property that failed last time. So this file drives both through
+`reverse()` and asserts against the HTTP answer and the database.
 
 The end-to-end assertion is the first one: fill a cart signed out, go through a
-door, and ask `GET /api/carts/active/` with the credential that door returned.
-That is the sentence the product actually promises.
+door, and ask `GET /api/carts/active/` with the cookies that door set. That is
+the sentence the product actually promises.
 
 A property worth stating rather than asserting: the anonymous ID is a bearer
 identifier. Whoever presents it gets the cart it names, and the cart is moved
@@ -57,7 +54,7 @@ class _Login:
     def enter(self, **extra):
         payload = {'email': EMAIL, 'password': TEST_PASSWORD}
         payload.update(extra)
-        return self.client.post(reverse('rest_login'), payload, format='json')
+        return self.client.post(reverse('login'), payload, format='json')
 
 
 class _Registration:
@@ -77,7 +74,7 @@ class _Registration:
             'password2': TEST_PASSWORD,
         }
         payload.update(extra)
-        return self.client.post(reverse('rest_register'), payload, format='json')
+        return self.client.post(reverse('register'), payload, format='json')
 
 
 @pytest.fixture(params=[_Login, _Registration], ids=['login', 'registration'])
@@ -113,7 +110,8 @@ class TestTheCartFollowsTheShopper:
         response = door.enter(anonymous_id=signed_out_cart.anonymous_id)
         assert response.status_code == door.accepted, response.content
 
-        api_client.credentials(HTTP_AUTHORIZATION=f"Token {response.json()['key']}")
+        # The door set the session cookies on this client; nothing is copied
+        # out of the body, because nothing is in it.
         active = api_client.get(reverse('cart-active'))
 
         assert active.status_code == 200, active.content
@@ -194,41 +192,15 @@ class TestTheBoundaryBetweenBrowsers:
 class TestTheTwoDoorsAgree:
     """The asymmetry that has already cost this product a cart once."""
 
-    @pytest.mark.parametrize(
-        'door',
-        [
-            pytest.param(
-                _Login,
-                id='login',
-                marks=pytest.mark.xfail(
-                    strict=True,
-                    reason=(
-                        "CustomLoginSerializer.validate() reads anonymous_id "
-                        "from self.initial_data -- the raw string as posted -- "
-                        "instead of from the validated UUIDField, so the "
-                        "lookup against users_cart.anonymous_id is done on "
-                        "whatever spelling arrived. Registration reads "
-                        "validated_data and gets a canonical uuid.UUID. The "
-                        "same identifier therefore keeps the cart at one door "
-                        "and silently loses it at the other."
-                    ),
-                ),
-            ),
-            pytest.param(_Registration, id='registration'),
-        ],
-        indirect=True,
-    )
     def test_an_identifier_in_a_different_letter_case_still_finds_the_cart(
         self, door, signed_out_cart
     ):
         """A UUID is the same UUID in either case, and both doors declare the
-        field as a `UUIDField`, so both accept the upper-case spelling and
-        neither reports a problem. Only one of them then finds the cart.
+        field as a `UUIDField`, so both accept the upper-case spelling.
 
-        This is not a hypothetical: it is the difference between validating a
-        field and using the validated value, and the next thing to re-home this
-        hook will choose one of the two behaviours without noticing there were
-        two. Whatever AU-3 lands, both doors must answer this the same way.
+        Login used to read the raw string as posted while registration read the
+        validated value, so only registration then found the cart. Both now pass
+        the merger the canonical `uuid.UUID`, and this holds them to it.
         """
         response = door.enter(anonymous_id=signed_out_cart.anonymous_id.upper())
         assert response.status_code == door.accepted, response.content

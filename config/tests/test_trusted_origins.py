@@ -9,9 +9,14 @@ saying the cart could not be created. That points at the cart. It happened on
 2026-09-25, when the local frontend moved to 3021 because another project in
 this family holds 3000.
 
+The list was CORS's then. Since the browser reaches Django only through the
+frontend's `/api/*` rewrite there is no CORS, but a write still arrives naming
+the frontend in `Origin`, and Django's CSRF check refuses an origin it does not
+trust -- the same failure, behind a different setting.
+
 The second is the opposite mistake: the dev origins used to be in the list
 unconditionally, so the live API trusted `http://localhost:3000` -- any page on
-any machine, making cross-origin calls to production.
+any machine, writing to production.
 """
 
 import importlib
@@ -71,7 +76,6 @@ class TestDevOriginsReachTheDevFrontend:
         dev = _settings_with(monkeypatch, debug=True)
         assert dev.DEV_FRONTEND_ORIGINS
         for origin in dev.DEV_FRONTEND_ORIGINS:
-            assert origin in dev.CORS_ALLOWED_ORIGINS
             assert origin in dev.CSRF_TRUSTED_ORIGINS
 
     def test_a_new_port_needs_no_code_change(self, monkeypatch):
@@ -81,15 +85,15 @@ class TestDevOriginsReachTheDevFrontend:
         here, so reaching for an env var has to be the easier path.
         """
         dev = _settings_with(monkeypatch, debug=True, ports='3000,4173')
-        assert 'http://localhost:4173' in dev.CORS_ALLOWED_ORIGINS
-        assert 'http://127.0.0.1:4173' in dev.CORS_ALLOWED_ORIGINS
-        assert 'http://localhost:3001' not in dev.CORS_ALLOWED_ORIGINS
+        assert 'http://localhost:4173' in dev.CSRF_TRUSTED_ORIGINS
+        assert 'http://127.0.0.1:4173' in dev.CSRF_TRUSTED_ORIGINS
+        assert 'http://localhost:3001' not in dev.CSRF_TRUSTED_ORIGINS
 
 
 class TestProductionDoesNotTrustLocalhost:
     def test_no_local_origin_survives_with_debug_off(self, monkeypatch):
         prod = _settings_with(monkeypatch, debug=False)
-        trusted = prod.CORS_ALLOWED_ORIGINS + prod.CSRF_TRUSTED_ORIGINS
+        trusted = prod.CSRF_TRUSTED_ORIGINS
         offenders = [o for o in trusted if 'localhost' in o or '127.0.0.1' in o]
         assert not offenders, (
             f'Production trusts these local origins: {offenders}. A localhost '
@@ -99,5 +103,14 @@ class TestProductionDoesNotTrustLocalhost:
     def test_the_deployed_origins_are_still_there(self, monkeypatch):
         """Gating the dev origins must not gate the real ones out with them."""
         prod = _settings_with(monkeypatch, debug=False)
-        assert 'https://www.splitcart.com.au' in prod.CORS_ALLOWED_ORIGINS
         assert 'https://www.splitcart.com.au' in prod.CSRF_TRUSTED_ORIGINS
+
+
+class TestThereIsNoCors:
+    def test_no_cross_origin_policy_is_configured(self, monkeypatch):
+        """A correctly shaped frontend needs none, and a list that exists is a
+        list somebody adds an origin to."""
+        for debug in (True, False):
+            module = _settings_with(monkeypatch, debug=debug)
+            assert not [name for name in dir(module) if name.startswith('CORS_')]
+            assert not [m for m in module.MIDDLEWARE if 'corsheaders' in m]

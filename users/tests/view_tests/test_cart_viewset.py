@@ -14,6 +14,7 @@ from django.urls import reverse
 
 from users.models import Cart, CartItem
 from users.tests.factories import CartFactory, CartItemFactory
+from users.tests.sessions import client_for
 
 
 def _detail(cart):
@@ -247,14 +248,9 @@ class TestResponsesAreNotSharedBetweenCallers:
     def test_two_accounts_do_not_see_each_others_active_cart(
         self, auth_client, user, other_user
     ):
-        from rest_framework.authtoken.models import Token
-        from rest_framework.test import APIClient
-
         CartFactory(user=user, is_active=True, name='Mine')
         CartFactory(user=other_user, is_active=True, name='Theirs')
-        their_client = APIClient()
-        token, _ = Token.objects.get_or_create(user=other_user)
-        their_client.credentials(HTTP_AUTHORIZATION=f'Token {token.key}')
+        their_client = client_for(other_user)
 
         mine = auth_client.get(reverse('cart-active'))
         theirs = their_client.get(reverse('cart-active'))
@@ -283,14 +279,9 @@ class TestResponsesAreNotSharedBetweenCallers:
     def test_the_cart_list_is_not_shared_either(
         self, auth_client, user, other_user
     ):
-        from rest_framework.authtoken.models import Token
-        from rest_framework.test import APIClient
-
         CartFactory(user=user, name='Mine')
         CartFactory(user=other_user, name='Theirs')
-        their_client = APIClient()
-        token, _ = Token.objects.get_or_create(user=other_user)
-        their_client.credentials(HTTP_AUTHORIZATION=f'Token {token.key}')
+        their_client = client_for(other_user)
 
         auth_client.get(reverse('cart-list'))
         theirs = their_client.get(reverse('cart-list'))
@@ -301,15 +292,10 @@ class TestResponsesAreNotSharedBetweenCallers:
         self, auth_client, user, other_user
     ):
         """`GET /api/auth/user/` answers with the caller's email address."""
-        from rest_framework.authtoken.models import Token
-        from rest_framework.test import APIClient
+        their_client = client_for(other_user)
 
-        their_client = APIClient()
-        token, _ = Token.objects.get_or_create(user=other_user)
-        their_client.credentials(HTTP_AUTHORIZATION=f'Token {token.key}')
-
-        mine = auth_client.get(reverse('rest_user_details'))
-        theirs = their_client.get(reverse('rest_user_details'))
+        mine = auth_client.get(reverse('ftp_auth:profile'))
+        theirs = their_client.get(reverse('ftp_auth:profile'))
 
         assert mine.json()['email'] == user.email
         assert theirs.json()['email'] == other_user.email

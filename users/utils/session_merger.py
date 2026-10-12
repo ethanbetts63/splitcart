@@ -1,13 +1,29 @@
+from django.db import transaction
+
 from users.models import Cart
 from .name_generator import generate_unique_name
 
 
 def merge_anonymous_session(user, anonymous_id):
+    """Hand the cart a signed-out browser filled to the account it just entered.
+
+    `anonymous_id` should be the validated `uuid.UUID`, not the string as
+    posted: both doors validate it with a `UUIDField` and pass the result, so an
+    upper-case spelling of the same identifier finds the same cart at either.
+
+    One transaction, because the first write is destructive. The account's own
+    active cart is stood down before the replacement exists, so a failure
+    anywhere after that would otherwise leave the shopper with no active cart
+    and the list they had switched off.
+    """
     if not user or not anonymous_id:
         return
 
-    try:
-        anon_cart = Cart.objects.get(anonymous_id=anonymous_id, is_active=True)
+    with transaction.atomic():
+        try:
+            anon_cart = Cart.objects.get(anonymous_id=anonymous_id, is_active=True)
+        except Cart.DoesNotExist:
+            return
 
         Cart.objects.filter(user=user, is_active=True).update(is_active=False)
 
@@ -20,6 +36,3 @@ def merge_anonymous_session(user, anonymous_id):
 
         anon_cart.items.update(cart=new_cart)
         anon_cart.delete()
-
-    except Cart.DoesNotExist:
-        pass

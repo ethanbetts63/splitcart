@@ -1,9 +1,9 @@
 """The whole-site page cache is not installed, and must not come back.
 
 `UpdateCacheMiddleware`/`FetchFromCacheMiddleware` key a cached 200 on the URL
-plus the response's `Vary` headers. Token authentication never touches the
-session, so Django never adds `Vary: Cookie`, and every caller -- signed in as
-anyone, or signed in as nobody -- computes the same key.
+plus the response's `Vary` headers. Cookie-JWT authentication never touches
+Django's session, so Django never adds `Vary: Cookie`, and every caller --
+signed in as anyone, or signed in as nobody -- computes the same key.
 
 While they were installed this served one shopper's cart, by name and with its
 contents, to whoever asked next, and one account's email address to everyone.
@@ -102,7 +102,7 @@ def test_a_never_cache_view_is_left_exactly_as_it_was(client):
     `no-cache` and `must-revalidate`, so the middleware has to leave it alone
     rather than overwrite it with its own value.
     """
-    response = client.get(reverse('rest_user_details'))
+    response = client.get(reverse('cart-list'))
 
     directives = {part.strip() for part in response['Cache-Control'].split(',')}
     assert {'no-cache', 'no-store', 'must-revalidate', 'private'} <= directives

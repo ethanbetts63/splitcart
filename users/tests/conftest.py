@@ -8,10 +8,10 @@ the part that is specific to this app's idea of "signed in".
 import uuid
 
 import pytest
-from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
 
 from users.tests.factories import UserFactory
+from users.tests.sessions import client_for
 
 
 @pytest.fixture
@@ -22,10 +22,7 @@ def user(db):
 @pytest.fixture
 def auth_client(db, user):
     """A client authenticated the way the live frontend authenticates."""
-    client = APIClient()
-    token, _ = Token.objects.get_or_create(user=user)
-    client.credentials(HTTP_AUTHORIZATION=f'Token {token.key}')
-    return client
+    return client_for(user)
 
 
 @pytest.fixture
