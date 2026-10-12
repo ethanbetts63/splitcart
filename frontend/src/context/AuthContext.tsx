@@ -1,7 +1,11 @@
+import { apiFetch } from '@freetheplatform/web-security';
 import { createContext, useCallback, useContext, useState, useEffect, type ReactNode } from 'react';
-import type { AuthContextType } from '../types/AuthContextType';
+import type { AuthContextType, Principal } from '../types/AuthContextType';
+import { AUTH_FAILURE_EVENT, tryRefreshSession } from '@/services/apiClient';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+const ANONYMOUS_COOKIE = 'anonymousId';
 
 const createAnonymousId = () => {
   if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
@@ -10,89 +14,113 @@ const createAnonymousId = () => {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 };
 
+const readAnonymousId = () =>
+  document.cookie
+    .split('; ')
+    .find((row) => row.startsWith(`${ANONYMOUS_COOKIE}=`))
+    ?.split('=')[1] ?? null;
+
 const persistAnonymousId = (anonymousId: string) => {
   const secure = window.location.protocol === 'https:' ? '; Secure' : '';
-  document.cookie = `anonymousId=${encodeURIComponent(anonymousId)}; max-age=31536000; path=/; SameSite=Lax${secure}`;
+  document.cookie = `${ANONYMOUS_COOKIE}=${encodeURIComponent(anonymousId)}; max-age=31536000; path=/; SameSite=Lax${secure}`;
+};
+
+const forgetAnonymousId = () => {
+  document.cookie = `${ANONYMOUS_COOKIE}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+};
+
+/**
+ * Who the session cookies belong to, or `null` for a signed-out browser.
+ *
+ * The cookies are HttpOnly, so the only way to know is to ask. An expired
+ * access token is normal on a first load -- the refresh token outlives it by
+ * days -- so a 401 is answered with one quiet refresh rather than the
+ * auth-failure cascade, which is for a session that ends mid-use.
+ */
+const readPrincipal = async (): Promise<Principal | null> => {
+  try {
+    let response = await apiFetch('/api/me/');
+    if (response.status === 401 && (await tryRefreshSession())) {
+      response = await apiFetch('/api/me/');
+    }
+    return response.ok ? ((await response.json()) as Principal) : null;
+  } catch {
+    // Unreachable API: browse signed out rather than not at all.
+    return null;
+  }
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
+  const [principal, setPrincipal] = useState<Principal | null>(null);
   const [anonymousId, setAnonymousId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Declared above the effect that subscribes to `unauthorized`, because the
-  // effect calls it: a function read before its `const` is initialised works
-  // only by accident of when the effect runs, and stops updating when the
-  // value changes.
-  const logout = useCallback(() => {
-    localStorage.removeItem('token');
-    sessionStorage.clear(); // Clear all session storage for a cleaner logout
-    setIsAuthenticated(false);
-    setToken(null);
-    // The backend will assign a new anonymousId on the next request after reload.
-    document.cookie = 'anonymousId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    setAnonymousId(null);
-    window.location.reload(); // Force a full page reload to reset all state.
+  /**
+   * Sets state from what the session turned out to be. A signed-in shopper
+   * carries no anonymous ID -- the cart it named was handed to the account at
+   * the door -- and a signed-out one always has one, minted here if the
+   * browser has none yet.
+   */
+  const adopt = useCallback((next: Principal | null) => {
+    setPrincipal(next);
+    if (next) {
+      forgetAnonymousId();
+      setAnonymousId(null);
+      return;
+    }
+    let id = readAnonymousId();
+    if (!id) {
+      id = createAnonymousId();
+      persistAnonymousId(id);
+    }
+    setAnonymousId(id);
+  }, []);
+
+  const refreshSession = useCallback(async () => {
+    adopt(await readPrincipal());
+  }, [adopt]);
+
+  /**
+   * Revokes on the server, then starts over. The POST is what makes signing out
+   * a containment step: the refresh token is blacklisted, not merely forgotten
+   * by this browser. Logout always answers 200, so there is nothing to handle.
+   */
+  const logout = useCallback(async () => {
+    await apiFetch('/api/token/logout/', { method: 'POST' }).catch(() => undefined);
+    sessionStorage.clear();
+    forgetAnonymousId();
+    window.location.reload();
   }, []);
 
   useEffect(() => {
-    const initializeAuth = () => {
-      setIsLoading(true);
-      try {
-        const storedToken = localStorage.getItem('token');
-        // Read the anonymousId from the cookie set by the backend.
-        const storedAnonymousId =
-          document.cookie
-            .split('; ')
-            .find((row) => row.startsWith('anonymousId='))
-            ?.split('=')[1] ?? null;
+    let cancelled = false;
+    void readPrincipal().then((next) => {
+      if (cancelled) return;
+      adopt(next);
+      setIsLoading(false);
+    });
 
-        if (storedToken) {
-          setIsAuthenticated(true);
-          setToken(storedToken);
-          setAnonymousId(null); // A logged-in user should not use an anonymous ID.
-        } else if (storedAnonymousId) {
-          setIsAuthenticated(false);
-          setToken(null);
-          setAnonymousId(storedAnonymousId);
-        } else {
-          const newAnonymousId = createAnonymousId();
-          persistAnonymousId(newAnonymousId);
-          setIsAuthenticated(false);
-          setToken(null);
-          setAnonymousId(newAnonymousId);
-        }
-      } catch (error) {
-        console.error('Failed during auth state initialization:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    const handleUnauthorized = () => {
-      logout();
-    };
-
-    window.addEventListener('unauthorized', handleUnauthorized);
-    initializeAuth();
-
+    // The shared fetch fires this when a refresh fails mid-use: the session is
+    // over, so the page starts again signed out.
+    const handleAuthFailure = () => void logout();
+    window.addEventListener(AUTH_FAILURE_EVENT, handleAuthFailure);
     return () => {
-      window.removeEventListener('unauthorized', handleUnauthorized);
+      cancelled = true;
+      window.removeEventListener(AUTH_FAILURE_EVENT, handleAuthFailure);
     };
-  }, [logout]);
-
-  const login = (newToken: string) => {
-    localStorage.setItem('token', newToken);
-    // After logging in, we can remove the anonymousId cookie, though the backend will prioritize the token anyway.
-    document.cookie = 'anonymousId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    setIsAuthenticated(true);
-    setToken(newToken);
-    setAnonymousId(null);
-  };
+  }, [adopt, logout]);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, token, anonymousId, isLoading, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated: principal !== null,
+        principal,
+        anonymousId,
+        isLoading,
+        refreshSession,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

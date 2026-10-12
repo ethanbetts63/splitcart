@@ -8,101 +8,32 @@ import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '../
 import { Input } from '../common/input';
 import { useActionState, useEffect, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
-import { z } from 'zod';
 import { useAuth } from '../../context/AuthContext';
 import { Spinner } from '../common/spinner';
-import { getApiUrl } from '@/lib/apiUrl';
-import { FIELD_MAX } from '@/lib/fieldMax';
-import { MINIMUM_PASSWORD_LENGTH, signupSchema } from './signup-form.schema';
+import { FIELD_MAX } from '@freetheplatform/web-security';
+import { MINIMUM_PASSWORD_LENGTH } from './signup-form.schema';
+import { submitSignup, type SignupState } from './signup-form.actions';
 
-/**
- * Track B, in the shape this app can hold today -- see the note in
- * `login-form.tsx` for why this is a client action rather than a Server Action,
- * and `_docs/convergence/auth-migration.md` for when it stops being one.
- *
- * The confirm-password rule moved out of `handleSubmit` and into the schema's
- * `.refine()`. It was the only validation this form had.
- */
-type SignupField = 'full_name' | 'email' | 'password1' | 'password2' | '_form';
-
-interface SignupState {
-  errors?: Partial<Record<SignupField, string[]>>;
-  /** The DRF token, present only on the render that follows a success. */
-  token?: string;
-}
-
-const GENERIC_FAILURE = 'We could not create your account. Try again.';
-
-/** Django's field errors, kept only where this form has somewhere to show them. */
-const SHOWN: readonly SignupField[] = ['full_name', 'email', 'password1', 'password2'];
-
-async function submitSignup(
-  anonymousId: string | null,
-  _previous: SignupState,
-  formData: FormData,
-): Promise<SignupState> {
-  const parsed = signupSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) {
-    return { errors: z.flattenError(parsed.error).fieldErrors };
-  }
-
-  let response: Response;
-  try {
-    response = await fetch(getApiUrl('/api/auth/registration/'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      // `anonymous_id` hands the signed-out cart to the account being created,
-      // the way logging in already does. `CustomRegisterSerializer` validates
-      // it and runs the same merge.
-      body: JSON.stringify({ ...parsed.data, anonymous_id: anonymousId }),
-    });
-  } catch {
-    return {
-      errors: { _form: ['We could not reach SplitCart. Check your connection and try again.'] },
-    };
-  }
-
-  const body = await response.json().catch(() => null);
-  if (!response.ok) {
-    const errors: NonNullable<SignupState['errors']> = {};
-    for (const field of SHOWN) {
-      if (Array.isArray(body?.[field])) errors[field] = body[field];
-    }
-    // Anything Django rejected that this form has no field for still has to
-    // reach the person: a silent 400 reads as a button that does nothing.
-    const unplaced = Object.entries(body ?? {})
-      .filter(([field]) => !SHOWN.includes(field as SignupField))
-      .flatMap(([, messages]) => (Array.isArray(messages) ? (messages as string[]) : []));
-    if (unplaced.length || !Object.keys(errors).length) {
-      errors._form = unplaced.length ? unplaced : [GENERIC_FAILURE];
-    }
-    return { errors };
-  }
-  return { token: body?.key };
-}
+const INITIAL: SignupState = { status: 'idle' };
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
-  const { login, anonymousId } = useAuth();
+  const { refreshSession } = useAuth();
   const router = useRouter();
-  const [state, formAction] = useActionState(submitSignup.bind(null, anonymousId), {});
+  const [state, formAction] = useActionState(submitSignup, INITIAL);
 
-  // See `login-form.tsx`: `login` changes identity on every provider render, so
-  // the ref is what makes this run once per token instead of once per render.
-  const adopted = useRef<string | null>(null);
+  // See `login-form.tsx`: once per success, not once per render.
+  const adopted = useRef<SignupState | null>(null);
   useEffect(() => {
-    if (!state.token || adopted.current === state.token) return;
-    adopted.current = state.token;
-    login(state.token);
-    router.push('/');
-  }, [state.token, login, router]);
+    if (state.status !== 'success' || adopted.current === state) return;
+    adopted.current = state;
+    void refreshSession().then(() => router.push('/'));
+  }, [state, refreshSession, router]);
 
   return (
     <Card {...props}>
       <CardHeader>
         <CardTitle>Create an account</CardTitle>
-        <CardDescription>
-          Enter your information below to create your account. We take
-        </CardDescription>
+        <CardDescription>Enter your information below to create your account.</CardDescription>
       </CardHeader>
       <CardContent>
         <form action={formAction}>

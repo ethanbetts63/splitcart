@@ -1,19 +1,12 @@
-const PUBLIC_API_URL = process.env.NEXT_PUBLIC_DJANGO_API_URL?.replace(/\/$/, '');
-const PRODUCTION_API_URL = 'https://api.splitcart.com.au';
-
-const shouldUseProductionApiFallback = () => {
-  if (typeof window === 'undefined') return false;
-  return window.location.hostname === 'www.splitcart.com.au';
-};
-
+/**
+ * The path the browser calls for an API endpoint: always same-origin.
+ *
+ * `/api/*` reaches Django through `proxy.ts`, so the session cookies ride along
+ * without CORS and the visitor's address reaches Django's throttles. An
+ * absolute URL is passed through untouched.
+ */
 export const getApiUrl = (endpoint: string) => {
   if (/^https?:\/\//.test(endpoint)) return endpoint;
-
-  const normalizedEndpoint = endpoint.startsWith('/api')
-    ? endpoint
-    : `/api${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
-
-  const apiUrl = PUBLIC_API_URL || (shouldUseProductionApiFallback() ? PRODUCTION_API_URL : '');
-
-  return apiUrl ? `${apiUrl}${normalizedEndpoint}` : normalizedEndpoint;
+  if (endpoint.startsWith('/api')) return endpoint;
+  return `/api${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
 };

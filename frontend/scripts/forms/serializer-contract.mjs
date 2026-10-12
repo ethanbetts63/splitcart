@@ -1,5 +1,11 @@
 /**
- * Holds the login and signup forms to the DRF serializers they post to.
+ * Holds a repo's Track B forms to the DRF serializers they post to.
+ *
+ * Shared engine — edit it in `freetheplatform/frontend/registry/tooling/forms/`
+ * and re-sync. The pairs, the exception rows and the Django settings module are
+ * repo facts, passed in by each repo's `scripts/check-form-contract.mjs`.
+ * splitcart is the only consumer today: it is the one repo whose forms are
+ * held to their serializers this way, and the sync scopes the file to it.
  *
  * ## The failure this exists to prevent
  *
@@ -13,8 +19,8 @@
  * created without it. That is exactly what happened to the anonymous cart —
  * registration took no `anonymous_id`, so a shopper who filled a cart signed
  * out lost it on signing up, while the same shopper signing *in* kept it.
- * `CustomRegisterSerializer` has since gained the field; this check is what
- * stops the two sides drifting apart again without anyone noticing.
+ * Registration has since gained the field; this check is what stops the two
+ * sides drifting apart again without anyone noticing.
  *
  * Typecheck cannot see any of this. The wire between a `FormData` and a DRF
  * serializer is untyped by construction, and the two halves are in different
@@ -30,12 +36,11 @@
  *     script `import()` a `.ts` module, so the field list is `schema.shape` —
  *     the real object, `.refine()` and all.
  *   - The **serializer** is imported too, by the repository's own interpreter:
- *     `venv/Scripts/python` under `settings_test`, printing `serializer().fields`
- *     as JSON. That is the only way to see fields the class *inherits* —
- *     `username` is declared by neither `CustomLoginSerializer` nor
- *     `CustomRegisterSerializer`, arrives from dj-rest-auth, and is a field the
- *     endpoint will accept. Reading the two `.py` files as text would miss it,
- *     and would miss a library upgrade changing whether it is required.
+ *     `venv/Scripts/python` under the repo's test settings, printing
+ *     `serializer().fields` as JSON. That is the only way to see fields a class
+ *     *inherits* from a library or a shared package, which are fields the
+ *     endpoint will accept all the same. Reading `.py` files as text would miss
+ *     them, and would miss an upgrade changing whether one is required.
  *
  * Only the markup is read as text: `ts-loader` strips types but does not
  * transpile, so a `.tsx` cannot be imported at all.
@@ -112,7 +117,7 @@ function findInterpreter(repoRoot) {
  * @param {string} repoRoot Absolute path to the repository root (Django's).
  * @param {string[]} targets `'<module>.<Class>'` for each serializer.
  */
-function readSerializerFields(repoRoot, targets) {
+function readSerializerFields(repoRoot, targets, settingsModule) {
   const python = findInterpreter(repoRoot);
   if (!python) {
     throw new Error(
@@ -127,7 +132,7 @@ function readSerializerFields(repoRoot, targets) {
   const result = spawnSync(python, ['-c', INTROSPECT, JSON.stringify(targets)], {
     cwd: repoRoot,
     encoding: 'utf8',
-    env: { ...process.env, DJANGO_SETTINGS_MODULE: 'settings_test', PYTHONIOENCODING: 'utf-8' },
+    env: { ...process.env, DJANGO_SETTINGS_MODULE: settingsModule, PYTHONIOENCODING: 'utf-8' },
   });
 
   if (result.status !== 0) {
@@ -137,10 +142,9 @@ function readSerializerFields(repoRoot, targets) {
     );
   }
 
-  // `settings_test` is the settings module the Python suite uses: `config.settings`
-  // with SQLite substituted, so nothing here can reach for a MySQL grant that
-  // does not exist. Django and allauth may write to stdout on the way up, so
-  // the JSON is the last line, not the whole of it.
+  // The settings module is the one the repo's Python suite uses, so nothing here
+  // reaches for a production database. Django and its apps may write to stdout
+  // on the way up, so the JSON is the last line, not the whole of it.
   const lines = result.stdout.trim().split(/\r?\n/);
   try {
     return JSON.parse(lines[lines.length - 1]);
@@ -162,7 +166,7 @@ function controlNames(source) {
 }
 
 /** The comparison itself, exit-free so it can be called without a process. */
-export async function findContractProblems({ root, pairs }) {
+export async function findContractProblems({ root, pairs, settingsModule }) {
   const source = join(root, 'src');
   const repoRoot = join(root, '..');
   registerTsLoader(source);
@@ -170,6 +174,7 @@ export async function findContractProblems({ root, pairs }) {
   const serializerFields = readSerializerFields(
     repoRoot,
     pairs.map((pair) => pair.serializer),
+    settingsModule,
   );
 
   const problems = [];

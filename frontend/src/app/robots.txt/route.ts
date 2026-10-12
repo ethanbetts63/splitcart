@@ -35,6 +35,9 @@ const DISALLOWED_ROUTES = [
   // Django admin and the API proxy. Neither is a page.
   '/admin',
   '/api',
+  // Password reset links. Each path carries a one-time credential, so it is a
+  // capability URL: nothing to crawl, and nothing a crawler should hold.
+  '/reset-password',
   // An unbounded query surface: every distinct `?q=` is a new URL and none of
   // them is worth a crawl.
   '/search',
@@ -45,12 +48,12 @@ const DISALLOWED_ROUTES = [
 ];
 
 /**
- * `/login`, `/signup`, `/final-cart` and `/substitutions` are deliberately NOT
- * here. They are noindex instead (`STATIC_NOINDEX_PAGES` in `lib/pages.ts`),
+ * `/login`, `/signup`, `/forgot-password`, `/final-cart` and `/substitutions`
+ * are deliberately NOT here. They are noindex instead (`STATIC_NOINDEX_PAGES` in `lib/pages.ts`),
  * because noindex only works on a page that is crawled. Until 2026-09-25 they
  * were both disallowed and noindexed, which meant Google never fetched them,
  * never read the directive, and could still surface them as bare titleless
- * URLs. Four bounded application pages cost nothing to let a crawler read.
+ * URLs. A few bounded application pages cost nothing to let a crawler read.
  */
 
 const AI_USER_AGENTS = [
@@ -66,15 +69,16 @@ const AI_USER_AGENTS = [
 ];
 
 /**
- * Answer engines get the whole public site, minus three prefixes.
+ * Answer engines get the whole public site, minus four prefixes.
  *
  * Being cited is the point of publishing the pillar pages and the bargain data,
  * and an answer engine fetching a login form costs one wasted request. So the
  * `*` list's crawl-budget reasoning does not transfer wholesale.
  *
- * Three exclusions survive it, and they are a deliberate local divergence from
- * the shared standard's "capability URLs and the API only":
+ * Two of the exclusions are the shared standard's "capability URLs and the API
+ * only"; the other two are a deliberate local divergence from it:
  *   - `/api` — the proxy, not content, same as for everyone.
+ *   - `/reset-password` — capability URLs, same as for everyone.
  *   - `/search` — genuinely unbounded, and a dead end for any crawler.
  *   - `/product` — the reason here is not crawl budget, it is origin load. Each
  *     of those pages is a live API fetch against one small Django instance, and
@@ -85,7 +89,7 @@ const AI_USER_AGENTS = [
  * `DISALLOWED_ROUTES` stays the authoritative list for everything that is not
  * robots.txt: the indexation ledger resolves state 4 from the `*` group alone.
  */
-const AI_DISALLOWED_ROUTES = ['/api', '/search', '/product'];
+const AI_DISALLOWED_ROUTES = ['/api', '/reset-password', '/search', '/product'];
 
 const GROUPS: RobotsGroup[] = [
   { userAgents: ['*'], allow: ['/'], disallow: DISALLOWED_ROUTES },

@@ -1,43 +1,6 @@
 import { securityHeaders } from '@freetheplatform/web-security';
 import type { NextConfig } from 'next';
 
-const apiUrl = process.env.DJANGO_API_URL ?? 'http://localhost:8000';
-
-/**
- * Every origin the browser may address the Django API at.
- *
- * `lib/apiUrl.ts` does not go through the `/api/*` rewrite below: it builds an
- * absolute URL from `NEXT_PUBLIC_DJANGO_API_URL`, falling back to the
- * production host by `window.location.hostname`. So every product, category,
- * cart and auth request leaves the page cross-origin, and an origin missing
- * from `connect-src` is an empty shell with a console full of refusals.
- *
- * Read from the environment rather than written down, because that variable is
- * what varies: `.env.local` aims a local frontend at a local Django, and
- * hard-coding the production host here refuses every API call the moment
- * somebody does that. Both are listed because `apiUrl.ts` itself falls back to
- * production when the variable is unset. Next inlines the same variable into
- * the client bundle at build time, so the policy and the code that has to
- * satisfy it are read from one value at one moment and cannot disagree.
- */
-const PRODUCTION_API_ORIGIN = 'https://api.splitcart.com.au';
-
-const configuredApiOrigin = (() => {
-  const configured = process.env.NEXT_PUBLIC_DJANGO_API_URL;
-  // A relative value leaves requests same-origin, which `'self'` already
-  // covers; an unparseable one is not a source this can honestly emit.
-  if (!configured) return null;
-  try {
-    return new URL(configured).origin;
-  } catch {
-    return null;
-  }
-})();
-
-const apiOrigins = [
-  ...new Set([PRODUCTION_API_ORIGIN, ...(configuredApiOrigin ? [configuredApiOrigin] : [])]),
-];
-
 const nextConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
   images: {
@@ -82,15 +45,16 @@ const nextConfig: NextConfig = {
               'https://dm.apac.cms.aldi.cx',
               'https://productimages.coles.com.au',
             ],
-            connect: apiOrigins,
+            // No `connect` hosts: the browser calls only `/api/*` on its own origin,
+            // which `proxy.ts` rewrites to Django, so `'self'` covers it.
           },
         }),
       },
       // No `/api/:path*` entry, and not an oversight — SEC §7's
-      // `Cache-Control: no-store` cannot be delivered from here. Every
-      // `/api/*` path is rewritten to another origin, and Next returns an
-      // externally-rewritten response byte for byte: neither a `headers()`
-      // rule nor a `proxy.ts` `NextResponse.next()` header survives it.
+      // `Cache-Control: no-store` cannot be delivered from here. `proxy.ts`
+      // rewrites every `/api/*` path to another origin, and Next returns an
+      // externally-rewritten response byte for byte: no `headers()` rule
+      // survives it. Django's `NoCacheApiMiddleware` sets it instead.
       // Verified against `next start` — `curl -D -` on `/api/products/` shows
       // only Django's own headers, not one of the six above. A rule here would
       // look like the control and be inert.
@@ -121,14 +85,6 @@ const nextConfig: NextConfig = {
         source: '/pillar-pages/fruit-veg-and-spices/',
         destination: '/categories/fruit-and-veg/',
         permanent: true,
-      },
-    ];
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${apiUrl}/api/:path*`,
       },
     ];
   },

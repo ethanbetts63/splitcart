@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
-import { FIELD_MAX, email, password, requiredString } from '@/lib/fieldMax';
+import { FIELD_MAX } from '@freetheplatform/web-security';
+import { email, password, requiredString } from '@freetheplatform/web-security/schema';
 
 /**
  * Django's `MinimumLengthValidator`, restated. The server is still the thing
@@ -16,12 +17,12 @@ export const MINIMUM_PASSWORD_LENGTH = 8;
  * adjacent fields, not a rule deciding whether some *other* field is required.
  *
  * Field names are the wire names, so `Object.fromEntries(formData)` parses
- * straight into the body `/api/auth/registration/` expects.
+ * straight into the body `/api/register/` expects.
  */
 export const signupSchema = z
   .object({
     full_name: requiredString('name', 'Enter your name.'),
-    email: email(),
+    email: email({ required: 'Enter your email address.' }),
     password1: password(MINIMUM_PASSWORD_LENGTH),
     // Bounded but not length-checked: whether it is long enough is decided by
     // the field above, and a second "too short" under the confirm box is noise.

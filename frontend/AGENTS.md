@@ -23,29 +23,35 @@ does not.
 | `src/page_components/`   | The body of each page, imported by the thin `page.tsx` in the matching route                                        |
 | `src/components/`        | Shared components                                                                                                   |
 | `src/components/common/` | The shadcn/Radix primitives. Seven are registry copies, the rest are local                                          |
-| `src/components/forms/`  | `login-form` and `signup-form`, each beside its Zod schema                                                          |
+| `src/components/forms/`  | Login, signup and the two password-reset forms, each beside its Zod schema and Server Action                        |
 | `src/context/`           | `AuthContext`, `CartContext`, `DialogContext` — composed in `app/providers.tsx`                                     |
 | `src/services/`          | `apiClient.ts` plus one `*.api.ts` module per endpoint family                                                       |
 | `src/hooks/`             | `useApiQuery`, `useMediaQuery`, `use-mobile`                                                                        |
-| `src/lib/`               | `apiUrl`, `seo`, `companies`, `assets`, `utils`, `controlState`                                                     |
+| `src/lib/`               | `serverApi`, `catalogue`, `apiUrl`, `seo`, `companies`, `assets`, `utils`, `controlState`                           |
 | `src/types/`             | One exported type per file, re-exported from `index.ts`                                                             |
 | `src/data/`              | Static content: category icons and copy, pillar-page FAQs                                                           |
 | `src/index.css`          | The only stylesheet. Tailwind import, `@theme inline`, and the token block                                          |
 
 ## The API boundary
 
-- `next.config.ts` rewrites `/api/:path*` to `DJANGO_API_URL`, defaulting to
-  `http://localhost:8000`. `src/lib/apiUrl.ts` resolves the browser-side base
-  from `NEXT_PUBLIC_DJANGO_API_URL`.
-- `services/apiClient.ts` is the only place that calls `fetch` against the
-  Django API. It attaches `Authorization: Token <token>` for a signed-in user
-  and `X-Anonymous-ID` for an anonymous one, via `getAuthHeaders` in
-  `lib/utils.ts`. Add an endpoint as a `*.api.ts` module that uses `ApiClient`;
-  do not call `fetch` from a component.
-- The session model is DRF `TokenAuthentication`, not the cookie-JWT scheme the
-  other repositories use. Changing it is a planned migration with a live blast
-  radius — read [`../_docs/convergence/auth-migration.md`](../_docs/convergence/auth-migration.md)
-  before touching auth.
+- `lib/serverApi.ts` owns `DJANGO_API_URL` and is the only file that reads it
+  (FORMS-9). Everything server-side goes through it: the four ISR pages via
+  `lib/catalogue.ts`, the Server Actions via `serverApiFetch`, and `proxy.ts`.
+- The browser calls only `/api/*` on its own origin. `src/proxy.ts` rewrites
+  that to Django and attaches the visitor's address beside `FTP_PROXY_SECRET`,
+  so Django's per-IP throttles key on the visitor rather than on Vercel. There
+  is no `NEXT_PUBLIC_` API variable and no CORS.
+- Sessions are `freetheplatform.auth`'s HttpOnly cookies, `splitcart_access`
+  and `splitcart_refresh`; no script can read them. `services/apiClient.ts`
+  exports the shared `authedFetch` (deadline, CSRF, one refresh in flight) and
+  is the only place browser code calls Django; a signed-out shopper is still
+  identified by `X-Anonymous-ID`. Add an endpoint as a `*.api.ts` module that
+  uses `ApiClient`; do not call `fetch` from a component.
+- Login, signup and password reset are Server Actions: they call Django once
+  and relay its `Set-Cookie` with the registry's `lib/serverCookies.ts`.
+- A catalogue read that fails throws (`lib/catalogue.ts`). A production build
+  needs Django reachable at `DJANGO_API_URL` and fails, naming the URL, when it
+  is not; it used to prerender empty pages instead.
 
 ## Styling and tokens
 

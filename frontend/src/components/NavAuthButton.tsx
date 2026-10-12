@@ -9,16 +9,16 @@ export function NavAuthButton() {
 
   if (isAuthenticated) {
     return (
-      <Button variant="outline" size="sm" onClick={logout}>
+      <Button variant="outline" size="sm" onClick={() => void logout()}>
         Logout
       </Button>
     );
   }
   return (
-    <Link href="/login">
-      <Button variant="outline" size="sm">
-        Login
-      </Button>
-    </Link>
+    // One control, not a button inside a link: that was two tab stops and a
+    // nested interactive element for one action.
+    <Button asChild variant="outline" size="sm">
+      <Link href="/login">Login</Link>
+    </Button>
   );
 }

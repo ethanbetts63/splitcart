@@ -10,85 +10,29 @@ import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '../
 import { Input } from '../common/input';
 import { useActionState, useEffect, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
-import { z } from 'zod';
 import { useAuth } from '../../context/AuthContext';
 import { Spinner } from '../common/spinner';
 import { assetSrc } from '@/lib/assets';
-import { getApiUrl } from '@/lib/apiUrl';
-import { FIELD_MAX } from '@/lib/fieldMax';
-import { loginSchema } from './login-form.schema';
+import { FIELD_MAX } from '@freetheplatform/web-security';
+import { submitLogin, type LoginState } from './login-form.actions';
 
-/**
- * Track B, in the shape this app can actually hold today.
- *
- * `forms-standard.md` wires Track B to a Server Action. splitcart has none, and
- * cannot have one here: the thing login produces is a DRF token that lives in
- * `localStorage` and is attached by client JavaScript on every later request,
- * so there is no session for a Next server to establish. FORMS-9/10/11 are
- * `n/a` for that reason, not unimplemented -- see
- * `_docs/convergence/auth-migration.md`, which is where the session model
- * changes and this becomes a real `'use server'` action.
- *
- * Everything else is the standard's Track B verbatim: `useActionState` over an
- * action that parses `FormData` against the schema beside this file, returns
- * field errors on failure, and otherwise calls Django once.
- */
-interface LoginState {
-  errors?: Partial<Record<'email' | 'password' | '_form', string[]>>;
-  /** The DRF token, present only on the render that follows a success. */
-  token?: string;
-}
-
-const GENERIC_FAILURE = 'We could not sign you in. Check your details and try again.';
-
-async function submitLogin(
-  anonymousId: string | null,
-  _previous: LoginState,
-  formData: FormData,
-): Promise<LoginState> {
-  const parsed = loginSchema.safeParse({
-    email: formData.get('email'),
-    password: formData.get('password'),
-  });
-  if (!parsed.success) {
-    return { errors: z.flattenError(parsed.error).fieldErrors };
-  }
-
-  let response: Response;
-  try {
-    response = await fetch(getApiUrl('/api/auth/login/'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...parsed.data, anonymous_id: anonymousId }),
-    });
-  } catch {
-    return {
-      errors: { _form: ['We could not reach SplitCart. Check your connection and try again.'] },
-    };
-  }
-
-  const body = await response.json().catch(() => null);
-  if (!response.ok) {
-    return { errors: { _form: [body?.non_field_errors?.[0] ?? GENERIC_FAILURE] } };
-  }
-  return { token: body?.key };
-}
+const INITIAL: LoginState = { status: 'idle' };
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
-  const { login, anonymousId } = useAuth();
+  const { refreshSession } = useAuth();
   const router = useRouter();
-  const [state, formAction] = useActionState(submitLogin.bind(null, anonymousId), {});
+  const [state, formAction] = useActionState(submitLogin, INITIAL);
 
-  // `login` is re-created on every `AuthProvider` render, so it cannot gate
-  // this effect on its own -- the ref is what makes the effect run once per
-  // token rather than once per render.
-  const adopted = useRef<string | null>(null);
+  // Every submission returns a new state object, so the ref is what makes this
+  // run once per success rather than once per render. The cookies the action
+  // relayed are on the browser by now; reading the session flips the cart over
+  // to the account, which already holds whatever the signed-out cart held.
+  const adopted = useRef<LoginState | null>(null);
   useEffect(() => {
-    if (!state.token || adopted.current === state.token) return;
-    adopted.current = state.token;
-    login(state.token);
-    router.push('/');
-  }, [state.token, login, router]);
+    if (state.status !== 'success' || adopted.current === state) return;
+    adopted.current = state;
+    void refreshSession().then(() => router.push('/'));
+  }, [state, refreshSession, router]);
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
@@ -124,9 +68,12 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
               <Field data-invalid={state.errors?.password ? true : undefined}>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a href="#" className="ml-auto text-body underline-offset-2 hover:underline">
+                  <Link
+                    href="/forgot-password"
+                    className="ml-auto text-body underline-offset-2 hover:underline"
+                  >
                     Forgot your password?
-                  </a>
+                  </Link>
                 </div>
                 <Input
                   id="password"

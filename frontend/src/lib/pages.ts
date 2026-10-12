@@ -124,13 +124,14 @@ export const CATEGORY_PAGE_UPDATED: Record<CategorySlug, string> = {
  * Noindex rather than a robots.txt disallow, because noindex only works on a
  * page that is crawled. All four were previously BOTH noindexed and disallowed,
  * which the standard forbids: the disallow meant Google never read the noindex,
- * so they could still surface as bare titleless URLs. These four are a handful
- * of bounded application pages, so letting a crawler fetch them and read the
+ * so they could still surface as bare titleless URLs. These are a handful of
+ * bounded application pages, so letting a crawler fetch them and read the
  * directive costs nothing worth counting.
  */
 export const STATIC_NOINDEX_PAGES: string[] = [
   '/login',
   '/signup',
+  '/forgot-password',
   '/final-cart',
   '/substitutions',
 ];

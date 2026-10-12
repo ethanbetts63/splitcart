@@ -1,5 +1,5 @@
 /**
- * The options `useApiQuery`/`useApiMutation` forward to `fetch`.
+ * The options `useApiQuery` forwards to `fetch`.
  *
  * `method` narrows fetch's `string` to the verbs this app actually sends, and
  * `body` is pre-serialisation — the hook calls `JSON.stringify` on it — so it

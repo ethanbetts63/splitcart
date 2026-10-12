@@ -1,4 +1,5 @@
 import ProductPage from '@/page_components/ProductPage';
+import { fetchCatalogue } from '@/lib/catalogue';
 import type { Product } from '@/types';
 
 /**
@@ -21,19 +22,9 @@ export const revalidate = 1800;
 
 type PageProps = { params: Promise<{ slug: string }> };
 
-const apiUrl = process.env.DJANGO_API_URL ?? 'http://localhost:8000';
-
 async function getProduct(slug: string): Promise<Product | null> {
   const productId = slug.split('-').pop();
-  try {
-    const res = await fetch(`${apiUrl}/api/products/${productId}/`, {
-      next: { revalidate },
-    });
-    if (!res.ok) return null;
-    return res.json();
-  } catch {
-    return null;
-  }
+  return fetchCatalogue<Product>(`/api/products/${productId}/`, revalidate);
 }
 
 export default async function Page({ params }: PageProps) {

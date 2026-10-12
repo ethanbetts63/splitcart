@@ -193,9 +193,14 @@ DB_PORT=3306
 internal endpoints the scrape and upload steps use; `API_SERVER_URL` is where
 those endpoints live. Both are read in `config/settings.py`.
 
-The frontend reads `DJANGO_API_URL` (server-side rewrite target),
-`NEXT_PUBLIC_DJANGO_API_URL` (browser-side base) and `NEXT_PUBLIC_SITE_URL`
-from `frontend/.env.local`.
+The frontend reads `DJANGO_API_URL` (where its server and its `/api/*` proxy
+reach Django) and `NEXT_PUBLIC_SITE_URL` from `frontend/.env.local`.
+
+`FTP_PROXY_SECRET` is one random value of 32 or more characters, set in both
+environments in production: Vercel's (server-only, never `NEXT_PUBLIC_`) and
+the PythonAnywhere web app's. With it, Django believes the visitor's address the
+frontend forwards, so per-IP throttles are per visitor; without it every request
+is attributed to Vercel and `scripts/check-security.sh` warns.
 
 ## Deployment
 

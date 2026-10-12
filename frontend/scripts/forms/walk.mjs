@@ -1,8 +1,4 @@
-/**
- * Shared source-tree walk for the forms checks. One skip list, one traversal
- * convention — the two engines used to carry byte-identical private copies of
- * this, which is the same drift-by-copy the registry exists to prevent.
- */
+/** Shared source-tree walk for the forms checks: one skip list, one traversal. */
 import { readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 

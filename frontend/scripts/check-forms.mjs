@@ -2,8 +2,6 @@
 /**
  * Thin entry point. The engines are shared — edit them in
  * `freetheplatform/frontend/registry/tooling/forms/` and re-sync, never here.
- * `form-ledger.mjs` and `walk.mjs` are byte-identical copies; `form-hygiene.mjs`
- * is adapted, and says at the top exactly how and why.
  *
  * The ledger below is the repo-specific part and is the whole point: a new form
  * cannot be added without a row saying which track it is on, and a row saying
@@ -37,40 +35,25 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 checkFormLedger({
   root,
   ledger: [
-    // Track B — useActionState over an action that validates the schema beside
-    // the form. A *client* action, not a Server Action: splitcart holds a DRF
-    // token in `localStorage` and attaches it from the browser, so there is no
-    // session for a Next server to forward. Each form says so at its top.
+    // Track B — useActionState over a Server Action that validates the schema
+    // beside the form and calls Django once through `lib/serverApi.ts`.
     { file: 'components/forms/login-form.tsx', track: 'B' },
     { file: 'components/forms/signup-form.tsx', track: 'B' },
+    { file: 'components/forms/forgot-password-form.tsx', track: 'B' },
+    { file: 'components/forms/reset-password-form.tsx', track: 'B' },
+    // Track B with a client action: the rename goes through `CartContext`,
+    // which owns the cart's state and updates it from the answer.
     { file: 'page_components/dialog-pages/CartPage.tsx', track: 'B' },
   ],
 });
 
 checkFormHygiene({
   root,
-  // No `sessionCookies`, and that is the fact rather than an omission: there is
-  // no `lib/serverApi.ts`, no Server Action and no session cookie pair to
-  // forward, so FORMS-10 and FORMS-11 have no subject here. They are recorded
-  // `n/a` with that reason in the conformance ledger, and become live when
-  // `_docs/convergence/auth-migration.md` issues `splitcart_access` /
-  // `splitcart_refresh`. See the note at the top of `forms/form-hygiene.mjs`.
+  sessionCookies: ['splitcart_access', 'splitcart_refresh'],
   envReaders: [
     {
-      file: 'app/bargains/page.tsx',
-      why: 'Reads DJANGO_API_URL inline for its server-side fetch. FORMS-9 wants one owner; that owner is lib/serverApi.ts, which cannot exist until auth-migration.md gives this app a server-side session. Listed rather than hidden so the consolidation has a list to work from.',
-    },
-    {
-      file: 'app/categories/[slug]/page.tsx',
-      why: 'Same inline read, same owner-in-waiting. See app/bargains/page.tsx.',
-    },
-    {
-      file: 'app/page.tsx',
-      why: 'Same inline read, same owner-in-waiting. See app/bargains/page.tsx.',
-    },
-    {
-      file: 'app/product/[slug]/page.tsx',
-      why: 'Same inline read, same owner-in-waiting. See app/bargains/page.tsx.',
+      file: 'lib/serverApi.ts',
+      why: 'Owns SERVER_API_BASE_URL and the 127.0.0.1 fallback.',
     },
   ],
 });

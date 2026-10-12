@@ -1,8 +1,29 @@
-import { getAuthHeaders } from '../lib/authHeaders';
+import { createAuthedFetch } from '@freetheplatform/web-security';
 import type { ApiClientOptions } from '../types/ApiClientOptions';
 import type { ApiErrorBody } from '../types/ApiErrorBody';
 import type { JsonBody } from '../types/JsonBody';
 import { getApiUrl } from '@/lib/apiUrl';
+
+/**
+ * Named rather than written out at both ends. It is dispatched here and
+ * listened for in `AuthContext`, and a typo in either spelling fails silently:
+ * the event never arrives and the session never ends.
+ */
+export const AUTH_FAILURE_EVENT = 'auth-failure';
+
+/**
+ * The browser's one fetch against Django, from the shared package: a deadline
+ * on every request, the CSRF header on every unsafe method, and one refresh in
+ * flight however many requests hit a 401 together. Refresh tokens rotate and
+ * the old one is blacklisted on use, so without that last guard a page firing
+ * several requests on an expired access token would spend the same refresh
+ * token several times and sign the shopper out.
+ */
+export const { authedFetch, tryRefreshSession } = createAuthedFetch({
+  onAuthFailure: () => {
+    window.dispatchEvent(new Event(AUTH_FAILURE_EVENT));
+  },
+});
 
 export class ApiError extends Error {
   statusCode: number;
@@ -53,35 +74,34 @@ export const apiErrorMessage = (error: unknown, fallback: string): string =>
   error instanceof Error && error.message ? error.message : fallback;
 
 export class ApiClient {
-  private token: string | null;
   private anonymousId: string | null;
 
-  constructor(token: string | null, anonymousId: string | null) {
-    this.token = token;
+  /**
+   * A signed-in shopper is identified by the session cookies, which the
+   * browser attaches and no script can read. A signed-out one by
+   * `X-Anonymous-ID`, which is how a cart survives until the account exists.
+   */
+  constructor(anonymousId: string | null) {
     this.anonymousId = anonymousId;
   }
 
   private async request<T>(url: string, options: ApiClientOptions = {}): Promise<T> {
-    const headers = getAuthHeaders(this.token, this.anonymousId);
+    const headers: Record<string, string> = {};
+    if (this.anonymousId) headers['X-Anonymous-ID'] = this.anonymousId;
 
     const config: RequestInit = {
       method: options.method || 'GET',
-      headers: headers,
+      headers,
       signal: options.signal,
     };
 
     if (options.body) {
-      if (options.body instanceof FormData) {
-        // FormData doesn't need Content-Type header set explicitly,
-        // browser sets it with boundary.
-        delete (config.headers as Record<string, string>)['Content-Type'];
-        config.body = options.body;
-      } else {
-        config.body = JSON.stringify(options.body);
-      }
+      // FormData carries its own boundary; the shared fetch sets JSON's
+      // Content-Type for anything else.
+      config.body = options.body instanceof FormData ? options.body : JSON.stringify(options.body);
     }
 
-    const response = await fetch(getApiUrl(url), config);
+    const response = await authedFetch(getApiUrl(url), config);
 
     if (!response.ok) {
       const errorData = await readErrorBody(response);
@@ -117,7 +137,5 @@ export class ApiClient {
   }
 }
 
-// Helper to create an API client instance
-export const createApiClient = (token: string | null, anonymousId: string | null): ApiClient => {
-  return new ApiClient(token, anonymousId);
-};
+export const createApiClient = (anonymousId: string | null): ApiClient =>
+  new ApiClient(anonymousId);

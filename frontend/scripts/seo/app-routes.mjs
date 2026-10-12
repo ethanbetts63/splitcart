@@ -1,26 +1,14 @@
-/**
- * Copied from `freethedesk/frontend/scripts/seo/app-routes.mjs`, unchanged.
- *
- * Route discovery for the SEO checks: what the App Router actually serves.
- *
- * Shared by `indexation-ledger.mjs` and `sitemap-routes.mjs` so the two can
- * never disagree about what a route is — they are two halves of one question
- * (every route declared, every declaration real) and a difference in how they
- * enumerate the tree would show up as a phantom failure in one of them.
- */
+/** Route discovery for the SEO checks, shared by `indexation-ledger.mjs` and `sitemap-routes.mjs` so they cannot disagree about what a route is. */
 import { readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
-/**
- * Every `page.tsx` in the app tree, as a route: groups stripped, `/` for the
- * root. Returns route → absolute file path.
- */
+/** Every `page.tsx` in the app tree as a route (groups stripped, `/` for the root): route → absolute file path. */
 export function discoverRoutes(appDir, segments = []) {
   const found = new Map();
   for (const entry of readdirSync(appDir)) {
     const full = join(appDir, entry);
     if (statSync(full).isDirectory()) {
-      // `(catalog)` and friends are organisational, not part of the URL.
+      // `(group)` directories are not part of the URL.
       const next = /^\(.*\)$/.test(entry) ? segments : [...segments, entry];
       for (const [route, file] of discoverRoutes(full, next)) found.set(route, file);
     } else if (entry === 'page.tsx') {
@@ -31,13 +19,8 @@ export function discoverRoutes(appDir, segments = []) {
 }
 
 /**
- * Resolve a concrete route to the page that serves it, following dynamic
- * segments. `/articles/best-flower-delivery-perth` is served by
- * `/articles/[slug]`; bloomprint spreads a registry entry per article into
- * `STATIC_PAGES`, so most of what it declares has no literal page of its own.
- *
- * An exact match always wins over a dynamic one, which is Next's own
- * precedence. Returns the page file, or `undefined`.
+ * Resolves a concrete route to the page serving it, following dynamic segments (`/articles/some-slug` is served by
+ * `/articles/[slug]`). An exact match beats a dynamic one, as in Next. Returns the page file or `undefined`.
  */
 export function resolveRoute(routes, route) {
   const exact = routes.get(route);

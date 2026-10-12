@@ -7,25 +7,21 @@ import {
   metadataFor,
 } from '@/lib/seo';
 import StructuredDataScript from '@/components/seo/StructuredDataScript';
+import { fetchCatalogue } from '@/lib/catalogue';
 import type { Product } from '@/types';
 
 export const revalidate = 600;
 
-const apiUrl = process.env.DJANGO_API_URL ?? 'http://localhost:8000';
-
 export const metadata = metadataFor('/');
 
 async function getBargainProducts(): Promise<Product[]> {
-  try {
-    const params = new URLSearchParams({ limit: '20' });
-    const response = await fetch(`${apiUrl}/api/products/bargain-carousel/?${params.toString()}`, {
-      next: { revalidate },
-    });
-    if (!response.ok) return [];
-    return response.json();
-  } catch {
-    return [];
-  }
+  const params = new URLSearchParams({ limit: '20' });
+  return (
+    (await fetchCatalogue<Product[]>(
+      `/api/products/bargain-carousel/?${params.toString()}`,
+      revalidate,
+    )) ?? []
+  );
 }
 
 export default async function Page() {

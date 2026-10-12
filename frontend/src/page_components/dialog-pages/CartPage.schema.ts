@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { requiredString } from '@/lib/fieldMax';
+import { requiredString } from '@freetheplatform/web-security/schema';
 
 /**
  * Track B: one field, one submit.

@@ -40,9 +40,9 @@ const GridSourcer = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState('');
   const queryClient = useQueryClient();
-  const { token, anonymousId } = useAuth();
+  const { anonymousId } = useAuth();
 
-  const apiClient = useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
+  const apiClient = useMemo(() => createApiClient(anonymousId), [anonymousId]);
 
   // Changing what is being listed puts you back on page one. Adjusted during
   // render rather than in an effect: an effect would paint page 7 of the new

@@ -15,7 +15,7 @@ import {
 import { Button } from '../../components/common/button';
 import { Input } from '../../components/common/input';
 import { PlusCircle, Save, Trash2, Pencil } from 'lucide-react';
-import { FIELD_MAX } from '@/lib/fieldMax';
+import { FIELD_MAX } from '@freetheplatform/web-security';
 import type { CartPageProps } from '../../types/CartPageProps';
 import { cartRenameSchema } from './CartPage.schema';
 
@@ -26,10 +26,10 @@ import { cartRenameSchema } from './CartPage.schema';
  * network was an `onKeyDown` watching for Enter; form semantics give that back
  * for free, and give the field a schema it never had.
  *
- * Not a Server Action: `renameCart` reaches Django through `apiClient`, which
- * attaches a DRF token held in `localStorage` by client JavaScript. There is no
- * session for a Next server to forward, which is why FORMS-9/10/11 are `n/a`
- * here -- see `_docs/convergence/auth-migration.md`.
+ * Not a Server Action: `renameCart` goes through `CartContext`, which owns the
+ * cart's state and updates it from the answer, over the browser's own
+ * same-origin session. A Server Action would have to hand the renamed cart
+ * back into that context anyway.
  */
 interface RenameState {
   /** A schema failure. A *network* failure is already a toast from `renameCart`. */

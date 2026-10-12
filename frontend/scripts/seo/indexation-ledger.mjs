@@ -1,15 +1,6 @@
 /**
- * Copied from `freethedesk/frontend/scripts/seo/indexation-ledger.mjs`.
- * SplitCart is not a component-registry consumer yet
- * (`_docs/convergence/registry.md`), so this is a local copy rather than a
- * synced one. Unchanged from the original.
- *
- * Asserts that every public route carries exactly one true indexation policy.
- *
- * `check-sitemap-routes.mjs` guards the outward direction — a listed route with
- * no page. This is the inward direction: a new public route nobody added to any
- * bucket, which is otherwise indistinguishable from a forgotten one. Every
- * route must land in exactly one of:
+ * Asserts that every public route carries exactly one true indexation policy. The inward counterpart of
+ * `check-sitemap-routes.mjs` (a listed route with no page): a new route nobody bucketed. Each route must land in exactly one of:
  *
  *   - `STATIC_PAGES`           (lib/pages.ts)            — listed
  *   - `STATIC_NOINDEX_PAGES`   (lib/pages.ts)            — noindex
@@ -17,26 +8,13 @@
  *   - `DYNAMIC_ROUTE_FAMILIES` (lib/pages.ts)            — generated from data
  *   - the robots.txt `*` group                           — disallowed
  *
- * *Exactly* one, not at least one. seo-standard.md section 2 forbids a route
- * being both disallowed and noindexed: a disallowed page is never crawled, so
- * its noindex is never read, and it can still surface as a bare URL with no
- * title.
+ * Exactly one: a disallowed page is never crawled, so its noindex is never read (seo-standard.md section 2).
  *
- * Both sides are read as VALUES, not as source text. The registry is imported
- * (see ts-loader.mjs) and robots.txt is taken from the route's own `GET()`, so
- * what this checks is the bytes a crawler receives rather than a regex's guess
- * at what the file says. Formatting, quoting style, comments and computed
- * entries all stop being load-bearing.
+ * Both sides are read as values: the page registry is imported (ts-loader.mjs) and robots.txt comes from the route's
+ * own `GET()`, so this checks what a crawler receives. Only the `*` group counts; the AI group is deliberately
+ * more permissive (seo-standard.md section 4).
  *
- * State 4 resolves from the `*` group alone. The AI group is deliberately more
- * permissive (seo-standard.md section 4); reading the union would make a page
- * opened to answer engines look undeclared.
- *
- * A dynamic family's per-record correctness cannot be evaluated here — it
- * depends on data this has no access to. What can be checked is that the
- * family still points at something real: `policyModule` exists, and
- * `policySymbol` still appears in it. That is the rot the field was previously
- * open to, a resolver renamed with its declaration left behind.
+ * A dynamic family's per-record policy cannot be checked here, only that `policyModule` exists and still contains `policySymbol`.
  */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -44,12 +22,7 @@ import { pathToFileURL } from 'node:url';
 import { registerTsLoader } from './ts-loader.mjs';
 import { discoverRoutes } from './app-routes.mjs';
 
-/**
- * Split robots.txt into groups. A group is one or more consecutive
- * `User-Agent:` lines followed by its rules; the next `User-Agent:` after a
- * rule starts a new one (RFC 9309 section 2.2.1). Blank lines are not the
- * delimiter, so this holds even if the emitter stops putting them in.
- */
+/** Splits robots.txt into groups: consecutive `User-Agent:` lines plus rules; a `User-Agent:` after a rule starts a new one (RFC 9309 section 2.2.1). */
 function parseRobots(text) {
   const groups = [];
   let current = null;
@@ -79,13 +52,7 @@ function parseRobots(text) {
   return groups;
 }
 
-/**
- * Robots.txt matching, RFC 9309 section 2.2.2: every allow and disallow rule is
- * a prefix, and the LONGEST matching rule wins. Modelling that rather than "any
- * disallow matches" is what lets an `Allow:` carve an exception out of a
- * broader `Disallow:` — and it is the same resolution a crawler performs, so
- * the ledger and robots.txt cannot disagree.
- */
+/** Robots.txt matching (RFC 9309 section 2.2.2): rules are prefixes and the longest match wins, so an `Allow:` can carve out of a broader `Disallow:`. */
 function longestMatch(rules, route) {
   let best = -1;
   for (const rule of rules) {
@@ -139,17 +106,15 @@ export async function checkIndexationLedger({ root, noindexIn, noindexFix }) {
     else if (buckets.length > 1) doubleDeclared.push(`${route} — ${buckets.join(' + ')}`);
   }
 
-  // A noindex declaration is only true if the page's metadata actually carries
-  // it. A route can sit in STATIC_NOINDEX_PAGES while its page emits no robots
-  // meta at all, and a ledger that only checks a decision was recorded is worse
-  // than none — it turns an unknown into a false assurance.
-  //
-  // This one assertion is still a regex over source text, because `page.tsx`
-  // cannot be imported: Node strips types but does not transpile JSX. It is
-  // therefore the weakest check here — a match inside a comment would satisfy
-  // it. seo-standard.md section 2 records that limit.
+  // A noindex declaration is only true if the page's metadata carries it. This is a regex over source text,
+  // because `page.tsx` cannot be imported (Node does not transpile JSX), so it is the weakest check here:
+  // a match inside a comment would satisfy it (seo-standard.md section 2). A dynamic family declared
+  // `noindex` is held to the same test: its one `page.tsx` serves every record, so it must say so too.
+  const noindexFamilies = pages.DYNAMIC_ROUTE_FAMILIES.filter(
+    (family) => family.state === 'noindex',
+  ).map((family) => family.pattern);
   const unenforced = [];
-  for (const route of noindexed) {
+  for (const route of [...noindexed, ...noindexFamilies]) {
     const file = routes.get(route);
     if (!file) {
       unenforced.push(`${route} — declared noindex but has no page`);
@@ -158,9 +123,7 @@ export async function checkIndexationLedger({ root, noindexIn, noindexFix }) {
     }
   }
 
-  // Every dynamic family must still point at a real resolver. Text, not an
-  // import: these modules reach the server API client, and pulling that graph
-  // into a build-time check is exactly what `policyModule` avoids.
+  // Every dynamic family must still point at a real resolver. Read as text: an import would pull in the server API client.
   const rotted = [];
   for (const family of pages.DYNAMIC_ROUTE_FAMILIES) {
     let source;

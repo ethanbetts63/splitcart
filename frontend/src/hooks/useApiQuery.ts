@@ -1,48 +1,29 @@
-import { useQuery, useMutation, type QueryKey } from '@tanstack/react-query';
+import { useQuery, type QueryKey } from '@tanstack/react-query';
 import { useAuth } from '../context/AuthContext';
 import type { ApiOptions } from '../types/ApiOptions';
 import { getApiUrl } from '@/lib/apiUrl';
-
-// --- Centralized API Fetch Function ---
+import { authedFetch } from '@/services/apiClient';
 
 const apiFetch = async <T>(
   endpoint: string,
-  token: string | null,
   anonymousId: string | null,
   options: ApiOptions = {},
 ): Promise<T> => {
   const { method = 'GET', body, ...restOptions } = options;
 
   const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
     ...(restOptions.headers as Record<string, string>),
   };
+  if (anonymousId) headers['X-Anonymous-ID'] = anonymousId;
 
-  if (token) {
-    headers['Authorization'] = `Token ${token}`;
-  } else if (anonymousId) {
-    headers['X-Anonymous-ID'] = anonymousId;
-  }
-
-  const config: RequestInit = {
+  const response = await authedFetch(getApiUrl(endpoint), {
+    ...restOptions,
     method,
     headers,
-    ...restOptions,
-  };
-
-  if (body) {
-    config.body = JSON.stringify(body);
-  }
-
-  const finalEndpoint = getApiUrl(endpoint);
-
-  const response = await fetch(finalEndpoint, config);
+    body: body ? JSON.stringify(body) : undefined,
+  });
 
   if (!response.ok) {
-    if (response.status === 401) {
-      // Dispatch a custom event to be caught by the AuthProvider
-      window.dispatchEvent(new CustomEvent('unauthorized'));
-    }
     let errorMessage = `API Error: ${response.status} ${response.statusText}`;
     try {
       const errorData: unknown = await response.json();
@@ -63,8 +44,6 @@ const apiFetch = async <T>(
   return response.json();
 };
 
-// --- Custom Hook for Queries (GET requests) ---
-
 export const useApiQuery = <T>(
   queryKey: QueryKey,
   endpoint: string,
@@ -75,28 +54,11 @@ export const useApiQuery = <T>(
     staleTime?: number;
   } = {},
 ) => {
-  const { token, anonymousId } = useAuth();
+  const { anonymousId } = useAuth();
 
   return useQuery<T, Error>({
     queryKey,
-    queryFn: () => apiFetch<T>(endpoint, token, anonymousId, { ...options, method: 'GET' }),
+    queryFn: () => apiFetch<T>(endpoint, anonymousId, { ...options, method: 'GET' }),
     ...reactQueryOptions,
-  });
-};
-
-// --- Custom Hook for Mutations (POST, PUT, PATCH, DELETE) ---
-
-export const useApiMutation = <T, U>(
-  // Endpoint can be a function of variables
-  endpoint: string | ((variables: U) => string),
-  method: 'POST' | 'PUT' | 'PATCH' | 'DELETE',
-) => {
-  const { token, anonymousId } = useAuth();
-
-  return useMutation<T, Error, U>({
-    mutationFn: (variables: U) => {
-      const finalEndpoint = typeof endpoint === 'function' ? endpoint(variables) : endpoint;
-      return apiFetch<T>(finalEndpoint, token, anonymousId, { method, body: variables });
-    },
   });
 };

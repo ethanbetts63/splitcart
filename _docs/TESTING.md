@@ -184,13 +184,13 @@ their place.
 
 ### `users/tests/conftest.py`
 
-| Fixture            | What it is for                                                                        |
-| ------------------ | ------------------------------------------------------------------------------------- |
-| `user`             | An ordinary account, from `UserFactory`.                                              |
-| `auth_client`      | An `APIClient` carrying `user`'s DRF token — the way the live frontend authenticates. |
-| `other_user`       | A second account, for the cross-user boundary tests. Named for what it is for.        |
-| `anonymous_id`     | The ID a signed-out browser carries.                                                  |
-| `anonymous_client` | A signed-out `APIClient` that keeps one `anonymous_id` across requests.               |
+| Fixture            | What it is for                                                                             |
+| ------------------ | ------------------------------------------------------------------------------------------ |
+| `user`             | An ordinary account, from `UserFactory`.                                                   |
+| `auth_client`      | An `APIClient` holding `user`'s session cookies — the way the live frontend authenticates. |
+| `other_user`       | A second account, for the cross-user boundary tests. Named for what it is for.             |
+| `anonymous_id`     | The ID a signed-out browser carries.                                                       |
+| `anonymous_client` | A signed-out `APIClient` that keeps one `anonymous_id` across requests.                    |
 
 `anonymous_client` exists because `config.middleware.AnonymousUserMiddleware`
 mints a fresh ID for any request that arrives without one. A plain `api_client`

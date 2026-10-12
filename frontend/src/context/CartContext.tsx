@@ -10,14 +10,14 @@ import * as cartApi from '../services/cart.api';
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { token, anonymousId, isAuthenticated, isLoading: isAuthLoading } = useAuth();
+  const { anonymousId, isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const [currentCart, setCurrentCart] = useState<Cart | null>(null);
   const [userCarts, setUserCarts] = useState<Cart[]>([]);
   const [optimizationResult, setOptimizationResult] = useState<ApiResponse | null>(null);
   const [cartLoading, setCartLoading] = useState(true);
   const [isCartSyncing, setIsFetchingSubstitutions] = useState(false); // Initialize new state
 
-  const apiClient = useMemo(() => createApiClient(token, anonymousId), [token, anonymousId]);
+  const apiClient = useMemo(() => createApiClient(anonymousId), [anonymousId]);
 
   /**
    * The fetch itself, without asserting the loading flag.

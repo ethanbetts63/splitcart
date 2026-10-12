@@ -7,11 +7,10 @@ import {
   metadataFor,
 } from '@/lib/seo';
 import StructuredDataScript from '@/components/seo/StructuredDataScript';
+import { fetchCatalogue } from '@/lib/catalogue';
 import type { PriceComparison, Product } from '@/types';
 
 export const revalidate = 86400;
-
-const apiUrl = process.env.DJANGO_API_URL ?? 'http://localhost:8000';
 
 export const metadata = metadataFor('/bargains');
 
@@ -50,35 +49,22 @@ export default async function Page() {
 }
 
 async function getBargainStats(): Promise<PriceComparison[]> {
-  try {
-    const response = await fetch(`${apiUrl}/api/stats/bargains/`, {
-      next: { revalidate },
-    });
-    if (!response.ok) return [];
-    return response.json();
-  } catch {
-    return [];
-  }
+  return (await fetchCatalogue<PriceComparison[]>('/api/stats/bargains/', revalidate)) ?? [];
 }
 
 async function getCompanyProducts(): Promise<Record<string, Product[]>> {
   const companies = ['Coles', 'Woolworths', 'Aldi'];
   const entries = await Promise.all(
     companies.map(async (company) => {
-      try {
-        const params = new URLSearchParams({
-          company_name: company,
-          limit: '20',
-        });
-        const response = await fetch(
-          `${apiUrl}/api/products/bargain-carousel/?${params.toString()}`,
-          { next: { revalidate } },
-        );
-        if (!response.ok) return [company, []] as const;
-        return [company, await response.json()] as const;
-      } catch {
-        return [company, []] as const;
-      }
+      const params = new URLSearchParams({
+        company_name: company,
+        limit: '20',
+      });
+      const products = await fetchCatalogue<Product[]>(
+        `/api/products/bargain-carousel/?${params.toString()}`,
+        revalidate,
+      );
+      return [company, products ?? []] as const;
     }),
   );
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Thin entry point over `scripts/forms/serializer-contract.mjs`. The engine
+ * Thin entry point over `scripts/forms/serializer-contract.mjs`, a registry
+ * copy — edit it in `freetheplatform/frontend/registry/tooling/forms/`. The engine
  * explains the failure it prevents; the pairs below are the repo facts, and
  * the exception rows are where somebody has to say in words why a field the
  * API accepts is one the client never sends.
@@ -13,9 +14,17 @@
  * shared command would make splitcart's `check:forms` mean something different
  * from everyone else's. It is a separate row in `npm run check` instead.
  *
- * All three of the repository's Track B forms are here, which is what makes
- * `check:forms`' ledger and this file checkable against each other by eye: the
- * same three files, on the same three endpoints.
+ * Every Track B form in `check:forms`' ledger is here but one, and the two
+ * lists are meant to be checked against each other by eye. The forgot-password
+ * form posts to a serializer in `freetheplatform.auth`, which this repository
+ * installs and so can import like its own.
+ *
+ * The one absent is `reset-password-form.tsx`. Its body is assembled in the
+ * action rather than posted from the controls -- `uid` and `token` come from the
+ * link's path, and `confirm_password` is checked by the schema and never sent --
+ * so the engine's reading of control names as the posted body does not hold for
+ * it. Its serializer is the package's `PasswordResetConfirmSerializer`, and the
+ * action names its three fields literally.
  */
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -25,42 +34,43 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 await checkSerializerContract({
   root,
+  // `config.settings` with SQLite: the module the Python suite runs under.
+  settingsModule: 'settings_test',
   pairs: [
     {
-      endpoint: 'POST /api/auth/login/',
+      endpoint: 'POST /api/token/',
       form: 'components/forms/login-form.tsx',
       schema: { module: 'components/forms/login-form.schema.ts', export: 'loginSchema' },
-      serializer: 'users.serializers.custom_login_serializer.CustomLoginSerializer',
+      serializer: 'users.serializers.auth_serializers.LoginRequestSerializer',
       alsoPosts: [
         {
           field: 'anonymous_id',
-          why: "The browser's own identifier, read from AuthContext and added to the body rather than typed into the schema. A hidden input would be a value the page could rewrite; CustomLoginSerializer validates it as a UUID either way.",
-        },
-      ],
-      serverOnly: [
-        {
-          field: 'username',
-          why: "dj-rest-auth's second spelling of the identifier. USERNAME_FIELD is `email` for this project's user, so the serializer bounds `username` for the same reason it bounds `email` and the form has one field, not two.",
+          in: 'components/forms/login-form.actions.ts',
+          why: "The browser's own identifier, read by the Server Action from the request's cookie rather than typed into the schema. A hidden input would be a value the page could rewrite; Django validates it as a UUID either way.",
         },
       ],
     },
     {
-      endpoint: 'POST /api/auth/registration/',
+      endpoint: 'POST /api/register/',
       form: 'components/forms/signup-form.tsx',
       schema: { module: 'components/forms/signup-form.schema.ts', export: 'signupSchema' },
-      serializer: 'users.serializers.custom_register_serializer.CustomRegisterSerializer',
+      serializer: 'users.serializers.auth_serializers.RegisterSerializer',
       alsoPosts: [
         {
           field: 'anonymous_id',
-          why: 'Same value, same reason as login. This is the field whose absence lost the signed-out cart on every signup until CustomRegisterSerializer.save() started merging it.',
+          in: 'components/forms/signup-form.actions.ts',
+          why: 'Same value, same reason as login. This is the field whose absence once lost the signed-out cart on every signup.',
         },
       ],
-      serverOnly: [
-        {
-          field: 'username',
-          why: "Inherited from dj-rest-auth's RegisterSerializer and optional because ACCOUNT_USERNAME_REQUIRED is off: this project's user has no username column. Nothing should start sending one.",
-        },
-      ],
+    },
+    {
+      endpoint: 'POST /api/password/reset/',
+      form: 'components/forms/forgot-password-form.tsx',
+      schema: {
+        module: 'components/forms/forgot-password-form.schema.ts',
+        export: 'forgotPasswordSchema',
+      },
+      serializer: 'freetheplatform.auth.passwords.PasswordResetRequestSerializer',
     },
     {
       endpoint: 'POST /api/carts/rename/',

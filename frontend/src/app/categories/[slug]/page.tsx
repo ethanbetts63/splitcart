@@ -16,12 +16,11 @@ import StructuredDataScript from '@/components/seo/StructuredDataScript';
 import { CATEGORY_PAGE_UPDATED } from '@/lib/pages';
 import type { PillarPage as PillarPageType, Product } from '@/types';
 import { CATEGORY_SLUGS, type CategorySlug } from '@/data/categories';
+import { fetchCatalogue } from '@/lib/catalogue';
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
-
-const apiUrl = process.env.DJANGO_API_URL ?? 'http://localhost:8000';
 
 const FALLBACK_TITLE = 'Category';
 const FALLBACK_DESCRIPTION = 'Compare supermarket prices by grocery category with SplitCart.';
@@ -33,15 +32,7 @@ export function generateStaticParams() {
 export const revalidate = 86400;
 
 async function getPillarPage(slug: string): Promise<PillarPageType | null> {
-  try {
-    const response = await fetch(`${apiUrl}/api/pillar-pages/${slug}/`, {
-      next: { revalidate },
-    });
-    if (!response.ok) return null;
-    return response.json();
-  } catch {
-    return null;
-  }
+  return fetchCatalogue<PillarPageType>(`/api/pillar-pages/${slug}/`, revalidate);
 }
 
 /**
@@ -68,21 +59,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 async function getCategoryProducts(slugs: string[]): Promise<Record<string, Product[]>> {
   const entries = await Promise.all(
     slugs.map(async (categorySlug) => {
-      try {
-        const params = new URLSearchParams({
-          primary_category_slugs: categorySlug,
-          limit: '20',
-          ordering: 'carousel_default',
-        });
-        const response = await fetch(`${apiUrl}/api/products/?${params.toString()}`, {
-          next: { revalidate },
-        });
-        if (!response.ok) return [categorySlug, []] as const;
-        const data = await response.json();
-        return [categorySlug, data.results ?? []] as const;
-      } catch {
-        return [categorySlug, []] as const;
-      }
+      const params = new URLSearchParams({
+        primary_category_slugs: categorySlug,
+        limit: '20',
+        ordering: 'carousel_default',
+      });
+      const data = await fetchCatalogue<{ results?: Product[] }>(
+        `/api/products/?${params.toString()}`,
+        revalidate,
+      );
+      return [categorySlug, data?.results ?? []] as const;
     }),
   );
   return Object.fromEntries(entries);

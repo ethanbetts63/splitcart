@@ -26,11 +26,11 @@ npm install
 npm run dev
 ```
 
-The app runs at `http://localhost:3000`. `next.config.ts` rewrites `/api/:path*`
-to `DJANGO_API_URL`, which defaults to `http://localhost:8000` — so a local
-Django server is picked up with no configuration. To point at the deployed API
-instead, set `DJANGO_API_URL` and `NEXT_PUBLIC_DJANGO_API_URL` in
-`.env.local`.
+The app runs at `http://localhost:3000`. `src/proxy.ts` rewrites `/api/:path*`
+to `DJANGO_API_URL`, which defaults to `http://127.0.0.1:8000` — so a local
+Django server is picked up with no configuration. To point at another one, set
+`DJANGO_API_URL` in `.env.local`. `npm run build` prerenders the catalogue
+pages from that Django and fails if it cannot reach it.
 
 | Script              | Does                                       |
 | ------------------- | ------------------------------------------ |
