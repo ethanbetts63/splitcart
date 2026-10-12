@@ -3,14 +3,19 @@ from django.db.models import Q, Min, Case, When
 from products.models import Product, Price, ProductPriceSummary
 
 
-def _primary_category_slug_filter(slugs: list) -> Q:
+def _primary_category_slug_filter(slugs: list, via: str = '') -> Q:
     """
     Build an OR query that matches products whose primary_category_slugs JSON
     array contains any of the given slugs.
+
+    `via` is the path from the model being filtered to `Product`: empty on
+    `Product` itself, `'product__'` on `ProductPriceSummary`, which has no
+    `primary_category_slugs` of its own. Without it the summary query raised
+    `FieldError` for every slug, and every category carousel answered 500.
     """
     q = Q()
     for slug in slugs:
-        q |= Q(primary_category_slugs__contains=[slug])
+        q |= Q(**{f'{via}primary_category_slugs__contains': [slug]})
     return q
 
 
@@ -28,7 +33,7 @@ def get_bargain_first_ordering(company_ids, primary_category_slugs, limit=None):
 
     # --- Step 1: Identify potential candidates ---
     candidate_product_ids = list(ProductPriceSummary.objects.filter(
-        slug_filter,
+        _primary_category_slug_filter(primary_category_slugs, via='product__'),
         product__prices__company__id__in=company_ids,
     ).distinct().order_by('-best_possible_discount').values_list('product_id', flat=True)[:200])
 
