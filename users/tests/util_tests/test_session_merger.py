@@ -47,6 +47,7 @@ class TestAnonymousCartMerge:
 
     def test_the_anonymous_cart_is_not_left_behind(self, user):
         anon_cart = CartFactory(user=None, anonymous_id=ANONYMOUS_ID, is_active=True)
+        CartItemFactory(cart=anon_cart)
 
         merge_anonymous_session(user, ANONYMOUS_ID)
 
@@ -91,7 +92,8 @@ class TestAnonymousCartMerge:
         """
         existing = CartFactory(user=user, is_active=True, name='Weekly shop')
         CartItemFactory(cart=existing)
-        CartFactory(user=None, anonymous_id=ANONYMOUS_ID, is_active=True)
+        anon_cart = CartFactory(user=None, anonymous_id=ANONYMOUS_ID, is_active=True)
+        CartItemFactory(cart=anon_cart)
 
         merge_anonymous_session(user, ANONYMOUS_ID)
 
@@ -100,10 +102,24 @@ class TestAnonymousCartMerge:
         assert existing.items.count() == 1
         assert Cart.objects.filter(user=user, is_active=True).count() == 1
 
+    def test_an_empty_signed_out_cart_does_not_replace_the_accounts_own(self, user):
+        """Signing out and straight back in arrives with the empty cart the
+        signed-out visit was given. The account's list must survive it."""
+        existing = CartFactory(user=user, is_active=True, name='Weekly shop')
+        CartItemFactory(cart=existing)
+        CartFactory(user=None, anonymous_id=ANONYMOUS_ID, is_active=True)
+
+        merge_anonymous_session(user, ANONYMOUS_ID)
+
+        existing.refresh_from_db()
+        assert existing.is_active is True
+        assert Cart.objects.filter(user=user, is_active=True).get() == existing
+
     def test_a_named_anonymous_cart_keeps_its_name(self, user):
-        CartFactory(
+        anon_cart = CartFactory(
             user=None, anonymous_id=ANONYMOUS_ID, is_active=True, name='Christmas lunch'
         )
+        CartItemFactory(cart=anon_cart)
 
         merge_anonymous_session(user, ANONYMOUS_ID)
 
@@ -111,9 +127,10 @@ class TestAnonymousCartMerge:
 
     def test_the_default_anonymous_name_is_replaced(self, user):
         """"Anonymous Cart" is the placeholder the API invents, not a choice."""
-        CartFactory(
+        anon_cart = CartFactory(
             user=None, anonymous_id=ANONYMOUS_ID, is_active=True, name='Anonymous Cart'
         )
+        CartItemFactory(cart=anon_cart)
 
         merge_anonymous_session(user, ANONYMOUS_ID)
 
@@ -122,9 +139,10 @@ class TestAnonymousCartMerge:
     def test_a_name_the_user_already_has_is_made_unique(self, user):
         """`unique_user_cart_name` is a database constraint; a clash is a 500."""
         CartFactory(user=user, name='Christmas lunch', is_active=False)
-        CartFactory(
+        anon_cart = CartFactory(
             user=None, anonymous_id=ANONYMOUS_ID, is_active=True, name='Christmas lunch'
         )
+        CartItemFactory(cart=anon_cart)
 
         merge_anonymous_session(user, ANONYMOUS_ID)
 
@@ -213,9 +231,10 @@ class TestAMergeThatCannotFinish:
         self, user, monkeypatch
     ):
         theirs = CartFactory(user=user, name='Weekly shop', is_active=True)
-        CartFactory(
+        anon_cart = CartFactory(
             user=None, anonymous_id=ANONYMOUS_ID, is_active=True, name='Anonymous Cart'
         )
+        CartItemFactory(cart=anon_cart)
 
         def fails(*args, **kwargs):
             raise RuntimeError('the database went away mid-merge')

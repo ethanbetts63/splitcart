@@ -11,6 +11,8 @@ def merge_anonymous_session(user, anonymous_id):
     posted: both doors validate it with a `UUIDField` and pass the result, so an
     upper-case spelling of the same identifier finds the same cart at either.
 
+    An empty signed-out cart is left where it is: there is nothing to carry in.
+
     One transaction, because the first write is destructive. The account's own
     active cart is stood down before the replacement exists, so a failure
     anywhere after that would otherwise leave the shopper with no active cart
@@ -23,6 +25,13 @@ def merge_anonymous_session(user, anonymous_id):
         try:
             anon_cart = Cart.objects.get(anonymous_id=anonymous_id, is_active=True)
         except Cart.DoesNotExist:
+            return
+
+        # Every signed-out visit gets an active cart from `GET /api/carts/active/`,
+        # so a browser that signed out and straight back in arrives holding an
+        # empty one. Handing that over would stand the account's own list down
+        # for nothing, and from the shopper's side their cart would vanish.
+        if not anon_cart.items.exists():
             return
 
         Cart.objects.filter(user=user, is_active=True).update(is_active=False)
