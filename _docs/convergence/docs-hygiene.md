@@ -55,11 +55,11 @@ the other plans rather than a separate problem.
 
 Verdicts on each shared capability, applying strategy.md's tests:
 
-| Capability                     | Verdict       | Reason                                                                               |
-| ------------------------------ | ------------- | ------------------------------------------------------------------------------------ |
-| `web-security` CSP + sanitiser | **adopt now** | splitcart emits no CSP at all. Cheapest real security win available.                 |
-| Security bounds table          | **adopt now** | Closes a live blind spot; see [`forms.md`](forms.md) FM-4.                           |
-| Auth / cookie-JWT sessions     | adopt later   | Large migration with a live blast radius — [`auth-migration.md`](auth-migration.md). |
-| Component registry             | adopt later   | Blocked on tokens — [`registry.md`](registry.md).                                    |
-| Messaging / email              | stays local   | No shared need demonstrated.                                                         |
-| Search Console reporting       | adopt later   | No measurement plumbing here yet.                                                    |
+| Capability                     | Verdict       | Reason                                                               |
+| ------------------------------ | ------------- | -------------------------------------------------------------------- |
+| `web-security` CSP + sanitiser | **adopt now** | splitcart emits no CSP at all. Cheapest real security win available. |
+| Security bounds table          | **adopt now** | Closes a live blind spot; see [`forms.md`](forms.md) FM-4.           |
+| Auth / cookie-JWT sessions     | adopted       | 2026-10-13 — [`auth-migration.md`](auth-migration.md).               |
+| Component registry             | adopt later   | Blocked on tokens — [`registry.md`](registry.md).                    |
+| Messaging / email              | stays local   | No shared need demonstrated.                                         |
+| Search Console reporting       | adopt later   | No measurement plumbing here yet.                                    |

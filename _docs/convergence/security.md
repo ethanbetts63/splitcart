@@ -1,6 +1,6 @@
 # Convergence plan — security
 
-**Type:** status and work plan. Non-normative. The binding rules are
+**Type:** closed record. Non-normative. The binding rules are
 [`../../../freetheplatform/_docs/security-standard.md`](../../../freetheplatform/_docs/security-standard.md).
 Delete a row when it lands; delete this file when every row is gone.
 
@@ -13,20 +13,15 @@ This plan has two halves and they are not the same kind of work.
 
 **Half A — configuration and boundary defects.** Landed.
 
-**Half B — the session model.** splitcart authenticates with a
-non-expiring DRF `authtoken` held in `localStorage`. The standard (§3) requires
-cookie-JWT sessions from `freetheplatform.auth`, the Python distribution, which
-splitcart does not depend on — the npm package the header work brought in is the
-other artifact built from that repository, not this one. This is a real migration with a real blast radius and it is
-planned separately in [`auth-migration.md`](auth-migration.md). Nothing in Half A
-depends on it.
+**Half B — the session model.** Landed 2026-10-13: cookie-JWT sessions from
+`freetheplatform.auth`, recorded in [`auth-migration.md`](auth-migration.md).
+Nothing in Half A depended on it.
 
 ## Half A — landed
 
 The header set and the CSP landed on 2026-09-25. `frontend/next.config.ts`
 builds them with `securityHeaders()` from `@freetheplatform/web-security`,
-which splitcart now depends on — pinned to `v0.19.0`, the tag the other three
-repos are on. That closed `auth-migration.md`'s AU-1 and AU-2 ahead of the rest
+which splitcart now depends on, at the tag the other three repos are on. That closed `auth-migration.md`'s AU-1 and AU-2 ahead of the rest
 of that plan, so a local `headers()` block never had to exist.
 
 Django's half of the header set was already in place: `SECURE_HSTS_SECONDS` is
@@ -37,10 +32,9 @@ Django's half of the header set was already in place: `SECURE_HSTS_SECONDS` is
 `config.middleware.NoCacheApiMiddleware`, which gives an `/api/` response
 `no-store, private` only when it carries no `Cache-Control` of its own. It could
 not be the frontend's: Next 16 returns an externally-rewritten response byte for
-byte, so neither a `headers()` rule nor a `proxy.ts` header survives — and in
-production `lib/apiUrl.ts` builds an absolute URL to `api.splitcart.com.au`, so
-the browser never uses the rewrite at all. The reason is recorded in
-`next.config.ts`, where somebody would go to add the rule that does nothing.
+byte, so no `headers()` rule survives `proxy.ts`'s rewrite of `/api/*`. The
+reason is recorded in `next.config.ts`, where somebody would go to add the rule
+that does nothing.
 
 It could not be a blanket rule either. splitcart's API is mostly a public price
 catalogue and six views carry `@cache_page` for two to twenty-four hours, which
@@ -53,28 +47,14 @@ tested in `config/tests/test_caching.py`.
 
 ## Carried out of Half A
 
-Two things the Half A work turned up that no row anticipated, and that belong to
-plans other than this one.
-
-- **`api/export/companies/` has no throttle scope.** It is the one remaining DRF
-  route without one. `IsInternalAPIRequest` gates it, so it is not a public
-  surface, but the §19 route-coverage check will flag it when that arrives.
+- **`api/export/companies/` had no throttle scope.** `ftp_security.E006` found
+  it when the §19 checks arrived, and it took the pipeline's `internal` scope.
 - **`SECURE_SSL_REDIRECT` is `True` rather than silenced.** freethedesk silences
   `security.W008` because its host redirects at the edge; whether PythonAnywhere's
   "Force HTTPS" is on is not visible from this repository, so Django does the
   redirect here. If the host turns out to do it too, the duplicate is harmless —
   but the test suite will 301 every request on any checkout whose `.env` sets
   `DEBUG=False`.
-
-## Half B — planned separately
-
-| Item                                                        | Where                                    |
-| ----------------------------------------------------------- | ---------------------------------------- |
-| Cookie-JWT sessions, account lockout, password reset, roles | [`auth-migration.md`](auth-migration.md) |
-| Retiring CORS in favour of same-origin proxying             | [`auth-migration.md`](auth-migration.md) |
-| Edge route protection (`proxy.ts`)                          | [`auth-migration.md`](auth-migration.md) |
-| `FIELD_MAX` / shared bounds table                           | [`forms.md`](forms.md)                   |
-| The §19 check suite                                         | [`auth-migration.md`](auth-migration.md) |
 
 ## Why these are separated
 

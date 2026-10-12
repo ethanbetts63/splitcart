@@ -11,9 +11,9 @@ Evidence: `scratchpad/gap-tooling.md`, `gap-tokens.md`, `gap-seo.md`,
 
 ## Work
 
-| #    | Remove                                                                                                                                                                                                     | Why it is dead                                                                                                    |
-| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| DC-3 | The `pillar_page_redirect` view and `_PILLAR_SLUG_MAP`, **only if** the old `/pillar-pages/<slug>/` URLs are confirmed unreferenced by live traffic. Otherwise keep and move the redirect to the frontend. | Needs a look at real traffic before deleting; a 301 that still has referrers is not dead code. Do not guess.      |
+| #    | Remove                                                                                                                                                                                                     | Why it is dead                                                                                               |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| DC-3 | The `pillar_page_redirect` view and `_PILLAR_SLUG_MAP`, **only if** the old `/pillar-pages/<slug>/` URLs are confirmed unreferenced by live traffic. Otherwise keep and move the redirect to the frontend. | Needs a look at real traffic before deleting; a 301 that still has referrers is not dead code. Do not guess. |
 
 ## DC-3 is the one to be careful with
 

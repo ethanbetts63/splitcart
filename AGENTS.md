@@ -17,15 +17,14 @@ PythonAnywhere at `api.splitcart.com.au`, the frontend to Vercel at
 `www.splitcart.com.au`.
 
 The sibling `../freetheplatform` repository holds reusable Django capabilities
-and the canonical cross-project engineering policies. **splitcart consumes one
-thing from it: `@freetheplatform/web-security`**, declared in
-`frontend/package.json` and used by `next.config.ts` to build the response
-header set. Nothing on the Python side — the `freetheplatform` distribution
-appears in neither `requirements.txt` nor `requirements_dev.txt`, so the
-session model, throttling and the §19 system checks are all still local.
-Bringing splitcart onto those policies is in progress; see
-[`_docs/convergence/README.md`](_docs/convergence/README.md) for what has and
-has not landed, and
+and the canonical cross-project engineering policies. splitcart consumes two
+artifacts built from it, both at pinned tags: the `freetheplatform` Python
+distribution, for sessions (`freetheplatform.auth`), the shared field bounds,
+the throttle class and the deployment checks; and `@freetheplatform/web-security`
+on the frontend, for the response headers, the authenticated fetch and the
+schema builders. It also takes component-registry copies. See
+[`_docs/convergence/README.md`](_docs/convergence/README.md) for how it got
+here, and
 [`../freetheplatform/_docs/conformance/splitcart.md`](../freetheplatform/_docs/conformance/splitcart.md)
 for the per-rule ledger.
 
@@ -65,10 +64,7 @@ directory.
 
 - Scraping targets, normalisation heuristics, the optimisation algorithm, the
   category taxonomy, and SplitCart wording stay local.
-- `@freetheplatform/web-security` is the only shared capability in use, and it
-  arrived with the header work recorded in
-  [`_docs/convergence/security.md`](_docs/convergence/security.md). Adding any
-  further `freetheplatform` (PyPI/git) or `@freetheplatform/*` (npm) dependency
+- Adopting a further `freetheplatform` app or `@freetheplatform/*` package
   applies the tests in `../freetheplatform/_docs/strategy.md` first, and records
   the decision. A pinned tag, never a branch: two deploys of one lockfile must
   not install different code.
@@ -100,8 +96,9 @@ changed the area runs them.
 | ------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | Django/Python             | `./venv/Scripts/python -m pytest <relevant paths>`; broaden to `./venv/Scripts/python -m pytest` when warranted |
 | Django models             | `./venv/Scripts/python manage.py makemigrations --check --dry-run` plus relevant tests                          |
+| Settings, URLconf, views  | `sh scripts/check-security.sh` — the deploy checks, including a route with no throttle scope                    |
 | Frontend static checks    | `cd frontend; npm run check`                                                                                    |
-| Frontend production build | `cd frontend; npm run build`                                                                                    |
+| Frontend production build | `cd frontend; npm run build` — prerenders from Django at `DJANGO_API_URL`; report whether it was up             |
 | Documentation only        | Link and path checks against the repository, Prettier for changed Markdown, and `git diff --check`              |
 
 A commit-time subset of the above is available:

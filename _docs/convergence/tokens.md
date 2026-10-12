@@ -26,8 +26,7 @@ and bloomprint's names and values, so `gap-m` and `p-l` exist here and mean
 what they mean there; the eight t-shirt width call sites moved to the role
 scale first, because four of the space rung names shadow a Tailwind container
 width. Every width resolved to the same pixel value after the move as before
-it, verified in the browser at 390px and 1440px: 448, 512, 672, 768, 800 and
-1024. `check:tokens` invariant 3 was proven to have teeth by reintroducing
+it, verified in the browser at 390px and 1440px: 448, 512, 672, 768, 800 and 1024. `check:tokens` invariant 3 was proven to have teeth by reintroducing
 `max-w-2xl` on the product panel, which failed the check by name.
 
 | Check              | Result                                            |

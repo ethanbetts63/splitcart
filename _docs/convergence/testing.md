@@ -41,7 +41,7 @@ Each is described in full where it was found.
 **Django's whole-site cache served one caller's data to another. Fixed.**
 `UpdateCacheMiddleware` and `FetchFromCacheMiddleware` stored any 200 answering
 a GET under a key built from the URL and the response's `Vary` headers. Token
-authentication never touches the session, so no `Vary: Cookie` was ever added
+authentication never touched the session, so no `Vary: Cookie` was ever added
 and every caller computed the same key. Three live consequences were found: one
 shopper's cart served to everyone (`/api/carts/active/`, `/api/carts/`), one
 account's email address served to everyone (`/api/auth/user/`), and a
@@ -51,26 +51,21 @@ middleware itself has since been removed so the next per-caller GET is safe by
 default. Nothing was lost: the public read-only endpoints already carry their
 own `@cache_page`. `config/tests/test_caching.py` keeps it removed.
 
-**`POST /api/auth/password/reset/` answers 500.** Live, unauthenticated, and
-throttled, but the email builder reverses `password_reset_confirm` and nothing
-routes that name. Behind it is a product gap: there is no frontend page for a
-reset link to land on. `users/tests/view_tests/test_password_reset.py` holds
-the detail and an `xfail(strict=True)` assertion of what is owed.
+**Password reset answered 500.** The email builder reversed a URL name nothing
+routed, and there was no page for a link to land on. Fixed by the session
+migration: the package's reset sends `users/notifications.py`'s email, linking
+to `/reset-password/<uid>/<token>/`.
 
 **Registering with an email that already has an account answered 500.** Fixed,
 because the fix was unambiguous: dj-rest-auth's uniqueness check asks whether
 the address is _verified_, and `ACCOUNT_EMAIL_VERIFICATION` is `'none'`, so it
 never fired and the INSERT hit the unique constraint.
-`CustomRegisterSerializer.validate_email` now checks the user table.
+Registration's serializer now checks the user table.
 
-**Signing up loses the cart; logging in keeps it.** The anonymous-cart merge
-hangs off `CustomLoginSerializer.validate()`, and the signup form posts to
-`/api/auth/registration/`, which takes no `anonymous_id` and never calls login.
-A shopper who fills a cart signed out and then creates an account loses it.
-Product decision, not a defect in the merge — and directly relevant to
-[`auth-migration.md`](auth-migration.md), which deletes the class the merge
-lives on. The behaviour itself is pinned independently in
-`users/tests/util_tests/test_session_merger.py`.
+**Signing up lost the cart; logging in kept it.** The anonymous-cart merge hung
+off login alone. Both doors now carry `anonymous_id` and call the same merger,
+and `users/tests/view_tests/test_anonymous_cart_at_both_doors.py` holds them
+together.
 
 **`/api/carts/` paginated an unordered queryset. Fixed.** `Cart` declared no
 `Meta.ordering`, so DRF warned on every list request and a second page could

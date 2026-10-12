@@ -32,8 +32,9 @@ of how splitcart differs; read them there rather than restating them.
 Two things this made true that are worth knowing:
 
 - `lib/utils.ts` had to be split first. The registry's version is `cn()` and
-  nothing else. `getCsrfToken`/`getAuthHeaders` are now `lib/authHeaders.ts`
-  and `debounce` is `lib/debounce.ts`.
+  nothing else. `debounce` is `lib/debounce.ts`; the CSRF and token headers
+  `utils.ts` also carried went with the session migration, to the shared
+  `createAuthedFetch`.
 - `lib/schema.tsx` is gone. It was a one-line forward kept alive only by the
   five route files that imported `@/lib/schema`; those now import
   `@/components/seo/StructuredDataScript` directly (2026-09-25). There is still

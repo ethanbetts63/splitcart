@@ -11,20 +11,19 @@ plan when its rows are gone; delete this directory when there is nothing left.
 
 Surveyed 2026-09-25 against the standards as they stood that day.
 
-**State as of 2026-09-26: eight of the ten plans are closed.** Eight rows
-remain, in three plans — `auth-migration.md` (six), `registry.md` (one, waiting
-on a `font-weight-*` ramp) and `dead-code.md` (one, waiting on a Search Console
-traffic check, not on code). The closed plans are kept rather than deleted where
-their emptied tables were replaced by a record of what landed and why; the
-deletion this file asks for is owed once that record has somewhere better to
-live.
+**State as of 2026-10-13: nine of the ten plans are closed.** Two rows remain,
+neither waiting on effort: `registry.md` (one, waiting on a `font-weight-*`
+ramp) and `dead-code.md` (one, waiting on a Search Console traffic check, not on
+code). The closed plans are kept rather than deleted where their emptied tables
+were replaced by a record of what landed and why; the deletion this file asks
+for is owed once that record has somewhere better to live.
 
 ## The one-paragraph summary
 
 splitcart was never on these policies — it was not drifting from them. It sat
 outside the shared-package graph entirely until 2026-09-25, when the header work
-brought in `@freetheplatform/web-security`; the Python side is still untouched,
-so that remains one npm package rather than a shared session model. Its frontend
+brought in `@freetheplatform/web-security`, and the Python side followed on
+2026-10-13 with the session migration. Its frontend
 had completed a Vite-to-Next migration that never reached its documentation, its
 configuration, or its dead routes. Its design tokens were unmodified
 `shadcn init` output. It had no formatter, no CSS lint, no structural checks, no
@@ -35,9 +34,9 @@ None of that was unusual for a repo brought in late, and most of it was cheap.
 All of the above has since landed. `npm run check` runs twelve checks; the token
 vocabulary is semantic, holds the family's one type ladder under a check that
 fails in all four repos when it diverges, and carries a role-named width scale
-so the space ramp cannot shadow a container width; `users/` has 238 tests. What
-is left is the one item that was always going to be last — the session model —
-plus two rows that are waiting on something other than effort.
+so the space ramp cannot shadow a container width; `users/` has its own suite,
+and sessions are the family's cookie-JWT ones. What is left is two rows that are
+waiting on something other than effort.
 
 ## The plans
 
@@ -52,7 +51,7 @@ plus two rows that are waiting on something other than effort.
 | [`testing.md`](testing.md)               | The missing `users/` test suite and the frontend check pipeline                                        | closed |
 | [`forms.md`](forms.md)                   | Three forms, their schemas, and the field bounds table                                                 | closed |
 | [`registry.md`](registry.md)             | Becoming a registry consumer, gated on tokens                                                          | 1 row  |
-| [`auth-migration.md`](auth-migration.md) | The session model — the one large item, sequenced last and held back deliberately                      | 6 rows |
+| [`auth-migration.md`](auth-migration.md) | The session model — the one large item, sequenced last                                                 | closed |
 
 ## Sequence
 
@@ -72,16 +71,13 @@ every social share of every page.
 `registry.md`. A registry component may name only tokens that exist, and
 splitcart currently declares none of them.
 
-**Wave 4 — unblocked, and the only wave still open.**
-`auth-migration.md`. Its prerequisite was coverage of `users/`. That began with
-`testing.md` and was finished by AU-0 on 2026-09-26: 238 tests where there were
-none, and the anonymous-cart merge pinned at both doors through `reverse()`,
-naming no serializer, so the migration cannot quietly change it. AU-0 also found
-four defects that AU-3 now inherits, each held open by a strict `xfail` rather
-than a note. AU-3 is the head of the chain. See that document for why the whole
-thing is still last.
+**Wave 4 — the session model.**
+`auth-migration.md`. Its prerequisite was coverage of `users/`, finished by
+AU-0 on 2026-09-26 with the anonymous-cart merge pinned at both doors through
+`reverse()`, naming no serializer, so the migration could not quietly change
+it. It landed on 2026-10-13.
 
-Waves 1 to 3 are closed. Their plans are listed above with their state.
+All four waves are closed.
 
 ## Three things worth knowing before reading further
 
@@ -98,10 +94,10 @@ boundaries, and the money-adjacent cart optimisation. Writing the tests it now
 has turned up Django's whole-site cache serving one shopper's cart, and one
 account's email address, to whoever asked next. The middleware is gone and
 `config/tests/test_caching.py` keeps it gone. Finishing the job in AU-0 turned
-up four more: login and registration disagreeing about the spelling of the same
-`anonymous_id`, a cart merge that is not atomic, and two `REST_AUTH` keys whose
-absence means a password change neither proves you know the old password nor
-ends any other session.
+up four more, all closed by the session migration: login and registration
+disagreeing about the spelling of the same `anonymous_id`, a cart merge that was
+not atomic, and a password change that neither proved you knew the old password
+nor ended any other session.
 
 (The `CartViewSet` is described as nine-action in places. It is five `@action`s
 plus the operations `SimpleRouter` generates; AU-0's record in
@@ -119,5 +115,4 @@ The ledger is
 [`../../../freetheplatform/_docs/conformance/splitcart.md`](../../../freetheplatform/_docs/conformance/splitcart.md),
 created by [`docs-hygiene.md`](docs-hygiene.md) DH-9. Verdicts there record what
 landed, never what these plans intend. A rule whose preconditions do not exist
-yet — FORMS-9/10/11, until the session model changes — is `n/a` with the reason,
-not `fail` and not `pass`.
+is `n/a` with the reason, not `fail` and not `pass`.
