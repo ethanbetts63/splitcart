@@ -14,8 +14,12 @@ In this order, because the frontend speaks only the new protocol:
    console needs the `GH_TOKEN` `insteadOf` entry in `~/.gitconfig` that
    `../freetheplatform/_docs/deployment-standard.md` describes — exactly one —
    unless this account already has it for another site.
-2. **`FTP_PROXY_SECRET`.** Generate one value (32+ random characters) and set it
-   in the PythonAnywhere web app's environment and in Vercel's (server-only).
+2. **`FTP_PROXY_SECRET`.** It exists nowhere yet: generate one value with
+   `python -c "import secrets; print(secrets.token_urlsafe(48))"` and put the
+   same string in two places — the server's `.env` at the repository root
+   (beside `SECRET_KEY`; `settings.py` reads it through `load_dotenv`), and
+   Vercel → splitcart project → Settings → Environment Variables, Production,
+   as a plain (not `NEXT_PUBLIC_`) variable.
    Without it every request is attributed to Vercel and the cart rates become
    one bucket for everyone.
 3. **Backend.** On the server: `git pull`, install `requirements.txt`, run
