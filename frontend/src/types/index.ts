@@ -38,7 +38,6 @@ export type { GridSourcerProps } from './GridSourcerProps';
 export type { HeroProps } from './HeroProps';
 export type { HowItWorksStep } from './HowItWorksStep';
 export type { HowItWorksSectionProps } from './HowItWorksSectionProps';
-export type { JsonLdItemListProps } from './JsonLdItemListProps';
 export type { LoadingSpinnerProps } from './LoadingSpinnerProps';
 export type { NavItem } from './NavItem';
 export type { NextButtonProps } from './NextButtonProps';

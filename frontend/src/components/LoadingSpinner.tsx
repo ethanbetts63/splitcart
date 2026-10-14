@@ -85,9 +85,9 @@ const LoadingSpinner = ({ fullScreen = true }: LoadingSpinnerProps) => {
         className="site-shell py-4 flex flex-col items-center justify-center text-center"
         style={{ minHeight: 'calc(100vh - 10rem)' }}
       >
-        <h1 className="text-title-sm font-bold mb-4" style={{ whiteSpace: 'pre-line' }}>
+        <p className="text-title-sm font-bold mb-4" style={{ whiteSpace: 'pre-line' }}>
           {loadingMessage}
-        </h1>
+        </p>
         <Spinner />
       </div>
     );
@@ -95,9 +95,9 @@ const LoadingSpinner = ({ fullScreen = true }: LoadingSpinnerProps) => {
 
   return (
     <div className="flex flex-col items-center justify-center text-center p-8">
-      <h1 className="text-lead font-bold mb-4" style={{ whiteSpace: 'pre-line' }}>
+      <p className="text-lead font-bold mb-4" style={{ whiteSpace: 'pre-line' }}>
         {loadingMessage}
-      </h1>
+      </p>
       <Spinner />
     </div>
   );

@@ -1,3 +1,6 @@
+import { Suspense } from 'react';
+
+import LoadingSpinner from '@/components/LoadingSpinner';
 import SearchResultsPage from '@/page_components/SearchResultsPage';
 
 /**
@@ -13,5 +16,10 @@ import SearchResultsPage from '@/page_components/SearchResultsPage';
 export const dynamic = 'force-dynamic';
 
 export default function Page() {
-  return <SearchResultsPage />;
+  // useSearchParams() needs a boundary of its own now that the shell has none.
+  return (
+    <Suspense fallback={<LoadingSpinner fullScreen />}>
+      <SearchResultsPage />
+    </Suspense>
+  );
 }
