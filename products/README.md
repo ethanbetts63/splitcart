@@ -27,7 +27,13 @@ The app is designed for performance and scalability, using caching, pre-calculat
 
 - **Endpoint**: `GET /api/products/<int:pk>/`
 - **View**: `ProductDetailView`
-- **Functionality**: Cached endpoint for retrieving all details for a single product.
+- **Functionality**: Cached endpoint for retrieving all details for a single product, including `indexable`: whether search may index its page (`utils/indexable.py`). Each price carries its `scraped_date`.
+
+### Indexable Products
+
+- **Endpoint**: `GET /api/products/indexable/`
+- **View**: `IndexableProductListView`
+- **Functionality**: The slugs of every product whose page is indexable — at least two of Aldi, Coles and Woolworths with a price scraped within `INDEXABLE_PRICE_MAX_AGE_DAYS`. Unpaginated; the frontend sitemap reads it once a day.
 
 ### Bargain Discovery
 

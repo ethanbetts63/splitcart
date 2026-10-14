@@ -25,3 +25,8 @@ class TestProductDetailView:
     def test_returns_404_for_nonexistent_product(self, client):
         response = client.get(reverse('product-detail', kwargs={'pk': 99999}))
         assert response.status_code == 404
+
+    def test_says_whether_the_page_is_indexable(self, client):
+        product = ProductFactory()
+        response = client.get(reverse('product-detail', kwargs={'pk': product.pk}))
+        assert response.json()['indexable'] is False

@@ -16,6 +16,8 @@ export type Product = {
   };
   min_unit_price?: number | null;
   slug?: string;
+  /** Detail endpoint only: whether search may index this product's page. */
+  indexable?: boolean;
   bargain_info?: {
     discount_percentage: number;
     cheapest_company_name: string;

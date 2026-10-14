@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.utils.text import slugify
 from products.models import Product
 from companies.serializers.primary_category_serializer import PrimaryCategorySerializer
+from products.utils.indexable import is_indexable
 
 class ProductSerializer(serializers.ModelSerializer):
     prices = serializers.SerializerMethodField()
@@ -142,6 +143,7 @@ class ProductSerializer(serializers.ModelSerializer):
                 'is_lowest': price.price == overall_min_price,
                 'image_url': self._get_image_url_for_company(obj, price.company.name, company_obj=price.company),
                 'per_unit_price_string': price.per_unit_price_string or None,
+                'scraped_date': price.scraped_date.isoformat(),
             }
             for price in prices
         ]
@@ -150,3 +152,28 @@ class ProductSerializer(serializers.ModelSerializer):
         formatted_prices.sort(key=lambda x: (float(x['price_display']), x['company']))
 
         return formatted_prices
+
+
+class ProductDetailSerializer(ProductSerializer):
+    """One product page: the list fields, plus whether search may index it."""
+
+    indexable = serializers.SerializerMethodField()
+
+    class Meta(ProductSerializer.Meta):
+        fields = ProductSerializer.Meta.fields + ('indexable',)
+
+    def get_indexable(self, obj):
+        return is_indexable(obj.prices.all())
+
+
+class IndexableProductSerializer(serializers.ModelSerializer):
+    """A sitemap row: just the canonical slug."""
+
+    slug = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Product
+        fields = ('slug',)
+
+    def get_slug(self, obj):
+        return f"{slugify(obj.name)}-{obj.id}"

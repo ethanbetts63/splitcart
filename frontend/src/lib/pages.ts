@@ -181,14 +181,17 @@ export const DYNAMIC_ROUTE_FAMILIES: DynamicRouteFamily[] = [
       'the family; their titles and descriptions come from the Django pillar-page ' +
       'record, and their sitemap dates from CATEGORY_PAGE_UPDATED above.',
   },
+  {
+    pattern: '/product/[slug]',
+    state: 'conditional',
+    policyModule: 'app/product/[slug]/page.tsx',
+    policySymbol: 'noindex: !product.indexable',
+    policyNote:
+      'Indexable when at least two of Aldi, Coles and Woolworths have a current ' +
+      'price for the product (Django, products/utils/indexable.py); noindex ' +
+      'otherwise. app/sitemap.ts lists exactly the indexable set, from the same rule.',
+  },
 ];
-
-// `/product/[slug]` is deliberately NOT a family here. It is an unbounded
-// generated surface backed by a live API fetch per page, so it is declared in
-// exactly one place — the robots.txt `*` Disallow — and seo-standard.md
-// section 2 wants exactly one bucket per route. It previously carried BOTH the
-// disallow and a noindex, and the noindex was the inert half: a disallowed page
-// is never fetched, so the directive on it is never read.
 
 /**
  * Breadcrumb trail for a registry route, with the short `label` as the final

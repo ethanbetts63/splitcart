@@ -2,46 +2,22 @@ import type { Product } from '../types';
 import PriceDisplay from '../components/PriceDisplay';
 import AddToCartButton from '../components/AddToCartButton';
 import fallbackImage from '../assets/splitcart_symbol_v6.webp';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '../components/common/card';
+import { Card, CardContent, CardHeader, CardDescription } from '../components/common/card';
 import { ProductCarousel } from '../components/ProductCarousel';
 import { assetSrc } from '@/lib/assets';
 import { notFound } from 'next/navigation';
+import { priceSummary, pricesChecked } from '@/lib/productPage';
 
 type ProductPageProps = {
   product: Product | null;
 };
 
-/**
- * No structured data here, deliberately.
- *
- * `/product` is robots-disallowed -- see `app/product/[slug]/page.tsx` and
- * `DISALLOWED_ROUTES` in `app/robots.txt/route.ts`. A disallowed page is never
- * fetched, so JSON-LD on it is never parsed, and the block that used to sit
- * here was inert in exactly the way that route's own comment describes.
- *
- * It was not harmlessly inert. It was a raw <script type="application/ld+json">
- * built with plain JSON.stringify over scraped supermarket product names, so a
- * name containing </script would have closed the element early and handed what
- * followed to the browser as markup. It also published SplitCart's Django
- * primary key as `sku`, minted a fresh anonymous Organization per price instead
- * of referencing the canonical retailer nodes, and hard-coded a second spelling
- * of the site origin beside `lib/siteConfig.ts`.
- *
- * If `/product` is ever removed from the disallow list, build the graph with
- * `buildProductItemListSchema`/`buildRetailerSchemas` from `lib/seo.ts` and
- * emit it through `StructuredDataScript`, which escapes `<`. Do not restore
- * what was here.
- */
 const ProductPage = ({ product }: ProductPageProps) => {
   if (!product) notFound();
 
   const imageUrl = product.image_url || assetSrc(fallbackImage);
+  const summary = priceSummary(product);
+  const checked = pricesChecked(product);
 
   return (
     <div className="site-shell py-4">
@@ -56,7 +32,7 @@ const ProductPage = ({ product }: ProductPageProps) => {
             {/* Details Column */}
             <div className="flex flex-col p-2">
               <CardHeader className="p-0">
-                <CardTitle className="text-title-sm font-bold">{product.name}</CardTitle>
+                <h1 className="text-title-sm font-bold leading-none">{product.name}</h1>
                 {product.brand_name && (
                   <CardDescription className="text-lead text-text-muted pt-2">
                     {product.brand_name}
@@ -70,8 +46,10 @@ const ProductPage = ({ product }: ProductPageProps) => {
               </CardHeader>
 
               <CardContent className="flex-grow p-0 mt-6 w-full">
-                <h3 className="text-lead font-semibold mb-4 text-center">Price Comparison</h3>
+                <h2 className="text-lead font-semibold mb-4 text-center">Price Comparison</h2>
                 <PriceDisplay prices={product.prices} displayMode="full" />
+                {summary && <p className="text-body mt-4 text-center">{summary}</p>}
+                {checked && <p className="text-body text-text-muted mt-1 text-center">{checked}</p>}
               </CardContent>
 
               <div className="mt-auto pt-6 flex justify-center">

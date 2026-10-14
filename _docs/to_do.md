@@ -33,3 +33,16 @@ In this order, because the frontend speaks only the new protocol:
 6. **Optional cleanup.** The `authtoken_token`, `account_*`, `socialaccount_*`
    and `django_site` tables are orphaned and can be dropped once the deploy has
    settled.
+
+## Product pages qualify for search only after a fresh scrape (2026-10-14)
+
+Product pages are indexable when at least two of Aldi, Coles and Woolworths
+have a price scraped within the last 14 days (`INDEXABLE_PRICE_MAX_AGE_DAYS` in
+`config/settings.py`). On 2026-10-14 production qualifies **none**: it holds no
+Coles prices at all, and the newest Woolworths and Aldi prices are from late
+June. Nothing needs changing in code — the sitemap and the robots tags follow
+the data — but nothing reaches Google until a Coles and Woolworths scrape is
+ingested on the server. Scrape Coles and Woolworths together, then check the
+count at `https://api.splitcart.com.au/api/products/indexable/`. If scrapes stay
+months apart, the window has to grow to match, or every page drops back to
+`noindex` two weeks after each one.

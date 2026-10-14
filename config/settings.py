@@ -248,6 +248,11 @@ FTP_SECURITY = {"PROXY_SECRET": os.environ.get("FTP_PROXY_SECRET")}
 SITE_URL = os.getenv("SITE_URL", "https://www.splitcart.com.au")
 ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "ethan.betts.dev@gmail.com")
 
+# How old a price may be and still count towards a product page being indexed.
+# Older than this and the page drops back to noindex until the next scrape. See
+# products/utils/indexable.py.
+INDEXABLE_PRICE_MAX_AGE_DAYS = 14
+
 # The ceiling on the request body itself, which is the only bound that applies
 # before anything is parsed: a serializer's per-field maximums are checked after
 # the body has already been read into memory. Django's own defaults, stated

@@ -41,11 +41,14 @@ const DISALLOWED_ROUTES = [
   // An unbounded query surface: every distinct `?q=` is a new URL and none of
   // them is worth a crawl.
   '/search',
-  // Tens of thousands of generated pages, each served by a live fetch against
-  // the Django API. Disallow rather than noindex, because noindex would require
-  // crawling all of them to take effect — which is the cost being avoided.
-  '/product',
 ];
+
+/**
+ * `/product` is deliberately NOT here, since 2026-10-14. Each product page is
+ * indexable or `noindex` by its own record (`app/product/[slug]/page.tsx`), and
+ * a crawler has to fetch a page to read that. It was disallowed on origin load;
+ * the page's one-day revalidation is what bounds that now.
+ */
 
 /**
  * `/login`, `/signup`, `/forgot-password`, `/final-cart` and `/substitutions`
@@ -69,27 +72,22 @@ const AI_USER_AGENTS = [
 ];
 
 /**
- * Answer engines get the whole public site, minus four prefixes.
+ * Answer engines get the whole public site, minus three prefixes.
  *
  * Being cited is the point of publishing the pillar pages and the bargain data,
  * and an answer engine fetching a login form costs one wasted request. So the
  * `*` list's crawl-budget reasoning does not transfer wholesale.
  *
  * Two of the exclusions are the shared standard's "capability URLs and the API
- * only"; the other two are a deliberate local divergence from it:
+ * only"; the third is a deliberate local divergence from it:
  *   - `/api` — the proxy, not content, same as for everyone.
  *   - `/reset-password` — capability URLs, same as for everyone.
  *   - `/search` — genuinely unbounded, and a dead end for any crawler.
- *   - `/product` — the reason here is not crawl budget, it is origin load. Each
- *     of those pages is a live API fetch against one small Django instance, and
- *     there are tens of thousands of them. SplitCart has also decided those
- *     pages stay out of search; opening them to answer engines alone would
- *     contradict that decision rather than refine it.
  *
  * `DISALLOWED_ROUTES` stays the authoritative list for everything that is not
  * robots.txt: the indexation ledger resolves state 4 from the `*` group alone.
  */
-const AI_DISALLOWED_ROUTES = ['/api', '/reset-password', '/search', '/product'];
+const AI_DISALLOWED_ROUTES = ['/api', '/reset-password', '/search'];
 
 const GROUPS: RobotsGroup[] = [
   { userAgents: ['*'], allow: ['/'], disallow: DISALLOWED_ROUTES },

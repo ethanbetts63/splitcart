@@ -2,6 +2,7 @@ from django.urls import path
 from .views.product_list_view import ProductListView
 from .views.bargain_carousel_view import BargainCarouselView
 from .views.product_detail_view import ProductDetailView
+from .views.indexable_product_list_view import IndexableProductListView
 from .views.primary_category_list_view import PrimaryCategoryListView
 from .views.bargain_stats_view import BargainStatsView
 from .views.product_substitute_list_view import ProductSubstituteListView
@@ -16,6 +17,7 @@ urlpatterns = [
     path('products/', ProductListView.as_view(), name='product-list'),
     path('products/bargain-carousel/', BargainCarouselView.as_view(), name='bargain-carousel'),
     path('products/<int:pk>/', ProductDetailView.as_view(), name='product-detail'),
+    path('products/indexable/', IndexableProductListView.as_view(), name='indexable-product-list'),
     path('categories/primary/', PrimaryCategoryListView.as_view(), name='primary-category-list'),
     path('stats/bargains/', BargainStatsView.as_view(), name='bargain-stats'),
     path('products/<int:product_id>/substitutes/', ProductSubstituteListView.as_view(), name='product-substitute-list'),

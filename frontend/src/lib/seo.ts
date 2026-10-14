@@ -333,61 +333,66 @@ function parsePrice(display: string | undefined): number | null {
 }
 
 /**
- * An `ItemList` of the products a carousel shows.
+ * One product as a schema.org `Product` with an `AggregateOffer`.
  *
- * This is a product *snippet* aggregation, not a merchant listing: SplitCart
- * does not sell any of these, it reports what three supermarkets charge. Google
- * documents `AggregateOffer` (`lowPrice`/`highPrice`/`offerCount`/
- * `priceCurrency`) for exactly this case.
+ * This is a product *snippet*, not a merchant listing: SplitCart does not sell
+ * any of these, it reports what three supermarkets charge. Google documents
+ * `AggregateOffer` (`lowPrice`/`highPrice`/`offerCount`/`priceCurrency`) for
+ * exactly this case.
  *
  * What is deliberately absent, and must stay absent until it is true:
  * `availability` (no live stock state reaches this codebase — the scrape
  * carries prices, not stock), `shippingDetails` and `hasMerchantReturnPolicy`
  * (they would be Coles' and Woolworths' terms, which SplitCart neither sets nor
- * honours). Publishing the easy half of an offer and inventing the rest is the
- * seo-standard.md section 0 violation that carries a manual action rather than
- * a missed feature.
+ * honours), and `sku` (SplitCart's own primary key is nobody's SKU). Publishing
+ * the easy half of an offer and inventing the rest is the seo-standard.md
+ * section 0 violation that carries a manual action rather than a missed
+ * feature.
  *
- * No `Product.url` either: product pages are robots-disallowed, so linking one
- * from schema points a crawler at a URL it is told not to fetch.
+ * `url` only when the caller knows the page is indexable: a carousel does not,
+ * and pointing schema at a `noindex` page claims a page Google is told to drop.
  */
+export function buildProductSchema(product: Product, url?: string): JsonLdNode | null {
+  const offers = product.prices
+    .map((priceInfo) => ({
+      company: priceInfo.company,
+      price: parsePrice(priceInfo.price_display),
+    }))
+    .filter((offer): offer is { company: string; price: number } => offer.price !== null);
+
+  if (offers.length === 0) return null;
+
+  const prices = offers.map((offer) => offer.price);
+  const item: JsonLdNode = {
+    '@type': 'Product',
+    name: product.name,
+    offers: {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'AUD',
+      lowPrice: Math.min(...prices).toFixed(2),
+      highPrice: Math.max(...prices).toFixed(2),
+      offerCount: offers.length,
+      offers: offers.map((offer) => ({
+        '@type': 'Offer',
+        price: offer.price.toFixed(2),
+        priceCurrency: 'AUD',
+        seller: { '@id': retailerId(offer.company) },
+      })),
+    },
+  };
+  if (url) item.url = url;
+  if (product.size) item.size = product.size;
+  if (product.image_url) item.image = product.image_url;
+  if (product.brand_name) {
+    item.brand = { '@type': 'Brand', name: product.brand_name };
+  }
+  return item;
+}
+
+/** An `ItemList` of the products a carousel shows, each as `buildProductSchema` builds it. */
 export function buildProductItemListSchema(products: Product[], name: string): JsonLdNode | null {
   const items = products
-    .map((product) => {
-      const offers = product.prices
-        .map((priceInfo) => ({
-          company: priceInfo.company,
-          price: parsePrice(priceInfo.price_display),
-        }))
-        .filter((offer): offer is { company: string; price: number } => offer.price !== null);
-
-      if (offers.length === 0) return null;
-
-      const prices = offers.map((offer) => offer.price);
-      const item: JsonLdNode = {
-        '@type': 'Product',
-        name: product.name,
-        offers: {
-          '@type': 'AggregateOffer',
-          priceCurrency: 'AUD',
-          lowPrice: Math.min(...prices).toFixed(2),
-          highPrice: Math.max(...prices).toFixed(2),
-          offerCount: offers.length,
-          offers: offers.map((offer) => ({
-            '@type': 'Offer',
-            price: offer.price.toFixed(2),
-            priceCurrency: 'AUD',
-            seller: { '@id': retailerId(offer.company) },
-          })),
-        },
-      };
-      if (product.image_url) item.image = product.image_url;
-      if (product.brand_name) {
-        item.brand = { '@type': 'Brand', name: product.brand_name };
-      }
-
-      return item;
-    })
+    .map((product) => buildProductSchema(product))
     .filter((entry): entry is JsonLdNode => entry !== null);
 
   if (items.length === 0) return null;
