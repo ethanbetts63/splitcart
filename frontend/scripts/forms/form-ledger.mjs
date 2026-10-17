@@ -20,6 +20,11 @@
  * cannot check is whether a row is honest — that is what review is for, and
  * why every excluded row carries its reason in the same table.
  *
+ * With `requireErrorSummary` (a repo opts in, FORMS-12), every A or B form must
+ * render `FormErrorSummary` or carry a `summary` reason saying why it needs
+ * none, such as a two-field form whose error already sits by its button. A
+ * reason on a form that does render one is stale and is reported too.
+ *
  * See freetheplatform/_docs/forms-standard.md.
  */
 import { readFileSync } from 'node:fs';
@@ -29,20 +34,24 @@ import { walk } from './walk.mjs';
 /** A `<form` opening tag, not the word "form" in prose or a className. */
 const FORM_TAG = /<form[\s>]/;
 
+/** The shared error-summary component, by name, in the form's own file. */
+const ERROR_SUMMARY = /\bFormErrorSummary\b/;
+
 /** The comparison itself, exit-free so the test suite can call it. */
-export function findFormLedgerProblems({ root, ledger }) {
+export function findFormLedgerProblems({ root, ledger, requireErrorSummary = false }) {
   const source = join(root, 'src');
-  const found = new Set();
+  const found = new Map();
   for (const path of walk(source, ['.tsx'])) {
-    if (FORM_TAG.test(readFileSync(path, 'utf8'))) {
-      found.add(relative(source, path).split(sep).join('/'));
+    const text = readFileSync(path, 'utf8');
+    if (FORM_TAG.test(text)) {
+      found.set(relative(source, path).split(sep).join('/'), text);
     }
   }
 
   const listed = new Map(ledger.map((row) => [row.file, row]));
   const problems = [];
 
-  for (const file of [...found].sort()) {
+  for (const file of [...found.keys()].sort()) {
     if (!listed.has(file)) {
       problems.push(
         `  ${file}\n      renders a <form> and is not in the ledger. Add a row saying which\n      track it is on, or why neither applies.`,
@@ -62,13 +71,32 @@ export function findFormLedgerProblems({ root, ledger }) {
       says why in words: what excludes it, who owns it, or what is left.`,
       );
     }
+    if (requireErrorSummary && (row.track === 'A' || row.track === 'B') && found.has(row.file)) {
+      const renders = ERROR_SUMMARY.test(found.get(row.file));
+      const reason = String(row.summary ?? '').trim();
+      if (!renders && !reason) {
+        problems.push(
+          `  ${row.file}
+      renders no FormErrorSummary. List a failed submit's problems at the top
+      of the form with it, or give the row a \`summary\` saying why this form
+      needs none (FORMS-12).`,
+        );
+      }
+      if (renders && reason) {
+        problems.push(
+          `  ${row.file}
+      renders FormErrorSummary but its row still says it needs none. Drop the
+      \`summary\` reason.`,
+        );
+      }
+    }
   }
 
   return { problems, formCount: found.size };
 }
 
-export function checkFormLedger({ root, ledger }) {
-  const { problems, formCount } = findFormLedgerProblems({ root, ledger });
+export function checkFormLedger({ root, ledger, requireErrorSummary = false }) {
+  const { problems, formCount } = findFormLedgerProblems({ root, ledger, requireErrorSummary });
 
   if (problems.length) {
     console.error('check-forms: the ledger and the tree disagree.\n');
